@@ -40,7 +40,7 @@ export default function Navbar({ onJoinWaitlist }) {
           data-testid="navbar-logo"
         >
           <img
-            src="/valuevade-logo.png"
+            src="/valuevade-logo.svg"
             alt="Valuevade Logo"
             className="w-8 h-8 object-contain"
           />

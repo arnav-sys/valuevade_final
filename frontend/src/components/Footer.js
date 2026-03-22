@@ -31,7 +31,7 @@ export default function Footer() {
           <div>
             <div className="flex items-center gap-2 mb-2">
               <img
-                src="/valuevade-logo.png"
+                src="/valuevade-logo.svg"
                 alt="Valuevade Logo"
                 className="w-7 h-7 object-contain"
               />

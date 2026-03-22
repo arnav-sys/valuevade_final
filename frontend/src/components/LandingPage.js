@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { X, ArrowRight } from 'lucide-react';
 import CustomCursor from '@/components/CustomCursor';
@@ -19,16 +19,22 @@ export default function LandingPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [waitlistData, setWaitlistData] = useState(null);
   const [showMobileBar, setShowMobileBar] = useState(true);
+  const [refCode, setRefCode] = useState(null);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('ref');
+    if (ref) setRefCode(ref);
+  }, []);
 
   const scrollToWaitlist = () => {
     document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleWaitlistSubmit = async (firstName, email) => {
-    const res = await axios.post(`${API}/waitlist`, {
-      first_name: firstName,
-      email,
-    });
+    const payload = { first_name: firstName, email };
+    if (refCode) payload.ref_code = refCode;
+    const res = await axios.post(`${API}/waitlist`, payload);
     setWaitlistData(res.data);
     setShowConfirmation(true);
     window.scrollTo(0, 0);
@@ -60,7 +66,6 @@ export default function LandingPage() {
 
       <Footer />
 
-      {/* Mobile sticky bar */}
       {showMobileBar && (
         <div
           className="fixed bottom-0 left-0 right-0 z-40 lg:hidden mobile-sticky-bar"
