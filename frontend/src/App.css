@@ -1,0 +1,306 @@
+/* ========== CUSTOM CURSOR ========== */
+.cursor-dot {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: #FF6AC1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px;
+  height: 36px;
+  border: 2px solid #FF6AC1;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+}
+
+body.custom-cursor,
+body.custom-cursor * {
+  cursor: none !important;
+}
+
+@media (hover: none) {
+  .cursor-dot, .cursor-ring {
+    display: none !important;
+  }
+}
+
+/* ========== KEYFRAMES ========== */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 1; }
+}
+
+@keyframes orbit {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes orbit-reverse {
+  from { transform: translate(-50%, -50%) rotate(360deg); }
+  to { transform: translate(-50%, -50%) rotate(0deg); }
+}
+
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255, 106, 193, 0.3), 0 0 60px rgba(255, 106, 193, 0.1); }
+  50% { box-shadow: 0 0 30px rgba(255, 106, 193, 0.5), 0 0 80px rgba(255, 106, 193, 0.2); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes blob-float {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(30px, -30px); }
+  66% { transform: translate(-20px, 20px); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes draw-check {
+  from { stroke-dashoffset: 100; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes confetti-fall {
+  0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+  100% { transform: translateY(500px) rotate(720deg) scale(0); opacity: 0; }
+}
+
+@keyframes confetti-burst {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes light-ray-rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+@keyframes line-draw {
+  from { stroke-dashoffset: 1000; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes slide-up-mobile {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ========== ANIMATION CLASSES ========== */
+.animate-fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.animate-fade-up.visible {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+.animate-hero-float {
+  animation: hero-float 4s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 2s ease-in-out infinite;
+}
+
+.animate-blob {
+  animation: blob-float 8s ease-in-out infinite;
+}
+
+/* ========== GRADIENT TEXT ========== */
+.logo-gradient {
+  background: linear-gradient(135deg, #246BFD, #6A5CFF, #FF6AC1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.gradient-underline::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #246BFD, #6A5CFF, #FF6AC1);
+  border-radius: 2px;
+  background-size: 200% 100%;
+  animation: gradient-shift 3s ease infinite;
+}
+
+/* ========== GLASSMORPHISM ========== */
+.glass-card {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  border-color: rgba(106, 92, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(106, 92, 255, 0.15);
+}
+
+/* ========== DOT GRID BACKGROUND ========== */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* ========== STAR PARTICLE ========== */
+.star-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: white;
+}
+
+/* ========== ORBITAL ========== */
+.orbital {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* ========== SECTION LABEL ========== */
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #6A5CFF;
+  margin-bottom: 1rem;
+}
+
+/* ========== BENTO GRID ========== */
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ========== MOBILE STICKY BAR ========== */
+.mobile-sticky-bar {
+  animation: slide-up-mobile 0.3s ease-out;
+}
+
+/* ========== SVG LINE DRAW ========== */
+.line-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  transition: stroke-dashoffset 2s ease;
+}
+
+.line-draw.visible {
+  stroke-dashoffset: 0;
+}
+
+/* ========== CONFETTI PIECE ========== */
+.confetti-piece {
+  position: absolute;
+  top: 0;
+  border-radius: 2px;
+}
+
+/* ========== SCROLLBAR ========== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #02073D;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #246BFD;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6A5CFF;
+}
+
+/* ========== LIGHT RAYS ========== */
+.light-rays::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(36, 107, 253, 0.03) 10deg,
+    transparent 20deg,
+    transparent 40deg,
+    rgba(106, 92, 255, 0.03) 50deg,
+    transparent 60deg,
+    transparent 80deg,
+    rgba(255, 106, 193, 0.03) 90deg,
+    transparent 100deg,
+    transparent 120deg,
+    rgba(36, 107, 253, 0.03) 130deg,
+    transparent 140deg,
+    transparent 160deg,
+    rgba(106, 92, 255, 0.03) 170deg,
+    transparent 180deg,
+    transparent 200deg,
+    rgba(255, 106, 193, 0.03) 210deg,
+    transparent 220deg,
+    transparent 240deg,
+    rgba(36, 107, 253, 0.03) 250deg,
+    transparent 260deg,
+    transparent 280deg,
+    rgba(106, 92, 255, 0.03) 290deg,
+    transparent 300deg,
+    transparent 320deg,
+    rgba(255, 106, 193, 0.03) 330deg,
+    transparent 340deg,
+    transparent 360deg
+  );
+  animation: light-ray-rotate 30s linear infinite;
+  pointer-events: none;
+}

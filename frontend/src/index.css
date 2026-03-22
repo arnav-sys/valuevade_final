@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --navy: #02073D;
+    --blue: #246BFD;
+    --purple: #6A5CFF;
+    --pink: #FF6AC1;
+    --lavender: #F5ECFF;
+    --background: 230 90% 12%;
+    --foreground: 0 0% 98%;
+    --card: 230 90% 12%;
+    --card-foreground: 0 0% 98%;
+    --popover: 230 90% 12%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 220 98% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 246 100% 68%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 230 50% 20%;
+    --muted-foreground: 230 20% 70%;
+    --accent: 246 100% 68%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 230 30% 20%;
+    --input: 230 30% 20%;
+    --ring: 220 98% 56%;
+    --chart-1: 220 98% 56%;
+    --chart-2: 246 100% 68%;
+    --chart-3: 330 100% 69%;
+    --chart-4: 260 100% 95%;
+    --chart-5: 230 90% 12%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    font-family: 'Bricolage Grotesque', sans-serif;
+    background: #02073D;
+    color: #ffffff;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  h1, h2, h3 {
+    font-family: 'Clash Display', sans-serif;
+  }
+}
+
+@layer base {
+  [data-debug-wrapper="true"] {
+    display: contents !important;
+  }
+  [data-debug-wrapper="true"] > * {
+    margin-left: inherit;
+    margin-right: inherit;
+    margin-top: inherit;
+    margin-bottom: inherit;
+    padding-left: inherit;
+    padding-right: inherit;
+    padding-top: inherit;
+    padding-bottom: inherit;
+    column-gap: inherit;
+    row-gap: inherit;
+    gap: inherit;
+    border-left-width: inherit;
+    border-right-width: inherit;
+    border-top-width: inherit;
+    border-bottom-width: inherit;
+    border-left-style: inherit;
+    border-right-style: inherit;
+    border-top-style: inherit;
+    border-bottom-style: inherit;
+    border-left-color: inherit;
+    border-right-color: inherit;
+    border-top-color: inherit;
+    border-bottom-color: inherit;
+  }
+}
