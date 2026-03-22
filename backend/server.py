@@ -5,8 +5,9 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, field_validator
 import uuid
+import re
 from datetime import datetime, timezone
 import random
 
@@ -24,6 +25,13 @@ api_router = APIRouter(prefix="/api")
 class WaitlistCreate(BaseModel):
     first_name: str
     email: str
+
+    @field_validator('email')
+    @classmethod
+    def validate_email_format(cls, v):
+        if not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', v):
+            raise ValueError('Invalid email format')
+        return v
 
 
 class WaitlistResponse(BaseModel):
