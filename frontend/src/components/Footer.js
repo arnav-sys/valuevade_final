@@ -4,12 +4,10 @@ const footerLinks = [
   { label: 'Features', id: 'features' },
   { label: 'How It Works', id: 'how-it-works' },
   { label: 'AI-Proof', id: 'ai-proof' },
-  { label: 'Blog', href: '#' },
-  { label: 'Contact', href: '#' },
 ];
 
 const socialLinks = [
-  { icon: Instagram, label: 'Instagram', href: '#' },
+  { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/valuevade/' },
   { icon: Linkedin, label: 'LinkedIn', href: '#' },
   { icon: Youtube, label: 'YouTube', href: '#' },
 ];

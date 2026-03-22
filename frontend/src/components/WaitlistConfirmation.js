@@ -280,7 +280,9 @@ export default function WaitlistConfirmation({ data }) {
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row gap-3 mb-6">
           <a
-            href="#"
+            href="https://www.instagram.com/valuevade/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="flex-1 px-6 py-3 bg-vblue text-white font-semibold rounded-full text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2"
             data-testid="follow-instagram-btn"
           >
