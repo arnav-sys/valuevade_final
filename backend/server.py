@@ -140,9 +140,11 @@ async def get_waitlist_count():
 async def get_all_waitlist():
     cursor = db.waitlist.find(
         {},
-        {"_id": 0, "first_name": 1, "email": 1, "position": 1, "referral_code": 1, "referral_count": 1, "referred_by": 1, "timestamp": 1},
-    ).sort("timestamp", -1)
+        {"first_name": 1, "email": 1, "position": 1, "referral_code": 1, "referral_count": 1, "referred_by": 1, "timestamp": 1},
+    ).sort("_id", -1)
     entries = await cursor.to_list(1000)
+    for e in entries:
+        e.pop("_id", None)
     return entries
 
 
