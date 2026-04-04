@@ -135,6 +135,18 @@ async def get_waitlist_count():
     return {"count": count + 500}
 
 
+
+@api_router.get("/waitlist/all")
+async def get_all_waitlist():
+    cursor = db.waitlist.find(
+        {},
+        {"_id": 0, "first_name": 1, "email": 1, "position": 1, "referral_code": 1, "referral_count": 1, "referred_by": 1, "timestamp": 1},
+    ).sort("timestamp", -1)
+    entries = await cursor.to_list(1000)
+    return entries
+
+
+
 @api_router.get("/waitlist/leaderboard", response_model=List[LeaderboardEntry])
 async def get_leaderboard():
     cursor = db.waitlist.find(
