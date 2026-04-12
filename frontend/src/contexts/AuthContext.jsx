@@ -44,16 +44,12 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signUp = async ({ email, password, fullName }) => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { full_name: fullName } },
+    });
     if (error) return { error };
-
-    if (data.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert({ id: data.user.id, full_name: fullName, email });
-      if (profileError) return { error: profileError };
-    }
-
     return { data };
   };
 
