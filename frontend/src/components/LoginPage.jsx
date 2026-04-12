@@ -39,23 +39,25 @@ export default function LoginPage() {
       return;
     }
 
-    // Check if user has an active enrollment
+    // Check if user has an active enrollment — default to /courses on any failure
     const userId = data?.user?.id;
     if (userId) {
-      const { data: enrollments } = await supabase
-        .from('user_enrollments')
-        .select('id')
-        .eq('user_id', userId)
-        .eq('status', 'active');
+      try {
+        const { data: enrollments } = await supabase
+          .from('user_enrollments')
+          .select('id')
+          .eq('user_id', userId)
+          .eq('status', 'active');
 
-      if (enrollments && enrollments.length > 0) {
-        navigate('/dashboard');
-      } else {
-        navigate('/courses');
+        if (enrollments && enrollments.length > 0) {
+          navigate('/dashboard');
+          return;
+        }
+      } catch {
+        // Enrollment check failed — proceed to courses
       }
-    } else {
-      navigate('/courses');
     }
+    navigate('/courses');
   };
 
   const set = (field) => (e) => {
