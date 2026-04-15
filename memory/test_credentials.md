@@ -7,4 +7,8 @@
 ## Supabase Auth (Signup/Login)
 - Supabase URL: https://yuadeybycbfqlkdpxbkv.supabase.co
 - Auth is managed via Supabase — users create accounts through /signup
-- No pre-seeded test accounts (user creates via Supabase Auth)
+
+## Test User Account
+- Email: testagent2026@gmail.com
+- Password: TestPass123!
+- Full Name: Test Agent User
