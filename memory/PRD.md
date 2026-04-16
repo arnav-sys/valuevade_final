@@ -1,7 +1,7 @@
 # Valuevade - PRD
 
 ## Problem Statement
-Premium landing page + waitlist + AI-powered career learning platform for finance professionals. Dark cosmic premium aesthetic. React frontend + Supabase backend + MongoDB (legacy waitlist).
+Premium landing page + waitlist + AI-powered career learning platform for finance professionals. Light/dark theme support with warm pink default. React frontend + Supabase backend + MongoDB (legacy waitlist).
 
 ## Architecture
 - **Frontend**: React with Tailwind CSS, Supabase JS client, custom CSS animations, Shadcn UI components
@@ -54,10 +54,28 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Sticky mobile CTA bar at bottom
 - All protected routes requiring authentication
 
+### Phase 7 - Light/Dark Theme System (Feb 2026)
+- ThemeContext with localStorage persistence (key: vv-theme)
+- Light mode default: #F2E6EE background, dark text, white glass cards
+- Dark mode: Original cosmic #02073D theme preserved
+- Theme toggle (sun/moon icon) in: landing navbar, courses header, course details header
+- All 15+ components updated from hardcoded dark colors to CSS variable references
+- Courses page upgraded: gradient accent bar, sparkles icon, colored stat pills, gradient CTA button
+- Smooth 0.3s transitions between themes
+
 ## Brand System (CSS Variables)
-- --bg-primary: #02073D, --color-primary: #246BFD
-- --color-accent-purple: #6A5CFF, --color-accent-pink: #FF6AC1
+### Light Mode (default)
+- --bg-primary: #F2E6EE, --bg-secondary: #EAD9E5
+- --color-text: #1A1A2E, --color-text-muted: #6B6B7B
+- --glass-bg: rgba(255, 255, 255, 0.65)
+
+### Dark Mode
+- --bg-primary: #02073D, --bg-secondary: #050d4a
 - --color-text: #E8E6F0, --color-text-muted: #8B8A9E
+- --glass-bg: rgba(255, 255, 255, 0.04)
+
+### Shared
+- --color-primary: #246BFD, --color-accent-purple: #6A5CFF, --color-accent-pink: #FF6AC1
 - Fonts: Clash Display, Bricolage Grotesque, JetBrains Mono
 
 ## API Endpoints
@@ -68,15 +86,15 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - DELETE /api/waitlist/{entry_id} - Protected: delete entry
 
 ## Key Files
-- /app/frontend/src/lib/supabase.js - Supabase client
+- /app/frontend/src/contexts/ThemeContext.jsx - Theme provider
 - /app/frontend/src/contexts/AuthContext.jsx - Auth context
-- /app/frontend/src/components/SignupPage.jsx - Signup page
-- /app/frontend/src/components/LoginPage.jsx - Login page
-- /app/frontend/src/components/ProtectedRoute.jsx - Auth guard
-- /app/frontend/src/components/CoursesPage.jsx - All Courses page
-- /app/frontend/src/components/CourseDetailsPage.jsx - Course Details page
-- /app/frontend/src/App.js - Router with AuthProvider
-- /app/backend/server.py - FastAPI + MongoDB routes
+- /app/frontend/src/lib/supabase.js - Supabase client
+- /app/frontend/src/index.css - Light/dark CSS variables
+- /app/frontend/src/App.css - Theme-aware styles
+- /app/frontend/src/components/Navbar.js - Theme toggle + auth nav
+- /app/frontend/src/components/CoursesPage.jsx - Upgraded courses
+- /app/frontend/src/components/CourseDetailsPage.jsx - Course details
+- /app/frontend/src/App.js - Router with ThemeProvider + AuthProvider
 
 ## Backlog
 - P1: CSV Export from Admin Dashboard
