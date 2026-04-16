@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Menu, X, LogOut } from 'lucide-react';
+import { useTheme } from '../contexts/ThemeContext';
+import { Menu, X, LogOut, Sun, Moon } from 'lucide-react';
 
 const navLinks = [
   { label: 'Features', id: 'features' },
@@ -12,6 +13,7 @@ const navLinks = [
 
 export default function Navbar({ onJoinWaitlist }) {
   const { user, profile, loading, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -33,7 +35,7 @@ export default function Navbar({ onJoinWaitlist }) {
       data-testid="navbar"
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-navy/80 backdrop-blur-xl border-b border-white/10'
+          ? 'bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--color-border)]'
           : 'bg-transparent'
       }`}
     >
@@ -44,14 +46,8 @@ export default function Navbar({ onJoinWaitlist }) {
           className="flex items-center gap-2"
           data-testid="navbar-logo"
         >
-          <img
-            src="/valuevade-logo.svg"
-            alt="Valuevade Logo"
-            className="w-8 h-8 object-contain"
-          />
-          <span className="font-clash text-xl font-semibold logo-gradient">
-            Valuevade
-          </span>
+          <img src="/valuevade-logo.svg" alt="Valuevade Logo" className="w-8 h-8 object-contain" />
+          <span className="font-clash text-xl font-semibold logo-gradient">Valuevade</span>
         </button>
 
         {/* Center links - desktop */}
@@ -60,7 +56,7 @@ export default function Navbar({ onJoinWaitlist }) {
             <button
               key={link.label}
               onClick={() => scrollTo(link.id)}
-              className="text-sm text-white/60 hover:text-white transition-colors font-bricolage"
+              className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage"
               data-testid={`nav-link-${link.id}`}
             >
               {link.label}
@@ -70,32 +66,42 @@ export default function Navbar({ onJoinWaitlist }) {
 
         {/* Right side - desktop */}
         <div className="hidden md:flex items-center gap-3">
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
+            data-testid="theme-toggle"
+            aria-label="Toggle theme"
+          >
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+
           {loading ? (
             <div className="w-20 h-8" />
           ) : isLoggedIn ? (
             <>
               <Link
                 to="/courses"
-                className="px-4 py-2 text-sm text-white/70 hover:text-white transition-colors font-bricolage"
+                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
                 data-testid="nav-courses-link"
               >
                 Courses
               </Link>
               <Link
                 to="/dashboard"
-                className="px-4 py-2 text-sm text-white/70 hover:text-white transition-colors font-bricolage"
+                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
                 data-testid="nav-dashboard-link"
               >
                 Dashboard
               </Link>
               {profile && (
-                <span className="text-sm text-white/50 font-bricolage px-2" data-testid="nav-user-name">
+                <span className="text-sm text-[var(--color-text-muted)] font-bricolage px-2" data-testid="nav-user-name">
                   {profile.full_name}
                 </span>
               )}
               <button
                 onClick={signOut}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all font-bricolage"
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all font-bricolage"
                 data-testid="nav-signout-button"
               >
                 <LogOut size={14} />
@@ -105,14 +111,14 @@ export default function Navbar({ onJoinWaitlist }) {
             <>
               <Link
                 to="/login"
-                className="px-4 py-2 text-sm text-white/70 hover:text-white transition-colors font-bricolage"
+                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
                 data-testid="nav-login-link"
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="px-5 py-2 bg-vblue text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
+                className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
                 data-testid="nav-signup-link"
               >
                 Sign Up
@@ -124,7 +130,7 @@ export default function Navbar({ onJoinWaitlist }) {
         {/* Hamburger - mobile */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-white"
+          className="md:hidden text-[var(--color-text)]"
           data-testid="nav-hamburger"
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -134,26 +140,36 @@ export default function Navbar({ onJoinWaitlist }) {
       {/* Mobile overlay menu */}
       {menuOpen && (
         <div
-          className="md:hidden fixed inset-0 top-16 bg-navy/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8"
+          className="md:hidden fixed inset-0 top-16 bg-[var(--bg-primary)]/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8"
           data-testid="mobile-menu-overlay"
         >
           {navLinks.map((link) => (
             <button
               key={link.label}
               onClick={() => scrollTo(link.id)}
-              className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+              className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
               data-testid={`mobile-nav-${link.id}`}
             >
               {link.label}
             </button>
           ))}
 
+          {/* Mobile theme toggle */}
+          <button
+            onClick={toggleTheme}
+            className="flex items-center gap-2 text-lg text-[var(--color-text-muted)] font-bricolage"
+            data-testid="mobile-theme-toggle"
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </button>
+
           {loading ? null : isLoggedIn ? (
             <>
               <Link
                 to="/courses"
                 onClick={() => setMenuOpen(false)}
-                className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+                className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
                 data-testid="mobile-nav-courses"
               >
                 Courses
@@ -161,14 +177,14 @@ export default function Navbar({ onJoinWaitlist }) {
               <Link
                 to="/dashboard"
                 onClick={() => setMenuOpen(false)}
-                className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+                className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
                 data-testid="mobile-nav-dashboard"
               >
                 Dashboard
               </Link>
               <button
                 onClick={() => { setMenuOpen(false); signOut(); }}
-                className="px-8 py-3 bg-white/10 text-white font-semibold rounded-full text-lg flex items-center gap-2 font-bricolage"
+                className="px-8 py-3 bg-[var(--color-surface)] text-[var(--color-text)] font-semibold rounded-full text-lg flex items-center gap-2 font-bricolage border border-[var(--color-border)]"
                 data-testid="mobile-signout-btn"
               >
                 <LogOut size={18} /> Sign Out
@@ -179,7 +195,7 @@ export default function Navbar({ onJoinWaitlist }) {
               <Link
                 to="/login"
                 onClick={() => setMenuOpen(false)}
-                className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+                className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
                 data-testid="mobile-nav-login"
               >
                 Log In
@@ -187,7 +203,7 @@ export default function Navbar({ onJoinWaitlist }) {
               <Link
                 to="/signup"
                 onClick={() => setMenuOpen(false)}
-                className="px-8 py-3 bg-vblue text-white font-semibold rounded-full text-lg font-bricolage"
+                className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
                 data-testid="mobile-nav-signup"
               >
                 Sign Up

@@ -160,31 +160,33 @@ body.custom-cursor * {
   animation: gradient-shift 3s ease infinite;
 }
 
-/* ========== GLASSMORPHISM ========== */
+/* ========== GLASSMORPHISM (theme-aware) ========== */
 .glass-card {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--glass-border);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-card-hover:hover {
   transform: translateY(-4px);
-  border-color: rgba(106, 92, 255, 0.3);
-  box-shadow: 0 8px 32px rgba(106, 92, 255, 0.15);
+  border-color: var(--glass-hover-border);
+  box-shadow: 0 8px 32px var(--glass-hover-shadow);
 }
 
 /* ========== DOT GRID BACKGROUND ========== */
 .dot-grid {
-  background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-image: radial-gradient(circle, var(--color-text-faint) 1px, transparent 1px);
   background-size: 32px 32px;
+  opacity: 0.3;
 }
 
 /* ========== STAR PARTICLE ========== */
 .star-particle {
   position: absolute;
   border-radius: 50%;
-  background: white;
+  background: var(--star-color);
 }
 
 /* ========== ORBITAL ========== */
@@ -255,16 +257,16 @@ body.custom-cursor * {
 }
 
 ::-webkit-scrollbar-track {
-  background: #02073D;
+  background: var(--scrollbar-track);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #246BFD;
+  background: var(--scrollbar-thumb);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #6A5CFF;
+  background: var(--scrollbar-thumb-hover);
 }
 
 /* ========== LIGHT RAYS ========== */
@@ -308,4 +310,9 @@ body.custom-cursor * {
   );
   animation: light-ray-rotate 30s linear infinite;
   pointer-events: none;
+}
+
+/* ========== THEME TRANSITION ========== */
+.theme-transition {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }

@@ -7,7 +7,7 @@ const features = [
     body: "Tell Valuevade your dream role and current skills. The AI maps your exact gap and builds a week-by-week path — personalised to you, not a generic syllabus.",
     span: 'col-span-12 lg:col-span-7',
     size: 'large',
-    gradient: 'from-vblue/10 to-transparent',
+    gradient: 'from-[var(--color-primary)]/10 to-transparent',
     borderColor: 'rgba(36, 107, 253, 0.2)',
   },
   {
@@ -16,7 +16,7 @@ const features = [
     icon: Shield,
     span: 'col-span-12 lg:col-span-5',
     size: 'large',
-    gradient: 'from-vpurple/10 to-transparent',
+    gradient: 'from-[var(--color-accent-purple)]/10 to-transparent',
     borderColor: 'rgba(106, 92, 255, 0.2)',
   },
   {
@@ -81,20 +81,20 @@ function RoadmapVisual() {
   return (
     <div className="flex items-center gap-3 mt-6">
       <div className="flex items-center gap-1">
-        <div className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-xs text-white/60 font-jetbrains">
+        <div className="w-8 h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-xs text-[var(--color-text-muted)] font-jetbrains">
           IN
         </div>
-        <div className="w-12 h-px bg-gradient-to-r from-white/20 to-vblue/60" />
+        <div className="w-12 h-px bg-gradient-to-r from-[var(--color-border)] to-[var(--color-primary)]/60" />
       </div>
-      <div className="w-10 h-10 rounded-full bg-vblue/20 border border-vblue/40 flex items-center justify-center relative">
-        <div className="w-3 h-3 rounded-full bg-vblue animate-pulse" />
+      <div className="w-10 h-10 rounded-full bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40 flex items-center justify-center relative">
+        <div className="w-3 h-3 rounded-full bg-[var(--color-primary)] animate-pulse" />
       </div>
       <div className="flex items-center gap-1">
-        <div className="w-12 h-px bg-gradient-to-r from-vblue/60 to-vpurple/60" />
+        <div className="w-12 h-px bg-gradient-to-r from-[var(--color-primary)]/60 to-[var(--color-accent-purple)]/60" />
         <div className="flex gap-1">
-          <div className="w-6 h-6 rounded bg-vpurple/20 border border-vpurple/30" />
-          <div className="w-6 h-6 rounded bg-vpink/20 border border-vpink/30" />
-          <div className="w-6 h-6 rounded bg-vblue/20 border border-vblue/30" />
+          <div className="w-6 h-6 rounded bg-[var(--color-accent-purple)]/20 border border-[var(--color-accent-purple)]/30" />
+          <div className="w-6 h-6 rounded bg-[var(--color-accent-pink)]/20 border border-[var(--color-accent-pink)]/30" />
+          <div className="w-6 h-6 rounded bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/30" />
         </div>
       </div>
     </div>
@@ -107,8 +107,7 @@ export default function FeaturesSection() {
   return (
     <section
       id="features"
-      className="relative py-24 lg:py-32"
-      style={{ background: '#02073D' }}
+      className="relative py-24 lg:py-32 bg-[var(--bg-primary)]"
       data-testid="features-section"
     >
       <div ref={sectionRef} className="max-w-7xl mx-auto px-6">
@@ -117,7 +116,7 @@ export default function FeaturesSection() {
             WHAT VALUEVADE GIVES YOU
           </p>
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-white leading-tight ${
+            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] leading-tight ${
               isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
             }`}
             style={{ animationDelay: '0.1s' }}
@@ -144,19 +143,19 @@ export default function FeaturesSection() {
                 data-testid={`feature-card-${i}`}
               >
                 {Icon && (
-                  <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center mb-4">
-                    <Icon size={feature.size === 'small' ? 18 : 22} className="text-vpurple" />
+                  <div className="w-10 h-10 rounded-lg bg-[var(--color-surface)] flex items-center justify-center mb-4">
+                    <Icon size={feature.size === 'small' ? 18 : 22} className="text-[var(--color-accent-purple)]" />
                   </div>
                 )}
                 <h3
-                  className={`font-clash text-white mb-2 ${
+                  className={`font-clash text-[var(--color-text)] mb-2 ${
                     feature.size === 'large' ? 'text-2xl' : feature.size === 'medium' ? 'text-lg' : 'text-base'
                   }`}
                 >
                   {feature.title}
                 </h3>
                 <p
-                  className={`text-white/50 font-bricolage leading-relaxed ${
+                  className={`text-[var(--color-text-muted)] font-bricolage leading-relaxed ${
                     feature.size === 'small' ? 'text-xs' : 'text-sm'
                   }`}
                 >

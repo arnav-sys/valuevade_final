@@ -3,27 +3,88 @@
 @tailwind utilities;
 
 @layer base {
+  /* ===== LIGHT MODE (default) ===== */
   :root {
-    --navy: #02073D;
-    --blue: #246BFD;
-    --purple: #6A5CFF;
-    --pink: #FF6AC1;
-    --lavender: #F5ECFF;
+    --bg-primary: #F2E6EE;
+    --bg-secondary: #EAD9E5;
+    --bg-tertiary: #E2D0DC;
+    --color-primary: #246BFD;
+    --color-accent-purple: #6A5CFF;
+    --color-accent-pink: #FF6AC1;
+    --color-lavender: #F5ECFF;
+    --color-text: #1A1A2E;
+    --color-text-secondary: #3D3B54;
+    --color-text-muted: #6B6B7B;
+    --color-text-faint: #9E9EAE;
+    --color-surface: rgba(255, 255, 255, 0.7);
+    --color-surface-hover: rgba(255, 255, 255, 0.9);
+    --color-border: rgba(0, 0, 0, 0.08);
+    --color-success: #00B876;
+    --color-error: #E53E5C;
+    --font-display: 'Clash Display', sans-serif;
+    --font-body: 'Bricolage Grotesque', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --glass-hover-border: rgba(106, 92, 255, 0.3);
+    --glass-hover-shadow: rgba(106, 92, 255, 0.1);
+    --star-color: rgba(106, 92, 255, 0.15);
+    --scrollbar-track: #F2E6EE;
+    --scrollbar-thumb: #246BFD;
+    --scrollbar-thumb-hover: #6A5CFF;
+    --background: 330 40% 93%;
+    --foreground: 240 30% 14%;
+    --card: 330 40% 93%;
+    --card-foreground: 240 30% 14%;
+    --popover: 330 40% 93%;
+    --popover-foreground: 240 30% 14%;
+    --primary: 220 98% 56%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 246 100% 68%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 330 20% 85%;
+    --muted-foreground: 240 10% 45%;
+    --accent: 246 100% 68%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 348 75% 55%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 330 15% 82%;
+    --input: 330 15% 82%;
+    --ring: 220 98% 56%;
+    --chart-1: 220 98% 56%;
+    --chart-2: 246 100% 68%;
+    --chart-3: 330 100% 69%;
+    --chart-4: 260 100% 95%;
+    --chart-5: 330 40% 93%;
+    --radius: 0.5rem;
+  }
+
+  /* ===== DARK MODE ===== */
+  .dark {
     --bg-primary: #02073D;
+    --bg-secondary: #050d4a;
+    --bg-tertiary: #0a1156;
     --color-primary: #246BFD;
     --color-accent-purple: #6A5CFF;
     --color-accent-pink: #FF6AC1;
     --color-lavender: #F5ECFF;
     --color-text: #E8E6F0;
+    --color-text-secondary: #C0BDD0;
     --color-text-muted: #8B8A9E;
+    --color-text-faint: #55546B;
     --color-surface: rgba(255, 255, 255, 0.04);
     --color-surface-hover: rgba(255, 255, 255, 0.08);
     --color-border: rgba(255, 255, 255, 0.08);
     --color-success: #00D68F;
     --color-error: #FF4D6A;
-    --font-display: 'Clash Display', sans-serif;
-    --font-body: 'Bricolage Grotesque', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --glass-bg: rgba(255, 255, 255, 0.04);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-hover-border: rgba(106, 92, 255, 0.3);
+    --glass-hover-shadow: rgba(106, 92, 255, 0.15);
+    --star-color: rgba(255, 255, 255, 1);
+    --scrollbar-track: #02073D;
+    --scrollbar-thumb: #246BFD;
+    --scrollbar-thumb-hover: #6A5CFF;
     --background: 230 90% 12%;
     --foreground: 0 0% 98%;
     --card: 230 90% 12%;
@@ -48,7 +109,6 @@
     --chart-3: 330 100% 69%;
     --chart-4: 260 100% 95%;
     --chart-5: 230 90% 12%;
-    --radius: 0.5rem;
   }
 }
 
@@ -58,12 +118,13 @@
   }
   body {
     font-family: 'Bricolage Grotesque', sans-serif;
-    background: #02073D;
-    color: #ffffff;
+    background: var(--bg-primary);
+    color: var(--color-text);
     margin: 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
   h1, h2, h3 {
     font-family: 'Clash Display', sans-serif;

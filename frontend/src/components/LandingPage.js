@@ -50,7 +50,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="bg-navy min-h-screen" data-testid="landing-page">
+    <div className="bg-[var(--bg-primary)] min-h-screen" data-testid="landing-page">
       <CustomCursor />
       <Navbar onJoinWaitlist={scrollToWaitlist} />
 
@@ -71,20 +71,20 @@ export default function LandingPage() {
           className="fixed bottom-0 left-0 right-0 z-40 lg:hidden mobile-sticky-bar"
           data-testid="mobile-sticky-bar"
         >
-          <div className="bg-navy/95 backdrop-blur-xl border-t border-white/10 px-4 py-3 flex items-center justify-between">
-            <p className="text-white/70 text-sm font-bricolage flex-1">
+          <div className="bg-[var(--bg-primary)]/95 backdrop-blur-xl border-t border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
+            <p className="text-[var(--color-text-muted)] text-sm font-bricolage flex-1">
               Join 500+ students
             </p>
             <button
               onClick={scrollToWaitlist}
-              className="px-4 py-2 bg-vblue text-white text-sm font-semibold rounded-full flex items-center gap-1.5"
+              className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full flex items-center gap-1.5"
               data-testid="mobile-bar-cta"
             >
               Claim your spot <ArrowRight size={14} />
             </button>
             <button
               onClick={() => setShowMobileBar(false)}
-              className="ml-2 text-white/40 hover:text-white"
+              className="ml-2 text-[var(--color-text-faint)] hover:text-[var(--color-text)]"
               data-testid="mobile-bar-dismiss"
             >
               <X size={18} />

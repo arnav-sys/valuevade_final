@@ -27,8 +27,7 @@ export default function ProblemSection() {
 
   return (
     <section
-      className="relative py-24 lg:py-32 dot-grid"
-      style={{ background: '#02073D' }}
+      className="relative py-24 lg:py-32 bg-[var(--bg-primary)]"
       data-testid="problem-section"
     >
       <div ref={sectionRef} className="max-w-7xl mx-auto px-6">
@@ -37,7 +36,7 @@ export default function ProblemSection() {
             THE GAP NO ONE TALKS ABOUT
           </p>
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-white leading-tight max-w-3xl mx-auto ${
+            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] leading-tight max-w-3xl mx-auto ${
               isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
             }`}
             style={{ animationDelay: '0.1s' }}
@@ -69,10 +68,10 @@ export default function ProblemSection() {
                 >
                   <Icon size={24} style={{ color: problem.color }} />
                 </div>
-                <h3 className="font-clash text-xl text-white mb-3">
+                <h3 className="font-clash text-xl text-[var(--color-text)] mb-3">
                   {problem.title}
                 </h3>
-                <p className="text-white/55 font-bricolage leading-relaxed text-sm">
+                <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-sm">
                   {problem.body}
                 </p>
               </div>
@@ -81,7 +80,7 @@ export default function ProblemSection() {
         </div>
 
         <p
-          className={`text-center mt-12 text-vpink italic font-bricolage text-base lg:text-lg ${
+          className={`text-center mt-12 text-[var(--color-accent-pink)] italic font-bricolage text-base lg:text-lg ${
             isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
           }`}
           style={{ animationDelay: '0.5s' }}

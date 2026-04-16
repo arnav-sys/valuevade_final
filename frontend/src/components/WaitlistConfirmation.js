@@ -48,8 +48,7 @@ export default function WaitlistConfirmation({ data }) {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center relative overflow-hidden"
-      style={{ background: '#02073D' }}
+      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-[var(--bg-primary)]"
       data-testid="waitlist-confirmation"
     >
       {stars.map((star, i) => (
@@ -139,7 +138,7 @@ export default function WaitlistConfirmation({ data }) {
             href="https://www.instagram.com/valuevade/"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 px-6 py-3 bg-vblue text-white font-semibold rounded-full text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-sm hover:brightness-110 transition-all flex items-center justify-center gap-2"
             data-testid="follow-instagram-btn"
           >
             <Instagram size={16} />
@@ -147,7 +146,7 @@ export default function WaitlistConfirmation({ data }) {
           </a>
           <button
             onClick={handleCopy}
-            className="flex-1 px-6 py-3 border border-white/20 text-white font-semibold rounded-full text-sm hover:bg-white/5 transition-all flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 border border-[var(--color-border)] text-[var(--color-text)] font-semibold rounded-full text-sm hover:bg-[var(--color-surface)] transition-all flex items-center justify-center gap-2"
             data-testid="share-with-friend-btn"
           >
             {copied ? <><Check size={16} /> Copied!</> : <><Copy size={16} /> Share with a friend</>}
@@ -158,7 +157,7 @@ export default function WaitlistConfirmation({ data }) {
           Share Valuevade with a friend and move up the waitlist
         </p>
 
-        <p className="text-white/25 text-xs font-bricolage">
+        <p className="text-[var(--color-text-faint)] text-xs font-bricolage">
           We'll never spam you. Unsubscribe anytime.
         </p>
       </div>

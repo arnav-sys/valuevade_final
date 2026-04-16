@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { useTheme } from '../contexts/ThemeContext';
 import { Skeleton } from '../components/ui/skeleton';
 import {
   Accordion,
@@ -24,6 +25,8 @@ import {
   Target,
   Sparkles,
   ChevronRight,
+  Sun,
+  Moon,
 } from 'lucide-react';
 
 function DifficultyBadge({ level }) {
@@ -67,6 +70,7 @@ export default function CourseDetailsPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
@@ -160,7 +164,10 @@ export default function CourseDetailsPage() {
             <img src="/valuevade-logo.svg" alt="Valuevade" className="w-8 h-8" />
             <span className="font-clash text-xl font-semibold logo-gradient">Valuevade</span>
           </Link>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <button onClick={toggleTheme} className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all" data-testid="detail-theme-toggle" aria-label="Toggle theme">
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
             {profile && (
               <span className="text-sm text-[var(--color-text-muted)] font-bricolage hidden sm:block" data-testid="detail-user-name">
                 {profile.full_name}
