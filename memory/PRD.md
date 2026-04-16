@@ -33,9 +33,12 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 ### Phase 5 - Supabase Auth & Routing (Feb 2026)
 - Supabase client initialized (src/lib/supabase.js)
 - AuthContext with signUp, signIn, signOut, session persistence
+- Optimized auth initialization with safety timeout (no more stuck loading)
+- Profile fetch non-blocking for faster page loads
 - Signup page (/signup): Full Name, Email, Password, Confirm Password with validation
 - Login page (/login): Email/Password with enrollment-based redirect logic
 - ProtectedRoute component with loading spinner
+- Navbar: Login/Signup when logged out, Courses/Dashboard/user name/logout when logged in (desktop + mobile)
 - Brand CSS variables system applied globally
 - Toaster (sonner) for notifications
 

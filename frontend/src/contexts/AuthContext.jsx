@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
 
 const AuthContext = createContext(null);
@@ -8,40 +8,71 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const resolved = useRef(false);
 
-  const fetchProfile = async (userId) => {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('id, full_name, email')
-      .eq('id', userId)
-      .single();
-    if (!error && data) setProfile(data);
-    return data;
-  };
+  const done = useCallback(() => {
+    if (!resolved.current) {
+      resolved.current = true;
+      setLoading(false);
+    }
+  }, []);
+
+  const fetchProfile = useCallback(async (userId) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('id, full_name, email')
+        .eq('id', userId)
+        .single();
+      if (!error && data) setProfile(data);
+      return data;
+    } catch {
+      return null;
+    }
+  }, []);
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session: s } }) => {
-      setSession(s);
-      setUser(s?.user ?? null);
-      if (s?.user) fetchProfile(s.user.id);
-      setLoading(false);
-    });
+    let mounted = true;
 
+    // Safety timeout — never leave loading stuck
+    const timeout = setTimeout(() => {
+      if (mounted) done();
+    }, 3000);
+
+    // onAuthStateChange fires on INITIAL_SESSION and then on token changes.
+    // This is the fastest path to getting the session on page load.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, s) => {
+        if (!mounted) return;
         setSession(s);
         setUser(s?.user ?? null);
         if (s?.user) {
-          await fetchProfile(s.user.id);
+          // Fire profile fetch but don't block done() on it
+          fetchProfile(s.user.id);
         } else {
           setProfile(null);
         }
-        setLoading(false);
+        done();
       }
     );
 
-    return () => subscription.unsubscribe();
-  }, []);
+    // Also call getSession as a fallback in case onAuthStateChange doesn't fire
+    supabase.auth.getSession().then(async ({ data: { session: s } }) => {
+      if (!mounted) return;
+      setSession(s);
+      setUser(s?.user ?? null);
+      if (s?.user) fetchProfile(s.user.id);
+      done();
+    }).catch(() => {
+      if (mounted) done();
+    });
+
+    return () => {
+      mounted = false;
+      clearTimeout(timeout);
+      subscription.unsubscribe();
+    };
+  }, [done, fetchProfile]);
 
   const signUp = async ({ email, password, fullName }) => {
     const { data, error } = await supabase.auth.signUp({

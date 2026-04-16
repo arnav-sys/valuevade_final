@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { Menu, X, LogOut } from 'lucide-react';
 
 const navLinks = [
   { label: 'Features', id: 'features' },
@@ -9,6 +11,7 @@ const navLinks = [
 ];
 
 export default function Navbar({ onJoinWaitlist }) {
+  const { user, profile, loading, signOut } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -22,6 +25,8 @@ export default function Navbar({ onJoinWaitlist }) {
     setMenuOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const isLoggedIn = !loading && !!user;
 
   return (
     <header
@@ -63,14 +68,58 @@ export default function Navbar({ onJoinWaitlist }) {
           ))}
         </div>
 
-        {/* CTA - desktop */}
-        <button
-          onClick={onJoinWaitlist}
-          className="hidden md:block px-5 py-2 bg-vblue text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
-          data-testid="nav-join-waitlist-btn"
-        >
-          Join Waitlist
-        </button>
+        {/* Right side - desktop */}
+        <div className="hidden md:flex items-center gap-3">
+          {loading ? (
+            <div className="w-20 h-8" />
+          ) : isLoggedIn ? (
+            <>
+              <Link
+                to="/courses"
+                className="px-4 py-2 text-sm text-white/70 hover:text-white transition-colors font-bricolage"
+                data-testid="nav-courses-link"
+              >
+                Courses
+              </Link>
+              <Link
+                to="/dashboard"
+                className="px-4 py-2 text-sm text-white/70 hover:text-white transition-colors font-bricolage"
+                data-testid="nav-dashboard-link"
+              >
+                Dashboard
+              </Link>
+              {profile && (
+                <span className="text-sm text-white/50 font-bricolage px-2" data-testid="nav-user-name">
+                  {profile.full_name}
+                </span>
+              )}
+              <button
+                onClick={signOut}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-white/50 hover:text-white hover:bg-white/5 transition-all font-bricolage"
+                data-testid="nav-signout-button"
+              >
+                <LogOut size={14} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="px-4 py-2 text-sm text-white/70 hover:text-white transition-colors font-bricolage"
+                data-testid="nav-login-link"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/signup"
+                className="px-5 py-2 bg-vblue text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
+                data-testid="nav-signup-link"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
+        </div>
 
         {/* Hamburger - mobile */}
         <button
@@ -98,13 +147,53 @@ export default function Navbar({ onJoinWaitlist }) {
               {link.label}
             </button>
           ))}
-          <button
-            onClick={() => { setMenuOpen(false); onJoinWaitlist(); }}
-            className="px-8 py-3 bg-vblue text-white font-semibold rounded-full text-lg"
-            data-testid="mobile-join-waitlist-btn"
-          >
-            Join Waitlist
-          </button>
+
+          {loading ? null : isLoggedIn ? (
+            <>
+              <Link
+                to="/courses"
+                onClick={() => setMenuOpen(false)}
+                className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+                data-testid="mobile-nav-courses"
+              >
+                Courses
+              </Link>
+              <Link
+                to="/dashboard"
+                onClick={() => setMenuOpen(false)}
+                className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+                data-testid="mobile-nav-dashboard"
+              >
+                Dashboard
+              </Link>
+              <button
+                onClick={() => { setMenuOpen(false); signOut(); }}
+                className="px-8 py-3 bg-white/10 text-white font-semibold rounded-full text-lg flex items-center gap-2 font-bricolage"
+                data-testid="mobile-signout-btn"
+              >
+                <LogOut size={18} /> Sign Out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                onClick={() => setMenuOpen(false)}
+                className="text-2xl text-white/80 hover:text-white font-clash transition-colors"
+                data-testid="mobile-nav-login"
+              >
+                Log In
+              </Link>
+              <Link
+                to="/signup"
+                onClick={() => setMenuOpen(false)}
+                className="px-8 py-3 bg-vblue text-white font-semibold rounded-full text-lg font-bricolage"
+                data-testid="mobile-nav-signup"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
       )}
     </header>
