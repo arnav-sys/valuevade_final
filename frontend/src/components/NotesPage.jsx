@@ -37,7 +37,7 @@ function ExtraFields({ content, handled = [], accent = '#246BFD' }) {
   );
 }
 
-function ExtraFieldValue({ value, accent }) {
+function ExtraFieldValue({ value }) {
   if (value == null) return null;
   if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
     return (
@@ -48,32 +48,24 @@ function ExtraFieldValue({ value, accent }) {
   }
   if (Array.isArray(value)) {
     return (
-      <ul className="space-y-2">
+      <ul className="space-y-1.5">
         {value.map((item, i) => (
           <li key={i} className="text-sm font-bricolage text-[var(--color-text)]">
-            {typeof item === 'string' || typeof item === 'number' ? (
-              <span>• {String(item)}</span>
-            ) : (
-              <div className="pl-3 border-l-2" style={{ borderColor: `${accent}40` }}>
-                <ExtraFieldValue value={item} accent={accent} />
-              </div>
-            )}
+            <span>• {typeof item === 'object' && item !== null ? Object.values(item).filter((v) => typeof v === 'string' || typeof v === 'number').join(' — ') : String(item)}</span>
           </li>
         ))}
       </ul>
     );
   }
-  // object
+  // object (one level flat)
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       {Object.entries(value).map(([k, v]) => (
-        <div key={k}>
+        <div key={k} className="text-sm font-bricolage text-[var(--color-text)]">
           <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mr-2">
             {humanize(k)}:
           </span>
-          <span className="text-sm font-bricolage text-[var(--color-text)]">
-            {typeof v === 'object' ? JSON.stringify(v) : String(v)}
-          </span>
+          <span>{typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v)}</span>
         </div>
       ))}
     </div>
@@ -571,7 +563,7 @@ function ExampleCard({ content, title }) {
   const verdict = c.verdict || c.conclusion;
   const deeper_insight = c.deeper_insight || c.insight || c.takeaway;
   const connection = c.connection_to_equities || c.connection || c.wider_application;
-  const total_intrinsic_value = c.total_intrinsic_value ?? c.total_value ?? c.final_value;
+  const total_intrinsic_value = [c.total_intrinsic_value, c.total_value, c.final_value].find((v) => v != null);
   const key_insight = c.key_insight || c.lesson;
 
   const handled = [
