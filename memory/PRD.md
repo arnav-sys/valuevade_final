@@ -93,7 +93,7 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Full flow: Customize → Preview → Confirm → Loading → Enrolled
 
 ### Phase 11 - Dashboard + Persistent Sidebar (Feb 2026)
-- Persistent left Sidebar (/app/frontend/src/components/Sidebar.jsx): Valuevade logo, 4 nav items (Dashboard, My Course expandable w/ modules + completion icons, Profile, Settings), theme toggle, user name, sign-out
+- Persistent left Sidebar (/app/frontend/src/components/Sidebar.jsx): Valuevade logo, 4 nav items (Dashboard, My Course expandable showing enrolled path title only, Profile, Settings), theme toggle, user name, sign-out
 - Desktop: fixed 250px, collapsible to 60px icon-only (persisted in localStorage['vv-sidebar-collapsed'])
 - Mobile: hamburger top-left opens slide-in drawer with overlay backdrop
 - Dashboard page (/dashboard) rebuilt with 4 data states: loading skeleton, error + retry, empty (no enrollment → Browse Courses CTA), populated
@@ -102,6 +102,15 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Progress utilities at /app/frontend/src/utils/progress.js: markPhaseComplete, checkModuleCompletion, checkCapstoneUnlock, updateStats, getNextPhase
 - Conditional Continue Learning states: normal (resume phase) / module project pending / all modules done → Begin Capstone
 - Tested: 95% frontend success, all testids present, no console errors
+
+### Phase 12 - Session Start + Notes Card System (Feb 2026)
+- Session Start page (/session/:sessionId/start): breadcrumb (Module X > Session Y), title, description, learning objectives, 4-phase journey list w/ completion status, Begin/Continue CTA → first uncompleted phase, AI-added badge for AI-generated sessions
+- Notes page (/session/:sessionId/notes): full-screen one-card-at-a-time carousel fetching from master_notes_cards ordered by order_index
+- 8 card renderers (accent-colored, JSONB content): hook (#FF6AC1 gradient), concept (#246BFD w/ key_terms + core_principle), formula (#6A5CFF w/ mono formula + variables + worked example + quick_rule), visual (SVG/image support), deep_dive (expandable sections + bottom_line), example (walkthrough steps + key_insight), mistake (wrong/right comparison panels), summary (gradient border w/ numbered takeaways + interview_tip + next_preview)
+- Navigation: Prev/Next buttons, clickable progress dots, keyboard arrows, touch swipe, card counter, animated transitions, top progress bar
+- Last card "Next" becomes "Complete Notes" which calls markPhaseComplete(sessionId, 'notes') and navigates to /session/:sessionId/notes/complete
+- AI-added session fallback: shows placeholder ("AI-generated notes coming soon") with skip-complete button
+- Notes Complete page (/session/:sessionId/notes/complete): CSS confetti, animated checkmark, "Phase 1 of 4 done" badge, stats (cards reviewed, time spent), Continue to Quiz CTA, Review Notes Again link, Back to Dashboard
 
 ## Brand System (CSS Variables)
 ### Light Mode (default)

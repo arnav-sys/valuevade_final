@@ -15,6 +15,9 @@ import ConfirmPage from "@/components/ConfirmPage";
 import LoadingPage from "@/components/LoadingPage";
 import EnrolledPage from "@/components/EnrolledPage";
 import DashboardPage from "@/components/DashboardPage";
+import SessionStartPage from "@/components/SessionStartPage";
+import NotesPage from "@/components/NotesPage";
+import NotesCompletePage from "@/components/NotesCompletePage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 function App() {
@@ -46,6 +49,9 @@ function App() {
             <Route path="/course/:courseId/loading" element={<ProtectedRoute><LoadingPage /></ProtectedRoute>} />
             <Route path="/course/:courseId/enrolled" element={<ProtectedRoute><EnrolledPage /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/start" element={<ProtectedRoute><SessionStartPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/notes/complete" element={<ProtectedRoute><NotesCompletePage /></ProtectedRoute>} />
             <Route path="/referral" element={<AdminDashboard />} />
           </Routes>
         </AuthProvider>
