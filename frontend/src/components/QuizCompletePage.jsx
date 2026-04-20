@@ -119,31 +119,25 @@ export default function QuizCompletePage() {
     async function save() {
       if (saved || !user?.id || !sessionId || total === 0) return;
       try {
-        // Fetch user_session to get attempts count
-        const { data: sess } = await supabase
-          .from('user_sessions')
-          .select('id, quiz_attempts')
-          .eq('id', sessionId)
-          .maybeSingle();
-        const attempts = (sess?.quiz_attempts || 0) + 1;
-
-        const scoreData = {
-          quiz_score: score,
-          quiz_total: total,
-          quiz_attempts: attempts,
-          quiz_passed: passed,
-        };
+        // user_sessions schema only guarantees quiz_score (int) —
+        // quiz_total/quiz_attempts/quiz_passed are derived client-side.
+        const scoreData = { quiz_score: score };
 
         if (passed) {
-          await markPhaseComplete(sessionId, 'quiz', scoreData);
+          const res = await markPhaseComplete(sessionId, 'quiz', scoreData);
+          if (!res?.success) {
+            console.error('[quiz] markPhaseComplete failed:', res?.error);
+          }
         } else {
-          // Not passing: don't mark complete, but update attempt counters best-effort
-          try {
-            await supabase.from('user_sessions').update(scoreData).eq('id', sessionId);
-          } catch { /* ignore non-existent columns */ }
+          // Not passing: record latest score only, don't flip quiz_completed.
+          const { error: upErr } = await supabase
+            .from('user_sessions')
+            .update(scoreData)
+            .eq('id', sessionId);
+          if (upErr) console.error('[quiz] score update failed:', upErr.message);
         }
-      } catch {
-        // silently ignore — UI continues
+      } catch (err) {
+        console.error('[quiz] save error:', err);
       } finally {
         if (mounted) setSaved(true);
       }
