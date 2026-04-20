@@ -14,10 +14,10 @@ const MIN_CHARS = 50;
 const TYPING_MS = 900;
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
-async function evaluateWithLLM({ question, response, context, evaluation_criteria, model_answer, session_title }) {
+async function evaluateWithLLM({ question_id, question, response, context, evaluation_criteria, model_answer, session_title }) {
   const { data } = await axios.post(
     `${API}/interview/evaluate`,
-    { question, response, context, evaluation_criteria, model_answer, session_title },
+    { question_id, question, response, context, evaluation_criteria, model_answer, session_title },
     { timeout: 30000 }
   );
   return data;
@@ -198,6 +198,7 @@ export default function InterviewPage() {
     let feedback;
     try {
       const llm = await evaluateWithLLM({
+        question_id: q.id,
         question: questionText,
         response: answer.trim(),
         context: contextText,

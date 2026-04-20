@@ -11,6 +11,7 @@ from typing import Optional, List
 import uuid
 import re
 import string
+import hashlib
 import jwt
 from datetime import datetime, timezone
 import random
@@ -455,6 +456,7 @@ class InterviewEvalRequest(BaseModel):
     evaluation_criteria: Optional[dict] = None
     model_answer: Optional[str] = ''
     session_title: Optional[str] = ''
+    question_id: Optional[str] = None  # used for cache key
 
 
 INTERVIEW_EVAL_SYSTEM_PROMPT = """You are a Senior Analyst at a top investment firm conducting a mock interview for a finance student at Valuevade. Your job is to evaluate the candidate's spoken/typed response to an interview question.
@@ -508,6 +510,24 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
     resp_text = (req.response or '').strip()
     if len(resp_text) < 10:
         raise HTTPException(status_code=400, detail="Response too short to evaluate")
+
+    # Build normalised response hash for caching: whitespace-collapsed, lowercased.
+    normalised = re.sub(r'\s+', ' ', resp_text.lower()).strip()
+    response_hash = hashlib.sha256(normalised.encode('utf-8')).hexdigest()
+
+    # Cache lookup — only when we have a question_id to scope the key.
+    if req.question_id:
+        cached = await db.interview_eval_cache.find_one(
+            {"question_id": req.question_id, "response_hash": response_hash},
+            {"_id": 0, "scores": 1, "feedback": 1},
+        )
+        if cached and cached.get('scores') and cached.get('feedback'):
+            logger.info(f"[interview-eval] cache hit q={req.question_id} h={response_hash[:8]}")
+            return {
+                "scores": cached['scores'],
+                "feedback": cached['feedback'],
+                "cached": True,
+            }
 
     payload = {
         "session_title": req.session_title or '',
@@ -574,7 +594,32 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
                 "improvements": str_list(feedback.get('improvements')) or ["Try leading with the conclusion for extra impact"],
             },
         }
-        return clean
+
+        # Persist to cache (best-effort; ignore Mongo write errors).
+        if req.question_id:
+            try:
+                await db.interview_eval_cache.update_one(
+                    {"question_id": req.question_id, "response_hash": response_hash},
+                    {
+                        "$set": {
+                            "question_id": req.question_id,
+                            "response_hash": response_hash,
+                            "scores": clean["scores"],
+                            "feedback": clean["feedback"],
+                            "response_preview": resp_text[:240],
+                            "updated_at": datetime.now(timezone.utc).isoformat(),
+                        },
+                        "$setOnInsert": {
+                            "created_at": datetime.now(timezone.utc).isoformat(),
+                        },
+                    },
+                    upsert=True,
+                )
+                logger.info(f"[interview-eval] cache store q={req.question_id} h={response_hash[:8]}")
+            except Exception as cache_err:
+                logger.warning(f"[interview-eval] cache write failed: {cache_err}")
+
+        return {**clean, "cached": False}
 
     except json_module.JSONDecodeError as e:
         logger.error(f"Failed to parse interview eval response: {e}")
