@@ -160,6 +160,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - QuizCompletePage.jsx (/session/:id/quiz/complete): Circular score, pass (>=70%) vs fail states with confetti on pass, collapsible per-question breakdown showing user's answer + correct answer + explanation, Continue to Interview / Review Notes / Retry Quiz / Continue Anyway CTAs
 - Persistence: markPhaseComplete('quiz', {quiz_score}) flips quiz_completed=true on pass; fail path updates quiz_score only
 
+### Phase 12 - Session Interview Practice (Feb 2026)
+- InterviewStartPage / InterviewPage / InterviewCompletePage with chat-aesthetic UI, "Mock Interview — Senior Analyst" header, typing dots → question bubble → 50-char-min textarea → Evaluating → feedback card flow, collapsed previous exchanges, forward-only navigation
+- Three animated score rings on complete page (Technical / Communication / Structure) + per-question recap + Continue to Simulation + Practice Again CTAs
+- Persistence: markPhaseComplete('interview', {interview_score: Math.round(overall)}) flips interview_completed=true
+- Breadcrumb deduplication fix across SessionStart / QuizStart / InterviewStart ("Module 1: Module 1:" issue resolved)
+
+### Phase 13 - AI-Powered Interview Evaluator (Feb 2026)
+- POST /api/interview/evaluate using Claude Sonnet 4 via Emergent LLM Key; accepts question + response + context + evaluation_criteria + model_answer; returns strict JSON with per-dimension 1-5 scores + response-specific Strengths/Improvements bullets that quote candidate phrasing
+- Frontend InterviewPage.jsx awaits LLM endpoint as primary path; /app/frontend/src/utils/interviewEval.js template evaluator kept as fallback on LLM failure
+- Fixed bug where every answer got identical 3/5 + generic feedback (root cause: Supabase evaluation_criteria used must_cover/bonus_points/red_flags keys, not keywords/key_points expected by the template)
+- Tests: /app/backend/tests/test_interview_evaluate.py (8 pytest cases) validated differentiated output across strong/mid/weak answers
 
 - P1: Build session Simulation phase player (phase 4 of 4 — interview done)
 - P1: Module project + Capstone project pages
