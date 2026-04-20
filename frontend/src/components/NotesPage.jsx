@@ -635,8 +635,14 @@ function ExampleCard({ content, title }) {
               }
               const stepNum = s.step || s.number || i + 1;
               const label = s.label || s.title || s.heading || s.name;
-              const value = s.value || s.result || s.output;
-              const explanation = s.explanation || s.description || s.reasoning || s.text;
+              const value = s.value || s.result || s.output || s.amount;
+              const explanation = s.explanation || s.description || s.reasoning || s.text || s.body || s.content || s.commentary;
+              // Fallback: if none of the above matched, show any remaining string/number fields
+              const knownKeys = new Set(['step', 'number', 'label', 'title', 'heading', 'name', 'value', 'result', 'output', 'amount', 'explanation', 'description', 'reasoning', 'text', 'body', 'content', 'commentary']);
+              const extraEntries = Object.entries(s).filter(
+                ([k, v]) => !knownKeys.has(k) && (typeof v === 'string' || typeof v === 'number') && v !== ''
+              );
+              const hasKnownBody = label || value != null || explanation;
               return (
                 <li key={i} className="flex items-start gap-4 glass-card rounded-xl p-4 border-[var(--color-border)]">
                   <div className="w-7 h-7 rounded-lg bg-[#246BFD]/15 border border-[#246BFD]/30 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
@@ -653,6 +659,18 @@ function ExampleCard({ content, title }) {
                     )}
                     {explanation && (
                       <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{explanation}</p>
+                    )}
+                    {!hasKnownBody && extraEntries.length > 0 && (
+                      <div className="space-y-1.5">
+                        {extraEntries.map(([k, v]) => (
+                          <div key={k} className="text-sm font-bricolage text-[var(--color-text)]">
+                            <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mr-2">
+                              {humanize(k)}:
+                            </span>
+                            <span>{String(v)}</span>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </li>
