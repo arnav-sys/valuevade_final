@@ -14,12 +14,15 @@ import {
 
 function HookCard({ content, title }) {
   const c = content || {};
-  const displayMain = c.main_text || c.text || c.body || c.headline || title;
+  // Known aliases
+  const scenario = c.scenario || c.setup || c.story;
+  const insight = c.insight || c.aha || c.main_text || c.text;
+  const why_it_matters = c.why_it_matters || c.matters || c.importance || c.call_to_action;
+  // Fallbacks for alt schemas
   const sub_text = c.sub_text || c.subtitle || c.description || c.subheading;
-  const call_to_action = c.call_to_action || c.cta || c.action;
   return (
     <div
-      className="relative w-full h-full flex flex-col justify-center overflow-hidden rounded-3xl px-8 py-12 sm:px-14 sm:py-16"
+      className="relative w-full h-full flex flex-col justify-center overflow-hidden rounded-3xl px-6 py-10 sm:px-12 sm:py-14"
       style={{
         background: 'linear-gradient(135deg, rgba(255,106,193,0.12) 0%, rgba(106,92,255,0.08) 100%)',
         border: '1px solid rgba(255,106,193,0.2)',
@@ -30,25 +33,44 @@ function HookCard({ content, title }) {
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#6A5CFF] opacity-20 blur-[120px] rounded-full" />
 
       <div className="relative z-10">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/15 border border-[#FF6AC1]/30 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/15 border border-[#FF6AC1]/30 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
           <Zap size={11} /> Hook
         </div>
-        {displayMain && (
-          <h2 className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] leading-[1.1] mb-5" data-testid="hook-main">
-            {displayMain}
+        {title && (
+          <h2 className="font-clash text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-text)] leading-[1.15] mb-5" data-testid="hook-title">
+            {title}
           </h2>
         )}
-        {sub_text && (
+        {scenario && (
+          <div className="mb-5 pl-4 border-l-2 border-[#FF6AC1]/40">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF6AC1] mb-1.5">The Scenario</div>
+            <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+              {scenario}
+            </p>
+          </div>
+        )}
+        {insight && (
+          <div className="mb-5 glass-card rounded-xl p-4 border-[#6A5CFF]/25">
+            <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">
+              <Sparkles size={11} /> The Insight
+            </div>
+            <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+              {insight}
+            </p>
+          </div>
+        )}
+        {why_it_matters && (
+          <div className="pt-5 border-t border-[var(--color-border)]">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF6AC1] mb-1.5">Why It Matters</div>
+            <p className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed italic">
+              {why_it_matters}
+            </p>
+          </div>
+        )}
+        {!scenario && !insight && !why_it_matters && sub_text && (
           <p className="text-base sm:text-lg text-[var(--color-text-muted)] font-bricolage leading-relaxed max-w-2xl">
             {sub_text}
           </p>
-        )}
-        {call_to_action && (
-          <div className="mt-8 pt-5 border-t border-[var(--color-border)]">
-            <p className="text-sm font-bricolage text-[#FF6AC1] font-medium italic">
-              → {call_to_action}
-            </p>
-          </div>
         )}
       </div>
     </div>
