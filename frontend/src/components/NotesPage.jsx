@@ -57,15 +57,57 @@ function ExtraFieldValue({ value }) {
       </ul>
     );
   }
-  // object (one level flat)
+// Inline nested renderer — avoids recursion to stay compatible with
+// the @emergentbase/visual-edits babel plugin.
+function NestedValue({ value }) {
+  if (value == null) return null;
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return <span className="whitespace-pre-wrap break-words">{String(value)}</span>;
+  }
+  if (Array.isArray(value)) {
+    return (
+      <ul className="space-y-1 list-none">
+        {value.map((item, i) => (
+          <li key={i} className="pl-2 text-sm font-bricolage text-[var(--color-text)] break-words">
+            <span className="text-[var(--color-text-muted)] mr-1">•</span>
+            {typeof item === 'object' && item !== null
+              ? Object.values(item).filter((v) => typeof v === 'string' || typeof v === 'number').join(' — ')
+              : String(item)}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  // Object: render as key/value pairs
   return (
-    <div className="space-y-1.5">
+    <div className="space-y-1">
       {Object.entries(value).map(([k, v]) => (
-        <div key={k} className="text-sm font-bricolage text-[var(--color-text)]">
+        <div key={k} className="text-sm font-bricolage text-[var(--color-text)] break-words">
           <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mr-2">
             {humanize(k)}:
           </span>
-          <span>{typeof v === 'object' && v !== null ? JSON.stringify(v) : String(v)}</span>
+          <span>{typeof v === 'object' && v !== null ? JSON.stringify(v).slice(0, 300) : String(v)}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+  // object (one level flat)
+  return (
+    <div className="space-y-1.5 min-w-0">
+      {Object.entries(value).map(([k, v]) => (
+        <div key={k} className="text-sm font-bricolage text-[var(--color-text)] min-w-0">
+          <div className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mb-0.5">
+            {humanize(k)}:
+          </div>
+          {typeof v === 'object' && v !== null ? (
+            <div className="pl-2">
+              <NestedValue value={v} />
+            </div>
+          ) : (
+            <p className="whitespace-pre-wrap break-words">{String(v)}</p>
+          )}
         </div>
       ))}
     </div>
