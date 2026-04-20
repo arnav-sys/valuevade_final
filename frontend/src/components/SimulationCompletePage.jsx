@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import {
   ArrowRight, Trophy, Sparkles, Target, CheckCircle2, TrendingUp, Wrench,
@@ -64,6 +64,15 @@ export default function SimulationCompletePage() {
   const location = useLocation();
 
   const { tasks_completed = 0, tasks_total = 0, accuracy = 0, sim_type, title } = location.state || {};
+  const hasState = !!location.state;
+
+  // If user lands here by refresh/direct-nav with no state, bounce to session complete
+  useEffect(() => {
+    if (!hasState) {
+      navigate(`/session/${sessionId}/complete`, { replace: true });
+    }
+  }, [hasState, navigate, sessionId]);
+
   const passed = accuracy >= 0.7;
   const feedback = useMemo(() => overallFeedback(accuracy), [accuracy]);
 

@@ -126,6 +126,8 @@ export default function SessionCompletePage() {
     });
   }, [session]);
 
+  const allPhasesComplete = phaseScores.length > 0 && phaseScores.every((p) => p.completed);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center" data-testid="session-complete-loading">
@@ -175,7 +177,9 @@ export default function SessionCompletePage() {
             </p>
           )}
           <p className="text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto leading-relaxed">
-            You crushed all 4 phases. This is how real analysts learn — notes → quiz → interview → simulation.
+            {allPhasesComplete
+              ? 'You crushed all 4 phases. This is how real analysts learn — notes → quiz → interview → simulation.'
+              : 'Great work. Finish the remaining phases when you\'re ready to cement what you learned.'}
           </p>
         </div>
 

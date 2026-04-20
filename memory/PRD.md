@@ -172,11 +172,23 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Fixed bug where every answer got identical 3/5 + generic feedback (root cause: Supabase evaluation_criteria used must_cover/bonus_points/red_flags keys, not keywords/key_points expected by the template)
 - Tests: /app/backend/tests/test_interview_evaluate.py (8 pytest cases) validated differentiated output across strong/mid/weak answers
 
-- P1: Build session Simulation phase player (phase 4 of 4 — interview done)
+### Phase 14 - Session Simulation + Session Complete (Feb 2026)
+- SimulationStartPage (/session/:id/simulation/start): fetches master_simulations by master_session_id, renders type badge, scenario, objectives, how-to-play, Start Simulation CTA
+- SimulationPage (/session/:id/simulation): dispatches to 1 of 4 type-specific renderers based on sim_type:
+  - ExcelSim: dark-themed spreadsheet with JetBrains Mono, zebra rows, editable answer cells, Check Answers validates input against expected_value within tolerance, shows hint/explanation on repeat wrong attempts
+  - DocumentSim: white/cream financial statement on dark bg with clickable highlights (tooltips) + sidebar task panel with number/text/free_text answer types
+  - DecisionMakingSim: narrative engine with scenario_context, initial_data cards, selectable option cards, consequence reveal with score-impact pills, decision history timeline, terminal outcome with scoring.outcome_mapping + "See optimal path" toggle
+  - InteractiveSim: 4 exercise sub-types using @dnd-kit/core + @dnd-kit/sortable — categorize (drag into categories), order (sortable list), match (click-to-connect with SVG lines), label (drag onto template_svg drop zones)
+- SimulationCompletePage (/session/:id/simulation/complete): accuracy ring, performance summary, Complete Session CTA; redirects to /session/:id/complete if accessed without state
+- SessionCompletePage (/session/:id/complete): "Session Complete!" hero + confetti, 4-phase grid with per-phase scores, dynamic CTA: Next Session if sibling exists → "Module Complete! Start Module Project" if last session → "Back to Dashboard"
+- Persistence: markPhaseComplete('simulation', {simulation_score}) flips simulation_completed=true
+- Tested: iteration_13.json — all routes, selectors, empty states, navigation verified. InteractiveSim sub-exercises not exercised E2E because live master_simulations seed data lacks config.exercise_type (SEED-DATA gap, not a bug — graceful fallback UI was verified).
+
 - P1: Module project + Capstone project pages
 - P1: Profile + Settings pages (currently sidebar links to placeholders)
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup
+- P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
 - P2: Post-login redirect logic review (currently /courses; consider /dashboard)
 - P2: Dynamic SEO meta tags
 - P2: Refactor ConfirmPage.jsx client-side enrollment → backend RPC for atomic transactions
