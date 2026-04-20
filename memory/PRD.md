@@ -148,8 +148,20 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - /app/frontend/src/App.js - Router with ThemeProvider + AuthProvider
 - /app/backend/server.py - FastAPI + MongoDB routes + /api/customize/generate endpoint
 
-## Backlog
-- P1: Build session player (notes/quiz/interview/simulation phases) — hooks into progress.js helpers
+### Phase 10 - Session Notes System (Feb 2026)
+- NotesPage.jsx: 8 card renderers (Hook, Concept, Formula, Visual, Deep Dive, Example, Mistake, Summary) rendering heterogeneous JSONB schemas from master_notes_cards
+- Backend /api/visual/generate endpoint using Gemini Nano Banana for AI images on Visual cards
+- localStorage + Supabase caching of generated images
+- NotesCompletePage.jsx with confetti celebration + stats
+
+### Phase 11 - Session Quiz System (Feb 2026)
+- QuizStartPage.jsx (/session/:id/quiz/start): "Test Your Knowledge" heading, breadcrumb, info grid (questions, est time, 70% passing), tip card, Start Quiz CTA
+- QuizPage.jsx (/session/:id/quiz): One question at a time with progress bar, 4 option cards (default/hover/selected/correct-green/wrong-red states), submit → explanation slide-in → forward-only next; keyboard shortcuts (1-4 + Enter); tracks [{question_id, selected_index, is_correct}]
+- QuizCompletePage.jsx (/session/:id/quiz/complete): Circular score, pass (>=70%) vs fail states with confetti on pass, collapsible per-question breakdown showing user's answer + correct answer + explanation, Continue to Interview / Review Notes / Retry Quiz / Continue Anyway CTAs
+- Persistence: markPhaseComplete('quiz', {quiz_score}) flips quiz_completed=true on pass; fail path updates quiz_score only
+
+
+- P1: Build session Interview + Simulation phase players (quiz done; remaining 2 of 4 phases)
 - P1: Module project + Capstone project pages
 - P1: Profile + Settings pages (currently sidebar links to placeholders)
 - P1: CSV Export from Admin Dashboard
@@ -157,6 +169,9 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - P2: Post-login redirect logic review (currently /courses; consider /dashboard)
 - P2: Dynamic SEO meta tags
 - P2: Refactor ConfirmPage.jsx client-side enrollment → backend RPC for atomic transactions
+- P2: Add phase-specific data-testids on SessionStartPage (phase-quiz-status=DONE|TODO) for deterministic regression testing
+- P2: Refactor NotesPage.jsx (1360 lines) — extract 8 card renderers into /components/notes_cards/
 - P3: Analytics integration
 - P3: Migrate waitlist from MongoDB to Supabase
 - P3: Refactor DashboardPage.jsx (~670 lines) — extract ContinueLearningCard / ModuleCard / StatCard into /components/dashboard/
+- P3: Use useRef-based lock in QuizCompletePage save() instead of state flag (StrictMode double-mount hardening)
