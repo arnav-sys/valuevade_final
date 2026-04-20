@@ -11,6 +11,9 @@ import CoursesPage from "@/components/CoursesPage";
 import CourseDetailsPage from "@/components/CourseDetailsPage";
 import CustomizePage from "@/components/CustomizePage";
 import PreviewPage from "@/components/PreviewPage";
+import ConfirmPage from "@/components/ConfirmPage";
+import LoadingPage from "@/components/LoadingPage";
+import EnrolledPage from "@/components/EnrolledPage";
 import DashboardPage from "@/components/DashboardPage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
@@ -39,6 +42,9 @@ function App() {
             <Route path="/course/:courseId" element={<ProtectedRoute><CourseDetailsPage /></ProtectedRoute>} />
             <Route path="/course/:courseId/customize" element={<ProtectedRoute><CustomizePage /></ProtectedRoute>} />
             <Route path="/course/:courseId/preview" element={<ProtectedRoute><PreviewPage /></ProtectedRoute>} />
+            <Route path="/course/:courseId/confirm" element={<ProtectedRoute><ConfirmPage /></ProtectedRoute>} />
+            <Route path="/course/:courseId/loading" element={<ProtectedRoute><LoadingPage /></ProtectedRoute>} />
+            <Route path="/course/:courseId/enrolled" element={<ProtectedRoute><EnrolledPage /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/referral" element={<AdminDashboard />} />
           </Routes>
