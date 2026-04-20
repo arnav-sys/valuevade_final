@@ -217,3 +217,34 @@ export function getNextPhase(session) {
   if (!session.simulation_completed) return 'simulation';
   return null;
 }
+
+/** Map a phase key to its route segment (after /session/:id/). */
+export const PHASE_ROUTES = {
+  notes: 'notes',
+  quiz: 'quiz/start',
+  interview: 'interview/start',
+  simulation: 'simulation/start',
+};
+
+/** Map a phase key to its short human-readable label for CTAs. */
+export const PHASE_LABELS = {
+  notes: 'Notes',
+  quiz: 'Quiz',
+  interview: 'Interview',
+  simulation: 'Simulation',
+};
+
+/**
+ * After completing a phase, figure out where to go next.
+ * Skips any already-complete phase. Returns:
+ *   { phase, route, label }   → next unfinished phase (use `/session/:id/${route}`)
+ *   { phase: null, route: 'complete', label: 'Session' } → all phases done
+ */
+export function getNextPhaseRoute(session, justCompleted = null) {
+  // Apply the just-completed flip locally so callers don't need a re-fetch.
+  const s = session ? { ...session } : {};
+  if (justCompleted) s[`${justCompleted}_completed`] = true;
+  const next = getNextPhase(s);
+  if (!next) return { phase: null, route: 'complete', label: 'Session' };
+  return { phase: next, route: PHASE_ROUTES[next], label: PHASE_LABELS[next] };
+}

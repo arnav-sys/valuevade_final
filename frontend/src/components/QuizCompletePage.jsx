@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete } from '../utils/progress';
+import { getNextPhaseRoute } from '../utils/progress';
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, BookOpen, Sparkles,
   ChevronDown, ChevronUp, Trophy,
@@ -112,6 +113,7 @@ export default function QuizCompletePage() {
   const [showConfetti, setShowConfetti] = useState(passed);
   const [expandedIdx, setExpandedIdx] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [nextRoute, setNextRoute] = useState({ phase: 'interview', route: 'interview/start', label: 'Interview' });
 
   // Save results once
   useEffect(() => {
@@ -127,6 +129,8 @@ export default function QuizCompletePage() {
           const res = await markPhaseComplete(sessionId, 'quiz', scoreData);
           if (!res?.success) {
             console.error('[quiz] markPhaseComplete failed:', res?.error);
+          } else if (mounted && res.data) {
+            setNextRoute(getNextPhaseRoute(res.data, 'quiz'));
           }
         } else {
           // Not passing: record latest score only, don't flip quiz_completed.
@@ -135,6 +139,17 @@ export default function QuizCompletePage() {
             .update(scoreData)
             .eq('id', sessionId);
           if (upErr) console.error('[quiz] score update failed:', upErr.message);
+
+          // Still compute next route so "Continue Anyway" skips already-done phases.
+          const { data: sess } = await supabase
+            .from('user_sessions')
+            .select('notes_completed, quiz_completed, interview_completed, simulation_completed')
+            .eq('id', sessionId)
+            .maybeSingle();
+          if (mounted && sess) {
+            // Don't flip quiz — user hasn't passed it
+            setNextRoute(getNextPhaseRoute({ ...sess, quiz_completed: true }, 'quiz'));
+          }
         }
       } catch (err) {
         console.error('[quiz] save error:', err);
@@ -283,11 +298,11 @@ export default function QuizCompletePage() {
         <div className="flex flex-col gap-3" data-testid="quiz-complete-ctas">
           {passed ? (
             <button
-              onClick={() => navigate(`/session/${sessionId}/interview/start`)}
+              onClick={() => navigate(`/session/${sessionId}/${nextRoute.route}`)}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
               data-testid="quiz-continue-interview"
             >
-              Continue to Interview <ArrowRight size={16} />
+              {nextRoute.phase ? `Continue to ${nextRoute.label}` : 'Complete Session'} <ArrowRight size={16} />
             </button>
           ) : (
             <div className="flex flex-col sm:flex-row gap-3">
@@ -309,7 +324,7 @@ export default function QuizCompletePage() {
           )}
 
           <button
-            onClick={() => navigate(`/session/${sessionId}/interview/start`)}
+            onClick={() => navigate(`/session/${sessionId}/${nextRoute.route}`)}
             className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]/60 border border-transparent hover:border-[var(--color-border)] transition-all"
             data-testid="quiz-continue-anyway"
           >

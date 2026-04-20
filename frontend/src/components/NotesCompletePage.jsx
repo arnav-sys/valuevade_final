@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { CheckCircle2, ArrowRight, RotateCcw, BookOpen, Clock, Sparkles } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { getNextPhaseRoute } from '../utils/progress';
 
 function formatTime(seconds) {
   if (!seconds || seconds < 1) return '—';
@@ -57,6 +59,23 @@ export default function NotesCompletePage() {
   const location = useLocation();
   const { cardsReviewed = 0, timeSpentSeconds = 0 } = location.state || {};
   const [showConfetti, setShowConfetti] = useState(true);
+  const [nextRoute, setNextRoute] = useState({ phase: 'quiz', route: 'quiz/start', label: 'Quiz' });
+
+  useEffect(() => {
+    let mounted = true;
+    async function loadNext() {
+      const { data: sess } = await supabase
+        .from('user_sessions')
+        .select('notes_completed, quiz_completed, interview_completed, simulation_completed')
+        .eq('id', sessionId)
+        .maybeSingle();
+      if (mounted && sess) {
+        setNextRoute(getNextPhaseRoute(sess, 'notes'));
+      }
+    }
+    loadNext();
+    return () => { mounted = false; };
+  }, [sessionId]);
 
   useEffect(() => {
     const t = setTimeout(() => setShowConfetti(false), 3500);

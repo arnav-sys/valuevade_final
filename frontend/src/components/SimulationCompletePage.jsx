@@ -1,8 +1,10 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import {
   ArrowRight, Trophy, Sparkles, Target, CheckCircle2, TrendingUp, Wrench,
 } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { getNextPhaseRoute } from '../utils/progress';
 
 function CircularScore({ accuracy, passed }) {
   const pct = Math.round((accuracy || 0) * 100);
@@ -75,6 +77,24 @@ export default function SimulationCompletePage() {
 
   const passed = accuracy >= 0.7;
   const feedback = useMemo(() => overallFeedback(accuracy), [accuracy]);
+  const [nextRoute, setNextRoute] = useState({ phase: null, route: 'complete', label: 'Session' });
+
+  useEffect(() => {
+    if (!hasState) return;
+    let mounted = true;
+    async function loadNext() {
+      const { data: sess } = await supabase
+        .from('user_sessions')
+        .select('notes_completed, quiz_completed, interview_completed, simulation_completed')
+        .eq('id', sessionId)
+        .maybeSingle();
+      if (mounted && sess) {
+        setNextRoute(getNextPhaseRoute(sess, 'simulation'));
+      }
+    }
+    loadNext();
+    return () => { mounted = false; };
+  }, [hasState, sessionId]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden px-4 py-10 sm:py-14">
@@ -151,11 +171,11 @@ export default function SimulationCompletePage() {
         {/* CTAs */}
         <div className="flex flex-col gap-3" data-testid="simulation-complete-ctas">
           <button
-            onClick={() => navigate(`/session/${sessionId}/complete`)}
+            onClick={() => navigate(`/session/${sessionId}/${nextRoute.route}`)}
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
             data-testid="simulation-continue-session"
           >
-            Complete Session <ArrowRight size={16} />
+            {nextRoute.phase ? `Continue to ${nextRoute.label}` : 'Complete Session'} <ArrowRight size={16} />
           </button>
           <button
             onClick={() => navigate(`/session/${sessionId}/simulation`)}

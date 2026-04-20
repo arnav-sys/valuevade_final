@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { markPhaseComplete } from '../utils/progress';
+import { markPhaseComplete, getNextPhaseRoute } from '../utils/progress';
 import { aggregateScores } from '../utils/interviewEval';
 import {
   ArrowRight, RotateCcw, CheckCircle2, AlertTriangle, Sparkles,
@@ -89,6 +89,7 @@ export default function InterviewCompletePage() {
   const scores = useMemo(() => aggregateScores(results), [results]);
   const feedback = useMemo(() => overallFeedback(scores), [scores]);
   const [saved, setSaved] = useState(false);
+  const [nextRoute, setNextRoute] = useState({ phase: 'simulation', route: 'simulation/start', label: 'Simulation' });
 
   useEffect(() => {
     let mounted = true;
@@ -101,6 +102,8 @@ export default function InterviewCompletePage() {
         });
         if (!res?.success) {
           console.error('[interview] markPhaseComplete failed:', res?.error);
+        } else if (mounted && res.data) {
+          setNextRoute(getNextPhaseRoute(res.data, 'interview'));
         }
       } catch (err) {
         console.error('[interview] save error:', err);
@@ -216,11 +219,11 @@ export default function InterviewCompletePage() {
         {/* CTAs */}
         <div className="flex flex-col gap-3" data-testid="interview-complete-ctas">
           <button
-            onClick={() => navigate(`/session/${sessionId}/simulation/start`)}
+            onClick={() => navigate(`/session/${sessionId}/${nextRoute.route}`)}
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
             data-testid="interview-continue-simulation"
           >
-            Continue to Simulation <ArrowRight size={16} />
+            {nextRoute.phase ? `Continue to ${nextRoute.label}` : 'Complete Session'} <ArrowRight size={16} />
           </button>
           <button
             onClick={() => navigate(`/session/${sessionId}/interview`)}
