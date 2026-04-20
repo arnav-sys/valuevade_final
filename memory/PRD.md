@@ -63,6 +63,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Courses page upgraded: gradient accent bar, sparkles icon, colored stat pills, gradient CTA button
 - Smooth 0.3s transitions between themes
 
+### Phase 8 - Course Customization Wizard — Phase A (Feb 2026)
+- Multi-step wizard at /course/:courseId/customize
+- Fetches customization questions from Supabase master_customization_questions
+- Dynamic step grouping (3 questions per step, auto-groups)
+- 4 question type renderers: single_select (radio), multi_select (checkbox), slider (range), rating_grid (circle grid)
+- Progress bar with gradient fill and step dots
+- Validation: Next button disabled until all questions answered
+- Free-text final step with 1000 char limit and character count
+- "Generate My Personalized Path" CTA navigates to /course/:id/preview with full state
+- Back navigation through steps and to course details
+
 ## Brand System (CSS Variables)
 ### Light Mode (default)
 - --bg-primary: #F2E6EE, --bg-secondary: #EAD9E5
@@ -94,9 +105,12 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - /app/frontend/src/components/Navbar.js - Theme toggle + auth nav
 - /app/frontend/src/components/CoursesPage.jsx - Upgraded courses
 - /app/frontend/src/components/CourseDetailsPage.jsx - Course details
+- /app/frontend/src/components/CustomizePage.jsx - Customization wizard (Phase A)
 - /app/frontend/src/App.js - Router with ThemeProvider + AuthProvider
 
 ## Backlog
+- P0: Course Customization Phase B — AI preview (Claude call, visual diff)
+- P0: Course Customization Phase C — Confirm & Enroll (store plan, enrollment, loading, success)
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup
 - P1: Course customization & enrollment flow (/course/:id/customize)
