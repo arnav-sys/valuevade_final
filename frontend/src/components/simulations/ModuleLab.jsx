@@ -1,7 +1,7 @@
 import { useMemo, useState, useEffect } from 'react';
 import {
   ArrowRight, ArrowLeft, CheckCircle2, Sliders, Grid3X3, GitBranch, Sparkles,
-  TrendingUp, TrendingDown, Layers,
+  TrendingUp, TrendingDown, Layers, BookOpen, Eye,
 } from 'lucide-react';
 
 /* =============================================================
@@ -535,6 +535,224 @@ function DecisionModuleInner({ module, onExplored }) {
 }
 
 /* =============================================================
+   GENERIC MODULE — graceful renderer for any unknown module type.
+   Shows the description + any rich fields (arrays, objects) as
+   readable cards, plus a "Mark as Explored" button.
+   ============================================================= */
+
+// Keys we don't want to render as "extra data" sections
+const SKIP_KEYS = new Set([
+  'id', 'type', 'label', 'scoring', 'max_score', 'scenario_count',
+  'completion_requirement', 'description',
+]);
+
+function isPrimitive(v) {
+  return v == null || typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean';
+}
+
+function prettyKey(k) {
+  return String(k).replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function GenericKeyValue({ data }) {
+  if (!data || typeof data !== 'object') return null;
+  const entries = Object.entries(data).filter(([, v]) => v != null && v !== '');
+  if (!entries.length) return null;
+  return (
+    <div className="space-y-1.5">
+      {entries.map(([k, v]) => (
+        <div key={k} className="flex items-start justify-between gap-3 text-xs font-bricolage break-words">
+          <span className="text-[var(--color-text-muted)] font-mono text-[10px] uppercase tracking-[0.12em] shrink-0">{prettyKey(k)}</span>
+          <span className="text-[var(--color-text)] text-right break-words">
+            {isPrimitive(v) ? String(v) : (
+              Array.isArray(v)
+                ? `${v.length} items`
+                : typeof v === 'object' ? `${Object.keys(v).length} fields` : String(v)
+            )}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function GenericArray({ items, limit = 6 }) {
+  const [expanded, setExpanded] = useState(false);
+  if (!Array.isArray(items) || !items.length) return null;
+  const visible = expanded ? items : items.slice(0, limit);
+  const rest = items.length - visible.length;
+
+  return (
+    <div className="space-y-2">
+      {visible.map((item, i) => {
+        if (isPrimitive(item)) {
+          return (
+            <div key={i} className="flex items-start gap-3 px-3 py-2 rounded-lg bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
+              <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 text-[var(--color-primary)] text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
+                {i + 1}
+              </div>
+              <span className="text-sm font-bricolage text-[var(--color-text)] break-words">{String(item)}</span>
+            </div>
+          );
+        }
+        // Object item: pick a display title + show key fields
+        const title = item.label || item.title || item.name || item.question || item.transaction || item.narrative || item.description || `Item ${i + 1}`;
+        const subFields = Object.entries(item).filter(([k, v]) => {
+          if (['label', 'title', 'name', 'id'].includes(k)) return false;
+          return v != null && v !== '';
+        });
+        return (
+          <div key={i} className="rounded-xl p-3 bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
+            <div className="flex items-start gap-3 mb-2">
+              <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 text-[var(--color-primary)] text-[10px] font-mono font-bold flex items-center justify-center shrink-0">
+                {i + 1}
+              </div>
+              <div className="font-clash text-sm font-semibold text-[var(--color-text)] break-words flex-1 min-w-0">
+                {typeof title === 'string' ? title : `Item ${i + 1}`}
+              </div>
+            </div>
+            {subFields.length > 0 && (
+              <div className="pl-9 space-y-1">
+                {subFields.slice(0, 6).map(([k, v]) => (
+                  <div key={k} className="text-xs font-bricolage text-[var(--color-text-muted)] break-words">
+                    <span className="text-[10px] font-mono uppercase tracking-[0.1em] text-[var(--color-text-faint)] mr-2">{prettyKey(k)}:</span>
+                    <span className="text-[var(--color-text)]">
+                      {isPrimitive(v) ? String(v) :
+                        Array.isArray(v) ? `${v.length} items` :
+                          typeof v === 'object' ? Object.entries(v).map(([kk, vv]) => `${prettyKey(kk)}: ${isPrimitive(vv) ? vv : '…'}`).slice(0, 3).join(' • ') :
+                            String(v)
+                      }
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+      {rest > 0 && (
+        <button
+          onClick={() => setExpanded(true)}
+          className="w-full text-xs font-mono text-[var(--color-primary)] hover:text-[var(--color-accent-purple)] py-2 rounded-lg hover:bg-[var(--color-surface)]/40 transition-all"
+        >
+          Show {rest} more
+        </button>
+      )}
+      {expanded && items.length > limit && (
+        <button
+          onClick={() => setExpanded(false)}
+          className="w-full text-xs font-mono text-[var(--color-text-muted)] hover:text-[var(--color-text)] py-2 rounded-lg hover:bg-[var(--color-surface)]/40 transition-all"
+        >
+          Show less
+        </button>
+      )}
+    </div>
+  );
+}
+
+function GenericModule({ module, onExplored }) {
+  const description = module.description;
+  const typeLabel = String(module.type || 'interactive').replace(/_/g, ' ');
+
+  // Find the "primary" content array (transactions, scenarios, errors_to_find, roll_forwards, etc.)
+  const extraEntries = Object.entries(module).filter(([k]) => !SKIP_KEYS.has(k));
+  const [acknowledged, setAcknowledged] = useState(false);
+
+  const handleAck = () => {
+    setAcknowledged(true);
+    onExplored?.();
+  };
+
+  return (
+    <div className="space-y-5" data-testid={`module-lab-${module.id}`}>
+      {/* Type indicator */}
+      <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 text-[var(--color-accent-purple)] text-[10px] font-mono uppercase tracking-[0.2em]">
+        <BookOpen size={11} /> {typeLabel}
+      </div>
+
+      {/* Description */}
+      {description && (
+        <div className="glass-card rounded-2xl p-5 sm:p-6" data-testid="module-description">
+          <div className="flex items-center gap-2 mb-3">
+            <Sparkles size={14} className="text-[var(--color-primary)]" />
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">What you'll do</span>
+          </div>
+          <p className="text-sm sm:text-base font-bricolage text-[var(--color-text)] leading-relaxed whitespace-pre-wrap break-words">
+            {description}
+          </p>
+        </div>
+      )}
+
+      {/* Extra fields — arrays render as lists, objects as key/value, scalars as cards */}
+      {extraEntries.map(([k, v]) => {
+        if (v == null || v === '' || v === false) return null;
+
+        // Arrays — render as numbered cards with rich content
+        if (Array.isArray(v) && v.length > 0) {
+          return (
+            <div key={k} className="glass-card rounded-2xl p-5" data-testid={`module-field-${k}`}>
+              <div className="flex items-center gap-2 mb-4">
+                <Layers size={14} className="text-[var(--color-primary)]" />
+                <span className="text-xs font-clash font-semibold uppercase tracking-[0.15em] text-[var(--color-text)]">
+                  {prettyKey(k)}
+                </span>
+                <span className="ml-auto text-[10px] font-mono text-[var(--color-text-muted)]">{v.length} items</span>
+              </div>
+              <GenericArray items={v} />
+            </div>
+          );
+        }
+
+        // Plain object — render as key/value
+        if (typeof v === 'object') {
+          return (
+            <div key={k} className="glass-card rounded-2xl p-5" data-testid={`module-field-${k}`}>
+              <div className="flex items-center gap-2 mb-3">
+                <Grid3X3 size={14} className="text-[var(--color-primary)]" />
+                <span className="text-xs font-clash font-semibold uppercase tracking-[0.15em] text-[var(--color-text)]">
+                  {prettyKey(k)}
+                </span>
+              </div>
+              <GenericKeyValue data={v} />
+            </div>
+          );
+        }
+
+        // Primitive
+        return (
+          <div key={k} className="glass-card rounded-2xl p-4 flex items-center justify-between gap-3" data-testid={`module-field-${k}`}>
+            <span className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">{prettyKey(k)}</span>
+            <span className="text-sm font-bricolage font-semibold text-[var(--color-text)]">{String(v)}</span>
+          </div>
+        );
+      })}
+
+      {/* Acknowledgment button */}
+      <div className="flex items-center justify-between gap-3 pt-2">
+        <span className="text-xs font-mono text-[var(--color-text-muted)]">
+          {acknowledged ? (
+            <span className="inline-flex items-center gap-1.5 text-[var(--color-success)]">
+              <CheckCircle2 size={12} /> Module reviewed
+            </span>
+          ) : (
+            'Review the content above, then mark as explored'
+          )}
+        </span>
+        <button
+          onClick={handleAck}
+          disabled={acknowledged}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text)] font-bricolage hover:border-[var(--color-primary)]/40 transition-all disabled:opacity-50"
+          data-testid="module-acknowledge"
+        >
+          <Eye size={14} />
+          {acknowledged ? 'Explored' : 'Mark as Explored'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* =============================================================
    MODULE LAB — tabbed container over config.modules
    ============================================================= */
 export default function ModuleLab({ config, onComplete }) {
@@ -625,25 +843,14 @@ export default function ModuleLab({ config, onComplete }) {
         {m.type === 'decision_making' && (
           <DecisionModuleInner module={m} onExplored={() => markExplored(activeIdx)} />
         )}
-        {/* Fallback for slider_interactive without a known formula */}
-        {m.type === 'slider_interactive' && !FORMULAS[m.id] && (
-          <div className="glass-card rounded-2xl p-6 text-center" data-testid="module-unimplemented">
-            <Sparkles size={18} className="text-[var(--color-text-muted)] mx-auto mb-2" />
-            <p className="text-sm font-bricolage text-[var(--color-text-muted)]">
-              {m.label} — preview mode. Explore the inputs & outputs below:
-            </p>
-            <div className="mt-4 grid grid-cols-2 gap-3 text-left">
-              <div className="rounded-xl p-3 bg-[var(--color-surface)]/50 border border-[var(--color-border)]">
-                <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1">Inputs</div>
-                <div className="text-xs font-mono text-[var(--color-text)]">{(m.inputs || []).join(', ') || '—'}</div>
-              </div>
-              <div className="rounded-xl p-3 bg-[var(--color-surface)]/50 border border-[var(--color-border)]">
-                <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1">Outputs</div>
-                <div className="text-xs font-mono text-[var(--color-text)]">{(m.outputs || []).join(', ') || '—'}</div>
-              </div>
-            </div>
-          </div>
-        )}
+        {/* Generic fallback — handles any unknown module type
+            (interactive_three_panel, fill_in_the_blank_interactive,
+             build_from_scratch_interactive, error_detection_interactive, etc.)
+            and slider_interactive modules without a known formula. */}
+        {!['matrix_table', 'decision_making'].includes(m.type) &&
+          !(m.type === 'slider_interactive' && FORMULAS[m.id]) && (
+            <GenericModule module={m} onExplored={() => markExplored(activeIdx)} />
+          )}
       </div>
 
       {/* Footer */}
