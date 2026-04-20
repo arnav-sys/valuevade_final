@@ -16,6 +16,62 @@ function humanize(key) {
   return String(key).replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+/**
+ * Format any value (string, number, object, array) into a human-readable string.
+ * Prevents the "[object Object]" leak when nested JSON lands in a simple field.
+ */
+function formatValue(v) {
+  if (v == null) return '';
+  if (typeof v === 'string' || typeof v === 'number' || typeof v === 'boolean') return String(v);
+  if (Array.isArray(v)) {
+    return v.map((item) => {
+      if (item == null) return '';
+      if (typeof item === 'object') {
+        // Pick the most meaningful string from the object
+        const preferred = ['text', 'label', 'value', 'name', 'title', 'description'];
+        for (const k of preferred) { if (typeof item[k] === 'string') return item[k]; }
+        return Object.values(item).filter((x) => typeof x === 'string' || typeof x === 'number').join(' — ');
+      }
+      return String(item);
+    }).filter(Boolean).join(', ');
+  }
+  // Plain object — render as "k: v, k: v"
+  return Object.entries(v).map(([k, val]) => {
+    if (val == null) return null;
+    if (typeof val === 'object') return `${humanize(k)}: …`;
+    return `${humanize(k)}: ${String(val)}`;
+  }).filter(Boolean).join(' • ');
+}
+
+/** Nicer labels for common financial-statement abbreviations. */
+const KEY_LABEL_OVERRIDES = {
+  bs: 'Balance Sheet',
+  pl: 'P&L',
+  pnl: 'P&L',
+  cfs: 'Cash Flow Statement',
+  cf: 'Cash Flow',
+  cogs: 'COGS',
+  ebitda: 'EBITDA',
+  ebit: 'EBIT',
+  pe: 'P/E',
+  roe: 'ROE',
+  roa: 'ROA',
+  wacc: 'WACC',
+  dcf: 'DCF',
+  fcf: 'FCF',
+  npv: 'NPV',
+  irr: 'IRR',
+  ytd: 'YTD',
+  yoy: 'YoY',
+  qoq: 'QoQ',
+};
+
+function prettyKey(key) {
+  const k = String(key).toLowerCase();
+  if (KEY_LABEL_OVERRIDES[k]) return KEY_LABEL_OVERRIDES[k];
+  return humanize(key);
+}
+
 function ExtraFields({ content, handled = [], accent = '#246BFD' }) {
   if (!content || typeof content !== 'object') return null;
   const handledSet = new Set(handled);
@@ -757,13 +813,33 @@ function ExampleCard({ content, title }) {
           <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-3">
             Inputs
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
-            {Object.entries(dataDict).map(([k, v]) => (
-              <div key={k} className="flex items-center justify-between gap-2 py-1 border-b border-[var(--color-border)]/50 last:border-0">
-                <span className="text-xs font-mono text-[var(--color-text-muted)]">{humanize(k)}</span>
-                <span className="text-sm font-bricolage font-semibold text-[#246BFD]">{String(v)}</span>
-              </div>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3">
+            {Object.entries(dataDict).map(([k, v]) => {
+              const isNested = v && typeof v === 'object' && !Array.isArray(v);
+              if (isNested) {
+                return (
+                  <div key={k} className="col-span-1 sm:col-span-2 rounded-lg p-3 bg-[var(--color-surface)]/50 border border-[var(--color-border)]">
+                    <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[#246BFD] mb-2">{prettyKey(k)}</div>
+                    <div className="space-y-1">
+                      {Object.entries(v).map(([subK, subV]) => (
+                        <div key={subK} className="flex items-start justify-between gap-3 text-xs font-bricolage">
+                          <span className="text-[var(--color-text-muted)] break-words">{prettyKey(subK)}</span>
+                          <span className="text-[var(--color-text)] font-semibold text-right break-words">
+                            {formatValue(subV)}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <div key={k} className="flex items-center justify-between gap-2 py-1 border-b border-[var(--color-border)]/50 last:border-0">
+                  <span className="text-xs font-mono text-[var(--color-text-muted)]">{prettyKey(k)}</span>
+                  <span className="text-sm font-bricolage font-semibold text-[#246BFD] break-words text-right">{formatValue(v)}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
@@ -805,8 +881,8 @@ function ExampleCard({ content, title }) {
                       <div className="text-xs font-mono uppercase tracking-[0.1em] text-[var(--color-text-muted)] mb-1">{label}</div>
                     )}
                     {value != null && (
-                      <div className="font-mono text-sm text-[#246BFD] font-semibold bg-[#246BFD]/8 px-2 py-1 rounded inline-block mb-2">
-                        {String(value)}
+                      <div className="font-mono text-sm text-[#246BFD] font-semibold bg-[#246BFD]/8 px-2 py-1 rounded inline-block mb-2 break-words max-w-full">
+                        {formatValue(value)}
                       </div>
                     )}
                     {explanation && (
@@ -815,11 +891,11 @@ function ExampleCard({ content, title }) {
                     {!hasKnownBody && extraEntries.length > 0 && (
                       <div className="space-y-1.5">
                         {extraEntries.map(([k, v]) => (
-                          <div key={k} className="text-sm font-bricolage text-[var(--color-text)]">
+                          <div key={k} className="text-sm font-bricolage text-[var(--color-text)] break-words">
                             <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mr-2">
-                              {humanize(k)}:
+                              {prettyKey(k)}:
                             </span>
-                            <span>{String(v)}</span>
+                            <span>{formatValue(v)}</span>
                           </div>
                         ))}
                       </div>
