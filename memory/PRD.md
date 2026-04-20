@@ -74,6 +74,16 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - "Generate My Personalized Path" CTA navigates to /course/:id/preview with full state
 - Back navigation through steps and to course details
 
+### Phase 9 - Course Customization — Phase B: AI Preview (Feb 2026)
+- Backend `/api/customize/generate` endpoint using Claude Sonnet 4 via Emergent LLM key
+- Full system prompt with curriculum design logic (removal, addition, reorder, certification overrides, conservative rules)
+- PreviewPage at `/course/:courseId/preview` receives answers via React Router state
+- Animated loading screen with 3 progressive steps
+- Visual diff display: removed modules (red strikethrough + badge), added sessions (green badge), reordered modules (blue badge), locked modules (lock badge)
+- User profile summary, stats (modules/sessions/customizations), conservative flags
+- "Accept & Continue" and "Go Back & Modify Answers" navigation
+- Error handling with retry button and fallback to modify answers
+
 ## Brand System (CSS Variables)
 ### Light Mode (default)
 - --bg-primary: #F2E6EE, --bg-secondary: #EAD9E5
@@ -106,10 +116,11 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - /app/frontend/src/components/CoursesPage.jsx - Upgraded courses
 - /app/frontend/src/components/CourseDetailsPage.jsx - Course details
 - /app/frontend/src/components/CustomizePage.jsx - Customization wizard (Phase A)
+- /app/frontend/src/components/PreviewPage.jsx - AI preview with visual diff (Phase B)
 - /app/frontend/src/App.js - Router with ThemeProvider + AuthProvider
+- /app/backend/server.py - FastAPI + MongoDB routes + /api/customize/generate endpoint
 
 ## Backlog
-- P0: Course Customization Phase B — AI preview (Claude call, visual diff)
 - P0: Course Customization Phase C — Confirm & Enroll (store plan, enrollment, loading, success)
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup
