@@ -161,7 +161,7 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Persistence: markPhaseComplete('quiz', {quiz_score}) flips quiz_completed=true on pass; fail path updates quiz_score only
 
 
-- P1: Build session Interview + Simulation phase players (quiz done; remaining 2 of 4 phases)
+- P1: Build session Simulation phase player (phase 4 of 4 — interview done)
 - P1: Module project + Capstone project pages
 - P1: Profile + Settings pages (currently sidebar links to placeholders)
 - P1: CSV Export from Admin Dashboard
