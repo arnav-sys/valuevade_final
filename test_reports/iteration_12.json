@@ -1,0 +1,31 @@
+{
+  "summary": "Regression test for the 'identical feedback / identical 3/5 scores' bug in the Interview Practice flow. Bug is FIXED. Backend: 8/8 pytest cases pass against POST /api/interview/evaluate — strong, mid, and weak answers to the same question return differentiated scores (strong technical > weak), non-identical feedback text, and response-specific bullets (e.g., quotes 'Gordon', 'perpetuity', '1,428'). Frontend: logged in as testagent2026@gmail.com, went to /session/5e0c2a88-d864-4827-9a95-5aedd8d27ffd/interview, submitted 3 different-quality answers. Network panel confirms 3x POST /api/interview/evaluate -> 200 (LLM path hit, NOT template fallback). Scores rendered by UI differ across answers: STRONG Technical 4/5, Clarity 3/5, Structure 4/5, Overall 4/5 vs WEAK 1/5, 2/5, 1/5, 1/5. Every strengths/improvements bullet is specific and references concrete content from the candidate's answer (e.g., 'Correctly identified opportunity cost and inflation', 'Strong connection to practical applications: DCF, bond pricing, NPV'). LLM also demonstrated cross-question awareness — called out when a candidate's answer did not address the actual question asked. Evaluating… spinner stays visible during LLM call (~6-8s). No console errors during flow. End-to-end Submit -> LLM -> feedback card -> Next wiring works per question.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_interview_evaluate.py",
+    "/app/test_reports/pytest/iter12_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py evaluate_interview_response: clamp() defaults invalid/missing numeric fields to 1 (the lower bound). If the LLM ever omits one score entirely, the candidate gets a silent 1/5 — consider logging when a key is missing vs letting it pass as a real low score.",
+    "INTERVIEW_EVAL_SYSTEM_PROMPT instructs the model to 'Return ONLY the JSON object. No code fences.' but the endpoint still strips ``` fences defensively. Good resilience; keep it.",
+    "InterviewPage.jsx evaluateWithLLM has a 30s axios timeout. Observed LLM p95 was ~7-8s, so 30s is safe, but there is no user-visible retry or 'taking longer than usual' nudge — template fallback triggers silently on any failure. Consider a toast when fallback path fires so the user / support can tell signal apart from LLM output.",
+    "Frontend UI labels the score pill as 'CLARITY' while backend returns the key 'communication'. Mapping is done inside the component correctly today, but the terminology mismatch is a minor foot-gun for future refactors — align either the API key or the pill label.",
+    "handleSubmit sets phase='evaluating' before the LLM call but does not guard against double-click/double-submit between the click and the axios promise resolution (canSubmit flips because phase changes, so in practice it's safe — worth a one-line comment so a future edit doesn't break it)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_interview_evaluate.py (new file)"
+  ],
+  "success_rate": {"backend": "100% (8/8 pytest)", "frontend": "100% (3/3 LLM evaluations, differentiated & response-specific)"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (Supabase test user id 13a690c4-96d7-4827-8117-fde4f696e999)",
+  "seed_data_creation": "Answered 3 of 10 questions on user_sessions.id=5e0c2a88-d864-4827-9a95-5aedd8d27ffd as requested (keep LLM spend minimal). Did NOT walk through to Complete page, so interview_completed / interview_score on that row are still whatever iteration_11 left them (should be false/null per that report's context).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "LLM-backed interview evaluator is live and healthy. Row user_sessions.id=5e0c2a88-d864-4827-9a95-5aedd8d27ffd still has interview_completed=false / interview_score=null (we stopped after Q3 feedback, never reached the complete page). Test file /app/backend/tests/test_interview_evaluate.py hits the real Emergent LLM and costs ~3 Claude Sonnet calls per run — rerun only when prompt or endpoint contract changes. Observed LLM latency: ~5-8s per call; 30s axios timeout has plenty of headroom. No frontend changes required.",
+  "rca of the issue": "Original bug: evaluation_criteria JSONB in Supabase uses keys must_cover/bonus_points/red_flags but the template evaluator (interviewEval.js) only looked at keywords/key_points -> every answer hit the same default path -> identical 3/5 scores and generic feedback. Fix (already applied by main agent): backend POST /api/interview/evaluate endpoint built on Claude Sonnet via Emergent LLM Key with a strict-JSON contract; frontend awaits it as primary path with template evaluator kept as a pure fallback. Verified via 3 different-quality submissions producing 3 different score/feedback sets that quote candidate phrasing directly."
+}

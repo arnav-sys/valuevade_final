@@ -447,6 +447,146 @@ async def delete_waitlist_entry(entry_id: str, payload=Depends(verify_token)):
     return {"deleted": True}
 
 
+# ---------------- Interview Response Evaluation ----------------
+class InterviewEvalRequest(BaseModel):
+    question: str
+    response: str
+    context: Optional[str] = ''
+    evaluation_criteria: Optional[dict] = None
+    model_answer: Optional[str] = ''
+    session_title: Optional[str] = ''
+
+
+INTERVIEW_EVAL_SYSTEM_PROMPT = """You are a Senior Analyst at a top investment firm conducting a mock interview for a finance student at Valuevade. Your job is to evaluate the candidate's spoken/typed response to an interview question.
+
+You will receive:
+- The interview question
+- The candidate's response
+- Optional setup/context for the question
+- Evaluation criteria (a JSONB object — may contain any of: must_cover, key_points, keywords, bonus_points, red_flags, or arbitrary fields that describe what a strong answer looks like)
+- Optional sample strong answer
+
+You MUST evaluate the candidate's response and return STRICT JSON in this exact shape (no markdown, no prose):
+
+{
+  "scores": {
+    "technical": <integer 1-5>,
+    "communication": <integer 1-5>,
+    "structure": <integer 1-5>,
+    "overall": <integer 1-5>
+  },
+  "feedback": {
+    "strengths": ["<2-4 specific bullet points referring to THIS exact answer>"],
+    "improvements": ["<2-4 specific bullet points referring to THIS exact answer>"]
+  }
+}
+
+SCORING RUBRIC (1-5):
+- technical: Accuracy of finance concepts, coverage of the must_cover / key_points from evaluation_criteria, correct formulas/numbers. 5 = mastery; 3 = mostly correct with gaps; 1 = fundamentally wrong.
+- communication: Clarity, conciseness, use of plain language, avoidance of filler. 5 = interview-ready; 1 = confusing or sparse.
+- structure: Logical flow (conclusion-first, clear reasoning, transitions). 5 = textbook structure; 1 = rambling or one-dimensional.
+- overall: Holistic judgement, not a strict average. Round to integer.
+
+FEEDBACK RULES (CRITICAL — this is what makes the feedback useful):
+1. Every bullet MUST reference something specific the candidate actually said or omitted. Quote short phrases or call out concrete numbers/concepts.
+2. NEVER produce generic feedback like "Good answer" or "Add more detail". Always say what specifically was good and what specifically to improve.
+3. If the response is very short or off-topic, say so plainly.
+4. Keep bullets under 25 words each. Crisp, like a real interviewer.
+5. Calibrate tone to the finance domain — you're mentoring, not grading.
+6. If evaluation_criteria.red_flags triggered, surface them in improvements.
+7. If evaluation_criteria.bonus_points achieved, highlight in strengths.
+8. Use the sample_strong_answer only as a reference — do NOT ask the candidate to memorize it.
+
+Return ONLY the JSON object. No code fences. No preamble."""
+
+
+@api_router.post("/interview/evaluate")
+async def evaluate_interview_response(req: InterviewEvalRequest):
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=500, detail="LLM key not configured")
+
+    resp_text = (req.response or '').strip()
+    if len(resp_text) < 10:
+        raise HTTPException(status_code=400, detail="Response too short to evaluate")
+
+    payload = {
+        "session_title": req.session_title or '',
+        "question": req.question or '',
+        "context": req.context or '',
+        "candidate_response": resp_text,
+        "evaluation_criteria": req.evaluation_criteria or {},
+        "sample_strong_answer": (req.model_answer or '')[:1200],
+    }
+
+    user_message_text = json_module.dumps(payload, indent=2)
+
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"interview-eval-{uuid.uuid4()}",
+            system_message=INTERVIEW_EVAL_SYSTEM_PROMPT,
+        ).with_model("anthropic", "claude-4-sonnet-20250514")
+
+        response = await chat.send_message(UserMessage(text=user_message_text))
+
+        # Strip markdown fences if the model added any
+        response_text = (response or '').strip()
+        if response_text.startswith('```'):
+            lines = response_text.split('\n')
+            lines = [l for l in lines if not l.strip().startswith('```')]
+            response_text = '\n'.join(lines)
+
+        result = json_module.loads(response_text)
+
+        # Minimal validation + sanitisation
+        scores = result.get('scores') or {}
+        feedback = result.get('feedback') or {}
+
+        def clamp(v, lo=1, hi=5):
+            try:
+                n = int(round(float(v)))
+            except (TypeError, ValueError):
+                n = lo
+            return max(lo, min(hi, n))
+
+        def str_list(v):
+            if not isinstance(v, list):
+                return []
+            out = []
+            for item in v:
+                if isinstance(item, str) and item.strip():
+                    out.append(item.strip())
+                elif isinstance(item, dict):
+                    txt = item.get('text') or item.get('point') or ''
+                    if txt:
+                        out.append(str(txt).strip())
+            return out[:6]
+
+        clean = {
+            "scores": {
+                "technical": clamp(scores.get('technical')),
+                "communication": clamp(scores.get('communication')),
+                "structure": clamp(scores.get('structure')),
+                "overall": clamp(scores.get('overall')),
+            },
+            "feedback": {
+                "strengths": str_list(feedback.get('strengths')) or ["You took a clear stance — good starting point"],
+                "improvements": str_list(feedback.get('improvements')) or ["Try leading with the conclusion for extra impact"],
+            },
+        }
+        return clean
+
+    except json_module.JSONDecodeError as e:
+        logger.error(f"Failed to parse interview eval response: {e}")
+        logger.error(f"Raw response: {(response_text or '')[:500]}")
+        raise HTTPException(status_code=502, detail="AI returned invalid response format")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Interview evaluation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"AI evaluation failed: {str(e)}")
+
+
 app.include_router(api_router)
 
 app.add_middleware(

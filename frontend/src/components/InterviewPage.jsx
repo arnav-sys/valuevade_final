@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { evaluateAnswer } from '../utils/interviewEval';
+import axios from 'axios';
 import {
   ArrowLeft, ArrowRight, Send, Loader2, AlertCircle, RefreshCw,
   CheckCircle2, AlertTriangle, ChevronDown, ChevronUp, Sparkles,
@@ -11,7 +12,16 @@ import {
 
 const MIN_CHARS = 50;
 const TYPING_MS = 900;
-const EVAL_MS = 1400;
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+async function evaluateWithLLM({ question, response, context, evaluation_criteria, model_answer, session_title }) {
+  const { data } = await axios.post(
+    `${API}/interview/evaluate`,
+    { question, response, context, evaluation_criteria, model_answer, session_title },
+    { timeout: 30000 }
+  );
+  return data;
+}
 
 function InterviewerAvatar({ size = 40 }) {
   return (
@@ -114,6 +124,7 @@ export default function InterviewPage() {
         if (sErr) throw sErr;
         if (!mounted) return;
         setSession(sess);
+        setSessionTitle(sess.title || '');
 
         if (!sess.master_session_id) {
           setQuestions([]);
@@ -174,26 +185,48 @@ export default function InterviewPage() {
     }
   }, [phase, idx]);
 
+  const [sessionTitle, setSessionTitle] = useState('');
   const canSubmit = answer.trim().length >= MIN_CHARS && phase === 'answering';
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit || !q) return;
     setPhase('evaluating');
-    await new Promise((r) => setTimeout(r, EVAL_MS));
-    const evalResult = evaluateAnswer(answer, q.evaluation_criteria);
+
+    // Primary path: LLM-based evaluation via backend.
+    // Fallback: template evaluator (keeps flow usable if LLM is down).
+    let scores;
+    let feedback;
+    try {
+      const llm = await evaluateWithLLM({
+        question: questionText,
+        response: answer.trim(),
+        context: contextText,
+        evaluation_criteria: q.evaluation_criteria || {},
+        model_answer: modelAnswer,
+        session_title: sessionTitle,
+      });
+      scores = llm.scores;
+      feedback = llm.feedback;
+    } catch (err) {
+      console.error('[interview] LLM eval failed, falling back to template:', err?.response?.data || err?.message);
+      const evalResult = evaluateAnswer(answer, q.evaluation_criteria);
+      scores = evalResult.scores;
+      feedback = evalResult.feedback;
+    }
+
     setResults((prev) => [
       ...prev,
       {
         question_id: q.id,
         questionText,
         response: answer.trim(),
-        scores: evalResult.scores,
-        feedback: evalResult.feedback,
+        scores,
+        feedback,
         modelAnswer,
       },
     ]);
     setPhase('feedback');
-  }, [canSubmit, q, answer, questionText, modelAnswer]);
+  }, [canSubmit, q, answer, questionText, contextText, modelAnswer, sessionTitle]);
 
   const handleNext = useCallback(() => {
     if (phase !== 'feedback') return;
