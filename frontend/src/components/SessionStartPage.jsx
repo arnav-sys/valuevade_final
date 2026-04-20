@@ -13,7 +13,7 @@ const PHASES = [
   { key: 'notes', label: 'Notes', icon: FileText, path: 'notes', blurb: 'Learn the core concepts' },
   { key: 'quiz', label: 'Quiz', icon: HelpCircle, path: 'quiz/start', blurb: 'Test your understanding' },
   { key: 'interview', label: 'Interview', icon: MessageSquare, path: 'interview/start', blurb: 'Practice answering' },
-  { key: 'simulation', label: 'Simulation', icon: Wrench, path: 'simulation', blurb: 'Apply in a real scenario' },
+  { key: 'simulation', label: 'Simulation', icon: Wrench, path: 'simulation/start', blurb: 'Apply in a real scenario' },
 ];
 
 export default function SessionStartPage() {

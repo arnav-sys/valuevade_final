@@ -24,6 +24,10 @@ import QuizCompletePage from "@/components/QuizCompletePage";
 import InterviewStartPage from "@/components/InterviewStartPage";
 import InterviewPage from "@/components/InterviewPage";
 import InterviewCompletePage from "@/components/InterviewCompletePage";
+import SimulationStartPage from "@/components/SimulationStartPage";
+import SimulationPage from "@/components/SimulationPage";
+import SimulationCompletePage from "@/components/SimulationCompletePage";
+import SessionCompletePage from "@/components/SessionCompletePage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 function App() {
@@ -64,6 +68,10 @@ function App() {
             <Route path="/session/:sessionId/interview/start" element={<ProtectedRoute><InterviewStartPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/interview" element={<ProtectedRoute><InterviewPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/interview/complete" element={<ProtectedRoute><InterviewCompletePage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/simulation/start" element={<ProtectedRoute><SimulationStartPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/simulation" element={<ProtectedRoute><SimulationPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/simulation/complete" element={<ProtectedRoute><SimulationCompletePage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/complete" element={<ProtectedRoute><SessionCompletePage /></ProtectedRoute>} />
             <Route path="/referral" element={<AdminDashboard />} />
           </Routes>
         </AuthProvider>

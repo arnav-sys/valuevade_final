@@ -216,7 +216,7 @@ export default function InterviewCompletePage() {
         {/* CTAs */}
         <div className="flex flex-col gap-3" data-testid="interview-complete-ctas">
           <button
-            onClick={() => navigate(`/session/${sessionId}/simulation`)}
+            onClick={() => navigate(`/session/${sessionId}/simulation/start`)}
             className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
             data-testid="interview-continue-simulation"
           >
