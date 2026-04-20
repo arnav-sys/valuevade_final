@@ -55,7 +55,30 @@ export default function ConfirmPage() {
     setError(null);
 
     try {
-      // 1. Create enrollment
+      // 1. Delete any existing enrollment + its child rows for this user/path
+      const { data: existing } = await supabase
+        .from('user_enrollments')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('master_path_id', courseId)
+        .maybeSingle();
+
+      if (existing) {
+        // Delete child sessions first, then modules, then enrollment
+        const { data: oldMods } = await supabase
+          .from('user_modules')
+          .select('id')
+          .eq('enrollment_id', existing.id);
+
+        if (oldMods?.length) {
+          const modIds = oldMods.map((m) => m.id);
+          await supabase.from('user_sessions').delete().in('user_module_id', modIds);
+          await supabase.from('user_modules').delete().eq('enrollment_id', existing.id);
+        }
+        await supabase.from('user_enrollments').delete().eq('id', existing.id);
+      }
+
+      // 2. Create enrollment
       const { data: enrollment, error: enrollErr } = await supabase
         .from('user_enrollments')
         .insert({
