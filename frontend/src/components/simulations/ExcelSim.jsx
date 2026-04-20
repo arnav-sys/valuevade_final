@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { CheckCircle2, XCircle, Lightbulb, RefreshCw, CheckSquare } from 'lucide-react';
+import ExcelWorkspace from './ExcelWorkspace';
 
 function formatValue(val, format) {
   if (val === '' || val == null) return '';
@@ -24,10 +25,18 @@ function checkRow(input, expected, tolerance) {
   return Math.abs(num - expected) <= tol;
 }
 
-export default function ExcelSim({ config, onProgress, onComplete }) {
+export default function ExcelSim({ config, title, onProgress, onComplete }) {
+  // Route to the structured ExcelSim (expected_value grading) only when the
+  // legacy grid schema with `columns` + `rows[].type` markers is present.
+  // Any other shape (tabs, workbook, dataset, spreadsheet_setup, ...) routes
+  // to the new ExcelWorkspace which renders a full working spreadsheet.
   const grid = config?.grid || {};
   const columns = grid.columns || [];
   const rows = grid.rows || [];
+  const hasLegacyGridShape =
+    Array.isArray(columns) && columns.length > 0 &&
+    Array.isArray(rows) && rows.some((r) => r && (r.type === 'answer_row' || r.type === 'section_header' || r.type === 'data'));
+
   const showHints = grid.show_hints_after_wrong_attempt ?? config?.show_hints_after_wrong_attempt ?? true;
 
   const answerRows = useMemo(
@@ -38,6 +47,10 @@ export default function ExcelSim({ config, onProgress, onComplete }) {
   const [inputs, setInputs] = useState({});
   const [results, setResults] = useState({}); // { rowIdx: { correct, attempts } }
   const [checked, setChecked] = useState(false);
+
+  if (!hasLegacyGridShape) {
+    return <ExcelWorkspace config={config} title={title} onComplete={onComplete} />;
+  }
 
   const correctCount = Object.values(results).filter((r) => r.correct).length;
   const totalAnswers = answerRows.length;

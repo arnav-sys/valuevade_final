@@ -3,6 +3,7 @@ import {
   GitBranch, Sparkles, ArrowRight, ChevronDown, ChevronUp, Target,
   CheckCircle2, Eye, History,
 } from 'lucide-react';
+import GenericRenderer from './GenericRenderer';
 
 function accumulateScores(history, scoring) {
   const scores = {};
@@ -26,11 +27,15 @@ function computeOverallQuality(scores, mapping) {
   return { total, ...match };
 }
 
-export default function DecisionMakingSim({ config, onComplete }) {
+export default function DecisionMakingSim({ config, title, onComplete }) {
   const scenarioContext = config?.scenario_context || '';
   const initialData = config?.initial_data || {};
   const decisionPoints = config?.decision_points || [];
   const scoring = config?.scoring || {};
+
+  // Fall back to generic renderer when none of the structured fields exist
+  // (e.g., configs with `rounds`, `decisions`, `scoring_rubric` instead).
+  const hasStructured = decisionPoints.length > 0 || Object.keys(initialData).length > 0 || scenarioContext;
 
   const decisionsById = useMemo(() => {
     const m = {};
@@ -49,6 +54,27 @@ export default function DecisionMakingSim({ config, onComplete }) {
   const isTerminal = lastEntry?.option?.is_terminal;
 
   const scores = useMemo(() => accumulateScores(history, scoring), [history, scoring]);
+
+  // Build "optimal path" — pick highest total score per decision
+  const optimalPathIds = useMemo(() => {
+    if (!showOptimal) return new Set();
+    const ids = new Set();
+    decisionPoints.forEach((d) => {
+      let best = null;
+      let bestScore = -Infinity;
+      (d.options || []).forEach((o) => {
+        const s = Object.values(o.score_impact || {}).reduce((a, b) => a + b, 0);
+        if (s > bestScore) { bestScore = s; best = o; }
+      });
+      if (best) ids.add(`${d.id}:${best.id}`);
+    });
+    return ids;
+  }, [decisionPoints, showOptimal]);
+
+  if (!hasStructured) {
+    return <GenericRenderer config={config} title={title} typeLabel="Decision Making" onComplete={onComplete} />;
+  }
+
   const outcome = isTerminal ? computeOverallQuality(scores, scoring.outcome_mapping) : null;
 
   const handleSelect = (option) => {
@@ -66,22 +92,6 @@ export default function DecisionMakingSim({ config, onComplete }) {
       setRevealed(false);
     }
   };
-
-  // Build "optimal path" — pick highest total score per decision
-  const optimalPathIds = useMemo(() => {
-    if (!showOptimal) return new Set();
-    const ids = new Set();
-    decisionPoints.forEach((d) => {
-      let best = null;
-      let bestScore = -Infinity;
-      (d.options || []).forEach((o) => {
-        const s = Object.values(o.score_impact || {}).reduce((a, b) => a + b, 0);
-        if (s > bestScore) { bestScore = s; best = o; }
-      });
-      if (best) ids.add(`${d.id}:${best.id}`);
-    });
-    return ids;
-  }, [decisionPoints, showOptimal]);
 
   return (
     <div className="max-w-3xl mx-auto space-y-6" data-testid="decision-sim">

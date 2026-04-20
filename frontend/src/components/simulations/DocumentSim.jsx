@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { CheckCircle2, XCircle, Sparkles, ArrowRight, ArrowLeft, FileText } from 'lucide-react';
+import GenericRenderer from './GenericRenderer';
 
 function formatNumber(n) {
   if (n == null || n === '') return '—';
@@ -235,11 +236,10 @@ function TaskPanel({ tasks, answers, setAnswers, submitted, setSubmitted, onComp
   );
 }
 
-export default function DocumentSim({ config, onComplete }) {
+export default function DocumentSim({ config, title, onComplete }) {
   const doc = config?.document_data || {};
   const highlights = config?.interactive_highlights || [];
   const tasks = config?.tasks || [];
-
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState({});
 
@@ -248,6 +248,13 @@ export default function DocumentSim({ config, onComplete }) {
     highlights.forEach((h) => { m[h.id || h.item_id] = h.tooltip || h.text; });
     return m;
   }, [highlights]);
+
+  // If this sim doesn't use the structured document_data shape, fall back to
+  // the generic renderer (handles document_content + questions + red_flags_to_spot etc.).
+  const hasStructuredDoc = doc && (doc.company_name || doc.sections || doc.period);
+  if (!hasStructuredDoc) {
+    return <GenericRenderer config={config} title={title} typeLabel="Document Analysis" onComplete={onComplete} />;
+  }
 
   const renderLabel = (itemId, label) => {
     if (highlightMap[itemId]) {

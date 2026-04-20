@@ -10,6 +10,7 @@ import ExcelSim from './simulations/ExcelSim';
 import DocumentSim from './simulations/DocumentSim';
 import DecisionMakingSim from './simulations/DecisionMakingSim';
 import InteractiveSim from './simulations/InteractiveSim';
+import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
 
 const TYPE_META = {
@@ -184,28 +185,19 @@ export default function SimulationPage() {
 
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-24">
         {sim.sim_type === 'excel' && (
-          <ExcelSim config={config} onProgress={setProgress} onComplete={handleComplete} />
+          <ExcelSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
         {sim.sim_type === 'document' && (
-          <DocumentSim config={config} onProgress={setProgress} onComplete={handleComplete} />
+          <DocumentSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
         {sim.sim_type === 'decision_making' && (
-          <DecisionMakingSim config={config} onProgress={setProgress} onComplete={handleComplete} />
+          <DecisionMakingSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
         {sim.sim_type === 'interactive' && (
-          <InteractiveSim config={config} onProgress={setProgress} onComplete={handleComplete} />
+          <InteractiveSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
         {!['excel', 'document', 'decision_making', 'interactive'].includes(sim.sim_type) && (
-          <div className="glass-card rounded-2xl p-8 text-center">
-            <p className="font-clash text-base text-[var(--color-text)] mb-2">Unsupported simulation type</p>
-            <p className="text-xs font-mono text-[var(--color-text-muted)] mb-5">"{sim.sim_type}"</p>
-            <button
-              onClick={() => handleComplete({ tasks_completed: 0, tasks_total: 0, accuracy: 0 })}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage"
-            >
-              Skip to completion
-            </button>
-          </div>
+          <GenericRenderer config={config} title={sim.title} typeLabel={sim.sim_type || 'Simulation'} onComplete={handleComplete} />
         )}
       </main>
     </div>

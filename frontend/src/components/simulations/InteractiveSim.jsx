@@ -842,7 +842,7 @@ function LabelExercise({ config, onComplete }) {
 /* =============================================================
    DISPATCHER
    ============================================================= */
-export default function InteractiveSim({ config, onComplete }) {
+export default function InteractiveSim({ config, title, onComplete }) {
   const exerciseType = config?.exercise_type;
 
   // Legacy fallback: if config shape uses `modules` (slider_interactive lab pattern),
@@ -864,20 +864,7 @@ export default function InteractiveSim({ config, onComplete }) {
   if (exerciseType === 'label') {
     return <LabelExercise config={config} onComplete={onComplete} />;
   }
-  return (
-    <div className="glass-card rounded-2xl p-8 text-center" data-testid="interactive-unknown">
-      <Target size={24} className="text-[var(--color-text-muted)] mx-auto mb-3" />
-      <p className="font-clash text-base text-[var(--color-text)] mb-1">Unsupported exercise type</p>
-      <p className="text-xs font-mono text-[var(--color-text-muted)]">
-        "{exerciseType || 'unknown'}" is not configured for this simulation.
-      </p>
-      <button
-        onClick={() => onComplete({ tasks_completed: 0, tasks_total: 0, accuracy: 0 })}
-        className="mt-5 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text)] font-bricolage hover:border-[var(--color-primary)]/40 transition-all"
-        data-testid="interactive-skip"
-      >
-        Continue <ArrowRight size={14} />
-      </button>
-    </div>
-  );
+  // Ultimate fallback for any unknown interactive shape — render all
+  // config fields as readable cards + "Mark as Complete" button.
+  return <GenericRenderer config={config} title={title} typeLabel="Interactive" onComplete={onComplete} />;
 }
