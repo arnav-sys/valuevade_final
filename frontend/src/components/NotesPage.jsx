@@ -443,9 +443,70 @@ function FormulaCard({ content, title }) {
   );
 }
 
-function VisualCard({ content, title: topTitle }) {
-  const { title, description, svg_content, image_url, caption, alt_text } = content || {};
+function VisualCard({ content, title: topTitle, cardId }) {
+  const { title, description, svg_content, image_url: contentImageUrl, caption, alt_text } = content || {};
   const displayTitle = title || topTitle;
+  const apiBase = process.env.REACT_APP_BACKEND_URL;
+
+  const [generatedUrl, setGeneratedUrl] = useState(null);
+  const [genLoading, setGenLoading] = useState(false);
+  const [genError, setGenError] = useState(null);
+
+  const finalImageUrl = contentImageUrl || generatedUrl;
+  const shouldGenerate = !svg_content && !contentImageUrl && !!cardId && !!displayTitle;
+
+  useEffect(() => {
+    if (!shouldGenerate) return;
+    // Check localStorage first
+    const cacheKey = `vv-visual-${cardId}`;
+    const cached = typeof window !== 'undefined' ? localStorage.getItem(cacheKey) : null;
+    if (cached) {
+      setGeneratedUrl(cached);
+      return;
+    }
+
+    let cancelled = false;
+    async function generate() {
+      setGenLoading(true);
+      setGenError(null);
+      try {
+        const resp = await fetch(`${apiBase}/api/visual/generate`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            card_id: cardId,
+            title: displayTitle || '',
+            description: description || '',
+          }),
+        });
+        if (!resp.ok) {
+          const errText = await resp.text();
+          throw new Error(errText || `HTTP ${resp.status}`);
+        }
+        const data = await resp.json();
+        if (cancelled) return;
+        const url = data.image_url;
+        setGeneratedUrl(url);
+        // Cache locally
+        try { localStorage.setItem(cacheKey, url); } catch { /* quota */ }
+        // Cache to Supabase (best-effort; silently fails if RLS blocks)
+        try {
+          const updatedContent = { ...(content || {}), image_url: url };
+          await supabase
+            .from('master_notes_cards')
+            .update({ content: updatedContent })
+            .eq('id', cardId);
+        } catch { /* ignore */ }
+      } catch (err) {
+        if (!cancelled) setGenError(err.message || 'Failed to generate visual');
+      } finally {
+        if (!cancelled) setGenLoading(false);
+      }
+    }
+    generate();
+    return () => { cancelled = true; };
+  }, [shouldGenerate, cardId, displayTitle, description, apiBase, content]);
+
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20 text-center" data-testid="card-visual">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
@@ -461,15 +522,64 @@ function VisualCard({ content, title: topTitle }) {
           {description}
         </p>
       )}
-      <div className="rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border)] p-4 sm:p-6 flex items-center justify-center min-h-[240px] overflow-auto">
+      <div className="rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border)] p-4 sm:p-6 flex items-center justify-center min-h-[320px] overflow-hidden relative">
         {svg_content ? (
           <div
             className="max-w-full"
             data-testid="visual-svg"
             dangerouslySetInnerHTML={{ __html: svg_content }}
           />
-        ) : image_url ? (
-          <img src={image_url} alt={alt_text || title || 'Visual'} className="max-w-full h-auto rounded-lg" data-testid="visual-img" />
+        ) : finalImageUrl ? (
+          <img
+            src={finalImageUrl}
+            alt={alt_text || title || 'Visual'}
+            className="max-w-full h-auto rounded-xl shadow-[0_8px_32px_rgba(36,107,253,0.15)]"
+            data-testid="visual-img"
+          />
+        ) : genLoading ? (
+          <div className="flex flex-col items-center justify-center w-full" data-testid="visual-generating">
+            {/* Shimmer */}
+            <div className="w-full max-w-md aspect-square rounded-2xl overflow-hidden relative bg-gradient-to-br from-[#246BFD]/8 via-[#6A5CFF]/8 to-[#FF6AC1]/8">
+              <div
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%)',
+                  animation: 'vvShimmer 1.8s ease-in-out infinite',
+                }}
+              />
+            </div>
+            <div className="flex items-center gap-2 mt-5 text-sm font-bricolage text-[var(--color-text-muted)]">
+              <Sparkles size={14} className="text-[#6A5CFF] animate-pulse" />
+              <span>Generating visual<span className="vv-ellipsis" /></span>
+              <Loader2 size={14} className="animate-spin text-[#246BFD]" />
+            </div>
+            <style>{`
+              @keyframes vvShimmer {
+                0% { transform: translateX(-100%); }
+                100% { transform: translateX(100%); }
+              }
+              .vv-ellipsis::after {
+                display: inline-block;
+                animation: vvDots 1.4s steps(4, end) infinite;
+                content: '';
+                width: 1.2em;
+                text-align: left;
+              }
+              @keyframes vvDots {
+                0%   { content: ''; }
+                25%  { content: '.'; }
+                50%  { content: '..'; }
+                75%  { content: '...'; }
+                100% { content: ''; }
+              }
+            `}</style>
+          </div>
+        ) : genError ? (
+          <div className="flex flex-col items-center justify-center py-8" data-testid="visual-error">
+            <AlertCircle size={28} className="text-[var(--color-error)] mb-3" />
+            <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-1">Couldn't generate visual</p>
+            <p className="text-xs text-[var(--color-text-faint)] font-mono">{genError}</p>
+          </div>
         ) : (
           <span className="text-xs text-[var(--color-text-faint)] font-mono">NO VISUAL</span>
         )}
@@ -966,7 +1076,7 @@ function CardRenderer({ card }) {
     return <RawFallbackCard card={{ ...card, content }} />;
   }
   // Pass top-level title as a fallback for renderers that use heading/main_text
-  return <Cmp content={content} title={card?.title} />;
+  return <Cmp content={content} title={card?.title} cardId={card?.id} />;
 }
 
 // -----------------------------------------------------------

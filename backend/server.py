@@ -375,6 +375,70 @@ async def generate_customization(req: CustomizeRequest):
         raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")
 
 
+# ---------------- Visual Card Image Generation ----------------
+class VisualGenRequest(BaseModel):
+    card_id: str
+    title: str = ''
+    description: str = ''
+
+
+VISUAL_STYLE_PROMPT = (
+    "Ultra-clean minimal vector illustration for a premium finance education app called Valuevade. "
+    "Aesthetic: soft pastel pink background (#F2E6EE or #EAD9E5), elegant modern flat design, "
+    "thin geometric lines, rounded corners, subtle depth, lots of whitespace. "
+    "Strict color palette: primary blue #246BFD, purple accent #6A5CFF, pink accent #FF6AC1, "
+    "success green #10B981, dark text #1A1A2E. "
+    "Style is editorial and calm — like a high-end finance textbook. "
+    "No photographs, no realistic people, no busy backgrounds, no cluttered text, no logos. "
+    "Focus: a single clear visual metaphor with minimal annotations. "
+    "Square 1024x1024 composition."
+)
+
+
+@api_router.post("/visual/generate")
+async def generate_visual(req: VisualGenRequest):
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=500, detail="LLM key not configured")
+
+    prompt_subject = req.title.strip() or 'Finance concept'
+    if req.description:
+        prompt_subject += f". Context: {req.description.strip()[:400]}"
+
+    full_prompt = (
+        f"Create a conceptual diagram illustrating: {prompt_subject}. "
+        f"{VISUAL_STYLE_PROMPT}"
+    )
+
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"visual-{req.card_id}-{uuid.uuid4()}",
+            system_message="You are an expert visual designer creating educational illustrations for a premium finance learning app.",
+        )
+        chat.with_model("gemini", "gemini-3.1-flash-image-preview").with_params(modalities=["image", "text"])
+
+        _text, images = await chat.send_message_multimodal_response(
+            UserMessage(text=full_prompt)
+        )
+
+        if not images:
+            raise HTTPException(status_code=500, detail="No image generated")
+
+        img = images[0]
+        mime = img.get('mime_type') or 'image/png'
+        data = img.get('data') or ''
+        data_url = f"data:{mime};base64,{data}"
+
+        logger.info(f"Generated visual for card {req.card_id} ({len(data)} b64 chars)")
+        return {"image_url": data_url, "card_id": req.card_id}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Visual generation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Image generation failed: {str(e)}")
+
+
 @api_router.delete("/waitlist/{entry_id}")
 async def delete_waitlist_entry(entry_id: str, payload=Depends(verify_token)):
     result = await db.waitlist.delete_one({"id": entry_id})
