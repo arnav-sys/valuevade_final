@@ -8,6 +8,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CheckCircle2, XCircle, GripVertical, ArrowRight, RefreshCw, Target } from 'lucide-react';
+import ModuleLab from './ModuleLab';
 
 /* =============================================================
    EXERCISE 1: CATEGORIZE — drag items onto category drop zones
@@ -843,6 +844,13 @@ function LabelExercise({ config, onComplete }) {
    ============================================================= */
 export default function InteractiveSim({ config, onComplete }) {
   const exerciseType = config?.exercise_type;
+
+  // Legacy fallback: if config shape uses `modules` (slider_interactive lab pattern),
+  // route to the ModuleLab renderer so users get a working interactive simulation
+  // instead of the "Unsupported" empty state.
+  if (!exerciseType && Array.isArray(config?.modules) && config.modules.length > 0) {
+    return <ModuleLab config={config} onComplete={onComplete} />;
+  }
 
   if (exerciseType === 'categorize') {
     return <CategorizeExercise config={config} onComplete={onComplete} />;
