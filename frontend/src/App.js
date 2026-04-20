@@ -21,6 +21,9 @@ import NotesCompletePage from "@/components/NotesCompletePage";
 import QuizStartPage from "@/components/QuizStartPage";
 import QuizPage from "@/components/QuizPage";
 import QuizCompletePage from "@/components/QuizCompletePage";
+import InterviewStartPage from "@/components/InterviewStartPage";
+import InterviewPage from "@/components/InterviewPage";
+import InterviewCompletePage from "@/components/InterviewCompletePage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 function App() {
@@ -58,6 +61,9 @@ function App() {
             <Route path="/session/:sessionId/quiz/start" element={<ProtectedRoute><QuizStartPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/quiz/complete" element={<ProtectedRoute><QuizCompletePage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/interview/start" element={<ProtectedRoute><InterviewStartPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/interview" element={<ProtectedRoute><InterviewPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/interview/complete" element={<ProtectedRoute><InterviewCompletePage /></ProtectedRoute>} />
             <Route path="/referral" element={<AdminDashboard />} />
           </Routes>
         </AuthProvider>

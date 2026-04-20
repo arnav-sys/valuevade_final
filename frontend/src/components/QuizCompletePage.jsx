@@ -283,7 +283,7 @@ export default function QuizCompletePage() {
         <div className="flex flex-col gap-3" data-testid="quiz-complete-ctas">
           {passed ? (
             <button
-              onClick={() => navigate(`/session/${sessionId}/interview`)}
+              onClick={() => navigate(`/session/${sessionId}/interview/start`)}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
               data-testid="quiz-continue-interview"
             >
@@ -309,7 +309,7 @@ export default function QuizCompletePage() {
           )}
 
           <button
-            onClick={() => navigate(`/session/${sessionId}/interview`)}
+            onClick={() => navigate(`/session/${sessionId}/interview/start`)}
             className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]/60 border border-transparent hover:border-[var(--color-border)] transition-all"
             data-testid="quiz-continue-anyway"
           >
