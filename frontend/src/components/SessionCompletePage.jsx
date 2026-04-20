@@ -194,6 +194,8 @@ export default function SessionCompletePage() {
           <div className="space-y-2">
             {phaseScores.map((p) => {
               const Icon = p.icon;
+              // Quiz specifically: attempted (yellow) when score < 70; passed (green) when >= 70
+              const isAttempted = p.completed && p.key === 'quiz' && (p.score ?? 100) < 70;
               return (
                 <div
                   key={p.key}
@@ -203,9 +205,9 @@ export default function SessionCompletePage() {
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0"
                     style={{
-                      background: `${p.color}15`,
-                      border: `1px solid ${p.color}35`,
-                      color: p.color,
+                      background: isAttempted ? '#F59E0B15' : `${p.color}15`,
+                      border: `1px solid ${isAttempted ? '#F59E0B35' : p.color + '35'}`,
+                      color: isAttempted ? '#F59E0B' : p.color,
                     }}
                   >
                     <Icon size={18} />
@@ -213,7 +215,7 @@ export default function SessionCompletePage() {
                   <div className="flex-1 min-w-0">
                     <div className="font-clash text-sm font-semibold text-[var(--color-text)]">{p.label}</div>
                     <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
-                      {p.completed ? 'Completed' : 'Skipped'}
+                      {isAttempted ? 'Attempted' : p.completed ? 'Completed' : 'Skipped'}
                     </div>
                   </div>
                   {p.completed && (
@@ -222,16 +224,20 @@ export default function SessionCompletePage() {
                         <span
                           className="text-xs font-mono font-bold px-2.5 py-1 rounded-full"
                           style={{
-                            color: p.color,
-                            background: `${p.color}12`,
-                            border: `1px solid ${p.color}30`,
+                            color: isAttempted ? '#F59E0B' : p.color,
+                            background: `${isAttempted ? '#F59E0B' : p.color}12`,
+                            border: `1px solid ${isAttempted ? '#F59E0B' : p.color}30`,
                           }}
                           data-testid={`session-complete-score-${p.key}`}
                         >
-                          {p.scoreField === 'interview_score' ? `${p.score}/5` : `${p.score}${p.scoreField === 'simulation_score' ? '%' : ''}`}
+                          {p.scoreField === 'interview_score' ? `${p.score}/5` : `${p.score}%`}
                         </span>
                       )}
-                      <CheckCircle2 size={16} className="text-[var(--color-success)] shrink-0" />
+                      {isAttempted ? (
+                        <span className="text-[10px] font-mono font-bold text-[#F59E0B] shrink-0">⚠</span>
+                      ) : (
+                        <CheckCircle2 size={16} className="text-[var(--color-success)] shrink-0" />
+                      )}
                     </div>
                   )}
                 </div>

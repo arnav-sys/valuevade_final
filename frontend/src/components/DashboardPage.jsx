@@ -130,15 +130,20 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
                       {phases.map((ph) => {
                         const done = s[`${ph}_completed`];
                         const Icon = PHASE_META[ph].icon;
+                        // Hybrid: quiz is "attempted" (yellow) when completed but score < 70
+                        const attempted = done && ph === 'quiz' && (s.quiz_score ?? 100) < 70;
                         return (
                           <span
                             key={ph}
                             className={`w-5 h-5 rounded-md flex items-center justify-center ${
-                              done
-                                ? 'bg-[var(--color-success)]/15 text-[var(--color-success)]'
-                                : 'bg-[var(--color-surface)] text-[var(--color-text-faint)]'
+                              attempted
+                                ? 'bg-[#F59E0B]/15 text-[#F59E0B]'
+                                : done
+                                  ? 'bg-[var(--color-success)]/15 text-[var(--color-success)]'
+                                  : 'bg-[var(--color-surface)] text-[var(--color-text-faint)]'
                             }`}
-                            title={`${PHASE_META[ph].label}${done ? ' complete' : ''}`}
+                            title={`${PHASE_META[ph].label}${attempted ? ` attempted (${s.quiz_score}%)` : done ? ' complete' : ''}`}
+                            data-testid={`session-item-${sidx}-phase-${ph}`}
                           >
                             <Icon size={10} />
                           </span>

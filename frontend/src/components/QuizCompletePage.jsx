@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
 import { markPhaseComplete } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
@@ -109,47 +108,27 @@ export default function QuizCompletePage() {
   const total = questions.length || answers.length;
   const percentage = total ? score / total : 0;
   const passed = percentage >= PASS_THRESHOLD;
+  // Persist as 0-100 so dashboard/session pages can distinguish
+  // "attempted" (<70) vs "passed" (>=70) from the stored column alone.
+  const pctScore = Math.round(percentage * 100);
 
   const [showConfetti, setShowConfetti] = useState(passed);
   const [expandedIdx, setExpandedIdx] = useState(null);
   const [saved, setSaved] = useState(false);
   const [nextRoute, setNextRoute] = useState({ phase: 'interview', route: 'interview/start', label: 'Interview' });
 
-  // Save results once
+  // Save results once. Quiz is marked "completed" on ANY attempt
+  // (hybrid model). Pass/fail is derived from quiz_score >= 70.
   useEffect(() => {
     let mounted = true;
     async function save() {
       if (saved || !user?.id || !sessionId || total === 0) return;
       try {
-        // user_sessions schema only guarantees quiz_score (int) —
-        // quiz_total/quiz_attempts/quiz_passed are derived client-side.
-        const scoreData = { quiz_score: score };
-
-        if (passed) {
-          const res = await markPhaseComplete(sessionId, 'quiz', scoreData);
-          if (!res?.success) {
-            console.error('[quiz] markPhaseComplete failed:', res?.error);
-          } else if (mounted && res.data) {
-            setNextRoute(getNextPhaseRoute(res.data, 'quiz'));
-          }
-        } else {
-          // Not passing: record latest score only, don't flip quiz_completed.
-          const { error: upErr } = await supabase
-            .from('user_sessions')
-            .update(scoreData)
-            .eq('id', sessionId);
-          if (upErr) console.error('[quiz] score update failed:', upErr.message);
-
-          // Still compute next route so "Continue Anyway" skips already-done phases.
-          const { data: sess } = await supabase
-            .from('user_sessions')
-            .select('notes_completed, quiz_completed, interview_completed, simulation_completed')
-            .eq('id', sessionId)
-            .maybeSingle();
-          if (mounted && sess) {
-            // Don't flip quiz — user hasn't passed it
-            setNextRoute(getNextPhaseRoute({ ...sess, quiz_completed: true }, 'quiz'));
-          }
+        const res = await markPhaseComplete(sessionId, 'quiz', { quiz_score: pctScore });
+        if (!res?.success) {
+          console.error('[quiz] markPhaseComplete failed:', res?.error);
+        } else if (mounted && res.data) {
+          setNextRoute(getNextPhaseRoute(res.data, 'quiz'));
         }
       } catch (err) {
         console.error('[quiz] save error:', err);
@@ -159,7 +138,7 @@ export default function QuizCompletePage() {
     }
     save();
     return () => { mounted = false; };
-  }, [saved, user?.id, sessionId, score, total, passed]);
+  }, [saved, user?.id, sessionId, pctScore, total]);
 
   useEffect(() => {
     if (!passed) return;

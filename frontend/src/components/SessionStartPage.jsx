@@ -177,6 +177,8 @@ export default function SessionStartPage() {
                     const isDone = session[`${p.key}_completed`];
                     const isNext = firstIncomplete?.key === p.key;
                     const Icon = p.icon;
+                    // Hybrid: quiz counts as attempted (yellow) if done but scored < 70
+                    const isAttempted = isDone && p.key === 'quiz' && (session.quiz_score ?? 100) < 70;
                     return (
                       <div
                         key={p.key}
@@ -186,13 +188,15 @@ export default function SessionStartPage() {
                         data-testid={`phase-${p.key}`}
                       >
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                          isDone
+                          isAttempted
+                            ? 'bg-[#F59E0B]/15 border border-[#F59E0B]/30 text-[#F59E0B]'
+                            : isDone
                             ? 'bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]'
                             : isNext
                             ? 'bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 text-[var(--color-primary)]'
                             : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-faint)]'
                         }`}>
-                          {isDone ? <CheckCircle2 size={18} /> : <Icon size={18} />}
+                          {isAttempted ? <Icon size={18} /> : isDone ? <CheckCircle2 size={18} /> : <Icon size={18} />}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
@@ -203,10 +207,12 @@ export default function SessionStartPage() {
                           </div>
                           <p className="text-xs text-[var(--color-text-muted)] font-bricolage">{p.blurb}</p>
                         </div>
-                        {isDone ? (
-                          <span className="text-[10px] font-mono text-[var(--color-success)]">DONE</span>
+                        {isAttempted ? (
+                          <span className="text-[10px] font-mono text-[#F59E0B]" data-testid={`phase-${p.key}-status`}>ATTEMPTED · {session.quiz_score}%</span>
+                        ) : isDone ? (
+                          <span className="text-[10px] font-mono text-[var(--color-success)]" data-testid={`phase-${p.key}-status`}>DONE</span>
                         ) : isNext ? (
-                          <span className="text-[10px] font-mono text-[var(--color-primary)]">NEXT</span>
+                          <span className="text-[10px] font-mono text-[var(--color-primary)]" data-testid={`phase-${p.key}-status`}>NEXT</span>
                         ) : (
                           <Circle size={14} className="text-[var(--color-text-faint)]" />
                         )}
