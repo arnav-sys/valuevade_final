@@ -320,10 +320,111 @@ function SensitivityModule({ module, onExplored }) {
 }
 
 /* =============================================================
+   SCENARIO REGISTRY — resolve string IDs to full scenario data
+   (Seed data sometimes stores scenarios as IDs only.)
+   ============================================================= */
+
+const SCENARIO_REGISTRY = {
+  uncles_offer_lumpsum_choice: {
+    title: "The Uncle's Offer",
+    narrative:
+      "Your uncle sits you down after dinner and makes you a deal: ₹5,00,000 in your account tomorrow, OR ₹10,00,000 wired in exactly 8 years.\n\nYou have a reliable brokerage account earning ~10% compounded annually. Which do you take?",
+    options: [
+      {
+        id: 'lumpsum_today',
+        label: 'Take ₹5,00,000 today',
+        is_correct: true,
+        rationale:
+          '✓ Correct. At 10% compounded annually, ₹5L grows to ₹10.72L in 8 years — more than the ₹10L offered. The PV of ₹10L in 8 years at 10% is only ₹4.67L. Take the money today and compound it yourself.',
+      },
+      {
+        id: 'wait_eight_years',
+        label: 'Take ₹10,00,000 in 8 years',
+        is_correct: false,
+        rationale:
+          '✗ You\'re giving up time value. At 10%, ₹5L today compounds to ₹10.72L in 8 years — ₹72K more than the deferred offer. Rule of 72 tells you money doubles in ~7.2 yrs at 10%.',
+      },
+      {
+        id: 'not_enough_info',
+        label: "I don't have enough info to decide",
+        is_correct: false,
+        rationale:
+          '✗ You have everything: two cashflows, an expected rate (10%), and a tenor (8 yrs). Compute FV(₹5L, 10%, 8) or PV(₹10L, 10%, 8) — either comparison proves the choice.',
+      },
+    ],
+  },
+
+  bond_buy_or_pass: {
+    title: 'The Bond Desk Call',
+    narrative:
+      "A broker pings you with a hot tip: a ₹1,000 face-value corporate bond paying a 7% annual coupon, 5 years to maturity. Comparable bonds in the market are yielding 8%. The seller is asking ₹1,020.\n\nDo you buy?",
+    options: [
+      {
+        id: 'buy_now',
+        label: 'Yes — buy at ₹1,020',
+        is_correct: false,
+        rationale:
+          '✗ Overpaying. At 8% yield, the intrinsic value ≈ ₹960 (coupon 7% < market yield 8% → discount bond). ₹1,020 is above BOTH intrinsic AND face value. You\'d be paying ₹60 extra for a bond the market prices lower.',
+      },
+      {
+        id: 'pass',
+        label: 'Pass — asking price is above intrinsic',
+        is_correct: true,
+        rationale:
+          '✓ Correct. Coupon (7%) < market yield (8%) means this is a discount bond — intrinsic ≈ ₹960. A ₹1,020 ask represents a 6%+ premium over fair value. Unless you have private info justifying a lower required yield, walk.',
+      },
+      {
+        id: 'buy_if_yield_drops',
+        label: 'Buy only if market yield drops to 7%',
+        is_correct: false,
+        rationale:
+          '✗ Even if yield dropped to 7%, the bond would trade at par (₹1,000) — still below the ₹1,020 ask. You\'d need yields to fall below ~6.5% for this price to be defensible.',
+      },
+    ],
+  },
+
+  discount_rate_judgment: {
+    title: 'The Analyst Debate',
+    narrative:
+      'Two analysts on your team are modelling the same stable FMCG: FCF₁ = ₹120 cr, terminal growth = 3%.\n\n• Analyst A uses WACC = 10%\n• Analyst B uses WACC = 14%\n\nWhose terminal value is more defensible?',
+    options: [
+      {
+        id: 'analyst_a',
+        label: 'Analyst A (10% WACC)',
+        is_correct: false,
+        rationale:
+          '✗ At 10% WACC, TV = ₹120 / (0.10 − 0.03) = ₹1,714 cr. Plausible for a defensive FMCG, but 10% might be aggressive depending on the business\'s actual beta, leverage, and country risk.',
+      },
+      {
+        id: 'analyst_b',
+        label: 'Analyst B (14% WACC)',
+        is_correct: false,
+        rationale:
+          '✗ 14% is a mid-risk TECH multiple — too high for a stable FMCG. At 14%, TV = ₹120 / (0.14 − 0.03) = ₹1,091 cr, materially understating value. You\'d walk away from a fair deal.',
+      },
+      {
+        id: 'context_dependent',
+        label: 'Neither — WACC must be built bottom-up from the business',
+        is_correct: true,
+        rationale:
+          '✓ Correct. A defensible WACC = weighted(cost of equity via CAPM, after-tax cost of debt). It depends on the RISK-FREE rate, equity risk premium, the company\'s beta, and its actual capital structure. Without those, any number is a guess.',
+      },
+    ],
+  },
+};
+
+function resolveScenario(raw) {
+  if (!raw) return null;
+  if (typeof raw === 'string') return SCENARIO_REGISTRY[raw] || { title: raw, narrative: '', options: [] };
+  return raw;
+}
+
+/* =============================================================
    DECISION SCENARIOS — simple scenario walker
    ============================================================= */
 function DecisionModuleInner({ module, onExplored }) {
-  const scenarios = module.scenarios || [];
+  const rawScenarios = module.scenarios || [];
+  const scenarios = useMemo(() => rawScenarios.map(resolveScenario).filter(Boolean), [rawScenarios]);
   const [idx, setIdx] = useState(0);
   const [picks, setPicks] = useState({});
   const [revealed, setRevealed] = useState({});
