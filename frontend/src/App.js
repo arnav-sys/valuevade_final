@@ -18,6 +18,9 @@ import DashboardPage from "@/components/DashboardPage";
 import SessionStartPage from "@/components/SessionStartPage";
 import NotesPage from "@/components/NotesPage";
 import NotesCompletePage from "@/components/NotesCompletePage";
+import QuizStartPage from "@/components/QuizStartPage";
+import QuizPage from "@/components/QuizPage";
+import QuizCompletePage from "@/components/QuizCompletePage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 function App() {
@@ -52,6 +55,9 @@ function App() {
             <Route path="/session/:sessionId/start" element={<ProtectedRoute><SessionStartPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/notes" element={<ProtectedRoute><NotesPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/notes/complete" element={<ProtectedRoute><NotesCompletePage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/quiz/start" element={<ProtectedRoute><QuizStartPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/quiz" element={<ProtectedRoute><QuizPage /></ProtectedRoute>} />
+            <Route path="/session/:sessionId/quiz/complete" element={<ProtectedRoute><QuizCompletePage /></ProtectedRoute>} />
             <Route path="/referral" element={<AdminDashboard />} />
           </Routes>
         </AuthProvider>
