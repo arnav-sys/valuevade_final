@@ -9,6 +9,78 @@ import {
 } from 'lucide-react';
 
 // -----------------------------------------------------------
+// HELPER: ExtraFields — renders any content keys not already handled,
+// so unknown/new fields still show up instead of being silently dropped.
+// -----------------------------------------------------------
+function humanize(key) {
+  return String(key).replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
+function ExtraFields({ content, handled = [], accent = '#246BFD' }) {
+  if (!content || typeof content !== 'object') return null;
+  const handledSet = new Set(handled);
+  const entries = Object.entries(content).filter(
+    ([k, v]) => !handledSet.has(k) && v != null && v !== ''
+  );
+  if (!entries.length) return null;
+  return (
+    <div className="mt-5 space-y-4" data-testid="card-extras">
+      {entries.map(([k, v]) => (
+        <div key={k} className="rounded-xl p-4 bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
+          <div className="text-[10px] font-mono uppercase tracking-[0.18em] mb-2" style={{ color: accent }}>
+            {humanize(k)}
+          </div>
+          <ExtraFieldValue value={v} accent={accent} />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ExtraFieldValue({ value, accent }) {
+  if (value == null) return null;
+  if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
+    return (
+      <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed whitespace-pre-wrap">
+        {String(value)}
+      </p>
+    );
+  }
+  if (Array.isArray(value)) {
+    return (
+      <ul className="space-y-2">
+        {value.map((item, i) => (
+          <li key={i} className="text-sm font-bricolage text-[var(--color-text)]">
+            {typeof item === 'string' || typeof item === 'number' ? (
+              <span>• {String(item)}</span>
+            ) : (
+              <div className="pl-3 border-l-2" style={{ borderColor: `${accent}40` }}>
+                <ExtraFieldValue value={item} accent={accent} />
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+  // object
+  return (
+    <div className="space-y-2">
+      {Object.entries(value).map(([k, v]) => (
+        <div key={k}>
+          <span className="text-[11px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mr-2">
+            {humanize(k)}:
+          </span>
+          <span className="text-sm font-bricolage text-[var(--color-text)]">
+            {typeof v === 'object' ? JSON.stringify(v) : String(v)}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// -----------------------------------------------------------
 // CARD RENDERERS
 // -----------------------------------------------------------
 
@@ -80,9 +152,23 @@ function HookCard({ content, title }) {
 function ConceptCard({ content, title }) {
   const c = content || {};
   const displayHeading = c.heading || c.title || title;
-  const explanation = c.explanation || c.body || c.text || c.description || c.content;
+  const definition = c.definition || c.explanation || c.body || c.text || c.description;
+  const analogy = c.analogy || c.metaphor;
+  const forces = c.forces || c.factors || c.drivers || [];
+  const core_operations = c.core_operations || c.operations || c.mechanics || [];
   const key_terms = c.key_terms || c.terms || c.definitions || [];
   const core_principle = c.core_principle || c.principle || c.key_insight || c.insight;
+  const discount_rate = c.discount_rate; // special field
+
+  const handled = [
+    'heading', 'title', 'definition', 'explanation', 'body', 'text', 'description',
+    'analogy', 'metaphor', 'forces', 'factors', 'drivers',
+    'core_operations', 'operations', 'mechanics',
+    'key_terms', 'terms', 'definitions',
+    'core_principle', 'principle', 'key_insight', 'insight',
+    'discount_rate',
+  ];
+
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-concept">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
@@ -93,28 +179,83 @@ function ConceptCard({ content, title }) {
           {displayHeading}
         </h2>
       )}
-      {explanation && (
-        <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-6">
-          {explanation}
+      {definition && (
+        <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-5">
+          {definition}
         </p>
       )}
 
+      {analogy && (
+        <div className="rounded-xl p-4 bg-[#FF6AC1]/6 border border-[#FF6AC1]/20 mb-5 flex gap-3">
+          <Lightbulb size={18} className="text-[#FF6AC1] shrink-0 mt-0.5" />
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF6AC1] mb-1">Analogy</div>
+            <p className="text-sm font-bricolage text-[var(--color-text)] italic leading-relaxed">{analogy}</p>
+          </div>
+        </div>
+      )}
+
+      {forces.length > 0 && (
+        <div className="mb-5">
+          <div className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-3">
+            Forces at Play
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3" data-testid="concept-forces">
+            {forces.map((f, i) => (
+              <div key={i} className="glass-card rounded-xl p-4 border-[var(--color-border)]">
+                <div className="text-sm font-clash font-semibold text-[#246BFD] mb-1.5">
+                  {typeof f === 'string' ? f : (f.name || f.title)}
+                </div>
+                {typeof f !== 'string' && (f.explanation || f.description) && (
+                  <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                    {f.explanation || f.description}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {core_operations.length > 0 && (
+        <div className="mb-5">
+          <div className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-3">
+            Core Operations
+          </div>
+          <div className="space-y-2" data-testid="concept-core-operations">
+            {core_operations.map((op, i) => (
+              <div key={i} className="flex items-start gap-3 glass-card rounded-xl p-4 border-[var(--color-border)]">
+                <div className="w-7 h-7 rounded-lg bg-[#246BFD]/12 border border-[#246BFD]/25 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
+                  {i + 1}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-clash font-semibold text-[var(--color-text)] mb-1">
+                    {typeof op === 'string' ? op : (op.name || op.title)}
+                  </div>
+                  {typeof op !== 'string' && (op.description || op.explanation) && (
+                    <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                      {op.description || op.explanation}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {key_terms.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6" data-testid="concept-key-terms">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5" data-testid="concept-key-terms">
           {key_terms.map((t, i) => {
             const term = typeof t === 'string' ? t : (t.term || t.name || t.key || '');
             const def = typeof t === 'string' ? '' : (t.definition || t.meaning || t.description || t.value || '');
             return (
               <div key={i} className="glass-card rounded-xl p-4 border-[var(--color-border)]">
                 {term && (
-                  <div className="text-xs font-mono uppercase tracking-[0.1em] text-[#246BFD] mb-1.5">
-                    {term}
-                  </div>
+                  <div className="text-xs font-mono uppercase tracking-[0.1em] text-[#246BFD] mb-1.5">{term}</div>
                 )}
                 {def && (
-                  <div className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                    {def}
-                  </div>
+                  <div className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">{def}</div>
                 )}
               </div>
             );
@@ -122,15 +263,79 @@ function ConceptCard({ content, title }) {
         </div>
       )}
 
+      {discount_rate && (
+        <div className="rounded-xl p-4 bg-[#6A5CFF]/6 border border-[#6A5CFF]/20 mb-5">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">Discount Rate</div>
+          <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{discount_rate}</p>
+        </div>
+      )}
+
       {core_principle && (
         <div className="rounded-xl p-5 bg-[#246BFD]/5 border-l-4 border-[#246BFD]" data-testid="concept-principle">
           <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-2">
-            <Sparkles size={11} /> Core Principle
+            <Sparkles size={11} /> Key Insight
           </div>
           <p className="text-base font-bricolage text-[var(--color-text)] leading-relaxed italic">
             {core_principle}
           </p>
         </div>
+      )}
+
+      <ExtraFields content={c} handled={handled} accent="#246BFD" />
+    </div>
+  );
+}
+
+function FormulaSubCard({ f, idx }) {
+  const name = f.name || f.formula_name || f.title || `Formula ${idx + 1}`;
+  const display = f.display || f.formula_display || f.formula || f.equation || f.expression;
+  const variables = f.variables || f.vars || f.symbols || [];
+  const notes = f.notes || f.note || f.description || f.explanation;
+  const example = f.example || f.example_calculation || f.worked_example;
+
+  return (
+    <div className="glass-card rounded-2xl p-5 border-[#6A5CFF]/15">
+      <div className="text-sm font-clash font-semibold text-[#6A5CFF] mb-3">{name}</div>
+
+      {display && (
+        <div className="rounded-xl px-4 sm:px-6 py-4 sm:py-5 bg-gradient-to-br from-[#6A5CFF]/10 to-[#246BFD]/5 border border-[#6A5CFF]/20 text-center mb-3 overflow-x-auto">
+          <code className="font-mono text-base sm:text-lg lg:text-xl text-[var(--color-text)] font-semibold whitespace-pre-wrap">
+            {display}
+          </code>
+        </div>
+      )}
+
+      {variables.length > 0 && (
+        <div className="space-y-1.5 mb-3">
+          {variables.map((v, i) => (
+            <div key={i} className="flex items-start gap-3 text-xs font-bricolage">
+              <code className="font-mono text-[#6A5CFF] font-semibold bg-[#6A5CFF]/10 px-2 py-0.5 rounded shrink-0">
+                {typeof v === 'string' ? v : (v.symbol || v.name || v.key)}
+              </code>
+              {typeof v !== 'string' && (
+                <span className="text-[var(--color-text-muted)]">
+                  {v.meaning || v.description || v.definition || v.value || ''}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {notes && (
+        <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed mt-2 italic">
+          {notes}
+        </p>
+      )}
+
+      {example && typeof example === 'object' && (
+        <div className="mt-3 rounded-lg p-3 bg-[var(--color-surface)]/50 border border-[var(--color-border)]">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">Example</div>
+          <ExtraFieldValue value={example} accent="#6A5CFF" />
+        </div>
+      )}
+      {example && typeof example === 'string' && (
+        <p className="text-xs font-bricolage text-[var(--color-text)] mt-3">{example}</p>
       )}
     </div>
   );
@@ -139,23 +344,46 @@ function ConceptCard({ content, title }) {
 function FormulaCard({ content, title }) {
   const c = content || {};
   const displayName = c.formula_name || c.name || c.title || title;
+  // Support BOTH: a `formulas` array OR a single formula at the top level
+  const formulasArray = Array.isArray(c.formulas) ? c.formulas : null;
+
   const formula_display = c.formula_display || c.formula || c.equation || c.expression;
   const variables = c.variables || c.vars || c.symbols || [];
   const example_calculation = c.example_calculation || c.example || c.worked_example || {};
   const quick_rule = c.quick_rule || c.rule || c.tip || c.rule_of_thumb;
   const ex = example_calculation || {};
+
+  const handled = [
+    'formula_name', 'name', 'title',
+    'formulas',
+    'formula_display', 'formula', 'equation', 'expression',
+    'variables', 'vars', 'symbols',
+    'example_calculation', 'example', 'worked_example',
+    'quick_rule', 'rule', 'tip', 'rule_of_thumb',
+  ];
+
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20" data-testid="card-formula">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6A5CFF]/10 border border-[#6A5CFF]/25 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <TrendingUp size={11} /> Formula
       </div>
-      {displayName && (
+      {(displayName || title) && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6" data-testid="formula-name">
-          {displayName}
+          {displayName || title}
         </h2>
       )}
 
-      {formula_display && (
+      {/* Multiple formulas (array) */}
+      {formulasArray && formulasArray.length > 0 && (
+        <div className="space-y-4 mb-5" data-testid="formula-list">
+          {formulasArray.map((f, i) => (
+            <FormulaSubCard key={i} f={f} idx={i} />
+          ))}
+        </div>
+      )}
+
+      {/* Single formula (legacy / top-level fields) */}
+      {!formulasArray && formula_display && (
         <div className="rounded-2xl px-5 sm:px-8 py-6 sm:py-8 bg-gradient-to-br from-[#6A5CFF]/10 to-[#246BFD]/5 border border-[#6A5CFF]/25 text-center mb-6 overflow-x-auto">
           <code className="font-mono text-xl sm:text-2xl lg:text-3xl text-[var(--color-text)] font-semibold whitespace-pre-wrap" data-testid="formula-display">
             {formula_display}
@@ -163,7 +391,7 @@ function FormulaCard({ content, title }) {
         </div>
       )}
 
-      {variables.length > 0 && (
+      {!formulasArray && variables.length > 0 && (
         <div className="mb-6">
           <div className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-3">
             Variables
@@ -172,16 +400,18 @@ function FormulaCard({ content, title }) {
             {variables.map((v, i) => (
               <div key={i} className="flex items-start gap-3 text-sm font-bricolage">
                 <code className="font-mono text-[#6A5CFF] font-semibold bg-[#6A5CFF]/10 px-2 py-0.5 rounded shrink-0">
-                  {v.symbol}
+                  {typeof v === 'string' ? v : (v.symbol || v.name || v.key)}
                 </code>
-                <span className="text-[var(--color-text-muted)]">{v.meaning}</span>
+                {typeof v !== 'string' && (
+                  <span className="text-[var(--color-text-muted)]">{v.meaning || v.description || v.definition || ''}</span>
+                )}
               </div>
             ))}
           </div>
         </div>
       )}
 
-      {(ex.context || ex.values || ex.result) && (
+      {!formulasArray && (ex.context || ex.values || ex.result) && (
         <div className="rounded-xl p-5 bg-[var(--color-surface)]/50 border border-[var(--color-border)] mb-5" data-testid="formula-example">
           <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-2">
             Worked Example
@@ -215,6 +445,8 @@ function FormulaCard({ content, title }) {
           </div>
         </div>
       )}
+
+      <ExtraFields content={c} handled={handled} accent="#6A5CFF" />
     </div>
   );
 }
@@ -333,9 +565,27 @@ function ExampleCard({ content, title }) {
   const c = content || {};
   const company_name = c.company_name || c.company || c.subject;
   const displayCompany = company_name || title;
-  const context = c.context || c.description || c.scenario || c.body || c.introduction;
-  const walkthrough_steps = c.walkthrough_steps || c.steps || c.walkthrough || [];
-  const key_insight = c.key_insight || c.insight || c.takeaway || c.lesson;
+  const situation = c.situation || c.context || c.description || c.scenario || c.body || c.introduction;
+  const dataDict = c.data || c.inputs || c.givens;
+  const analysis = c.analysis || c.walkthrough_steps || c.steps || c.walkthrough || [];
+  const verdict = c.verdict || c.conclusion;
+  const deeper_insight = c.deeper_insight || c.insight || c.takeaway;
+  const connection = c.connection_to_equities || c.connection || c.wider_application;
+  const total_intrinsic_value = c.total_intrinsic_value ?? c.total_value ?? c.final_value;
+  const key_insight = c.key_insight || c.lesson;
+
+  const handled = [
+    'company_name', 'company', 'subject',
+    'situation', 'context', 'description', 'scenario', 'body', 'introduction',
+    'data', 'inputs', 'givens',
+    'analysis', 'walkthrough_steps', 'steps', 'walkthrough',
+    'verdict', 'conclusion',
+    'deeper_insight', 'insight', 'takeaway',
+    'connection_to_equities', 'connection', 'wider_application',
+    'total_intrinsic_value', 'total_value', 'final_value',
+    'key_insight', 'lesson',
+  ];
+
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-example">
       <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
@@ -348,42 +598,116 @@ function ExampleCard({ content, title }) {
           </div>
         )}
       </div>
-      {context && (
-        <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-6">
-          {context}
-        </p>
+
+      {situation && (
+        <div className="mb-5">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-1.5">The Situation</div>
+          <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+            {situation}
+          </p>
+        </div>
       )}
 
-      {walkthrough_steps.length > 0 && (
-        <ol className="space-y-3 mb-6" data-testid="example-steps">
-          {walkthrough_steps.map((s, i) => (
-            <li key={i} className="flex items-start gap-4 glass-card rounded-xl p-4 border-[var(--color-border)]">
-              <div className="w-7 h-7 rounded-lg bg-[#246BFD]/15 border border-[#246BFD]/30 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
-                {s.step || i + 1}
+      {dataDict && typeof dataDict === 'object' && !Array.isArray(dataDict) && (
+        <div className="glass-card rounded-xl p-4 border-[var(--color-border)] mb-5" data-testid="example-data">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-3">
+            Inputs
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
+            {Object.entries(dataDict).map(([k, v]) => (
+              <div key={k} className="flex items-center justify-between gap-2 py-1 border-b border-[var(--color-border)]/50 last:border-0">
+                <span className="text-xs font-mono text-[var(--color-text-muted)]">{humanize(k)}</span>
+                <span className="text-sm font-bricolage font-semibold text-[#246BFD]">{String(v)}</span>
               </div>
-              <div className="flex-1 min-w-0">
-                {s.label && (
-                  <div className="text-xs font-mono uppercase tracking-[0.1em] text-[var(--color-text-muted)] mb-1">
-                    {s.label}
-                  </div>
-                )}
-                {s.value && (
-                  <div className="font-mono text-sm text-[#246BFD] font-semibold bg-[#246BFD]/8 px-2 py-1 rounded inline-block mb-2">
-                    {s.value}
-                  </div>
-                )}
-                {s.explanation && (
-                  <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">
-                    {s.explanation}
-                  </p>
-                )}
-              </div>
-            </li>
-          ))}
-        </ol>
+            ))}
+          </div>
+        </div>
       )}
 
-      {key_insight && (
+      {analysis.length > 0 && (
+        <div className="mb-5">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-3">
+            Analysis
+          </div>
+          <ol className="space-y-3" data-testid="example-analysis">
+            {analysis.map((s, i) => {
+              if (typeof s === 'string') {
+                return (
+                  <li key={i} className="flex items-start gap-3 glass-card rounded-xl p-4 border-[var(--color-border)]">
+                    <div className="w-7 h-7 rounded-lg bg-[#246BFD]/15 border border-[#246BFD]/30 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
+                      {i + 1}
+                    </div>
+                    <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed flex-1">{s}</p>
+                  </li>
+                );
+              }
+              const stepNum = s.step || s.number || i + 1;
+              const label = s.label || s.title || s.heading || s.name;
+              const value = s.value || s.result || s.output;
+              const explanation = s.explanation || s.description || s.reasoning || s.text;
+              return (
+                <li key={i} className="flex items-start gap-4 glass-card rounded-xl p-4 border-[var(--color-border)]">
+                  <div className="w-7 h-7 rounded-lg bg-[#246BFD]/15 border border-[#246BFD]/30 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
+                    {stepNum}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    {label && (
+                      <div className="text-xs font-mono uppercase tracking-[0.1em] text-[var(--color-text-muted)] mb-1">{label}</div>
+                    )}
+                    {value != null && (
+                      <div className="font-mono text-sm text-[#246BFD] font-semibold bg-[#246BFD]/8 px-2 py-1 rounded inline-block mb-2">
+                        {String(value)}
+                      </div>
+                    )}
+                    {explanation && (
+                      <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{explanation}</p>
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      )}
+
+      {total_intrinsic_value != null && (
+        <div className="rounded-xl p-5 bg-gradient-to-br from-[#6A5CFF]/10 to-[#246BFD]/5 border border-[#6A5CFF]/25 mb-5 text-center">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">
+            Total Intrinsic Value
+          </div>
+          <div className="font-clash text-3xl font-bold text-[var(--color-text)]">
+            {String(total_intrinsic_value)}
+          </div>
+        </div>
+      )}
+
+      {verdict && (
+        <div className="rounded-xl p-5 bg-emerald-500/5 border-l-4 border-emerald-500 mb-5" data-testid="example-verdict">
+          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-emerald-500 mb-1.5">
+            <CheckCircle2 size={11} /> Verdict
+          </div>
+          <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{verdict}</p>
+        </div>
+      )}
+
+      {deeper_insight && (
+        <div className="rounded-xl p-4 bg-[#FF6AC1]/8 border border-[#FF6AC1]/20 flex gap-3 mb-5">
+          <Lightbulb size={18} className="text-[#FF6AC1] shrink-0 mt-0.5" />
+          <div>
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF6AC1] mb-1">Deeper Insight</div>
+            <p className="text-sm font-bricolage text-[var(--color-text)]">{deeper_insight}</p>
+          </div>
+        </div>
+      )}
+
+      {connection && (
+        <div className="rounded-xl p-4 bg-[#246BFD]/6 border border-[#246BFD]/20 mb-5">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-1.5">Wider Application</div>
+          <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{connection}</p>
+        </div>
+      )}
+
+      {key_insight && !deeper_insight && (
         <div className="rounded-xl p-4 bg-[#FF6AC1]/8 border border-[#FF6AC1]/20 flex gap-3">
           <Lightbulb size={18} className="text-[#FF6AC1] shrink-0 mt-0.5" />
           <div>
@@ -392,6 +716,8 @@ function ExampleCard({ content, title }) {
           </div>
         </div>
       )}
+
+      <ExtraFields content={c} handled={handled} accent="#246BFD" />
     </div>
   );
 }
@@ -400,10 +726,21 @@ function MistakeCard({ content, title }) {
   const c = content || {};
   const mistake_title = c.mistake_title || c.heading || c.title;
   const displayTitle = mistake_title || title;
-  const scenario = c.scenario || c.description || c.context || c.body;
-  const wrong_approach = c.wrong_approach || c.wrong || c.incorrect || {};
-  const right_approach = c.right_approach || c.right || c.correct || {};
-  const remember = c.remember || c.takeaway || c.key_insight || c.tip;
+  const scenario = c.scenario || c.description || c.context || c.body || c.situation;
+  const wrong_approach = c.wrong_approach || c.wrong || c.incorrect || c.mistake;
+  const right_approach = c.right_approach || c.right || c.correct || c.fix;
+  const remember = c.remember || c.takeaway || c.key_insight || c.tip || c.lesson;
+
+  const handled = [
+    'mistake_title', 'heading', 'title',
+    'scenario', 'description', 'context', 'body', 'situation',
+    'wrong_approach', 'wrong', 'incorrect', 'mistake',
+    'right_approach', 'right', 'correct', 'fix',
+    'remember', 'takeaway', 'key_insight', 'tip', 'lesson',
+  ];
+
+  const hasComparison = wrong_approach || right_approach;
+
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#FF6AC1]/20" data-testid="card-mistake">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/10 border border-[#FF6AC1]/25 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
@@ -420,42 +757,60 @@ function MistakeCard({ content, title }) {
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" data-testid="mistake-comparison">
-        {/* Wrong */}
-        <div className="rounded-xl p-5 bg-red-500/5 border border-red-500/20">
-          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-red-500 mb-3">
-            <X size={14} /> Wrong Approach
-          </div>
-          {(typeof wrong_approach === 'string' ? wrong_approach : wrong_approach?.description || wrong_approach?.text) && (
-            <p className="text-sm font-bricolage text-[var(--color-text)] mb-3">
-              {typeof wrong_approach === 'string' ? wrong_approach : (wrong_approach.description || wrong_approach.text)}
-            </p>
+      {hasComparison && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6" data-testid="mistake-comparison">
+          {/* Wrong */}
+          {wrong_approach && (
+            <div className="rounded-xl p-5 bg-red-500/5 border border-red-500/20">
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-red-500 mb-3">
+                <X size={14} /> Wrong Approach
+              </div>
+              {typeof wrong_approach === 'string' ? (
+                <p className="text-sm font-bricolage text-[var(--color-text)]">{wrong_approach}</p>
+              ) : (
+                <>
+                  {(wrong_approach.description || wrong_approach.text || wrong_approach.explanation) && (
+                    <p className="text-sm font-bricolage text-[var(--color-text)] mb-3">
+                      {wrong_approach.description || wrong_approach.text || wrong_approach.explanation}
+                    </p>
+                  )}
+                  {wrong_approach.consequence && (
+                    <div className="text-xs font-bricolage text-red-400 italic border-t border-red-500/15 pt-3">
+                      → {wrong_approach.consequence}
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           )}
-          {wrong_approach?.consequence && (
-            <div className="text-xs font-bricolage text-red-400 italic border-t border-red-500/15 pt-3">
-              → {wrong_approach.consequence}
+          {/* Right */}
+          {right_approach && (
+            <div className="rounded-xl p-5 bg-emerald-500/5 border border-emerald-500/20">
+              <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-emerald-500 mb-3">
+                <CheckCircle2 size={14} /> Right Approach
+              </div>
+              {typeof right_approach === 'string' ? (
+                <p className="text-sm font-bricolage text-[var(--color-text)]">{right_approach}</p>
+              ) : (
+                <>
+                  {(right_approach.description || right_approach.text || right_approach.explanation) && (
+                    <p className="text-sm font-bricolage text-[var(--color-text)] mb-3">
+                      {right_approach.description || right_approach.text || right_approach.explanation}
+                    </p>
+                  )}
+                  {right_approach.steps && right_approach.steps.length > 0 && (
+                    <ol className="space-y-1.5 text-sm font-bricolage text-[var(--color-text)] list-decimal list-inside">
+                      {right_approach.steps.map((s, i) => (
+                        <li key={i}>{typeof s === 'string' ? s : (s.text || s.step || s.description || JSON.stringify(s))}</li>
+                      ))}
+                    </ol>
+                  )}
+                </>
+              )}
             </div>
           )}
         </div>
-        {/* Right */}
-        <div className="rounded-xl p-5 bg-emerald-500/5 border border-emerald-500/20">
-          <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-emerald-500 mb-3">
-            <CheckCircle2 size={14} /> Right Approach
-          </div>
-          {(typeof right_approach === 'string' ? right_approach : right_approach?.description || right_approach?.text) && (
-            <p className="text-sm font-bricolage text-[var(--color-text)] mb-3">
-              {typeof right_approach === 'string' ? right_approach : (right_approach.description || right_approach.text)}
-            </p>
-          )}
-          {right_approach?.steps && right_approach.steps.length > 0 && (
-            <ol className="space-y-1.5 text-sm font-bricolage text-[var(--color-text)] list-decimal list-inside">
-              {right_approach.steps.map((s, i) => (
-                <li key={i}>{typeof s === 'string' ? s : (s.text || s.step || JSON.stringify(s))}</li>
-              ))}
-            </ol>
-          )}
-        </div>
-      </div>
+      )}
 
       {remember && (
         <div className="rounded-xl p-4 bg-[#FF6AC1]/8 border border-[#FF6AC1]/20 flex gap-3">
@@ -466,6 +821,8 @@ function MistakeCard({ content, title }) {
           </div>
         </div>
       )}
+
+      <ExtraFields content={c} handled={handled} accent="#FF6AC1" />
     </div>
   );
 }
