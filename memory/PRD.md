@@ -92,6 +92,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Enrolled success page (/course/:courseId/enrolled) with confetti, "You're all set!", "Start Learning" CTA
 - Full flow: Customize → Preview → Confirm → Loading → Enrolled
 
+### Phase 11 - Dashboard + Persistent Sidebar (Feb 2026)
+- Persistent left Sidebar (/app/frontend/src/components/Sidebar.jsx): Valuevade logo, 4 nav items (Dashboard, My Course expandable w/ modules + completion icons, Profile, Settings), theme toggle, user name, sign-out
+- Desktop: fixed 250px, collapsible to 60px icon-only (persisted in localStorage['vv-sidebar-collapsed'])
+- Mobile: hamburger top-left opens slide-in drawer with overlay backdrop
+- Dashboard page (/dashboard) rebuilt with 4 data states: loading skeleton, error + retry, empty (no enrollment → Browse Courses CTA), populated
+- Populated view: Welcome header, Continue Learning card (next session + next phase + resume CTA), Stats grid (sessions / modules / streak / time), Course Progress Map (module timeline w/ progress bars + session expansion showing 4 phase icons + module project indicators), Capstone card
+- Supabase fetches in parallel (Promise.all) for: user_enrollments, user_modules, user_sessions, user_stats, user_module_projects, user_capstone_projects — gracefully handles missing tables
+- Progress utilities at /app/frontend/src/utils/progress.js: markPhaseComplete, checkModuleCompletion, checkCapstoneUnlock, updateStats, getNextPhase
+- Conditional Continue Learning states: normal (resume phase) / module project pending / all modules done → Begin Capstone
+- Tested: 95% frontend success, all testids present, no console errors
+
 ## Brand System (CSS Variables)
 ### Light Mode (default)
 - --bg-primary: #F2E6EE, --bg-secondary: #EAD9E5
@@ -129,11 +140,14 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - /app/backend/server.py - FastAPI + MongoDB routes + /api/customize/generate endpoint
 
 ## Backlog
+- P1: Build session player (notes/quiz/interview/simulation phases) — hooks into progress.js helpers
+- P1: Module project + Capstone project pages
+- P1: Profile + Settings pages (currently sidebar links to placeholders)
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup
-- P1: Course customization & enrollment flow (/course/:id/customize)
-- P2: Build Dashboard with enrollment tracking & progress
+- P2: Post-login redirect logic review (currently /courses; consider /dashboard)
 - P2: Dynamic SEO meta tags
-- P2: Smooth onboarding flow after signup
+- P2: Refactor ConfirmPage.jsx client-side enrollment → backend RPC for atomic transactions
 - P3: Analytics integration
 - P3: Migrate waitlist from MongoDB to Supabase
+- P3: Refactor DashboardPage.jsx (~670 lines) — extract ContinueLearningCard / ModuleCard / StatCard into /components/dashboard/
