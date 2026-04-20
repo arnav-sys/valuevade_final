@@ -12,8 +12,9 @@ import {
 // CARD RENDERERS
 // -----------------------------------------------------------
 
-function HookCard({ content }) {
+function HookCard({ content, title }) {
   const { main_text, sub_text, call_to_action } = content || {};
+  const displayMain = main_text || title;
   return (
     <div
       className="relative w-full h-full flex flex-col justify-center overflow-hidden rounded-3xl px-8 py-12 sm:px-14 sm:py-16"
@@ -30,9 +31,9 @@ function HookCard({ content }) {
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/15 border border-[#FF6AC1]/30 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-6">
           <Zap size={11} /> Hook
         </div>
-        {main_text && (
+        {displayMain && (
           <h2 className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] leading-[1.1] mb-5" data-testid="hook-main">
-            {main_text}
+            {displayMain}
           </h2>
         )}
         {sub_text && (
@@ -52,16 +53,17 @@ function HookCard({ content }) {
   );
 }
 
-function ConceptCard({ content }) {
+function ConceptCard({ content, title }) {
   const { heading, explanation, key_terms = [], core_principle } = content || {};
+  const displayHeading = heading || title;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-concept">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <Target size={11} /> Concept
       </div>
-      {heading && (
+      {displayHeading && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-4" data-testid="concept-heading">
-          {heading}
+          {displayHeading}
         </h2>
       )}
       {explanation && (
@@ -99,17 +101,18 @@ function ConceptCard({ content }) {
   );
 }
 
-function FormulaCard({ content }) {
+function FormulaCard({ content, title }) {
   const { formula_name, formula_display, variables = [], example_calculation, quick_rule } = content || {};
+  const displayName = formula_name || title;
   const ex = example_calculation || {};
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20" data-testid="card-formula">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6A5CFF]/10 border border-[#6A5CFF]/25 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <TrendingUp size={11} /> Formula
       </div>
-      {formula_name && (
+      {displayName && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6" data-testid="formula-name">
-          {formula_name}
+          {displayName}
         </h2>
       )}
 
@@ -177,16 +180,17 @@ function FormulaCard({ content }) {
   );
 }
 
-function VisualCard({ content }) {
+function VisualCard({ content, title: topTitle }) {
   const { title, description, svg_content, image_url, caption, alt_text } = content || {};
+  const displayTitle = title || topTitle;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20 text-center" data-testid="card-visual">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <FileText size={11} /> Visual
       </div>
-      {title && (
+      {displayTitle && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-3">
-          {title}
+          {displayTitle}
         </h2>
       )}
       {description && (
@@ -214,8 +218,9 @@ function VisualCard({ content }) {
   );
 }
 
-function DeepDiveCard({ content }) {
+function DeepDiveCard({ content, title }) {
   const { heading, introduction, sections = [], bottom_line } = content || {};
+  const displayHeading = heading || title;
   const [openIdx, setOpenIdx] = useState(() => new Set(sections.map((_, i) => i)));
 
   const toggle = (i) => {
@@ -231,9 +236,9 @@ function DeepDiveCard({ content }) {
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6A5CFF]/10 border border-[#6A5CFF]/25 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <TrendingUp size={11} /> Deep Dive
       </div>
-      {heading && (
+      {displayHeading && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-4">
-          {heading}
+          {displayHeading}
         </h2>
       )}
       {introduction && (
@@ -245,6 +250,8 @@ function DeepDiveCard({ content }) {
       <div className="space-y-2 mb-6" data-testid="deepdive-sections">
         {sections.map((sec, i) => {
           const isOpen = openIdx.has(i);
+          const subheading = sec.subheading || sec.heading || sec.title || `Section ${i + 1}`;
+          const body = sec.content || sec.text || sec.body || '';
           return (
             <div key={i} className="glass-card rounded-xl overflow-hidden border-[var(--color-border)]">
               <button
@@ -252,16 +259,16 @@ function DeepDiveCard({ content }) {
                 className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[var(--color-surface)] transition-colors"
               >
                 <span className="font-clash text-sm font-semibold text-[var(--color-text)]">
-                  {sec.subheading}
+                  {subheading}
                 </span>
                 <ArrowRight
                   size={14}
                   className={`text-[var(--color-text-muted)] shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}
                 />
               </button>
-              {isOpen && (
-                <div className="px-4 pb-4 pt-1 text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                  {sec.content}
+              {isOpen && body && (
+                <div className="px-4 pb-4 pt-1 text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed whitespace-pre-wrap">
+                  {body}
                 </div>
               )}
             </div>
@@ -283,17 +290,18 @@ function DeepDiveCard({ content }) {
   );
 }
 
-function ExampleCard({ content }) {
+function ExampleCard({ content, title }) {
   const { company_name, context, walkthrough_steps = [], key_insight } = content || {};
+  const displayCompany = company_name || title;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-example">
       <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em]">
           <FileText size={11} /> Real Example
         </div>
-        {company_name && (
+        {displayCompany && (
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-bricolage font-semibold text-[var(--color-text)]" data-testid="example-company">
-            {company_name}
+            {displayCompany}
           </div>
         )}
       </div>
@@ -345,16 +353,17 @@ function ExampleCard({ content }) {
   );
 }
 
-function MistakeCard({ content }) {
+function MistakeCard({ content, title }) {
   const { mistake_title, scenario, wrong_approach, right_approach, remember } = content || {};
+  const displayTitle = mistake_title || title;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#FF6AC1]/20" data-testid="card-mistake">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/10 border border-[#FF6AC1]/25 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <AlertTriangle size={11} /> Common Mistake
       </div>
-      {mistake_title && (
+      {displayTitle && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-4">
-          {mistake_title}
+          {displayTitle}
         </h2>
       )}
       {scenario && (
@@ -413,8 +422,9 @@ function MistakeCard({ content }) {
   );
 }
 
-function SummaryCard({ content }) {
+function SummaryCard({ content, title }) {
   const { session_title, key_takeaways = [], interview_tip, next_preview } = content || {};
+  const displayTitle = session_title || title;
   return (
     <div
       className="w-full rounded-3xl p-6 sm:p-10 border-2 relative overflow-hidden"
@@ -431,9 +441,9 @@ function SummaryCard({ content }) {
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-[#246BFD]/15 to-[#FF6AC1]/15 border border-[#6A5CFF]/30 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <Sparkles size={11} /> Summary
       </div>
-      {session_title && (
+      {displayTitle && (
         <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
-          {session_title}
+          {displayTitle}
         </h2>
       )}
 
@@ -485,10 +495,13 @@ const CARD_RENDERERS = {
   concept: ConceptCard,
   formula: FormulaCard,
   visual: VisualCard,
+  'deep-dive': DeepDiveCard,
   deep_dive: DeepDiveCard,
   deepdive: DeepDiveCard,
   example: ExampleCard,
   mistake: MistakeCard,
+  'common-mistake': MistakeCard,
+  common_mistake: MistakeCard,
   summary: SummaryCard,
 };
 
@@ -527,11 +540,18 @@ function CardRenderer({ card }) {
     try { content = JSON.parse(content); } catch { /* leave as-is */ }
   }
 
-  const Cmp = CARD_RENDERERS[card?.card_type];
+  // Normalize card_type: lowercase, replace spaces/underscores with hyphens
+  const key = (card?.card_type || '').toString().toLowerCase().trim();
+  const Cmp =
+    CARD_RENDERERS[key] ||
+    CARD_RENDERERS[key.replace(/[_\s]+/g, '-')] ||
+    CARD_RENDERERS[key.replace(/[-\s]+/g, '_')];
+
   if (!Cmp || isContentEmpty(content)) {
     return <RawFallbackCard card={{ ...card, content }} />;
   }
-  return <Cmp content={content} />;
+  // Pass top-level title as a fallback for renderers that use heading/main_text
+  return <Cmp content={content} title={card?.title} />;
 }
 
 // -----------------------------------------------------------
