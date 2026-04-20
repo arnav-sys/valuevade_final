@@ -492,9 +492,46 @@ const CARD_RENDERERS = {
   summary: SummaryCard,
 };
 
+function RawFallbackCard({ card }) {
+  return (
+    <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[var(--color-border)]" data-testid="card-raw-fallback">
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 text-[var(--color-accent-purple)] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
+        {card?.card_type || 'unknown'} · raw
+      </div>
+      <pre className="text-xs font-mono text-[var(--color-text-muted)] whitespace-pre-wrap break-words bg-[var(--color-surface)]/50 p-4 rounded-xl border border-[var(--color-border)] overflow-auto max-h-[60vh]">
+        {JSON.stringify(card?.content || {}, null, 2)}
+      </pre>
+    </div>
+  );
+}
+
+function isContentEmpty(content) {
+  if (!content || typeof content !== 'object') return true;
+  const vals = Object.values(content);
+  if (!vals.length) return true;
+  return vals.every(
+    (v) => v == null || (typeof v === 'string' && !v.trim()) || (Array.isArray(v) && !v.length)
+  );
+}
+
 function CardRenderer({ card }) {
-  const Cmp = CARD_RENDERERS[card?.card_type] || ConceptCard;
-  return <Cmp content={card?.content || {}} />;
+  // Log for debugging once per card
+  if (typeof window !== 'undefined' && card) {
+    // eslint-disable-next-line no-console
+    console.log('[NotesPage] card_type:', card.card_type, 'content:', card.content);
+  }
+
+  let content = card?.content;
+  // Some JSONB columns come through as stringified JSON — try parsing
+  if (typeof content === 'string') {
+    try { content = JSON.parse(content); } catch { /* leave as-is */ }
+  }
+
+  const Cmp = CARD_RENDERERS[card?.card_type];
+  if (!Cmp || isContentEmpty(content)) {
+    return <RawFallbackCard card={{ ...card, content }} />;
+  }
+  return <Cmp content={content} />;
 }
 
 // -----------------------------------------------------------
