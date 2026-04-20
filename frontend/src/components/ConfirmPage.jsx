@@ -113,6 +113,7 @@ export default function ConfirmPage() {
           .insert({
             enrollment_id: enrollmentId,
             master_module_id: mod.id,
+            title: mod.title,
             order_index: reorderChange ? reorderChange.new_position : mod.order_index,
             is_removed: isRemoved,
             ai_reasoning: isRemoved ? removeChange?.reason : null,
@@ -135,6 +136,7 @@ export default function ConfirmPage() {
             .insert({
               user_module_id: userMod.id,
               master_session_id: sess.id,
+              title: sess.title,
               order_index: sess.order_index,
               is_removed: isRemoved || isSessRemoved,
               ai_reasoning: isSessRemoved ? sessChange?.reason : null,
