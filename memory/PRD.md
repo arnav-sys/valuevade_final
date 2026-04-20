@@ -84,6 +84,14 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - "Accept & Continue" and "Go Back & Modify Answers" navigation
 - Error handling with retry button and fallback to modify answers
 
+### Phase 10 - Course Customization — Phase C: Confirm & Enroll (Feb 2026)
+- Confirm page (/course/:courseId/confirm) with final course structure, stats, module list
+- Client-side Supabase enrollment: inserts into user_enrollments, user_modules, user_sessions
+- Applies AI customization plan: remove_module, remove_session, add_session, reorder_module
+- Loading page (/course/:courseId/loading) with branded 3-step animation, auto-redirect after 3.6s
+- Enrolled success page (/course/:courseId/enrolled) with confetti, "You're all set!", "Start Learning" CTA
+- Full flow: Customize → Preview → Confirm → Loading → Enrolled
+
 ## Brand System (CSS Variables)
 ### Light Mode (default)
 - --bg-primary: #F2E6EE, --bg-secondary: #EAD9E5
@@ -121,7 +129,6 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - /app/backend/server.py - FastAPI + MongoDB routes + /api/customize/generate endpoint
 
 ## Backlog
-- P0: Course Customization Phase C — Confirm & Enroll (store plan, enrollment, loading, success)
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup
 - P1: Course customization & enrollment flow (/course/:id/customize)
