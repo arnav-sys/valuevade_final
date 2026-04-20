@@ -61,6 +61,7 @@ export default function ConfirmPage() {
         .insert({
           user_id: user.id,
           master_path_id: courseId,
+          title: courseTitle,
           status: 'active',
           customization_answers: answers,
           customization_prompt: freeText || null,
