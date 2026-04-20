@@ -13,8 +13,10 @@ import {
 // -----------------------------------------------------------
 
 function HookCard({ content, title }) {
-  const { main_text, sub_text, call_to_action } = content || {};
-  const displayMain = main_text || title;
+  const c = content || {};
+  const displayMain = c.main_text || c.text || c.body || c.headline || title;
+  const sub_text = c.sub_text || c.subtitle || c.description || c.subheading;
+  const call_to_action = c.call_to_action || c.cta || c.action;
   return (
     <div
       className="relative w-full h-full flex flex-col justify-center overflow-hidden rounded-3xl px-8 py-12 sm:px-14 sm:py-16"
@@ -54,8 +56,11 @@ function HookCard({ content, title }) {
 }
 
 function ConceptCard({ content, title }) {
-  const { heading, explanation, key_terms = [], core_principle } = content || {};
-  const displayHeading = heading || title;
+  const c = content || {};
+  const displayHeading = c.heading || c.title || title;
+  const explanation = c.explanation || c.body || c.text || c.description || c.content;
+  const key_terms = c.key_terms || c.terms || c.definitions || [];
+  const core_principle = c.core_principle || c.principle || c.key_insight || c.insight;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-concept">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
@@ -74,16 +79,24 @@ function ConceptCard({ content, title }) {
 
       {key_terms.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6" data-testid="concept-key-terms">
-          {key_terms.map((t, i) => (
-            <div key={i} className="glass-card rounded-xl p-4 border-[var(--color-border)]">
-              <div className="text-xs font-mono uppercase tracking-[0.1em] text-[#246BFD] mb-1.5">
-                {t.term}
+          {key_terms.map((t, i) => {
+            const term = typeof t === 'string' ? t : (t.term || t.name || t.key || '');
+            const def = typeof t === 'string' ? '' : (t.definition || t.meaning || t.description || t.value || '');
+            return (
+              <div key={i} className="glass-card rounded-xl p-4 border-[var(--color-border)]">
+                {term && (
+                  <div className="text-xs font-mono uppercase tracking-[0.1em] text-[#246BFD] mb-1.5">
+                    {term}
+                  </div>
+                )}
+                {def && (
+                  <div className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                    {def}
+                  </div>
+                )}
               </div>
-              <div className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                {t.definition}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -102,8 +115,12 @@ function ConceptCard({ content, title }) {
 }
 
 function FormulaCard({ content, title }) {
-  const { formula_name, formula_display, variables = [], example_calculation, quick_rule } = content || {};
-  const displayName = formula_name || title;
+  const c = content || {};
+  const displayName = c.formula_name || c.name || c.title || title;
+  const formula_display = c.formula_display || c.formula || c.equation || c.expression;
+  const variables = c.variables || c.vars || c.symbols || [];
+  const example_calculation = c.example_calculation || c.example || c.worked_example || {};
+  const quick_rule = c.quick_rule || c.rule || c.tip || c.rule_of_thumb;
   const ex = example_calculation || {};
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20" data-testid="card-formula">
@@ -291,8 +308,12 @@ function DeepDiveCard({ content, title }) {
 }
 
 function ExampleCard({ content, title }) {
-  const { company_name, context, walkthrough_steps = [], key_insight } = content || {};
+  const c = content || {};
+  const company_name = c.company_name || c.company || c.subject;
   const displayCompany = company_name || title;
+  const context = c.context || c.description || c.scenario || c.body || c.introduction;
+  const walkthrough_steps = c.walkthrough_steps || c.steps || c.walkthrough || [];
+  const key_insight = c.key_insight || c.insight || c.takeaway || c.lesson;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-example">
       <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
@@ -354,8 +375,13 @@ function ExampleCard({ content, title }) {
 }
 
 function MistakeCard({ content, title }) {
-  const { mistake_title, scenario, wrong_approach, right_approach, remember } = content || {};
+  const c = content || {};
+  const mistake_title = c.mistake_title || c.heading || c.title;
   const displayTitle = mistake_title || title;
+  const scenario = c.scenario || c.description || c.context || c.body;
+  const wrong_approach = c.wrong_approach || c.wrong || c.incorrect || {};
+  const right_approach = c.right_approach || c.right || c.correct || {};
+  const remember = c.remember || c.takeaway || c.key_insight || c.tip;
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#FF6AC1]/20" data-testid="card-mistake">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/10 border border-[#FF6AC1]/25 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
@@ -378,9 +404,9 @@ function MistakeCard({ content, title }) {
           <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-red-500 mb-3">
             <X size={14} /> Wrong Approach
           </div>
-          {wrong_approach?.description && (
+          {(typeof wrong_approach === 'string' ? wrong_approach : wrong_approach?.description || wrong_approach?.text) && (
             <p className="text-sm font-bricolage text-[var(--color-text)] mb-3">
-              {wrong_approach.description}
+              {typeof wrong_approach === 'string' ? wrong_approach : (wrong_approach.description || wrong_approach.text)}
             </p>
           )}
           {wrong_approach?.consequence && (
@@ -394,15 +420,15 @@ function MistakeCard({ content, title }) {
           <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-emerald-500 mb-3">
             <CheckCircle2 size={14} /> Right Approach
           </div>
-          {right_approach?.description && (
+          {(typeof right_approach === 'string' ? right_approach : right_approach?.description || right_approach?.text) && (
             <p className="text-sm font-bricolage text-[var(--color-text)] mb-3">
-              {right_approach.description}
+              {typeof right_approach === 'string' ? right_approach : (right_approach.description || right_approach.text)}
             </p>
           )}
           {right_approach?.steps && right_approach.steps.length > 0 && (
             <ol className="space-y-1.5 text-sm font-bricolage text-[var(--color-text)] list-decimal list-inside">
               {right_approach.steps.map((s, i) => (
-                <li key={i}>{s}</li>
+                <li key={i}>{typeof s === 'string' ? s : (s.text || s.step || JSON.stringify(s))}</li>
               ))}
             </ol>
           )}
