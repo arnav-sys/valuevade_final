@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import {
   Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
-  CheckCircle2, Circle, Lock, Sun, Moon, ChevronLeft,
+  Sun, Moon, ChevronLeft,
 } from 'lucide-react';
 
 /**
@@ -25,7 +25,6 @@ export default function Sidebar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [courseExpanded, setCourseExpanded] = useState(true);
   const [enrollment, setEnrollment] = useState(null);
-  const [modules, setModules] = useState([]);
 
   useEffect(() => {
     localStorage.setItem('vv-sidebar-collapsed', String(collapsed));
@@ -36,10 +35,10 @@ export default function Sidebar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Fetch enrollment + modules for "My Course" sub-nav
+  // Fetch active enrollment for "My Course" sub-nav
   useEffect(() => {
     let mounted = true;
-    async function fetchCourseNav() {
+    async function fetchEnrollment() {
       if (!user?.id) return;
       try {
         const { data: enr } = await supabase
@@ -50,20 +49,11 @@ export default function Sidebar() {
           .maybeSingle();
         if (!mounted || !enr) return;
         setEnrollment(enr);
-
-        const { data: mods } = await supabase
-          .from('user_modules')
-          .select('id, title, order_index, is_completed, is_removed')
-          .eq('enrollment_id', enr.id)
-          .eq('is_removed', false)
-          .order('order_index');
-        if (!mounted) return;
-        setModules(mods || []);
       } catch {
         // ignore
       }
     }
-    fetchCourseNav();
+    fetchEnrollment();
     return () => { mounted = false; };
   }, [user?.id, location.pathname]);
 
@@ -153,28 +143,15 @@ export default function Sidebar() {
                   </button>
 
                   {courseExpanded && (
-                    <div className="mt-1 ml-3 pl-3 border-l border-[var(--color-border)] space-y-0.5" data-testid="sidebar-module-list">
-                      {modules.length === 0 ? (
-                        <p className="text-[11px] text-[var(--color-text-faint)] font-mono px-2 py-1">
-                          No modules yet
-                        </p>
-                      ) : (
-                        modules.map((m, idx) => (
-                          <Link
-                            key={m.id}
-                            to={`/course/${enrollment.master_path_id}`}
-                            className="flex items-center gap-2 px-2 py-1.5 rounded-md text-[12px] font-bricolage text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
-                            data-testid={`sidebar-module-${idx}`}
-                          >
-                            {m.is_completed ? (
-                              <CheckCircle2 size={12} className="shrink-0 text-[var(--color-success)]" />
-                            ) : (
-                              <Circle size={12} className="shrink-0 text-[var(--color-text-faint)]" />
-                            )}
-                            <span className="truncate">{m.title}</span>
-                          </Link>
-                        ))
-                      )}
+                    <div className="mt-1 ml-3 pl-3 border-l border-[var(--color-border)]" data-testid="sidebar-enrolled-path">
+                      <Link
+                        to={`/course/${enrollment.master_path_id}`}
+                        className="flex items-center gap-2 px-2 py-1.5 rounded-md text-[12px] font-bricolage text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
+                        data-testid="sidebar-enrolled-path-link"
+                      >
+                        <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)] shrink-0" />
+                        <span className="truncate">{enrollment.title}</span>
+                      </Link>
                     </div>
                   )}
                 </div>
