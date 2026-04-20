@@ -204,6 +204,9 @@ export async function updateStats(enrollmentId, timeSpentMinutes = 0) {
   }
 }
 
+/** Ordered phase sequence. Source of truth for "what's next". */
+export const PHASE_ORDER = ['notes', 'quiz', 'interview', 'simulation'];
+
 /**
  * Determine the next phase to work on for a session.
  * Order: notes → quiz → interview → simulation
@@ -211,10 +214,24 @@ export async function updateStats(enrollmentId, timeSpentMinutes = 0) {
  */
 export function getNextPhase(session) {
   if (!session) return null;
-  if (!session.notes_completed) return 'notes';
-  if (!session.quiz_completed) return 'quiz';
-  if (!session.interview_completed) return 'interview';
-  if (!session.simulation_completed) return 'simulation';
+  for (const ph of PHASE_ORDER) {
+    if (!session[`${ph}_completed`]) return ph;
+  }
+  return null;
+}
+
+/**
+ * After completing a phase, figure out the next UNFINISHED phase that
+ * comes AFTER the just-completed one. This prevents routing back to a
+ * skipped earlier phase (e.g. if quiz is done but notes is somehow still
+ * false, we should still go forward to interview — not loop back to notes).
+ */
+function getNextForwardPhase(session, justCompleted) {
+  if (!session) return null;
+  const startIdx = justCompleted ? PHASE_ORDER.indexOf(justCompleted) + 1 : 0;
+  for (let i = startIdx; i < PHASE_ORDER.length; i++) {
+    if (!session[`${PHASE_ORDER[i]}_completed`]) return PHASE_ORDER[i];
+  }
   return null;
 }
 
@@ -236,15 +253,21 @@ export const PHASE_LABELS = {
 
 /**
  * After completing a phase, figure out where to go next.
- * Skips any already-complete phase. Returns:
+ *
+ * When `justCompleted` is provided: routes to the next UNFINISHED phase
+ * that is AFTER the just-completed phase (never goes backwards). This
+ * prevents cases like "finished quiz but notes flag never flipped" from
+ * routing the user back to notes.
+ *
+ * Returns:
  *   { phase, route, label }   → next unfinished phase (use `/session/:id/${route}`)
- *   { phase: null, route: 'complete', label: 'Session' } → all phases done
+ *   { phase: null, route: 'complete', label: 'Session' } → no more forward phases
  */
 export function getNextPhaseRoute(session, justCompleted = null) {
   // Apply the just-completed flip locally so callers don't need a re-fetch.
   const s = session ? { ...session } : {};
   if (justCompleted) s[`${justCompleted}_completed`] = true;
-  const next = getNextPhase(s);
+  const next = justCompleted ? getNextForwardPhase(s, justCompleted) : getNextPhase(s);
   if (!next) return { phase: null, route: 'complete', label: 'Session' };
   return { phase: next, route: PHASE_ROUTES[next], label: PHASE_LABELS[next] };
 }
