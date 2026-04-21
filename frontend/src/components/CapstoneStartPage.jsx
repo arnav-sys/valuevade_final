@@ -176,7 +176,7 @@ export default function CapstoneStartPage() {
                 }}
                 data-testid="capstone-premium-card"
               >
-                <div className="rounded-[22px] bg-[var(--bg-primary)]/95 backdrop-blur-xl p-6 sm:p-8">
+                <div className="rounded-[22px] bg-[var(--color-surface)] p-6 sm:p-8">
                   <div className="flex items-center gap-3 mb-5">
                     <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[var(--color-accent-pink)]/20 to-[var(--color-accent-purple)]/20 border border-[var(--color-accent-pink)]/30 flex items-center justify-center shrink-0">
                       <Trophy size={28} className="text-[var(--color-accent-pink)]" />
