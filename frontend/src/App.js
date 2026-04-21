@@ -89,6 +89,7 @@ function App() {
                   <Route path="/signup" element={<SignupPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/referral" element={<AdminDashboard />} />
+                  <Route path="/waitlist-arnav" element={<AdminDashboard />} />
 
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
                   <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
