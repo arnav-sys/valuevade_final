@@ -195,7 +195,18 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Wired new routes in App.js; fixed Dashboard ContinueLearningCard links (/module/:id/project → /start, /capstone/:enrId → /capstone/start); fixed SessionCompletePage "Start Module Project" CTA target
 - Smoke tested: /capstone/start renders correctly with graceful "No capstone configured" empty state for test enrollment without master row
 
-- P1: Profile + Settings pages (currently sidebar links to placeholders)
+### Phase 16 - App Integration & Polish (Feb 2026)
+- **Routing architecture** consolidated in App.js: lazy-loaded all protected routes (React.lazy + Suspense with branded RouteLoader), reduced initial bundle; public routes (/, /signup, /login, /referral) eager-loaded; 404 catch-all via `path="*"` → NotFoundPage
+- **ErrorBoundary** (/components/ErrorBoundary.jsx): class component wrapping entire app; branded error UI with AlertTriangle hero + error message pre-block + "Reload app" + "Back home" CTAs; logs via componentDidCatch
+- **EnrollmentGuard** (/components/EnrollmentGuard.jsx): queries user_enrollments for active/completed, redirects to /courses if none; shows branded shimmer loader during check; wraps all learning routes (/dashboard, /session/*, /module/*/project/*, /capstone/*)
+- **SessionPhaseGuard** (/components/SessionPhaseGuard.jsx): enforces PHASE_ORDER — /quiz requires notes_completed, /interview requires quiz_completed, /simulation requires interview_completed; redirects to prior phase URL if incomplete; uses replace-navigation so back button stays clean
+- **PageTransition** (/components/PageTransition.jsx): CSS fade+slide (translateY 6px → 0, opacity 0 → 1, 280ms) keyed on pathname so every navigation fresh-mounts with animation; respects prefers-reduced-motion
+- **RouteLoader** (/components/RouteLoader.jsx): Suspense fallback with logo pulse + shimmer gradient bar
+- **SettingsPage** (/settings): "Coming soon" gradient-border hero + 3-item roadmap (Email notifications / Privacy controls / Contact preferences) + Go-to-Profile link; re-added Settings to Sidebar nav
+- **NotFoundPage** (catch-all): cosmic theme with orbital rings (30s + 50s animated), 40 deterministic twinkling stars, gradient 404 title (pink→purple→blue), Compass icon + "Lost in space" badge, "Go back" + "Take me home" CTAs
+- Fixed CapstoneStartPage + SettingsPage gradient-border inner-card bg: changed bg-[var(--bg-primary)]/95 → bg-[var(--color-surface)] for proper contrast in both themes
+- **Tested via iteration_14.json**: 14/14 spec items passed (100%) — public routes, auth guards, 404 catch-all, login flow, Profile (edit name, theme toggle, sign out), Settings (coming-soon + roadmap), Sidebar nav, PageTransition wrapper present on every route. One benign Supabase 400 console warning on sparsely-seeded tables (non-blocking).
+
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
