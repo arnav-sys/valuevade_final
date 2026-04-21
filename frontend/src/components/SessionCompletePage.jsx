@@ -274,7 +274,7 @@ export default function SessionCompletePage() {
             </button>
           ) : moduleComplete ? (
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(`/module/${module.id}/project/start`)}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(106,92,255,0.4)] hover:brightness-110 transition-all"
               data-testid="session-complete-module-project"
             >

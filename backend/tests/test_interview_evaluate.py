@@ -8,7 +8,7 @@ import os
 import requests
 import pytest
 
-BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://ai-career-hub-21.preview.emergentagent.com').rstrip('/')
+BASE_URL = os.environ.get('REACT_APP_BACKEND_URL', 'https://finance-copilot-dev.preview.emergentagent.com').rstrip('/')
 EVAL_URL = f"{BASE_URL}/api/interview/evaluate"
 
 QUESTION = "Walk me through how you would value a growing perpetuity using the Time Value of Money framework."

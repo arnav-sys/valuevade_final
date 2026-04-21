@@ -28,6 +28,13 @@ import SimulationStartPage from "@/components/SimulationStartPage";
 import SimulationPage from "@/components/SimulationPage";
 import SimulationCompletePage from "@/components/SimulationCompletePage";
 import SessionCompletePage from "@/components/SessionCompletePage";
+import ModuleProjectStartPage from "@/components/ModuleProjectStartPage";
+import ModuleProjectTasksPage from "@/components/ModuleProjectTasksPage";
+import ModuleProjectCompletePage from "@/components/ModuleProjectCompletePage";
+import CapstoneStartPage from "@/components/CapstoneStartPage";
+import CapstoneTasksPage from "@/components/CapstoneTasksPage";
+import CapstoneCompletePage from "@/components/CapstoneCompletePage";
+import ProfilePage from "@/components/ProfilePage";
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 function App() {
@@ -72,6 +79,13 @@ function App() {
             <Route path="/session/:sessionId/simulation" element={<ProtectedRoute><SimulationPage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/simulation/complete" element={<ProtectedRoute><SimulationCompletePage /></ProtectedRoute>} />
             <Route path="/session/:sessionId/complete" element={<ProtectedRoute><SessionCompletePage /></ProtectedRoute>} />
+            <Route path="/module/:moduleId/project/start" element={<ProtectedRoute><ModuleProjectStartPage /></ProtectedRoute>} />
+            <Route path="/module/:moduleId/project/tasks" element={<ProtectedRoute><ModuleProjectTasksPage /></ProtectedRoute>} />
+            <Route path="/module/:moduleId/project/complete" element={<ProtectedRoute><ModuleProjectCompletePage /></ProtectedRoute>} />
+            <Route path="/capstone/start" element={<ProtectedRoute><CapstoneStartPage /></ProtectedRoute>} />
+            <Route path="/capstone/tasks" element={<ProtectedRoute><CapstoneTasksPage /></ProtectedRoute>} />
+            <Route path="/capstone/complete" element={<ProtectedRoute><CapstoneCompletePage /></ProtectedRoute>} />
+            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
             <Route path="/referral" element={<AdminDashboard />} />
           </Routes>
         </AuthProvider>

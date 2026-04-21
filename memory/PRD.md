@@ -184,7 +184,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Persistence: markPhaseComplete('simulation', {simulation_score}) flips simulation_completed=true
 - Tested: iteration_13.json — all routes, selectors, empty states, navigation verified. InteractiveSim sub-exercises not exercised E2E because live master_simulations seed data lacks config.exercise_type (SEED-DATA gap, not a bug — graceful fallback UI was verified).
 
-- P1: Module project + Capstone project pages
+### Phase 15 - Module Project + Capstone Systems (Feb 2026)
+- ModuleProjectStartPage (/module/:moduleId/project/start): fetches user_module_projects joined with user_modules + master_module_projects; access control (all sessions in module must be completed, else locked state listing remaining sessions with Resume links); title/description/deliverable callout, estimated time + task count pills; "Start Project" CTA flips started_at
+- ModuleProjectTasksPage (/module/:moduleId/project/tasks): progress bar X/Y; tasks rendered from master_module_projects.tasks JSONB via reusable TaskCard (checkbox + expandable description + Show Hints toggle + resource links); checked state in user_module_projects.tasks_progress ([{task_index, is_completed}]); optimistic updates with revert on error; tasks completable in any order; "Mark Project as Complete" enabled only when all done; triggers checkCapstoneUnlock on submit
+- ModuleProjectCompletePage (/module/:moduleId/project/complete): confetti celebration, skills_demonstrated chips, dynamic CTA — "Begin Capstone" if all modules done, else "Continue to Module N+1 → /dashboard"
+- CapstoneStartPage (/capstone/start): premium gradient-border hero card with trophy icon, fetches user_capstone_projects joined with master_capstone_projects; access control (ALL user_modules + ALL user_module_projects is_completed=true else locked with module/project remaining counts); final deliverable callout + estimated hours + phase count; "Begin Capstone" flips started_at
+- CapstoneTasksPage (/capstone/tasks): collapsible phase sections from master_capstone_projects.phases (phase_title, phase_description, tasks[]); per-phase progress bar + overall progress bar; tracks [{phase_index, task_index, is_completed}] in user_capstone_projects.phases_progress; "Complete Capstone" flips is_completed=true AND updates user_enrollments.status='completed'
+- CapstoneCompletePage (/capstone/complete): full-screen confetti (140 pieces) + cosmic twinkling particles; bouncing trophy medallion with pink→purple→blue gradient glow; custom SVG digital certificate/badge with user name, path title, date; journey summary grid (sessions, modules, projects, time, quiz average, capstone status); "Share Achievement" button using navigator.share with clipboard fallback
+- Shared component: /components/projects/TaskCard.jsx (reused across Module Project + Capstone Tasks); includes hints toggle, resource chips with external-link icons, completed strikethrough state
+- Wired new routes in App.js; fixed Dashboard ContinueLearningCard links (/module/:id/project → /start, /capstone/:enrId → /capstone/start); fixed SessionCompletePage "Start Module Project" CTA target
+- Smoke tested: /capstone/start renders correctly with graceful "No capstone configured" empty state for test enrollment without master row
+
 - P1: Profile + Settings pages (currently sidebar links to placeholders)
 - P1: CSV Export from Admin Dashboard
 - P1: Email confirmation/notification on waitlist signup

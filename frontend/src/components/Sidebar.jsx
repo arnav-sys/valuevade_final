@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import {
-  Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
+  Home, BookOpen, User, LogOut, Menu, X, ChevronDown, ChevronRight,
   Sun, Moon, ChevronLeft,
 } from 'lucide-react';
 
@@ -73,7 +73,6 @@ export default function Sidebar() {
         expandable: true,
       },
       { label: 'Profile', icon: User, path: '/profile', testid: 'nav-profile' },
-      { label: 'Settings', icon: Settings, path: '/settings', testid: 'nav-settings' },
     ],
     [enrollment]
   );

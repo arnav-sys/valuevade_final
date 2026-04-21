@@ -572,7 +572,7 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
           Bring it all together. Your capstone project is the final mile — apply everything you've learned to a real-world scenario.
         </p>
         <button
-          onClick={() => onNavigate(`/capstone/${enrollment.id}`)}
+          onClick={() => onNavigate('/capstone/start')}
           className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-accent-pink)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(255,106,193,0.4)] hover:brightness-110 transition-all"
           data-testid="begin-capstone-btn"
         >
@@ -601,7 +601,7 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
             You've finished every session in this module. Put it to work.
           </p>
           <button
-            onClick={() => onNavigate(`/module/${currentModule.id}/project`)}
+            onClick={() => onNavigate(`/module/${currentModule.id}/project/start`)}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
             data-testid="complete-project-btn"
           >

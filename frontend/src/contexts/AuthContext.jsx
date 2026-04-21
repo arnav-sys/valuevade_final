@@ -98,8 +98,21 @@ export function AuthProvider({ children }) {
     setSession(null);
   };
 
+  const updateProfile = async (updates) => {
+    if (!user?.id) return { error: new Error('Not signed in') };
+    const { data, error } = await supabase
+      .from('profiles')
+      .update(updates)
+      .eq('id', user.id)
+      .select('id, full_name, email')
+      .single();
+    if (error) return { error };
+    setProfile(data);
+    return { data };
+  };
+
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
