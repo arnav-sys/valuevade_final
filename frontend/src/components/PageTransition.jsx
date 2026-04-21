@@ -20,7 +20,6 @@ export default function PageTransition({ children }) {
       <style>{`
         .vv-page-transition {
           animation: vvPageIn 280ms cubic-bezier(0.25, 0.8, 0.25, 1);
-          will-change: transform, opacity;
         }
         @keyframes vvPageIn {
           from { opacity: 0; transform: translateY(6px); }

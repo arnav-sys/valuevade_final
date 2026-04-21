@@ -140,7 +140,13 @@ export default function Navbar({ onJoinWaitlist }) {
       {/* Mobile overlay menu */}
       {menuOpen && (
         <div
-          className="md:hidden fixed inset-0 top-16 bg-[var(--bg-primary)]/95 backdrop-blur-xl z-40 flex flex-col items-center justify-center gap-8"
+          className="md:hidden fixed left-0 right-0 bottom-0 z-40 flex flex-col items-center justify-center gap-8 overflow-y-auto py-10"
+          style={{
+            top: '64px',
+            background: 'var(--bg-primary)',
+            backdropFilter: 'blur(20px)',
+            WebkitBackdropFilter: 'blur(20px)',
+          }}
           data-testid="mobile-menu-overlay"
         >
           {navLinks.map((link) => (
