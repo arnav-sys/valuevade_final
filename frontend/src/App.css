@@ -1,26 +1,40 @@
 /* ========== CUSTOM CURSOR ========== */
+/* Light mode: brand blue (primary) — strong contrast on pinkish lavender bg */
+/* Dark mode: brand pink (accent-pink) — pops on deep navy bg */
 .cursor-dot {
   position: fixed;
   width: 8px;
   height: 8px;
-  background: #FF6AC1;
+  background: var(--color-primary);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
+  box-shadow: 0 0 12px color-mix(in srgb, var(--color-primary) 50%, transparent);
+  transition: background-color 200ms ease, box-shadow 200ms ease;
 }
 
 .cursor-ring {
   position: fixed;
   width: 36px;
   height: 36px;
-  border: 2px solid #FF6AC1;
+  border: 2px solid var(--color-primary);
   border-radius: 50%;
   pointer-events: none;
   z-index: 9999;
   transform: translate(-50%, -50%);
-  mix-blend-mode: difference;
+  box-shadow: 0 0 16px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.dark .cursor-dot {
+  background: var(--color-accent-pink);
+  box-shadow: 0 0 14px color-mix(in srgb, var(--color-accent-pink) 55%, transparent);
+}
+
+.dark .cursor-ring {
+  border-color: var(--color-accent-pink);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--color-accent-pink) 25%, transparent);
 }
 
 body.custom-cursor,
