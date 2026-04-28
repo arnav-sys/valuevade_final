@@ -546,6 +546,26 @@ function VisualCard({ content, title: topTitle, cardId }) {
   const displayTitle = title || topTitle;
   const apiBase = process.env.REACT_APP_BACKEND_URL;
 
+  // Build a richer description by harvesting any text in nested fields
+  // (so cards like Session 11 WACC — which store descriptions inside
+  // sub-objects like u_curve/wacc_waterfall — still get a meaningful prompt).
+  const promptDescription = useMemo(() => {
+    if (description && typeof description === 'string') return description;
+    const parts = [];
+    const walk = (v, depth = 0) => {
+      if (depth > 3 || parts.length > 8) return;
+      if (typeof v === 'string') {
+        if (v.trim().length > 20) parts.push(v.trim());
+      } else if (Array.isArray(v)) {
+        v.forEach((item) => walk(item, depth + 1));
+      } else if (v && typeof v === 'object') {
+        Object.values(v).forEach((val) => walk(val, depth + 1));
+      }
+    };
+    walk(content);
+    return parts.slice(0, 4).join(' ').slice(0, 600);
+  }, [description, content]);
+
   const [generatedUrl, setGeneratedUrl] = useState(null);
   const [genLoading, setGenLoading] = useState(false);
   const [genError, setGenError] = useState(null);
@@ -574,7 +594,7 @@ function VisualCard({ content, title: topTitle, cardId }) {
           body: JSON.stringify({
             card_id: cardId,
             title: displayTitle || '',
-            description: description || '',
+            description: promptDescription || '',
           }),
         });
         if (!resp.ok) {
@@ -603,7 +623,7 @@ function VisualCard({ content, title: topTitle, cardId }) {
     }
     generate();
     return () => { cancelled = true; };
-  }, [shouldGenerate, cardId, displayTitle, description, apiBase, content]);
+  }, [shouldGenerate, cardId, displayTitle, promptDescription, apiBase, content]);
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20 text-center" data-testid="card-visual">
@@ -615,9 +635,9 @@ function VisualCard({ content, title: topTitle, cardId }) {
           {displayTitle}
         </h2>
       )}
-      {description && (
+      {(description || promptDescription) && (
         <p className="text-sm text-[var(--color-text-muted)] font-bricolage max-w-xl mx-auto mb-6">
-          {description}
+          {description || promptDescription}
         </p>
       )}
       <div className="rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border)] p-4 sm:p-6 flex items-center justify-center min-h-[320px] overflow-hidden relative">
@@ -685,6 +705,11 @@ function VisualCard({ content, title: topTitle, cardId }) {
       {caption && (
         <p className="text-xs text-[var(--color-text-muted)] font-bricolage italic mt-4">{caption}</p>
       )}
+      <ExtraFields
+        content={content}
+        handled={['title', 'description', 'svg_content', 'image_url', 'caption', 'alt_text']}
+        accent="#246BFD"
+      />
     </div>
   );
 }
@@ -1365,7 +1390,7 @@ export default function NotesPage() {
 
       {/* Card area */}
       <main
-        className="flex-1 relative z-10 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12"
+        className="flex-1 relative z-10 flex items-start justify-center px-4 sm:px-6 py-8 sm:py-12"
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
