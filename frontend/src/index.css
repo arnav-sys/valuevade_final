@@ -116,15 +116,24 @@
   * {
     @apply border-border;
   }
+  html {
+    background: var(--bg-primary);
+    min-height: 100%;
+  }
   body {
     font-family: 'Bricolage Grotesque', sans-serif;
     background: var(--bg-primary);
     color: var(--color-text);
     margin: 0;
+    min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  #root {
+    min-height: 100vh;
+    background: var(--bg-primary);
   }
   h1, h2, h3 {
     font-family: 'Clash Display', sans-serif;
