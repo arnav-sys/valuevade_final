@@ -150,11 +150,6 @@ export default function LoginPage() {
               {submitting ? <><Loader2 size={18} className="animate-spin" /> Signing in...</> : 'Sign In'}
             </button>
           </form>
-
-          <p className="mt-6 text-center text-sm text-[var(--color-text-muted)] font-bricolage">
-            Don&apos;t have an account?{' '}
-            <Link to="/signup" className="text-[var(--color-primary)] hover:underline font-medium" data-testid="login-signup-link">Sign up</Link>
-          </p>
         </div>
       </div>
     </div>
