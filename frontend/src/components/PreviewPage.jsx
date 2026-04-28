@@ -59,8 +59,9 @@ export default function PreviewPage() {
       });
     }, 2500);
 
+    const url = `${API}/api/customize/generate`;
     try {
-      const res = await fetch(`${API}/api/customize/generate`, {
+      const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -73,12 +74,20 @@ export default function PreviewPage() {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        throw new Error(errData.detail || `Server error (${res.status})`);
+        const detail = errData.detail || `Server returned ${res.status} ${res.statusText || ''}`.trim();
+        // eslint-disable-next-line no-console
+        console.error('[customize/generate] failed', { url, status: res.status, detail });
+        if (res.status === 404) {
+          throw new Error('We couldn\'t reach the AI service (404). Please hard-refresh the page (Cmd/Ctrl + Shift + R) and try again.');
+        }
+        throw new Error(detail);
       }
 
       const data = await res.json();
       setPlan(data);
     } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[customize/generate] exception', err, { url });
       setError(err.message || 'Failed to generate customization plan');
     } finally {
       clearInterval(stepInterval);
