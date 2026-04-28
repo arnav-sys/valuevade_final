@@ -1348,7 +1348,7 @@ export default function NotesPage() {
 
   // ------------- render -------------
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden flex flex-col">
+    <div className="min-h-screen bg-[var(--bg-primary)] relative flex flex-col" style={{ overflowX: 'clip' }}>
       <div className="absolute top-[-10%] left-[10%] w-[600px] h-[600px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.05] blur-[140px] pointer-events-none" />
 

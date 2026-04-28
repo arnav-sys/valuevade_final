@@ -187,7 +187,7 @@ export default function QuizPage() {
   const isCorrect = submitted && selected === correctIndex;
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden" data-testid="quiz-page">
+    <div className="min-h-screen bg-[var(--bg-primary)] relative" style={{ overflowX: 'clip' }} data-testid="quiz-page">
       <div className="absolute top-[-10%] left-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[20%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.04] blur-[140px] pointer-events-none" />
 
