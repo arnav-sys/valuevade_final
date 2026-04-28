@@ -767,7 +767,14 @@ function ExampleCard({ content, title }) {
   const displayCompany = company_name || title;
   const situation = c.situation || c.context || c.description || c.scenario || c.body || c.introduction;
   const dataDict = c.data || c.inputs || c.givens;
-  const analysis = c.analysis || c.walkthrough_steps || c.steps || c.walkthrough || [];
+  let analysis = c.analysis || c.walkthrough_steps || c.steps || c.walkthrough || [];
+  // Defensive: some authored content stores analysis as a single string paragraph.
+  // Normalize to array so the renderer below can safely .map().
+  if (typeof analysis === 'string') {
+    analysis = analysis.trim() ? [analysis] : [];
+  } else if (!Array.isArray(analysis)) {
+    analysis = [];
+  }
   const verdict = c.verdict || c.conclusion;
   const deeper_insight = c.deeper_insight || c.insight || c.takeaway;
   const connection = c.connection_to_equities || c.connection || c.wider_application;
@@ -1066,7 +1073,16 @@ function MistakeCard({ content, title }) {
 }
 
 function SummaryCard({ content, title }) {
-  const { session_title, key_takeaways = [], interview_tip, next_preview } = content || {};
+  const c = content || {};
+  const session_title = c.session_title;
+  let key_takeaways = c.key_takeaways || c.takeaways || c.key_points || c.points || [];
+  if (typeof key_takeaways === 'string') {
+    key_takeaways = key_takeaways.trim() ? [key_takeaways] : [];
+  } else if (!Array.isArray(key_takeaways)) {
+    key_takeaways = [];
+  }
+  const interview_tip = c.interview_tip || c.analysts_mindset || c.tip;
+  const next_preview = c.next_preview;
   const displayTitle = session_title || title;
   return (
     <div
