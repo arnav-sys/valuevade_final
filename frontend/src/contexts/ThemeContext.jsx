@@ -18,6 +18,12 @@ export function ThemeProvider({ children }) {
       root.classList.remove('dark');
     }
     localStorage.setItem('vv-theme', theme);
+    // Keep <meta name="theme-color"> in sync so iOS Safari overscroll
+    // and the mobile address-bar tint match the current theme bg.
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#02073D' : '#F2E6EE');
+    }
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));
