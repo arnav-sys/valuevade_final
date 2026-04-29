@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete } from '../utils/progress';
+import useTimeTracking from '../utils/useTimeTracking';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, AlertTriangle, Sparkles,
   Zap, TrendingUp, Target, FileText, Loader2, AlertCircle, RefreshCw, X,
@@ -1254,6 +1255,9 @@ export default function NotesPage() {
   const [idx, setIdx] = useState(0);
   const [completing, setCompleting] = useState(false);
   const [startedAt] = useState(() => Date.now());
+
+  // Track active reading time on this page → user_stats.total_time_minutes
+  useTimeTracking(user?.id);
 
   useEffect(() => {
     let mounted = true;

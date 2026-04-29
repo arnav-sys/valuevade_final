@@ -12,6 +12,7 @@ import DecisionMakingSim from './simulations/DecisionMakingSim';
 import InteractiveSim from './simulations/InteractiveSim';
 import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
+import useTimeTracking from '../utils/useTimeTracking';
 
 const TYPE_META = {
   excel: { label: 'Excel', Icon: FileSpreadsheet, color: '#10B981' },
@@ -31,6 +32,9 @@ export default function SimulationPage() {
   const [sim, setSim] = useState(null);
   const [progress, setProgress] = useState({ correct: 0, total: 0 });
   const [saving, setSaving] = useState(false);
+
+  // Track active time on this page → user_stats.total_time_minutes
+  useTimeTracking(user?.id);
 
   useEffect(() => {
     let mounted = true;

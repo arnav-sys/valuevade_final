@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { getNextPhase } from '../utils/progress';
+import { getNextPhase, computeStreak, updateStats } from '../utils/progress';
 import Sidebar from './Sidebar';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
@@ -283,6 +283,26 @@ export default function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
+  // Streak is derived from user_sessions.completed_at — not stored — so it
+  // can never get out of sync with session history or be reset by accident.
+  const streakDays = useMemo(() => {
+    const dates = (sessions || [])
+      .map((s) => s.completed_at)
+      .filter(Boolean);
+    // Also include today if last_activity_date is today (covers logged-in
+    // study time before any session is finished today)
+    if (stats?.last_activity_date) dates.push(stats.last_activity_date);
+    return computeStreak(dates);
+  }, [sessions, stats?.last_activity_date]);
+
+  // Bump last_activity_date when the user opens the dashboard so streak
+  // counts even if they don't immediately finish a session today.
+  useEffect(() => {
+    if (enrollment?.id) {
+      void updateStats(enrollment.id, 0);
+    }
+  }, [enrollment?.id]);
+
   // Computed state
   const computed = useMemo(() => {
     if (!enrollment || !modules.length) {
@@ -458,8 +478,8 @@ export default function DashboardPage() {
                   <StatCard
                     icon={Flame}
                     label="Streak"
-                    value={stats?.streak ?? 0}
-                    suffix={stats?.streak === 1 ? 'day' : 'days'}
+                    value={streakDays}
+                    suffix={streakDays === 1 ? 'day' : 'days'}
                     accent="pink"
                     testid="stat-streak"
                   />

@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { evaluateAnswer } from '../utils/interviewEval';
+import useTimeTracking from '../utils/useTimeTracking';
 import axios from 'axios';
 import {
   ArrowLeft, ArrowRight, Send, Loader2, AlertCircle, RefreshCw,
@@ -107,6 +108,9 @@ export default function InterviewPage() {
   const [showModelAnswer, setShowModelAnswer] = useState(false);
 
   const scrollRef = useRef(null);
+
+  // Track active time on this page → user_stats.total_time_minutes
+  useTimeTracking(user?.id);
 
   // Load
   useEffect(() => {

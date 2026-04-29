@@ -145,63 +145,102 @@ export async function checkCapstoneUnlock(enrollmentId) {
 }
 
 /**
- * Update user stats after finishing work.
- * Bumps sessions_completed, updates streak (simple: last_active_date = today), adds minutes.
+ * Update user_stats row after activity. Adds minutes spent and bumps the
+ * last_activity_date to today. Streak is NOT stored (no column for it) — it
+ * is computed at read time from user_sessions completion history, which is
+ * immutable and therefore can never get out of sync or reset accidentally.
+ *
+ * Safe to call frequently (idempotent for same-day calls when minutes=0).
  */
 export async function updateStats(enrollmentId, timeSpentMinutes = 0) {
+  if (!enrollmentId) return { success: false, error: 'no enrollment' };
   try {
     const today = new Date().toISOString().slice(0, 10);
 
-    // Fetch existing stats row (may not exist)
+    const { data: { user } = { user: null } } = await supabase.auth.getUser();
+    const userId = user?.id || null;
+
     const { data: existing } = await supabase
       .from('user_stats')
-      .select('*')
+      .select('id, total_time_minutes, last_activity_date')
       .eq('enrollment_id', enrollmentId)
       .maybeSingle();
 
     if (!existing) {
-      await supabase.from('user_stats').insert({
+      const insertRow = {
         enrollment_id: enrollmentId,
         sessions_completed: 0,
-        streak: 1,
-        total_time_minutes: timeSpentMinutes,
-        last_active_date: today,
-      });
-      return { success: true, data: { streak: 1 } };
+        total_time_minutes: Math.max(0, Math.round(timeSpentMinutes)),
+        last_activity_date: today,
+      };
+      if (userId) insertRow.user_id = userId;
+      const { error: insErr } = await supabase.from('user_stats').insert(insertRow);
+      if (insErr) throw insErr;
+      return { success: true, data: { last_activity_date: today } };
     }
 
-    // Compute new streak
-    let streak = existing.streak || 0;
-    const lastActive = existing.last_active_date;
-    if (lastActive) {
-      const diffDays = Math.floor(
-        (new Date(today) - new Date(lastActive)) / (1000 * 60 * 60 * 24)
-      );
-      if (diffDays === 0) {
-        // same day - no change
-      } else if (diffDays === 1) {
-        streak += 1;
-      } else {
-        streak = 1;
-      }
-    } else {
-      streak = 1;
+    const newMinutes = (existing.total_time_minutes || 0) + Math.max(0, Math.round(timeSpentMinutes));
+    const update = { total_time_minutes: newMinutes };
+    if (existing.last_activity_date !== today) {
+      update.last_activity_date = today;
     }
-
     const { error } = await supabase
       .from('user_stats')
-      .update({
-        total_time_minutes: (existing.total_time_minutes || 0) + timeSpentMinutes,
-        streak,
-        last_active_date: today,
-      })
+      .update(update)
       .eq('enrollment_id', enrollmentId);
     if (error) throw error;
-
-    return { success: true, data: { streak } };
+    return { success: true, data: update };
   } catch (err) {
     return { success: false, error: err.message || String(err) };
   }
+}
+
+/**
+ * Compute the user's current daily streak from a list of session completion
+ * dates. A streak is the count of consecutive calendar days (ending today or
+ * yesterday) on which the user completed at least one session.
+ *
+ *  - If today has activity → streak grows from today
+ *  - If yesterday is the latest activity day → streak grows from yesterday
+ *    (so the user doesn't lose their streak by checking the dashboard before
+ *    they study today)
+ *  - If the latest activity was 2+ days ago → streak is 0
+ *
+ * @param {string[]} completedAtIsoDates - array of ISO datetime strings (any user_sessions.completed_at values)
+ * @param {string} [todayIso] - optional override for "today" (used in tests). Defaults to local current date.
+ * @returns {number}
+ */
+export function computeStreak(completedAtIsoDates, todayIso = null) {
+  if (!Array.isArray(completedAtIsoDates) || completedAtIsoDates.length === 0) return 0;
+  const dayKey = (d) => {
+    const dt = typeof d === 'string' ? new Date(d) : d;
+    if (Number.isNaN(dt.getTime())) return null;
+    return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')}`;
+  };
+  const days = new Set();
+  completedAtIsoDates.forEach((iso) => {
+    const k = dayKey(iso);
+    if (k) days.add(k);
+  });
+  if (days.size === 0) return 0;
+
+  const today = todayIso ? new Date(todayIso) : new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayKey = dayKey(today);
+
+  // Anchor either at today (if active) or yesterday (grace period)
+  let cursor = new Date(today);
+  if (!days.has(todayKey)) {
+    cursor.setDate(cursor.getDate() - 1);
+    if (!days.has(dayKey(cursor))) return 0;
+  }
+
+  let streak = 0;
+  while (days.has(dayKey(cursor))) {
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return streak;
 }
 
 /** Ordered phase sequence. Source of truth for "what's next". */

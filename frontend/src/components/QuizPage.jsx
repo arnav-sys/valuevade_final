@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import useTimeTracking from '../utils/useTimeTracking';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, XCircle, Lightbulb,
   Loader2, AlertCircle, RefreshCw,
@@ -38,6 +39,9 @@ export default function QuizPage() {
   const [selected, setSelected] = useState(null);
   const [submitted, setSubmitted] = useState(false);
   const [answers, setAnswers] = useState([]); // [{ question_id, selected_index, is_correct }]
+
+  // Track active time on this page → user_stats.total_time_minutes
+  useTimeTracking(user?.id);
 
   useEffect(() => {
     let mounted = true;
