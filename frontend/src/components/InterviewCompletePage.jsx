@@ -118,7 +118,7 @@ export default function InterviewCompletePage() {
   const hasResults = results.length > 0;
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden px-4 py-10 sm:py-14">
+    <div className="min-h-screen bg-[var(--bg-primary)] relative px-4 py-10 sm:py-14" style={{ overflowX: 'clip' }}>
       <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-[var(--color-primary)] opacity-[0.06] blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.06] blur-[140px] pointer-events-none" />
 
