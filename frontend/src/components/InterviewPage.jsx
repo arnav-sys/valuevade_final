@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { evaluateAnswer } from '../utils/interviewEval';
 import useTimeTracking from '../utils/useTimeTracking';
+import VoiceInputButton from './VoiceInputButton';
 import axios from 'axios';
 import {
   ArrowLeft, ArrowRight, Send, Loader2, AlertCircle, RefreshCw,
@@ -413,22 +414,35 @@ export default function InterviewPage() {
                   >
                     {answer.trim().length} / {MIN_CHARS} chars min
                   </span>
-                  <button
-                    onClick={handleSubmit}
-                    disabled={!canSubmit}
-                    className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
-                    data-testid="interview-submit-response"
-                  >
-                    {phase === 'evaluating' ? (
-                      <>
-                        <Loader2 size={15} className="animate-spin" /> Evaluating…
-                      </>
-                    ) : (
-                      <>
-                        <Send size={15} /> Submit Response
-                      </>
-                    )}
-                  </button>
+                  <div className="flex items-center gap-2 flex-wrap justify-end">
+                    <VoiceInputButton
+                      disabled={phase === 'evaluating'}
+                      prompt={questions[idx]?.question}
+                      onTranscribed={(text) => {
+                        setAnswer((prev) => {
+                          const trimmed = (prev || '').trimEnd();
+                          if (!trimmed) return text;
+                          return `${trimmed} ${text}`;
+                        });
+                      }}
+                    />
+                    <button
+                      onClick={handleSubmit}
+                      disabled={!canSubmit}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
+                      data-testid="interview-submit-response"
+                    >
+                      {phase === 'evaluating' ? (
+                        <>
+                          <Loader2 size={15} className="animate-spin" /> Evaluating…
+                        </>
+                      ) : (
+                        <>
+                          <Send size={15} /> Submit Response
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>

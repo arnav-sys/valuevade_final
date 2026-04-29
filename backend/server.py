@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -156,6 +156,7 @@ async def get_waitlist_count():
 
 
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+from emergentintegrations.llm.openai import OpenAISpeechToText
 import json as json_module
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
@@ -630,6 +631,74 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
     except Exception as e:
         logger.error(f"Interview evaluation failed: {e}")
         raise HTTPException(status_code=500, detail=f"AI evaluation failed: {str(e)}")
+
+
+# ----------------------- Voice transcription (Whisper) ----------------------
+
+# Allowed audio mime/extension hints — Whisper accepts mp3, mp4, mpeg, mpga,
+# m4a, wav, webm. Browser MediaRecorder typically produces audio/webm.
+_ALLOWED_AUDIO_EXTS = {"mp3", "mp4", "mpeg", "mpga", "m4a", "wav", "webm", "ogg"}
+_MAX_AUDIO_BYTES = 25 * 1024 * 1024  # Whisper hard limit
+
+
+@api_router.post("/voice/transcribe")
+async def transcribe_audio(
+    audio: UploadFile = File(...),
+    language: Optional[str] = Form(default="en"),
+    prompt: Optional[str] = Form(default=None),
+):
+    """
+    Transcribe a short audio clip recorded in the browser to text using
+    OpenAI Whisper (whisper-1) via the Emergent LLM key. Used by the
+    Interview practice flow so users can speak their answer instead of
+    typing it.
+    """
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=500, detail="Speech-to-text service is not configured")
+
+    # Validate extension
+    filename = audio.filename or "audio.webm"
+    ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else 'webm'
+    if ext not in _ALLOWED_AUDIO_EXTS:
+        # MediaRecorder sometimes sends 'blob' as filename — fall back to webm
+        ext = 'webm'
+        filename = 'audio.webm'
+
+    # Read into memory and validate size (Whisper limit is 25MB)
+    data = await audio.read()
+    if not data:
+        raise HTTPException(status_code=400, detail="Empty audio upload")
+    if len(data) > _MAX_AUDIO_BYTES:
+        raise HTTPException(status_code=413, detail="Audio file exceeds 25MB limit")
+
+    # Whisper SDK expects a file-like object with a name attribute
+    import io
+    buf = io.BytesIO(data)
+    buf.name = filename
+
+    try:
+        stt = OpenAISpeechToText(api_key=EMERGENT_LLM_KEY)
+        kwargs = {
+            "file": buf,
+            "model": "whisper-1",
+            "response_format": "json",
+        }
+        if language:
+            kwargs["language"] = language
+        if prompt:
+            kwargs["prompt"] = prompt[:1024]
+        response = await stt.transcribe(**kwargs)
+        text = getattr(response, "text", None)
+        if text is None and isinstance(response, dict):
+            text = response.get("text")
+        if not text:
+            raise HTTPException(status_code=500, detail="Transcription returned empty result")
+        return {"text": text.strip()}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Whisper transcription failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
 
 
 app.include_router(api_router)
