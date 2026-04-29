@@ -157,6 +157,7 @@ export default function InterviewPage() {
   const total = questions.length;
   const q = questions[idx];
   const isLast = idx === total - 1;
+  const isReview = !!session?.interview_completed;
 
   const questionText = useMemo(() => {
     if (!q) return '';
@@ -179,9 +180,14 @@ export default function InterviewPage() {
     setPhase('typing');
     setAnswer('');
     setShowModelAnswer(false);
+    // In review mode, skip answering — show question + model answer immediately
+    if (isReview) {
+      const t = setTimeout(() => setPhase('review'), TYPING_MS);
+      return () => clearTimeout(t);
+    }
     const t = setTimeout(() => setPhase('answering'), TYPING_MS);
     return () => clearTimeout(t);
-  }, [q]);
+  }, [q, isReview]);
 
   // Auto-scroll on phase change
   useEffect(() => {
@@ -235,6 +241,14 @@ export default function InterviewPage() {
   }, [canSubmit, q, answer, questionText, contextText, modelAnswer, sessionTitle]);
 
   const handleNext = useCallback(() => {
+    if (isReview) {
+      if (isLast) {
+        navigate(`/session/${sessionId}/start`);
+        return;
+      }
+      setIdx((i) => i + 1);
+      return;
+    }
     if (phase !== 'feedback') return;
     if (isLast) {
       navigate(`/session/${sessionId}/interview/complete`, {
@@ -243,7 +257,7 @@ export default function InterviewPage() {
       return;
     }
     setIdx((i) => i + 1);
-  }, [phase, isLast, navigate, sessionId, results]);
+  }, [isReview, phase, isLast, navigate, sessionId, results]);
 
   if (loading) {
     return (
@@ -322,7 +336,12 @@ export default function InterviewPage() {
                 <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">Senior Analyst</div>
               </div>
             </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]" data-testid="interview-progress-text">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] flex items-center gap-2" data-testid="interview-progress-text">
+              {isReview && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]" data-testid="interview-review-badge">
+                  <CheckCircle2 size={10} /> REVIEW
+                </span>
+              )}
               Q {idx + 1} / {total}
             </span>
           </div>
@@ -548,6 +567,63 @@ export default function InterviewPage() {
                   data-testid="interview-next-btn"
                 >
                   {isLast ? 'See Results' : 'Next Question'}
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+          )}
+          {/* Review mode block — show question + model answer with a Next/Back CTA */}
+          {phase === 'review' && (
+            <div className="mt-2 space-y-5 animate-vv-fade-up" data-testid="interview-review-block">
+              {modelAnswer && (
+                <div className="rounded-2xl bg-[var(--color-accent-purple)]/8 border border-[var(--color-accent-purple)]/25 overflow-hidden">
+                  <button
+                    onClick={() => setShowModelAnswer((v) => !v)}
+                    className="w-full flex items-center justify-between gap-3 px-5 py-4 hover:bg-[var(--color-accent-purple)]/5 transition-colors"
+                    data-testid="interview-review-model-toggle"
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-lg bg-[var(--color-accent-purple)]/15 border border-[var(--color-accent-purple)]/30 text-[var(--color-accent-purple)] flex items-center justify-center">
+                        <Sparkles size={14} />
+                      </div>
+                      <h3 className="font-clash text-sm font-semibold text-[var(--color-accent-purple)] uppercase tracking-[0.12em]">Model answer</h3>
+                    </div>
+                    {showModelAnswer ? (
+                      <ChevronUp size={16} className="text-[var(--color-accent-purple)]" />
+                    ) : (
+                      <ChevronDown size={16} className="text-[var(--color-accent-purple)]" />
+                    )}
+                  </button>
+                  {showModelAnswer && (
+                    <div className="px-5 pb-5 border-t border-[var(--color-accent-purple)]/20 animate-vv-slide-in">
+                      <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed whitespace-pre-wrap pt-3">
+                        {modelAnswer}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <div className="rounded-2xl px-5 py-4 bg-[var(--color-success)]/6 border border-[var(--color-success)]/25 text-sm font-bricolage text-[var(--color-text-muted)]">
+                You already completed this interview{session?.interview_score != null ? ` with an overall score of ${session.interview_score}%` : ''}. You can step through the questions and review the model answers — your previous evaluations aren&apos;t kept after completion.
+              </div>
+
+              <div className="flex justify-end pt-2 gap-2">
+                {idx > 0 && (
+                  <button
+                    onClick={() => setIdx((i) => Math.max(0, i - 1))}
+                    className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-semibold font-bricolage hover:bg-[var(--color-surface-hover)] transition-all"
+                    data-testid="interview-review-prev"
+                  >
+                    <ArrowLeft size={16} /> Previous
+                  </button>
+                )}
+                <button
+                  onClick={handleNext}
+                  className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
+                  data-testid="interview-review-next"
+                >
+                  {isLast ? 'Back to Session' : 'Next Question'}
                   <ArrowRight size={16} />
                 </button>
               </div>

@@ -87,21 +87,30 @@ export default function QuizPage() {
   const options = useMemo(() => getOptions(q), [q]);
   const correctIndex = useMemo(() => getCorrectIndex(q), [q]);
   const isLast = idx === total - 1;
-  const progress = total ? ((idx + (submitted ? 1 : 0)) / total) * 100 : 0;
+  const isReview = !!session?.quiz_completed;
+  const progress = total ? ((idx + (submitted || isReview ? 1 : 0)) / total) * 100 : 0;
+  // In review mode each question is shown with the correct answer revealed
+  // and explanation visible — no scoring, no DB writes.
+  const reviewSubmitted = isReview ? true : submitted;
+  const reviewSelected = isReview ? correctIndex : selected;
 
   const handleSubmit = useCallback(() => {
-    if (submitted || selected == null || !q) return;
+    if (isReview || submitted || selected == null || !q) return;
     const isCorrect = selected === correctIndex;
     setSubmitted(true);
     setAnswers((prev) => [
       ...prev,
       { question_id: q.id, selected_index: selected, is_correct: isCorrect },
     ]);
-  }, [submitted, selected, q, correctIndex]);
+  }, [isReview, submitted, selected, q, correctIndex]);
 
   const handleNext = useCallback(() => {
-    if (!submitted) return;
+    if (!isReview && !submitted) return;
     if (isLast) {
+      if (isReview) {
+        navigate(`/session/${sessionId}/start`);
+        return;
+      }
       navigate(`/session/${sessionId}/quiz/complete`, {
         state: {
           answers: [...answers],
@@ -119,22 +128,22 @@ export default function QuizPage() {
     setIdx((i) => i + 1);
     setSelected(null);
     setSubmitted(false);
-  }, [submitted, isLast, navigate, sessionId, answers, questions]);
+  }, [isReview, submitted, isLast, navigate, sessionId, answers, questions]);
 
   // Keyboard shortcuts: 1-4 to pick, Enter to submit/next
   useEffect(() => {
     const onKey = (e) => {
       if (e.key >= '1' && e.key <= '4') {
         const n = parseInt(e.key, 10) - 1;
-        if (!submitted && n < options.length) setSelected(n);
+        if (!reviewSubmitted && n < options.length) setSelected(n);
       } else if (e.key === 'Enter') {
-        if (!submitted && selected != null) handleSubmit();
-        else if (submitted) handleNext();
+        if (!reviewSubmitted && selected != null) handleSubmit();
+        else if (reviewSubmitted) handleNext();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [submitted, selected, options.length, handleSubmit, handleNext]);
+  }, [reviewSubmitted, selected, options.length, handleSubmit, handleNext]);
 
   if (loading) {
     return (
@@ -188,7 +197,7 @@ export default function QuizPage() {
 
   const explanation = q.explanation || q.rationale || '';
   const questionText = q.question || q.text || q.prompt || '';
-  const isCorrect = submitted && selected === correctIndex;
+  const isCorrect = reviewSubmitted && reviewSelected === correctIndex;
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative" style={{ overflowX: 'clip' }} data-testid="quiz-page">
@@ -207,9 +216,16 @@ export default function QuizPage() {
               <ArrowLeft size={14} className="group-hover:-translate-x-0.5 transition-transform" />
               Exit Quiz
             </Link>
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]" data-testid="quiz-progress-text">
-              Question {idx + 1} of {total}
-            </span>
+            <div className="flex items-center gap-2">
+              {isReview && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]" data-testid="quiz-review-badge">
+                  <CheckCircle2 size={10} /> REVIEW {session?.quiz_score != null ? `· ${session.quiz_score}%` : ''}
+                </span>
+              )}
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]" data-testid="quiz-progress-text">
+                Question {idx + 1} of {total}
+              </span>
+            </div>
           </div>
           <div className="h-1.5 w-full rounded-full bg-[var(--color-surface)] overflow-hidden">
             <div
@@ -234,14 +250,14 @@ export default function QuizPage() {
           {/* Options */}
           <div className="space-y-3 mb-6" data-testid="quiz-options">
             {options.map((opt, i) => {
-              const isSelected = selected === i;
+              const isSelected = reviewSelected === i;
               const isCorrectOption = i === correctIndex;
-              const showCorrect = submitted && isCorrectOption;
-              const showWrong = submitted && isSelected && !isCorrectOption;
+              const showCorrect = reviewSubmitted && isCorrectOption;
+              const showWrong = reviewSubmitted && isSelected && !isCorrectOption;
 
               let cls =
                 'w-full text-left rounded-2xl border px-5 py-4 flex items-start gap-4 transition-all font-bricolage ';
-              if (submitted) {
+              if (reviewSubmitted) {
                 if (showCorrect) {
                   cls +=
                     'bg-[var(--color-success)]/12 border-[var(--color-success)]/40 text-[var(--color-text)] shadow-[0_0_24px_rgba(16,185,129,0.15)]';
@@ -263,8 +279,8 @@ export default function QuizPage() {
               return (
                 <button
                   key={i}
-                  onClick={() => !submitted && setSelected(i)}
-                  disabled={submitted}
+                  onClick={() => !reviewSubmitted && setSelected(i)}
+                  disabled={reviewSubmitted}
                   className={cls}
                   data-testid={`quiz-option-${i}`}
                   data-selected={isSelected}
@@ -299,7 +315,7 @@ export default function QuizPage() {
           </div>
 
           {/* Explanation */}
-          {submitted && explanation && (
+          {reviewSubmitted && explanation && (
             <div
               className={`rounded-2xl p-5 sm:p-6 border mb-6 animate-vv-slide-in ${
                 isCorrect
@@ -336,7 +352,7 @@ export default function QuizPage() {
 
           {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-2">
-            {!submitted ? (
+            {!reviewSubmitted ? (
               <button
                 onClick={handleSubmit}
                 disabled={selected == null}
@@ -351,7 +367,7 @@ export default function QuizPage() {
                 className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all animate-vv-fade-up"
                 data-testid="quiz-next-btn"
               >
-                {isLast ? 'See Results' : 'Next Question'}
+                {isLast ? (isReview ? 'Back to Session' : 'See Results') : 'Next Question'}
                 <ArrowRight size={16} />
               </button>
             )}

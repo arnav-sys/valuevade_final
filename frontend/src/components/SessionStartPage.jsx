@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, FileText, HelpCircle, MessageSquare, Wrench,
-  CheckCircle2, Circle, Lock, PlayCircle, Target, AlertCircle, RefreshCw, Sparkles,
+  CheckCircle2, Lock, PlayCircle, Target, AlertCircle, RefreshCw, Sparkles,
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
 
@@ -179,12 +179,25 @@ export default function SessionStartPage() {
                     const Icon = p.icon;
                     // Hybrid: quiz counts as attempted (yellow) if done but scored < 70
                     const isAttempted = isDone && p.key === 'quiz' && (session.quiz_score ?? 100) < 70;
+                    // A phase row is interactive if it's the next phase (start it) or
+                    // already done (open in review mode). Future-locked phases stay disabled.
+                    const targetPath = `/session/${sessionId}/${p.path}`;
+                    const isClickable = isDone || isNext;
+                    const Wrapper = isClickable ? 'button' : 'div';
+                    const wrapperProps = isClickable
+                      ? {
+                          onClick: () => navigate(targetPath),
+                          type: 'button',
+                          'aria-label': isDone ? `Review ${p.label}` : `Start ${p.label}`,
+                        }
+                      : {};
                     return (
-                      <div
+                      <Wrapper
                         key={p.key}
-                        className={`glass-card rounded-xl px-4 py-3.5 flex items-center gap-4 transition-all ${
+                        {...wrapperProps}
+                        className={`w-full text-left glass-card rounded-xl px-4 py-3.5 flex items-center gap-4 transition-all ${
                           isNext ? 'border-[var(--color-primary)]/40 shadow-[0_0_24px_rgba(36,107,253,0.12)]' : ''
-                        }`}
+                        } ${isClickable ? 'hover:border-[var(--color-primary)]/40 hover:shadow-[0_0_24px_rgba(36,107,253,0.08)] cursor-pointer' : 'opacity-70'}`}
                         data-testid={`phase-${p.key}`}
                       >
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
@@ -205,18 +218,22 @@ export default function SessionStartPage() {
                             </span>
                             <h3 className="font-clash text-base font-semibold text-[var(--color-text)]">{p.label}</h3>
                           </div>
-                          <p className="text-xs text-[var(--color-text-muted)] font-bricolage">{p.blurb}</p>
+                          <p className="text-xs text-[var(--color-text-muted)] font-bricolage">
+                            {isDone ? 'Review what you covered' : p.blurb}
+                          </p>
                         </div>
                         {isAttempted ? (
-                          <span className="text-[10px] font-mono text-[#F59E0B]" data-testid={`phase-${p.key}-status`}>ATTEMPTED · {session.quiz_score}%</span>
+                          <span className="text-[10px] font-mono text-[#F59E0B]" data-testid={`phase-${p.key}-status`}>REVIEW · {session.quiz_score}%</span>
                         ) : isDone ? (
-                          <span className="text-[10px] font-mono text-[var(--color-success)]" data-testid={`phase-${p.key}-status`}>DONE</span>
+                          <span className="text-[10px] font-mono text-[var(--color-success)] inline-flex items-center gap-1" data-testid={`phase-${p.key}-status`}>
+                            <CheckCircle2 size={11} /> REVIEW
+                          </span>
                         ) : isNext ? (
                           <span className="text-[10px] font-mono text-[var(--color-primary)]" data-testid={`phase-${p.key}-status`}>NEXT</span>
                         ) : (
-                          <Circle size={14} className="text-[var(--color-text-faint)]" />
+                          <Lock size={14} className="text-[var(--color-text-faint)]" />
                         )}
-                      </div>
+                      </Wrapper>
                     );
                   })}
                 </div>

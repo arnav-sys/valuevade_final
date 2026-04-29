@@ -76,6 +76,12 @@ export default function SimulationPage() {
 
   const handleComplete = async ({ tasks_completed, tasks_total, accuracy }) => {
     if (saving) return;
+    // In review mode (already completed once) — skip the DB write and just
+    // navigate the user back to the session start page.
+    if (session?.simulation_completed) {
+      navigate(`/session/${sessionId}/start`);
+      return;
+    }
     setSaving(true);
     try {
       const scoreData = {
@@ -93,6 +99,8 @@ export default function SimulationPage() {
       setSaving(false);
     }
   };
+
+  const isReview = !!session?.simulation_completed;
 
   if (loading) {
     return (
@@ -180,7 +188,12 @@ export default function SimulationPage() {
                 </div>
               </div>
             </div>
-            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]" data-testid="simulation-phase-badge">
+            <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] flex items-center gap-2" data-testid="simulation-phase-badge">
+              {isReview && (
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]" data-testid="simulation-review-badge">
+                  REVIEW
+                </span>
+              )}
               Phase 4 / 4
             </span>
           </div>

@@ -1311,6 +1311,11 @@ export default function NotesPage() {
 
   const complete = useCallback(async () => {
     if (completing || !session) return;
+    // In review mode, "complete" just navigates back without re-marking.
+    if (session.notes_completed) {
+      navigate(`/session/${sessionId}/start`);
+      return;
+    }
     setCompleting(true);
     const timeSpent = Math.round((Date.now() - startedAt) / 1000);
     try {
@@ -1349,6 +1354,7 @@ export default function NotesPage() {
   };
 
   const currentCard = useMemo(() => cards[idx], [cards, idx]);
+  const isReview = !!session?.notes_completed;
 
   // ------------- render -------------
   return (
@@ -1374,6 +1380,11 @@ export default function NotesPage() {
               <span className="text-sm font-bricolage text-[var(--color-text)] truncate" data-testid="notes-session-title">
                 {session.title}
               </span>
+              {isReview && (
+                <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)] shrink-0" data-testid="notes-review-badge">
+                  <CheckCircle2 size={10} /> REVIEW
+                </span>
+              )}
             </div>
           )}
 
@@ -1496,15 +1507,25 @@ export default function NotesPage() {
             </div>
 
             {isLast ? (
-              <button
-                onClick={complete}
-                disabled={completing}
-                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bricolage font-semibold bg-gradient-to-r from-[var(--color-success)] to-emerald-500 text-white hover:shadow-[0_0_24px_rgba(16,185,129,0.4)] transition-all disabled:opacity-60"
-                data-testid="notes-complete"
-              >
-                {completing ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
-                Complete Notes
-              </button>
+              isReview ? (
+                <Link
+                  to={`/session/${sessionId}/start`}
+                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bricolage font-semibold bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)] transition-all"
+                  data-testid="notes-review-back"
+                >
+                  <CheckCircle2 size={14} /> Back to Session
+                </Link>
+              ) : (
+                <button
+                  onClick={complete}
+                  disabled={completing}
+                  className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bricolage font-semibold bg-gradient-to-r from-[var(--color-success)] to-emerald-500 text-white hover:shadow-[0_0_24px_rgba(16,185,129,0.4)] transition-all disabled:opacity-60"
+                  data-testid="notes-complete"
+                >
+                  {completing ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
+                  Complete Notes
+                </button>
+              )
             ) : (
               <button
                 onClick={goNext}
