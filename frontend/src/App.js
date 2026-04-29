@@ -92,7 +92,7 @@ function App() {
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />
 
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
-                  <Route path="/courses" element={<ProtectedRoute><CoursesPage /></ProtectedRoute>} />
+                  <Route path="/courses" element={<CoursesPage />} />
                   <Route path="/course/:courseId" element={<ProtectedRoute><CourseDetailsPage /></ProtectedRoute>} />
                   <Route path="/course/:courseId/customize" element={<ProtectedRoute><CustomizePage /></ProtectedRoute>} />
                   <Route path="/course/:courseId/preview" element={<ProtectedRoute><PreviewPage /></ProtectedRoute>} />

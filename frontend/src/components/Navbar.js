@@ -52,6 +52,13 @@ export default function Navbar({ onJoinWaitlist }) {
 
         {/* Center links - desktop */}
         <div className="hidden md:flex items-center gap-8">
+          <Link
+            to="/courses"
+            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage"
+            data-testid="nav-link-courses"
+          >
+            Courses
+          </Link>
           {navLinks.map((link) => (
             <button
               key={link.label}
@@ -80,13 +87,6 @@ export default function Navbar({ onJoinWaitlist }) {
             <div className="w-20 h-8" />
           ) : isLoggedIn ? (
             <>
-              <Link
-                to="/courses"
-                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
-                data-testid="nav-courses-link"
-              >
-                Courses
-              </Link>
               <Link
                 to="/dashboard"
                 className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
@@ -142,6 +142,14 @@ export default function Navbar({ onJoinWaitlist }) {
           }}
           data-testid="mobile-menu-overlay"
         >
+          <Link
+            to="/courses"
+            onClick={() => setMenuOpen(false)}
+            className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
+            data-testid="mobile-nav-courses"
+          >
+            Courses
+          </Link>
           {navLinks.map((link) => (
             <button
               key={link.label}
@@ -165,14 +173,6 @@ export default function Navbar({ onJoinWaitlist }) {
 
           {loading ? null : isLoggedIn ? (
             <>
-              <Link
-                to="/courses"
-                onClick={() => setMenuOpen(false)}
-                className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
-                data-testid="mobile-nav-courses"
-              >
-                Courses
-              </Link>
               <Link
                 to="/dashboard"
                 onClick={() => setMenuOpen(false)}

@@ -205,14 +205,33 @@ export default function CoursesPage() {
             <button onClick={toggleTheme} className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all" data-testid="courses-theme-toggle" aria-label="Toggle theme">
               {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
             </button>
-            {profile && (
-              <span className="text-sm text-[var(--color-text-muted)] font-bricolage hidden sm:block" data-testid="courses-user-name">
-                {profile.full_name}
-              </span>
+            {user ? (
+              <>
+                {profile && (
+                  <span className="text-sm text-[var(--color-text-muted)] font-bricolage hidden sm:block" data-testid="courses-user-name">
+                    {profile.full_name}
+                  </span>
+                )}
+                <Link
+                  to="/dashboard"
+                  className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage hidden sm:inline-block"
+                  data-testid="courses-dashboard-link"
+                >
+                  Dashboard
+                </Link>
+                <button onClick={signOut} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage" data-testid="courses-signout-button">
+                  <LogOut size={16} /> Sign Out
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/login"
+                className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
+                data-testid="courses-login-cta"
+              >
+                Log In
+              </Link>
             )}
-            <button onClick={signOut} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage" data-testid="courses-signout-button">
-              <LogOut size={16} /> Sign Out
-            </button>
           </div>
         </div>
       </header>
