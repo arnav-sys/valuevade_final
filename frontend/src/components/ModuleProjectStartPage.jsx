@@ -29,13 +29,19 @@ export default function ModuleProjectStartPage() {
       setError(null);
       try {
         // 1. user_module_projects + joined user_modules
-        const { data: up, error: upErr } = await supabase
+        // Use array fetch (not .single()) so duplicate rows don't crash the page.
+        // We pick the most recently updated row defensively.
+        const { data: upRows, error: upErr } = await supabase
           .from('user_module_projects')
           .select('*, user_modules(id, title, order_index, enrollment_id, is_completed)')
           .eq('user_module_id', moduleId)
-          .single();
+          .order('updated_at', { ascending: false, nullsFirst: false });
         if (upErr) throw upErr;
         if (!mounted) return;
+        const up = Array.isArray(upRows) && upRows.length > 0 ? upRows[0] : null;
+        if (!up) {
+          throw new Error('No project found for this module yet. Please complete all sessions first.');
+        }
         setUserProject(up);
         setModule(up.user_modules || null);
 

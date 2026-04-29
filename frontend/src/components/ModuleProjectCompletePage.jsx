@@ -72,13 +72,15 @@ export default function ModuleProjectCompletePage() {
       setLoading(true);
       setError(null);
       try {
-        const { data: up, error: upErr } = await supabase
+        const { data: upRows, error: upErr } = await supabase
           .from('user_module_projects')
           .select('*, user_modules(id, title, order_index, enrollment_id, is_completed)')
           .eq('user_module_id', moduleId)
-          .single();
+          .order('updated_at', { ascending: false, nullsFirst: false });
         if (upErr) throw upErr;
         if (!mounted) return;
+        const up = Array.isArray(upRows) && upRows.length > 0 ? upRows[0] : null;
+        if (!up) throw new Error('No project found for this module.');
         setModule(up.user_modules || null);
 
         const [mpRes, sibRes] = await Promise.all([

@@ -305,6 +305,10 @@ export default function DashboardPage() {
       sessionsByModule[s.user_module_id].push(s);
     });
 
+    // Build projectByModule lookup inside computed so we can break for project-pending state
+    const projectMap = {};
+    moduleProjects.forEach((p) => { projectMap[p.user_module_id] = p; });
+
     let currentModule = null;
     let currentSession = null;
     for (const m of modules) {
@@ -313,6 +317,14 @@ export default function DashboardPage() {
       if (incomplete) {
         currentModule = m;
         currentSession = incomplete;
+        break;
+      }
+      // All sessions in this module are complete — but if its project is still
+      // pending, the user should finish that BEFORE jumping to the next module.
+      const project = projectMap[m.id];
+      if (ms.length > 0 && project && !project.is_completed) {
+        currentModule = m;
+        currentSession = null;
         break;
       }
     }
@@ -335,7 +347,7 @@ export default function DashboardPage() {
       allModulesComplete,
       sessionsByModule,
     };
-  }, [enrollment, modules, sessions]);
+  }, [enrollment, modules, sessions, moduleProjects]);
 
   const projectByModule = useMemo(() => {
     const map = {};
