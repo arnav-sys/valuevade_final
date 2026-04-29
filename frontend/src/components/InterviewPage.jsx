@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 
 const MIN_CHARS = 50;
+const MAX_CHARS = 2000; // ~300–350 words — plenty for a thorough finance answer
 const TYPING_MS = 900;
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -197,7 +198,7 @@ export default function InterviewPage() {
   }, [phase, idx]);
 
   const [sessionTitle, setSessionTitle] = useState('');
-  const canSubmit = answer.trim().length >= MIN_CHARS && phase === 'answering';
+  const canSubmit = answer.trim().length >= MIN_CHARS && answer.length <= MAX_CHARS && phase === 'answering';
 
   const handleSubmit = useCallback(async () => {
     if (!canSubmit || !q) return;
@@ -414,34 +415,50 @@ export default function InterviewPage() {
                 <div className="rounded-2xl rounded-tr-sm p-1 bg-gradient-to-br from-[var(--color-primary)]/30 to-[var(--color-accent-purple)]/30">
                   <textarea
                     value={answer}
-                    onChange={(e) => setAnswer(e.target.value)}
+                    onChange={(e) => setAnswer(e.target.value.slice(0, MAX_CHARS))}
                     disabled={phase === 'evaluating'}
                     placeholder="Think through your answer. Structure it — conclusion first, then reasoning…"
                     rows={6}
+                    maxLength={MAX_CHARS}
                     className="w-full rounded-[14px] px-4 py-3.5 bg-[var(--bg-primary)] text-[var(--color-text)] text-sm sm:text-base font-bricolage placeholder:text-[var(--color-text-faint)] resize-none focus:outline-none leading-relaxed disabled:opacity-60"
                     data-testid="interview-response-textarea"
                   />
                 </div>
                 <div className="flex items-center justify-between mt-2 gap-3 flex-wrap">
-                  <span
-                    className={`text-[10px] font-mono ${
-                      answer.trim().length >= MIN_CHARS
-                        ? 'text-[var(--color-success)]'
-                        : 'text-[var(--color-text-muted)]'
-                    }`}
-                    data-testid="interview-char-count"
-                  >
-                    {answer.trim().length} / {MIN_CHARS} chars min
-                  </span>
+                  {(() => {
+                    const len = answer.length;
+                    const trimmedLen = answer.trim().length;
+                    const remaining = MAX_CHARS - len;
+                    const tooShort = trimmedLen < MIN_CHARS;
+                    const nearMax = remaining <= 100;
+                    const atMax = remaining <= 0;
+                    const colorCls = atMax
+                      ? 'text-[var(--color-error)]'
+                      : nearMax
+                      ? 'text-[#F59E0B]'
+                      : tooShort
+                      ? 'text-[var(--color-text-muted)]'
+                      : 'text-[var(--color-success)]';
+                    return (
+                      <span
+                        className={`text-[10px] font-mono ${colorCls}`}
+                        data-testid="interview-char-count"
+                      >
+                        {tooShort
+                          ? `${trimmedLen} / ${MIN_CHARS} chars min`
+                          : `${len} / ${MAX_CHARS} chars`}
+                      </span>
+                    );
+                  })()}
                   <div className="flex items-center gap-2 flex-wrap justify-end">
                     <VoiceInputButton
-                      disabled={phase === 'evaluating'}
+                      disabled={phase === 'evaluating' || answer.length >= MAX_CHARS}
                       prompt={questions[idx]?.question}
                       onTranscribed={(text) => {
                         setAnswer((prev) => {
                           const trimmed = (prev || '').trimEnd();
-                          if (!trimmed) return text;
-                          return `${trimmed} ${text}`;
+                          const merged = !trimmed ? text : `${trimmed} ${text}`;
+                          return merged.slice(0, MAX_CHARS);
                         });
                       }}
                     />
