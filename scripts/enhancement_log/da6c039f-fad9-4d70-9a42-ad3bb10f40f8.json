@@ -1,0 +1,255 @@
+{
+  "id": "da6c039f-fad9-4d70-9a42-ad3bb10f40f8",
+  "label": "M4 S6 | The Three Schedule Formulas — Working Capital, PP&E, and Dep",
+  "before": {
+    "formulas": [
+      {
+        "name": "Working Capital Days-Based Forecast",
+        "formula": "Trade Receivables = (Receivable Days / 365) × Revenue | Inventory = (Inventory Days / 365) × COGS | Trade Payables = (Payable Days / 365) × COGS",
+        "variables": [
+          {
+            "symbol": "Receivable Days",
+            "meaning": "Forecast DSO based on historical pattern and business model — typically held stable for mature businesses, flexed for changing credit terms"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "From Session 4 forecast — top-line revenue in rupees. Used as denominator for DSO"
+          },
+          {
+            "symbol": "Inventory Days",
+            "meaning": "Forecast DIO based on business structure — retailers hold inventory longer if they have multiple SKUs or seasonal patterns"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "From Session 5 forecast — Cost of Goods Sold. Used as denominator for DIO and DPO because inventory and payables relate to cost of goods, not revenue"
+          },
+          {
+            "symbol": "Payable Days",
+            "meaning": "Forecast DPO based on supplier negotiation power — companies with scale typically get longer payable terms"
+          }
+        ],
+        "worked_example": "Titan FY24: Revenue ₹47,100 cr, COGS ₹33,810 cr. Receivables ₹620 cr → DSO = (620/47,100) × 365 = 4.8 days. Inventory ₹13,200 cr → DIO = (13,200/33,810) × 365 = 142 days (mostly gold and diamond stock — structurally high for jewellery). Payables ₹8,400 cr → DPO = (8,400/33,810) × 365 = 91 days (Titan has strong supplier payment terms due to scale and gold-on-lease arrangement). CCC = 142 + 4.8 − 91 = 55.8 days. For FY25E, I assume stable days: DSO 5, DIO 140, DPO 90. Applied to FY25E revenue ₹54,330 cr and FY25E COGS ₹40,638 cr: Receivables = (5/365) × 54,330 = ₹745 cr. Inventory = (140/365) × 40,638 = ₹15,586 cr. Payables = (90/365) × 40,638 = ₹10,019 cr. Net Working Capital FY25E = 745 + 15,586 − 10,019 = ₹6,312 cr (vs FY24 ₹5,420 cr). Change in NWC = ₹892 cr — this will be a cash OUTFLOW on the Cash Flow Statement (CFO reduced by ₹892 cr).",
+        "sensitivity_note": "For Titan, a 10-day increase in Inventory Days (from 140 to 150) at FY25E COGS of ₹40,638 cr adds ₹1,113 cr of inventory — a ₹1,113 cr cash outflow in that year. Over a 5-year forecast, working capital days assumptions are the single biggest balance sheet risk. PC Jeweller's collapse was driven by DSO moving from 80 to 169 over 3 years — analysts who tracked this carefully called the stock before it collapsed."
+      },
+      {
+        "name": "PP&E Roll-Forward",
+        "formula": "Closing Gross Block = Opening Gross Block + Capex − Disposals | Closing Net Block = Opening Net Block + Capex − Disposals − Depreciation | Closing Accumulated Depreciation = Opening Accumulated Depreciation + Depreciation − Disposal-related depreciation write-off",
+        "variables": [
+          {
+            "symbol": "Opening Gross Block",
+            "meaning": "Prior year closing gross block — the historical cost of all PP&E still on the books"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Capital expenditure during the year — cash spent on acquiring new PP&E"
+          },
+          {
+            "symbol": "Disposals",
+            "meaning": "Original cost of assets sold or written off — reduces gross block"
+          },
+          {
+            "symbol": "Depreciation",
+            "meaning": "Annual depreciation charge based on useful life assumption applied to gross block"
+          }
+        ],
+        "worked_example": "Titan FY24 PP&E schedule. Opening Gross Block FY24 = ₹4,200 cr. Capex FY24 = ₹680 cr (for new stores + existing store refresh + IT infrastructure). Disposals = ₹20 cr (minor equipment write-offs). Closing Gross Block FY24 = 4,200 + 680 − 20 = ₹4,860 cr. Opening Accumulated Depreciation FY24 = ₹2,900 cr. Depreciation FY24 = ₹680 cr (about 14% of opening gross block — reflects ~7 years average remaining useful life). Disposal adjustments = ₹18 cr. Closing Accumulated Depreciation = 2,900 + 680 − 18 = ₹3,562 cr. Net Block FY24 = 4,860 − 3,562 = ₹1,298 cr. For FY25E forecast: Assume capex = 3.5% of revenue = ₹1,902 cr (for ~175 new stores at ~₹8-10 cr per store + maintenance). Disposals = ₹25 cr. Opening Gross Block FY25 = ₹4,860 cr. Closing Gross Block FY25 = 4,860 + 1,902 − 25 = ₹6,737 cr. Depreciation FY25 = compute based on useful life — new assets depreciated at half-year convention for first year (₹1,902 × 0.5 / 10 = ₹95 cr new asset depreciation) + existing net block depreciated at remaining life (₹1,298 × 14% = ₹182 cr existing) + prior year capex full year depreciation (₹680 × 0.5 / 10 + other rolls) ≈ ₹760 cr. Net Block FY25E = 6,737 − (3,562 + 760 − 23) = ₹2,438 cr.",
+        "sensitivity_note": "The PP&E roll-forward is the single biggest source of Balance Sheet complexity for beginners. Common errors: forgetting to remove disposals from accumulated depreciation, using wrong useful life (too long = under-depreciation, too short = over-depreciation), missing the half-year convention for new assets. The rule: every rupee of capex shows up on the asset side, and eventually depreciates off — it must balance over the asset's useful life."
+      },
+      {
+        "name": "Capex Forecasting — Maintenance vs Growth Split",
+        "formula": "Maintenance Capex ≈ Depreciation (steady-state replacement) | Growth Capex = f(Revenue Growth, Store Count Change, Capacity Addition) | Total Capex = Maintenance + Growth",
+        "variables": [
+          {
+            "symbol": "Maintenance Capex",
+            "meaning": "Capex needed to maintain existing capacity — replacing worn-out equipment, refurbishing existing stores, IT upgrades. Typically approximates depreciation in steady state."
+          },
+          {
+            "symbol": "Growth Capex",
+            "meaning": "Capex for new capacity — new stores, new plants, new product lines. Usually tied to specific expansion plans in management guidance."
+          },
+          {
+            "symbol": "Total Capex",
+            "meaning": "Sum of maintenance and growth — the full cash outflow for PP&E investment in the year"
+          }
+        ],
+        "worked_example": "Titan FY25E capex build. Approach 1 — Top-down: capex as % of revenue. Historical (FY22-24) averaged 2.8% of revenue. With 175 new stores planned and Eyewear expansion, assume 3.5% for FY25E. Total Capex = 3.5% × ₹54,330 cr = ₹1,902 cr. Approach 2 — Bottom-up: 175 new Jewellery stores × ₹7 cr/store (store fit-out + inventory launch) = ₹1,225 cr. 180 new Eyewear stores × ₹1.5 cr/store = ₹270 cr. IT infrastructure and systems = ₹200 cr. Maintenance capex (existing stores refresh, equipment) = ₹250 cr. Total = ₹1,945 cr. Reconciliation: top-down ₹1,902 cr vs bottom-up ₹1,945 cr — consistent within 2%. Use bottom-up as primary since it's more defensible. Note: of the ₹1,945 cr, maintenance capex is ~₹250 cr and growth capex is ~₹1,695 cr. Depreciation of ₹760 cr in FY25 is slightly above maintenance capex — means Titan is currently under-investing in replacement relative to its depreciation rate, OR the existing asset base was over-depreciated. This kind of cross-check is where analysts catch subtle signals.",
+        "sensitivity_note": "Maintenance capex ≈ Depreciation is a rule of thumb, not a law. For aging asset bases it may exceed depreciation; for fast-growing businesses it's usually below. The key test: if a company's capex is persistently below depreciation, either (a) the asset base is being run into the ground (dangerous), (b) accounting depreciation exceeds economic depreciation (okay), or (c) capex is genuinely not needed for reinvestment. For Indian capital-intensive businesses like steel, cement, power — watch this ratio carefully. Undershooting reinvestment is a classic value trap signal."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + + (insert row)",
+        "Cmd + T (toggle references)",
+        "Cmd + D (fill down)"
+      ],
+      "windows": [
+        "Ctrl + Shift + + (insert row — useful when adding PP&E line items)",
+        "F4 (toggle absolute references — critical for days-based formulas that use same denominator across years)",
+        "Ctrl + D (fill down — propagates formulas across forecast years)",
+        "Alt + H + O + H (hide row — for clean presentation of detailed schedules)",
+        "Ctrl + 9 / Ctrl + 0 (hide/unhide rows — navigate dense schedules)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Working Capital Days-Based Forecast",
+        "formula": "Trade Receivables = (Receivable Days / 365) × Revenue | Inventory = (Inventory Days / 365) × COGS | Trade Payables = (Payable Days / 365) × COGS",
+        "variables": [
+          {
+            "symbol": "Receivable Days",
+            "meaning": "Forecast DSO based on historical pattern and business model — typically held stable for mature businesses, flexed for changing credit terms"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "From Session 4 forecast — top-line revenue in rupees. Used as denominator for DSO"
+          },
+          {
+            "symbol": "Inventory Days",
+            "meaning": "Forecast DIO based on business structure — retailers hold inventory longer if they have multiple SKUs or seasonal patterns"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "From Session 5 forecast — Cost of Goods Sold. Used as denominator for DIO and DPO because inventory and payables relate to cost of goods, not revenue"
+          },
+          {
+            "symbol": "Payable Days",
+            "meaning": "Forecast DPO based on supplier negotiation power — companies with scale typically get longer payable terms"
+          }
+        ],
+        "plain_english": "This formula converts balance-sheet working capital items into a forecast by anchoring them to a days measure. Instead of guessing absolute receivables or inventory amounts, you estimate how many days of revenue or cost the company holds. This is more stable, more comparable across competitors, and more resistant to shocks in revenue — a key edge in equity research.",
+        "worked_example": {
+          "problem": "Forecast Titan's working capital for FY25E given FY24 actuals: Revenue ₹47,100 cr, COGS ₹33,810 cr, Receivables ₹620 cr, Inventory ₹13,200 cr, Payables ₹8,400 cr. FY25E Revenue is forecast at ₹54,330 cr and COGS at ₹40,638 cr.",
+          "steps": [
+            "Calculate FY24 historical days: DSO = (620/47,100) × 365 = 4.8 days. DIO = (13,200/33,810) × 365 = 142 days. DPO = (8,400/33,810) × 365 = 91 days.",
+            "Interpret the drivers: DSO 4.8 days is very low — Titan is mostly retail (fast payment). DIO 142 days is structurally high because Titan's inventory is gold and diamonds (slow-moving, high-value, partly on-lease). DPO 91 days reflects Titan's supplier power and gold-on-lease arrangements.",
+            "Assume stable days for FY25E (mature, stable business): DSO 5, DIO 140, DPO 90.",
+            "Apply to FY25E revenue and COGS: Receivables = (5/365) × 54,330 = ₹745 cr. Inventory = (140/365) × 40,638 = ₹15,586 cr. Payables = (90/365) × 40,638 = ₹10,019 cr.",
+            "Calculate Net Working Capital: NWC FY25E = 745 + 15,586 − 10,019 = ₹6,312 cr. Compare to FY24: ₹5,420 cr (estimate from given items). Change = ₹892 cr (cash outflow on CFO)."
+          ],
+          "result": "FY25E Working Capital: Receivables ₹745 cr, Inventory ₹15,586 cr, Payables ₹10,019 cr. Net Working Capital ₹6,312 cr. Incremental NWC tie-up ₹892 cr reduces free cash flow.",
+          "insight": "Days-based forecasting reveals that Titan's NWC growth is driven almost entirely by inventory (gold holdings and stock for new stores). The low DSO and moderate DPO are stable, so they're not risk drivers. But inventory sensitivity is high — a 10-day slip in DIO adds ₹1,113 cr of cash tied up. Over multi-year forecasts, working capital days are the single biggest balance-sheet assumption risk; PC Jeweller's DSO expanded from 80 to 169 days over three years before collapse, a signal careful analysts would have flagged early."
+        },
+        "sensitivity_note": "For Titan, a 10-day increase in Inventory Days (from 140 to 150) at FY25E COGS of ₹40,638 cr adds ₹1,113 cr of inventory — a ₹1,113 cr cash outflow in that year. Over a 5-year forecast, working capital days assumptions are the single biggest balance sheet risk. PC Jeweller's collapse was driven by DSO moving from 80 to 169 over 3 years — analysts who tracked this carefully called the stock before it collapsed."
+      },
+      {
+        "name": "PP&E Roll-Forward",
+        "formula": "Closing Gross Block = Opening Gross Block + Capex − Disposals | Closing Net Block = Opening Net Block + Capex − Disposals − Depreciation | Closing Accumulated Depreciation = Opening Accumulated Depreciation + Depreciation − Disposal-related depreciation write-off",
+        "variables": [
+          {
+            "symbol": "Opening Gross Block",
+            "meaning": "Prior year closing gross block — the historical cost of all PP&E still on the books"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Capital expenditure during the year — cash spent on acquiring new PP&E"
+          },
+          {
+            "symbol": "Disposals",
+            "meaning": "Original cost of assets sold or written off — reduces gross block"
+          },
+          {
+            "symbol": "Depreciation",
+            "meaning": "Annual depreciation charge based on useful life assumption applied to gross block"
+          },
+          {
+            "symbol": "Opening Accumulated Depreciation",
+            "meaning": "Prior year closing accumulated depreciation — total depreciation charged to date"
+          },
+          {
+            "symbol": "Disposal-related depreciation write-off",
+            "meaning": "Accumulated depreciation on assets disposed — must be removed when asset is sold"
+          }
+        ],
+        "plain_english": "The PP&E roll-forward tracks how the balance sheet's property, plant, and equipment changes year to year. Every capex dollar goes on the books at cost (gross block), then systematically depreciates off over its useful life into accumulated depreciation. Net block is what's left. This schedule forces balance: all capex in, all depreciation out, over the asset's life.",
+        "computation": [
+          "Start with opening gross block (prior year closing).",
+          "Add capex (new purchases at cost).",
+          "Subtract disposals (removal of old cost).",
+          "Result: closing gross block.",
+          "Separately, track accumulated depreciation: opening + depreciation charge − depreciation on disposed assets = closing accumulated depreciation.",
+          "Net block = closing gross block − closing accumulated depreciation.",
+          "Verify: opening net block + capex − disposals − depreciation = closing net block (alternative calculation for cross-check)."
+        ],
+        "worked_example": {
+          "problem": "Build Titan's PP&E schedule for FY24 actual and FY25E forecast. FY24 opening gross block ₹4,200 cr, capex ₹680 cr, disposals ₹20 cr, depreciation ₹680 cr, opening accumulated depreciation ₹2,900 cr, disposal-related depreciation write-off ₹18 cr.",
+          "steps": [
+            "FY24 Closing Gross Block: 4,200 + 680 − 20 = ₹4,860 cr.",
+            "FY24 Closing Accumulated Depreciation: 2,900 + 680 − 18 = ₹3,562 cr.",
+            "FY24 Closing Net Block: 4,860 − 3,562 = ₹1,298 cr.",
+            "FY25E forecast build: Plan 175 new Jewellery stores at ₹7 cr/store + 180 Eyewear stores at ₹1.5 cr/store + IT and systems = ₹1,695 cr growth capex. Maintenance capex (existing store refresh, equipment) = ₹250 cr. Total capex = ₹1,945 cr.",
+            "FY25E Opening Gross Block: ₹4,860 cr. Assume disposals ₹25 cr. Closing Gross Block FY25E: 4,860 + 1,945 − 25 = ₹6,780 cr.",
+            "FY25E Depreciation: Apply useful life and half-year convention. Existing net block depreciation = ₹1,298 × 14% = ₹182 cr. Prior year capex (FY24) full-year depreciation = ₹680 / 10 = ₹68 cr. New capex (FY25) half-year depreciation = ₹1,945 × 0.5 / 10 = ₹97 cr. Rough total ≈ ₹760 cr (with rounding for other rolls).",
+            "FY25E Closing Accumulated Depreciation: 3,562 + 760 − 23 = ₹4,299 cr (assume ₹23 cr disposal write-off).",
+            "FY25E Closing Net Block: 6,780 − 4,299 = ₹2,481 cr."
+          ],
+          "result": "FY24 PP&E: Gross Block ₹4,860 cr, Accumulated Depreciation ₹3,562 cr, Net Block ₹1,298 cr. FY25E PP&E: Gross Block ₹6,780 cr, Accumulated Depreciation ₹4,299 cr, Net Block ₹2,481 cr. Capex intensity (capex/revenue) FY25E = 3.6%.",
+          "insight": "Titan's net block grows from ₹1,298 cr to ₹2,481 cr (91% growth) even though depreciation is almost equal to maintenance capex. This is because growth capex (new stores) far exceeds maintenance. The ₹2,481 cr net block represents real, productive assets in new stores and systems — this is a value-add if returns exceed WACC, a value-destroy if they don't. Note how capex intensity (3.6% of revenue) slightly exceeds depreciation as a % of revenue — Titan is still in expansion mode, not yet in steady-state harvest mode."
+        },
+        "sensitivity_note": "The PP&E roll-forward is the single biggest source of Balance Sheet complexity for beginners. Common errors: forgetting to remove disposals from accumulated depreciation, using wrong useful life (too long = under-depreciation, too short = over-depreciation), missing the half-year convention for new assets. The rule: every rupee of capex shows up on the asset side, and eventually depreciates off — it must balance over the asset's useful life."
+      },
+      {
+        "name": "Capex Forecasting — Maintenance vs Growth Split",
+        "formula": "Maintenance Capex ≈ Depreciation (steady-state replacement) | Growth Capex = f(Revenue Growth, Store Count Change, Capacity Addition) | Total Capex = Maintenance + Growth",
+        "variables": [
+          {
+            "symbol": "Maintenance Capex",
+            "meaning": "Capex needed to maintain existing capacity — replacing worn-out equipment, refurbishing existing stores, IT upgrades. Typically approximates depreciation in steady state."
+          },
+          {
+            "symbol": "Growth Capex",
+            "meaning": "Capex for new capacity — new stores, new plants, new product lines. Usually tied to specific expansion plans in management guidance."
+          },
+          {
+            "symbol": "Total Capex",
+            "meaning": "Sum of maintenance and growth — the full cash outflow for PP&E investment in the year"
+          },
+          {
+            "symbol": "Revenue Growth",
+            "meaning": "Percentage increase in revenue year-over-year — often correlated with growth capex needs"
+          },
+          {
+            "symbol": "Store Count Change",
+            "meaning": "Net new stores opened in the year — each new store requires a specific capex outlay"
+          }
+        ],
+        "plain_english": "Capex consists of two economic purposes: maintenance (keeping the lights on) and growth (expanding the business). Maintenance capex is typically stable and approximates depreciation; growth capex is lumpier and tied to management's expansion strategy. Separating the two helps you assess capex quality and sustainability, and catch red flags when companies cut maintenance capex to artificially inflate free cash flow.",
+        "computation": [
+          "Estimate maintenance capex: use historical depreciation or management guidance on refurbishment cycles.",
+          "Estimate growth capex: work bottom-up from expansion plans (new store count, new facilities, capacity additions) or top-down from capex intensity (% of revenue) for comparable peers.",
+          "Reconcile: ensure bottom-up store capex + IT + systems ≈ top-down capex % assumption.",
+          "Sum: total capex = maintenance + growth.",
+          "Sensitivity: stress what happens if expansion plans are cut in half (recession scenario) or accelerated (bull case)."
+        ],
+        "worked_example": {
+          "problem": "Forecast Titan's FY25E capex. FY24 capex was ₹680 cr (2.8% of revenue). FY25E revenue forecast is ₹54,330 cr. Management has guided 175 new Jewellery stores and 180 new Eyewear stores. Build a bottom-up capex model and reconcile to top-down.",
+          "steps": [
+            "Top-down approach: historical capex intensity 2.8%, but with store expansion assume 3.5% for FY25E. Total = 3.5% × 54,330 = ₹1,902 cr.",
+            "Bottom-up approach: 175 new Jewellery stores × ₹7 cr/store (design, fit-out, initial inventory) = ₹1,225 cr. 180 new Eyewear stores × ₹1.5 cr/store = ₹270 cr. IT infrastructure upgrade = ₹200 cr. Maintenance capex for existing 300+ stores (refresh, equipment replacement) = ₹250 cr. Total bottom-up = ₹1,945 cr.",
+            "Reconciliation: top-down ₹1,902 cr vs bottom-up ₹1,945 cr. Difference 2.3% — well within tolerance. Use bottom-up as primary since it's fully justified.",
+            "Maintenance vs growth split: Maintenance capex = ₹250 cr. Growth capex = ₹1,945 − 250 = ₹1,695 cr. Growth capex is 87% of total — reflects expansion phase.",
+            "Cross-check against depreciation FY25E: estimated at ₹760 cr. Maintenance capex ₹250 cr is below depreciation — suggests either (a) asset base depreciates faster than replacement needs (possible), or (b) under-investment in store refresh (watch this)."
+          ],
+          "result": "FY25E Capex: Total ₹1,945 cr (3.6% of revenue). Maintenance ₹250 cr, Growth ₹1,695 cr. New store openings: 355 (Jewellery + Eyewear). Average capex per new store ≈ ₹4.8 cr (blended).",
+          "insight": "Titan's capex is heavily growth-driven, but the maintenance capex of only ₹250 cr against depreciation of ₹760 cr warrants scrutiny. This could mean: (1) existing stores need less capex than the accounting depreciation suggests (plausible for a modern, well-maintained chain), or (2) Titan is underinvesting in store refresh relative to its depreciation expense (riskier). Monitor this ratio over the forecast period — if it remains negative, check management guidance on store refresh timelines. A company that starves maintenance capex eventually becomes a value trap."
+        },
+        "sensitivity_note": "Maintenance capex ≈ Depreciation is a rule of thumb, not a law. For aging asset bases it may exceed depreciation; for fast-growing businesses it's usually below. The key test: if a company's capex is persistently below depreciation, either (a) the asset base is being run into the ground (dangerous), (b) accounting depreciation exceeds economic depreciation (okay), or (c) capex is genuinely not needed for reinvestment. For Indian capital-intensive businesses like steel, cement, power — watch this ratio carefully. Undershooting reinvestment is a classic value trap signal."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + + (insert row)",
+        "Cmd + T (toggle references)",
+        "Cmd + D (fill down)"
+      ],
+      "windows": [
+        "Ctrl + Shift + + (insert row — useful when adding PP&E line items)",
+        "F4 (toggle absolute references — critical for days-based formulas that use same denominator across years)",
+        "Ctrl + D (fill down — propagates formulas across forecast years)",
+        "Alt + H + O + H (hide row — for clean presentation of detailed schedules)",
+        "Ctrl + 9 / Ctrl + 0 (hide/unhide rows — navigate dense schedules)"
+      ]
+    }
+  }
+}

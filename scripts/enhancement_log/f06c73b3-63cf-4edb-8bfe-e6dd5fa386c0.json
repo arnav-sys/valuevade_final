@@ -1,0 +1,215 @@
+{
+  "id": "f06c73b3-63cf-4edb-8bfe-e6dd5fa386c0",
+  "label": "M9 S9 | The Cash Flow Formula Arsenal",
+  "before": {
+    "formulas": [
+      {
+        "name": "OCF / Net Profit Ratio",
+        "formula": "OCF / Net Profit Ratio = Operating Cash Flow / Net Profit",
+        "variables": [
+          {
+            "symbol": "Operating Cash Flow",
+            "meaning": "Cash from operations, reported on the cash flow statement"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit after tax attributable to shareholders, reported on the income statement"
+          }
+        ],
+        "worked_example": "HUL FY23: OCF = ₹10,400 Cr, Net Profit = ₹9,962 Cr. OCF/NP = 10,400/9,962 = 1.04x or 104%. Exceptional earnings quality — every rupee of reported profit converts to slightly more than a rupee of cash. Classic signature of a high-quality consumer staple. Compare Asian Paints FY23: OCF ≈ ₹5,200 Cr, Net Profit = ₹4,106 Cr. OCF/NP = 126%. Even better — Asian Paints generates 26% more cash than it reports as profit due to negative working capital dynamics. Now contrast with a stressed mid-cap: OCF = ₹140 Cr, Net Profit = ₹350 Cr. OCF/NP = 40%. Only 40% of reported profit is cash-backed — the rest sits in receivables, inventory, or elsewhere on the balance sheet. This is the earnings quality warning that no margin analysis would reveal.",
+        "sensitivity_note": "The benchmark is multi-year average, not single year. A high-quality business maintains OCF/NP of 90-110% over 5 years. Single-year aberrations can happen from working capital swings or one-off items. Multi-year patterns reveal the truth. Any business with OCF/NP consistently below 70% across 3 consecutive years should be treated as having suspect earnings quality until proven otherwise."
+      },
+      {
+        "name": "Free Cash Flow (FCF)",
+        "formula": "Free Cash Flow = Operating Cash Flow - Capital Expenditure",
+        "variables": [
+          {
+            "symbol": "Operating Cash Flow",
+            "meaning": "OCF from cash flow statement"
+          },
+          {
+            "symbol": "Capital Expenditure",
+            "meaning": "Cash spent on acquiring or upgrading property, plant, equipment, intangibles"
+          }
+        ],
+        "worked_example": "TCS FY23: OCF = ₹42,500 Cr, Capex = ₹2,200 Cr. FCF = 42,500 - 2,200 = ₹40,300 Cr. An extraordinary FCF profile — TCS generates ₹40,300 crore of completely unrestricted cash annually, which it uses for buybacks, dividends, and strategic investments. Compare to a capital-intensive business like a power utility: OCF = ₹5,000 Cr, Capex = ₹4,200 Cr. FCF = ₹800 Cr. The business generates cash but most of it goes back into the asset base — leaving only ₹800 Cr for shareholders and debt service. Same revenue scale, radically different FCF profiles due to capex intensity.",
+        "sensitivity_note": "FCF can be split into 'maintenance capex' (required to keep the business running) and 'growth capex' (optional, for expansion). Sophisticated analysts estimate maintenance FCF separately — this is the 'truly' free cash flow available after essential reinvestment, even if growth is paused. For the TCS example, maintenance capex might be ₹1,500 Cr vs total capex of ₹2,200 Cr, making maintenance FCF = ₹41,000 Cr."
+      },
+      {
+        "name": "Cash Conversion Ratio",
+        "formula": "Cash Conversion Ratio = Free Cash Flow / Net Profit",
+        "variables": [
+          {
+            "symbol": "Free Cash Flow",
+            "meaning": "OCF - Capex"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Reported net profit attributable to shareholders"
+          }
+        ],
+        "worked_example": "HUL FY23: FCF = ₹9,100 Cr (OCF 10,400 - Capex 1,300), Net Profit = ₹9,962 Cr. Cash Conversion = 9,100/9,962 = 91%. Strong cash conversion typical of FMCG. Asian Paints FY23: FCF = ₹4,600 Cr, Net Profit = ₹4,106 Cr. Cash Conversion = 112%. The golden signature — FCF exceeding net profit, showing that accounting earnings understate true cash-generating capacity. Compare a capex-heavy business: FCF = ₹300 Cr, Net Profit = ₹1,500 Cr. Cash Conversion = 20%. The business reports ₹1,500 Cr of profit but only ₹300 Cr is truly free — most earnings are consumed by ongoing capex.",
+        "sensitivity_note": "Cash Conversion above 80% for 5+ years is the signature of genuinely high-quality compounders. Below 40% consistently indicates capex-heavy or capital-destructive businesses. Use the 5-year rolling average to smooth out investment cycles."
+      },
+      {
+        "name": "FCF Yield",
+        "formula": "FCF Yield = Free Cash Flow / Market Cap (or FCF / Enterprise Value for leverage-adjusted view)",
+        "variables": [
+          {
+            "symbol": "Free Cash Flow",
+            "meaning": "OCF - Capex for the most recent 12 months"
+          },
+          {
+            "symbol": "Market Cap",
+            "meaning": "Current market value of equity"
+          }
+        ],
+        "worked_example": "TCS FY23: FCF = ₹40,300 Cr, Market Cap = ₹13,80,000 Cr. FCF Yield = 40,300/13,80,000 = 2.9%. Low absolute yield reflecting premium valuation, but stable and growing. HDFC Bank (adjusting for financial services): Net Income + Non-cash adjustments, FCF ≈ ₹45,000 Cr, Market Cap ₹8,70,000 Cr. FCF Yield ≈ 5.2%. Higher yield on a more cyclical business. A mid-cap manufacturing business: FCF = ₹800 Cr, Market Cap = ₹8,000 Cr. FCF Yield = 10%. High yield — often a value opportunity if the business quality is intact. Global benchmark: Indian large-caps typically 2-6% FCF Yield; global mature value stocks 6-10%; high-growth tech 1-3%.",
+        "sensitivity_note": "FCF Yield is the cash-based equivalent of earnings yield (inverse of P/E). It's generally more reliable for valuation because cash is less manipulable than earnings. A business with both attractive FCF Yield and growing FCF is often the best long-term investment — high current yield plus compounding."
+      },
+      {
+        "name": "Capex Intensity",
+        "formula": "Capex Intensity = Capital Expenditure / Revenue",
+        "variables": [
+          {
+            "symbol": "Capital Expenditure",
+            "meaning": "Annual capex from cash flow statement"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales for the same period"
+          }
+        ],
+        "worked_example": "HUL FY23: Capex = ₹1,300 Cr, Revenue = ₹58,154 Cr. Capex Intensity = 2.2%. Extremely low — FMCG is asset-light, most cash reinvested in brand marketing rather than plants. NTPC FY23: Capex ≈ ₹22,000 Cr, Revenue ≈ ₹1,75,000 Cr. Capex Intensity = 12.6%. Power sector is intensely capex-heavy because every megawatt of capacity needs hundreds of crores. L&T FY23: Capex ≈ ₹8,000 Cr, Revenue ≈ ₹1,84,000 Cr. Capex Intensity = 4.3%. Capital goods are moderate capex — own facilities plus project equipment. Industry benchmarks: FMCG/IT 2-4%, Auto 4-6%, Capital Goods 4-6%, Cement 6-10%, Power/Utilities 10-15%+.",
+        "sensitivity_note": "Capex Intensity should be viewed as rolling 3-5 year average to smooth investment cycles. A company with 3% capex in FY22 but 8% in FY23 may be mid-capex cycle, not permanently changed. Consistent high capex intensity limits FCF generation and caps shareholder returns over time."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter activation",
+        "Fn + F4 → absolute reference lock",
+        "Cmd + T → insert table for ratio tracking",
+        "Cmd + / → toggle cell reference highlights"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → filter cash flow data for multi-year trend",
+        "F4 → lock shared cells (revenue) when computing Capex Intensity",
+        "Alt + H + T → apply table format for ratio dashboards",
+        "Ctrl + / → highlight drill-through to cash flow statement source"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "OCF / Net Profit Ratio",
+        "formula": "OCF / Net Profit Ratio = Operating Cash Flow / Net Profit",
+        "variables": [
+          {
+            "symbol": "Operating Cash Flow",
+            "meaning": "Cash from operations, reported on the cash flow statement"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit after tax attributable to shareholders, reported on the income statement"
+          }
+        ],
+        "plain_english": "This ratio measures what percentage of reported net profit actually converts to cash from operations. A ratio above 90% signals high-quality earnings; below 70% suggests accrual-heavy profits that may not be cash-backed. It's the first filter for distinguishing genuine profitability from accounting illusions.",
+        "worked_example": "HUL FY23: OCF = ₹10,400 Cr, Net Profit = ₹9,962 Cr. OCF/NP = 10,400/9,962 = 1.04x or 104%. Exceptional earnings quality — every rupee of reported profit converts to slightly more than a rupee of cash. Classic signature of a high-quality consumer staple. Compare Asian Paints FY23: OCF ≈ ₹5,200 Cr, Net Profit = ₹4,106 Cr. OCF/NP = 126%. Even better — Asian Paints generates 26% more cash than it reports as profit due to negative working capital dynamics. Now contrast with a stressed mid-cap: OCF = ₹140 Cr, Net Profit = ₹350 Cr. OCF/NP = 40%. Only 40% of reported profit is cash-backed — the rest sits in receivables, inventory, or elsewhere on the balance sheet. This is the earnings quality warning that no margin analysis would reveal.",
+        "sensitivity_note": "The benchmark is multi-year average, not single year. A high-quality business maintains OCF/NP of 90-110% over 5 years. Single-year aberrations can happen from working capital swings or one-off items. Multi-year patterns reveal the truth. Any business with OCF/NP consistently below 70% across 3 consecutive years should be treated as having suspect earnings quality until proven otherwise."
+      },
+      {
+        "name": "Free Cash Flow (FCF)",
+        "formula": "Free Cash Flow = Operating Cash Flow - Capital Expenditure",
+        "variables": [
+          {
+            "symbol": "Operating Cash Flow",
+            "meaning": "OCF from cash flow statement"
+          },
+          {
+            "symbol": "Capital Expenditure",
+            "meaning": "Cash spent on acquiring or upgrading property, plant, equipment, intangibles"
+          }
+        ],
+        "plain_english": "Free Cash Flow is the cash a business generates after maintaining or expanding its asset base. It represents the true cash available for dividends, buybacks, debt repayment, or acquisitions. Two companies with identical operating cash flows can have vastly different FCF profiles depending on capex intensity; asset-light businesses generate far more free cash than capital-intensive ones.",
+        "worked_example": "TCS FY23: OCF = ₹42,500 Cr, Capex = ₹2,200 Cr. FCF = 42,500 - 2,200 = ₹40,300 Cr. An extraordinary FCF profile — TCS generates ₹40,300 crore of completely unrestricted cash annually, which it uses for buybacks, dividends, and strategic investments. Compare to a capital-intensive business like a power utility: OCF = ₹5,000 Cr, Capex = ₹4,200 Cr. FCF = ₹800 Cr. The business generates cash but most of it goes back into the asset base — leaving only ₹800 Cr for shareholders and debt service. Same revenue scale, radically different FCF profiles due to capex intensity.",
+        "sensitivity_note": "FCF can be split into 'maintenance capex' (required to keep the business running) and 'growth capex' (optional, for expansion). Sophisticated analysts estimate maintenance FCF separately — this is the 'truly' free cash flow available after essential reinvestment, even if growth is paused. For the TCS example, maintenance capex might be ₹1,500 Cr vs total capex of ₹2,200 Cr, making maintenance FCF = ₹41,000 Cr."
+      },
+      {
+        "name": "Cash Conversion Ratio",
+        "formula": "Cash Conversion Ratio = Free Cash Flow / Net Profit",
+        "variables": [
+          {
+            "symbol": "Free Cash Flow",
+            "meaning": "OCF - Capex"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Reported net profit attributable to shareholders"
+          }
+        ],
+        "plain_english": "This ratio combines earnings quality with capital efficiency into a single metric. It shows how much of each rupee of reported profit actually remains as free cash after all reinvestment. A ratio above 100% means the business generates more free cash than it reports in profits—a hallmark of genuinely superior compounders.",
+        "worked_example": "HUL FY23: FCF = ₹9,100 Cr (OCF 10,400 - Capex 1,300), Net Profit = ₹9,962 Cr. Cash Conversion = 9,100/9,962 = 91%. Strong cash conversion typical of FMCG. Asian Paints FY23: FCF = ₹4,600 Cr, Net Profit = ₹4,106 Cr. Cash Conversion = 112%. The golden signature — FCF exceeding net profit, showing that accounting earnings understate true cash-generating capacity. Compare a capex-heavy business: FCF = ₹300 Cr, Net Profit = ₹1,500 Cr. Cash Conversion = 20%. The business reports ₹1,500 Cr of profit but only ₹300 Cr is truly free — most earnings are consumed by ongoing capex.",
+        "sensitivity_note": "Cash Conversion above 80% for 5+ years is the signature of genuinely high-quality compounders. Below 40% consistently indicates capex-heavy or capital-destructive businesses. Use the 5-year rolling average to smooth out investment cycles."
+      },
+      {
+        "name": "FCF Yield",
+        "formula": "FCF Yield = Free Cash Flow / Market Cap (or FCF / Enterprise Value for leverage-adjusted view)",
+        "variables": [
+          {
+            "symbol": "Free Cash Flow",
+            "meaning": "OCF - Capex for the most recent 12 months"
+          },
+          {
+            "symbol": "Market Cap",
+            "meaning": "Current market value of equity"
+          },
+          {
+            "symbol": "Enterprise Value",
+            "meaning": "Market Cap + Total Debt - Cash (for leverage-neutral valuation comparison)"
+          }
+        ],
+        "plain_english": "FCF Yield is the cash-based equivalent of earnings yield, showing what percentage of the market's valuation is returned as free cash each year. Unlike P/E, which relies on accounting profits vulnerable to manipulation, FCF Yield is grounded in actual cash. A high FCF Yield combined with stable or growing FCF is a potent signal of undervaluation and compounding potential.",
+        "computation": [
+          "Calculate Free Cash Flow = Operating Cash Flow - Capital Expenditure",
+          "Obtain current Market Cap from stock price × fully diluted shares outstanding",
+          "Divide FCF by Market Cap and multiply by 100 for percentage",
+          "For leverage-adjusted view: Enterprise Value = Market Cap + Net Debt; divide FCF by EV instead"
+        ],
+        "worked_example": "TCS FY23: FCF = ₹40,300 Cr, Market Cap = ₹13,80,000 Cr. FCF Yield = 40,300/13,80,000 = 2.9%. Low absolute yield reflecting premium valuation, but stable and growing. HDFC Bank (adjusting for financial services): Net Income + Non-cash adjustments, FCF ≈ ₹45,000 Cr, Market Cap ₹8,70,000 Cr. FCF Yield ≈ 5.2%. Higher yield on a more cyclical business. A mid-cap manufacturing business: FCF = ₹800 Cr, Market Cap = ₹8,000 Cr. FCF Yield = 10%. High yield — often a value opportunity if the business quality is intact. Global benchmark: Indian large-caps typically 2-6% FCF Yield; global mature value stocks 6-10%; high-growth tech 1-3%.",
+        "sensitivity_note": "FCF Yield is the cash-based equivalent of earnings yield (inverse of P/E). It's generally more reliable for valuation because cash is less manipulable than earnings. A business with both attractive FCF Yield and growing FCF is often the best long-term investment — high current yield plus compounding."
+      },
+      {
+        "name": "Capex Intensity",
+        "formula": "Capex Intensity = Capital Expenditure / Revenue",
+        "variables": [
+          {
+            "symbol": "Capital Expenditure",
+            "meaning": "Annual capex from cash flow statement"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales for the same period"
+          }
+        ],
+        "plain_english": "This metric reveals how much a business must reinvest in its asset base for every rupee of sales. Asset-light businesses (IT services, FMCG) have low capex intensity, leaving more cash for shareholders. Capital-intensive sectors (power, telecom, cement) must devote 10%+ of revenue to capex just to maintain operations, limiting FCF generation and shareholder returns.",
+        "worked_example": "HUL FY23: Capex = ₹1,300 Cr, Revenue = ₹58,154 Cr. Capex Intensity = 2.2%. Extremely low — FMCG is asset-light, most cash reinvested in brand marketing rather than plants. NTPC FY23: Capex ≈ ₹22,000 Cr, Revenue ≈ ₹1,75,000 Cr. Capex Intensity = 12.6%. Power sector is intensely capex-heavy because every megawatt of capacity needs hundreds of crores. L&T FY23: Capex ≈ ₹8,000 Cr, Revenue ≈ ₹1,84,000 Cr. Capex Intensity = 4.3%. Capital goods are moderate capex — own facilities plus project equipment. Industry benchmarks: FMCG/IT 2-4%, Auto 4-6%, Capital Goods 4-6%, Cement 6-10%, Power/Utilities 10-15%+.",
+        "sensitivity_note": "Capex Intensity should be viewed as rolling 3-5 year average to smooth investment cycles. A company with 3% capex in FY22 but 8% in FY23 may be mid-capex cycle, not permanently changed. Consistent high capex intensity limits FCF generation and caps shareholder returns over time."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter activation",
+        "Fn + F4 → absolute reference lock",
+        "Cmd + T → insert table for ratio tracking",
+        "Cmd + / → toggle cell reference highlights"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → filter cash flow data for multi-year trend",
+        "F4 → lock shared cells (revenue) when computing Capex Intensity",
+        "Alt + H + T → apply table format for ratio dashboards",
+        "Ctrl + / → highlight drill-through to cash flow statement source"
+      ]
+    }
+  }
+}

@@ -1,0 +1,244 @@
+{
+  "id": "4009061a-4891-4b3f-9fb6-3c9116f52382",
+  "label": "M8 S7 | The Four Ratios That Reveal Working Capital Manipulation",
+  "before": {
+    "formulas": [
+      {
+        "name": "Days Sales Outstanding (DSO)",
+        "formula": "DSO = (Trade Receivables / Revenue) × 365",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "Closing balance of trade receivables from the balance sheet, including any disclosed bills discounted/factored receivables that remain contingent"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Annual revenue from operations for the same period, consolidated"
+          }
+        ],
+        "worked_example": "Running DSO on three Indian consumer peers FY23. HUL: Trade Receivables ₹3,120 crore against Revenue ₹58,154 crore = DSO of 20 days. Extremely short because FMCG distributors pay rapidly and much revenue is cash-on-delivery. Nestle India: Trade Receivables ₹1,284 crore against Revenue ₹19,126 crore = DSO of 24 days. Similar range — disciplined credit management. Manpasand Beverages FY17 (pre-collapse): Trade Receivables ₹269 crore against Revenue ₹720 crore = DSO of 136 days. Against sector peers at 20-25 days, Manpasand's DSO was 5-7x higher. For a beverage company with perishable products, 136 days of outstanding receivables is physically implausible — distributors cannot hold juice inventory for 4-5 months. The number alone, cross-checked against sector physical reality, should have been a definitive Sell signal. The cumulative DSO trajectory from FY13 (42 days) to FY17 (136 days) shows the progression from already-stretched to impossibility. Every annual report carried this number publicly.",
+        "sensitivity_note": "DSO benchmarks are strongly sector-specific. FMCG 15-30 days, pharma 60-90 days, IT services 70-100 days, capital goods 90-180 days, organised jewellery 45-70 days, textiles 60-120 days. The forensic signal is deviation from same-sector peers and trajectory trend, not absolute level."
+      },
+      {
+        "name": "Days Inventory Outstanding (DIO)",
+        "formula": "DIO = (Inventory / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Inventory",
+            "meaning": "Closing balance of inventories from the balance sheet, broken into raw materials, work-in-progress, and finished goods where disclosed"
+          },
+          {
+            "symbol": "Cost of Goods Sold",
+            "meaning": "Cost of materials consumed plus changes in inventory plus direct costs; sometimes disclosed as 'Cost of Materials Consumed' in Indian filings"
+          }
+        ],
+        "worked_example": "Running DIO on three auto peers FY23. Maruti Suzuki: Inventory ₹5,670 crore against COGS ₹91,453 crore = DIO of 23 days. Tata Motors Commercial Vehicle segment: Inventory ₹12,450 crore against COGS ₹58,240 crore = DIO of 78 days. Tata has higher DIO due to commercial vehicle production cycles. Mahindra and Mahindra Auto: Inventory ₹6,890 crore against COGS ₹62,180 crore = DIO of 40 days. CG Power FY18 (pre-collapse): Inventory ₹3,120 crore against COGS ₹5,890 crore = DIO of 193 days. Against peer capital goods companies running 60-90 days, CG Power's 193 days was exceptional. Breaking down the inventory — work-in-progress was ₹1,450 crore (46 percent of inventory), up from ₹480 crore in FY15. The WIP growth indicated long-delayed, commercially unviable projects being carried at cost. The expectation under Ind AS 2 would be to mark WIP down to net realisable value when projects become unviable. CG Power did not, and the ₹2,100 crore inventory gap disclosed in August 2019 was largely this accumulated unrecognised impairment.",
+        "sensitivity_note": "DIO must be analysed alongside inventory composition. Rising WIP as percentage of total inventory is often more diagnostic than total DIO increase. For real estate developers, 'inventory' includes unsold flats at cost — rising inventory days combined with declining average selling prices in the micro-market is a classic combination signalling delayed mark-down."
+      },
+      {
+        "name": "Cash Conversion Cycle (CCC)",
+        "formula": "CCC = DSO + DIO - DPO",
+        "variables": [
+          {
+            "symbol": "DSO",
+            "meaning": "Days Sales Outstanding as computed above"
+          },
+          {
+            "symbol": "DIO",
+            "meaning": "Days Inventory Outstanding as computed above"
+          },
+          {
+            "symbol": "DPO",
+            "meaning": "Days Payables Outstanding = (Trade Payables / COGS) × 365"
+          }
+        ],
+        "worked_example": "Running CCC on Hindustan Unilever FY23: DSO 20 + DIO 35 - DPO 118 = -63 days. Negative CCC means HUL collects from customers before paying suppliers — a mark of exceptional working capital discipline and negotiating power. Reliance Industries consolidated FY23: DSO 38 + DIO 52 - DPO 62 = 28 days. Moderately positive — normal for a diversified conglomerate. A hypothetical deteriorating mid-cap over 5 years: FY19 CCC of 75 days (DSO 65 + DIO 78 - DPO 68). FY23 CCC of 178 days (DSO 112 + DIO 128 - DPO 62). A 103-day deterioration in CCC over 5 years on a ₹2,000 crore revenue base represents roughly ₹565 crore of additional cash tied up in working capital versus FY19 — cash that has been extracted from operations and is sitting on the balance sheet. This is definitional phantom profit with a specific location. The CCC trajectory is often the single most comprehensive working capital diagnostic — a steadily rising CCC over multi-year periods without business model justification is a strong manipulation signal regardless of any single ratio.",
+        "sensitivity_note": "Negative CCC is characteristic of retailers (DMart), strong consumer brands (HUL, Asian Paints), and businesses with strong bargaining power over suppliers. Positive CCC is normal for most industrial and manufacturing businesses. A rising CCC is a signal regardless of whether the starting point is negative or positive."
+      },
+      {
+        "name": "Receivables Growth vs Revenue Growth",
+        "formula": "Ratio = (% Growth in Trade Receivables over N years) / (% Growth in Revenue over N years)",
+        "variables": [
+          {
+            "symbol": "% Growth in Trade Receivables",
+            "meaning": "Compound growth rate of receivables over chosen window"
+          },
+          {
+            "symbol": "% Growth in Revenue",
+            "meaning": "Compound growth rate of revenue over the same window"
+          },
+          {
+            "symbol": "N",
+            "meaning": "Analysis window in years — typically 3 or 5 years"
+          }
+        ],
+        "worked_example": "For DHFL FY14-FY18: Receivables growth CAGR 49 percent. Revenue growth CAGR 29 percent. Ratio = 49/29 = 1.69. Receivables were compounding 1.7x faster than revenue. For PC Jeweller FY14-FY18: Receivables growth CAGR 27 percent. Revenue growth CAGR 15 percent. Ratio = 27/15 = 1.80. Both cases show receivables outpacing revenue substantially. The benchmark interpretation: Ratio below 1.2 is healthy (receivables growing roughly in line with revenue). Ratio between 1.2 and 1.5 warrants investigation — legitimate explanations exist (customer mix shift to larger buyers, geographic expansion to longer-credit markets) but must be verified. Ratio above 1.5 is almost always a manipulation signal — receivables are growing structurally faster than revenue for reasons that cannot typically be explained by business evolution alone. Both DHFL and PC Jeweller exceeded 1.5 for multiple years before their respective crises. The mathematical simplicity of this ratio is what makes it so powerful — it collapses the revenue-receivables relationship into a single number comparable across companies and over time.",
+        "sensitivity_note": "Single-year ratios can be noisy; compute over 3-5 year windows for structural signal. Also compute the closing receivables balance against closing revenue to catch end-period channel stuffing that may not show in annual growth rate."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for working capital comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-peer data",
+        "F4 — Lock peer averages when dragging benchmark formulas",
+        "Alt + = — AutoSum for cumulative comparisons",
+        "Ctrl + Shift + $ — Format as currency for clean ₹ crore presentation"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Days Sales Outstanding (DSO)",
+        "formula": "DSO = (Trade Receivables / Revenue) × 365",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "Closing balance of trade receivables from the balance sheet, including any disclosed bills discounted/factored receivables that remain contingent"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Annual revenue from operations for the same period, consolidated"
+          }
+        ],
+        "plain_english": "DSO measures how many days it takes a company to convert its sales into cash. A lower DSO means faster cash collection, which is generally a sign of strong operational discipline and customer credit quality. In India's context, DSO varies sharply by sector—FMCG businesses collect within days (often via distributors on cash terms), while capital goods may take months. A rising DSO relative to peers or historical trend often signals either legitimate business change (geographic mix shift, customer type shift) or deteriorating creditworthiness among customers, sometimes masking revenue recognition manipulation.",
+        "worked_example": {
+          "problem": "Compare DSO trends across three Indian consumer companies in FY23 and identify any outlier signals.",
+          "steps": [
+            "HUL: Trade Receivables ₹3,120 crore ÷ Revenue ₹58,154 crore × 365 = 20 days",
+            "Nestle India: Trade Receivables ₹1,284 crore ÷ Revenue ₹19,126 crore × 365 = 24 days",
+            "Manpasand Beverages (FY17 pre-collapse): Trade Receivables ₹269 crore ÷ Revenue ₹720 crore × 365 = 136 days",
+            "Benchmark sector DSO for FMCG beverages: 20–25 days",
+            "Manpasand's 136-day DSO is 5–7× peer level, and physically implausible for a perishable goods business (distributors cannot hold inventory 4–5 months)"
+          ],
+          "result": "Manpasand's DSO trajectory deteriorated from 42 days (FY13) to 136 days (FY17). At 136 days, the receivables are inconsistent with sector physics and cash flow reality.",
+          "insight": "DSO alone, when cross-checked against peer benchmarks and sector operating realities, can be a definitive early warning signal. The progression over 5 years from stretched (42 days) to impossible (136 days) was published in annual reports and should have triggered forensic review years before the company's 2017 collapse."
+        },
+        "sensitivity_note": "DSO benchmarks are strongly sector-specific. FMCG 15-30 days, pharma 60-90 days, IT services 70-100 days, capital goods 90-180 days, organised jewellery 45-70 days, textiles 60-120 days. The forensic signal is deviation from same-sector peers and trajectory trend, not absolute level."
+      },
+      {
+        "name": "Days Inventory Outstanding (DIO)",
+        "formula": "DIO = (Inventory / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Inventory",
+            "meaning": "Closing balance of inventories from the balance sheet, broken into raw materials, work-in-progress, and finished goods where disclosed"
+          },
+          {
+            "symbol": "Cost of Goods Sold",
+            "meaning": "Cost of materials consumed plus changes in inventory plus direct costs; sometimes disclosed as 'Cost of Materials Consumed' in Indian filings"
+          }
+        ],
+        "plain_english": "DIO measures how long inventory sits on the balance sheet before being sold or consumed. A lower DIO indicates efficient inventory management and strong sales traction; a rising DIO often signals deteriorating demand, obsolescence building up, or—in capital-intensive businesses—projects stalling with work-in-progress mounting. Unlike DSO, which is partly a credit policy choice, DIO is largely an operational and demand signal. Abnormal DIO combined with rising work-in-progress percentage is a classic red flag for impairment risk.",
+        "worked_example": {
+          "problem": "Compare DIO across three Indian automotive peers and identify inventory composition risk.",
+          "steps": [
+            "Maruti Suzuki: Inventory ₹5,670 crore ÷ COGS ₹91,453 crore × 365 = 23 days",
+            "Tata Motors (CV segment): Inventory ₹12,450 crore ÷ COGS ₹58,240 crore × 365 = 78 days",
+            "Mahindra and Mahindra: Inventory ₹6,890 crore ÷ COGS ₹62,180 crore × 365 = 40 days",
+            "CG Power (FY18, pre-collapse): Inventory ₹3,120 crore ÷ COGS ₹5,890 crore × 365 = 193 days",
+            "Peer capital goods average DIO: 60–90 days",
+            "CG Power WIP composition: ₹1,450 crore (46% of inventory), up from ₹480 crore in FY15; WIP growth rate significantly outpaced revenue growth"
+          ],
+          "result": "CG Power's 193-day DIO was more than double peer average. Rising WIP as percentage of total inventory (from 25% to 46% over 3 years) indicated commercially unviable projects being carried at cost without impairment.",
+          "insight": "The ₹2,100 crore inventory gap disclosed in August 2019 was largely this accumulated WIP that should have been written down under Ind AS 2 Net Realisable Value rules. The inventory composition breakdown (WIP % trend) was more diagnostic than the headline DIO number. Rising WIP percentage in capital goods and project-based businesses is often an early signal of project economics deterioration before revenue recognition flows reverse."
+        },
+        "sensitivity_note": "DIO must be analysed alongside inventory composition. Rising WIP as percentage of total inventory is often more diagnostic than total DIO increase. For real estate developers, 'inventory' includes unsold flats at cost — rising inventory days combined with declining average selling prices in the micro-market is a classic combination signalling delayed mark-down."
+      },
+      {
+        "name": "Cash Conversion Cycle (CCC)",
+        "formula": "CCC = DSO + DIO - DPO",
+        "variables": [
+          {
+            "symbol": "DSO",
+            "meaning": "Days Sales Outstanding as computed above"
+          },
+          {
+            "symbol": "DIO",
+            "meaning": "Days Inventory Outstanding as computed above"
+          },
+          {
+            "symbol": "DPO",
+            "meaning": "Days Payables Outstanding = (Trade Payables / COGS) × 365"
+          }
+        ],
+        "plain_english": "The Cash Conversion Cycle (CCC) is the net number of days between paying suppliers and collecting from customers. It represents how long a company's cash is locked in operations. A negative CCC (collect before you pay) is highly valuable and indicates strong bargaining power and operational efficiency; a rising or extremely positive CCC indicates deteriorating working capital health and eventual cash starvation. The CCC is a comprehensive single metric that integrates receivables, inventory, and payables—making it often more powerful than any individual ratio for detecting phantom profit or working capital deterioration.",
+        "computation": [
+          "Calculate DSO = (Trade Receivables / Revenue) × 365",
+          "Calculate DIO = (Inventory / COGS) × 365",
+          "Calculate DPO = (Trade Payables / COGS) × 365",
+          "CCC = DSO + DIO − DPO"
+        ],
+        "worked_example": {
+          "problem": "Compare CCC across peers and quantify the working capital deterioration signal.",
+          "steps": [
+            "Hindustan Unilever FY23: DSO 20 + DIO 35 − DPO 118 = −63 days (collect before paying suppliers)",
+            "Reliance Industries FY23: DSO 38 + DIO 52 − DPO 62 = 28 days (moderately positive, normal for diversified conglomerate)",
+            "Hypothetical mid-cap FY19: DSO 65 + DIO 78 − DPO 68 = 75 days",
+            "Same mid-cap FY23: DSO 112 + DIO 128 − DPO 62 = 178 days",
+            "CCC deterioration: 178 − 75 = 103 days over 5 years",
+            "On ₹2,000 crore revenue base: (103 ÷ 365) × ₹2,000 crore ≈ ₹565 crore additional cash locked in working capital"
+          ],
+          "result": "CCC worsened by 103 days over 5 years, representing ₹565 crore of cash extracted from operations and sitting on the balance sheet as phantom profit.",
+          "insight": "A multi-year rising CCC trajectory without business model justification (e.g., geographic expansion, customer mix shift to lower-margin segments requiring longer payment terms) is one of the strongest structural signals of working capital manipulation. The cash is definitionally located on the balance sheet, often as increased receivables and/or inventory, visible in plain sight."
+        },
+        "sensitivity_note": "Negative CCC is characteristic of retailers (DMart), strong consumer brands (HUL, Asian Paints), and businesses with strong bargaining power over suppliers. Positive CCC is normal for most industrial and manufacturing businesses. A rising CCC is a signal regardless of whether the starting point is negative or positive."
+      },
+      {
+        "name": "Receivables Growth vs Revenue Growth",
+        "formula": "Ratio = (% Growth in Trade Receivables over N years) / (% Growth in Revenue over N years)",
+        "variables": [
+          {
+            "symbol": "% Growth in Trade Receivables",
+            "meaning": "Compound growth rate of receivables over chosen window"
+          },
+          {
+            "symbol": "% Growth in Revenue",
+            "meaning": "Compound growth rate of revenue over the same window"
+          },
+          {
+            "symbol": "N",
+            "meaning": "Analysis window in years — typically 3 or 5 years"
+          }
+        ],
+        "plain_english": "This ratio isolates whether receivables are growing faster than the underlying revenue that generated them. If receivables compound at a materially higher rate than revenue over multiple years, it suggests that either (1) credit terms are systematically loosening, (2) customer quality is deteriorating, or (3) revenue is being inflated through channel stuffing or round-tripping with related parties. A ratio near 1.0 is healthy (receivables and revenue grow together); a ratio above 1.5 sustained over multiple years is almost always a red flag and warrants forensic review of customer composition, concentration, and credit history.",
+        "worked_example": {
+          "problem": "Identify receivables manipulation signals using growth ratio analysis on known collapse cases.",
+          "steps": [
+            "DHFL FY14–FY18: Receivables CAGR 49%, Revenue CAGR 29%, Ratio = 49 ÷ 29 = 1.69",
+            "PC Jeweller FY14–FY18: Receivables CAGR 27%, Revenue CAGR 15%, Ratio = 27 ÷ 15 = 1.80",
+            "Benchmark healthy ratio: ≤1.20 (receivables in line with revenue growth)",
+            "Investigation threshold: 1.20–1.50 (requires business explanation; mix or geography shift possible)",
+            "Manipulation signal: >1.50 sustained across multiple rolling 3–5 year windows"
+          ],
+          "result": "Both DHFL and PC Jeweller showed ratios of 1.69–1.80, well above 1.5, for multiple consecutive years. Both collapsed within 12–24 months of the period where this ratio peaked.",
+          "insight": "The receivables-to-revenue growth ratio is the single most mathematically simple yet diagnostically powerful metric for detecting phantom revenue. It requires no estimation and can be computed directly from audited financials. A ratio above 1.5 sustained over 3+ years is almost never explained by legitimate business evolution alone, and should trigger immediate deep-dive validation of top customers, credit history, and revenue recognition policy changes."
+        },
+        "sensitivity_note": "Single-year ratios can be noisy; compute over 3-5 year windows for structural signal. Also compute the closing receivables balance against closing revenue to catch end-period channel stuffing that may not show in annual growth rate."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for working capital comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-peer data",
+        "F4 — Lock peer averages when dragging benchmark formulas",
+        "Alt + = — AutoSum for cumulative comparisons",
+        "Ctrl + Shift + $ — Format as currency for clean ₹ crore presentation"
+      ]
+    }
+  }
+}

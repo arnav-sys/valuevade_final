@@ -1,0 +1,839 @@
+[
+  {
+    "id": "752382d6-f7a6-49b0-8c16-6349ec4f6490",
+    "status": "enhanced",
+    "label": "M12 S12 | The SOTP Math — Building from Segments to Per-Share Target",
+    "seconds": 30.4,
+    "idx": 0
+  },
+  {
+    "id": "444fdbc8-ee54-4d36-bc6c-4155d36e23ce",
+    "status": "skipped_target",
+    "label": "M1 S2 | Risk & Return Formulas: HPR, Expected Return, Std Dev, Sharp",
+    "seconds": 0.0,
+    "idx": 3
+  },
+  {
+    "id": "73d5abc2-9f90-44ed-bab6-aadf5d751bd7",
+    "status": "enhanced",
+    "label": "M9 S12 | The Comparative Analysis Formula Arsenal",
+    "seconds": 37.6,
+    "idx": 2
+  },
+  {
+    "id": "923d10f6-5a11-47dd-8a69-db868504c752",
+    "status": "enhanced",
+    "label": "M10 S6 | The Currency Impact Formulas — Sensitivity, EPS Math, and He",
+    "seconds": 44.3,
+    "idx": 1
+  },
+  {
+    "id": "bfefa3c0-689e-47cb-b885-caa05b4f1285",
+    "status": "enhanced",
+    "label": "M8 S5 | The Four Key Ratios for Expense Manipulation Detection",
+    "seconds": 29.4,
+    "idx": 4
+  },
+  {
+    "id": "f9fa6869-ea40-4799-b149-f08dc361c285",
+    "status": "enhanced",
+    "label": "M2 S2 | Key Secondary Market Metrics",
+    "seconds": 16.0,
+    "idx": 6
+  },
+  {
+    "id": "20fa126c-5481-410a-bfd9-a6bb4bdd0054",
+    "status": "enhanced",
+    "label": "M8 S5 | The Four Key Ratios for Expense Manipulation Detection",
+    "seconds": 27.4,
+    "idx": 5
+  },
+  {
+    "id": "9f06408c-3b4b-4703-ac3e-46571fbafcfe",
+    "status": "enhanced",
+    "label": "M2 S4 | Key Index Metrics for Analysts",
+    "seconds": 16.5,
+    "idx": 9
+  },
+  {
+    "id": "bd498873-b40b-42e9-b418-2a4556dfeb87",
+    "status": "enhanced",
+    "label": "M12 S11 | The Precedent Transaction Math — From Deal Multiples to Impl",
+    "seconds": 26.2,
+    "idx": 8
+  },
+  {
+    "id": "da6c039f-fad9-4d70-9a42-ad3bb10f40f8",
+    "status": "enhanced",
+    "label": "M4 S6 | The Three Schedule Formulas — Working Capital, PP&E, and Dep",
+    "seconds": 36.7,
+    "idx": 7
+  },
+  {
+    "id": "1dcdb9f4-1bf3-451c-a324-3f236586397d",
+    "status": "enhanced",
+    "label": "M1 S1 | TVM Formulas: FV, PV, Annuity & Rule of 72",
+    "seconds": 14.1,
+    "idx": 11
+  },
+  {
+    "id": "81778e94-85ce-4920-b24d-6c0d8cbd39ac",
+    "status": "enhanced",
+    "label": "M10 S2 | The Inflation Formulas — Calculation, Decomposition, and Sto",
+    "seconds": 21.1,
+    "idx": 13
+  },
+  {
+    "id": "f2658b2f-ad9e-4faa-9dbe-ecd2f930832e",
+    "status": "enhanced",
+    "label": "M7 S13 | The FSA Scorecard Scoring System — Thresholds and Calculatio",
+    "seconds": 27.5,
+    "idx": 12
+  },
+  {
+    "id": "26181f07-9505-42ce-baf8-ec2f5e3d20b5",
+    "status": "enhanced",
+    "label": "M1 S3 | Unit Economics & Operating Leverage Formulas",
+    "seconds": 12.7,
+    "idx": 15
+  },
+  {
+    "id": "437c999b-579f-4e4f-a6d7-1d39f9647f74",
+    "status": "enhanced",
+    "label": "M8 S6 | The Four Ratios That Reveal the Cookie Jar",
+    "seconds": 28.4,
+    "idx": 14
+  },
+  {
+    "id": "d6b09d19-16fd-452e-9889-eea2d1016453",
+    "status": "enhanced",
+    "label": "M4 S2 | The Three Integrity Check Formulas — Your Model's Alarm Syst",
+    "seconds": 17.5,
+    "idx": 16
+  },
+  {
+    "id": "4c25c1ac-6694-4bf7-a8aa-348c6abbc7a9",
+    "status": "enhanced",
+    "label": "M3 S3 | All Seven Functions at a Glance",
+    "seconds": 31.9,
+    "idx": 18
+  },
+  {
+    "id": "e61c6ad9-42ba-4741-8ab4-df15714ae01b",
+    "status": "enhanced",
+    "label": "M9 S6 | The Efficiency Formula Arsenal (With Indian Worked Examples)",
+    "seconds": 36.3,
+    "idx": 17
+  },
+  {
+    "id": "c73bc68a-8bee-4290-afbb-2ddb14dc4d85",
+    "status": "enhanced",
+    "label": "M1 S11 | WACC and CAPM Formulas with TCS Worked Example",
+    "seconds": 16.3,
+    "idx": 20
+  },
+  {
+    "id": "6d254f90-4173-493e-990a-235570ca62a9",
+    "status": "enhanced",
+    "label": "M12 S2 | The TVM Formula Family — Five Equations That Power Every DCF",
+    "seconds": 20.2,
+    "idx": 19
+  },
+  {
+    "id": "d7fd8988-699a-43d6-8796-1d48c71b98cf",
+    "status": "enhanced",
+    "label": "M9 S4 | The Three Liquidity Formulas (With Worked Indian Examples)",
+    "seconds": 17.2,
+    "idx": 22
+  },
+  {
+    "id": "5faacbc3-48e2-48b8-ad80-f1436b695288",
+    "status": "enhanced",
+    "label": "M9 S13 | The Complete Analytical Workflow — Formula Hierarchy by Laye",
+    "error": "Unterminated string starting at: line 273 column 9 (char 21146)",
+    "seconds": 44.5,
+    "idx": 10
+  },
+  {
+    "id": "f9a3c1a3-2acf-4726-83de-77e1ffcbcdb3",
+    "status": "enhanced",
+    "label": "M9 S8 | The Valuation Multiple Formula Arsenal",
+    "seconds": 44.5,
+    "idx": 21
+  },
+  {
+    "id": "06aa5797-7831-44da-a5a2-425640bb3a9f",
+    "status": "enhanced",
+    "label": "M7 S11 | The Return Formula Stack and the DuPont Decomposition",
+    "seconds": 25.2,
+    "idx": 23
+  },
+  {
+    "id": "0a106b17-e487-4432-9070-f2a1d0654dba",
+    "status": "enhanced",
+    "label": "M10 S5 | The Budget Math Every Analyst Must Know",
+    "seconds": 33.4,
+    "idx": 24
+  },
+  {
+    "id": "f06c73b3-63cf-4edb-8bfe-e6dd5fa386c0",
+    "status": "enhanced",
+    "label": "M9 S9 | The Cash Flow Formula Arsenal",
+    "seconds": 21.8,
+    "idx": 26
+  },
+  {
+    "id": "ea4709a9-4611-4421-9a4a-ea82a94fb9e8",
+    "status": "enhanced",
+    "label": "M11 S4 | The Banking Analyst's Formula Toolkit — Every Calculation Yo",
+    "seconds": 23.9,
+    "idx": 25
+  },
+  {
+    "id": "1a79c9e2-9606-4d9b-acc5-b074e39c519e",
+    "status": "enhanced",
+    "label": "M1 S5 | The Accrual Adjustment Equations",
+    "seconds": 17.4,
+    "idx": 29
+  },
+  {
+    "id": "4ef166e3-1c07-4b1b-af2b-30983805dc1a",
+    "status": "enhanced",
+    "label": "M11 S5 | The IT Analyst's Calculation Toolkit — From Constant Currenc",
+    "seconds": 24.6,
+    "idx": 27
+  },
+  {
+    "id": "344ac552-46f4-471a-bdd4-1200fecf6c12",
+    "status": "enhanced",
+    "label": "M4 S4 | The Four Driver Frameworks — Formulas You Will Use for Every",
+    "seconds": 46.8,
+    "idx": 28
+  },
+  {
+    "id": "5ae4e2e9-4cb8-4e44-9712-527e1464af70",
+    "status": "enhanced",
+    "label": "M1 S10 | Capital Structure and Shareholder Return Formulas with Airte",
+    "seconds": 31.5,
+    "idx": 30
+  },
+  {
+    "id": "f0e3ffb7-8d39-4498-b9e3-95221b9415dc",
+    "status": "enhanced",
+    "label": "M7 S9 | Segment Metrics and Cross-Segment Comparisons",
+    "seconds": 26.3,
+    "idx": 31
+  },
+  {
+    "id": "65c0aac8-1cf8-4683-9a8e-71041f035869",
+    "status": "enhanced",
+    "label": "M9 S7 | The Working Capital System Formulas",
+    "seconds": 21.9,
+    "idx": 32
+  },
+  {
+    "id": "a344f0cc-4e2d-4ed6-be26-9d0fc3ce1260",
+    "status": "enhanced",
+    "label": "M8 S11 | The Four Ratios That Quantify Ownership Behaviour Signals",
+    "seconds": 31.2,
+    "idx": 33
+  },
+  {
+    "id": "445b07cc-72ac-4826-a66d-589c99e2a7bd",
+    "status": "enhanced",
+    "label": "M7 S10 | The Quality of Earnings Metrics",
+    "seconds": 20.4,
+    "idx": 35
+  },
+  {
+    "id": "fd708a3f-57fd-4e80-a590-2efdf8b3f33e",
+    "status": "enhanced",
+    "label": "M11 S11 | The Top-Down Allocator's Toolkit — From Macro To Sector Conv",
+    "seconds": 40.1,
+    "idx": 34
+  },
+  {
+    "id": "b6f3928d-be4b-484d-ae41-cb93def0f076",
+    "status": "enhanced",
+    "label": "M7 S10 | The Quality of Earnings Metrics",
+    "seconds": 20.7,
+    "idx": 36
+  },
+  {
+    "id": "c4216ef3-61b0-46bf-8e08-2f120e201f9b",
+    "status": "enhanced",
+    "label": "M4 S3 | The Exceptional Item Normalisation Framework",
+    "seconds": 25.8,
+    "idx": 37
+  },
+  {
+    "id": "512a22df-da65-4f14-8190-53b922db1b7c",
+    "status": "enhanced",
+    "label": "M7 S3 | The Volume-Price-Mix Decomposition",
+    "seconds": 28.7,
+    "idx": 38
+  },
+  {
+    "id": "172fade2-1dc3-438b-9ed2-7d18f1178e08",
+    "status": "enhanced",
+    "label": "M11 S7 | The Auto Analyst's Calculation Toolkit — From Wholesales to ",
+    "seconds": 35.2,
+    "idx": 39
+  },
+  {
+    "id": "21f083cb-9f05-495b-8f65-e28b1873fcf6",
+    "status": "enhanced",
+    "label": "M1 S8 | Cash Flow Formulas and Asian Paints Worked Example",
+    "seconds": 29.1,
+    "idx": 40
+  },
+  {
+    "id": "c84df2d1-4259-47be-93f5-30087dae1928",
+    "status": "enhanced",
+    "label": "M9 S1 | The Universal Ratio Template",
+    "seconds": 11.6,
+    "idx": 42
+  },
+  {
+    "id": "4f8674d4-3127-47a3-b15b-d59e6bf8eae7",
+    "status": "enhanced",
+    "label": "M10 S3 | The Transmission Mechanism — From Repo to Earnings, Decoded",
+    "seconds": 30.3,
+    "idx": 41
+  },
+  {
+    "id": "73249eac-180d-4fe7-9aa1-ff04173dfdb7",
+    "status": "enhanced",
+    "label": "M10 S1 | The GDP Formulas Every Analyst Must Know Cold",
+    "seconds": 19.2,
+    "idx": 44
+  },
+  {
+    "id": "d23563f7-21c8-4286-a809-d74737b2ecbc",
+    "status": "enhanced",
+    "label": "M3 S11 | Data Validation, Conditional Formatting & Dashboard Skills",
+    "seconds": 20.3,
+    "idx": 45
+  },
+  {
+    "id": "2b06c400-7117-49ea-b20d-266c6ed9d696",
+    "status": "enhanced",
+    "label": "M11 S8 | The Pharma Analyst's Toolkit — From ANDA Pipeline To Para IV",
+    "seconds": 34.3,
+    "idx": 43
+  },
+  {
+    "id": "2541aca5-ba9d-4a8a-857b-881033651e4a",
+    "status": "enhanced",
+    "label": "M8 S12 | The Audit Signal Severity Framework and Detection Metrics",
+    "seconds": 34.0,
+    "idx": 46
+  },
+  {
+    "id": "ad4fc106-dbcc-4ffa-aa36-133ce38b0cf8",
+    "status": "enhanced",
+    "label": "M10 S8 | The Global Macro to Indian Equity Translation Math",
+    "seconds": 44.2,
+    "idx": 47
+  },
+  {
+    "id": "d821b8cc-5994-4a26-91f9-b2f3202aedae",
+    "status": "enhanced",
+    "label": "M11 S9 | The Commodity Analyst's Toolkit — From Cost Curves To Throug",
+    "seconds": 41.6,
+    "idx": 48
+  },
+  {
+    "id": "82b65d2e-2e5c-4e35-bf5d-4fae8c250ad9",
+    "status": "enhanced",
+    "label": "M5 S5 | The pledging formulas every analyst must know",
+    "seconds": 21.8,
+    "idx": 49
+  },
+  {
+    "id": "75492ec8-759a-467f-aac7-d90952661998",
+    "status": "enhanced",
+    "label": "M7 S7 | The Cash Flow Formula Stack — From Statement to Analysis",
+    "seconds": 22.1,
+    "idx": 52
+  },
+  {
+    "id": "d690ed9f-3afc-4689-ae45-b4a113951505",
+    "status": "enhanced",
+    "label": "M7 S7 | The Cash Flow Formula Stack — From Statement to Analysis",
+    "seconds": 22.4,
+    "idx": 53
+  },
+  {
+    "id": "7c772b7f-0229-439a-a249-069b578d4c36",
+    "status": "enhanced",
+    "label": "M11 S12 | The Initiation Note Architecture Toolkit — From Page Allocat",
+    "seconds": 51.6,
+    "idx": 51
+  },
+  {
+    "id": "fed6667d-1244-4280-9fec-c654d708a8da",
+    "status": "enhanced",
+    "label": "M11 S6 | The FMCG Analyst's Calculation Toolkit — From Volume-Price-M",
+    "seconds": 27.9,
+    "idx": 54
+  },
+  {
+    "id": "a8626e71-8d3b-4981-a21c-bdec9b52a349",
+    "status": "enhanced",
+    "label": "M11 S10 | The Pipeline Analyst's Toolkit — From NAV To Order Book Conv",
+    "seconds": 36.2,
+    "idx": 55
+  },
+  {
+    "id": "035b8536-5be6-40d9-8857-b45a01381f70",
+    "status": "enhanced",
+    "label": "M7 S12 | The Leverage and Solvency Formula Stack",
+    "seconds": 20.1,
+    "idx": 56
+  },
+  {
+    "id": "3aea1d61-f074-4e3d-829c-f7b465171afa",
+    "status": "enhanced",
+    "label": "M4 S7 | The Debt Schedule Formulas — Roll-Forward, Interest, and Rev",
+    "seconds": 28.4,
+    "idx": 57
+  },
+  {
+    "id": "c520b953-09d3-4977-b4a8-9cd0dbae80f4",
+    "status": "enhanced",
+    "label": "M3 S5 | Master Reference: All Text Functions",
+    "seconds": 21.5,
+    "idx": 58
+  },
+  {
+    "id": "e871af44-360a-4b63-94f1-86ce8fbab9b2",
+    "status": "enhanced",
+    "label": "M12 S4 | WACC and the Cost-of-Debt Family",
+    "seconds": 19.4,
+    "idx": 59
+  },
+  {
+    "id": "75c699e1-de6f-4f7c-bc42-0f2b90a7a6d9",
+    "status": "enhanced",
+    "label": "M3 S8 | All 9 Financial Functions with Worked Examples",
+    "error": "Unterminated string starting at: line 388 column 20 (char 18619)",
+    "seconds": 55.4,
+    "idx": 50
+  },
+  {
+    "id": "4df546f2-4775-4242-9b75-62af16d7ded1",
+    "status": "enhanced",
+    "label": "M12 S5 | The FCFF and FCFE Build-Ups — Two Paths to Each",
+    "seconds": 24.1,
+    "idx": 60
+  },
+  {
+    "id": "8b12ac54-f511-42cf-867d-6169c7d662ac",
+    "status": "enhanced",
+    "label": "M1 S12 | Bond Pricing, Current Yield, and Duration Formulas",
+    "seconds": 10.4,
+    "idx": 62
+  },
+  {
+    "id": "84ad8d7e-ee7f-4bea-a6cb-3346c7927e3c",
+    "status": "enhanced",
+    "label": "M9 S3 | The DuPont Formula Arsenal — 3-Step and 5-Step",
+    "seconds": 15.9,
+    "idx": 61
+  },
+  {
+    "id": "804ac209-d4b1-46bf-a6c0-b6082e0b4860",
+    "status": "enhanced",
+    "label": "M9 S2 | The Profitability Formula Arsenal",
+    "seconds": 18.7,
+    "idx": 63
+  },
+  {
+    "id": "3ea1ebb4-dede-4829-bcb6-711f3a283aed",
+    "status": "enhanced",
+    "label": "M7 S4 | The Full Margin Walk — Revenue to PAT, Layer by Layer",
+    "seconds": 16.2,
+    "idx": 64
+  },
+  {
+    "id": "abc0f1a0-4fb4-4b5b-b65d-90b85e59c88f",
+    "status": "enhanced",
+    "label": "M4 S1 | The Three Golden Integrity Equations",
+    "seconds": 16.3,
+    "idx": 65
+  },
+  {
+    "id": "0dc926b6-dec4-450b-8ee6-4a68f84ffcca",
+    "status": "enhanced",
+    "label": "M1 S14 | PED, HHI, and Lerner Index with Worked Examples",
+    "seconds": 14.3,
+    "idx": 66
+  },
+  {
+    "id": "b8c1090d-b8f3-4d96-9c26-ce4a341196b4",
+    "status": "enhanced",
+    "label": "M8 S2 | The PAT-CFO Reconciliation — Three Forms, One Truth",
+    "seconds": 21.9,
+    "idx": 68
+  },
+  {
+    "id": "bcd4e8c0-1765-4770-96bf-c3ef5e66309c",
+    "status": "enhanced",
+    "label": "M11 S2 | The Classification Decision Logic — Three Tests to Place Any",
+    "seconds": 17.9,
+    "idx": 69
+  },
+  {
+    "id": "09901704-6cd6-429b-b4d9-d589835a07d7",
+    "status": "enhanced",
+    "label": "M8 S8 | The Four Cash Flow Forensic Adjustments",
+    "seconds": 40.0,
+    "idx": 67
+  },
+  {
+    "id": "589eef64-e319-454f-b282-fa81a65ef0fe",
+    "status": "enhanced",
+    "label": "M12 S3 | CAPM and the Beta Levering Equations",
+    "seconds": 19.3,
+    "idx": 71
+  },
+  {
+    "id": "55351e31-e6bd-45d4-a1f5-3eab43983590",
+    "status": "enhanced",
+    "label": "M2 S1 | Key IPO Metrics",
+    "seconds": 12.6,
+    "idx": 73
+  },
+  {
+    "id": "3fa0f6a9-ca53-4334-9ad7-8c68da6c77ee",
+    "status": "enhanced",
+    "label": "M3 S7 | All 6 Conditional Logic Functions",
+    "seconds": 31.0,
+    "idx": 72
+  },
+  {
+    "id": "1350472b-dc44-4b94-8be0-d99b78548433",
+    "status": "enhanced",
+    "label": "M10 S10 | The Investor Decision Math — Sector Allocation, Stock Pickin",
+    "seconds": 52.1,
+    "idx": 70
+  },
+  {
+    "id": "46ae2d0f-a69e-4b7c-9785-a25bd84cdec0",
+    "status": "enhanced",
+    "label": "M5 S6 | The compensation metrics every analyst must compute",
+    "seconds": 18.9,
+    "idx": 74
+  },
+  {
+    "id": "f78e261a-8883-4b52-a325-882ea977a79e",
+    "status": "enhanced",
+    "label": "M1 S7 | Balance Sheet Ratios and Titan Worked Example",
+    "seconds": 18.4,
+    "idx": 75
+  },
+  {
+    "id": "40a03c06-f6f4-4e5f-b81a-7bb69dfc3280",
+    "status": "enhanced",
+    "label": "M13 S4 | The Math Behind Trading Bands and Indexing",
+    "seconds": 14.0,
+    "idx": 76
+  },
+  {
+    "id": "159fc110-2976-4a4d-ae03-bbaab69d1d46",
+    "status": "enhanced",
+    "label": "M3 S2 | The F4 Toggle & Reference Behaviour",
+    "seconds": 10.7,
+    "idx": 79
+  },
+  {
+    "id": "9c5b9ef7-991c-4cdc-a947-8e09d1f60982",
+    "status": "enhanced",
+    "label": "M12 S8 | The EV-to-Equity Bridge and the Target Price Formula",
+    "seconds": 25.0,
+    "idx": 77
+  },
+  {
+    "id": "22691a55-80a7-416d-baea-3aa97558deba",
+    "status": "enhanced",
+    "label": "M8 S14 | The Altman Z-Score and Piotroski F-Score Formulas with India",
+    "seconds": 30.8,
+    "idx": 78
+  },
+  {
+    "id": "ddd8022a-f012-4718-a564-b331d23ddde3",
+    "status": "enhanced",
+    "label": "M1 S13 | Statistics Formulas with Nifty Monthly Returns Worked Exampl",
+    "seconds": 27.1,
+    "idx": 80
+  },
+  {
+    "id": "36ab1dae-0d74-41dc-a8d7-059e4572ed08",
+    "status": "enhanced",
+    "label": "M2 S6 | Key Regulatory Formulas & Thresholds",
+    "seconds": 27.1,
+    "idx": 81
+  },
+  {
+    "id": "4f867bba-7df5-47b0-bd6f-a53620f562d1",
+    "status": "enhanced",
+    "label": "M2 S3 | Key Participant-Level Metrics",
+    "seconds": 20.6,
+    "idx": 82
+  },
+  {
+    "id": "6660bcfe-cdea-4605-bcae-63da3ed6c33b",
+    "status": "enhanced",
+    "label": "M11 S1 | Decomposing Stock Returns — The Sector Attribution Formula",
+    "seconds": 14.9,
+    "idx": 85
+  },
+  {
+    "id": "5b63e093-f221-469a-9355-a43fdf12cf4f",
+    "status": "enhanced",
+    "label": "M3 S4 | All Lookup Functions Side by Side",
+    "seconds": 28.4,
+    "idx": 83
+  },
+  {
+    "id": "4a878b9a-8e9b-4d11-9d94-2c52ba74f100",
+    "status": "enhanced",
+    "label": "M1 S9 | Master Linkage Formulas and Bajaj Finance Mini-Model",
+    "seconds": 31.4,
+    "idx": 84
+  },
+  {
+    "id": "97366334-5958-44a9-be8a-0826dc73dbca",
+    "status": "enhanced",
+    "label": "M3 S13 | The 30 Essential Keyboard Shortcuts & Audit Tools",
+    "seconds": 16.5,
+    "idx": 88
+  },
+  {
+    "id": "f6725bb8-917b-4afa-8657-a651800d7d98",
+    "status": "enhanced",
+    "label": "M4 S5 | The Margin Build-Up — From Revenue to EBIT in Layered Compon",
+    "seconds": 30.0,
+    "idx": 86
+  },
+  {
+    "id": "35602e52-f9a6-4e59-b6ca-c525c1de1bc9",
+    "status": "enhanced",
+    "label": "M11 S3 | The Five Forces Scoring Model — Translating Forces into ROCE",
+    "seconds": 19.5,
+    "idx": 90
+  },
+  {
+    "id": "caf6c90b-b55b-4315-9d80-6f6143a6be27",
+    "status": "enhanced",
+    "label": "M13 S7 | Decomposition Formulas — Revenue, ROCE, Cash Flow Quality",
+    "seconds": 34.7,
+    "idx": 89
+  },
+  {
+    "id": "553e5d6c-d264-416c-988d-c4234bf6f8e6",
+    "status": "enhanced",
+    "label": "M7 S2 | The Reported-to-Core PAT Bridge",
+    "seconds": 22.6,
+    "idx": 92
+  },
+  {
+    "id": "2e774268-7a36-4d51-b8d5-f0fe5cd757a5",
+    "status": "enhanced",
+    "label": "M9 S10 | The Banking Ratio Arsenal — Every Formula You Need",
+    "seconds": 33.1,
+    "idx": 91
+  },
+  {
+    "id": "b4e6292d-31aa-4fc7-92bc-1d0a0c370aef",
+    "status": "enhanced",
+    "label": "M6 S1 | The Disclosure Quality Score — A Quantitative Lens on Report",
+    "seconds": 12.7,
+    "idx": 94
+  },
+  {
+    "id": "2a57ec87-50f8-4e92-8b9c-7e8f7840a730",
+    "status": "skipped_target",
+    "label": "M1 S6 | Income Statement Formulas and HUL Worked Example",
+    "seconds": 0.0,
+    "idx": 95
+  },
+  {
+    "id": "9691b75f-a56a-42e5-8ae5-a1bc8dfbb69c",
+    "status": "enhanced",
+    "label": "M1 S4 | The Three Equations That Hold Everything Together",
+    "seconds": 19.4,
+    "idx": 93
+  },
+  {
+    "id": "87c49e32-3225-4740-8f4c-8c805941ee25",
+    "status": "enhanced",
+    "label": "M3 S10 | The 5 Chart Types — Detailed Skills",
+    "seconds": 30.5,
+    "idx": 97
+  },
+  {
+    "id": "551ea9b5-e6a1-4b8c-94fc-9cc3784429fc",
+    "status": "enhanced",
+    "label": "M8 S13 | The Beneish M-Score Formula and Montier C-Score Framework",
+    "error": "Unterminated string starting at: line 162 column 20 (char 17645)",
+    "seconds": 46.5,
+    "idx": 87
+  },
+  {
+    "id": "ff66fc94-5009-41f3-a4c1-de71065ce035",
+    "status": "enhanced",
+    "label": "M4 S8 | The Cash Flow Statement Build — Three Sections, Every Line T",
+    "seconds": 24.4,
+    "idx": 98
+  },
+  {
+    "id": "9b51580a-cbc1-4761-8d66-cd90687a82a6",
+    "status": "enhanced",
+    "label": "M7 S1 | The Core FSA Ratios — The Seven You Will Actually Use",
+    "seconds": 31.7,
+    "idx": 99
+  },
+  {
+    "id": "95b0468e-fe1b-48b9-9e9b-5bbe3415b573",
+    "status": "enhanced",
+    "label": "M9 S5 | The Solvency Formula Arsenal (With Indian Examples)",
+    "seconds": 35.3,
+    "idx": 100
+  },
+  {
+    "id": "573fbc88-895d-48ef-8113-8d88e2207f2a",
+    "status": "enhanced",
+    "label": "M1 S15 | Key Macro Formulas with Worked Examples",
+    "seconds": 22.5,
+    "idx": 101
+  },
+  {
+    "id": "c0ff08d9-9381-412e-a4a6-d64b10e27bba",
+    "status": "skipped_target",
+    "label": "M10 S4 | The Yield Curve Formulas — Spreads, Real Rates, and DCF Sens",
+    "seconds": 0.0,
+    "idx": 103
+  },
+  {
+    "id": "99b6c024-51a2-483f-9585-f21eea8939b4",
+    "status": "enhanced",
+    "label": "M2 S5 | Key Corporate Action & Margin Formulas",
+    "seconds": 29.7,
+    "idx": 102
+  },
+  {
+    "id": "f4b3663a-de00-41ea-b2a2-e6bfff24a419",
+    "status": "enhanced",
+    "label": "M12 S14 | The Recommendation Formulas — Translating Football Field to ",
+    "seconds": 15.1,
+    "idx": 105
+  },
+  {
+    "id": "51f5b65a-0df2-4efc-afa9-6eb56d24b76c",
+    "status": "enhanced",
+    "label": "M3 S6 | All 10 Date Functions with Worked Examples",
+    "error": "Unterminated string starting at: line 310 column 11 (char 19409)",
+    "seconds": 43.0,
+    "idx": 96
+  },
+  {
+    "id": "343e8fe9-82f2-4b6b-85db-9955cf507fba",
+    "status": "enhanced",
+    "label": "M13 S8 | The Three Valuation Calculations Every Analyst Must Know",
+    "seconds": 44.9,
+    "idx": 104
+  },
+  {
+    "id": "d63573ea-b698-49dc-a411-1688fa0f21cb",
+    "status": "enhanced",
+    "label": "M8 S9 | The Four Ratios That Reveal True Economic Leverage",
+    "seconds": 32.9,
+    "idx": 107
+  },
+  {
+    "id": "6bd6484c-f85a-47bc-941a-116aa766dfa1",
+    "status": "enhanced",
+    "label": "M7 S8 | The Common-Size and Trend Formulas",
+    "seconds": 28.7,
+    "idx": 108
+  },
+  {
+    "id": "9a384486-92c9-4f08-8d24-a6b278977a7d",
+    "status": "enhanced",
+    "label": "M10 S9 | The Indicator Math — Lead Times, Probabilities, and Composit",
+    "seconds": 52.8,
+    "idx": 106
+  },
+  {
+    "id": "6e3fa544-8aa3-4acd-9b4f-c99a829c2832",
+    "status": "enhanced",
+    "label": "M3 S12 | Sensitivity Analysis Skills — Data Tables, Goal Seek & Scena",
+    "seconds": 28.1,
+    "idx": 109
+  },
+  {
+    "id": "d5f458d9-7d1f-46b6-8e47-abad77223da8",
+    "status": "enhanced",
+    "label": "M2 S7 | Behavioral Finance Metrics for Analysts",
+    "seconds": 22.7,
+    "idx": 111
+  },
+  {
+    "id": "c6e86ffb-45d9-4b39-b231-9da0ec146f9d",
+    "status": "enhanced",
+    "label": "M12 S13 | The Sector-Specific Formulas — Banks, Insurance, Real Estate",
+    "seconds": 29.5,
+    "idx": 110
+  },
+  {
+    "id": "d3948549-d89d-4468-a7e2-e38444dffb4f",
+    "status": "enhanced",
+    "label": "M7 S6 | The Working Capital Formula Stack",
+    "seconds": 16.1,
+    "idx": 114
+  },
+  {
+    "id": "0acefb7b-98e2-497c-8972-880eaa762a8a",
+    "status": "enhanced",
+    "label": "M12 S7 | The Two Terminal Value Formulas Every Analyst Memorises",
+    "seconds": 22.4,
+    "idx": 112
+  },
+  {
+    "id": "908dcd2d-46b4-44d9-8e99-d4ee81f1a880",
+    "status": "enhanced",
+    "label": "M7 S5 | The Core Balance Sheet Ratios",
+    "seconds": 21.1,
+    "idx": 113
+  },
+  {
+    "id": "3c2365fe-0b2b-479f-9ab0-8f71e4ff4dd6",
+    "status": "enhanced",
+    "label": "M12 S10 | The Comps Math — From Peer Multiples to Target Price",
+    "seconds": 26.2,
+    "idx": 116
+  },
+  {
+    "id": "4009061a-4891-4b3f-9fb6-3c9116f52382",
+    "status": "enhanced",
+    "label": "M8 S7 | The Four Ratios That Reveal Working Capital Manipulation",
+    "seconds": 28.6,
+    "idx": 117
+  },
+  {
+    "id": "92059e73-a85e-41e2-a693-5f6589a19f67",
+    "status": "enhanced",
+    "label": "M10 S7 | The Commodity Sensitivity Math — From Brent Move to EPS Impa",
+    "seconds": 41.1,
+    "idx": 115
+  },
+  {
+    "id": "bae22aa2-8e68-4ea5-91fa-e659187cf899",
+    "status": "enhanced",
+    "label": "M3 S9 | Pivot Table Skills & Techniques",
+    "seconds": 91.0,
+    "idx": 118
+  }
+]

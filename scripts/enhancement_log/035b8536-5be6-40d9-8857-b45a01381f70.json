@@ -1,0 +1,189 @@
+{
+  "id": "035b8536-5be6-40d9-8857-b45a01381f70",
+  "label": "M7 S12 | The Leverage and Solvency Formula Stack",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net Debt / EBITDA — The Primary Leverage Metric",
+        "formula": "Net Debt / EBITDA = (Total Debt − Cash and Cash Equivalents) / EBITDA\\nTotal Debt = Long-term Borrowings + Short-term Borrowings + Current Portion of Long-term Debt\\nCash includes Cash + Short-term Investments (but typically NOT long-term strategic investments)",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "All interest-bearing liabilities — both long-term and short-term. Lease liabilities under Ind AS 116 are often included (increasingly standard post-2019)."
+          },
+          {
+            "symbol": "Cash & Cash Equivalents",
+            "meaning": "Balance sheet cash, bank balances, liquid investments convertible to cash within 3 months"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, Amortisation — operating cash generation proxy"
+          }
+        ],
+        "worked_example": "UltraTech Cement FY24:\\nTotal Debt: ₹9,800 cr\\nCash & Equivalents: ₹3,200 cr\\nNet Debt: ₹6,600 cr\\nEBITDA: ₹13,800 cr\\n\\nNet Debt / EBITDA = 6,600 / 13,800 = 0.48x\\n\\nInterpretation: UltraTech's leverage is modest — less than half a year of EBITDA is required to fully retire net debt. This is comfortable for a cyclical cement business.\\n\\nVodafone Idea FY24:\\nTotal Debt: ₹2,00,000 cr\\nCash: ₹3,500 cr\\nNet Debt: ₹1,96,500 cr\\nEBITDA: ₹32,000 cr\\n\\nNet Debt / EBITDA = 1,96,500 / 32,000 = 6.14x\\n\\nInterpretation: VI's leverage is extreme — it would take 6+ years of every rupee of EBITDA to retire net debt. Even this understates the problem because it ignores AGR dues and assumes no reinvestment needs. For any business with debt at this level, solvency becomes the critical question.\\n\\nINTERPRETATION BANDS (general):\\n• Below 1x: Strong balance sheet (HDFC Bank deposit-heavy banking aside; TCS, Infosys, Asian Paints in this zone)\\n• 1-2x: Healthy leverage supporting moderate capital needs (many FMCG and industrial names)\\n• 2-4x: Meaningful leverage requiring monitoring (cyclical industrials at peak, some infrastructure)\\n• 4-6x: High leverage, watch solvency (distressed mid-caps, some stressed telcos/infra)\\n• Above 6x: Potential distress territory (unsustainable without material reduction plan)",
+        "sensitivity_note": "A company at 3x Debt/EBITDA moving to 5x over 3 years is in structural deterioration — typically preceded by earnings decline, capex surge, or operational stress. This trajectory is a more reliable signal than any single-year level."
+      },
+      {
+        "name": "Interest Coverage Ratio (ICR)",
+        "formula": "ICR = EBIT / Interest Expense",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax. Use trailing 12 months or latest annual."
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Finance costs from the P&L — the full interest obligation for the period. Some analysts use cash interest paid as an alternative."
+          }
+        ],
+        "worked_example": "Asian Paints FY24:\\nEBIT: ₹6,880 cr\\nInterest Expense: ₹245 cr (minimal debt)\\nICR = 6,880 / 245 = 28.1x\\n\\nVodafone Idea FY24:\\nEBIT: approximately −₹8,000 cr (negative)\\nInterest Expense: ₹25,800 cr\\nICR = negative/25,800 = NEGATIVE (EBIT cannot even cover any interest)\\n\\nINTERPRETATION BANDS:\\n• Above 10x: Strong balance sheet (most large-cap quality names)\\n• 5-10x: Healthy coverage (industrials, stable businesses)\\n• 3-5x: Acceptable coverage, monitor for deterioration\\n• 2-3x: Concerning — thin margin of safety\\n• Below 2x: Distress signal — imminent stress risk\\n• Below 1x: Debt service cannot be funded from operations\\n\\nAsian Paints' 28x is extraordinarily strong. Even a 50% EBIT decline would leave coverage at 14x. VI's negative ICR is the classic distress pattern.",
+        "sensitivity_note": "ICR is more sensitive to earnings volatility than leverage ratios. A company at 8x ICR with 20% earnings decline would move to 6.4x (still safe). A company at 3x ICR with the same 20% decline would move to 2.4x (concerning). ICR bands must be read in context of earnings stability."
+      },
+      {
+        "name": "Debt Service Coverage Ratio (DSCR)",
+        "formula": "DSCR = Cash Flow from Operations / (Interest + Principal Repayment)\\nOR\\nDSCR = EBITDA / (Interest + Principal Repayment)",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations (Session 7). Most analytically rigorous as it captures actual cash generation."
+          },
+          {
+            "symbol": "Interest + Principal Repayment",
+            "meaning": "Total debt service for the period — interest payments plus scheduled principal repayments. Must include all debt categories (long-term, short-term, current portion of long-term)."
+          }
+        ],
+        "worked_example": "For a leveraged mid-cap with:\\nCFO: ₹450 cr\\nInterest Expense: ₹120 cr\\nPrincipal Repayment (year): ₹180 cr\\nTotal Debt Service: ₹300 cr\\n\\nDSCR = 450 / 300 = 1.5x\\n\\nInterpretation: 1.5x means the company generates 1.5 years of debt service in 1 year — comfortable coverage but not excessive. Some buffer for cash flow volatility.\\n\\nDSCR INTERPRETATION BANDS:\\n• Below 1.0x: Cannot service debt from operations — distress\\n• 1.0-1.25x: Tight coverage, no margin for adverse conditions\\n• 1.25-1.5x: Manageable but limited buffer\\n• 1.5-2.0x: Healthy coverage with reasonable buffer\\n• Above 2.0x: Strong coverage with meaningful safety margin\\n\\nBanks and rating agencies typically require DSCR above 1.25-1.35x for standard lending; investment-grade ratings require DSCR above 1.5x typically.",
+        "sensitivity_note": "DSCR is more operationally rigorous than ICR because it includes principal repayment. A company with strong ICR but weak DSCR has interest affordability but insufficient cash flow to repay debt — indicating it must refinance debt rather than repay from operations. This is a subtle but important distinction."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Home → Navigate to start",
+        "Cmd+N → New worksheet",
+        "Cmd+Shift+V → Paste values",
+        "Cmd+Shift+Enter → Array formula (for complex multi-variable calculations)"
+      ],
+      "windows": [
+        "Alt+H+B+S → Show cell borders for leverage analysis tables",
+        "Ctrl+Home → Navigate to start of worksheet",
+        "Alt+N+V+T → Pivot table for multi-year leverage trends",
+        "Ctrl+E → Flash fill (useful for quick formatting of ratio tables)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net Debt / EBITDA — The Primary Leverage Metric",
+        "formula": "Net Debt / EBITDA = (Total Debt − Cash and Cash Equivalents) / EBITDA\\nTotal Debt = Long-term Borrowings + Short-term Borrowings + Current Portion of Long-term Debt\\nCash includes Cash + Short-term Investments (but typically NOT long-term strategic investments)",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "All interest-bearing liabilities — both long-term and short-term. Lease liabilities under Ind AS 116 are often included (increasingly standard post-2019)."
+          },
+          {
+            "symbol": "Cash & Cash Equivalents",
+            "meaning": "Balance sheet cash, bank balances, liquid investments convertible to cash within 3 months"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, Amortisation — operating cash generation proxy"
+          }
+        ],
+        "plain_english": "Net Debt / EBITDA tells you how many years of operating earnings it would take a company to fully repay its net debt (total borrowings minus cash). It is the most widely used leverage metric because it normalises debt across different company sizes and industries. A ratio below 2x is generally healthy; above 4x signals deteriorating financial health and heightened refinancing risk.",
+        "worked_example": {
+          "problem": "Compare leverage positions of UltraTech Cement and Vodafone Idea in FY24.",
+          "steps": [
+            "UltraTech: Total Debt ₹9,800 cr − Cash ₹3,200 cr = Net Debt ₹6,600 cr",
+            "UltraTech: Net Debt ₹6,600 cr ÷ EBITDA ₹13,800 cr = 0.48x",
+            "Vodafone Idea: Total Debt ₹2,00,000 cr − Cash ₹3,500 cr = Net Debt ₹1,96,500 cr",
+            "Vodafone Idea: Net Debt ₹1,96,500 cr ÷ EBITDA ₹32,000 cr = 6.14x"
+          ],
+          "result": "UltraTech 0.48x; Vodafone Idea 6.14x",
+          "insight": "UltraTech's leverage is modest — less than half a year of EBITDA is required to fully retire net debt, appropriate for a cyclical cement business with stable market position. Vodafone Idea's 6.14x is extreme; it would take 6+ years of every rupee of EBITDA to retire net debt, understating true distress when AGR dues and reinvestment needs are considered. Interpretation bands: <1x = strong (TCS, Infosys, Asian Paints); 1–2x = healthy (many FMCG, industrials); 2–4x = meaningful (cyclical peaks, infrastructure); 4–6x = high, watch solvency (distressed mid-caps); >6x = distress territory."
+        },
+        "sensitivity_note": "A company at 3x Debt/EBITDA moving to 5x over 3 years is in structural deterioration — typically preceded by earnings decline, capex surge, or operational stress. This trajectory is a more reliable signal than any single-year level."
+      },
+      {
+        "name": "Interest Coverage Ratio (ICR)",
+        "formula": "ICR = EBIT / Interest Expense",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax. Use trailing 12 months or latest annual."
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Finance costs from the P&L — the full interest obligation for the period. Some analysts use cash interest paid as an alternative."
+          }
+        ],
+        "plain_english": "Interest Coverage Ratio shows how many times over operating profit can cover interest expense. It measures the margin of safety: a higher ratio means greater ability to weather operational stress without defaulting on debt service. ICR is especially useful for comparing solvency across different capital structures within the same industry.",
+        "computation": [
+          "Extract EBIT from the P&L (Profit Before Tax + Interest Expense).",
+          "Extract total Interest Expense from the P&L.",
+          "Divide EBIT by Interest Expense."
+        ],
+        "worked_example": {
+          "problem": "Evaluate debt service safety for Asian Paints and Vodafone Idea in FY24.",
+          "steps": [
+            "Asian Paints: EBIT ₹6,880 cr ÷ Interest Expense ₹245 cr = 28.1x",
+            "Vodafone Idea: EBIT ≈ −₹8,000 cr ÷ Interest Expense ₹25,800 cr = NEGATIVE",
+            "Asian Paints resilience check: Even 50% EBIT decline → 28.1x ÷ 2 = 14.1x (still very strong)",
+            "Vodafone Idea stress: Negative EBIT cannot cover any interest, classic distress signal"
+          ],
+          "result": "Asian Paints 28.1x; Vodafone Idea NEGATIVE",
+          "insight": "Asian Paints' 28x is extraordinarily strong, reflecting minimal leverage and fortress balance sheet — the company has vast cushion even against severe earnings shocks. Vodafone Idea's negative ICR is the hallmark of financial distress: operating losses mean debt service must be funded from asset sales or restructuring rather than operations. Interpretation bands: >10x = strong (large-cap quality); 5–10x = healthy (stable industrials); 3–5x = acceptable (monitor); 2–3x = concerning (thin safety margin); <2x = distress signal; <1x = cannot fund interest from operations."
+        },
+        "sensitivity_note": "ICR is more sensitive to earnings volatility than leverage ratios. A company at 8x ICR with 20% earnings decline would move to 6.4x (still safe). A company at 3x ICR with the same 20% decline would move to 2.4x (concerning). ICR bands must be read in context of earnings stability."
+      },
+      {
+        "name": "Debt Service Coverage Ratio (DSCR)",
+        "formula": "DSCR = Cash Flow from Operations / (Interest + Principal Repayment)\\nOR\\nDSCR = EBITDA / (Interest + Principal Repayment)",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations (Session 7). Most analytically rigorous as it captures actual cash generation."
+          },
+          {
+            "symbol": "Interest + Principal Repayment",
+            "meaning": "Total debt service for the period — interest payments plus scheduled principal repayments. Must include all debt categories (long-term, short-term, current portion of long-term)."
+          }
+        ],
+        "plain_english": "Debt Service Coverage Ratio measures whether a company generates enough operating cash flow to cover both interest and principal repayments. Unlike ICR, DSCR includes principal repayment — the actual cash that must leave the business to service debt. A DSCR below 1.0x means the company cannot fund its debt obligations from operations and must refinance or draw down cash reserves.",
+        "computation": [
+          "Calculate total annual debt service: Interest Expense + Principal Repayment for the year.",
+          "Extract Cash Flow from Operations from the cash flow statement.",
+          "Divide CFO by total debt service to obtain DSCR.",
+          "Alternative: Use EBITDA if CFO is not available, though CFO is more rigorous."
+        ],
+        "worked_example": {
+          "problem": "Assess debt service capacity for a mid-cap industrial company.",
+          "steps": [
+            "Extract from cash flow statement: CFO ₹450 cr",
+            "Extract from P&L and debt schedule: Interest Expense ₹120 cr",
+            "Extract from debt schedule: Principal Repayment ₹180 cr (year)",
+            "Total Debt Service = ₹120 cr + ₹180 cr = ₹300 cr",
+            "DSCR = ₹450 cr ÷ ₹300 cr = 1.5x"
+          ],
+          "result": "DSCR = 1.5x",
+          "insight": "A ratio of 1.5x means the company generates ₹1.50 of operating cash for every ₹1.00 of debt service. This is comfortable coverage with reasonable buffer for seasonal swings or minor adverse conditions. Interpretation bands: <1.0x = cannot service debt from operations (distress); 1.0–1.25x = tight coverage; 1.25–1.5x = manageable but limited buffer; 1.5–2.0x = healthy with safety margin; >2.0x = strong coverage. Banks and rating agencies typically require DSCR >1.25–1.35x for standard lending; investment-grade ratings generally require >1.5x."
+        },
+        "sensitivity_note": "DSCR is more operationally rigorous than ICR because it includes principal repayment. A company with strong ICR but weak DSCR has interest affordability but insufficient cash flow to repay debt — indicating it must refinance debt rather than repay from operations. This is a subtle but important distinction."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Home → Navigate to start",
+        "Cmd+N → New worksheet",
+        "Cmd+Shift+V → Paste values",
+        "Cmd+Shift+Enter → Array formula (for complex multi-variable calculations)"
+      ],
+      "windows": [
+        "Alt+H+B+S → Show cell borders for leverage analysis tables",
+        "Ctrl+Home → Navigate to start of worksheet",
+        "Alt+N+V+T → Pivot table for multi-year leverage trends",
+        "Ctrl+E → Flash fill (useful for quick formatting of ratio tables)"
+      ]
+    }
+  }
+}

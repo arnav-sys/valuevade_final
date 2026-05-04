@@ -1,0 +1,225 @@
+{
+  "id": "d690ed9f-3afc-4689-ae45-b4a113951505",
+  "label": "M7 S7 | The Cash Flow Formula Stack — From Statement to Analysis",
+  "before": {
+    "formulas": [
+      {
+        "name": "CFO Quality Ratio (CFO / EBITDA)",
+        "formula": "CFO / EBITDA, computed over 3-5 year trailing average",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations from the Cash Flow Statement — the final line of Section 1"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "From the P&L — Earnings Before Interest, Tax, Depreciation, Amortisation"
+          }
+        ],
+        "worked_example": "TCS FY24:\\nCFO: ₹44,300 cr\\nEBITDA: ₹64,200 cr\\nCFO / EBITDA = 69%\\n\\nTCS's CFO/EBITDA ratio has historically been 75-85%, reflecting a services business with moderate working capital and high cash conversion. The FY24 dip to 69% reflects working capital expansion due to DSO extension and corporate tax timing. For IT services peers: Infosys typically runs 85-90%, Wipro 75-80%. Nestlé India runs 85-90% (negative working capital helps). Asian Paints runs 75-85%.\\n\\nA CFO/EBITDA ratio consistently below 70% over 3+ years is a quality red flag. Below 60% suggests aggressive accrual accounting, working capital bleed, or structural cash problems. For comparison, DHFL's CFO/EBITDA ratio was deeply negative in FY19 preceding its collapse — a direct warning signal.",
+        "sensitivity_note": "A 10 percentage point drop in CFO/EBITDA ratio on a ₹60,000 cr EBITDA base represents ₹6,000 cr of cash leakage — often locked up in working capital, accrued income, or unusual provisions. Multi-year tracking is essential; single-year noise can mislead."
+      },
+      {
+        "name": "Free Cash Flow Hierarchy",
+        "formula": "FCFF (Free Cash Flow to Firm) = CFO − Capex\\nFCFE (Free Cash Flow to Equity) = FCFF − (1 − tax rate) × Interest Expense − Net Debt Repayment\\nUnlevered Free Cash Flow = CFO − Capex (synonym for FCFF, used in valuation)",
+        "variables": [
+          {
+            "symbol": "Capex",
+            "meaning": "Purchase of Property, Plant & Equipment plus Purchase of Intangible Assets — from CFI section of cash flow statement. Some analysts separate maintenance capex from growth capex for DCF analysis."
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Finance Costs from the P&L — tax effected at the applicable corporate tax rate"
+          },
+          {
+            "symbol": "Net Debt Repayment",
+            "meaning": "Repayment of Borrowings minus Proceeds from Borrowings, from CFF section"
+          }
+        ],
+        "worked_example": "Reliance Industries FY24:\\nCFO: 1,33,200 cr\\nCapex (CFI line): 1,17,400 cr\\nFCFF = 1,33,200 − 1,17,400 = ₹15,800 cr\\nInterest Expense (P&L): ₹25,100 cr\\nTax Rate: 25.17%\\nAfter-tax Interest: 25,100 × (1 − 0.2517) = ₹18,800 cr\\nNet Debt Repayment: ~₹10,000 cr\\nFCFE ≈ 15,800 − 18,800 − 10,000 = −₹13,000 cr\\n\\nInsight: Reliance's FCFF of ₹15,800 cr is modest because the company is in a heavy capex phase investing in new energy, retail expansion, and Jio 5G rollout. FCFE is negative because interest payments and debt repayment exceed FCFF. This is why Reliance has not been paying large dividends — cash is being reinvested in the business.",
+        "sensitivity_note": "FCFF is the primary input for enterprise value DCF (Session 12). If a company's FCFF is volatile year-to-year due to capex lumpiness, using normalised capex (5-year average) gives a more stable FCFF for valuation. Maintenance capex is typically 60-80% of total capex for mature businesses."
+      },
+      {
+        "name": "Cash Conversion Sustainability Test",
+        "formula": "Sustainability Gap = CFO − Maintenance Capex − Interest Paid − Dividends Paid\\n(If positive, the business is self-funding. If negative, capital needs are being met through external financing.)",
+        "variables": [
+          {
+            "symbol": "Maintenance Capex",
+            "meaning": "Capex required to sustain current operations without growth — typically 60-80% of total capex for mature businesses. For DCF precision, management disclosures or industry benchmarks can be used."
+          },
+          {
+            "symbol": "Interest Paid",
+            "meaning": "Actual cash interest paid — disclosed in CFO section of cash flow statement, often near the end"
+          },
+          {
+            "symbol": "Dividends Paid",
+            "meaning": "Cash dividends paid during the year — from CFF section"
+          }
+        ],
+        "worked_example": "HUL FY24:\\nCFO: ₹11,800 cr\\nEstimated Maintenance Capex (70% of total capex): ₹750 cr\\nInterest Paid: ₹95 cr (HUL has minimal debt)\\nDividends Paid: ₹9,300 cr\\nSustainability Gap = 11,800 − 750 − 95 − 9,300 = +₹1,655 cr\\n\\nHUL is self-funding even after paying substantial dividends — an indicator of the underlying economic strength of the franchise. Compare with Vodafone Idea: Sustainability Gap is deeply negative, sustained only through repeated equity raises and government interventions.",
+        "sensitivity_note": "The Sustainability Gap framework catches businesses that look profitable on the P&L but are cash-insolvent. A consistently negative Sustainability Gap with no clear growth justification is one of the most reliable predictors of eventual capital raise, dividend cut, or financial distress."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+F → Find in sheet",
+        "Cmd+Shift+Home → Select to start",
+        "Cmd+Option+S → Save sheet",
+        "Cmd+= → Recalculate"
+      ],
+      "windows": [
+        "Alt+H+T → Find text in cash flow items (useful for locating specific line items)",
+        "Ctrl+Shift+Home → Select from cursor to start of sheet",
+        "Alt+I+W → Insert worksheet (create separate CFO/CFI/CFF analysis tabs)",
+        "F9 → Recalculate all formulas (after updating FCFF calculations)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "CFO Quality Ratio (CFO / EBITDA)",
+        "formula": "CFO / EBITDA, computed over 3-5 year trailing average",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations from the Cash Flow Statement — the final line of Section 1"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "From the P&L — Earnings Before Interest, Tax, Depreciation, Amortisation"
+          }
+        ],
+        "plain_english": "The CFO/EBITDA ratio measures what percentage of reported earnings actually converts to cash. A ratio of 75–85% is healthy; below 70% signals that accruals, working capital expansion, or timing issues are preventing cash realisation. This ratio is a red flag detector: collapsing CFO/EBITDA over several years often precedes financial distress, because reported profits are not translating to real cash available for creditors and shareholders.",
+        "computation": [
+          "1. Extract CFO from the cash flow statement (line after changes in working capital adjustments).",
+          "2. Extract or calculate EBITDA: Net Profit + Interest + Tax + Depreciation + Amortisation.",
+          "3. Divide CFO by EBITDA and express as a percentage.",
+          "4. Calculate the 3-year or 5-year average ratio to smooth single-year distortions."
+        ],
+        "worked_example": {
+          "problem": "Assess cash quality for TCS based on FY24 results and historical context.",
+          "steps": [
+            "CFO (FY24): ₹44,300 cr",
+            "EBITDA (FY24): ₹64,200 cr",
+            "CFO / EBITDA = 44,300 ÷ 64,200 = 0.690 or 69%",
+            "Historical TCS ratio (FY19–FY23): 75–85% average",
+            "Peer comparison: Infosys 85–90%, Wipro 75–80%, Nestlé India 85–90%, Asian Paints 75–85%"
+          ],
+          "result": "69% in FY24, down from 75–85% historical range.",
+          "insight": "TCS's FY24 dip to 69% reflects working capital expansion (DSO extension) and corporate tax timing, not core deterioration. IT services peers range 75–90%, showing TCS is still healthy. A sustained slide below 70% over 3+ years would be a quality red flag. DHFL's CFO/EBITDA went deeply negative in FY19 — a clear warning sign before collapse."
+        },
+        "sensitivity_note": "A 10 percentage point drop in CFO/EBITDA ratio on a ₹60,000 cr EBITDA base represents ₹6,000 cr of cash leakage — often locked up in working capital, accrued income, or unusual provisions. Multi-year tracking is essential; single-year noise can mislead."
+      },
+      {
+        "name": "Free Cash Flow Hierarchy",
+        "formula": "FCFF (Free Cash Flow to Firm) = CFO − Capex\nFCFE (Free Cash Flow to Equity) = FCFF − (1 − tax rate) × Interest Expense − Net Debt Repayment\nUnlevered Free Cash Flow = CFO − Capex (synonym for FCFF, used in valuation)",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations from the cash flow statement"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Purchase of Property, Plant & Equipment plus Purchase of Intangible Assets — from CFI section of cash flow statement. Some analysts separate maintenance capex from growth capex for DCF analysis."
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Finance Costs from the P&L — tax effected at the applicable corporate tax rate"
+          },
+          {
+            "symbol": "Tax Rate",
+            "meaning": "Applicable corporate tax rate (statutory or effective)"
+          },
+          {
+            "symbol": "Net Debt Repayment",
+            "meaning": "Repayment of Borrowings minus Proceeds from Borrowings, from CFF section"
+          }
+        ],
+        "plain_english": "Free cash flow is cash available after the company has invested in maintaining and growing its assets. FCFF (to the firm) belongs to all investors — debt and equity holders; FCFE (to equity) is what shareholders can theoretically receive after meeting all debt obligations. FCFF is the standard input for enterprise value DCF valuation. Understanding the hierarchy helps you determine whether a company is a cash generator (positive FCFF) or a cash consumer (negative FCFF), and whether debt holders or equity holders face pressure.",
+        "computation": [
+          "1. FCFF: Start with CFO from cash flow statement. Subtract total capex (both maintenance and growth) from CFI.",
+          "2. FCFE: Begin with FCFF. Subtract after-tax interest: Interest Expense × (1 − Tax Rate). Subtract net debt repayment (borrowing repayments minus new borrowing proceeds).",
+          "3. For normalised valuation, use 5-year average capex if single-year capex is lumpy or unrepresentative."
+        ],
+        "worked_example": {
+          "problem": "Calculate FCFF and FCFE for Reliance Industries FY24 and explain why dividend payout is low.",
+          "steps": [
+            "CFO (FY24): ₹1,33,200 cr",
+            "Total Capex (CFI): ₹1,17,400 cr",
+            "FCFF = 1,33,200 − 1,17,400 = ₹15,800 cr",
+            "Interest Expense (P&L): ₹25,100 cr",
+            "Tax Rate: 25.17%",
+            "After-tax Interest = 25,100 × (1 − 0.2517) = ₹18,800 cr",
+            "Net Debt Repayment: ~₹10,000 cr",
+            "FCFE = 15,800 − 18,800 − 10,000 = −₹13,000 cr"
+          ],
+          "result": "FCFF ₹15,800 cr, FCFE −₹13,000 cr",
+          "insight": "Reliance's modest FCFF reflects heavy capex in new energy, retail, and Jio 5G — growth investments. Negative FCFE means equity holders don't receive cash after interest and debt repayment; dividends are therefore limited. This is a deliberate capital allocation strategy, not financial distress."
+        },
+        "sensitivity_note": "FCFF is the primary input for enterprise value DCF (Session 12). If a company's FCFF is volatile year-to-year due to capex lumpiness, using normalised capex (5-year average) gives a more stable FCFF for valuation. Maintenance capex is typically 60–80% of total capex for mature businesses."
+      },
+      {
+        "name": "Cash Conversion Sustainability Test",
+        "formula": "Sustainability Gap = CFO − Maintenance Capex − Interest Paid − Dividends Paid\n(If positive, the business is self-funding. If negative, capital needs are being met through external financing.)",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations from the cash flow statement"
+          },
+          {
+            "symbol": "Maintenance Capex",
+            "meaning": "Capex required to sustain current operations without growth — typically 60–80% of total capex for mature businesses. For DCF precision, management disclosures or industry benchmarks can be used."
+          },
+          {
+            "symbol": "Interest Paid",
+            "meaning": "Actual cash interest paid — disclosed in CFO section of cash flow statement, often near the end"
+          },
+          {
+            "symbol": "Dividends Paid",
+            "meaning": "Cash dividends paid during the year — from CFF section"
+          }
+        ],
+        "plain_english": "The Sustainability Gap reveals whether a company's operating cash flow covers the minimum cash needs to stay afloat (maintenance capex, interest, and shareholder dividends). A positive gap means the business self-funds comfortably and can even grow; a persistent negative gap signals the company is living beyond its means and must refinance or cut dividends. This metric often catches financial distress earlier than P&L metrics because it directly measures cash insolvency.",
+        "computation": [
+          "1. Identify CFO from the cash flow statement.",
+          "2. Estimate Maintenance Capex: Typically 60–80% of total capex. Check management disclosures for guidance, or use industry benchmarks.",
+          "3. Extract Interest Paid from the CFO section (often a line item near the bottom).",
+          "4. Extract Dividends Paid from the CFF section.",
+          "5. Calculate: CFO − Maintenance Capex − Interest Paid − Dividends Paid.",
+          "6. If positive, the company generates surplus cash; if negative, external financing plugs the gap."
+        ],
+        "worked_example": {
+          "problem": "Evaluate cash sustainability for HUL vs. a distressed telecom operator. Assess dividend safety.",
+          "steps": [
+            "HUL FY24:",
+            "CFO: ₹11,800 cr",
+            "Total Capex: ~₹1,070 cr; Maintenance Capex (70%): ₹750 cr",
+            "Interest Paid: ₹95 cr (HUL has minimal debt)",
+            "Dividends Paid: ₹9,300 cr",
+            "Sustainability Gap = 11,800 − 750 − 95 − 9,300 = +₹1,655 cr",
+            "Result: HUL is strongly self-funding.",
+            "Contrast: Vodafone Idea sustained negative gap, leading to repeated equity raises and government support."
+          ],
+          "result": "HUL +₹1,655 cr; Vodafone Idea deeply negative.",
+          "insight": "HUL's positive gap even after substantial dividends demonstrates underlying franchise strength and dividend safety. Vodafone Idea's persistent negative gap is a red flag for capital adequacy and unsustainability — a predictive signal of eventual dividend cut or restructuring."
+        },
+        "sensitivity_note": "The Sustainability Gap framework catches businesses that look profitable on the P&L but are cash-insolvent. A consistently negative Sustainability Gap with no clear growth justification is one of the most reliable predictors of eventual capital raise, dividend cut, or financial distress."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+F → Find in sheet",
+        "Cmd+Shift+Home → Select to start",
+        "Cmd+Option+S → Save sheet",
+        "Cmd+= → Recalculate"
+      ],
+      "windows": [
+        "Alt+H+T → Find text in cash flow items (useful for locating specific line items)",
+        "Ctrl+Shift+Home → Select from cursor to start of sheet",
+        "Alt+I+W → Insert worksheet (create separate CFO/CFI/CFF analysis tabs)",
+        "F9 → Recalculate all formulas (after updating FCFF calculations)"
+      ]
+    }
+  }
+}

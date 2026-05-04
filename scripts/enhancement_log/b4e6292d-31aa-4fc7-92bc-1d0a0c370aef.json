@@ -1,0 +1,124 @@
+{
+  "id": "b4e6292d-31aa-4fc7-92bc-1d0a0c370aef",
+  "label": "M6 S1 | The Disclosure Quality Score — A Quantitative Lens on Report",
+  "before": {
+    "formulas": [
+      {
+        "name": "Disclosure Quality Score (DQS)",
+        "formula": "DQS = (Mandatory Complete / Total Mandatory) x 40 + (Voluntary Present / Benchmark Voluntary) x 30 + (KAM Count x 5) + (RPT Granularity x 1.5) + (Segment Detail x 1)",
+        "variables": [
+          {
+            "symbol": "Mandatory Complete",
+            "meaning": "Count of mandatory disclosure items correctly disclosed per Companies Act + LODR (benchmark ~38 items for an Indian listed company)"
+          },
+          {
+            "symbol": "Voluntary Present",
+            "meaning": "Voluntary items — unit economics, cohort data, segment KPIs beyond statutory minimum (benchmark ~30)"
+          },
+          {
+            "symbol": "KAM Count",
+            "meaning": "Number of Key Audit Matters disclosed; more KAMs = more audit transparency, not more problems"
+          },
+          {
+            "symbol": "RPT Granularity",
+            "meaning": "0-10 analyst-scored scale on related party transaction disclosure depth (counterparty naming, pricing, approvals)"
+          },
+          {
+            "symbol": "Segment Detail",
+            "meaning": "0-10 analyst-scored scale on segment-wise revenue, margin, asset, and capex disclosure"
+          }
+        ],
+        "worked_example": "Asian Paints FY24 score: Mandatory 38/38 = 100% x 40 = 40. Voluntary 22/30 = 73% x 30 = 22. KAMs = 3 x 5 = 15. RPT granularity 8 x 1.5 = 12. Segment 9 x 1 = 9. Total DQS = 98/100. A weak mid-cap comparable: Mandatory 35/38 = 92% x 40 = 36.8. Voluntary 10/30 = 33% x 30 = 10. KAMs = 1 x 5 = 5. RPT granularity 4 x 1.5 = 6. Segment 5 x 1 = 5. Total = 62.8/100. The 35-point gap tells you the mid-cap deserves additional scepticism even before you read a single financial number.",
+        "sensitivity_note": "Counter-intuitive: MORE KAMs reflects MORE audit transparency. An auditor disclosing 3 KAMs has told you exactly where to focus scrutiny. An auditor with 0 KAMs may just be boilerplating. Do not penalise KAM count in DQS. Also note that DQS is a qualitative research aid — do not mechanically drive investment decisions from the score alone."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Ctrl+V (Paste Special)",
+        "Cmd+Shift+F (filter)",
+        "Cmd+= (recalculate)"
+      ],
+      "windows": [
+        "Alt+E+S+V (Paste Special Values for moving scorecard components)",
+        "Ctrl+Shift+L (apply filter to scorecard table)",
+        "F9 (recalculate after updating component scores)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Disclosure Quality Score (DQS)",
+        "formula": "DQS = (Mandatory Complete / Total Mandatory) x 40 + (Voluntary Present / Benchmark Voluntary) x 30 + (KAM Count x 5) + (RPT Granularity x 1.5) + (Segment Detail x 1)",
+        "variables": [
+          {
+            "symbol": "Mandatory Complete",
+            "meaning": "Count of mandatory disclosure items correctly disclosed per Companies Act + LODR (benchmark ~38 items for an Indian listed company)"
+          },
+          {
+            "symbol": "Total Mandatory",
+            "meaning": "Statutory minimum number of mandatory disclosure items (typically 38 for Indian listed companies under Companies Act and LODR)"
+          },
+          {
+            "symbol": "Voluntary Present",
+            "meaning": "Voluntary items — unit economics, cohort data, segment KPIs beyond statutory minimum (benchmark ~30)"
+          },
+          {
+            "symbol": "Benchmark Voluntary",
+            "meaning": "Expected count of voluntary disclosures for peer comparison (typically 30 for a large-cap Indian company)"
+          },
+          {
+            "symbol": "KAM Count",
+            "meaning": "Number of Key Audit Matters disclosed; more KAMs = more audit transparency, not more problems"
+          },
+          {
+            "symbol": "RPT Granularity",
+            "meaning": "0-10 analyst-scored scale on related party transaction disclosure depth (counterparty naming, pricing, approvals)"
+          },
+          {
+            "symbol": "Segment Detail",
+            "meaning": "0-10 analyst-scored scale on segment-wise revenue, margin, asset, and capex disclosure"
+          }
+        ],
+        "plain_english": "The Disclosure Quality Score quantifies how thoroughly and transparently a company reports to investors across mandatory, voluntary, audit, related-party, and segment dimensions. A higher DQS signals lower information asymmetry and reduces the risk of hidden liabilities or earnings quality surprises. This score helps you identify which companies deserve deeper scrutiny (low DQS) and which have earned the trust to move faster through your checklist (high DQS).",
+        "computation": [
+          "Calculate Mandatory Disclosure component: (Mandatory Complete / Total Mandatory) × 40. For example, if all 38 mandatory items are disclosed, this equals (38/38) × 40 = 40.",
+          "Calculate Voluntary Disclosure component: (Voluntary Present / Benchmark Voluntary) × 30. If the company discloses 22 voluntary items out of a 30-item benchmark, this equals (22/30) × 30 = 22.",
+          "Calculate KAM component: KAM Count × 5. If the auditor disclosed 3 Key Audit Matters, this equals 3 × 5 = 15.",
+          "Calculate RPT Granularity component: RPT Granularity score (0–10 scale) × 1.5. If you score RPT transparency as 8/10, this equals 8 × 1.5 = 12.",
+          "Calculate Segment Detail component: Segment Detail score (0–10 scale) × 1. If you score segment disclosure as 9/10, this equals 9 × 1 = 9.",
+          "Sum all five components to arrive at the total DQS (maximum 100)."
+        ],
+        "worked_example": {
+          "problem": "Compare disclosure quality of Asian Paints (large-cap, mature reporting) versus a mid-cap peer to decide how much scepticism to apply during your financial statement review.",
+          "steps": [
+            "Asian Paints FY24: Count mandatory items disclosed = 38/38. Score: (38/38) × 40 = 40.",
+            "Asian Paints voluntary items = 22 out of 30-item benchmark. Score: (22/30) × 30 = 22.",
+            "Asian Paints disclosed 3 KAMs in FY24 audit report. Score: 3 × 5 = 15.",
+            "Analyst assessment: RPT disclosure (counterparty names, transaction purpose, pricing rationale) rates 8/10. Score: 8 × 1.5 = 12.",
+            "Analyst assessment: Segment disclosure (revenue, EBITDA, assets, capex by segment) rates 9/10. Score: 9 × 1 = 9.",
+            "Asian Paints total DQS = 40 + 22 + 15 + 12 + 9 = 98/100.",
+            "Mid-cap peer: Mandatory 35/38 = (35/38) × 40 = 36.8; Voluntary 10/30 = (10/30) × 30 = 10; KAMs 1 × 5 = 5; RPT granularity 4/10 × 1.5 = 6; Segment 5/10 × 1 = 5.",
+            "Mid-cap peer total DQS = 36.8 + 10 + 5 + 6 + 5 = 62.8/100."
+          ],
+          "result": "Asian Paints DQS = 98/100 (transparent, mature, low information risk). Mid-cap peer DQS = 62.8/100 (opaque, sparse voluntary data, minimal KAM disclosure).",
+          "insight": "The 35-point gap (98 vs 62.8) indicates that the mid-cap deserves added scepticism on earnings quality, related-party fairness, and segment profitability claims — even before you calculate a single ratio. High DQS companies have done the heavy lifting to prove they have nothing to hide; low DQS companies warrant deeper forensic scrutiny. Also note: 0 KAMs is a red flag for boilerplate audits, not a sign of strength."
+        },
+        "sensitivity_note": "Counter-intuitive: MORE KAMs reflects MORE audit transparency. An auditor disclosing 3 KAMs has told you exactly where to focus scrutiny. An auditor with 0 KAMs may just be boilerplating. Do not penalise KAM count in DQS. Also note that DQS is a qualitative research aid — do not mechanically drive investment decisions from the score alone.",
+        "analyst_note": "Use DQS as a triage tool: companies with DQS > 85 move faster through due diligence; DQS 70–85 require standard forensic review; DQS < 70 warrant forensic red-flag analysis before engagement. Pair DQS with accrual quality metrics (working capital trends, depreciation methods, revenue recognition policies) for a complete information-risk assessment."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Ctrl+V (Paste Special)",
+        "Cmd+Shift+F (filter)",
+        "Cmd+= (recalculate)"
+      ],
+      "windows": [
+        "Alt+E+S+V (Paste Special Values for moving scorecard components)",
+        "Ctrl+Shift+L (apply filter to scorecard table)",
+        "F9 (recalculate after updating component scores)"
+      ]
+    }
+  }
+}

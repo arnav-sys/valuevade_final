@@ -1,0 +1,292 @@
+{
+  "id": "2541aca5-ba9d-4a8a-857b-881033651e4a",
+  "label": "M8 S12 | The Audit Signal Severity Framework and Detection Metrics",
+  "before": {
+    "formulas": [
+      {
+        "name": "Audit Opinion Severity Scale",
+        "formula": "Severity Score (0-10) based on opinion type and modifications",
+        "variables": [
+          {
+            "symbol": "Unqualified Opinion",
+            "meaning": "Score 0 — baseline, no forensic signal"
+          },
+          {
+            "symbol": "Unqualified with Emphasis of Matter",
+            "meaning": "Score 2-3 — specific matter highlighted, investigate content"
+          },
+          {
+            "symbol": "Qualified Opinion on Specific Matter",
+            "meaning": "Score 5-6 — material issue identified, significant forensic signal"
+          },
+          {
+            "symbol": "Adverse Opinion",
+            "meaning": "Score 9 — financial statements do not present fairly, extreme signal"
+          },
+          {
+            "symbol": "Disclaimer of Opinion",
+            "meaning": "Score 9 — auditor cannot form opinion, extreme signal"
+          }
+        ],
+        "worked_example": "Running this on three Indian coverage names. HDFC Bank FY23: Unqualified opinion from MSKA and Associates. Severity Score 0. Normal coverage treatment on audit basis alone. Manpasand Beverages FY17 (the last audit before Deloitte's May 2018 resignation): Unqualified opinion but with multiple Emphasis of Matter paragraphs regarding specific balance sheet items and related-party transactions. Severity Score 3. Forensic yellow flag warranting specific examination of the flagged matters. Note that the FY17 Unqualified opinion was Deloitte's last — within 12 months they would resign rather than sign FY18. The Emphasis of Matter paragraphs in FY17 were the specific precursor signals. CG Power FY18: Unqualified opinion with Emphasis of Matter paragraphs on specific inventory and receivables matters, plus Key Audit Matters identifying revenue recognition risks. Severity Score 4. Yellow flag that, combined with the Family 4 working capital signals and Family 6 off-balance-sheet signals from Sessions 7 and 9, produced integrated pre-collapse assessment 12 months before the August 2019 board disclosure. Interpretation framework: Severity Scores 0-2 indicate clean audit with normal coverage implications. 3-5 indicates yellow flag requiring examination of specific matters. 6-8 indicates red flag warranting substantial rating adjustment. 9-10 indicates extreme signal — Adverse, Disclaimer, or resignation — typically warranting immediate Sell rating regardless of any other consideration.",
+        "sensitivity_note": "Severity interpretation should incorporate context of the specific matter identified. A qualification regarding a ₹5 crore balance sheet item in a ₹50,000 crore company is proportionally different from a qualification regarding a ₹500 crore item. Always examine materiality alongside severity."
+      },
+      {
+        "name": "Auditor Change Pattern Analysis",
+        "formula": "Change Signal Strength = Base Severity + Timing Modifier + Firm Tier Transition + Explanation Clarity",
+        "variables": [
+          {
+            "symbol": "Base Severity",
+            "meaning": "0 for scheduled rotation at 5/10-year mark, 5 for year-end change at odd times, 10 for mid-engagement resignation"
+          },
+          {
+            "symbol": "Timing Modifier",
+            "meaning": "0 for end-of-year clean transitions, +3 for transitions with short notice or clear disruption"
+          },
+          {
+            "symbol": "Firm Tier Transition",
+            "meaning": "0 for Big Four to Big Four, +2 for Big Four to mid-tier, +5 for Big Four to smaller firm, -1 for smaller firm to Big Four"
+          },
+          {
+            "symbol": "Explanation Clarity",
+            "meaning": "0 for clear published reasons (rotation cycle, specific business rationale), +3 for vague or minimal disclosure"
+          }
+        ],
+        "worked_example": "Running this on several cases. Manpasand Beverages May 2018 — Deloitte resigned mid-engagement: Base Severity 10, Timing Modifier +3 (short notice), Firm Tier Transition 0 (Deloitte to CNK Associates — mid-tier), Explanation Clarity +3 (vague letter citing 'inability to obtain information'). Total Signal Strength 16. Extreme — essentially the highest possible audit change signal. The stock collapse within weeks validated the interpretation. CG Power auditor transition during FY18 — Emphasis of Matter paragraphs precede subsequent resignation-like event: Base Severity 5 (year-end change), Timing Modifier +2, Firm Tier Transition +2 (Big Four to mid-tier replacement pattern), Explanation Clarity +1. Total Signal Strength 10. Material signal warranting substantial rating adjustment. Scheduled rotation example — Infosys rotating from Deloitte to BSR (Big Four affiliate) in 2018: Base Severity 0 (scheduled rotation), Timing Modifier 0, Firm Tier Transition 0, Explanation Clarity 0. Total Signal Strength 0. No forensic concern. Interpretation thresholds: Signal Strength 0-3 is routine, no forensic concern. 4-7 is yellow flag warranting investigation. 8-12 is material concern requiring rating adjustment. 13-20 is extreme signal often warranting immediate Sell rating.",
+        "sensitivity_note": "Pattern analysis should examine multiple years to distinguish one-time events from systematic patterns. A company with Big Four auditor for 10 years that transitions to mid-tier once has different profile than a company that has transitioned through multiple auditors over 5 years."
+      },
+      {
+        "name": "Audit Firm Tier Assessment",
+        "formula": "Firm Tier Classification — Big Four (Tier 1), Mid-tier Indian firms (Tier 2), Smaller firms (Tier 3)",
+        "variables": [
+          {
+            "symbol": "Tier 1 — Big Four and Affiliates",
+            "meaning": "Deloitte Haskins and Sells, BSR (KPMG affiliate), Walker Chandiok (Grant Thornton/Baker Tilly), SRB and Associates (EY affiliate), Price Waterhouse (PwC), and similar"
+          },
+          {
+            "symbol": "Tier 2 — Mid-tier",
+            "meaning": "MSKA and Associates (BDO), Khimji Kunverji, MGB and Co, NGS and Co, Haribhakti, and similar established firms"
+          },
+          {
+            "symbol": "Tier 3 — Smaller firms",
+            "meaning": "Smaller Indian CA firms, often local or regional"
+          }
+        ],
+        "worked_example": "Classification examples: Reliance Industries FY23 — SRBC and Associates (EY affiliate), Tier 1. Wipro FY23 — Deloitte, Tier 1. TCS FY23 — BSR and Associates, Tier 1. Titan FY23 — Walker Chandiok, Tier 1. Infosys FY23 — Deloitte, Tier 1. Most large-cap Indian companies retain Tier 1 auditors due to regulatory requirements and governance norms. Mid-cap coverage shows more variability — many mid-caps use Tier 2 firms, which is not inherently a forensic concern. The issue arises when companies transition downward in tier. Manpasand Beverages FY18 transition from Deloitte (Tier 1) to CNK Associates (Tier 2 at best) — substantial tier drop combined with resignation pattern. The tier analysis supplements the change pattern analysis. Interpretation: Tier 1 auditor throughout is expected for large-caps, common for mid-caps, positive governance signal. Tier 2 auditor is acceptable for mid-caps with clear business rationale. Tier 3 auditor for listed companies requires specific investigation. Tier downward transitions are forensic signals; upward transitions suggest improving governance.",
+        "sensitivity_note": "Tier classification is not a quality verdict. Some Tier 2 firms provide excellent audit quality for mid-cap clients. The forensic signal is in tier transitions and specific firm-client fit considerations, not in absolute tier levels."
+      },
+      {
+        "name": "Regulatory Action Signal Framework",
+        "formula": "Regulatory Signal = NFRA Actions + ICAI Disciplinary + SEBI Actions + PCAOB Actions (if US-listed)",
+        "variables": [
+          {
+            "symbol": "NFRA Actions",
+            "meaning": "National Financial Reporting Authority actions against specific auditors or firms — established 2018"
+          },
+          {
+            "symbol": "ICAI Disciplinary",
+            "meaning": "Institute of Chartered Accountants of India disciplinary proceedings against individual auditors or firms"
+          },
+          {
+            "symbol": "SEBI Actions",
+            "meaning": "Securities and Exchange Board of India actions specifically related to audit failures or auditor conduct"
+          },
+          {
+            "symbol": "PCAOB Actions",
+            "meaning": "Public Company Accounting Oversight Board (US) actions affecting Indian audit firms serving US-listed clients"
+          }
+        ],
+        "worked_example": "Examples of regulatory action signals. PwC debarment from auditing listed companies in India January 2018 by SEBI — following Satyam 2009 fraud, PwC was barred from conducting statutory audits of listed companies for two years. Any company switching from PwC to other firm during this period had specific context. NFRA disciplinary actions against specific auditor-firm-company combinations have been published since 2019 and should be consulted when evaluating any company's audit context. ICAI reviews and censures of individual chartered accountants or firms provide relevant context. The cumulative regulatory signal framework is informational — actions against specific firms make their future engagements subject to greater scrutiny; actions against specific individuals make their future opinions less credible. Detection technique: for any coverage name, check whether the current auditor has been subject to any material regulatory action in the prior 5 years. Check whether the auditor was connected to any major Indian audit failures. Adjust Severity Scores accordingly.",
+        "sensitivity_note": "Regulatory actions provide context but should not be over-weighted. Most Big Four and mid-tier firms have clean regulatory history, and occasional actions against specific individuals do not automatically impugn firm-level capacity. The signal is cumulative and pattern-based rather than single-event."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for audit history tables",
+        "Ctrl + Shift + L — Toggle filters for multi-year audit data",
+        "F4 — Lock references for Severity Score calculations",
+        "Alt + = — AutoSum for cumulative signal strength",
+        "Ctrl + Shift + 1 — Number format for structured data"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Audit Opinion Severity Scale",
+        "formula": "Severity Score (0-10) based on opinion type and modifications",
+        "variables": [
+          {
+            "symbol": "Unqualified Opinion",
+            "meaning": "Score 0 — baseline, no forensic signal"
+          },
+          {
+            "symbol": "Unqualified with Emphasis of Matter",
+            "meaning": "Score 2-3 — specific matter highlighted, investigate content"
+          },
+          {
+            "symbol": "Qualified Opinion on Specific Matter",
+            "meaning": "Score 5-6 — material issue identified, significant forensic signal"
+          },
+          {
+            "symbol": "Adverse Opinion",
+            "meaning": "Score 9 — financial statements do not present fairly, extreme signal"
+          },
+          {
+            "symbol": "Disclaimer of Opinion",
+            "meaning": "Score 9 — auditor cannot form opinion, extreme signal"
+          }
+        ],
+        "plain_english": "The Audit Opinion Severity Scale converts the auditor's formal opinion type into a numerical forensic signal (0–10). An unqualified opinion represents baseline audit comfort with no red flags; as the auditor adds qualifications or emphasis paragraphs, the severity score rises. A score of 9–10 (Adverse or Disclaimer) signals that the auditor fundamentally doubts the financial statements' reliability and warrants immediate investor concern.",
+        "worked_example": {
+          "problem": "You are evaluating three Indian stocks for audit-based forensic signals. How would you assign Severity Scores to each based on their most recent audit opinions?",
+          "steps": [
+            "HDFC Bank FY23: Unqualified opinion from MSKA and Associates with no emphasis paragraphs or modifications. Assign Severity Score 0.",
+            "Manpasand Beverages FY17: Unqualified opinion but with multiple Emphasis of Matter paragraphs regarding specific balance sheet items and related-party transactions. Assign Severity Score 3.",
+            "CG Power FY18: Unqualified opinion with Emphasis of Matter paragraphs on inventory and receivables, plus Key Audit Matters identifying revenue recognition risks. Assign Severity Score 4."
+          ],
+          "result": "HDFC Bank (0) = clean audit, normal coverage. Manpasand (3) = yellow flag; within 12 months Deloitte resigned from engagement. CG Power (4) = yellow flag that, combined with working capital and off-balance-sheet signals, preceded board disclosure and collapse in August 2019.",
+          "insight": "Severity Scores 0–2 indicate routine audits. Scores 3–5 warrant specific investigation of flagged matters. Scores 6–8 require material rating adjustment. Scores 9–10 (Adverse/Disclaimer) typically warrant immediate Sell recommendation regardless of other factors."
+        },
+        "sensitivity_note": "Severity interpretation should incorporate context of the specific matter identified. A qualification regarding a ₹5 crore balance sheet item in a ₹50,000 crore company is proportionally different from a qualification regarding a ₹500 crore item. Always examine materiality alongside severity."
+      },
+      {
+        "name": "Auditor Change Pattern Analysis",
+        "formula": "Change Signal Strength = Base Severity + Timing Modifier + Firm Tier Transition + Explanation Clarity",
+        "variables": [
+          {
+            "symbol": "Base Severity",
+            "meaning": "0 for scheduled rotation at 5/10-year mark, 5 for year-end change at odd times, 10 for mid-engagement resignation"
+          },
+          {
+            "symbol": "Timing Modifier",
+            "meaning": "0 for end-of-year clean transitions, +3 for transitions with short notice or clear disruption"
+          },
+          {
+            "symbol": "Firm Tier Transition",
+            "meaning": "0 for Big Four to Big Four, +2 for Big Four to mid-tier, +5 for Big Four to smaller firm, -1 for smaller firm to Big Four"
+          },
+          {
+            "symbol": "Explanation Clarity",
+            "meaning": "0 for clear published reasons (rotation cycle, specific business rationale), +3 for vague or minimal disclosure"
+          }
+        ],
+        "plain_english": "Auditor changes carry forensic meaning—not all departures are routine. This formula combines the timing of the change, the drop in firm tier, and the auditor's explanation into a single signal strength score. Unexpected mid-engagement resignations, downward tier transitions, and vague explanations all elevate the signal and warrant investigation into what prompted the auditor's departure.",
+        "computation": [
+          "Identify the reason for auditor change (scheduled rotation, mid-year resignation, or end-of-year non-renewal).",
+          "Assign Base Severity: 0 if rotation occurs at normal 5 or 10-year mark; 5 if change at unexpected year-end; 10 if resignation during audit year.",
+          "Add Timing Modifier: +0 if clean year-end transition; +3 if short-notice resignation or disrupted timeline.",
+          "Assess Firm Tier Transition using the Audit Firm Tier Assessment framework; add the corresponding points (0, +2, +5, or -1).",
+          "Evaluate Explanation Clarity: +0 if auditor published clear, business-driven reasons; +3 if disclosure was vague or minimal.",
+          "Sum all components to derive Change Signal Strength; interpret against thresholds (0–3 routine, 4–7 yellow flag, 8–12 material concern, 13–20 extreme)."
+        ],
+        "worked_example": {
+          "problem": "You are reviewing auditor changes at three companies. Assign Change Signal Strength scores and interpret forensic implications.",
+          "steps": [
+            "Manpasand Beverages May 2018 — Deloitte resigned mid-engagement: Base Severity 10 (mid-engagement resignation) + Timing Modifier +3 (short notice, clear disruption) + Firm Tier Transition 0 (Deloitte to CNK Associates, both Tier 1/2) + Explanation Clarity +3 (vague letter citing 'inability to obtain information'). Total: 16.",
+            "CG Power during FY18 — year-end auditor transition with Emphasis of Matter paragraphs: Base Severity 5 (year-end change at odd timing) + Timing Modifier +2 (transition notice but with prior audit concerns) + Firm Tier Transition +2 (Big Four to mid-tier) + Explanation Clarity +1 (partial clarity). Total: 10.",
+            "Infosys 2018 — scheduled rotation from Deloitte to BSR (Big Four affiliate): Base Severity 0 (scheduled 5-year rotation) + Timing Modifier 0 (clean end-of-year transition) + Firm Tier Transition 0 (Big Four to Big Four affiliate) + Explanation Clarity 0 (clear rotation cycle published). Total: 0."
+          ],
+          "result": "Manpasand (16) = extreme signal; stock collapsed within weeks. CG Power (10) = material forensic concern; board disclosure and collapse followed within 12 months. Infosys (0) = routine governance; no forensic concern.",
+          "insight": "Signal Strength 0–3 is routine. 4–7 warrants investigation. 8–12 requires material rating adjustment. 13–20 often warrants immediate Sell recommendation."
+        },
+        "sensitivity_note": "Pattern analysis should examine multiple years to distinguish one-time events from systematic patterns. A company with Big Four auditor for 10 years that transitions to mid-tier once has different profile than a company that has transitioned through multiple auditors over 5 years."
+      },
+      {
+        "name": "Audit Firm Tier Assessment",
+        "formula": "Firm Tier Classification — Big Four (Tier 1), Mid-tier Indian firms (Tier 2), Smaller firms (Tier 3)",
+        "variables": [
+          {
+            "symbol": "Tier 1 — Big Four and Affiliates",
+            "meaning": "Deloitte Haskins and Sells, BSR (KPMG affiliate), Walker Chandiok (Grant Thornton/Baker Tilly), SRB and Associates (EY affiliate), Price Waterhouse (PwC), and similar"
+          },
+          {
+            "symbol": "Tier 2 — Mid-tier",
+            "meaning": "MSKA and Associates (BDO), Khimji Kunverji, MGB and Co, NGS and Co, Haribhakti, and similar established firms"
+          },
+          {
+            "symbol": "Tier 3 — Smaller firms",
+            "meaning": "Smaller Indian CA firms, often local or regional"
+          }
+        ],
+        "plain_english": "Audit firm tier reflects the firm's scale, regulatory profile, and capacity to challenge management on complex accounting issues. Tier 1 (Big Four) firms have global resources and independence frameworks. Tier 2 firms are established but smaller. Tier 3 firms are local. For forensic analysis, what matters is tier transitions—downward moves to smaller firms suggest reduced audit challenge and increased forensic risk.",
+        "worked_example": {
+          "problem": "You are classifying auditors for three Indian companies and evaluating tier transitions. Assign Tier classifications and assess forensic implications.",
+          "steps": [
+            "Reliance Industries FY23: SRBC and Associates (EY affiliate). Classify as Tier 1.",
+            "Wipro FY23: Deloitte. Classify as Tier 1.",
+            "TCS FY23: BSR and Associates (KPMG affiliate). Classify as Tier 1.",
+            "Manpasand Beverages FY18 transition: From Deloitte (Tier 1) to CNK Associates (Tier 2 at best). Assess as downward tier transition combined with mid-engagement resignation (extreme signal)."
+          ],
+          "result": "Large-cap Indian companies (Reliance, Wipro, TCS) all retain Tier 1 auditors—standard governance. Manpasand's transition from Tier 1 to Tier 2 during mid-engagement resignation = extreme forensic concern.",
+          "insight": "Tier 1 throughout is expected for large-caps, common for mid-caps, and a positive governance signal. Tier 2 is acceptable for mid-caps with clear business rationale. Tier 3 for listed companies requires investigation. Downward tier transitions are forensic red flags; upward transitions suggest improving governance."
+        },
+        "sensitivity_note": "Tier classification is not a quality verdict. Some Tier 2 firms provide excellent audit quality for mid-cap clients. The forensic signal is in tier transitions and specific firm-client fit considerations, not in absolute tier levels."
+      },
+      {
+        "name": "Regulatory Action Signal Framework",
+        "formula": "Regulatory Signal = NFRA Actions + ICAI Disciplinary + SEBI Actions + PCAOB Actions (if US-listed)",
+        "variables": [
+          {
+            "symbol": "NFRA Actions",
+            "meaning": "National Financial Reporting Authority actions against specific auditors or firms — established 2018"
+          },
+          {
+            "symbol": "ICAI Disciplinary",
+            "meaning": "Institute of Chartered Accountants of India disciplinary proceedings against individual auditors or firms"
+          },
+          {
+            "symbol": "SEBI Actions",
+            "meaning": "Securities and Exchange Board of India actions specifically related to audit failures or auditor conduct"
+          },
+          {
+            "symbol": "PCAOB Actions",
+            "meaning": "Public Company Accounting Oversight Board (US) actions affecting Indian audit firms serving US-listed clients"
+          }
+        ],
+        "plain_english": "Regulatory action frameworks capture formal enforcement history against auditors, firms, and individuals. When a regulator—NFRA, ICAI, SEBI, or PCAOB—takes action against an auditor or firm, it signals prior audit failures or conduct issues that reduce credibility and increase investor forensic concern. Check the regulatory history of any company's current auditor and audit engagement team.",
+        "computation": [
+          "For the company's current auditor firm, search NFRA enforcement records (available from 2018 onward) for actions against the firm or audit engagement partners.",
+          "Check ICAI disciplinary records for actions against individual chartered accountants involved in the company's audit.",
+          "Search SEBI enforcement actions specifically related to audit failures or auditor conduct relevant to the company's sector.",
+          "If the company is US-listed, check PCAOB inspection and enforcement records for the auditor firm.",
+          "For each action found, record the year, nature of action (suspension, debarment, censure, disciplinary action), and relevance to the company's account.",
+          "Assign a cumulative signal: no actions = 0 (clean history); minor individual censures = +1; firm-level suspension or debarment = +5; multiple recent actions = +10."
+        ],
+        "worked_example": {
+          "problem": "You are assessing regulatory action signals for two companies. How would you evaluate and integrate this information into forensic analysis?",
+          "steps": [
+            "Company A, audited by PwC: Check SEBI records and find that PwC was debarred from auditing listed companies in India in January 2018 for two years following Satyam fraud (2009). If the company retained PwC during the debarment period, this is a material regulatory violation.",
+            "Company B, audited by mid-tier firm: Check NFRA records (established 2018) for any disciplinary actions. Check ICAI for actions against the engagement partners. Find no material actions. Regulatory Signal = 0 (clean history)."
+          ],
+          "result": "Company A with PwC during debarment = regulatory red flag requiring investigation and likely rating downgrade. Company B with clean regulatory history = no regulatory forensic concern.",
+          "insight": "Regulatory actions are cumulative and pattern-based. Most Big Four and mid-tier firms have clean regulatory history. Actions against specific individuals do not automatically impugn firm-level capacity, but actions against the firm itself (debarment, suspension) warrant immediate escalation."
+        },
+        "sensitivity_note": "Regulatory actions provide context but should not be over-weighted. Most Big Four and mid-tier firms have clean regulatory history, and occasional actions against specific individuals do not automatically impugn firm-level capacity. The signal is cumulative and pattern-based rather than single-event."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for audit history tables",
+        "Ctrl + Shift + L — Toggle filters for multi-year audit data",
+        "F4 — Lock references for Severity Score calculations",
+        "Alt + = — AutoSum for cumulative signal strength",
+        "Ctrl + Shift + 1 — Number format for structured data"
+      ]
+    }
+  }
+}

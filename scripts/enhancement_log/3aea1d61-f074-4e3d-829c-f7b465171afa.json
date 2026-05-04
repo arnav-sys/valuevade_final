@@ -1,0 +1,237 @@
+{
+  "id": "3aea1d61-f074-4e3d-829c-f7b465171afa",
+  "label": "M4 S7 | The Debt Schedule Formulas — Roll-Forward, Interest, and Rev",
+  "before": {
+    "formulas": [
+      {
+        "name": "Debt Tranche Roll-Forward",
+        "formula": "Closing Debt = Opening Debt + New Issuances − Scheduled Repayments",
+        "variables": [
+          {
+            "symbol": "Opening Debt",
+            "meaning": "Prior year closing debt balance for the specific tranche (Term Loan, NCD, etc.)"
+          },
+          {
+            "symbol": "New Issuances",
+            "meaning": "New debt raised during the year — for Titan's simplified case, typically zero unless management has announced specific refinancing"
+          },
+          {
+            "symbol": "Scheduled Repayments",
+            "meaning": "Contractual principal repayments as per loan/bond terms, disclosed in the AR Note on Borrowings"
+          }
+        ],
+        "worked_example": "Titan FY24 debt structure: Long-term borrowings ₹840 cr, Short-term borrowings ₹1,120 cr, Current portion of LT debt ₹285 cr, Lease liabilities ₹620 cr. Total debt (ex-lease) ₹2,245 cr; including leases ₹2,865 cr. For simplicity in our model, we'll aggregate into two tranches: (1) Term Loans/LT debt = ₹840 + ₹285 = ₹1,125 cr, (2) Working Capital/ST borrowings = ₹1,120 cr, plus (3) Lease Liabilities = ₹620 cr. Term loan scheduled repayments based on AR Note 20: ₹150 cr in FY25, ₹200 cr in FY26, ₹250 cr in FY27, ₹200 cr in FY28, ₹150 cr in FY29 (these match the actual maturity schedule Titan discloses). FY25E Term Loan rolls: Opening ₹1,125 − Repayment ₹150 + New Issuance ₹0 = Closing ₹975 cr. Working Capital facility generally rolls over each year (no scheduled principal repayment) — stays at ₹1,120 cr. Lease liability roll-forward is separate — based on new leases signed minus lease principal payments; for forecasting simplicity assume stable at 1.2% of revenue (tracking store expansion).",
+        "sensitivity_note": "Term loan refinancing is a key event to model carefully. If Titan's ₹840 cr LT loan matures in FY27, the question is: will they refinance at the same rate or a higher rate? With India's interest rate cycle, refinancing in 2027 could be 50-100 bps higher than current rates. A 100 bps rate increase on ₹840 cr is ₹8.4 cr additional annual interest — small for Titan but material for debt-heavy businesses like Tata Motors where this could be ₹500+ cr."
+      },
+      {
+        "name": "Interest Expense Calculation",
+        "formula": "Interest on Tranche = Average Tranche Balance × Interest Rate | Average Tranche Balance = (Opening + Closing) / 2 | Total Interest = Sum of Interest on All Tranches + Lease Interest − Interest Income on Cash",
+        "variables": [
+          {
+            "symbol": "Average Tranche Balance",
+            "meaning": "The average of opening and closing debt for each tranche — reflects that the balance changes through the year"
+          },
+          {
+            "symbol": "Interest Rate",
+            "meaning": "Tranche-specific rate disclosed in the AR. For Indian companies, varies by tenure, currency, and creditworthiness: Term loans typically 8-10%, bonds 8-9%, working capital 8-11%, lease interest ~8%"
+          },
+          {
+            "symbol": "Lease Interest",
+            "meaning": "Interest portion of lease payments under Ind-AS 116 — approximately 8% of lease liability balance for most Indian retailers"
+          },
+          {
+            "symbol": "Interest Income",
+            "meaning": "Yield earned on cash and liquid investments — typically 6-7% for Indian companies deployed in bank deposits and liquid funds"
+          }
+        ],
+        "worked_example": "Titan FY25E interest calculation. Term Loans avg balance = (1,125 + 975)/2 = ₹1,050 cr × 8.5% rate = ₹89 cr. Working Capital avg balance = (1,120 + 1,120)/2 = ₹1,120 cr × 9.5% rate (higher rate for ST facility) = ₹106 cr. Lease liability avg balance = estimated ₹680 cr (growing from ₹620 cr) × 8% = ₹54 cr. Interest income on cash = average cash balance ₹1,900 cr × 6.5% = ₹124 cr. Total Finance Cost = 89 + 106 + 54 − 124 = ₹125 cr NET. This is net finance cost after deducting interest income. On the IS, you typically show Finance Cost gross (89+106+54 = ₹249 cr) and Other Income/Interest Income (₹124 cr) separately. The net impact on PBT is the same, but the classification matters for ratio analysis (EBITDA to Net Interest coverage).",
+        "sensitivity_note": "Interest rate assumptions can make or break a forecast for debt-heavy businesses. Bharti Airtel with ₹180,000 cr net debt — a 100 bps change in blended rate is ₹1,800 cr of annual interest expense change. This is why rate-sensitive businesses trade off interest rate cycles. For Titan with modest debt, rate sensitivity is small: 100 bps change = ~₹30 cr interest impact, which is 0.5% of PAT — negligible. Know which of your companies is rate-sensitive vs rate-indifferent."
+      },
+      {
+        "name": "Revolver Logic — The Self-Balancing Mechanism",
+        "formula": "Cash Need = Capex + Scheduled Debt Repayments + Dividends − (Operating Cash Flow Pre-Revolver) | If Cash Need > 0 (shortfall): Revolver Draw = Cash Need | If Cash Need < 0 (surplus): Revolver Repayment = min(|Cash Need|, Opening Revolver) until Revolver = 0",
+        "variables": [
+          {
+            "symbol": "Cash Need",
+            "meaning": "The gap between cash-consuming items and cash-generating items. Positive means you need to borrow; negative means you can repay debt or build cash"
+          },
+          {
+            "symbol": "Operating Cash Flow Pre-Revolver",
+            "meaning": "CFO that excludes any revolver movement — pure operational cash generation (PAT + non-cash + working capital changes)"
+          },
+          {
+            "symbol": "Revolver Draw",
+            "meaning": "New borrowing from the revolver to fund the cash shortfall — increases revolver balance and cash"
+          },
+          {
+            "symbol": "Revolver Repayment",
+            "meaning": "Voluntary repayment of outstanding revolver using surplus cash — decreases revolver balance and cash"
+          }
+        ],
+        "worked_example": "Titan FY25E revolver logic. Pre-revolver cash sources: CFO (from IS PAT + D&A addback + WC changes) ≈ ₹4,200 cr. Pre-revolver cash uses: Capex ₹1,902 cr + Scheduled debt repayment ₹150 cr + Dividends ₹1,800 cr (at ~40% payout) = ₹3,852 cr. Pre-revolver cash flow = 4,200 − 3,852 = +₹348 cr SURPLUS. Since FY24 closing cash was ₹1,800 cr and the revolver balance (part of short-term borrowings ₹1,120 cr) was drawn — with surplus, Titan would REPAY ₹348 cr of the revolver. Revolver closing balance = 1,120 − 348 = ₹772 cr. Closing cash stays at the minimum level (assume ₹1,500 cr target). In years where pre-revolver flow is negative, the revolver DRAWS to cover the shortfall. This logic ensures BS balances automatically without any plug.",
+        "sensitivity_note": "The revolver is your model's self-balancing mechanism. If everything upstream is correct, the revolver plus closing cash will make the BS balance at the integrity check cell. If the BS doesn't balance after the revolver, look for errors upstream — most commonly in the working capital schedule linkage or the depreciation calculation. NEVER add a hardcoded plug; find the error."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Alt + F9 (force recalculation)",
+        "Cmd + [ (trace precedents)"
+      ],
+      "windows": [
+        "File → Options → Formulas → check 'Enable iterative calculation' (Session 2 step, critical here)",
+        "Ctrl + Alt + F9 (force full recalculation — useful after changing iterative calculation settings)",
+        "F9 (recalculate current sheet — helps resolve circular references quickly)",
+        "Ctrl + [ (trace precedents — for navigating the circular reference chain)",
+        "Ctrl + ] (trace dependents — see what cells your debt schedule feeds)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Debt Tranche Roll-Forward",
+        "formula": "Closing Debt = Opening Debt + New Issuances − Scheduled Repayments",
+        "variables": [
+          {
+            "symbol": "Opening Debt",
+            "meaning": "Prior year closing debt balance for the specific tranche (Term Loan, NCD, etc.)"
+          },
+          {
+            "symbol": "New Issuances",
+            "meaning": "New debt raised during the year — for Titan's simplified case, typically zero unless management has announced specific refinancing"
+          },
+          {
+            "symbol": "Scheduled Repayments",
+            "meaning": "Contractual principal repayments as per loan/bond terms, disclosed in the AR Note on Borrowings"
+          }
+        ],
+        "plain_english": "This formula tracks how a single debt tranche evolves year-to-year by starting with what you owed, adding any new borrowing, and subtracting mandatory repayments. It's the foundation of every debt schedule — without it, you cannot forecast interest expense, refinancing risk, or covenant headroom. Think of it as a bank account: you start with a balance, deposit new funds, and make withdrawals.",
+        "worked_example": {
+          "problem": "Titan FY24 debt structure: Long-term borrowings ₹840 cr, Short-term borrowings ₹1,120 cr, Current portion of LT debt ₹285 cr, Lease liabilities ₹620 cr. For FY25E, model the roll-forward of the Term Loan tranche given scheduled repayment of ₹150 cr and no new issuance.",
+          "steps": [
+            "Identify opening balance: Term Loan = ₹840 cr (LT) + ₹285 cr (current portion) = ₹1,125 cr",
+            "Add new issuances: ₹0 cr (no refinancing announced)",
+            "Subtract scheduled repayment from AR Note 20: ₹150 cr",
+            "Calculate closing balance: ₹1,125 + ₹0 − ₹150 = ₹975 cr"
+          ],
+          "result": "FY25E Term Loan closing balance: ₹975 cr. This becomes the opening balance for FY26E, from which you deduct the next scheduled repayment (₹200 cr) to get FY26E closing of ₹775 cr.",
+          "insight": "For Titan, scheduled repayments are modest relative to operating cash flow, so refinancing risk is low. For a highly leveraged business like Tata Motors or Bharti Airtel, the maturity wall becomes critical — if ₹5,000 cr of debt matures in a single year, you must assume either refinancing at a higher rate or asset sales. Always reconcile the debt schedule repayments to the AR Note on Borrowings maturity disclosure."
+        },
+        "sensitivity_note": "Term loan refinancing is a key event to model carefully. If Titan's ₹840 cr LT loan matures in FY27, the question is: will they refinance at the same rate or a higher rate? With India's interest rate cycle, refinancing in 2027 could be 50-100 bps higher than current rates. A 100 bps rate increase on ₹840 cr is ₹8.4 cr additional annual interest — small for Titan but material for debt-heavy businesses like Tata Motors where this could be ₹500+ cr."
+      },
+      {
+        "name": "Interest Expense Calculation",
+        "formula": "Interest on Tranche = Average Tranche Balance × Interest Rate | Average Tranche Balance = (Opening + Closing) / 2 | Total Interest = Sum of Interest on All Tranches + Lease Interest − Interest Income on Cash",
+        "variables": [
+          {
+            "symbol": "Average Tranche Balance",
+            "meaning": "The average of opening and closing debt for each tranche — reflects that the balance changes through the year"
+          },
+          {
+            "symbol": "Interest Rate",
+            "meaning": "Tranche-specific rate disclosed in the AR. For Indian companies, varies by tenure, currency, and creditworthiness: Term loans typically 8-10%, bonds 8-9%, working capital 8-11%, lease interest ~8%"
+          },
+          {
+            "symbol": "Lease Interest",
+            "meaning": "Interest portion of lease payments under Ind-AS 116 — approximately 8% of lease liability balance for most Indian retailers"
+          },
+          {
+            "symbol": "Interest Income",
+            "meaning": "Yield earned on cash and liquid investments — typically 6-7% for Indian companies deployed in bank deposits and liquid funds"
+          }
+        ],
+        "plain_english": "Interest expense is not calculated on opening or closing debt alone — it's on the average, because the balance changes throughout the year as you make repayments. You pay interest on all tranches (term loans, working capital, leases) but offset it against interest earned on your cash reserves. The net number is what hits your profit and loss statement and drives debt servicing burden.",
+        "computation": [
+          "For each debt tranche: (Opening Balance + Closing Balance) / 2 = Average Balance",
+          "Multiply average balance by the tranche-specific interest rate",
+          "Repeat for all tranches (term loans, working capital, bonds, leases)",
+          "Sum all tranche interest and lease interest",
+          "Deduct interest income on average cash balance = Net Finance Cost"
+        ],
+        "worked_example": {
+          "problem": "Titan FY25E: Term Loan opening ₹1,125 cr closing ₹975 cr, rate 8.5%. Working Capital opening ₹1,120 cr closing ₹1,120 cr, rate 9.5%. Lease Liability opening ₹620 cr closing ₹680 cr, rate 8%. Cash balance ₹1,900 cr, interest rate 6.5%. Calculate total net finance cost.",
+          "steps": [
+            "Term Loan interest: (1,125 + 975) / 2 × 8.5% = 1,050 × 0.085 = ₹89.25 cr",
+            "Working Capital interest: (1,120 + 1,120) / 2 × 9.5% = 1,120 × 0.095 = ₹106.4 cr",
+            "Lease interest: (620 + 680) / 2 × 8% = 650 × 0.08 = ₹52 cr",
+            "Gross Finance Cost = 89.25 + 106.4 + 52 = ₹247.65 cr",
+            "Interest income on cash: 1,900 × 6.5% = ₹123.5 cr",
+            "Net Finance Cost = 247.65 − 123.5 = ₹124.15 cr"
+          ],
+          "result": "FY25E net finance cost ₹124 cr. On the P&L, show Finance Cost ₹248 cr and Interest Income ₹124 cr separately for ratio analysis clarity.",
+          "insight": "Interest income is material for Titan (₹124 cr) because the company carries significant cash. For a cash-starved business like Bharti Airtel or Tata Motors, interest income is negligible — the net finance cost is nearly equal to gross. Also note: the 50 bps difference in rates between Term Loan (8.5%) and Working Capital (9.5%) reflects lender pricing for short-term facilities, which carry more refinancing risk. Always stress-test rates: a 100 bps hike across all tranches would add ₹30+ cr to Titan's annual interest, denting PAT by 0.5%."
+        },
+        "sensitivity_note": "Interest rate assumptions can make or break a forecast for debt-heavy businesses. Bharti Airtel with ₹180,000 cr net debt — a 100 bps change in blended rate is ₹1,800 cr of annual interest expense change. This is why rate-sensitive businesses trade off interest rate cycles. For Titan with modest debt, rate sensitivity is small: 100 bps change = ~₹30 cr interest impact, which is 0.5% of PAT — negligible. Know which of your companies is rate-sensitive vs rate-indifferent."
+      },
+      {
+        "name": "Revolver Logic — The Self-Balancing Mechanism",
+        "formula": "Cash Need = Capex + Scheduled Debt Repayments + Dividends − (Operating Cash Flow Pre-Revolver) | If Cash Need > 0 (shortfall): Revolver Draw = Cash Need | If Cash Need < 0 (surplus): Revolver Repayment = min(|Cash Need|, Opening Revolver) until Revolver = 0",
+        "variables": [
+          {
+            "symbol": "Cash Need",
+            "meaning": "The gap between cash-consuming items and cash-generating items. Positive means you need to borrow; negative means you can repay debt or build cash"
+          },
+          {
+            "symbol": "Operating Cash Flow Pre-Revolver",
+            "meaning": "CFO that excludes any revolver movement — pure operational cash generation (PAT + non-cash + working capital changes)"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Capital expenditure — cash outflow for property, plant, equipment, and other long-term assets"
+          },
+          {
+            "symbol": "Scheduled Debt Repayments",
+            "meaning": "Principal repayment on term loans and bonds as per contractual maturity schedule"
+          },
+          {
+            "symbol": "Dividends",
+            "meaning": "Cash outflow to shareholders — typically a fixed payout ratio of net profit or a stated per-share amount"
+          },
+          {
+            "symbol": "Revolver Draw",
+            "meaning": "New borrowing from the revolver to fund the cash shortfall — increases revolver balance and cash"
+          },
+          {
+            "symbol": "Revolver Repayment",
+            "meaning": "Voluntary repayment of outstanding revolver using surplus cash — decreases revolver balance and cash"
+          }
+        ],
+        "plain_english": "The revolver is a flexible credit facility that automatically draws when the company runs short of cash and repays when it has surplus. Unlike term loans with fixed maturity, a revolver adjusts daily to balance the cash account. It's the self-balancing mechanism in any financial model — if your balance sheet doesn't reconcile, the revolver is the first place to check. Think of it as your company's overdraft facility: you tap it in lean months and pay it back in fat months.",
+        "computation": [
+          "Calculate operating cash flow excluding any revolver movements",
+          "Sum all cash outflows: Capex + Scheduled Debt Repayments + Dividends",
+          "Compute Cash Need = Total Outflows − Operating Cash Flow",
+          "If Cash Need > 0: Revolver Draw = Cash Need (add to revolver balance)",
+          "If Cash Need < 0: Revolver Repayment = min(|Cash Need|, Opening Revolver), which cannot exceed outstanding revolver balance"
+        ],
+        "worked_example": {
+          "problem": "Titan FY25E: Pre-revolver CFO ₹4,200 cr, Capex ₹1,902 cr, Scheduled Debt Repayment ₹150 cr, Dividends ₹1,800 cr (40% payout on ₹4,500 cr PAT). Opening revolver balance ₹1,120 cr. Model the revolver closing balance.",
+          "steps": [
+            "Total cash uses: 1,902 + 150 + 1,800 = ₹3,852 cr",
+            "Pre-revolver CFO: ₹4,200 cr",
+            "Cash Need = 3,852 − 4,200 = −₹348 cr (SURPLUS, not a shortfall)",
+            "Since Cash Need < 0, this is a revolver repayment scenario",
+            "Revolver Repayment = min(₹348 cr, ₹1,120 cr opening revolver) = ₹348 cr",
+            "Revolver Closing = 1,120 − 348 = ₹772 cr"
+          ],
+          "result": "FY25E revolver closing balance ₹772 cr. Closing cash floor is maintained at ₹1,500 cr (the company's target minimum). The balance sheet reconciles: Total Debt FY25E = Term Loan ₹975 cr + Revolver ₹772 cr + Lease ₹680 cr = ₹2,427 cr.",
+          "insight": "For Titan, the revolver is drawn only to smooth working capital timing — it's not a structural cash source. The company generates surplus cash every year and repays the revolver methodically. In contrast, a highly cyclical business like Tata Motors may carry a structurally drawn revolver because capex and debt repayments often exceed annual operating cash flow. Always ask: Is the revolver drawn as a permanent source (bad sign — company can't self-fund) or as a temporary liquidity tool (healthy)?"
+        },
+        "sensitivity_note": "The revolver is your model's self-balancing mechanism. If everything upstream is correct, the revolver plus closing cash will make the BS balance at the integrity check cell. If the BS doesn't balance after the revolver, look for errors upstream — most commonly in the working capital schedule linkage or the depreciation calculation. NEVER add a hardcoded plug; find the error."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Alt + F9 (force recalculation)",
+        "Cmd + [ (trace precedents)"
+      ],
+      "windows": [
+        "File → Options → Formulas → check 'Enable iterative calculation' (Session 2 step, critical here)",
+        "Ctrl + Alt + F9 (force full recalculation — useful after changing iterative calculation settings)",
+        "F9 (recalculate current sheet — helps resolve circular references quickly)",
+        "Ctrl + [ (trace precedents — for navigating the circular reference chain)",
+        "Ctrl + ] (trace dependents — see what cells your debt schedule feeds)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,235 @@
+{
+  "id": "573fbc88-895d-48ef-8113-8d88e2207f2a",
+  "label": "M1 S15 | Key Macro Formulas with Worked Examples",
+  "before": {
+    "formulas": [
+      {
+        "name": "Real GDP Growth",
+        "india": "~6.5-7% recent years. US ~2-3%, China ~4-5%. India growth premium justifies higher equity valuations.",
+        "formula": "((Real GDP current - Real GDP previous) / Real GDP previous) x 100"
+      },
+      {
+        "name": "CPI Inflation",
+        "target": "RBI target 2-6% with 4% midpoint. Above 6% triggers hikes. Below 4% opens room for cuts.",
+        "formula": "((CPI current - CPI previous) / CPI previous) x 100"
+      },
+      {
+        "name": "Fiscal Deficit % of GDP",
+        "formula": "(Expenditure - Revenue Receipts) / GDP x 100",
+        "worked_example": "FY25: Expenditure 48.2L cr, Revenue 31.3L cr, GDP 332L cr. Deficit = 16.9/332 = 5.1%. The number that moved Rs 12L crore."
+      },
+      {
+        "name": "CAD % of GDP",
+        "formula": "(Imports - Exports - Net Transfers) / GDP x 100",
+        "benchmark": "India typically 1-2.5%. Above 3% = dangerous (2013 crisis territory)."
+      },
+      {
+        "name": "Real Interest Rate",
+        "formula": "Nominal Rate - Inflation Rate",
+        "worked_example": "Repo 6.5% - CPI 5.0% = 1.5% real rate. Positive = attracts foreign capital. Negative = loose policy, weakens currency."
+      }
+    ],
+    "key_data_sources": {
+      "CPI": "NSO monthly",
+      "GDP": "NSO/MOSPI quarterly",
+      "Rupee": "RBI real-time",
+      "FPI_Flows": "NSDL daily",
+      "Repo_Rate": "RBI MPC every 2 months",
+      "Trade_Data": "Commerce Ministry monthly",
+      "Brent_Crude": "ICE real-time",
+      "Fiscal_Deficit": "CGA monthly"
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Real GDP Growth",
+        "india": "~6.5-7% recent years. US ~2-3%, China ~4-5%. India growth premium justifies higher equity valuations.",
+        "formula": "((Real GDP current - Real GDP previous) / Real GDP previous) x 100",
+        "variables": [
+          {
+            "symbol": "Real GDP current",
+            "meaning": "Gross Domestic Product adjusted for inflation in the current period (constant prices, typically base year 2015-16 for India)"
+          },
+          {
+            "symbol": "Real GDP previous",
+            "meaning": "Gross Domestic Product adjusted for inflation in the previous period (constant prices)"
+          }
+        ],
+        "plain_english": "Real GDP growth measures how much the economy actually expanded, stripping out inflation noise. A 7% real growth rate means the economy produced 7% more goods and services in real terms. For equity investors, higher real growth signals stronger future corporate earnings and justifies premium valuations.",
+        "computation": [
+          "Obtain Real GDP (constant prices) for current quarter/year from NSO",
+          "Obtain Real GDP (constant prices) for previous quarter/year from NSO",
+          "Subtract previous from current",
+          "Divide difference by previous period's Real GDP",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "India's real GDP in FY24 was ₹332 trillion (2015-16 prices). In FY25, it grew to ₹355 trillion. What was the real GDP growth rate?",
+          "steps": [
+            "Real GDP current (FY25) = ₹355 trillion",
+            "Real GDP previous (FY24) = ₹332 trillion",
+            "Difference = 355 - 332 = ₹23 trillion",
+            "Growth rate = (23 / 332) × 100 = 6.93%"
+          ],
+          "result": "6.93% real GDP growth",
+          "insight": "At ~7% real growth, India remains one of the fastest-growing large economies. This supports equity research thesis of structural earnings growth for domestically-exposed sectors like consumer staples, banking, and automobiles."
+        }
+      },
+      {
+        "name": "CPI Inflation",
+        "target": "RBI target 2-6% with 4% midpoint. Above 6% triggers hikes. Below 4% opens room for cuts.",
+        "formula": "((CPI current - CPI previous) / CPI previous) x 100",
+        "variables": [
+          {
+            "symbol": "CPI current",
+            "meaning": "Consumer Price Index level in the current month/quarter"
+          },
+          {
+            "symbol": "CPI previous",
+            "meaning": "Consumer Price Index level in the previous month/quarter"
+          }
+        ],
+        "plain_english": "CPI inflation measures the percentage change in the cost of goods and services that households buy. This is critical because high inflation erodes purchasing power, forces central banks to raise interest rates (hurting equity valuations), and squeezes corporate margins if companies cannot pass costs to consumers.",
+        "computation": [
+          "Obtain CPI index for current month from NSO",
+          "Obtain CPI index for previous month from NSO",
+          "Subtract previous from current",
+          "Divide difference by previous month's CPI",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "CPI in December 2024 was 154.2. In November 2024, it was 152.8. What was the month-on-month inflation rate?",
+          "steps": [
+            "CPI current (Dec) = 154.2",
+            "CPI previous (Nov) = 152.8",
+            "Difference = 154.2 - 152.8 = 1.4",
+            "Inflation = (1.4 / 152.8) × 100 = 0.92%"
+          ],
+          "result": "0.92% month-on-month CPI inflation",
+          "insight": "At 0.92% MoM, annualized rate would be ~11%, well above RBI's 4% target. Sustained CPI above 6% would likely trigger repo rate hikes, compressing equity multiples. Equity analysts monitor CPI closely for rate path implications."
+        }
+      },
+      {
+        "name": "Fiscal Deficit % of GDP",
+        "formula": "(Expenditure - Revenue Receipts) / GDP x 100",
+        "variables": [
+          {
+            "symbol": "Expenditure",
+            "meaning": "Total government spending (revenue expenditure + capital expenditure), in rupees"
+          },
+          {
+            "symbol": "Revenue Receipts",
+            "meaning": "Government tax and non-tax revenues collected, in rupees"
+          },
+          {
+            "symbol": "GDP",
+            "meaning": "Gross Domestic Product (nominal or current-year prices), in rupees"
+          }
+        ],
+        "plain_english": "Fiscal deficit measures how much the government spends more than it collects in revenues, expressed as a percentage of GDP. A large deficit must be financed by borrowing, which can crowd out private investment, push up interest rates, and weaken the rupee if foreign investors lose confidence.",
+        "computation": [
+          "Obtain total government expenditure for the fiscal year from CGA/Budget documents",
+          "Obtain total revenue receipts (direct + indirect taxes + non-tax) for the fiscal year",
+          "Calculate deficit = Expenditure − Revenue Receipts",
+          "Obtain nominal GDP for the fiscal year from MOSPI",
+          "Divide deficit by GDP and multiply by 100"
+        ],
+        "worked_example": {
+          "problem": "FY25: Central government expenditure ₹48.2 lakh crore, revenue receipts ₹31.3 lakh crore, nominal GDP ₹332 lakh crore. Calculate fiscal deficit as % of GDP.",
+          "steps": [
+            "Expenditure = ₹48.2 lakh crore",
+            "Revenue Receipts = ₹31.3 lakh crore",
+            "Fiscal Deficit = 48.2 − 31.3 = ₹16.9 lakh crore",
+            "Fiscal Deficit % GDP = (16.9 / 332) × 100 = 5.09%"
+          ],
+          "result": "5.09% fiscal deficit to GDP ratio",
+          "insight": "At 5.1%, India's fiscal deficit is within the 5.5% glide path target but remains elevated. Persistent high fiscal deficits can crowd out credit for corporates, particularly affecting capital-intensive sectors like infrastructure and power. Equity investors monitor fiscal consolidation announcements closely."
+        }
+      },
+      {
+        "name": "CAD % of GDP",
+        "formula": "(Imports - Exports - Net Transfers) / GDP x 100",
+        "variables": [
+          {
+            "symbol": "Imports",
+            "meaning": "Value of goods and services imported into the country, in USD or rupees"
+          },
+          {
+            "symbol": "Exports",
+            "meaning": "Value of goods and services exported from the country, in USD or rupees"
+          },
+          {
+            "symbol": "Net Transfers",
+            "meaning": "Unilateral transfers net of inflows (remittances, aid, gifts); usually a positive inflow for India"
+          },
+          {
+            "symbol": "GDP",
+            "meaning": "Gross Domestic Product in USD or rupees (typically USD for CAD analysis)"
+          }
+        ],
+        "plain_english": "Current account deficit shows the gap between what a country imports versus exports plus transfers. A large CAD means the country is borrowing from abroad to finance consumption, raising currency depreciation risk and foreign exchange vulnerability. India's 2013 'taper tantrum' crisis occurred when CAD hit 4.8% of GDP.",
+        "computation": [
+          "Obtain merchandise + services imports for the period (typically quarterly or annual) from Commerce Ministry",
+          "Obtain merchandise + services exports for the same period",
+          "Deduct exports from imports to get goods & services deficit",
+          "Add net transfers (primarily remittances) as a credit to current account",
+          "Calculate CAD = (Imports − Exports − Net Transfers) / nominal GDP in USD",
+          "Multiply by 100 for percentage"
+        ],
+        "worked_example": {
+          "problem": "Q2 FY25: India's merchandise + services imports = $120 billion, exports = $95 billion, net transfers (remittances) = $18 billion, nominal GDP (quarterly) = $580 billion. Calculate CAD as % of GDP.",
+          "steps": [
+            "Imports = $120 billion",
+            "Exports = $95 billion",
+            "Net Transfers = $18 billion",
+            "CAD = (120 − 95 − 18) / 580 × 100",
+            "CAD = 7 / 580 × 100 = 1.21%"
+          ],
+          "result": "1.21% current account deficit to GDP",
+          "insight": "At 1.21%, India's CAD is comfortable and well below the 2-2.5% safety threshold. Strong remittances (IT diaspora, NRIs) cushion the trade deficit. However, watch for crude oil price spikes; a $10/barrel jump widens the import bill by ~$4-5 billion annually, pushing CAD toward 2%. Currency depreciation risk peaks when CAD exceeds 3%."
+        }
+      },
+      {
+        "name": "Real Interest Rate",
+        "formula": "Nominal Rate - Inflation Rate",
+        "variables": [
+          {
+            "symbol": "Nominal Rate",
+            "meaning": "The policy interest rate (e.g., RBI repo rate) or any quoted rate without inflation adjustment"
+          },
+          {
+            "symbol": "Inflation Rate",
+            "meaning": "CPI inflation rate (percentage per annum), typically the latest or forward-looking expectation"
+          }
+        ],
+        "plain_english": "Real interest rate tells you how much purchasing power you actually earn on savings or deposits after inflation is factored in. A positive real rate attracts foreign investors seeking real returns; a negative real rate punishes savers and encourages borrowing and asset inflation. Equity valuations are sensitive to real rates because they influence discount rates.",
+        "computation": [
+          "Obtain current RBI repo rate (or policy rate applicable) as nominal rate",
+          "Obtain latest CPI inflation reading or forward expectation",
+          "Subtract inflation rate from nominal rate to derive real rate"
+        ],
+        "worked_example": {
+          "problem": "RBI repo rate is 6.5% (nominal). Current CPI inflation is 5.0%. What is the real interest rate, and what does it signal?",
+          "steps": [
+            "Nominal Rate (Repo) = 6.5%",
+            "Inflation Rate (CPI) = 5.0%",
+            "Real Rate = 6.5% − 5.0% = 1.5%"
+          ],
+          "result": "Real interest rate = 1.5% (positive)",
+          "insight": "A +1.5% real rate is moderately positive, attractive to FPI inflows and supports the rupee. Positive real rates also encourage domestic savers to park funds in fixed income rather than equities, potentially moderating equity demand. If inflation rises to 6%, real rate drops to +0.5%, signaling tighter policy ahead and likely repo hikes, which compress equity valuations. Conversely, if inflation falls to 3%, real rate rises to +3.5%, a stronger signal to foreign capital and supportive for equity multiples."
+        }
+      }
+    ],
+    "key_data_sources": {
+      "CPI": "NSO monthly",
+      "GDP": "NSO/MOSPI quarterly",
+      "Rupee": "RBI real-time",
+      "FPI_Flows": "NSDL daily",
+      "Repo_Rate": "RBI MPC every 2 months",
+      "Trade_Data": "Commerce Ministry monthly",
+      "Brent_Crude": "ICE real-time",
+      "Fiscal_Deficit": "CGA monthly"
+    }
+  }
+}

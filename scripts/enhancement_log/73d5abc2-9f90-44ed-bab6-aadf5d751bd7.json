@@ -1,0 +1,315 @@
+{
+  "id": "73d5abc2-9f90-44ed-bab6-aadf5d751bd7",
+  "label": "M9 S12 | The Comparative Analysis Formula Arsenal",
+  "before": {
+    "formulas": [
+      {
+        "name": "Compound Annual Growth Rate (CAGR)",
+        "formula": "CAGR = ((Ending Value / Beginning Value)^(1/Number of Years)) - 1",
+        "variables": [
+          {
+            "symbol": "Ending Value",
+            "meaning": "The metric at the end of the period"
+          },
+          {
+            "symbol": "Beginning Value",
+            "meaning": "The metric at the beginning of the period"
+          },
+          {
+            "symbol": "Number of Years",
+            "meaning": "Time elapsed between beginning and ending"
+          }
+        ],
+        "worked_example": "TCS Revenue 5-year CAGR: Revenue FY19 = ₹1,46,463 Cr, Revenue FY23 = ₹2,25,458 Cr. CAGR = (2,25,458/1,46,463)^(1/4) - 1 = 1.112 - 1 = 11.2%. Infosys Revenue 5-year CAGR: FY19 = ₹82,675 Cr, FY23 = ₹1,46,767 Cr. CAGR = (1,46,767/82,675)^(1/4) - 1 = 15.4%. Infosys grew faster than TCS over 5 years despite TCS being larger. However, looking at last 3 years only: TCS 3-year CAGR = 15.2%, Infosys = 18.9%. The gap has slightly narrowed. This example shows that single-period comparisons can mislead — 5-year view tells a different story than 3-year.",
+        "sensitivity_note": "Choose CAGR timeframes carefully. 5-year captures multiple cycles and provides structural view. 3-year is more recent but sensitive to one-off effects. Report both when available, and note when they diverge — it reveals operating dynamics."
+      },
+      {
+        "name": "Peer Comparison Z-Score",
+        "formula": "Z-Score = (Company Value - Peer Mean) / Peer Standard Deviation",
+        "variables": [
+          {
+            "symbol": "Company Value",
+            "meaning": "Metric value for target company"
+          },
+          {
+            "symbol": "Peer Mean",
+            "meaning": "Average of the same metric across peer group"
+          },
+          {
+            "symbol": "Peer Standard Deviation",
+            "meaning": "Standard deviation of the metric across peer group"
+          }
+        ],
+        "worked_example": "HUL's Operating Margin of 24% vs peer set of Nestle (21%), Britannia (15%), Dabur (18%), Marico (17%): Peer mean = (24+21+15+18+17)/5 = 19%. Peer std dev = approximately 3.5%. HUL Z-Score = (24-19)/3.5 = 1.43. HUL is 1.43 standard deviations above peer mean — top-quartile performance. Compare Britannia Z-Score = (15-19)/3.5 = -1.14. Britannia is 1.14 std dev below peer mean — second quartile. Z-scores above 2 are top 5%; -2 are bottom 5%. This statistical framing provides precision that simple rankings miss.",
+        "sensitivity_note": "Z-scores can be sensitive to peer set composition. Be thoughtful about which peers you include. Also, z-scores assume normal distribution, which may not hold for all metrics. Use as a directional indicator rather than precise ranking."
+      },
+      {
+        "name": "Quartile Positioning",
+        "formula": "Quartile = RANK(x, peer values, descending) / count of peers; Top Quartile = top 25%, Second Quartile = 25-50%, Third Quartile = 50-75%, Bottom Quartile = 75-100%",
+        "variables": [
+          {
+            "symbol": "x",
+            "meaning": "Company's metric value"
+          },
+          {
+            "symbol": "Peer Values",
+            "meaning": "All values of the metric in the peer set"
+          }
+        ],
+        "worked_example": "In a set of 20 Indian mid-cap pharma companies by ROCE: Sun Pharma ROCE 12%, Dr Reddy's 14%, Cipla 16%, Torrent Pharma 22%, Aurobindo 14%, Glenmark 8%, Zydus 20%, Cadila 18%. Top 5 by ROCE: Torrent 22%, Zydus 20%, Cadila 18%, Cipla 16%, Aurobindo 14% = 22%, 20%, 18%, 16%, 14%. Median ROCE = 15%. Top Quartile (top 25%, i.e., top 5) = 14%+ threshold. Torrent Pharma at 22% is clearly top-quartile — significantly above industry median of 15%. Sun Pharma at 12% is in third quartile — below industry median.",
+        "sensitivity_note": "Quartile positioning is simple and intuitive but sensitive to industry definition. For very homogeneous industries (Indian IT services — 5 main players), quartile may be meaningless. For heterogeneous industries (real estate, retail), quartile provides clear positioning. Combine with absolute rank to avoid misreading."
+      },
+      {
+        "name": "Relative Revenue Growth vs Peer Average",
+        "formula": "Relative Growth = Company Growth - Peer Group Average Growth",
+        "variables": [
+          {
+            "symbol": "Company Growth",
+            "meaning": "Revenue growth rate of target company"
+          },
+          {
+            "symbol": "Peer Group Average Growth",
+            "meaning": "Simple or weighted average of peer group growth rates"
+          }
+        ],
+        "worked_example": "TCS revenue growth FY23 = 13.7%. Peer set: Infosys 15.4%, Wipro 15.0%, HCL Tech 14.6%, Tech Mahindra 12.0%. Peer group simple average = (15.4+15.0+14.6+12.0)/4 = 14.25%. TCS relative growth = 13.7 - 14.25 = -0.55%. Slightly below peer average. This single number reveals that while TCS is growing well in absolute terms, it is slightly underperforming the IT services industry. Infosys at 15.4% vs peer average of 13.8% has relative growth of +1.6% — clearly outperforming. Track quarterly to identify when relative position shifts.",
+        "sensitivity_note": "Relative growth over multiple quarters is more reliable than single-quarter relative performance. A company losing relative position for 3-4 consecutive quarters is in genuine share decline. Single-quarter fluctuation is noise. Also, weighted average of peers (using revenue or market cap weights) is sometimes more meaningful than simple average."
+      },
+      {
+        "name": "Industry Median Benchmark",
+        "formula": "For each metric, identify: Industry Median (50th percentile), Top Quartile (75th percentile), Bottom Quartile (25th percentile) from industry research reports",
+        "variables": [
+          {
+            "symbol": "Industry Median",
+            "meaning": "50th percentile value of the metric across all industry players"
+          },
+          {
+            "symbol": "Top Quartile",
+            "meaning": "75th percentile — threshold for being in top 25%"
+          },
+          {
+            "symbol": "Bottom Quartile",
+            "meaning": "25th percentile — threshold for being in bottom 25%"
+          }
+        ],
+        "worked_example": "CRISIL banking industry benchmarks FY23 for mid-size private banks: GNPA industry median 2.2%, top quartile (best) 1.2%, bottom quartile (worst) 4.5%. A bank at 1.8% GNPA is between median and top quartile — upper half, not elite. A bank at 3.5% GNPA is in bottom quartile — relative underperformer. This framework is useful because it converts absolute numbers into percentile positioning, which is more meaningful than '3.5% GNPA' alone. Combined with trend (is it improving?) and peer (how does it compare specifically?), it provides comprehensive context.",
+        "sensitivity_note": "Industry benchmarks come from third-party sources that may not be perfectly timely. Always check the source date. For mature industries (banking, FMCG), benchmarks are reliable. For emerging industries (EV, fintech), benchmarks may not be well-established yet. Supplement with peer analysis when benchmarks are unreliable."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter activation",
+        "Cmd + Shift + T → insert pivot",
+        "Fn + F4 → absolute reference",
+        "Cmd + R → apply rank formulas"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → filter for peer comparison",
+        "F4 → lock cell references when computing CAGRs across companies",
+        "Alt + N + V → insert pivot table for peer summary",
+        "Ctrl + R → apply rank formulas across multiple metrics"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Compound Annual Growth Rate (CAGR)",
+        "formula": "CAGR = ((Ending Value / Beginning Value)^(1/Number of Years)) - 1",
+        "variables": [
+          {
+            "symbol": "Ending Value",
+            "meaning": "The metric at the end of the period"
+          },
+          {
+            "symbol": "Beginning Value",
+            "meaning": "The metric at the beginning of the period"
+          },
+          {
+            "symbol": "Number of Years",
+            "meaning": "Time elapsed between beginning and ending"
+          }
+        ],
+        "plain_english": "CAGR smooths out the compounding effect of growth over multiple years into a single annual rate, eliminating noise from year-to-year volatility. It answers: 'If this company had grown at a steady rate each year, what would that rate be?' For equity research, CAGR is essential because it reveals the true magnitude and consistency of business expansion—a company with 15% CAGR is structurally stronger than one with 8% CAGR, and this difference compounds into vastly different valuations over time.",
+        "computation": [
+          "Divide Ending Value by Beginning Value to get the total growth multiple.",
+          "Raise this multiple to the power of (1 / Number of Years) to extract the annualised rate.",
+          "Subtract 1 to convert from a multiplier to a percentage growth rate."
+        ],
+        "worked_example": {
+          "problem": "Compare TCS and Infosys 5-year revenue growth (FY19–FY23) and 3-year growth (FY21–FY23) to understand trend acceleration.",
+          "steps": [
+            "TCS 5-year: (₹2,25,458 Cr / ₹1,46,463 Cr)^(1/4) - 1 = 1.112^0.25 - 1 = 11.2%",
+            "Infosys 5-year: (₹1,46,767 Cr / ₹82,675 Cr)^(1/4) - 1 = 1.777^0.25 - 1 = 15.4%",
+            "TCS 3-year (FY21: ₹1,95,313 Cr; FY23: ₹2,25,458 Cr): (2,25,458 / 1,95,313)^(1/2) - 1 = 15.2%",
+            "Infosys 3-year (FY21: ₹1,12,349 Cr; FY23: ₹1,46,767 Cr): (1,46,767 / 1,12,349)^(1/2) - 1 = 18.9%"
+          ],
+          "result": "TCS 5-year CAGR 11.2% vs 3-year 15.2%; Infosys 5-year 15.4% vs 3-year 18.9%.",
+          "insight": "Both companies accelerated in recent years (3-year > 5-year), but Infosys' acceleration is sharper. This divergence suggests either market-share gains in FY22–FY23 or cost reduction driving margin and profit CAGR even faster than revenue CAGR. A single-period (1-year) comparison would miss this structural shift entirely."
+        },
+        "sensitivity_note": "Choose CAGR timeframes carefully. 5-year captures multiple cycles and provides structural view. 3-year is more recent but sensitive to one-off effects. Report both when available, and note when they diverge — it reveals operating dynamics."
+      },
+      {
+        "name": "Peer Comparison Z-Score",
+        "formula": "Z-Score = (Company Value - Peer Mean) / Peer Standard Deviation",
+        "variables": [
+          {
+            "symbol": "Company Value",
+            "meaning": "Metric value for target company"
+          },
+          {
+            "symbol": "Peer Mean",
+            "meaning": "Average of the same metric across peer group"
+          },
+          {
+            "symbol": "Peer Standard Deviation",
+            "meaning": "Standard deviation of the metric across peer group"
+          }
+        ],
+        "plain_english": "Z-score measures how many standard deviations a company sits away from the peer average, providing a statistically rigorous way to benchmark. A Z-score of 1.5 means the company is 1.5 standard deviations above peers—objectively in the top tier. Unlike simple ranking, Z-score accounts for how spread out the peer group is; if all peers cluster together, even a small difference yields a large Z-score. For equity research, Z-scores help identify truly exceptional operators (Z > 1.5) versus margin-of-error outperformers.",
+        "computation": [
+          "Calculate the average (mean) of the peer metric across all peers.",
+          "Calculate the standard deviation of that metric.",
+          "Subtract peer mean from the company's metric value.",
+          "Divide the difference by peer standard deviation."
+        ],
+        "worked_example": {
+          "problem": "Assess HUL and Britannia operating margins against the FMCG peer group (Nestle, Britannia, Dabur, Marico, HUL).",
+          "steps": [
+            "Peer operating margins: HUL 24%, Nestle 21%, Britannia 15%, Dabur 18%, Marico 17%.",
+            "Peer mean = (24 + 21 + 15 + 18 + 17) / 5 = 19%.",
+            "Peer std dev ≈ 3.5% (variance in margins reflects product mix and manufacturing efficiency differences).",
+            "HUL Z-Score = (24 - 19) / 3.5 = +1.43.",
+            "Britannia Z-Score = (15 - 19) / 3.5 = -1.14."
+          ],
+          "result": "HUL at +1.43 SD is top-quartile (top 15%); Britannia at -1.14 SD is second quartile (25–50%).",
+          "insight": "HUL's superior margin discipline (premium portfolio, scale, pricing power) is statistically significant. Britannia's below-mean margin reflects commodity cost exposure and lower pricing power, a real competitive gap. An analyst should investigate whether Britannia is improving (margin trend positive?) or structural (competitor advantage durable?)."
+        },
+        "sensitivity_note": "Z-scores can be sensitive to peer set composition. Be thoughtful about which peers you include. Also, z-scores assume normal distribution, which may not hold for all metrics. Use as a directional indicator rather than precise ranking."
+      },
+      {
+        "name": "Quartile Positioning",
+        "formula": "Quartile = RANK(x, peer values, descending) / count of peers; Top Quartile = top 25%, Second Quartile = 25-50%, Third Quartile = 50-75%, Bottom Quartile = 75-100%",
+        "variables": [
+          {
+            "symbol": "x",
+            "meaning": "Company's metric value"
+          },
+          {
+            "symbol": "Peer Values",
+            "meaning": "All values of the metric in the peer set"
+          },
+          {
+            "symbol": "RANK",
+            "meaning": "Ordinal position of the company within the sorted peer group (1 = best)"
+          }
+        ],
+        "plain_english": "Quartile positioning divides peers into four equal groups by performance. It is the simplest, most intuitive way to communicate where a company stands: top 25% is elite, 25–50% is above average, 50–75% is below average, 75–100% is weak. Unlike Z-score (which requires normally distributed data), quartile positioning works with any distribution and is instantly understood by executives and portfolio managers. For equity research, quartile framing removes ambiguity: 'top-quartile ROCE' is unambiguous; '16% ROCE' requires context.",
+        "computation": [
+          "Sort peers by the metric in descending order.",
+          "Identify the company's rank (e.g., rank 5 out of 20).",
+          "Calculate the percentile: (rank / total peers) × 100.",
+          "Assign quartile: 0–25th percentile = Q1 (best), 25–50th = Q2, 50–75th = Q3, 75–100th = Q4 (worst)."
+        ],
+        "worked_example": {
+          "problem": "Benchmark 8 mid-cap pharma companies by ROCE to identify competitive positioning.",
+          "steps": [
+            "Sorted by ROCE (descending): Torrent 22%, Zydus 20%, Cadila 18%, Cipla 16%, Aurobindo 14%, Sun 12%, Dr Reddy's 14%, Glenmark 8%.",
+            "Median ROCE across the 8 = (14 + 16) / 2 = 15%.",
+            "Torrent rank = 1/8 = 12.5th percentile → Top Quartile (above 75th percentile in strength).",
+            "Sun Pharma rank = 6/8 = 75th percentile → Bottom Quartile (below 25th percentile in strength).",
+            "Aurobindo rank = 5/8 = 62.5th percentile → Third Quartile (below median)."
+          ],
+          "result": "Torrent is clearly top-quartile; Sun and Glenmark are bottom-quartile; Cipla and Aurobindo are mid-pack.",
+          "insight": "Torrent's 22% ROCE vs industry median 15% signals superior manufacturing efficiency, pricing, or asset turns. Sun Pharma's decline to 12% ROCE (vs historical 18%–20%) warrants deep-dive investigation into restructuring, supply-chain disruption, or competitive loss. Quartile positioning makes this comparison immediate and actionable for portfolio decisions."
+        },
+        "sensitivity_note": "Quartile positioning is simple and intuitive but sensitive to industry definition. For very homogeneous industries (Indian IT services — 5 main players), quartile may be meaningless. For heterogeneous industries (real estate, retail), quartile provides clear positioning. Combine with absolute rank to avoid misreading."
+      },
+      {
+        "name": "Relative Revenue Growth vs Peer Average",
+        "formula": "Relative Growth = Company Growth - Peer Group Average Growth",
+        "variables": [
+          {
+            "symbol": "Company Growth",
+            "meaning": "Revenue growth rate of target company (YoY or CAGR)"
+          },
+          {
+            "symbol": "Peer Group Average Growth",
+            "meaning": "Simple or weighted average of peer group growth rates"
+          }
+        ],
+        "plain_english": "Relative growth isolates whether a company is gaining or losing market share within its industry. A company growing at 12% in an industry growing at 10% has positive relative growth (+2%), indicating competitive strength. Absolute growth alone is misleading: 12% sounds strong, but it hides market-share loss if peers are averaging 15%. Relative growth is the key metric for equity research because it reveals the trajectory of competitive positioning—the source of long-term value creation or destruction.",
+        "computation": [
+          "Calculate or obtain peer group average growth (simple average of all peers, or weighted by market cap/revenue).",
+          "Subtract peer average from company's growth rate.",
+          "Positive number = market-share gains; negative = market-share losses.",
+          "Track over 3–4 quarters to identify trend, not single-period noise."
+        ],
+        "worked_example": {
+          "problem": "Assess TCS market-share position in Indian IT services vs peer group (Infosys, Wipro, HCL Tech, Tech Mahindra).",
+          "steps": [
+            "FY23 revenue growth: TCS 13.7%, Infosys 15.4%, Wipro 15.0%, HCL Tech 14.6%, Tech Mahindra 12.0%.",
+            "Peer group simple average = (15.4 + 15.0 + 14.6 + 12.0) / 4 = 14.25%.",
+            "TCS relative growth = 13.7% - 14.25% = -0.55%.",
+            "Infosys relative growth = 15.4% - 14.25% = +1.15% (among fastest in peer set)."
+          ],
+          "result": "TCS grew 13.7% in absolute terms (healthy) but underperformed peer average by 55 bps.",
+          "insight": "TCS's modest underperformance is a yellow flag for relative market-share loss, though modest in scale. Watching Q1–Q4 FY24 relative growth is critical: if TCS relative growth remains negative for 3 consecutive quarters, a structural market-share shift to Infosys/Wipro is underway, warranting downgrade or tactical pause. Single-quarter fluctuation is noise; multi-quarter trends signal genuine competitive shifts."
+        },
+        "sensitivity_note": "Relative growth over multiple quarters is more reliable than single-quarter relative performance. A company losing relative position for 3-4 consecutive quarters is in genuine share decline. Single-quarter fluctuation is noise. Also, weighted average of peers (using revenue or market cap weights) is sometimes more meaningful than simple average."
+      },
+      {
+        "name": "Industry Median Benchmark",
+        "formula": "For each metric, identify: Industry Median (50th percentile), Top Quartile (75th percentile), Bottom Quartile (25th percentile) from industry research reports",
+        "variables": [
+          {
+            "symbol": "Industry Median",
+            "meaning": "50th percentile value of the metric across all industry players"
+          },
+          {
+            "symbol": "Top Quartile",
+            "meaning": "75th percentile — threshold for being in top 25%"
+          },
+          {
+            "symbol": "Bottom Quartile",
+            "meaning": "25th percentile — threshold for being in bottom 25%"
+          }
+        ],
+        "plain_english": "Industry medians and quartiles convert absolute metrics into percentile standings, providing instant context without manual peer-group assembly. A GNPA of 1.8% for a bank means little; but knowing the industry median is 2.2% and top quartile is 1.2% immediately clarifies the bank is above median but not elite. Industry benchmarks come from CRISIL, ICRA, or regulator-published data, removing the burden of peer selection. For equity research, industry benchmarks accelerate sectoral understanding and identify outliers (both positive and negative) at a glance.",
+        "computation": [
+          "Source industry-wide metric data from CRISIL, ICRA, RBI, SEBI, or sector-specific reports.",
+          "Sort all companies in the industry by the metric.",
+          "Identify 25th, 50th, and 75th percentile values.",
+          "Map company's value to percentile band for quick positioning."
+        ],
+        "worked_example": {
+          "problem": "Position ICICI Bank's Gross NPA ratio against industry benchmarks (private sector mid-size banking FY23).",
+          "steps": [
+            "Industry research (CRISIL FY23): GNPA median (50th percentile) = 2.2%, top quartile (75th percentile) = 1.2%, bottom quartile (25th percentile) = 4.5%.",
+            "ICICI Bank GNPA = 1.8%.",
+            "Percentile position: 1.8% falls between 1.2% (top quartile) and 2.2% (median) → upper-middle quartile (25–50th percentile).",
+            "Axis Bank GNPA = 3.5%: falls between 2.2% (median) and 4.5% (bottom quartile) → lower-middle quartile (50–75th percentile).",
+            "Yes Bank GNPA = 5.1%: above 4.5% → bottom quartile (worst 25%)."
+          ],
+          "result": "ICICI is in upper-middle (clean balance sheet, not elite); Axis is in lower-middle (elevated credit risk); Yes Bank is stressed.",
+          "insight": "ICICI's 1.8% GNPA is contextually strong but not best-in-class (RBI/IDBI at 1.0–1.2%). The gap between ICICI and top tier suggests either risk selection or slower recovery. Combined with 3-year GNPA trend (is 1.8% better or worse than FY21?), this benchmark positioning reveals asset-quality trajectory and supports valuation decisions."
+        },
+        "sensitivity_note": "Industry benchmarks come from third-party sources that may not be perfectly timely. Always check the source date. For mature industries (banking, FMCG), benchmarks are reliable. For emerging industries (EV, fintech), benchmarks may not be well-established yet. Supplement with peer analysis when benchmarks are unreliable."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter activation",
+        "Cmd + Shift + T → insert pivot",
+        "Fn + F4 → absolute reference",
+        "Cmd + R → apply rank formulas"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → filter for peer comparison",
+        "F4 → lock cell references when computing CAGRs across companies",
+        "Alt + N + V → insert pivot table for peer summary",
+        "Ctrl + R → apply rank formulas across multiple metrics"
+      ]
+    }
+  }
+}

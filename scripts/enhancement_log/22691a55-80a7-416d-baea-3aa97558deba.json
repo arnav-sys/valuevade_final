@@ -1,0 +1,257 @@
+{
+  "id": "22691a55-80a7-416d-baea-3aa97558deba",
+  "label": "M8 S14 | The Altman Z-Score and Piotroski F-Score Formulas with India",
+  "before": {
+    "formulas": [
+      {
+        "name": "Altman Z-Score — Original Manufacturing Formula",
+        "formula": "Z = 1.2×X1 + 1.4×X2 + 3.3×X3 + 0.6×X4 + 1.0×X5",
+        "variables": [
+          {
+            "symbol": "X1",
+            "meaning": "Working Capital / Total Assets = (Current Assets − Current Liabilities) / Total Assets. Captures short-term liquidity position."
+          },
+          {
+            "symbol": "X2",
+            "meaning": "Retained Earnings / Total Assets. Captures cumulative profitability and financial history — young companies have low values."
+          },
+          {
+            "symbol": "X3",
+            "meaning": "EBIT / Total Assets = Earnings Before Interest and Tax / Total Assets. Captures asset productivity — the most heavily weighted variable."
+          },
+          {
+            "symbol": "X4",
+            "meaning": "Market Value of Equity / Book Value of Total Liabilities. Market-based solvency measure. For unlisted or thinly-traded companies, use book value."
+          },
+          {
+            "symbol": "X5",
+            "meaning": "Sales / Total Assets. Asset turnover — captures operational efficiency. Excluded in non-manufacturing Z''-Score variant."
+          }
+        ],
+        "worked_example": "Computing Altman Z-Score for hypothetical Indian manufacturing mid-cap FY23. Total Assets ₹1,840 crore, Current Assets ₹780 crore, Current Liabilities ₹420 crore, Retained Earnings ₹340 crore, EBIT ₹215 crore, Market Cap (equity) ₹1,280 crore, Total Liabilities ₹560 crore, Revenue ₹2,450 crore. X1 = (780-420)/1840 = 0.196. X2 = 340/1840 = 0.185. X3 = 215/1840 = 0.117. X4 = 1280/560 = 2.286. X5 = 2450/1840 = 1.332. Z = 1.2×0.196 + 1.4×0.185 + 3.3×0.117 + 0.6×2.286 + 1.0×1.332 = 0.235 + 0.259 + 0.386 + 1.372 + 1.332 = 3.584. Interpretation: Z-Score of 3.584 is above 2.99 (safe zone), indicating low bankruptcy probability. The manufacturing company has healthy financial positioning. Applied to IL&FS FY17 retroactive analysis: approximate X1 = 0.05 (low working capital), X2 = 0.08 (modest retained earnings), X3 = 0.04 (low EBIT to assets), X4 = 0.4 (high leverage), X5 = 0.12 (low sales to assets — infrastructure nature). Approximate Z-Score = 1.2×0.05 + 1.4×0.08 + 3.3×0.04 + 0.6×0.4 + 1.0×0.12 = 0.06+0.112+0.132+0.24+0.12 = 0.664. Below 1.81 distress threshold — strongly flagged. The Altman framework would have flagged IL&FS approximately 12-18 months before the September 2018 default. For Indian non-manufacturing coverage, use Z''-Score variant. Applied to same IL&FS FY17 data: Z'' = 3.25 + 6.56×0.05 + 3.26×0.08 + 6.72×0.04 + 1.05×(book equity/liabilities ratio). Computation similar severity — distress zone flagging.",
+        "sensitivity_note": "For Indian companies, use the Z''-Score variant for non-manufacturing sectors (services, infrastructure, NBFC, technology). The original Z-Score was calibrated for US manufacturing and may produce less reliable signals for service-oriented or asset-light businesses. Also note that X4 (market value / liabilities) requires listed equity market cap — for private companies or thinly-traded stocks, use book value substitution with understanding of reduced reliability."
+      },
+      {
+        "name": "Altman Z''-Score — Non-Manufacturing and Emerging Markets Formula",
+        "formula": "Z'' = 3.25 + 6.56×X1 + 3.26×X2 + 6.72×X3 + 1.05×X4",
+        "variables": [
+          {
+            "symbol": "X1",
+            "meaning": "Working Capital / Total Assets (same as original)"
+          },
+          {
+            "symbol": "X2",
+            "meaning": "Retained Earnings / Total Assets (same as original)"
+          },
+          {
+            "symbol": "X3",
+            "meaning": "EBIT / Total Assets (same as original)"
+          },
+          {
+            "symbol": "X4",
+            "meaning": "Book Value of Equity / Total Liabilities — note: uses BOOK value, not market value, making this variant applicable to private companies and robust to market volatility"
+          }
+        ],
+        "worked_example": "Z''-Score is preferred for Indian coverage because it excludes Sales/Total Assets (X5) which is industry-specific, and uses book equity rather than market value which is more stable. Applied to hypothetical Indian services mid-cap FY23. Total Assets ₹2,450 crore, Current Assets ₹1,140 crore, Current Liabilities ₹680 crore, Retained Earnings ₹485 crore, EBIT ₹295 crore, Book Value of Equity ₹1,560 crore, Total Liabilities ₹890 crore. X1 = (1140-680)/2450 = 0.188. X2 = 485/2450 = 0.198. X3 = 295/2450 = 0.120. X4 = 1560/890 = 1.753. Z'' = 3.25 + 6.56×0.188 + 3.26×0.198 + 6.72×0.120 + 1.05×1.753 = 3.25 + 1.233 + 0.645 + 0.806 + 1.841 = 7.775. Interpretation: Z'' of 7.775 is substantially above 2.6 safe threshold — very healthy financial positioning. Z'' thresholds: below 1.1 is distress zone; 1.1 to 2.6 is grey zone; above 2.6 is safe zone. Applied to Jet Airways FY18 retroactive: approximate Z'' of 0.8-1.0 — strongly in distress zone 12 months before April 2019 shutdown. Applied to DHFL FY18 retroactive: approximate Z'' of 1.2-1.4 — grey zone approaching distress threshold, 12 months before September 2019 default. The Z''-Score variant has been validated in multiple Indian academic studies with accuracy ranges of 85-90 percent for bankruptcy prediction 1-2 years forward.",
+        "sensitivity_note": "For Indian banking and NBFC companies, standard Z-Score and Z''-Score variants may produce less reliable signals due to different business model dynamics (leverage is the business model). Specialized variants exist but require adaptation. For these sectors, integrate with NPA analysis, provision coverage ratios, and regulatory capital metrics from Session 6."
+      },
+      {
+        "name": "Piotroski F-Score — 9 Binary Signals",
+        "formula": "F-Score = Sum of 9 binary signals (0 or 1 each) = 0 to 9",
+        "variables": [
+          {
+            "symbol": "PROFITABILITY SIGNALS",
+            "meaning": "Signal 1: Net Income > 0 (positive current year profit); Signal 2: CFO > 0 (positive operating cash flow); Signal 3: CFO > Net Income (quality earnings); Signal 4: ROA current year > prior year (improving profitability)"
+          },
+          {
+            "symbol": "LEVERAGE/LIQUIDITY SIGNALS",
+            "meaning": "Signal 5: Long-Term Debt / Total Assets current year < prior year (deleveraging); Signal 6: Current Ratio current year > prior year (improving liquidity); Signal 7: No new equity issued during year (no dilution)"
+          },
+          {
+            "symbol": "OPERATING EFFICIENCY SIGNALS",
+            "meaning": "Signal 8: Gross Margin current year > prior year (pricing power); Signal 9: Asset Turnover current year > prior year (improving asset utilization)"
+          }
+        ],
+        "worked_example": "Computing Piotroski F-Score for hypothetical Indian consumer products mid-cap. FY23 Net Income ₹185 crore (positive — Signal 1 triggered, 1). FY23 CFO ₹215 crore (positive — Signal 2 triggered, 1). CFO ₹215 crore > Net Income ₹185 crore (earnings quality — Signal 3 triggered, 1). ROA FY23 9.2 percent > FY22 ROA 8.5 percent (improving — Signal 4 triggered, 1). Long-Term Debt/Total Assets FY23 0.18 < FY22 0.21 (deleveraging — Signal 5 triggered, 1). Current Ratio FY23 1.68 > FY22 1.52 (improving liquidity — Signal 6 triggered, 1). Shares outstanding FY23 equal to FY22 — no new equity issued (Signal 7 triggered, 1). Gross Margin FY23 42 percent > FY22 40 percent (pricing power — Signal 8 triggered, 1). Asset Turnover FY23 1.25 > FY22 1.18 (improving utilization — Signal 9 triggered, 1). Total F-Score = 9. Interpretation: F-Score of 9 is the maximum possible, indicating strongest fundamental financial position. This company exhibits improvement across all three categories — profitability, leverage/liquidity, and operating efficiency. Rare in practice — most strong companies score 7-8. A score of 9 combined with reasonable valuation (low P/B or P/E) represents high-conviction fundamental opportunity. Interpretation ranges: 0-3 weak financial position (concerning signals across multiple categories); 4-5 average (mixed signals); 6-9 strong (positive signals across most categories). Piotroski's original research showed that applying F-Score filter to low P/B value stocks produced approximately 7.5 percent annual outperformance — high F-Score value stocks (7-9) substantially outperformed low F-Score value stocks (0-3) over 1976-1996 period. Indian market validation studies have shown similar patterns on Nifty 500 and BSE 500 stocks.",
+        "sensitivity_note": "F-Score is most powerful when combined with valuation screening. Apply F-Score as secondary filter on top of value screening (lowest 20 percent P/B in coverage universe). High F-Score among value stocks identifies genuine turnaround candidates. Low F-Score among value stocks identifies value traps where low valuation reflects genuine deterioration. The combined application is where Piotroski's original research showed the largest outperformance."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for financial ratio tables",
+        "Ctrl + Shift + L — Toggle filters for multi-company screening",
+        "F4 — Lock references for formula replication",
+        "Alt + = — AutoSum for F-Score binary indicator totals",
+        "Ctrl + Shift + 1 — Number format for financial data"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Altman Z-Score — Original Manufacturing Formula",
+        "formula": "Z = 1.2×X1 + 1.4×X2 + 3.3×X3 + 0.6×X4 + 1.0×X5",
+        "variables": [
+          {
+            "symbol": "X1",
+            "meaning": "Working Capital / Total Assets = (Current Assets − Current Liabilities) / Total Assets. Captures short-term liquidity position."
+          },
+          {
+            "symbol": "X2",
+            "meaning": "Retained Earnings / Total Assets. Captures cumulative profitability and financial history — young companies have low values."
+          },
+          {
+            "symbol": "X3",
+            "meaning": "EBIT / Total Assets = Earnings Before Interest and Tax / Total Assets. Captures asset productivity — the most heavily weighted variable."
+          },
+          {
+            "symbol": "X4",
+            "meaning": "Market Value of Equity / Book Value of Total Liabilities. Market-based solvency measure. For unlisted or thinly-traded companies, use book value."
+          },
+          {
+            "symbol": "X5",
+            "meaning": "Sales / Total Assets. Asset turnover — captures operational efficiency. Excluded in non-manufacturing Z''-Score variant."
+          }
+        ],
+        "plain_english": "The Altman Z-Score combines five financial ratios into a single distress probability score. It measures short-term liquidity, profitability history, operational efficiency, financial leverage, and asset productivity simultaneously. A score above 2.99 indicates low bankruptcy risk; below 1.81 signals serious distress. For equity research, it serves as an early-warning system—a rising Z-Score suggests improving financial health, while a falling score may indicate deteriorating fundamentals 12–18 months before crisis.",
+        "computation": [
+          "Calculate X1: (Current Assets − Current Liabilities) ÷ Total Assets",
+          "Calculate X2: Retained Earnings ÷ Total Assets",
+          "Calculate X3: EBIT ÷ Total Assets",
+          "Calculate X4: Market Value of Equity ÷ Book Value of Total Liabilities",
+          "Calculate X5: Revenue ÷ Total Assets",
+          "Multiply each ratio by its weight: X1×1.2, X2×1.4, X3×3.3, X4×0.6, X5×1.0",
+          "Sum all five weighted components to obtain Z"
+        ],
+        "worked_example": {
+          "problem": "Compute Altman Z-Score for a hypothetical Indian manufacturing mid-cap in FY23.",
+          "steps": [
+            "Total Assets ₹1,840 crore; Current Assets ₹780 crore; Current Liabilities ₹420 crore; Retained Earnings ₹340 crore; EBIT ₹215 crore; Market Cap ₹1,280 crore; Total Liabilities ₹560 crore; Revenue ₹2,450 crore",
+            "X1 = (780 − 420) ÷ 1,840 = 360 ÷ 1,840 = 0.196",
+            "X2 = 340 ÷ 1,840 = 0.185",
+            "X3 = 215 ÷ 1,840 = 0.117",
+            "X4 = 1,280 ÷ 560 = 2.286",
+            "X5 = 2,450 ÷ 1,840 = 1.332",
+            "Z = (1.2 × 0.196) + (1.4 × 0.185) + (3.3 × 0.117) + (0.6 × 2.286) + (1.0 × 1.332)",
+            "Z = 0.235 + 0.259 + 0.386 + 1.372 + 1.332 = 3.584"
+          ],
+          "result": "Z-Score = 3.584",
+          "insight": "A score of 3.584 sits well above the 2.99 safe threshold, indicating low bankruptcy risk. This manufacturing company exhibits healthy working capital, positive retained earnings, reasonable profitability relative to assets, moderate leverage, and solid asset turnover. IL&FS retroactive FY17 analysis illustrates the formula's predictive power: estimated X1 ≈ 0.05 (weak working capital), X2 ≈ 0.08 (modest accumulated profit), X3 ≈ 0.04 (low EBIT productivity), X4 ≈ 0.4 (high leverage), X5 ≈ 0.12 (low sales-to-assets—typical for infrastructure). Resulting Z ≈ 0.06 + 0.112 + 0.132 + 0.24 + 0.12 = 0.664, well below the 1.81 distress threshold. This score would have flagged IL&FS approximately 12–18 months before the September 2018 default, demonstrating the formula's utility for early-warning detection in Indian equity research."
+        },
+        "sensitivity_note": "For Indian companies, use the Z''-Score variant for non-manufacturing sectors (services, infrastructure, NBFC, technology). The original Z-Score was calibrated for US manufacturing and may produce less reliable signals for service-oriented or asset-light businesses. Also note that X4 (market value / liabilities) requires listed equity market cap — for private companies or thinly-traded stocks, use book value substitution with understanding of reduced reliability."
+      },
+      {
+        "name": "Altman Z''-Score — Non-Manufacturing and Emerging Markets Formula",
+        "formula": "Z'' = 3.25 + 6.56×X1 + 3.26×X2 + 6.72×X3 + 1.05×X4",
+        "variables": [
+          {
+            "symbol": "X1",
+            "meaning": "Working Capital / Total Assets = (Current Assets − Current Liabilities) / Total Assets (same as original)"
+          },
+          {
+            "symbol": "X2",
+            "meaning": "Retained Earnings / Total Assets (same as original)"
+          },
+          {
+            "symbol": "X3",
+            "meaning": "EBIT / Total Assets (same as original)"
+          },
+          {
+            "symbol": "X4",
+            "meaning": "Book Value of Equity / Total Liabilities — uses book value (not market value), making this variant applicable to private companies and robust to market volatility"
+          }
+        ],
+        "plain_english": "The Z''-Score is a modified version designed for non-manufacturing, services, and emerging-market companies. It excludes the sales-to-assets ratio (which varies dramatically across industries) and replaces market value of equity with book value, making it more stable and applicable to unlisted or thinly-traded companies. A Z'' above 2.6 signals safety; below 1.1 indicates distress. For Indian equity research, this is often the preferred variant because it works reliably across sectors and does not depend on volatile equity market valuations.",
+        "computation": [
+          "Calculate X1: (Current Assets − Current Liabilities) ÷ Total Assets",
+          "Calculate X2: Retained Earnings ÷ Total Assets",
+          "Calculate X3: EBIT ÷ Total Assets",
+          "Calculate X4: Book Value of Equity ÷ Total Liabilities",
+          "Multiply each ratio by its weight: X1×6.56, X2×3.26, X3×6.72, X4×1.05",
+          "Sum the constant 3.25 and all four weighted components to obtain Z''"
+        ],
+        "worked_example": {
+          "problem": "Compute Altman Z''-Score for a hypothetical Indian services mid-cap in FY23.",
+          "steps": [
+            "Total Assets ₹2,450 crore; Current Assets ₹1,140 crore; Current Liabilities ₹680 crore; Retained Earnings ₹485 crore; EBIT ₹295 crore; Book Value of Equity ₹1,560 crore; Total Liabilities ₹890 crore",
+            "X1 = (1,140 − 680) ÷ 2,450 = 460 ÷ 2,450 = 0.188",
+            "X2 = 485 ÷ 2,450 = 0.198",
+            "X3 = 295 ÷ 2,450 = 0.120",
+            "X4 = 1,560 ÷ 890 = 1.753",
+            "Z'' = 3.25 + (6.56 × 0.188) + (3.26 × 0.198) + (6.72 × 0.120) + (1.05 × 1.753)",
+            "Z'' = 3.25 + 1.233 + 0.645 + 0.806 + 1.841 = 7.775"
+          ],
+          "result": "Z''-Score = 7.775",
+          "insight": "A Z'' of 7.775 is substantially above the 2.6 safe threshold, indicating very healthy financial positioning. This services company exhibits strong working capital, solid retained earnings, reasonable profitability relative to assets, and conservative leverage. Interpretation thresholds: Z'' < 1.1 is distress zone; 1.1–2.6 is grey zone; > 2.6 is safe zone. Jet Airways FY18 retroactive analysis showed Z'' ≈ 0.8–1.0 (distress zone), flagging severe distress 12 months before the April 2019 shutdown. DHFL FY18 showed Z'' ≈ 1.2–1.4 (grey zone approaching distress), 12 months before September 2019 default. Indian academic studies have validated Z''-Score accuracy at 85–90% for bankruptcy prediction 1–2 years forward on NSE-listed companies, making it a reliable early-warning tool for equity research."
+        },
+        "sensitivity_note": "For Indian banking and NBFC companies, standard Z-Score and Z''-Score variants may produce less reliable signals due to different business model dynamics (leverage is the business model). Specialized variants exist but require adaptation. For these sectors, integrate with NPA analysis, provision coverage ratios, and regulatory capital metrics from Session 6."
+      },
+      {
+        "name": "Piotroski F-Score — 9 Binary Signals",
+        "formula": "F-Score = Sum of 9 binary signals (0 or 1 each) = 0 to 9",
+        "variables": [
+          {
+            "symbol": "PROFITABILITY SIGNALS (1–4)",
+            "meaning": "Signal 1: Net Income > 0 (positive current year profit); Signal 2: CFO > 0 (positive operating cash flow); Signal 3: CFO > Net Income (quality earnings); Signal 4: ROA current year > prior year (improving profitability)"
+          },
+          {
+            "symbol": "LEVERAGE/LIQUIDITY SIGNALS (5–7)",
+            "meaning": "Signal 5: Long-Term Debt / Total Assets current year < prior year (deleveraging); Signal 6: Current Ratio current year > prior year (improving liquidity); Signal 7: Shares outstanding current year = prior year (no new equity issued, no dilution)"
+          },
+          {
+            "symbol": "OPERATING EFFICIENCY SIGNALS (8–9)",
+            "meaning": "Signal 8: Gross Margin current year > prior year (pricing power); Signal 9: Asset Turnover current year > prior year (improving asset utilization)"
+          }
+        ],
+        "plain_english": "The Piotroski F-Score is a simple nine-question checklist that scores a company's financial health by measuring improvements or strengths across profitability, leverage/liquidity, and operational efficiency. Each question has a yes/no answer (signal present = 1 point, absent = 0 points), yielding a total score from 0 to 9. A high F-Score (7–9) indicates a company with improving fundamentals across multiple dimensions; a low score (0–3) suggests financial weakness or deterioration. It works best as a secondary filter applied to value stocks—high F-Score value stocks are turnaround opportunities, while low F-Score value stocks are value traps.",
+        "computation": [
+          "Profitability check: Award 1 point each if Net Income > 0, CFO > 0, CFO > Net Income, and ROA improves year-over-year",
+          "Leverage/Liquidity check: Award 1 point each if Long-Term Debt ÷ Assets decreases, Current Ratio improves, and shares outstanding remain unchanged",
+          "Efficiency check: Award 1 point each if Gross Margin improves and Asset Turnover improves year-over-year",
+          "Sum all 9 signals (maximum 9 points) to obtain the F-Score"
+        ],
+        "worked_example": {
+          "problem": "Compute Piotroski F-Score for a hypothetical Indian consumer products mid-cap comparing FY23 to FY22.",
+          "steps": [
+            "FY23 Net Income ₹185 crore > 0: Signal 1 = 1",
+            "FY23 CFO ₹215 crore > 0: Signal 2 = 1",
+            "FY23 CFO ₹215 crore > Net Income ₹185 crore (earnings quality indicator): Signal 3 = 1",
+            "FY23 ROA 9.2% > FY22 ROA 8.5% (profitability improving): Signal 4 = 1",
+            "FY23 Long-Term Debt ÷ Assets (0.18) < FY22 ratio (0.21), indicating deleveraging: Signal 5 = 1",
+            "FY23 Current Ratio 1.68 > FY22 Current Ratio 1.52, indicating improved liquidity: Signal 6 = 1",
+            "FY23 shares outstanding equal FY22 (no new equity issued, no dilution): Signal 7 = 1",
+            "FY23 Gross Margin 42% > FY22 Gross Margin 40%, indicating pricing power: Signal 8 = 1",
+            "FY23 Asset Turnover 1.25 > FY22 Asset Turnover 1.18, indicating improved utilization: Signal 9 = 1",
+            "Total F-Score = 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 + 1 = 9"
+          ],
+          "result": "F-Score = 9",
+          "insight": "A perfect F-Score of 9 is rare in practice and represents the strongest possible financial position. This company exhibits improvement or strength across all three categories: profitability (all four signals positive), leverage/liquidity (all three signals positive), and operating efficiency (both signals positive). Most high-quality companies score 7–8; a score of 9 combined with reasonable valuation (low P/B or P/E) represents a high-conviction fundamental opportunity. Piotroski's original 1976–1996 research showed that value stocks (lowest 20% P/B) with F-Score 7–9 outperformed value stocks with F-Score 0–3 by approximately 7.5% annually. Indian market validation studies on Nifty 500 and BSE 500 stocks have replicated similar patterns: high F-Score value stocks materially outperformed low F-Score value stocks over 5-year holding periods. Interpretation ranges: 0–3 weak (concerning signals across multiple categories, potential value trap); 4–5 average (mixed signals); 6–9 strong (positive signals across most categories, turnaround or quality indicator)."
+        },
+        "sensitivity_note": "F-Score is most powerful when combined with valuation screening. Apply F-Score as secondary filter on top of value screening (lowest 20 percent P/B in coverage universe). High F-Score among value stocks identifies genuine turnaround candidates. Low F-Score among value stocks identifies value traps where low valuation reflects genuine deterioration. The combined application is where Piotroski's original research showed the largest outperformance."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for financial ratio tables",
+        "Ctrl + Shift + L — Toggle filters for multi-company screening",
+        "F4 — Lock references for formula replication",
+        "Alt + = — AutoSum for F-Score binary indicator totals",
+        "Ctrl + Shift + 1 — Number format for financial data"
+      ]
+    }
+  }
+}

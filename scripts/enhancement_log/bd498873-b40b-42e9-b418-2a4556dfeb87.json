@@ -1,0 +1,260 @@
+{
+  "id": "bd498873-b40b-42e9-b418-2a4556dfeb87",
+  "label": "M12 S11 | The Precedent Transaction Math — From Deal Multiples to Impl",
+  "before": {
+    "formulas": [
+      {
+        "name": "Implied Control Premium",
+        "formula": "Implied Control Premium = (Deal Price per Share / Undisturbed Price per Share) - 1",
+        "variables": [
+          {
+            "symbol": "Deal Price per Share",
+            "meaning": "Per-share consideration in the transaction (cash equivalent if mixed cash-stock)"
+          },
+          {
+            "symbol": "Undisturbed Price per Share",
+            "meaning": "Target's share price 1-3 months pre-deal-rumours, before any speculation moved the stock"
+          }
+        ],
+        "worked_example": "Holcim-Adani Ambuja deal (May 2022). Deal price ~₹385 per share. Undisturbed price (early 2022, before deal rumours): ~₹230 per share. Implied Control Premium = (385/230) - 1 = 67%. This was at the high end of recent Indian deals, reflecting strategic scarcity (Adani entering cement at scale) and Holcim's desire for clean exit.",
+        "sensitivity_note": "Always specify the undisturbed window. Using last-day price before announcement understates premium because rumours typically move the stock 5-15% before announcement. Using 6-month-prior price often overstates because broader market may have moved. Standard convention: 1-month or 3-month volume-weighted average pre-rumour."
+      },
+      {
+        "name": "Deal EV/EBITDA",
+        "formula": "Deal EV/EBITDA = Deal Enterprise Value / Target's LTM (or NFY) EBITDA",
+        "variables": [
+          {
+            "symbol": "Deal Enterprise Value",
+            "meaning": "Equity consideration + assumed debt - cash (sometimes adjusted for working capital adjustments)"
+          },
+          {
+            "symbol": "LTM EBITDA",
+            "meaning": "Last twelve months EBITDA at deal announcement (reported metric used in deal disclosures)"
+          },
+          {
+            "symbol": "NFY EBITDA",
+            "meaning": "Next fiscal year forward EBITDA (sometimes used in deal documents and equity research analysis)"
+          }
+        ],
+        "worked_example": "Holcim-Adani Ambuja deal. Deal value $10.5bn (~₹85,000 cr) for 63.1% stake in Ambuja + ACC implies 100% EV ~₹135,000 cr. Combined Ambuja + ACC FY22 EBITDA ~₹6,500 cr. Deal EV/EBITDA = 135,000 / 6,500 = ~21x. Compare to listed cement peer median trading multiple of ~12-14x at the time. The 50% premium to trading multiples reflects ~40% control premium plus auction dynamics from Adani's strategic entry into cement.",
+        "sensitivity_note": "Deal multiples are sensitive to which EBITDA measure you use (LTM vs forward, normalised vs reported). For commodity industries with cyclical earnings, use through-cycle or normalised EBITDA — using a peak-cycle LTM number understates the multiple and misleads."
+      },
+      {
+        "name": "Trading-Equivalent Multiple from Precedent Transaction",
+        "formula": "Trading-Equivalent Multiple = Deal Multiple × (1 / (1 + Control Premium))",
+        "variables": [
+          {
+            "symbol": "Deal Multiple",
+            "meaning": "EV/EBITDA, P/E, or other multiple from the precedent transaction"
+          },
+          {
+            "symbol": "Control Premium",
+            "meaning": "Estimated control premium in the deal — typically 25-50% in Indian deals"
+          }
+        ],
+        "worked_example": "For Ambuja-Adani deal at 21x EV/EBITDA with implied control premium of ~40%: Trading-Equivalent Multiple = 21 × (1/1.40) = 15x. This 15x is the implied trading multiple — what minority shares should trade at without control premium. It's above peer trading at 12-14x, suggesting either Ambuja's standalone business deserves a premium to peer median (defensible given asset quality), or the deal multiple itself was elevated by competitive auction dynamics beyond pure synergy value.",
+        "sensitivity_note": "This adjustment is essential when using precedent transactions to value minority equity stakes. Without it, target prices are systematically inflated by 25-50%. The precise control premium to use is itself a judgment — for most Indian deals, 30-40% is the typical range to back out."
+      },
+      {
+        "name": "Implied Target Price from Precedent Transactions",
+        "formula": "Implied Target Price = Subject Company Forward EBITDA × Average Deal EV/EBITDA × (1/(1 + Control Premium)) + Bridge to Equity Value, all divided by Fully Diluted Shares",
+        "variables": [
+          {
+            "symbol": "Subject Forward EBITDA",
+            "meaning": "Subject company's next-fiscal-year forward EBITDA forecast"
+          },
+          {
+            "symbol": "Average Deal EV/EBITDA",
+            "meaning": "Average (or median) of relevant precedent transaction multiples after time and quality adjustments"
+          },
+          {
+            "symbol": "Control Premium Adjustment",
+            "meaning": "Removes control premium for valuing minority stakes"
+          }
+        ],
+        "worked_example": "For a hypothetical Indian cement company with FY27 EBITDA of ₹5,000 cr, using cement deal precedents: average deal EV/EBITDA 18x, average control premium 35%. Trading-equivalent multiple = 18 × (1/1.35) = 13.3x. Implied EV = 5,000 × 13.3 = ₹66,500 cr. Bridge to equity, divide by shares for per-share target. The 18x deal multiple becomes 13.3x trading-equivalent — much closer to listed peer trading multiples and giving a sensible minority-stake valuation.",
+        "sensitivity_note": "For special-situation analysis where the subject company itself might be acquired (family-controlled business, distressed asset, sector consolidation play), don't make the trading-equivalent adjustment. Use the deal multiple directly to estimate what an acquirer would pay. The choice of whether to adjust depends entirely on the use case: minority valuation requires adjustment; controlling-stake valuation does not."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=AVERAGE() and =MEDIAN()",
+        "=COUNTIF()",
+        "=YEAR() and =MONTH()",
+        "Cmd + Shift + T — pivot table"
+      ],
+      "windows": [
+        "=AVERAGE() and =MEDIAN() — for aggregating across deal sample. Median is preferred (less sensitive to outlier deals).",
+        "=COUNTIF() — for counting deals meeting specific criteria (e.g., last 3 years only, same geography, similar size)",
+        "=YEAR(deal_date) and =MONTH(deal_date) — for time-period filtering",
+        "Alt + N + V + T — pivot table for organising deal database by sector / geography / time period"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Implied Control Premium",
+        "formula": "Implied Control Premium = (Deal Price per Share / Undisturbed Price per Share) - 1",
+        "variables": [
+          {
+            "symbol": "Deal Price per Share",
+            "meaning": "Per-share consideration in the transaction (cash equivalent if mixed cash-stock)"
+          },
+          {
+            "symbol": "Undisturbed Price per Share",
+            "meaning": "Target's share price 1-3 months pre-deal-rumours, before any speculation moved the stock"
+          }
+        ],
+        "plain_english": "The control premium quantifies how much an acquirer paid above the pre-rumour market price to gain controlling interest. It captures the value of control, synergies, and auction dynamics — essential for benchmarking deal valuations against trading multiples and for assessing whether the price paid was steep or reasonable.",
+        "worked_example": {
+          "problem": "Holcim acquired a controlling stake in Ambuja Cements and ACC in May 2022. Deal price was ₹385 per share. The undisturbed price in early 2022 (before deal rumours) was ₹230 per share. What is the implied control premium?",
+          "steps": [
+            "Identify deal price per share: ₹385",
+            "Identify undisturbed price per share: ₹230",
+            "Divide deal price by undisturbed price: 385 ÷ 230 = 1.67",
+            "Subtract 1 to express as a percentage premium: 1.67 − 1 = 0.67 or 67%"
+          ],
+          "result": "Implied control premium of 67%",
+          "insight": "This 67% premium was at the high end of recent Indian M&A, reflecting strategic scarcity (Adani's entry into cement consolidation) and Holcim's desire for a clean exit from a crowded sector. Benchmarking this against typical Indian deal premiums of 30–50% signals either heightened competition for the asset or genuine synergy value."
+        },
+        "sensitivity_note": "Always specify the undisturbed window. Using last-day price before announcement understates premium because rumours typically move the stock 5–15% before announcement. Using 6-month-prior price often overstates because broader market may have moved. Standard convention: 1-month or 3-month volume-weighted average pre-rumour."
+      },
+      {
+        "name": "Deal EV/EBITDA",
+        "formula": "Deal EV/EBITDA = Deal Enterprise Value / Target's LTM (or NFY) EBITDA",
+        "variables": [
+          {
+            "symbol": "Deal Enterprise Value",
+            "meaning": "Equity consideration + assumed debt - cash (sometimes adjusted for working capital adjustments)"
+          },
+          {
+            "symbol": "LTM EBITDA",
+            "meaning": "Last twelve months EBITDA at deal announcement (reported metric used in deal disclosures)"
+          },
+          {
+            "symbol": "NFY EBITDA",
+            "meaning": "Next fiscal year forward EBITDA (sometimes used in deal documents and equity research analysis)"
+          }
+        ],
+        "plain_english": "Deal EV/EBITDA shows what multiple an acquirer paid for the target's earnings power. It reveals whether the deal was cheap or expensive relative to both listed peer trading multiples and the company's intrinsic cash generation — critical for determining if the transaction price sets a reasonable benchmark for similar businesses.",
+        "computation": [
+          "Calculate deal equity consideration (total purchase price for target's stake)",
+          "Add back assumed or refinanced debt post-deal",
+          "Subtract estimated cash at deal close",
+          "Apply any working capital or other adjustments disclosed in deal documents",
+          "Divide resulting enterprise value by target's LTM or forward EBITDA as disclosed in deal materials"
+        ],
+        "worked_example": {
+          "problem": "Holcim's acquisition of a 63.1% stake in Ambuja Cements and ACC was valued at $10.5 billion (~₹85,000 crore) for the stake. Assuming a 100% enterprise value of approximately ₹135,000 crore. Ambuja and ACC combined FY22 LTM EBITDA was ₹6,500 crore. What is the deal EV/EBITDA?",
+          "steps": [
+            "Identify deal enterprise value for 100% of combined entity: ₹135,000 crore",
+            "Identify LTM EBITDA at deal announcement: ₹6,500 crore",
+            "Divide EV by LTM EBITDA: 135,000 ÷ 6,500 = 20.77x"
+          ],
+          "result": "Deal EV/EBITDA of approximately 21x",
+          "insight": "Listed cement peers were trading at 12–14x EV/EBITDA at the time. The 21x multiple reflects both a ~40% control premium and auction dynamics from competitive bidding. Without the control premium adjustment, this multiple would mislead a minority shareholder valuation."
+        },
+        "sensitivity_note": "Deal multiples are sensitive to which EBITDA measure you use (LTM vs forward, normalised vs reported). For commodity industries with cyclical earnings, use through-cycle or normalised EBITDA — using a peak-cycle LTM number understates the multiple and misleads."
+      },
+      {
+        "name": "Trading-Equivalent Multiple from Precedent Transaction",
+        "formula": "Trading-Equivalent Multiple = Deal Multiple × (1 / (1 + Control Premium))",
+        "variables": [
+          {
+            "symbol": "Deal Multiple",
+            "meaning": "EV/EBITDA, P/E, or other multiple from the precedent transaction"
+          },
+          {
+            "symbol": "Control Premium",
+            "meaning": "Estimated control premium in the deal — typically 25–50% in Indian deals"
+          }
+        ],
+        "plain_english": "This formula strips the control premium out of a deal multiple to estimate what minority shareholders should pay (or what a minority stake should trade at). It bridges the gap between control-transaction pricing and minority-equity valuation, preventing systematic overvaluation when using precedent transactions for minority equity targets.",
+        "computation": [
+          "Identify deal EV/EBITDA (or other multiple) from the precedent transaction",
+          "Estimate the control premium embedded in that deal (typically 30–40% for Indian M&A)",
+          "Divide deal multiple by (1 + control premium) to isolate the trading-equivalent component",
+          "Use this trading-equivalent multiple as your benchmark for valuing minority stakes"
+        ],
+        "worked_example": {
+          "problem": "The Ambuja-Holcim deal traded at 21x EV/EBITDA with an estimated 40% control premium embedded. If you are valuing a 10% minority stake in a similar Indian cement company, what trading-equivalent multiple should you use?",
+          "steps": [
+            "Identify deal EV/EBITDA multiple: 21x",
+            "Estimate control premium: 40% (0.40)",
+            "Calculate trading-equivalent: 21 × (1 ÷ 1.40)",
+            "Compute: 21 × 0.714 = 15.0x"
+          ],
+          "result": "Trading-equivalent multiple of 15x",
+          "insight": "The 15x trading-equivalent is what comparable minority stakes should trade at, stripped of control premium. It sits above peer trading of 12–14x, suggesting Ambuja deserves a modest premium valuation for asset quality, or the deal itself was elevated by auction dynamics. Using 21x directly for a minority valuation would inflate the target price by 40%."
+        },
+        "sensitivity_note": "This adjustment is essential when using precedent transactions to value minority equity stakes. Without it, target prices are systematically inflated by 25–50%. The precise control premium to use is itself a judgment — for most Indian deals, 30–40% is the typical range to back out."
+      },
+      {
+        "name": "Implied Target Price from Precedent Transactions",
+        "formula": "Implied Target Price = Subject Company Forward EBITDA × Average Deal EV/EBITDA × (1/(1 + Control Premium)) + Bridge to Equity Value, all divided by Fully Diluted Shares",
+        "variables": [
+          {
+            "symbol": "Subject Forward EBITDA",
+            "meaning": "Subject company's next-fiscal-year forward EBITDA forecast"
+          },
+          {
+            "symbol": "Average Deal EV/EBITDA",
+            "meaning": "Average (or median) of relevant precedent transaction multiples after time and quality adjustments"
+          },
+          {
+            "symbol": "Control Premium Adjustment",
+            "meaning": "Removes control premium for valuing minority stakes"
+          },
+          {
+            "symbol": "Bridge to Equity Value",
+            "meaning": "Net debt (debt minus cash) that converts enterprise value to equity value"
+          },
+          {
+            "symbol": "Fully Diluted Shares",
+            "meaning": "Outstanding shares plus shares underlying in-the-money options, warrants, and convertibles"
+          }
+        ],
+        "plain_english": "This formula translates a set of precedent transaction multiples into a per-share target price for a specific company you are analyzing. It applies a median or average deal multiple to your company's forward earnings, removes control premium to reflect minority valuation, adjusts for net debt, and divides by diluted share count to arrive at an analyst target price benchmarked to real M&A precedent.",
+        "computation": [
+          "Gather a sample of relevant precedent transactions (same sector, comparable size, recent) and compute their deal EV/EBITDA multiples",
+          "Calculate the median (or mean, with outlier treatment) of these multiples",
+          "Estimate the average control premium across these deals (typically 30–40%)",
+          "Forecast subject company's forward EBITDA",
+          "Multiply forward EBITDA by median deal multiple",
+          "Divide by (1 + control premium) to remove control premium",
+          "Add back net debt (or subtract net cash) to convert EV to equity value",
+          "Divide by fully diluted share count to arrive at per-share target price"
+        ],
+        "worked_example": {
+          "problem": "You are valuing a hypothetical Indian cement company (call it Cement Co.) with FY27 forward EBITDA of ₹5,000 crore. Recent cement precedent transactions: Ambuja-Holcim at 21x, Dalmia-Shriram at 16x, JSW-Cement at 18x. Average deal control premium is 35%. Cement Co. has net debt of ₹2,000 crore and 100 crore fully diluted shares. What is your precedent-transaction-based target price?",
+          "steps": [
+            "Calculate median deal multiple from sample: (16x, 18x, 21x) → median 18x",
+            "Estimate average control premium: 35%",
+            "Calculate trading-equivalent multiple: 18 × (1 ÷ 1.35) = 13.33x",
+            "Apply to subject forward EBITDA: 5,000 cr × 13.33x = ₹66,650 crore (enterprise value)",
+            "Convert to equity value: 66,650 − 2,000 (net debt) = ₹64,650 crore",
+            "Divide by fully diluted shares: 64,650 ÷ 100 = ₹646.50 per share"
+          ],
+          "result": "Precedent-transaction implied target price of ₹646.50 per share",
+          "insight": "The 13.33x trading-equivalent multiple sits between peer trading multiples (12–14x) and the deal median (18x), reflecting that Cement Co. is neither a strategic premium nor a distressed discount. The precedent-transaction method grounds your valuation in real-world M&A activity while avoiding the systematic overvaluation that arises from using control multiples to value minority stakes."
+        },
+        "sensitivity_note": "For special-situation analysis where the subject company itself might be acquired (family-controlled business, distressed asset, sector consolidation play), don't make the trading-equivalent adjustment. Use the deal multiple directly to estimate what an acquirer would pay. The choice of whether to adjust depends entirely on the use case: minority valuation requires adjustment; controlling-stake valuation does not."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=AVERAGE() and =MEDIAN()",
+        "=COUNTIF()",
+        "=YEAR() and =MONTH()",
+        "Cmd + Shift + T — pivot table"
+      ],
+      "windows": [
+        "=AVERAGE() and =MEDIAN() — for aggregating across deal sample. Median is preferred (less sensitive to outlier deals).",
+        "=COUNTIF() — for counting deals meeting specific criteria (e.g., last 3 years only, same geography, similar size)",
+        "=YEAR(deal_date) and =MONTH(deal_date) — for time-period filtering",
+        "Alt + N + V + T — pivot table for organising deal database by sector / geography / time period"
+      ]
+    }
+  }
+}

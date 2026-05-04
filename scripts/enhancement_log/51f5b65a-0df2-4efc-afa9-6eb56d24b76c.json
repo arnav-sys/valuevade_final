@@ -1,0 +1,574 @@
+{
+  "id": "51f5b65a-0df2-4efc-afa9-6eb56d24b76c",
+  "label": "M3 S6 | All 10 Date Functions with Worked Examples",
+  "before": {
+    "functions": [
+      {
+        "name": "DATE(year, month, day)",
+        "pro_tip": "Month overflow is a feature. DATE(2025, 13, 1) rolls over to January 2026. DATE(2025, 0, 1) goes back to December 2024. =DATE(YEAR(A1), MONTH(A1)+3, 1) always gives you the date 3 months later.",
+        "examples": [
+          {
+            "result": "01-Apr-2025",
+            "formula": "=DATE(2025,4,1)",
+            "scenario": "Start of FY 2025–26"
+          },
+          {
+            "result": "31-Mar-2026",
+            "formula": "=DATE(2026,3,31)",
+            "scenario": "End of FY 2025–26"
+          },
+          {
+            "result": "01-Apr-2026",
+            "formula": "=DATE(YEAR(TODAY()),4,1)",
+            "scenario": "Dynamic: Start of current FY"
+          },
+          {
+            "result": "01-Jan-2026",
+            "formula": "=DATE(2025,13,1)",
+            "scenario": "Month overflow (smart!)"
+          },
+          {
+            "result": "31-Mar-2025",
+            "formula": "=DATE(2025,4,0)",
+            "scenario": "Negative day (month-end)"
+          }
+        ],
+        "description": "Creates a proper Excel date from three separate numbers. Unambiguous, formula-driven, and immune to regional format differences."
+      },
+      {
+        "name": "YEAR(date) / MONTH(date) / DAY(date)",
+        "description": "Extract the year, month, or day component from any date. The reverse of DATE().",
+        "quarter_formula": "=CHOOSE(MONTH(date),4,4,4,1,1,1,2,2,2,3,3,3) — Maps Jan–Mar to Q4, Apr–Jun to Q1, Jul–Sep to Q2, Oct–Dec to Q3 (Indian fiscal quarters).",
+        "fiscal_year_mapping": "In India, any date in January–March belongs to the previous fiscal year. FY classification: =IF(MONTH(date)>=4, YEAR(date), YEAR(date)-1)"
+      },
+      {
+        "name": "TODAY()",
+        "trap": "TODAY() is volatile. Every time you press F9 or open the workbook, it recalculates. For audit-proof models, hardcode the valuation date in an assumptions cell (e.g., =DATE(2025,4,1)) and reference THAT cell, not TODAY(). Use TODAY() only for live dashboards and aging reports.",
+        "use_cases": "Receivables aging (=TODAY()-InvoiceDate), days since last earnings (=TODAY()-LastResultDate), bond days to maturity (=MaturityDate-TODAY()).",
+        "description": "Returns today's date. Updates automatically every time the workbook recalculates. Takes no arguments."
+      },
+      {
+        "name": "EOMONTH(start_date, months)",
+        "examples": [
+          {
+            "use": "Current quarter-end",
+            "start": "15-Jun-2025",
+            "result": "30-Jun-2025",
+            "formula": "=EOMONTH(A2,0)"
+          },
+          {
+            "use": "Next quarter-end",
+            "start": "15-Jun-2025",
+            "result": "30-Sep-2025",
+            "formula": "=EOMONTH(A2,3)"
+          },
+          {
+            "use": "Prior month-end",
+            "start": "15-Jun-2025",
+            "result": "31-May-2025",
+            "formula": "=EOMONTH(A2,-1)"
+          },
+          {
+            "use": "FY year-end",
+            "start": "15-Jun-2025",
+            "result": "31-Mar-2026",
+            "formula": "=EOMONTH(A2,9)"
+          },
+          {
+            "use": "Handles Feb correctly!",
+            "start": "31-Jan-2025",
+            "result": "28-Feb-2025",
+            "formula": "=EOMONTH(A6,1)"
+          }
+        ],
+        "analyst_tip": "Building a row of quarterly dates? Start with =DATE(2025,6,30) in the first cell, then =EOMONTH(PreviousCell,3) across. You get 30-Jun, 30-Sep, 31-Dec, 31-Mar — all month-end dates, all handling February and leap years automatically.",
+        "description": "Returns the LAST day of the month that is 'months' months away from start_date. The most underappreciated date function in finance."
+      },
+      {
+        "name": "EDATE(start_date, months)",
+        "comparison": [
+          {
+            "note": "EDATE keeps the 15th",
+            "start": "15-Jan-2025",
+            "edate_3": "15-Apr-2025",
+            "eomonth_3": "30-Apr-2025"
+          },
+          {
+            "note": "EDATE adjusts for short months",
+            "start": "31-Jan-2025",
+            "edate_3": "28-Feb-2025",
+            "eomonth_3": "30-Apr-2025"
+          },
+          {
+            "note": "EDATE: 1st; EOMONTH: 31st",
+            "start": "01-Oct-2025",
+            "edate_3": "01-Jan-2026",
+            "eomonth_3": "31-Jan-2026"
+          }
+        ],
+        "description": "Returns the date that is exactly 'months' months before or after start_date. Same day-of-month, different month.",
+        "key_difference": "EDATE preserves the day (15th stays 15th), while EOMONTH always gives month-end. Use EDATE for coupon dates and payment schedules; use EOMONTH for period-end reporting dates."
+      },
+      {
+        "name": "NETWORKDAYS(start_date, end_date, [holidays])",
+        "nse_tip": "Create a separate sheet called 'Holidays' with all NSE trading holidays for the year (available on nseindia.com). Name the range 'NSEHolidays'. Now use =NETWORKDAYS(start, end, NSEHolidays) everywhere. Update the holiday list once per year and every formula updates automatically.",
+        "examples": [
+          {
+            "end": "30-Jun-2025",
+            "start": "01-Apr-2025",
+            "scenario": "Q1 FY26",
+            "working_days": 64,
+            "calendar_days": 91
+          },
+          {
+            "end": "30-Sep-2025",
+            "start": "01-Sep-2025",
+            "scenario": "Project deadline",
+            "working_days": 22,
+            "calendar_days": 30
+          },
+          {
+            "end": "15-Oct-2025",
+            "start": "15-Jul-2025",
+            "scenario": "Earnings to earnings",
+            "working_days": 66,
+            "calendar_days": 92
+          }
+        ],
+        "description": "Counts the number of working days (Mon–Fri) between two dates, optionally excluding a list of holidays."
+      },
+      {
+        "name": "DATEDIF(start_date, end_date, unit)",
+        "gotcha": "If start_date > end_date, DATEDIF returns #NUM! error. Always wrap it: =IFERROR(DATEDIF(A1,B1,\"Y\"),\"\"). Also, DATEDIF's \"MD\" unit has known bugs in some Excel versions — avoid it. Stick to \"Y\", \"M\", and \"D\".",
+        "examples": [
+          {
+            "end": "10-Apr-2025",
+            "unit": "Y",
+            "start": "15-Jun-2020",
+            "result": "4 years",
+            "scenario": "Employee tenure (years)"
+          },
+          {
+            "end": "01-Jan-2028",
+            "unit": "M",
+            "start": "01-Jan-2023",
+            "result": "60 months",
+            "scenario": "Bond life (months)"
+          },
+          {
+            "end": "10-Apr-2025",
+            "unit": "D",
+            "start": "18-Nov-2021",
+            "result": "1,239 days",
+            "scenario": "Days since IPO"
+          }
+        ],
+        "why_hidden": "DATEDIF is a legacy function inherited from Lotus 1-2-3. Microsoft doesn't officially document it, and it won't appear in auto-complete. But it's still supported in all Excel versions.",
+        "description": "Calculates the difference between two dates in complete years ('Y'), months ('M'), or days ('D'). Not shown in Excel's function wizard — you must type it manually."
+      },
+      {
+        "name": "YEARFRAC(start_date, end_date, [basis])",
+        "description": "Returns the fraction of the year between two dates. The 'basis' argument controls the day-count convention.",
+        "basis_options": [
+          {
+            "name": "US 30/360",
+            "basis": 0,
+            "description": "Assumes 30-day months, 360-day year"
+          },
+          {
+            "name": "Actual/Actual",
+            "basis": 1,
+            "description": "Uses actual days in month and year"
+          },
+          {
+            "name": "Actual/360",
+            "basis": 2,
+            "description": "Actual days, 360-day year"
+          },
+          {
+            "name": "Actual/365",
+            "basis": 3,
+            "description": "Actual days, 365-day year — Indian G-Secs use this"
+          },
+          {
+            "name": "European 30/360",
+            "basis": 4,
+            "description": "European variant of 30/360"
+          }
+        ],
+        "cfa_connection": "Accrued interest on bonds: Annual Coupon × YEARFRAC(last_coupon_date, settlement_date, day_count_basis). Indian G-Secs typically use Actual/365 (basis=3), while US Treasuries use Actual/Actual (basis=1)."
+      }
+    ]
+  },
+  "after": {
+    "functions": [
+      {
+        "name": "DATE(year, month, day)",
+        "pro_tip": "Month overflow is a feature. DATE(2025, 13, 1) rolls over to January 2026. DATE(2025, 0, 1) goes back to December 2024. =DATE(YEAR(A1), MONTH(A1)+3, 1) always gives you the date 3 months later.",
+        "plain_english": "DATE() constructs a valid calendar date from three separate numbers: year, month, and day. It is immune to regional date formatting differences and handles month/day overflow intelligently, making it essential for audit-proof financial models. Instead of typing dates as text or relying on system date settings, use DATE() to build dates formulaically.",
+        "variables": [
+          {
+            "symbol": "year",
+            "meaning": "Four-digit year (e.g., 2025)"
+          },
+          {
+            "symbol": "month",
+            "meaning": "Month number (1–12), or overflow values (0 goes to previous year, 13+ rolls forward)"
+          },
+          {
+            "symbol": "day",
+            "meaning": "Day of month (1–31), or 0 for last day of previous month, negative for days back from month-end"
+          }
+        ],
+        "examples": [
+          {
+            "result": "01-Apr-2025",
+            "formula": "=DATE(2025,4,1)",
+            "scenario": "Start of FY 2025–26"
+          },
+          {
+            "result": "31-Mar-2026",
+            "formula": "=DATE(2026,3,31)",
+            "scenario": "End of FY 2025–26"
+          },
+          {
+            "result": "01-Apr-2026",
+            "formula": "=DATE(YEAR(TODAY()),4,1)",
+            "scenario": "Dynamic: Start of current FY"
+          },
+          {
+            "result": "01-Jan-2026",
+            "formula": "=DATE(2025,13,1)",
+            "scenario": "Month overflow (smart!)"
+          },
+          {
+            "result": "31-Mar-2025",
+            "formula": "=DATE(2025,4,0)",
+            "scenario": "Negative day (month-end)"
+          }
+        ],
+        "description": "Creates a proper Excel date from three separate numbers. Unambiguous, formula-driven, and immune to regional format differences."
+      },
+      {
+        "name": "YEAR(date) / MONTH(date) / DAY(date)",
+        "plain_english": "These three functions extract individual date components—the year, month (1–12), or day (1–31)—from any date value. They are the inverse of DATE() and are essential for building fiscal calendars, extracting quarters, and dynamically referencing date parts in financial models.",
+        "variables": [
+          {
+            "symbol": "date",
+            "meaning": "A valid Excel date value (serial number or date reference)"
+          }
+        ],
+        "description": "Extract the year, month, or day component from any date. The reverse of DATE().",
+        "quarter_formula": "=CHOOSE(MONTH(date),4,4,4,1,1,1,2,2,2,3,3,3) — Maps Jan–Mar to Q4, Apr–Jun to Q1, Jul–Sep to Q2, Oct–Dec to Q3 (Indian fiscal quarters).",
+        "fiscal_year_mapping": "In India, any date in January–March belongs to the previous fiscal year. FY classification: =IF(MONTH(date)>=4, YEAR(date), YEAR(date)-1)",
+        "worked_example": {
+          "problem": "A TCS earnings date is 15-Apr-2025. Extract the fiscal year and quarter for FY2025–26.",
+          "steps": [
+            "Fiscal year: =IF(MONTH(date)>=4, YEAR(date), YEAR(date)-1) = IF(MONTH(15-Apr-2025)>=4, 2025, 2024) = IF(4>=4, 2025, 2024) = 2025",
+            "Month: =MONTH(15-Apr-2025) = 4",
+            "Quarter: =CHOOSE(4, 4,4,4, 1,1,1, 2,2,2, 3,3,3) = 1 (Q1 of FY26)"
+          ],
+          "result": "FY 2025, Q1",
+          "insight": "Earnings in April are the start of the Indian fiscal year. Always map calendar dates to Indian fiscal period using IF(MONTH>=4) for correct year assignment."
+        }
+      },
+      {
+        "name": "TODAY()",
+        "plain_english": "TODAY() returns the system date on which the workbook is opened or recalculated. It updates automatically on every recalculation, making it useful for live dashboards and aging reports, but problematic for audit-proof valuations where the snapshot date must be fixed and auditable.",
+        "variables": [
+          {
+            "symbol": "TODAY()",
+            "meaning": "Current system date; takes no arguments. Volatile function—recalculates on every spreadsheet change or file open."
+          }
+        ],
+        "trap": "TODAY() is volatile. Every time you press F9 or open the workbook, it recalculates. For audit-proof models, hardcode the valuation date in an assumptions cell (e.g., =DATE(2025,4,1)) and reference THAT cell, not TODAY(). Use TODAY() only for live dashboards and aging reports.",
+        "use_cases": "Receivables aging (=TODAY()-InvoiceDate), days since last earnings (=TODAY()-LastResultDate), bond days to maturity (=MaturityDate-TODAY()).",
+        "description": "Returns today's date. Updates automatically every time the workbook recalculates. Takes no arguments.",
+        "worked_example": {
+          "problem": "Calculate days of receivables aging for an invoice dated 10-Jan-2025, as of 15-Apr-2025.",
+          "steps": [
+            "Receivables age = TODAY() - Invoice Date (but use hardcoded valuation date for audit trail)",
+            "Better: =Valuation_Date - Invoice_Date, where Valuation_Date cell = DATE(2025,4,15)",
+            "Age = DATE(2025,4,15) - DATE(2025,1,10) = 95 days"
+          ],
+          "result": "95 days",
+          "insight": "In audit-trail models, always store the valuation date in a named cell (e.g., 'ValuationDate') and reference it instead of TODAY(). This ensures the model's snapshot is reproducible and verifiable."
+        }
+      },
+      {
+        "name": "EOMONTH(start_date, months)",
+        "plain_english": "EOMONTH() returns the last calendar day of a month that is a specified number of months away from a start date. It handles February, leap years, and month-end logic automatically, making it indispensable for building period-end date schedules in financial models without manual adjustments.",
+        "variables": [
+          {
+            "symbol": "start_date",
+            "meaning": "The reference date (any day in a month)"
+          },
+          {
+            "symbol": "months",
+            "meaning": "Number of months forward (positive) or backward (negative) from start_date"
+          }
+        ],
+        "examples": [
+          {
+            "use": "Current quarter-end",
+            "start": "15-Jun-2025",
+            "result": "30-Jun-2025",
+            "formula": "=EOMONTH(A2,0)"
+          },
+          {
+            "use": "Next quarter-end",
+            "start": "15-Jun-2025",
+            "result": "30-Sep-2025",
+            "formula": "=EOMONTH(A2,3)"
+          },
+          {
+            "use": "Prior month-end",
+            "start": "15-Jun-2025",
+            "result": "31-May-2025",
+            "formula": "=EOMONTH(A2,-1)"
+          },
+          {
+            "use": "FY year-end",
+            "start": "15-Jun-2025",
+            "result": "31-Mar-2026",
+            "formula": "=EOMONTH(A2,9)"
+          },
+          {
+            "use": "Handles Feb correctly!",
+            "start": "31-Jan-2025",
+            "result": "28-Feb-2025",
+            "formula": "=EOMONTH(A6,1)"
+          }
+        ],
+        "analyst_tip": "Building a row of quarterly dates? Start with =DATE(2025,6,30) in the first cell, then =EOMONTH(PreviousCell,3) across. You get 30-Jun, 30-Sep, 31-Dec, 31-Mar — all month-end dates, all handling February and leap years automatically.",
+        "description": "Returns the LAST day of the month that is 'months' months away from start_date. The most underappreciated date function in finance.",
+        "worked_example": {
+          "problem": "Build a quarterly reporting schedule starting from mid-June 2025, for four quarters (Q1–Q4 of FY26), showing only quarter-end dates.",
+          "steps": [
+            "Q1 (30-Jun-2025): =EOMONTH(DATE(2025,6,15), 0) = 30-Jun-2025",
+            "Q2 (30-Sep-2025): =EOMONTH(DATE(2025,6,15), 3) = 30-Sep-2025",
+            "Q3 (31-Dec-2025): =EOMONTH(DATE(2025,6,15), 6) = 31-Dec-2025",
+            "Q4 (31-Mar-2026): =EOMONTH(DATE(2025,6,15), 9) = 31-Mar-2026"
+          ],
+          "result": "[30-Jun-2025, 30-Sep-2025, 31-Dec-2025, 31-Mar-2026]",
+          "insight": "EOMONTH automatically handles varying month lengths. Use it to build automated quarter-end schedules; it eliminates manual date adjustments and leap-year errors."
+        }
+      },
+      {
+        "name": "EDATE(start_date, months)",
+        "plain_english": "EDATE() advances or retreats a date by a specified number of months while keeping the same day-of-month, except when the target month is shorter (e.g., 31-Jan + 1 month becomes 28-Feb, not 31-Feb). Use EDATE for coupon dates, payment schedules, and tenor calculations; use EOMONTH when you need period-end reporting dates.",
+        "variables": [
+          {
+            "symbol": "start_date",
+            "meaning": "The reference date"
+          },
+          {
+            "symbol": "months",
+            "meaning": "Number of months forward (positive) or backward (negative)"
+          }
+        ],
+        "comparison": [
+          {
+            "note": "EDATE keeps the 15th",
+            "start": "15-Jan-2025",
+            "edate_3": "15-Apr-2025",
+            "eomonth_3": "30-Apr-2025"
+          },
+          {
+            "note": "EDATE adjusts for short months",
+            "start": "31-Jan-2025",
+            "edate_3": "28-Feb-2025",
+            "eomonth_3": "30-Apr-2025"
+          },
+          {
+            "note": "EDATE: 1st; EOMONTH: 31st",
+            "start": "01-Oct-2025",
+            "edate_3": "01-Jan-2026",
+            "eomonth_3": "31-Jan-2026"
+          }
+        ],
+        "description": "Returns the date that is exactly 'months' months before or after start_date. Same day-of-month, different month.",
+        "key_difference": "EDATE preserves the day (15th stays 15th), while EOMONTH always gives month-end. Use EDATE for coupon dates and payment schedules; use EOMONTH for period-end reporting dates.",
+        "worked_example": {
+          "problem": "A bond issued on 15-Jan-2025 has a 5-year tenor with annual coupon payments on the issue anniversary. Calculate the maturity date and the second coupon date.",
+          "steps": [
+            "Maturity (5 years later): =EDATE(DATE(2025,1,15), 60) = 15-Jan-2030",
+            "Second coupon (1 year later): =EDATE(DATE(2025,1,15), 12) = 15-Jan-2026",
+            "Third coupon (2 years): =EDATE(DATE(2025,1,15), 24) = 15-Jan-2027"
+          ],
+          "result": "Maturity: 15-Jan-2030; 2nd coupon: 15-Jan-2026; 3rd coupon: 15-Jan-2027",
+          "insight": "EDATE preserves day-of-month, perfect for bond coupons and regular payment schedules. If the target month is shorter (e.g., moving from 31-Jan to Feb), it intelligently clips to the last day of the short month."
+        }
+      },
+      {
+        "name": "NETWORKDAYS(start_date, end_date, [holidays])",
+        "plain_english": "NETWORKDAYS() counts only working days (Monday through Friday) between two dates, optionally excluding a holiday list. It is essential for calculating trading periods, project timelines, and settlement timelines in equity research where weekends and market holidays must be excluded.",
+        "variables": [
+          {
+            "symbol": "start_date",
+            "meaning": "First date in the range"
+          },
+          {
+            "symbol": "end_date",
+            "meaning": "Last date in the range"
+          },
+          {
+            "symbol": "holidays",
+            "meaning": "(Optional) A range of dates to exclude (e.g., NSE holidays, public holidays)"
+          }
+        ],
+        "nse_tip": "Create a separate sheet called 'Holidays' with all NSE trading holidays for the year (available on nseindia.com). Name the range 'NSEHolidays'. Now use =NETWORKDAYS(start, end, NSEHolidays) everywhere. Update the holiday list once per year and every formula updates automatically.",
+        "examples": [
+          {
+            "end": "30-Jun-2025",
+            "start": "01-Apr-2025",
+            "scenario": "Q1 FY26",
+            "working_days": 64,
+            "calendar_days": 91
+          },
+          {
+            "end": "30-Sep-2025",
+            "start": "01-Sep-2025",
+            "scenario": "Project deadline",
+            "working_days": 22,
+            "calendar_days": 30
+          },
+          {
+            "end": "15-Oct-2025",
+            "start": "15-Jul-2025",
+            "scenario": "Earnings to earnings",
+            "working_days": 66,
+            "calendar_days": 92
+          }
+        ],
+        "description": "Counts the number of working days (Mon–Fri) between two dates, optionally excluding a list of holidays.",
+        "worked_example": {
+          "problem": "Calculate trading days between Reliance's Q1 FY26 results date (15-Aug-2025) and Q2 results date (15-Oct-2025), excluding NSE holidays.",
+          "steps": [
+            "Assume NSE holidays in this period: 15-Aug-2025 (Independence Day), 29-Aug-2025 (Janmashtami), 4-Sep-2025 (local), 2-Oct-2025 (Gandhi Jayanti)",
+            "=NETWORKDAYS(DATE(2025,8,15), DATE(2025,10,15), HolidayRange)",
+            "Calendar days = 61; Weekend days (~8–9); NSE holidays = 4",
+            "Trading days ≈ 61 − 9 − 4 = 48"
+          ],
+          "result": "~48 trading days",
+          "insight": "Use NETWORKDAYS with a named NSE holiday list to track true trading periods. This is critical for analyzing price momentum between earnings and for settlement calculations in equity research."
+        }
+      },
+      {
+        "name": "DATEDIF(start_date, end_date, unit)",
+        "plain_english": "DATEDIF() calculates the complete number of years, months, or days between two dates. It is a legacy function (undocumented but still supported) that returns whole-number intervals, unlike YEARFRAC which gives fractional years. Use it for tenure calculations, bond life, and time-since-IPO metrics in equity reports.",
+        "variables": [
+          {
+            "symbol": "start_date",
+            "meaning": "Beginning date (must be ≤ end_date)"
+          },
+          {
+            "symbol": "end_date",
+            "meaning": "Ending date"
+          },
+          {
+            "symbol": "unit",
+            "meaning": "\"Y\" for years, \"M\" for months, \"D\" for days (must be a text string)"
+          }
+        ],
+        "gotcha": "If start_date > end_date, DATEDIF returns #NUM! error. Always wrap it: =IFERROR(DATEDIF(A1,B1,\"Y\"),\"\"). Also, DATEDIF's \"MD\" unit has known bugs in some Excel versions — avoid it. Stick to \"Y\", \"M\", and \"D\".",
+        "examples": [
+          {
+            "end": "10-Apr-2025",
+            "unit": "Y",
+            "start": "15-Jun-2020",
+            "result": "4 years",
+            "scenario": "Employee tenure (years)"
+          },
+          {
+            "end": "01-Jan-2028",
+            "unit": "M",
+            "start": "01-Jan-2023",
+            "result": "60 months",
+            "scenario": "Bond life (months)"
+          },
+          {
+            "end": "10-Apr-2025",
+            "unit": "D",
+            "start": "18-Nov-2021",
+            "result": "1,239 days",
+            "scenario": "Days since IPO"
+          }
+        ],
+        "why_hidden": "DATEDIF is a legacy function inherited from Lotus 1-2-3. Microsoft doesn't officially document it, and it won't appear in auto-complete. But it's still supported in all Excel versions.",
+        "description": "Calculates the difference between two dates in complete years ('Y'), months ('M'), or days ('D'). Not shown in Excel's function wizard — you must type it manually.",
+        "worked_example": {
+          "problem": "Infosys was founded on 07-Jul-1981. Calculate its age in years, and separately, how many days it has been listed on NSE (assume listing date 14-Feb-2000 to 15-Apr-2025).",
+          "steps": [
+            "Company age in years: =DATEDIF(DATE(1981,7,7), DATE(2025,4,15), \"Y\")",
+            "= 43 years (since 07-Jul-2024 to 07-Jul-2025 hasn't arrived yet)",
+            "Listing tenure in days: =DATEDIF(DATE(2000,2,14), DATE(2025,4,15), \"D\")",
+            "= 9,216 days"
+          ],
+          "result": "43 years; 9,216 days listed",
+          "insight": "DATEDIF returns complete intervals only. Use \"Y\" for whole-year tenure (useful for 'years in business' disclosures), and \"D\" for precise day counts (useful for trading record or investment horizon metrics)."
+        }
+      },
+      {
+        "name": "YEARFRAC(start_date, end_date, [basis])",
+        "plain_english": "YEARFRAC() calculates the exact fraction of a year between two dates using a specified day-count convention. It is essential for fixed-income analysis, accrued interest, and any calculation that requires precise time measurement aligned with market practice (e.g., Indian G-Secs use Actual/365, US Treasuries use Actual/Actual).",
+        "variables": [
+          {
+            "symbol": "start_date",
+            "meaning": "Beginning date"
+          },
+          {
+            "symbol": "end_date",
+            "meaning": "Ending date"
+          },
+          {
+            "symbol": "basis",
+            "meaning": "Day-count convention (0–4); default is 0 if omitted"
+          }
+        ],
+        "description": "Returns the fraction of the year between two dates. The 'basis' argument controls the day-count convention.",
+        "basis_options": [
+          {
+            "name": "US 30/360",
+            "basis": 0,
+            "description": "Assumes 30-day months, 360-day year"
+          },
+          {
+            "name": "Actual/Actual",
+            "basis": 1,
+            "description": "Uses actual days in month and year"
+          },
+          {
+            "name": "Actual/360",
+            "basis": 2,
+            "description": "Actual days, 360-day year"
+          },
+          {
+            "name": "Actual/365",
+            "basis": 3,
+            "description": "Actual days, 365-day year — Indian G-Secs use this"
+          },
+          {
+            "name": "European 30/360",
+            "basis": 4,
+            "description": "European variant of 30/360"
+          }
+        ],
+        "cfa_connection": "Accrued interest on bonds: Annual Coupon × YEARFRAC(last_coupon_date, settlement_date, day_count_basis). Indian G-Secs typically use Actual/365 (basis=3), while US Treasuries use Actual/Actual (basis=1).",
+        "worked_example": {
+          "problem": "Calculate accrued interest on an Indian G-Sec (10-year bond) with a 6% annual coupon. Last coupon was paid on 01-Jan-2025; settlement date is 15-Apr-2025. Use Actual/365 convention (standard for Indian G-Secs).",
+          "steps": [
+            "Accrued interest = Annual Coupon × YEARFRAC(last_coupon_date, settlement_date, 3)",
+            "= 6% × YEARFRAC(DATE(2025,1,1), DATE(2025,4,15), 3)",
+            "Days elapsed (01-Jan to 15-Apr) = 104 days",
+            "YEARFRAC = 104 / 365 = 0.2849 (Actual/365 basis)",
+            "Accrued interest per ₹100 face = 6 × 0.2849 = ₹1.71"
+          ],
+          "result": "₹1.71 accrued interest per ₹100 face value",
+          "insight": "Always use basis=3 (Actual/365) for Indian government securities and most Indian corporate bonds. Using the wrong day-count basis will produce incorrect accrued interest and mispriced bond valuations."
+        }
+      }
+    ]
+  },
+  "model": "claude-haiku-4-5-20251001"
+}

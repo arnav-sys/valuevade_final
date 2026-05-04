@@ -1,0 +1,338 @@
+{
+  "id": "3fa0f6a9-ca53-4334-9ad7-8c68da6c77ee",
+  "label": "M3 S7 | All 6 Conditional Logic Functions",
+  "before": {
+    "functions": [
+      {
+        "name": "IF(logical_test, value_if_true, value_if_false)",
+        "examples": [
+          {
+            "formula": "=IF(CMP<TargetPrice,\"BUY\",\"SELL\")",
+            "scenario": "Buy/Sell recommendation"
+          },
+          {
+            "formula": "=IF(EBITDAMargin>20%,\"Healthy\",\"Weak\")",
+            "scenario": "Margin flag"
+          },
+          {
+            "formula": "=IF(B2/B1-1>0.1,\"Above 10%\",\"Below 10%\")",
+            "scenario": "Revenue growth check"
+          }
+        ],
+        "nested_if": {
+          "syntax": "=IF(condition1, result1, IF(condition2, result2, IF(condition3, result3, default)))",
+          "example": "=IF(D2>8,\"AAA\",IF(D2>5,\"AA\",IF(D2>3,\"A\",\"Below Investment Grade\")))",
+          "three_nest_rule": "If you're nesting more than 3 IFs, stop. Switch to IFS() or SWITCH() or a lookup table."
+        },
+        "description": "Tests a condition. If TRUE, returns the second argument. If FALSE, returns the third.",
+        "mental_model": "Every IF formula is a fork in the road. The logical_test is the signpost. You go left (true) or right (false)."
+      },
+      {
+        "name": "AND(condition1, condition2, ...) / OR(condition1, condition2, ...)",
+        "examples": [
+          {
+            "logic": "Both conditions must be true",
+            "formula": "=IF(AND(Upside>20%, EBITDA_Growing=TRUE), \"STRONG BUY\", \"HOLD\")",
+            "scenario": "Strong Buy signal"
+          },
+          {
+            "logic": "Either condition triggers the flag",
+            "formula": "=IF(OR(D_E>2, ICR<3), \"HIGH RISK\", \"OK\")",
+            "scenario": "Risk flag"
+          },
+          {
+            "logic": "AND + OR combined",
+            "formula": "=IF(AND(MCap>5000, OR(Sector=\"IT\", Sector=\"Pharma\")), \"Include\", \"Exclude\")",
+            "scenario": "Investable universe"
+          }
+        ],
+        "description": "AND returns TRUE only if ALL conditions are true. OR returns TRUE if ANY condition is true.",
+        "key_insight": "AND and OR don't do anything useful alone. They return TRUE/FALSE. Their power comes from being inside an IF."
+      },
+      {
+        "name": "IFERROR(value, value_if_error)",
+        "trap": "IFERROR catches ALL errors, including genuine bugs. If you wrap =A1/B1 in IFERROR and B1 is blank because someone forgot to enter data, you'll see 0 instead of an error — and never know the input is missing. Best practice: use IFERROR for presentation layers. In calculation layers, let errors surface.",
+        "description": "Tries to evaluate the first argument. If it returns ANY error (#DIV/0!, #N/A, #VALUE!, #REF!), returns the second argument instead.",
+        "errors_caught": [
+          {
+            "fix": "=IFERROR(Rev/Shares, 0)",
+            "cause": "Dividing by zero or empty cell",
+            "error": "#DIV/0!"
+          },
+          {
+            "fix": "=IFERROR(VLOOKUP(...), \"Not Found\")",
+            "cause": "VLOOKUP/INDEX-MATCH can't find value",
+            "error": "#N/A"
+          },
+          {
+            "fix": "=IFERROR(A1*B1, \"\")",
+            "cause": "Wrong data type in formula",
+            "error": "#VALUE!"
+          },
+          {
+            "fix": "=IFERROR(Sheet2!A1, \"Check Ref\")",
+            "cause": "Referenced cell was deleted",
+            "error": "#REF!"
+          }
+        ],
+        "golden_pattern": "Wrap every VLOOKUP, every INDEX-MATCH, and every division in IFERROR. Always. No exceptions for output layers."
+      },
+      {
+        "name": "IFS(condition1, result1, condition2, result2, ..., TRUE, default)",
+        "comparison": {
+          "ifs": "=IFS(D2>8,\"AAA\", D2>5,\"AA\", D2>3,\"A\", TRUE,\"Below IG\")",
+          "nested_if": "=IF(D2>8,\"AAA\",IF(D2>5,\"AA\",IF(D2>3,\"A\",\"Below IG\")))",
+          "ifs_parentheses": 1,
+          "nested_parentheses": 3
+        },
+        "description": "Tests multiple conditions in order. Returns the result for the FIRST true condition. The last pair should be TRUE, default_value as a catch-all.",
+        "compatibility": "IFS is available in Excel 2019, Office 365, and Google Sheets. If your firm uses Excel 2016 or earlier, fall back to nested IF."
+      },
+      {
+        "name": "SWITCH(expression, value1, result1, value2, result2, ..., default)",
+        "example": {
+          "explanation": "If B1=\"Bull\", returns 18%. If B1=\"Base\", returns 12%. If B1=\"Bear\", returns 5%. Otherwise returns 10% (default).",
+          "scenario_toggle": "=SWITCH(B1, \"Bull\",18%, \"Base\",12%, \"Bear\",5%, 10%)"
+        },
+        "description": "Compares one expression against a list of exact values. Returns the result for the first match.",
+        "when_to_use": "Use SWITCH when comparing one cell against exact values (scenario name, sector code, rating). Use IFS when testing ranges or inequalities.",
+        "choose_alternative": "Some analysts prefer =CHOOSE(scenario_number, bull_value, base_value, bear_value) where the scenario cell contains 1, 2, or 3 instead of text. CHOOSE is older and more universally compatible."
+      }
+    ]
+  },
+  "after": {
+    "functions": [
+      {
+        "name": "IF(logical_test, value_if_true, value_if_false)",
+        "examples": [
+          {
+            "formula": "=IF(CMP<TargetPrice,\"BUY\",\"SELL\")",
+            "scenario": "Buy/Sell recommendation"
+          },
+          {
+            "formula": "=IF(EBITDAMargin>20%,\"Healthy\",\"Weak\")",
+            "scenario": "Margin flag"
+          },
+          {
+            "formula": "=IF(B2/B1-1>0.1,\"Above 10%\",\"Below 10%\")",
+            "scenario": "Revenue growth check"
+          }
+        ],
+        "nested_if": {
+          "syntax": "=IF(condition1, result1, IF(condition2, result2, IF(condition3, result3, default)))",
+          "example": "=IF(D2>8,\"AAA\",IF(D2>5,\"AA\",IF(D2>3,\"A\",\"Below Investment Grade\")))",
+          "three_nest_rule": "If you're nesting more than 3 IFs, stop. Switch to IFS() or SWITCH() or a lookup table."
+        },
+        "description": "Tests a condition. If TRUE, returns the second argument. If FALSE, returns the third.",
+        "mental_model": "Every IF formula is a fork in the road. The logical_test is the signpost. You go left (true) or right (false).",
+        "variables": [
+          {
+            "symbol": "logical_test",
+            "meaning": "A condition that evaluates to TRUE or FALSE (e.g., CMP < TargetPrice)"
+          },
+          {
+            "symbol": "value_if_true",
+            "meaning": "The result returned when logical_test evaluates to TRUE"
+          },
+          {
+            "symbol": "value_if_false",
+            "meaning": "The result returned when logical_test evaluates to FALSE"
+          }
+        ],
+        "plain_english": "IF is the most fundamental decision tool in spreadsheets. It tests whether a condition is true or false, then branches to one of two outcomes. In equity research, you use IF to flag investment decisions (BUY/SELL), classify companies by metrics (Healthy/Weak margins), or trigger alerts when thresholds are crossed.",
+        "worked_example": {
+          "problem": "You are screening mid-cap pharma stocks. You want to flag stocks where current market price (CMP) is trading below your target price, indicating a potential buy. Use IF to generate a recommendation.",
+          "steps": [
+            "Assume CMP in cell B2 is ₹1,200 and your TargetPrice in C2 is ₹1,500.",
+            "Write the formula: =IF(B2<C2,\"BUY\",\"SELL\")",
+            "Excel evaluates: Is 1200 < 1500? Yes (TRUE).",
+            "Formula returns \"BUY\" because the condition is true."
+          ],
+          "result": "Cell shows \"BUY\"",
+          "insight": "IF enables you to automatically generate actionable recommendations without manually reviewing every stock. This scales your screening process."
+        }
+      },
+      {
+        "name": "AND(condition1, condition2, ...) / OR(condition1, condition2, ...)",
+        "examples": [
+          {
+            "logic": "Both conditions must be true",
+            "formula": "=IF(AND(Upside>20%, EBITDA_Growing=TRUE), \"STRONG BUY\", \"HOLD\")",
+            "scenario": "Strong Buy signal"
+          },
+          {
+            "logic": "Either condition triggers the flag",
+            "formula": "=IF(OR(D_E>2, ICR<3), \"HIGH RISK\", \"OK\")",
+            "scenario": "Risk flag"
+          },
+          {
+            "logic": "AND + OR combined",
+            "formula": "=IF(AND(MCap>5000, OR(Sector=\"IT\", Sector=\"Pharma\")), \"Include\", \"Exclude\")",
+            "scenario": "Investable universe"
+          }
+        ],
+        "description": "AND returns TRUE only if ALL conditions are true. OR returns TRUE if ANY condition is true.",
+        "key_insight": "AND and OR don't do anything useful alone. They return TRUE/FALSE. Their power comes from being inside an IF.",
+        "variables": [
+          {
+            "symbol": "condition1, condition2, ...",
+            "meaning": "Individual logical statements (e.g., Upside>20%, EBITDA_Growing=TRUE) that each evaluate to TRUE or FALSE"
+          },
+          {
+            "symbol": "AND",
+            "meaning": "Logical operator that returns TRUE only when ALL supplied conditions are TRUE"
+          },
+          {
+            "symbol": "OR",
+            "meaning": "Logical operator that returns TRUE when ANY one or more of the supplied conditions is TRUE"
+          }
+        ],
+        "plain_english": "AND and OR are logical gatekeepers. AND is strict—it says \"all of these must be true.\" OR is permissive—it says \"at least one of these must be true.\" In research, AND helps you find stocks that pass multiple quality filters simultaneously, while OR helps you flag risk when any single red flag appears.",
+        "worked_example": {
+          "problem": "You are building a quality screener for large-cap consumer stocks. You want to identify stocks that meet ALL of these criteria: market cap > ₹100,000 crore AND either strong dividend history (DivYield > 2%) OR consistent earnings growth (EPS_Growth > 10% YoY). Write the formula.",
+          "steps": [
+            "Assume MCap in D2 is 120000 (crore), DivYield in E2 is 1.5%, and EPS_Growth in F2 is 12%.",
+            "Write: =IF(AND(D2>100000, OR(E2>2%, F2>10%)), \"INCLUDE\", \"EXCLUDE\")",
+            "Excel evaluates the AND condition: Is D2 > 100000? Yes. Now check the OR: Is E2 > 2% OR F2 > 10%? E2 (1.5%) is not > 2%, but F2 (12%) is > 10%, so OR returns TRUE.",
+            "Since both AND conditions are true (MCap check ✓, and OR check ✓), AND returns TRUE.",
+            "Formula returns \"INCLUDE\"."
+          ],
+          "result": "Cell shows \"INCLUDE\"",
+          "insight": "Combining AND with OR lets you build sophisticated multi-criteria screens. MCap alone doesn't determine quality; you need MCap AND (dividend income OR growth). This models how real analysts think."
+        }
+      },
+      {
+        "name": "IFERROR(value, value_if_error)",
+        "trap": "IFERROR catches ALL errors, including genuine bugs. If you wrap =A1/B1 in IFERROR and B1 is blank because someone forgot to enter data, you'll see 0 instead of an error — and never know the input is missing. Best practice: use IFERROR for presentation layers. In calculation layers, let errors surface.",
+        "description": "Tries to evaluate the first argument. If it returns ANY error (#DIV/0!, #N/A, #VALUE!, #REF!), returns the second argument instead.",
+        "errors_caught": [
+          {
+            "fix": "=IFERROR(Rev/Shares, 0)",
+            "cause": "Dividing by zero or empty cell",
+            "error": "#DIV/0!"
+          },
+          {
+            "fix": "=IFERROR(VLOOKUP(...), \"Not Found\")",
+            "cause": "VLOOKUP/INDEX-MATCH can't find value",
+            "error": "#N/A"
+          },
+          {
+            "fix": "=IFERROR(A1*B1, \"\")",
+            "cause": "Wrong data type in formula",
+            "error": "#VALUE!"
+          },
+          {
+            "fix": "=IFERROR(Sheet2!A1, \"Check Ref\")",
+            "cause": "Referenced cell was deleted",
+            "error": "#REF!"
+          }
+        ],
+        "golden_pattern": "Wrap every VLOOKUP, every INDEX-MATCH, and every division in IFERROR. Always. No exceptions for output layers.",
+        "variables": [
+          {
+            "symbol": "value",
+            "meaning": "The formula or expression you want to execute (e.g., A1/B1, VLOOKUP(...))"
+          },
+          {
+            "symbol": "value_if_error",
+            "meaning": "The result returned if the first argument produces any error (could be 0, \"N/A\", \"\", or custom text)"
+          }
+        ],
+        "plain_english": "IFERROR is a safety net. Instead of displaying a confusing error code like #DIV/0! or #N/A, it lets you show a friendly message or a default value. This is essential in research dashboards where clients expect clean, professional output. However, use it carefully—it can hide data quality problems if applied too liberally to calculation layers.",
+        "worked_example": {
+          "problem": "You are building a multi-sheet financial model for a mid-cap bank. Sheet 1 contains balance sheet data; Sheet 2 calculates loan loss ratios. When you reference cells from Sheet 1 that might be empty or deleted, you want to display \"Data Missing\" instead of an error. Write a formula for Net Interest Margin (NII / Average Earning Assets).",
+          "steps": [
+            "Net Interest Income (NII) is in Sheet1!D5 (value: ₹5000 crore). Average Earning Assets is in Sheet1!E5 (value: ₹100000 crore).",
+            "Write: =IFERROR(Sheet1!D5/Sheet1!E5, \"Data Missing\")",
+            "Excel evaluates: Is Sheet1!D5 a number AND Sheet1!E5 a non-zero number? Yes.",
+            "Division succeeds: 5000/100000 = 0.05 (or 5%).",
+            "Formula returns 0.05. If Sheet1!E5 were empty, it would return \"Data Missing\"."
+          ],
+          "result": "Cell shows 0.05 (5% NIM)",
+          "insight": "IFERROR prevents your entire dashboard from breaking if a source cell changes or is deleted. In a live trading or portfolio model, this is critical for operational resilience."
+        }
+      },
+      {
+        "name": "IFS(condition1, result1, condition2, result2, ..., TRUE, default)",
+        "comparison": {
+          "ifs": "=IFS(D2>8,\"AAA\", D2>5,\"AA\", D2>3,\"A\", TRUE,\"Below IG\")",
+          "nested_if": "=IF(D2>8,\"AAA\",IF(D2>5,\"AA\",IF(D2>3,\"A\",\"Below IG\")))",
+          "ifs_parentheses": 1,
+          "nested_parentheses": 3
+        },
+        "description": "Tests multiple conditions in order. Returns the result for the FIRST true condition. The last pair should be TRUE, default_value as a catch-all.",
+        "compatibility": "IFS is available in Excel 2019, Office 365, and Google Sheets. If your firm uses Excel 2016 or earlier, fall back to nested IF.",
+        "variables": [
+          {
+            "symbol": "condition1, condition2, ...",
+            "meaning": "A series of logical statements tested in order from left to right"
+          },
+          {
+            "symbol": "result1, result2, ...",
+            "meaning": "The value returned when the corresponding condition is TRUE"
+          },
+          {
+            "symbol": "TRUE",
+            "meaning": "A logical constant used in the final pair as a catch-all default condition (always evaluates to TRUE)"
+          },
+          {
+            "symbol": "default",
+            "meaning": "The result returned if none of the earlier conditions are TRUE (paired with the TRUE catch-all)"
+          }
+        ],
+        "plain_english": "IFS is the modern replacement for nested IF statements. Instead of writing IF(a, x, IF(b, y, IF(c, z, default))), you write IFS(a, x, b, y, c, z, TRUE, default)—much cleaner and easier to read. It tests conditions in order and returns the result for the first match. This is especially useful for rating assignments, risk classifications, or tiered performance bands.",
+        "worked_example": {
+          "problem": "You are assigning credit ratings to mid-market corporates based on their Interest Coverage Ratio (ICR). The rating scale is: ICR > 8 = AAA, ICR 5–8 = AA, ICR 3–5 = A, ICR < 3 = Below Investment Grade. Use IFS to automate this.",
+          "steps": [
+            "Assume ICR value in D2 is 6.5.",
+            "Write: =IFS(D2>8,\"AAA\", D2>5,\"AA\", D2>3,\"A\", TRUE,\"Below IG\")",
+            "Excel tests in order: Is 6.5 > 8? No. Is 6.5 > 5? Yes.",
+            "First TRUE condition found. Formula returns \"AA\" and stops (doesn't evaluate remaining conditions)."
+          ],
+          "result": "Cell shows \"AA\"",
+          "insight": "IFS is cleaner and faster to read than three nested IFs. For rating systems or multi-bucket classifications, it's the professional choice. Always end with TRUE as your catch-all to ensure a default is always returned."
+        }
+      },
+      {
+        "name": "SWITCH(expression, value1, result1, value2, result2, ..., default)",
+        "example": {
+          "explanation": "If B1=\"Bull\", returns 18%. If B1=\"Base\", returns 12%. If B1=\"Bear\", returns 5%. Otherwise returns 10% (default).",
+          "scenario_toggle": "=SWITCH(B1, \"Bull\",18%, \"Base\",12%, \"Bear\",5%, 10%)"
+        },
+        "description": "Compares one expression against a list of exact values. Returns the result for the first match.",
+        "when_to_use": "Use SWITCH when comparing one cell against exact values (scenario name, sector code, rating). Use IFS when testing ranges or inequalities.",
+        "choose_alternative": "Some analysts prefer =CHOOSE(scenario_number, bull_value, base_value, bear_value) where the scenario cell contains 1, 2, or 3 instead of text. CHOOSE is older and more universally compatible.",
+        "variables": [
+          {
+            "symbol": "expression",
+            "meaning": "A single cell or value to be compared (e.g., B1 containing scenario name)"
+          },
+          {
+            "symbol": "value1, value2, ...",
+            "meaning": "Exact values to match against the expression (text, numbers, or cell references)"
+          },
+          {
+            "symbol": "result1, result2, ...",
+            "meaning": "The value returned when the corresponding value is matched"
+          },
+          {
+            "symbol": "default",
+            "meaning": "The value returned if the expression does not match any value in the list"
+          }
+        ],
+        "plain_english": "SWITCH compares a single value (like a scenario label or sector code) against a list of exact matches and returns the corresponding result. Unlike IFS, which tests inequalities, SWITCH is for exact matches. It's ideal for scenario analysis (Bull/Base/Bear), DCF toggles, or sector lookups where you're checking if a cell equals one specific value, not whether it's greater than or less than something.",
+        "worked_example": {
+          "problem": "You are building a valuation model for a software-as-a-service (SaaS) company with three scenarios. Each scenario has a different revenue growth rate assumption. Cell B1 contains the scenario name (\"Bull\", \"Base\", or \"Bear\"). Use SWITCH to return the appropriate growth rate for your model.",
+          "steps": [
+            "Assume B1 contains \"Base\".",
+            "Write: =SWITCH(B1, \"Bull\", 25%, \"Base\", 15%, \"Bear\", 8%, 12%)",
+            "Excel evaluates: Does B1 equal \"Bull\"? No. Does B1 equal \"Base\"? Yes.",
+            "Formula returns 15% and stops."
+          ],
+          "result": "Cell shows 15% (Base case growth rate)",
+          "insight": "SWITCH enables scenario toggles. You can change one cell (B1) and your entire model updates automatically. This is faster and safer than manually editing multiple formula cells. For institutional models, use SWITCH with scenario buttons or dropdowns."
+        }
+      }
+    ]
+  }
+}

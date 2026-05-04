@@ -1,0 +1,492 @@
+{
+  "id": "97366334-5958-44a9-be8a-0826dc73dbca",
+  "label": "M3 S13 | The 30 Essential Keyboard Shortcuts & Audit Tools",
+  "before": {
+    "trace_tools": {
+      "dependents": "Draws blue arrows FROM the selected cell TO all cells that depend on it. Click WACC, press Alt+M,D, see every cell that changes when WACC changes.",
+      "precedents": "Draws blue arrows FROM the cells that feed INTO the selected cell. Click target price, press Alt+M,P, instantly see contributing cells. Press again for next level.",
+      "cross_sheet": "When a precedent/dependent is on a different sheet, Excel draws a dashed arrow to a small sheet icon. Double-click the arrow to see external references."
+    },
+    "f4_importance": "F4 is the single most important shortcut in financial modelling. When editing a formula, it cycles through reference types: A1 → $A$1 → A$1 → $A1. Saves more time than any other shortcut. Every time you would type a $ sign manually, press F4 instead.",
+    "go_to_special": {
+      "key_action": "Ctrl+G → Special (or F5 → Special)",
+      "selections": [
+        {
+          "type": "Formulas",
+          "selects": "All cells containing formulas",
+          "use_case": "Check which cells are calculated vs hard-coded"
+        },
+        {
+          "type": "Constants",
+          "selects": "All cells with typed values (not formulas)",
+          "use_case": "Find all input assumptions at once"
+        },
+        {
+          "type": "Blanks",
+          "selects": "All empty cells in a range",
+          "use_case": "Find gaps in data, missing inputs"
+        },
+        {
+          "type": "Errors",
+          "selects": "All cells showing #N/A, #VALUE!, #REF!, etc.",
+          "use_case": "Instant error audit across entire sheet"
+        },
+        {
+          "type": "Precedents (Direct)",
+          "selects": "Cells that directly feed the selected cell",
+          "use_case": "Understand what drives a formula"
+        },
+        {
+          "type": "Dependents (Direct)",
+          "selects": "Cells that directly use the selected cell",
+          "use_case": "Understand impact of changing a cell"
+        },
+        {
+          "type": "Current Region",
+          "selects": "Contiguous block of data around cursor",
+          "use_case": "Select entire data table without Ctrl+Shift"
+        },
+        {
+          "type": "Visible Cells Only",
+          "selects": "Only visible cells (skips hidden rows/columns)",
+          "use_case": "Copy from filtered data without hidden rows"
+        }
+      ],
+      "description": "The most powerful selection tool in Excel. Selects cells by TYPE."
+    },
+    "evaluate_formula": {
+      "method": "Enter edit mode (F2), select ONE part of the formula, press F9. Excel replaces that portion with its actual value.",
+      "critical_warning": "If you press Enter instead of Escape after using F9, Excel PERMANENTLY replaces the formula portion with the static value. Always press Escape."
+    },
+    "pillar_2_editing": [
+      {
+        "why": "Edit without double-clicking",
+        "action": "Edit cell (enter edit mode)",
+        "number": 11,
+        "shortcut": "F2"
+      },
+      {
+        "why": "Cycles A1 → $A$1 → A$1 → $A1",
+        "action": "Toggle absolute/relative reference",
+        "number": 12,
+        "shortcut": "F4"
+      },
+      {
+        "why": "Copy formula from cell above",
+        "action": "Fill Down",
+        "number": 13,
+        "shortcut": "Ctrl+D"
+      },
+      {
+        "why": "Copy formula from cell to the left",
+        "action": "Fill Right",
+        "number": 14,
+        "shortcut": "Ctrl+R"
+      },
+      {
+        "why": "Paste values, formats, formulas selectively",
+        "action": "Paste Special dialog",
+        "number": 15,
+        "shortcut": "Ctrl+Shift+V"
+      },
+      {
+        "why": "The fastest paste-as-values in muscle memory",
+        "action": "Paste Values (legacy shortcut)",
+        "number": 16,
+        "shortcut": "Alt+E,S,V,Enter"
+      },
+      {
+        "why": "Number format, font, borders, alignment",
+        "action": "Format Cells dialog",
+        "number": 17,
+        "shortcut": "Ctrl+1"
+      },
+      {
+        "why": "Quick number formatting",
+        "action": "Apply Number format (2 decimals)",
+        "number": 18,
+        "shortcut": "Ctrl+Shift+1"
+      },
+      {
+        "why": "Instantly format as percentage",
+        "action": "Apply Percentage format",
+        "number": 19,
+        "shortcut": "Ctrl+Shift+5"
+      },
+      {
+        "why": "Hardcoded date stamp, doesn't change",
+        "action": "Insert today's date (static)",
+        "number": 20,
+        "shortcut": "Ctrl+; (semicolon)"
+      },
+      {
+        "why": "Add rows without right-click menu",
+        "action": "Insert cells/rows/columns",
+        "number": 21,
+        "shortcut": "Ctrl+Shift+="
+      },
+      {
+        "why": "Remove rows without right-click menu",
+        "action": "Delete cells/rows/columns",
+        "number": 22,
+        "shortcut": "Ctrl+- (minus)"
+      }
+    ],
+    "pillar_3_auditing": [
+      {
+        "why": "Jump to cells that feed into current formula",
+        "action": "Select precedent cells",
+        "number": 23,
+        "shortcut": "Ctrl+[ (open bracket)"
+      },
+      {
+        "why": "Jump to cells that USE the current cell",
+        "action": "Select dependent cells",
+        "number": 24,
+        "shortcut": "Ctrl+] (close bracket)"
+      },
+      {
+        "why": "Same as Ctrl+` — toggle formula view",
+        "action": "Show/hide formulas",
+        "number": 25,
+        "shortcut": "Ctrl+~ (tilde)"
+      },
+      {
+        "why": "Select a portion, press F9 to see its value",
+        "action": "Evaluate part of formula",
+        "number": 26,
+        "shortcut": "F9 (in formula bar)"
+      },
+      {
+        "why": "Visual arrows showing what feeds a cell",
+        "action": "Trace Precedents (draw arrows)",
+        "number": 27,
+        "shortcut": "Alt+M,P"
+      },
+      {
+        "why": "Visual arrows showing what a cell feeds",
+        "action": "Trace Dependents (draw arrows)",
+        "number": 28,
+        "shortcut": "Alt+M,D"
+      },
+      {
+        "why": "Clean up after auditing",
+        "action": "Remove all trace arrows",
+        "number": 29,
+        "shortcut": "Alt+M,A,A"
+      },
+      {
+        "why": "See long formulas without scrolling",
+        "action": "Expand/collapse formula bar",
+        "number": 30,
+        "shortcut": "Ctrl+Shift+U"
+      }
+    ],
+    "pillar_1_navigation": [
+      {
+        "why": "Navigate 10,000 rows in 0.1 seconds",
+        "action": "Jump to edge of data region",
+        "number": 1,
+        "shortcut": "Ctrl+Arrow"
+      },
+      {
+        "why": "Select entire column of data instantly",
+        "action": "Select to edge of data region",
+        "number": 2,
+        "shortcut": "Ctrl+Shift+Arrow"
+      },
+      {
+        "why": "Return to start of sheet from anywhere",
+        "action": "Jump to cell A1",
+        "number": 3,
+        "shortcut": "Ctrl+Home"
+      },
+      {
+        "why": "Find the actual extent of your data",
+        "action": "Jump to last used cell",
+        "number": 4,
+        "shortcut": "Ctrl+End"
+      },
+      {
+        "why": "Jump to any cell address or select by type",
+        "action": "Go To dialog / Go To Special",
+        "number": 5,
+        "shortcut": "Ctrl+G (F5)"
+      },
+      {
+        "why": "Navigate tabs without mouse",
+        "action": "Switch between sheets",
+        "number": 6,
+        "shortcut": "Ctrl+Page Up/Down"
+      },
+      {
+        "why": "Faster than clicking the column header",
+        "action": "Select entire column",
+        "number": 7,
+        "shortcut": "Ctrl+Space"
+      },
+      {
+        "why": "Faster than clicking the row number",
+        "action": "Select entire row",
+        "number": 8,
+        "shortcut": "Shift+Space"
+      },
+      {
+        "why": "Select all remaining data at once",
+        "action": "Select from current cell to last used cell",
+        "number": 9,
+        "shortcut": "Ctrl+Shift+End"
+      },
+      {
+        "why": "See all formulas in the sheet at once",
+        "action": "Toggle formula view on/off",
+        "number": 10,
+        "shortcut": "Ctrl+` (backtick)"
+      }
+    ]
+  },
+  "after": {
+    "trace_tools": {
+      "dependents": "Draws blue arrows FROM the selected cell TO all cells that depend on it. Click WACC, press Alt+M,D, see every cell that changes when WACC changes.",
+      "precedents": "Draws blue arrows FROM the cells that feed INTO the selected cell. Click target price, press Alt+M,P, instantly see contributing cells. Press again for next level.",
+      "cross_sheet": "When a precedent/dependent is on a different sheet, Excel draws a dashed arrow to a small sheet icon. Double-click the arrow to see external references."
+    },
+    "f4_importance": "F4 is the single most important shortcut in financial modelling. When editing a formula, it cycles through reference types: A1 → $A$1 → A$1 → $A1. Saves more time than any other shortcut. Every time you would type a $ sign manually, press F4 instead.",
+    "go_to_special": {
+      "key_action": "Ctrl+G → Special (or F5 → Special)",
+      "selections": [
+        {
+          "type": "Formulas",
+          "selects": "All cells containing formulas",
+          "use_case": "Check which cells are calculated vs hard-coded"
+        },
+        {
+          "type": "Constants",
+          "selects": "All cells with typed values (not formulas)",
+          "use_case": "Find all input assumptions at once"
+        },
+        {
+          "type": "Blanks",
+          "selects": "All empty cells in a range",
+          "use_case": "Find gaps in data, missing inputs"
+        },
+        {
+          "type": "Errors",
+          "selects": "All cells showing #N/A, #VALUE!, #REF!, etc.",
+          "use_case": "Instant error audit across entire sheet"
+        },
+        {
+          "type": "Precedents (Direct)",
+          "selects": "Cells that directly feed the selected cell",
+          "use_case": "Understand what drives a formula"
+        },
+        {
+          "type": "Dependents (Direct)",
+          "selects": "Cells that directly use the selected cell",
+          "use_case": "Understand impact of changing a cell"
+        },
+        {
+          "type": "Current Region",
+          "selects": "Contiguous block of data around cursor",
+          "use_case": "Select entire data table without Ctrl+Shift"
+        },
+        {
+          "type": "Visible Cells Only",
+          "selects": "Only visible cells (skips hidden rows/columns)",
+          "use_case": "Copy from filtered data without hidden rows"
+        }
+      ],
+      "description": "The most powerful selection tool in Excel. Selects cells by TYPE."
+    },
+    "evaluate_formula": {
+      "method": "Enter edit mode (F2), select ONE part of the formula, press F9. Excel replaces that portion with its actual value.",
+      "critical_warning": "If you press Enter instead of Escape after using F9, Excel PERMANENTLY replaces the formula portion with the static value. Always press Escape."
+    },
+    "pillar_2_editing": [
+      {
+        "why": "Edit without double-clicking",
+        "action": "Edit cell (enter edit mode)",
+        "number": 11,
+        "shortcut": "F2"
+      },
+      {
+        "why": "Cycles A1 → $A$1 → A$1 → $A1",
+        "action": "Toggle absolute/relative reference",
+        "number": 12,
+        "shortcut": "F4"
+      },
+      {
+        "why": "Copy formula from cell above",
+        "action": "Fill Down",
+        "number": 13,
+        "shortcut": "Ctrl+D"
+      },
+      {
+        "why": "Copy formula from cell to the left",
+        "action": "Fill Right",
+        "number": 14,
+        "shortcut": "Ctrl+R"
+      },
+      {
+        "why": "Paste values, formats, formulas selectively",
+        "action": "Paste Special dialog",
+        "number": 15,
+        "shortcut": "Ctrl+Shift+V"
+      },
+      {
+        "why": "The fastest paste-as-values in muscle memory",
+        "action": "Paste Values (legacy shortcut)",
+        "number": 16,
+        "shortcut": "Alt+E,S,V,Enter"
+      },
+      {
+        "why": "Number format, font, borders, alignment",
+        "action": "Format Cells dialog",
+        "number": 17,
+        "shortcut": "Ctrl+1"
+      },
+      {
+        "why": "Quick number formatting",
+        "action": "Apply Number format (2 decimals)",
+        "number": 18,
+        "shortcut": "Ctrl+Shift+1"
+      },
+      {
+        "why": "Instantly format as percentage",
+        "action": "Apply Percentage format",
+        "number": 19,
+        "shortcut": "Ctrl+Shift+5"
+      },
+      {
+        "why": "Hardcoded date stamp, doesn't change",
+        "action": "Insert today's date (static)",
+        "number": 20,
+        "shortcut": "Ctrl+; (semicolon)"
+      },
+      {
+        "why": "Add rows without right-click menu",
+        "action": "Insert cells/rows/columns",
+        "number": 21,
+        "shortcut": "Ctrl+Shift+="
+      },
+      {
+        "why": "Remove rows without right-click menu",
+        "action": "Delete cells/rows/columns",
+        "number": 22,
+        "shortcut": "Ctrl+- (minus)"
+      }
+    ],
+    "pillar_3_auditing": [
+      {
+        "why": "Jump to cells that feed into current formula",
+        "action": "Select precedent cells",
+        "number": 23,
+        "shortcut": "Ctrl+[ (open bracket)"
+      },
+      {
+        "why": "Jump to cells that USE the current cell",
+        "action": "Select dependent cells",
+        "number": 24,
+        "shortcut": "Ctrl+] (close bracket)"
+      },
+      {
+        "why": "Same as Ctrl+` — toggle formula view",
+        "action": "Show/hide formulas",
+        "number": 25,
+        "shortcut": "Ctrl+~ (tilde)"
+      },
+      {
+        "why": "Select a portion, press F9 to see its value",
+        "action": "Evaluate part of formula",
+        "number": 26,
+        "shortcut": "F9 (in formula bar)"
+      },
+      {
+        "why": "Visual arrows showing what feeds a cell",
+        "action": "Trace Precedents (draw arrows)",
+        "number": 27,
+        "shortcut": "Alt+M,P"
+      },
+      {
+        "why": "Visual arrows showing what a cell feeds",
+        "action": "Trace Dependents (draw arrows)",
+        "number": 28,
+        "shortcut": "Alt+M,D"
+      },
+      {
+        "why": "Clean up after auditing",
+        "action": "Remove all trace arrows",
+        "number": 29,
+        "shortcut": "Alt+M,A,A"
+      },
+      {
+        "why": "See long formulas without scrolling",
+        "action": "Expand/collapse formula bar",
+        "number": 30,
+        "shortcut": "Ctrl+Shift+U"
+      }
+    ],
+    "pillar_1_navigation": [
+      {
+        "why": "Navigate 10,000 rows in 0.1 seconds",
+        "action": "Jump to edge of data region",
+        "number": 1,
+        "shortcut": "Ctrl+Arrow"
+      },
+      {
+        "why": "Select entire column of data instantly",
+        "action": "Select to edge of data region",
+        "number": 2,
+        "shortcut": "Ctrl+Shift+Arrow"
+      },
+      {
+        "why": "Return to start of sheet from anywhere",
+        "action": "Jump to cell A1",
+        "number": 3,
+        "shortcut": "Ctrl+Home"
+      },
+      {
+        "why": "Find the actual extent of your data",
+        "action": "Jump to last used cell",
+        "number": 4,
+        "shortcut": "Ctrl+End"
+      },
+      {
+        "why": "Jump to any cell address or select by type",
+        "action": "Go To dialog / Go To Special",
+        "number": 5,
+        "shortcut": "Ctrl+G (F5)"
+      },
+      {
+        "why": "Navigate tabs without mouse",
+        "action": "Switch between sheets",
+        "number": 6,
+        "shortcut": "Ctrl+Page Up/Down"
+      },
+      {
+        "why": "Faster than clicking the column header",
+        "action": "Select entire column",
+        "number": 7,
+        "shortcut": "Ctrl+Space"
+      },
+      {
+        "why": "Faster than clicking the row number",
+        "action": "Select entire row",
+        "number": 8,
+        "shortcut": "Shift+Space"
+      },
+      {
+        "why": "Select all remaining data at once",
+        "action": "Select from current cell to last used cell",
+        "number": 9,
+        "shortcut": "Ctrl+Shift+End"
+      },
+      {
+        "why": "See all formulas in the sheet at once",
+        "action": "Toggle formula view on/off",
+        "number": 10,
+        "shortcut": "Ctrl+` (backtick)"
+      }
+    ]
+  }
+}

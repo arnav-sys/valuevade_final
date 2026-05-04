@@ -1,0 +1,266 @@
+{
+  "id": "a344f0cc-4e2d-4ed6-be26-9d0fc3ce1260",
+  "label": "M8 S11 | The Four Ratios That Quantify Ownership Behaviour Signals",
+  "before": {
+    "formulas": [
+      {
+        "name": "Pledge Intensity Ratio",
+        "formula": "Pledge Intensity = Shares Pledged by Promoters / Total Promoter Holding × 100",
+        "variables": [
+          {
+            "symbol": "Shares Pledged",
+            "meaning": "Total promoter shares pledged to lenders as collateral, from BSE/NSE pledge disclosures"
+          },
+          {
+            "symbol": "Total Promoter Holding",
+            "meaning": "Total shares held by promoter group including all promoter entities"
+          }
+        ],
+        "worked_example": "Running this on Yes Bank across the 2018-2020 timeline. As of September 30, 2018: Pledged shares approximately 8 crore against total promoter holding of 24 crore = Pledge Intensity 33 percent. By December 31, 2018: approximately 15 crore pledged = 63 percent. By March 31, 2019: approximately 19 crore pledged = 79 percent. By September 30, 2019: approximately 22 crore pledged = 92 percent. By February 2020 (just before RBI moratorium): essentially 100 percent of remaining promoter holding pledged. Each quarterly data point was disclosed in BSE and NSE shareholding pattern filings. Any analyst monitoring pledge intensity would have observed the progression from 33 percent to 92 percent over 12 months — an unmistakable forensic signal of escalating promoter financial stress. Interpretation thresholds: Below 20 percent is normal and typically reflects standard promoter financing arrangements. 20-40 percent warrants investigation of the specific promoter financing structure and counterparties. 40-70 percent is high and indicates material promoter financial stress. Above 70 percent is extreme — the promoter has essentially leveraged his entire ownership stake and faces immediate forced-sale risk if stock price declines trigger margin calls. The Yes Bank progression from September 2018 to March 2020 crossed every threshold in the interpretation ladder over an 18-month period visible to any analyst. For mid-cap coverage, Pledge Intensity above 50 percent sustained for multiple quarters is typically a Sell signal. For large-cap coverage where promoters have diversified personal wealth, Pledge Intensity above 40 percent is the warning threshold because even diversified promoters face financial constraints at this level.",
+        "sensitivity_note": "Pledge Intensity should be analysed alongside absolute promoter holding percentage. A promoter with 55 percent holding who pledges 40 percent of it retains substantial voting control even if the pledge is invoked. A promoter with 25 percent holding who pledges 40 percent loses effective control if pledge is invoked. Control concentration matters for interpreting pledge implications."
+      },
+      {
+        "name": "Pledge Velocity Ratio",
+        "formula": "Pledge Velocity = (Current Period Pledge Intensity - Prior Period Pledge Intensity) / Number of Months × 100",
+        "variables": [
+          {
+            "symbol": "Current Period Pledge Intensity",
+            "meaning": "Most recent quarterly pledge intensity percentage"
+          },
+          {
+            "symbol": "Prior Period Pledge Intensity",
+            "meaning": "Pledge intensity one or more quarters earlier, typically 4 quarters (1 year) prior"
+          },
+          {
+            "symbol": "Number of Months",
+            "meaning": "Months between current and prior periods, typically 12"
+          }
+        ],
+        "worked_example": "Running this on various Indian companies. Reliance Industries historical: Pledge Intensity has remained below 5 percent for 10-plus years, indicating stable low-pledge ownership structure. Velocity near zero. Yes Bank September 2018 to September 2019: Intensity moved from 33 percent to 92 percent = delta of 59 percentage points over 12 months = Velocity of 4.9 percentage points per month. Extreme acceleration. For comparison, a healthy company might have Pledge Velocity of zero or mildly negative (as promoters unpledge shares). A watchlist company might show Velocity of 0.5-1.0 percentage points per month (gradual increase). A distress-stage company shows Velocity above 2.0 percentage points per month. Yes Bank's 4.9 was uniquely extreme. Interpretation thresholds: Velocity below 0.5 (including negative) is healthy. 0.5-1.5 is watchlist — promoter financing is increasing but not at alarming rate. 1.5-3.0 is material concern — substantial new pledging indicates emerging promoter stress. Above 3.0 is extreme — the promoter is rapidly deploying shares as collateral, consistent with acute financial distress or cascade-pledging patterns. The Velocity metric captures trajectory in ways that Intensity alone cannot. A company at 40 percent Intensity with Velocity near zero (stable at 40 percent for years) has different risk profile than a company at 40 percent Intensity with Velocity of 2.5 (rapidly increasing). Both warrant investigation but the Velocity metric identifies acute escalation patterns.",
+        "sensitivity_note": "Velocity should be computed using publicly disclosed pledge data from BSE/NSE portals. For companies without substantial promoter pledging history, Velocity is near zero and the metric provides no signal. For companies with meaningful pledge activity, Velocity is the specific metric that catches acute escalation patterns like Yes Bank 2018-2019."
+      },
+      {
+        "name": "Insider Trading Signal Ratio",
+        "formula": "Insider Net Activity = (Value of Insider Purchases - Value of Insider Sales) / Total Designated Persons' Existing Holdings × 100",
+        "variables": [
+          {
+            "symbol": "Value of Insider Purchases",
+            "meaning": "Aggregate rupee value of all insider purchases across designated persons during the measurement window, from SEBI PIT disclosures"
+          },
+          {
+            "symbol": "Value of Insider Sales",
+            "meaning": "Aggregate rupee value of all insider sales during the same window"
+          },
+          {
+            "symbol": "Total Designated Persons' Holdings",
+            "meaning": "Aggregate value of shares held by all designated persons at the start of the measurement window"
+          }
+        ],
+        "worked_example": "Running this on two Indian companies. Company A (clean large-cap): Over trailing 12 months, insider purchases ₹45 crore, insider sales ₹12 crore, net ₹33 crore positive against total designated holdings of ₹280 crore = Net Activity of positive 11.8 percent. Signals insider confidence — designated persons are increasing exposure to the company. Company B (deteriorating promoter-led): Over trailing 12 months, insider purchases ₹8 crore, insider sales ₹145 crore (concentrated in Q3 before weak Q4 results), net negative ₹137 crore against holdings of ₹450 crore = Net Activity of negative 30 percent. Signals insider concern — designated persons are substantially reducing exposure, particularly concentrated before negative earnings. Cross-reference with the timing of sales is important — sales concentrated 60-90 days before negative results or corporate events suggest information-advantage trading that may trigger SEBI scrutiny. Interpretation thresholds: Net Activity above positive 5 percent is positive signal (insider buying). Between negative 5 percent and positive 5 percent is neutral. Negative 5 to negative 15 percent is watchlist — material insider selling that warrants investigation of timing and context. Negative 15 to negative 30 percent is concerning — substantial insider selling indicates concerns among designated persons. Negative 30 percent and beyond is severe — effectively a vote of no confidence from insiders, particularly when concentrated in timing before negative events.",
+        "sensitivity_note": "Insider Trading Signal must be interpreted in context. Large sales might reflect legitimate diversification by specific individuals rather than collective concern. The aggregation across multiple designated persons matters. Also consider exercise of ESOPs separately from purchases — ESOP exercises are compensation-related rather than information-based trades. The cleanest signal is when multiple designated persons are aggressively buying (positive) or selling (negative) in concentrated windows."
+      },
+      {
+        "name": "Buyback Value Test",
+        "formula": "Buyback Yield = (Buyback Price - Current Market Price) / Current Market Price × 100; Buyback P/E = Buyback Price / EPS for TTM period",
+        "variables": [
+          {
+            "symbol": "Buyback Price",
+            "meaning": "Price per share at which the company is repurchasing shares, from buyback announcement"
+          },
+          {
+            "symbol": "Current Market Price",
+            "meaning": "Stock price in secondary market at time of buyback announcement"
+          },
+          {
+            "symbol": "EPS for TTM period",
+            "meaning": "Earnings per share for trailing twelve months"
+          }
+        ],
+        "worked_example": "Running this on two Indian buybacks. TCS December 2023 buyback announcement: Buyback price ₹3,500 per share against market price at announcement of ₹3,270 = Buyback Yield of 7.0 percent. EPS TTM at ₹115 gives Buyback P/E of 30.4x. Historical TCS P/E range 20-35x. The buyback was priced toward the upper end of historical multiples, suggesting management confidence in continued strong performance and willingness to pay premium for share concentration. Whether value-creating depends on forward earnings trajectory. Infosys September 2022 buyback: Buyback price ₹1,850 against market of ₹1,470 at announcement = Buyback Yield 25.9 percent. EPS TTM at ₹52 gives Buyback P/E of 35.6x. Aggressive premium but with substantial return to participating shareholders who tendered. For participating shareholders, value creation was clear (25 percent premium over market). For non-participating shareholders, value creation depends on whether forward earnings justify the P/E paid. Indian IT buybacks have generally been value-creating for participating shareholders through tender offer structure. Interpretation framework: Buyback Yield below 5 percent is unusual and may indicate open market buyback without clear return intent. 5-15 percent is reasonable premium for tender offer. 15-30 percent is aggressive but can be justified by management confidence. Above 30 percent is exceptional and typically signals specific capital-return strategy. Buyback P/E above historical P/E ceiling suggests management is paying premium for share concentration — appropriate if forward earnings are expected to justify, problematic if buyback is EPS-engineering without forward-earnings support. Always compute buyback economics from both participating shareholder perspective and continuing shareholder perspective.",
+        "sensitivity_note": "Buyback analysis requires context-dependent interpretation. For cash-rich companies with limited organic reinvestment opportunities (Indian IT services), buybacks at reasonable premiums are typically value-creating. For capital-constrained companies where cash could be used for debt reduction or growth capex, buybacks at any premium warrant scrutiny. Sector context matters."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for pledge tracking tables",
+        "Ctrl + Shift + L — Toggle filters for time-series pledge data",
+        "F4 — Lock references for ratio calculations",
+        "Alt + = — AutoSum for aggregate insider trading activity",
+        "Ctrl + Shift + 1 — Number format with thousand separators"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Pledge Intensity Ratio",
+        "formula": "Pledge Intensity = Shares Pledged by Promoters / Total Promoter Holding × 100",
+        "variables": [
+          {
+            "symbol": "Shares Pledged",
+            "meaning": "Total promoter shares pledged to lenders as collateral, from BSE/NSE pledge disclosures"
+          },
+          {
+            "symbol": "Total Promoter Holding",
+            "meaning": "Total shares held by promoter group including all promoter entities"
+          }
+        ],
+        "plain_english": "Pledge Intensity measures what percentage of a promoter's total shareholding has been pledged as collateral to lenders. It reveals the degree to which a promoter has mortgaged ownership stakes to secure financing—a forensic signal of financial stress and forced-sale risk. High pledging erodes effective voting control and signals liquidity pressure; analysts use this to identify distress narratives before they become public.",
+        "worked_example": {
+          "problem": "Yes Bank: Track pledge intensity from September 2018 to February 2020 to identify escalating promoter financial stress.",
+          "steps": [
+            "September 30, 2018: Pledged shares ≈ 8 crore; Total promoter holding = 24 crore; Intensity = (8/24) × 100 = 33%",
+            "December 31, 2018: Pledged shares ≈ 15 crore; Intensity = (15/24) × 100 = 63%",
+            "March 31, 2019: Pledged shares ≈ 19 crore; Intensity = (19/24) × 100 = 79%",
+            "September 30, 2019: Pledged shares ≈ 22 crore; Intensity = (22/24) × 100 = 92%",
+            "February 2020: Pledged shares ≈ 24 crore; Intensity ≈ 100%"
+          ],
+          "result": "Progression from 33% to 100% in 18 months; every interpretation threshold crossed",
+          "insight": "Below 20%: normal financing. 20–40%: investigate structure. 40–70%: material stress. Above 70%: extreme leverage. Yes Bank's escalation from 33% to 92% was a forensic red flag visible in quarterly BSE/NSE disclosures. Any analyst monitoring would have observed unmistakable distress signals. For mid-cap stocks, >50% sustained is a Sell signal; for large-cap, >40% is a warning threshold."
+        },
+        "sensitivity_note": "Pledge Intensity should be analysed alongside absolute promoter holding percentage. A promoter with 55 percent holding who pledges 40 percent of it retains substantial voting control even if the pledge is invoked. A promoter with 25 percent holding who pledges 40 percent loses effective control if pledge is invoked. Control concentration matters for interpreting pledge implications."
+      },
+      {
+        "name": "Pledge Velocity Ratio",
+        "formula": "Pledge Velocity = (Current Period Pledge Intensity - Prior Period Pledge Intensity) / Number of Months × 100",
+        "variables": [
+          {
+            "symbol": "Current Period Pledge Intensity",
+            "meaning": "Most recent quarterly pledge intensity percentage"
+          },
+          {
+            "symbol": "Prior Period Pledge Intensity",
+            "meaning": "Pledge intensity one or more quarters earlier, typically 4 quarters (1 year) prior"
+          },
+          {
+            "symbol": "Number of Months",
+            "meaning": "Months between current and prior periods, typically 12"
+          }
+        ],
+        "plain_english": "Pledge Velocity measures the rate of change in pledge intensity—how quickly a promoter is increasing pledging month-over-month. While Pledge Intensity is a stock measure, Velocity is a flow measure that captures acute escalation patterns. It identifies distress narratives that are accelerating, not just those already at dangerous levels, making it a leading indicator of cascade-pledging risk.",
+        "computation": [
+          "Calculate Pledge Intensity for current quarter using shares pledged / total promoter holding",
+          "Calculate Pledge Intensity for prior quarter (typically 12 months earlier)",
+          "Subtract prior from current to get the percentage-point delta",
+          "Divide by number of months elapsed (typically 12 for year-over-year)",
+          "Multiply by 100 if expressing as percentage points per month"
+        ],
+        "worked_example": {
+          "problem": "Compare Yes Bank (distress scenario) with Reliance Industries (stable scenario) to identify escalation patterns.",
+          "steps": [
+            "Reliance Industries (10-year history): Pledge Intensity consistently below 5%; Velocity near zero; stable ownership structure",
+            "Yes Bank September 2018 to September 2019: Intensity 33% → 92% = delta of 59 percentage points over 12 months = Velocity of 4.9 percentage points per month",
+            "Healthy company benchmark: Velocity ≤ 0% (unpledging) or ≈ 0%",
+            "Watchlist company: Velocity 0.5–1.5 percentage points per month (gradual increase)",
+            "Distress-stage company: Velocity 1.5–3.0 percentage points per month",
+            "Yes Bank's 4.9 percentage points per month: extreme acceleration"
+          ],
+          "result": "Yes Bank Velocity of 4.9 vs. Reliance Velocity near zero over same period; Yes Bank trajectory unmistakable",
+          "insight": "Velocity captures trajectory in ways Intensity alone cannot. A company at 40% Intensity with Velocity near zero (stable for years) has different risk than 40% Intensity with Velocity of 2.5 (rapidly increasing). Above 3.0 percentage points per month indicates acute financial distress or cascade-pledging—a severe sell signal."
+        },
+        "sensitivity_note": "Velocity should be computed using publicly disclosed pledge data from BSE/NSE portals. For companies without substantial promoter pledging history, Velocity is near zero and the metric provides no signal. For companies with meaningful pledge activity, Velocity is the specific metric that catches acute escalation patterns like Yes Bank 2018-2019."
+      },
+      {
+        "name": "Insider Trading Signal Ratio",
+        "formula": "Insider Net Activity = (Value of Insider Purchases - Value of Insider Sales) / Total Designated Persons' Existing Holdings × 100",
+        "variables": [
+          {
+            "symbol": "Value of Insider Purchases",
+            "meaning": "Aggregate rupee value of all insider purchases across designated persons during the measurement window, from SEBI PIT disclosures"
+          },
+          {
+            "symbol": "Value of Insider Sales",
+            "meaning": "Aggregate rupee value of all insider sales during the same window"
+          },
+          {
+            "symbol": "Total Designated Persons' Holdings",
+            "meaning": "Aggregate value of shares held by all designated persons at the start of the measurement window"
+          }
+        ],
+        "plain_english": "Insider Net Activity measures whether insiders (promoters, directors, key managers) are collectively buying or selling shares, expressed as a percentage of their total holdings. Positive activity signals insider confidence; negative activity—especially when concentrated before weak results—signals insider concern. This ratio reveals information-advantage behaviour that precedes public announcements, making it a leading indicator of upcoming value shifts.",
+        "computation": [
+          "Aggregate all insider purchases (from SEBI PIT disclosures) over the trailing 12-month window, in rupees",
+          "Aggregate all insider sales over the same window, in rupees",
+          "Calculate net activity: purchases minus sales",
+          "Divide net activity by total designated persons' holdings (in rupees) at measurement window start",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "Compare insider activity in a clean large-cap (Company A) vs. a deteriorating promoter-led company (Company B) over trailing 12 months.",
+          "steps": [
+            "Company A (clean large-cap): Insider purchases ₹45 crore, insider sales ₹12 crore, net = ₹33 crore; Total designated holdings = ₹280 crore",
+            "Company A Net Activity = (33/280) × 100 = +11.8%; Signals insider confidence and increasing exposure",
+            "Company B (deteriorating): Insider purchases ₹8 crore, insider sales ₹145 crore (concentrated in Q3 before weak Q4 results), net = ₹137 crore negative; Total designated holdings = ₹450 crore",
+            "Company B Net Activity = (-137/450) × 100 = -30.4%; Sales concentrated 60–90 days before negative results",
+            "Cross-reference timing: Company B sales preceded Q4 results decline by 2 months—information-advantage pattern"
+          ],
+          "result": "Company A: +11.8% (positive signal); Company B: -30.4% (severe signal of insider concern)",
+          "insight": "Positive 5%+ signals confidence. Between ±5% is neutral. Negative 5–15% warrants investigation. Negative 15–30% is concerning. Negative 30%+ is severe, especially when concentrated before negative events. Company B's pattern suggests insiders foresaw deterioration. Timing concentration is critical—sales 60–90 days before negative announcements trigger SEBI scrutiny and indicate information-advantage trading."
+        },
+        "sensitivity_note": "Insider Trading Signal must be interpreted in context. Large sales might reflect legitimate diversification by specific individuals rather than collective concern. The aggregation across multiple designated persons matters. Also consider exercise of ESOPs separately from purchases — ESOP exercises are compensation-related rather than information-based trades. The cleanest signal is when multiple designated persons are aggressively buying (positive) or selling (negative) in concentrated windows."
+      },
+      {
+        "name": "Buyback Value Test",
+        "formula": "Buyback Yield = (Buyback Price - Current Market Price) / Current Market Price × 100; Buyback P/E = Buyback Price / EPS for TTM period",
+        "variables": [
+          {
+            "symbol": "Buyback Price",
+            "meaning": "Price per share at which the company is repurchasing shares, from buyback announcement"
+          },
+          {
+            "symbol": "Current Market Price",
+            "meaning": "Stock price in secondary market at time of buyback announcement"
+          },
+          {
+            "symbol": "EPS for TTM period",
+            "meaning": "Earnings per share for trailing twelve months"
+          }
+        ],
+        "plain_english": "Buyback Value Test evaluates whether a company is repurchasing shares at reasonable valuations relative to current market price and historical earnings multiples. It answers two questions: (1) At what premium is the buyback priced? (2) Is the P/E multiple being paid consistent with the company's earning power? High premiums and elevated P/E multiples can be justified by management confidence but signal premium pricing; buybacks at reasonable multiples are typically shareholder-friendly, especially for cash-rich companies with limited reinvestment opportunities.",
+        "computation": [
+          "Calculate Buyback Yield: (Buyback Price − Current Market Price) / Current Market Price × 100",
+          "Calculate Buyback P/E: Buyback Price / EPS (trailing twelve months)",
+          "Compare Buyback P/E to historical P/E range (3–5 year average) to assess relative valuation",
+          "Evaluate: Is the premium justified by forward earnings expectations?"
+        ],
+        "worked_example": {
+          "problem": "Evaluate two Indian IT sector buybacks: TCS December 2023 and Infosys September 2022.",
+          "steps": [
+            "TCS December 2023: Buyback price ₹3,500, market price ₹3,270; Yield = (3500−3270)/3270 × 100 = 7.0%",
+            "TCS EPS TTM ₹115; Buyback P/E = 3500/115 = 30.4x; Historical TCS P/E range 20–35x (toward upper end)",
+            "Infosys September 2022: Buyback price ₹1,850, market price ₹1,470; Yield = (1850−1470)/1470 × 100 = 25.9%",
+            "Infosys EPS TTM ₹52; Buyback P/E = 1850/52 = 35.6x; Premium but aggressive within IT context",
+            "For TCS: 7% premium at 30.4x signals management confidence in continued strong performance; reasonable for cash-rich IT with limited reinvestment needs",
+            "For Infosys: 25.9% premium with 35.6x P/E is aggressive but justified by participating shareholder returns in tender offer structure"
+          ],
+          "result": "TCS: 7% Yield, 30.4x P/E (upper-range but justified). Infosys: 25.9% Yield, 35.6x P/E (aggressive premium, clear shareholder benefit)",
+          "insight": "Buyback Yield <5%: unusual, no clear return intent. 5–15%: reasonable premium for tender offer. 15–30%: aggressive but can be justified. >30%: exceptional, signals specific capital-return strategy. Always evaluate Buyback P/E against historical range and sector context. For participating shareholders, value is clear via premium; for continuing shareholders, value depends on forward earnings justifying the multiple paid."
+        },
+        "sensitivity_note": "Buyback analysis requires context-dependent interpretation. For cash-rich companies with limited organic reinvestment opportunities (Indian IT services), buybacks at reasonable premiums are typically value-creating. For capital-constrained companies where cash could be used for debt reduction or growth capex, buybacks at any premium warrant scrutiny. Sector context matters."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for pledge tracking tables",
+        "Ctrl + Shift + L — Toggle filters for time-series pledge data",
+        "F4 — Lock references for ratio calculations",
+        "Alt + = — AutoSum for aggregate insider trading activity",
+        "Ctrl + Shift + 1 — Number format with thousand separators"
+      ]
+    }
+  }
+}

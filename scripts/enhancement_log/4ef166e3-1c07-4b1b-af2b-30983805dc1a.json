@@ -1,0 +1,221 @@
+{
+  "id": "4ef166e3-1c07-4b1b-af2b-30983805dc1a",
+  "label": "M11 S5 | The IT Analyst's Calculation Toolkit — From Constant Currenc",
+  "before": {
+    "formulas": [
+      {
+        "name": "USD Revenue Growth in Constant Currency",
+        "formula": "CC Growth = ((Current Period USD Revenue × Prior Period FX Rates) / Prior Period USD Revenue) − 1",
+        "variables": [
+          {
+            "symbol": "Current Period USD Revenue",
+            "meaning": "Reported revenue for the current quarter or year, restated using prior period exchange rates for non-USD billings (EUR, GBP, AUD, etc.)"
+          },
+          {
+            "symbol": "Prior Period FX Rates",
+            "meaning": "Exchange rates that prevailed during the same period one year ago — used to neutralise cross-currency movement"
+          },
+          {
+            "symbol": "Cross-Currency Impact",
+            "meaning": "The difference between reported USD growth and constant currency growth. Positive when USD weakened against EUR/GBP; negative when USD strengthened"
+          }
+        ],
+        "worked_example": "Infosys Q4FY24: Reported USD revenue 4,564 million USD, up 1.3% YoY in reported USD. However, the EUR strengthened roughly 2% against USD over the year, and the company derives roughly 25% of revenue from European billings. Cross-currency tailwind = approximately 0.5%. Therefore, Constant Currency Growth = 1.3% − 0.5% = 0.8% YoY. This is the genuine operating growth — the rest was cross-currency movement. Compare to TCS Q4FY24: Reported USD revenue 7,196 million USD, up 3.5% YoY reported USD, up 2.2% YoY in constant currency. Always use CC growth for true comparison — reported USD numbers can be misleading when EUR or GBP moves significantly. The five tier-1 Indian IT companies (TCS, Infosys, HCL Tech, Wipro, LTIMindtree) all disclose CC growth in their investor presentations and concall.",
+        "sensitivity_note": "Constant currency growth is the single most important number in any IT services concall. When EUR/USD moved from 1.05 to 1.10 over FY24, it added roughly 50-70 basis points of cross-currency tailwind to reported USD growth for European-exposed Indian IT companies. The opposite happens when USD strengthens. The market consistently rewards companies that explain CC growth clearly and punishes those that hide behind reported numbers. As an analyst, always normalise your peer comparison to CC."
+      },
+      {
+        "name": "Book-to-Bill Ratio (TTM)",
+        "formula": "Book-to-Bill (TTM) = TTM Total Contract Value Signed / TTM Revenue Recognised",
+        "variables": [
+          {
+            "symbol": "TTM TCV Signed",
+            "meaning": "Sum of total contract values for new and renewed contracts won over the trailing twelve months. Disclosed by some companies (HCL Tech, LTIMindtree); estimated from quarterly disclosures for others"
+          },
+          {
+            "symbol": "TTM Revenue",
+            "meaning": "Total revenue recognised over the trailing twelve months — the denominator that contextualises whether new wins are growing relative to the existing run-rate"
+          }
+        ],
+        "worked_example": "HCL Tech Q1FY25 disclosure: TTM TCV signed = 9,500 million USD. TTM Revenue = 13,700 million USD. Book-to-Bill = 9,500 / 13,700 = 0.69x. This is below the historical healthy threshold of 0.9-1.1x. Interpretation: HCL Tech is winning new business but not at a pace fast enough to support continued strong growth — a leading indicator of growth deceleration in subsequent quarters. Compare to Infosys: TTM TCV approximately 17,300 million USD, TTM Revenue approximately 18,600 million USD, Book-to-Bill = 0.93x — closer to the healthy zone. Tier-1 IT companies typically disclose 'Large Deal TCV' (deals above 50 million USD) which is the most-watched subset. A Book-to-Bill of 1.0x or above for two consecutive quarters is a positive growth signal; below 0.8x for two consecutive quarters is a negative growth signal.",
+        "sensitivity_note": "TCV is a leading indicator with a 6-12 month conversion lag — most contracts win-to-revenue takes 2-3 quarters before showing up in the P&L. So a strong TCV quarter today predicts strong revenue 6-12 months out. Conversely, a weak TCV quarter does NOT immediately hurt revenue (existing contracts continue running off) but it forecasts revenue weakness 2-3 quarters later. This is why TCV trends often diverge from current revenue trends. Read both in tandem."
+      },
+      {
+        "name": "Margin Walk Decomposition",
+        "formula": "ΔEBIT Margin = ΔUtilisation + ΔPyramid + ΔPricing + ΔCurrency + ΔSG&A leverage + ΔSub-contractor costs + Other",
+        "variables": [
+          {
+            "symbol": "ΔUtilisation",
+            "meaning": "Change in billable utilisation. Each 1% of utilisation typically adds/removes ~25-30 bps to EBIT margin"
+          },
+          {
+            "symbol": "ΔPyramid",
+            "meaning": "Shift in junior:senior mix. Junior-heavy expansion is margin-accretive (lower fully-loaded cost per billable hour)"
+          },
+          {
+            "symbol": "ΔPricing",
+            "meaning": "Change in realised hourly billing rate. Strong demand allows price hikes; weak demand forces concessions"
+          },
+          {
+            "symbol": "ΔCurrency",
+            "meaning": "Net impact of forex on rupee-denominated costs vs USD-denominated revenue. INR depreciation typically adds margin"
+          },
+          {
+            "symbol": "ΔSG&A leverage",
+            "meaning": "Operating leverage on fixed costs as revenue scales. Each 5% revenue growth on flat SG&A adds ~30-40 bps margin"
+          },
+          {
+            "symbol": "ΔSub-contractor costs",
+            "meaning": "Costs of bench staff and external contractors brought in to fill capacity gaps. Higher sub-contractor mix is margin-dilutive"
+          }
+        ],
+        "worked_example": "TCS FY24 EBIT Margin = 24.6%, FY23 EBIT Margin = 24.1% — a 50 basis point expansion. Margin walk decomposition disclosed in concall: Utilisation +60 bps (driven by tighter bench management), Pyramid -20 bps (slight senior skew due to wage hikes), Currency +40 bps (INR depreciation against USD), Sub-contractor costs +30 bps (reduced sub-contractor reliance), Pricing -50 bps (some discounting on renewals), SG&A leverage -10 bps. Sum = 60-20+40+30-50-10 = +50 bps — matches the actual margin expansion. The walk reveals what is driving margin and whether the drivers are sustainable. Currency and pyramid mix shifts are usually one-time; pricing and sub-contractor mix can be repeated.",
+        "sensitivity_note": "The margin walk is the most useful diagnostic tool in IT services analysis. Analysts who memorise margin numbers without decomposing them into drivers miss the underlying story. A 50 bps margin expansion can be 'good' (utilisation, leverage, pricing) or 'cosmetic' (one-time currency tailwind that will reverse). Always read the margin walk in concall slides and ask: which drivers are repeatable next quarter, and which are not?"
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)",
+        "=ROUND(value, 1)",
+        "Format → Conditional Formatting (Data Bars)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for vertical/geographic mix tables)",
+        "=GROWTH(range) for trend extrapolation",
+        "Ctrl + Shift + 5 (% format)",
+        "=ROUND(value, 1) for clean ratio display",
+        "Conditional formatting Data Bars for utilisation/attrition trends across peers"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "USD Revenue Growth in Constant Currency",
+        "formula": "CC Growth = ((Current Period USD Revenue × Prior Period FX Rates) / Prior Period USD Revenue) − 1",
+        "variables": [
+          {
+            "symbol": "Current Period USD Revenue",
+            "meaning": "Reported revenue for the current quarter or year, restated using prior period exchange rates for non-USD billings (EUR, GBP, AUD, etc.)"
+          },
+          {
+            "symbol": "Prior Period FX Rates",
+            "meaning": "Exchange rates that prevailed during the same period one year ago — used to neutralise cross-currency movement"
+          },
+          {
+            "symbol": "Cross-Currency Impact",
+            "meaning": "The difference between reported USD growth and constant currency growth. Positive when USD weakened against EUR/GBP; negative when USD strengthened"
+          }
+        ],
+        "plain_english": "Constant currency growth strips out the noise of forex fluctuations to show the true operational growth of the business. For Indian IT companies with large USD revenues and significant EUR/GBP billings, reported USD growth can be inflated by currency tailwinds or depressed by currency headwinds. This metric isolates what actually grew in the business versus what moved due to exchange rates — essential for peer comparison and forecasting.",
+        "worked_example": {
+          "problem": "Infosys reported Q4FY24 USD revenue of ₹4,564 million USD, up 1.3% YoY reported USD. However, the EUR strengthened roughly 2% against USD over the year, and the company derives 25% of revenue from European billings. Calculate constant currency growth.",
+          "steps": [
+            "Identify reported USD growth = 1.3% YoY",
+            "Estimate currency tailwind from EUR strength = ~0.5% (2% EUR strengthening × 25% European revenue exposure)",
+            "Calculate CC growth = Reported growth − Currency tailwind = 1.3% − 0.5% = 0.8%"
+          ],
+          "result": "Constant Currency Growth = 0.8% YoY; reported USD growth of 1.3% was roughly 40% currency tailwind.",
+          "insight": "The true operating growth was 0.8%, not 1.3%. Compare to TCS Q4FY24 (reported 3.5% USD, 2.2% CC): both companies benefited from EUR strength, but TCS's underlying business grew faster. Always normalise peer comparisons to constant currency to avoid being misled by forex movements."
+        },
+        "sensitivity_note": "Constant currency growth is the single most important number in any IT services concall. When EUR/USD moved from 1.05 to 1.10 over FY24, it added roughly 50-70 basis points of cross-currency tailwind to reported USD growth for European-exposed Indian IT companies. The opposite happens when USD strengthens. The market consistently rewards companies that explain CC growth clearly and punishes those that hide behind reported numbers. As an analyst, always normalise your peer comparison to CC."
+      },
+      {
+        "name": "Book-to-Bill Ratio (TTM)",
+        "formula": "Book-to-Bill (TTM) = TTM Total Contract Value Signed / TTM Revenue Recognised",
+        "variables": [
+          {
+            "symbol": "TTM TCV Signed",
+            "meaning": "Sum of total contract values for new and renewed contracts won over the trailing twelve months. Disclosed by some companies (HCL Tech, LTIMindtree); estimated from quarterly disclosures for others"
+          },
+          {
+            "symbol": "TTM Revenue",
+            "meaning": "Total revenue recognised over the trailing twelve months — the denominator that contextualises whether new wins are growing relative to the existing run-rate"
+          }
+        ],
+        "plain_english": "The book-to-bill ratio measures how much new contract value a company is winning relative to its current revenue run-rate. A ratio above 1.0 means the company is winning more business than it is currently executing, suggesting strong future growth. Below 1.0 indicates the company is not replenishing its contract backlog fast enough to sustain current growth — a leading warning signal. For IT services companies, this is a critical forward-looking metric because there is typically a 6-12 month lag between contract signing and revenue recognition.",
+        "computation": [
+          "Sum all new contract TCV wins announced in the trailing 12 months (TTM TCV Signed)",
+          "Sum all revenue recognised over the same 12-month period (TTM Revenue)",
+          "Divide TTM TCV Signed by TTM Revenue to get the ratio"
+        ],
+        "worked_example": {
+          "problem": "HCL Tech Q1FY25: TTM TCV signed = ₹9,500 million USD. TTM Revenue = ₹13,700 million USD. Calculate book-to-bill and interpret.",
+          "steps": [
+            "Book-to-Bill = TTM TCV Signed / TTM Revenue = 9,500 / 13,700",
+            "= 0.69x"
+          ],
+          "result": "Book-to-Bill = 0.69x",
+          "insight": "At 0.69x, HCL Tech is below the healthy threshold of 0.9–1.1x. This signals that new contract wins are not keeping pace with current revenue. This is a leading indicator of growth deceleration 2–3 quarters ahead. Compare to Infosys (TTM TCV ~₹17,300M, TTM Revenue ~₹18,600M, B2B = 0.93x), which sits in the healthy zone. Tier-1 IT companies typically disclose 'Large Deal TCV' (deals >$50M) as the most-watched subset. A B2B of 1.0x+ for two consecutive quarters is a positive growth signal; below 0.8x for two consecutive quarters is a negative growth signal."
+        },
+        "sensitivity_note": "TCV is a leading indicator with a 6-12 month conversion lag — most contracts take 2-3 quarters from win to revenue recognition. So a strong TCV quarter today predicts strong revenue 6-12 months out. Conversely, a weak TCV quarter does NOT immediately hurt revenue (existing contracts continue running off) but it forecasts revenue weakness 2-3 quarters later. This is why TCV trends often diverge from current revenue trends. Read both in tandem."
+      },
+      {
+        "name": "Margin Walk Decomposition",
+        "formula": "ΔEBIT Margin = ΔUtilisation + ΔPyramid + ΔPricing + ΔCurrency + ΔSG&A leverage + ΔSub-contractor costs + Other",
+        "variables": [
+          {
+            "symbol": "ΔUtilisation",
+            "meaning": "Change in billable utilisation. Each 1% of utilisation typically adds/removes ~25-30 bps to EBIT margin"
+          },
+          {
+            "symbol": "ΔPyramid",
+            "meaning": "Shift in junior:senior mix. Junior-heavy expansion is margin-accretive (lower fully-loaded cost per billable hour)"
+          },
+          {
+            "symbol": "ΔPricing",
+            "meaning": "Change in realised hourly billing rate. Strong demand allows price hikes; weak demand forces concessions"
+          },
+          {
+            "symbol": "ΔCurrency",
+            "meaning": "Net impact of forex on rupee-denominated costs vs USD-denominated revenue. INR depreciation typically adds margin"
+          },
+          {
+            "symbol": "ΔSG&A leverage",
+            "meaning": "Operating leverage on fixed costs as revenue scales. Each 5% revenue growth on flat SG&A adds ~30-40 bps margin"
+          },
+          {
+            "symbol": "ΔSub-contractor costs",
+            "meaning": "Costs of bench staff and external contractors brought in to fill capacity gaps. Higher sub-contractor mix is margin-dilutive"
+          }
+        ],
+        "plain_english": "The margin walk decomposes changes in EBIT margin into specific operational drivers: utilisation, staffing mix, pricing power, forex, overhead absorption, and contractor costs. Rather than just noting that margin expanded by 50 bps, the walk reveals which drivers contributed and whether they are sustainable. Currency tailwinds and one-time mix shifts are transitory; pricing power and utilisation improvements tend to repeat. This framework is essential for forecasting margin sustainability and distinguishing 'real' operational improvement from cosmetic changes.",
+        "computation": [
+          "Start with prior period EBIT margin (base)",
+          "Calculate the change in each driver (utilisation, pyramid, pricing, currency, SG&A, sub-contractor) in basis points",
+          "Add all positive drivers and subtract all negative drivers",
+          "Verify that the sum equals the reported change in EBIT margin"
+        ],
+        "worked_example": {
+          "problem": "TCS FY24 EBIT Margin = 24.6%, FY23 EBIT Margin = 24.1% (+50 bps expansion). Decompose the margin walk using disclosed drivers: Utilisation +60 bps, Pyramid −20 bps, Currency +40 bps, Sub-contractor costs +30 bps, Pricing −50 bps, SG&A leverage −10 bps.",
+          "steps": [
+            "Sum positive drivers: Utilisation (+60) + Currency (+40) + Sub-contractor (+30) = +130 bps",
+            "Sum negative drivers: Pyramid (−20) + Pricing (−50) + SG&A leverage (−10) = −80 bps",
+            "Net change: +130 − 80 = +50 bps",
+            "Compare to reported margin change: FY24 24.6% − FY23 24.1% = +50 bps ✓"
+          ],
+          "result": "Margin walk explains the 50 bps expansion: +60 bps from better bench management offset by −50 bps from pricing concessions; net gain of +50 bps after all factors.",
+          "insight": "The walk reveals story quality: Utilisation (+60) and Sub-contractor efficiency (+30) are likely repeatable operational improvements. Currency (+40) is a one-time tailwind (INR depreciation) that may reverse. Pricing (−50) reflects competitive pressure — concerning for sustainability. The margin expansion looks decent in headline, but pricing pressure is a red flag for future quarters. An analyst who only reads '24.6% margin' misses this underlying weakness."
+        },
+        "sensitivity_note": "The margin walk is the most useful diagnostic tool in IT services analysis. Analysts who memorise margin numbers without decomposing them into drivers miss the underlying story. A 50 bps margin expansion can be 'good' (utilisation, leverage, pricing) or 'cosmetic' (one-time currency tailwind that will reverse). Always read the margin walk in concall slides and ask: which drivers are repeatable next quarter, and which are not?"
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)",
+        "=ROUND(value, 1)",
+        "Format → Conditional Formatting (Data Bars)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for vertical/geographic mix tables)",
+        "=GROWTH(range) for trend extrapolation",
+        "Ctrl + Shift + 5 (% format)",
+        "=ROUND(value, 1) for clean ratio display",
+        "Conditional formatting Data Bars for utilisation/attrition trends across peers"
+      ]
+    }
+  }
+}

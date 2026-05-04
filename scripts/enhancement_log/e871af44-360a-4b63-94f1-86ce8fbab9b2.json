@@ -1,0 +1,222 @@
+{
+  "id": "e871af44-360a-4b63-94f1-86ce8fbab9b2",
+  "label": "M12 S4 | WACC and the Cost-of-Debt Family",
+  "before": {
+    "formulas": [
+      {
+        "name": "After-tax Cost of Debt",
+        "formula": "Kd (after-tax) = Kd (pre-tax) × (1 - T)",
+        "variables": [
+          {
+            "symbol": "Kd (pre-tax)",
+            "meaning": "The headline interest rate from YTM, blended interest expense, or synthetic rating"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal corporate tax rate (25.17% standard for Indian companies post-2019)"
+          }
+        ],
+        "worked_example": "Asian Paints has minimal debt. Pre-tax Kd from blended interest expense ~ 7.5%. After-tax Kd = 7.5% × (1 - 0.2517) = 5.61%. Reliance Industries borrows at roughly 8% blended (mixing INR borrowings and lower-cost USD bonds). After-tax Kd = 8% × (1 - 0.2517) = 5.99%. Vedanta as a more leveraged credit borrows at roughly 11% blended given higher default spreads. After-tax Kd = 11% × (1 - 0.2517) = 8.23%.",
+        "sensitivity_note": "The tax shield typically reduces Kd by 25-30% in absolute terms. A 100bps increase in pre-tax Kd translates to roughly 75bps in after-tax Kd. The shield matters enormously over the long-duration discounting of a DCF — a 200bps difference in after-tax Kd compounds across every year of cash flow."
+      },
+      {
+        "name": "Synthetic Credit Rating from Interest Coverage",
+        "formula": "Pre-tax Kd = Rf + Default Spread (mapped from Interest Coverage Ratio)",
+        "variables": [
+          {
+            "symbol": "Rf",
+            "meaning": "Risk-free rate (10-year G-Sec)"
+          },
+          {
+            "symbol": "Interest Coverage Ratio",
+            "meaning": "EBIT / Interest Expense"
+          },
+          {
+            "symbol": "Default Spread",
+            "meaning": "From Damodaran's published table — see worked example"
+          }
+        ],
+        "worked_example": "For an unlisted Indian midcap with EBIT of ₹500 cr and Interest Expense of ₹100 cr, Interest Coverage = 5.0x. Per Damodaran's synthetic rating table, Interest Coverage of 4.5x-6.0x maps to a BBB rating with a default spread of approximately 1.50%. Pre-tax Kd = 6.85% (G-Sec) + 1.50% = 8.35%. After-tax Kd at 25.17% tax rate = 8.35% × 0.7483 = 6.25%. This is the workhorse method when bond yields are unavailable.",
+        "sensitivity_note": "Synthetic ratings can shift dramatically with one bad year of EBIT. A company that drops from 5x interest coverage to 2x might move from BBB to BB or B, with default spreads jumping 200-400bps. This is why analysts often use the average interest coverage over 3 years rather than a single year for stability."
+      },
+      {
+        "name": "Weighted Average Cost of Capital (WACC)",
+        "formula": "WACC = (E / V) × Ke + (D / V) × Kd × (1 - T)",
+        "variables": [
+          {
+            "symbol": "E",
+            "meaning": "Market value of equity (market cap = share price × shares outstanding)"
+          },
+          {
+            "symbol": "D",
+            "meaning": "Market value of debt (typically approximated by book value of debt for non-traded debt)"
+          },
+          {
+            "symbol": "V",
+            "meaning": "Total market value of capital = E + D"
+          },
+          {
+            "symbol": "Ke",
+            "meaning": "Cost of equity from CAPM (Session 3)"
+          },
+          {
+            "symbol": "Kd",
+            "meaning": "Pre-tax cost of debt"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal tax rate"
+          }
+        ],
+        "worked_example": "Asian Paints in April 2026: Market cap ₹2,80,000 cr, Total Debt ₹3,000 cr (negligible). E/V = 280,000 / 283,000 = 98.94%. D/V = 1.06%. Ke = 11.7% (from Session 3 with beta 0.65). Pre-tax Kd = 7.5%. WACC = 0.9894 × 11.7% + 0.0106 × 7.5% × 0.7483 = 11.58% + 0.06% = 11.64%. Notice that for nearly-debt-free companies, WACC is essentially equal to Ke — the debt component contributes almost nothing.",
+        "sensitivity_note": "WACC is highly sensitive to capital structure weights. A company moving from 30% debt to 50% debt at constant Kd and Ke would see WACC drop by roughly 100-150bps. This is why Modigliani-Miller is wrong in detail (zero leverage isn't optimal because of the tax shield) but right in spirit (extreme leverage destroys value because of distress costs)."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SUMPRODUCT(weights, rates)",
+        "Ctrl + ` — toggle formula view",
+        "Cmd + Shift + L — toggle filter"
+      ],
+      "windows": [
+        "=SUMPRODUCT(weights, rates) — clean way to compute weighted average",
+        "Ctrl + ` — toggle between formula view and value view to audit complex calculations",
+        "F2 — edit the active cell to inspect the formula",
+        "Ctrl + Shift + L — toggle filter on a debt schedule to check tenor, currency, coupon"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "After-tax Cost of Debt",
+        "formula": "Kd (after-tax) = Kd (pre-tax) × (1 - T)",
+        "variables": [
+          {
+            "symbol": "Kd (pre-tax)",
+            "meaning": "The headline interest rate from YTM, blended interest expense, or synthetic rating"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal corporate tax rate (25.17% standard for Indian companies post-2019)"
+          }
+        ],
+        "plain_english": "The after-tax cost of debt reflects the true economic cost to the firm after accounting for the tax deductibility of interest payments. Because interest expense reduces taxable income, the government effectively subsidizes debt through lower taxes. This tax shield makes debt cheaper than its headline rate suggests — a critical reason why companies use some leverage in their capital structure.",
+        "worked_example": {
+          "problem": "Three Indian firms report blended interest expenses. Calculate their after-tax cost of debt using the 25.17% marginal tax rate.",
+          "steps": [
+            "Asian Paints: Pre-tax Kd = 7.5%. After-tax Kd = 7.5% × (1 − 0.2517) = 7.5% × 0.7483 = 5.61%.",
+            "Reliance Industries: Pre-tax Kd = 8.0% (mix of INR and USD borrowings). After-tax Kd = 8.0% × 0.7483 = 5.99%.",
+            "Vedanta: Pre-tax Kd = 11.0% (higher spread due to leverage). After-tax Kd = 11.0% × 0.7483 = 8.23%."
+          ],
+          "result": "Asian Paints 5.61%, Reliance 5.99%, Vedanta 8.23%",
+          "insight": "The tax shield reduces headline Kd by roughly 25–30% in absolute terms. Over a multi-year DCF, even small differences in after-tax Kd (e.g., 75 bps vs. 100 bps) compound significantly across all periods, shifting enterprise value by percentage points."
+        },
+        "sensitivity_note": "The tax shield typically reduces Kd by 25-30% in absolute terms. A 100bps increase in pre-tax Kd translates to roughly 75bps in after-tax Kd. The shield matters enormously over the long-duration discounting of a DCF — a 200bps difference in after-tax Kd compounds across every year of cash flow."
+      },
+      {
+        "name": "Synthetic Credit Rating from Interest Coverage",
+        "formula": "Pre-tax Kd = Rf + Default Spread (mapped from Interest Coverage Ratio)",
+        "variables": [
+          {
+            "symbol": "Rf",
+            "meaning": "Risk-free rate (10-year G-Sec yield, e.g., ~6.85% in early 2026)"
+          },
+          {
+            "symbol": "Interest Coverage Ratio",
+            "meaning": "EBIT / Interest Expense — measures how many times a firm can cover interest from operating earnings"
+          },
+          {
+            "symbol": "Default Spread",
+            "meaning": "From Damodaran's published table — mapped from Interest Coverage to synthetic rating (e.g., 5x IC → BBB → 1.50% spread)"
+          }
+        ],
+        "plain_english": "When a company's debt is not traded (no market price available), we infer its credit quality and cost using interest coverage — a simple measure of earnings cushion relative to debt obligations. By mapping interest coverage to a synthetic rating table (pioneered by Aswath Damodaran), we assign a default spread that reflects the company's actual default risk. This approach works for private companies and for divisions of larger firms where bond yields are unavailable.",
+        "computation": [
+          "Calculate EBIT / Interest Expense to obtain the Interest Coverage Ratio.",
+          "Look up the Interest Coverage Ratio in Damodaran's synthetic rating table to find the mapped rating (AAA, AA, A, BBB, BB, B, etc.).",
+          "Read the default spread for that rating from the same table.",
+          "Add the default spread to the risk-free rate (10-year G-Sec) to get pre-tax Kd."
+        ],
+        "worked_example": {
+          "problem": "An unlisted Indian midcap has EBIT of ₹500 cr and annual interest expense of ₹100 cr. G-Sec yield is 6.85%. Estimate its pre-tax and after-tax cost of debt.",
+          "steps": [
+            "Interest Coverage Ratio = 500 / 100 = 5.0x.",
+            "Per Damodaran's table, IC of 4.5x–6.0x maps to BBB rating with default spread ≈ 1.50%.",
+            "Pre-tax Kd = 6.85% + 1.50% = 8.35%.",
+            "After-tax Kd (at 25.17% tax rate) = 8.35% × (1 − 0.2517) = 8.35% × 0.7483 = 6.25%."
+          ],
+          "result": "Pre-tax Kd 8.35%, After-tax Kd 6.25%",
+          "insight": "The synthetic rating approach bridges the gap between listed and unlisted companies. A single bad year can shift coverage dramatically (e.g., 5x → 2x), causing a rating drop and spread increase of 200–400 bps. Analysts typically average IC over 3 years to reduce year-to-year noise."
+        },
+        "sensitivity_note": "Synthetic ratings can shift dramatically with one bad year of EBIT. A company that drops from 5x interest coverage to 2x might move from BBB to BB or B, with default spreads jumping 200-400bps. This is why analysts often use the average interest coverage over 3 years rather than a single year for stability."
+      },
+      {
+        "name": "Weighted Average Cost of Capital (WACC)",
+        "formula": "WACC = (E / V) × Ke + (D / V) × Kd × (1 - T)",
+        "variables": [
+          {
+            "symbol": "E",
+            "meaning": "Market value of equity (market cap = share price × shares outstanding)"
+          },
+          {
+            "symbol": "D",
+            "meaning": "Market value of debt (typically approximated by book value of debt for non-traded debt)"
+          },
+          {
+            "symbol": "V",
+            "meaning": "Total market value of capital = E + D"
+          },
+          {
+            "symbol": "Ke",
+            "meaning": "Cost of equity from CAPM (Session 3)"
+          },
+          {
+            "symbol": "Kd",
+            "meaning": "Pre-tax cost of debt"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal tax rate"
+          }
+        ],
+        "plain_english": "WACC is the blended cost of all capital financing the firm — both equity and debt, weighted by their market values. It represents the minimum return the firm must earn on its investments to satisfy all investors (equity and debt holders). WACC is the all-important discount rate in DCF valuation because it reflects both the risk of the business and the firm's capital structure.",
+        "computation": [
+          "Calculate market value of equity: E = current share price × shares outstanding.",
+          "Obtain or estimate market value of debt: D ≈ book value for non-traded debt, or sum of market prices for traded bonds.",
+          "Calculate total capital: V = E + D.",
+          "Calculate weight of equity: E / V.",
+          "Calculate weight of debt: D / V.",
+          "Apply the formula: (E/V) × Ke + (D/V) × Kd × (1 − T)."
+        ],
+        "worked_example": {
+          "problem": "Asian Paints in April 2026. Market cap ₹2,80,000 cr, Total Debt ₹3,000 cr, Ke = 11.7% (beta 0.65), Pre-tax Kd = 7.5%, Tax rate 25.17%. Calculate WACC.",
+          "steps": [
+            "E = ₹2,80,000 cr (given market cap).",
+            "D = ₹3,000 cr (given total debt).",
+            "V = E + D = 2,80,000 + 3,000 = ₹2,83,000 cr.",
+            "E / V = 2,80,000 / 2,83,000 = 98.94%.",
+            "D / V = 3,000 / 2,83,000 = 1.06%.",
+            "WACC = (0.9894 × 11.7%) + (0.0106 × 7.5% × (1 − 0.2517)) = 11.58% + (0.0106 × 7.5% × 0.7483) = 11.58% + 0.06% = 11.64%."
+          ],
+          "result": "WACC = 11.64%",
+          "insight": "For nearly debt-free companies like Asian Paints, WACC is almost identical to Ke. The debt component contributes negligibly because D/V is tiny. This changes dramatically for leveraged firms — a capital-intensive company with 40% debt weight can see WACC 200–300 bps below Ke due to the tax shield on debt."
+        },
+        "sensitivity_note": "WACC is highly sensitive to capital structure weights. A company moving from 30% debt to 50% debt at constant Kd and Ke would see WACC drop by roughly 100-150bps. This is why Modigliani-Miller is wrong in detail (zero leverage isn't optimal because of the tax shield) but right in spirit (extreme leverage destroys value because of distress costs)."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SUMPRODUCT(weights, rates)",
+        "Ctrl + ` — toggle formula view",
+        "Cmd + Shift + L — toggle filter"
+      ],
+      "windows": [
+        "=SUMPRODUCT(weights, rates) — clean way to compute weighted average",
+        "Ctrl + ` — toggle between formula view and value view to audit complex calculations",
+        "F2 — edit the active cell to inspect the formula",
+        "Ctrl + Shift + L — toggle filter on a debt schedule to check tenor, currency, coupon"
+      ]
+    }
+  }
+}

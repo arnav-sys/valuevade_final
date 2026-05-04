@@ -1,0 +1,442 @@
+{
+  "id": "5ae4e2e9-4cb8-4e44-9712-527e1464af70",
+  "label": "M1 S10 | Capital Structure and Shareholder Return Formulas with Airte",
+  "before": {
+    "formulas": [
+      {
+        "tells": "Leverage level",
+        "metric": "Debt-to-Equity",
+        "formula": "Total Debt / Equity"
+      },
+      {
+        "tells": "Debt proportion of total funding",
+        "metric": "Debt-to-Capital",
+        "formula": "Total Debt / (Debt + Equity)"
+      },
+      {
+        "tells": "True debt burden",
+        "metric": "Net Debt",
+        "formula": "Total Debt - Cash"
+      },
+      {
+        "tells": "Ability to service debt (>2.5x healthy)",
+        "metric": "Interest Coverage",
+        "formula": "EBIT / Interest Expense"
+      },
+      {
+        "tells": "Total debt service ability",
+        "metric": "DSCR",
+        "formula": "(EBITDA - Tax) / (Interest + Principal)"
+      },
+      {
+        "tells": "Annual tax savings from debt",
+        "metric": "Tax Shield",
+        "formula": "Interest Expense x Tax Rate"
+      },
+      {
+        "tells": "Blended borrowing cost",
+        "metric": "Avg Cost of Debt",
+        "formula": "Total Interest / Avg Total Debt"
+      },
+      {
+        "tells": "Income return",
+        "metric": "Dividend Yield",
+        "formula": "Annual DPS / Market Price"
+      },
+      {
+        "tells": "% of profit distributed",
+        "metric": "Payout Ratio",
+        "formula": "Dividends / Net Profit"
+      },
+      {
+        "tells": "% reinvested",
+        "metric": "Retention Ratio",
+        "formula": "1 - Payout Ratio"
+      },
+      {
+        "tells": "Max growth without external capital",
+        "metric": "Sustainable Growth Rate",
+        "formula": "ROE x Retention Ratio"
+      },
+      {
+        "tells": "Leverage amplification",
+        "metric": "Financial Leverage Effect",
+        "formula": "ROE - ROA (approx)"
+      }
+    ],
+    "worked_example": {
+      "data": {
+        "PAT": "18,000cr",
+        "Cash": "12,000cr",
+        "EBIT": "42,000cr",
+        "EBITDA": "62,000cr",
+        "Equity": "85,000cr",
+        "LT_Debt": "1,10,000cr",
+        "ST_Debt": "15,000cr",
+        "Interest": "12,500cr",
+        "Net_Debt": "1,13,000cr",
+        "Tax_Rate": "25%",
+        "Total_Debt": "1,25,000cr"
+      },
+      "ratios": {
+        "DE": "1.47x",
+        "Tax_Shield": "3,125cr/year",
+        "Avg_Cost_Debt": "10.0%",
+        "Net_Debt_EBITDA": "1.82x",
+        "Interest_Coverage": "3.36x"
+      },
+      "company": "Bharti Airtel",
+      "sensitivity": "If rates rise 1% (10% to 11%), interest up ~1,250cr, PAT down ~937cr (post-tax). ~5% earnings hit from seemingly small rate move. Why interest rate sensitivity matters for leveraged companies.",
+      "interpretation": "D/E 1.47x moderate for telecom. Interest coverage 3.36x comfortable. Net Debt/EBITDA 1.82x means could repay in under 2 years. Tax shield of 3,125cr is meaningful. But high absolute debt (1.25L cr) means any sustained ARPU downturn could stress BS."
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "tells": "Leverage level",
+        "metric": "Debt-to-Equity",
+        "formula": "Total Debt / Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Sum of long-term and short-term borrowings"
+          },
+          {
+            "symbol": "Equity",
+            "meaning": "Total shareholders' equity or book value of equity"
+          }
+        ],
+        "plain_english": "This ratio measures how much debt a company uses relative to shareholder capital. A D/E of 1.5x means the company has ₹1.50 of debt for every ₹1 of equity. Higher ratios indicate more financial leverage and typically higher risk, though context matters by industry (telecom tolerates higher leverage than software).",
+        "worked_example": {
+          "problem": "Airtel has Total Debt of ₹1,25,000 cr and Equity of ₹85,000 cr. Calculate D/E.",
+          "steps": [
+            "D/E = Total Debt / Equity",
+            "D/E = 1,25,000 / 85,000",
+            "D/E = 1.47x"
+          ],
+          "result": "1.47x",
+          "insight": "Airtel's moderate leverage is typical for telecom; the company has ₹1.47 of debt per rupee of equity, reflecting the capital-intensive nature of telecom infrastructure."
+        }
+      },
+      {
+        "tells": "Debt proportion of total funding",
+        "metric": "Debt-to-Capital",
+        "formula": "Total Debt / (Debt + Equity)",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Sum of all borrowed funds (short-term and long-term)"
+          },
+          {
+            "symbol": "Equity",
+            "meaning": "Total shareholders' equity"
+          }
+        ],
+        "plain_english": "This ratio shows what percentage of the company's total capital structure is financed by debt. Unlike D/E, which can exceed 1, D/C is bounded between 0 and 1. A D/C of 0.60 means 60% debt and 40% equity funding. Analysts use this to compare leverage across companies with different equity bases.",
+        "worked_example": {
+          "problem": "Airtel's Total Debt is ₹1,25,000 cr and Equity is ₹85,000 cr. What is D/C?",
+          "steps": [
+            "D/C = Total Debt / (Total Debt + Equity)",
+            "D/C = 1,25,000 / (1,25,000 + 85,000)",
+            "D/C = 1,25,000 / 2,10,000",
+            "D/C = 0.595 or 59.5%"
+          ],
+          "result": "59.5%",
+          "insight": "Airtel funds about 60% of its capital from debt and 40% from equity, showing meaningful reliance on borrowed capital typical of telecom operators."
+        }
+      },
+      {
+        "tells": "True debt burden",
+        "metric": "Net Debt",
+        "formula": "Total Debt - Cash",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Sum of long-term and short-term borrowings"
+          },
+          {
+            "symbol": "Cash",
+            "meaning": "Cash and cash equivalents on the balance sheet"
+          }
+        ],
+        "plain_english": "Net Debt removes cash from the gross debt picture, giving the 'true' debt burden. A company with ₹100 cr debt but ₹80 cr cash has net debt of only ₹20 cr—it could theoretically pay down most debt immediately. Net Debt is crucial for assessing actual financial distress risk.",
+        "worked_example": {
+          "problem": "Airtel has Total Debt of ₹1,25,000 cr and Cash of ₹12,000 cr. Calculate Net Debt.",
+          "steps": [
+            "Net Debt = Total Debt - Cash",
+            "Net Debt = 1,25,000 - 12,000",
+            "Net Debt = 1,13,000 cr"
+          ],
+          "result": "₹1,13,000 cr",
+          "insight": "Although Airtel carries ₹1,25,000 cr gross debt, the ₹12,000 cr cash reduces the true burden to ₹1,13,000 cr. Still substantial, but the cash provides a buffer for debt service and emergencies."
+        }
+      },
+      {
+        "tells": "Ability to service debt (>2.5x healthy)",
+        "metric": "Interest Coverage",
+        "formula": "EBIT / Interest Expense",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax; operating profit"
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Total annual interest paid on all debt"
+          }
+        ],
+        "plain_english": "Interest Coverage measures how many times a company can pay its interest bill from operating earnings. A ratio of 3.0x means EBIT is 3 times interest expense—a healthy cushion. Below 2.0x signals stress; below 1.0x means the company cannot cover interest from operations and risks default. This is the first ratio lenders and equity analysts check.",
+        "worked_example": {
+          "problem": "Airtel's EBIT is ₹42,000 cr and Interest Expense is ₹12,500 cr. Calculate Interest Coverage.",
+          "steps": [
+            "Interest Coverage = EBIT / Interest Expense",
+            "Interest Coverage = 42,000 / 12,500",
+            "Interest Coverage = 3.36x"
+          ],
+          "result": "3.36x",
+          "insight": "Airtel's 3.36x coverage is comfortable—operating earnings comfortably exceed interest obligations. Even a significant EBIT decline would not immediately threaten debt service, making the company's interest payments relatively safe."
+        }
+      },
+      {
+        "tells": "Total debt service ability",
+        "metric": "DSCR",
+        "formula": "(EBITDA - Tax) / (Interest + Principal)",
+        "variables": [
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, and Amortization"
+          },
+          {
+            "symbol": "Tax",
+            "meaning": "Total income tax expense"
+          },
+          {
+            "symbol": "Interest",
+            "meaning": "Total annual interest payments on debt"
+          },
+          {
+            "symbol": "Principal",
+            "meaning": "Principal repayment due within the period (usually one year)"
+          }
+        ],
+        "plain_english": "Debt Service Coverage Ratio (DSCR) is the ultimate debt repayment stress test. It shows whether cash available after tax can cover both interest and principal repayment. A DSCR of 1.5x is healthy; below 1.0x signals the company cannot service debt from cash flow. This ratio is particularly important in project finance and for companies with large principal repayments.",
+        "worked_example": {
+          "problem": "Airtel has EBITDA of ₹62,000 cr, Tax of ₹18,000 cr, Interest of ₹12,500 cr, and Principal due of ₹8,000 cr. Calculate DSCR.",
+          "steps": [
+            "DSCR = (EBITDA - Tax) / (Interest + Principal)",
+            "DSCR = (62,000 - 18,000) / (12,500 + 8,000)",
+            "DSCR = 44,000 / 20,500",
+            "DSCR = 2.15x"
+          ],
+          "result": "2.15x",
+          "insight": "Airtel's 2.15x DSCR shows it can cover both interest and principal repayment more than twice over from cash available after tax. This is a healthy cushion, indicating sustainable debt service even under modest business stress."
+        }
+      },
+      {
+        "tells": "Annual tax savings from debt",
+        "metric": "Tax Shield",
+        "formula": "Interest Expense × Tax Rate",
+        "variables": [
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Total annual interest payments on all debt"
+          },
+          {
+            "symbol": "Tax Rate",
+            "meaning": "Marginal corporate income tax rate (as a decimal)"
+          }
+        ],
+        "plain_english": "Because interest is tax-deductible, debt provides a 'tax shield'—a real saving. If a company pays ₹100 cr interest at a 25% tax rate, it saves ₹25 cr in taxes. This is one reason companies use debt: the government effectively subsidises borrowing. Tax shields amplify the true benefit (or cost) of financial leverage.",
+        "worked_example": {
+          "problem": "Airtel pays ₹12,500 cr in annual interest with a 25% tax rate. Calculate the Tax Shield.",
+          "steps": [
+            "Tax Shield = Interest Expense × Tax Rate",
+            "Tax Shield = 12,500 × 0.25",
+            "Tax Shield = 3,125 cr"
+          ],
+          "result": "₹3,125 cr per year",
+          "insight": "Airtel receives an annual tax benefit of ₹3,125 cr from its debt interest deductions. This reduces the true after-tax cost of borrowing and is a material benefit to shareholders—one reason why financial leverage is not purely a cost."
+        }
+      },
+      {
+        "tells": "Blended borrowing cost",
+        "metric": "Avg Cost of Debt",
+        "formula": "Total Interest / Avg Total Debt",
+        "variables": [
+          {
+            "symbol": "Total Interest",
+            "meaning": "Total annual interest expense across all debt instruments"
+          },
+          {
+            "symbol": "Avg Total Debt",
+            "meaning": "Average of opening and closing total debt balances"
+          }
+        ],
+        "plain_english": "This is the weighted average interest rate Airtel actually pays across all its debt. If total debt is ₹125,000 cr and total interest is ₹12,500 cr, the cost of debt is 10%. Analysts compare this to market rates, credit spreads, and the company's credit rating to assess whether the company is borrowing efficiently.",
+        "worked_example": {
+          "problem": "Airtel's Total Interest is ₹12,500 cr and Average Total Debt is ₹1,25,000 cr. Calculate Avg Cost of Debt.",
+          "steps": [
+            "Avg Cost of Debt = Total Interest / Avg Total Debt",
+            "Avg Cost of Debt = 12,500 / 1,25,000",
+            "Avg Cost of Debt = 0.10 or 10.0%"
+          ],
+          "result": "10.0% per annum",
+          "insight": "Airtel's average borrowing cost of 10% reflects its rating and market conditions. If Airtel's risk-free rate is 6.5%, this 10% implies a 3.5% credit spread—reasonable for a telecommunications operator with moderate leverage."
+        }
+      },
+      {
+        "tells": "Income return",
+        "metric": "Dividend Yield",
+        "formula": "Annual DPS / Market Price",
+        "variables": [
+          {
+            "symbol": "Annual DPS",
+            "meaning": "Dividend Per Share; total annual dividends declared per equity share"
+          },
+          {
+            "symbol": "Market Price",
+            "meaning": "Current share price in the market"
+          }
+        ],
+        "plain_english": "Dividend Yield measures the annual cash return an investor receives from holding one share. If a stock trades at ₹500 and pays ₹20 per share in annual dividend, the yield is 4%. Income-focused investors use this to compare yield opportunities across stocks. Higher yields can signal either attractive value or financial stress if unsustainable.",
+        "worked_example": {
+          "problem": "Assume Airtel's Annual DPS is ₹2.50 and the market price is ₹650. Calculate Dividend Yield.",
+          "steps": [
+            "Dividend Yield = Annual DPS / Market Price",
+            "Dividend Yield = 2.50 / 650",
+            "Dividend Yield = 0.00385 or 0.385%"
+          ],
+          "result": "0.385% or 38.5 bps",
+          "insight": "Airtel's modest yield reflects its reinvestment-focused strategy in a growth industry. Telecom operators often prioritize debt reduction and capex over high dividends, so low yields are not unusual."
+        }
+      },
+      {
+        "tells": "% of profit distributed",
+        "metric": "Payout Ratio",
+        "formula": "Dividends / Net Profit",
+        "variables": [
+          {
+            "symbol": "Dividends",
+            "meaning": "Total cash dividends paid to equity shareholders in the period"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Net income or PAT (Profit After Tax)"
+          }
+        ],
+        "plain_english": "Payout Ratio shows what percentage of earnings the company returns to shareholders as dividends. A 40% payout ratio means 40% of profit is distributed and 60% is retained. This ratio reveals management's dividend policy: growth companies often have low payouts (reinvest earnings), while mature companies have high payouts (limited growth opportunities).",
+        "worked_example": {
+          "problem": "Assume Airtel's annual Dividends are ₹7,200 cr and PAT is ₹18,000 cr. Calculate Payout Ratio.",
+          "steps": [
+            "Payout Ratio = Dividends / Net Profit",
+            "Payout Ratio = 7,200 / 18,000",
+            "Payout Ratio = 0.40 or 40%"
+          ],
+          "result": "40%",
+          "insight": "Airtel returns 40% of earnings as dividends and retains 60% for debt reduction, capex, and growth. This moderate payout is typical for capital-intensive telecom operators managing high leverage."
+        }
+      },
+      {
+        "tells": "% reinvested",
+        "metric": "Retention Ratio",
+        "formula": "1 - Payout Ratio",
+        "variables": [
+          {
+            "symbol": "Payout Ratio",
+            "meaning": "Percentage of net profit distributed as dividends (expressed as a decimal)"
+          }
+        ],
+        "plain_english": "Retention Ratio is the flip side of Payout Ratio—it shows what percentage of earnings is reinvested in the business. A 60% retention ratio means 60% of profit stays in the company for growth, debt repayment, and strategic initiatives. Higher retention supports organic growth but may suppress current shareholder returns.",
+        "worked_example": {
+          "problem": "Airtel's Payout Ratio is 40%. Calculate Retention Ratio.",
+          "steps": [
+            "Retention Ratio = 1 - Payout Ratio",
+            "Retention Ratio = 1 - 0.40",
+            "Retention Ratio = 0.60 or 60%"
+          ],
+          "result": "60%",
+          "insight": "Airtel retains 60% of earnings, prioritizing debt management and infrastructure investment over shareholder distributions. This supports long-term balance-sheet strength in a capital-heavy industry."
+        }
+      },
+      {
+        "tells": "Max growth without external capital",
+        "metric": "Sustainable Growth Rate",
+        "formula": "ROE × Retention Ratio",
+        "variables": [
+          {
+            "symbol": "ROE",
+            "meaning": "Return on Equity; net income divided by average shareholders' equity"
+          },
+          {
+            "symbol": "Retention Ratio",
+            "meaning": "Percentage of net profit retained (not paid as dividends)"
+          }
+        ],
+        "plain_english": "Sustainable Growth Rate (SGR) is the maximum rate at which a company can grow using only internally retained earnings, without raising new equity or increasing leverage. If ROE is 20% and retention is 60%, SGR is 12%—the company can grow earnings at 12% per year indefinitely using only reinvested profit. This is a key metric for valuing stable, mature companies.",
+        "worked_example": {
+          "problem": "Airtel has ROE of 21% and Retention Ratio of 60%. Calculate Sustainable Growth Rate.",
+          "steps": [
+            "Assume ROE = 21% = 0.21",
+            "Retention Ratio = 60% = 0.60",
+            "SGR = ROE × Retention Ratio",
+            "SGR = 0.21 × 0.60",
+            "SGR = 0.126 or 12.6%"
+          ],
+          "result": "12.6% per annum",
+          "insight": "Airtel can sustainably grow at 12.6% per year using retained earnings alone. This is a reasonable benchmark for telecom—if Airtel targets growth above 12.6%, it must raise external capital (equity, debt, or asset sales)."
+        }
+      },
+      {
+        "tells": "Leverage amplification",
+        "metric": "Financial Leverage Effect",
+        "formula": "ROE - ROA (approx)",
+        "variables": [
+          {
+            "symbol": "ROE",
+            "meaning": "Return on Equity; net income divided by average shareholders' equity"
+          },
+          {
+            "symbol": "ROA",
+            "meaning": "Return on Assets; net income divided by average total assets"
+          }
+        ],
+        "plain_english": "The Financial Leverage Effect is the incremental return generated by using debt. If ROA (return on asset base) is 10% but ROE (return on equity only) is 18%, the 8% spread is the amplification from leverage. This shows how borrowed capital magnifies shareholder returns—but also magnifies losses in downturns. It's a key insight into why leverage is a double-edged sword.",
+        "worked_example": {
+          "problem": "Airtel has ROE of 21% and ROA of 12%. Calculate the Financial Leverage Effect.",
+          "steps": [
+            "Financial Leverage Effect = ROE - ROA",
+            "Financial Leverage Effect = 21% - 12%",
+            "Financial Leverage Effect = 9%"
+          ],
+          "result": "9 percentage points",
+          "insight": "Leverage amplifies Airtel's asset returns (12%) by 9 percentage points to deliver 21% equity returns. This shows the power of debt: shareholders earn 9% extra return simply from borrowing. However, this benefit is only sustainable if the business remains profitable and interest costs stay manageable."
+        }
+      }
+    ],
+    "worked_example": {
+      "data": {
+        "PAT": "18,000cr",
+        "Cash": "12,000cr",
+        "EBIT": "42,000cr",
+        "EBITDA": "62,000cr",
+        "Equity": "85,000cr",
+        "LT_Debt": "1,10,000cr",
+        "ST_Debt": "15,000cr",
+        "Interest": "12,500cr",
+        "Net_Debt": "1,13,000cr",
+        "Tax_Rate": "25%",
+        "Total_Debt": "1,25,000cr"
+      },
+      "ratios": {
+        "DE": "1.47x",
+        "Tax_Shield": "3,125cr/year",
+        "Avg_Cost_Debt": "10.0%",
+        "Net_Debt_EBITDA": "1.82x",
+        "Interest_Coverage": "3.36x"
+      },
+      "company": "Bharti Airtel",
+      "sensitivity": "If rates rise 1% (10% to 11%), interest up ~1,250cr, PAT down ~937cr (post-tax). ~5% earnings hit from seemingly small rate move. Why interest rate sensitivity matters for leveraged companies.",
+      "interpretation": "D/E 1.47x moderate for telecom. Interest coverage 3.36x comfortable. Net Debt/EBITDA 1.82x means could repay in under 2 years. Tax shield of 3,125cr is meaningful. But high absolute debt (1.25L cr) means any sustained ARPU downturn could stress BS."
+    }
+  }
+}

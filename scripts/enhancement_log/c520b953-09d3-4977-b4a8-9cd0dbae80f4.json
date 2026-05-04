@@ -1,0 +1,444 @@
+{
+  "id": "c520b953-09d3-4977-b4a8-9cd0dbae80f4",
+  "label": "M3 S5 | Master Reference: All Text Functions",
+  "before": {
+    "shortcuts": [
+      {
+        "mac": "Data → Text to Columns",
+        "action": "Text to Columns wizard",
+        "windows": "Data → Text to Columns"
+      },
+      {
+        "mac": "⌘ + E",
+        "action": "Flash Fill (auto-detect pattern)",
+        "windows": "Ctrl + E"
+      },
+      {
+        "mac": "⌘ + H",
+        "action": "Find and Replace",
+        "windows": "Ctrl + H"
+      },
+      {
+        "mac": "⌘ + Shift + V",
+        "action": "Paste Special → Values",
+        "windows": "Ctrl + Shift + V"
+      },
+      {
+        "mac": "Data → Remove Duplicates",
+        "action": "Remove duplicates",
+        "windows": "Data → Remove Duplicates"
+      },
+      {
+        "mac": "⌘ + Shift + Z",
+        "action": "Select visible cells only",
+        "windows": "Alt + ;"
+      }
+    ],
+    "flash_fill_tip": "Type the cleaned version of 2–3 cells manually, then press Ctrl + E. Excel detects the pattern and applies it to the entire column. It's not a function (no formula is created), so use it for quick one-time cleaning, not for dynamic models.",
+    "functions_table": [
+      {
+        "note": "n is optional; defaults to 1",
+        "syntax": "=LEFT(text, n)",
+        "returns": "First n characters",
+        "function": "LEFT"
+      },
+      {
+        "note": "Combine with LEN for dynamic extraction",
+        "syntax": "=RIGHT(text, n)",
+        "returns": "Last n characters",
+        "function": "RIGHT"
+      },
+      {
+        "note": "start is 1-indexed, not 0",
+        "syntax": "=MID(text, start, n)",
+        "returns": "n chars from position start",
+        "function": "MID"
+      },
+      {
+        "note": "Includes spaces; compare with TRIM to find extras",
+        "syntax": "=LEN(text)",
+        "returns": "Character count",
+        "function": "LEN"
+      },
+      {
+        "note": "Removes leading, trailing, and extra internal spaces",
+        "syntax": "=TRIM(text)",
+        "returns": "Cleaned text",
+        "function": "TRIM"
+      },
+      {
+        "note": "Use with TRIM: CLEAN(TRIM(x))",
+        "syntax": "=CLEAN(text)",
+        "returns": "Text without non-printable chars",
+        "function": "CLEAN"
+      },
+      {
+        "note": "Case-sensitive; 4th arg = specific instance",
+        "syntax": "=SUBSTITUTE(text, old, new)",
+        "returns": "Text with replacements",
+        "function": "SUBSTITUTE"
+      },
+      {
+        "note": "Use & operator instead — shorter, cleaner",
+        "syntax": "=CONCATENATE(a, b, ...)",
+        "returns": "Joined text",
+        "function": "CONCATENATE"
+      },
+      {
+        "note": "Excel 365/2019+ only",
+        "syntax": "=TEXTJOIN(delim, skip, range)",
+        "returns": "Joined with delimiter",
+        "function": "TEXTJOIN"
+      },
+      {
+        "note": "Use before MATCH for case-insensitive lookups",
+        "syntax": "=UPPER(text)",
+        "returns": "ALL CAPS",
+        "function": "UPPER"
+      },
+      {
+        "note": "Alternative to UPPER for standardisation",
+        "syntax": "=LOWER(text)",
+        "returns": "all lowercase",
+        "function": "LOWER"
+      },
+      {
+        "note": "Capitalises first letter of every word",
+        "syntax": "=PROPER(text)",
+        "returns": "Title Case",
+        "function": "PROPER"
+      },
+      {
+        "note": "Loses numeric properties — for display only",
+        "syntax": "=TEXT(value, format)",
+        "returns": "Formatted text string",
+        "function": "TEXT"
+      },
+      {
+        "note": "Use after SUBSTITUTE to convert text-numbers",
+        "syntax": "=VALUE(text)",
+        "returns": "Number",
+        "function": "VALUE"
+      },
+      {
+        "note": "Returns #VALUE! if not found",
+        "syntax": "=FIND(find, in, [start])",
+        "returns": "Position (case-sensitive)",
+        "function": "FIND"
+      },
+      {
+        "note": "Supports * and ? wildcards",
+        "syntax": "=SEARCH(find, in, [start])",
+        "returns": "Position (case-insensitive)",
+        "function": "SEARCH"
+      }
+    ]
+  },
+  "after": {
+    "shortcuts": [
+      {
+        "mac": "Data → Text to Columns",
+        "action": "Text to Columns wizard",
+        "windows": "Data → Text to Columns"
+      },
+      {
+        "mac": "⌘ + E",
+        "action": "Flash Fill (auto-detect pattern)",
+        "windows": "Ctrl + E"
+      },
+      {
+        "mac": "⌘ + H",
+        "action": "Find and Replace",
+        "windows": "Ctrl + H"
+      },
+      {
+        "mac": "⌘ + Shift + V",
+        "action": "Paste Special → Values",
+        "windows": "Ctrl + Shift + V"
+      },
+      {
+        "mac": "Data → Remove Duplicates",
+        "action": "Remove duplicates",
+        "windows": "Data → Remove Duplicates"
+      },
+      {
+        "mac": "⌘ + Shift + Z",
+        "action": "Select visible cells only",
+        "windows": "Alt + ;"
+      }
+    ],
+    "flash_fill_tip": "Type the cleaned version of 2–3 cells manually, then press Ctrl + E. Excel detects the pattern and applies it to the entire column. It's not a function (no formula is created), so use it for quick one-time cleaning, not for dynamic models.",
+    "functions_table": [
+      {
+        "function": "LEFT",
+        "syntax": "=LEFT(text, n)",
+        "returns": "First n characters",
+        "note": "n is optional; defaults to 1",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to extract from"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of characters to extract from the left (optional, defaults to 1)"
+          }
+        ],
+        "plain_english": "Extracts the first n characters from the beginning of a text string. Useful for isolating prefixes, like extracting a company code from a ticker symbol or the first few characters of a product name for classification."
+      },
+      {
+        "function": "RIGHT",
+        "syntax": "=RIGHT(text, n)",
+        "returns": "Last n characters",
+        "note": "Combine with LEN for dynamic extraction",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to extract from"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of characters to extract from the right"
+          }
+        ],
+        "plain_english": "Extracts the last n characters from the end of a text string. Common in finance for pulling suffixes like fiscal year indicators (e.g., last 2 digits of 'FY2024' to get '24') or the right-most digits of an identifier."
+      },
+      {
+        "function": "MID",
+        "syntax": "=MID(text, start, n)",
+        "returns": "n chars from position start",
+        "note": "start is 1-indexed, not 0",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to extract from"
+          },
+          {
+            "symbol": "start",
+            "meaning": "Position of the first character to extract (1-indexed, where 1 is the first character)"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of characters to extract"
+          }
+        ],
+        "plain_english": "Extracts a substring of length n starting at position start. Useful for pulling out middle segments, such as extracting quarter codes from date formats or isolating segments of a multi-part identifier (e.g., 'Q3' from 'FY2024Q3')."
+      },
+      {
+        "function": "LEN",
+        "syntax": "=LEN(text)",
+        "returns": "Character count",
+        "note": "Includes spaces; compare with TRIM to find extras",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to measure"
+          }
+        ],
+        "plain_english": "Counts the total number of characters in a text string, including spaces and punctuation. Use to identify data quality issues (unexpected lengths) or to validate that text entries conform to a standard format."
+      },
+      {
+        "function": "TRIM",
+        "syntax": "=TRIM(text)",
+        "returns": "Cleaned text",
+        "note": "Removes leading, trailing, and extra internal spaces",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to clean"
+          }
+        ],
+        "plain_english": "Removes all leading and trailing spaces, and reduces multiple internal spaces to single spaces. Essential for cleaning imported data before performing matches or concatenations, especially common when data comes from PDFs or poorly formatted sources."
+      },
+      {
+        "function": "CLEAN",
+        "syntax": "=CLEAN(text)",
+        "returns": "Text without non-printable chars",
+        "note": "Use with TRIM: CLEAN(TRIM(x))",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to clean"
+          }
+        ],
+        "plain_english": "Removes non-printable characters (like hidden line breaks and special encoding artifacts) from text. Combine with TRIM for comprehensive cleaning when importing data from legacy systems or web sources."
+      },
+      {
+        "function": "SUBSTITUTE",
+        "syntax": "=SUBSTITUTE(text, old, new)",
+        "returns": "Text with replacements",
+        "note": "Case-sensitive; 4th arg = specific instance",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The original text string or cell reference"
+          },
+          {
+            "symbol": "old",
+            "meaning": "The substring to find and replace (case-sensitive)"
+          },
+          {
+            "symbol": "new",
+            "meaning": "The replacement text"
+          }
+        ],
+        "plain_english": "Finds and replaces all (or a specific instance of) a substring with new text. Useful for standardising company names, converting ticker symbols, or replacing abbreviations (e.g., changing 'Ltd.' to 'Limited' across a column)."
+      },
+      {
+        "function": "CONCATENATE",
+        "syntax": "=CONCATENATE(a, b, ...)",
+        "returns": "Joined text",
+        "note": "Use & operator instead — shorter, cleaner",
+        "variables": [
+          {
+            "symbol": "a, b, ...",
+            "meaning": "Text values or cell references to join together"
+          }
+        ],
+        "plain_english": "Joins multiple text strings into one. Modern Excel prefers the & operator (e.g., A1 & B1) for brevity, but CONCATENATE is still useful when joining many values programmatically."
+      },
+      {
+        "function": "TEXTJOIN",
+        "syntax": "=TEXTJOIN(delim, skip, range)",
+        "returns": "Joined with delimiter",
+        "note": "Excel 365/2019+ only",
+        "variables": [
+          {
+            "symbol": "delim",
+            "meaning": "The delimiter character(s) to insert between joined values (e.g., ', ' or '; ')"
+          },
+          {
+            "symbol": "skip",
+            "meaning": "Boolean: TRUE to skip empty cells, FALSE to include them"
+          },
+          {
+            "symbol": "range",
+            "meaning": "The range of cells to join"
+          }
+        ],
+        "plain_english": "Joins a range of cells with a specified delimiter, optionally skipping empty cells. Powerful for consolidating lists (e.g., combining multiple analyst names into a single 'Research Team' field) without manual concatenation."
+      },
+      {
+        "function": "UPPER",
+        "syntax": "=UPPER(text)",
+        "returns": "ALL CAPS",
+        "note": "Use before MATCH for case-insensitive lookups",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to convert"
+          }
+        ],
+        "plain_english": "Converts all letters to uppercase. Useful for standardising company names or ticker symbols before comparison, ensuring that lookups are case-insensitive."
+      },
+      {
+        "function": "LOWER",
+        "syntax": "=LOWER(text)",
+        "returns": "all lowercase",
+        "note": "Alternative to UPPER for standardisation",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to convert"
+          }
+        ],
+        "plain_english": "Converts all letters to lowercase. Use for data standardisation before performing string comparisons or lookups, especially when integrating data from sources with inconsistent casing."
+      },
+      {
+        "function": "PROPER",
+        "syntax": "=PROPER(text)",
+        "returns": "Title Case",
+        "note": "Capitalises first letter of every word",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "The text string or cell reference to convert"
+          }
+        ],
+        "plain_english": "Converts text to title case (first letter of each word capitalised, rest lowercase). Ideal for cleaning company names and analyst names for professional report formatting."
+      },
+      {
+        "function": "TEXT",
+        "syntax": "=TEXT(value, format)",
+        "returns": "Formatted text string",
+        "note": "Loses numeric properties — for display only",
+        "variables": [
+          {
+            "symbol": "value",
+            "meaning": "The numeric value or date to format"
+          },
+          {
+            "symbol": "format",
+            "meaning": "A format code string (e.g., '₹#,##0.00' for Indian currency, 'dd-mmm-yyyy' for dates)"
+          }
+        ],
+        "plain_english": "Converts a number or date into formatted text according to a specified format code. Useful for displaying numbers as currency (₹), percentages, or dates in a specific locale format. The result is text, not a number, so use only for display or export.",
+        "worked_example": {
+          "problem": "You have a revenue value of 12500000 (₹1.25 crore) and need to display it as formatted text for a report: ₹1,25,00,000.",
+          "steps": [
+            "Use =TEXT(12500000, '₹##,##,##0')",
+            "Excel applies the Indian numbering format (groups of two after the initial three digits)",
+            "Result: ₹1,25,00,000 — text format suitable for export or display"
+          ],
+          "result": "₹1,25,00,000",
+          "insight": "TEXT is purely for display. If you need to use the formatted number in calculations afterward, convert it back to a number with VALUE(). Always use TEXT near the end of a model, not during intermediate calculations."
+        }
+      },
+      {
+        "function": "VALUE",
+        "syntax": "=VALUE(text)",
+        "returns": "Number",
+        "note": "Use after SUBSTITUTE to convert text-numbers",
+        "variables": [
+          {
+            "symbol": "text",
+            "meaning": "A text string representing a number, possibly including currency symbols or thousands separators"
+          }
+        ],
+        "plain_english": "Converts a text string that represents a number back into a numeric value. Essential after importing formatted text (e.g., '₹1,25,00,000' or '50%') so you can use it in calculations."
+      },
+      {
+        "function": "FIND",
+        "syntax": "=FIND(find, in, [start])",
+        "returns": "Position (case-sensitive)",
+        "note": "Returns #VALUE! if not found",
+        "variables": [
+          {
+            "symbol": "find",
+            "meaning": "The substring to locate (case-sensitive)"
+          },
+          {
+            "symbol": "in",
+            "meaning": "The text string or cell reference to search within"
+          },
+          {
+            "symbol": "start",
+            "meaning": "Optional starting position for the search (defaults to 1)"
+          }
+        ],
+        "plain_english": "Returns the position (1-indexed) of the first occurrence of a substring, with case sensitivity. Use FIND when you need exact case matching (e.g., distinguishing 'Rs' from 'rs'), or combine with IFERROR to handle missing values gracefully."
+      },
+      {
+        "function": "SEARCH",
+        "syntax": "=SEARCH(find, in, [start])",
+        "returns": "Position (case-insensitive)",
+        "note": "Supports * and ? wildcards",
+        "variables": [
+          {
+            "symbol": "find",
+            "meaning": "The substring or pattern to locate (case-insensitive; supports * and ? wildcards)"
+          },
+          {
+            "symbol": "in",
+            "meaning": "The text string or cell reference to search within"
+          },
+          {
+            "symbol": "start",
+            "meaning": "Optional starting position for the search (defaults to 1)"
+          }
+        ],
+        "plain_english": "Returns the position of the first occurrence of a substring, ignoring case. Unlike FIND, SEARCH supports wildcards (* for any characters, ? for a single character), making it more flexible for pattern matching. Use when case doesn't matter or you need fuzzy matching."
+      }
+    ]
+  }
+}

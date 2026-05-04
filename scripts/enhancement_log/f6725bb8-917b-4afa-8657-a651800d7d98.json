@@ -1,0 +1,225 @@
+{
+  "id": "f6725bb8-917b-4afa-8657-a651800d7d98",
+  "label": "M4 S5 | The Margin Build-Up — From Revenue to EBIT in Layered Compon",
+  "before": {
+    "formulas": [
+      {
+        "name": "Gross Margin Calculation",
+        "formula": "Gross Margin = (Revenue − COGS) / Revenue | COGS = Raw Materials + Purchases + Changes in Inventory",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Revenue from operations — the top line from Session 4's forecast"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — for manufacturers this is raw materials + labour; for retailers it is purchases of inventory; varies by business model"
+          },
+          {
+            "symbol": "Raw Materials",
+            "meaning": "Cost of materials consumed — directly tracked for manufacturers via input prices × usage"
+          },
+          {
+            "symbol": "Purchases",
+            "meaning": "Goods purchased for resale — for pure retailers like DMart, this is ~90% of COGS"
+          },
+          {
+            "symbol": "Changes in Inventory",
+            "meaning": "Negative if inventory increased (expense reduced), positive if inventory decreased (expense increased)"
+          }
+        ],
+        "worked_example": "Titan FY24 actuals: Revenue ₹47,100 cr, COGS (Material + Purchases + Inventory changes) ₹33,810 cr, Gross Profit ₹13,290 cr, Gross Margin = 28.2%. For the FY25E forecast, I decompose Titan's COGS into its structural drivers. Jewellery COGS is roughly 78% of Jewellery Revenue (the rest is margin on making charges, design premium, and studded mix) — this ratio moves with gold price pass-through and mix. Watches COGS is ~55% of Watches Revenue (higher brand margin). Eyewear COGS is ~45% of Eyewear Revenue (retail model). Applied to FY25E segmental revenues: Jewellery COGS = 47,772 × 78% = ₹37,262 cr; Watches COGS = 3,382 × 55% = ₹1,860 cr; Eyewear COGS = 1,040 × 45% = ₹468 cr; Other COGS = 2,136 × 70% = ₹1,495 cr. Total FY25E COGS = ₹41,085 cr. Gross Margin FY25E = (54,330 − 41,085) / 54,330 = 24.4%. Note: this is LOWER than FY24's 28.2% because the studded mix assumption is conservative. If mgmt's 37% studded mix target is achieved, COGS ratio drops to ~76% and Gross Margin rises to 26-27%. That is a live sensitivity for the model.",
+        "sensitivity_note": "For Titan, every 100 bps of Jewellery COGS ratio change = ~₹478 cr of Gross Profit change on FY25E revenue. That flows directly to EBITDA. Over a 5-year forecast, persistent 100 bps of COGS-ratio change compounds to ~₹3,500 cr of cumulative EBITDA swing. Studded mix modelling is the single most important margin driver for Titan — get it wrong and your forecast is built on sand."
+      },
+      {
+        "name": "EBITDA Build from Gross Profit",
+        "formula": "EBITDA = Gross Profit − Employee Cost − Other Operating Expenses | EBITDA Margin = EBITDA / Revenue",
+        "variables": [
+          {
+            "symbol": "Gross Profit",
+            "meaning": "Revenue − COGS, from the step above"
+          },
+          {
+            "symbol": "Employee Cost",
+            "meaning": "Wages, benefits, PF, ESOP expense — semi-variable, with a fixed base and variable component"
+          },
+          {
+            "symbol": "Other Operating Expenses",
+            "meaning": "Rent, utilities, marketing, admin, travel — typically 70-80% fixed with 20-30% variable scaling"
+          }
+        ],
+        "worked_example": "Titan FY24: Gross Profit ₹13,290 cr, Employee Cost ₹1,985 cr, Other Opex ₹4,620 cr, EBITDA ₹6,685 cr, EBITDA Margin = 14.2%. For FY25E, I forecast Employee Cost as semi-variable: fixed base ₹1,700 cr growing at 8% inflation = ₹1,836 cr, plus variable component of ₹300 cr × (store growth 7%) = ₹321 cr. Total FY25E Employee Cost = ₹2,157 cr. Growth of 8.7% vs revenue growth of 15.4% — this is operating leverage in action. Other Opex: 75% fixed (₹3,465 cr × 7% inflation = ₹3,708 cr) + 25% variable (₹1,155 cr × revenue growth 15.4% = ₹1,333 cr) = ₹5,041 cr. FY25E EBITDA = 13,245 − 2,157 − 5,041 = ₹6,047 cr. Wait — this is LOWER than FY24 ₹6,685 cr despite higher revenue. That's because my conservative COGS assumption (78% for Jewellery vs 73% implied in FY24) crushed gross margin. If I use a more realistic 75% Jewellery COGS ratio (allowing some studded mix benefit), COGS falls to ~₹40,000 cr, Gross Profit rises to ₹14,330 cr, EBITDA = 14,330 − 2,157 − 5,041 = ₹7,132 cr. Margin = 13.1% (vs 14.2% in FY24 — some compression from mix and other-segment drag, offsetting operating leverage). This scenario feels right.",
+        "sensitivity_note": "The EBITDA build makes operating leverage visible. Employee cost growing at 8.7% on revenue growth of 15.4% means every 1% incremental revenue beyond the base drops roughly 50% to EBITDA as contribution. Other Opex at 75% fixed means 75% of that line doesn't scale — also contributing to leverage. An analyst who forecasts Employee Cost and Opex as flat percentages of revenue MISSES operating leverage entirely and produces a flat-margin forecast that is structurally wrong for any scaling business."
+      },
+      {
+        "name": "EBIT from EBITDA and Depreciation",
+        "formula": "EBIT = EBITDA − Depreciation & Amortisation | EBIT Margin = EBIT / Revenue",
+        "variables": [
+          {
+            "symbol": "EBITDA",
+            "meaning": "From the step above — operating profit before D&A"
+          },
+          {
+            "symbol": "D&A",
+            "meaning": "Depreciation of tangible assets (PP&E) + Amortisation of intangibles (software, trademarks, goodwill). Non-cash but economically meaningful"
+          }
+        ],
+        "worked_example": "Titan FY24: EBITDA ₹6,685 cr, D&A ₹680 cr, EBIT ₹6,005 cr, EBIT Margin = 12.7%. For FY25E, D&A grows based on the capex forecast from Session 6 — but for this session, I'll use a placeholder assumption. FY25E capex is expected to be ~3.5% of revenue = ₹1,900 cr (for new stores, infrastructure, technology). Average useful life for Titan's asset base is ~10 years. Incremental depreciation from FY25E capex = ₹1,900/10 = ₹190 cr of NEW depreciation. Existing PP&E base has ₹4,800 cr of gross block with remaining average life of 7 years, contributing ₹685 cr of baseline depreciation. Total FY25E D&A = ₹685 + ₹190/2 (half-year convention for new additions) = ₹780 cr. FY25E EBIT = 7,132 − 780 = ₹6,352 cr. EBIT Margin = 11.7% (FY24: 12.7%). The slight margin contraction comes from (a) my conservative studded mix assumption on Jewellery and (b) higher depreciation from incremental capex.",
+        "sensitivity_note": "For asset-light businesses (IT services, FMCG), D&A is 2-4% of revenue and EBIT margin ≈ EBITDA margin - 2-4%. For capital-intensive businesses (autos, metals, telecom), D&A is 8-15% of revenue and EBIT margin can be 8-15% lower than EBITDA. Titan is in between — at ~1.4% of revenue, D&A is a secondary margin driver but materially affects the EBIT line. In Session 6 you will rebuild the PP&E schedule properly and this placeholder becomes a rigorous forecast."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + = (auto-sum)",
+        "Cmd + [ (trace precedents)",
+        "Cmd + Shift + F9 (force recalc)"
+      ],
+      "windows": [
+        "Alt + = (auto-sum — rapid rollup for cost line totals)",
+        "F5 → Special → Formulas (isolate only calculated cells for audit)",
+        "Ctrl + [ (trace precedents — verify where your EBITDA formula is pulling from)",
+        "Ctrl + Shift + F9 (force recalculation — catches any stale cached values)",
+        "Alt + H + B (border menu — for subtotal lines above EBITDA / EBIT)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Gross Margin Calculation",
+        "formula": "Gross Margin = (Revenue − COGS) / Revenue | COGS = Raw Materials + Purchases + Changes in Inventory",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Revenue from operations — the top line from Session 4's forecast"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — for manufacturers this is raw materials + labour; for retailers it is purchases of inventory; varies by business model"
+          },
+          {
+            "symbol": "Raw Materials",
+            "meaning": "Cost of materials consumed — directly tracked for manufacturers via input prices × usage"
+          },
+          {
+            "symbol": "Purchases",
+            "meaning": "Goods purchased for resale — for pure retailers like DMart, this is ~90% of COGS"
+          },
+          {
+            "symbol": "Changes in Inventory",
+            "meaning": "Negative if inventory increased (expense reduced), positive if inventory decreased (expense increased)"
+          }
+        ],
+        "plain_english": "Gross Margin measures what percentage of every rupee of revenue remains after paying for the direct cost of goods sold. It reveals the inherent profitability of your product or service before operating expenses. For manufacturers and retailers, this is the single most important structural margin — changes in input costs, pricing power, or product mix flow directly here and cascade to EBITDA.",
+        "worked_example": {
+          "problem": "Titan FY24 actuals: Revenue ₹47,100 cr, COGS (Material + Purchases + Inventory changes) ₹33,810 cr. Forecast FY25E Gross Margin using segment-level COGS ratios.",
+          "steps": [
+            "FY24 Gross Profit = Revenue − COGS = ₹47,100 − ₹33,810 = ₹13,290 cr",
+            "FY24 Gross Margin = ₹13,290 / ₹47,100 = 28.2%",
+            "For FY25E, decompose COGS by segment: Jewellery COGS ratio 78% (conservative studded mix), Watches 55%, Eyewear 45%, Other 70%",
+            "FY25E Jewellery Revenue ₹47,772 cr → COGS = ₹47,772 × 78% = ₹37,262 cr",
+            "FY25E Watches Revenue ₹3,382 cr → COGS = ₹3,382 × 55% = ₹1,860 cr",
+            "FY25E Eyewear Revenue ₹1,040 cr → COGS = ₹1,040 × 45% = ₹468 cr",
+            "FY25E Other Revenue ₹2,136 cr → COGS = ₹2,136 × 70% = ₹1,495 cr",
+            "Total FY25E COGS = ₹37,262 + ₹1,860 + ₹468 + ₹1,495 = ₹41,085 cr",
+            "Total FY25E Revenue = ₹47,772 + ₹3,382 + ₹1,040 + ₹2,136 = ₹54,330 cr",
+            "FY25E Gross Profit = ₹54,330 − ₹41,085 = ₹13,245 cr",
+            "FY25E Gross Margin = ₹13,245 / ₹54,330 = 24.4%"
+          ],
+          "result": "FY25E Gross Margin 24.4% vs FY24 28.2% — a 380 bps contraction due to conservative studded mix assumption.",
+          "insight": "Studded mix is the critical sensitivity. If management achieves its 37% studded mix target, Jewellery COGS ratio drops from 78% to ~76%, improving total COGS to ~₹40,000 cr and lifting FY25E Gross Margin to 26–27%. This single driver accounts for 200+ bps of margin range in the forecast — get the mix assumption wrong and your model is fundamentally mispriced."
+        },
+        "sensitivity_note": "For Titan, every 100 bps of Jewellery COGS ratio change = ~₹478 cr of Gross Profit change on FY25E revenue. That flows directly to EBITDA. Over a 5-year forecast, persistent 100 bps of COGS-ratio change compounds to ~₹3,500 cr of cumulative EBITDA swing. Studded mix modelling is the single most important margin driver for Titan — get it wrong and your forecast is built on sand."
+      },
+      {
+        "name": "EBITDA Build from Gross Profit",
+        "formula": "EBITDA = Gross Profit − Employee Cost − Other Operating Expenses | EBITDA Margin = EBITDA / Revenue",
+        "variables": [
+          {
+            "symbol": "Gross Profit",
+            "meaning": "Revenue − COGS, from the step above"
+          },
+          {
+            "symbol": "Employee Cost",
+            "meaning": "Wages, benefits, PF, ESOP expense — semi-variable, with a fixed base and variable component"
+          },
+          {
+            "symbol": "Other Operating Expenses",
+            "meaning": "Rent, utilities, marketing, admin, travel — typically 70-80% fixed with 20-30% variable scaling"
+          }
+        ],
+        "plain_english": "EBITDA measures operating profit before financing and tax decisions, and before non-cash charges. It isolates the cash-generation capability of the core business from the specific way it is financed or asset-based. For a scaling business, EBITDA margin improvement reveals operating leverage — the degree to which incremental revenue converts to profit because fixed costs don't scale linearly.",
+        "computation": [
+          "Segment Employee Cost into fixed base (headcount-dependent, growing with inflation) and variable component (store openings, output scaling)",
+          "Segment Other Opex into fixed elements (rent on lease base, baseline admin) and variable elements (utilities, commissions, delivery costs)",
+          "Calculate total EBITDA = Gross Profit − (fixed Employee Cost + variable Employee Cost) − (fixed Other Opex + variable Other Opex)"
+        ],
+        "worked_example": {
+          "problem": "Titan FY24: Gross Profit ₹13,290 cr, Employee Cost ₹1,985 cr, Other Opex ₹4,620 cr. Forecast FY25E EBITDA using semi-variable cost structure, with 7% store growth and 15.4% revenue growth.",
+          "steps": [
+            "FY24 EBITDA = ₹13,290 − ₹1,985 − ₹4,620 = ₹6,685 cr, EBITDA Margin = 14.2%",
+            "FY25E Employee Cost — segment into fixed (₹1,700 cr) and variable (₹285 cr): Fixed base grows at 8% inflation = ₹1,700 × 1.08 = ₹1,836 cr; Variable component of ₹285 cr tied to store growth of 7% = ₹285 × 1.07 = ₹305 cr; Total FY25E Employee Cost = ₹1,836 + ₹305 = ₹2,141 cr",
+            "FY25E Other Opex — segment into fixed (₹3,465 cr) and variable (₹1,155 cr): Fixed portion grows at 7% inflation = ₹3,465 × 1.07 = ₹3,707 cr; Variable portion scales with revenue growth 15.4% = ₹1,155 × 1.154 = ₹1,333 cr; Total FY25E Other Opex = ₹3,707 + ₹1,333 = ₹5,040 cr",
+            "Conservative case (Jewellery COGS 78%): FY25E Gross Profit = ₹13,245 cr (from prior formula), EBITDA = ₹13,245 − ₹2,141 − ₹5,040 = ₹6,064 cr",
+            "Base case (Jewellery COGS 75%): FY25E Gross Profit = ₹14,330 cr, EBITDA = ₹14,330 − ₹2,141 − ₹5,040 = ₹7,149 cr, EBITDA Margin = 13.1%"
+          ],
+          "result": "FY25E EBITDA ranges from ₹6,064 cr (conservative) to ₹7,149 cr (base), vs FY24 ₹6,685 cr. Base case shows EBITDA Margin of 13.1% vs FY24 14.2% — slight compression despite operating leverage from fixed cost absorption, due to mix headwinds.",
+          "insight": "Operating leverage is visible here: Employee Cost grows 8% (below revenue growth) and Other Opex's 75% fixed component means the variable portion absorbs most of revenue growth. On ₹7,600 cr of incremental revenue (15.4% growth), incremental Employee Cost is ~₹350 cr and incremental Other Opex ~₹900 cr = ₹1,250 cr combined, leaving ~₹6,350 cr incremental EBITDA contribution (84% flow-through on the base case). This is operating leverage in action — critical for long-term value creation."
+        },
+        "sensitivity_note": "The EBITDA build makes operating leverage visible. Employee cost growing at 8.7% on revenue growth of 15.4% means every 1% incremental revenue beyond the base drops roughly 50% to EBITDA as contribution. Other Opex at 75% fixed means 75% of that line doesn't scale — also contributing to leverage. An analyst who forecasts Employee Cost and Opex as flat percentages of revenue MISSES operating leverage entirely and produces a flat-margin forecast that is structurally wrong for any scaling business."
+      },
+      {
+        "name": "EBIT from EBITDA and Depreciation",
+        "formula": "EBIT = EBITDA − Depreciation & Amortisation | EBIT Margin = EBIT / Revenue",
+        "variables": [
+          {
+            "symbol": "EBITDA",
+            "meaning": "From the step above — operating profit before D&A"
+          },
+          {
+            "symbol": "D&A",
+            "meaning": "Depreciation of tangible assets (PP&E) + Amortisation of intangibles (software, trademarks, goodwill). Non-cash but economically meaningful"
+          }
+        ],
+        "plain_english": "EBIT is the true operating profit available to all investors (debt and equity holders) after all operating costs and the economic wear-and-tear of assets. D&A is non-cash but real — it reflects the cost of building and maintaining the asset base needed to generate revenue. EBIT margin reveals how much operating profit you keep per rupee of sales after full capital recovery.",
+        "computation": [
+          "Extract or forecast the PP&E (Property, Plant & Equipment) gross block and accumulated depreciation",
+          "Calculate incremental depreciation from capex using applicable useful lives (buildings 30–40 years, equipment 5–10 years, vehicles 5 years)",
+          "Add baseline depreciation from existing asset base (gross block divided by weighted average remaining useful life)",
+          "Add amortisation of intangible assets from the balance sheet",
+          "Deduct total D&A from EBITDA to arrive at EBIT"
+        ],
+        "worked_example": {
+          "problem": "Titan FY24: EBITDA ₹6,685 cr, D&A ₹680 cr. Forecast FY25E D&A given FY25E capex of ~3.5% of revenue (₹1,900 cr), 10-year average useful life, and existing PP&E base.",
+          "steps": [
+            "FY24 EBIT = EBITDA − D&A = ₹6,685 − ₹680 = ₹6,005 cr, EBIT Margin = 12.7%",
+            "FY25E capex forecast = 3.5% × ₹54,330 cr revenue = ₹1,900 cr (for new stores, infrastructure, technology)",
+            "Incremental depreciation from FY25E capex: ₹1,900 / 10-year average life = ₹190 cr annual, assuming half-year convention for new additions = ₹95 cr in FY25E",
+            "Existing PP&E gross block ₹4,800 cr with average remaining useful life of 7 years contributes baseline depreciation = ₹4,800 / 7 = ₹686 cr",
+            "Amortisation of intangibles (software, trademarks): assume ~₹10 cr annual",
+            "Total FY25E D&A = ₹686 + ₹95 + ₹10 = ₹791 cr",
+            "Base case FY25E EBITDA = ₹7,149 cr (from prior worked example)",
+            "FY25E EBIT = ₹7,149 − ₹791 = ₹6,358 cr, EBIT Margin = 11.7%"
+          ],
+          "result": "FY25E EBIT ₹6,358 cr, EBIT Margin 11.7% vs FY24 12.7% — a 100 bps margin contraction driven by higher depreciation from capex and slight Gross Margin pressure from studded mix assumptions.",
+          "insight": "For Titan (asset-heavy retail with significant store capex), D&A of ₹791 cr is ~1.45% of revenue. This is moderate compared to telecom or manufacturing (~10–15% of revenue) but material versus software/services (~2–3%). The depreciation schedule is a key sensitivity — if capex intensity increases to support growth or if stores are not fully productive, depreciation burden grows faster than EBITDA, compressing EBIT margins. In Session 6, the PP&E schedule will be rebuilt in detail; this placeholder assumption will be replaced with a rigorous capex build-up by asset category."
+        },
+        "sensitivity_note": "For asset-light businesses (IT services, FMCG), D&A is 2–4% of revenue and EBIT margin ≈ EBITDA margin − 2–4%. For capital-intensive businesses (autos, metals, telecom), D&A is 8–15% of revenue and EBIT margin can be 8–15% lower than EBITDA. Titan is in between — at ~1.4% of revenue, D&A is a secondary margin driver but materially affects the EBIT line. In Session 6 you will rebuild the PP&E schedule properly and this placeholder becomes a rigorous forecast."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + = (auto-sum)",
+        "Cmd + [ (trace precedents)",
+        "Cmd + Shift + F9 (force recalc)"
+      ],
+      "windows": [
+        "Alt + = (auto-sum — rapid rollup for cost line totals)",
+        "F5 → Special → Formulas (isolate only calculated cells for audit)",
+        "Ctrl + [ (trace precedents — verify where your EBITDA formula is pulling from)",
+        "Ctrl + Shift + F9 (force recalculation — catches any stale cached values)",
+        "Alt + H + B (border menu — for subtotal lines above EBITDA / EBIT)"
+      ]
+    }
+  }
+}

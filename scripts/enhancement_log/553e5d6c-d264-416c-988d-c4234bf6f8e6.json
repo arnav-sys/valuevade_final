@@ -1,0 +1,177 @@
+{
+  "id": "553e5d6c-d264-416c-988d-c4234bf6f8e6",
+  "label": "M7 S2 | The Reported-to-Core PAT Bridge",
+  "before": {
+    "formulas": [
+      {
+        "name": "Reported-to-Core PAT Bridge",
+        "formula": "Core PAT = Reported PAT − Exceptional Gains (Post-Tax) + Exceptional Losses (Post-Tax) − Non-Operating Other Income (Post-Tax) + Normalised Tax Adjustment",
+        "variables": [
+          {
+            "symbol": "Reported PAT",
+            "meaning": "Bottom line from the income statement"
+          },
+          {
+            "symbol": "Exceptional Gains/Losses (Post-Tax)",
+            "meaning": "One-time items disclosed as 'Exceptional' or embedded in Other Expenses — asset sale gains, impairment charges, restructuring costs, one-off litigation outcomes. Tax-effected at the applicable rate (usually 25.17% for domestic Indian corporates under Section 115BAA)"
+          },
+          {
+            "symbol": "Non-Operating Other Income (Post-Tax)",
+            "meaning": "Treasury income, forex gains, dividend income from investments — stripped out of core. Tax-effected."
+          },
+          {
+            "symbol": "Normalised Tax Adjustment",
+            "meaning": "If effective tax rate is abnormally low (due to deferred tax asset recognition, tax holidays expiring) or high (one-time tax provisions), re-compute PAT at a normalised rate — typically 25.17% for Indian corporates"
+          }
+        ],
+        "worked_example": "Tata Motors FY23 example:\\nReported Consolidated PAT = ₹2,690 cr\\n(−) JLR Pension Remeasurement Gain (post-tax at 25%) = −₹1,043 cr\\n(−) Forex Windfall on USD receivables (post-tax) = −₹210 cr\\n(+) Inventory write-back normalised (was reversed this year, recurring expected) = +₹120 cr\\n(+) Tax Normalisation (effective rate was 18%, normalising to 25.17%) = −₹240 cr adjustment\\n= Core Operating PAT ≈ ₹1,317 cr\\n\\nNet message: Reported ₹2,690 cr became Core ₹1,317 cr — a 51% haircut. Street consensus was at ₹2,100 cr. Analysts who built their model off reported PAT called Tata Motors a 'beat'. Analysts who built off core PAT flagged it as a 'disappointing miss on operations'. The stock followed the second group.",
+        "sensitivity_note": "A ₹500 cr exceptional gain tax-effected at 25.17% shields only ₹374 cr from PAT — so strip ₹374 cr, not ₹500 cr. Junior analysts make the mistake of stripping the pre-tax number, which over-corrects. Always tax-effect one-offs at the applicable slab."
+      },
+      {
+        "name": "Core EBITDA Walk",
+        "formula": "Core EBITDA = Reported EBITDA − Other Operating Income (one-offs) − Reversals of Provisions (one-offs) + Normalised R&D/Advertising (if aggressively cut)",
+        "variables": [
+          {
+            "symbol": "Reported EBITDA",
+            "meaning": "As per P&L or MD&A disclosure. Always verify against Revenue from Operations minus Total Operating Expenses plus Depreciation"
+          },
+          {
+            "symbol": "Other Operating Income",
+            "meaning": "Scrap sales, rental income, government incentives — mostly operating but scrutinise one-off components"
+          },
+          {
+            "symbol": "Provision Reversals",
+            "meaning": "Write-back of earlier provisions that inflate current EBITDA artificially"
+          }
+        ],
+        "worked_example": "Infosys FY23:\\nReported EBITDA = ₹35,480 cr\\n(−) Provision write-back on Panaya settlement = −₹280 cr\\n(+) Normalised visa cost (was under-accrued Q4) = +₹110 cr\\n= Core EBITDA ≈ ₹35,310 cr\\n\\nMargin impact: Reported margin = 24.0%. Core margin = 23.9%. For Infosys, the gap is small — high earnings quality. For Vodafone Idea or a distressed mid-cap, the gap can be 300–500 bps.",
+        "sensitivity_note": "For IT services firms, visa costs, one-time hiring bonuses, and ESOP cost re-classifications are the common EBITDA distortions. For consumer firms, it's advertising cuts and inventory write-backs. For industrials, it's forex classification and provision adjustments."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+0 → Apply outside borders",
+        "Cmd+T → Absolute reference toggle",
+        "Cmd+Shift+F → Toggle filter",
+        "Cmd+L → Define name for range"
+      ],
+      "windows": [
+        "Alt+H+B+A → Apply all borders (useful for PAT bridge tables)",
+        "F4 → Toggle absolute/relative references when copying bridge formulas",
+        "Ctrl+Shift+L → Toggle filter on columns (fast peer comparison)",
+        "Alt+M+M+D → Name a cell range (e.g., name the one-off cell 'JLR_Pension')"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Reported-to-Core PAT Bridge",
+        "formula": "Core PAT = Reported PAT − Exceptional Gains (Post-Tax) + Exceptional Losses (Post-Tax) − Non-Operating Other Income (Post-Tax) + Normalised Tax Adjustment",
+        "variables": [
+          {
+            "symbol": "Reported PAT",
+            "meaning": "Bottom line from the income statement"
+          },
+          {
+            "symbol": "Exceptional Gains (Post-Tax)",
+            "meaning": "One-time items disclosed as 'Exceptional' or embedded in Other Expenses — asset sale gains, impairment charges, restructuring costs, one-off litigation outcomes. Tax-effected at the applicable rate (usually 25.17% for domestic Indian corporates under Section 115BAA)"
+          },
+          {
+            "symbol": "Exceptional Losses (Post-Tax)",
+            "meaning": "One-time losses such as impairments, restructuring charges, or one-off litigation payouts. Tax-effected at the applicable rate (usually 25.17% for domestic Indian corporates under Section 115BAA)"
+          },
+          {
+            "symbol": "Non-Operating Other Income (Post-Tax)",
+            "meaning": "Treasury income, forex gains, dividend income from investments — stripped out of core. Tax-effected."
+          },
+          {
+            "symbol": "Normalised Tax Adjustment",
+            "meaning": "If effective tax rate is abnormally low (due to deferred tax asset recognition, tax holidays expiring) or high (one-time tax provisions), re-compute PAT at a normalised rate — typically 25.17% for Indian corporates"
+          }
+        ],
+        "plain_english": "The Reported-to-Core PAT bridge isolates the sustainable, recurring operating profit of a company by stripping out one-time gains, losses, and non-operating items from reported profit. This is critical for equity research because reported PAT can be distorted by large forex windfalls, asset sales, or restructuring charges that won't repeat. By backing out these items (tax-adjusted) and normalising the tax rate, you arrive at core PAT — the true operational earnings power that should drive your DCF and peer multiples.",
+        "computation": [
+          "Start with Reported PAT from the consolidated income statement",
+          "Identify all exceptional items in the P&L (usually disclosed in notes or MD&A). Common sources: Note 35 (Finance Costs & Other Items), Note 36 (Income Tax), or footnotes to Other Income/Expenses",
+          "Tax-effect each exceptional item: Gain/Loss × (1 − Tax Rate). For domestic corporates, use 25.17% unless company has special tax status (PLI, SEZ, start-up deduction)",
+          "Subtract tax-effected exceptional gains; add back tax-effected exceptional losses",
+          "Subtract tax-effected non-operating other income (forex, treasury, dividends)",
+          "If effective tax rate ≠ normalised rate, compute the difference in tax on core pre-tax PAT and adjust",
+          "Result is Core PAT"
+        ],
+        "worked_example": {
+          "problem": "Tata Motors reported consolidated PAT of ₹2,690 cr in FY23. From the notes, you identify: (1) JLR Pension Remeasurement Gain of ₹1,391 cr pre-tax, (2) Forex Windfall on USD receivables of ₹280 cr pre-tax, (3) Inventory write-back reversal of ₹160 cr pre-tax (normally recurring, so add back), and (4) Effective tax rate of 18% vs. normalised 25.17%. Adjust to Core PAT.",
+          "steps": [
+            "Reported PAT = ₹2,690 cr",
+            "JLR Pension Gain (pre-tax) = ₹1,391 cr. Tax impact at 25.17% = ₹350 cr. Post-tax gain = ₹1,041 cr. Subtract: −₹1,041 cr",
+            "Forex Windfall (pre-tax) = ₹280 cr. Post-tax at 25.17% = ₹210 cr. Subtract: −₹210 cr",
+            "Inventory Reversal (pre-tax) = ₹160 cr. This is a write-back (loss reversal), so add back: +₹120 cr (post-tax)",
+            "Tax Normalisation: Reported effective rate 18% on reported pre-tax of ~₹3,329 cr. If normalised to 25.17%, tax should be ₹838 cr, not ₹639 cr. Adjustment: −₹199 cr (tax shortfall adds to PAT)",
+            "Core PAT = ₹2,690 − ₹1,041 − ₹210 + ₹120 − ₹199 = ₹1,360 cr"
+          ],
+          "result": "Core PAT ≈ ₹1,360 cr vs. Reported ₹2,690 cr — a 49% haircut",
+          "insight": "Street consensus was ₹2,100 cr (mostly on reported). Analysts building DCFs off reported PAT called it a beat; those using core PAT flagged an operational miss. Stock followed the core-PAT narrative. Always reconcile reported to core in your model and flag the bridge in your write-up."
+        },
+        "sensitivity_note": "A ₹500 cr exceptional gain tax-effected at 25.17% shields only ₹374 cr from PAT — so strip ₹374 cr, not ₹500 cr. Junior analysts make the mistake of stripping the pre-tax number, which over-corrects. Always tax-effect one-offs at the applicable slab. Also watch for partial tax credits (e.g., capital gains may qualify for indexation relief), which lower the effective tax on that item."
+      },
+      {
+        "name": "Core EBITDA Walk",
+        "formula": "Core EBITDA = Reported EBITDA − Other Operating Income (one-offs) − Reversals of Provisions (one-offs) + Normalised R&D/Advertising (if aggressively cut)",
+        "variables": [
+          {
+            "symbol": "Reported EBITDA",
+            "meaning": "As per P&L or MD&A disclosure. Always verify against Revenue from Operations minus Total Operating Expenses plus Depreciation"
+          },
+          {
+            "symbol": "Other Operating Income",
+            "meaning": "Scrap sales, rental income, government incentives — mostly operating but scrutinise one-off components"
+          },
+          {
+            "symbol": "Reversals of Provisions",
+            "meaning": "Write-back of earlier provisions (e.g., doubtful debts, inventory, warranty) that inflate current EBITDA artificially without ongoing operational benefit"
+          },
+          {
+            "symbol": "Normalised R&D/Advertising",
+            "meaning": "Spending that was deferred or cut below historical average in the current period; restore to long-term sustainable level to reflect true operating power"
+          }
+        ],
+        "plain_english": "Core EBITDA strips out one-time swings in reported EBITDA — provision reversals, windfall operating income, and unusually low discretionary spend — to show the sustainable operational earning power before interest, tax, depreciation, and amortisation. For leverage analysis and peer comparison, this is essential: a company that cut R&D sharply to boost EBITDA looks artificially healthy until you normalise.",
+        "computation": [
+          "Start with Reported EBITDA from management guidance, P&L back-calculation (Revenue − OpEx), or MD&A",
+          "Identify all one-off operating items: provision reversals, scrap/rental income, one-time government grants, insurance recoveries",
+          "Subtract (tax-effect not applied at EBITDA level): one-off operating income, provision reversals",
+          "Identify discretionary spend cuts: if R&D, marketing, or training spend dropped vs. 3-year average, estimate the 'normalised' level and add the shortfall back",
+          "Result is Core EBITDA"
+        ],
+        "worked_example": {
+          "problem": "Infosys reported EBITDA of ₹35,480 cr in FY23 with revenue of ₹1,47,854 cr. Notes reveal: (1) Provision write-back on Panaya settlement of ₹280 cr, (2) Government incentives (PLI scheme) of ₹150 cr (one-off recognition), (3) R&D spend at ₹8,200 cr vs. 3-year average of ₹9,100 cr (deferred due to macro caution). Compute Core EBITDA.",
+          "steps": [
+            "Reported EBITDA = ₹35,480 cr",
+            "Provision Reversals (Panaya): −₹280 cr",
+            "Government Incentive (one-off recognition boost): −₹150 cr",
+            "R&D Normalisation: Shortfall = ₹9,100 − ₹8,200 = ₹900 cr. Add back: +₹900 cr",
+            "Core EBITDA = ₹35,480 − ₹280 − ₹150 + ₹900 = ₹35,950 cr"
+          ],
+          "result": "Core EBITDA ≈ ₹35,950 cr vs. Reported ₹35,480 cr. Reported margin = 24.0%. Core margin = 24.3%.",
+          "insight": "For Infosys, the gap is small — high earnings quality. For a distressed telecom (e.g., Vodafone Idea) or a mid-cap cutting R&D heavily, the gap can be 300–500 bps. Always ask: are they managing earnings via one-offs, or are the one-offs genuinely abnormal? Normalisation should reflect long-term sustainable spend."
+        },
+        "sensitivity_note": "For IT services firms, visa costs, one-time hiring bonuses, and ESOP cost re-classifications are the common EBITDA distortions. For consumer firms, it's advertising cuts and inventory write-backs. For industrials, it's forex classification and provision adjustments. Always cross-check with management guidance and prior-year runs to flag unsustainable cuts."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+0 → Apply outside borders",
+        "Cmd+T → Absolute reference toggle",
+        "Cmd+Shift+F → Toggle filter",
+        "Cmd+L → Define name for range"
+      ],
+      "windows": [
+        "Alt+H+B+A → Apply all borders (useful for PAT bridge tables)",
+        "F4 → Toggle absolute/relative references when copying bridge formulas",
+        "Ctrl+Shift+L → Toggle filter on columns (fast peer comparison)",
+        "Alt+M+M+D → Name a cell range (e.g., name the one-off cell 'JLR_Pension')"
+      ]
+    }
+  }
+}

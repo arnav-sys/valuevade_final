@@ -1,0 +1,402 @@
+{
+  "id": "4c25c1ac-6694-4bf7-a8aa-348c6abbc7a9",
+  "label": "M3 S3 | All Seven Functions at a Glance",
+  "before": {
+    "shortcuts": [
+      {
+        "mac": "⌘ + Shift + T",
+        "action": "AutoSum (instant SUM)",
+        "windows": "Alt + ="
+      },
+      {
+        "mac": "Shift + F3",
+        "action": "Insert Function dialog",
+        "windows": "Shift + F3"
+      },
+      {
+        "mac": "⌘ + Enter",
+        "action": "Enter formula in multiple cells",
+        "windows": "Ctrl + Enter"
+      },
+      {
+        "mac": "Ctrl + `",
+        "action": "Toggle Formula View",
+        "windows": "Ctrl + `"
+      },
+      {
+        "mac": "Same (ribbon)",
+        "action": "Evaluate formula step-by-step",
+        "windows": "Formulas → Evaluate Formula"
+      },
+      {
+        "mac": "⌘ + D",
+        "action": "Fill Down (copy formula)",
+        "windows": "Ctrl + D"
+      }
+    ],
+    "autosum_tip": "Select a cell below a column of numbers and press Alt + = (Windows). Excel instantly inserts =SUM() for the range above. Senior analysts use this dozens of times per model.",
+    "functions_table": [
+      {
+        "gotcha": "Ignores text/blanks, includes 0s",
+        "syntax": "=SUM(range)",
+        "returns": "Total of all numbers",
+        "function": "SUM"
+      },
+      {
+        "gotcha": "Ignores blanks, INCLUDES 0s",
+        "syntax": "=AVERAGE(range)",
+        "returns": "Arithmetic mean",
+        "function": "AVERAGE"
+      },
+      {
+        "gotcha": "Ignores text/blanks",
+        "syntax": "=COUNT(range)",
+        "returns": "Count of numeric cells",
+        "function": "COUNT"
+      },
+      {
+        "gotcha": "Counts text + numbers + errors",
+        "syntax": "=COUNTA(range)",
+        "returns": "Count of non-empty cells",
+        "function": "COUNTA"
+      },
+      {
+        "gotcha": "Nesting beyond 3 levels = unreadable",
+        "syntax": "=IF(test, true, false)",
+        "returns": "Conditional value",
+        "function": "IF"
+      },
+      {
+        "gotcha": "\">=\"&cell for dynamic criteria",
+        "syntax": "=SUMIF(range, criteria, sum_range)",
+        "returns": "Conditional total",
+        "function": "SUMIF"
+      },
+      {
+        "gotcha": "\"*\" wildcard for partial matches",
+        "syntax": "=COUNTIF(range, criteria)",
+        "returns": "Conditional count",
+        "function": "COUNTIF"
+      },
+      {
+        "gotcha": "Ignores blanks in avg_range too",
+        "syntax": "=AVERAGEIF(range, criteria, avg_range)",
+        "returns": "Conditional mean",
+        "function": "AVERAGEIF"
+      }
+    ]
+  },
+  "after": {
+    "shortcuts": [
+      {
+        "mac": "⌘ + Shift + T",
+        "action": "AutoSum (instant SUM)",
+        "windows": "Alt + ="
+      },
+      {
+        "mac": "Shift + F3",
+        "action": "Insert Function dialog",
+        "windows": "Shift + F3"
+      },
+      {
+        "mac": "⌘ + Enter",
+        "action": "Enter formula in multiple cells",
+        "windows": "Ctrl + Enter"
+      },
+      {
+        "mac": "Ctrl + `",
+        "action": "Toggle Formula View",
+        "windows": "Ctrl + `"
+      },
+      {
+        "mac": "Same (ribbon)",
+        "action": "Evaluate formula step-by-step",
+        "windows": "Formulas → Evaluate Formula"
+      },
+      {
+        "mac": "⌘ + D",
+        "action": "Fill Down (copy formula)",
+        "windows": "Ctrl + D"
+      }
+    ],
+    "autosum_tip": "Select a cell below a column of numbers and press Alt + = (Windows). Excel instantly inserts =SUM() for the range above. Senior analysts use this dozens of times per model.",
+    "functions_table": [
+      {
+        "function": "SUM",
+        "syntax": "=SUM(range)",
+        "returns": "Total of all numbers",
+        "gotcha": "Ignores text/blanks, includes 0s",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "A contiguous or non-contiguous set of cells containing numeric values"
+          }
+        ],
+        "plain_english": "SUM adds together all numeric values in a range. It automatically ignores text, empty cells, and logical values, but includes zero. This is the foundational aggregation function in financial modelling—use it for revenue totals, cost summaries, and balance sheet line items.",
+        "computation": [
+          "Identify all cells in the specified range",
+          "Exclude any cells containing text, blanks, or errors",
+          "Add the remaining numeric values",
+          "Return the total"
+        ],
+        "worked_example": {
+          "problem": "A distributor's quarterly sales by month are ₹45 lakh, ₹52 lakh, and ₹48 lakh. Calculate total quarterly revenue.",
+          "steps": [
+            "Enter sales figures in cells B2:B4: 4500000, 5200000, 4800000",
+            "In cell B5, enter =SUM(B2:B4)",
+            "Excel adds: 4500000 + 5200000 + 4800000",
+            "Result displays in B5"
+          ],
+          "result": "₹14,500,000 (₹1.45 crore)",
+          "insight": "SUM is the fastest way to aggregate revenue, expenses, or any line item across periods. Always use it instead of manual addition in financial models."
+        }
+      },
+      {
+        "function": "AVERAGE",
+        "syntax": "=AVERAGE(range)",
+        "returns": "Arithmetic mean",
+        "gotcha": "Ignores blanks, INCLUDES 0s",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "A set of cells containing numeric values to average"
+          }
+        ],
+        "plain_english": "AVERAGE calculates the arithmetic mean by summing all numeric values and dividing by the count of numeric cells (excluding blanks and text). It includes zero in both the sum and count. Use this to find typical performance—average revenue per transaction, mean margin per product, or average monthly cash burn.",
+        "computation": [
+          "Sum all numeric values in the range (ignoring text and blanks)",
+          "Count the numeric cells (zeros are counted)",
+          "Divide the sum by the count",
+          "Return the result"
+        ],
+        "worked_example": {
+          "problem": "An IT services firm has monthly utilisation rates of 82%, 88%, 85%, and 90%. What is the average utilisation?",
+          "steps": [
+            "Enter rates in C2:C5: 82, 88, 85, 90",
+            "In cell C6, enter =AVERAGE(C2:C5)",
+            "Excel sums: 82 + 88 + 85 + 90 = 345",
+            "Excel divides: 345 ÷ 4 = 86.25"
+          ],
+          "result": "86.25%",
+          "insight": "AVERAGE reveals central tendency. A 86% average suggests stable team deployment; if it drops to 75%, it may signal bench time or project delays that need investigation."
+        }
+      },
+      {
+        "function": "COUNT",
+        "syntax": "=COUNT(range)",
+        "returns": "Count of numeric cells",
+        "gotcha": "Ignores text/blanks",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "A range of cells to evaluate"
+          }
+        ],
+        "plain_english": "COUNT returns the number of cells in a range that contain numeric values. It ignores text, blanks, and logical values. Use this to verify data completeness, detect missing entries, or count the number of transactions or line items in a dataset.",
+        "computation": [
+          "Scan each cell in the range",
+          "Increment counter only for numeric values",
+          "Ignore text, blanks, and errors",
+          "Return the counter"
+        ],
+        "worked_example": {
+          "problem": "A sales dataset has entries in rows 2–21, but some cells are empty due to cancelled orders. How many actual transactions exist?",
+          "steps": [
+            "Enter order amounts in range D2:D21 (some empty, some with values)",
+            "In cell D22, enter =COUNT(D2:D21)",
+            "Excel counts only cells with numbers (e.g., 15 out of 20 rows have data)",
+            "Cell D22 displays 15"
+          ],
+          "result": "15 transactions",
+          "insight": "COUNT is a quick data quality check. If you expect 20 orders but COUNT returns 15, you've found 5 missing or cancelled entries to investigate."
+        }
+      },
+      {
+        "function": "COUNTA",
+        "syntax": "=COUNTA(range)",
+        "returns": "Count of non-empty cells",
+        "gotcha": "Counts text + numbers + errors",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "A range of cells to evaluate"
+          }
+        ],
+        "plain_english": "COUNTA counts any non-empty cell—numbers, text, errors, even spaces. Unlike COUNT, it counts text entries. Use this when you need a total row count regardless of data type, or to detect completely blank rows in a dataset.",
+        "computation": [
+          "Scan each cell in the range",
+          "Increment counter for any cell that is not blank",
+          "Include numbers, text, and error values",
+          "Return the counter"
+        ],
+        "worked_example": {
+          "problem": "A vendor master list has company names and contact details. Some cells have phone numbers (numeric), others have only names (text). How many vendors are listed?",
+          "steps": [
+            "Enter vendor data in range A2:A50 (some numeric, some text, some blank)",
+            "In cell A51, enter =COUNTA(A2:A50)",
+            "Excel counts every non-empty cell: 47 total",
+            "Cell A51 displays 47"
+          ],
+          "result": "47 vendors",
+          "insight": "COUNTA is better than COUNT for roster or directory data. COUNT would give only the numeric entries (e.g., 12 phone numbers), missing the 35 text-only records."
+        }
+      },
+      {
+        "function": "IF",
+        "syntax": "=IF(test, true, false)",
+        "returns": "Conditional value",
+        "gotcha": "Nesting beyond 3 levels = unreadable",
+        "variables": [
+          {
+            "symbol": "test",
+            "meaning": "A logical condition or comparison (e.g., '>50', '=A2', 'A2>B2')"
+          },
+          {
+            "symbol": "true",
+            "meaning": "Value, formula, or text to return if the test evaluates to TRUE"
+          },
+          {
+            "symbol": "false",
+            "meaning": "Value, formula, or text to return if the test evaluates to FALSE"
+          }
+        ],
+        "plain_english": "IF evaluates a condition and returns one of two outcomes depending on whether it is true or false. It is the gatekeeper for conditional logic in spreadsheets. Use it to flag exceptions (e.g., 'Profit' or 'Loss'), apply tiered rules, or conditionally sum/average based on business criteria.",
+        "computation": [
+          "Evaluate the test condition (comparison or logical expression)",
+          "If TRUE, return or execute the true argument",
+          "If FALSE, return or execute the false argument",
+          "Avoid nesting more than 2–3 IF statements; use IFS() or lookup functions instead"
+        ],
+        "worked_example": {
+          "problem": "A credit analyst needs to flag loans with a debt-to-income ratio above 40% as 'High Risk', others as 'Acceptable'.",
+          "steps": [
+            "Enter DTI ratios in column E (e.g., E2 = 0.35, E3 = 0.45, E4 = 0.42)",
+            "In cell F2, enter =IF(E2>0.40, 'High Risk', 'Acceptable')",
+            "For E2 (0.35), test is FALSE → returns 'Acceptable'",
+            "For E3 (0.45), test is TRUE → returns 'High Risk'",
+            "Copy formula down for all rows"
+          ],
+          "result": "E2→'Acceptable', E3→'High Risk', E4→'High Risk'",
+          "insight": "IF is the foundation of rule-based decisioning in models. One IF per cell is clear and maintainable; nested IF chains should be replaced with IFS() or CHOOSE() for readability."
+        }
+      },
+      {
+        "function": "SUMIF",
+        "syntax": "=SUMIF(range, criteria, sum_range)",
+        "returns": "Conditional total",
+        "gotcha": "\">=\"&cell for dynamic criteria",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "The range of cells to test against the criteria"
+          },
+          {
+            "symbol": "criteria",
+            "meaning": "The condition to match (e.g., '>100', 'North', or a cell reference); use \">&\"&A1 for dynamic comparisons"
+          },
+          {
+            "symbol": "sum_range",
+            "meaning": "The range of values to sum if the criteria is met (optional; if omitted, range is summed)"
+          }
+        ],
+        "plain_english": "SUMIF sums values from one range based on criteria applied to another range. It is the workhorse for conditional aggregation—sum revenue by region, total expenses by cost centre, or aggregate sales only for a specific product or customer. Far more powerful than manual filtering and summing.",
+        "computation": [
+          "Iterate through each cell in range",
+          "Test if the cell meets the criteria",
+          "If TRUE, add the corresponding cell from sum_range to the total",
+          "If FALSE, skip it",
+          "Return the total"
+        ],
+        "worked_example": {
+          "problem": "A regional manager has sales data: Region in column A, Amount in column B. Calculate total sales for 'North' region.",
+          "steps": [
+            "Data: A2:A10 = {North, South, North, East, North, South, West, North, East}",
+            "        B2:B10 = {₹2,50,000, ₹1,80,000, ₹3,20,000, ₹1,50,000, ₹2,80,000, ₹1,95,000, ₹2,20,000, ₹3,10,000, ₹1,70,000}",
+            "In cell C2, enter =SUMIF(A2:A10, 'North', B2:B10)",
+            "Excel tests each region in A2:A10, finds four 'North' entries",
+            "Sums corresponding amounts: ₹2,50,000 + ₹3,20,000 + ₹2,80,000 + ₹3,10,000"
+          ],
+          "result": "₹11,60,000 (North region total)",
+          "insight": "SUMIF replaces manual filtering and calculator work. To make criteria dynamic, use \">&\"&A1 instead of a hardcoded '>100', allowing easy sensitivity testing."
+        }
+      },
+      {
+        "function": "COUNTIF",
+        "syntax": "=COUNTIF(range, criteria)",
+        "returns": "Conditional count",
+        "gotcha": "\"*\" wildcard for partial matches",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "The range of cells to evaluate"
+          },
+          {
+            "symbol": "criteria",
+            "meaning": "The condition to match (e.g., '>50', 'Approved', '*Ltd*' for partial match)"
+          }
+        ],
+        "plain_english": "COUNTIF counts cells that meet a specific criterion. Unlike COUNT, it is condition-aware. Use it to count orders above a threshold, approvals by status, or entries matching a partial text pattern (with wildcards). Essential for risk segmentation and deal counting in equity research.",
+        "computation": [
+          "Iterate through each cell in range",
+          "Test if the cell matches the criteria",
+          "If TRUE, increment the counter",
+          "If FALSE, skip",
+          "Return the counter"
+        ],
+        "worked_example": {
+          "problem": "A loan portfolio has approval statuses: 'Approved', 'Pending', 'Rejected'. Count how many are 'Approved'.",
+          "steps": [
+            "Data in G2:G50 contains status values",
+            "In cell H2, enter =COUNTIF(G2:G50, 'Approved')",
+            "Excel scans each cell in G2:G50",
+            "Counts only cells that exactly match 'Approved' (e.g., 23 matches)",
+            "Cell H2 displays 23"
+          ],
+          "result": "23 approved loans",
+          "insight": "COUNTIF is faster than manual filtering. For partial matches (e.g., any company name containing 'Ltd'), use =COUNTIF(range, '*Ltd*') with wildcards."
+        }
+      },
+      {
+        "function": "AVERAGEIF",
+        "syntax": "=AVERAGEIF(range, criteria, avg_range)",
+        "returns": "Conditional mean",
+        "gotcha": "Ignores blanks in avg_range too",
+        "variables": [
+          {
+            "symbol": "range",
+            "meaning": "The range of cells to test against the criteria"
+          },
+          {
+            "symbol": "criteria",
+            "meaning": "The condition to match (e.g., '>500', 'Active', or a cell reference)"
+          },
+          {
+            "symbol": "avg_range",
+            "meaning": "The range of values to average if criteria is met (optional; if omitted, range is averaged)"
+          }
+        ],
+        "plain_english": "AVERAGEIF calculates the mean of values that meet a specific condition. Use it to find the average deal size for a region, typical margin for a product line, or mean duration of approved transactions. It is AVERAGE with a filter built in.",
+        "computation": [
+          "Iterate through each cell in range",
+          "Test if the cell meets the criteria",
+          "If TRUE, include the corresponding avg_range cell in the calculation",
+          "If FALSE, skip it",
+          "Sum the included values and divide by their count (ignoring blanks)",
+          "Return the mean"
+        ],
+        "worked_example": {
+          "problem": "A bank has a loan portfolio with Status in column I and Interest Rate in column J. Find the average rate for all 'Active' loans.",
+          "steps": [
+            "Data: I2:I25 = {Active, Closed, Active, Active, Closed, Active, ...}",
+            "        J2:J25 = {8.5%, 7.2%, 9.1%, 8.8%, 7.5%, 8.3%, ...}",
+            "In cell K2, enter =AVERAGEIF(I2:I25, 'Active', J2:J25)",
+            "Excel finds all 'Active' status rows",
+            "Averages corresponding rates: (8.5 + 9.1 + 8.8 + 8.3 + ...) ÷ count of active loans"
+          ],
+          "result": "8.62% (average rate for active loans)",
+          "insight": "AVERAGEIF reveals segment-level performance. If active loans average 8.62% but closed loans averaged 7.5%, the portfolio is earning more on current business—a positive working capital signal."
+        }
+      }
+    ]
+  }
+}

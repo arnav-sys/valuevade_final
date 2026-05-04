@@ -1,0 +1,207 @@
+{
+  "id": "d6b09d19-16fd-452e-9889-eea2d1016453",
+  "label": "M4 S2 | The Three Integrity Check Formulas — Your Model's Alarm Syst",
+  "before": {
+    "formulas": [
+      {
+        "name": "Balance Sheet Integrity Check",
+        "formula": "=ROUND(Total_Assets - Total_Liabilities - Total_Equity, 2)",
+        "variables": [
+          {
+            "symbol": "Total_Assets",
+            "meaning": "Reference to the Total Assets cell on the Balance Sheet, typically the subtotal row"
+          },
+          {
+            "symbol": "Total_Liabilities",
+            "meaning": "Reference to Total Liabilities cell on the BS"
+          },
+          {
+            "symbol": "Total_Equity",
+            "meaning": "Reference to Total Equity cell on the BS"
+          },
+          {
+            "symbol": "ROUND(...,2)",
+            "meaning": "Rounds to 2 decimal places to ignore floating-point noise below ₹0.01 cr"
+          }
+        ],
+        "worked_example": "Placed in cell B1 of the Balance Sheet tab (before you even enter any data), formula = ROUND(B45 - B62 - B75, 2) where B45 is Total Assets, B62 is Total Liabilities, B75 is Total Equity. Today the cell shows 0 (all values are empty, which Excel treats as zero). As you populate historicals and forecasts, this cell must remain 0. Conditional formatting rule: if value = 0 then fill green, else fill red. Repeat the formula across all years — if year FY27 suddenly turns red, you know exactly which year has the error.",
+        "sensitivity_note": "The ROUND wrapper is critical. Without it, you'll see tiny values like 0.000001 from floating-point arithmetic and panic. With ROUND to 2 decimals, the cell shows 0 whenever the imbalance is less than ₹0.01 cr — which is effectively zero for any reasonable model."
+      },
+      {
+        "name": "Cash Reconciliation Check",
+        "formula": "=ROUND(CFS_Closing_Cash - BS_Cash, 2)",
+        "variables": [
+          {
+            "symbol": "CFS_Closing_Cash",
+            "meaning": "The closing cash cell at the bottom of the Cash Flow Statement, after adding Opening Cash + CFO + CFI + CFF"
+          },
+          {
+            "symbol": "BS_Cash",
+            "meaning": "The Cash & Cash Equivalents line on the current-year Balance Sheet"
+          }
+        ],
+        "worked_example": "Placed in cell B2 of the Cash Flow Statement tab. Formula = ROUND(CFS!B58 - BS!B12, 2). For FY24 Titan: CFS closing cash = ₹1,800 cr. BS cash = ₹1,800 cr. Difference = 0. ✓. Repeat across all years. If any year turns red, the CFS is either missing a line or has a sign error. This check catches roughly 80% of modelling errors in the forecast period.",
+        "sensitivity_note": "This check will fire before the BS integrity check does, because a cash tie-out failure propagates into an imbalanced BS. So: fix cash tie-out FIRST, then BS integrity usually resolves itself."
+      },
+      {
+        "name": "Retained Earnings Roll Check",
+        "formula": "=ROUND(RE_Closing - (RE_Opening + Net_Income - Dividends), 2)",
+        "variables": [
+          {
+            "symbol": "RE_Closing",
+            "meaning": "Current-year closing retained earnings on the BS"
+          },
+          {
+            "symbol": "RE_Opening",
+            "meaning": "Prior-year closing retained earnings (i.e. opening for current year)"
+          },
+          {
+            "symbol": "Net_Income",
+            "meaning": "Current-year Net Income from the IS bottom line"
+          },
+          {
+            "symbol": "Dividends",
+            "meaning": "Dividends paid in the current year (from CFF on the CFS)"
+          }
+        ],
+        "worked_example": "Placed in cell B3 of the Balance Sheet tab. Formula = ROUND(BS!F75 - (BS!E75 + IS!F45 - CFS!F52), 2). For FY24 Titan: Closing RE ₹9,086 cr = Opening RE ₹7,100 cr + NI ₹3,496 cr − Dividends ₹1,510 cr. 9,086 − (7,100 + 3,496 − 1,510) = 0. ✓. If this check fires, it's usually because Net Income is linked to the wrong year, or dividends from CFF aren't being reflected in RE.",
+        "sensitivity_note": "This is the sneakiest check because when it fails, BS integrity also fails — and beginners fix BS integrity with a plug without realising the RE roll was the underlying cause. Always check RE roll before touching anything else."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + 1 (Format Cells dialog)",
+        "Cmd + Shift + ~ (General format)",
+        "Cmd + Shift + 1 (Number format)",
+        "Cmd + Shift + 5 (Percentage format)"
+      ],
+      "windows": [
+        "Alt + H + J (Cell Styles menu — apply named styles quickly)",
+        "Alt + H + L (Conditional Formatting menu — for the integrity check green/red rules)",
+        "Ctrl + 1 (Format Cells dialog — deep number formatting options)",
+        "Ctrl + Shift + ~ (apply General number format)",
+        "Ctrl + Shift + 1 (apply Number format with 2 decimals and thousands separator)",
+        "Ctrl + Shift + 5 (apply Percentage format)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Balance Sheet Integrity Check",
+        "formula": "=ROUND(Total_Assets - Total_Liabilities - Total_Equity, 2)",
+        "variables": [
+          {
+            "symbol": "Total_Assets",
+            "meaning": "Reference to the Total Assets cell on the Balance Sheet, typically the subtotal row"
+          },
+          {
+            "symbol": "Total_Liabilities",
+            "meaning": "Reference to Total Liabilities cell on the BS"
+          },
+          {
+            "symbol": "Total_Equity",
+            "meaning": "Reference to Total Equity cell on the BS"
+          },
+          {
+            "symbol": "ROUND(...,2)",
+            "meaning": "Rounds to 2 decimal places to ignore floating-point noise below ₹0.01 cr"
+          }
+        ],
+        "plain_english": "The fundamental balance sheet equation is Assets = Liabilities + Equity. This formula calculates the residual difference; if the equation balances perfectly, the result is zero. A non-zero result (especially after rounding to 2 decimals) signals that you've made a data-entry error, a formula error, or a sign error somewhere in your model. In equity research, an unbalanced sheet is a red flag that invalidates all downstream analysis.",
+        "worked_example": {
+          "problem": "You are building a three-year forecast model for HUL. You place the Balance Sheet Integrity Check in cell B1 of the Balance Sheet tab before entering any data.",
+          "steps": [
+            "Set formula to =ROUND(B45 - B62 - B75, 2) where B45 = Total Assets, B62 = Total Liabilities, B75 = Total Equity.",
+            "Initially, all three cells are empty (Excel treats as 0). The check returns 0.",
+            "Apply conditional formatting: if value = 0, fill green; else fill red.",
+            "Copy the formula across columns for FY25, FY26, FY27.",
+            "As you populate historicals and build forecasts, monitor the check. If FY27 turns red with a value of ₹50 cr, you know FY27 has an imbalance of exactly ₹50 cr."
+          ],
+          "result": "All years remain green (value = 0). The balance sheet is in equilibrium across the forecast period.",
+          "insight": "This check catches omitted line items, incorrect account mappings, and sign errors long before you present the model. It is the single most important guard rail in a three-statement model."
+        },
+        "sensitivity_note": "The ROUND wrapper is critical. Without it, you'll see tiny values like 0.000001 from floating-point arithmetic and panic. With ROUND to 2 decimals, the cell shows 0 whenever the imbalance is less than ₹0.01 cr — which is effectively zero for any reasonable model."
+      },
+      {
+        "name": "Cash Reconciliation Check",
+        "formula": "=ROUND(CFS_Closing_Cash - BS_Cash, 2)",
+        "variables": [
+          {
+            "symbol": "CFS_Closing_Cash",
+            "meaning": "The closing cash cell at the bottom of the Cash Flow Statement, after adding Opening Cash + CFO + CFI + CFF"
+          },
+          {
+            "symbol": "BS_Cash",
+            "meaning": "The Cash & Cash Equivalents line on the current-year Balance Sheet"
+          }
+        ],
+        "plain_english": "Cash shown on the balance sheet should match the closing cash balance calculated at the bottom of the cash flow statement. If they differ, it means either a cash line is missing from the CFS, a sign is inverted, or the opening cash doesn't tie to the prior year's closing balance. This check is often the first domino to fall when something is broken in your model.",
+        "worked_example": {
+          "problem": "You are building a historical + forecast model for Bajaj Finance. You want to ensure FY24 and FY25 cash tie-outs are perfect before forecasting FY26–FY28.",
+          "steps": [
+            "Place the check in cell B2 of the Cash Flow Statement tab.",
+            "Set formula to =ROUND(CFS!B58 - BS!B12, 2) where CFS!B58 is closing cash from the CFS and BS!B12 is Cash & Cash Equivalents on the BS.",
+            "For FY24: CFS closing cash = ₹2,100 cr. BS cash = ₹2,100 cr. Difference = 0. ✓",
+            "For FY25 (forecast): CFS closing cash = ₹2,650 cr. BS cash should = ₹2,650 cr. If it doesn't, check for omitted working capital lines or incorrect CFF entries.",
+            "Repeat check across all years; apply red/green conditional formatting."
+          ],
+          "result": "FY24 and FY25 both show 0. The cash tie-out is complete and auditable.",
+          "insight": "This check catches roughly 80% of modelling errors in the forecast period. Because cash is central to valuation (discounted free cash flow), even a small tie-out error compounds through the valuation. A red flag here means stop and debug before proceeding."
+        },
+        "sensitivity_note": "This check will fire before the BS integrity check does, because a cash tie-out failure propagates into an imbalanced BS. So: fix cash tie-out FIRST, then BS integrity usually resolves itself."
+      },
+      {
+        "name": "Retained Earnings Roll Check",
+        "formula": "=ROUND(RE_Closing - (RE_Opening + Net_Income - Dividends), 2)",
+        "variables": [
+          {
+            "symbol": "RE_Closing",
+            "meaning": "Current-year closing retained earnings on the BS"
+          },
+          {
+            "symbol": "RE_Opening",
+            "meaning": "Prior-year closing retained earnings (i.e. opening for current year)"
+          },
+          {
+            "symbol": "Net_Income",
+            "meaning": "Current-year Net Income from the IS bottom line"
+          },
+          {
+            "symbol": "Dividends",
+            "meaning": "Dividends paid in the current year (from CFF on the CFS)"
+          }
+        ],
+        "plain_english": "Retained earnings grow by the amount of net income earned and shrink by the amount of dividends paid out. This formula checks whether the closing retained earnings balance on the balance sheet is consistent with the opening balance, plus earnings, minus distributions. A mismatch often signals that net income is linked to the wrong year, dividends are double-counted or omitted, or opening retained earnings is stale.",
+        "worked_example": {
+          "problem": "You are building a model for ITC (tobacco and FMCG conglomerate). You need to ensure that retained earnings rolls forward correctly across FY24–FY27.",
+          "steps": [
+            "Place the check in cell B3 of the Balance Sheet tab.",
+            "Set formula to =ROUND(BS!F75 - (BS!E75 + IS!F45 - CFS!F52), 2) where BS!F75 is FY25 closing RE, BS!E75 is FY24 closing RE, IS!F45 is FY25 net income, CFS!F52 is FY25 dividends.",
+            "For FY24 actual: Closing RE = ₹18,500 cr. Opening RE (FY23 close) = ₹16,200 cr. NI = ₹3,100 cr. Dividends = ₹1,000 cr. Check: 18,500 − (16,200 + 3,100 − 1,000) = 18,500 − 18,300 = 0. ✓",
+            "For FY25 (forecast): RE Opening = 18,500. NI = 3,400 (forecast). Dividends = 1,100 (forecast). Closing should be 18,500 + 3,400 − 1,100 = 20,800. Verify BS shows 20,800 in RE; check formula returns 0."
+          ],
+          "result": "All years return 0. Retained earnings roll forward consistently with profitability and distribution policy.",
+          "insight": "When this check fails, the BS integrity check also fails—but beginners often plug the BS imbalance without realising the RE roll was the root cause. Always diagnose RE roll first before blindly adjusting equity."
+        },
+        "sensitivity_note": "This is the sneakiest check because when it fails, BS integrity also fails — and beginners fix BS integrity with a plug without realising the RE roll was the underlying cause. Always check RE roll before touching anything else."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + 1 (Format Cells dialog)",
+        "Cmd + Shift + ~ (General format)",
+        "Cmd + Shift + 1 (Number format)",
+        "Cmd + Shift + 5 (Percentage format)"
+      ],
+      "windows": [
+        "Alt + H + J (Cell Styles menu — apply named styles quickly)",
+        "Alt + H + L (Conditional Formatting menu — for the integrity check green/red rules)",
+        "Ctrl + 1 (Format Cells dialog — deep number formatting options)",
+        "Ctrl + Shift + ~ (apply General number format)",
+        "Ctrl + Shift + 1 (apply Number format with 2 decimals and thousands separator)",
+        "Ctrl + Shift + 5 (apply Percentage format)"
+      ]
+    }
+  }
+}

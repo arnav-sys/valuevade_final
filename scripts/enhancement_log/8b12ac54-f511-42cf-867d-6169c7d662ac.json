@@ -1,0 +1,153 @@
+{
+  "id": "8b12ac54-f511-42cf-867d-6169c7d662ac",
+  "label": "M1 S12 | Bond Pricing, Current Yield, and Duration Formulas",
+  "before": {
+    "excel": {
+      "ytm": "=RATE(nper, pmt, pv, fv) -- PV entered as negative",
+      "duration": "=DURATION(settlement, maturity, coupon, yield, frequency, basis)",
+      "bond_price": "=PV(rate, nper, pmt, fv) -- negate with -PV()",
+      "modified_duration": "=MDURATION(...)"
+    },
+    "duration": {
+      "macaulay": "Weighted average time to receive all cash flows",
+      "modified": "Macaulay Duration / (1 + YTM)",
+      "price_change": "Approx Price Change = -Modified Duration x Change in Yield x Price",
+      "plain_english": "Duration 7 years = bond loses approximately 7% for every 1% rise in yields. Longer maturity = higher duration = more volatility."
+    },
+    "bond_price": {
+      "formula": "P = Sum[C/(1+r)^t] + FV/(1+r)^n for t=1 to n",
+      "variables": {
+        "C": "Annual coupon (Coupon Rate x Face Value)",
+        "P": "Market price",
+        "n": "Years to maturity",
+        "r": "Yield to maturity (market required return)",
+        "FV": "Face value (par)"
+      },
+      "worked_example": {
+        "given": "5-year G-Sec, 7% coupon, Rs 100 face, market yield 8%",
+        "total": "Rs 96.01 -- below par because market demands 8% but coupon pays only 7%",
+        "calculations": [
+          {
+            "cf": "7.00",
+            "df": "0.9259",
+            "pv": "6.48",
+            "year": 1
+          },
+          {
+            "cf": "7.00",
+            "df": "0.8573",
+            "pv": "6.00",
+            "year": 2
+          },
+          {
+            "cf": "7.00",
+            "df": "0.7938",
+            "pv": "5.56",
+            "year": 3
+          },
+          {
+            "cf": "7.00",
+            "df": "0.7350",
+            "pv": "5.15",
+            "year": 4
+          },
+          {
+            "cf": "107.00",
+            "df": "0.6806",
+            "pv": "72.82",
+            "year": 5
+          }
+        ]
+      }
+    },
+    "current_yield": {
+      "example": "7/96.01 = 7.29%. Between coupon rate (7%) and YTM (8%). Ignores capital gains/losses -- YTM is more complete.",
+      "formula": "Annual Coupon / Market Price"
+    }
+  },
+  "after": {
+    "excel": {
+      "ytm": "=RATE(nper, pmt, pv, fv) -- PV entered as negative",
+      "duration": "=DURATION(settlement, maturity, coupon, yield, frequency, basis)",
+      "bond_price": "=PV(rate, nper, pmt, fv) -- negate with -PV()",
+      "modified_duration": "=MDURATION(...)"
+    },
+    "duration": {
+      "macaulay": "Weighted average time to receive all cash flows",
+      "modified": "Macaulay Duration / (1 + YTM)",
+      "price_change": "Approx Price Change = -Modified Duration x Change in Yield x Price",
+      "plain_english": "Duration 7 years = bond loses approximately 7% for every 1% rise in yields. Longer maturity = higher duration = more volatility."
+    },
+    "bond_price": {
+      "formula": "P = Sum[C/(1+r)^t] + FV/(1+r)^n for t=1 to n",
+      "variables": [
+        {
+          "symbol": "P",
+          "meaning": "Market price of the bond"
+        },
+        {
+          "symbol": "C",
+          "meaning": "Annual coupon payment (Coupon Rate × Face Value)"
+        },
+        {
+          "symbol": "r",
+          "meaning": "Yield to maturity (YTM), the market's required return, expressed as a decimal"
+        },
+        {
+          "symbol": "t",
+          "meaning": "Time period in years (1 to n)"
+        },
+        {
+          "symbol": "n",
+          "meaning": "Number of years to maturity"
+        },
+        {
+          "symbol": "FV",
+          "meaning": "Face value or par value of the bond"
+        }
+      ],
+      "plain_english": "Bond price is the present value of all future cash flows — coupons and principal repayment — discounted at the yield to maturity. When market yields rise above the coupon rate, the bond trades at a discount (below par); when yields fall below the coupon rate, it trades at a premium. This formula is fundamental to fixed-income investing because it tells you the fair value of any bond given current market conditions.",
+      "computation": [
+        "Step 1: Calculate the present value of each annual coupon payment: C / (1+r)^t for t = 1, 2, ..., n",
+        "Step 2: Sum all coupon present values.",
+        "Step 3: Calculate the present value of the face value repayment: FV / (1+r)^n",
+        "Step 4: Add the two components to get total bond price P."
+      ],
+      "worked_example": {
+        "problem": "A 5-year Indian Government Security (G-Sec) has a 7% coupon paid annually, face value of ₹100, and the market yield is 8%. What is the bond's fair price?",
+        "steps": [
+          "Year 1 coupon: ₹7 / (1.08)^1 = ₹7 / 1.0800 = ₹6.48",
+          "Year 2 coupon: ₹7 / (1.08)^2 = ₹7 / 1.1664 = ₹6.00",
+          "Year 3 coupon: ₹7 / (1.08)^3 = ₹7 / 1.2597 = ₹5.56",
+          "Year 4 coupon: ₹7 / (1.08)^4 = ₹7 / 1.3605 = ₹5.15",
+          "Year 5 coupon + principal: ₹107 / (1.08)^5 = ₹107 / 1.4693 = ₹72.82",
+          "Total bond price = ₹6.48 + ₹6.00 + ₹5.56 + ₹5.15 + ₹72.82 = ₹96.01"
+        ],
+        "result": "₹96.01",
+        "insight": "The bond trades at a discount (₹96.01 vs. par value of ₹100) because the market yield (8%) exceeds the coupon rate (7%). An investor buying at ₹96.01 will earn the higher 8% return; the discount accounts for the below-market coupon payments. This illustrates the inverse relationship between bond prices and yields: as yields rise, prices fall."
+      }
+    },
+    "current_yield": {
+      "formula": "Current Yield = Annual Coupon / Market Price",
+      "variables": [
+        {
+          "symbol": "Annual Coupon",
+          "meaning": "The fixed annual coupon payment (Coupon Rate × Face Value)"
+        },
+        {
+          "symbol": "Market Price",
+          "meaning": "The current trading price of the bond"
+        }
+      ],
+      "plain_english": "Current yield measures the annual income return relative to the price you pay today, ignoring capital gains or losses at maturity. It sits between the coupon rate and the yield to maturity (YTM) when a bond trades at a discount or premium. While simple and useful for quick comparisons, current yield is incomplete because it ignores the total return from price appreciation or depreciation — YTM is the more comprehensive metric.",
+      "worked_example": {
+        "problem": "Using the 5-year G-Sec from the bond price example: coupon is 7% (₹7 annual payment), and the bond trades at ₹96.01. What is the current yield?",
+        "steps": [
+          "Current Yield = ₹7 / ₹96.01 = 0.0729 or 7.29%"
+        ],
+        "result": "7.29%",
+        "insight": "The current yield (7.29%) lies between the coupon rate (7.0%) and the YTM (8.0%). This makes intuitive sense: if you buy at a discount, your income return is higher than the coupon rate alone. However, current yield ignores the ₹3.99 capital gain you will realize at maturity (₹100 face value minus ₹96.01 purchase price), which is why YTM (8%) remains the more complete measure of total return."
+      }
+    }
+  }
+}

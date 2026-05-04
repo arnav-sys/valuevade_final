@@ -1,0 +1,179 @@
+{
+  "id": "d3948549-d89d-4468-a7e2-e38444dffb4f",
+  "label": "M7 S6 | The Working Capital Formula Stack",
+  "before": {
+    "formulas": [
+      {
+        "name": "Days Sales Outstanding (DSO)",
+        "formula": "DSO = (Trade Receivables / Revenue from Operations) × 365",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "From the balance sheet — receivables owed by customers for goods or services already delivered. Use closing balance for stock-view, or average of opening and closing for flow-view."
+          },
+          {
+            "symbol": "Revenue from Operations",
+            "meaning": "From the P&L — annual revenue from the core business. Exclude Other Income. Exclude indirect taxes (GST) if reported gross of taxes."
+          }
+        ],
+        "worked_example": "Bharat Forge FY24:\\nTrade Receivables (closing): ₹2,140 cr\\nRevenue from Operations: ₹12,500 cr\\nDSO = (2,140 / 12,500) × 365 = 62 days\\n\\nFor context, Bharat Forge supplies to global OEMs like Daimler, MAN, Volvo, Cummins — counterparties with net-60 to net-90 terms. A DSO of 62 days is consistent with premium-client auto ancillary norms. Rising DSO above 75 days would signal either a shift in customer mix toward weaker credit, or extended terms given to maintain volumes. For comparison, Asian Paints runs DSO of approximately 35 days (domestic distribution credit), Nestlé India runs approximately 8 days (modern trade + GT + cash-heavy).",
+        "sensitivity_note": "A 10-day increase in DSO on Bharat Forge's ₹12,500 cr revenue translates to approximately ₹340 cr of incremental working capital deployment — nearly 2% of market cap in additional capital locked up. For a company generating 12% ROCE, that is material capital efficiency erosion."
+      },
+      {
+        "name": "Days Inventory Outstanding (DIO)",
+        "formula": "DIO = (Inventory / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Inventory",
+            "meaning": "From the balance sheet — raw materials, work-in-progress, and finished goods. Use closing or average balance."
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "From the P&L — Cost of Materials Consumed plus Purchases of Stock-in-Trade plus Changes in Inventories. Essentially the operational cost of goods sold."
+          }
+        ],
+        "worked_example": "UltraTech Cement FY24:\\nInventory (closing): ₹5,890 cr\\nCost of Materials + Purchases: ₹37,420 cr\\n(Note: for cement, we can approximate COGS with materials + purchases + power & fuel, but materials-only is a close approximation for DIO)\\nDIO ≈ (5,890 / 37,420) × 365 = 57 days\\n\\nContext: 57 days DIO for a cement company reflects significant transit inventory (cement moves from manufacturing plants through depots to end customers, distances often 500-1,000 km in the Indian context). Below 40 days would suggest excellent supply chain discipline but risk of stock-outs. Above 70 days suggests demand weakness, inventory build-up, or seasonal stocking. Comparable: Shree Cement runs approximately 55 days, Ambuja approximately 50 days — all in a similar band for national cement players.",
+        "sensitivity_note": "If cement demand softens in a weak monsoon or slowdown year, DIO can expand 15-20 days rapidly, locking up 25-30% more working capital. This is why cement company earnings and cash flows both compress in downcycles — not just margin compression, but working capital expansion compounds the cash pressure."
+      },
+      {
+        "name": "Cash Conversion Cycle (CCC)",
+        "formula": "CCC = DSO + DIO − DPO",
+        "variables": [
+          {
+            "symbol": "DSO",
+            "meaning": "Days Sales Outstanding (from formula above)"
+          },
+          {
+            "symbol": "DIO",
+            "meaning": "Days Inventory Outstanding (from formula above)"
+          },
+          {
+            "symbol": "DPO",
+            "meaning": "Days Payables Outstanding = (Trade Payables / COGS) × 365"
+          }
+        ],
+        "worked_example": "Hindustan Unilever FY24:\\nTrade Receivables: ₹1,480 cr → DSO = (1,480 / 59,580) × 365 = 9 days\\nInventory: ₹3,260 cr → DIO = (3,260 / 30,410) × 365 = 39 days\\nTrade Payables: ₹11,240 cr → DPO = (11,240 / 30,410) × 365 = 135 days\\n\\nCCC = 9 + 39 − 135 = −87 days\\n\\nThis is the quintessential negative working capital signature. HUL collects cash almost immediately (low DSO), turns inventory reasonably (39 days), and stretches suppliers to 135 days. The net result — HUL operates on 87 days of supplier float. This is why HUL's ROCE is 45%+ despite 'only' 25% EBITDA margins. Capital efficiency is the hidden multiplier.",
+        "sensitivity_note": "HUL's CCC has been negative for over a decade. If DPO were forced to contract to 90 days (through supplier pushback or regulatory intervention), CCC would move to −42 days — still negative but meaningfully less powerful. The current CCC of −87 days contributes approximately 1,800-2,200 cr of interest-free funding — equivalent to reducing net borrowings by that amount."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+; → Insert current date",
+        "Cmd+Shift+1 → Format as number with 2 decimals",
+        "Cmd+Shift+7 → Apply border",
+        "Cmd+Shift+R → Sort ascending"
+      ],
+      "windows": [
+        "Ctrl+; → Insert current date (useful for working capital age calculations)",
+        "Alt+H+K → Format as number with 1 decimal (for DSO/DIO/DPO tables)",
+        "Ctrl+Shift+& → Apply outside border",
+        "Alt+A+T → Sort data (for peer benchmark tables)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Days Sales Outstanding (DSO)",
+        "formula": "DSO = (Trade Receivables / Revenue from Operations) × 365",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "From the balance sheet — receivables owed by customers for goods or services already delivered. Use closing balance for stock-view, or average of opening and closing for flow-view."
+          },
+          {
+            "symbol": "Revenue from Operations",
+            "meaning": "From the P&L — annual revenue from the core business. Exclude Other Income. Exclude indirect taxes (GST) if reported gross of taxes."
+          }
+        ],
+        "plain_english": "DSO measures how many days it takes a company to collect cash after a sale. A lower DSO means cash comes in faster, freeing up capital for growth or debt reduction. In Indian equity research, DSO reveals credit discipline and customer mix — a rising DSO often signals either weakening counterparties or intentional terms concessions to defend volumes.",
+        "worked_example": {
+          "problem": "Bharat Forge FY24 has trade receivables of ₹2,140 cr and revenue from operations of ₹12,500 cr. Calculate DSO.",
+          "steps": [
+            "Divide Trade Receivables by Revenue from Operations: 2,140 ÷ 12,500 = 0.1712",
+            "Multiply by 365 days: 0.1712 × 365 = 62.5 days"
+          ],
+          "result": "62 days",
+          "insight": "Bharat Forge supplies global OEMs (Daimler, MAN, Volvo, Cummins) with net-60 to net-90 payment terms. A DSO of 62 days is consistent with premium-client auto ancillary norms. For context, Asian Paints runs ~35 days (domestic distribution), Nestlé India ~8 days (modern trade + cash). If Bharat Forge's DSO rises above 75 days, it signals either a shift toward weaker-credit customers or extended terms to maintain volumes — both warrant investigation."
+        },
+        "sensitivity_note": "A 10-day increase in DSO on ₹12,500 cr revenue translates to approximately ₹340 cr of incremental working capital deployment — nearly 2% of market cap in additional capital locked up. For a company generating 12% ROCE, that is material capital efficiency erosion."
+      },
+      {
+        "name": "Days Inventory Outstanding (DIO)",
+        "formula": "DIO = (Inventory / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Inventory",
+            "meaning": "From the balance sheet — raw materials, work-in-progress, and finished goods. Use closing or average balance."
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "From the P&L — Cost of Materials Consumed plus Purchases of Stock-in-Trade plus Changes in Inventories. Essentially the operational cost of goods sold."
+          }
+        ],
+        "plain_english": "DIO measures how many days inventory sits before being sold. A lower DIO suggests efficient inventory turnover and less capital locked up in stock; a rising DIO flags demand weakness, supply chain inefficiency, or forced inventory build-up. In Indian manufacturing and distribution, DIO varies dramatically — cement and steel require high transit inventory; FMCG and pharma are leaner.",
+        "worked_example": {
+          "problem": "UltraTech Cement FY24 has inventory of ₹5,890 cr and cost of materials/purchases of approximately ₹37,420 cr. Calculate DIO.",
+          "steps": [
+            "Divide Inventory by COGS (approximated by materials + purchases): 5,890 ÷ 37,420 = 0.1574",
+            "Multiply by 365 days: 0.1574 × 365 = 57.5 days"
+          ],
+          "result": "57 days",
+          "insight": "A DIO of 57 days for cement reflects significant transit inventory — cement moves from manufacturing plants through depots to end customers over 500–1,000 km. Below 40 days would suggest excellent supply chain discipline but risk of stock-outs; above 70 days signals demand weakness or seasonal stocking. Comparable peers: Shree Cement ~55 days, Ambuja ~50 days. In weak monsoon or slowdown years, DIO can expand 15–20 days rapidly, locking up 25–30% more working capital and compressing cash flow alongside margin compression."
+        },
+        "sensitivity_note": "If cement demand softens in a weak monsoon or slowdown year, DIO can expand 15-20 days rapidly, locking up 25-30% more working capital. This is why cement company earnings and cash flows both compress in downcycles — not just margin compression, but working capital expansion compounds the cash pressure."
+      },
+      {
+        "name": "Cash Conversion Cycle (CCC)",
+        "formula": "CCC = DSO + DIO − DPO",
+        "variables": [
+          {
+            "symbol": "DSO",
+            "meaning": "Days Sales Outstanding — the number of days to collect cash from customers after a sale."
+          },
+          {
+            "symbol": "DIO",
+            "meaning": "Days Inventory Outstanding — the number of days inventory is held before sale."
+          },
+          {
+            "symbol": "DPO",
+            "meaning": "Days Payables Outstanding = (Trade Payables / COGS) × 365 — the number of days before the company pays its suppliers."
+          }
+        ],
+        "plain_english": "CCC is the number of days between when a company pays cash to suppliers and when it collects cash from customers. A negative CCC (like HUL's −87 days) is a superpower — the company operates on supplier float, generating interest-free working capital funding. A positive CCC drains cash; every day of growth requires more working capital investment. In Indian equity research, CCC is a hidden driver of ROCE and capital efficiency.",
+        "computation": [
+          "Calculate DSO = (Trade Receivables / Revenue from Operations) × 365",
+          "Calculate DIO = (Inventory / COGS) × 365",
+          "Calculate DPO = (Trade Payables / COGS) × 365",
+          "Add DSO and DIO, then subtract DPO: CCC = DSO + DIO − DPO"
+        ],
+        "worked_example": {
+          "problem": "Hindustan Unilever FY24 has trade receivables ₹1,480 cr, inventory ₹3,260 cr, trade payables ₹11,240 cr, revenue ₹59,580 cr, and COGS (cost of materials + purchases) ₹30,410 cr. Calculate CCC.",
+          "steps": [
+            "Calculate DSO: (1,480 / 59,580) × 365 = 9 days",
+            "Calculate DIO: (3,260 / 30,410) × 365 = 39 days",
+            "Calculate DPO: (11,240 / 30,410) × 365 = 135 days",
+            "Calculate CCC: 9 + 39 − 135 = −87 days"
+          ],
+          "result": "−87 days",
+          "insight": "HUL's negative CCC of −87 days is the quintessential signature of a capital-efficient business model. The company collects cash almost immediately (DSO 9 days), turns inventory reasonably (DIO 39 days), and stretches suppliers to 135 days. The net result — HUL operates on 87 days of supplier float, equivalent to approximately ₹1,800–₹2,200 cr of interest-free working capital funding. This is why HUL's ROCE exceeds 45% despite 'only' 25% EBITDA margins — capital efficiency is the hidden multiplier. If DPO were forced to 90 days (through supplier pushback), CCC would move to −42 days, still negative but meaningfully less powerful."
+        },
+        "sensitivity_note": "HUL's CCC has been negative for over a decade. If DPO were forced to contract to 90 days (through supplier pushback or regulatory intervention), CCC would move to −42 days — still negative but meaningfully less powerful. The current CCC of −87 days contributes approximately 1,800-2,200 cr of interest-free funding — equivalent to reducing net borrowings by that amount."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+; → Insert current date",
+        "Cmd+Shift+1 → Format as number with 2 decimals",
+        "Cmd+Shift+7 → Apply border",
+        "Cmd+Shift+R → Sort ascending"
+      ],
+      "windows": [
+        "Ctrl+; → Insert current date (useful for working capital age calculations)",
+        "Alt+H+K → Format as number with 1 decimal (for DSO/DIO/DPO tables)",
+        "Ctrl+Shift+& → Apply outside border",
+        "Alt+A+T → Sort data (for peer benchmark tables)"
+      ]
+    }
+  }
+}

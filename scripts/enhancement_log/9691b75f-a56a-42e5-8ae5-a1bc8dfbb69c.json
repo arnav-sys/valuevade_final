@@ -1,0 +1,235 @@
+{
+  "id": "9691b75f-a56a-42e5-8ae5-a1bc8dfbb69c",
+  "label": "M1 S4 | The Three Equations That Hold Everything Together",
+  "before": {
+    "formulas": [
+      {
+        "name": "The Accounting Equation (Balance Sheet Identity)",
+        "formula": "Assets = Liabilities + Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Assets",
+            "meaning": "Everything the company owns or controls — cash, inventory, factories, patents, receivables"
+          },
+          {
+            "symbol": "Liabilities",
+            "meaning": "Everything the company owes to outsiders — debt, payables, taxes due"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "What's left for shareholders after liabilities are paid — share capital + retained earnings"
+          }
+        ],
+        "worked_example": "TCS FY24 (approximate, in ₹ crore): Total Assets = ₹1,40,000 cr. Total Liabilities = ₹50,000 cr. Therefore Shareholders' Equity = ₹1,40,000 − ₹50,000 = ₹90,000 cr. If TCS borrows ₹10,000 cr more, Assets rise to ₹1,50,000 cr (cash up by ₹10,000) AND Liabilities rise to ₹60,000 cr. The equation still balances. It always must — if it doesn't, your model has a bug.",
+        "sensitivity_note": "Every transaction touches at least two accounts. Buy a building for ₹100 cr in cash: Assets (Building) +₹100, Assets (Cash) −₹100. Net change: zero. The equation never breaks — that's the entire principle of double-entry bookkeeping."
+      },
+      {
+        "name": "The Net Income Build (Income Statement Logic)",
+        "formula": "Net Income = Revenue − COGS − Operating Expenses − Interest − Taxes",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Total sales / top line — money earned from selling goods or services"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — direct costs of producing what you sold"
+          },
+          {
+            "symbol": "Operating Expenses",
+            "meaning": "Selling, General, Administrative, R&D — running the business"
+          },
+          {
+            "symbol": "Interest",
+            "meaning": "Cost of debt — what you pay lenders"
+          },
+          {
+            "symbol": "Taxes",
+            "meaning": "What the government takes from your pre-tax profit"
+          }
+        ],
+        "worked_example": "Reliance Industries FY24 (simplified, ₹ crore): Revenue ₹9,00,000 − COGS ₹6,50,000 = Gross Profit ₹2,50,000. Less OpEx ₹80,000 = EBIT ₹1,70,000. Less Interest ₹25,000 = PBT ₹1,45,000. Less Tax ₹35,000 = Net Income (PAT) ₹1,10,000 cr. Each subtraction is a margin checkpoint analysts care about — Gross Margin, Operating Margin, Net Margin.",
+        "sensitivity_note": "A 1% change in revenue with fixed costs disproportionately impacts net income — this is operating leverage. We'll explore it deeply in Module 7."
+      },
+      {
+        "name": "The Cash Reconciliation (Cash Flow Logic)",
+        "formula": "Closing Cash = Opening Cash + CFO + CFI + CFF",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations — cash from the core business (the engine)"
+          },
+          {
+            "symbol": "CFI",
+            "meaning": "Cash Flow from Investing — cash spent on or earned from long-term assets (capex, acquisitions)"
+          },
+          {
+            "symbol": "CFF",
+            "meaning": "Cash Flow from Financing — cash from issuing/repaying debt, equity, dividends"
+          }
+        ],
+        "worked_example": "Suppose Zomato starts the year with ₹2,000 cr cash. CFO = +₹400 cr (operations finally turning cash positive). CFI = −₹600 cr (acquired Blinkit, bought equipment). CFF = +₹200 cr (issued new equity). Closing Cash = 2,000 + 400 − 600 + 200 = ₹2,000 cr. The Cash Flow Statement explains exactly how the Cash line on the Balance Sheet moved — there are no mysteries.",
+        "sensitivity_note": "If Net Income is ₹500 cr but CFO is −₹300 cr, that's a giant red flag. It means the profit is on paper but cash isn't coming in — classic case of inflated receivables or revenue recognition games. We'll forensic this in Module 8."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + T → AutoSum",
+        "Cmd + Shift + F → Toggle filters",
+        "Cmd + T → Lock cell references (Mac equivalent of F4)",
+        "Ctrl + ; → Insert today's date"
+      ],
+      "windows": [
+        "Alt + = → AutoSum a column instantly",
+        "Ctrl + Shift + L → Toggle filters on the financial statements",
+        "F4 → Lock cell references when copying formulas across years",
+        "Ctrl + ; → Insert today's date for the as-of header"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "The Accounting Equation (Balance Sheet Identity)",
+        "formula": "Assets = Liabilities + Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Assets",
+            "meaning": "Everything the company owns or controls — cash, inventory, factories, patents, receivables"
+          },
+          {
+            "symbol": "Liabilities",
+            "meaning": "Everything the company owes to outsiders — debt, payables, taxes due"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "What's left for shareholders after liabilities are paid — share capital + retained earnings"
+          }
+        ],
+        "plain_english": "This equation is the foundation of financial accounting. It tells you that everything a company owns must be financed by either borrowing from others (liabilities) or by money invested by shareholders (equity). It never breaks — every transaction preserves this balance, which is why it's called double-entry bookkeeping. Understanding it means you'll never be confused about how the three main financial statements connect.",
+        "worked_example": {
+          "problem": "TCS FY24 (approximate, in ₹ crore): Total Assets = ₹1,40,000 cr. Total Liabilities = ₹50,000 cr. If TCS borrows ₹10,000 cr more, how do Assets and Equity change?",
+          "steps": [
+            "Initial state: Assets = ₹1,40,000 cr, Liabilities = ₹50,000 cr, Equity = ₹90,000 cr",
+            "New borrowing: Cash (an asset) increases by ₹10,000 cr",
+            "New liabilities increase by ₹10,000 cr (the debt obligation)",
+            "Updated: Assets = ₹1,50,000 cr, Liabilities = ₹60,000 cr, Equity = ₹90,000 cr (unchanged)",
+            "Verification: ₹1,50,000 = ₹60,000 + ₹90,000 ✓"
+          ],
+          "result": "Assets rise to ₹1,50,000 cr, Liabilities to ₹60,000 cr; Shareholders' Equity stays at ₹90,000 cr. The equation remains balanced.",
+          "insight": "The balance sheet always balances. If it doesn't when you build a model, you have a formula error — period. This is your first sanity check on any financial analysis."
+        },
+        "sensitivity_note": "Every transaction touches at least two accounts. Buy a building for ₹100 cr in cash: Assets (Building) +₹100, Assets (Cash) −₹100. Net change: zero. The equation never breaks — that's the entire principle of double-entry bookkeeping."
+      },
+      {
+        "name": "The Net Income Build (Income Statement Logic)",
+        "formula": "Net Income = Revenue − COGS − Operating Expenses − Interest − Taxes",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Total sales / top line — money earned from selling goods or services"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — direct costs of producing what you sold"
+          },
+          {
+            "symbol": "Operating Expenses",
+            "meaning": "Selling, General, Administrative, R&D — running the business"
+          },
+          {
+            "symbol": "Interest",
+            "meaning": "Cost of debt — what you pay lenders"
+          },
+          {
+            "symbol": "Taxes",
+            "meaning": "What the government takes from your pre-tax profit"
+          }
+        ],
+        "plain_english": "This formula walks you down the income statement line-by-line, from the top-line revenue down to what shareholders actually keep (net income). Each subtraction represents a layer of cost: some tied to production (COGS), some to running the business (OpEx), some to financing decisions (Interest), and some to the taxman. Analysts obsess over the margins at each level—gross, operating, and net—because they reveal the health and efficiency of the business at different stages.",
+        "computation": [
+          "Step 1: Revenue − COGS = Gross Profit (measures production efficiency)",
+          "Step 2: Gross Profit − Operating Expenses = EBIT (measures operational efficiency)",
+          "Step 3: EBIT − Interest = EBT or PBT (pre-tax profit; measures capital structure impact)",
+          "Step 4: EBT − Taxes = Net Income / PAT (what shareholders actually own)"
+        ],
+        "worked_example": {
+          "problem": "Reliance Industries FY24 (simplified, ₹ crore): Revenue ₹9,00,000, COGS ₹6,50,000, OpEx ₹80,000, Interest ₹25,000, Tax ₹35,000. Calculate Net Income and key margins.",
+          "steps": [
+            "Gross Profit = ₹9,00,000 − ₹6,50,000 = ₹2,50,000 cr",
+            "EBIT = ₹2,50,000 − ₹80,000 = ₹1,70,000 cr",
+            "EBT (PBT) = ₹1,70,000 − ₹25,000 = ₹1,45,000 cr",
+            "Net Income (PAT) = ₹1,45,000 − ₹35,000 = ₹1,10,000 cr",
+            "Gross Margin = ₹2,50,000 / ₹9,00,000 = 27.8%",
+            "Operating Margin = ₹1,70,000 / ₹9,00,000 = 18.9%",
+            "Net Margin = ₹1,10,000 / ₹9,00,000 = 12.2%"
+          ],
+          "result": "Net Income is ₹1,10,000 cr with a net margin of 12.2%.",
+          "insight": "Each checkpoint (Gross, EBIT, PAT) tells a story. Reliance's 27.8% gross margin is strong for refining; 18.9% operating margin shows disciplined cost control; 12.2% net margin reflects the burden of interest and taxes on a capital-heavy business. Comparing these across years or peers reveals where the company is getting better or worse."
+        },
+        "sensitivity_note": "A 1% change in revenue with fixed costs disproportionately impacts net income — this is operating leverage. We'll explore it deeply in Module 7."
+      },
+      {
+        "name": "The Cash Reconciliation (Cash Flow Logic)",
+        "formula": "Closing Cash = Opening Cash + CFO + CFI + CFF",
+        "variables": [
+          {
+            "symbol": "Opening Cash",
+            "meaning": "Cash balance at the start of the period (from prior period's balance sheet)"
+          },
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations — cash from the core business (the engine)"
+          },
+          {
+            "symbol": "CFI",
+            "meaning": "Cash Flow from Investing — cash spent on or earned from long-term assets (capex, acquisitions)"
+          },
+          {
+            "symbol": "CFF",
+            "meaning": "Cash Flow from Financing — cash from issuing/repaying debt, equity, dividends"
+          },
+          {
+            "symbol": "Closing Cash",
+            "meaning": "Cash balance at the end of the period (on the current balance sheet)"
+          }
+        ],
+        "plain_english": "This equation is the bridge between the income statement (which is accrual-based) and the balance sheet (which is a snapshot). It explains exactly where the cash came from and where it went during the period. CFO is the heartbeat — it shows if the core business is actually generating cash. CFI shows capital discipline. CFF shows financing choices. Together, they explain why the cash line on the balance sheet moved from opening to closing. Net Income can be ₹500 cr and Cash Flow can be negative — this equation helps you spot that red flag.",
+        "computation": [
+          "Step 1: Start with cash at the beginning of the period (Opening Cash from prior balance sheet)",
+          "Step 2: Add CFO (typically largest source in stable, mature businesses)",
+          "Step 3: Add CFI (usually negative for growing capex, positive for divestitures or asset sales)",
+          "Step 4: Add CFF (can be positive from new debt/equity or negative from debt repayment/dividends)",
+          "Step 5: Result = Closing Cash (should match Cash on the current balance sheet)"
+        ],
+        "worked_example": {
+          "problem": "Zomato FY24 (simplified, ₹ crore): Opening Cash = ₹2,000 cr. CFO = +₹400 cr (operations turning positive). CFI = −₹600 cr (Blinkit acquisition + capex). CFF = +₹200 cr (equity issuance). Calculate closing cash.",
+          "steps": [
+            "Opening Cash = ₹2,000 cr",
+            "Add CFO = +₹400 cr (core business generated cash)",
+            "Add CFI = −₹600 cr (invested in growth: Blinkit + equipment)",
+            "Add CFF = +₹200 cr (raised equity to fund growth)",
+            "Closing Cash = ₹2,000 + ₹400 − ₹600 + ₹200 = ₹2,000 cr"
+          ],
+          "result": "Closing Cash = ₹2,000 cr, matching the beginning balance.",
+          "insight": "Despite heavy investment (₹600 cr), Zomato maintained its cash position by raising equity. The ₹400 cr CFO is the real prize — it shows the core marketplace is generating cash. If CFO had been −₹400 cr, even ₹600 cr in equity wouldn't feel reassuring; burning cash on operations is unsustainable. This is why CFO is the #1 quality signal in equity research."
+        },
+        "sensitivity_note": "If Net Income is ₹500 cr but CFO is −₹300 cr, that's a giant red flag. It means the profit is on paper but cash isn't coming in — classic case of inflated receivables or revenue recognition games. We'll forensic this in Module 8."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + T → AutoSum",
+        "Cmd + Shift + F → Toggle filters",
+        "Cmd + T → Lock cell references (Mac equivalent of F4)",
+        "Ctrl + ; → Insert today's date"
+      ],
+      "windows": [
+        "Alt + = → AutoSum a column instantly",
+        "Ctrl + Shift + L → Toggle filters on the financial statements",
+        "F4 → Lock cell references when copying formulas across years",
+        "Ctrl + ; → Insert today's date for the as-of header"
+      ]
+    }
+  }
+}

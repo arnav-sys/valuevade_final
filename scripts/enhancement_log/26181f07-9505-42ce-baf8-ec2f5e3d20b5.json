@@ -1,0 +1,198 @@
+{
+  "id": "26181f07-9505-42ce-baf8-ec2f5e3d20b5",
+  "label": "M1 S3 | Unit Economics & Operating Leverage Formulas",
+  "before": {
+    "formulas": [
+      {
+        "name": "Customer Acquisition Cost (CAC)",
+        "formula": "CAC = Total Sales & Marketing Spend / Number of New Customers Acquired",
+        "worked_example": {
+          "steps": [
+            "CAC = 800,00,00,000 / 40,00,000",
+            "CAC = ₹2,000 per new customer"
+          ],
+          "insight": "The question: does each customer eventually generate more than ₹2,000 in profit? If yes, model works. If no, buying growth at a loss.",
+          "problem": "Zomato spends ₹800 crore on S&M, acquires 40 lakh new customers."
+        }
+      },
+      {
+        "name": "Customer Lifetime Value (CLTV)",
+        "formula": "CLTV = (ARPU × Gross Margin) / Churn Rate",
+        "variables": {
+          "ARPU": "Average Revenue Per User per period",
+          "CLTV": "Total profit a customer generates over entire relationship",
+          "Churn Rate": "% of customers who stop using the product per period",
+          "Gross Margin": "(Revenue - COGS) / Revenue"
+        },
+        "benchmarks": {
+          "1x_to_3x": "Marginal. Need to reduce CAC or improve retention/margins.",
+          "above_3x": "Healthy unit economics. Business model works.",
+          "below_1x": "Broken. Every new customer destroys value."
+        },
+        "sensitivity": "If churn increases from 8% to 12%, CLTV drops to ₹5,833 and ratio falls to 2.9x — borderline. Churn is the silent killer of unit economics.",
+        "worked_example": {
+          "steps": [
+            "Gross profit/customer/month = ₹2,800 × 25% = ₹700",
+            "CLTV = ₹700 / 0.08 = ₹8,750"
+          ],
+          "insight": "CLTV/CAC = 8,750/2,000 = 4.375x → Healthy (>3x benchmark)",
+          "problem": "Zomato: 8 orders/month × ₹350 AOV = ₹2,800 ARPU. Gross margin 25%. Monthly churn 8%."
+        }
+      },
+      {
+        "name": "Contribution Margin",
+        "formula": "Contribution Margin = Revenue - Variable Costs",
+        "formula_pct": "Contribution Margin % = (Revenue - Variable Costs) / Revenue × 100",
+        "why_it_matters": "How much each sale contributes toward covering fixed costs and generating profit. If negative, every additional sale makes the company poorer.",
+        "worked_example": {
+          "steps": [
+            "Contribution margin = ₹5,500 - ₹3,200 = ₹2,300",
+            "Contribution margin % = 2,300/5,500 = 41.8%"
+          ],
+          "insight": "Each passenger contributes ₹2,300 toward fixed costs. IndiGo's genius: fixed costs per seat among lowest in world (single aircraft type A320, high seat density, fast turnaround).",
+          "problem": "IndiGo Airlines: ticket ₹5,500. Variable costs: fuel ₹2,200, airport ₹600, food ₹100, other ₹300 = ₹3,200."
+        }
+      },
+      {
+        "name": "Operating Leverage (DOL)",
+        "formula": "DOL = % Change in Operating Profit / % Change in Revenue",
+        "flip_side": "Works in reverse: if revenue falls 20%, profit could fall 40%. Why high-operating-leverage businesses (airlines, hotels, steel, software) are more volatile and often have higher betas.",
+        "worked_example": {
+          "steps": [
+            "DOL = 40% / 20% = 2.0x"
+          ],
+          "insight": "20% revenue increase → 40% profit increase. Fixed cost base doesn't grow, so incremental revenue flows to profit.",
+          "problem": "Zoho: Y1 Revenue ₹5,000cr, Op Profit ₹1,500cr. Y2 Revenue ₹6,000cr (+20%), Op Profit ₹2,100cr (+40%)."
+        }
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Customer Acquisition Cost (CAC)",
+        "formula": "CAC = Total Sales & Marketing Spend / Number of New Customers Acquired",
+        "variables": [
+          {
+            "symbol": "Total Sales & Marketing Spend",
+            "meaning": "Aggregate expenditure on advertising, promotions, sales team, and customer acquisition activities over a period"
+          },
+          {
+            "symbol": "Number of New Customers Acquired",
+            "meaning": "Count of unique new customers gained during the same period"
+          }
+        ],
+        "plain_english": "CAC tells you how much you must spend in sales and marketing to bring in one new customer. The lower the CAC, the more efficient your customer acquisition. For a unit economics model to be healthy, CAC must be significantly lower than the profit each customer eventually generates (CLTV).",
+        "worked_example": {
+          "problem": "Zomato spends ₹800 crore on S&M, acquires 40 lakh new customers.",
+          "steps": [
+            "CAC = 800,00,00,000 / 40,00,000",
+            "CAC = ₹2,000 per new customer"
+          ],
+          "result": "₹2,000 per new customer",
+          "insight": "The question: does each customer eventually generate more than ₹2,000 in profit? If yes, model works. If no, buying growth at a loss."
+        }
+      },
+      {
+        "name": "Customer Lifetime Value (CLTV)",
+        "formula": "CLTV = (ARPU × Gross Margin) / Churn Rate",
+        "variables": [
+          {
+            "symbol": "ARPU",
+            "meaning": "Average Revenue Per User per period (typically monthly or annual)"
+          },
+          {
+            "symbol": "Gross Margin",
+            "meaning": "(Revenue - COGS) / Revenue; expressed as a decimal (e.g., 0.25 for 25%)"
+          },
+          {
+            "symbol": "Churn Rate",
+            "meaning": "Fraction of customers who stop using the product per period (e.g., 0.08 for 8% monthly churn)"
+          },
+          {
+            "symbol": "CLTV",
+            "meaning": "Total discounted profit a customer generates over their entire relationship with the company"
+          }
+        ],
+        "plain_english": "CLTV quantifies the total lifetime profit from one customer. It reflects how much gross profit the customer generates each period, adjusted for how long they stay (inverse of churn). A healthy unit economics model requires CLTV to be at least 3× CAC; anything below 1× CAC means customer acquisition is destroying value.",
+        "benchmarks": {
+          "1x_to_3x": "Marginal. Need to reduce CAC or improve retention/margins.",
+          "above_3x": "Healthy unit economics. Business model works.",
+          "below_1x": "Broken. Every new customer destroys value."
+        },
+        "sensitivity": "If churn increases from 8% to 12%, CLTV drops to ₹5,833 and ratio falls to 2.9x — borderline. Churn is the silent killer of unit economics.",
+        "worked_example": {
+          "problem": "Zomato: 8 orders/month × ₹350 AOV = ₹2,800 ARPU. Gross margin 25%. Monthly churn 8%.",
+          "steps": [
+            "Gross profit/customer/month = ₹2,800 × 0.25 = ₹700",
+            "CLTV = ₹700 / 0.08 = ₹8,750"
+          ],
+          "result": "CLTV = ₹8,750; CLTV/CAC = 8,750/2,000 = 4.375x",
+          "insight": "CLTV/CAC = 4.375x → Healthy (>3x benchmark). Each customer eventually generates 4.4× the cost to acquire them."
+        }
+      },
+      {
+        "name": "Contribution Margin",
+        "formula": "Contribution Margin = Revenue - Variable Costs",
+        "formula_pct": "Contribution Margin % = (Revenue - Variable Costs) / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Total sales or price per unit"
+          },
+          {
+            "symbol": "Variable Costs",
+            "meaning": "Costs that change directly with production or sales volume (e.g., raw materials, direct labour, packaging)"
+          }
+        ],
+        "plain_english": "Contribution margin shows how much profit each sale generates after paying the direct costs to produce or deliver it. It represents the pool of money available to cover fixed costs (rent, salaries, depreciation) and fund profit. A negative contribution margin means the business loses money on every additional sale — a critical red flag.",
+        "why_it_matters": "How much each sale contributes toward covering fixed costs and generating profit. If negative, every additional sale makes the company poorer.",
+        "worked_example": {
+          "problem": "IndiGo Airlines: ticket ₹5,500. Variable costs: fuel ₹2,200, airport ₹600, food ₹100, other ₹300 = ₹3,200.",
+          "steps": [
+            "Contribution margin = ₹5,500 - ₹3,200 = ₹2,300",
+            "Contribution margin % = 2,300/5,500 × 100 = 41.8%"
+          ],
+          "result": "₹2,300 per passenger; 41.8% contribution margin",
+          "insight": "Each passenger contributes ₹2,300 toward fixed costs. IndiGo's genius: fixed costs per seat among lowest in world (single aircraft type A320, high seat density, fast turnaround)."
+        }
+      },
+      {
+        "name": "Operating Leverage (DOL)",
+        "formula": "DOL = % Change in Operating Profit / % Change in Revenue",
+        "variables": [
+          {
+            "symbol": "% Change in Operating Profit",
+            "meaning": "Percentage increase or decrease in operating profit (EBIT) from one period to the next"
+          },
+          {
+            "symbol": "% Change in Revenue",
+            "meaning": "Percentage increase or decrease in total revenue from one period to the next"
+          },
+          {
+            "symbol": "DOL",
+            "meaning": "Degree of Operating Leverage; a multiplier showing how sensitive operating profit is to revenue changes"
+          }
+        ],
+        "plain_english": "Operating leverage measures how much operating profit moves when revenue moves. A DOL of 2.0× means a 1% change in revenue produces a 2% change in profit. High operating leverage (DOL > 2) amplifies upside but also downside; it reflects a business with high fixed costs and low variable costs, common in airlines, hotels, software, and steel.",
+        "computation": [
+          "Calculate operating profit (EBIT) for Year 1 and Year 2.",
+          "Find % change in revenue: [(Revenue Y2 - Revenue Y1) / Revenue Y1] × 100",
+          "Find % change in EBIT: [(EBIT Y2 - EBIT Y1) / EBIT Y1] × 100",
+          "Divide % change in EBIT by % change in revenue to get DOL."
+        ],
+        "flip_side": "Works in reverse: if revenue falls 20%, profit could fall 40%. Why high-operating-leverage businesses (airlines, hotels, steel, software) are more volatile and often have higher betas.",
+        "worked_example": {
+          "problem": "Zoho: Y1 Revenue ₹5,000cr, Op Profit ₹1,500cr. Y2 Revenue ₹6,000cr (+20%), Op Profit ₹2,100cr (+40%).",
+          "steps": [
+            "% Change in Revenue = (6,000 - 5,000) / 5,000 × 100 = 20%",
+            "% Change in Operating Profit = (2,100 - 1,500) / 1,500 × 100 = 40%",
+            "DOL = 40% / 20% = 2.0x"
+          ],
+          "result": "DOL = 2.0x",
+          "insight": "20% revenue increase → 40% profit increase. Fixed cost base doesn't grow, so incremental revenue flows to profit. This leverage is powerful in good times but risks rapid margin compression if revenue contracts."
+        }
+      }
+    ]
+  }
+}

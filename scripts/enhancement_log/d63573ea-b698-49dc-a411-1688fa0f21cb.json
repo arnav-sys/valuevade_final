@@ -1,0 +1,259 @@
+{
+  "id": "d63573ea-b698-49dc-a411-1688fa0f21cb",
+  "label": "M8 S9 | The Four Ratios That Reveal True Economic Leverage",
+  "before": {
+    "formulas": [
+      {
+        "name": "True Economic Debt Ratio",
+        "formula": "True Economic Debt = Consolidated Debt + Corporate Guarantees to Unconsolidated Entities + Material Contingent Liabilities + Operating Lease Commitments (pre-Ind AS 116 analysis) + Equity Commitments to JVs and Associates",
+        "variables": [
+          {
+            "symbol": "Consolidated Debt",
+            "meaning": "Total debt from the consolidated balance sheet, including short-term and long-term borrowings"
+          },
+          {
+            "symbol": "Corporate Guarantees",
+            "meaning": "Sum of guarantees issued by the parent to support debt of subsidiaries, associates, JVs, or related parties, from Note on Contingent Liabilities"
+          },
+          {
+            "symbol": "Material Contingent Liabilities",
+            "meaning": "Lawsuits with specified claim amounts, tax disputes, performance bonds, and other obligations with quantified exposure from Ind AS 37 disclosures"
+          },
+          {
+            "symbol": "Operating Lease Commitments",
+            "meaning": "For periods before April 2019 Ind AS 116 adoption, future committed lease payments aggregated from lease note disclosure"
+          },
+          {
+            "symbol": "Equity Commitments",
+            "meaning": "Capital commitments to JVs, associates, or project vehicles that are contractually required"
+          }
+        ],
+        "worked_example": "Running this on CG Power FY18 (pre-fraud disclosure): Consolidated Debt ₹3,245 crore. Corporate Guarantees to Avantha group entities disclosed in contingent liabilities note: ₹4,512 crore. Material contingent liabilities (tax, litigation): ₹487 crore. Operating lease commitments (pre-Ind AS 116): ₹340 crore. Equity commitments to joint ventures: ₹156 crore. True Economic Debt = 3,245 + 4,512 + 487 + 340 + 156 = ₹8,740 crore. Compared to Net Worth of approximately ₹5,780 crore, True Economic Debt to Net Worth is 1.51x. Reported Debt to Net Worth was 0.56x. The off-balance-sheet leverage was effectively 2.7x the reported leverage. Any analyst using only reported debt to net worth would have classified CG Power as moderately leveraged (0.56x is below typical industrial thresholds). True economic analysis would have classified it as highly leveraged (1.51x is above distress thresholds). The ₹4,512 crore of corporate guarantees — representing 78 percent of net worth — was the dominant off-balance-sheet item and the specific Family 6 signal. This guarantee pattern preceded the August 2019 fraud disclosure by roughly 18 months and the subsequent insolvency events.",
+        "sensitivity_note": "Not all contingent liabilities warrant full inclusion. Discretion is required for items that are highly unlikely to crystallise (old tax disputes that have been consistently defended, for example). But for promoter-led companies with guarantees to group entities, the default should be full inclusion because the economic intent of the guarantees is to transfer credit risk from the promoter's weak entities to the listed company's stronger balance sheet."
+      },
+      {
+        "name": "Guarantee-to-Net-Worth Ratio",
+        "formula": "Guarantee Intensity = Corporate Guarantees to Unconsolidated Entities / Net Worth × 100",
+        "variables": [
+          {
+            "symbol": "Corporate Guarantees",
+            "meaning": "Sum of corporate guarantees from contingent liabilities disclosure"
+          },
+          {
+            "symbol": "Net Worth",
+            "meaning": "Shareholders' equity including retained earnings and reserves"
+          }
+        ],
+        "worked_example": "For HDFC Bank FY23: Corporate guarantees disclosed at ₹1,245 crore against net worth of ₹2,85,450 crore = Guarantee Intensity of 0.4 percent. Minimal. For Reliance Industries FY23: Corporate guarantees ₹45,280 crore against net worth of ₹8,45,260 crore = 5.4 percent. Moderate, typical of conglomerate structures. For CG Power FY18: Corporate guarantees ₹4,512 crore against net worth of ₹5,780 crore = 78 percent. Extreme. For Yes Bank FY18: Corporate guarantees relatively modest at ₹890 crore against net worth of ₹28,760 crore = 3.1 percent — clean bank practice. Interpretation thresholds: Below 10 percent is normal for most companies. 10-30 percent warrants investigation of the structure and counterparties. 30-70 percent is high — typically indicates group structure with significant unconsolidated entities. Above 70 percent is extreme and almost always a red flag indicating promoter-led siphoning or structural risk concentration. CG Power's 78 percent was a definitive signal preceding its collapse. For promoter-led Indian companies, Guarantee Intensity above 50 percent sustained for multiple years is a strong Family 6 manipulation signal.",
+        "sensitivity_note": "Guarantee Intensity alone is necessary but not sufficient. Must be analysed alongside the counterparty identity. Guarantees to group entities controlled by the same promoter are fundamentally different from guarantees to unrelated third parties in the ordinary course of business (like bank guarantees to customers of an infrastructure project)."
+      },
+      {
+        "name": "Subsidiary-to-Parent Debt Analysis",
+        "formula": "Subsidiary Debt Concentration = (Subsidiary-Level Debt) / (Total Consolidated Debt) × 100; compare to ownership pattern",
+        "variables": [
+          {
+            "symbol": "Subsidiary-Level Debt",
+            "meaning": "Debt sitting on individual subsidiary balance sheets, from subsidiary-by-subsidiary financials or disclosures"
+          },
+          {
+            "symbol": "Total Consolidated Debt",
+            "meaning": "Total debt on the parent's consolidated balance sheet"
+          }
+        ],
+        "worked_example": "For IL&FS FY18 (pre-default): Subsidiary-level debt across 169 entities was substantially below the group's actual economic leverage because many entities were not fully consolidated. The parent IL&FS Ltd showed consolidated debt of approximately ₹91,000 crore on its consolidated balance sheet. But individual subsidiaries (IL&FS Financial Services, IL&FS Transportation, IL&FS Energy, etc.) each had their own substantial debt that was only partially captured in consolidation due to ownership structures. For analytical purposes, when a group has more than 20 subsidiaries, the consolidated balance sheet alone rarely tells the complete story. Analysts covering such groups must examine individual subsidiary financials where available (credit rating agency reports, RBI filings for NBFCs, SEBI filings for listed subsidiaries) to piece together the full picture. Detection technique: For any Indian conglomerate or promoter group with 15-plus subsidiaries or associates, pull credit rating reports of the individual entities. CARE Ratings, ICRA, and CRISIL publish detailed reports on individual group entities that aggregate to a group-level picture not available from consolidated financials alone. This was the specific work that caught IL&FS and DHFL patterns for the analysts who did it. Shortcut: screen for promoter groups where the number of subsidiaries exceeds the analyst's reasonable ability to examine — any promoter group with 50-plus subsidiaries should default to a structural risk rating regardless of any single entity's disclosures.",
+        "sensitivity_note": "This analysis is time-intensive. For any coverage where you complete it, maintain a shared spreadsheet with subsidiary-level debt, ownership percentages, and guarantee flows. Update at least annually. The work pays off because it reveals group-level exposures that no consolidated view captures."
+      },
+      {
+        "name": "Contingent Liability Severity Ratio",
+        "formula": "CL Severity Ratio = Material Contingent Liabilities / Net Worth × 100",
+        "variables": [
+          {
+            "symbol": "Material Contingent Liabilities",
+            "meaning": "Quantified contingent liabilities disclosed under Ind AS 37, excluding items with extremely low crystallisation probability"
+          },
+          {
+            "symbol": "Net Worth",
+            "meaning": "Shareholders' equity"
+          }
+        ],
+        "worked_example": "For TCS FY23: Contingent liabilities of approximately ₹6,450 crore against net worth of ₹94,260 crore = 6.8 percent. Minimal concern. For Tata Steel FY23: Contingent liabilities ₹14,280 crore (tax disputes, environmental claims) against net worth ₹2,15,340 crore = 6.6 percent. Also moderate. For Vodafone Idea FY23: Contingent liabilities including AGR-related tax disputes approximately ₹2,85,000 crore against negative net worth — ratio becomes mathematically extreme, indicating structural existential risk. For Indian pharma companies with ongoing FDA disputes: ratios of 10-40 percent are typical but sector-specific. Interpretation thresholds: Below 20 percent is generally acceptable for mature companies. 20-50 percent warrants examination of specific items and probability assessments. Above 50 percent is high and requires specific investigation of worst-case scenarios. Any company where material contingent liabilities alone approach or exceed net worth is an existential risk company, regardless of how strong the income statement appears. Vodafone Idea is the canonical example of how accumulated contingent liabilities can overwhelm even sustained operating performance.",
+        "sensitivity_note": "Probability weighting matters. A ₹10,000 crore claim with 20 percent probability of crystallisation is effectively ₹2,000 crore in expected terms. A ₹10,000 crore claim with 80 percent probability is effectively ₹8,000 crore. The Ind AS 37 distinction between provisions (probable) and contingent liabilities (possible) already attempts this filtering, but analysts should apply their own probability assessment to specific large items based on public information about the dispute."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for contingent liability aggregation tables",
+        "Ctrl + Shift + L — Toggle filters on multi-subsidiary data",
+        "F4 — Lock references when computing guarantee intensity",
+        "Alt + = — AutoSum for total economic debt calculation",
+        "Ctrl + Shift + L — Format numbers with separators for ₹ crore clarity"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "True Economic Debt Ratio",
+        "formula": "True Economic Debt = Consolidated Debt + Corporate Guarantees to Unconsolidated Entities + Material Contingent Liabilities + Operating Lease Commitments (pre-Ind AS 116 analysis) + Equity Commitments to JVs and Associates",
+        "variables": [
+          {
+            "symbol": "Consolidated Debt",
+            "meaning": "Total debt from the consolidated balance sheet, including short-term and long-term borrowings"
+          },
+          {
+            "symbol": "Corporate Guarantees",
+            "meaning": "Sum of guarantees issued by the parent to support debt of subsidiaries, associates, JVs, or related parties, from Note on Contingent Liabilities"
+          },
+          {
+            "symbol": "Material Contingent Liabilities",
+            "meaning": "Lawsuits with specified claim amounts, tax disputes, performance bonds, and other obligations with quantified exposure from Ind AS 37 disclosures"
+          },
+          {
+            "symbol": "Operating Lease Commitments",
+            "meaning": "For periods before April 2019 Ind AS 116 adoption, future committed lease payments aggregated from lease note disclosure"
+          },
+          {
+            "symbol": "Equity Commitments",
+            "meaning": "Capital commitments to JVs, associates, or project vehicles that are contractually required"
+          }
+        ],
+        "plain_english": "True Economic Debt captures the full cash obligation and risk exposure a company will face beyond what appears on the consolidated balance sheet. It includes guarantees the parent has given to affiliated entities, material lawsuits and tax disputes that are likely to crystallise, committed lease payments, and contractual capital outlays. This matters because reported debt understates the real leverage burden when a promoter-led group has parked assets and obligations in unconsolidated entities — a pattern that has preceded major Indian corporate collapses.",
+        "worked_example": {
+          "problem": "Analyse the true economic leverage of CG Power and Industrial Solutions Limited as of FY18 (before fraud disclosure).",
+          "steps": [
+            "Consolidated Debt from balance sheet: ₹3,245 crore",
+            "Corporate Guarantees to Avantha group entities (Note on Contingent Liabilities): ₹4,512 crore",
+            "Material contingent liabilities (tax disputes, litigation with quantified amounts): ₹487 crore",
+            "Operating lease commitments (pre-Ind AS 116, from lease note): ₹340 crore",
+            "Equity commitments to joint ventures and associates: ₹156 crore",
+            "Sum all components: 3,245 + 4,512 + 487 + 340 + 156 = ₹8,740 crore",
+            "Divide True Economic Debt by Net Worth (₹5,780 crore): 8,740 / 5,780 = 1.51x",
+            "Compare to reported Debt-to-Net Worth: 3,245 / 5,780 = 0.56x"
+          ],
+          "result": "True Economic Debt-to-Net Worth of 1.51x versus reported ratio of 0.56x. Off-balance-sheet leverage was 2.7x the reported figure.",
+          "insight": "An analyst using only reported debt would have classified CG Power as moderately leveraged (below industrial thresholds). True economic analysis revealed highly leveraged status (above distress thresholds). The ₹4,512 crore of corporate guarantees — representing 78 percent of net worth — transferred credit risk from weak group entities to the parent. This guarantee concentration pattern preceded the August 2019 fraud disclosure by 18 months and was the primary Family 6 signal."
+        },
+        "sensitivity_note": "Not all contingent liabilities warrant full inclusion. Discretion is required for items that are highly unlikely to crystallise (old tax disputes that have been consistently defended, for example). But for promoter-led companies with guarantees to group entities, the default should be full inclusion because the economic intent of the guarantees is to transfer credit risk from the promoter's weak entities to the listed company's stronger balance sheet."
+      },
+      {
+        "name": "Guarantee-to-Net-Worth Ratio",
+        "formula": "Guarantee Intensity = Corporate Guarantees to Unconsolidated Entities / Net Worth × 100",
+        "variables": [
+          {
+            "symbol": "Corporate Guarantees",
+            "meaning": "Sum of corporate guarantees from contingent liabilities disclosure"
+          },
+          {
+            "symbol": "Net Worth",
+            "meaning": "Shareholders' equity including retained earnings and reserves"
+          }
+        ],
+        "plain_english": "Guarantee Intensity measures how much of a company's equity cushion is committed to backing the debt of related entities outside the consolidation perimeter. A high ratio signals that the parent is using its balance sheet strength to prop up weaker group entities — a classic risk transfer mechanism in promoter-led structures. In Indian conglomerates, this ratio is a leading indicator of hidden leverage and group stress before it manifests in the parent's own financials.",
+        "computation": [
+          "Locate corporate guarantees from the Contingent Liabilities note in the Balance Sheet.",
+          "Extract Net Worth (shareholders' equity) from the Balance Sheet.",
+          "Divide Corporate Guarantees by Net Worth.",
+          "Multiply by 100 to express as a percentage."
+        ],
+        "worked_example": {
+          "problem": "Calculate and interpret Guarantee Intensity for four large Indian corporates in FY23 to assess group leverage risk.",
+          "steps": [
+            "HDFC Bank: Corporate guarantees ₹1,245 crore / Net Worth ₹2,85,450 crore = 0.4%",
+            "Reliance Industries: Corporate guarantees ₹45,280 crore / Net Worth ₹8,45,260 crore = 5.4%",
+            "CG Power FY18: Corporate guarantees ₹4,512 crore / Net Worth ₹5,780 crore = 78.0%",
+            "Yes Bank FY18: Corporate guarantees ₹890 crore / Net Worth ₹28,760 crore = 3.1%"
+          ],
+          "result": "HDFC Bank 0.4%, Reliance 5.4%, CG Power 78%, Yes Bank 3.1%.",
+          "insight": "Interpretation thresholds: Below 10% is normal for most companies and indicates limited group risk-transfer. 10–30% warrants investigation of the structure and counterparties. 30–70% indicates a significant conglomerate with unconsolidated entities. Above 70% is extreme and almost always a red flag for promoter-led siphoning or structural risk concentration. CG Power's 78% was a definitive signal preceding its collapse. For promoter-led Indian companies, Guarantee Intensity above 50% sustained for multiple years is a strong Family 6 manipulation signal."
+        },
+        "sensitivity_note": "Guarantee Intensity alone is necessary but not sufficient. Must be analysed alongside the counterparty identity. Guarantees to group entities controlled by the same promoter are fundamentally different from guarantees to unrelated third parties in the ordinary course of business (like bank guarantees to customers of an infrastructure project)."
+      },
+      {
+        "name": "Subsidiary-to-Parent Debt Analysis",
+        "formula": "Subsidiary Debt Concentration = (Subsidiary-Level Debt) / (Total Consolidated Debt) × 100; compare to ownership pattern",
+        "variables": [
+          {
+            "symbol": "Subsidiary-Level Debt",
+            "meaning": "Debt sitting on individual subsidiary balance sheets, from subsidiary-by-subsidiary financials or disclosures"
+          },
+          {
+            "symbol": "Total Consolidated Debt",
+            "meaning": "Total debt on the parent's consolidated balance sheet"
+          }
+        ],
+        "plain_english": "This analysis reveals how leverage is distributed across a group's legal entities and whether the parent or subsidiaries are bearing the debt burden. When subsidiaries carry disproportionate debt relative to their equity or contribution to group earnings, it can signal structural stress, group imbalance, or incomplete consolidation in the reported numbers. This matters because groups with 15+ subsidiaries often use complex ownership structures to obscure true economic leverage.",
+        "worked_example": {
+          "problem": "Assess whether IL&FS Limited's consolidated debt figures accurately represent the group's total leverage burden in FY18.",
+          "steps": [
+            "IL&FS consolidated debt from balance sheet: approximately ₹91,000 crore",
+            "Identify subsidiary-level borrowings from individual entity filings (IL&FS Financial Services, IL&FS Transportation Networks, IL&FS Energy, etc.) — 169 entities in total",
+            "Note that many subsidiaries had partial ownership structures (51-99% stakes) that impacted consolidation mechanics",
+            "Recognise that individual subsidiaries (especially non-wholly-owned) may have debt not fully captured or proportionately consolidated",
+            "Cross-reference credit rating agency reports from CARE, ICRA, CRISIL for individual subsidiary debt assessments",
+            "Aggregate subsidiary-level debt from primary sources and compare to consolidation adjustment lines in the parent's notes"
+          ],
+          "result": "The consolidated balance sheet alone did not fully capture the economic leverage because of the large number of partially-owned subsidiaries and non-consolidation of some entities.",
+          "insight": "For any Indian conglomerate with 15+ subsidiaries or associates, the consolidated balance sheet rarely tells the complete story. Analysts covering such groups must examine individual subsidiary financials where available (credit rating agency reports, RBI filings for NBFCs, SEBI filings for listed subsidiaries) to piece together the full picture. Detection shortcut: for any promoter group with 50+ subsidiaries, default to a structural risk rating regardless of any single entity's disclosures. This subsidiary-level work caught IL&FS and DHFL patterns for the analysts who did it."
+        },
+        "sensitivity_note": "This analysis is time-intensive. For any coverage where you complete it, maintain a shared spreadsheet with subsidiary-level debt, ownership percentages, and guarantee flows. Update at least annually. The work pays off because it reveals group-level exposures that no consolidated view captures."
+      },
+      {
+        "name": "Contingent Liability Severity Ratio",
+        "formula": "CL Severity Ratio = Material Contingent Liabilities / Net Worth × 100",
+        "variables": [
+          {
+            "symbol": "Material Contingent Liabilities",
+            "meaning": "Quantified contingent liabilities disclosed under Ind AS 37, excluding items with extremely low crystallisation probability"
+          },
+          {
+            "symbol": "Net Worth",
+            "meaning": "Shareholders' equity"
+          }
+        ],
+        "plain_english": "The Contingent Liability Severity Ratio measures how much of a company's equity cushion could be consumed by lawsuits, tax disputes, and other unresolved claims that have a material probability of crystallising. A ratio above 20% signals that the company faces existential risk if multiple large claims resolve against it. This is especially critical in Indian companies where tax disputes and litigation can persist for years and suddenly materialize as unexpected cash drains.",
+        "computation": [
+          "Extract Material Contingent Liabilities from the Notes to the Balance Sheet (Ind AS 37 disclosures).",
+          "Exclude contingent liabilities with very low probability or immeasurable amounts.",
+          "Extract Net Worth (Shareholders' Equity) from the Balance Sheet.",
+          "Divide Material Contingent Liabilities by Net Worth.",
+          "Multiply by 100 to express as a percentage."
+        ],
+        "worked_example": {
+          "problem": "Compare contingent liability risk across three large Indian companies and one high-risk case to assess equity stability.",
+          "steps": [
+            "TCS FY23: Contingent liabilities ₹6,450 crore / Net Worth ₹94,260 crore = 6.8%",
+            "Tata Steel FY23: Contingent liabilities ₹14,280 crore (tax disputes, environmental claims) / Net Worth ₹2,15,340 crore = 6.6%",
+            "Vodafone Idea FY23: Contingent liabilities including AGR-related tax disputes ₹2,85,000 crore / Net Worth (negative) = extreme ratio, indicates existential risk",
+            "Indian pharma companies with ongoing FDA disputes typically show ratios of 10–40% depending on pipeline risk concentration"
+          ],
+          "result": "TCS 6.8%, Tata Steel 6.6%, Vodafone Idea mathematically extreme (equity already negative).",
+          "insight": "Interpretation thresholds: Below 20% is generally acceptable for mature companies. 20–50% warrants detailed examination of specific items and crystallisation probabilities. Above 50% is high and requires scenario analysis of worst-case outcomes. Any company where material contingent liabilities alone approach or exceed net worth is an existential risk company, regardless of operating performance. Vodafone Idea exemplifies how accumulated contingent liabilities overwhelm even sustained revenue generation when equity is depleted."
+        },
+        "sensitivity_note": "Probability weighting matters. A ₹10,000 crore claim with 20% probability of crystallisation is effectively ₹2,000 crore in expected terms. A ₹10,000 crore claim with 80% probability is effectively ₹8,000 crore. The Ind AS 37 distinction between provisions (probable) and contingent liabilities (possible) already attempts this filtering, but analysts should apply their own probability assessment to specific large items based on public information about the dispute."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for contingent liability aggregation tables",
+        "Ctrl + Shift + L — Toggle filters on multi-subsidiary data",
+        "F4 — Lock references when computing guarantee intensity",
+        "Alt + = — AutoSum for total economic debt calculation",
+        "Ctrl + Shift + L — Format numbers with separators for ₹ crore clarity"
+      ]
+    }
+  }
+}

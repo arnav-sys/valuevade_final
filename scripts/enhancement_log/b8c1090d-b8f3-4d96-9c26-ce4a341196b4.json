@@ -1,0 +1,205 @@
+{
+  "id": "b8c1090d-b8f3-4d96-9c26-ce4a341196b4",
+  "label": "M8 S2 | The PAT-CFO Reconciliation — Three Forms, One Truth",
+  "before": {
+    "formulas": [
+      {
+        "name": "Cumulative Cash Conversion Ratio (CCR)",
+        "formula": "CCR = Σ CFO(t-n to t) / Σ PAT(t-n to t) × 100",
+        "variables": [
+          {
+            "symbol": "Σ CFO",
+            "meaning": "Sum of Cash Flow from Operations (as reported in cash flow statement) over the chosen window"
+          },
+          {
+            "symbol": "Σ PAT",
+            "meaning": "Sum of Profit After Tax (from consolidated P&L) over the same window"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Window length — minimum 3 years, ideal 5 years, gold standard 10 years"
+          }
+        ],
+        "worked_example": "Running this on TCS, FY19-FY23: Cumulative PAT = ₹38,449 + 32,447 + 38,327 + 42,147 + 42,303 = ₹1,93,673 crore. Cumulative CFO = ₹36,476 + 35,335 + 41,477 + 39,545 + 42,963 = ₹1,95,796 crore. CCR = 1,95,796 / 1,93,673 = 101%. Interpretation: TCS converts every rupee of reported profit into slightly more than a rupee of cash, because non-cash depreciation adds back while working capital is tightly managed. This is world-class cash conversion. Now running the same on Manpasand Beverages, FY13-FY17: Cumulative PAT = ₹21 + 29 + 42 + 67 + 203 = ₹362 crore. Cumulative CFO = ₹13 + 18 + 26 + 8 + 19 = ₹84 crore. CCR = 84 / 362 = 23%. Interpretation: Only 23% of reported profit is converting into cash. The remaining 77% — ₹278 crore — must be sitting somewhere on the balance sheet. That is the forensic finding. Next step: drill into which working capital line absorbed it.",
+        "sensitivity_note": "CCR is most reliable over 5+ year windows because short-term swings in working capital (one-off customer delays, genuine inventory build before capacity ramp) can produce misleading single-year ratios. Always look at cumulative over 5 years, not year-by-year."
+      },
+      {
+        "name": "Phantom Profit Identification",
+        "formula": "Phantom Profit (approx) = Σ PAT − Σ CFO − Σ Genuine Non-Cash Items Already Added Back in CFO",
+        "variables": [
+          {
+            "symbol": "Σ PAT",
+            "meaning": "Cumulative reported profit over the window"
+          },
+          {
+            "symbol": "Σ CFO",
+            "meaning": "Cumulative operating cash flow over the window"
+          },
+          {
+            "symbol": "Note",
+            "meaning": "Since CFO (indirect method) already adds back depreciation, amortisation, and most non-cash items to PAT, the residual gap after subtracting CFO from PAT captures working capital movement + any unusual adjustments. You do not need to add back depreciation separately — the CFO figure already has."
+          }
+        ],
+        "worked_example": "For Manpasand FY13-FY17: Phantom Profit = ₹362 cr − ₹84 cr = ₹278 crore. This ₹278 crore sits on the balance sheet as accumulated working capital growth. Opening this up: receivables went from ₹24 cr (FY13) to ₹269 cr (FY17) — a ₹245 cr increase, absorbing most of the gap. Inventory went from ₹21 cr to ₹86 cr, absorbing another ₹65 cr. Offset by ₹30 cr increase in payables. Net working capital absorbed ₹280 cr — matching the ₹278 cr gap within rounding. Now the forensic question crystallises: why did receivables grow 11x when revenue grew only 4x? That is the question Manpasand management could never answer in concalls.",
+        "sensitivity_note": "Legitimate reasons for temporary gaps exist — rapid growth does absorb working capital, commodity cycles can swing inventory. But over 5 years, genuine businesses normalise. Gaps that persist past 5 years and keep widening are not growth-driven — they are manipulation-driven or terminal-demand-driven, and both end badly."
+      },
+      {
+        "name": "Free Cash Flow Reality Check",
+        "formula": "FCF = CFO − Capex (Maintenance + Growth)",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Reported cash flow from operations"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Cash outflow for purchase of property, plant, equipment, and intangibles (from investing section of cash flow statement)"
+          }
+        ],
+        "worked_example": "For Asian Paints FY23: CFO = ₹4,837 cr. Capex = ₹1,324 cr. FCF = ₹3,513 cr. Cross-check vs PAT of ₹4,168 cr: FCF/PAT = 84%, confirming healthy cash generation and genuine reinvestment. For a company with CCR below 50% AND capex exceeding CFO year after year, the math breaks — they are not generating cash and yet spending on capex, which means capex is being funded by debt or equity raises. This is the pattern visible in DHFL 2016-2018 and Reliance Communications 2014-2018 before both collapsed.",
+        "sensitivity_note": "Distinguish maintenance capex (needed to keep the current business running) from growth capex (optional, for expansion). A business should cover maintenance capex from CFO even in a bad year. A business that cannot fund maintenance capex from CFO has broken economics."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references (equivalent of F4 on Mac)",
+        "Cmd + Ctrl + V — Paste Special",
+        "Cmd + Shift + Enter — Array formula entry"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply all borders for clean reconciliation tables",
+        "Ctrl + Shift + L — Toggle filters on multi-year data",
+        "F4 — Lock references when dragging CCR formulas across companies",
+        "Alt + E, S, V — Paste Special Values to freeze pulled data from Screener/Tickertape",
+        "Ctrl + Shift + Enter — For array formulas when summing across non-contiguous years"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Cumulative Cash Conversion Ratio (CCR)",
+        "formula": "CCR = Σ CFO(t-n to t) / Σ PAT(t-n to t) × 100",
+        "variables": [
+          {
+            "symbol": "Σ CFO",
+            "meaning": "Sum of Cash Flow from Operations (as reported in cash flow statement) over the chosen window"
+          },
+          {
+            "symbol": "Σ PAT",
+            "meaning": "Sum of Profit After Tax (from consolidated P&L) over the same window"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Window length — minimum 3 years, ideal 5 years, gold standard 10 years"
+          }
+        ],
+        "plain_english": "The cumulative cash conversion ratio tells you what percentage of total reported profits actually showed up as cash in the bank over a multi-year period. A ratio above 80% means the business is real and sustainable; below 60% means profits are getting trapped on the balance sheet (usually in receivables, inventory, or other working capital). Over 5+ years, this metric reveals whether management is playing accounting games or running a genuine business.",
+        "worked_example": {
+          "problem": "Compare the quality of reported earnings at TCS versus Manpasand Beverages by examining how much of their cumulative PAT converted to operating cash over a 5-year period.",
+          "steps": [
+            "TCS FY19–FY23: Cumulative PAT = ₹38,449 + 32,447 + 38,327 + 42,147 + 42,303 = ₹1,93,673 crore",
+            "TCS FY19–FY23: Cumulative CFO = ₹36,476 + 35,335 + 41,477 + 39,545 + 42,963 = ₹1,95,796 crore",
+            "TCS CCR = 1,95,796 / 1,93,673 × 100 = 101%",
+            "Manpasand FY13–FY17: Cumulative PAT = ₹21 + 29 + 42 + 67 + 203 = ₹362 crore",
+            "Manpasand FY13–FY17: Cumulative CFO = ₹13 + 18 + 26 + 8 + 19 = ₹84 crore",
+            "Manpasand CCR = 84 / 362 × 100 = 23%"
+          ],
+          "result": "TCS: 101% CCR; Manpasand: 23% CCR",
+          "insight": "TCS converts every rupee of reported profit into slightly more than a rupee of cash because non-cash depreciation adds back while working capital is tightly managed — world-class cash conversion. Manpasand's 23% CCR is a red flag: only ₹84 crore out of ₹362 crore profit became cash. The missing ₹278 crore sits on the balance sheet, mostly trapped in receivables that grew 11× while revenue grew only 4×. This kind of gap signals either aggressive revenue recognition or fundamental demand failure."
+        },
+        "sensitivity_note": "CCR is most reliable over 5+ year windows because short-term swings in working capital (one-off customer delays, genuine inventory build before capacity ramp) can produce misleading single-year ratios. Always look at cumulative over 5 years, not year-by-year."
+      },
+      {
+        "name": "Phantom Profit Identification",
+        "formula": "Phantom Profit (approx) = Σ PAT − Σ CFO − Σ Genuine Non-Cash Items Already Added Back in CFO",
+        "variables": [
+          {
+            "symbol": "Σ PAT",
+            "meaning": "Cumulative reported profit over the window"
+          },
+          {
+            "symbol": "Σ CFO",
+            "meaning": "Cumulative operating cash flow over the window"
+          },
+          {
+            "symbol": "Genuine Non-Cash Items",
+            "meaning": "Depreciation, amortisation, and stock-based compensation already added back in the CFO calculation — do not double-count these"
+          }
+        ],
+        "plain_english": "Phantom profit is the gap between cumulative reported earnings and cumulative operating cash flow. Because the cash flow statement (indirect method) already adds back non-cash charges like depreciation, any large and persistent gap after subtracting CFO from PAT points to working capital that has been absorbed on the balance sheet — and cannot be withdrawn without damaging the business. Large phantom profit over multi-year periods often precedes financial distress.",
+        "worked_example": {
+          "problem": "Identify where Manpasand's reported profits vanished on the balance sheet, and diagnose the underlying issue.",
+          "steps": [
+            "Manpasand FY13–FY17: Cumulative PAT = ₹362 crore; Cumulative CFO = ₹84 crore",
+            "Phantom Profit = ₹362 − ₹84 = ₹278 crore",
+            "Examine balance sheet changes: Receivables grew from ₹24 cr (FY13) to ₹269 cr (FY17) = ₹245 cr increase",
+            "Inventory grew from ₹21 cr to ₹86 cr = ₹65 cr increase",
+            "Payables increased by ₹30 cr, offsetting some of the working capital build",
+            "Net working capital absorbed: ₹245 + ₹65 − ₹30 = ₹280 cr (closely matches the ₹278 cr phantom profit)"
+          ],
+          "result": "₹278 crore of phantom profit; root cause: receivables grew 11× while revenue grew 4×",
+          "insight": "The forensic question becomes unavoidable: why did receivables grow 11 times when the business grew only 4 times? Management could never answer this question credibly on concalls. This pattern — a widening gap between revenue growth and receivables growth — is a classic early warning sign of revenue quality deterioration, aggressive channel stuffing, or incipient default by major customers. Over a 5-year window, this is not temporary; it is structural failure."
+        },
+        "sensitivity_note": "Legitimate reasons for temporary gaps exist — rapid growth does absorb working capital, commodity cycles can swing inventory. But over 5 years, genuine businesses normalise. Gaps that persist past 5 years and keep widening are not growth-driven — they are manipulation-driven or terminal-demand-driven, and both end badly."
+      },
+      {
+        "name": "Free Cash Flow Reality Check",
+        "formula": "FCF = CFO − Capex (Maintenance + Growth)",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Reported cash flow from operations"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Cash outflow for purchase of property, plant, equipment, and intangibles (from investing section of cash flow statement)"
+          },
+          {
+            "symbol": "FCF",
+            "meaning": "Free cash flow available to shareholders and debt holders after funding all capital investment"
+          }
+        ],
+        "plain_english": "Free cash flow is the cash left over after a business has paid for the capex needed to maintain and grow its assets. If CFO is high but FCF is negative or near-zero because capex is excessive relative to CFO, the business may be funding growth through debt or equity raises rather than from genuine operating profits. A sustainable business generates positive FCF year after year; a distressed business cannot.",
+        "computation": [
+          "Step 1: Locate CFO from the cash flow statement (Operating Activities section).",
+          "Step 2: Locate total capex from the cash flow statement (Investing Activities section), usually labelled 'Purchase of property, plant and equipment'.",
+          "Step 3: Subtract: FCF = CFO − Capex.",
+          "Step 4: Cross-check: FCF should generally be 30–70% of PAT for a mature business; if FCF/PAT is below 20% or negative, question whether capex is sustainable or if the business is in distress."
+        ],
+        "worked_example": {
+          "problem": "Assess the free cash flow generation quality of Asian Paints in FY23, and contrast with a distressed company pattern.",
+          "steps": [
+            "Asian Paints FY23: CFO = ₹4,837 crore; Capex = ₹1,324 crore",
+            "FCF = ₹4,837 − ₹1,324 = ₹3,513 crore",
+            "PAT for FY23 = ₹4,168 crore",
+            "FCF/PAT ratio = ₹3,513 / ₹4,168 = 84%",
+            "For contrast, DHFL FY17-FY18 pattern: CFO ≈ ₹1,500 cr but Capex ≈ ₹2,000 cr = FCF negative; funded by equity/debt raises",
+            "Reliance Communications FY14-FY18 showed similar: small CFO, large capex, negative FCF, followed by debt spiral and collapse"
+          ],
+          "result": "Asian Paints FY23: FCF = ₹3,513 crore with FCF/PAT = 84% (healthy); DHFL/RCom pattern showed Capex > CFO (unsustainable)",
+          "insight": "Asian Paints generates substantial free cash flow after reinvestment, confirming earnings quality and financial health. By contrast, a company that shows large capex exceeding CFO year after year, combined with a CCR below 50%, is not generating genuine cash profits — it is funding growth through external finance. That structure collapses when capital markets dry up, as happened to DHFL and RCom. The rule: if capex exceeds CFO consistently, the business is not self-sustaining, and you should be wary of extrapolating historical growth."
+        },
+        "sensitivity_note": "Distinguish maintenance capex (needed to keep the current business running) from growth capex (optional, for expansion). A business should cover maintenance capex from CFO even in a bad year. A business that cannot fund maintenance capex from CFO has broken economics."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references (equivalent of F4 on Mac)",
+        "Cmd + Ctrl + V — Paste Special",
+        "Cmd + Shift + Enter — Array formula entry"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply all borders for clean reconciliation tables",
+        "Ctrl + Shift + L — Toggle filters on multi-year data",
+        "F4 — Lock references when dragging CCR formulas across companies",
+        "Alt + E, S, V — Paste Special Values to freeze pulled data from Screener/Tickertape",
+        "Ctrl + Shift + Enter — For array formulas when summing across non-contiguous years"
+      ]
+    }
+  }
+}

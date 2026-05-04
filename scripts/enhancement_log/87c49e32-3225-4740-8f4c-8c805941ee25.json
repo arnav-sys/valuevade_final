@@ -1,0 +1,370 @@
+{
+  "id": "87c49e32-3225-4740-8f4c-8c805941ee25",
+  "label": "M3 S10 | The 5 Chart Types — Detailed Skills",
+  "before": {
+    "charts": [
+      {
+        "name": "Line — The Trend Tracker",
+        "insert_path": "Insert → Chart → Line → Line with Markers",
+        "when_to_use": "Any metric that changes over time. Revenue over 5 years. Share price over 12 months. Gross margin over 8 quarters. If the X-axis is time, use a line chart.",
+        "indian_example": "Plot TCS quarterly revenue for 8 quarters. Title: 'TCS revenue sustained double-digit growth across FY24–25 despite macro headwinds.' X-axis: Q1 FY24 to Q4 FY25. Y-axis: ₹ Cr.",
+        "zero_base_debate": "In research, NO — if TCS revenue ranges from ₹58,000 to ₹65,000 Cr, starting at zero compresses all variation into a tiny band. Start the axis at ₹56,000 to show the actual trend. But ALWAYS note the truncated axis with a break symbol. Misleading axes are career-ending if caught.",
+        "formatting_standards": [
+          {
+            "why": "Thin enough to be precise, thick enough to be visible",
+            "element": "Line thickness",
+            "standard": "2–2.5 pt"
+          },
+          {
+            "why": "Help identify exact data points on the line",
+            "element": "Markers",
+            "standard": "Small circles (size 5–7)"
+          },
+          {
+            "why": "Guide the eye without cluttering",
+            "element": "Gridlines",
+            "standard": "Horizontal only, light gray"
+          },
+          {
+            "why": "Show start and end values; middle points use gridlines",
+            "element": "Data labels",
+            "standard": "Only on first and last point"
+          },
+          {
+            "why": "Saves horizontal space for the data",
+            "element": "Legend",
+            "standard": "Below the chart, not on the right"
+          }
+        ]
+      },
+      {
+        "name": "Bar / Column — The Comparison Machine",
+        "variations": [
+          {
+            "when": "Comparing 2–3 series side by side",
+            "example": "FY24 vs FY25 revenue by segment",
+            "variation": "Clustered"
+          },
+          {
+            "when": "Showing composition of a total",
+            "example": "Revenue breakdown: domestic vs export",
+            "variation": "Stacked"
+          },
+          {
+            "when": "Showing proportion changes",
+            "example": "Revenue mix shift over 5 years",
+            "variation": "100% Stacked"
+          },
+          {
+            "when": "Long category labels",
+            "example": "Top 15 companies ranked by market cap",
+            "variation": "Horizontal Bar"
+          }
+        ],
+        "insert_path": "Insert → Chart → Clustered Column",
+        "when_to_use": "Comparing categories: sectors, companies, segments, years side by side. Column (vertical) when X-axis is time or short labels. Bar (horizontal) when labels are long.",
+        "sorting_rule": "Always sort bar charts by value (largest to smallest) unless the X-axis is time or has a natural order (Q1→Q4). An unsorted bar chart makes the viewer work to find the biggest bar.",
+        "formatting_rules": "Gap width 80–120% (not Excel's default 150%). Consistent colours per series across all charts. Data labels on top of each bar. No 3D effects — ever."
+      },
+      {
+        "name": "Waterfall — The Bridge Builder",
+        "use_cases": [
+          {
+            "end": "FY25 EBITDA",
+            "start": "FY24 EBITDA",
+            "use_case": "EBITDA Bridge",
+            "components": "Revenue Δ, COGS Δ, SGA Δ, Other"
+          },
+          {
+            "end": "Target Price",
+            "start": "Current Market Price",
+            "use_case": "DCF Bridge",
+            "components": "FCF PV, Terminal PV, Net Debt, Minority"
+          },
+          {
+            "end": "Q4 EPS",
+            "start": "Q3 EPS",
+            "use_case": "EPS Walk",
+            "components": "Revenue impact, margin change, tax, shares"
+          },
+          {
+            "end": "Ending NAV",
+            "start": "Starting NAV",
+            "use_case": "Fund Performance",
+            "components": "Equity return, debt return, fees, FX"
+          }
+        ],
+        "insert_path": "Insert → Chart → Waterfall",
+        "when_to_use": "Shows how a starting value increases or decreases through positive and negative factors to reach an ending value. The most IB-specific chart type.",
+        "dcf_bridge_note": "The single most important chart in a valuation report. Shows: Current Price → + PV of FCFs → + PV of Terminal Value → − Net Debt → ÷ Shares = Target Price.",
+        "why_ibs_love_it": "They answer the most common question in finance: 'What changed, and why?' How did EBITDA go from ₹500 Cr to ₹620 Cr? Revenue +₹150, raw material cost −₹40, employee cost −₹20, other income +₹30 = ₹620 Cr.",
+        "building_in_excel": "Excel 2016+ has a built-in waterfall chart. For the bridge bars, set each component as a regular value. For the Start and End totals, right-click the bar → 'Set as Total.' Positive changes are green, negative are red, totals are navy/gray."
+      },
+      {
+        "name": "Scatter — The Relationship Revealer",
+        "formatting": "Label each dot with the company name. Add a trendline (linear regression) with R² displayed. Quadrant lines at median X and median Y create four quadrants for classification.",
+        "insert_path": "Insert → Chart → XY (Scatter) → Scatter with only Markers",
+        "peg_scatter": "Plot Forward PE (Y) vs Expected EPS Growth (X) for 15 sector peers. Add a 45-degree reference line (PE = Growth, PEG = 1). Stocks below = cheap for their growth; above = expensive.",
+        "when_to_use": "Plots two variables against each other to reveal correlations, outliers, and clusters. Each dot is one data point (company, stock, country).",
+        "classic_scatter_plots": [
+          {
+            "x_axis": "EPS Growth %",
+            "y_axis": "Forward PE",
+            "insight": "Overvalued = above regression line",
+            "what_it_shows": "Growth vs Valuation"
+          },
+          {
+            "x_axis": "ROIC %",
+            "y_axis": "EV/EBITDA",
+            "insight": "High ROIC + low multiple = opportunity",
+            "what_it_shows": "Quality vs Price"
+          },
+          {
+            "x_axis": "Beta",
+            "y_axis": "1Y Return %",
+            "insight": "Is higher risk rewarded?",
+            "what_it_shows": "Risk vs Return"
+          },
+          {
+            "x_axis": "Revenue Growth",
+            "y_axis": "EBITDA Margin Change",
+            "insight": "Who's growing profitably?",
+            "what_it_shows": "Growth vs Profitability"
+          }
+        ]
+      },
+      {
+        "name": "Combo (Dual-Axis) — The Two-Metric View",
+        "playbook": [
+          {
+            "insight": "Is the company growing profitably?",
+            "left_axis": "Revenue (₹ Cr)",
+            "right_axis": "EBITDA Margin %"
+          },
+          {
+            "insight": "Price movement with conviction (volume)",
+            "left_axis": "Share Price (₹)",
+            "right_axis": "Volume (L shares)"
+          },
+          {
+            "insight": "Is capex generating adequate returns?",
+            "left_axis": "Capex (₹ Cr)",
+            "right_axis": "ROIC %"
+          },
+          {
+            "insight": "Leverage vs ability to service",
+            "left_axis": "Net Debt (₹ Cr)",
+            "right_axis": "Interest Coverage Ratio"
+          }
+        ],
+        "insert_path": "Insert → Chart → Combo → Clustered Column + Line on Secondary Axis",
+        "when_to_use": "Overlays two chart types with different Y-axes. Shows how an absolute metric and a relative metric move together.",
+        "dual_axis_trap": "Dual-axis charts can be misleading because the two axes have different scales. Always label both axes clearly and use them only when the two metrics genuinely tell a combined story.",
+        "when_not_to_use": "If the two metrics have no logical connection. The test: can you write a title that connects both metrics? 'Revenue growth drove margin expansion' = good combo. 'Employee count and PE ratio' = two separate charts."
+      }
+    ]
+  },
+  "after": {
+    "charts": [
+      {
+        "name": "Line — The Trend Tracker",
+        "insert_path": "Insert → Chart → Line → Line with Markers",
+        "when_to_use": "Any metric that changes over time. Revenue over 5 years. Share price over 12 months. Gross margin over 8 quarters. If the X-axis is time, use a line chart.",
+        "indian_example": "Plot TCS quarterly revenue for 8 quarters. Title: 'TCS revenue sustained double-digit growth across FY24–25 despite macro headwinds.' X-axis: Q1 FY24 to Q4 FY25. Y-axis: ₹ Cr.",
+        "zero_base_debate": "In research, NO — if TCS revenue ranges from ₹58,000 to ₹65,000 Cr, starting at zero compresses all variation into a tiny band. Start the axis at ₹56,000 to show the actual trend. But ALWAYS note the truncated axis with a break symbol. Misleading axes are career-ending if caught.",
+        "formatting_standards": [
+          {
+            "why": "Thin enough to be precise, thick enough to be visible",
+            "element": "Line thickness",
+            "standard": "2–2.5 pt"
+          },
+          {
+            "why": "Help identify exact data points on the line",
+            "element": "Markers",
+            "standard": "Small circles (size 5–7)"
+          },
+          {
+            "why": "Guide the eye without cluttering",
+            "element": "Gridlines",
+            "standard": "Horizontal only, light gray"
+          },
+          {
+            "why": "Show start and end values; middle points use gridlines",
+            "element": "Data labels",
+            "standard": "Only on first and last point"
+          },
+          {
+            "why": "Saves horizontal space for the data",
+            "element": "Legend",
+            "standard": "Below the chart, not on the right"
+          }
+        ]
+      },
+      {
+        "name": "Bar / Column — The Comparison Machine",
+        "variations": [
+          {
+            "when": "Comparing 2–3 series side by side",
+            "example": "FY24 vs FY25 revenue by segment",
+            "variation": "Clustered"
+          },
+          {
+            "when": "Showing composition of a total",
+            "example": "Revenue breakdown: domestic vs export",
+            "variation": "Stacked"
+          },
+          {
+            "when": "Showing proportion changes",
+            "example": "Revenue mix shift over 5 years",
+            "variation": "100% Stacked"
+          },
+          {
+            "when": "Long category labels",
+            "example": "Top 15 companies ranked by market cap",
+            "variation": "Horizontal Bar"
+          }
+        ],
+        "insert_path": "Insert → Chart → Clustered Column",
+        "when_to_use": "Comparing categories: sectors, companies, segments, years side by side. Column (vertical) when X-axis is time or short labels. Bar (horizontal) when labels are long.",
+        "sorting_rule": "Always sort bar charts by value (largest to smallest) unless the X-axis is time or has a natural order (Q1→Q4). An unsorted bar chart makes the viewer work to find the biggest bar.",
+        "formatting_rules": "Gap width 80–120% (not Excel's default 150%). Consistent colours per series across all charts. Data labels on top of each bar. No 3D effects — ever."
+      },
+      {
+        "name": "Waterfall — The Bridge Builder",
+        "use_cases": [
+          {
+            "end": "FY25 EBITDA",
+            "start": "FY24 EBITDA",
+            "use_case": "EBITDA Bridge",
+            "components": "Revenue Δ, COGS Δ, SGA Δ, Other"
+          },
+          {
+            "end": "Target Price",
+            "start": "Current Market Price",
+            "use_case": "DCF Bridge",
+            "components": "FCF PV, Terminal PV, Net Debt, Minority"
+          },
+          {
+            "end": "Q4 EPS",
+            "start": "Q3 EPS",
+            "use_case": "EPS Walk",
+            "components": "Revenue impact, margin change, tax, shares"
+          },
+          {
+            "end": "Ending NAV",
+            "start": "Starting NAV",
+            "use_case": "Fund Performance",
+            "components": "Equity return, debt return, fees, FX"
+          }
+        ],
+        "insert_path": "Insert → Chart → Waterfall",
+        "when_to_use": "Shows how a starting value increases or decreases through positive and negative factors to reach an ending value. The most IB-specific chart type.",
+        "plain_english": "A waterfall chart visually bridges a beginning value to an ending value by stacking up all the positive and negative changes in between. Instead of showing isolated metrics, it answers the critical question: 'What drove the change?' This format forces clarity and accountability—every rupee of movement must be explained.",
+        "dcf_bridge_note": "The single most important chart in a valuation report. Shows: Current Price → + PV of FCFs → + PV of Terminal Value → − Net Debt → ÷ Shares = Target Price.",
+        "why_ibs_love_it": "They answer the most common question in finance: 'What changed, and why?' How did EBITDA go from ₹500 Cr to ₹620 Cr? Revenue +₹150, raw material cost −₹40, employee cost −₹20, other income +₹30 = ₹620 Cr.",
+        "building_in_excel": "Excel 2016+ has a built-in waterfall chart. For the bridge bars, set each component as a regular value. For the Start and End totals, right-click the bar → 'Set as Total.' Positive changes are green, negative are red, totals are navy/gray.",
+        "worked_example": {
+          "problem": "HUL EBITDA moved from ₹2,800 Cr in FY24 to ₹3,150 Cr in FY25. Explain the bridge using waterfall logic.",
+          "steps": [
+            "Starting value (FY24 EBITDA): ₹2,800 Cr",
+            "Revenue growth contribution: +₹420 Cr (volumes + price increases)",
+            "Gross margin improvement (raw material deflation): +₹95 Cr",
+            "SG&A deleverage (higher ad spend): −₹85 Cr",
+            "Other operating income: +₹20 Cr",
+            "Calculate total: ₹2,800 + ₹420 + ₹95 − ₹85 + ₹20 = ₹3,250 Cr"
+          ],
+          "result": "The waterfall reveals FY25 EBITDA should reach ₹3,250 Cr. Chart shows revenue as the dominant driver (+15% contribution), offset partially by SG&A inflation.",
+          "insight": "Waterfall exposes whether margin growth is sustainable (from operational leverage) or one-off (from commodity tailwinds). In HUL's case, the revenue and gross margin gains are structural; SG&A drift is a watch item."
+        }
+      },
+      {
+        "name": "Scatter — The Relationship Revealer",
+        "formatting": "Label each dot with the company name. Add a trendline (linear regression) with R² displayed. Quadrant lines at median X and median Y create four quadrants for classification.",
+        "insert_path": "Insert → Chart → XY (Scatter) → Scatter with only Markers",
+        "plain_english": "A scatter plot shows how two variables move together—one on the horizontal axis, one on the vertical. Each dot is a single company or data point. By plotting both variables at once, you can spot which companies are overvalued, which are efficient, and which are outliers. A trendline shows the average relationship; dots far from the line are the most interesting.",
+        "peg_scatter": "Plot Forward PE (Y) vs Expected EPS Growth (X) for 15 sector peers. Add a 45-degree reference line (PE = Growth, PEG = 1). Stocks below = cheap for their growth; above = expensive.",
+        "when_to_use": "Plots two variables against each other to reveal correlations, outliers, and clusters. Each dot is one data point (company, stock, country).",
+        "classic_scatter_plots": [
+          {
+            "x_axis": "EPS Growth %",
+            "y_axis": "Forward PE",
+            "insight": "Overvalued = above regression line",
+            "what_it_shows": "Growth vs Valuation"
+          },
+          {
+            "x_axis": "ROIC %",
+            "y_axis": "EV/EBITDA",
+            "insight": "High ROIC + low multiple = opportunity",
+            "what_it_shows": "Quality vs Price"
+          },
+          {
+            "x_axis": "Beta",
+            "y_axis": "1Y Return %",
+            "insight": "Is higher risk rewarded?",
+            "what_it_shows": "Risk vs Return"
+          },
+          {
+            "x_axis": "Revenue Growth",
+            "y_axis": "EBITDA Margin Change",
+            "insight": "Who's growing profitably?",
+            "what_it_shows": "Growth vs Profitability"
+          }
+        ],
+        "worked_example": {
+          "problem": "You have 10 IT services companies. Plot their Forward PE (Y-axis) vs. 3-year EPS CAGR (X-axis) to identify if any are mispriced relative to peers.",
+          "steps": [
+            "Collect Forward PE and 3-year CAGR for: TCS, Infosys, HCLTech, Wipro, Tech Mahindra, LTI, Mphasis, Mindtree, Coforge, and Persistent.",
+            "Create XY scatter: X = EPS CAGR (%), Y = Forward PE (multiples).",
+            "Add linear trendline and display R².",
+            "Draw median lines (X median ≈ 16% CAGR, Y median ≈ 22× PE).",
+            "Identify quadrants: High growth–high PE (justified), Low growth–high PE (risky), High growth–low PE (opportunity), Low growth–low PE (defensive)."
+          ],
+          "result": "TCS plots in lower-right (mature growth 12% CAGR, 25× PE). Infosys upper-left (strong 18% CAGR, 19× PE). Tech Mahindra upper-right (15% CAGR, 17× PE—bargain). HCLTech lower-left (11% CAGR, 14× PE—a mature defensive play).",
+          "insight": "The scatter immediately flags Tech Mahindra as potentially undervalued (high growth, low multiple) and raises questions about TCS's premium (slow growth, high PE). This leads to deeper investigation of competitive position and FCF quality."
+        }
+      },
+      {
+        "name": "Combo (Dual-Axis) — The Two-Metric View",
+        "playbook": [
+          {
+            "insight": "Is the company growing profitably?",
+            "left_axis": "Revenue (₹ Cr)",
+            "right_axis": "EBITDA Margin %"
+          },
+          {
+            "insight": "Price movement with conviction (volume)",
+            "left_axis": "Share Price (₹)",
+            "right_axis": "Volume (L shares)"
+          },
+          {
+            "insight": "Is capex generating adequate returns?",
+            "left_axis": "Capex (₹ Cr)",
+            "right_axis": "ROIC %"
+          },
+          {
+            "insight": "Leverage vs ability to service",
+            "left_axis": "Net Debt (₹ Cr)",
+            "right_axis": "Interest Coverage Ratio"
+          }
+        ],
+        "insert_path": "Insert → Chart → Combo → Clustered Column + Line on Secondary Axis",
+        "when_to_use": "Overlays two chart types with different Y-axes. Shows how an absolute metric and a relative metric move together.",
+        "plain_english": "A combo chart plots two unrelated metrics on separate Y-axes—one absolute (₹ Cr), one relative (%)—so you can see both in one view. For instance, you might plot revenue as columns on the left axis and margin % as a line on the right axis. This reveals whether growth is coming with healthy margins or at the cost of profitability. The key is that both metrics must tell a coherent story together.",
+        "dual_axis_trap": "Dual-axis charts can be misleading because the two axes have different scales. Always label both axes clearly and use them only when the two metrics genuinely tell a combined story.",
+        "when_not_to_use": "If the two metrics have no logical connection. The test: can you write a title that connects both metrics? 'Revenue growth drove margin expansion' = good combo. 'Employee count and PE ratio' = two separate charts.",
+        "worked_example": {
+          "problem": "Bajaj Finance shows rising loan book but declining NIMs (net interest margins). Plot 5 years of Total Assets (₹ Cr) on left axis and NIM (%) on right axis to visualize the trade-off.",
+          "steps": [
+            "Gather data: FY21–FY25 Total Assets and NIM for Bajaj Finance.",
+            "Create combo chart: Columns for Assets (left axis, ₹ Cr), Line for NIM (right axis, %).",
+            "Scale left axis: 0–₹1,00,000 Cr. Scale right axis: 2%–5%.",
+            "Label clearly: 'Assets grew at 18% CAGR; NIMs compressed from 4.8% to 3.9%'.",
+            "Add data labels on first and last values of each series."
+          ],
+          "result": "FY21: Assets ₹45,000 Cr, NIM 4.8%. FY25: Assets ₹98,000 Cr, NIM 3.9%. Combo reveals growth strategy came at margin cost—typical for NBFC expansion into mass-market unsecured lending.",
+          "insight": "The chart shows management prioritized scale over profitability margin. This raises questions: Is this sustainable? Will NIMs recover as rates stabilize? Is the ROIC still acceptable despite lower NIMs? The combo chart frames the investigation; it doesn't answer it."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,205 @@
+{
+  "id": "95b0468e-fe1b-48b9-9e9b-5bbe3415b573",
+  "label": "M9 S5 | The Solvency Formula Arsenal (With Indian Examples)",
+  "before": {
+    "formulas": [
+      {
+        "name": "Debt-to-Equity (D/E)",
+        "formula": "D/E = Total Debt / Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Short-term borrowings + Long-term borrowings + Current portion of long-term debt + Lease obligations under Ind AS 116"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "Share Capital + Reserves & Surplus — i.e. book value of equity"
+          }
+        ],
+        "worked_example": "Tata Motors FY23 (consolidated): Total Debt ≈ ₹1,26,000 Cr (includes JLR debt), Shareholders' Equity ≈ ₹70,000 Cr. D/E = 1,26,000 / 70,000 = 1.80x. Concerning at first glance — but contextualised against global auto peers (Ford D/E ≈ 2.2x, GM D/E ≈ 1.5x), it's in line. Within India, compare to Maruti Suzuki D/E of roughly 0.05x (essentially debt-free) — the gap reflects Tata Motors' JLR acquisition leverage. Same industry, wildly different balance sheet strategies.",
+        "sensitivity_note": "D/E is the most quoted leverage metric but also the most misused. It varies dramatically by industry — don't apply generic thresholds. Also note: using Net Debt / Equity (subtracting cash) often gives a more accurate picture, especially for cash-rich companies like TCS (net cash position means D/E of -0.4x if computed on net basis)."
+      },
+      {
+        "name": "Debt-to-EBITDA",
+        "formula": "Debt / EBITDA = Total Debt / EBITDA",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Same as D/E. For more conservative analysis, use Net Debt = Total Debt - Cash & Equivalents"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, Amortisation — the cash-operating proxy most rating agencies use"
+          }
+        ],
+        "worked_example": "Reliance Industries FY23: Net Debt ≈ ₹1,10,000 Cr, EBITDA ≈ ₹1,78,000 Cr. Net Debt/EBITDA = 1,10,000 / 1,78,000 = 0.62x. Fortress level. Despite having over ₹3 lakh crore of gross debt, Reliance's EBITDA capacity means it could theoretically repay all net debt in less than 8 months of cash earnings. This is why Reliance sustained an AAA rating through the entire Jio capex cycle. Contrast with a stressed infrastructure company with Debt/EBITDA of 7x — that means 7 years of 'everything-to-debt' just to repay. Rating agencies typically view: AAA-AA <1.5x, A 1.5-2.5x, BBB 2.5-3.5x, BB 3.5-4.5x, below BB above 4.5x.",
+        "sensitivity_note": "Debt/EBITDA is the single most important credit ratio globally. A one-turn deterioration (e.g. from 2x to 3x) often triggers a rating downgrade. CFOs manage to stay below covenant thresholds (typically 3.5-4.0x for investment grade debt) because breach = refinancing crisis."
+      },
+      {
+        "name": "Interest Coverage Ratio (ICR)",
+        "formula": "ICR = EBIT / Interest Expense",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax — operating profit"
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Interest on borrowings + Interest on lease liabilities (under Ind AS 116)"
+          }
+        ],
+        "worked_example": "Asian Paints FY23: EBIT = ₹5,488 Cr, Interest Expense = ₹125 Cr. ICR = 5,488 / 125 = 43.9x. Astronomical — Asian Paints could lose 95% of operating profit and still cover interest. Contrast with Jet Airways FY18 (just before collapse): EBIT ≈ ₹240 Cr, Interest ≈ ₹900 Cr. ICR = 240 / 900 = 0.27x. Operating profit didn't even cover one-third of interest — inevitable default. A healthy ICR is above 5x; below 2x is financial stress; below 1.5x is near-certain distress; below 1.0x means the company is funding interest from new debt (a death spiral).",
+        "sensitivity_note": "ICR is the most predictive solvency ratio for imminent distress. Jet Airways, Vodafone Idea, DHFL, and Reliance Communications all showed ICR below 2x for multiple quarters before their formal crises — the warning was visible 12-18 months early to any analyst watching this number."
+      },
+      {
+        "name": "Debt Service Coverage Ratio (DSCR)",
+        "formula": "DSCR = (EBITDA - Taxes) / (Interest + Principal Repayment due in period)",
+        "variables": [
+          {
+            "symbol": "EBITDA - Taxes",
+            "meaning": "Cash available for debt service (CADS)"
+          },
+          {
+            "symbol": "Interest + Principal",
+            "meaning": "Total debt service — what's actually due to lenders in the period (usually annual)"
+          }
+        ],
+        "worked_example": "A power generation company with EBITDA ₹1,500 Cr, Taxes ₹200 Cr, Interest ₹700 Cr, and annual Principal Repayment ₹400 Cr. CADS = 1,500 - 200 = ₹1,300 Cr. Total Debt Service = 700 + 400 = ₹1,100 Cr. DSCR = 1,300 / 1,100 = 1.18x. Barely acceptable — most project finance lenders require minimum DSCR of 1.2x, and comfort level is 1.5x. Indian power sector stress in the 2015-2019 period saw many projects with DSCR below 1.0x, triggering the massive NPA crisis in public sector banks.",
+        "sensitivity_note": "DSCR is critical for project finance, infrastructure, and real estate. Unlike ICR which ignores principal repayment, DSCR captures the full annual debt servicing obligation. Infrastructure projects often have DSCR covenants — breach triggers loan restructuring or acceleration."
+      },
+      {
+        "name": "Net Debt / Net Worth",
+        "formula": "Net Debt / Equity = (Total Debt - Cash) / Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt - Cash",
+            "meaning": "Debt net of cash and liquid investments the company could use to repay"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "Book value of equity"
+          }
+        ],
+        "worked_example": "TCS FY23: Total Debt ≈ ₹200 Cr, Cash & Investments ≈ ₹35,000 Cr. Net Debt = 200 - 35,000 = -₹34,800 Cr. Shareholders' Equity ≈ ₹91,000 Cr. Net Debt/Equity = -34,800 / 91,000 = -0.38x (net cash position). TCS has negative net debt — it's effectively a lender, not a borrower. Compare to JSW Steel FY23: Net Debt ≈ ₹58,000 Cr, Equity ≈ ₹75,000 Cr. Net Debt/Equity = 0.77x. Healthy for a capital-intensive commodity business. Always use Net Debt rather than Gross Debt for a true picture of leverage.",
+        "sensitivity_note": "A negative net debt (cash > debt) indicates a financially conservative, cash-generative business. Common in elite IT services (TCS, Infosys) and asset-light consumer businesses (Nestle, HUL, Asian Paints). These companies trade at premium valuations partly because they have zero refinancing risk."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter",
+        "Cmd + Shift + R → refresh linked external data for debt schedules",
+        "Fn + F4 → absolute reference for multi-year ratio dragging",
+        "Cmd + Shift + U → apply upper case for rating bucket labels (AAA, AA, BBB)"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → apply filter to peer leverage comparison table",
+        "Alt + H + AT → top/bottom conditional formatting for leverage outliers",
+        "F4 → lock denominators (EBITDA, Equity) when dragging Debt ratios across years",
+        "Ctrl + G → Go to cells with errors if Debt/EBITDA returns #DIV/0 (watch for loss years)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Debt-to-Equity (D/E)",
+        "formula": "D/E = Total Debt / Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Short-term borrowings + Long-term borrowings + Current portion of long-term debt + Lease obligations under Ind AS 116"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "Share Capital + Reserves & Surplus — i.e. book value of equity"
+          }
+        ],
+        "plain_english": "D/E measures how much debt a company carries relative to owner capital. A ratio of 1.5x means for every rupee of equity, the company has borrowed ₹1.50. Higher D/E suggests greater financial leverage and risk, but context matters enormously — capital-intensive sectors like telecom and autos carry higher ratios as a business norm, while asset-light IT services run lean. The metric is useful for comparing solvency within the same industry, but risky when applied across sectors without adjustment.",
+        "worked_example": "Tata Motors FY23 (consolidated): Total Debt ≈ ₹1,26,000 Cr (includes JLR debt), Shareholders' Equity ≈ ₹70,000 Cr. D/E = 1,26,000 / 70,000 = 1.80x. Concerning at first glance — but contextualised against global auto peers (Ford D/E ≈ 2.2x, GM D/E ≈ 1.5x), it's in line. Within India, compare to Maruti Suzuki D/E of roughly 0.05x (essentially debt-free) — the gap reflects Tata Motors' JLR acquisition leverage. Same industry, wildly different balance sheet strategies.",
+        "sensitivity_note": "D/E is the most quoted leverage metric but also the most misused. It varies dramatically by industry — don't apply generic thresholds. Also note: using Net Debt / Equity (subtracting cash) often gives a more accurate picture, especially for cash-rich companies like TCS (net cash position means D/E of -0.4x if computed on net basis)."
+      },
+      {
+        "name": "Debt-to-EBITDA",
+        "formula": "Debt / EBITDA = Total Debt / EBITDA",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Same as D/E. For more conservative analysis, use Net Debt = Total Debt - Cash & Equivalents"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, Amortisation — the cash-operating proxy most rating agencies use"
+          }
+        ],
+        "plain_english": "Debt/EBITDA translates total borrowings into a multiple of annual operating cash earnings. A ratio of 2.5x means the company would need 2.5 years of full EBITDA (before taxes, interest, and principal repayment) to erase all debt. This metric is far superior to D/E because it measures debt against genuine cash-generation capacity, not accounting book value. Rating agencies rely almost exclusively on this ratio to assign credit grades because it predicts refinancing ability and default risk with high accuracy.",
+        "worked_example": "Reliance Industries FY23: Net Debt ≈ ₹1,10,000 Cr, EBITDA ≈ ₹1,78,000 Cr. Net Debt/EBITDA = 1,10,000 / 1,78,000 = 0.62x. Fortress level. Despite having over ₹3 lakh crore of gross debt, Reliance's EBITDA capacity means it could theoretically repay all net debt in less than 8 months of cash earnings. This is why Reliance sustained an AAA rating through the entire Jio capex cycle. Contrast with a stressed infrastructure company with Debt/EBITDA of 7x — that means 7 years of 'everything-to-debt' just to repay. Rating agencies typically view: AAA-AA <1.5x, A 1.5-2.5x, BBB 2.5-3.5x, BB 3.5-4.5x, below BB above 4.5x.",
+        "sensitivity_note": "Debt/EBITDA is the single most important credit ratio globally. A one-turn deterioration (e.g. from 2x to 3x) often triggers a rating downgrade. CFOs manage to stay below covenant thresholds (typically 3.5-4.0x for investment grade debt) because breach = refinancing crisis."
+      },
+      {
+        "name": "Interest Coverage Ratio (ICR)",
+        "formula": "ICR = EBIT / Interest Expense",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax — operating profit"
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Interest on borrowings + Interest on lease liabilities (under Ind AS 116)"
+          }
+        ],
+        "plain_english": "ICR shows how many times operating profit covers the annual interest bill. An ICR of 5x means operating profit is five times larger than interest due — a comfortable margin. An ICR below 2x signals strain; below 1.5x indicates acute distress; below 1.0x means the company cannot afford interest from operations and must fund it from cash or new borrowing, a warning sign of imminent default. This is perhaps the most predictive single metric for solvency crisis within 12–18 months.",
+        "worked_example": "Asian Paints FY23: EBIT = ₹5,488 Cr, Interest Expense = ₹125 Cr. ICR = 5,488 / 125 = 43.9x. Astronomical — Asian Paints could lose 95% of operating profit and still cover interest. Contrast with Jet Airways FY18 (just before collapse): EBIT ≈ ₹240 Cr, Interest ≈ ₹900 Cr. ICR = 240 / 900 = 0.27x. Operating profit didn't even cover one-third of interest — inevitable default. A healthy ICR is above 5x; below 2x is financial stress; below 1.5x is near-certain distress; below 1.0x means the company is funding interest from new debt (a death spiral).",
+        "sensitivity_note": "ICR is the most predictive solvency ratio for imminent distress. Jet Airways, Vodafone Idea, DHFL, and Reliance Communications all showed ICR below 2x for multiple quarters before their formal crises — the warning was visible 12-18 months early to any analyst watching this number."
+      },
+      {
+        "name": "Debt Service Coverage Ratio (DSCR)",
+        "formula": "DSCR = (EBITDA - Taxes) / (Interest + Principal Repayment due in period)",
+        "variables": [
+          {
+            "symbol": "EBITDA - Taxes",
+            "meaning": "Cash available for debt service (CADS)"
+          },
+          {
+            "symbol": "Interest + Principal",
+            "meaning": "Total debt service — what's actually due to lenders in the period (usually annual)"
+          }
+        ],
+        "plain_english": "DSCR measures whether a company's operating cash (after tax) is sufficient to cover both interest and principal repayment due in a period. Unlike ICR which ignores principal, DSCR captures the full debt servicing burden. A DSCR of 1.5x is comfortable; 1.2x is acceptable but tight; below 1.0x is a hard constraint indicating the company cannot service debt from operations and must use reserves or refinance. This ratio is essential for project finance, infrastructure, and real estate deals where lenders impose strict DSCR covenants.",
+        "worked_example": "A power generation company with EBITDA ₹1,500 Cr, Taxes ₹200 Cr, Interest ₹700 Cr, and annual Principal Repayment ₹400 Cr. CADS = 1,500 - 200 = ₹1,300 Cr. Total Debt Service = 700 + 400 = ₹1,100 Cr. DSCR = 1,300 / 1,100 = 1.18x. Barely acceptable — most project finance lenders require minimum DSCR of 1.2x, and comfort level is 1.5x. Indian power sector stress in the 2015-2019 period saw many projects with DSCR below 1.0x, triggering the massive NPA crisis in public sector banks.",
+        "sensitivity_note": "DSCR is critical for project finance, infrastructure, and real estate. Unlike ICR which ignores principal repayment, DSCR captures the full annual debt servicing obligation. Infrastructure projects often have DSCR covenants — breach triggers loan restructuring or acceleration."
+      },
+      {
+        "name": "Net Debt / Net Worth",
+        "formula": "Net Debt / Equity = (Total Debt - Cash) / Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt - Cash",
+            "meaning": "Debt net of cash and liquid investments the company could use to repay"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "Book value of equity"
+          }
+        ],
+        "plain_english": "Net Debt/Equity adjusts gross leverage for cash on the balance sheet. A company with ₹100 Cr debt and ₹80 Cr cash has net debt of ₹20 Cr, not ₹100 Cr — it could pay down most borrowing immediately if needed. When net debt is negative (cash exceeds debt), the company is a net cash holder, indicating zero refinancing risk and substantial financial flexibility. This metric reveals true leverage far better than gross D/E, especially for cash-rich tech and consumer businesses.",
+        "worked_example": "TCS FY23: Total Debt ≈ ₹200 Cr, Cash & Investments ≈ ₹35,000 Cr. Net Debt = 200 - 35,000 = -₹34,800 Cr. Shareholders' Equity ≈ ₹91,000 Cr. Net Debt/Equity = -34,800 / 91,000 = -0.38x (net cash position). TCS has negative net debt — it's effectively a lender, not a borrower. Compare to JSW Steel FY23: Net Debt ≈ ₹58,000 Cr, Equity ≈ ₹75,000 Cr. Net Debt/Equity = 0.77x. Healthy for a capital-intensive commodity business. Always use Net Debt rather than Gross Debt for a true picture of leverage.",
+        "sensitivity_note": "A negative net debt (cash > debt) indicates a financially conservative, cash-generative business. Common in elite IT services (TCS, Infosys) and asset-light consumer businesses (Nestle, HUL, Asian Paints). These companies trade at premium valuations partly because they have zero refinancing risk."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter",
+        "Cmd + Shift + R → refresh linked external data for debt schedules",
+        "Fn + F4 → absolute reference for multi-year ratio dragging",
+        "Cmd + Shift + U → apply upper case for rating bucket labels (AAA, AA, BBB)"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → apply filter to peer leverage comparison table",
+        "Alt + H + AT → top/bottom conditional formatting for leverage outliers",
+        "F4 → lock denominators (EBITDA, Equity) when dragging Debt ratios across years",
+        "Ctrl + G → Go to cells with errors if Debt/EBITDA returns #DIV/0 (watch for loss years)"
+      ]
+    }
+  }
+}

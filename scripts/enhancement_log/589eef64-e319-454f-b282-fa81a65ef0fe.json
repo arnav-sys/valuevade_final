@@ -1,0 +1,226 @@
+{
+  "id": "589eef64-e319-454f-b282-fa81a65ef0fe",
+  "label": "M12 S3 | CAPM and the Beta Levering Equations",
+  "before": {
+    "formulas": [
+      {
+        "name": "Capital Asset Pricing Model (CAPM)",
+        "formula": "Ke = Rf + β × ERP",
+        "variables": [
+          {
+            "symbol": "Ke",
+            "meaning": "Cost of equity — the annual return required by equity investors"
+          },
+          {
+            "symbol": "Rf",
+            "meaning": "Risk-free rate — typically the 10-year G-Sec yield in India"
+          },
+          {
+            "symbol": "β",
+            "meaning": "Beta — sensitivity of the stock's returns to the broader market"
+          },
+          {
+            "symbol": "ERP",
+            "meaning": "Equity risk premium = Rm - Rf, where Rm is the expected market return"
+          }
+        ],
+        "worked_example": "For HDFC Bank: Rf = 6.8% (current 10-year G-Sec), ERP = 7.5% (Damodaran India estimate), β = 1.0 (Bloomberg, 2-year monthly). Ke = 6.8% + 1.0 × 7.5% = 14.3%. For Asian Paints with β = 0.65: Ke = 6.8% + 0.65 × 7.5% = 11.68%. For Vedanta with β = 1.6: Ke = 6.8% + 1.6 × 7.5% = 18.8%. Notice the spread — the riskiest cyclical demands roughly 7 percentage points more than the defensive consumer staple.",
+        "sensitivity_note": "Each input moves Ke roughly one-for-one. Bumping ERP from 7.5% to 8% lifts Ke by 0.5% (at β = 1) or 0.8% (at β = 1.6). Bumping beta by 0.1 lifts Ke by 0.75% (at ERP = 7.5%). Senior analysts will pressure-test each input separately, and you should be ready to defend each one independently."
+      },
+      {
+        "name": "Unlevering Beta (Removing the Effect of Financial Leverage)",
+        "formula": "βu = βL / [1 + (1 - T) × (D/E)]",
+        "variables": [
+          {
+            "symbol": "βu",
+            "meaning": "Unlevered beta — the beta the company would have if it had zero debt"
+          },
+          {
+            "symbol": "βL",
+            "meaning": "Levered (equity) beta — the beta you observe in the market"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal tax rate (use 25% for most Indian companies)"
+          },
+          {
+            "symbol": "D/E",
+            "meaning": "Market-value debt-to-equity ratio"
+          }
+        ],
+        "worked_example": "Tata Motors has an observed (levered) beta of 1.4, a D/E ratio of 0.8, and a tax rate of 25%. Unlevered beta = 1.4 / [1 + (1 - 0.25) × 0.8] = 1.4 / [1 + 0.6] = 1.4 / 1.6 = 0.875. This unlevered beta represents the pure business risk of Tata Motors, stripped of financial leverage. You would unlever beta when you want to compare business risk across companies with different capital structures, or when you need to re-lever it to a target capital structure.",
+        "sensitivity_note": "Higher D/E inflates observed (levered) beta. A company with the same business risk but more debt will have a higher equity beta because debt magnifies the volatility of equity returns. This is why two paint companies — one debt-free and one heavily levered — can have very different observed betas despite identical business operations."
+      },
+      {
+        "name": "Re-levering Beta (Applying a New Capital Structure)",
+        "formula": "βL = βu × [1 + (1 - T) × (D/E)]",
+        "variables": [
+          {
+            "symbol": "βL",
+            "meaning": "Levered beta — the beta at the target capital structure"
+          },
+          {
+            "symbol": "βu",
+            "meaning": "Unlevered beta — the pure business risk beta"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal tax rate"
+          },
+          {
+            "symbol": "D/E",
+            "meaning": "Target market-value debt-to-equity ratio"
+          }
+        ],
+        "worked_example": "You want to value an unlisted auto company. You take Tata Motors' unlevered beta of 0.875 (assumed comparable business risk) and apply it to your target's D/E of 0.4 with T = 25%. Levered beta = 0.875 × [1 + (1 - 0.25) × 0.4] = 0.875 × 1.30 = 1.14. This is the beta you plug into CAPM for the unlisted auto company. The whole levering / unlevering exercise lets you transport business risk across different capital structures.",
+        "sensitivity_note": "In practice, analysts unlever betas of multiple comparable companies, take the median of the unlevered betas, then re-lever to the subject company's capital structure. This produces a more stable estimate than relying on any single observed beta — particularly useful for IPO candidates or thinly-traded names."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SLOPE(stock_returns_range, market_returns_range)",
+        "=COVARIANCE.S(stock_returns, market_returns) / VAR.S(market_returns)",
+        "Cmd + Shift + Fn + F4 — toggle absolute references"
+      ],
+      "windows": [
+        "=SLOPE(stock_returns_range, market_returns_range) — manual beta regression in Excel",
+        "=COVARIANCE.S(stock_returns, market_returns) / VAR.S(market_returns) — equivalent beta calculation",
+        "Alt + N + N + L — insert a line chart for visualising stock vs. market returns",
+        "F4 — toggle between absolute and relative cell references when building beta regressions"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Capital Asset Pricing Model (CAPM)",
+        "formula": "Ke = Rf + β × ERP",
+        "variables": [
+          {
+            "symbol": "Ke",
+            "meaning": "Cost of equity — the annual return required by equity investors"
+          },
+          {
+            "symbol": "Rf",
+            "meaning": "Risk-free rate — typically the 10-year G-Sec yield in India"
+          },
+          {
+            "symbol": "β",
+            "meaning": "Beta — sensitivity of the stock's returns to the broader market"
+          },
+          {
+            "symbol": "ERP",
+            "meaning": "Equity risk premium = Rm - Rf, where Rm is the expected market return"
+          }
+        ],
+        "plain_english": "CAPM tells you the minimum annual return equity investors demand from a stock. It combines a safe baseline return (the risk-free rate) with an extra premium proportional to the stock's riskiness (its beta times the market risk premium). The higher the beta, the higher the required return—and thus the lower the justified valuation. This cost of equity is a critical input to your DCF model's terminal value and WACC.",
+        "worked_example": {
+          "problem": "Calculate the cost of equity for three Indian stocks using current market data.",
+          "steps": [
+            "Set Rf = 6.8% (10-year Indian G-Sec yield, Jan 2025)",
+            "Set ERP = 7.5% (Damodaran India equity risk premium estimate)",
+            "For HDFC Bank: use β = 1.0 (Bloomberg, 2-year monthly); Ke = 6.8% + 1.0 × 7.5% = 14.3%",
+            "For Asian Paints: use β = 0.65 (defensive consumer staple); Ke = 6.8% + 0.65 × 7.5% = 11.68%",
+            "For Vedanta: use β = 1.6 (cyclical commodity exposure); Ke = 6.8% + 1.6 × 7.5% = 18.8%"
+          ],
+          "result": "HDFC Bank 14.3%, Asian Paints 11.68%, Vedanta 18.8%",
+          "insight": "The riskiest cyclical (Vedanta) demands roughly 7 percentage points more annual return than the defensive consumer stock (Asian Paints), even though both are Indian-listed. This spread directly impacts your terminal value and hence your price target—a 1% change in Ke can swing your target by 15–20% for a mature company."
+        },
+        "sensitivity_note": "Each input moves Ke roughly one-for-one. Bumping ERP from 7.5% to 8% lifts Ke by 0.5% (at β = 1) or 0.8% (at β = 1.6). Bumping beta by 0.1 lifts Ke by 0.75% (at ERP = 7.5%). Senior analysts will pressure-test each input separately, and you should be ready to defend each one independently."
+      },
+      {
+        "name": "Unlevering Beta (Removing the Effect of Financial Leverage)",
+        "formula": "βu = βL / [1 + (1 - T) × (D/E)]",
+        "variables": [
+          {
+            "symbol": "βu",
+            "meaning": "Unlevered beta — the beta the company would have if it had zero debt"
+          },
+          {
+            "symbol": "βL",
+            "meaning": "Levered (equity) beta — the beta you observe in the market"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal tax rate (use 25% for most Indian companies)"
+          },
+          {
+            "symbol": "D/E",
+            "meaning": "Market-value debt-to-equity ratio"
+          }
+        ],
+        "plain_english": "Unlevering beta strips away the amplifying effect of debt from a company's observed equity beta. When a company borrows, debt magnifies the volatility of returns to equity holders—so two companies with identical business operations but different leverage will have different observed betas. By unlevering, you isolate the pure business risk, which lets you compare apples to apples across differently-leveraged peers or re-apply the business risk to a new capital structure.",
+        "computation": [
+          "Calculate the leverage factor: 1 + (1 - T) × (D/E)",
+          "Divide the levered (observed) beta by the leverage factor to obtain the unlevered beta"
+        ],
+        "worked_example": {
+          "problem": "Calculate Tata Motors' unlevered beta to compare its business risk with peers.",
+          "steps": [
+            "Identify Tata Motors' current (levered) equity beta: βL = 1.4 (Bloomberg, 2-year data)",
+            "Identify the company's market-value D/E ratio: 0.8 (use latest balance-sheet date with market prices for equity)",
+            "Use marginal tax rate T = 25% (standard for large Indian corporates post-GST era)",
+            "Calculate the leverage factor: 1 + (1 - 0.25) × 0.8 = 1 + 0.6 = 1.6",
+            "Divide: βu = 1.4 / 1.6 = 0.875"
+          ],
+          "result": "Tata Motors unlevered beta = 0.875",
+          "insight": "The unlevered beta of 0.875 represents the pure cyclical auto industry business risk, net of Tata Motors' current debt load. If you compare this to another auto company (e.g., Maruti with a 0.6 unlevered beta), you can conclude that Tata Motors faces higher inherent business volatility, independent of how each company chooses to finance itself. This is crucial when valuing an unlisted peer or a company undergoing a major capital restructure."
+        },
+        "sensitivity_note": "Higher D/E inflates observed (levered) beta. A company with the same business risk but more debt will have a higher equity beta because debt magnifies the volatility of equity returns. This is why two paint companies — one debt-free and one heavily levered — can have very different observed betas despite identical business operations."
+      },
+      {
+        "name": "Re-levering Beta (Applying a New Capital Structure)",
+        "formula": "βL = βu × [1 + (1 - T) × (D/E)]",
+        "variables": [
+          {
+            "symbol": "βL",
+            "meaning": "Levered beta — the beta at the target capital structure"
+          },
+          {
+            "symbol": "βu",
+            "meaning": "Unlevered beta — the pure business risk beta"
+          },
+          {
+            "symbol": "T",
+            "meaning": "Marginal tax rate"
+          },
+          {
+            "symbol": "D/E",
+            "meaning": "Target market-value debt-to-equity ratio"
+          }
+        ],
+        "plain_english": "Re-levering beta applies a new capital structure's financial risk to a company's pure business risk. Once you have unlevered beta (which is capital-structure-neutral), you can re-lever it to any target D/E ratio—whether that's the company's strategic target, a peer's structure, or an assumed capital structure for an unlisted business. The result is the beta you use in CAPM for your cost-of-equity calculation. This technique is essential for valuing IPO candidates, acquisitions, or assessing how refinancing might change the required return.",
+        "computation": [
+          "Calculate the leverage factor for the target D/E: 1 + (1 - T) × (D/E)",
+          "Multiply the unlevered beta by this leverage factor to obtain the levered beta for CAPM"
+        ],
+        "worked_example": {
+          "problem": "You are valuing an unlisted auto-parts supplier. Use Tata Motors' business risk profile and apply your target company's intended capital structure.",
+          "steps": [
+            "Take Tata Motors' unlevered beta (from the unlevering example): βu = 0.875",
+            "Define your target company's expected D/E at stabilisation: 0.4 (more conservative than Tata Motors' 0.8)",
+            "Use T = 25% (consistent with Indian corporate tax environment)",
+            "Calculate the leverage factor: 1 + (1 - 0.25) × 0.4 = 1 + 0.3 = 1.30",
+            "Multiply: βL = 0.875 × 1.30 = 1.14"
+          ],
+          "result": "Levered beta for target company = 1.14",
+          "insight": "The levered beta of 1.14 reflects the same auto-sector business risk as Tata Motors (0.875 unlevered) but adjusted for a leaner capital structure (D/E 0.4 vs. 0.8). You would now plug 1.14 into CAPM alongside Rf and ERP to calculate the cost of equity for your DCF. Notice that if the target had assumed the same 0.8 D/E, the levered beta would have been 1.4—identical to Tata Motors' current observed beta. This cross-check is a useful sanity test in practice."
+        },
+        "sensitivity_note": "In practice, analysts unlever betas of multiple comparable companies, take the median of the unlevered betas, then re-lever to the subject company's capital structure. This produces a more stable estimate than relying on any single observed beta — particularly useful for IPO candidates or thinly-traded names."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SLOPE(stock_returns_range, market_returns_range)",
+        "=COVARIANCE.S(stock_returns, market_returns) / VAR.S(market_returns)",
+        "Cmd + Shift + Fn + F4 — toggle absolute references"
+      ],
+      "windows": [
+        "=SLOPE(stock_returns_range, market_returns_range) — manual beta regression in Excel",
+        "=COVARIANCE.S(stock_returns, market_returns) / VAR.S(market_returns) — equivalent beta calculation",
+        "Alt + N + N + L — insert a line chart for visualising stock vs. market returns",
+        "F4 — toggle between absolute and relative cell references when building beta regressions"
+      ]
+    }
+  }
+}

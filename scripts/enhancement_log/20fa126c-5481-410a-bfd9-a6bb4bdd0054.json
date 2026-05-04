@@ -1,0 +1,253 @@
+{
+  "id": "20fa126c-5481-410a-bfd9-a6bb4bdd0054",
+  "label": "M8 S5 | The Four Key Ratios for Expense Manipulation Detection",
+  "before": {
+    "formulas": [
+      {
+        "name": "Capitalisation Intensity Ratio",
+        "formula": "Capitalisation Intensity = Capitalised Costs / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Capitalised Costs",
+            "meaning": "Total additions to gross block (PP&E) plus additions to intangibles during the year, from the fixed asset schedule or notes"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Total revenue for the same period, consolidated"
+          }
+        ],
+        "worked_example": "Running this on two Indian IT services peers, FY23. Infosys: Capitalised intangibles and PP&E additions ₹2,140 crore against revenue of ₹1,46,767 crore = 1.5 percent capitalisation intensity. TCS: ₹1,890 crore against ₹2,25,458 crore = 0.8 percent. Both are low, indicating software services businesses that are intrinsically asset-light. Now consider a hypothetical mid-cap IT company reporting 8.5 percent capitalisation intensity — five times Infosys's level in the same sector. The deviation demands explanation. Legitimate explanations: acquired technology assets, new data centre build, software development for products (not services). Aggressive explanation: the company is capitalising costs its peers expense — software development labour, internal tools, consulting contracts with vendors. The 7-percentage-point gap represents roughly ₹250 crore of capitalised spend that peers treat as opex. If revenue is ₹3,000 crore and normal opex mix would bring that ₹250 crore through the P&L, reported EBITDA is overstated by ₹250 crore relative to a conservatively-accounted peer. That is the manipulation magnitude.",
+        "sensitivity_note": "Compare capitalisation intensity only within the same sector and stage of business — a pharma company mid-clinical-trial cycle will have high capitalisation, a steady-state FMCG will have low. The signal is deviation from same-sector peers, not the absolute level."
+      },
+      {
+        "name": "R&D Capitalisation Ratio",
+        "formula": "R&D Capitalisation Ratio = R&D Capitalised / Total R&D Spend × 100",
+        "variables": [
+          {
+            "symbol": "R&D Capitalised",
+            "meaning": "Development costs capitalised as intangible assets during the period, disclosed in intangible asset notes"
+          },
+          {
+            "symbol": "Total R&D Spend",
+            "meaning": "Total R&D cost for the period, whether expensed or capitalised — often disclosed in the MD&A or a separate R&D note"
+          }
+        ],
+        "worked_example": "For pharma companies, Ind AS 38 permits capitalisation of 'development' costs (late-stage clinical trials for drugs likely to be commercialised) but requires expensing of 'research' costs (early-stage basic research). Sun Pharma FY23: Total R&D spend of ₹2,845 crore, of which ₹487 crore was capitalised — R&D capitalisation ratio of 17 percent. Cipla FY23: Total R&D of ₹1,156 crore, capitalised ₹89 crore — ratio of 7.7 percent. Dr Reddy's: Total R&D of ₹2,032 crore, capitalised ₹310 crore — ratio of 15 percent. The inter-peer variance suggests different judgement calls on when development begins. A hypothetical pharma mid-cap reporting a 45 percent R&D capitalisation ratio is an outlier that demands scrutiny — is the management genuinely confident about late-stage commercialisation, or is it capitalising research-stage spend to flatter reported profit? The quantitative impact is significant: every ₹100 crore of R&D reclassified from expense to capital inflates reported PAT by roughly ₹75 crore after tax.",
+        "sensitivity_note": "R&D capitalisation is legitimate for late-stage development with demonstrable commercialisation path. Early-stage or unclear-outcome research should never be capitalised. Track the six Ind AS 38 conditions: technical feasibility, intention to complete, ability to use or sell, probable future economic benefits, availability of resources, and ability to measure cost reliably."
+      },
+      {
+        "name": "Depreciation Rate Benchmark",
+        "formula": "Implied Depreciation Rate = Annual Depreciation / Average Gross Block × 100",
+        "variables": [
+          {
+            "symbol": "Annual Depreciation",
+            "meaning": "Depreciation expense for the year from the P&L or depreciation schedule"
+          },
+          {
+            "symbol": "Average Gross Block",
+            "meaning": "(Opening Gross Block + Closing Gross Block) / 2, from fixed asset schedule"
+          }
+        ],
+        "worked_example": "Running this on three Indian cement peers, FY23. UltraTech Cement: Depreciation ₹3,120 crore on average gross block of ₹58,440 crore = implied rate of 5.3 percent (implied useful life of 19 years). ACC: ₹680 crore on ₹12,780 crore = 5.3 percent (19 years). Ambuja Cement: ₹890 crore on ₹20,450 crore = 4.4 percent (23 years). Ambuja's lower rate — implying 4 years of extra assumed useful life — should raise a question. Is Ambuja's equipment genuinely higher quality, or has management stretched useful life assumptions? Each 4-year extension of useful life reduces depreciation by roughly 20 percent, which flows directly to PAT. At Ambuja's scale, this accounts for approximately ₹180 crore of annual profit relative to peer-consistent depreciation. Over five years, that is ₹900 crore of cumulative reported profit that more conservative peers would not have booked. The stock price impact across that period is material.",
+        "sensitivity_note": "Useful life comparison requires adjustment for asset composition — cement companies with older kilns vs new kilns, with captive power vs grid power, with integrated mining vs purchased limestone. Read the fixed asset schedule composition before jumping to conclusions."
+      },
+      {
+        "name": "Interest Capitalisation Intensity",
+        "formula": "Interest Capitalisation Intensity = Interest Capitalised / Total Interest Cost × 100",
+        "variables": [
+          {
+            "symbol": "Interest Capitalised",
+            "meaning": "Portion of interest expense capitalised under Ind AS 23 during the period, typically disclosed in borrowing costs or fixed asset notes"
+          },
+          {
+            "symbol": "Total Interest Cost",
+            "meaning": "Total interest expense for the year, whether expensed or capitalised"
+          }
+        ],
+        "worked_example": "A large Indian infrastructure company in construction phase on multiple projects: Total interest cost for FY23 of ₹2,800 crore, of which ₹1,960 crore capitalised = 70 percent capitalisation intensity. This is legal under Ind AS 23 if the interest is directly attributable to qualifying assets under construction. But the analytical implication is severe — the company is reporting profit only because 70 percent of its actual interest cost is hiding on the balance sheet rather than in the P&L. When projects commission and interest starts flowing through as amortisation, reported margins will structurally decline. A forensic analyst separates 'reported EBITDA' from 'steady-state EBITDA' — the latter adding back the capitalised interest to the expense line. If the difference is 5-8 percent of margin, valuation multiples applied to reported numbers overvalue the business by that margin gap.",
+        "sensitivity_note": "Interest capitalisation is fully legal during construction phases but structurally misleading when projects commission. Always separate construction-phase and operational-phase companies. Never apply a P/E multiple based on reported earnings when a material portion of actual interest is being capitalised."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Ctrl + V — Paste Special",
+        "Cmd + ; — Insert current date"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for capitalisation intensity comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-peer data",
+        "F4 — Lock peer averages when dragging benchmark formulas",
+        "Alt + E, S, V — Paste Special Values to freeze pulled data from financial statements",
+        "Ctrl + ; — Insert current date for version tracking of peer benchmark datasets"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Capitalisation Intensity Ratio",
+        "formula": "Capitalisation Intensity = Capitalised Costs / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Capitalised Costs",
+            "meaning": "Total additions to gross block (PP&E) plus additions to intangibles during the year, from the fixed asset schedule or notes"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Total revenue for the same period, consolidated"
+          }
+        ],
+        "plain_english": "This ratio measures what percentage of annual revenue a company is converting into capitalised assets rather than expensing. A company can legitimately capitalise development costs, software, or equipment, but aggressive capitalisation inflates reported profit by moving costs from the P&L to the balance sheet. Comparing this ratio across peers in the same sector reveals whether a company is using more aggressive accounting than its competitors.",
+        "computation": [
+          "Extract total capitalised costs from the fixed asset schedule (sum of additions to PP&E and intangible assets)",
+          "Extract total revenue from the consolidated income statement",
+          "Divide capitalised costs by revenue",
+          "Multiply by 100 to express as a percentage"
+        ],
+        "worked_example": {
+          "problem": "Compare capitalisation intensity across two IT services companies in FY23 to detect potential expense manipulation.",
+          "steps": [
+            "Infosys: Capitalised intangibles and PP&E additions ₹2,140 crore; Revenue ₹1,46,767 crore",
+            "Calculate: (₹2,140 / ₹1,46,767) × 100 = 1.5%",
+            "TCS: Capitalised additions ₹1,890 crore; Revenue ₹2,25,458 crore",
+            "Calculate: (₹1,890 / ₹2,25,458) × 100 = 0.8%",
+            "Hypothetical mid-cap IT company: ₹250 crore capitalised; ₹3,000 crore revenue = 8.5%",
+            "Compare: Hypothetical 8.5% vs. Infosys 1.5% = 7 percentage-point gap representing ₹250 crore in excess capitalisation"
+          ],
+          "result": "Mid-cap company shows 5× the capitalisation intensity of sector peers, indicating possible aggressive capitalisation of software development labour, internal tools, or vendor consulting that peers treat as operating expense.",
+          "insight": "The ₹250 crore of excess-capitalised cost, if expensed, would reduce reported EBITDA by ₹250 crore. At a 30% tax rate, this would reduce reported PAT by approximately ₹175 crore, materially overstating profitability relative to conservative peers."
+        },
+        "sensitivity_note": "Compare capitalisation intensity only within the same sector and stage of business — a pharma company mid-clinical-trial cycle will have high capitalisation, a steady-state FMCG will have low. The signal is deviation from same-sector peers, not the absolute level."
+      },
+      {
+        "name": "R&D Capitalisation Ratio",
+        "formula": "R&D Capitalisation Ratio = R&D Capitalised / Total R&D Spend × 100",
+        "variables": [
+          {
+            "symbol": "R&D Capitalised",
+            "meaning": "Development costs capitalised as intangible assets during the period, disclosed in intangible asset notes"
+          },
+          {
+            "symbol": "Total R&D Spend",
+            "meaning": "Total R&D cost for the period, whether expensed or capitalised — often disclosed in the MD&A or a separate R&D note"
+          }
+        ],
+        "plain_english": "This ratio shows what fraction of a company's total R&D investment is being capitalised (moved to the balance sheet) versus expensed (flowing through the P&L). Under Ind AS 38, only late-stage development with demonstrable commercialisation potential qualifies for capitalisation; early-stage research must be expensed. A high ratio relative to peers suggests either genuinely advanced development pipelines or aggressive accounting that disguises R&D spend as future-period assets.",
+        "computation": [
+          "Extract R&D capitalised from the intangible asset schedule or R&D notes",
+          "Extract total R&D spend (expensed + capitalised) from MD&A, segment notes, or R&D disclosure",
+          "Divide R&D capitalised by total R&D spend",
+          "Multiply by 100 to express as a percentage"
+        ],
+        "worked_example": {
+          "problem": "Benchmark R&D capitalisation across three pharma companies in FY23 to assess accounting conservatism.",
+          "steps": [
+            "Sun Pharma: Total R&D ₹2,845 crore; R&D capitalised ₹487 crore",
+            "Calculate: (₹487 / ₹2,845) × 100 = 17.1%",
+            "Cipla: Total R&D ₹1,156 crore; R&D capitalised ₹89 crore",
+            "Calculate: (₹89 / ₹1,156) × 100 = 7.7%",
+            "Dr Reddy's: Total R&D ₹2,032 crore; R&D capitalised ₹310 crore",
+            "Calculate: (₹310 / ₹2,032) × 100 = 15.3%",
+            "Hypothetical mid-cap pharma: Total R&D ₹500 crore; R&D capitalised ₹225 crore = 45% ratio"
+          ],
+          "result": "Peer ratio range is 7.7%–17.1%. The hypothetical mid-cap at 45% is a 2.6–5.8× outlier, suggesting either unique late-stage pipeline confidence or aggressive capitalisation of research-stage spend.",
+          "insight": "If ₹225 crore of the hypothetical company's capitalised R&D is reclassified from capital to operating expense, it reduces reported PAT by approximately ₹169 crore after tax (assuming 25% marginal rate). This forensic adjustment reveals whether the company's earnings quality matches its reported numbers."
+        },
+        "sensitivity_note": "R&D capitalisation is legitimate for late-stage development with demonstrable commercialisation path. Early-stage or unclear-outcome research should never be capitalised. Track the six Ind AS 38 conditions: technical feasibility, intention to complete, ability to use or sell, probable future economic benefits, availability of resources, and ability to measure cost reliably."
+      },
+      {
+        "name": "Depreciation Rate Benchmark",
+        "formula": "Implied Depreciation Rate = Annual Depreciation / Average Gross Block × 100",
+        "variables": [
+          {
+            "symbol": "Annual Depreciation",
+            "meaning": "Depreciation expense for the year from the P&L or depreciation schedule"
+          },
+          {
+            "symbol": "Average Gross Block",
+            "meaning": "(Opening Gross Block + Closing Gross Block) / 2, from fixed asset schedule"
+          }
+        ],
+        "plain_english": "This ratio converts reported depreciation expense into an implied useful-life assumption. Companies set useful lives for different asset classes (e.g., plant machinery 15 years, buildings 30 years), and depreciation flows from those assumptions. If one company shows a materially lower implied rate than peers, management may have stretched useful-life estimates, deferring expense recognition and inflating current-period profit at the cost of future-period charges.",
+        "computation": [
+          "Extract annual depreciation from the P&L or fixed asset note",
+          "Extract opening and closing gross block (before accumulated depreciation) from the fixed asset schedule",
+          "Calculate average gross block = (Opening + Closing) / 2",
+          "Divide annual depreciation by average gross block",
+          "Multiply by 100 to express as a percentage",
+          "Implied useful life (years) ≈ 100 / Implied Depreciation Rate"
+        ],
+        "worked_example": {
+          "problem": "Compare depreciation rates across three cement companies in FY23 to detect potential useful-life stretching.",
+          "steps": [
+            "UltraTech Cement: Depreciation ₹3,120 crore; Opening gross block ₹57,300 crore; Closing gross block ₹59,580 crore",
+            "Average gross block = (₹57,300 + ₹59,580) / 2 = ₹58,440 crore",
+            "Implied rate = (₹3,120 / ₹58,440) × 100 = 5.3% (implied life ≈ 19 years)",
+            "ACC: Depreciation ₹680 crore; Average gross block ₹12,780 crore = 5.3% rate (19 years)",
+            "Ambuja Cement: Depreciation ₹890 crore; Average gross block ₹20,450 crore = 4.4% rate (23 years)",
+            "Variance analysis: Ambuja's 4-year longer implied life vs. peers represents approximately 20% lower annual depreciation"
+          ],
+          "result": "UltraTech and ACC both use 19-year effective useful life; Ambuja assumes 23 years, implying either superior asset quality or stretched useful-life estimates.",
+          "insight": "At Ambuja's asset base, a 4-year useful-life extension reduces depreciation by roughly ₹180 crore annually relative to peer methodology. Over a five-year holding period, this represents ₹900 crore of cumulative reported profit not justified by conservative accounting, materially overstating equity returns and creating valuation headwind when assumptions eventually normalise."
+        },
+        "sensitivity_note": "Useful life comparison requires adjustment for asset composition — cement companies with older kilns vs new kilns, with captive power vs grid power, with integrated mining vs purchased limestone. Read the fixed asset schedule composition before jumping to conclusions."
+      },
+      {
+        "name": "Interest Capitalisation Intensity",
+        "formula": "Interest Capitalisation Intensity = Interest Capitalised / Total Interest Cost × 100",
+        "variables": [
+          {
+            "symbol": "Interest Capitalised",
+            "meaning": "Portion of interest expense capitalised under Ind AS 23 during the period, typically disclosed in borrowing costs or fixed asset notes"
+          },
+          {
+            "symbol": "Total Interest Cost",
+            "meaning": "Total interest expense for the year, whether expensed or capitalised"
+          }
+        ],
+        "plain_english": "During construction or development phases, companies can capitalise interest directly attributable to qualifying assets under Ind AS 23, deferring it to the balance sheet rather than expensing it immediately. This ratio measures what percentage of total interest cost is being capitalised. High capitalisation intensity is legitimate during heavy construction but masks actual profitability and creates a structural earnings cliff when projects commission and capitalised interest begins amortising through the P&L.",
+        "computation": [
+          "Extract interest capitalised from borrowing costs note or fixed asset note",
+          "Extract total interest cost (expensed + capitalised) from the finance cost line item",
+          "Divide interest capitalised by total interest cost",
+          "Multiply by 100 to express as a percentage",
+          "For steady-state EBITDA, add back capitalised interest to operating profit to reflect actual cash cost"
+        ],
+        "worked_example": {
+          "problem": "Analyse an infrastructure company in heavy construction phase to distinguish reported vs. steady-state profitability.",
+          "steps": [
+            "Large Indian infrastructure company FY23: Total interest cost ₹2,800 crore; Interest capitalised ₹1,960 crore",
+            "Capitalisation intensity = (₹1,960 / ₹2,800) × 100 = 70%",
+            "Reported EBITDA (from published financials): ₹3,500 crore",
+            "Steady-state EBITDA = Reported EBITDA – Capitalised interest add-back = ₹3,500 – ₹1,960 = ₹1,540 crore",
+            "Reported EBITDA margin (if revenue ₹15,000 crore) = 23.3%",
+            "Steady-state margin = ₹1,540 / ₹15,000 = 10.3%",
+            "Margin differential = 13 percentage points, entirely attributable to interest capitalisation"
+          ],
+          "result": "The company's reported profitability is nearly 2.3× its steady-state level due to 70% interest capitalisation. When projects commission, amortisation of capitalised interest will suppress reported margins for 5–10 years.",
+          "insight": "A P/E multiple applied to reported earnings systematically overstates business value by roughly 130% (the margin differential). Forensic analysts discount the stock by applying a 'normalised multiple' to steady-state EBITDA, reflecting the structural margin compression post-commissioning."
+        },
+        "sensitivity_note": "Interest capitalisation is fully legal during construction phases but structurally misleading when projects commission. Always separate construction-phase and operational-phase companies. Never apply a P/E multiple based on reported earnings when a material portion of actual interest is being capitalised."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Ctrl + V — Paste Special",
+        "Cmd + ; — Insert current date"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for capitalisation intensity comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-peer data",
+        "F4 — Lock peer averages when dragging benchmark formulas",
+        "Alt + E, S, V — Paste Special Values to freeze pulled data from financial statements",
+        "Ctrl + ; — Insert current date for version tracking of peer benchmark datasets"
+      ]
+    }
+  }
+}

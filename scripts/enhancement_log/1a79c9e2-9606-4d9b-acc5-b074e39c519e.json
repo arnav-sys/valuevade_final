@@ -1,0 +1,186 @@
+{
+  "id": "1a79c9e2-9606-4d9b-acc5-b074e39c519e",
+  "label": "M1 S5 | The Accrual Adjustment Equations",
+  "before": {
+    "formulas": [
+      {
+        "name": "Revenue Recognition Under Accrual",
+        "formula": "Revenue Recognised = Goods/Services Delivered × Price (regardless of cash received)",
+        "variables": [
+          {
+            "symbol": "Goods/Services Delivered",
+            "meaning": "The unit of value transferred to the customer in the period"
+          },
+          {
+            "symbol": "Price",
+            "meaning": "The agreed sale price"
+          }
+        ],
+        "worked_example": "TCS signs a 3-year IT contract worth ₹120 Cr in April 2024. Cash will be received in 36 equal monthly instalments of ₹3.33 Cr. In FY24 income statement (April-March), TCS recognises revenue ONLY for the months work is delivered — not the full ₹120 Cr. If 12 months of services are delivered in FY24, revenue recognised = ₹40 Cr (12 × ₹3.33 Cr). The remaining ₹80 Cr stays on the balance sheet as Deferred Revenue or Unearned Revenue (a liability) until services are delivered.",
+        "sensitivity_note": "If you confuse cash received (₹40 Cr in year 1) with revenue recognised (₹40 Cr in year 1), you might get the answer right — but if the contract had upfront billing of ₹120 Cr, cash would be ₹120 Cr while revenue is still only ₹40 Cr. Always check timing of delivery vs. billing."
+      },
+      {
+        "name": "Matching Principle for Expenses",
+        "formula": "Expense for the Period = Cost of Resources Consumed in Generating That Period's Revenue",
+        "variables": [
+          {
+            "symbol": "Cost of Resources Consumed",
+            "meaning": "Materials, labour, depreciation, rent, and other inputs used to produce this period's output"
+          }
+        ],
+        "worked_example": "Britannia buys ₹100 Cr of wheat flour in March 2024. By March 31, only ₹70 Cr of flour has been used to make biscuits that were sold. The remaining ₹30 Cr sits in the warehouse. Under matching, only ₹70 Cr is recorded as Cost of Goods Sold (expense) for FY24. The ₹30 Cr stays on the balance sheet as Inventory (asset) and becomes an expense only when those biscuits are eventually sold.",
+        "sensitivity_note": "When sales drop suddenly, inventory swells on the balance sheet. If a company expenses everything immediately (violating matching), profit looks volatile. If it incorrectly capitalises consumed inventory, profit looks artificially smooth — a common red flag."
+      },
+      {
+        "name": "Cash-to-Accrual Reconciliation (Simplified)",
+        "formula": "Net Profit (Accrual) = Cash from Operations − Increase in Receivables − Increase in Inventory + Increase in Payables + Non-Cash Expenses (Depreciation/Amortisation)",
+        "variables": [
+          {
+            "symbol": "Increase in Receivables",
+            "meaning": "Sales booked but not yet collected — reduces cash but not profit"
+          },
+          {
+            "symbol": "Increase in Inventory",
+            "meaning": "Purchases not yet sold — reduces cash but not profit"
+          },
+          {
+            "symbol": "Increase in Payables",
+            "meaning": "Expenses booked but not yet paid — reduces profit but not cash"
+          },
+          {
+            "symbol": "Depreciation/Amortisation",
+            "meaning": "Non-cash expense — reduces profit but not cash"
+          }
+        ],
+        "worked_example": "Hypothetical mid-cap: Cash from Ops = ₹500 Cr. Receivables increased by ₹150 Cr. Inventory increased by ₹80 Cr. Payables increased by ₹60 Cr. Depreciation = ₹100 Cr. Working backward to derive Net Profit: Net Profit = ₹500 + ₹150 + ₹80 − ₹60 − ₹100 = ₹570 Cr. The point: profit and cash diverge by exactly the size of non-cash and working capital items. The bigger the gap, the more aggressive the accruals.",
+        "sensitivity_note": "If receivables grow faster than revenue year after year, the company is recognising sales it cannot collect. This is the single most common forensic red flag in Indian small-caps — we will see it again in Module 8."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Ctrl + U — edit formula in cell",
+        "Cmd + ; — insert today's date",
+        "Cmd + Shift + T — quick AutoSum"
+      ],
+      "windows": [
+        "F2 — edit formula in cell",
+        "Ctrl + ; — insert today's date for cut-off testing",
+        "Alt + = — quick AutoSum for accruals reconciliation"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Revenue Recognition Under Accrual",
+        "formula": "Revenue Recognised = Goods/Services Delivered × Price (regardless of cash received)",
+        "variables": [
+          {
+            "symbol": "Goods/Services Delivered",
+            "meaning": "The unit of value transferred to the customer in the period"
+          },
+          {
+            "symbol": "Price",
+            "meaning": "The agreed sale price"
+          }
+        ],
+        "plain_english": "Under accrual accounting, revenue is recognised when goods or services are delivered to the customer, not when cash is received. This matches revenue to the period in which value was actually created, regardless of payment timing. For investors, this means a company's reported revenue may differ significantly from cash collected — a critical distinction when assessing earnings quality.",
+        "worked_example": {
+          "problem": "TCS signs a 3-year IT contract worth ₹120 Cr in April 2024. Cash will be received in 36 equal monthly instalments of ₹3.33 Cr. How much revenue should TCS recognise in FY24?",
+          "steps": [
+            "Identify the period: FY24 spans April 2024 to March 2025 (12 months).",
+            "Determine work delivered: TCS delivers 12 months of services during FY24.",
+            "Calculate revenue: 12 months × ₹3.33 Cr/month = ₹40 Cr revenue recognised in FY24.",
+            "Identify deferred amount: Remaining ₹80 Cr (24 months × ₹3.33 Cr) stays on balance sheet as Deferred Revenue (liability)."
+          ],
+          "result": "Revenue recognised in FY24 = ₹40 Cr. Cash collected in FY24 = ₹40 Cr (coincidentally aligned here, but this won't always be true).",
+          "insight": "If the contract had upfront billing of ₹120 Cr in April 2024, cash inflow would be ₹120 Cr while revenue recognition is still only ₹40 Cr. This divergence is why investors must reconcile cash flow statements with P&L."
+        },
+        "sensitivity_note": "If you confuse cash received (₹40 Cr in year 1) with revenue recognised (₹40 Cr in year 1), you might get the answer right — but if the contract had upfront billing of ₹120 Cr, cash would be ₹120 Cr while revenue is still only ₹40 Cr. Always check timing of delivery vs. billing."
+      },
+      {
+        "name": "Matching Principle for Expenses",
+        "formula": "Expense for the Period = Cost of Resources Consumed in Generating That Period's Revenue",
+        "variables": [
+          {
+            "symbol": "Cost of Resources Consumed",
+            "meaning": "Materials, labour, depreciation, rent, and other inputs used to produce this period's output"
+          }
+        ],
+        "plain_english": "The matching principle requires that expenses be recorded in the same period as the revenue they helped generate, not when cash is paid. This ensures the profit statement accurately reflects the economic reality of the period: if you sold ₹100 of goods but only consumed ₹70 of raw materials, only ₹70 becomes an expense. This principle separates true profitability from timing distortions and is essential for quality-of-earnings analysis.",
+        "worked_example": {
+          "problem": "Britannia buys ₹100 Cr of wheat flour in March 2024. By March 31 (end of FY24), only ₹70 Cr of flour has been used to make biscuits that were sold. The remaining ₹30 Cr sits in the warehouse. How much flour cost should be expensed in FY24?",
+          "steps": [
+            "Identify total purchase: ₹100 Cr of flour bought in March 2024.",
+            "Measure consumption: ₹70 Cr of flour was consumed in production during FY24.",
+            "Calculate COGS for FY24: Only ₹70 Cr is recorded as Cost of Goods Sold expense.",
+            "Classify remainder: ₹30 Cr remains on the balance sheet as Inventory (asset)."
+          ],
+          "result": "Expense (COGS) for FY24 = ₹70 Cr. Inventory on balance sheet (March 31, 2024) = ₹30 Cr.",
+          "insight": "The ₹30 Cr will become an expense only when those biscuits are actually sold — in future periods. This timing mismatch between cash outflow (₹100 Cr in March) and expense recognition (₹70 Cr in FY24, ₹30 Cr later) is normal and correct under accrual accounting."
+        },
+        "sensitivity_note": "When sales drop suddenly, inventory swells on the balance sheet. If a company expenses everything immediately (violating matching), profit looks volatile. If it incorrectly capitalises consumed inventory, profit looks artificially smooth — a common red flag."
+      },
+      {
+        "name": "Cash-to-Accrual Reconciliation (Simplified)",
+        "formula": "Net Profit (Accrual) = Cash from Operations − Increase in Receivables − Increase in Inventory + Increase in Payables + Non-Cash Expenses (Depreciation/Amortisation)",
+        "variables": [
+          {
+            "symbol": "Cash from Operations",
+            "meaning": "Operating cash generated in the period (from cash flow statement)"
+          },
+          {
+            "symbol": "Increase in Receivables",
+            "meaning": "Sales booked but not yet collected — reduces cash but not profit"
+          },
+          {
+            "symbol": "Increase in Inventory",
+            "meaning": "Purchases not yet sold — reduces cash but not profit"
+          },
+          {
+            "symbol": "Increase in Payables",
+            "meaning": "Expenses booked but not yet paid — reduces profit but not cash"
+          },
+          {
+            "symbol": "Non-Cash Expenses (Depreciation/Amortisation)",
+            "meaning": "Charges to profit that do not consume cash in the period"
+          }
+        ],
+        "plain_english": "This formula bridges the gap between accrual profit and operating cash. Net profit can appear healthy while cash evaporates if a company grows receivables or inventory faster than payables, or if large non-cash charges inflate expenses. The wider the gap between reported profit and actual operating cash, the more aggressive (or fragile) the earnings quality. This is the most important forensic tool for detecting quality-of-earnings issues in India's equity markets.",
+        "computation": [
+          "Start with Cash from Operations (from the cash flow statement).",
+          "Subtract the increase in Receivables: more credit sales mean cash hasn't arrived yet.",
+          "Subtract the increase in Inventory: more inventory sitting on the balance sheet means cash was spent but not expensed.",
+          "Add back the increase in Payables: expenses haven't been paid in cash yet, so they reduce profit but not cash.",
+          "Add back Non-Cash Expenses: depreciation, amortisation, and impairments reduce profit but don't consume cash.",
+          "The result is an estimate of Net Profit (Accrual) that can be reconciled to the P&L."
+        ],
+        "worked_example": {
+          "problem": "A mid-cap FMCG company reports: Cash from Operations = ₹500 Cr. Receivables increased by ₹150 Cr during the year. Inventory increased by ₹80 Cr. Payables increased by ₹60 Cr. Depreciation = ₹100 Cr. What is the implied Net Profit under accrual accounting?",
+          "steps": [
+            "Start with operating cash: ₹500 Cr.",
+            "Subtract increase in receivables: ₹500 − ₹150 = ₹350 Cr (receivables are a use of cash).",
+            "Subtract increase in inventory: ₹350 − ₹80 = ₹270 Cr (inventory is a use of cash).",
+            "Add increase in payables: ₹270 + ₹60 = ₹330 Cr (payables reduce cash outflow).",
+            "Add back depreciation: ₹330 + ₹100 = ₹430 Cr (non-cash charge to profit)."
+          ],
+          "result": "Implied Net Profit (Accrual) = ₹430 Cr.",
+          "insight": "The company converted ₹500 Cr of operating cash into ₹430 Cr of accrual profit via working capital and non-cash charges. The ₹70 Cr gap (₹500 − ₹430) is explained by a net ₹170 Cr increase in receivables and inventory minus ₹60 Cr increase in payables, plus ₹100 Cr of non-cash depreciation. If receivables grow faster than revenue in future years, this signals deteriorating collection quality."
+        },
+        "sensitivity_note": "If receivables grow faster than revenue year after year, the company is recognising sales it cannot collect. This is the single most common forensic red flag in Indian small-caps — we will see it again in Module 8."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Ctrl + U — edit formula in cell",
+        "Cmd + ; — insert today's date",
+        "Cmd + Shift + T — quick AutoSum"
+      ],
+      "windows": [
+        "F2 — edit formula in cell",
+        "Ctrl + ; — insert today's date for cut-off testing",
+        "Alt + = — quick AutoSum for accruals reconciliation"
+      ]
+    }
+  }
+}

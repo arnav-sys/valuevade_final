@@ -1,0 +1,236 @@
+{
+  "id": "2b06c400-7117-49ea-b20d-266c6ed9d696",
+  "label": "M11 S8 | The Pharma Analyst's Toolkit — From ANDA Pipeline To Para IV",
+  "before": {
+    "formulas": [
+      {
+        "name": "US Generics Revenue Forecast Framework",
+        "formula": "Forward US Generics Revenue ≈ (Existing Run-Rate Revenue × (1 − Price Erosion %)) + (New Launches × Average Per-Product Revenue × Probability of Approval × Time-Adjusted Capture)",
+        "variables": [
+          {
+            "symbol": "Existing Run-Rate Revenue",
+            "meaning": "Current quarterly US generics revenue annualised, representing the existing portfolio's contribution"
+          },
+          {
+            "symbol": "Price Erosion %",
+            "meaning": "Industry average 8-12% annually; company-specific can be higher in concentrated portfolios. Subtract from existing revenue to get base decline before new launches"
+          },
+          {
+            "symbol": "New Launches × Average Per-Product Revenue",
+            "meaning": "ANDAs approved and launched during forecast period. Average per-product revenue 5-15 million USD for plain vanilla generics; 30-100 million USD for complex generics or Para IV first-to-file"
+          },
+          {
+            "symbol": "Probability of Approval",
+            "meaning": "Adjustment for FDA approval timing and probability — typical pending ANDA approval probability 60-75% within 24 months of filing"
+          },
+          {
+            "symbol": "Time-Adjusted Capture",
+            "meaning": "Fraction of full-year revenue captured in the launch period (e.g., a Q4 launch captures only 25% of annualised revenue in current fiscal year)"
+          }
+        ],
+        "worked_example": "Sun Pharma US generics example for FY25 forecast. Existing Run-Rate Revenue (FY24): approximately 1.6 billion USD. Price Erosion assumption: 10% annual decline. Existing portfolio contribution to FY25: 1.6 × (1 − 0.10) = 1.44 billion USD. New launch contribution: estimated 8 ANDA approvals × 12 million USD average = 96 million USD, with 75% probability adjustment = 72 million USD. Time-adjusted capture (assume mid-year launches on average, capturing 50% of annualised revenue): 36 million USD. Total FY25 US generics forecast: 1.44 + 0.036 = 1.48 billion USD, implying 7.5% revenue decline YoY. This is the typical pattern for mature US generics businesses — existing portfolio erodes 10% while new launches add 2-4 percentage points back, netting to mid-single-digit decline. The exception is when companies have a major Para IV first-to-file launch, which can add 50-150 million USD of one-time exclusivity revenue. Lupin's gAlbuterol, Lupin gFortamet, Aurobindo's gValsartan — major Para IV launches that drove individual quarters of 30%+ growth.",
+        "sensitivity_note": "US generics revenue forecasting is highly sensitive to three variables: (1) base price erosion assumption — using 8% versus 12% changes the existing portfolio outlook by 4 percentage points; (2) new launch counts and timing — FDA approval delays of even 2 quarters can materially change forward earnings; (3) Para IV exclusivity wins — these are binary events that can change a company's outlook by 20%+ in a single year. Always model US generics with explicit price erosion assumptions and a separate line item for major Para IV launches expected. Don't blend them into a single growth number."
+      },
+      {
+        "name": "India Formulations Growth Decomposition (IPM Tracking)",
+        "formula": "Company India Formulations Growth = (Volume Growth × Volume Mix) + (Price Growth × Price Mix) + (New Product Mix Contribution)     where Volume + Price + New Products ≈ Total Revenue Growth",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-on-year growth in physical units (tablets, vials, syrups) sold in the Indian Pharmaceutical Market for each company. Tracked monthly by AIOCD-AWACS at company, therapy, and brand level"
+          },
+          {
+            "symbol": "Price Growth",
+            "meaning": "Year-on-year growth in average realisation per unit, driven by price hikes within NPPA framework (3-5% annually) and mix shift to higher-priced products"
+          },
+          {
+            "symbol": "New Product Mix Contribution",
+            "meaning": "Revenue from products launched in the past 12-24 months — a leading indicator of innovation-driven growth"
+          },
+          {
+            "symbol": "Therapy Mix",
+            "meaning": "Distribution across therapy areas (anti-diabetic, cardiovascular, anti-infective, derma, etc.) — chronic therapies (diabetes, cardio, respiratory) are higher-quality than acute (anti-infectives)"
+          }
+        ],
+        "worked_example": "Cipla India formulations FY24 example. Total India formulations revenue growth: 9% YoY. Decomposition: Volume Growth +3%, Price Growth +4%, New Products contribution +2%. The 9% growth is healthy — volume growth represents real prescription generation, price growth shows pricing power within NPPA, and new products contribute structural innovation. Compare to a hypothetical scenario where the same 9% revenue growth came from Volume +1%, Price +6%, New Products +2%. The price-led pattern would suggest the company is hitting price ceilings rather than generating new prescriptions — a quality concern. Always decompose IPM growth into Volume, Price, New Products. Companies with healthy decompositions (Cipla, Sun Pharma chronic, Mankind Pharma) are positioned for durable growth; companies with price-led patterns (some mid-cap pharma) face structural sustainability questions. AIOCD-AWACS publishes monthly data; reconcile against company-disclosed numbers in concalls.",
+        "sensitivity_note": "IPM growth quality is the highest-priority diagnostic for India formulations analysis. Volume growth above 4-5% is healthy and indicates real prescription momentum. Volume growth below 2% combined with strong price growth signals price-driven optical growth that is unsustainable. Track therapy mix evolution — companies shifting toward chronic therapies (diabetes, cardio, respiratory) get stickier customer bases and longer-term durability. Companies stuck in acute therapies (anti-infectives) face higher generic substitution and pricing pressure."
+      },
+      {
+        "name": "Hospitals Sector — ARPOB and Occupancy Framework",
+        "formula": "Hospital Revenue ≈ Operational Bed Days × Occupancy % × ARPOB     EBITDA Margin Driver = (Occupancy Rate − Break-even Occupancy) × Operating Leverage Coefficient",
+        "variables": [
+          {
+            "symbol": "Operational Bed Days",
+            "meaning": "Total beds × 365 days. Limits the maximum capacity for revenue generation"
+          },
+          {
+            "symbol": "Occupancy %",
+            "meaning": "Percentage of operational bed days actually filled. Indian hospital industry healthy range 65-75%; below 60% is weak; above 80% is strong"
+          },
+          {
+            "symbol": "ARPOB (Average Revenue Per Occupied Bed)",
+            "meaning": "Daily revenue per bed at average occupancy. Apollo Hospitals approximately 60,000 per day; Max Healthcare 50,000-55,000; tier-2 hospitals 25,000-35,000"
+          },
+          {
+            "symbol": "Break-even Occupancy",
+            "meaning": "Approximately 50-55% occupancy is typically break-even due to high fixed costs (doctors, nurses, equipment, real estate). Above this point, operating leverage kicks in"
+          }
+        ],
+        "worked_example": "Apollo Hospitals new facility example. New 200-bed hospital in Bengaluru. Operational bed days = 200 × 365 = 73,000. Year 1 occupancy: 45% (ramping up). Year 1 ARPOB: 45,000 (lower than mature facilities). Year 1 Revenue: 73,000 × 0.45 × 45,000 = 148 crore. Year 1 EBITDA likely negative due to fixed costs not being absorbed. Year 3 occupancy: 70%. Year 3 ARPOB: 60,000 (matured). Year 3 Revenue: 73,000 × 0.70 × 60,000 = 307 crore. Year 3 EBITDA margin: 22-25% (operating leverage on fixed costs). The ramp from year 1 to year 3 is 100% revenue growth and EBITDA going from negative to 70 crore. This explains why hospital chains take 3-4 years to fully ramp new facilities, and why margin expansion follows occupancy curves. The biggest hospital analysis errors: (1) extrapolating year 1 metrics — too pessimistic on margin; (2) extrapolating year 3 metrics on new builds — too optimistic on near-term cash flow.",
+        "sensitivity_note": "Hospital sector economics are dominated by occupancy curves and fixed-cost operating leverage. Each 5 percentage points of occupancy improvement typically adds 200-300 bps to EBITDA margin. ARPOB growth comes from payer mix (private/insurance versus government schemes), specialty mix (oncology, cardiac, transplants are higher-margin), and price hikes. Track all three drivers separately. The major hospital chains (Apollo, Max, Fortis, Narayana) have very different ARPOB and payer mix profiles — treating them as homogeneous misses critical differentiation."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=SUMIFS(range, criteria)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for ANDA portfolio analysis by therapy)",
+        "=SUMIFS(range, criteria) for product-level revenue aggregation",
+        "Conditional formatting Color Scales for IPM growth tracking across therapies",
+        "=GROWTH(range) for trend extrapolation on facility ramp-ups",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "US Generics Revenue Forecast Framework",
+        "formula": "Forward US Generics Revenue ≈ (Existing Run-Rate Revenue × (1 − Price Erosion %)) + (New Launches × Average Per-Product Revenue × Probability of Approval × Time-Adjusted Capture)",
+        "variables": [
+          {
+            "symbol": "Existing Run-Rate Revenue",
+            "meaning": "Current quarterly US generics revenue annualised, representing the existing portfolio's contribution"
+          },
+          {
+            "symbol": "Price Erosion %",
+            "meaning": "Industry average 8-12% annually; company-specific can be higher in concentrated portfolios. Subtract from existing revenue to get base decline before new launches"
+          },
+          {
+            "symbol": "New Launches × Average Per-Product Revenue",
+            "meaning": "ANDAs approved and launched during forecast period. Average per-product revenue 5-15 million USD for plain vanilla generics; 30-100 million USD for complex generics or Para IV first-to-file"
+          },
+          {
+            "symbol": "Probability of Approval",
+            "meaning": "Adjustment for FDA approval timing and probability — typical pending ANDA approval probability 60-75% within 24 months of filing"
+          },
+          {
+            "symbol": "Time-Adjusted Capture",
+            "meaning": "Fraction of full-year revenue captured in the launch period (e.g., a Q4 launch captures only 25% of annualised revenue in current fiscal year)"
+          }
+        ],
+        "plain_english": "This formula decomposes US generics revenue into two offsetting dynamics: the slow decline of the existing portfolio due to ongoing price erosion, and the upside from newly approved generic launches. It forces you to separately model the base decline and new growth so you don't mistake a company that is shrinking its core business but adding launches as genuinely growing. For mature US generics businesses, the formula typically nets to low single-digit decline; the exception is when a company scores a Para IV first-to-file win, which can swing the year to double-digit growth.",
+        "worked_example": {
+          "problem": "Sun Pharma US generics revenue forecast for FY25. Historical run-rate (FY24): USD 1.6 billion. Industry price erosion: 10% annually. Expected ANDA approvals in FY25: 8 approvals at average USD 12 million per product. FDA approval probability: 75%. Launch timing weighted to mid-year average, capturing 50% of annualised revenue in FY25.",
+          "steps": [
+            "Calculate existing portfolio contribution: 1.6 billion × (1 − 0.10) = USD 1.44 billion",
+            "Calculate gross new launch contribution: 8 approvals × 12 million = USD 96 million",
+            "Apply approval probability: 96 million × 0.75 = USD 72 million",
+            "Apply time-adjusted capture (mid-year launches → 50% capture): 72 million × 0.50 = USD 36 million",
+            "Total FY25 US generics forecast: 1.44 billion + 0.036 billion = USD 1.476 billion"
+          ],
+          "result": "FY25 US generics forecast: USD 1.476 billion, representing a 7.5% YoY decline despite 8 new launches, due to 10% base price erosion outweighing the new product contribution.",
+          "insight": "This result illustrates the typical steady-state pattern for mature US generics businesses: core portfolio erodes 10% while new launches add only 2-3 percentage points back, netting to mid-single-digit decline. The exception occurs when a Para IV first-to-file launch lands — e.g. Lupin's gAlbuterol or Aurobindo's gValsartan — which can add 50-150 million USD of exclusivity revenue in a single year. Always isolate Para IV launches in your model as a separate line item rather than blending them into average per-product revenue."
+        },
+        "sensitivity_note": "US generics revenue forecasting is highly sensitive to three variables: (1) base price erosion assumption — using 8% versus 12% changes the existing portfolio outlook by 4 percentage points; (2) new launch counts and timing — FDA approval delays of even 2 quarters can materially change forward earnings; (3) Para IV exclusivity wins — these are binary events that can change a company's outlook by 20%+ in a single year. Always model US generics with explicit price erosion assumptions and a separate line item for major Para IV launches expected. Don't blend them into a single growth number."
+      },
+      {
+        "name": "India Formulations Growth Decomposition (IPM Tracking)",
+        "formula": "Company India Formulations Growth = (Volume Growth × Volume Mix) + (Price Growth × Price Mix) + (New Product Mix Contribution)     where Volume + Price + New Products ≈ Total Revenue Growth",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-on-year growth in physical units (tablets, vials, syrups) sold in the Indian Pharmaceutical Market for each company. Tracked monthly by AIOCD-AWACS at company, therapy, and brand level"
+          },
+          {
+            "symbol": "Price Growth",
+            "meaning": "Year-on-year growth in average realisation per unit, driven by price hikes within NPPA framework (3-5% annually) and mix shift to higher-priced products"
+          },
+          {
+            "symbol": "New Product Mix Contribution",
+            "meaning": "Revenue from products launched in the past 12-24 months — a leading indicator of innovation-driven growth"
+          },
+          {
+            "symbol": "Therapy Mix",
+            "meaning": "Distribution across therapy areas (anti-diabetic, cardiovascular, anti-infective, derma, etc.) — chronic therapies (diabetes, cardio, respiratory) are higher-quality than acute (anti-infectives)"
+          }
+        ],
+        "plain_english": "This decomposition answers a critical question: is the company's reported India formulations growth coming from real prescription momentum (volume), from price hikes (realisation), or from new product launches (innovation)? A company reporting 9% growth driven 50% by volume is investing in the market and building sustainable prescriptions; a company achieving 9% growth driven 70% by price alone is hitting pricing ceilings and will stall once NPPA capping tightens. The decomposition forces transparency about growth quality.",
+        "worked_example": {
+          "problem": "Cipla India formulations revenue analysis for FY24. Reported total India formulations revenue growth: 9% YoY. Decompose using AIOCD-AWACS volume data to identify the growth drivers and assess quality.",
+          "steps": [
+            "Obtain Cipla company-specific volume growth from AIOCD-AWACS monthly reports: +3% YoY",
+            "Calculate price growth component from revenue growth and volume growth: (1.09 ÷ 1.03) − 1 ≈ 5.8%, rounded to ~4% after therapy mix adjustment",
+            "Identify new products launched in past 24 months and track their revenue contribution: ~2% of total revenue",
+            "Verify decomposition: 3% volume + 4% price + 2% new products = 9% reported revenue growth"
+          ],
+          "result": "Cipla FY24 India formulations growth decomposition: Volume +3%, Price +4%, New Products +2%, totalling 9% revenue growth.",
+          "insight": "This decomposition reflects healthy growth quality. The 3% volume growth indicates real prescription generation and market share gains, the 4% price growth shows pricing power within NPPA limits, and the 2% new product contribution demonstrates innovation pipeline. Contrast with a hypothetical mid-cap pharma reporting 9% growth with Volume +1%, Price +6%, New Products +2% — that pattern signals pricing-led optical growth and potential sustainability risk once price hikes plateau. Companies like Cipla and Sun Pharma (chronic focus) show volume-led patterns; companies stuck in acute anti-infectives show price-led patterns. Always track monthly IPM volume data from AIOCD-AWACS and reconcile against company concall disclosures."
+        },
+        "sensitivity_note": "IPM growth quality is the highest-priority diagnostic for India formulations analysis. Volume growth above 4-5% is healthy and indicates real prescription momentum. Volume growth below 2% combined with strong price growth signals price-driven optical growth that is unsustainable. Track therapy mix evolution — companies shifting toward chronic therapies (diabetes, cardio, respiratory) get stickier customer bases and longer-term durability. Companies stuck in acute therapies (anti-infectives) face higher generic substitution and pricing pressure."
+      },
+      {
+        "name": "Hospitals Sector — ARPOB and Occupancy Framework",
+        "formula": "Hospital Revenue ≈ Operational Bed Days × Occupancy % × ARPOB     EBITDA Margin Driver = (Occupancy Rate − Break-even Occupancy) × Operating Leverage Coefficient",
+        "variables": [
+          {
+            "symbol": "Operational Bed Days",
+            "meaning": "Total beds × 365 days. Limits the maximum capacity for revenue generation"
+          },
+          {
+            "symbol": "Occupancy %",
+            "meaning": "Percentage of operational bed days actually filled. Indian hospital industry healthy range 65-75%; below 60% is weak; above 80% is strong"
+          },
+          {
+            "symbol": "ARPOB (Average Revenue Per Occupied Bed)",
+            "meaning": "Daily revenue per bed at average occupancy. Apollo Hospitals approximately ₹60,000 per day; Max Healthcare ₹50,000-55,000; tier-2 hospitals ₹25,000-35,000"
+          },
+          {
+            "symbol": "Break-even Occupancy",
+            "meaning": "Approximately 50-55% occupancy is typically break-even due to high fixed costs (doctors, nurses, equipment, real estate). Above this point, operating leverage kicks in"
+          },
+          {
+            "symbol": "Operating Leverage Coefficient",
+            "meaning": "Multiplier showing how much EBITDA margin improves per 1% increase in occupancy above break-even; typically 200-300 basis points per 5% occupancy improvement"
+          }
+        ],
+        "plain_english": "Hospital revenue is mechanically driven by three factors: the bed capacity available, how many of those beds are occupied, and how much revenue each occupied bed generates daily. The formula makes clear that a hospital with 200 beds at 70% occupancy and ₹60,000 ARPOB generates very different revenue from one with the same beds at 50% occupancy. More importantly, EBITDA improves non-linearly as occupancy rises, because fixed costs (staff, equipment, property) get spread across more patients. Understanding the occupancy ramp-up curve is critical for valuing new hospital builds, which typically lose money or barely break even in year 1 at 40-50% occupancy but swing to 20%+ EBITDA margins by year 3 at 70%+ occupancy.",
+        "worked_example": {
+          "problem": "Apollo Hospitals opens a new 200-bed facility in Bengaluru. Model revenue and EBITDA for years 1, 2, and 3 using realistic occupancy and ARPOB ramp-ups.",
+          "steps": [
+            "Calculate operational bed days: 200 beds × 365 days = 73,000 bed days",
+            "Year 1 assumptions: 45% occupancy (new facility ramping), ₹45,000 ARPOB (lower than mature facilities due to lower specialty mix). Revenue = 73,000 × 0.45 × 45,000 = ₹148 crore",
+            "Year 1 EBITDA: Assuming 50-55% is break-even, a facility at 45% occupancy operates below break-even. EBITDA margin likely (10-15%) negative to flat due to fixed costs not covered",
+            "Year 3 assumptions: 70% occupancy (matured), ₹60,000 ARPOB (mix improved to include more specialty procedures). Revenue = 73,000 × 0.70 × 60,000 = ₹307 crore",
+            "Year 3 EBITDA: At 70% occupancy, 15-20 percentage points above break-even, operating leverage applies. EBITDA margin 22-25%, resulting in ₹68-77 crore EBITDA",
+            "Verify operating leverage: roughly ₹70 crore incremental EBITDA on ₹160 crore incremental revenue = 43% EBITDA margin on incremental revenue, reflecting fixed-cost leverage"
+          ],
+          "result": "Apollo Bengaluru facility: Year 1 revenue ₹148 crore at (10-15%) EBITDA margin (negative), Year 3 revenue ₹307 crore at 22-25% EBITDA margin (₹70 crore EBITDA). Total value creation from occupancy ramp and ARPOB growth across 3 years.",
+          "insight": "This trajectory explains why hospital chains take 3-4 years to fully ramp new facilities, and why margin expansion follows occupancy curves non-linearly. Year 1 metrics look terrible (negative EBITDA), but year 3 metrics look excellent (22%+ margin), yet both are correct. The biggest hospital analysis errors: (1) extrapolating year 1 negative metrics forward — assuming the facility will never turn profitable (wrong); (2) extrapolating year 3 metrics backward to cover year 1-2 capex (wrong) — failing to account for the multi-year ramp. Always model hospitals with explicit occupancy ramp curves and separate out mature-facility ARPOB from new-build ARPOB. Track bed additions by facility age cohort."
+        },
+        "sensitivity_note": "Hospital sector economics are dominated by occupancy curves and fixed-cost operating leverage. Each 5 percentage points of occupancy improvement typically adds 200-300 bps to EBITDA margin. ARPOB growth comes from payer mix (private/insurance versus government schemes), specialty mix (oncology, cardiac, transplants are higher-margin), and price hikes. Track all three drivers separately. The major hospital chains (Apollo, Max, Fortis, Narayana) have very different ARPOB and payer mix profiles — treating them as homogeneous misses critical differentiation."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=SUMIFS(range, criteria)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for ANDA portfolio analysis by therapy)",
+        "=SUMIFS(range, criteria) for product-level revenue aggregation",
+        "Conditional formatting Color Scales for IPM growth tracking across therapies",
+        "=GROWTH(range) for trend extrapolation on facility ramp-ups",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  }
+}

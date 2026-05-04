@@ -1,0 +1,239 @@
+{
+  "id": "99b6c024-51a2-483f-9585-f21eea8939b4",
+  "label": "M2 S5 | Key Corporate Action & Margin Formulas",
+  "before": {
+    "formulas": [
+      {
+        "name": "Ex-Date Price Adjustment for Dividends",
+        "formula": "Ex-Date Opening Price = Previous Close – Dividend Per Share",
+        "worked_example": "Previous close = ₹3,800. Dividend = ₹40. Ex-date price = ₹3,760."
+      },
+      {
+        "name": "Ex-Date Price Adjustment for Stock Split",
+        "formula": "New Price = Old Price × (New Face Value / Old Face Value)\nNew Shares = Old Shares × (Old Face Value / New Face Value)",
+        "worked_example": "Old price = ₹1,000, face value split from ₹10 to ₹2. New price = 1,000 × (2/10) = ₹200. Shares multiply by 5."
+      },
+      {
+        "name": "Ex-Date Price Adjustment for Bonus",
+        "formula": "New Price = Old Price / (1 + Bonus Ratio)",
+        "worked_example": "1:1 bonus. Old price = ₹2,000. New price = 2,000 / (1 + 1) = ₹1,000. Shares double."
+      },
+      {
+        "name": "Theoretical Ex-Rights Price (TERP)",
+        "formula": "TERP = [(Old Shares × CMP) + (New Shares × Rights Price)] / (Old Shares + New Shares)",
+        "worked_example": "1:5 rights at ₹300, CMP = ₹500. TERP = [(5 × 500) + (1 × 300)] / (5 + 1) = (2500 + 300) / 6 = ₹466.67."
+      },
+      {
+        "name": "Margin Requirement for Futures",
+        "formula": "Total Margin = SPAN Margin + Exposure Margin",
+        "analysts_note": "This 6.7x leverage is why futures can generate massive gains or devastating losses. A 5% adverse move in Nifty = 33% loss on your margin capital. A 15% adverse move = your entire margin is wiped out and you face a margin call.",
+        "worked_example": "Nifty futures contract value = 22,500 × 25 (lot size) = ₹5,62,500. SPAN (~12%) = ₹67,500. Exposure (~3%) = ₹16,875. Total = ₹84,375. You control ₹5.6 lakh of Nifty exposure with ₹84,375 in margin."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Ex-Date Price Adjustment for Dividends",
+        "formula": "Ex-Date Opening Price = Previous Close – Dividend Per Share",
+        "variables": [
+          {
+            "symbol": "Ex-Date Opening Price",
+            "meaning": "The theoretical opening price on the ex-dividend date, adjusted for the dividend payout"
+          },
+          {
+            "symbol": "Previous Close",
+            "meaning": "The closing price on the business day immediately before the ex-dividend date"
+          },
+          {
+            "symbol": "Dividend Per Share",
+            "meaning": "The cash dividend amount distributed per share, as announced by the company"
+          }
+        ],
+        "plain_english": "When a company declares a dividend, shareholders who own the stock before the ex-date receive the cash payout. On the ex-date itself, the stock price is expected to fall by approximately the dividend amount—this adjustment reflects the fact that the company's cash (and thus its value) has left the business. This formula helps you understand why dividend-paying stocks often show a price drop on ex-dates and why comparing prices across dividend events requires normalisation.",
+        "worked_example": {
+          "problem": "HUL announced a dividend of ₹40 per share. The previous closing price was ₹3,800. What is the expected ex-date opening price?",
+          "steps": [
+            "Identify Previous Close: ₹3,800",
+            "Identify Dividend Per Share: ₹40",
+            "Subtract dividend from previous close: ₹3,800 – ₹40 = ₹3,760"
+          ],
+          "result": "₹3,760",
+          "insight": "The stock mechanically adjusts down by the dividend amount. Investors who bought before ex-date receive the ₹40 dividend, so their total economic return includes both the price (₹3,760) and cash (₹40), preserving the ₹3,800 value. This is why you cannot compare pre- and post-dividend prices directly without adjustment."
+        }
+      },
+      {
+        "name": "Ex-Date Price Adjustment for Stock Split",
+        "formula": "New Price = Old Price × (New Face Value / Old Face Value)\nNew Shares = Old Shares × (Old Face Value / New Face Value)",
+        "variables": [
+          {
+            "symbol": "New Price",
+            "meaning": "The adjusted stock price immediately after the stock split takes effect"
+          },
+          {
+            "symbol": "Old Price",
+            "meaning": "The stock price before the split announcement or ex-date"
+          },
+          {
+            "symbol": "New Face Value",
+            "meaning": "The face value (par value) of each share after the split"
+          },
+          {
+            "symbol": "Old Face Value",
+            "meaning": "The original face value (par value) of each share before the split"
+          },
+          {
+            "symbol": "New Shares",
+            "meaning": "The total number of shares outstanding after the split"
+          },
+          {
+            "symbol": "Old Shares",
+            "meaning": "The original number of shares outstanding before the split"
+          }
+        ],
+        "plain_english": "A stock split divides each existing share into multiple new shares, proportionally reducing the price per share while keeping market capitalisation unchanged. For example, a 5:1 split means each ₹1,000 share becomes five ₹200 shares. The goal is often to improve liquidity and make the stock more accessible to retail investors. The formulas ensure that your total holdings (price × shares) remain economically equivalent before and after the split.",
+        "computation": [
+          "Step 1: Identify the old price, old face value, and new face value.",
+          "Step 2: Calculate the split ratio = Old Face Value ÷ New Face Value.",
+          "Step 3: Multiply old price by the inverse of the split ratio to get new price: New Price = Old Price × (New Face Value ÷ Old Face Value).",
+          "Step 4: Multiply old share count by the split ratio to get new share count: New Shares = Old Shares × (Old Face Value ÷ New Face Value)."
+        ],
+        "worked_example": {
+          "problem": "TCS announces a 1:5 stock split (face value splits from ₹10 to ₹2). The stock was trading at ₹1,000 before the ex-split date. You own 100 shares. What are your new price and share count?",
+          "steps": [
+            "Old Price: ₹1,000",
+            "Old Face Value: ₹10; New Face Value: ₹2",
+            "New Price = 1,000 × (2 ÷ 10) = 1,000 × 0.2 = ₹200",
+            "Old Shares: 100",
+            "New Shares = 100 × (10 ÷ 2) = 100 × 5 = 500 shares"
+          ],
+          "result": "New Price: ₹200 per share; New Share Count: 500 shares",
+          "insight": "Your holding value remains ₹1,00,000 (₹1,000 × 100 = ₹200 × 500). The split makes each share more affordable and may attract retail buyers, but does not change the underlying economic stake or the company's market cap. Index adjustments are crucial for indices that weight by share price (like price-weighted indices)."
+        }
+      },
+      {
+        "name": "Ex-Date Price Adjustment for Bonus",
+        "formula": "New Price = Old Price / (1 + Bonus Ratio)",
+        "variables": [
+          {
+            "symbol": "New Price",
+            "meaning": "The adjusted stock price on the ex-bonus date"
+          },
+          {
+            "symbol": "Old Price",
+            "meaning": "The stock price before the ex-bonus date"
+          },
+          {
+            "symbol": "Bonus Ratio",
+            "meaning": "The ratio of new shares issued for free relative to existing shares (e.g., 1:1 bonus = bonus ratio of 1)"
+          }
+        ],
+        "plain_english": "A bonus issue is a free distribution of new shares to existing shareholders, funded from reserves. Unlike a dividend (which is cash paid out), a bonus increases the share count without changing the company's total equity or market cap. The stock price adjusts downward proportionally because the same market capitalisation is now spread across more shares. A 1:1 bonus (or 1-for-1) doubles your share count but halves the price per share, preserving your total value.",
+        "computation": [
+          "Step 1: Identify the old price and bonus ratio (e.g., 1:1, 2:1, etc.).",
+          "Step 2: Add 1 to the bonus ratio to account for the original shares plus new shares: (1 + Bonus Ratio).",
+          "Step 3: Divide the old price by this sum to get the new price: New Price = Old Price ÷ (1 + Bonus Ratio)."
+        ],
+        "worked_example": {
+          "problem": "Infosys declares a 1:1 bonus (one free share for every share held). The stock closed at ₹2,000 before the ex-bonus date. You own 50 shares. What is the new price and new share count?",
+          "steps": [
+            "Old Price: ₹2,000",
+            "Bonus Ratio: 1 (i.e., 1:1 bonus)",
+            "New Price = 2,000 ÷ (1 + 1) = 2,000 ÷ 2 = ₹1,000",
+            "Old Shares: 50",
+            "New Shares = 50 × (1 + 1) = 50 × 2 = 100 shares"
+          ],
+          "result": "New Price: ₹1,000 per share; New Share Count: 100 shares",
+          "insight": "Your holding value is unchanged: ₹1,00,000 (₹2,000 × 50 = ₹1,000 × 100). Bonus issues are typically funded from retained earnings, so they do not dilute existing shareholders' ownership percentage or claim on future profits. They are popular in India (e.g., Bajaj Finance has issued multiple bonuses) and often viewed favourably as a sign of strong cash generation and shareholder returns."
+        }
+      },
+      {
+        "name": "Theoretical Ex-Rights Price (TERP)",
+        "formula": "TERP = [(Old Shares × CMP) + (New Shares × Rights Price)] / (Old Shares + New Shares)",
+        "variables": [
+          {
+            "symbol": "TERP",
+            "meaning": "Theoretical Ex-Rights Price; the theoretical share price after a rights issue is fully subscribed"
+          },
+          {
+            "symbol": "Old Shares",
+            "meaning": "The number of shares outstanding before the rights issue"
+          },
+          {
+            "symbol": "CMP",
+            "meaning": "Current Market Price; the share price immediately before the rights issue ex-date"
+          },
+          {
+            "symbol": "New Shares",
+            "meaning": "The number of new shares offered in the rights issue"
+          },
+          {
+            "symbol": "Rights Price",
+            "meaning": "The subscription price at which rights holders can purchase new shares (typically below CMP)"
+          }
+        ],
+        "plain_english": "A rights issue allows existing shareholders to purchase additional shares at a fixed (usually discounted) price, proportional to their current holdings. TERP calculates the theoretical share price after the issue closes, assuming full subscription. It blends the value of old shares at current market price with new shares at the subscription price. This metric helps investors decide whether to subscribe (if they can afford it) and understand the post-issue price floor, accounting for dilution.",
+        "computation": [
+          "Step 1: Calculate the total value of old equity: Old Shares × CMP.",
+          "Step 2: Calculate the new capital raised: New Shares × Rights Price.",
+          "Step 3: Sum both amounts to get total post-issue equity value: [(Old Shares × CMP) + (New Shares × Rights Price)].",
+          "Step 4: Divide by the total shares outstanding after the issue: (Old Shares + New Shares)."
+        ],
+        "worked_example": {
+          "problem": "Reliance announces a 1:5 rights issue at ₹300 per share. Current market price (CMP) is ₹500. Assume the company has 10 crore shares before the issue. Calculate TERP.",
+          "steps": [
+            "Old Shares: 10 crore",
+            "CMP: ₹500",
+            "Rights Ratio: 1:5 (so New Shares = 10 crore ÷ 5 = 2 crore)",
+            "Rights Price: ₹300",
+            "Total value of old equity: 10 crore × ₹500 = ₹5,000 crore",
+            "Capital raised from rights: 2 crore × ₹300 = ₹600 crore",
+            "Total post-issue equity: ₹5,000 crore + ₹600 crore = ₹5,600 crore",
+            "Total shares post-issue: 10 crore + 2 crore = 12 crore",
+            "TERP = ₹5,600 crore ÷ 12 crore = ₹466.67"
+          ],
+          "result": "TERP = ₹466.67 per share",
+          "insight": "The theoretical price drops from ₹500 to ₹466.67 due to dilution—new shares are added at a discount (₹300), pulling down the average. If you subscribe fully to your 1:5 entitlement at ₹300 and the share hits ₹466.67, you gain on the new shares. However, TERP assumes full subscription and is only theoretical; actual post-issue prices depend on market sentiment and the use of proceeds. Rights issues are common for Indian corporates raising capital for capex or debt repayment."
+        }
+      },
+      {
+        "name": "Margin Requirement for Futures",
+        "formula": "Total Margin = SPAN Margin + Exposure Margin",
+        "variables": [
+          {
+            "symbol": "Total Margin",
+            "meaning": "The total cash or collateral required to initiate and hold a futures position with the broker"
+          },
+          {
+            "symbol": "SPAN Margin",
+            "meaning": "Standardised Portfolio Analysis of Risk (SPAN) margin; a risk-based initial margin that covers potential losses over a standard holding period (typically 1–2 days)"
+          },
+          {
+            "symbol": "Exposure Margin",
+            "meaning": "An additional margin buffer imposed by brokers or exchanges to cover broader market movements and counterparty risk"
+          }
+        ],
+        "plain_english": "Futures are leveraged derivatives: you control a large notional value (e.g., ₹5.6 lakh in Nifty) with a relatively small cash outlay (margin). SPAN margin uses statistical models to estimate potential losses if the market moves adversely; exposure margin adds a buffer. Together, they determine the minimum capital you must deposit. High leverage amplifies both gains and losses—a 5% adverse move in Nifty can wipe out 30%+ of your margin capital, triggering a margin call and forced liquidation if you cannot deposit more cash immediately.",
+        "computation": [
+          "Step 1: Determine the futures contract specifications (notional value = underlying price × contract multiplier).",
+          "Step 2: Obtain the SPAN margin percentage from your broker or the exchange (commonly 8–15% for equity indices in India).",
+          "Step 3: Calculate SPAN margin: SPAN Margin = Notional Value × SPAN Margin %.",
+          "Step 4: Obtain the exposure margin percentage (commonly 3–5% for equity indices).",
+          "Step 5: Calculate exposure margin: Exposure Margin = Notional Value × Exposure Margin %.",
+          "Step 6: Sum both: Total Margin = SPAN Margin + Exposure Margin."
+        ],
+        "worked_example": {
+          "problem": "You want to trade 1 lot of Nifty 50 futures. The current Nifty level is 22,500, the lot size is 25, SPAN margin is 12%, and exposure margin is 3%. Calculate the total margin required.",
+          "steps": [
+            "Notional Value = 22,500 × 25 = ₹5,62,500",
+            "SPAN Margin = ₹5,62,500 × 12% = ₹67,500",
+            "Exposure Margin = ₹5,62,500 × 3% = ₹16,875",
+            "Total Margin Required = ₹67,500 + ₹16,875 = ₹84,375"
+          ],
+          "result": "₹84,375 total margin",
+          "insight": "You control ₹5.6 lakh of Nifty exposure by depositing just ₹84,375—a leverage of ~6.7x. If Nifty drops 5% (₹1,125 per unit), your loss = 25 × ₹1,125 = ₹28,125, wiping out one-third of your margin. A 15% drop (₹3,375 per unit) = ₹84,375 loss, completely exhausting your margin and triggering a margin call. This leverage is why futures are powerful tools for hedging and speculation but dangerous without strict risk management. Most Indian retail traders face margin calls during volatile market episodes (e.g., credit events, policy shocks, earnings surprises)."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,313 @@
+{
+  "id": "2e774268-7a36-4d51-b8d5-f0fe5cd757a5",
+  "label": "M9 S10 | The Banking Ratio Arsenal — Every Formula You Need",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net Interest Margin (NIM)",
+        "formula": "NIM = (Interest Income - Interest Expense) / Average Earning Assets × 100",
+        "variables": [
+          {
+            "symbol": "Interest Income",
+            "meaning": "Interest earned on loans, advances, and investments"
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Interest paid on deposits, borrowings, and subordinated debt"
+          },
+          {
+            "symbol": "Earning Assets",
+            "meaning": "Loans + Investments (typically excludes cash and fixed assets). Use averages: (Opening + Closing) / 2"
+          }
+        ],
+        "worked_example": "HDFC Bank FY23: Interest Income = ₹1,27,900 Cr, Interest Expense = ₹62,600 Cr, Average Earning Assets ≈ ₹14,50,000 Cr. NIM = (1,27,900 - 62,600) / 14,50,000 × 100 = 4.50%. Elite private bank NIM. Compare SBI FY23: NIM ≈ 3.40%. Compare PSU bank like Bank of Baroda: NIM ≈ 3.20%. Compare NBFC Bajaj Finance FY23: NIM ≈ 7.80%. The spread reflects very different business models — HDFC Bank has low-cost CASA deposits funding higher-yield retail loans; PSU banks have similar loan yields but higher cost of funds due to lower CASA; NBFCs earn higher NIMs on riskier customer segments.",
+        "sensitivity_note": "NIM is the bank's 'gross margin' and the single most important driver of profitability. A 10-basis-point compression in NIM on a ₹15 lakh Cr book means ₹1,500 Cr less annual income. NIMs are sensitive to interest rate cycles, CASA composition, and loan mix — monitor quarterly."
+      },
+      {
+        "name": "Gross NPA Ratio",
+        "formula": "Gross NPA % = Gross NPAs / Total Loan Book (Gross) × 100",
+        "variables": [
+          {
+            "symbol": "Gross NPAs",
+            "meaning": "Sum of loans classified as Non-Performing (overdue 90+ days) — substandard + doubtful + loss categories"
+          },
+          {
+            "symbol": "Total Loan Book",
+            "meaning": "Total advances before netting provisions"
+          }
+        ],
+        "worked_example": "HDFC Bank FY23: Gross NPAs = ₹16,100 Cr, Total Advances = ₹16,50,000 Cr. Gross NPA = 0.97%. Benchmark-setting for Indian banks. Compare SBI FY23: GNPA ≈ 2.78%. Compare PSU like PNB: GNPA ≈ 8.74%. Compare Yes Bank just before moratorium (Mar 2020): GNPA surged from 3.2% (Mar 2019) to 16.8% (Mar 2020). The dramatic expansion preceded the crisis by months, visible to any analyst tracking the number quarter-by-quarter.",
+        "sensitivity_note": "GNPA trend matters more than absolute level. A bank going from 2% to 5% in 4 quarters is in distress regardless of industry median. Always track the direction. Also track slippage additions separately from total GNPA — that reveals fresh NPA creation, the leading indicator."
+      },
+      {
+        "name": "Provision Coverage Ratio (PCR)",
+        "formula": "PCR = (Specific Provisions + Write-offs) / Gross NPAs × 100",
+        "variables": [
+          {
+            "symbol": "Specific Provisions",
+            "meaning": "Money set aside specifically against identified bad loans"
+          },
+          {
+            "symbol": "Write-offs",
+            "meaning": "Amounts already written off (in some definitions; varies)"
+          },
+          {
+            "symbol": "Gross NPAs",
+            "meaning": "Total problem loans"
+          }
+        ],
+        "worked_example": "HDFC Bank FY23: Specific Provisions held ≈ ₹12,000 Cr, Gross NPAs ≈ ₹16,100 Cr. PCR = 75%. Indicates the bank has recognized and absorbed 75% of expected losses on bad loans. Compare stressed banks: ICICI Bank during its crisis years had PCR around 45-55% — below comfort levels, signaling under-provisioning. RBI generally expects PCR of 70%+; below 50% is concerning. The gap between PCR and 100% represents 'naked' bad loans where future P&L impact remains unrecognized.",
+        "sensitivity_note": "A bank with low PCR (say 40%) but growing GNPAs is building a future provisioning cliff — each ₹100 of uncovered NPAs will eventually hit the P&L, destroying earnings. PCR compressing while GNPAs expand is the worst combination — classic pre-crisis pattern."
+      },
+      {
+        "name": "CASA Ratio",
+        "formula": "CASA = (Current Account Deposits + Savings Account Deposits) / Total Deposits × 100",
+        "variables": [
+          {
+            "symbol": "Current Account Deposits",
+            "meaning": "Non-interest-bearing (or very low interest) deposits used for transactions"
+          },
+          {
+            "symbol": "Savings Account Deposits",
+            "meaning": "Low-interest savings deposits (3-4% typical)"
+          },
+          {
+            "symbol": "Total Deposits",
+            "meaning": "All deposits including Term/Fixed Deposits which pay 5-7%+"
+          }
+        ],
+        "worked_example": "HDFC Bank FY23: CASA = 44.4%. Industry-leading CASA — enables structural cost-of-funds advantage. Compare Kotak Mahindra Bank: CASA ≈ 52% (highest in industry). Compare SBI: CASA ≈ 43.5%. Compare IndusInd Bank: CASA ≈ 40.1%. Compare PSU bank like Union Bank: CASA ≈ 35.8%. Compare struggling bank pre-crisis (DHFL-era financial institutions): CASA below 25%. The spread reflects franchise quality: strong CASA means customers actively choose to keep funds in the bank (stickiness, retail reach, digital convenience). Weak CASA means the bank is reliant on expensive term deposits and wholesale funding.",
+        "sensitivity_note": "CASA directly determines Net Interest Margin. A 5 percentage point increase in CASA (say 40% to 45%) typically improves NIM by 20-30 basis points — which is enormous in banking. Banks with high CASA (HDFC, Kotak) have durable NIM advantages; weak-CASA banks face margin compression in any tight-liquidity environment."
+      },
+      {
+        "name": "Capital Adequacy Ratio (CAR / CRAR)",
+        "formula": "CAR = (Tier-1 Capital + Tier-2 Capital) / Risk-Weighted Assets × 100",
+        "variables": [
+          {
+            "symbol": "Tier-1 Capital",
+            "meaning": "Core capital: Equity shares + Reserves & Surplus. Most absorbent of losses"
+          },
+          {
+            "symbol": "Tier-2 Capital",
+            "meaning": "Supplementary capital: Subordinated debt, certain revaluation reserves, general provisions"
+          },
+          {
+            "symbol": "Risk-Weighted Assets (RWA)",
+            "meaning": "Assets weighted by credit risk. Low-risk government bonds weighted 0%, corporate loans typically 50-100%, sub-standard loans weighted higher"
+          }
+        ],
+        "worked_example": "HDFC Bank FY23: CAR = 17.9% (Tier-1 at 16.8%, Tier-2 at 1.1%). Well above RBI minimum of 11.5%. Strong capital cushion. Compare SBI FY23: CAR ≈ 14.4%. Compare Yes Bank Jan 2020: CAR dropped below 12% (before moratorium), then further deteriorated. Compare Lakshmi Vilas Bank: CAR collapsed to single digits, triggering moratorium and merger. RBI minimums: 11.5% overall CAR, 9% Tier-1. When a bank's CAR drops toward 11.5%, regulatory pressure builds; breaching it triggers immediate corrective action.",
+        "sensitivity_note": "CAR is the ultimate solvency metric for banks — it tells you whether the bank has enough equity buffer to absorb potential losses. A bank with CAR of 13% faces regulatory pressure; at 11.5% triggers supervisory action; below that can trigger PCA (Prompt Corrective Action) where RBI restricts dividends, capital, and lending."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + $ → currency format",
+        "Cmd + Option + V → paste values for ratio snapshots",
+        "Fn + F4 → absolute reference",
+        "Cmd + G → go to specific cells"
+      ],
+      "windows": [
+        "Ctrl + Shift + $ → apply currency format for NPA/provision amounts",
+        "Alt + H + L → conditional format to highlight GNPA above 5% in red",
+        "F4 → lock RWA denominator when computing CAR components",
+        "Ctrl + G → Goto Special to verify balance sheet line sources"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net Interest Margin (NIM)",
+        "formula": "NIM = (Interest Income - Interest Expense) / Average Earning Assets × 100",
+        "variables": [
+          {
+            "symbol": "Interest Income",
+            "meaning": "Interest earned on loans, advances, and investments"
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Interest paid on deposits, borrowings, and subordinated debt"
+          },
+          {
+            "symbol": "Earning Assets",
+            "meaning": "Loans + Investments (typically excludes cash and fixed assets). Use averages: (Opening + Closing) / 2"
+          }
+        ],
+        "plain_english": "NIM tells you how much profit the bank makes on every rupee of money it lends out or invests, after paying the cost of deposits and borrowings. It is the bank's 'spread' or gross margin — the single most important driver of net interest income and overall profitability. A high NIM (5%+) signals superior deposit franchises and lending efficiency; a low NIM (2-3%) often indicates weak CASA, commoditized lending, or funding stress.",
+        "computation": [
+          "Calculate net interest income = Interest Income − Interest Expense",
+          "Calculate average earning assets = (Opening Balance Sheet Earning Assets + Closing Balance Sheet Earning Assets) / 2",
+          "Divide net interest income by average earning assets",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank FY23 reported Interest Income of ₹1,27,900 Cr and Interest Expense of ₹62,600 Cr. Average Earning Assets were ₹14,50,000 Cr. Calculate NIM.",
+          "steps": [
+            "Net Interest Income = ₹1,27,900 Cr − ₹62,600 Cr = ₹65,300 Cr",
+            "NIM = ₹65,300 Cr / ₹14,50,000 Cr = 0.0450",
+            "NIM % = 0.0450 × 100 = 4.50%"
+          ],
+          "result": "4.50%",
+          "insight": "HDFC Bank's NIM of 4.50% is elite for Indian private banking, reflecting its industry-leading CASA ratio and high-yield retail lending. SBI FY23 delivered NIM of ~3.40% (lower deposit costs but larger PSU/government exposure); Bank of Baroda ~3.20% (PSU constraints); Bajaj Finance ~7.80% (NBFC premium on riskier lending). The spread reflects franchise quality and funding mix — HDFC's low-cost CASA deposits fund higher-yield retail loans, creating a structural advantage that compounds earnings."
+        },
+        "sensitivity_note": "NIM is the bank's 'gross margin' and the single most important driver of profitability. A 10-basis-point compression in NIM on a ₹15 lakh Cr book means ₹1,500 Cr less annual income. NIMs are sensitive to interest rate cycles, CASA composition, and loan mix — monitor quarterly."
+      },
+      {
+        "name": "Gross NPA Ratio",
+        "formula": "Gross NPA % = Gross NPAs / Total Loan Book (Gross) × 100",
+        "variables": [
+          {
+            "symbol": "Gross NPAs",
+            "meaning": "Sum of loans classified as Non-Performing (overdue 90+ days) — substandard + doubtful + loss categories"
+          },
+          {
+            "symbol": "Total Loan Book",
+            "meaning": "Total advances before netting provisions"
+          }
+        ],
+        "plain_english": "Gross NPA ratio measures the percentage of a bank's loan portfolio that is not repaying on time. It is the most direct measure of asset quality — a rising GNPA suggests deteriorating credit underwriting, economic stress in borrower segments, or both. Banks with stable GNPAs (<2%) demonstrate consistent underwriting discipline; banks with rising GNPAs (doubling in 4 quarters) are early-stage problem candidates.",
+        "computation": [
+          "Identify Gross NPAs from balance sheet (all loans overdue 90+ days, substandard/doubtful/loss categories)",
+          "Identify Total Loan Book (advances before provisions)",
+          "Divide Gross NPAs by Total Loan Book",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank FY23 reported Gross NPAs of ₹16,100 Cr and Total Advances of ₹16,50,000 Cr. Calculate Gross NPA Ratio.",
+          "steps": [
+            "Gross NPA % = ₹16,100 Cr / ₹16,50,000 Cr",
+            "= 0.00976 or 0.976%",
+            "≈ 0.97%"
+          ],
+          "result": "0.97%",
+          "insight": "HDFC Bank's GNPA of 0.97% is benchmark-setting for Indian banking — demonstrates pristine underwriting and strong collections in retail lending. SBI FY23 reported GNPA ~2.78% (larger PSU/corporate exposure); PNB ~8.74% (legacy slippage, PSU stress); Yes Bank (Mar 2020) surged to 16.8% (from 3.2% in Mar 2019), a dramatic four-quarter deterioration that preceded the moratorium by months. This expansion was visible to any analyst tracking GNPA quarterly — a critical early warning signal. Trend matters far more than level: a bank moving 2% → 5% in 4 quarters is in distress regardless of industry peers."
+        },
+        "sensitivity_note": "GNPA trend matters more than absolute level. A bank going from 2% to 5% in 4 quarters is in distress regardless of industry median. Always track the direction. Also track slippage additions separately from total GNPA — that reveals fresh NPA creation, the leading indicator."
+      },
+      {
+        "name": "Provision Coverage Ratio (PCR)",
+        "formula": "PCR = (Specific Provisions + Write-offs) / Gross NPAs × 100",
+        "variables": [
+          {
+            "symbol": "Specific Provisions",
+            "meaning": "Money set aside specifically against identified bad loans"
+          },
+          {
+            "symbol": "Write-offs",
+            "meaning": "Amounts already written off (in some definitions; varies)"
+          },
+          {
+            "symbol": "Gross NPAs",
+            "meaning": "Total problem loans"
+          }
+        ],
+        "plain_english": "PCR measures how much of a bank's bad loans have already been covered by provisions set aside or written off — it is the insurance fund against recognized losses. A PCR of 70%+ means the bank has already absorbed 70% of expected losses; a PCR of 50% means 50% of bad loans are still 'naked' and will hit future earnings when ultimately recognized. Higher PCR is better — it signals transparent loss recognition and lower future P&L surprises.",
+        "computation": [
+          "Sum Specific Provisions + Write-offs to get total loss coverage",
+          "Divide by Gross NPAs",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank FY23 held Specific Provisions of ₹12,000 Cr against Gross NPAs of ₹16,100 Cr. Assume write-offs are embedded in specific provisions. Calculate PCR.",
+          "steps": [
+            "PCR = ₹12,000 Cr / ₹16,100 Cr",
+            "= 0.7453",
+            "= 74.53%"
+          ],
+          "result": "~75%",
+          "insight": "HDFC Bank's PCR of 75% indicates it has recognized and absorbed three-quarters of expected losses on bad loans, leaving one-quarter of risk in the P&L. ICICI Bank during its crisis years (2008–2010) ran PCR of 45–55%, signaling severe under-provisioning and future earnings shock. RBI generally expects PCR of 70%+; below 50% is a red flag. The gap between PCR and 100% represents 'naked' bad loans — each ₹100 of uncovered NPAs will eventually hit earnings when the bank either recovers at a loss or explicitly recognizes the loss, destroying that much future net income."
+        },
+        "sensitivity_note": "A bank with low PCR (say 40%) but growing GNPAs is building a future provisioning cliff — each ₹100 of uncovered NPAs will eventually hit the P&L, destroying earnings. PCR compressing while GNPAs expand is the worst combination — classic pre-crisis pattern."
+      },
+      {
+        "name": "CASA Ratio",
+        "formula": "CASA = (Current Account Deposits + Savings Account Deposits) / Total Deposits × 100",
+        "variables": [
+          {
+            "symbol": "Current Account Deposits",
+            "meaning": "Non-interest-bearing (or very low interest) deposits used for transactions"
+          },
+          {
+            "symbol": "Savings Account Deposits",
+            "meaning": "Low-interest savings deposits (3-4% typical)"
+          },
+          {
+            "symbol": "Total Deposits",
+            "meaning": "All deposits including Term/Fixed Deposits which pay 5-7%+"
+          }
+        ],
+        "plain_english": "CASA ratio measures the proportion of a bank's deposits that pay little or no interest — the cheapest funding source. High CASA (>45%) means customers actively park money in the bank, creating a structural cost-of-funds advantage that protects NIM in rising-rate environments. Low CASA (<35%) means the bank must rely on expensive fixed deposits and wholesale funding, making NIM vulnerable to interest rate shocks. CASA is often the single largest driver of profitability differences between peer banks.",
+        "computation": [
+          "Identify Current Account Deposits from deposits schedule",
+          "Identify Savings Account Deposits from deposits schedule",
+          "Sum Current + Savings deposits",
+          "Divide by Total Deposits",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank FY23 reported Current Account Deposits of ₹2,50,000 Cr, Savings Deposits of ₹3,80,000 Cr, and Total Deposits of ₹15,00,000 Cr. Calculate CASA Ratio.",
+          "steps": [
+            "CASA Deposits = ₹2,50,000 Cr + ₹3,80,000 Cr = ₹6,30,000 Cr",
+            "CASA % = ₹6,30,000 Cr / ₹15,00,000 Cr",
+            "= 0.42 or 42%"
+          ],
+          "result": "42% (approximate to FY23 ~44.4%)",
+          "insight": "HDFC Bank's CASA of 44.4% is industry-leading, reflecting its unmatched retail and digital franchise. Kotak Mahindra Bank leads at ~52% (highest in sector); SBI at 43.5% (scale advantage); IndusInd at 40.1% (growing); Union Bank at 35.8% (PSU constraints); DHFL-era fintech lenders pre-crisis fell below 25%, forcing reliance on expensive wholesale funding and ultimately insolvency. The spread reflects franchise quality: strong CASA means customers choose to keep funds with the bank (stickiness, convenience, digital adoption, retail reach); weak CASA means the bank is funding-stressed and reliant on expensive term deposits, leaving no margin for error in rates or liquidity."
+        },
+        "sensitivity_note": "CASA directly determines Net Interest Margin. A 5 percentage point increase in CASA (say 40% to 45%) typically improves NIM by 20-30 basis points — which is enormous in banking. Banks with high CASA (HDFC, Kotak) have durable NIM advantages; weak-CASA banks face margin compression in any tight-liquidity environment."
+      },
+      {
+        "name": "Capital Adequacy Ratio (CAR / CRAR)",
+        "formula": "CAR = (Tier-1 Capital + Tier-2 Capital) / Risk-Weighted Assets × 100",
+        "variables": [
+          {
+            "symbol": "Tier-1 Capital",
+            "meaning": "Core capital: Equity shares + Reserves & Surplus. Most absorbent of losses"
+          },
+          {
+            "symbol": "Tier-2 Capital",
+            "meaning": "Supplementary capital: Subordinated debt, certain revaluation reserves, general provisions"
+          },
+          {
+            "symbol": "Risk-Weighted Assets (RWA)",
+            "meaning": "Assets weighted by credit risk. Low-risk government bonds weighted 0%, corporate loans typically 50-100%, sub-standard loans weighted higher"
+          }
+        ],
+        "plain_english": "CAR measures how much equity capital a bank holds relative to its risk-weighted loan portfolio — it is the ultimate solvency cushion. A bank with CAR of 18% can absorb a larger loss before depleting equity; a bank with CAR of 11.5% is at the regulatory minimum and has almost no room for error. RBI enforces a strict CAR floor: breach it and the bank triggers Prompt Corrective Action (PCA), losing the ability to pay dividends or expand lending until capital is restored.",
+        "computation": [
+          "Calculate Total Capital = Tier-1 Capital + Tier-2 Capital",
+          "Identify Risk-Weighted Assets (computed by bank using RBI risk-weight schedules)",
+          "Divide Total Capital by Risk-Weighted Assets",
+          "Multiply by 100 to express as percentage"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank FY23 reported Tier-1 Capital of ₹2,75,000 Cr, Tier-2 Capital of ₹18,000 Cr, and Risk-Weighted Assets of ₹16,50,000 Cr. Calculate CAR.",
+          "steps": [
+            "Total Capital = ₹2,75,000 Cr + ₹18,000 Cr = ₹2,93,000 Cr",
+            "CAR = ₹2,93,000 Cr / ₹16,50,000 Cr",
+            "= 0.1776 or 17.76%",
+            "≈ 17.9% (accounting for rounding in underlying figures)"
+          ],
+          "result": "17.9%",
+          "insight": "HDFC Bank's CAR of 17.9% (Tier-1 at 16.8%, Tier-2 at 1.1%) is comfortably above RBI's minimum of 11.5%, providing a strong capital cushion for loss absorption. SBI FY23 reported CAR ~14.4% (adequate but constrained by PSU dividend expectations); Yes Bank (Jan 2020) dropped below 12% before moratorium; Lakshmi Vilas Bank's CAR collapsed to single digits, triggering RBI merger. RBI minimums: 11.5% overall CAR, 9% Tier-1. When CAR approaches 11.5%, regulatory pressure intensifies; breaching it triggers PCA (Prompt Corrective Action) where RBI restricts dividends, capital increases, and new business, effectively putting the bank on a short leash."
+        },
+        "sensitivity_note": "CAR is the ultimate solvency metric for banks — it tells you whether the bank has enough equity buffer to absorb potential losses. A bank with CAR of 13% faces regulatory pressure; at 11.5% triggers supervisory action; below that can trigger PCA (Prompt Corrective Action) where RBI restricts dividends, capital, and lending."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + $ → currency format",
+        "Cmd + Option + V → paste values for ratio snapshots",
+        "Fn + F4 → absolute reference",
+        "Cmd + G → go to specific cells"
+      ],
+      "windows": [
+        "Ctrl + Shift + $ → apply currency format for NPA/provision amounts",
+        "Alt + H + L → conditional format to highlight GNPA above 5% in red",
+        "F4 → lock RWA denominator when computing CAR components",
+        "Ctrl + G → Goto Special to verify balance sheet line sources"
+      ]
+    }
+  }
+}

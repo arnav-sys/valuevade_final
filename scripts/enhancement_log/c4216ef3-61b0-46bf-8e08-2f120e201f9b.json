@@ -1,0 +1,255 @@
+{
+  "id": "c4216ef3-61b0-46bf-8e08-2f120e201f9b",
+  "label": "M4 S3 | The Exceptional Item Normalisation Framework",
+  "before": {
+    "formulas": [
+      {
+        "name": "Adjusted EBITDA (Normalised for Exceptionals)",
+        "formula": "Adjusted EBITDA = Reported EBITDA − Exceptional Income + Exceptional Expense",
+        "variables": [
+          {
+            "symbol": "Reported EBITDA",
+            "meaning": "EBITDA as shown in the annual report, including all exceptional items"
+          },
+          {
+            "symbol": "Exceptional Income",
+            "meaning": "One-time gains — e.g., asset sale profit, insurance recovery, litigation win, sale of subsidiary"
+          },
+          {
+            "symbol": "Exceptional Expense",
+            "meaning": "One-time costs — e.g., product recall, restructuring, impairment, litigation settlement, COVID-related one-offs"
+          }
+        ],
+        "worked_example": "Suppose Titan FY23 Reported EBITDA was ₹3,840 cr. The AR notes disclose: (a) a one-time land sale gain of ₹120 cr, and (b) a ₹85 cr loss on fire damage at the Hosur factory (not fully recoverable from insurance). Adjusted EBITDA = 3,840 − 120 + 85 = ₹3,805 cr. The EBITDA MARGIN you use for forecasting must be based on ₹3,805 cr, not ₹3,840 cr — otherwise you're building your forecast on a one-time tailwind that will not repeat. On the IS, you show both: 'Reported EBITDA 3,840' then 'Less: Exceptional Income (120)' then 'Add: Exceptional Expense 85' then 'Adjusted EBITDA 3,805'. Full transparency, zero loss of information.",
+        "sensitivity_note": "If Adjusted EBITDA margin is ~50 bps different from Reported, your forecast EPS can shift by 3-5%. The difference between '₹3,805 cr × 12% growth = ₹4,262 cr' and '₹3,840 cr × 12% growth = ₹4,301 cr' compounds over a 5-year forecast into a materially different terminal value. Normalise or pay the price."
+      },
+      {
+        "name": "Net Debt Reconciliation",
+        "formula": "Net Debt = Short-Term Borrowings + Long-Term Borrowings + Current Portion of LT Debt + Lease Liabilities − Cash & Cash Equivalents − Current Investments",
+        "variables": [
+          {
+            "symbol": "Short-Term Borrowings",
+            "meaning": "Working capital loans, commercial paper, bank overdrafts — typically Note 22 or 23 in Indian ARs"
+          },
+          {
+            "symbol": "Long-Term Borrowings",
+            "meaning": "Term loans, debentures, NCDs — Note 20 or 21 usually"
+          },
+          {
+            "symbol": "Current Portion of LT Debt",
+            "meaning": "The portion of long-term debt maturing within 12 months — moved from non-current to current on the BS"
+          },
+          {
+            "symbol": "Lease Liabilities",
+            "meaning": "Post-Ind-AS 116 (FY20), operating leases are capitalised — this is often missed by beginners but is genuine debt-like commitment"
+          },
+          {
+            "symbol": "Cash & Cash Equivalents",
+            "meaning": "Bank balances, fixed deposits under 3 months, cash in hand"
+          },
+          {
+            "symbol": "Current Investments",
+            "meaning": "Liquid mutual funds, debt funds, treasury bills — often 10x cash itself for Indian cash-rich companies"
+          }
+        ],
+        "worked_example": "Titan FY24: Short-term borrowings ₹1,120 cr + Long-term borrowings ₹840 cr + Current portion of LT debt ₹285 cr + Lease liabilities ₹620 cr − Cash ₹1,800 cr − Current investments ₹780 cr = ₹285 cr Net Debt. Note: if you forget lease liabilities, you show 'Net Debt ₹-335 cr (net cash)' which is materially wrong — Titan has real lease obligations on its 3,000+ stores. Post-Ind-AS 116, leases are debt. Every Indian analyst who started before FY20 had to retrain on this.",
+        "sensitivity_note": "Enterprise Value = Market Cap + Net Debt. If Net Debt is understated by ₹600 cr (e.g., missed leases), EV is understated by ₹600 cr, EV/EBITDA multiple is understated by ~0.08x, and in a high-multiple stock like Titan (~50x EV/EBITDA), that's a 0.15% error. Small in percentage but real in absolute terms. For a bank or NBFC, where Net Debt is the core KPI, missing leases can mean mis-stating leverage by 200-300 bps."
+      },
+      {
+        "name": "Working Capital Days (Days-Based Standardisation)",
+        "formula": "Receivable Days = (Trade Receivables / Revenue) × 365 | Inventory Days = (Inventory / COGS) × 365 | Payable Days = (Trade Payables / COGS) × 365",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "Net of provision for doubtful debts — use the NET number, not gross"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Revenue from operations (not total income) — excludes Other Income"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Total inventory — raw materials + WIP + finished goods + stores & spares"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of goods sold — in Indian ARs this is the sum of 'Cost of materials consumed' + 'Purchases of stock-in-trade' + 'Changes in inventories' (signed correctly)"
+          },
+          {
+            "symbol": "Trade Payables",
+            "meaning": "Amount owed to suppliers — does NOT include statutory dues, employee payables, or other current liabilities"
+          }
+        ],
+        "worked_example": "Titan FY24: Receivables ₹620 cr, Revenue ₹47,100 cr → Receivable Days = (620/47,100) × 365 = 4.8 days. Inventory ₹13,200 cr, COGS ₹36,800 cr → Inventory Days = (13,200/36,800) × 365 = 131 days. Payables ₹8,400 cr, COGS ₹36,800 cr → Payable Days = (8,400/36,800) × 365 = 83 days. Cash Conversion Cycle = 4.8 + 131 − 83 = 52.8 days. Titan's cycle is inventory-heavy because jewellery requires holding gold stock — a structural feature, not a red flag.",
+        "sensitivity_note": "Days-based standardisation is the foundation for working capital FORECASTING in Session 6. If your historical days are wrong (e.g., you used Total Income instead of Revenue, or Gross Receivables instead of Net), your forecast days are anchored to the wrong base, and your forecast working capital is wrong. Get historical days exactly right or Session 6 suffers."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Ctrl + V → Paste Values",
+        "Cmd + Shift + V → Paste Special",
+        "Cmd + ` (toggle formula view)"
+      ],
+      "windows": [
+        "Ctrl + Shift + V → Paste Values only (when copying from AR PDFs, paste values to avoid formatting import)",
+        "Alt + E + S + V (older Paste Special Values shortcut — muscle memory for data work)",
+        "Ctrl + ` (toggle formula view — verifies that historicals are hardcoded blue not accidental formulas)",
+        "Ctrl + G → Special → Blanks (find empty cells in historicals — catches missing entries)",
+        "Alt + H + E + A (clear all formatting when pasting text from PDFs)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Adjusted EBITDA (Normalised for Exceptionals)",
+        "formula": "Adjusted EBITDA = Reported EBITDA − Exceptional Income + Exceptional Expense",
+        "variables": [
+          {
+            "symbol": "Reported EBITDA",
+            "meaning": "EBITDA as shown in the annual report, including all exceptional items"
+          },
+          {
+            "symbol": "Exceptional Income",
+            "meaning": "One-time gains — e.g., asset sale profit, insurance recovery, litigation win, sale of subsidiary"
+          },
+          {
+            "symbol": "Exceptional Expense",
+            "meaning": "One-time costs — e.g., product recall, restructuring, impairment, litigation settlement, COVID-related one-offs"
+          }
+        ],
+        "plain_english": "Adjusted EBITDA strips out one-time gains and losses to show what operating profit would look like on a normalised, recurring basis. This is critical for forecasting because your future margins should be anchored to the sustainable earnings power of the business, not inflated by a land sale or depressed by a one-off restructuring charge. Investors and analysts use adjusted metrics because they reveal true operational performance.",
+        "computation": [
+          "Identify all exceptional items disclosed in the Notes to Accounts (often Note 33 or under 'Exceptional Items')",
+          "Classify each as either Exceptional Income (gains) or Exceptional Expense (costs)",
+          "Subtract exceptional income from reported EBITDA",
+          "Add back exceptional expenses to reported EBITDA",
+          "The result is recurring EBITDA available for normalisation of margins and forecasting"
+        ],
+        "worked_example": {
+          "problem": "Titan FY23 Reported EBITDA was ₹3,840 cr. The Notes disclose: (a) a one-time land sale gain of ₹120 cr, and (b) a ₹85 cr loss on fire damage at the Hosur factory (not fully recoverable from insurance). Calculate Adjusted EBITDA and explain why this matters for forecasting.",
+          "steps": [
+            "Start with Reported EBITDA: ₹3,840 cr",
+            "Identify exceptional income: land sale gain = ₹120 cr",
+            "Identify exceptional expense: fire damage loss = ₹85 cr",
+            "Apply formula: Adjusted EBITDA = 3,840 − 120 + 85 = ₹3,805 cr"
+          ],
+          "result": "Adjusted EBITDA = ₹3,805 cr",
+          "insight": "Reported EBITDA of ₹3,840 cr includes a tailwind from a one-time land sale that will not recur. If you forecast future EBITDA by growing ₹3,840 cr at 12%, you build in an unrealistic base. Instead, use ₹3,805 cr as your normalised base: 3,805 × 12% = ₹4,262 cr (vs 3,840 × 12% = ₹4,301 cr). The ₹39 cr annual difference compounds over five years into a materially different terminal value. On your income statement, show both layers: 'Reported EBITDA 3,840 | Less: Exceptional Income (120) | Add: Exceptional Expense 85 | Adjusted EBITDA 3,805'. Full transparency, zero loss of information."
+        },
+        "sensitivity_note": "If Adjusted EBITDA margin is ~50 bps different from Reported, your forecast EPS can shift by 3-5%. The difference between '₹3,805 cr × 12% growth = ₹4,262 cr' and '₹3,840 cr × 12% growth = ₹4,301 cr' compounds over a 5-year forecast into a materially different terminal value. Normalise or pay the price."
+      },
+      {
+        "name": "Net Debt Reconciliation",
+        "formula": "Net Debt = Short-Term Borrowings + Long-Term Borrowings + Current Portion of LT Debt + Lease Liabilities − Cash & Cash Equivalents − Current Investments",
+        "variables": [
+          {
+            "symbol": "Short-Term Borrowings",
+            "meaning": "Working capital loans, commercial paper, bank overdrafts — typically Note 22 or 23 in Indian ARs"
+          },
+          {
+            "symbol": "Long-Term Borrowings",
+            "meaning": "Term loans, debentures, NCDs — Note 20 or 21 usually"
+          },
+          {
+            "symbol": "Current Portion of LT Debt",
+            "meaning": "The portion of long-term debt maturing within 12 months — moved from non-current to current on the BS"
+          },
+          {
+            "symbol": "Lease Liabilities",
+            "meaning": "Post-Ind-AS 116 (FY20), operating leases are capitalised — this is often missed by beginners but is genuine debt-like commitment"
+          },
+          {
+            "symbol": "Cash & Cash Equivalents",
+            "meaning": "Bank balances, fixed deposits under 3 months, cash in hand"
+          },
+          {
+            "symbol": "Current Investments",
+            "meaning": "Liquid mutual funds, debt funds, treasury bills — often 10x cash itself for Indian cash-rich companies"
+          }
+        ],
+        "plain_english": "Net Debt is the true financial obligation of the company after accounting for all cash it has available to pay down that debt. It is the figure used to calculate Enterprise Value (Market Cap + Net Debt), and hence determines the headline multiple investors pay (EV/EBITDA, EV/Revenue). Missing lease liabilities or miscounting current investments is a common error that distorts leverage ratios and valuation multiples by hundreds of basis points.",
+        "computation": [
+          "From the Balance Sheet, extract short-term and long-term borrowings (Notes 20–23)",
+          "Identify the current portion of long-term debt (often shown separately in current liabilities)",
+          "Add post-Ind-AS 116 lease liabilities from the notes (typically Note 42 or under Finance Costs)",
+          "Sum all debt-like obligations",
+          "Subtract cash and cash equivalents (note the 3-month maturity cut-off)",
+          "Subtract current investments (explicitly check the Balance Sheet for mutual funds or treasury bills)",
+          "The result is Net Debt (or negative if net cash position)"
+        ],
+        "worked_example": {
+          "problem": "Titan FY24 Balance Sheet shows: Short-term borrowings ₹1,120 cr, Long-term borrowings ₹840 cr, Current portion of LT debt ₹285 cr, Lease liabilities ₹620 cr, Cash ₹1,800 cr, Current investments ₹780 cr. Calculate Net Debt and explain why lease liabilities are critical.",
+          "steps": [
+            "Sum all debt: 1,120 + 840 + 285 + 620 = ₹2,865 cr",
+            "Sum all cash and liquid assets: 1,800 + 780 = ₹2,580 cr",
+            "Net Debt = 2,865 − 2,580 = ₹285 cr"
+          ],
+          "result": "Net Debt = ₹285 cr",
+          "insight": "If you forgot lease liabilities, you would calculate: 1,120 + 840 + 285 − 1,800 − 780 = ₹-335 cr (showing net cash). But Titan operates 3,000+ retail stores under lease — these are real cash obligations every month. Post-Ind-AS 116, leases are debt. Forgetting them understates Net Debt by ₹620 cr and overstates the firm's financial flexibility. Enterprise Value would be understated by ₹620 cr, and in a high-multiple stock like Titan (~50x EV/EBITDA), that's material absolute impact. For banks and NBFCs, missing leases can misstate leverage by 200–300 bps."
+        },
+        "sensitivity_note": "Enterprise Value = Market Cap + Net Debt. If Net Debt is understated by ₹600 cr (e.g., missed leases), EV is understated by ₹600 cr, EV/EBITDA multiple is understated by ~0.08x, and in a high-multiple stock like Titan (~50x EV/EBITDA), that's a 0.15% error. Small in percentage but real in absolute terms. For a bank or NBFC, where Net Debt is the core KPI, missing leases can mean mis-stating leverage by 200-300 bps."
+      },
+      {
+        "name": "Working Capital Days (Days-Based Standardisation)",
+        "formula": "Receivable Days = (Trade Receivables / Revenue) × 365 | Inventory Days = (Inventory / COGS) × 365 | Payable Days = (Trade Payables / COGS) × 365",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "Net of provision for doubtful debts — use the NET number, not gross"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Revenue from operations (not total income) — excludes Other Income"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Total inventory — raw materials + WIP + finished goods + stores & spares"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of goods sold — in Indian ARs this is the sum of 'Cost of materials consumed' + 'Purchases of stock-in-trade' + 'Changes in inventories' (signed correctly)"
+          },
+          {
+            "symbol": "Trade Payables",
+            "meaning": "Amount owed to suppliers — does NOT include statutory dues, employee payables, or other current liabilities"
+          }
+        ],
+        "plain_english": "Working capital days standardise the balance sheet items (receivables, inventory, payables) into a common language: how many days of operation are tied up in each. Receivable Days tells you how long it takes to collect cash from customers; Inventory Days tells you how long products sit on shelves; Payable Days tells you how long you take to pay suppliers. Together, these drive the Cash Conversion Cycle — a metric that reveals whether the business is generating or consuming cash operationally, independent of profitability.",
+        "computation": [
+          "Calculate Receivable Days = (Trade Receivables / Revenue) × 365 to show average collection period",
+          "Calculate Inventory Days = (Inventory / COGS) × 365 to show average holding period",
+          "Calculate Payable Days = (Trade Payables / COGS) × 365 to show average payment period",
+          "Cash Conversion Cycle = Receivable Days + Inventory Days − Payable Days",
+          "A negative CCC means the company collects cash before it pays suppliers (Amazon-like efficiency); positive CCC means cash is tied up"
+        ],
+        "worked_example": {
+          "problem": "Titan FY24: Trade Receivables ₹620 cr, Revenue ₹47,100 cr, Inventory ₹13,200 cr, COGS ₹36,800 cr, Trade Payables ₹8,400 cr. Calculate all three working capital metrics and interpret the Cash Conversion Cycle.",
+          "steps": [
+            "Receivable Days = (620 / 47,100) × 365 = 4.8 days",
+            "Inventory Days = (13,200 / 36,800) × 365 = 131 days",
+            "Payable Days = (8,400 / 36,800) × 365 = 83 days",
+            "Cash Conversion Cycle = 4.8 + 131 − 83 = 52.8 days"
+          ],
+          "result": "Receivable Days 4.8 | Inventory Days 131 | Payable Days 83 | CCC 52.8 days",
+          "insight": "Titan's CCC of 53 days means the company ties up nearly 2 months of working capital operationally. The high inventory days (131) reflect the gold jewellery business — inventory must be held to support retail operations and customer choice. This is NOT a red flag; it's structural to the business model. The very low receivable days (4.8) show that jewellery retail is largely cash-and-carry (or quick credit-card settlement). When forecasting FY25 working capital, use these historical days as anchors. If you assume inventory days compress to 100 (trying to show 'operational efficiency'), you forecast a ₹3,600 cr working capital release — real money that will not actually appear."
+        },
+        "sensitivity_note": "Days-based standardisation is the foundation for working capital FORECASTING in Session 6. If your historical days are wrong (e.g., you used Total Income instead of Revenue, or Gross Receivables instead of Net), your forecast days are anchored to the wrong base, and your forecast working capital is wrong. Get historical days exactly right or Session 6 suffers."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Ctrl + V → Paste Values",
+        "Cmd + Shift + V → Paste Special",
+        "Cmd + ` (toggle formula view)"
+      ],
+      "windows": [
+        "Ctrl + Shift + V → Paste Values only (when copying from AR PDFs, paste values to avoid formatting import)",
+        "Alt + E + S + V (older Paste Special Values shortcut — muscle memory for data work)",
+        "Ctrl + ` (toggle formula view — verifies that historicals are hardcoded blue not accidental formulas)",
+        "Ctrl + G → Special → Blanks (find empty cells in historicals — catches missing entries)",
+        "Alt + H + E + A (clear all formatting when pasting text from PDFs)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,161 @@
+{
+  "id": "9f06408c-3b4b-4703-ac3e-46571fbafcfe",
+  "label": "M2 S4 | Key Index Metrics for Analysts",
+  "before": {
+    "formulas": [
+      {
+        "name": "Index Level Calculation",
+        "formula": "Index Value = (Current Total Free-Float Market Cap of All Constituents / Base Period Market Cap) × Base Index Value\nFor Nifty 50: Base period = Nov 3, 1995. Base value = 1,000.",
+        "plain_english": "If the total free-float market cap of all 50 Nifty stocks today is 150x what it was on November 3, 1995, then the Nifty index value = 1,000 × 150 = 150,000. The index is simply a ratio of today's aggregate value to the base period's value, multiplied by the base number."
+      },
+      {
+        "name": "Index P/E Ratio",
+        "formula": "Index P/E = Current Index Level / Aggregate Index EPS\nAlternatively: Weighted average of individual constituent P/Es, weighted by their index weight",
+        "analysts_note": "Always specify whether you're using trailing P/E (last 12 months' actual earnings) or forward P/E (next 12 months' estimated earnings). Nifty trailing P/E of 25x might translate to forward P/E of 21x if you expect 20% earnings growth. NSE publishes daily Nifty P/E, P/B, and dividend yield at nseindia.com.",
+        "worked_example": "If Nifty 50 is at 22,500 and the aggregate trailing 12-month EPS of all 50 stocks (weighted) is ₹900, then Nifty P/E = 22,500 / 900 = 25x. Historical Nifty P/E has ranged from ~10x (2008 crisis low) to ~40x (2021 bubble). A P/E of 25x is roughly at the historical mean."
+      },
+      {
+        "name": "Stock's Contribution to Index Movement",
+        "formula": "Stock's Contribution (points) = Stock's Weight in Index (%) × Stock's % Change × Index Level / 100",
+        "why_it_matters": "On many days, the Nifty moves 200 points and the headline screams 'market rallies!' But if you decompose the move, you find that Reliance alone contributed 80 points, HDFC Bank contributed 50, and Infosys contributed 40. Three stocks drove 85% of the move. The other 47 stocks were flat or negative. The 'market rally' was actually a 'three-stock rally.' Decomposing index moves tells you whether the move has breadth (sustainable) or is narrow (fragile).",
+        "worked_example": "If Reliance (weight ~10%) rises 3% and Nifty is at 22,500: Contribution = 10% × 3% × 22,500 / 100 = 67.5 Nifty points."
+      },
+      {
+        "name": "Relative Performance vs Benchmark (Alpha)",
+        "formula": "Alpha (Excess Return) = Stock Return – Benchmark Index Return",
+        "analysts_note": "When you issue a 'Buy' recommendation, you're implicitly saying: 'This stock will generate positive alpha vs the benchmark.' If your target implies 15% upside but Nifty is expected to do 14%, your effective alpha call is only 1% — barely worth the risk. Always frame returns relative to the benchmark, not in absolute terms.",
+        "worked_example": "TCS returned +18% over 12 months. Nifty 50 returned +12%. Alpha = +6%."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Index Level Calculation",
+        "formula": "Index Value = (Current Total Free-Float Market Cap of All Constituents / Base Period Market Cap) × Base Index Value\nFor Nifty 50: Base period = Nov 3, 1995. Base value = 1,000.",
+        "plain_english": "If the total free-float market cap of all 50 Nifty stocks today is 150x what it was on November 3, 1995, then the Nifty index value = 1,000 × 150 = 150,000. The index is simply a ratio of today's aggregate value to the base period's value, multiplied by the base number.",
+        "variables": [
+          {
+            "symbol": "Current Total Free-Float Market Cap",
+            "meaning": "Sum of (Current Share Price × Free-Float Shares Outstanding) for all index constituents"
+          },
+          {
+            "symbol": "Base Period Market Cap",
+            "meaning": "Aggregate free-float market capitalisation on the index's inception date (e.g., Nov 3, 1995 for Nifty 50)"
+          },
+          {
+            "symbol": "Base Index Value",
+            "meaning": "Arbitrary starting value set at index inception (1,000 for Nifty 50)"
+          }
+        ],
+        "computation": [
+          "Calculate the free-float market cap of each constituent: Current Share Price × Free-Float Shares Outstanding",
+          "Sum all constituent free-float market caps to get Current Total Free-Float Market Cap",
+          "Divide Current Total Free-Float Market Cap by Base Period Market Cap",
+          "Multiply the result by Base Index Value (1,000 for Nifty 50)"
+        ]
+      },
+      {
+        "name": "Index P/E Ratio",
+        "formula": "Index P/E = Current Index Level / Aggregate Index EPS\nAlternatively: Weighted average of individual constituent P/Es, weighted by their index weight",
+        "analysts_note": "Always specify whether you're using trailing P/E (last 12 months' actual earnings) or forward P/E (next 12 months' estimated earnings). Nifty trailing P/E of 25x might translate to forward P/E of 21x if you expect 20% earnings growth. NSE publishes daily Nifty P/E, P/B, and dividend yield at nseindia.com.",
+        "variables": [
+          {
+            "symbol": "Current Index Level",
+            "meaning": "Real-time value of the index (e.g., Nifty 50 at 22,500)"
+          },
+          {
+            "symbol": "Aggregate Index EPS",
+            "meaning": "Sum of trailing or forward 12-month earnings per share for all constituents, weighted by their market-cap weight in the index"
+          },
+          {
+            "symbol": "Index Weight",
+            "meaning": "Each constituent's free-float market cap as a percentage of the total index free-float market cap"
+          }
+        ],
+        "plain_english": "The Index P/E tells you how much investors are willing to pay for each rupee of index earnings. A Nifty P/E of 25x means that, on aggregate, the 50 stocks are trading at 25 times their annual earnings—a useful benchmark for valuation. You can compare it to historical averages or to the earnings growth rate to assess whether the index is expensive or cheap.",
+        "computation": [
+          "For each index constituent, multiply its EPS (trailing or forward 12M) by its index weight",
+          "Sum all weighted EPS values to get Aggregate Index EPS",
+          "Divide Current Index Level by Aggregate Index EPS"
+        ],
+        "worked_example": {
+          "problem": "Nifty 50 is trading at 22,500. The aggregate trailing 12-month EPS (market-cap-weighted) of all 50 stocks is ₹900. What is Nifty's trailing P/E?",
+          "steps": [
+            "Index Level = 22,500",
+            "Aggregate Index EPS = ₹900",
+            "Index P/E = 22,500 / 900 = 25.0x"
+          ],
+          "result": "Nifty 50 is trading at 25.0x trailing earnings.",
+          "insight": "Historical Nifty P/E has ranged from ~10x during the 2008 financial crisis to ~40x during the 2021 bull-market peak. A multiple of 25x is roughly at the long-term historical mean, suggesting the market is fairly valued relative to its history. However, this must be compared to expected earnings growth; if 15% EPS growth is expected, a 25x forward multiple may be reasonable."
+        }
+      },
+      {
+        "name": "Stock's Contribution to Index Movement",
+        "formula": "Stock's Contribution (points) = Stock's Weight in Index (%) × Stock's % Change × Index Level / 100",
+        "variables": [
+          {
+            "symbol": "Stock's Weight in Index (%)",
+            "meaning": "The stock's free-float market cap as a percentage of the total index free-float market cap"
+          },
+          {
+            "symbol": "Stock's % Change",
+            "meaning": "The percentage change in the stock's price over the period being analyzed"
+          },
+          {
+            "symbol": "Index Level",
+            "meaning": "The current value of the index (e.g., Nifty 50 = 22,500)"
+          }
+        ],
+        "plain_english": "On many days, the Nifty moves 200 points and the headline screams 'market rallies!' But if you decompose the move, you find that Reliance alone contributed 80 points, HDFC Bank contributed 50, and Infosys contributed 40. Three stocks drove 85% of the move. The other 47 stocks were flat or negative. The 'market rally' was actually a 'three-stock rally.' Decomposing index moves tells you whether the move has breadth (sustainable) or is narrow (fragile).",
+        "computation": [
+          "Identify the stock's weight in the index (available on NSE website, updated quarterly or on major rebalance dates)",
+          "Calculate the stock's percentage price change from open to close (or over the chosen period)",
+          "Multiply Weight (%) × % Change × Index Level",
+          "Divide by 100 to convert to index points"
+        ],
+        "worked_example": {
+          "problem": "Reliance Industries has a 10% weight in Nifty 50 and rises 3% today. Nifty 50 is currently at 22,500. How many index points did Reliance contribute to the index movement?",
+          "steps": [
+            "Stock Weight = 10%",
+            "Stock % Change = 3%",
+            "Index Level = 22,500",
+            "Contribution = (10 × 3 × 22,500) / 100 = 6,750,000 / 100 = 67.5 points"
+          ],
+          "result": "Reliance contributed 67.5 Nifty points to the index movement.",
+          "insight": "A 3% move in a 10% constituent generates substantial index points. If Nifty moved 150 points total and Reliance contributed 67.5, then Reliance was responsible for 45% of the day's index move. Analysts should decompose daily moves to identify whether rallies or declines are broad-based or driven by a few large-cap stocks, which helps assess market conviction and sustainability."
+        }
+      },
+      {
+        "name": "Relative Performance vs Benchmark (Alpha)",
+        "formula": "Alpha (Excess Return) = Stock Return – Benchmark Index Return",
+        "variables": [
+          {
+            "symbol": "Stock Return",
+            "meaning": "The percentage return of the individual stock over the measurement period"
+          },
+          {
+            "symbol": "Benchmark Index Return",
+            "meaning": "The percentage return of the relevant benchmark index (e.g., Nifty 50) over the same period"
+          }
+        ],
+        "plain_english": "Alpha measures the excess return an investor gets (or gives up) by holding a stock instead of simply holding the benchmark index. Positive alpha means the stock beat its benchmark; negative alpha means it underperformed. For equity research, alpha is the key output: your job is to identify stocks that will generate positive alpha for your clients.",
+        "computation": [
+          "Calculate or obtain the stock's total return (price appreciation + dividends) over the period",
+          "Calculate or obtain the benchmark index's total return over the same period",
+          "Subtract Benchmark Return from Stock Return to get Alpha"
+        ],
+        "worked_example": {
+          "problem": "Tata Consultancy Services (TCS) returned +18% (including dividends) over 12 months. The Nifty 50 benchmark returned +12% over the same period. What is TCS's alpha?",
+          "steps": [
+            "TCS Total Return = +18%",
+            "Nifty 50 Total Return = +12%",
+            "Alpha = 18% – 12% = +6%"
+          ],
+          "result": "TCS generated +6% alpha vs Nifty 50.",
+          "insight": "When you issue a 'Buy' recommendation, you're implicitly saying: 'This stock will generate positive alpha vs the benchmark.' If your target implies 15% upside but Nifty is expected to do 14%, your effective alpha call is only 1%—barely worth the risk given volatility. Always frame returns relative to the benchmark. A 20% stock return is only compelling if the market is expected to do 5%; if the market is expected to do 18%, your 20% call offers only 2% of alpha, which may not justify the stock's concentration risk."
+        }
+      }
+    ]
+  }
+}

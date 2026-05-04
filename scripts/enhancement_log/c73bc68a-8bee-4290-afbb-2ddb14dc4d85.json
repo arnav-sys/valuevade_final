@@ -1,0 +1,219 @@
+{
+  "id": "c73bc68a-8bee-4290-afbb-2ddb14dc4d85",
+  "label": "M1 S11 | WACC and CAPM Formulas with TCS Worked Example",
+  "before": {
+    "tcs_example": {
+      "note": "TCS has virtually no debt so WACC is almost entirely cost of equity. Typical of Indian IT.",
+      "step1": "Re = 7.1% + 0.65 x 6.0% = 11.0%",
+      "step2": "After-tax Rd = 7.5% x (1-0.252) = 5.61%",
+      "step3": "E/V = 99.67%, D/V = 0.33%",
+      "step4": "WACC = (99.67% x 11.0%) + (0.33% x 5.61%) = 10.98%",
+      "inputs": {
+        "Rd": "7.5%",
+        "Rf": "7.1%",
+        "Tc": "25.2%",
+        "ERP": "6.0%",
+        "Beta": "0.65",
+        "debt": "4,500 cr",
+        "market_cap": "13,50,000 cr"
+      }
+    },
+    "capm_formula": {
+      "formula": "Re = Rf + Beta x (Rm - Rf)",
+      "variables": {
+        "Rf": "Risk-free rate: 10-year G-Sec yield (India ~7.1%, US ~4.3%)",
+        "Rm": "Expected market return (Nifty/Sensex ~12-14% India)",
+        "Beta": "Stock sensitivity to market (Screener.in, Bloomberg, regression)",
+        "Rm_minus_Rf": "Equity Risk Premium: 5-7% India, 4-6% US"
+      }
+    },
+    "wacc_formula": {
+      "formula": "WACC = (E/V) x Re + (D/V) x Rd x (1 - Tc)",
+      "variables": {
+        "D": "Market value of debt (book value approximation)",
+        "E": "Market value of equity (share price x shares outstanding)",
+        "V": "Total value (E + D)",
+        "Rd": "Pre-tax cost of debt (interest expense / total debt or bond yield)",
+        "Re": "Cost of equity (from CAPM)",
+        "Tc": "Corporate tax rate (effective or statutory)"
+      }
+    },
+    "sensitivity_table": [
+      {
+        "wacc": "Up",
+        "change": "Beta increases",
+        "reason": "Higher equity risk -> higher Re"
+      },
+      {
+        "wacc": "Up",
+        "change": "Interest rates rise",
+        "reason": "Both Rf and Rd increase"
+      },
+      {
+        "wacc": "Down",
+        "change": "Moderate new debt",
+        "reason": "Debt cheaper than equity (tax shield)"
+      },
+      {
+        "wacc": "Up",
+        "change": "Excessive debt",
+        "reason": "Lenders charge higher Rd, beta rises too"
+      },
+      {
+        "wacc": "Up",
+        "change": "Tax rate drops",
+        "reason": "Tax shield shrinks"
+      }
+    ]
+  },
+  "after": {
+    "tcs_example": {
+      "note": "TCS has virtually no debt so WACC is almost entirely cost of equity. Typical of Indian IT.",
+      "step1": "Re = 7.1% + 0.65 x 6.0% = 11.0%",
+      "step2": "After-tax Rd = 7.5% x (1-0.252) = 5.61%",
+      "step3": "E/V = 99.67%, D/V = 0.33%",
+      "step4": "WACC = (99.67% x 11.0%) + (0.33% x 5.61%) = 10.98%",
+      "inputs": {
+        "Rd": "7.5%",
+        "Rf": "7.1%",
+        "Tc": "25.2%",
+        "ERP": "6.0%",
+        "Beta": "0.65",
+        "debt": "4,500 cr",
+        "market_cap": "13,50,000 cr"
+      },
+      "insight": "TCS's low beta (0.65) reflects its defensive, stable business model in IT services. With negligible leverage, the company's WACC of ~11% is driven almost entirely by the cost of equity, making it a good benchmark for comparing Indian tech majors."
+    },
+    "capm_formula": {
+      "formula": "Re = Rf + Beta x (Rm - Rf)",
+      "variables": [
+        {
+          "symbol": "Re",
+          "meaning": "Cost of equity: the minimum return shareholders require to hold the stock, expressed as a percentage"
+        },
+        {
+          "symbol": "Rf",
+          "meaning": "Risk-free rate: the yield on government securities with no default risk (India ~7.1% on 10-year G-Sec, US ~4.3%)"
+        },
+        {
+          "symbol": "Beta",
+          "meaning": "Stock sensitivity to market movements (β = 1 means it moves with the market; β < 1 is defensive; β > 1 is aggressive)"
+        },
+        {
+          "symbol": "Rm",
+          "meaning": "Expected return of the overall market (Nifty 50 or Sensex historical/forecasted return, typically 12–14% in India)"
+        },
+        {
+          "symbol": "Rm - Rf",
+          "meaning": "Equity Risk Premium (ERP): extra return demanded for equity risk above the risk-free rate (5–7% in India, 4–6% in US)"
+        }
+      ],
+      "plain_english": "CAPM answers: 'What return should an investor expect from this stock given its risk?' It builds on a simple idea: you get paid the risk-free rate for waiting, plus a premium for bearing company-specific and market risk (captured by beta). The higher the beta, the higher the required return.",
+      "worked_example": {
+        "problem": "Calculate the cost of equity for Infosys using CAPM. Assume: 10-year G-Sec yield 7.1%, Infosys beta 0.72 (vs Nifty), expected Nifty return 13.5%, therefore ERP = 13.5% − 7.1% = 6.4%.",
+        "steps": [
+          "Identify risk-free rate: Rf = 7.1% (10-year G-Sec)",
+          "Identify equity risk premium: ERP = Rm − Rf = 13.5% − 7.1% = 6.4%",
+          "Look up beta: Beta = 0.72 (Infosys is slightly less volatile than Nifty)",
+          "Apply CAPM: Re = 7.1% + 0.72 × 6.4% = 7.1% + 4.61% = 11.71%"
+        ],
+        "result": "Cost of equity for Infosys = 11.71%",
+        "insight": "Infosys's beta of 0.72 reflects its mature, stable cash flows and global diversification. Its cost of equity (11.71%) is lower than a cyclical company with beta > 1, but higher than the risk-free rate, rewarding investors for bearing market risk."
+      }
+    },
+    "wacc_formula": {
+      "formula": "WACC = (E/V) x Re + (D/V) x Rd x (1 - Tc)",
+      "variables": [
+        {
+          "symbol": "WACC",
+          "meaning": "Weighted Average Cost of Capital: the blended cost of all capital (equity and debt) a firm uses, weighted by their market values"
+        },
+        {
+          "symbol": "E",
+          "meaning": "Market value of equity: current share price × total shares outstanding"
+        },
+        {
+          "symbol": "D",
+          "meaning": "Market value of debt: typically approximated as the book value of interest-bearing debt (loans, bonds) from the balance sheet"
+        },
+        {
+          "symbol": "V",
+          "meaning": "Total firm value: V = E + D (sum of market value of equity and debt)"
+        },
+        {
+          "symbol": "E/V",
+          "meaning": "Equity weight: the proportion of the firm financed by equity (ranging from 0 to 100%)"
+        },
+        {
+          "symbol": "D/V",
+          "meaning": "Debt weight: the proportion of the firm financed by debt (ranging from 0 to 100%)"
+        },
+        {
+          "symbol": "Re",
+          "meaning": "Cost of equity: calculated using CAPM or other methods; the return required by shareholders"
+        },
+        {
+          "symbol": "Rd",
+          "meaning": "Pre-tax cost of debt: interest expense divided by total debt, or the yield on bonds; the rate the firm pays lenders"
+        },
+        {
+          "symbol": "Tc",
+          "meaning": "Corporate tax rate: effective or statutory tax rate (e.g., 25.2% in India); used to capture the tax deductibility of interest"
+        },
+        {
+          "symbol": "(1 - Tc)",
+          "meaning": "After-tax adjustment: reflects the tax shield from debt interest; reduces the effective cost of debt"
+        }
+      ],
+      "plain_english": "WACC is the 'average hurdle rate' a company must clear to create shareholder value. It reflects the blended cost of funding the business via equity and debt. Companies with low WACC (stable, low-risk firms like utilities or FMCG) can undertake more projects profitably; high-WACC firms (startups, cyclicals) are more selective. WACC is the discount rate for DCF valuations.",
+      "computation": [
+        "Calculate market value of equity: E = Current share price × Shares outstanding",
+        "Determine market value of debt: D ≈ Book value of interest-bearing debt (loans + bonds)",
+        "Calculate total firm value: V = E + D",
+        "Compute equity and debt weights: E/V and D/V",
+        "Calculate cost of equity using CAPM: Re = Rf + Beta × (Rm − Rf)",
+        "Determine cost of debt: Rd = Interest expense ÷ Total debt (or use bond yield)",
+        "Apply after-tax adjustment: Rd × (1 − Tc)",
+        "Blend and sum: WACC = (E/V) × Re + (D/V) × Rd × (1 − Tc)"
+      ],
+      "worked_example": {
+        "problem": "Calculate WACC for Bajaj Finance Ltd. Given: Market cap ₹2,00,000 cr, Market value of debt ₹40,000 cr, Cost of equity 14.2%, Pre-tax cost of debt 8.5%, Effective tax rate 20%.",
+        "steps": [
+          "Calculate weights: E = ₹2,00,000 cr, D = ₹40,000 cr, V = ₹2,40,000 cr",
+          "E/V = 2,00,000 ÷ 2,40,000 = 83.33%; D/V = 40,000 ÷ 2,40,000 = 16.67%",
+          "Apply after-tax cost of debt: Rd(after-tax) = 8.5% × (1 − 0.20) = 8.5% × 0.80 = 6.8%",
+          "Calculate WACC: WACC = (83.33% × 14.2%) + (16.67% × 6.8%) = 11.84% + 1.13% = 12.97%"
+        ],
+        "result": "WACC for Bajaj Finance = 12.97%",
+        "insight": "Bajaj Finance's WACC of 12.97% reflects its strong equity base (83% financed by equity) and good access to low-cost debt. The tax shield from debt reduces its overall cost of capital. This 12.97% is the minimum return the company should earn on its assets to satisfy all investors."
+      }
+    },
+    "sensitivity_table": [
+      {
+        "wacc": "Up",
+        "change": "Beta increases",
+        "reason": "Higher equity risk -> higher Re"
+      },
+      {
+        "wacc": "Up",
+        "change": "Interest rates rise",
+        "reason": "Both Rf and Rd increase"
+      },
+      {
+        "wacc": "Down",
+        "change": "Moderate new debt",
+        "reason": "Debt cheaper than equity (tax shield)"
+      },
+      {
+        "wacc": "Up",
+        "change": "Excessive debt",
+        "reason": "Lenders charge higher Rd, beta rises too"
+      },
+      {
+        "wacc": "Up",
+        "change": "Tax rate drops",
+        "reason": "Tax shield shrinks"
+      }
+    ]
+  }
+}

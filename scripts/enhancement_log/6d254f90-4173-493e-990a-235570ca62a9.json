@@ -1,0 +1,269 @@
+{
+  "id": "6d254f90-4173-493e-990a-235570ca62a9",
+  "label": "M12 S2 | The TVM Formula Family — Five Equations That Power Every DCF",
+  "before": {
+    "formulas": [
+      {
+        "name": "Present Value of a Single Future Cash Flow",
+        "formula": "PV = FV / (1 + r)^n",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value — what the future cash flow is worth today"
+          },
+          {
+            "symbol": "FV",
+            "meaning": "Future value — the cash flow at the future date"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate (decimal form, e.g., 0.10 for 10%)"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of periods (typically years) until the cash flow occurs"
+          }
+        ],
+        "worked_example": "You expect HDFC Bank to pay you a dividend of ₹50 per share five years from now. Your discount rate is 11%. The present value is ₹50 / (1.11)^5 = ₹50 / 1.6851 = ₹29.67. So that ₹50 future dividend is worth about ₹29.67 to you today. The other ₹20.33 is the cost of waiting five years to receive it.",
+        "sensitivity_note": "PV is highly sensitive to both r and n. At r = 10%, ₹100 in Year 10 is worth ₹38.55 today. Bump r to 12% and it falls to ₹32.20 (a 16% drop in PV from a 2 percentage point change in rate). Push n out to Year 20 at r = 10% and ₹100 is worth only ₹14.86. This is why long-duration cash flows are extremely sensitive to the discount rate — and why terminal value assumptions in a DCF deserve so much scrutiny."
+      },
+      {
+        "name": "Future Value of a Single Present Cash Flow",
+        "formula": "FV = PV × (1 + r)^n",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value — the amount you have today"
+          },
+          {
+            "symbol": "FV",
+            "meaning": "Future value — what it will grow to"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Compounding rate per period"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of compounding periods"
+          }
+        ],
+        "worked_example": "You invest ₹1,00,000 in a Nifty 50 index fund and assume a 12% CAGR over 15 years. Future value = 1,00,000 × (1.12)^15 = 1,00,000 × 5.4736 = ₹5,47,360. This is also why your senior keeps repeating that compounding is the eighth wonder of the world — that initial ₹1 lakh grew 5.5x over 15 years without you adding a single rupee.",
+        "sensitivity_note": "FV is especially sensitive to time horizon. The same ₹1 lakh at 12% becomes ₹3.11 lakh in 10 years, ₹5.47 lakh in 15 years, ₹9.65 lakh in 20 years, and ₹17.0 lakh in 25 years. Each additional 5 years adds dramatically more value than the last — that is the geometric magic of compounding."
+      },
+      {
+        "name": "Present Value of an Ordinary Annuity",
+        "formula": "PV = PMT × [(1 - (1 + r)^-n) / r]",
+        "variables": [
+          {
+            "symbol": "PMT",
+            "meaning": "Equal periodic payment"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate per period"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of periods"
+          }
+        ],
+        "worked_example": "Going back to the KBC opener — your uncle gets ₹15 lakh per year for 10 years at a 10% discount rate. PV = 15,00,000 × [(1 - (1.10)^-10) / 0.10] = 15,00,000 × 6.1446 = ₹92.17 lakh. The ₹1.5 crore headline number was actually worth ₹92 lakh in present-value terms — less than the ₹1 crore lump sum he turned down.",
+        "sensitivity_note": "For any annuity, the present value is bounded above by PMT/r (the perpetuity value). At r = 10% and PMT = ₹15 lakh, even an infinite annuity would only be worth ₹1.5 crore today — so a 10-year annuity at ₹92 lakh has captured about 61% of the perpetuity value. The longer the annuity, the more it asymptotes to the perpetuity, but the gains from extending get smaller and smaller."
+      },
+      {
+        "name": "Present Value of a Perpetuity",
+        "formula": "PV = PMT / r",
+        "variables": [
+          {
+            "symbol": "PMT",
+            "meaning": "Constant cash flow per period, forever"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate per period"
+          }
+        ],
+        "worked_example": "A government bond pays ₹100 per year forever (the British Consol bond was structured this way). At a discount rate of 8%, its present value is ₹100 / 0.08 = ₹1,250. No matter how far out you extend, you cannot value an infinite cash flow stream above this number when discounted at 8%.",
+        "sensitivity_note": "Perpetuity values are extraordinarily sensitive to small changes in r — at PMT = ₹100, PV at 8% is ₹1,250; at 6% it jumps to ₹1,667 (33% higher); at 4% it doubles to ₹2,500. This is why interest rate movements have such dramatic effects on long-duration assets, and why equity markets often correct violently when central banks raise rates."
+      },
+      {
+        "name": "Present Value of a Growing Perpetuity (Gordon Growth Model)",
+        "formula": "PV = CF₁ / (r - g)",
+        "variables": [
+          {
+            "symbol": "CF₁",
+            "meaning": "Cash flow in the first period (one year from now)"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Constant growth rate, forever (must be less than r)"
+          }
+        ],
+        "worked_example": "You expect TCS to generate ₹50,000 cr of free cash flow next year, growing at 5% forever. At a WACC of 11%, the value of TCS's cash flows from now to infinity is 50,000 / (0.11 - 0.05) = 50,000 / 0.06 = ₹8,33,333 cr. This is the workhorse formula for terminal value in every DCF on Earth.",
+        "sensitivity_note": "This formula is mathematically explosive as g approaches r. At r = 11%, g = 5% gives PV multiplier of 16.7x; bump g to 6% and the multiplier becomes 20x; push g to 7% and it shoots to 25x. Tiny changes in g move the answer enormously. This is why the perpetuity growth rate is the single most-debated assumption in any DCF."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=PV(rate, nper, pmt, [fv], [type])",
+        "=FV(rate, nper, pmt, [pv], [type])",
+        "=NPV(rate, value1, value2, ...)",
+        "=XNPV(rate, values, dates)",
+        "Cmd + Shift + % — percentage formatting"
+      ],
+      "windows": [
+        "=PV(rate, nper, pmt, [fv], [type]) — present value of any cash flow stream",
+        "=FV(rate, nper, pmt, [pv], [type]) — future value",
+        "=NPV(rate, value1, value2, ...) — present value of irregular cash flows starting Year 1",
+        "=XNPV(rate, values, dates) — present value of irregular cash flows on actual dates",
+        "Ctrl + Shift + 5 — convert decimal to percentage format"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Present Value of a Single Future Cash Flow",
+        "formula": "PV = FV / (1 + r)^n",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value — what the future cash flow is worth today"
+          },
+          {
+            "symbol": "FV",
+            "meaning": "Future value — the cash flow at the future date"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate (decimal form, e.g., 0.10 for 10%)"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of periods (typically years) until the cash flow occurs"
+          }
+        ],
+        "plain_english": "This formula answers the fundamental question: what is a cash flow I will receive in the future worth to me in today's money? Money today is always more valuable than money tomorrow because you can invest it and earn returns. The discount rate reflects your required return; the longer you must wait (higher n), the less that future cash is worth today.",
+        "worked_example": "You expect HDFC Bank to pay you a dividend of ₹50 per share five years from now. Your discount rate is 11%. The present value is ₹50 / (1.11)^5 = ₹50 / 1.6851 = ₹29.67. So that ₹50 future dividend is worth about ₹29.67 to you today. The other ₹20.33 is the cost of waiting five years to receive it.",
+        "sensitivity_note": "PV is highly sensitive to both r and n. At r = 10%, ₹100 in Year 10 is worth ₹38.55 today. Bump r to 12% and it falls to ₹32.20 (a 16% drop in PV from a 2 percentage point change in rate). Push n out to Year 20 at r = 10% and ₹100 is worth only ₹14.86. This is why long-duration cash flows are extremely sensitive to the discount rate — and why terminal value assumptions in a DCF deserve so much scrutiny."
+      },
+      {
+        "name": "Future Value of a Single Present Cash Flow",
+        "formula": "FV = PV × (1 + r)^n",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value — the amount you have today"
+          },
+          {
+            "symbol": "FV",
+            "meaning": "Future value — what it will grow to"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Compounding rate per period"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of compounding periods"
+          }
+        ],
+        "plain_english": "This is the mirror image of discounting: instead of asking what a future cash flow is worth today, it asks what today's cash will grow to. The (1 + r)^n term is the compounding multiplier — it shows how money grows geometrically when you reinvest earnings each period. This is why long time horizons and consistent returns create exponential wealth.",
+        "worked_example": "You invest ₹1,00,000 in a Nifty 50 index fund and assume a 12% CAGR over 15 years. Future value = 1,00,000 × (1.12)^15 = 1,00,000 × 5.4736 = ₹5,47,360. This is also why your senior keeps repeating that compounding is the eighth wonder of the world — that initial ₹1 lakh grew 5.5x over 15 years without you adding a single rupee.",
+        "sensitivity_note": "FV is especially sensitive to time horizon. The same ₹1 lakh at 12% becomes ₹3.11 lakh in 10 years, ₹5.47 lakh in 15 years, ₹9.65 lakh in 20 years, and ₹17.0 lakh in 25 years. Each additional 5 years adds dramatically more value than the last — that is the geometric magic of compounding."
+      },
+      {
+        "name": "Present Value of an Ordinary Annuity",
+        "formula": "PV = PMT × [(1 - (1 + r)^-n) / r]",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value of all payments combined"
+          },
+          {
+            "symbol": "PMT",
+            "meaning": "Equal periodic payment"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate per period"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of periods"
+          }
+        ],
+        "plain_english": "An annuity is a series of equal payments spread across multiple periods. This formula tells you what all those future payments are worth in today's money by discounting each one back and summing them. It is the workhorse formula for valuing pension obligations, lease payments, bond coupons, and loan repayments — anything that involves regular equal cash flows.",
+        "worked_example": "Going back to the KBC opener — your uncle gets ₹15 lakh per year for 10 years at a 10% discount rate. PV = 15,00,000 × [(1 - (1.10)^-10) / 0.10] = 15,00,000 × 6.1446 = ₹92.17 lakh. The ₹1.5 crore headline number was actually worth ₹92 lakh in present-value terms — less than the ₹1 crore lump sum he turned down.",
+        "sensitivity_note": "For any annuity, the present value is bounded above by PMT/r (the perpetuity value). At r = 10% and PMT = ₹15 lakh, even an infinite annuity would only be worth ₹1.5 crore today — so a 10-year annuity at ₹92 lakh has captured about 61% of the perpetuity value. The longer the annuity, the more it asymptotes to the perpetuity, but the gains from extending get smaller and smaller."
+      },
+      {
+        "name": "Present Value of a Perpetuity",
+        "formula": "PV = PMT / r",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value of all cash flows forever"
+          },
+          {
+            "symbol": "PMT",
+            "meaning": "Constant cash flow per period, forever"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate per period"
+          }
+        ],
+        "plain_english": "A perpetuity is a stream of equal cash flows that never ends — a simplified model for stable, mature businesses. The formula is remarkably simple: divide the annual cash flow by the discount rate. The intuition is that if you earned PMT every year forever at a rate of return r, the capital required today would be PMT/r. This form appears in terminal value calculations whenever you assume a business will generate stable cash flows into perpetuity.",
+        "worked_example": "A government bond pays ₹100 per year forever (the British Consol bond was structured this way). At a discount rate of 8%, its present value is ₹100 / 0.08 = ₹1,250. No matter how far out you extend, you cannot value an infinite cash flow stream above this number when discounted at 8%.",
+        "sensitivity_note": "Perpetuity values are extraordinarily sensitive to small changes in r — at PMT = ₹100, PV at 8% is ₹1,250; at 6% it jumps to ₹1,667 (33% higher); at 4% it doubles to ₹2,500. This is why interest rate movements have such dramatic effects on long-duration assets, and why equity markets often correct violently when central banks raise rates."
+      },
+      {
+        "name": "Present Value of a Growing Perpetuity (Gordon Growth Model)",
+        "formula": "PV = CF₁ / (r - g)",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present value of the perpetual growing cash flow stream"
+          },
+          {
+            "symbol": "CF₁",
+            "meaning": "Cash flow in the first period (one year from now)"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate (required return)"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Constant growth rate, forever (must be less than r)"
+          }
+        ],
+        "plain_english": "This extends the perpetuity model to allow for growth: instead of flat cash flows forever, imagine cash flows that grow at a constant rate g forever. The formula shows that value depends on the spread between your required return (r) and that growth rate (g) — the wider the spread, the lower the value. As g approaches r, the formula explodes to infinity, which is why perpetuity growth assumptions demand intense scrutiny in any DCF.",
+        "worked_example": "You expect TCS to generate ₹50,000 cr of free cash flow next year, growing at 5% forever. At a WACC of 11%, the value of TCS's cash flows from now to infinity is 50,000 / (0.11 - 0.05) = 50,000 / 0.06 = ₹8,33,333 cr. This is the workhorse formula for terminal value in every DCF on Earth.",
+        "sensitivity_note": "This formula is mathematically explosive as g approaches r. At r = 11%, g = 5% gives PV multiplier of 16.7x; bump g to 6% and the multiplier becomes 20x; push g to 7% and it shoots to 25x. Tiny changes in g move the answer enormously. This is why the perpetuity growth rate is the single most-debated assumption in any DCF."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=PV(rate, nper, pmt, [fv], [type])",
+        "=FV(rate, nper, pmt, [pv], [type])",
+        "=NPV(rate, value1, value2, ...)",
+        "=XNPV(rate, values, dates)",
+        "Cmd + Shift + % — percentage formatting"
+      ],
+      "windows": [
+        "=PV(rate, nper, pmt, [fv], [type]) — present value of any cash flow stream",
+        "=FV(rate, nper, pmt, [pv], [type]) — future value",
+        "=NPV(rate, value1, value2, ...) — present value of irregular cash flows starting Year 1",
+        "=XNPV(rate, values, dates) — present value of irregular cash flows on actual dates",
+        "Ctrl + Shift + 5 — convert decimal to percentage format"
+      ]
+    }
+  }
+}

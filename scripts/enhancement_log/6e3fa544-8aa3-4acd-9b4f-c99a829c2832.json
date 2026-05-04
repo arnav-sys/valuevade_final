@@ -1,0 +1,488 @@
+{
+  "id": "6e3fa544-8aa3-4acd-9b4f-c99a829c2832",
+  "label": "M3 S12 | Sensitivity Analysis Skills — Data Tables, Goal Seek & Scena",
+  "before": {
+    "skills": [
+      {
+        "skill": "One-Variable Data Table",
+        "pro_tip": "You can track multiple outputs simultaneously. Place multiple formula references in the row above: =TargetPrice, =ImpliedPE, =IRR. The data table fills all columns.",
+        "key_action": "Data → What-If Analysis → Data Table",
+        "description": "Varies ONE input across a range of values and shows the resulting output(s). The fastest way to see how sensitive your model is to a single assumption.",
+        "setup_steps": [
+          "Create a column of input values (e.g., WACC from 8% to 14% in 0.5% steps)",
+          "In the cell to the RIGHT of the first input value AND one row ABOVE, place a formula referencing the output (e.g., =TargetPrice)",
+          "Select the entire table (input column + output column, including the formula cell)",
+          "Data → What-If Analysis → Data Table",
+          "'Column input cell' = the cell in your model that holds the input being varied",
+          "Click OK — Excel fills in the output for each input value"
+        ],
+        "example_output": [
+          {
+            "wacc": "8.0%",
+            "upside": "22.1% upside",
+            "target_price": "₹3,480"
+          },
+          {
+            "wacc": "9.0%",
+            "upside": "11.6% upside",
+            "target_price": "₹3,180"
+          },
+          {
+            "wacc": "10.0%",
+            "upside": "2.5% upside",
+            "target_price": "₹2,920"
+          },
+          {
+            "wacc": "10.5% (Base)",
+            "upside": "0.0%",
+            "target_price": "₹2,850 (Base TP)"
+          },
+          {
+            "wacc": "11.0%",
+            "upside": "-2.5% downside",
+            "target_price": "₹2,780"
+          },
+          {
+            "wacc": "12.0%",
+            "upside": "-10.2% downside",
+            "target_price": "₹2,560"
+          },
+          {
+            "wacc": "14.0%",
+            "upside": "-23.5% downside",
+            "target_price": "₹2,180"
+          }
+        ]
+      },
+      {
+        "skill": "Two-Variable Data Table — The Interview Favourite",
+        "key_action": "Data → What-If Analysis → Data Table (with both Row and Column input cells)",
+        "limitation": "A two-variable data table can only show ONE output formula. For multiple outputs (implied PE AND target price), build separate two-variable tables side by side.",
+        "description": "Varies TWO inputs simultaneously and shows the output in a grid. THE most important sensitivity analysis tool in DCF valuation.",
+        "setup_steps": [
+          "Top-left corner: the output formula (e.g., =TargetPrice)",
+          "Top row (right of formula): values for Input 1 (e.g., WACC: 9%, 10%, 11%, 12%, 13%)",
+          "Left column (below formula): values for Input 2 (e.g., Terminal Growth: 2%, 3%, 4%, 5%)",
+          "Select the entire grid (formula + row values + column values + empty body)",
+          "Data → What-If Analysis → Data Table",
+          "Row input cell = the model cell for Input 1 (WACC cell)",
+          "Column input cell = the model cell for Input 2 (Terminal Growth cell)",
+          "Click OK — the grid fills with target prices for every combination"
+        ],
+        "reading_guide": "At base case (WACC=11%, TG=4%), the target price is ₹2,650. If WACC rises to 13% and terminal growth falls to 2%, the target drops to ₹1,910 (28% downside from base). If WACC falls to 9% and terminal growth rises to 5.5%, the target jumps to ₹4,250 (60% upside).",
+        "example_output": {
+          "rows": [
+            {
+              "tg": "2.0%",
+              "values": [
+                2920,
+                2580,
+                2310,
+                2090,
+                1910
+              ]
+            },
+            {
+              "tg": "3.0%",
+              "values": [
+                3180,
+                2780,
+                2460,
+                2210,
+                2010
+              ]
+            },
+            {
+              "tg": "4.0% (Base)",
+              "values": [
+                3510,
+                3020,
+                2650,
+                2350,
+                2120
+              ]
+            },
+            {
+              "tg": "5.0%",
+              "values": [
+                3960,
+                3340,
+                2890,
+                2530,
+                2260
+              ]
+            },
+            {
+              "tg": "5.5%",
+              "values": [
+                4250,
+                3530,
+                3010,
+                2620,
+                2320
+              ]
+            }
+          ],
+          "columns": [
+            "9.0%",
+            "10.0%",
+            "11.0%",
+            "12.0%",
+            "13.0%"
+          ],
+          "base_case": {
+            "tg": "4.0%",
+            "wacc": "11.0%",
+            "value": 2650
+          },
+          "col_header": "Terminal Growth ↓",
+          "row_header": "WACC →"
+        }
+      },
+      {
+        "skill": "Goal Seek — Working Backwards",
+        "key_action": "Data → What-If Analysis → Goal Seek",
+        "limitation": "Goal Seek changes only ONE cell and finds only ONE solution (nearest to starting value). For complex problems with multiple solutions, use Solver (Data → Solver).",
+        "description": "Finds the input value needed to achieve a specific output. Works backwards: you tell Excel the answer you want and it finds the assumption that produces it.",
+        "applications": [
+          {
+            "question": "At what growth rate is the stock fairly valued?",
+            "set_cell": "Target Price",
+            "to_value": "Current Market Price",
+            "by_changing": "Revenue Growth"
+          },
+          {
+            "question": "What margin makes the project NPV = 0?",
+            "set_cell": "NPV Cell",
+            "to_value": "0",
+            "by_changing": "EBITDA Margin"
+          },
+          {
+            "question": "What WACC makes IRR equal the hurdle rate?",
+            "set_cell": "Implied IRR",
+            "to_value": "12%",
+            "by_changing": "WACC"
+          },
+          {
+            "question": "How much can capex increase before NPV turns negative?",
+            "set_cell": "NPV Cell",
+            "to_value": "0",
+            "by_changing": "Capex Amount"
+          },
+          {
+            "question": "What revenue is needed to hit ₹10 EPS?",
+            "set_cell": "EPS Cell",
+            "to_value": "10",
+            "by_changing": "Revenue"
+          }
+        ],
+        "three_fields": {
+          "set_cell": "The output cell (e.g., Target Price)",
+          "to_value": "The target output (e.g., 2850 = current market price)",
+          "by_changing_cell": "The input to adjust (e.g., Revenue Growth Rate)"
+        },
+        "implied_assumptions": "When Goal Seek finds the stock is fairly valued at 18% revenue growth, you're saying: 'The market is pricing in 18% growth. Our base case is 12%. If we're right, the stock is undervalued.' This is how equity research analysts frame their thesis."
+      },
+      {
+        "skill": "Scenario Manager — Named Parameter Sets",
+        "steps": [
+          "Data → What-If Analysis → Scenario Manager → Add",
+          "Name the scenario (e.g., 'Bull')",
+          "Select the changing cells (e.g., Growth Rate, WACC, Terminal Growth)",
+          "Enter the values for this scenario",
+          "Repeat for Base and Bear",
+          "Click 'Summary' to generate a comparison table"
+        ],
+        "key_action": "Data → What-If Analysis → Scenario Manager",
+        "description": "Stores named sets of input values (Bull, Base, Bear) that you can switch between and compare in a summary report.",
+        "example_output": [
+          {
+            "wacc": "10%",
+            "upside": "+35.1%",
+            "scenario": "Bull",
+            "target_price": "₹3,850",
+            "ebitda_margin": "28%",
+            "revenue_growth": "18%",
+            "terminal_growth": "5%"
+          },
+          {
+            "wacc": "11%",
+            "upside": "0.0%",
+            "scenario": "Base",
+            "target_price": "₹2,850",
+            "ebitda_margin": "24%",
+            "revenue_growth": "12%",
+            "terminal_growth": "4%"
+          },
+          {
+            "wacc": "12%",
+            "upside": "-31.6%",
+            "scenario": "Bear",
+            "target_price": "₹1,950",
+            "ebitda_margin": "20%",
+            "revenue_growth": "5%",
+            "terminal_growth": "2.5%"
+          }
+        ],
+        "vs_other_tools": "Use SWITCH (Session 7) for real-time toggling during presentations. Use Scenario Manager for formal comparison reports with a static summary table. Use Data Tables for granular sensitivity across 10–20+ values."
+      }
+    ]
+  },
+  "after": {
+    "skills": [
+      {
+        "skill": "One-Variable Data Table",
+        "pro_tip": "You can track multiple outputs simultaneously. Place multiple formula references in the row above: =TargetPrice, =ImpliedPE, =IRR. The data table fills all columns.",
+        "key_action": "Data → What-If Analysis → Data Table",
+        "description": "Varies ONE input across a range of values and shows the resulting output(s). The fastest way to see how sensitive your model is to a single assumption.",
+        "setup_steps": [
+          "Create a column of input values (e.g., WACC from 8% to 14% in 0.5% steps)",
+          "In the cell to the RIGHT of the first input value AND one row ABOVE, place a formula referencing the output (e.g., =TargetPrice)",
+          "Select the entire table (input column + output column, including the formula cell)",
+          "Data → What-If Analysis → Data Table",
+          "'Column input cell' = the cell in your model that holds the input being varied",
+          "Click OK — Excel fills in the output for each input value"
+        ],
+        "example_output": [
+          {
+            "wacc": "8.0%",
+            "upside": "22.1% upside",
+            "target_price": "₹3,480"
+          },
+          {
+            "wacc": "9.0%",
+            "upside": "11.6% upside",
+            "target_price": "₹3,180"
+          },
+          {
+            "wacc": "10.0%",
+            "upside": "2.5% upside",
+            "target_price": "₹2,920"
+          },
+          {
+            "wacc": "10.5% (Base)",
+            "upside": "0.0%",
+            "target_price": "₹2,850 (Base TP)"
+          },
+          {
+            "wacc": "11.0%",
+            "upside": "-2.5% downside",
+            "target_price": "₹2,780"
+          },
+          {
+            "wacc": "12.0%",
+            "upside": "-10.2% downside",
+            "target_price": "₹2,560"
+          },
+          {
+            "wacc": "14.0%",
+            "upside": "-23.5% downside",
+            "target_price": "₹2,180"
+          }
+        ],
+        "plain_english": "A one-variable data table shows you exactly how sensitive your valuation is to ONE assumption by automatically calculating your target price (or any output) across a range of that input. This is essential for equity research because the analyst needs to know: if my WACC estimate is slightly off, how much does my fair value move? A steep slope means high sensitivity; a flat line means the output is robust to that assumption."
+      },
+      {
+        "skill": "Two-Variable Data Table — The Interview Favourite",
+        "key_action": "Data → What-If Analysis → Data Table (with both Row and Column input cells)",
+        "limitation": "A two-variable data table can only show ONE output formula. For multiple outputs (implied PE AND target price), build separate two-variable tables side by side.",
+        "description": "Varies TWO inputs simultaneously and shows the output in a grid. THE most important sensitivity analysis tool in DCF valuation.",
+        "setup_steps": [
+          "Top-left corner: the output formula (e.g., =TargetPrice)",
+          "Top row (right of formula): values for Input 1 (e.g., WACC: 9%, 10%, 11%, 12%, 13%)",
+          "Left column (below formula): values for Input 2 (e.g., Terminal Growth: 2%, 3%, 4%, 5%)",
+          "Select the entire grid (formula + row values + column values + empty body)",
+          "Data → What-If Analysis → Data Table",
+          "Row input cell = the model cell for Input 1 (WACC cell)",
+          "Column input cell = the model cell for Input 2 (Terminal Growth cell)",
+          "Click OK — the grid fills with target prices for every combination"
+        ],
+        "reading_guide": "At base case (WACC=11%, TG=4%), the target price is ₹2,650. If WACC rises to 13% and terminal growth falls to 2%, the target drops to ₹1,910 (28% downside from base). If WACC falls to 9% and terminal growth rises to 5.5%, the target jumps to ₹4,250 (60% upside).",
+        "example_output": {
+          "rows": [
+            {
+              "tg": "2.0%",
+              "values": [
+                2920,
+                2580,
+                2310,
+                2090,
+                1910
+              ]
+            },
+            {
+              "tg": "3.0%",
+              "values": [
+                3180,
+                2780,
+                2460,
+                2210,
+                2010
+              ]
+            },
+            {
+              "tg": "4.0% (Base)",
+              "values": [
+                3510,
+                3020,
+                2650,
+                2350,
+                2120
+              ]
+            },
+            {
+              "tg": "5.0%",
+              "values": [
+                3960,
+                3340,
+                2890,
+                2530,
+                2260
+              ]
+            },
+            {
+              "tg": "5.5%",
+              "values": [
+                4250,
+                3530,
+                3010,
+                2620,
+                2320
+              ]
+            }
+          ],
+          "columns": [
+            "9.0%",
+            "10.0%",
+            "11.0%",
+            "12.0%",
+            "13.0%"
+          ],
+          "base_case": {
+            "tg": "4.0%",
+            "wacc": "11.0%",
+            "value": 2650
+          },
+          "col_header": "Terminal Growth ↓",
+          "row_header": "WACC →"
+        },
+        "plain_english": "A two-variable data table displays how your valuation changes when two key assumptions move together in a grid format. This is crucial for equity research pitches because it shows investors the 'map' of outcomes: best case (low cost of capital + high growth), base case, worst case (high cost of capital + low growth), and all combinations in between. You can spot which pairs of assumptions create the biggest upside or downside surprises."
+      },
+      {
+        "skill": "Goal Seek — Working Backwards",
+        "key_action": "Data → What-If Analysis → Goal Seek",
+        "limitation": "Goal Seek changes only ONE cell and finds only ONE solution (nearest to starting value). For complex problems with multiple solutions, use Solver (Data → Solver).",
+        "description": "Finds the input value needed to achieve a specific output. Works backwards: you tell Excel the answer you want and it finds the assumption that produces it.",
+        "applications": [
+          {
+            "question": "At what growth rate is the stock fairly valued?",
+            "set_cell": "Target Price",
+            "to_value": "Current Market Price",
+            "by_changing": "Revenue Growth"
+          },
+          {
+            "question": "What margin makes the project NPV = 0?",
+            "set_cell": "NPV Cell",
+            "to_value": "0",
+            "by_changing": "EBITDA Margin"
+          },
+          {
+            "question": "What WACC makes IRR equal the hurdle rate?",
+            "set_cell": "Implied IRR",
+            "to_value": "12%",
+            "by_changing": "WACC"
+          },
+          {
+            "question": "How much can capex increase before NPV turns negative?",
+            "set_cell": "NPV Cell",
+            "to_value": "0",
+            "by_changing": "Capex Amount"
+          },
+          {
+            "question": "What revenue is needed to hit ₹10 EPS?",
+            "set_cell": "EPS Cell",
+            "to_value": "10",
+            "by_changing": "Revenue"
+          }
+        ],
+        "three_fields": {
+          "set_cell": "The output cell (e.g., Target Price)",
+          "to_value": "The target output (e.g., 2850 = current market price)",
+          "by_changing_cell": "The input to adjust (e.g., Revenue Growth Rate)"
+        },
+        "implied_assumptions": "When Goal Seek finds the stock is fairly valued at 18% revenue growth, you're saying: 'The market is pricing in 18% growth. Our base case is 12%. If we're right, the stock is undervalued.' This is how equity research analysts frame their thesis.",
+        "plain_english": "Goal Seek reverses the typical valuation question: instead of asking 'What is the fair value given my assumptions?', you ask 'What assumption do I need to justify the current market price?' This reveals the implied assumptions baked into the market price. If the market is pricing in 20% revenue growth but you think 10% is realistic, the stock is likely overvalued—a critical insight for your research note.",
+        "worked_example": {
+          "problem": "A mid-cap IT services company (like Infosys) is trading at ₹1,800/share. Your DCF model with base-case assumptions (10% revenue CAGR, 22% EBITDA margin, 10% WACC) values it at ₹2,150. Use Goal Seek to find at what revenue growth rate the target price equals the current market price.",
+          "steps": [
+            "Set up your DCF model with Target Price in cell E50, Revenue Growth in cell D5.",
+            "Go to Data → What-If Analysis → Goal Seek.",
+            "Set Cell: E50 (Target Price cell)",
+            "To Value: 1800 (current market price in ₹)",
+            "By Changing Cell: D5 (Revenue Growth %)",
+            "Click OK. Goal Seek returns: 5.2% revenue growth."
+          ],
+          "result": "The market is pricing in only 5.2% revenue growth, well below your 10% base case assumption.",
+          "insight": "This implies the market is pessimistic on the company's growth prospects relative to your analysis. Either (1) the market knows something you don't (check recent news, competition, margins), or (2) the stock is undervalued if you believe 10% growth is achievable. This is the core of your investment thesis for the research note."
+        }
+      },
+      {
+        "skill": "Scenario Manager — Named Parameter Sets",
+        "steps": [
+          "Data → What-If Analysis → Scenario Manager → Add",
+          "Name the scenario (e.g., 'Bull')",
+          "Select the changing cells (e.g., Growth Rate, WACC, Terminal Growth)",
+          "Enter the values for this scenario",
+          "Repeat for Base and Bear",
+          "Click 'Summary' to generate a comparison table"
+        ],
+        "key_action": "Data → What-If Analysis → Scenario Manager",
+        "description": "Stores named sets of input values (Bull, Base, Bear) that you can switch between and compare in a summary report.",
+        "example_output": [
+          {
+            "wacc": "10%",
+            "upside": "+35.1%",
+            "scenario": "Bull",
+            "target_price": "₹3,850",
+            "ebitda_margin": "28%",
+            "revenue_growth": "18%",
+            "terminal_growth": "5%"
+          },
+          {
+            "wacc": "11%",
+            "upside": "0.0%",
+            "scenario": "Base",
+            "target_price": "₹2,850",
+            "ebitda_margin": "24%",
+            "revenue_growth": "12%",
+            "terminal_growth": "4%"
+          },
+          {
+            "wacc": "12%",
+            "upside": "-31.6%",
+            "scenario": "Bear",
+            "target_price": "₹1,950",
+            "ebitda_margin": "20%",
+            "revenue_growth": "5%",
+            "terminal_growth": "2.5%"
+          }
+        ],
+        "vs_other_tools": "Use SWITCH (Session 7) for real-time toggling during presentations. Use Scenario Manager for formal comparison reports with a static summary table. Use Data Tables for granular sensitivity across 10–20+ values.",
+        "plain_english": "Scenario Manager lets you bundle multiple assumptions into named 'stories'—Bull (optimistic), Base (most likely), Bear (pessimistic)—and switch between them or compare them all at once in a summary report. This is how equity research analysts present risk/reward to clients: instead of confusing them with dozens of sensitivity tables, you say: 'Here are three coherent narratives: if the company achieves operational leverage, we're at ₹3,850 (Bull); if it meets our expectations, ₹2,850 (Base); if headwinds persist, ₹1,950 (Bear).' One summary table tells the whole story.",
+        "worked_example": {
+          "problem": "You are analyzing a consumer durables company (like Asian Paints or HUL). Create three scenarios—Bull, Base, Bear—with different revenue growth, EBITDA margin, WACC, and terminal growth assumptions, then use Scenario Manager to compare their target prices side by side.",
+          "steps": [
+            "Set up your DCF model with assumptions in separate input cells: Revenue Growth (D2), EBITDA Margin (D3), WACC (D4), Terminal Growth (D5). Your Target Price formula is in E10.",
+            "Data → What-If Analysis → Scenario Manager → Add.",
+            "Scenario 1 'Bull': Revenue Growth 16%, EBITDA Margin 26%, WACC 9.5%, Terminal Growth 4.5%. Enter values and click OK.",
+            "Scenario 2 'Base': Revenue Growth 11%, EBITDA Margin 23%, WACC 10.5%, Terminal Growth 4%. Enter and OK.",
+            "Scenario 3 'Bear': Revenue Growth 5%, EBITDA Margin 20%, WACC 11.5%, Terminal Growth 2.5%. Enter and OK.",
+            "Back at Scenario Manager, click 'Summary'. Excel creates a new sheet with a summary table."
+          ],
+          "result": "Summary table shows: Bull ₹4,200 (+47% upside), Base ₹2,850 (0%), Bear ₹1,620 (−43% downside).",
+          "insight": "Your research report can now tell clients: 'At Base Case, the stock is fairly valued at ₹2,850. Bull scenario assumes strong market share gains and margin expansion (47% upside); Bear scenario reflects margin pressure and slower growth (43% downside). Our rating reflects the Base case with upside bias given the company's track record.' Scenario Manager makes this crystal clear for your pitch deck."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,293 @@
+{
+  "id": "343e8fe9-82f2-4b6b-85db-9955cf507fba",
+  "label": "M13 S8 | The Three Valuation Calculations Every Analyst Must Know",
+  "before": {
+    "formulas": [
+      {
+        "name": "DCF Enterprise Value",
+        "formula": "Enterprise Value = Sum from t=1 to N of [FCFF(t) / (1+WACC)^t] + Terminal Value / (1+WACC)^N\n\nWhere:\n  Terminal Value = FCFF(N+1) / (WACC - g)\n  Equity Value = Enterprise Value - Net Debt\n  Target Price per Share = Equity Value / Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "FCFF(t)",
+            "meaning": "Free cash flow to the firm in year t — EBIT times (1 minus tax rate) plus depreciation minus capex minus change in working capital"
+          },
+          {
+            "symbol": "WACC",
+            "meaning": "Weighted average cost of capital — the blended cost of debt and equity capital reflecting the company capital structure and risk profile"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Terminal growth rate — the perpetual growth rate of free cash flows beyond the explicit forecast period; typically 3-5% for Indian companies, anchored to long-term GDP growth or inflation"
+          },
+          {
+            "symbol": "N",
+            "meaning": "Length of explicit forecast period; standard is 5-10 years for stable companies, longer for high-growth names where terminal-year economics differ materially from current"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total debt minus cash and cash equivalents; for net cash companies, this is negative and adds to equity value"
+          }
+        ],
+        "worked_example": "Worked Example — Asian Paints DCF (10-year explicit forecast):\n\nFY27E FCFF: Rs. 4,950 cr (provided in financial model)\nFY28E FCFF: Rs. 6,200 cr (forecast)\nFY29E FCFF: Rs. 7,400 cr (forecast)\n... continuing through FY36E\n\nKey Assumptions:\n  WACC: 10.5% (cost of equity 11.0% blended with cost of debt 7.5%, near-zero debt weight)\n  Terminal Growth: 5.0% (Indian long-term inflation plus modest real GDP growth)\n  Terminal Year FCFF (FY37E normalised): Rs. 12,800 cr\n\nTerminal Value Calculation:\n  TV (at end of FY36) = 12,800 / (0.105 - 0.05) = Rs. 232,727 cr\n  PV of TV = 232,727 / (1.105)^10 = Rs. 86,140 cr\n\nPV of Explicit Forecast FCFFs (FY27-FY36): Rs. 49,650 cr\n\nEnterprise Value = 49,650 + 86,140 = Rs. 135,790 cr\nLess: Net Debt (negative, i.e., net cash): -3,800 cr\nEquity Value = 135,790 + 3,800 = Rs. 139,590 cr\nShares Outstanding: 95.92 cr\nTarget Price per Share = 139,590 / 95.92 = Rs. 1,455 (DCF base case)\n\nNote: This base case is conservative. Adjusting WACC to 10.0% and terminal growth to 5.5% (within reasonable ranges) lifts the DCF target to roughly Rs. 1,750. The DCF range is therefore Rs. 1,455 - Rs. 1,750 depending on assumptions. This is why sensitivity analysis is non-negotiable.",
+        "sensitivity_note": "DCF is acutely sensitive to two inputs: WACC and terminal growth. A 100 basis point change in WACC moves the target price by 15-25%. A 100 basis point change in terminal growth moves it by 10-20%. These two inputs alone explain most of the variation in DCF outputs across analysts on the same stock. Always present a 2D sensitivity table (typically 5x5 grid: WACC on one axis, terminal growth on the other), not a single point estimate. The football field chart should show the DCF as a range bar reflecting this sensitivity."
+      },
+      {
+        "name": "Trading Comparables Implied Price",
+        "formula": "Target Price = Target Multiple x Forecast Metric per Share\n\nFor P/E approach:\n  Target Price = Target P/E x FY+2 EPS\n\nFor EV/EBITDA approach:\n  Target Enterprise Value = Target EV/EBITDA x FY+2 EBITDA\n  Target Equity Value = Target EV - Net Debt\n  Target Price per Share = Target Equity Value / Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Target Multiple",
+            "meaning": "The multiple you apply to the company forecast metric — typically the median of the comparable peer group, adjusted for quality differential"
+          },
+          {
+            "symbol": "Forecast Metric",
+            "meaning": "Forward-year EPS, EBITDA, or revenue used as the multiplier base; FY+2 (12-24 months forward) is standard for trading comps"
+          },
+          {
+            "symbol": "Quality Adjustment",
+            "meaning": "Premium or discount applied to the median peer multiple based on the target company structural advantages or weaknesses; quantified as a percentage adjustment"
+          }
+        ],
+        "worked_example": "Worked Example — Asian Paints Trading Comps (P/E approach):\n\nPeer Set Construction:\n  Berger Paints: FY+2 P/E = 35x\n  Kansai Nerolac: FY+2 P/E = 32x\n  Akzo Nobel India: FY+2 P/E = 30x\n  Indigo Paints: FY+2 P/E = 28x\n  (Birla Opus excluded - new entrant, no FY+2 EPS)\n\nMedian Peer P/E: 31x\nMean Peer P/E: 31.25x\n\nQuality Adjustment for Asian Paints:\n  Premium for: market leadership (52% share), highest ROCE in peer set (26% vs peer median 18%), Tinting Machine Network moat\n  Quality premium applied: 15% to median peer multiple\n\nTarget P/E = 31x x 1.15 = 35.7x (round to 35x)\n\nFY+2 EPS Estimate: Rs. 84.2\n\nTarget Price (P/E approach) = 35x x 84.2 = Rs. 2,947 (round to Rs. 2,950)\n\nThe target P/E of 35x is also broadly consistent with the company 5-year mean P/E of 36x, providing a self-consistency check.",
+        "sensitivity_note": "Trading comps target multiple selection is the most contested decision in the valuation section. Three discipline points. First, document the peer set explicitly with inclusion/exclusion criteria. Second, justify the quality adjustment with specific reasoning, not vague terms like premium quality. Third, always sense-check the target multiple against the company own historical trading range — if the target is at the high end of the 5-year range, the implicit assumption is rerating, which needs a thesis catalyst to support. A target P/E meaningfully above 5-year mean without a clear rerating catalyst is the classic over-bullish valuation error."
+      },
+      {
+        "name": "Weighted Blended Target Price",
+        "formula": "Blended Target Price = Sum of [Method Weight x Method Target Price]\n\nWhere weights sum to 100% across all valuation methods used\n\nImplied Upside or Downside (%) = (Blended Target / Current Market Price) - 1",
+        "variables": [
+          {
+            "symbol": "Method Weight",
+            "meaning": "The percentage weight assigned to each valuation method in the final blended target; documented and justified explicitly in the valuation section"
+          },
+          {
+            "symbol": "Method Target Price",
+            "meaning": "The implied price per share output by each individual valuation method (DCF base case, comps median, etc.)"
+          },
+          {
+            "symbol": "Current Market Price",
+            "meaning": "The traded share price at the time of report publication, used to compute implied upside or downside"
+          }
+        ],
+        "worked_example": "Worked Example — Asian Paints Blended Target Price:\n\nMethod-Specific Targets:\n  DCF Base Case: Rs. 1,650 (midpoint of sensitivity range Rs. 1,455 to Rs. 1,750)\n  Trading Comps (P/E): Rs. 2,950\n  Trading Comps (EV/EBITDA): Rs. 2,890\n  Precedent Transactions: Rs. 3,150 (recent paint-sector M&A multiples imply higher value, including control premium)\n\nMethod Weights:\n  DCF: 30% (anchors fundamentals but high WACC sensitivity)\n  Trading Comps P/E: 35% (most market-relevant; primary metric for FMCG)\n  Trading Comps EV/EBITDA: 25% (cross-check on capital structure)\n  Precedent Transactions: 10% (limited deal data in Indian paints sector)\n\nWeighted Calculation:\n  (0.30 x 1,650) + (0.35 x 2,950) + (0.25 x 2,890) + (0.10 x 3,150)\n  = 495 + 1,032.5 + 722.5 + 315\n  = Rs. 2,565\n\nReconciliation with Senior Target: Senior thesis target was Rs. 2,950, which corresponds to weighting trading comps higher (e.g., 50-50 P/E and EV/EBITDA with no DCF weight). This reflects a stronger conviction in the relative valuation than the DCF base case — a defensible position for FMCG names where the comparable market is liquid and the DCF is highly sensitive to small input changes. The blended Rs. 2,565 is the technically rigorous output; the Rs. 2,950 target reflects the senior weighting of methods.\n\nImplied Upside vs CMP Rs. 2,540: 16.1% upside (using senior target Rs. 2,950).",
+        "sensitivity_note": "Blended target price weighting is where analytical judgment becomes explicit. Document the weights and justify them — the reader should be able to see exactly how you arrived at the final number. If your DCF says Rs. 1,650 and your blended target is Rs. 2,950, you are weighting comps very heavily; the reader deserves to see that and understand why. Never present a blended target without showing the underlying method-specific outputs and the weights used. That is what separates a defensible valuation from an arbitrary one."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + V for Paste Special (DCF construction)",
+        "Cmd + Shift + Enter to confirm array formulas",
+        "Cmd + = to recalculate sheet",
+        "Cmd + Option + 5 to apply percentage formatting to sensitivity tables",
+        "Cmd + T to lock cell references",
+        "Cmd + Shift + F for filter on data range"
+      ],
+      "windows": [
+        "Alt + N + V to insert PivotTable for peer set analysis",
+        "Ctrl + Shift + Enter to confirm array formulas (often used in DCF terminal value)",
+        "F9 to recalculate (manual calc mode useful for large DCF models)",
+        "Alt + W + F + F to freeze panes (essential for large valuation grids)",
+        "Ctrl + Shift + L to add filter to peer comparison table",
+        "F4 to lock cell reference (essential for sensitivity tables)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "DCF Enterprise Value",
+        "formula": "Enterprise Value = Sum from t=1 to N of [FCFF(t) / (1+WACC)^t] + Terminal Value / (1+WACC)^N\n\nWhere:\n  Terminal Value = FCFF(N+1) / (WACC - g)\n  Equity Value = Enterprise Value - Net Debt\n  Target Price per Share = Equity Value / Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "FCFF(t)",
+            "meaning": "Free cash flow to the firm in year t — EBIT times (1 minus tax rate) plus depreciation minus capex minus change in working capital"
+          },
+          {
+            "symbol": "WACC",
+            "meaning": "Weighted average cost of capital — the blended cost of debt and equity capital reflecting the company capital structure and risk profile"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Terminal growth rate — the perpetual growth rate of free cash flows beyond the explicit forecast period; typically 3-5% for Indian companies, anchored to long-term GDP growth or inflation"
+          },
+          {
+            "symbol": "N",
+            "meaning": "Length of explicit forecast period; standard is 5-10 years for stable companies, longer for high-growth names where terminal-year economics differ materially from current"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total debt minus cash and cash equivalents; for net cash companies, this is negative and adds to equity value"
+          },
+          {
+            "symbol": "Terminal Value",
+            "meaning": "The value of all cash flows beyond the explicit forecast period, calculated using the perpetuity growth method"
+          },
+          {
+            "symbol": "Equity Value",
+            "meaning": "The value attributable to shareholders; calculated by subtracting net debt from enterprise value"
+          }
+        ],
+        "plain_english": "DCF values a company by projecting its free cash flows over an explicit forecast horizon (typically 5–10 years), discounting them to present value at the company's weighted average cost of capital, and then estimating a terminal value that captures all cash flows beyond that horizon. The result is an enterprise value; you then subtract net debt to arrive at equity value and divide by shares outstanding to get a per-share target price. This method is grounded in the fundamental principle that a company is worth the present value of all cash it will ever generate for its investors. It is the most theoretically sound approach but is also the most sensitive to small changes in discount rate and terminal growth assumptions.",
+        "computation": [
+          "Step 1: Calculate or collect FCFF for each year t from year 1 to year N (explicit forecast period)",
+          "Step 2: Discount each year's FCFF by dividing by (1+WACC)^t to get present value",
+          "Step 3: Sum all discounted FCFFs from years 1 to N",
+          "Step 4: Calculate Terminal Value = FCFF(N+1) / (WACC - g); this represents perpetual cash flows from year N+1 onward",
+          "Step 5: Discount Terminal Value to present by dividing by (1+WACC)^N",
+          "Step 6: Add sum of discounted FCFFs (Step 3) and discounted Terminal Value (Step 5) to get Enterprise Value",
+          "Step 7: Subtract Net Debt from Enterprise Value to get Equity Value",
+          "Step 8: Divide Equity Value by Shares Outstanding to get Target Price per Share"
+        ],
+        "worked_example": {
+          "problem": "Value Asian Paints using a 10-year DCF model with explicit FCFF forecasts through FY36, then calculate the per-share target price.",
+          "steps": [
+            "Collect FCFF forecasts: FY27E Rs. 4,950 cr, FY28E Rs. 6,200 cr, FY29E Rs. 7,400 cr, continuing through FY36E",
+            "Establish WACC at 10.5% (blend of 11.0% cost of equity and 7.5% cost of debt, with near-zero debt weight)",
+            "Set terminal growth rate at 5.0%, aligned with long-term Indian inflation and nominal GDP growth expectations",
+            "Normalize FY37E FCFF to Rs. 12,800 cr, reflecting stable-state economics in the terminal year",
+            "Calculate Terminal Value: TV = 12,800 / (0.105 - 0.05) = Rs. 232,727 cr (end of FY36)",
+            "Discount Terminal Value to present: PV of TV = 232,727 / (1.105)^10 = Rs. 86,140 cr",
+            "Sum PV of explicit-period FCFFs (FY27–FY36): Rs. 49,650 cr",
+            "Enterprise Value = 49,650 + 86,140 = Rs. 135,790 cr",
+            "Adjust for net cash position: Net Debt = -Rs. 3,800 cr (negative indicates net cash)",
+            "Equity Value = 135,790 - (-3,800) = 135,790 + 3,800 = Rs. 139,590 cr",
+            "Divide by shares outstanding (95.92 cr): Target Price = 139,590 / 95.92 = Rs. 1,455"
+          ],
+          "result": "Base case DCF target price for Asian Paints: Rs. 1,455 per share",
+          "insight": "This is a conservative base case. A 50 bps reduction in WACC (to 10.0%) combined with a 50 bps increase in terminal growth (to 5.5%) moves the target to approximately Rs. 1,750, illustrating the high sensitivity of DCF outputs to these two inputs. The valuation range of Rs. 1,455 to Rs. 1,750 is more realistic than a point estimate. Always present a 5×5 sensitivity matrix (WACC on one axis, terminal growth on the other) to show the reasonable range of outcomes. This sensitivity analysis is non-negotiable for sell-side credibility."
+        },
+        "sensitivity_note": "DCF is acutely sensitive to two inputs: WACC and terminal growth. A 100 basis point change in WACC moves the target price by 15-25%. A 100 basis point change in terminal growth moves it by 10-20%. These two inputs alone explain most of the variation in DCF outputs across analysts on the same stock. Always present a 2D sensitivity table (typically 5x5 grid: WACC on one axis, terminal growth on the other), not a single point estimate. The football field chart should show the DCF as a range bar reflecting this sensitivity."
+      },
+      {
+        "name": "Trading Comparables Implied Price",
+        "formula": "Target Price = Target Multiple x Forecast Metric per Share\n\nFor P/E approach:\n  Target Price = Target P/E x FY+2 EPS\n\nFor EV/EBITDA approach:\n  Target Enterprise Value = Target EV/EBITDA x FY+2 EBITDA\n  Target Equity Value = Target EV - Net Debt\n  Target Price per Share = Target Equity Value / Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Target Multiple",
+            "meaning": "The multiple you apply to the company forecast metric — typically the median of the comparable peer group, adjusted for quality differential"
+          },
+          {
+            "symbol": "Forecast Metric",
+            "meaning": "Forward-year EPS, EBITDA, or revenue used as the multiplier base; FY+2 (12-24 months forward) is standard for trading comps"
+          },
+          {
+            "symbol": "Quality Adjustment",
+            "meaning": "Premium or discount applied to the median peer multiple based on the target company structural advantages or weaknesses; quantified as a percentage adjustment"
+          },
+          {
+            "symbol": "Target P/E",
+            "meaning": "The price-to-earnings multiple applied to forward EPS to derive the target price in an earnings-based valuation"
+          },
+          {
+            "symbol": "FY+2 EPS",
+            "meaning": "Earnings per share forecast for the fiscal year approximately 12-24 months forward from the valuation date"
+          },
+          {
+            "symbol": "Target EV/EBITDA",
+            "meaning": "The enterprise value to EBITDA multiple applied to forward EBITDA to derive target enterprise value in an EBITDA-based valuation"
+          },
+          {
+            "symbol": "FY+2 EBITDA",
+            "meaning": "Earnings before interest, tax, depreciation, and amortization forecast for the fiscal year approximately 12-24 months forward"
+          }
+        ],
+        "plain_english": "Trading comparables value a company by comparing it to similar listed peers trading in the market. You identify a peer set of comparable companies, calculate their key multiples (P/E, EV/EBITDA, Price/Sales, etc.) on a forward-year basis, and apply the median (or mean, with clear justification) to your target company's forecast metrics. You then adjust the peer multiple up or down based on the target company's structural quality relative to peers. This method is market-grounded and fast, but it assumes the peer group is fairly valued and that quality differences can be reliably quantified.",
+        "computation": [
+          "Step 1: Construct peer set with explicit inclusion and exclusion criteria (e.g., exclude new entrants without FY+2 earnings, exclude highly leveraged outliers)",
+          "Step 2: Collect historical and forward-year multiples (P/E, EV/EBITDA, etc.) for each peer",
+          "Step 3: Calculate median and mean multiples for the peer set; identify and document any outliers",
+          "Step 4: Identify the target company's structural advantages (ROCE, market share, brand moat, etc.) or disadvantages (scale, profitability, execution risk)",
+          "Step 5: Quantify the quality adjustment as a percentage premium or discount to median peer multiple; document explicitly",
+          "Step 6: Calculate Target Multiple = Peer Median Multiple × (1 + Quality Adjustment %)",
+          "Step 7: Apply Target Multiple to FY+2 forecast metric (EPS, EBITDA, etc.) to derive target price per share",
+          "Step 8: Sense-check target multiple against the target company's own 5-year historical trading range"
+        ],
+        "worked_example": {
+          "problem": "Value Asian Paints using the P/E trading comparables method, building a peer set of Indian paint companies and adjusting the median multiple for quality.",
+          "steps": [
+            "Construct peer set: Berger Paints, Kansai Nerolac, Akzo Nobel India, Indigo Paints (Birla Opus excluded as a new entrant without FY+2 EPS visibility)",
+            "Collect FY+2 P/E multiples: Berger Paints 35x, Kansai Nerolac 32x, Akzo Nobel India 30x, Indigo Paints 28x",
+            "Calculate peer median P/E: (32x + 30x) / 2 = 31x (mean = 31.25x)",
+            "Identify Asian Paints quality drivers: (a) market leadership with 52% category share, (b) highest ROCE in peer set at 26% vs median 18%, (c) proprietary Tinting Machine Network creating distribution moat",
+            "Identify relative weaknesses: (a) larger cap may constrain growth rates relative to smaller peers, (b) maturity of Indian paint market",
+            "Quantify quality premium: +15% for superior returns on capital and network moat; no discount for size/maturity as these are already reflected in the peer median",
+            "Calculate Target P/E: 31x × 1.15 = 35.7x (round to 35x for simplicity)",
+            "Obtain FY+2 EPS forecast: Rs. 84.2",
+            "Calculate Target Price: 35x × 84.2 = Rs. 2,947, round to Rs. 2,950",
+            "Self-consistency check: Asian Paints 5-year mean P/E = 36x, so target of 35x is at historical mean, implying no structural rerating — reasonable for a mature FMCG name"
+          ],
+          "result": "Trading comps P/E target price for Asian Paints: Rs. 2,950 per share",
+          "insight": "The peer median P/E of 31x is anchored by the market's valuation of comparable paint companies; the 15% quality premium reflects Asian Paints' structural superiority in ROCE and distribution. The target P/E of 35x is within the company's own historical range (36x mean), suggesting the market is already fairly pricing in the structural advantages. If the target P/E were significantly above the 5-year mean without a clear rerating catalyst (e.g., share gain into adjacencies, margin expansion), that would signal over-bullish assumptions. Always sense-check the implied multiple against the company's own history."
+        },
+        "sensitivity_note": "Trading comps target multiple selection is the most contested decision in the valuation section. Three discipline points. First, document the peer set explicitly with inclusion/exclusion criteria. Second, justify the quality adjustment with specific reasoning, not vague terms like premium quality. Third, always sense-check the target multiple against the company own historical trading range — if the target is at the high end of the 5-year range, the implicit assumption is rerating, which needs a thesis catalyst to support. A target P/E meaningfully above 5-year mean without a clear rerating catalyst is the classic over-bullish valuation error."
+      },
+      {
+        "name": "Weighted Blended Target Price",
+        "formula": "Blended Target Price = Sum of [Method Weight x Method Target Price]\n\nWhere weights sum to 100% across all valuation methods used\n\nImplied Upside or Downside (%) = (Blended Target / Current Market Price) - 1",
+        "variables": [
+          {
+            "symbol": "Method Weight",
+            "meaning": "The percentage weight assigned to each valuation method in the final blended target; documented and justified explicitly in the valuation section"
+          },
+          {
+            "symbol": "Method Target Price",
+            "meaning": "The implied price per share output by each individual valuation method (DCF base case, comps median, etc.)"
+          },
+          {
+            "symbol": "Current Market Price",
+            "meaning": "The traded share price at the time of report publication, used to compute implied upside or downside"
+          },
+          {
+            "symbol": "Blended Target Price",
+            "meaning": "The weighted-average target price across all valuation methods; the primary price target communicated to investors"
+          },
+          {
+            "symbol": "Implied Upside or Downside",
+            "meaning": "The percentage return from current market price to blended target price; positive for buy cases, negative for sell cases"
+          }
+        ],
+        "plain_english": "No single valuation method is perfect; each has strengths and weaknesses. DCF is theoretically rigorous but highly sensitive to small input changes. Comparables are market-grounded but assume peers are fairly valued. Blended valuation weights multiple methods to reduce reliance on any single approach. The weights should reflect your conviction in each method for this particular company and sector. Documenting the weights makes your reasoning transparent: if your blended target is Rs. 2,565 but you're telling investors Rs. 2,950, they should see exactly which method weights justify that difference.",
+        "computation": [
+          "Step 1: Identify all valuation methods used and calculate a target price for each (e.g., DCF base case, trading P/E comps, EV/EBITDA comps, precedent transactions)",
+          "Step 2: Assign a weight (as a percentage) to each method; weights must sum to 100%",
+          "Step 3: For each method, multiply (weight %) × (target price) to get the weighted contribution",
+          "Step 4: Sum all weighted contributions to get the blended target price",
+          "Step 5: Divide blended target price by current market price and subtract 1 to get implied upside/downside as a decimal; multiply by 100 to express as a percentage"
+        ],
+        "worked_example": {
+          "problem": "Blend Asian Paints' multiple valuation outputs (DCF, P/E comps, EV/EBITDA comps, precedent transactions) into a single weighted target price, and calculate implied upside versus a current market price of Rs. 2,540.",
+          "steps": [
+            "Collect method-specific targets: DCF base case Rs. 1,650, P/E trading comps Rs. 2,950, EV/EBITDA trading comps Rs. 2,890, Precedent Transactions Rs. 3,150 (based on recent paint-sector M&A multiples including control premium)",
+            "Assign weights: DCF 30% (fundamentals anchor but sensitive to WACC), Trading Comps P/E 35% (most market-relevant for FMCG), Trading Comps EV/EBITDA 25% (cross-check on capital structure), Precedent Transactions 10% (limited deal data in Indian paints sector)",
+            "Calculate weighted contributions: (0.30 × 1,650) + (0.35 × 2,950) + (0.25 × 2,890) + (0.10 × 3,150)",
+            "Compute each term: (495) + (1,032.5) + (722.5) + (315) = Rs. 2,565",
+            "Blended target price = Rs. 2,565",
+            "Calculate implied upside using blended target: (2,565 / 2,540) - 1 = 0.0098 = 0.98%, round to 1% upside",
+            "Reconcile with senior target of Rs. 2,950: Senior thesis weights trading comps (P/E and EV/EBITDA combined) at ~50-55% and de-emphasizes DCF to ~10-15%, reflecting stronger conviction in market multiples and lower conviction in DCF sensitivity; this approach yields approximately Rs. 2,950",
+            "Present both: technical blended target of Rs. 2,565 (1% upside) and senior conviction target of Rs. 2,950 (16% upside), with clear documentation of method weights underlying each"
+          ],
+          "result": "Technically blended target price: Rs. 2,565 (1% upside); Senior conviction target: Rs. 2,950 (16% upside)",
+          "insight": "The blended target of Rs. 2,565 reflects equal weighting of fundamentals (DCF) and market multiples, yielding minimal upside. The senior target of Rs. 2,950 reflects a heavier weighting of trading comps and lower weight on DCF, communicating higher conviction in relative valuation. Both are defensible; the difference lies in method-weighting judgment. By documenting the weights explicitly, you allow investors to understand the drivers of your price target and to adjust it themselves if they have different conviction in a particular method. Never present a blended target without showing (a) all method-specific targets, (b) the weights applied to each, and (c) an explanation of why those weights are appropriate for this company and sector."
+        },
+        "sensitivity_note": "Blended target price weighting is where analytical judgment becomes explicit. Document the weights and justify them — the reader should be able to see exactly how you arrived at the final number. If your DCF says Rs. 1,650 and your blended target is Rs. 2,950, you are weighting comps very heavily; the reader deserves to see that and understand why. Never present a blended target without showing the underlying method-specific outputs and the weights used. That is what separates a defensible valuation from an arbitrary one."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + V for Paste Special (DCF construction)",
+        "Cmd + Shift + Enter to confirm array formulas",
+        "Cmd + = to recalculate sheet",
+        "Cmd + Option + 5 to apply percentage formatting to sensitivity tables",
+        "Cmd + T to lock cell references",
+        "Cmd + Shift + F for filter on data range"
+      ],
+      "windows": [
+        "Alt + N + V to insert PivotTable for peer set analysis",
+        "Ctrl + Shift + Enter to confirm array formulas (often used in DCF terminal value)",
+        "F9 to recalculate (manual calc mode useful for large DCF models)",
+        "Alt + W + F + F to freeze panes (essential for large valuation grids)",
+        "Ctrl + Shift + L to add filter to peer comparison table",
+        "F4 to lock cell reference (essential for sensitivity tables)"
+      ]
+    }
+  }
+}

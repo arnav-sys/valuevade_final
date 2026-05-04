@@ -207,7 +207,18 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Fixed CapstoneStartPage + SettingsPage gradient-border inner-card bg: changed bg-[var(--bg-primary)]/95 → bg-[var(--color-surface)] for proper contrast in both themes
 - **Tested via iteration_14.json**: 14/14 spec items passed (100%) — public routes, auth guards, 404 catch-all, login flow, Profile (edit name, theme toggle, sign out), Settings (coming-soon + roadmap), Sidebar nav, PageTransition wrapper present on every route. One benign Supabase 400 console warning on sparsely-seeded tables (non-blocking).
 
-- P1: CSV Export from Admin Dashboard
+### Phase 17 - Formula Card Content Enhancement (Feb 2026)
+- **Acquired Supabase service-role key** (stored in /app/backend/.env as SUPABASE_SERVICE_ROLE_KEY) to bypass RLS on master_* tables for admin content edits
+- **Three target formula cards rewritten by hand** with comprehensive variable definitions, plain-English meanings, computation steps, and worked Indian examples:
+  - Session 2 (Risk & Return, M1 S2, id 444fdbc8): removed Sharpe & CAPM; kept HPR / Expected Return / Standard Deviation only; updated title accordingly
+  - Session 6 (Income Statement HUL, M1 S6, id 2a57ec87): all 11 metrics (Gross Profit, Margins, EBITDA, EBIT, EBT, PAT, EPS, ETR…) gained variables, plain-English, computation, per-metric worked examples; preserved card-level HUL worked_example; NO excel_shortcuts field
+  - Session 12 (M10 S4 Yield Curve, id c0ff08d9): full 5-formula rewrite — Term Spread (10Y−2Y), Recession Probability (10Y−3M), Real Yield, Equity DCF Sensitivity, OIS-Implied Forward Rate; comprehensive variables / plain-English / computation steps / Indian-context worked examples; NO excel_shortcuts field
+- **Bulk-enhanced 116 remaining formula cards** via Claude Haiku 4.5 through emergentintegrations using EMERGENT_LLM_KEY (with concurrency=3 thread executor; Sonnet 4.5 was rejected by gateway with 502s on long generations); 4 large cards re-run with max_tokens=12000 to avoid output truncation
+- **FormulaSubCard component updated** (/app/frontend/src/components/NotesPage.jsx): now renders new fields — `plain_english` (purple-tinted callout), `computation` (ordered list under "How to Compute"), `sensitivity` / `analyst_note` / `excel` — while preserving all legacy fields (notes, tells, worked_example)
+- Audit trail: per-card before/after JSON snapshots in /app/scripts/enhancement_log/{card_id}.json + run summary in summary.json
+- Verified end-to-end: TVM formula card renders Variables, In Plain English, Worked Example sections correctly in the Notes review flow
+
+
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
 - P2: Post-login redirect logic review (currently /courses; consider /dashboard)

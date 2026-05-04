@@ -1,0 +1,135 @@
+{
+  "id": "c84df2d1-4259-47be-93f5-30087dae1928",
+  "label": "M9 S1 | The Universal Ratio Template",
+  "before": {
+    "formulas": [
+      {
+        "name": "The Universal Ratio Formula",
+        "formula": "Ratio = Output Metric / Input Metric",
+        "variables": [
+          {
+            "symbol": "Output Metric",
+            "meaning": "What the business produced — profit, cash flow, revenue, etc."
+          },
+          {
+            "symbol": "Input Metric",
+            "meaning": "What the business used to produce it — capital, assets, equity, revenue base, etc."
+          }
+        ],
+        "worked_example": "Take Asian Paints FY23. Revenue = ₹34,488 Cr. Net Profit = ₹4,106 Cr. Total Capital Employed = ₹15,200 Cr. Three ratios, three different stories. Net Margin = 4,106 / 34,488 = 11.9% (every ₹100 of sales yields ₹11.9 of profit). ROCE = (Operating Profit ₹5,500 Cr) / 15,200 = 36.2% (every ₹100 of capital yields ₹36 of operating profit). Asset Turnover = 34,488 / (Total Assets ₹19,000 Cr) = 1.81x (each rupee of assets generates ₹1.81 of revenue). Same company. Three lenses. Three insights. Notice how the 11.9% margin alone tells you nothing — 11.9% is low for software (Infosys runs 25%+) but exceptional for paints. That is why lenses must be interpreted in context.",
+        "sensitivity_note": "If the output metric grows faster than the input metric, the ratio improves — that is the signature of a scaling business. If input grows faster than output, the ratio deteriorates — the signature of value destruction."
+      },
+      {
+        "name": "The Time-Series Delta",
+        "formula": "Year-on-Year Change = (Ratio_Current - Ratio_Prior) / Ratio_Prior × 100",
+        "variables": [
+          {
+            "symbol": "Ratio_Current",
+            "meaning": "Ratio in the current period"
+          },
+          {
+            "symbol": "Ratio_Prior",
+            "meaning": "Ratio in the prior period"
+          }
+        ],
+        "worked_example": "TCS ROCE moved from 52% in FY22 to 58% in FY23. YoY change = (58 - 52) / 52 × 100 = +11.5%. A double-digit improvement in an already elite ROCE is a massive signal. Always compute the delta — direction matters as much as the level.",
+        "sensitivity_note": "A stable ratio in an industry where peers are declining is actually an improvement. Always benchmark the delta, not just the absolute level."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + $ → currency format",
+        "Cmd + Shift + % → percentage format",
+        "Fn + F4 → absolute reference toggle",
+        "Cmd + Shift + L → apply filter to peer comparison tables"
+      ],
+      "windows": [
+        "Ctrl + Shift + $ → apply currency format",
+        "Ctrl + Shift + % → apply percentage format",
+        "F4 → lock cell reference when copying ratio formulas across years",
+        "Alt + H + H → highlight ratio cells for dashboard readability"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "The Universal Ratio Formula",
+        "formula": "Ratio = Output Metric / Input Metric",
+        "variables": [
+          {
+            "symbol": "Output Metric",
+            "meaning": "What the business produced — profit, cash flow, revenue, etc."
+          },
+          {
+            "symbol": "Input Metric",
+            "meaning": "What the business used to produce it — capital, assets, equity, revenue base, etc."
+          }
+        ],
+        "plain_english": "A ratio distils any business relationship into a single number by dividing what a company achieved by what it spent to achieve it. This template applies universally: whether measuring profitability (profit ÷ revenue), efficiency (revenue ÷ assets), or return (operating profit ÷ capital), the same structure reveals how effectively a business converts inputs into outputs. Ratios are meaningless in isolation — they only tell a story when compared across time, against peers, or against the company's cost of capital.",
+        "worked_example": {
+          "problem": "Analyse Asian Paints' FY23 operating efficiency and capital productivity using the universal ratio template.",
+          "steps": [
+            "Revenue = ₹34,488 Cr; Net Profit = ₹4,106 Cr; Operating Profit = ₹5,500 Cr; Total Assets = ₹19,000 Cr; Capital Employed = ₹15,200 Cr.",
+            "Net Margin = Net Profit / Revenue = ₹4,106 Cr / ₹34,488 Cr = 0.119 = 11.9%. Interpretation: every ₹100 of sales yields ₹11.9 of net profit.",
+            "ROCE = Operating Profit / Capital Employed = ₹5,500 Cr / ₹15,200 Cr = 0.362 = 36.2%. Interpretation: every ₹100 of capital generates ₹36.2 of operating profit.",
+            "Asset Turnover = Revenue / Total Assets = ₹34,488 Cr / ₹19,000 Cr = 1.81x. Interpretation: each rupee of assets generates ₹1.81 of annual revenue.",
+            "Contextualise: 11.9% margin is low for software (Infosys runs 25%+) but exceptional for paints (commoditised, capital-intense). 36.2% ROCE is elite. Asset turnover of 1.81x suggests efficient asset deployment for a manufacturing company."
+          ],
+          "result": "Three ratios, three lenses: Asian Paints is a capital-efficient, high-return business with narrow but respectable margins — typical of a well-run speciality chemical/paint maker.",
+          "insight": "The same company, same year, three different stories. No single ratio answers 'is this business good?' The universal template forces you to ask: good at what? This discipline prevents misinterpretation."
+        },
+        "sensitivity_note": "If the output metric grows faster than the input metric, the ratio improves — that is the signature of a scaling business. If input grows faster than output, the ratio deteriorates — the signature of value destruction."
+      },
+      {
+        "name": "The Time-Series Delta",
+        "formula": "Year-on-Year Change = (Ratio_Current - Ratio_Prior) / Ratio_Prior × 100",
+        "variables": [
+          {
+            "symbol": "Ratio_Current",
+            "meaning": "Ratio in the current period"
+          },
+          {
+            "symbol": "Ratio_Prior",
+            "meaning": "Ratio in the prior period"
+          }
+        ],
+        "plain_english": "Tracking how a ratio changes over time reveals momentum and inflection points. A ratio can be good in absolute terms but deteriorating in trend, or vice versa. Computing the year-on-year percentage change normalises the comparison and allows you to distinguish between modest improvements in weak businesses and meaningful declines in strong ones. This delta is your first alarm bell.",
+        "computation": [
+          "Calculate the ratio for the current period.",
+          "Calculate the same ratio for the prior period.",
+          "Subtract prior from current.",
+          "Divide the difference by the prior ratio.",
+          "Multiply by 100 to express as a percentage."
+        ],
+        "worked_example": {
+          "problem": "Assess the trend in TCS ROCE between FY22 and FY23.",
+          "steps": [
+            "TCS ROCE in FY22 = 52%.",
+            "TCS ROCE in FY23 = 58%.",
+            "Absolute change = 58% − 52% = 6 percentage points.",
+            "Percentage change = (58 − 52) / 52 × 100 = 6 / 52 × 100 = 11.5%.",
+            "Interpretation: ROCE improved by 11.5% year-on-year, from an already elite level, indicating accelerating capital productivity."
+          ],
+          "result": "TCS ROCE improved by +11.5% YoY.",
+          "insight": "A double-digit improvement in an already elite ROCE (52% is already exceptional) signals very strong momentum. This is not a struggling business inching towards profitability — it is an elite business getting more elite. Always compute the delta; direction matters as much as the absolute level. A stable ROCE at 40% in an industry where peers are declining from 45% to 35% is actually an improvement in competitive position."
+        },
+        "sensitivity_note": "A stable ratio in an industry where peers are declining is actually an improvement. Always benchmark the delta, not just the absolute level."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + $ → currency format",
+        "Cmd + Shift + % → percentage format",
+        "Fn + F4 → absolute reference toggle",
+        "Cmd + Shift + L → apply filter to peer comparison tables"
+      ],
+      "windows": [
+        "Ctrl + Shift + $ → apply currency format",
+        "Ctrl + Shift + % → apply percentage format",
+        "F4 → lock cell reference when copying ratio formulas across years",
+        "Alt + H + H → highlight ratio cells for dashboard readability"
+      ]
+    }
+  }
+}

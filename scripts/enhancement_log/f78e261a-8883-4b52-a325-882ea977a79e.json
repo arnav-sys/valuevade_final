@@ -1,0 +1,279 @@
+{
+  "id": "f78e261a-8883-4b52-a325-882ea977a79e",
+  "label": "M1 S7 | Balance Sheet Ratios and Titan Worked Example",
+  "before": {
+    "formulas": [
+      {
+        "tells": "Liquidity buffer (>1 = positive WC)",
+        "metric": "Current Ratio",
+        "formula": "Current Assets / Current Liabilities"
+      },
+      {
+        "tells": "Liquidity without relying on inventory",
+        "metric": "Quick Ratio",
+        "formula": "(Current Assets - Inventory) / Current Liabilities"
+      },
+      {
+        "tells": "Financial leverage/risk",
+        "metric": "Debt-to-Equity",
+        "formula": "Total Debt / Total Equity"
+      },
+      {
+        "tells": "Accounting value per share",
+        "metric": "BVPS",
+        "formula": "Total Equity / Shares Outstanding"
+      },
+      {
+        "tells": "Market premium over book value",
+        "metric": "Price-to-Book",
+        "formula": "Market Price / BVPS"
+      },
+      {
+        "tells": "True debt burden after netting cash",
+        "metric": "Net Debt",
+        "formula": "Total Debt - Cash"
+      },
+      {
+        "tells": "Years to repay from operating cash flow",
+        "metric": "Debt-to-EBITDA",
+        "formula": "Net Debt / EBITDA"
+      },
+      {
+        "tells": "Return on owners capital",
+        "metric": "ROE",
+        "formula": "Net Profit / Avg Equity"
+      },
+      {
+        "tells": "Efficiency of total asset base",
+        "metric": "ROA",
+        "formula": "Net Profit / Avg Total Assets"
+      },
+      {
+        "tells": "How efficiently fixed assets generate revenue",
+        "metric": "Fixed Asset Turnover",
+        "formula": "Revenue / Net Fixed Assets"
+      }
+    ],
+    "worked_example": {
+      "data": {
+        "equity": "10,500 (Share Cap 89, Reserves 10,411)",
+        "current": "13,000 (Inventory 9200, Receivables 900, Cash 1800, Other 1100)",
+        "non_current": "8,000 (PP&E 3100, ROU 2400, Goodwill 600, Investments 1500, Other 400)",
+        "current_liab": "7,500 (ST Borrowings 1000, Payables 3500, Other 3000)",
+        "total_assets": "21,000 cr",
+        "non_current_liab": "3,000 (LT Borrowings 500, Lease Liab 2200, Other 300)"
+      },
+      "ratios": {
+        "bvps": "10,500/88.7cr shares = Rs 118. At market price ~3,400, P/B = 28.8x -- brand premium",
+        "current_ratio": "13,000/7,500 = 1.73x -- healthy",
+        "inventory_pct": "9,200/13,000 = 70.8%. Quick ratio = (13,000-9,200)/7,500 = 0.51x -- normal for jeweller, alarming for software company",
+        "debt_to_equity": "(500+1000)/10,500 = 0.14x -- very low leverage, almost debt-free excluding leases",
+        "net_working_capital": "13,000-7,500 = 5,500cr -- positive, driven by high-value jewellery inventory"
+      },
+      "company": "Titan Company (Simplified FY24)",
+      "sensitivity": "If gold prices fall 10%, inventory could face write-down (lower of cost or NRV), reducing current assets and equity. Hidden commodity risk in a consumer brand."
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "tells": "Liquidity buffer (>1 = positive WC)",
+        "metric": "Current Ratio",
+        "formula": "Current Assets / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Cash, receivables, inventory, and other assets expected to convert to cash within 12 months"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Obligations due within 12 months, including short-term debt, payables, and accrued expenses"
+          }
+        ],
+        "plain_english": "The current ratio measures how many rupees of short-term assets a company has for every rupee of short-term obligations. A ratio above 1.0 means the company can cover its near-term liabilities; below 1.0 signals potential liquidity stress. It is a quick screening tool for financial distress risk."
+      },
+      {
+        "tells": "Liquidity without relying on inventory",
+        "metric": "Quick Ratio",
+        "formula": "(Current Assets - Inventory) / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Cash, receivables, inventory, and other assets expected to convert to cash within 12 months"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Unsold goods at cost; excluded because it is harder and slower to convert to cash than cash or receivables"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Obligations due within 12 months"
+          }
+        ],
+        "plain_english": "Also called the acid-test ratio, this excludes inventory to show whether the company can meet immediate obligations using only its most liquid assets. It is stricter than the current ratio and reveals hidden liquidity risk if inventory cannot be quickly sold."
+      },
+      {
+        "tells": "Financial leverage/risk",
+        "metric": "Debt-to-Equity",
+        "formula": "Total Debt / Total Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Sum of short-term and long-term borrowings (loans, bonds, and notes payable)"
+          },
+          {
+            "symbol": "Total Equity",
+            "meaning": "Shareholders' equity, including share capital and retained earnings"
+          }
+        ],
+        "plain_english": "This ratio shows how much the company has borrowed relative to the capital shareholders have invested. A ratio of 0.5 means ₹0.50 of debt for every ₹1 of equity. Higher ratios indicate greater financial risk; lower ratios suggest a more conservative capital structure."
+      },
+      {
+        "tells": "Accounting value per share",
+        "metric": "BVPS",
+        "formula": "Total Equity / Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Total Equity",
+            "meaning": "Shareholders' equity from the balance sheet"
+          },
+          {
+            "symbol": "Shares Outstanding",
+            "meaning": "Total number of ordinary shares issued and held by shareholders (in crores or units)"
+          }
+        ],
+        "plain_english": "Book value per share is the accounting equity allocated to each share. It represents what accountants say each share of ownership is worth based on historical cost balance-sheet values. It differs from market price because markets price future earnings, growth, and intangible assets differently than historical accounting."
+      },
+      {
+        "tells": "Market premium over book value",
+        "metric": "Price-to-Book",
+        "formula": "Market Price / BVPS",
+        "variables": [
+          {
+            "symbol": "Market Price",
+            "meaning": "Current stock price on the exchange (e.g., NSE or BSE)"
+          },
+          {
+            "symbol": "BVPS",
+            "meaning": "Book value per share, calculated as Total Equity / Shares Outstanding"
+          }
+        ],
+        "plain_english": "The P/B ratio compares what the stock market will pay for a company to what accountants say its equity is worth. A P/B of 3.0 means investors are willing to pay ₹3 for every ₹1 of book value, reflecting confidence in earnings power, brand strength, or growth prospects. It is a key metric for value investors assessing whether a stock is expensive or cheap."
+      },
+      {
+        "tells": "True debt burden after netting cash",
+        "metric": "Net Debt",
+        "formula": "Total Debt - Cash",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "Sum of short-term and long-term borrowings"
+          },
+          {
+            "symbol": "Cash",
+            "meaning": "Cash and cash equivalents on hand"
+          }
+        ],
+        "plain_english": "Net debt is the amount a company owes after accounting for the cash it could use to pay off debt immediately. If a company has ₹1,000 cr of debt but ₹200 cr of cash, its net debt is ₹800 cr. This metric is more economically meaningful than gross debt because it reflects the company's true leverage after factoring in liquid resources."
+      },
+      {
+        "tells": "Years to repay from operating cash flow",
+        "metric": "Debt-to-EBITDA",
+        "formula": "Net Debt / EBITDA",
+        "variables": [
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total debt minus cash"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings before interest, tax, depreciation, and amortization; a proxy for operating cash generation"
+          }
+        ],
+        "plain_english": "This ratio estimates how many years of EBITDA a company would need to pay off its net debt, assuming no growth and all EBITDA is directed to debt repayment. A ratio of 2.0x means the company could theoretically pay off debt in 2 years. Banks and credit analysts use this as a key solvency metric; below 3.0x is generally considered safe for mature businesses."
+      },
+      {
+        "tells": "Return on owners capital",
+        "metric": "ROE",
+        "formula": "Net Profit / Avg Equity",
+        "variables": [
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit for the year after all expenses, interest, and taxes"
+          },
+          {
+            "symbol": "Avg Equity",
+            "meaning": "Average of opening and closing shareholders' equity for the period"
+          }
+        ],
+        "plain_english": "ROE shows how much profit the company generates for every rupee of shareholder capital invested. An ROE of 20% means the company earned ₹0.20 of profit from each ₹1 of equity. High-ROE companies (>15%) are often compounders; low-ROE companies (<8%) may signal weak competitive moats or inefficient capital deployment."
+      },
+      {
+        "tells": "Efficiency of total asset base",
+        "metric": "ROA",
+        "formula": "Net Profit / Avg Total Assets",
+        "variables": [
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit for the year after all expenses, interest, and taxes"
+          },
+          {
+            "symbol": "Avg Total Assets",
+            "meaning": "Average of opening and closing total assets for the period"
+          }
+        ],
+        "plain_english": "ROA measures how much profit a company generates from all the assets it controls, regardless of how those assets are financed. It reveals how productively management deploys capital. ROA of 8% means every ₹1 of assets generates ₹0.08 of profit. It is a good metric to compare efficiency across companies in the same industry."
+      },
+      {
+        "tells": "How efficiently fixed assets generate revenue",
+        "metric": "Fixed Asset Turnover",
+        "formula": "Revenue / Net Fixed Assets",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Total sales or turnover for the period"
+          },
+          {
+            "symbol": "Net Fixed Assets",
+            "meaning": "Property, plant, equipment, and other long-term assets net of accumulated depreciation"
+          }
+        ],
+        "plain_english": "This ratio shows how many rupees of revenue a company generates from each rupee invested in fixed assets. A turnover of 5.0x means every ₹1 of machinery, buildings, and equipment produces ₹5 of sales. High turnover suggests efficient asset utilization; low turnover may indicate underutilized capacity, capital intensity, or aging assets."
+      }
+    ],
+    "worked_example": {
+      "company": "Titan Company (Simplified FY24)",
+      "data": {
+        "equity": "10,500 (Share Cap 89, Reserves 10,411)",
+        "current": "13,000 (Inventory 9200, Receivables 900, Cash 1800, Other 1100)",
+        "non_current": "8,000 (PP&E 3100, ROU 2400, Goodwill 600, Investments 1500, Other 400)",
+        "current_liab": "7,500 (ST Borrowings 1000, Payables 3500, Other 3000)",
+        "total_assets": "21,000 cr",
+        "non_current_liab": "3,000 (LT Borrowings 500, Lease Liab 2200, Other 300)"
+      },
+      "ratios": {
+        "current_ratio": {
+          "calculation": "13,000 / 7,500 = 1.73x",
+          "insight": "Healthy liquidity cushion; Titan can cover short-term obligations 1.73 times over"
+        },
+        "quick_ratio": {
+          "calculation": "(13,000 - 9,200) / 7,500 = 0.51x",
+          "insight": "Without inventory, liquidity drops sharply. Normal for a jeweller (high inventory of gold/diamonds); alarming for a software company"
+        },
+        "debt_to_equity": {
+          "calculation": "(1,000 + 500) / 10,500 = 0.14x",
+          "insight": "Very low leverage excluding leases; Titan operates nearly debt-free, relying on equity and operational cash flow"
+        },
+        "bvps": {
+          "calculation": "10,500 / 88.7 cr shares = ₹118 per share",
+          "insight": "Accounting book value is ₹118. At market price of ₹3,400, P/B = 28.8x, reflecting the powerful brand, consumer loyalty, and intangible value"
+        },
+        "net_working_capital": {
+          "calculation": "13,000 - 7,500 = ₹5,500 cr",
+          "insight": "Positive and substantial; driven by high-value jewellery inventory (70.8% of current assets)"
+        }
+      },
+      "sensitivity": "If gold prices fall 10%, inventory could face write-down to lower of cost or net realizable value (NRV), reducing current assets and equity. Titan's P/B and ROE are heavily dependent on commodity prices and consumer demand for discretionary jewellery. A prolonged slowdown in luxury spending would compress margins and returns."
+    }
+  }
+}

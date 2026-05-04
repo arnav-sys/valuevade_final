@@ -1,0 +1,308 @@
+{
+  "id": "ad4fc106-dbcc-4ffa-aa36-133ce38b0cf8",
+  "label": "M10 S8 | The Global Macro to Indian Equity Translation Math",
+  "before": {
+    "formulas": [
+      {
+        "name": "Fed Surprise Impact on Indian Equities",
+        "formula": "Indian Equity Reaction percent = (Fed Surprise vs Expectations) x Sectoral Beta x Magnitude Multiplier",
+        "variables": [
+          {
+            "symbol": "Fed Surprise",
+            "meaning": "Difference between Fed action and market expectation (in basis points or qualitative direction)"
+          },
+          {
+            "symbol": "Sectoral Beta",
+            "meaning": "Sensitivity of specific Indian sector to global macro shocks"
+          },
+          {
+            "symbol": "Magnitude Multiplier",
+            "meaning": "Adjustment for shock magnitude — 1.0x for moderate, 1.5x for major, 2x for regime shift"
+          }
+        ],
+        "worked_example": "December 2022 FOMC Hawkish Surprise:\nMarket Expectation: 50 bps hike, dovish 2023 outlook\nActual: 50 bps hike but hawkish 2023 outlook (terminal rate 5.25 percent vs expected 4.75 percent)\nFed Surprise: 50 bps hawkish on terminal rate\nMagnitude Multiplier: 1.5x (major surprise)\n\nSectoral Reaction within 4 weeks:\n- Bank Nifty (Beta 1.5): -1.5 x 1.5 = -2.25 percent direct, but compounded over 4 weeks: -8 to -12 percent\n- Mid-cap Index (Beta 1.8): -1.5 x 1.8 = -2.7 percent direct, compounded -12 to -18 percent\n- High PE Growth (Beta 2.0): -1.5 x 2.0 = -3.0 percent direct, compounded -15 to -25 percent\n- IT Services (Beta 0.4 — currency offset): -1.5 x 0.4 = -0.6 percent, actually positive due to currency benefit\n- FMCG Defensive (Beta 0.3): -1.5 x 0.3 = -0.45 percent, slight negative\n\nActual market behavior matched these predictions closely. Bank Nifty declined approximately 10 percent over 4 weeks. Mid-caps lost 12-18 percent. High PE growth names corrected 15-25 percent. IT services were relative outperformers.\n\nThe direction is predictable; the magnitude requires context-specific judgment about market positioning.",
+        "sensitivity_note": "Sectoral betas vary by macro regime. During normal times, banking beta to Fed is 1.0-1.5x. During stressed periods (high VIX), beta can spike to 2-3x as illiquidity amplifies moves. During calm periods (low VIX), beta compresses to 0.7-1.0x. Always adjust for current market regime."
+      },
+      {
+        "name": "China Demand Impact on Indian Sectors",
+        "formula": "Sector Earnings Impact = (China Demand Change percent) x (Indian Export Share to China percent) x (Operating Leverage)",
+        "variables": [
+          {
+            "symbol": "China Demand Change",
+            "meaning": "Change in Chinese consumption of relevant commodity or product"
+          },
+          {
+            "symbol": "Indian Export Share",
+            "meaning": "Indian companys exports to China as percent of total revenue"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "Margin response to revenue changes"
+          }
+        ],
+        "worked_example": "China Property Crisis Impact (2023):\nChina infrastructure spending decline: -25 percent\nChina copper consumption decline: -10 to -12 percent globally\n\nFor Hindalco (Indian aluminum and copper producer):\n- Aluminum exports: 20 percent to China\n- Copper exports: 30 percent to China\n- Operating leverage: 1.4x\n\nDirect demand impact:\n- Aluminum: 25 percent China decline x 20 percent share = -5 percent on aluminum revenue\n- Copper: 25 percent China decline x 30 percent share = -7.5 percent on copper revenue\n- Combined revenue impact: approximately -6 percent\n- Margin response with leverage: -8.4 percent margin compression\n- EPS impact: approximately -15 to -20 percent\n\nValidation: Hindalco stock during 2023 China property crisis declined 22-25 percent over 6 months, matching the predicted impact.\n\nFor Indian crude oil importers (Asian Paints, IndiGo) — Chinese demand decline benefits them as crude prices weaken. Same framework but with reverse sign.",
+        "sensitivity_note": "China demand effects flow through commodity prices. Track copper, aluminum, steel benchmarks weekly. The cumulative impact builds over 1-3 quarters as the demand decline manifests through inventory cycles and producer responses."
+      },
+      {
+        "name": "FII Flow Impact on Specific Indian Sectors",
+        "formula": "Sector Performance vs Index = (Cumulative FII Flow direction) x (Sector FII Holding Concentration) x (Liquidity Factor)",
+        "variables": [
+          {
+            "symbol": "Cumulative FII Flow",
+            "meaning": "Net FII flows over relevant period (week, month, quarter)"
+          },
+          {
+            "symbol": "FII Holding Concentration",
+            "meaning": "Sector holding by FIIs as percent of total holding"
+          },
+          {
+            "symbol": "Liquidity Factor",
+            "meaning": "Mid-caps have higher Liquidity Factor due to greater FII rotation impact"
+          }
+        ],
+        "worked_example": "March 2022 FII Outflow Wave (during Russia-Ukraine):\nMonthly FII outflow: 35,000 crore (from Indian equities)\nMid-cap and small-cap impact:\n- FII holding: approximately 20-22 percent of mid-cap free float\n- Mid-caps faced disproportionate selling pressure\n- Mid-cap index declined approximately 8-10 percent vs Nifty -5 percent\n- Mid-cap relative underperformance: approximately 4-5 percentage points\n\nLarge-cap sectors with high FII concentration:\n- Banks: 40-50 percent FII held, faced selling pressure\n- Auto OEMs: 25-30 percent FII held, modest pressure\n\nLarge-cap sectors with high DII offset:\n- FMCG: 15 percent FII held, 25 percent DII held — relatively insulated\n- Utilities: similar profile\n\nAfter 2022 Russia-Ukraine FII selling:\n- Bank Nifty: -7 percent over 30 days\n- Auto: -4 percent\n- FMCG: -2 percent (DII buying offset)\n- Mid-cap index: -8 to -10 percent (highest exposure)\n\nThe dispersion between FII-heavy mid-caps and DII-supported large defensive sectors was approximately 6-8 percentage points.",
+        "sensitivity_note": "FII flows can be volatile day-to-day. Use 4-week cumulative flows to identify regime shifts. Cumulative outflows above 30,000 crore in 4 weeks signal major selling pressure. Cumulative inflows above 25,000 crore signal buying pressure."
+      },
+      {
+        "name": "Dollar Index (DXY) and Indian Sectoral Impact",
+        "formula": "Indian Sector Impact = -(DXY Change percent) x Sector USD Sensitivity x Magnitude Factor",
+        "variables": [
+          {
+            "symbol": "DXY Change",
+            "meaning": "Percentage change in Dollar Index over relevant period"
+          },
+          {
+            "symbol": "Sector USD Sensitivity",
+            "meaning": "Sectoral beta to dollar strength — IT services positive (forex revenue), FMCG modest, importers negative"
+          },
+          {
+            "symbol": "Magnitude Factor",
+            "meaning": "Compounding factor for sustained moves"
+          }
+        ],
+        "worked_example": "August 2024 DXY Decline (Risk-On Period):\nDXY: 105 to 102 (3 percent decline)\nDuration: 6 weeks\nMarket regime: Risk-On (capital seeking EMs)\n\nIndian sectoral impact:\n- IT services (USD revenue translates to fewer rupees): -3 percent direct, compounded -2 percent over 6 weeks\n- Pharma exporters (US dollar revenue): -3 percent direct, compounded -1 percent\n- Banking and financials (capital flow positive): +3 percent direct, compounded +5 to 8 percent\n- Mid-caps (capital flow recipient): +3 percent direct, compounded +6 to 10 percent\n- FMCG (modest impact): minimal\n- Capital goods (capex narrative beneficiary): +4 to 6 percent compounded\n\nActual market behavior:\n- DXY decline coincided with FII inflows of 35,000 crore\n- Mid-cap rally of 8-12 percent\n- Banking rally of 6-10 percent\n- IT services lagged the broader rally by 4-5 percentage points\n\nThe dispersion was approximately 10-12 percentage points across sectors.",
+        "sensitivity_note": "DXY moves of 2-3 percent are routine; 5+ percent are major. Track DXY relative to its 200-day moving average. Above the moving average is dollar strength regime; below is dollar weakness regime."
+      },
+      {
+        "name": "Combined Global Macro Score for Indian Equities",
+        "formula": "Macro Score = Fed Score + China Score + DXY Score + EM Sentiment Score (each weighted 0.25)",
+        "variables": [
+          {
+            "symbol": "Fed Score",
+            "meaning": "+2 to -2 based on Fed direction (-2 most hawkish, +2 most dovish)"
+          },
+          {
+            "symbol": "China Score",
+            "meaning": "+2 to -2 based on China growth and sentiment"
+          },
+          {
+            "symbol": "DXY Score",
+            "meaning": "+2 to -2 based on dollar weakness (dollar weakness = positive for India)"
+          },
+          {
+            "symbol": "EM Sentiment Score",
+            "meaning": "+2 to -2 based on EM risk appetite"
+          }
+        ],
+        "worked_example": "November 2024 Snapshot:\nFed Score: +1.5 (Fed has paused, cuts expected in 2025)\nChina Score: -0.5 (mild stimulus, but property concerns persist)\nDXY Score: -0.5 (mixed, range 102-105)\nEM Sentiment: +0.5 (capital flows positive but selective)\n\nMacro Score = (1.5 + (-0.5) + (-0.5) + 0.5) / 4 = 0.25\n\nInterpretation: Mildly positive macro for Indian equities. Tactical positioning:\n- Modest overweight in mid-caps (FII-sensitive beneficiary)\n- Modest overweight in private banks (rate-sensitive)\n- Neutral on IT services (currency neutral)\n- Modest underweight in commodities (China impact)\n\nIf Macro Score had been +2.0 (very positive — dovish Fed + strong China + weak dollar + risk-on):\n- Aggressive overweight in mid-caps and small-caps\n- Aggressive overweight in capital goods\n- Aggressive overweight in private banks\n- Underweight in defensives and commodities\n\nIf Macro Score had been -2.0 (very negative — hawkish Fed + weak China + strong dollar + risk-off):\n- Aggressive overweight in defensives (FMCG, IT services)\n- Aggressive underweight in mid-caps\n- Aggressive underweight in commodities\n- Aggressive underweight in financials",
+        "sensitivity_note": "The Macro Score framework is qualitative but provides discipline. Update weekly. Major shifts in Macro Score (above 1.0 unit move) warrant portfolio reallocation. The framework works best when applied consistently over time, allowing for back-testing of decisions."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + ; -> today date",
+        "Cmd + Option + V -> paste special for transposing macro data",
+        "Cmd + R -> fill right (for monthly tracking)",
+        "Cmd + 1 -> format cells"
+      ],
+      "windows": [
+        "Ctrl + ; -> insert today date for daily macro tracking",
+        "Alt + N + V -> insert pivot table for multi-event sensitivity",
+        "F4 -> repeat last action (great for sector sensitivity tables)",
+        "Ctrl + 1 -> Format cells (currency, percentage)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Fed Surprise Impact on Indian Equities",
+        "formula": "Indian Equity Reaction percent = (Fed Surprise vs Expectations) x Sectoral Beta x Magnitude Multiplier",
+        "variables": [
+          {
+            "symbol": "Fed Surprise",
+            "meaning": "Difference between Fed action and market expectation (in basis points or qualitative direction)"
+          },
+          {
+            "symbol": "Sectoral Beta",
+            "meaning": "Sensitivity of specific Indian sector to global macro shocks"
+          },
+          {
+            "symbol": "Magnitude Multiplier",
+            "meaning": "Adjustment for shock magnitude — 1.0x for moderate, 1.5x for major, 2x for regime shift"
+          }
+        ],
+        "plain_english": "This formula quantifies how much an Indian sector's equity price reacts when the Federal Reserve surprises the market. A hawkish surprise (tighter policy than expected) triggers capital outflows from India as investors seek higher US Treasury yields; the reaction is amplified for sectors with high foreign holding concentration and cyclical exposure. The sectoral beta captures relative sensitivity, and the magnitude multiplier accounts for whether the surprise is routine or represents a regime break.",
+        "worked_example": {
+          "problem": "On 13 December 2022, the FOMC hiked 50 bps but signaled a higher 2023 terminal rate (5.25% vs market expectation 4.75%). Forecast the impact on Bank Nifty, Mid-cap, High-PE Growth, IT Services, and FMCG sectors over 4 weeks.",
+          "steps": [
+            "Fed Surprise quantification: 50 bps hawkish tilt on terminal rate guidance",
+            "Magnitude Multiplier: 1.5x (major surprise, not just a routine hike)",
+            "Apply sectoral betas: Bank Nifty 1.5, Mid-cap 1.8, High-PE Growth 2.0, IT Services 0.4, FMCG 0.3",
+            "Direct reaction: Multiply (−1.5 surprise magnitude) × beta × 1.5 multiplier",
+            "Account for compounding over 4 weeks as positioning unwinds and policy expectations propagate"
+          ],
+          "result": "Bank Nifty: −2.25% direct → −8 to −12% compounded; Mid-cap: −2.7% direct → −12 to −18% compounded; High-PE Growth: −3.0% direct → −15 to −25% compounded; IT Services: −0.6% direct → actually +1 to +2% due to currency tailwind; FMCG: −0.45% direct → −0 to −1% due to defensive nature.",
+          "insight": "The December 2022 FOMC hawkish surprise validation: Bank Nifty declined ~10% over 4 weeks (within predicted range); Mid-caps fell 12–18%; High-PE growth corrected 15–25%; IT services outperformed as rupee depreciation offset policy headwinds. Directional predictability is high; magnitude requires regime-aware judgment about leverage and positioning."
+        },
+        "sensitivity_note": "Sectoral betas vary by macro regime. During normal times, banking beta to Fed is 1.0-1.5x. During stressed periods (high VIX), beta can spike to 2-3x as illiquidity amplifies moves. During calm periods (low VIX), beta compresses to 0.7-1.0x. Always adjust for current market regime."
+      },
+      {
+        "name": "China Demand Impact on Indian Sectors",
+        "formula": "Sector Earnings Impact = (China Demand Change percent) x (Indian Export Share to China percent) x (Operating Leverage)",
+        "variables": [
+          {
+            "symbol": "China Demand Change",
+            "meaning": "Change in Chinese consumption of relevant commodity or product (percentage)"
+          },
+          {
+            "symbol": "Indian Export Share",
+            "meaning": "Indian company's exports to China as percent of total revenue"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "Earnings response to revenue changes — ratio of EBIT change to revenue change"
+          }
+        ],
+        "plain_english": "This formula translates a shift in Chinese demand into concrete earnings impacts for Indian commodity exporters and manufacturers. China's construction decline directly suppresses copper and steel demand; Indian exporters face lower prices and volumes. Operating leverage amplifies the impact because fixed costs (labour, energy, depreciation) don't fall proportionately, so a 5% revenue decline can drive a 7–8% earnings decline. The framework isolates which sectors matter most to China exposure.",
+        "worked_example": {
+          "problem": "In 2023, China's property crisis triggered a 25% decline in infrastructure spending and a 10–12% drop in global copper consumption. Estimate the EPS impact on Hindalco, which exports 20% of aluminum and 30% of copper revenue to China, with 1.4x operating leverage.",
+          "steps": [
+            "Identify China demand shock: −25% in infrastructure (commodities proxy)",
+            "Map Hindalco's exposure: 20% aluminum exports to China, 30% copper exports to China",
+            "Weighted revenue impact: (−25% × 20%) + (−25% × 30%) ÷ 2 sectors = −6.25% average revenue impact",
+            "Apply operating leverage 1.4x: −6.25% × 1.4 = −8.75% EBIT margin compression",
+            "Scale to EPS (assume EBIT margin ~15% of revenue): −8.75% ÷ 15% = −58 bps margin drop → −15 to −20% EPS impact after tax and capital intensity"
+          ],
+          "result": "Hindalco faced ~6% direct revenue pressure from China demand, which cascaded to 8.4% margin compression and 15–20% EPS impact. Actual stock performance: 22–25% decline over 6 months.",
+          "insight": "Commodity exporters' sensitivity to China is non-linear due to operating leverage. A 25% China demand shock inflicts 4–5x the earnings pain of the direct revenue impact. Conversely, crude oil importers (Asian Paints, IndiGo) benefit as oil prices weaken — same framework, reverse sign."
+        },
+        "sensitivity_note": "China demand effects flow through commodity prices. Track copper, aluminum, steel benchmarks weekly. The cumulative impact builds over 1-3 quarters as the demand decline manifests through inventory cycles and producer responses."
+      },
+      {
+        "name": "FII Flow Impact on Specific Indian Sectors",
+        "formula": "Sector Performance vs Index = (Cumulative FII Flow direction) x (Sector FII Holding Concentration) x (Liquidity Factor)",
+        "variables": [
+          {
+            "symbol": "Cumulative FII Flow",
+            "meaning": "Net FII inflows or outflows over relevant period (week, month, quarter) in ₹ crore"
+          },
+          {
+            "symbol": "FII Holding Concentration",
+            "meaning": "Sector holding by FIIs as percent of total free-float market cap"
+          },
+          {
+            "symbol": "Liquidity Factor",
+            "meaning": "Adjustment for ease of reallocation — mid-caps 1.5–2.0x, large-caps 1.0–1.2x, small-caps 2.0–3.0x"
+          }
+        ],
+        "plain_english": "When FIIs flush capital into or out of India, the impact is not uniform across sectors. High-concentration sectors (e.g., banks at 40–50% FII-held) face outsized selling pressure during outflows; mid-caps and small-caps experience amplified moves because liquidity is thinner and FII exit velocity is higher. This formula isolates which sectors will be hit hardest by capital flow shocks.",
+        "worked_example": {
+          "problem": "In March 2022, Russia-Ukraine geopolitical risk sparked ₹35,000 crore FII outflow over 30 days. Estimate the performance divergence across banking, auto, FMCG, and mid-cap sectors, accounting for FII concentration and DII (domestic) offsets.",
+          "steps": [
+            "Total FII outflow: ₹35,000 crore over 30 days (major outflow regime)",
+            "Map sector FII concentration: Banks 40–50%, Auto 25–30%, FMCG 15%, Mid-caps 20–22%",
+            "Assess DII offset: FMCG 25% DII, Utilities 30% DII (defensive sectors with strong retail bid)",
+            "Apply liquidity factor: Mid-cap 1.8x (thin liquidity, high rotation pain), Large-cap 1.1x",
+            "Net impact = (FII concentration) × (liquidity factor) − (DII offset): Banks (45% × 1.1 − 5% offset) = 44.5% vulnerability; FMCG (15% × 1.1 − 25% DII) = negative (DII protects); Mid-cap (22% × 1.8) = 39.6% vulnerability"
+          ],
+          "result": "Bank Nifty: −7% over 30 days; Auto: −4%; FMCG: −2% (DII buying offset FII selling); Mid-cap index: −8 to −10% (highest exposure and liquidity amplification). Dispersion between FII-heavy and DII-supported sectors: 6–8 percentage points.",
+          "insight": "Mid-caps and FII-concentrated sectors (banking, auto) face disproportionate pain during large outflow events. Defensive sectors with strong DII ownership (FMCG, utilities) provide relative outperformance shields. Use cumulative 4-week FII flows to identify regime transitions; flows above ₹30,000 crore outflow signal major dislocations."
+        },
+        "sensitivity_note": "FII flows can be volatile day-to-day. Use 4-week cumulative flows to identify regime shifts. Cumulative outflows above ₹30,000 crore in 4 weeks signal major selling pressure. Cumulative inflows above ₹25,000 crore signal buying pressure."
+      },
+      {
+        "name": "Dollar Index (DXY) and Indian Sectoral Impact",
+        "formula": "Indian Sector Impact = −(DXY Change percent) x Sector USD Sensitivity x Magnitude Factor",
+        "variables": [
+          {
+            "symbol": "DXY Change",
+            "meaning": "Percentage change in Dollar Index over relevant period"
+          },
+          {
+            "symbol": "Sector USD Sensitivity",
+            "meaning": "Sectoral beta to dollar strength — IT services positive (USD revenue, rupee depreciation drag), importers negative (higher input costs), financials mixed"
+          },
+          {
+            "symbol": "Magnitude Factor",
+            "meaning": "Compounding adjustment for sustained moves (1.5–2.5x for 4+ week trends)"
+          }
+        ],
+        "plain_english": "A stronger dollar (rising DXY) hurts Indian exporters (especially IT services) because their USD-denominated revenues translate into fewer rupees upon conversion; it also tightens financial conditions globally, reducing EM capital inflows. A weaker dollar reverses both effects: IT exporters see revenue tailwinds, and risk-on sentiment brings FII inflows. This formula quantifies the sectoral dispersion that emerges from sustained DXY moves.",
+        "worked_example": {
+          "problem": "In August 2024, the Dollar Index weakened from 105 to 102 (3% decline) over 6 weeks amid US economic slowdown and Fed pivot expectations (risk-on regime). Estimate sectoral impact across IT services, pharma, banking, mid-caps, FMCG, and capital goods.",
+          "steps": [
+            "DXY change: −3% (dollar weakness)",
+            "Apply negative sign convention: −(−3%) = +3% tailwind to EM-sensitive sectors",
+            "Sector USD sensitivities: IT services +1.5x (high USD revenue), Pharma +1.2x, Banking +2.0x (capital inflow), Mid-caps +1.8x, FMCG +0.2x, Capital goods +1.6x (capex narrative)",
+            "Direct impact: IT +4.5%, Pharma +3.6%, Banking +6%, Mid-caps +5.4%, FMCG +0.6%, Capex +4.8%",
+            "Magnitude factor 1.3x for 6-week compounding and positioning: IT +2%, Pharma +1%, Banking +5–8%, Mid-caps +6–10%, FMCG minimal, Capex +4–6%"
+          ],
+          "result": "Mid-cap rally 8–12%, Banking rally 6–10%, Capex +4–6%, IT services underperformance by 4–5 percentage points relative to broader rally (despite positive return). Sector dispersion: 10–12 percentage points (mid-caps vs IT leadership, though IT still positive).",
+          "insight": "Dollar weakness in risk-on regimes is a rising-tide scenario: capital flows expand, lifting most sectors, but IT services lag because their earnings leverage is tied to export value, not capital flows. Mid-caps and financials lead in risk-on dollar-weak periods. Monitor DXY relative to 200-day moving average for regime detection."
+        },
+        "sensitivity_note": "DXY moves of 2-3 percent are routine; 5+ percent are major. Track DXY relative to its 200-day moving average. Above the moving average is dollar strength regime; below is dollar weakness regime."
+      },
+      {
+        "name": "Combined Global Macro Score for Indian Equities",
+        "formula": "Macro Score = (Fed Score + China Score + DXY Score + EM Sentiment Score) / 4, each component scored −2 to +2",
+        "variables": [
+          {
+            "symbol": "Fed Score",
+            "meaning": "+2 (very dovish, rate cuts likely) to −2 (very hawkish, tightening ahead); 0 = neutral/data-dependent"
+          },
+          {
+            "symbol": "China Score",
+            "meaning": "+2 (strong growth, stimulus) to −2 (recession, property collapse); 0 = baseline"
+          },
+          {
+            "symbol": "DXY Score",
+            "meaning": "+2 (dollar weakness, EM strength) to −2 (dollar strength, EM headwind); 0 = neutral"
+          },
+          {
+            "symbol": "EM Sentiment Score",
+            "meaning": "+2 (risk-on, FII inflows) to −2 (risk-off, outflows); 0 = neutral"
+          }
+        ],
+        "plain_english": "This composite score distils four independent macro drivers into a single disciplined gauge of the overall environment for Indian equities. A score above +1.0 suggests broad tailwinds (dovish Fed, strong China, weak dollar, risk-on sentiment) → overweight cyclicals and growth. A score below −1.0 suggests headwinds → shift to defensives and reduce leverage. The framework enforces consistency and prevents reactive whipsaw.",
+        "worked_example": {
+          "problem": "Assess the macro backdrop in November 2024 and recommend a tactical portfolio tilt. Assume: Fed has paused hikes and may cut in 2025 (dovish pivot), China stimulus is mild but property concerns persist (weak), DXY is range-bound 102–105 (mixed), and FII flows are positive but selective (neutral-positive).",
+          "steps": [
+            "Fed Score: +1.5 (pause + expected cuts = dovish, but not extreme)",
+            "China Score: −0.5 (stimulus efforts offset by structural property weakness)",
+            "DXY Score: −0.5 (range-bound, no clear trend; slight EM bias)",
+            "EM Sentiment: +0.5 (capital flows positive but selective, not aggressive)",
+            "Macro Score = (1.5 − 0.5 − 0.5 + 0.5) / 4 = 1.0 / 4 = 0.25"
+          ],
+          "result": "Macro Score = 0.25 (mildly positive, near-neutral). Tactical positioning: Modest overweight mid-caps (FII-sensitive), modest overweight private banks (rate benefit), neutral IT (currency hedge), modest underweight commodities (China drag).",
+          "insight": "If Macro Score were +2.0 (dovish Fed, strong China, weak dollar, risk-on): Aggressive overweight mid-caps/small-caps, capex, private banks; underweight defensives. If −2.0 (hawkish Fed, weak China, strong dollar, risk-off): Aggressive overweight FMCG/IT defensives, underweight commodities/mid-caps. The 0.25 score implies balanced positioning with tactical tilts, not conviction trades. Back-test the score weekly to refine its predictive power."
+        },
+        "sensitivity_note": "The Macro Score framework is qualitative but provides discipline. Update weekly. Major shifts in Macro Score (above 1.0 unit move) warrant portfolio reallocation. The framework works best when applied consistently over time, allowing for back-testing of decisions."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + ; -> today date",
+        "Cmd + Option + V -> paste special for transposing macro data",
+        "Cmd + R -> fill right (for monthly tracking)",
+        "Cmd + 1 -> format cells"
+      ],
+      "windows": [
+        "Ctrl + ; -> insert today date for daily macro tracking",
+        "Alt + N + V -> insert pivot table for multi-event sensitivity",
+        "F4 -> repeat last action (great for sector sensitivity tables)",
+        "Ctrl + 1 -> Format cells (currency, percentage)"
+      ]
+    }
+  }
+}

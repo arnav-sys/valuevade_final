@@ -1,0 +1,281 @@
+{
+  "id": "09901704-6cd6-429b-b4d9-d589835a07d7",
+  "label": "M8 S8 | The Four Cash Flow Forensic Adjustments",
+  "before": {
+    "formulas": [
+      {
+        "name": "Normalised CFO (Classification-Adjusted)",
+        "formula": "Normalised CFO = Reported CFO − Interest Paid (if classified in financing) − Dividends Paid (if classified in financing) + Interest Received (if classified in investing) + Dividends Received (if classified in investing)",
+        "variables": [
+          {
+            "symbol": "Reported CFO",
+            "meaning": "Cash flow from operating activities as reported in the cash flow statement"
+          },
+          {
+            "symbol": "Interest Paid",
+            "meaning": "Interest expense paid during the year, from borrowing costs note or cash flow financing section"
+          },
+          {
+            "symbol": "Dividends Paid",
+            "meaning": "Dividends paid to equity shareholders during the year"
+          },
+          {
+            "symbol": "Interest Received",
+            "meaning": "Interest income received during the year, from other income breakdown"
+          },
+          {
+            "symbol": "Dividends Received",
+            "meaning": "Dividend income received from investments during the year"
+          }
+        ],
+        "worked_example": "For Reliance Industries FY23: Reported CFO ₹1,24,440 crore. Interest paid during the year (classified in financing) ₹22,520 crore. Dividends paid (classified in financing) ₹6,763 crore. Interest received (classified in investing) ₹12,450 crore. Dividends received (classified in investing) ₹2,310 crore. Normalised CFO under global IFRS convention: 1,24,440 − 22,520 − 6,763 + 12,450 + 2,310 = ₹1,09,917 crore. The classification adjustment reduces reported CFO by ₹14,523 crore, or roughly 12 percent. For valuation metrics that use CFO — EV/CFO, P/CFO, or CFO-based DCF — this difference materially changes the multiples. A stock trading at 8x reported CFO trades at 9.1x normalised CFO. When benchmarking Reliance against Exxon Mobil or Saudi Aramco (which classify interest in operating), using unadjusted CFO systematically favours Reliance's apparent cash generation versus peers. The analyst who normalises makes apples-to-apples comparisons; the analyst who does not is systematically wrong-footed. For ICICI Bank FY23: Reported CFO ₹68,450 crore. Interest paid classified in financing ₹27,890 crore. Normalised CFO: 68,450 − 27,890 = ₹40,560 crore. The adjustment is 40 percent of reported CFO for a bank. This is the magnitude that makes classification analysis non-optional for financial sector coverage.",
+        "sensitivity_note": "Normalisation should be applied consistently across peer sets. If some peers classify interest in operating and others in financing, normalise all to one convention (typically operating, for comparability with global IFRS and consistency with P&L treatment). Always disclose the adjustment in research notes."
+      },
+      {
+        "name": "Adjusted Free Cash Flow",
+        "formula": "Adjusted FCF = Normalised CFO − Capital Expenditure − Capitalised Interest (add back to keep consistent with expensed interest)",
+        "variables": [
+          {
+            "symbol": "Normalised CFO",
+            "meaning": "CFO adjusted for interest and dividend classification as computed above"
+          },
+          {
+            "symbol": "Capital Expenditure",
+            "meaning": "Cash outflow for purchase of property, plant, equipment, and intangibles from investing activities section"
+          },
+          {
+            "symbol": "Capitalised Interest",
+            "meaning": "Interest capitalised into assets under construction during the year, disclosed in Ind AS 23 borrowing costs note"
+          }
+        ],
+        "worked_example": "For a hypothetical mid-cap infrastructure company FY23: Reported CFO ₹2,400 crore. Interest paid (financing) ₹1,800 crore. Capex ₹1,200 crore. Capitalised interest ₹1,500 crore. Reported FCF (by many research conventions) = 2,400 − 1,200 = ₹1,200 crore. But this overstates true cash generation dramatically. Normalised CFO = 2,400 − 1,800 = ₹600 crore. Note that the ₹1,500 crore of capitalised interest is sitting in the investing section as part of capex (not in interest paid), so we do not double-count it. Adjusted FCF = 600 − 1,200 − 0 (capitalised interest already in capex) = −₹600 crore. The company is actually burning cash, not generating it. The 3,600 crore gap between reported FCF and adjusted FCF captures the combined effect of interest classification choice plus interest capitalisation — two Family 2 and Family 6 patterns compounding. Applied to real Indian infrastructure names during FY15-FY20 construction phases, the reported FCF was consistently positive ₹500-2,000 crore while adjusted FCF was consistently negative ₹1,500-4,000 crore. Investors who used reported FCF in DCF models systematically overvalued these companies. Investors who used adjusted FCF correctly identified them as value traps.",
+        "sensitivity_note": "Maintenance capex versus growth capex distinction matters here. For a steady-state business, adjusted FCF should be positive after covering maintenance capex. For a growth-phase business, some years of negative adjusted FCF are normal but must be financed by debt or equity raises — check the financing section for the funding source."
+      },
+      {
+        "name": "Quality of Earnings (QoE) Ratio",
+        "formula": "QoE Ratio = CFO / Net Income (PAT) × 100",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash flow from operating activities (use reported or normalised depending on comparison purpose)"
+          },
+          {
+            "symbol": "Net Income (PAT)",
+            "meaning": "Profit after tax from the income statement, attributable to parent"
+          }
+        ],
+        "worked_example": "This is the Session 2 ratio revisited with forensic refinement. For HUL FY23: CFO ₹9,480 crore against PAT ₹10,120 crore = QoE Ratio of 94 percent. This is excellent — nearly every rupee of reported profit is converting to cash, consistent with a mature FMCG business with strong working capital discipline. For Titan Company FY23: CFO ₹3,890 crore against PAT ₹3,268 crore = QoE Ratio of 119 percent. Above 100 percent because working capital released during the year and non-cash charges were substantial. Also excellent. For a hypothetical mid-cap industrial company: CFO ₹240 crore against PAT ₹545 crore = QoE Ratio of 44 percent. Severely deficient — less than half of reported profit is converting to cash. The remaining ₹305 crore is being absorbed somewhere (working capital, other current assets, or classification choice). This level of QoE Ratio warrants immediate investigation. Sector benchmarks: FMCG 85-105 percent (Hindustan Unilever, Dabur, Nestle typically in this range); IT services 95-115 percent (TCS, Infosys, Wipro); pharma 85-110 percent (Sun Pharma, Cipla, Lupin); consumer durables 80-100 percent; capital goods 70-100 percent (more volatile due to project cycles); real estate N/A (inventory cycles make ratio less meaningful). Anything persistently below 70 percent for 3-plus years is a strong manipulation signal.",
+        "sensitivity_note": "QoE Ratio should be computed over 3-5 year windows, not single years, because working capital timing creates natural single-year variation. The cumulative ratio is more diagnostic than any single year. Also normalise QoE using classification-adjusted CFO when comparing across companies with different interest classification conventions."
+      },
+      {
+        "name": "Cash Flow Composition Analysis",
+        "formula": "Composition percentages: CFO / Total Cash Inflows from All Three Buckets × 100; Investing / Total × 100; Financing / Total × 100",
+        "variables": [
+          {
+            "symbol": "Total Cash Inflows",
+            "meaning": "Sum of absolute values of all three bucket cash flows, used as a baseline"
+          }
+        ],
+        "worked_example": "A healthy steady-state company typically shows roughly 50-70 percent of its absolute cash flows from operating, modest negative investing (maintenance capex), and modest negative financing (debt servicing, dividends). A growth-phase company shows lower operating percentage and higher investing outflow. A distress-phase company shows weak operating, minimal investing, and high financing inflows (raising capital to survive). For Reliance Industries FY23: Operating CFO ₹1,24,440 crore, Investing −₹1,43,560 crore (heavy Jio and Retail capex), Financing ₹5,820 crore. Pattern consistent with growth-phase investment cycle funded by operating cash flow and modest financing. For a hypothetical distressed company: Operating CFO ₹180 crore, Investing ₹120 crore (asset sales generating cash), Financing ₹680 crore (raising debt). Pattern reveals operating cash flow is insufficient and the company is funding operations through asset sales and borrowing — a liquidity stress signal that P&L alone would miss. Specifically track the ratio of Financing Cash Inflows / Operating CFO — if consistently above 30 percent, the company is not self-funding and is structurally dependent on capital markets. This is a vulnerability that changes dramatically when capital markets tighten.",
+        "sensitivity_note": "Cash flow composition must be analysed over multi-year windows — single years can reflect specific financing rounds or asset sales that are not representative. A company may legitimately fund growth-phase investing through financing for 3-5 years, but distress patterns show up as financing dependence combined with weak operating."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Ctrl + Shift + 1 — Number format"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders to cash flow comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-company classification data",
+        "F4 — Lock references when normalising across multiple companies",
+        "Alt + = — AutoSum for bucket totals",
+        "Ctrl + Shift + 1 — Number format with thousand separators for cleaner ₹ crore presentation"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Normalised CFO (Classification-Adjusted)",
+        "formula": "Normalised CFO = Reported CFO − Interest Paid (if classified in financing) − Dividends Paid (if classified in financing) + Interest Received (if classified in investing) + Dividends Received (if classified in investing)",
+        "variables": [
+          {
+            "symbol": "Reported CFO",
+            "meaning": "Cash flow from operating activities as reported in the cash flow statement"
+          },
+          {
+            "symbol": "Interest Paid",
+            "meaning": "Interest expense paid during the year, from borrowing costs note or cash flow financing section"
+          },
+          {
+            "symbol": "Dividends Paid",
+            "meaning": "Dividends paid to equity shareholders during the year"
+          },
+          {
+            "symbol": "Interest Received",
+            "meaning": "Interest income received during the year, from other income breakdown"
+          },
+          {
+            "symbol": "Dividends Received",
+            "meaning": "Dividend income received from investments during the year"
+          }
+        ],
+        "plain_english": "This formula reclassifies cash flows to a uniform global standard where all interest and dividend cash flows appear in operating activities, regardless of how a company's accountants initially classified them. Because Indian companies follow Ind AS (which permits interest and dividends to be classified in either operating or investing), two otherwise identical businesses can report drastically different CFO figures. Normalisation strips this accounting choice away, letting you compare cash generation fairly across peers and against international benchmarks.",
+        "worked_example": {
+          "problem": "Reliance Industries FY23 reported CFO of ₹1,24,440 crore. Interest paid (classified in financing) ₹22,520 crore; dividends paid (classified in financing) ₹6,763 crore; interest received (classified in investing) ₹12,450 crore; dividends received (classified in investing) ₹2,310 crore. Normalise the CFO to the global IFRS convention.",
+          "steps": [
+            "Start with reported CFO: ₹1,24,440 crore",
+            "Subtract interest paid from financing section: ₹1,24,440 − ₹22,520 = ₹1,01,920 crore",
+            "Subtract dividends paid from financing section: ₹1,01,920 − ₹6,763 = ₹95,157 crore",
+            "Add interest received from investing section: ₹95,157 + ₹12,450 = ₹1,07,607 crore",
+            "Add dividends received from investing section: ₹1,07,607 + ₹2,310 = ₹1,09,917 crore"
+          ],
+          "result": "Normalised CFO = ₹1,09,917 crore (versus reported ₹1,24,440 crore, a ₹14,523 crore or 12 percent downward adjustment)",
+          "insight": "Reliance's reported CFO benefits from a ₹22.5k crore classification choice. When benchmarked against Exxon Mobil or Saudi Aramco (which classify interest in operating), Reliance appears 12 percent more cash-generative than it actually is. A stock trading at 8× reported CFO trades at 9.1× normalised CFO — a material valuation difference. For ICICI Bank FY23, the same adjustment on a bank's ₹68,450 crore reported CFO (₹27,890 crore interest in financing) yields a 40 percent downward revision, showing how critical this adjustment is for financial sector analysis."
+        },
+        "sensitivity_note": "Normalisation should be applied consistently across peer sets. If some peers classify interest in operating and others in financing, normalise all to one convention (typically operating, for comparability with global IFRS and consistency with P&L treatment). Always disclose the adjustment in research notes."
+      },
+      {
+        "name": "Adjusted Free Cash Flow",
+        "formula": "Adjusted FCF = Normalised CFO − Capital Expenditure − Capitalised Interest (add back to keep consistent with expensed interest)",
+        "variables": [
+          {
+            "symbol": "Normalised CFO",
+            "meaning": "CFO adjusted for interest and dividend classification as computed above"
+          },
+          {
+            "symbol": "Capital Expenditure",
+            "meaning": "Cash outflow for purchase of property, plant, equipment, and intangibles from investing activities section"
+          },
+          {
+            "symbol": "Capitalised Interest",
+            "meaning": "Interest capitalised into assets under construction during the year, disclosed in Ind AS 23 borrowing costs note"
+          }
+        ],
+        "plain_english": "Adjusted FCF answers the question: how much cash is available to shareholders after the company has paid to maintain and grow its asset base, treating all interest as an operating cost (not hidden in capex). When a company capitalises interest during construction, it defers the cash impact from the P&L into the balance sheet. This formula flushes that deferred interest out as a cash outflow in the same period it was incurred economically, giving you the true free cash available—not the smoothed-out fiction that capitalisation creates.",
+        "computation": [
+          "Begin with normalised CFO (from formula 1)",
+          "Subtract total capital expenditure (cash outflows in investing section for PP&E and intangibles)",
+          "Identify capitalised interest from the Ind AS 23 note (usually titled 'Borrowing Costs')",
+          "If capitalised interest is embedded in capex line items, subtract it separately to avoid double-counting",
+          "If capitalised interest is already excluded from the capex subtotal, do not subtract it again"
+        ],
+        "worked_example": {
+          "problem": "A mid-cap infrastructure company FY23: Reported CFO ₹2,400 crore; interest paid (classified in financing) ₹1,800 crore; capex (cash paid for equipment and assets under construction) ₹1,200 crore; capitalised interest (added to assets under construction, per Ind AS 23 note) ₹1,500 crore. Calculate adjusted FCF.",
+          "steps": [
+            "Normalise CFO: ₹2,400 − ₹1,800 = ₹600 crore",
+            "Check capex line: ₹1,200 crore includes both equipment (expensed to CFO via depreciation) and capitalised interest (expensed via interest expense). Verify from the cash flow statement footnote whether capitalised interest is already deducted from reported CFO",
+            "In typical Ind AS presentations, capitalised interest is NOT deducted from reported CFO; it sits in capex",
+            "Subtract capex from normalised CFO: ₹600 − ₹1,200 = −₹600 crore",
+            "Check if capitalised interest (₹1,500 crore) is already included in the ₹1,200 capex. If the company capitalised ₹1,500 crore but reported only ₹1,200 capex, there is a discrepancy. Assume standard case: capitalised interest is part of the investing cash outflow but is NOT explicitly subtracted separately from CFO. Thus adjusted FCF = −₹600 crore (no further adjustment)"
+          ],
+          "result": "Adjusted FCF = −₹600 crore",
+          "insight": "The company is burning cash, not generating it. Many analysts using 'reported FCF' (₹2,400 − ₹1,200 = ₹1,200 crore) would wrongly conclude the company is healthy. The ₹3,600 crore gap (between ₹1,200 crore reported FCF and −₹600 crore adjusted FCF) comes from two forensic errors: (1) interest classification inflates reported CFO by ₹1,800 crore, and (2) capitalised interest of ₹1,500 crore was deferred to the balance sheet instead of being recognised as a true operating cost. During India's infrastructure boom of FY15–FY20, dozens of mid-cap construction and real estate companies posted reported FCF of ₹500–2,000 crore while adjusted FCF was consistently −₹1,500 to −₹4,000 crore. Investors who relied on reported FCF in DCF models systematically overvalued these firms. Investors who normalised and adjusted correctly identified value traps."
+        },
+        "sensitivity_note": "Maintenance capex versus growth capex distinction matters here. For a steady-state business, adjusted FCF should be positive after covering maintenance capex. For a growth-phase business, some years of negative adjusted FCF are normal but must be financed by debt or equity raises — check the financing section for the funding source."
+      },
+      {
+        "name": "Quality of Earnings (QoE) Ratio",
+        "formula": "QoE Ratio = CFO / Net Income (PAT) × 100",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash flow from operating activities (use reported or normalised depending on comparison purpose)"
+          },
+          {
+            "symbol": "Net Income (PAT)",
+            "meaning": "Profit after tax from the income statement, attributable to parent"
+          }
+        ],
+        "plain_english": "The QoE Ratio measures what fraction of reported profit is actually converting into cash. A ratio of 100 percent means every rupee of earnings generated a rupee of operating cash; above 100 percent means working capital release or non-cash charges boosted cash flow; below 70–80 percent for sustained periods signals that earnings quality is poor and cash is being consumed somewhere (often in hidden working capital swells, receivables, or accounting games). This is one of the fastest filters for spotting manipulation.",
+        "computation": [
+          "Obtain CFO from the cash flow statement (either reported or normalised, depending on peer comparison consistency)",
+          "Obtain Net Income (PAT) from the P&L, attributable to parent",
+          "Divide CFO by PAT",
+          "Multiply by 100 to express as a percentage",
+          "For multi-year analysis, compute the ratio for each year and also compute cumulative 3–5 year CFO divided by cumulative PAT for a trend-adjusted view"
+        ],
+        "worked_example": {
+          "problem": "Compare QoE ratios for three Indian companies FY23: (1) HUL: CFO ₹9,480 crore, PAT ₹10,120 crore; (2) Titan Company: CFO ₹3,890 crore, PAT ₹3,268 crore; (3) A hypothetical mid-cap industrial: CFO ₹240 crore, PAT ₹545 crore. Interpret each.",
+          "steps": [
+            "HUL QoE Ratio: (₹9,480 / ₹10,120) × 100 = 93.7 percent",
+            "Titan Company QoE Ratio: (₹3,890 / ₹3,268) × 100 = 119.0 percent",
+            "Mid-cap industrial QoE Ratio: (₹240 / ₹545) × 100 = 44.0 percent"
+          ],
+          "result": "HUL 93.7%; Titan 119.0%; Mid-cap industrial 44.0%",
+          "insight": "HUL's 94 percent is excellent—a mature FMCG business with strong working capital discipline converts nearly every rupee of profit into cash. Titan's 119 percent is also excellent, above 100 because working capital was released and non-cash depreciation charges were material. The mid-cap industrial's 44 percent is severely deficient: less than half of reported profit became cash. The missing ₹305 crore is being absorbed into working capital build, inventory, or other current assets—a major red flag that warrants investigation into inventory ageing, receivable days, and capex cycles. Sector benchmarks: FMCG 85–105% (HUL, Dabur, Nestlé in this range); IT services 95–115% (TCS, Infosys, Wipro); pharma 85–110% (Sun Pharma, Cipla, Lupin); consumer durables 80–100%; capital goods 70–100% (more volatile due to project cycles); real estate N/A (inventory cycles make ratio less meaningful). Any company with persistently sub-70% QoE for 3+ years warrants scrutiny for earnings quality."
+        },
+        "sensitivity_note": "QoE Ratio should be computed over 3–5 year windows, not single years, because working capital timing creates natural single-year variation. The cumulative ratio is more diagnostic than any single year. Also normalise QoE using classification-adjusted CFO when comparing across companies with different interest classification conventions."
+      },
+      {
+        "name": "Cash Flow Composition Analysis",
+        "formula": "Composition percentages: CFO / Total Cash Inflows from All Three Buckets × 100; Investing / Total × 100; Financing / Total × 100",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash flow from operating activities (in absolute value)"
+          },
+          {
+            "symbol": "Investing Cash Flow",
+            "meaning": "Cash flow from investing activities (in absolute value, use negative absolute value or convert to positive outflow for composition analysis)"
+          },
+          {
+            "symbol": "Financing Cash Flow",
+            "meaning": "Cash flow from financing activities (in absolute value)"
+          },
+          {
+            "symbol": "Total Cash Inflows",
+            "meaning": "Sum of absolute values of all three bucket cash flows, used as the denominator"
+          }
+        ],
+        "plain_english": "Cash flow composition analysis reveals the structural health of a business. A steady-state company funds itself: operating generates the bulk of cash (50–70 percent), investing is a small net outflow (maintenance capex), and financing is a small net outflow (debt servicing, dividends). A growth-phase company shows lower operating percentage and high investing outflow. A distressed company shows weak operating, asset-sale inflows, and high financing inflows (desperate capital raising). One glance at the composition tells you the company's lifecycle stage and vulnerability to capital markets tightening.",
+        "computation": [
+          "Calculate absolute value of CFO (operating inflow)",
+          "Calculate absolute value of investing cash flow (absolute of potentially large negative capex)",
+          "Calculate absolute value of financing cash flow (absolute of debt servicing or equity raise)",
+          "Sum all three absolute values to get total cash flow magnitude",
+          "Divide each component by total and multiply by 100",
+          "Track the ratio of Financing Inflows / CFO: if consistently above 30%, the company is not self-funding and depends on capital markets access"
+        ],
+        "worked_example": {
+          "problem": "Analyse cash flow composition for Reliance Industries FY23 versus a hypothetical distressed company FY23. Reliance: CFO ₹1,24,440 crore, Investing −₹1,43,560 crore (Jio and Retail capex), Financing ₹5,820 crore. Distressed company: CFO ₹180 crore, Investing ₹120 crore (asset sales), Financing ₹680 crore (debt raise).",
+          "steps": [
+            "Reliance composition: Total = |₹1,24,440| + |−₹1,43,560| + |₹5,820| = ₹2,73,820 crore",
+            "Reliance operating %: (₹1,24,440 / ₹2,73,820) × 100 = 45.4%",
+            "Reliance investing %: (₹1,43,560 / ₹2,73,820) × 100 = 52.4%",
+            "Reliance financing %: (₹5,820 / ₹2,73,820) × 100 = 2.1%",
+            "Distressed composition: Total = |₹180| + |₹120| + |₹680| = ₹980 crore",
+            "Distressed operating %: (₹180 / ₹980) × 100 = 18.4%",
+            "Distressed investing %: (₹120 / ₹980) × 100 = 12.2%",
+            "Distressed financing %: (₹680 / ₹980) × 100 = 69.4%",
+            "Reliance financing/CFO ratio: (₹5,820 / ₹1,24,440) = 4.7% (healthy, self-funding)",
+            "Distressed financing/CFO ratio: (₹680 / ₹180) = 378% (pathological dependence on capital raise)"
+          ],
+          "result": "Reliance: 45% operating, 52% investing, 2% financing (growth-phase investment cycle). Distressed: 18% operating, 12% investing (asset sales), 69% financing (capital survival mode).",
+          "insight": "Reliance's composition is consistent with a healthy growth-phase company investing heavily in Jio expansion and retail infrastructure, funded by robust operating cash flow. The 45/52/2 split shows it is mostly self-funding capex with modest external financing—a position of strength. The distressed company's 18/12/69 split is a distress flag: operating cash is only ₹180 crore (insufficient), investing shows ₹120 crore of asset liquidation (selling non-core assets for cash), and financing is ₹680 crore (raising debt to survive). The financing/CFO ratio of 378% screams liquidity stress. P&L alone might show modest profitability, but cash flow composition reveals the company is dependent on capital markets and vulnerable to any tightening. Multi-year composition trends are critical: a company may legitimately shift from 60/30/10 to 40/50/10 during a 3–5 year growth spurt, but a trend toward 20/10/70 over the same period signals structural distress."
+        },
+        "sensitivity_note": "Cash flow composition must be analysed over multi-year windows—single years can reflect specific financing rounds or asset sales that are not representative. A company may legitimately fund growth-phase investing through financing for 3–5 years, but distress patterns show up as financing dependence combined with weak operating."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Ctrl + Shift + 1 — Number format"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders to cash flow comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-company classification data",
+        "F4 — Lock references when normalising across multiple companies",
+        "Alt + = — AutoSum for bucket totals",
+        "Ctrl + Shift + 1 — Number format with thousand separators for cleaner ₹ crore presentation"
+      ]
+    }
+  }
+}

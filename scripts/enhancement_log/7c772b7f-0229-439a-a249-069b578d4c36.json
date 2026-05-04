@@ -1,0 +1,260 @@
+{
+  "id": "7c772b7f-0229-439a-a249-069b578d4c36",
+  "label": "M11 S12 | The Initiation Note Architecture Toolkit — From Page Allocat",
+  "before": {
+    "formulas": [
+      {
+        "name": "Page Allocation Framework Across The Seven Sections",
+        "formula": "Total Page Budget (typically 60-100 pages) ≈ Executive Summary (5%) + Sector Overview (15%) + Demand-Supply (15%) + Competitive Landscape (10%) + Top Picks (25%) + Valuation Comp Sheet (10%) + Risk Factors (10%) + Appendix (10%)",
+        "variables": [
+          {
+            "symbol": "Executive Summary",
+            "meaning": "3-5 pages. Most important section; read by 90%+ of readers. Contains thesis, top picks, key catalysts"
+          },
+          {
+            "symbol": "Sector Overview",
+            "meaning": "8-12 pages. Establishes sector size, sub-segments, regulatory landscape, historical context"
+          },
+          {
+            "symbol": "Demand-Supply",
+            "meaning": "8-12 pages. Drives cyclical thesis. Demand drivers, supply landscape, balance forecast"
+          },
+          {
+            "symbol": "Top Picks",
+            "meaning": "12-18 pages (largest section). 3-5 stocks with detailed thesis, financials, target prices, catalysts, risks"
+          },
+          {
+            "symbol": "Valuation Comp Sheet",
+            "meaning": "6-10 pages. Master comparison table; sector-relative valuation analysis"
+          },
+          {
+            "symbol": "Risk Factors",
+            "meaning": "4-8 pages. Honest assessment without hedging top picks. Quantified sensitivities"
+          }
+        ],
+        "worked_example": "Sector initiation on Indian Quick Service Restaurants (QSR) — 78-page final document. Allocation: Executive Summary 4 pages (5%) covering Jubilant FoodWorks, Westlife, Sapphire as top picks. Sector Overview 12 pages (15%) covering 1.5 lakh crore Indian food services market, segmentation, 12-15% structural growth. Demand-Supply 11 pages (14%) covering urbanisation drivers, sub-segment growth (organized dining vs delivery), capacity additions through 2027. Competitive Landscape 8 pages (10%) covering Domino's vs McDonald's vs Burger King vs KFC vs Pizza Hut share dynamics. Top Picks 18 pages (23%) covering Jubilant FoodWorks (Domino's India, target 700 from 565, 24% upside), Westlife (McDonald's North India, target 1100 from 920, 20%), Sapphire Foods (KFC India, target 380 from 320, 19%). Valuation Comp Sheet 8 pages (10%) covering Indian peer set plus international comparables (Yum! Brands, McDonald's Corp, Domino's Pizza). Risk Factors 5 pages (6%) covering input cost volatility, demand sensitivity, competitive intensity. Appendix 12 pages (15%) covering company financials, store roll-out trackers, sector data. Total 78 pages. The framework allocates pages by importance — top picks gets the largest allocation because that's where the analytical value lies. Executive summary gets less pages but is most read. Risk factors gets smaller allocation reflecting honest assessment without padding.",
+        "sensitivity_note": "Page allocation is a discipline rather than a rigid rule. Adjust based on sector complexity. Sectors with multiple sub-segments (Pharma with US generics + India formulations + Specialty + Hospitals + CDMO) require more sub-segment pages. Sectors with strong cyclical dynamics (Capital Goods, Metals) require more demand-supply analysis. Sectors with high regulatory dependency (Pharma, Real Estate) require more regulatory analysis. The framework provides starting point; adapt to sector-specific needs while maintaining the seven-section architecture."
+      },
+      {
+        "name": "Target Price Calculation Framework Across Sectors",
+        "formula": "Target Price = Forward 12-Month Earnings × Justified Valuation Multiple     OR     Target Price = NAV per Share (Real Estate)     OR     Target Price = Sum of Segment Values ÷ Shares (Conglomerates SOTP)",
+        "variables": [
+          {
+            "symbol": "Forward 12-Month Earnings",
+            "meaning": "Analyst's projected EPS for next 12 months, typically derived from quarterly forecasts and bottoms-up modeling"
+          },
+          {
+            "symbol": "Justified Valuation Multiple",
+            "meaning": "Sector-appropriate multiple — P/E for non-cyclical (FMCG, Pharma, IT), P/E or EV/EBITDA for cyclicals, P/NAV for real estate, EV/Tonne for some commodities. Compare to historical average and peer average"
+          },
+          {
+            "symbol": "NAV per Share",
+            "meaning": "Real estate valuation methodology — Land Bank + Project Pipeline NPV + Inventory + Cash − Debt, divided by shares"
+          },
+          {
+            "symbol": "Segment Values (SOTP)",
+            "meaning": "Conglomerate valuation — sum of segment values using segment-appropriate multiples (e.g., Reliance: O2C at 10x EV/EBITDA, Jio at 13x, Retail at 35x)"
+          }
+        ],
+        "worked_example": "Jubilant FoodWorks target price calculation. Step 1: Forward 12-month EPS estimate. FY26 estimated EPS: 16 INR (from quarterly model assuming 14-16% revenue growth and continued margin expansion). Step 2: Apply justified P/E multiple. Historical 5-year average P/E for Jubilant: 50-55x. Peer average (Westlife, Sapphire): 45-55x. Sector premium for category leadership: +3-5x. Justified P/E: approximately 50x for stable franchise, premium category leadership. Step 3: Calculate target price. Target Price = 16 × 50 = 800 INR. Adjust for valuation context (sector at premium, slight haircut for valuation discipline) = 700 INR. Compare to current price 565 = 24% upside. Step 4: Establish bull/base/bear cases. Bull case: 850 (50x × 17 EPS, strong category momentum). Base case: 700 (49x × 16, central thesis). Bear case: 600 (47x × 14, demand softening). Communicate: 'Buy with 12-month target of 700, 24% upside.' The framework explicitly translates analytical view into investable target price with methodology that reader can verify and challenge. Apply consistently across all top picks. The combination of forward earnings forecast plus justified multiple plus contextual adjustment produces credible, defendable target prices.",
+        "sensitivity_note": "Target price methodology must be sector-appropriate. P/E framework works for non-cyclical and structural growth (FMCG, Pharma, IT). P/E plus through-cycle adjustment for cyclical sectors (Auto, Metals, Capital Goods). P/NAV for real estate. SOTP for conglomerates (Reliance, ITC). EV/Tonne with cycle adjustment for some commodities. The right methodology applied with discipline produces credible target prices; methodology mismatch produces misleading targets. Always include methodology in the report so readers can challenge."
+      },
+      {
+        "name": "Sector View Aggregation Framework",
+        "formula": "Sector View = (Composite Top Pick Conviction × 40%) + (Demand-Supply Cycle Position × 30%) + (Macro-Sector Mapping × 20%) + (Valuation Comparable × 10%)     where Output > 7.5: Strong Overweight; 6.5-7.5: Overweight; 5-6.5: Neutral; below 5: Underweight",
+        "variables": [
+          {
+            "symbol": "Composite Top Pick Conviction",
+            "meaning": "Average conviction across top picks (1-10 scale). Strong picks (composite 8+) suggest strong sector view"
+          },
+          {
+            "symbol": "Demand-Supply Cycle Position",
+            "meaning": "Where the sector sits in its sub-cycle. Tight cycle (above 7) supports overweight; loosening cycle (below 5) suggests underweight"
+          },
+          {
+            "symbol": "Macro-Sector Mapping",
+            "meaning": "From Session 11 framework — current macro environment supportive (above 7), neutral (5-7), or unsupportive (below 5)"
+          },
+          {
+            "symbol": "Valuation Comparable",
+            "meaning": "Sector valuation relative to history and peers. Cheap (above 7), fair (5-7), expensive (below 5)"
+          }
+        ],
+        "worked_example": "Indian QSR sector view aggregation in late 2024. Component 1 — Composite top pick conviction: Jubilant FoodWorks 8.5, Westlife 7.5, Sapphire 8.0. Average: 8.0. Component 2 — Demand-supply cycle: Indian QSR demand-supply tight (12-15% structural growth, organized share rising, premium dining premiumisation). Score: 8.0. Component 3 — Macro-sector mapping: Indian consumer discretionary spending in expansion phase, urban consumption resilient, urban premiumisation continuing. Score: 7.0. Component 4 — Valuation: Sector P/E z-score 0.0 (fair value); top picks at fair value with structural growth potential. Score: 6.5. Sector View Aggregation: (8.0 × 0.4) + (8.0 × 0.3) + (7.0 × 0.2) + (6.5 × 0.1) = 3.2 + 2.4 + 1.4 + 0.65 = 7.65 — Overweight signal (between 6.5 and 7.5; strong overweight requires above 7.5). The framework explicitly translates multi-dimensional analysis into actionable sector positioning with quantified conviction. Apply this aggregation methodology consistently. The composite score provides justification for the sector view; the components reveal the drivers; readers can challenge specific component scores rather than vague qualitative views.",
+        "sensitivity_note": "Sector view aggregation removes emotional bias from positioning decisions. Many analysts have qualitative conviction but struggle to translate into quantified positioning. The aggregation framework provides systematic discipline. Apply consistently. Refresh quarterly as components evolve. The sector view should be defendable through the components — if the aggregated score is overweight but individual components are weak (low conviction picks, deteriorating cycle), the view requires recalibration. The framework is iterative — improve as you track actual sector performance against the score."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=AVERAGE(range)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for valuation comp sheet building)",
+        "=AVERAGE(range, criteria) for peer averaging",
+        "Conditional formatting Color Scales for sector heat map",
+        "=GROWTH(range) for forward earnings extrapolation",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Page Allocation Framework Across The Seven Sections",
+        "formula": "Total Page Budget (typically 60-100 pages) ≈ Executive Summary (5%) + Sector Overview (15%) + Demand-Supply (15%) + Competitive Landscape (10%) + Top Picks (25%) + Valuation Comp Sheet (10%) + Risk Factors (10%) + Appendix (10%)",
+        "variables": [
+          {
+            "symbol": "Executive Summary",
+            "meaning": "3-5 pages. Most important section; read by 90%+ of readers. Contains thesis, top picks, key catalysts"
+          },
+          {
+            "symbol": "Sector Overview",
+            "meaning": "8-12 pages. Establishes sector size, sub-segments, regulatory landscape, historical context"
+          },
+          {
+            "symbol": "Demand-Supply",
+            "meaning": "8-12 pages. Drives cyclical thesis. Demand drivers, supply landscape, balance forecast"
+          },
+          {
+            "symbol": "Competitive Landscape",
+            "meaning": "6-10 pages. Market share dynamics, competitive positioning, competitive intensity assessment"
+          },
+          {
+            "symbol": "Top Picks",
+            "meaning": "12-18 pages (largest section). 3-5 stocks with detailed thesis, financials, target prices, catalysts, risks"
+          },
+          {
+            "symbol": "Valuation Comp Sheet",
+            "meaning": "6-10 pages. Master comparison table; sector-relative valuation analysis"
+          },
+          {
+            "symbol": "Risk Factors",
+            "meaning": "4-8 pages. Honest assessment without hedging top picks. Quantified sensitivities"
+          },
+          {
+            "symbol": "Appendix",
+            "meaning": "6-15 pages. Company financials, store roll-out trackers, sector data, detailed exhibits"
+          }
+        ],
+        "plain_english": "This framework allocates your initiation note pages by analytical importance and reader engagement. The Executive Summary gets proportionally few pages but is read by most investors—invest heavily in clarity. Sector context (Overview, Demand-Supply, Competitive Landscape) establishes credibility and grounds your picks. Top Picks gets the largest allocation because that's where your value-add lies—deep thesis, defensible targets, honest risks. Valuation and Risk sections anchor credibility. The structure ensures your most important message (the top picks) receives proportionate analytical real estate while foundational context justifies the picks.",
+        "worked_example": {
+          "problem": "Develop a 78-page sector initiation on Indian Quick Service Restaurants (QSR) with appropriate page allocation across all seven sections.",
+          "steps": [
+            "Calculate target pages: 78 total × allocation percentages = Executive Summary 4 pages (5%), Sector Overview 12 pages (15%), Demand-Supply 11 pages (14%), Competitive Landscape 8 pages (10%), Top Picks 18 pages (23%), Valuation Comp Sheet 8 pages (10%), Risk Factors 5 pages (6%), Appendix 12 pages (15%)",
+            "Executive Summary (4 pages): Thesis statement covering 1.5 lakh crore Indian food services market, 12-15% structural growth opportunity. Top picks: Jubilant FoodWorks (Domino's India), Westlife (McDonald's North India), Sapphire Foods (KFC India). Key catalysts: urbanisation, sub-segment premiumisation, store expansion",
+            "Sector Overview (12 pages): Market size segmentation (quick service, casual dining, cloud kitchens). Historical growth 2015-2024. Regulatory landscape. Competitive structure. Franchise model economics",
+            "Demand-Supply (11 pages): Urbanisation driver analysis. Consumer discretionary spending trends. Sub-segment growth rates (organized dining +14%, delivery +18%). Capacity additions through 2027. Supply-demand balance forecast",
+            "Competitive Landscape (8 pages): Market share dynamics. Domino's vs McDonald's vs Burger King vs KFC vs Pizza Hut positioning. Competitive intensity. Category premiumisation trends",
+            "Top Picks (18 pages): Jubilant FoodWorks (target ₹700 from ₹565, 24% upside, 8.5/10 conviction), Westlife (target ₹1100 from ₹920, 20% upside, 7.5/10), Sapphire Foods (target ₹380 from ₹320, 19% upside, 8.0/10). Per company: detailed financial model, store economics, growth levers, catalysts (2025-27), downside scenarios",
+            "Valuation Comp Sheet (8 pages): Indian peer set (JFL, Westlife, Sapphire). International comparables (Yum! Brands, McDonald's Corp, Domino's Pizza Inc). P/E, EV/EBITDA, P/Sales, P/Store comparisons. Sector premium justification",
+            "Risk Factors (5 pages): Input cost volatility (60% food cost exposure). Demand sensitivity to consumer discretionary spending. Competitive intensity and margin pressure. Real estate inflation. Franchise relationship risks. Quantified sensitivities: ±500 bps margin impact = ±15% EPS",
+            "Appendix (12 pages): 3-year historical financials per company. Store-by-store expansion tracker. Same-store sales growth analysis. Franchisee health indicators. Sector growth data sources"
+          ],
+          "result": "78-page sector initiation with disciplined page allocation reflecting analytical priorities. Executive Summary is brief but comprehensive. Top Picks section (18 pages) contains the highest analytical density—detailed unit economics, explicit catalysts, and defensible targets. Risk Factors (5 pages) provides honest assessment without over-hedging the bullish picks. Appendix supports all claims with data",
+          "insight": "Page allocation discipline forces prioritisation. Many weak analysts over-allocate to context (Overview 25%, Demand-Supply 20%) and under-allocate to picks (Top Picks 15%). This framework inverts that—your picks are your value-add; allocate pages accordingly. The Executive Summary being short but highly-read means every sentence must count. Risk Factors being honest (not hedged or minimised) builds credibility for the overweight call. The framework works because it mirrors how sophisticated investors read: scan Executive Summary, skim context, deeply study picks and risks, verify with appendix"
+        },
+        "sensitivity_note": "Page allocation is a discipline rather than a rigid rule. Adjust based on sector complexity. Sectors with multiple sub-segments (Pharma with US generics + India formulations + Specialty + Hospitals + CDMO) require more sub-segment pages. Sectors with strong cyclical dynamics (Capital Goods, Metals) require more demand-supply analysis. Sectors with high regulatory dependency (Pharma, Real Estate) require more regulatory analysis. The framework provides starting point; adapt to sector-specific needs while maintaining the seven-section architecture."
+      },
+      {
+        "name": "Target Price Calculation Framework Across Sectors",
+        "formula": "Target Price = Forward 12-Month Earnings × Justified Valuation Multiple     OR     Target Price = NAV per Share (Real Estate)     OR     Target Price = Sum of Segment Values ÷ Shares (Conglomerates SOTP)",
+        "variables": [
+          {
+            "symbol": "Forward 12-Month Earnings",
+            "meaning": "Analyst's projected EPS for next 12 months, typically derived from quarterly forecasts and bottoms-up modeling"
+          },
+          {
+            "symbol": "Justified Valuation Multiple",
+            "meaning": "Sector-appropriate multiple — P/E for non-cyclical (FMCG, Pharma, IT), P/E or EV/EBITDA for cyclicals, P/NAV for real estate, EV/Tonne for some commodities. Compare to historical average and peer average"
+          },
+          {
+            "symbol": "NAV per Share",
+            "meaning": "Real estate valuation methodology — Land Bank + Project Pipeline NPV + Inventory + Cash − Debt, divided by shares"
+          },
+          {
+            "symbol": "Segment Values (SOTP)",
+            "meaning": "Conglomerate valuation — sum of segment values using segment-appropriate multiples (e.g., Reliance: O2C at 10x EV/EBITDA, Jio at 13x, Retail at 35x)"
+          }
+        ],
+        "plain_english": "This framework translates your analytical view (earnings forecast + valuation conviction) into a single defensible target price that investors can challenge and verify. Different sectors and company types require different methodologies: earnings-based for stable franchises, NAV-based for real estate, sum-of-the-parts for conglomerates. The key is consistency—apply your chosen methodology the same way across all picks so readers can compare apples-to-apples. Always show your work explicitly so the target price is transparent, not a black box",
+        "worked_example": {
+          "problem": "Calculate a 12-month target price for Jubilant FoodWorks (Domino's India franchise) using the earnings × multiple framework.",
+          "steps": [
+            "Step 1 — Forecast forward 12-month EPS. Build quarterly revenue model: FY26 projected revenue ₹3,800 crore (assuming 14-16% growth on strong urbanisation and premiumisation). Assume EBITDA margin 28% (continued leverage from store productivity and pricing). Tax rate 23%. Shares outstanding 9 crore. Quarterly forecast: Q1 FY26 EPS ₹3.8, Q2 ₹4.2, Q3 ₹4.1, Q4 ₹3.9. Sum forward 12-month EPS = ₹16.0",
+            "Step 2 — Determine justified P/E multiple. Historical 5-year average P/E for Jubilant: 50-55x. Current peer set (Westlife 48x, Sapphire 52x average). Sector premium: franchise model with structural moats (Domino's global brand, proven unit economics, high franchisee ROI) justifies premium. Justified P/E: 50x",
+            "Step 3 — Calculate base case target price. Target Price = ₹16 × 50 = ₹800. This is the analytical target. Adjust for valuation discipline context: sector currently trading at fair valuation (historical z-score near 0), slight haircut for cycle positioning = final target ₹700",
+            "Step 4 — Build bull/base/bear cases. Bull case: FY26 EPS ₹17 (strong consumer momentum) × 50x = ₹850. Base case: ₹16 × 50 = ₹700. Bear case: FY26 EPS ₹14 (demand slowdown) × 47x (multiple compression) = ₹658 rounds to ₹600",
+            "Step 5 — Current price context: Jubilant at ₹565. Base case target ₹700 = 24% upside. Communicate: 'BUY | Target ₹700 | 24% 12-month upside | P/E-based on 50x justified multiple applied to FY26E EPS ₹16. Bull case ₹850 (+50%), Bear case ₹600 (−6%)'"
+          ],
+          "result": "Defensible, transparent target price of ₹700 with explicit methodology, bull/base/bear framework, and percentage upside quantified. Reader can challenge the EPS forecast or the multiple but cannot question the logic",
+          "insight": "The framework works because it separates opinion (earnings forecast, multiple justification) from mechanics (earnings × multiple). Readers disagree on earnings or multiples, not on arithmetic. Always show both the analytical target (₹800) and the final target (₹700) with explicit adjustment rationale—this transparency builds credibility. Bull/base/bear cases give readers a distribution of outcomes rather than false precision from a single number. The ₹700 target on current ₹565 price = 24% upside is compelling, simple, and verifiable"
+        },
+        "sensitivity_note": "Target price methodology must be sector-appropriate. P/E framework works for non-cyclical and structural growth (FMCG, Pharma, IT). P/E plus through-cycle adjustment for cyclical sectors (Auto, Metals, Capital Goods). P/NAV for real estate. SOTP for conglomerates (Reliance, ITC). EV/Tonne with cycle adjustment for some commodities. The right methodology applied with discipline produces credible target prices; methodology mismatch produces misleading targets. Always include methodology in the report so readers can challenge."
+      },
+      {
+        "name": "Sector View Aggregation Framework",
+        "formula": "Sector View = (Composite Top Pick Conviction × 40%) + (Demand-Supply Cycle Position × 30%) + (Macro-Sector Mapping × 20%) + (Valuation Comparable × 10%)     where Output > 7.5: Strong Overweight; 6.5-7.5: Overweight; 5-6.5: Neutral; below 5: Underweight",
+        "variables": [
+          {
+            "symbol": "Composite Top Pick Conviction",
+            "meaning": "Average conviction across top picks (1-10 scale). Strong picks (composite 8+) suggest strong sector view. Weight: 40% because stock-specific thesis quality drives sector positioning"
+          },
+          {
+            "symbol": "Demand-Supply Cycle Position",
+            "meaning": "Where the sector sits in its sub-cycle. Tight cycle (above 7) supports overweight; loosening cycle (below 5) suggests underweight. Weight: 30% because cycle position determines sector-wide earnings trajectory"
+          },
+          {
+            "symbol": "Macro-Sector Mapping",
+            "meaning": "From macro framework — current macro environment supportive (above 7), neutral (5-7), or unsupportive (below 5). Weight: 20% because macro tailwinds amplify or dampen sector performance"
+          },
+          {
+            "symbol": "Valuation Comparable",
+            "meaning": "Sector valuation relative to history and peers (z-score methodology). Cheap (above 7), fair (5-7), expensive (below 5). Weight: 10% because valuation is a timing overlay, not a primary driver"
+          }
+        ],
+        "plain_english": "This framework removes emotion from sector positioning by forcing quantified assessment of four independent drivers: your conviction in individual picks, the sector's supply-demand balance, macro tailwinds/headwinds, and valuation attractiveness. The weighted aggregation produces a single position (Overweight, Neutral, Underweight) backed by explicit component scores that readers can challenge individually rather than arguing against a vague qualitative view. This discipline prevents analysts from being bullish on picks but defensive on the sector, or vice versa—the framework forces internal consistency",
+        "computation": [
+          "Score each component on 1-10 scale with explicit reasoning",
+          "Multiply each component by its weight (Pick conviction × 0.40; Cycle × 0.30; Macro × 0.20; Valuation × 0.10)",
+          "Sum the four weighted components to get Sector View score",
+          "Map score to position: >7.5 = Strong Overweight; 6.5-7.5 = Overweight; 5-6.5 = Neutral; <5 = Underweight",
+          "Document each component score and adjustment rationale in report text"
+        ],
+        "worked_example": {
+          "problem": "Develop a sector view for Indian QSR sector in late 2024 using the aggregation framework, given strong pick conviction but mixed macro environment.",
+          "steps": [
+            "Component 1 — Composite Top Pick Conviction (weight 40%). Score individual picks: Jubilant FoodWorks 8.5 (strong Domino's franchise, proven store-level economics, clear growth runway), Westlife 7.5 (McDonald's leadership but slower growth trajectory), Sapphire Foods 8.0 (KFC turnaround with upside optionality). Average = (8.5 + 7.5 + 8.0) ÷ 3 = 8.0. This is strong conviction, suggesting sector-wide overweight positioning",
+            "Component 2 — Demand-Supply Cycle Position (weight 30%). Assess Indian QSR landscape: structural demand growth 12-15% annually (urbanisation 35% → 45% by 2030, consumer discretionary spending elasticity 1.3x). Organized QSR market share rising from 15% to 25%. Supply additions (Domino's +200 stores/year, McDonald's +50, KFC +80) manageable relative to demand growth. Pricing power evident (premiumisation +15-18% annually). Cycle assessment: tight and supportive. Score: 8.0",
+            "Component 3 — Macro-Sector Mapping (weight 20%). Current macro environment: GDP growth 6-7% forecast for FY25-26. Urban consumption resilient (urban GST at 1.4% of national total, premium segment spending +10-12% y-o-y despite broader moderation). Interest rate cycle stabilising (RBI holding rates steady). Automobile and discretionary consumption showing resilience. Macro score: 7.0 (supportive but not exceptional)",
+            "Component 4 — Valuation Comparable (weight 10%). Sector P/E analysis: Indian QSR sector (aggregate Jubilant + Westlife + Sapphire market cap weighted average) trading at 50x P/E. Historical 5-year average 50-52x. Peer comparison (global QSR peers McDonald's Corp 28x, Yum! Brands 26x). Premium justified by: India structural growth, franchisee economics, demographic tailwinds. Current relative valuation: fair (z-score approximately 0). Absolute valuation: at history. Score: 6.5 (fair value, not cheap)",
+            "Aggregate Sector View = (8.0 × 0.40) + (8.0 × 0.30) + (7.0 × 0.20) + (6.5 × 0.10) = 3.2 + 2.4 + 1.4 + 0.65 = 7.65",
+            "Map to position: 7.65 falls in 6.5-7.5 range = Overweight (not Strong Overweight, which requires >7.5)"
+          ],
+          "result": "Sector View: Overweight (score 7.65). Position supported by: strong pick conviction (8.0), tight demand-supply (8.0), supportive macro (7.0), fair valuation (6.5). Recommendation: accumulate top picks on any weakness; sector provides structural growth visibility through discretionary spending cycle. Fair valuation rules out deep undervalue positioning but structural drivers justify market-weight overweight",
+          "insight": "The 7.65 score is more informative than a vague 'Overweight.' Investors see: picks are strong (8.0), cycle is tight (8.0), but valuation is fairly priced (6.5). This prevents over-positioning—sector deserves overweight on picks and cycle but not aggressive overweight due to valuation. If valuation had scored 4.0 (cheap), the aggregate would be 7.4 (still Overweight but closer to threshold). If pick conviction had been 6.5 instead of 8.0, aggregate would be 6.95 (borderline, might flip to Neutral). The framework is sensitive to each component, forcing discipline. Refresh quarterly as components evolve: when Demand-Supply cycle begins loosening (from 8.0 toward 7.0 or below), it signals time to reduce sector positioning even if picks remain strong"
+        },
+        "sensitivity_note": "Sector view aggregation removes emotional bias from positioning decisions. Many analysts have qualitative conviction but struggle to translate into quantified positioning. The aggregation framework provides systematic discipline. Apply consistently. Refresh quarterly as components evolve. The sector view should be defendable through the components — if the aggregated score is overweight but individual components are weak (low conviction picks, deteriorating cycle), the view requires recalibration. The framework is iterative — improve as you track actual sector performance against the score."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=AVERAGE(range)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for valuation comp sheet building)",
+        "=AVERAGE(range, criteria) for peer averaging",
+        "Conditional formatting Color Scales for sector heat map",
+        "=GROWTH(range) for forward earnings extrapolation",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  }
+}

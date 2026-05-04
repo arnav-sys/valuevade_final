@@ -1,0 +1,179 @@
+{
+  "id": "4f867bba-7df5-47b0-bd6f-a53620f562d1",
+  "label": "M2 S3 | Key Participant-Level Metrics",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net FII/DII Activity",
+        "formula": "Net FII Activity = FII Gross Purchases – FII Gross Sales\nNet DII Activity = DII Gross Purchases – DII Gross Sales\nPositive = net buying. Negative = net selling.",
+        "analysts_note": "Look at rolling 5-day, 10-day, and 30-day net figures, not single days. One day of FII selling means nothing. Ten consecutive days of net selling is a trend. Thirty days is a regime shift.",
+        "worked_example": "On a given day, FIIs buy ₹8,500 crore and sell ₹9,200 crore. Net FII = –₹700 crore (net seller). DIIs buy ₹7,800 crore and sell ₹6,900 crore. Net DII = +₹900 crore (net buyer). DIIs absorbed FII selling and then some — this is the tug-of-war in action."
+      },
+      {
+        "name": "FII Ownership Change (Quarterly)",
+        "formula": "FII Ownership Change = FII Holding (Current Quarter %) – FII Holding (Previous Quarter %)\nData source: BSE/NSE quarterly shareholding pattern filings",
+        "worked_example": "HDFC Bank's FII holding drops from 55% to 52% over one quarter. That's a 3 percentage point decrease. On a ~₹12 lakh crore market cap, 3% = ~₹36,000 crore of FII selling. That's massive, and explains any price weakness during that quarter."
+      },
+      {
+        "name": "DII Absorption Ratio",
+        "formula": "DII Absorption Ratio = |Net DII Buying| / |Net FII Selling| × 100\n(Only calculated when FII is net seller and DII is net buyer)",
+        "sensitivity": "When the absorption ratio drops below 70%, the market typically falls 3–5%. When it exceeds 100% (DIIs buying more than FIIs are selling), the market often goes up despite FII outflows.",
+        "worked_example": "In a month, FIIs sell ₹30,000 crore net and DIIs buy ₹28,000 crore net. Absorption ratio = 28,000/30,000 × 100 = 93.3%. DIIs absorbed 93% of FII selling, leaving only 7% (₹2,000 crore) to pressure prices."
+      },
+      {
+        "name": "Retail Participation Ratio",
+        "formula": "Retail Share of Turnover = (Retail Turnover / Total Market Turnover) × 100\nRetail Ownership (%) from quarterly shareholding pattern filings",
+        "why_it_matters": "When retail participation spikes, it often signals frothy sentiment — new entrants chasing momentum. In 2021, retail share of cash turnover reached 45%+, correlating with peak valuations in mid and small-caps. When retail retreats, it often signals capitulation and potential bottoms."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net FII/DII Activity",
+        "formula": "Net FII Activity = FII Gross Purchases – FII Gross Sales\nNet DII Activity = DII Gross Purchases – DII Gross Sales\nPositive = net buying. Negative = net selling.",
+        "variables": [
+          {
+            "symbol": "FII Gross Purchases",
+            "meaning": "Total value of shares bought by Foreign Institutional Investors on a given day or period"
+          },
+          {
+            "symbol": "FII Gross Sales",
+            "meaning": "Total value of shares sold by Foreign Institutional Investors on a given day or period"
+          },
+          {
+            "symbol": "DII Gross Purchases",
+            "meaning": "Total value of shares bought by Domestic Institutional Investors (mutual funds, insurance, pension funds) on a given day or period"
+          },
+          {
+            "symbol": "DII Gross Sales",
+            "meaning": "Total value of shares sold by Domestic Institutional Investors on a given day or period"
+          },
+          {
+            "symbol": "Net FII Activity",
+            "meaning": "The net direction and magnitude of FII flows; positive indicates net buying, negative indicates net selling"
+          },
+          {
+            "symbol": "Net DII Activity",
+            "meaning": "The net direction and magnitude of DII flows; positive indicates net buying, negative indicates net selling"
+          }
+        ],
+        "plain_english": "This formula measures whether foreign and domestic institutions are buying or selling Indian equities on a given day or period. A positive net figure means institutions bought more than they sold; negative means they sold more than they bought. In the Indian market, DII flows (especially mutual fund inflows) often counter FII outflows, which can stabilise or support prices when foreigners are exiting.",
+        "analysts_note": "Look at rolling 5-day, 10-day, and 30-day net figures, not single days. One day of FII selling means nothing. Ten consecutive days of net selling is a trend. Thirty days is a regime shift.",
+        "worked_example": {
+          "problem": "On a given day, FIIs buy ₹8,500 crore and sell ₹9,200 crore. DIIs buy ₹7,800 crore and sell ₹6,900 crore. Calculate net FII and DII activity.",
+          "steps": [
+            "Net FII Activity = ₹8,500 cr − ₹9,200 cr = −₹700 cr (net seller)",
+            "Net DII Activity = ₹7,800 cr − ₹6,900 cr = +₹900 cr (net buyer)",
+            "Compare: DIIs bought ₹900 cr net while FIIs sold ₹700 cr net"
+          ],
+          "result": "Net FII = −₹700 crore; Net DII = +₹900 crore",
+          "insight": "DIIs absorbed FII selling and then some — this is the tug-of-war in action. Domestic institutions are providing support despite foreign outflows, which typically limits downside on that day."
+        }
+      },
+      {
+        "name": "FII Ownership Change (Quarterly)",
+        "formula": "FII Ownership Change = FII Holding (Current Quarter %) – FII Holding (Previous Quarter %)\nData source: BSE/NSE quarterly shareholding pattern filings",
+        "variables": [
+          {
+            "symbol": "FII Holding (Current Quarter %)",
+            "meaning": "Foreign Institutional Investor shareholding as a percentage of total market capitalisation at the end of the current quarter"
+          },
+          {
+            "symbol": "FII Holding (Previous Quarter %)",
+            "meaning": "Foreign Institutional Investor shareholding as a percentage of total market capitalisation at the end of the previous quarter"
+          },
+          {
+            "symbol": "FII Ownership Change",
+            "meaning": "The percentage point change in FII ownership from one quarter to the next; indicates the net direction of FII flows scaled by market cap changes"
+          }
+        ],
+        "plain_english": "This metric tracks whether foreign investors are increasing or decreasing their stake in Indian equities quarter-over-quarter. A decline in FII ownership (in percentage terms) signals net selling pressure; an increase signals accumulation. The percentage point change can be converted to rupee terms by multiplying the change by the total market cap, revealing the scale of FII repositioning.",
+        "computation": [
+          "Obtain FII holding % from BSE/NSE shareholding pattern for end of current quarter",
+          "Obtain FII holding % from BSE/NSE shareholding pattern for end of previous quarter",
+          "Subtract previous quarter % from current quarter %",
+          "If the market cap has changed materially, multiply the percentage point change by the average market cap to estimate rupee-denominated flows"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank's FII holding drops from 55% to 52% over one quarter. The bank's market cap is approximately ₹12 lakh crore. What is the FII ownership change and its rupee equivalent?",
+          "steps": [
+            "FII Ownership Change = 52% − 55% = −3 percentage points",
+            "Rupee equivalent = −3% × ₹12,00,000 crore = −₹36,000 crore (approximate selling pressure)"
+          ],
+          "result": "FII Ownership Change = −3 percentage points; Estimated FII selling ≈ ₹36,000 crore",
+          "insight": "A 3 percentage point decline in a large-cap stock's FII ownership represents massive repositioning. This explains any price weakness during that quarter and signals potential headwinds for the stock from reduced foreign buying support."
+        }
+      },
+      {
+        "name": "DII Absorption Ratio",
+        "formula": "DII Absorption Ratio = |Net DII Buying| / |Net FII Selling| × 100\n(Only calculated when FII is net seller and DII is net buyer)",
+        "variables": [
+          {
+            "symbol": "|Net DII Buying|",
+            "meaning": "Absolute value of net DII purchases over the period (in rupees)"
+          },
+          {
+            "symbol": "|Net FII Selling|",
+            "meaning": "Absolute value of net FII sales over the period (in rupees)"
+          },
+          {
+            "symbol": "DII Absorption Ratio",
+            "meaning": "Percentage of FII selling that is offset by DII buying; a ratio above 100% means DIIs are buying more than FIIs are selling"
+          }
+        ],
+        "plain_english": "This ratio measures how much of foreign investor selling is 'absorbed' by domestic institutional buyers. A high ratio (80%+) means domestic buyers are stepping in to offset FII outflows, limiting market impact. A low ratio (below 70%) suggests weak DII support, leaving excess supply that pressures prices. A ratio above 100% means DIIs are net buying even as FIIs sell, often indicating a reversal or stabilisation.",
+        "sensitivity": "When the absorption ratio drops below 70%, the market typically falls 3–5%. When it exceeds 100% (DIIs buying more than FIIs are selling), the market often goes up despite FII outflows.",
+        "worked_example": {
+          "problem": "In a month, FIIs sell ₹30,000 crore net and DIIs buy ₹28,000 crore net. Calculate the DII absorption ratio and interpret it.",
+          "steps": [
+            "DII Absorption Ratio = ₹28,000 cr / ₹30,000 cr × 100",
+            "DII Absorption Ratio = 0.933 × 100 = 93.3%"
+          ],
+          "result": "DII Absorption Ratio = 93.3%",
+          "insight": "DIIs absorbed 93% of FII selling, leaving only 7% (₹2,000 crore) to pressure prices. This is healthy support; the market is unlikely to decline sharply because domestic buyers are providing strong underlying demand. If absorption drops below 70%, it signals waning DII interest and higher downside risk."
+        }
+      },
+      {
+        "name": "Retail Participation Ratio",
+        "formula": "Retail Share of Turnover = (Retail Turnover / Total Market Turnover) × 100\nRetail Ownership (%) from quarterly shareholding pattern filings",
+        "variables": [
+          {
+            "symbol": "Retail Turnover",
+            "meaning": "Total trading value (buy + sell) executed by retail individual investors on the exchange over a period"
+          },
+          {
+            "symbol": "Total Market Turnover",
+            "meaning": "Total trading value across all participant categories (retail, institutions, high-frequency traders) on the exchange over the same period"
+          },
+          {
+            "symbol": "Retail Ownership (%)",
+            "meaning": "Retail investors' aggregate shareholding as a percentage of total market capitalisation, reported quarterly"
+          },
+          {
+            "symbol": "Retail Share of Turnover",
+            "meaning": "Percentage of daily or periodic trading volume driven by retail participants; a sentiment and liquidity indicator"
+          }
+        ],
+        "plain_english": "This metric captures how active retail individual traders are in the market. High retail turnover (40%+) usually signals speculative fervour and chasing of momentum, often correlating with elevated valuations in mid and small-caps. Retail ownership tells you how much equity stock individual investors hold. When retail turnover spikes while ownership remains flat, it indicates frothy trading and potential exhaustion; when retail retreats, it often signals capitulation and can precede bottoms.",
+        "why_it_matters": "When retail participation spikes, it often signals frothy sentiment — new entrants chasing momentum. In 2021, retail share of cash turnover reached 45%+, correlating with peak valuations in mid and small-caps. When retail retreats, it often signals capitulation and potential bottoms.",
+        "computation": [
+          "Aggregate all retail buy and sell transactions on NSE and BSE for the period",
+          "Calculate total turnover (retail + institutional + all other) for the same period",
+          "Divide retail turnover by total turnover and multiply by 100 to get percentage",
+          "For retail ownership, extract from quarterly BSE/NSE shareholding pattern reports under 'Non-Promoter, Non-Institutional' or 'Retail' category"
+        ],
+        "worked_example": {
+          "problem": "On a given day, total market turnover is ₹250 crore (across all participants). Retail trading accounts for ₹105 crore. Calculate the retail share of turnover. Separately, if retail holdings in a large-cap index increased from 8.5% to 9.2% quarter-over-quarter, what does this signal?",
+          "steps": [
+            "Retail Share of Turnover = (₹105 cr / ₹250 cr) × 100 = 42%",
+            "Retail ownership change = 9.2% − 8.5% = +0.7 percentage points",
+            "Interpret: High turnover (42%) with rising ownership suggests sustained retail interest, not just day-trading noise"
+          ],
+          "result": "Retail Share of Turnover = 42%; Retail Ownership increased by 0.7 percentage points",
+          "insight": "A 42% retail turnover share is elevated and indicates strong retail engagement. Combined with rising retail ownership, this suggests retail investors are not just trading but accumulating — a sign of confidence or, conversely, if this occurs at market peaks, potential vulnerability. During the 2021 retail boom, such levels preceded sharp corrections in mid and small-caps."
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "id": "40a03c06-f6f4-4e5f-b81a-7bb69dfc3280",
+  "label": "M13 S4 | The Math Behind Trading Bands and Indexing",
+  "before": {
+    "formulas": [
+      {
+        "name": "Mean and Standard Deviation Bands for Valuation Multiples",
+        "formula": "Upper Band = Mean(Multiple) + N × StDev(Multiple)\nLower Band = Mean(Multiple) - N × StDev(Multiple)\nWhere N is typically 1 (1 standard deviation)",
+        "variables": [
+          {
+            "symbol": "Mean(Multiple)",
+            "meaning": "Arithmetic mean of the valuation multiple (e.g., P/B, P/E) over the historical period — typically 5 years of monthly observations = 60 data points"
+          },
+          {
+            "symbol": "StDev(Multiple)",
+            "meaning": "Standard deviation of the same series, measuring how widely the multiple has varied around its mean"
+          },
+          {
+            "symbol": "N",
+            "meaning": "Number of standard deviations for the band — usually 1 SD (covers ~68% of historical observations) or 2 SD (covers ~95%)"
+          }
+        ],
+        "worked_example": "Worked Example — HDFC Bank P/B Trading Band:\n\nMonthly P/B observations over the last 5 years (60 data points):\n— Mean: 3.4x\n— Standard Deviation: 0.42x\n\nUpper Band (+1 SD) = 3.4 + (1 × 0.42) = 3.82x\nMean Line = 3.4x\nLower Band (-1 SD) = 3.4 - (1 × 0.42) = 2.98x\n\nCurrent P/B: 2.7x\n\nInterpretation: Current P/B of 2.7x is trading below the -1 SD line of 2.98x, indicating the stock is trading at a level seen less than 16% of the time over the last 5 years. Combined with an analytical thesis on ROE recovery, this becomes the visual support for a Buy call — the chart literally shows the valuation at a historical inflection point.",
+        "sensitivity_note": "The width of the band is fully determined by the volatility of the multiple, not by analyst choice. A wider band means the multiple has been more volatile historically; a narrower band means it has been more stable. For stable, blue-chip names like Asian Paints or HUL, the bands are tight (StDev ~0.15-0.25x). For more cyclical names like Tata Steel or auto OEMs, the bands are wider (StDev ~0.5-1.0x). Always use 5 years of data minimum — shorter windows produce statistically noisy bands."
+      },
+      {
+        "name": "Indexing for Relative Performance Comparison",
+        "formula": "Indexed Value(t) = (Price(t) / Price(t=0)) × 100",
+        "variables": [
+          {
+            "symbol": "Price(t)",
+            "meaning": "Closing price of the stock or index on date t"
+          },
+          {
+            "symbol": "Price(t=0)",
+            "meaning": "Closing price on the start date of the chart, which becomes the indexed value of 100"
+          },
+          {
+            "symbol": "100",
+            "meaning": "The base value — every series in a relative performance chart starts at 100, allowing direct percentage comparison"
+          }
+        ],
+        "worked_example": "Worked Example — Indexing TCS vs Nifty IT vs Nifty 50 from 1 Jan 2024:\n\nStart Date: 1 Jan 2024\n— TCS price: ₹3,800 → Indexed = 100\n— Nifty IT price: 35,400 → Indexed = 100\n— Nifty 50 price: 21,750 → Indexed = 100\n\nEnd Date: 31 Mar 2026\n— TCS price: ₹3,650 → Indexed = (3,650 / 3,800) × 100 = 96.05\n— Nifty IT price: 38,200 → Indexed = (38,200 / 35,400) × 100 = 107.91\n— Nifty 50 price: 24,800 → Indexed = (24,800 / 21,750) × 100 = 114.02\n\nInterpretation: Over the period, TCS has underperformed both the Nifty IT index (which is up ~8%) and the Nifty 50 (up ~14%). TCS is down ~4% in absolute terms while the broader market is up. This visual gap — three lines diverging — directly supports a thesis that the stock is currently out of favour but has potential for relative recovery if the Buy thesis plays out.",
+        "sensitivity_note": "The choice of start date dramatically affects the picture. Starting from a market top makes everything look bad; starting from a market bottom makes everything look good. Best practice for research: align the start date with the inception of your investment thesis or with a clear event date (results announcement, sector turning point, IPO). Always disclose the start date prominently in the chart subtitle."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + N → Insert chart from selection",
+        "Cmd + 1 → Format Cells / Format Chart Element",
+        "Fn + F11 → Insert chart on new sheet",
+        "Cmd + Shift + Enter → Confirm array formulas (for sensitivity tables)",
+        "Cmd + Option + V → Paste Special (useful for chart data prep)"
+      ],
+      "windows": [
+        "Alt + N + V → Insert PivotChart",
+        "Alt + F1 → Insert default chart on selected data",
+        "Ctrl + 1 → Format Cells / Format Chart Element",
+        "Alt + JC + A → Add Chart Element (in chart context)",
+        "F11 → Insert chart on a new sheet from selected data",
+        "Ctrl + Shift + L → Toggle filter on data range (for sensitivity tables)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Mean and Standard Deviation Bands for Valuation Multiples",
+        "formula": "Upper Band = Mean(Multiple) + N × StDev(Multiple)\nLower Band = Mean(Multiple) - N × StDev(Multiple)\nWhere N is typically 1 (1 standard deviation)",
+        "variables": [
+          {
+            "symbol": "Mean(Multiple)",
+            "meaning": "Arithmetic mean of the valuation multiple (e.g., P/B, P/E) over the historical period — typically 5 years of monthly observations = 60 data points"
+          },
+          {
+            "symbol": "StDev(Multiple)",
+            "meaning": "Standard deviation of the same series, measuring how widely the multiple has varied around its mean"
+          },
+          {
+            "symbol": "N",
+            "meaning": "Number of standard deviations for the band — usually 1 SD (covers ~68% of historical observations) or 2 SD (covers ~95%)"
+          }
+        ],
+        "plain_english": "Trading bands quantify the historical range of a valuation multiple and highlight when a stock is trading at extreme levels relative to its own history. By anchoring bands to the stock's own volatility rather than to arbitrary price targets, they provide a purely statistical view of whether current valuation is near the 'cheap' end, 'expensive' end, or the historical average. This helps identify inflection points where mean reversion may support a thesis.",
+        "worked_example": {
+          "problem": "HDFC Bank has traded at a P/B range over the last 5 years. You want to see if the current P/B of 2.7x is at a historical extreme that supports a Buy thesis.",
+          "steps": [
+            "Collect 60 monthly P/B observations over 5 years",
+            "Calculate Mean(P/B) = 3.4x",
+            "Calculate StDev(P/B) = 0.42x",
+            "Upper Band (+1 SD) = 3.4 + (1 × 0.42) = 3.82x",
+            "Lower Band (−1 SD) = 3.4 − (1 × 0.42) = 2.98x",
+            "Compare current P/B (2.7x) to bands: it falls below the lower band"
+          ],
+          "result": "Current P/B of 2.7x is trading below −1 SD at 2.98x, a level observed less than 16% of the time historically.",
+          "insight": "The statistical extreme provides visual support for a Buy thesis centred on ROE recovery. The chart shows the valuation is at a historical inflection point, giving conviction to the timing of the call."
+        },
+        "sensitivity_note": "The width of the band is fully determined by the volatility of the multiple, not by analyst choice. A wider band means the multiple has been more volatile historically; a narrower band means it has been more stable. For stable, blue-chip names like Asian Paints or HUL, the bands are tight (StDev ~0.15-0.25x). For more cyclical names like Tata Steel or auto OEMs, the bands are wider (StDev ~0.5-1.0x). Always use 5 years of data minimum — shorter windows produce statistically noisy bands."
+      },
+      {
+        "name": "Indexing for Relative Performance Comparison",
+        "formula": "Indexed Value(t) = (Price(t) / Price(t=0)) × 100",
+        "variables": [
+          {
+            "symbol": "Price(t)",
+            "meaning": "Closing price of the stock or index on date t"
+          },
+          {
+            "symbol": "Price(t=0)",
+            "meaning": "Closing price on the start date of the chart, which becomes the indexed value of 100"
+          },
+          {
+            "symbol": "100",
+            "meaning": "The base value — every series in a relative performance chart starts at 100, allowing direct percentage comparison"
+          }
+        ],
+        "plain_english": "Indexing normalises multiple price series to a common starting point so you can visually compare their relative returns without being distracted by their absolute price levels. By setting each series to 100 on day zero, divergence between lines directly shows which has outperformed or underperformed, making thesis-critical comparisons (stock vs sector vs benchmark) immediately clear on a single chart.",
+        "computation": [
+          "Select a common start date (t=0) for all series you want to compare",
+          "For each series, divide every subsequent price by the t=0 price",
+          "Multiply the result by 100 to express as an index with base 100",
+          "Plot all indexed series on the same chart"
+        ],
+        "worked_example": {
+          "problem": "You are writing a TCS equity research note and want to show whether TCS has outperformed or underperformed its peer group (Nifty IT) and the broader market (Nifty 50) over the last two years. You need a visual that immediately demonstrates relative strength or weakness.",
+          "steps": [
+            "Set start date: 1 Jan 2024",
+            "Record start prices: TCS ₹3,800, Nifty IT 35,400, Nifty 50 21,750",
+            "Assign all three an indexed value of 100 on 1 Jan 2024",
+            "On 31 Mar 2026: TCS ₹3,650 → Indexed = (3,650 / 3,800) × 100 = 96.05",
+            "On 31 Mar 2026: Nifty IT 38,200 → Indexed = (38,200 / 35,400) × 100 = 107.91",
+            "On 31 Mar 2026: Nifty 50 24,800 → Indexed = (24,800 / 21,750) × 100 = 114.02"
+          ],
+          "result": "TCS indexed at 96.05 (down 4%), Nifty IT at 107.91 (up ~8%), Nifty 50 at 114.02 (up ~14%).",
+          "insight": "TCS has underperformed both its sector and the broader market over the period. The diverging lines visually demonstrate that TCS is out of favour. This chart directly supports a thesis that the stock has relative downside or recovery potential, depending on your Bull/Bear call."
+        },
+        "sensitivity_note": "The choice of start date dramatically affects the picture. Starting from a market top makes everything look weak; starting from a market bottom makes everything look strong. Best practice for research: align the start date with the inception of your investment thesis or with a clear event date (results announcement, sector turning point, IPO, earnings reset). Always disclose the start date prominently in the chart subtitle to ensure readers interpret the relative performance in the correct context."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + N → Insert chart from selection",
+        "Cmd + 1 → Format Cells / Format Chart Element",
+        "Fn + F11 → Insert chart on new sheet",
+        "Cmd + Shift + Enter → Confirm array formulas (for sensitivity tables)",
+        "Cmd + Option + V → Paste Special (useful for chart data prep)"
+      ],
+      "windows": [
+        "Alt + N + V → Insert PivotChart",
+        "Alt + F1 → Insert default chart on selected data",
+        "Ctrl + 1 → Format Cells / Format Chart Element",
+        "Alt + JC + A → Add Chart Element (in chart context)",
+        "F11 → Insert chart on a new sheet from selected data",
+        "Ctrl + Shift + L → Toggle filter on data range (for sensitivity tables)"
+      ]
+    }
+  }
+}

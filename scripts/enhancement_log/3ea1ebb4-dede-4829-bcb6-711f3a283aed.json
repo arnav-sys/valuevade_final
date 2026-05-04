@@ -1,0 +1,191 @@
+{
+  "id": "3ea1ebb4-dede-4829-bcb6-711f3a283aed",
+  "label": "M7 S4 | The Full Margin Walk — Revenue to PAT, Layer by Layer",
+  "before": {
+    "formulas": [
+      {
+        "name": "Gross Margin",
+        "formula": "Gross Margin % = (Revenue from Operations − Cost of Goods Sold) / Revenue from Operations × 100",
+        "variables": [
+          {
+            "symbol": "Revenue from Operations",
+            "meaning": "Top line excluding Other Income — always the correct denominator for operating ratios"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of materials consumed + purchases of stock-in-trade + changes in inventories of finished goods/WIP. For services firms, COGS is direct project-linked employee cost."
+          }
+        ],
+        "worked_example": "Asian Paints FY23:\\nRevenue from Operations: ₹34,489 cr\\nCost of Materials Consumed: ₹20,117 cr\\nPurchases of Stock-in-Trade: ₹1,020 cr\\nChanges in Inventory: ₹(210) cr (decrease means add back)\\nTotal COGS: ₹20,927 cr\\nGross Margin = (34,489 − 20,927) / 34,489 = 39.3%\\n\\nFor context, Asian Paints gross margin was 44.1% in FY21 — compressed 480 bps over two years due to titanium dioxide inflation. When TiO2 eased in FY24, gross margin expanded back to ~43%. This single metric — gross margin — is the cleanest signal of raw material cycle positioning for any goods-producing business.",
+        "sensitivity_note": "Gross margin compression of 100 bps on Asian Paints' revenue base of ₹34,000 cr equals ₹340 cr of lost EBITDA — roughly 15% of annual EBITDA. Raw material cycle sensitivity in paints, chemicals, FMCG can be material."
+      },
+      {
+        "name": "EBITDA and EBITDA Margin",
+        "formula": "EBITDA = Revenue from Operations − COGS − Employee Benefits − Other Operating Expenses + Other Operating Income (only). EBITDA Margin % = EBITDA / Revenue from Operations × 100",
+        "variables": [
+          {
+            "symbol": "Employee Benefits",
+            "meaning": "Salaries, wages, ESOP cost, PF, gratuity — for services firms this is the largest operating cost"
+          },
+          {
+            "symbol": "Other Operating Expenses",
+            "meaning": "SG&A, freight, advertising, power, repairs, legal, rent (where not capitalized under Ind AS 116)"
+          },
+          {
+            "symbol": "Other Operating Income",
+            "meaning": "Scrap sales, export incentives, operating-related recoveries — included in EBITDA. Does NOT include treasury or investment income."
+          }
+        ],
+        "worked_example": "TCS FY24:\\nRevenue from Operations: ₹2,40,893 cr\\nEmployee Benefits: ₹1,39,310 cr (57.8% of revenue)\\nOther Operating Expenses: ₹37,383 cr (15.5% of revenue)\\nTotal Operating Costs: ₹1,76,693 cr\\nEBITDA: ₹64,200 cr\\nEBITDA Margin: 26.7%\\n\\nThe insight: TCS operates at a textbook IT services cost structure — employee cost dominates at 57.8%, reflecting the people-intensive nature of the business. Contrast with Asian Paints where employee cost is 6.8% of revenue and raw materials are 58%. Entirely different businesses, entirely different cost architectures.",
+        "sensitivity_note": "For IT services firms, a 100 bps wage inflation translates to approximately 60 bps of EBITDA margin compression (given employee cost is ~60% of revenue). For TCS, that's ₹1,440 cr of EBITDA at risk per 100 bps wage cycle."
+      },
+      {
+        "name": "Operating Leverage Coefficient",
+        "formula": "Operating Leverage = % Change in EBITDA / % Change in Revenue",
+        "variables": [
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "A coefficient showing how much EBITDA moves for a given revenue move. Higher values mean more fixed-cost intensity."
+          }
+        ],
+        "worked_example": "UltraTech Cement FY23 → FY24:\\nRevenue: ₹62,760 cr → ₹72,500 cr (+15.5%)\\nEBITDA: ₹11,430 cr → ₹14,100 cr (+23.4%)\\nOperating Leverage = 23.4% / 15.5% = 1.51x\\n\\nCement companies typically run operating leverage of 1.4x to 2.0x — meaning every 1% of revenue growth drops roughly 1.5–2x to EBITDA. This is why cement earnings are so volatile — a 10% revenue decline (cement down-cycle) can produce 15–20% EBITDA decline. Compare to HUL at ~1.1x operating leverage (low fixed cost, near-variable cost structure).",
+        "sensitivity_note": "Operating leverage > 1.5x is a red flag for cyclical businesses — they'll miss EBITDA estimates badly in any revenue softness quarter. Operating leverage near 1.0x (HUL, Nestlé) means earnings track revenue closely, which markets reward with multiple premium."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+5 → Percent format",
+        "Fn+F11 → Insert chart",
+        "Cmd+Shift+L → Toggle filter on data",
+        "Cmd+Option+Down → Copy formulas down quickly"
+      ],
+      "windows": [
+        "Alt+H+H → Fill color (highlight margin lines for margin walk)",
+        "Ctrl+Shift+5 → Percent formatting (one shortcut for entire margin column)",
+        "Alt+N+X → Insert text box for margin walk annotations",
+        "F11 → Create chart from selection (fast EBITDA bridge visualisation)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Gross Margin",
+        "formula": "Gross Margin % = (Revenue from Operations − Cost of Goods Sold) / Revenue from Operations × 100",
+        "variables": [
+          {
+            "symbol": "Revenue from Operations",
+            "meaning": "Top line excluding Other Income — always the correct denominator for operating ratios"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of materials consumed + purchases of stock-in-trade + changes in inventories of finished goods/WIP. For services firms, COGS is direct project-linked employee cost."
+          }
+        ],
+        "plain_english": "Gross margin measures the percentage of revenue left after paying for the direct cost of goods or services. It reflects your manufacturing efficiency or supply chain productivity — how much profit remains before operating expenses. For a paint manufacturer like Asian Paints, gross margin is extremely sensitive to raw material prices (especially titanium dioxide); for a service firm, it depends on labour utilisation and billing rates.",
+        "worked_example": {
+          "problem": "Asian Paints FY23 — calculate gross margin from P&L data.",
+          "steps": [
+            "Revenue from Operations: ₹34,489 cr",
+            "Cost of Materials Consumed: ₹20,117 cr",
+            "Purchases of Stock-in-Trade: ₹1,020 cr",
+            "Changes in Inventory: ₹(210) cr (decrease means add back)",
+            "Total COGS = ₹20,117 + ₹1,020 + (−₹210) = ₹20,927 cr",
+            "Gross Margin % = (₹34,489 − ₹20,927) / ₹34,489 × 100 = 39.3%"
+          ],
+          "result": "Gross Margin = 39.3%",
+          "insight": "Asian Paints gross margin was 44.1% in FY21 — compressed 480 bps over two years due to titanium dioxide inflation. When TiO2 eased in FY24, gross margin expanded back to ~43%. This single metric is the cleanest signal of raw material cycle positioning for any goods-producing business."
+        },
+        "sensitivity_note": "Gross margin compression of 100 bps on Asian Paints' revenue base of ₹34,000 cr equals ₹340 cr of lost EBITDA — roughly 15% of annual EBITDA. Raw material cycle sensitivity in paints, chemicals, FMCG can be material."
+      },
+      {
+        "name": "EBITDA and EBITDA Margin",
+        "formula": "EBITDA = Revenue from Operations − COGS − Employee Benefits − Other Operating Expenses + Other Operating Income (only). EBITDA Margin % = EBITDA / Revenue from Operations × 100",
+        "variables": [
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of materials consumed + purchases of stock-in-trade + changes in inventories of finished goods/WIP"
+          },
+          {
+            "symbol": "Employee Benefits",
+            "meaning": "Salaries, wages, ESOP cost, PF, gratuity — for services firms this is the largest operating cost"
+          },
+          {
+            "symbol": "Other Operating Expenses",
+            "meaning": "SG&A, freight, advertising, power, repairs, legal, rent (where not capitalized under Ind AS 116)"
+          },
+          {
+            "symbol": "Other Operating Income",
+            "meaning": "Scrap sales, export incentives, operating-related recoveries — included in EBITDA. Does NOT include treasury or investment income."
+          }
+        ],
+        "plain_english": "EBITDA measures operating profitability before financing and accounting costs. It strips away depreciation and interest to show the cash profit your core business generates. EBITDA margin reveals how much operating leverage your business model has — a high margin means you convert incremental revenue to cash efficiently; a low margin means high operating leverage (more volatility, more cyclicality).",
+        "worked_example": {
+          "problem": "TCS FY24 — calculate EBITDA and EBITDA margin from operations.",
+          "steps": [
+            "Revenue from Operations: ₹2,40,893 cr",
+            "Employee Benefits: ₹1,39,310 cr (57.8% of revenue — people-intensive IT services)",
+            "Other Operating Expenses: ₹37,383 cr (15.5% of revenue)",
+            "COGS equivalent (for IT services, typically embedded in employee cost): Already accounted for",
+            "EBITDA = ₹2,40,893 − ₹1,39,310 − ₹37,383 = ₹64,200 cr",
+            "EBITDA Margin % = ₹64,200 / ₹2,40,893 × 100 = 26.7%"
+          ],
+          "result": "EBITDA = ₹64,200 cr; EBITDA Margin = 26.7%",
+          "insight": "TCS operates at a textbook IT services cost structure — employee cost dominates at 57.8%, reflecting the people-intensive nature of the business. Contrast with Asian Paints where employee cost is 6.8% of revenue and raw materials are 58%. Entirely different businesses, entirely different cost architectures and margin drivers."
+        },
+        "sensitivity_note": "For IT services firms, a 100 bps wage inflation translates to approximately 60 bps of EBITDA margin compression (given employee cost is ~60% of revenue). For TCS, that's ₹1,440 cr of EBITDA at risk per 100 bps wage cycle."
+      },
+      {
+        "name": "Operating Leverage Coefficient",
+        "formula": "Operating Leverage = % Change in EBITDA / % Change in Revenue",
+        "variables": [
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "A coefficient showing how much EBITDA moves for a given revenue move. Higher values mean more fixed-cost intensity."
+          },
+          {
+            "symbol": "% Change in EBITDA",
+            "meaning": "(EBITDA Year N − EBITDA Year N−1) / EBITDA Year N−1 × 100"
+          },
+          {
+            "symbol": "% Change in Revenue",
+            "meaning": "(Revenue Year N − Revenue Year N−1) / Revenue Year N−1 × 100"
+          }
+        ],
+        "plain_english": "Operating leverage measures how much your EBITDA amplifies or dampens swings in revenue. A coefficient of 1.5x means a 10% revenue drop hits EBITDA with a 15% fall — dangerous in downturns. A coefficient near 1.0x means earnings move in line with sales — much less volatile. High leverage is typical of capital-intensive businesses (cement, steel, auto); low leverage is typical of variable-cost businesses (FMCG, retail).",
+        "computation": [
+          "Step 1: Calculate % change in Revenue = (Revenue current year − Revenue prior year) / Revenue prior year × 100",
+          "Step 2: Calculate % change in EBITDA = (EBITDA current year − EBITDA prior year) / EBITDA prior year × 100",
+          "Step 3: Divide % change in EBITDA by % change in Revenue"
+        ],
+        "worked_example": {
+          "problem": "UltraTech Cement FY23 → FY24 — calculate operating leverage and interpret cyclical risk.",
+          "steps": [
+            "Revenue FY23: ₹62,760 cr; Revenue FY24: ₹72,500 cr",
+            "% Change in Revenue = (₹72,500 − ₹62,760) / ₹62,760 × 100 = +15.5%",
+            "EBITDA FY23: ₹11,430 cr; EBITDA FY24: ₹14,100 cr",
+            "% Change in EBITDA = (₹14,100 − ₹11,430) / ₹11,430 × 100 = +23.4%",
+            "Operating Leverage = 23.4% / 15.5% = 1.51x"
+          ],
+          "result": "Operating Leverage = 1.51x",
+          "insight": "Cement companies typically run operating leverage of 1.4x to 2.0x — meaning every 1% of revenue growth drops roughly 1.5–2x to EBITDA. This is why cement earnings are so volatile — a 10% revenue decline (cement down-cycle) can produce 15–20% EBITDA decline. Compare to HUL at ~1.1x operating leverage (low fixed cost, near-variable cost structure). High leverage businesses are cheap in upturns and terrifying in downturns — analyst estimates miss badly in cycle turns."
+        },
+        "sensitivity_note": "Operating leverage > 1.5x is a red flag for cyclical businesses — they'll miss EBITDA estimates badly in any revenue softness quarter. Operating leverage near 1.0x (HUL, Nestlé) means earnings track revenue closely, which markets reward with multiple premium."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+5 → Percent format",
+        "Fn+F11 → Insert chart",
+        "Cmd+Shift+L → Toggle filter on data",
+        "Cmd+Option+Down → Copy formulas down quickly"
+      ],
+      "windows": [
+        "Alt+H+H → Fill color (highlight margin lines for margin walk)",
+        "Ctrl+Shift+5 → Percent formatting (one shortcut for entire margin column)",
+        "Alt+N+X → Insert text box for margin walk annotations",
+        "F11 → Create chart from selection (fast EBITDA bridge visualisation)"
+      ]
+    }
+  }
+}

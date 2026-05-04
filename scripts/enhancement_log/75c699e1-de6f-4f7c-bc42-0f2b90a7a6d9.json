@@ -1,0 +1,640 @@
+{
+  "id": "75c699e1-de6f-4f7c-bc42-0f2b90a7a6d9",
+  "label": "M3 S8 | All 9 Financial Functions with Worked Examples",
+  "before": {
+    "functions": [
+      {
+        "name": "PV(rate, nper, pmt, [fv], [type])",
+        "examples": [
+          {
+            "result": "₹62,092",
+            "formula": "=PV(10%,5,0,-100000)",
+            "scenario": "Lump sum: ₹1L in 5 years at 10%"
+          },
+          {
+            "result": "₹67,101",
+            "formula": "=PV(8%,10,-10000)",
+            "scenario": "Annuity: ₹10,000/yr for 10 yrs at 8%"
+          },
+          {
+            "result": "₹961.10",
+            "formula": "=PV(9%,5,-80,-1000)",
+            "scenario": "Bond: 8% coupon, ₹1000 face, 5yr, 9% YTM"
+          }
+        ],
+        "description": "Calculates the current worth of a series of future payments or a single future lump sum, discounted at a given rate."
+      },
+      {
+        "name": "FV(rate, nper, pmt, [pv], [type])",
+        "examples": [
+          {
+            "result": "₹3,10,585",
+            "formula": "=FV(12%,10,0,-100000)",
+            "scenario": "Lump sum: ₹1L invested at 12% for 10 yrs"
+          },
+          {
+            "result": "₹49,95,740",
+            "formula": "=FV(12%/12,240,-5000)",
+            "scenario": "SIP: ₹5,000/month at 12%/12 for 20 yrs"
+          },
+          {
+            "result": "₹7,00,98,157",
+            "formula": "=FV(15%/12,360,-10000)",
+            "scenario": "SIP: ₹10,000/month at 15%/12 for 30 yrs"
+          }
+        ],
+        "description": "Calculates what an investment or series of payments will be worth at a future date.",
+        "sip_insight": "₹10,000/month at 15% for 30 years becomes ₹7 crores. Total invested: ₹36 lakhs. Interest earned: ₹6.64 crores."
+      },
+      {
+        "name": "PMT(rate, nper, pv, [fv], [type])",
+        "examples": [
+          {
+            "result": "₹43,391",
+            "formula": "=PMT(8.5%/12,240,-5000000)",
+            "scenario": "Home loan: ₹50L, 8.5%, 20 yrs"
+          },
+          {
+            "result": "₹16,607",
+            "formula": "=PMT(9%/12,60,-800000)",
+            "scenario": "Car loan: ₹8L, 9%, 5 yrs"
+          },
+          {
+            "result": "₹19,917",
+            "formula": "=PMT(10%/12,84,-1200000)",
+            "scenario": "Education loan: ₹12L, 10%, 7 yrs"
+          }
+        ],
+        "description": "Calculates the periodic payment for a loan or annuity with constant interest rate and equal payments."
+      },
+      {
+        "name": "RATE(nper, pmt, pv, [fv]) / NPER(rate, pmt, pv, [fv])",
+        "examples": [
+          {
+            "answer": "7.18%",
+            "formula": "=RATE(10,0,-1,2)",
+            "question": "What rate doubles money in 10 years?"
+          },
+          {
+            "answer": "7.72%",
+            "formula": "=RATE(3,0,-800,1000)",
+            "question": "Implied yield on zero-coupon bond: pay ₹800, get ₹1000 in 3 years"
+          },
+          {
+            "answer": "52 months",
+            "formula": "=NPER(10%/12,-15000,0,1000000)",
+            "question": "How many months to save ₹10L with ₹15K/month at 10%?"
+          },
+          {
+            "answer": "176 months (14.7 yrs)",
+            "formula": "=NPER(9%/12,-30000,3000000)",
+            "question": "How many years to repay ₹30L home loan at ₹30K/month, 9%?"
+          }
+        ],
+        "description": "RATE finds the interest rate; NPER finds the number of periods. Both solve the TVM equation for the missing variable."
+      },
+      {
+        "name": "NPV(rate, value1, value2, ...) + Initial_Investment",
+        "trap": "Excel's NPV function does NOT include the initial investment at time 0. Correct pattern: =NPV(rate, CF1:CFn) + CF0 where CF0 is your initial outflow (negative).",
+        "example": {
+          "result": "₹25.47 Cr (positive → accept project)",
+          "formula": "=NPV(12%, B3:B7) + B2",
+          "project": "Plant construction",
+          "cash_flows": [
+            {
+              "cf": -200,
+              "desc": "Initial capex",
+              "year": 0
+            },
+            {
+              "cf": 45,
+              "year": 1
+            },
+            {
+              "cf": 55,
+              "year": 2
+            },
+            {
+              "cf": 65,
+              "year": 3
+            },
+            {
+              "cf": 70,
+              "year": 4
+            },
+            {
+              "cf": 80,
+              "year": 5
+            }
+          ]
+        },
+        "description": "Discounts a series of future cash flows at a given rate. CRITICAL: NPV assumes the first cash flow is at Period 1, NOT Period 0. You must add the initial investment separately.",
+        "error_warning": "If you write =NPV(12%, B2:B7) including the initial investment, Excel discounts it by one period. On a ₹200 Cr project at 12%, that's a ₹24 Cr error."
+      },
+      {
+        "name": "IRR(values, [guess])",
+        "description": "Finds the discount rate that makes the NPV of a cash flow stream exactly zero. Must include at least one negative and one positive value.",
+        "limitations": [
+          "Assumes reinvestment at the IRR rate (often unrealistic)",
+          "For non-conventional cash flows (multiple sign changes), can give multiple answers",
+          "Can't handle irregular dates — assumes equal spacing",
+          "For all these reasons, XIRR is the professional's choice"
+        ]
+      },
+      {
+        "name": "XIRR(values, dates, [guess])",
+        "description": "Calculates the annualised internal rate of return for cash flows occurring on SPECIFIC DATES. The gold standard for real-world return calculation.",
+        "interview_example": {
+          "result": "18.4% annualised return",
+          "context": "Total money in: ₹50L. Total money out: ₹75L. Simple return: 50%. But XIRR tells you the time-weighted truth: 18.4% per year.",
+          "formula": "=XIRR(B2:B6, A2:A6)",
+          "cash_flows": [
+            {
+              "cf": -50,
+              "date": "01-Jan-2020",
+              "desc": "Initial investment"
+            },
+            {
+              "cf": 8,
+              "date": "15-Mar-2021",
+              "desc": "First distribution (14 months)"
+            },
+            {
+              "cf": 12,
+              "date": "10-Mar-2022",
+              "desc": "Second distribution (26 months)"
+            },
+            {
+              "cf": 15,
+              "date": "05-Mar-2023",
+              "desc": "Third distribution (38 months)"
+            },
+            {
+              "cf": 40,
+              "date": "01-Jan-2025",
+              "desc": "Final exit (5 years)"
+            }
+          ]
+        }
+      },
+      {
+        "name": "XNPV(rate, values, dates)",
+        "description": "Calculates NPV using specific dates instead of assuming equal periods. The correct function for DCF valuations with actual calendar dates.",
+        "when_to_use": "Use NPV for quick-and-dirty annual models. Use XNPV for professional DCFs with actual dates, mid-year conventions, or any model where timing precision matters. In institutional equity research, XNPV is the standard.",
+        "key_difference": "XNPV includes CF0 automatically (the first date/value pair is treated as the valuation date). You do NOT add the initial investment separately like with NPV."
+      }
+    ]
+  },
+  "after": {
+    "functions": [
+      {
+        "name": "PV(rate, nper, pmt, [fv], [type])",
+        "variables": [
+          {
+            "symbol": "rate",
+            "meaning": "Discount rate (interest rate) per period, as a decimal (e.g., 0.10 for 10%)"
+          },
+          {
+            "symbol": "nper",
+            "meaning": "Total number of compounding periods"
+          },
+          {
+            "symbol": "pmt",
+            "meaning": "Periodic payment (annuity); negative if you receive it, positive if you pay it"
+          },
+          {
+            "symbol": "fv",
+            "meaning": "Future value (lump sum at the end); negative if you receive it, positive if you pay it"
+          },
+          {
+            "symbol": "type",
+            "meaning": "0 = payments at end of period (default); 1 = payments at beginning of period"
+          }
+        ],
+        "plain_english": "PV tells you what a future sum of money or stream of future payments is worth in today's rupees. By discounting at the given rate, it accounts for the time value of money—money today is worth more than the same amount tomorrow because you can invest it. This is essential for bond pricing, loan valuations, and deciding if a future cash flow is attractive now.",
+        "examples": [
+          {
+            "result": "₹62,092",
+            "formula": "=PV(10%,5,0,-100000)",
+            "scenario": "Lump sum: ₹1L in 5 years at 10%"
+          },
+          {
+            "result": "₹67,101",
+            "formula": "=PV(8%,10,-10000)",
+            "scenario": "Annuity: ₹10,000/yr for 10 yrs at 8%"
+          },
+          {
+            "result": "₹961.10",
+            "formula": "=PV(9%,5,-80,-1000)",
+            "scenario": "Bond: 8% coupon, ₹1000 face, 5yr, 9% YTM"
+          }
+        ],
+        "description": "Calculates the current worth of a series of future payments or a single future lump sum, discounted at a given rate.",
+        "worked_example": {
+          "problem": "An investor is offered a bond that pays ₹80 annual coupon for 5 years, then returns ₹1,000 principal. Market yield (discount rate) is 9% per annum. What is the bond worth today?",
+          "steps": [
+            "Set up: rate = 9%, nper = 5, pmt = -80 (annual coupon received), fv = -1000 (principal received), type = 0 (end of period)",
+            "Use formula: =PV(9%, 5, -80, -1000)",
+            "Excel calculates: PV = ₹961.10"
+          ],
+          "result": "₹961.10",
+          "insight": "The bond trades at a discount to par (₹1,000) because the coupon (8%) is lower than the market yield (9%). An investor must pay less today to achieve a 9% annual return."
+        }
+      },
+      {
+        "name": "FV(rate, nper, pmt, [pv], [type])",
+        "variables": [
+          {
+            "symbol": "rate",
+            "meaning": "Interest rate or growth rate per period, as a decimal"
+          },
+          {
+            "symbol": "nper",
+            "meaning": "Total number of compounding periods"
+          },
+          {
+            "symbol": "pmt",
+            "meaning": "Periodic payment or deposit (negative if you pay/invest, positive if you receive)"
+          },
+          {
+            "symbol": "pv",
+            "meaning": "Present value (initial lump sum); negative if you invest, positive if you receive"
+          },
+          {
+            "symbol": "type",
+            "meaning": "0 = payments at end of period (default); 1 = payments at beginning of period"
+          }
+        ],
+        "plain_english": "FV answers the question: if I invest (or save) money today and make regular contributions, how much will it grow? It captures the power of compound interest and regular deposits over time. For investors, this reveals the long-term wealth accumulation potential of systematic investing like SIPs; for corporates, it shows how retained capital compounds into future value.",
+        "examples": [
+          {
+            "result": "₹3,10,585",
+            "formula": "=FV(12%,10,0,-100000)",
+            "scenario": "Lump sum: ₹1L invested at 12% for 10 yrs"
+          },
+          {
+            "result": "₹49,95,740",
+            "formula": "=FV(12%/12,240,-5000)",
+            "scenario": "SIP: ₹5,000/month at 12%/12 for 20 yrs"
+          },
+          {
+            "result": "₹7,00,98,157",
+            "formula": "=FV(15%/12,360,-10000)",
+            "scenario": "SIP: ₹10,000/month at 15%/12 for 30 yrs"
+          }
+        ],
+        "description": "Calculates what an investment or series of payments will be worth at a future date.",
+        "sip_insight": "₹10,000/month at 15% for 30 years becomes ₹7 crores. Total invested: ₹36 lakhs. Interest earned: ₹6.64 crores.",
+        "worked_example": {
+          "problem": "A 25-year-old investor in India commits to a Systematic Investment Plan (SIP) of ₹10,000 per month in an equity mutual fund expected to return 15% per annum. What will be the corpus at age 55 (30 years)?",
+          "steps": [
+            "Monthly return: 15% ÷ 12 = 1.25% = 0.0125",
+            "Number of months: 30 years × 12 = 360",
+            "Monthly investment (pmt): -10000 (cash outflow)",
+            "Initial investment (pv): 0",
+            "Use formula: =FV(15%/12, 360, -10000, 0, 0)",
+            "Excel calculates: FV = ₹7,00,98,157"
+          ],
+          "result": "₹7,00,98,157 (approximately ₹7 crores)",
+          "insight": "Total amount invested over 30 years: ₹10,000 × 360 = ₹36,00,000. The remaining ₹6,64,98,157 is pure investment returns—demonstrating the extraordinary power of long-term compounding at 15% annually. This is why early and consistent investing is critical in equity research narratives about wealth creation."
+        }
+      },
+      {
+        "name": "PMT(rate, nper, pv, [fv], [type])",
+        "variables": [
+          {
+            "symbol": "rate",
+            "meaning": "Interest rate per period, as a decimal"
+          },
+          {
+            "symbol": "nper",
+            "meaning": "Total number of payment periods"
+          },
+          {
+            "symbol": "pv",
+            "meaning": "Present value (principal or loan amount); negative if you borrow, positive if you lend"
+          },
+          {
+            "symbol": "fv",
+            "meaning": "Future value (typically 0 for fully amortised loans); can be non-zero for balloon loans"
+          },
+          {
+            "symbol": "type",
+            "meaning": "0 = payments at end of period (default); 1 = payments at beginning of period"
+          }
+        ],
+        "plain_english": "PMT calculates the fixed periodic payment (instalment) on a loan or annuity. When you borrow ₹50 lakh for a home at 8.5% over 20 years, PMT tells you your monthly EMI. This is critical for assessing borrowing capacity, evaluating corporate debt servicing ability, and comparing loan products. The payment includes both interest and principal repayment.",
+        "examples": [
+          {
+            "result": "₹43,391",
+            "formula": "=PMT(8.5%/12,240,-5000000)",
+            "scenario": "Home loan: ₹50L, 8.5%, 20 yrs"
+          },
+          {
+            "result": "₹16,607",
+            "formula": "=PMT(9%/12,60,-800000)",
+            "scenario": "Car loan: ₹8L, 9%, 5 yrs"
+          },
+          {
+            "result": "₹19,917",
+            "formula": "=PMT(10%/12,84,-1200000)",
+            "scenario": "Education loan: ₹12L, 10%, 7 yrs"
+          }
+        ],
+        "description": "Calculates the periodic payment for a loan or annuity with constant interest rate and equal payments.",
+        "worked_example": {
+          "problem": "A young professional borrows ₹50 lakh for a home at 8.5% per annum over 20 years. What is the monthly EMI?",
+          "steps": [
+            "Monthly interest rate: 8.5% ÷ 12 = 0.7083% = 0.007083",
+            "Number of months: 20 years × 12 = 240",
+            "Loan principal (pv): -5000000 (negative because money is borrowed)",
+            "Final value (fv): 0 (loan fully repaid)",
+            "Use formula: =PMT(8.5%/12, 240, -5000000, 0, 0)",
+            "Excel calculates: PMT = ₹43,391"
+          ],
+          "result": "Monthly EMI: ₹43,391",
+          "insight": "Over 240 months, total outflow = ₹43,391 × 240 = ₹1,04,13,840. Interest paid = ₹1,04,13,840 − ₹50,00,000 = ₹54,13,840. This shows why early repayment of loans reduces interest burden significantly. For equity research, PMT helps evaluate whether a company's debt servicing is manageable relative to operating cash flow."
+        }
+      },
+      {
+        "name": "RATE(nper, pmt, pv, [fv]) / NPER(rate, pmt, pv, [fv])",
+        "variables": [
+          {
+            "symbol": "nper",
+            "meaning": "Number of periods (used as input in RATE, output in NPER)"
+          },
+          {
+            "symbol": "pmt",
+            "meaning": "Periodic payment or cash flow"
+          },
+          {
+            "symbol": "pv",
+            "meaning": "Present value (initial investment or loan)"
+          },
+          {
+            "symbol": "fv",
+            "meaning": "Future value (final amount or payoff)"
+          },
+          {
+            "symbol": "rate",
+            "meaning": "Interest rate or discount rate per period (output of RATE; input to NPER)"
+          }
+        ],
+        "plain_english": "RATE solves for the missing discount rate when you know the present value, future value, and time period—answering 'what return am I actually getting?' NPER solves for the missing time period—answering 'how long until I reach my goal?' Both are solver functions that rearrange the Time Value of Money equation. In equity research, RATE helps compute implied yields and cost-of-capital; NPER helps forecast payback periods.",
+        "examples": [
+          {
+            "answer": "7.18%",
+            "formula": "=RATE(10,0,-1,2)",
+            "question": "What rate doubles money in 10 years?"
+          },
+          {
+            "answer": "7.72%",
+            "formula": "=RATE(3,0,-800,1000)",
+            "question": "Implied yield on zero-coupon bond: pay ₹800, get ₹1000 in 3 years"
+          },
+          {
+            "answer": "52 months",
+            "formula": "=NPER(10%/12,-15000,0,1000000)",
+            "question": "How many months to save ₹10L with ₹15K/month at 10%?"
+          },
+          {
+            "answer": "176 months (14.7 yrs)",
+            "formula": "=NPER(9%/12,-30000,3000000)",
+            "question": "How many years to repay ₹30L home loan at ₹30K/month, 9%?"
+          }
+        ],
+        "description": "RATE finds the interest rate; NPER finds the number of periods. Both solve the TVM equation for the missing variable.",
+        "worked_example": {
+          "problem": "A company is considering a capital project. Initial investment: ₹100 crores. Expected total cash inflow in 5 years: ₹180 crores. No intermediate cash flows. What is the implied annual return (RATE)?",
+          "steps": [
+            "Set up: nper = 5, pmt = 0 (no interim cash flows), pv = -10000 (initial outflow in crore), fv = 18000 (final inflow in crore)",
+            "Use formula: =RATE(5, 0, -10000, 18000)",
+            "Excel solves for the rate iteratively",
+            "Excel returns: 12.4%"
+          ],
+          "result": "Implied annual return: 12.4%",
+          "insight": "If the project's 5-year timeline is realistic and the risk profile aligns with a 12.4% hurdle rate, the project is acceptable. This embedded rate of return is a key input to NPV and IRR analyses."
+        }
+      },
+      {
+        "name": "NPV(rate, value1, value2, ...) + Initial_Investment",
+        "variables": [
+          {
+            "symbol": "rate",
+            "meaning": "Discount rate (cost of capital or hurdle rate) per period, as a decimal"
+          },
+          {
+            "symbol": "value1, value2, ...",
+            "meaning": "Cash flows in periods 1, 2, 3, etc. (NOT including period 0)"
+          },
+          {
+            "symbol": "CF0",
+            "meaning": "Initial investment at time 0 (cash outflow); must be added separately after NPV() result"
+          }
+        ],
+        "plain_english": "NPV calculates the net present value of a project by discounting all future cash flows to today and summing them. A positive NPV means the project generates more value than the discount rate requires—accept it. A negative NPV means the project destroys value—reject it. This is the cornerstone of capital budgeting and M&A decisions in equity research. Critical pitfall: Excel's NPV function excludes time 0, so you must add the initial investment separately.",
+        "trap": "Excel's NPV function does NOT include the initial investment at time 0. Correct pattern: =NPV(rate, CF1:CFn) + CF0 where CF0 is your initial outflow (negative).",
+        "error_warning": "If you write =NPV(12%, B2:B7) including the initial investment, Excel discounts it by one period. On a ₹200 Cr project at 12%, that's a ₹24 Cr error.",
+        "example": {
+          "result": "₹25.47 Cr (positive → accept project)",
+          "formula": "=NPV(12%, B3:B7) + B2",
+          "project": "Plant construction",
+          "cash_flows": [
+            {
+              "cf": -200,
+              "desc": "Initial capex",
+              "year": 0
+            },
+            {
+              "cf": 45,
+              "year": 1
+            },
+            {
+              "cf": 55,
+              "year": 2
+            },
+            {
+              "cf": 65,
+              "year": 3
+            },
+            {
+              "cf": 70,
+              "year": 4
+            },
+            {
+              "cf": 80,
+              "year": 5
+            }
+          ]
+        },
+        "description": "Discounts a series of future cash flows at a given rate. CRITICAL: NPV assumes the first cash flow is at Period 1, NOT Period 0. You must add the initial investment separately.",
+        "computation": [
+          "Step 1: Identify all future cash flows (periods 1 onwards) in an Excel range, e.g., B3:B7",
+          "Step 2: Apply NPV(discount_rate, range)",
+          "Step 3: Add the time-0 initial investment (CF0) to the NPV result",
+          "Formula: =NPV(12%, B3:B7) + B2, where B2 is the negative initial investment"
+        ],
+        "worked_example": {
+          "problem": "A manufacturing company evaluates a new production line. Initial capex: ₹200 Cr (year 0). Expected annual cash inflows: Year 1: ₹45 Cr, Year 2: ₹55 Cr, Year 3: ₹65 Cr, Year 4: ₹70 Cr, Year 5: ₹80 Cr. Discount rate (WACC) is 12%. Should the company proceed?",
+          "steps": [
+            "Set discount rate: 12%",
+            "List future cash flows (Year 1–5): ₹45, ₹55, ₹65, ₹70, ₹80 Cr",
+            "Calculate NPV of future cash flows: =NPV(12%, [45, 55, 65, 70, 80]) = ₹225.47 Cr",
+            "Add initial investment (year 0): ₹225.47 Cr + (−₹200 Cr) = ₹25.47 Cr",
+            "Correct Excel formula: =NPV(12%, B3:B7) + B2 where B2 = −200"
+          ],
+          "result": "NPV = ₹25.47 Cr (positive)",
+          "insight": "Because NPV is positive, the project creates ₹25.47 Cr in shareholder value above the 12% cost of capital. The company should proceed. If NPV were negative, the project would destroy value and should be rejected. This is fundamental to capital allocation and a key evaluation in equity research reports on corporate capex decisions."
+        }
+      },
+      {
+        "name": "IRR(values, [guess])",
+        "variables": [
+          {
+            "symbol": "values",
+            "meaning": "Array of cash flows; must include at least one negative (outflow) and one positive (inflow)"
+          },
+          {
+            "symbol": "guess",
+            "meaning": "Optional starting estimate for IRR; helps Excel converge if the true IRR is far from zero"
+          }
+        ],
+        "plain_english": "IRR finds the discount rate that makes NPV exactly zero—the 'break-even' return of a cash flow stream. It answers: 'What annual return does my investment actually earn?' Higher IRR is better. Compare IRR to your cost of capital: if IRR > cost of capital, accept the project. However, IRR has limitations (reinvestment assumption, multiple solutions for non-standard cash flows), so XIRR is often preferred in professional settings.",
+        "description": "Finds the discount rate that makes the NPV of a cash flow stream exactly zero. Must include at least one negative and one positive value.",
+        "limitations": [
+          "Assumes reinvestment at the IRR rate (often unrealistic)",
+          "For non-conventional cash flows (multiple sign changes), can give multiple answers",
+          "Can't handle irregular dates — assumes equal spacing",
+          "For all these reasons, XIRR is the professional's choice"
+        ],
+        "computation": [
+          "Step 1: Gather all cash flows in chronological order, including at least one negative and one positive",
+          "Step 2: Apply =IRR(range, [guess])",
+          "Step 3: Excel uses iterative methods (Newton-Raphson) to find the rate where NPV = 0",
+          "Step 4: If Excel returns #NUM! error, either the cash flows have no real solution, or provide a better guess"
+        ],
+        "worked_example": {
+          "problem": "A private equity investor evaluates a startup investment. Cash flow stream: Initial investment (year 0): −₹50 Cr. Year 1: ₹5 Cr. Year 2: ₹10 Cr. Year 3: ₹15 Cr. Year 4: ₹25 Cr. Year 5: ₹50 Cr (exit). What is the IRR?",
+          "steps": [
+            "Cash flows: [−50, 5, 10, 15, 25, 50]",
+            "Apply formula: =IRR(values)",
+            "Excel iterates to find rate where NPV = 0",
+            "Excel returns: 27.4%"
+          ],
+          "result": "IRR = 27.4% per annum",
+          "insight": "The startup investment offers a 27.4% annualised return. If the investor's hurdle rate is, say, 20%, this exceeds it and should be accepted. However, this assumes reinvestment at 27.4% (often false in early-stage ventures), so a sensitivity check with XIRR on actual dates is prudent for institutional investors."
+        }
+      },
+      {
+        "name": "XIRR(values, dates, [guess])",
+        "variables": [
+          {
+            "symbol": "values",
+            "meaning": "Array of cash flows (must include at least one negative and one positive)"
+          },
+          {
+            "symbol": "dates",
+            "meaning": "Array of corresponding dates (in chronological order) for each cash flow"
+          },
+          {
+            "symbol": "guess",
+            "meaning": "Optional starting estimate; useful if convergence is slow"
+          }
+        ],
+        "plain_english": "XIRR calculates the annualised return of a cash flow stream that occurs on specific, possibly irregular dates. Unlike IRR, which assumes equal periods, XIRR counts actual calendar days, making it the true measure of investment performance. This is the standard for real-world portfolio returns, PE fund performance, and M&A exit calculations in India's equity research and institutional investing.",
+        "description": "Calculates the annualised internal rate of return for cash flows occurring on SPECIFIC DATES. The gold standard for real-world return calculation.",
+        "computation": [
+          "Step 1: Gather cash flows and corresponding transaction dates in Excel columns",
+          "Step 2: Ensure dates are in chronological order",
+          "Step 3: Apply =XIRR(value_range, date_range)",
+          "Step 4: Excel calculates annualised return accounting for actual day-counts between cash flows"
+        ],
+        "interview_example": {
+          "result": "18.4% annualised return",
+          "context": "Total money in: ₹50L. Total money out: ₹75L. Simple return: 50%. But XIRR tells you the time-weighted truth: 18.4% per year.",
+          "formula": "=XIRR(B2:B6, A2:A6)",
+          "cash_flows": [
+            {
+              "cf": -50,
+              "date": "01-Jan-2020",
+              "desc": "Initial investment"
+            },
+            {
+              "cf": 8,
+              "date": "15-Mar-2021",
+              "desc": "First distribution (14 months)"
+            },
+            {
+              "cf": 12,
+              "date": "10-Mar-2022",
+              "desc": "Second distribution (26 months)"
+            },
+            {
+              "cf": 15,
+              "date": "05-Mar-2023",
+              "desc": "Third distribution (38 months)"
+            },
+            {
+              "cf": 40,
+              "date": "01-Jan-2025",
+              "desc": "Final exit (5 years)"
+            }
+          ]
+        },
+        "worked_example": {
+          "problem": "A PE fund invests ₹50 Cr in a mid-market Indian company on 01-Jan-2020. It receives distributions: ₹8 Cr on 15-Mar-2021, ₹12 Cr on 10-Mar-2022, ₹15 Cr on 05-Mar-2023, and exits with ₹40 Cr sale proceeds on 01-Jan-2025. What is the annualised return?",
+          "steps": [
+            "Set up values: [−50, 8, 12, 15, 40] (all in crores)",
+            "Set up dates: [01-Jan-2020, 15-Mar-2021, 10-Mar-2022, 05-Mar-2023, 01-Jan-2025]",
+            "Apply formula: =XIRR(values, dates)",
+            "Excel calculates using exact day-counts (not assuming equal annual periods)",
+            "Excel returns: 18.4%"
+          ],
+          "result": "Annualised return: 18.4%",
+          "insight": "Total gross proceeds out: ₹75 Cr (₹8+₹12+₹15+₹40). Simple return = (₹75−₹50)/₹50 = 50%. However, because the final large exit occurs 5 years after the initial investment while interim distributions arrive earlier (when capital is idle), the time-weighted annualised return is only 18.4%. This is why XIRR is essential for PE reporting, fund performance attribution, and evaluating real-world returns in Indian institutional portfolios."
+        }
+      },
+      {
+        "name": "XNPV(rate, values, dates)",
+        "variables": [
+          {
+            "symbol": "rate",
+            "meaning": "Discount rate (cost of capital) as a decimal per annum"
+          },
+          {
+            "symbol": "values",
+            "meaning": "Array of cash flows, in chronological order by date"
+          },
+          {
+            "symbol": "dates",
+            "meaning": "Array of corresponding dates for each cash flow"
+          }
+        ],
+        "plain_english": "XNPV calculates net present value using actual calendar dates instead of assuming equal periods. It discounts cash flows based on the exact number of days (or years) from the valuation date, making it the professional standard for DCF valuations, project appraisals, and acquisition targets in equity research. Unlike NPV, XNPV automatically includes the initial investment—no need to add it separately.",
+        "description": "Calculates NPV using specific dates instead of assuming equal periods. The correct function for DCF valuations with actual calendar dates.",
+        "when_to_use": "Use NPV for quick-and-dirty annual models. Use XNPV for professional DCFs with actual dates, mid-year conventions, or any model where timing precision matters. In institutional equity research, XNPV is the standard.",
+        "key_difference": "XNPV includes CF0 automatically (the first date/value pair is treated as the valuation date). You do NOT add the initial investment separately like with NPV.",
+        "computation": [
+          "Step 1: Establish valuation date (typically today or the first cash flow date)",
+          "Step 2: List all projected cash flows (including year 0) with their specific dates",
+          "Step 3: Apply =XNPV(discount_rate, values_range, dates_range)",
+          "Step 4: Excel discounts each cash flow from its date back to the valuation date using actual day-count"
+        ],
+        "worked_example": {
+          "problem": "A company is evaluating an acquisition target. Expected cash flows: Today (15-Jan-2025): −₹500 Cr (acquisition cost). Year 1 (31-Mar-2026): ₹60 Cr. Year 2 (30-Jun-2027): ₹80 Cr. Year 3 (31-Dec-2028): ₹100 Cr. Year 4 (31-Dec-2029): ₹120 Cr. Year 5 (31-Dec-2030): ₹150 Cr. Discount rate (WACC): 11%. What is the XNPV?",
+          "steps": [
+            "Valuation date: 15-Jan-2025",
+            "Values: [−500, 60, 80, 100, 120, 150]",
+            "Dates: [15-Jan-2025, 31-Mar-2026, 30-Jun-2027, 31-Dec-2028, 31-Dec-2029, 31-Dec-2030]",
+            "Apply formula: =XNPV(11%, values, dates)",
+            "Excel calculates each PV factor using exact day-counts",
+            "Excel returns: ₹42.3 Cr"
+          ],
+          "result": "XNPV = ₹42.3 Cr (positive → acquisition creates value)",
+          "insight": "The acquisition target's present value (₹542.3 Cr) exceeds the acquisition cost (₹500 Cr) by ₹42.3 Cr. In an equity research report, this signals the deal is accretive to shareholder value at an 11% cost of capital. Using XNPV instead of NPV ensures the discount factors precisely match the actual timing of cash flows, avoiding errors that could arise from assuming equal annual periods. This precision is critical for institutional deal evaluation."
+        }
+      }
+    ]
+  },
+  "model": "claude-haiku-4-5-20251001"
+}

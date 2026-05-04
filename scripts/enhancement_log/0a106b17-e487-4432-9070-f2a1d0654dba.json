@@ -1,0 +1,325 @@
+{
+  "id": "0a106b17-e487-4432-9070-f2a1d0654dba",
+  "label": "M10 S5 | The Budget Math Every Analyst Must Know",
+  "before": {
+    "formulas": [
+      {
+        "name": "Fiscal Deficit Calculation",
+        "formula": "Fiscal Deficit = Total Expenditure - (Revenue Receipts + Non-debt Capital Receipts)",
+        "variables": [
+          {
+            "symbol": "Total Expenditure",
+            "meaning": "Sum of revenue expenditure and capital expenditure"
+          },
+          {
+            "symbol": "Revenue Receipts",
+            "meaning": "Tax revenue + non-tax revenue (dividends, fees, interest receipts)"
+          },
+          {
+            "symbol": "Non-debt Capital Receipts",
+            "meaning": "Disinvestment proceeds, recovery of loans (excludes borrowings)"
+          }
+        ],
+        "worked_example": "FY25 Budget Estimates (₹ lakh crore):\nTotal Expenditure = 48.21\nRevenue Receipts = 31.30 (Tax: 25.83, Non-tax: 5.47)\nNon-debt Capital Receipts = 0.78 (Disinvestment 0.50, Loan recovery 0.28)\n\nFiscal Deficit = 48.21 - (31.30 + 0.78) = 48.21 - 32.08 = ₹16.13 lakh crore\n\nFiscal Deficit % of GDP = 16.13 / 326.4 (nominal GDP) × 100 = 4.94% ≈ 4.9% (matches BE)\n\nThis is the lowest fiscal deficit ratio since FY15, signaling the government is committed to its glide path toward 3% over time.",
+        "sensitivity_note": "A 50 bps fiscal deficit slippage (from 4.9% to 5.4% of GDP) would represent ₹1.6 lakh crore of additional borrowing. This typically pushes 10Y G-Sec yields up 15-25 bps and weakens INR by 50-80 paise. Equity multiples compress 1-2% across the board."
+      },
+      {
+        "name": "Capital Expenditure Multiplier",
+        "formula": "GDP Impact = Capex Spending × Multiplier",
+        "variables": [
+          {
+            "symbol": "Capex Spending",
+            "meaning": "Government''s capital expenditure that creates assets"
+          },
+          {
+            "symbol": "Multiplier",
+            "meaning": "How much GDP increases per rupee of capex. Empirical estimates: 2.5x-3.5x for Indian capex over 2-3 years"
+          }
+        ],
+        "worked_example": "FY25 Budget Capex = ₹11.11 lakh crore (an 11% increase from FY24 RE)\n\nIncremental capex YoY = ₹11.11 - 10.00 = ₹1.11 lakh crore additional capex\n\nGDP Impact (over 2-3 years) = ₹1.11 × 3.0 multiplier = ₹3.33 lakh crore additional GDP\n\nAs % of GDP = 3.33 / 326.4 × 100 = 1.02% additional GDP growth\n\nThis means the FY25 capex push alone could add 30-40 bps to annual GDP growth over 2-3 years, before accounting for crowding-in of private investment.",
+        "sensitivity_note": "Capex multipliers vary significantly by type. Infrastructure capex (roads, railways, ports) has the highest multiplier of 3-3.5x. Defence and PSU equity have lower multipliers of 1.5-2x. Quality of capex matters — productive capex compounds; unproductive capex (vanity projects) does not."
+      },
+      {
+        "name": "Tax Revenue Buoyancy",
+        "formula": "Tax Buoyancy = (% Change in Tax Revenue) / (% Change in Nominal GDP)",
+        "variables": [
+          {
+            "symbol": "% Change in Tax Revenue",
+            "meaning": "Year-on-year growth in total tax collections"
+          },
+          {
+            "symbol": "% Change in Nominal GDP",
+            "meaning": "Year-on-year growth in nominal GDP"
+          }
+        ],
+        "worked_example": "FY24 → FY25 (Budget Estimates):\nTax Revenue: ₹23.30 lakh crore → ₹25.83 lakh crore (10.85% growth)\nNominal GDP: ₹295 → ₹326.4 lakh crore (10.66% growth)\n\nTax Buoyancy = 10.85 / 10.66 = 1.018\n\nA buoyancy of 1.0 means tax revenues grow at the same rate as the economy. Above 1.0 means tax revenues are outgrowing GDP (tax base widening). Below 1.0 means tax base shrinking relative to GDP.\n\nIndia has historically aimed for buoyancy above 1.0, with formalisation, GST integration, and digital tracking driving structural improvement. FY25 buoyancy near 1.0 is healthy but not aggressive.",
+        "sensitivity_note": "Tax buoyancy is a direct measure of fiscal health and tax administration efficiency. Buoyancy below 0.9 for 2+ years signals fiscal stress (revenue not keeping pace). Buoyancy above 1.2 sustained signals exceptional formalisation/digitisation gains."
+      },
+      {
+        "name": "Government Borrowing Impact on Yields",
+        "formula": "Δ 10Y G-Sec Yield (bps) ≈ -1.5 × (Δ Net Borrowing / Demand) + Term Premium Adjustment",
+        "variables": [
+          {
+            "symbol": "Δ Net Borrowing",
+            "meaning": "Change in net market borrowing vs prior year (in ₹ lakh crore)"
+          },
+          {
+            "symbol": "Demand",
+            "meaning": "Captive demand from banks (SLR), insurance (regulatory holdings), pension funds. Roughly ₹15-18 lakh crore annually in absorptive capacity"
+          },
+          {
+            "symbol": "Term Premium Adjustment",
+            "meaning": "Compensation for inflation/policy uncertainty"
+          }
+        ],
+        "worked_example": "FY25 Net Borrowing: ₹11.63 lakh crore (vs FY24 RE: ₹11.05 lakh crore)\nIncrease YoY: +₹0.58 lakh crore (modest)\n\nDemand absorption capacity: ~₹16 lakh crore annually\nNet borrowing as % of demand: 11.63 / 16 × 100 = 73%\nThis is well within demand capacity, hence yields stable\n\nIf instead borrowing had jumped to ₹14 lakh crore (an 87% absorption ratio approaching capacity limits), we''d expect 25-40 bps yield rise.\n\nFY24 Budget reaction: Markets actually rallied because borrowing came in lower than feared, a positive surprise vs market expectations of higher numbers.",
+        "sensitivity_note": "Markets react to surprise vs expectations, not absolute levels. If borrowing is announced ₹50,000 crore higher than economist consensus, yields can spike 10-20 bps even in absolute terms. Track the surprise component, not just absolute borrowing."
+      },
+      {
+        "name": "Sector EPS Impact from Specific Capex Allocation",
+        "formula": "Sector EPS Uplift = (Allocated Capex × Capture Rate) / Sector Aggregate PAT × Sector Margin × Asset Turnover",
+        "variables": [
+          {
+            "symbol": "Allocated Capex",
+            "meaning": "Government''s allocation to a specific sector"
+          },
+          {
+            "symbol": "Capture Rate",
+            "meaning": "% of capex flowing to listed companies (vs unlisted/PSU/imports)"
+          },
+          {
+            "symbol": "Sector Aggregate PAT",
+            "meaning": "Combined net profit of listed companies in the sector"
+          },
+          {
+            "symbol": "Sector Margin",
+            "meaning": "Net profit margin of listed companies in the sector"
+          },
+          {
+            "symbol": "Asset Turnover",
+            "meaning": "Revenue / Assets ratio for the sector"
+          }
+        ],
+        "worked_example": "Railway Sector Example (FY25 Budget):\nRailway Capex Allocation = ₹2.55 lakh crore\nCapture Rate (listed cos. like RVNL, IRCON, KEC) = 25% = ₹63,750 crore\nSector Aggregate Revenue (listed railway co''s) = ₹85,000 crore\nSector Margin = 8% (railway capex companies blended)\nIncremental Revenue = ₹63,750 crore\nIncremental Net Profit = ₹63,750 × 8% = ₹5,100 crore\n\nSector Aggregate PAT (current) = ₹6,500 crore\nIncremental PAT % = 5,100 / 6,500 = 78% theoretical uplift over 2-3 years\n\nIn practice, capture rates and execution lags reduce this. Realistic expectation: 25-35% sector PAT uplift over 2-3 years from railway capex allocation. This is why railway stocks (RVNL, IRCON) re-rated 5-10x in 2023-24.",
+        "sensitivity_note": "Capture rates are critical and often overestimated. PSU-heavy sectors (railways) have low capture rates because most spending stays internal. Private-heavy sectors (capital goods like L&T) have higher capture. Always check the listed-company capture ratio for any sector before sizing the trade."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + 4 → format as currency",
+        "Cmd + Option + V → paste special (for transposing budget tables)",
+        "Cmd + R → fill right (for monthly fiscal tracking)",
+        "Cmd + ; → insert today''s date"
+      ],
+      "windows": [
+        "Ctrl + Shift + 4 → format as currency (rupees)",
+        "Alt + N + V → insert pivot table for sector-wise budget analysis",
+        "F4 → repeat last action (great for sector sensitivity tables)",
+        "Ctrl + ; → insert today''s date for budget tracking notes"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Fiscal Deficit Calculation",
+        "formula": "Fiscal Deficit = Total Expenditure - (Revenue Receipts + Non-debt Capital Receipts)",
+        "variables": [
+          {
+            "symbol": "Total Expenditure",
+            "meaning": "Sum of revenue expenditure and capital expenditure"
+          },
+          {
+            "symbol": "Revenue Receipts",
+            "meaning": "Tax revenue + non-tax revenue (dividends, fees, interest receipts)"
+          },
+          {
+            "symbol": "Non-debt Capital Receipts",
+            "meaning": "Disinvestment proceeds, recovery of loans (excludes borrowings)"
+          }
+        ],
+        "plain_english": "Fiscal deficit tells you how much money the government spends beyond what it collects from taxes and other non-borrowed sources. It represents the gap that must be financed through borrowing. A lower fiscal deficit as a % of GDP signals fiscal discipline and reduces crowding-out pressure on private sector borrowing.",
+        "worked_example": {
+          "problem": "Calculate India's FY25 fiscal deficit using budget estimates and assess its significance.",
+          "steps": [
+            "Total Expenditure = ₹48.21 lakh crore",
+            "Revenue Receipts = ₹31.30 lakh crore (Tax: ₹25.83, Non-tax: ₹5.47)",
+            "Non-debt Capital Receipts = ₹0.78 lakh crore (Disinvestment ₹0.50, Loan recovery ₹0.28)",
+            "Fiscal Deficit = 48.21 − (31.30 + 0.78) = 48.21 − 32.08 = ₹16.13 lakh crore",
+            "Fiscal Deficit % of GDP = 16.13 / 326.4 × 100 = 4.94% ≈ 4.9%"
+          ],
+          "result": "₹16.13 lakh crore (4.9% of GDP)",
+          "insight": "This is the lowest fiscal deficit ratio since FY15, signalling the government is committed to its glide path toward 3% over time. Lower deficit reduces G-Sec yields and INR depreciation pressure."
+        },
+        "sensitivity_note": "A 50 bps fiscal deficit slippage (from 4.9% to 5.4% of GDP) would represent ₹1.6 lakh crore of additional borrowing. This typically pushes 10Y G-Sec yields up 15-25 bps and weakens INR by 50-80 paise. Equity multiples compress 1-2% across the board."
+      },
+      {
+        "name": "Capital Expenditure Multiplier",
+        "formula": "GDP Impact = Capex Spending × Multiplier",
+        "variables": [
+          {
+            "symbol": "Capex Spending",
+            "meaning": "Government's capital expenditure that creates productive assets"
+          },
+          {
+            "symbol": "Multiplier",
+            "meaning": "How much additional GDP is generated per rupee of capex. Empirical estimates: 2.5x–3.5x for Indian capex over 2–3 years"
+          }
+        ],
+        "plain_english": "Capex multiplier captures the ripple effect of government investment. When the government spends ₹100 on a highway, it generates demand for cement, steel, labour, and equipment—and those suppliers then spend further down the chain. This multiplier effect amplifies the initial spending into larger GDP growth, making capex a powerful tool for stimulus.",
+        "worked_example": {
+          "problem": "Estimate the GDP growth contribution from FY25 capex increase using multiplier analysis.",
+          "steps": [
+            "FY25 Budget Capex = ₹11.11 lakh crore",
+            "FY24 RE Capex = ₹10.00 lakh crore",
+            "Incremental capex YoY = ₹11.11 − ₹10.00 = ₹1.11 lakh crore",
+            "Apply multiplier of 3.0x over 2–3 years: ₹1.11 × 3.0 = ₹3.33 lakh crore additional GDP",
+            "As % of nominal GDP: 3.33 / 326.4 × 100 = 1.02% additional GDP growth"
+          ],
+          "result": "₹3.33 lakh crore incremental GDP impact (1.02% growth contribution)",
+          "insight": "The FY25 capex push alone could add 30–40 bps to annual GDP growth over 2–3 years, before accounting for crowding-in of private investment. This justifies equity research upgrades to infrastructure and construction stocks."
+        },
+        "sensitivity_note": "Capex multipliers vary significantly by type. Infrastructure capex (roads, railways, ports) has the highest multiplier of 3–3.5x. Defence and PSU equity have lower multipliers of 1.5–2x. Quality of capex matters—productive capex compounds; unproductive capex (vanity projects) does not."
+      },
+      {
+        "name": "Tax Revenue Buoyancy",
+        "formula": "Tax Buoyancy = (% Change in Tax Revenue) / (% Change in Nominal GDP)",
+        "variables": [
+          {
+            "symbol": "% Change in Tax Revenue",
+            "meaning": "Year-on-year growth in total tax collections"
+          },
+          {
+            "symbol": "% Change in Nominal GDP",
+            "meaning": "Year-on-year growth in nominal GDP (real growth + inflation)"
+          }
+        ],
+        "plain_english": "Tax buoyancy measures how aggressively tax revenues grow relative to the overall economy. A buoyancy of 1.0 means taxes grow in line with GDP; above 1.0 means the tax base is widening (formalisation, higher compliance); below 1.0 suggests the tax system is not capturing growth proportionally. It's a key indicator of fiscal health and tax administration effectiveness.",
+        "worked_example": {
+          "problem": "Calculate India's tax buoyancy for FY25 and interpret what it means for fiscal sustainability.",
+          "steps": [
+            "FY24 Tax Revenue = ₹23.30 lakh crore; FY25 BE Tax Revenue = ₹25.83 lakh crore",
+            "% Change in Tax Revenue = (25.83 − 23.30) / 23.30 × 100 = 10.85%",
+            "FY24 Nominal GDP = ₹295 lakh crore; FY25 Nominal GDP = ₹326.4 lakh crore",
+            "% Change in Nominal GDP = (326.4 − 295) / 295 × 100 = 10.66%",
+            "Tax Buoyancy = 10.85 / 10.66 = 1.018"
+          ],
+          "result": "Tax buoyancy of 1.018 (slightly above 1.0)",
+          "insight": "A buoyancy near 1.0 indicates healthy but not aggressive tax base growth. India has historically aimed for buoyancy above 1.0 through formalisation, GST integration, and digital tracking. Sustained buoyancy > 1.0 validates the government's capacity to sustain lower fiscal deficits."
+        },
+        "sensitivity_note": "Tax buoyancy is a direct measure of fiscal health and tax administration efficiency. Buoyancy below 0.9 for 2+ years signals fiscal stress (revenue not keeping pace with spending). Buoyancy above 1.2 sustained signals exceptional formalisation/digitisation gains. Track quarterly trends for early warning signals."
+      },
+      {
+        "name": "Government Borrowing Impact on Yields",
+        "formula": "Δ 10Y G-Sec Yield (bps) ≈ −1.5 × (Δ Net Borrowing / Demand) + Term Premium Adjustment",
+        "variables": [
+          {
+            "symbol": "Δ Net Borrowing",
+            "meaning": "Change in net market borrowing vs prior year (in ₹ lakh crore)"
+          },
+          {
+            "symbol": "Demand",
+            "meaning": "Captive demand from banks (SLR), insurance (regulatory holdings), pension funds. Roughly ₹15–18 lakh crore annually in absorptive capacity"
+          },
+          {
+            "symbol": "Term Premium Adjustment",
+            "meaning": "Compensation for inflation and policy uncertainty; typically 50–150 bps"
+          },
+          {
+            "symbol": "10Y G-Sec Yield Change",
+            "meaning": "Change in 10-year government security yield measured in basis points"
+          }
+        ],
+        "plain_english": "Government borrowing directly influences bond yields. When the government borrows more, it must offer higher yields to attract buyers. However, India has 'captive' institutional buyers (banks needing SLR holdings, insurers with regulatory quotas) who absorb a portion quasi-automatically. This limits yield spikes. The formula estimates how much yield moves based on borrowing relative to this absorptive capacity.",
+        "computation": [
+          "Calculate the ratio: Net Borrowing Increase / Annual Absorptive Demand",
+          "Multiply by −1.5 (negative because higher borrowing increases yields)",
+          "Add term premium adjustment based on inflation outlook and policy uncertainty",
+          "Result is the expected yield shift in basis points"
+        ],
+        "worked_example": {
+          "problem": "Assess the yield impact from FY25 borrowing announced in the budget.",
+          "steps": [
+            "FY25 Net Borrowing = ₹11.63 lakh crore",
+            "FY24 RE Net Borrowing = ₹11.05 lakh crore",
+            "YoY Increase = ₹0.58 lakh crore (modest)",
+            "Annual Absorptive Demand = ~₹16 lakh crore",
+            "Absorption ratio = 11.63 / 16 × 100 = 73% (well within capacity)",
+            "Δ Net Borrowing / Demand = 0.58 / 16 = 0.036 = 3.6%",
+            "Expected yield impact = −1.5 × 3.6% ≈ −5 bps (yields actually decline due to lower borrowing surprise)"
+          ],
+          "result": "Minimal yield pressure; potential 5–10 bps yield rally due to lower-than-expected borrowing",
+          "insight": "FY24 Budget reaction: Markets rallied because borrowing came in lower than consensus fears, a positive surprise. Always focus on surprise vs expectations, not absolute borrowing levels. At 73% absorption, plenty of room remains for higher borrowing without stress."
+        },
+        "sensitivity_note": "Markets react to surprise vs expectations, not absolute levels. If borrowing is announced ₹50,000 crore higher than economist consensus, yields can spike 10–20 bps even if absolute borrowing is modest. Track the surprise component. Also, RBI's policy stance and global yields heavily influence term premium—a rising US 10Y pushes India 10Y yields up 20–50 bps regardless of domestic borrowing."
+      },
+      {
+        "name": "Sector EPS Impact from Specific Capex Allocation",
+        "formula": "Sector EPS Uplift = (Allocated Capex × Capture Rate) / Sector Aggregate PAT × Sector Margin × Asset Turnover",
+        "variables": [
+          {
+            "symbol": "Allocated Capex",
+            "meaning": "Government's capital allocation to a specific sector (in ₹)"
+          },
+          {
+            "symbol": "Capture Rate",
+            "meaning": "% of capex flowing to listed companies (vs unlisted, PSUs, imports)"
+          },
+          {
+            "symbol": "Sector Aggregate PAT",
+            "meaning": "Combined net profit of listed companies in the sector (in ₹)"
+          },
+          {
+            "symbol": "Sector Margin",
+            "meaning": "Net profit margin (%) of listed companies in the sector"
+          },
+          {
+            "symbol": "Asset Turnover",
+            "meaning": "Revenue / Assets ratio for the sector"
+          }
+        ],
+        "plain_english": "This formula translates government capex allocation into earnings uplift for listed companies in a beneficiary sector. Not all capex flows to listed firms—some goes to PSUs, unlisted contractors, or imports. The 'capture rate' isolates what flows to the firms you can invest in. Divide that by current sector profit and apply the margin to estimate EPS growth. This is how equity analysts size the earnings beat from government spending announcements.",
+        "computation": [
+          "Determine government capex allocation to the target sector",
+          "Estimate capture rate (% flowing to listed companies). Check sector composition: PSU-heavy sectors have low capture (20–30%); private-heavy sectors have high capture (40–60%)",
+          "Calculate incremental revenue: Allocated Capex × Capture Rate",
+          "Calculate incremental PAT: Incremental Revenue × Sector Net Margin",
+          "Divide incremental PAT by current sector Aggregate PAT to get % uplift",
+          "Adjust downward for execution lags and working capital drag (typically 25–35% reduction from theoretical)"
+        ],
+        "worked_example": {
+          "problem": "Estimate EPS uplift for listed railway capex companies from FY25 budget allocation.",
+          "steps": [
+            "Railway Capex Allocation (FY25 Budget) = ₹2.55 lakh crore",
+            "Capture Rate for listed companies (RVNL, IRCON, KEC) = 25% (railways are PSU-heavy)",
+            "Capex flowing to listed firms = ₹2.55 × 25% = ₹63,750 crore",
+            "Sector Aggregate Revenue (listed railway companies) = ₹85,000 crore",
+            "Sector Net Margin = 8%",
+            "Incremental Revenue = ₹63,750 crore",
+            "Incremental Net Profit = ₹63,750 × 8% = ₹5,100 crore",
+            "Current Sector Aggregate PAT (listed) = ₹6,500 crore",
+            "Theoretical PAT Uplift = 5,100 / 6,500 = 78% over 2–3 years",
+            "Realistic adjustment (execution lags, phasing) = 78% × 35% = 27% sector PAT uplift"
+          ],
+          "result": "25–35% sector PAT uplift realistically expected over 2–3 years",
+          "insight": "This explains why railway stocks (RVNL, IRCON) re-rated 5–10x in 2023–24. Budget capex announcements in high-multiplier sectors drive outsized earnings revisions. RVNL's FY24–FY26 order book more than doubled from capex allocations, justifying price targets of ₹750–900 per share."
+        },
+        "sensitivity_note": "Capture rates are critical and often overestimated by bullish analysts. PSU-heavy sectors (railways, defence, power plants) have low capture rates because most spending stays internal or flows to smaller unlisted players. Private-heavy sectors (capital goods like L&T, energy transition) have higher capture. Always verify capture rate by segment before sizing the EPS trade. Execution risk is also high—capex announced != capex executed. Use a 2–3 year phasing ramp and haircut budgeted amounts by 10–15% for delays."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + 4 → format as currency",
+        "Cmd + Option + V → paste special (for transposing budget tables)",
+        "Cmd + R → fill right (for monthly fiscal tracking)",
+        "Cmd + ; → insert today's date"
+      ],
+      "windows": [
+        "Ctrl + Shift + 4 → format as currency (rupees)",
+        "Alt + N + V → insert pivot table for sector-wise budget analysis",
+        "F4 → repeat last action (great for sector sensitivity tables)",
+        "Ctrl + ; → insert today's date for budget tracking notes"
+      ]
+    }
+  }
+}

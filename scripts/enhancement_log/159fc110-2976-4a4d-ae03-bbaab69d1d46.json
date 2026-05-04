@@ -1,0 +1,212 @@
+{
+  "id": "159fc110-2976-4a4d-ae03-bbaab69d1d46",
+  "label": "M3 S2 | The F4 Toggle & Reference Behaviour",
+  "before": {
+    "body": "You do not need to manually type $ signs. Click on a cell reference inside a formula and press F4 to cycle through all four referencing modes.",
+    "f4_cycle": [
+      {
+        "row": "Locked",
+        "press": "1st press",
+        "column": "Locked",
+        "result": "$A$1 (Absolute)"
+      },
+      {
+        "row": "Locked",
+        "press": "2nd press",
+        "column": "Free",
+        "result": "A$1 (Mixed — row locked)"
+      },
+      {
+        "row": "Free",
+        "press": "3rd press",
+        "column": "Locked",
+        "result": "$A1 (Mixed — column locked)"
+      },
+      {
+        "row": "Free",
+        "press": "4th press",
+        "column": "Free",
+        "result": "A1 (Relative)"
+      }
+    ],
+    "mac_note": "On Mac, F4 may require pressing Fn + F4 if your function keys are mapped to system controls. Alternatively, use ⌘ + T in some Excel for Mac versions.",
+    "shortcuts": [
+      {
+        "mac": "Fn + F4 or ⌘ + T",
+        "action": "Toggle reference type (F4 cycle)",
+        "windows": "F4"
+      },
+      {
+        "mac": "⌘ + Enter",
+        "action": "Enter formula and stay in cell",
+        "windows": "Ctrl + Enter"
+      },
+      {
+        "mac": "⌘ + D",
+        "action": "Copy formula down (fill down)",
+        "windows": "Ctrl + D"
+      },
+      {
+        "mac": "⌘ + R",
+        "action": "Copy formula right (fill right)",
+        "windows": "Ctrl + R"
+      },
+      {
+        "mac": "Ctrl + `",
+        "action": "Show all formulas on sheet",
+        "windows": "Ctrl + ` (grave accent)"
+      },
+      {
+        "mac": "⌘ + Shift + V",
+        "action": "Paste Special (Values only)",
+        "windows": "Ctrl + Shift + V"
+      }
+    ],
+    "worked_example": {
+      "setup": "Cell B1 contains Reliance Industries' FY24 revenue: ₹2,59,000 Cr. Cell C1 contains the growth assumption: 12%. Project revenue for FY25–FY28 in cells B2 through B5.",
+      "formula": "=B1*(1+$C$1)",
+      "results": [
+        {
+          "cell": "B2",
+          "value": "2,90,080",
+          "formula": "=B1*(1+$C$1)",
+          "explanation": "B1 is relative (points to row above), $C$1 is locked"
+        },
+        {
+          "cell": "B3",
+          "value": "3,24,890",
+          "formula": "=B2*(1+$C$1)",
+          "explanation": "B2 is relative (now points to B2), $C$1 still locked"
+        },
+        {
+          "cell": "B4",
+          "value": "3,63,876",
+          "formula": "=B3*(1+$C$1)",
+          "explanation": "B3 is relative, $C$1 still locked"
+        },
+        {
+          "cell": "B5",
+          "value": "4,07,541",
+          "formula": "=B4*(1+$C$1)",
+          "explanation": "B4 is relative, $C$1 still locked"
+        }
+      ],
+      "sensitivity_warning": "If you had used a relative reference (C1 without $ signs) and copied the formula down, B3 would reference C2 (which is empty or wrong), B4 would reference C3, and so on. The model silently breaks — no error message, just wrong numbers."
+    }
+  },
+  "after": {
+    "body": "You do not need to manually type $ signs. Click on a cell reference inside a formula and press F4 to cycle through all four referencing modes.",
+    "f4_cycle": [
+      {
+        "row": "Locked",
+        "press": "1st press",
+        "column": "Locked",
+        "result": "$A$1 (Absolute)",
+        "plain_english": "Both row and column are fixed. When you copy this formula anywhere on the sheet, the reference always points to cell A1. Use this when a cell contains a constant (like a tax rate or exchange rate) that should never change during copying."
+      },
+      {
+        "row": "Locked",
+        "press": "2nd press",
+        "column": "Free",
+        "result": "A$1 (Mixed — row locked)",
+        "plain_english": "The row stays fixed at 1, but the column adjusts when copied left or right. Row always points to row 1, but the column letter changes. Useful when copying a formula horizontally across a single data row that contains reference values."
+      },
+      {
+        "row": "Free",
+        "press": "3rd press",
+        "column": "Locked",
+        "result": "$A1 (Mixed — column locked)",
+        "plain_english": "The column stays fixed at A, but the row adjusts when copied up or down. Column always points to column A, but the row number changes. Useful when copying a formula vertically down a single reference column."
+      },
+      {
+        "row": "Free",
+        "press": "4th press",
+        "column": "Free",
+        "result": "A1 (Relative)",
+        "plain_english": "Both row and column shift as you copy. When copied down one row, A1 becomes A2; when copied right one column, A1 becomes B1. This is the default mode and is used for most calculations where you want the reference to move with the formula."
+      }
+    ],
+    "mac_note": "On Mac, F4 may require pressing Fn + F4 if your function keys are mapped to system controls. Alternatively, use ⌘ + T in some Excel for Mac versions.",
+    "shortcuts": [
+      {
+        "mac": "Fn + F4 or ⌘ + T",
+        "action": "Toggle reference type (F4 cycle)",
+        "windows": "F4"
+      },
+      {
+        "mac": "⌘ + Enter",
+        "action": "Enter formula and stay in cell",
+        "windows": "Ctrl + Enter"
+      },
+      {
+        "mac": "⌘ + D",
+        "action": "Copy formula down (fill down)",
+        "windows": "Ctrl + D"
+      },
+      {
+        "mac": "⌘ + R",
+        "action": "Copy formula right (fill right)",
+        "windows": "Ctrl + R"
+      },
+      {
+        "mac": "Ctrl + `",
+        "action": "Show all formulas on sheet",
+        "windows": "Ctrl + ` (grave accent)"
+      },
+      {
+        "mac": "⌘ + Shift + V",
+        "action": "Paste Special (Values only)",
+        "windows": "Ctrl + Shift + V"
+      }
+    ],
+    "worked_example": {
+      "setup": "Cell B1 contains Reliance Industries' FY24 revenue: ₹2,59,000 Cr. Cell C1 contains the growth assumption: 12%. Project revenue for FY25–FY28 in cells B2 through B5.",
+      "formula": "=B1*(1+$C$1)",
+      "variables": [
+        {
+          "symbol": "B1",
+          "meaning": "Prior year revenue (relative reference — updates as formula copies down)"
+        },
+        {
+          "symbol": "$C$1",
+          "meaning": "Growth rate assumption (absolute reference — always locks to C1)"
+        }
+      ],
+      "plain_english": "This formula takes the prior year's revenue and multiplies it by (1 + growth rate) to project the next year. The $ signs around C1 ensure the growth rate stays constant while B1 adjusts row-by-row as you copy down. Without the $ signs, the growth reference would shift to C2, C3, and so on—silently breaking your model.",
+      "computation": [
+        "Step 1: Identify the reference that should never change (C1, the growth rate) and lock it with $ signs: $C$1",
+        "Step 2: Leave the data reference (B1) relative so it adjusts automatically when copied down to B2, B3, etc.",
+        "Step 3: Enter =B1*(1+$C$1) in cell B2 and press Ctrl+Enter (or ⌘+Enter on Mac)",
+        "Step 4: Select B2, then press Ctrl+D (or ⌘+D on Mac) to fill down through B5; the relative reference updates, the absolute reference stays locked"
+      ],
+      "results": [
+        {
+          "cell": "B2",
+          "value": "2,90,080",
+          "formula": "=B1*(1+$C$1)",
+          "explanation": "B1 is relative (points to row above), $C$1 is locked"
+        },
+        {
+          "cell": "B3",
+          "value": "3,24,890",
+          "formula": "=B2*(1+$C$1)",
+          "explanation": "B2 is relative (now points to B2), $C$1 still locked"
+        },
+        {
+          "cell": "B4",
+          "value": "3,63,876",
+          "formula": "=B3*(1+$C$1)",
+          "explanation": "B3 is relative, $C$1 still locked"
+        },
+        {
+          "cell": "B5",
+          "value": "4,07,541",
+          "formula": "=B4*(1+$C$1)",
+          "explanation": "B4 is relative, $C$1 still locked"
+        }
+      ],
+      "sensitivity_warning": "If you had used a relative reference (C1 without $ signs) and copied the formula down, B3 would reference C2 (which is empty or wrong), B4 would reference C3, and so on. The model silently breaks — no error message, just wrong numbers.",
+      "insight": "The F4 toggle saves you from the most common copy-paste error in financial models: forgetting to lock a constant reference. In India equity research, models often reference a single tax rate, inflation assumption, or exchange rate across hundreds of rows. F4 ensures those locks are in place without manual typing of $ signs."
+    }
+  }
+}

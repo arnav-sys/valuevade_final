@@ -1,0 +1,258 @@
+{
+  "id": "3c2365fe-0b2b-479f-9ab0-8f71e4ff4dd6",
+  "label": "M12 S10 | The Comps Math — From Peer Multiples to Target Price",
+  "before": {
+    "formulas": [
+      {
+        "name": "Implied Enterprise Value from EV/EBITDA",
+        "formula": "Implied EV = Subject Company FY EBITDA × Peer Group Median EV/EBITDA Multiple",
+        "variables": [
+          {
+            "symbol": "Subject Company FY EBITDA",
+            "meaning": "Forward 12-month EBITDA forecast for the company being valued (typically next fiscal year)"
+          },
+          {
+            "symbol": "Peer Group Median EV/EBITDA",
+            "meaning": "Median (or average) forward EV/EBITDA multiple across the chosen peer set"
+          }
+        ],
+        "worked_example": "For Asian Paints: FY27 forecasted EBITDA = ₹8,200 cr (from Session 6 forecast). Indian decorative paints peers (Berger Paints, Kansai Nerolac, Akzo Nobel India) trade at median 28x forward EV/EBITDA. Global mature decorative paints peers (Sherwin-Williams, AkzoNobel parent) trade at median 18x. If I use Indian peers: Implied EV = 8,200 × 28 = ₹2,29,600 cr. If I use global mature peers: Implied EV = 8,200 × 18 = ₹1,47,600 cr. The 50% gap reflects the entire structural question — should Asian Paints trade closer to other Indian premium franchises (high multiple) or to its eventual mature-state peers (lower multiple)?",
+        "sensitivity_note": "The median multiple choice is highly consequential. A 20x vs 28x peer median produces 40% difference in implied EV. This is why selecting the peer set, choosing median vs. average vs. trimmed mean, and deciding between trailing and forward multiples are themselves analytical decisions worth documenting."
+      },
+      {
+        "name": "Bridge from Implied EV to Target Price",
+        "formula": "Target Price = (Implied EV - Net Debt - Minority Interest + Investments) / Fully Diluted Shares",
+        "variables": [
+          {
+            "symbol": "Implied EV",
+            "meaning": "From multiple application above"
+          },
+          {
+            "symbol": "Bridge Adjustments",
+            "meaning": "Same as Session 8 — net debt, minority interest at fair value, non-operating assets at fair value"
+          },
+          {
+            "symbol": "Fully Diluted Shares",
+            "meaning": "Treasury Stock Method, same as Session 8"
+          }
+        ],
+        "worked_example": "For Asian Paints using global mature peer multiple of 18x: Implied EV = ₹1,47,600 cr. Bridge from Session 8: Net Debt -₹125 cr (cash-rich), Minority -₹750 cr fair value, Investments +₹420 cr. Equity Value = 1,47,600 + 125 - 750 + 420 = ₹1,47,395 cr. Fully Diluted Shares = 95.92 cr. Target Price = 1,47,395 / 95.92 = ₹1,537 per share. Compare to DCF base case of ₹1,382 — comps using global mature peers gives slightly higher value, reflecting the market's anchor multiple. Both well below current market price of ₹2,920.",
+        "sensitivity_note": "The bridge math is identical to Session 8 — the comps method just produces a different EV input. Same disciplines apply: operating cash vs total cash, fair value for minorities, treasury method for shares."
+      },
+      {
+        "name": "P/E-Based Implied Equity Value",
+        "formula": "Implied Equity Value = Subject Company FY Net Income × Peer Group Median Forward P/E",
+        "variables": [
+          {
+            "symbol": "Subject Company FY Net Income",
+            "meaning": "Forward 12-month net income forecast"
+          },
+          {
+            "symbol": "Peer Group Median Forward P/E",
+            "meaning": "Median of peer forward P/E multiples"
+          }
+        ],
+        "worked_example": "For Asian Paints: FY27 forecasted Net Income ≈ ₹5,500 cr. Indian peers trade at median 35x forward P/E (paint sector trades richer than broader market). Global mature peers (e.g., Sherwin-Williams) at 22x. Using global peer median: Implied Equity Value = 5,500 × 22 = ₹1,21,000 cr. Per share = 1,21,000 / 95.92 = ₹1,261. Using Indian peer median: 5,500 × 35 = ₹1,92,500 cr → ₹2,007 per share. Notice how the choice of peer set drives a ₹750 per share gap. Both well below current market price.",
+        "sensitivity_note": "P/E-based valuations bypass the EV-to-Equity bridge because they directly produce equity value. This makes them faster but more sensitive to capital structure differences across peers. For peers with very different leverage, EV/EBITDA is more comparable; P/E can mislead."
+      },
+      {
+        "name": "Comps-Implied Multiple Cross-Check",
+        "formula": "Implied Multiple from DCF = DCF Equity Value / Subject Company Metric",
+        "variables": [
+          {
+            "symbol": "DCF Equity Value",
+            "meaning": "Output from DCF (Sessions 4-9)"
+          },
+          {
+            "symbol": "Subject Company Metric",
+            "meaning": "Same metric used in peer multiple comparison (forward EBITDA, net income, etc.)"
+          }
+        ],
+        "worked_example": "For Asian Paints: DCF base case Equity Value = ₹1,32,545 cr (from Session 8 base). FY27 EBITDA = ₹8,200 cr. Implied EV/EBITDA from DCF = (1,32,545 + 125 + 750 - 420) / 8,200 = 1,33,000 / 8,200 = ~16.2x. Compare to Indian peers at 28x and global peers at 18x. The DCF implies a multiple meaningfully BELOW even the most conservative peer benchmark. Either the DCF is too conservative, or peers themselves are mispriced.",
+        "sensitivity_note": "The implied multiple from DCF is the same diagnostic we used in Session 7 for terminal value — it tells us what multiple our DCF assumptions imply. Cross-checking against peer-trading multiples reveals when DCF and market disagree, which is where the analytical conversation begins."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=MEDIAN(range)",
+        "=TRIMMEAN(range, 0.2)",
+        "Cmd + Shift + T — insert table",
+        "=PERCENTILE.INC(range, 0.25)"
+      ],
+      "windows": [
+        "=MEDIAN(range) — clean median of peer multiples, less sensitive to outliers than AVERAGE",
+        "=TRIMMEAN(range, 0.2) — trimmed mean removing top and bottom 10% of peer set",
+        "Alt + N + V + T — insert pivot table for organising peer data by sector/geography",
+        "Ctrl + T — convert peer list to Excel Table for sortable comparable analysis",
+        "=PERCENTILE.INC(range, 0.25) — first quartile of peer multiples for sensitivity bounds"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Implied Enterprise Value from EV/EBITDA",
+        "formula": "Implied EV = Subject Company FY EBITDA × Peer Group Median EV/EBITDA Multiple",
+        "variables": [
+          {
+            "symbol": "Subject Company FY EBITDA",
+            "meaning": "Forward 12-month EBITDA forecast for the company being valued (typically next fiscal year)"
+          },
+          {
+            "symbol": "Peer Group Median EV/EBITDA",
+            "meaning": "Median (or average) forward EV/EBITDA multiple across the chosen peer set"
+          }
+        ],
+        "plain_english": "This formula applies the market's consensus valuation multiple—how much investors pay per rupee of EBITDA—to your company's forecasted earnings. It anchors valuation to what comparable peers command in the market today. The resulting enterprise value is what you'd expect investors to pay for the entire business (debt + equity), before adjusting for balance-sheet items.",
+        "worked_example": {
+          "problem": "You are valuing Asian Paints for FY27. The company's forecasted EBITDA is ₹8,200 cr. Indian decorative paints peers (Berger Paints, Kansai Nerolac, Akzo Nobel India) trade at a median 28x forward EV/EBITDA. Global mature decorative paints peers (Sherwin-Williams, AkzoNobel parent) trade at 18x. What is the implied enterprise value using each peer set?",
+          "steps": [
+            "Identify subject company FY27 EBITDA: ₹8,200 cr",
+            "Identify Indian peer median EV/EBITDA multiple: 28x",
+            "Calculate implied EV (Indian peers): 8,200 × 28 = ₹2,29,600 cr",
+            "Identify global peer median EV/EBITDA multiple: 18x",
+            "Calculate implied EV (global peers): 8,200 × 18 = ₹1,47,600 cr",
+            "Compare: global peer scenario yields 36% lower valuation, reflecting maturity and margin profile differences"
+          ],
+          "result": "Indian peer scenario: ₹2,29,600 cr; Global peer scenario: ₹1,47,600 cr",
+          "insight": "The 50% gap between scenarios highlights that peer selection is not mechanical—it embeds a structural judgment about whether Asian Paints should be valued as a high-growth Indian franchise or as a mature global business. Documenting this choice is as important as the arithmetic."
+        },
+        "sensitivity_note": "The median multiple choice is highly consequential. A 20x vs 28x peer median produces 40% difference in implied EV. This is why selecting the peer set, choosing median vs. average vs. trimmed mean, and deciding between trailing and forward multiples are themselves analytical decisions worth documenting."
+      },
+      {
+        "name": "Bridge from Implied EV to Target Price",
+        "formula": "Target Price = (Implied EV - Net Debt - Minority Interest + Investments) / Fully Diluted Shares",
+        "variables": [
+          {
+            "symbol": "Implied EV",
+            "meaning": "Enterprise value from multiple application (e.g., EV/EBITDA or EV/Revenue)"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total financial debt minus cash and equivalents; subtract if company is indebted, add if net cash position"
+          },
+          {
+            "symbol": "Minority Interest",
+            "meaning": "Fair value of non-controlling interests in consolidated subsidiaries; subtract to isolate parent equity"
+          },
+          {
+            "symbol": "Investments",
+            "meaning": "Fair value of non-operating investments and associates; add to move from operating EV to total equity value"
+          },
+          {
+            "symbol": "Fully Diluted Shares",
+            "meaning": "Shares outstanding plus treasury stock method dilution from in-the-money options and RSUs"
+          }
+        ],
+        "plain_english": "Once you have implied enterprise value from peer multiples, you must bridge it to equity value by adjusting for financial position (debt, cash, minorities, non-operating assets). Then divide by fully diluted shares to arrive at per-share target price. This is identical to the Session 8 DCF bridge—the only difference is that comps gives you EV, whereas DCF derives it from free cash flow.",
+        "worked_example": {
+          "problem": "Using the global peer multiple scenario (Implied EV = ₹1,47,600 cr), bridge to target price for Asian Paints. From balance sheet: Net Cash ₹125 cr, Minority Interest ₹750 cr, Investments ₹420 cr. Fully Diluted Shares = 95.92 cr. What is the target price?",
+          "steps": [
+            "Start with Implied EV: ₹1,47,600 cr",
+            "Add back Net Cash (company is cash-rich): +₹125 cr",
+            "Subtract Minority Interest (non-controlling stakes): −₹750 cr",
+            "Add Investments (non-operating assets at fair value): +₹420 cr",
+            "Calculate Equity Value: 1,47,600 + 125 − 750 + 420 = ₹1,47,395 cr",
+            "Divide by Fully Diluted Shares: 1,47,395 / 95.92 = ₹1,537 per share"
+          ],
+          "result": "Target Price = ₹1,537 per share",
+          "insight": "The global peer multiple scenario (18x) yields ₹1,537—between the DCF base case (₹1,382) and current market price (₹2,920). This narrows the valuation range and flags that either the market is pricing in material upside not in base-case assumptions, or the stock is overvalued relative to peer comparables."
+        },
+        "sensitivity_note": "The bridge math is identical to Session 8—the comps method just produces a different EV input. Same disciplines apply: operating cash vs total cash, fair value for minorities, treasury method for shares."
+      },
+      {
+        "name": "P/E-Based Implied Equity Value",
+        "formula": "Implied Equity Value = Subject Company FY Net Income × Peer Group Median Forward P/E",
+        "variables": [
+          {
+            "symbol": "Subject Company FY Net Income",
+            "meaning": "Forward 12-month net income forecast (net profit attributable to parent)"
+          },
+          {
+            "symbol": "Peer Group Median Forward P/E",
+            "meaning": "Median price-to-earnings multiple of peer set, calculated on forward earnings"
+          }
+        ],
+        "plain_english": "Price-to-earnings is the simplest multiple—it directly values equity without the EV bridge. Apply the peer group's median forward P/E to your company's forecast net income to arrive at equity value immediately. This is faster than EV/EBITDA but more sensitive to differences in leverage, tax rates, and capital structure across peers.",
+        "computation": [
+          "Gather peer forward P/E multiples: current share price ÷ forward 12-month EPS",
+          "Calculate median across peer set (or mean, trimmed mean as alternative)",
+          "Multiply subject company's forward net income by peer median P/E",
+          "Result is implied equity value—no bridge required"
+        ],
+        "worked_example": {
+          "problem": "Value Asian Paints using P/E comparables. FY27 forecasted Net Income ≈ ₹5,500 cr. Indian decorative paints peers (Berger, Nerolac) trade at median 35x forward P/E. Global mature peers (Sherwin-Williams) trade at 22x forward P/E. Calculate implied equity value and per-share price using both benchmarks.",
+          "steps": [
+            "Identify subject company FY27 Net Income: ₹5,500 cr",
+            "Identify Indian peer median forward P/E: 35x",
+            "Calculate implied equity value (Indian peers): 5,500 × 35 = ₹1,92,500 cr",
+            "Convert to per-share: 1,92,500 / 95.92 = ₹2,007 per share",
+            "Identify global peer median forward P/E: 22x",
+            "Calculate implied equity value (global peers): 5,500 × 22 = ₹1,21,000 cr",
+            "Convert to per-share: 1,21,000 / 95.92 = ₹1,261 per share"
+          ],
+          "result": "Indian peer scenario: ₹2,007 per share; Global peer scenario: ₹1,261 per share",
+          "insight": "The ₹750 per-share gap between Indian and global scenarios is even wider in P/E than in EV/EBITDA, because Indian peers command both higher EV/EBITDA and higher P/E multiples. This reflects growth expectations embedded in earnings—Indian peers grow faster, justifying the premium. Both valuations remain well below the current market price of ₹2,920."
+        },
+        "sensitivity_note": "P/E-based valuations bypass the EV-to-Equity bridge because they directly produce equity value. This makes them faster but more sensitive to capital structure differences across peers. For peers with very different leverage, EV/EBITDA is more comparable; P/E can mislead."
+      },
+      {
+        "name": "Comps-Implied Multiple Cross-Check",
+        "formula": "Implied Multiple from DCF = DCF Equity Value / Subject Company Metric",
+        "variables": [
+          {
+            "symbol": "DCF Equity Value",
+            "meaning": "Total equity value output from discounted cash flow analysis (Sessions 4–9)"
+          },
+          {
+            "symbol": "Subject Company Metric",
+            "meaning": "Same forward metric used in peer comparison (EBITDA, net income, revenue, EBIT, etc.)"
+          },
+          {
+            "symbol": "Implied Multiple",
+            "meaning": "The multiple that the DCF model's equity value implies when divided by the company's metric"
+          }
+        ],
+        "plain_english": "To sanity-check your DCF, reverse-engineer what multiple it implies by dividing DCF equity value by the company's forecast EBITDA (or other metric). Compare this implied multiple to what peers are actually trading at. If your DCF implies a 16x multiple but peers trade at 25x, the gap signals whether your DCF is too conservative or peers are too expensive—starting point for deeper analysis.",
+        "computation": [
+          "Take DCF equity value from base case (Sessions 8–9)",
+          "Add back net debt and adjustments to arrive at implied enterprise value if working from EV/EBITDA",
+          "Divide implied EV by forecast EBITDA (or divide equity value by forecast net income for P/E)",
+          "Result is the multiple implied by your DCF assumptions",
+          "Compare to peer multiples to assess reasonableness"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints DCF base case (Session 8) produced Equity Value ₹1,32,545 cr. FY27 forecasted EBITDA is ₹8,200 cr. What multiple does the DCF imply? Compare to peer multiples (Indian 28x, Global 18x) to assess if the DCF is conservative or aggressive.",
+          "steps": [
+            "Start with DCF Equity Value: ₹1,32,545 cr",
+            "Add back Net Cash: +₹125 cr",
+            "Add back Minority Interest: +₹750 cr",
+            "Subtract Investments: −₹420 cr",
+            "Calculate Implied Enterprise Value: 1,32,545 + 125 + 750 − 420 = ₹1,33,000 cr",
+            "Divide by FY27 EBITDA: 1,33,000 / 8,200 = 16.2x",
+            "Compare: DCF implies 16.2x vs. Indian peers 28x vs. Global peers 18x",
+            "Gap analysis: DCF is 43% below global peers, 42% below Indian peers"
+          ],
+          "result": "DCF Implied EV/EBITDA = 16.2x",
+          "insight": "The DCF implies a multiple below even the most conservative peer benchmark (global 18x). This signals that either: (1) the DCF is too conservative on WACC, terminal growth, or margins; (2) peers themselves are overvalued; or (3) Asian Paints has specific moat/growth advantages justifying a premium. This gap is where the analyst's judgment begins—revisiting assumptions, confidence in margins, or market dynamics."
+        },
+        "sensitivity_note": "The implied multiple from DCF is the same diagnostic used in Session 7 for terminal value—it tells you what multiple your DCF assumptions imply. Cross-checking against peer-trading multiples reveals when DCF and market disagree, which is where the analytical conversation begins."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=MEDIAN(range)",
+        "=TRIMMEAN(range, 0.2)",
+        "Cmd + Shift + T — insert table",
+        "=PERCENTILE.INC(range, 0.25)"
+      ],
+      "windows": [
+        "=MEDIAN(range) — clean median of peer multiples, less sensitive to outliers than AVERAGE",
+        "=TRIMMEAN(range, 0.2) — trimmed mean removing top and bottom 10% of peer set",
+        "Alt + N + V + T — insert pivot table for organising peer data by sector/geography",
+        "Ctrl + T — convert peer list to Excel Table for sortable comparable analysis",
+        "=PERCENTILE.INC(range, 0.25) — first quartile of peer multiples for sensitivity bounds"
+      ]
+    }
+  }
+}

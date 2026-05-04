@@ -1,0 +1,175 @@
+{
+  "id": "9b51580a-cbc1-4761-8d66-cd90687a82a6",
+  "label": "M7 S1 | The Core FSA Ratios — The Seven You Will Actually Use",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net Profit Margin",
+        "formula": "Net Profit Margin = Profit After Tax / Revenue from Operations",
+        "variables": [
+          {
+            "symbol": "PAT",
+            "meaning": "Profit After Tax (bottom line of the P&L after minority interest adjustment)"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Revenue from Operations (top line, excluding Other Income)"
+          }
+        ],
+        "worked_example": "TCS FY24: Revenue from Operations = ₹2,40,893 crore. PAT = ₹46,099 crore. Net Profit Margin = 46,099 / 2,40,893 = 19.1%. For context, Infosys reported 16.8% and Wipro 11.2% in the same year — a 230 bps edge that compounds to massive value over a decade.",
+        "sensitivity_note": "A 100 bps margin change on TCS's revenue base translates to ~₹2,400 crore of PAT — roughly the entire annual profit of a mid-cap IT services firm. That is operating leverage at industrial scale."
+      },
+      {
+        "name": "Return on Capital Employed (ROCE)",
+        "formula": "ROCE = EBIT / Capital Employed, where Capital Employed = Total Assets - Current Liabilities (or equivalently, Equity + Debt)",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax — the operating profit the business generates from its deployed capital, before financing decisions"
+          },
+          {
+            "symbol": "Capital Employed",
+            "meaning": "The total long-term capital funding the business — equity plus interest-bearing debt"
+          }
+        ],
+        "worked_example": "Asian Paints FY24: EBIT = ₹6,330 crore. Capital Employed = Equity (₹17,400 cr) + Total Debt (₹550 cr) = ₹17,950 crore. ROCE = 6,330 / 17,950 = 35.3%. Compare with cement major UltraTech at ~14% in the same year — that ~21 percentage point spread is the entire reason Asian Paints trades at 50x earnings while UltraTech trades at 25x.",
+        "sensitivity_note": "ROCE is the analyst's most honest profitability metric because it strips out capital structure. A highly levered business cannot hide behind leverage — ROCE measures the raw earning power of the deployed rupee."
+      },
+      {
+        "name": "Cash Conversion Ratio",
+        "formula": "Cash Conversion Ratio = Cash Flow from Operations / EBITDA",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations from the cash flow statement"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, and Amortisation"
+          }
+        ],
+        "worked_example": "Nestlé India FY23: CFO = ₹3,180 crore. EBITDA = ₹3,650 crore. Cash Conversion = 87%. A healthy FMCG should clock 85%+ consistently. If this drops below 70% for two consecutive years, receivables or inventory is bloating and earnings quality is deteriorating.",
+        "sensitivity_note": "This ratio is the single fastest earnings quality red-flag detector. If CFO is chronically below 70% of EBITDA, the reported profit is not fully real — something is being accrued that is not turning into cash."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+V → Paste Special dialog",
+        "Cmd+Shift+$ → Apply currency format",
+        "Ctrl+U → Edit active cell",
+        "Cmd+[ → Trace precedents"
+      ],
+      "windows": [
+        "Alt+E+S+V → Paste Values Only (strip formulas when comparing companies)",
+        "Ctrl+Shift+$ → Apply currency format with thousands separator",
+        "F2 → Edit active cell to trace formula logic",
+        "Ctrl+[ → Jump to cells that a formula depends on (trace precedents)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net Profit Margin",
+        "formula": "Net Profit Margin = Profit After Tax / Revenue from Operations",
+        "variables": [
+          {
+            "symbol": "PAT",
+            "meaning": "Profit After Tax (bottom line of the P&L after minority interest adjustment)"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Revenue from Operations (top line, excluding Other Income)"
+          }
+        ],
+        "plain_english": "Net Profit Margin tells you what percentage of every rupee of revenue the company keeps as profit after all costs, taxes, and interest. It is the ultimate measure of operational and financial efficiency — a higher margin means the business model is stronger and more defensible, especially when sustained across multiple years.",
+        "worked_example": {
+          "problem": "TCS reported Revenue from Operations of ₹2,40,893 crore and PAT of ₹46,099 crore in FY24. Calculate its Net Profit Margin and compare with peers.",
+          "steps": [
+            "Net Profit Margin = 46,099 / 2,40,893",
+            "= 0.1912 or 19.1%",
+            "Compare: Infosys 16.8%, Wipro 11.2% in the same year"
+          ],
+          "result": "19.1%",
+          "insight": "TCS's 230 bps margin edge over Infosys compounds to roughly ₹5,500 crore of incremental annual profit on similar revenue — the entire market cap of a quality mid-cap. This is why margin consistency is a cornerstone of valuation."
+        },
+        "sensitivity_note": "A 100 bps margin change on TCS's revenue base translates to ~₹2,400 crore of PAT — roughly the entire annual profit of a mid-cap IT services firm. That is operating leverage at industrial scale."
+      },
+      {
+        "name": "Return on Capital Employed (ROCE)",
+        "formula": "ROCE = EBIT / Capital Employed, where Capital Employed = Total Assets - Current Liabilities (or equivalently, Equity + Debt)",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax — the operating profit the business generates from its deployed capital, before financing decisions"
+          },
+          {
+            "symbol": "Capital Employed",
+            "meaning": "The total long-term capital funding the business — equity plus interest-bearing debt"
+          }
+        ],
+        "plain_english": "ROCE measures how efficiently the company converts each rupee of long-term capital (equity and debt) into operating profit. Unlike margin ratios, ROCE strips out capital structure and financing choices, giving you the raw earning power of deployed capital — essential for comparing companies with different leverage profiles.",
+        "computation": [
+          "Step 1: Extract EBIT from the P&L (Profit Before Tax + Interest Expense)",
+          "Step 2: Calculate Capital Employed = Equity + Interest-Bearing Debt (exclude trade payables and current portion of debt if classifying by source)",
+          "Step 3: Divide EBIT by Capital Employed to get the return as a decimal; multiply by 100 for percentage"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints reported EBIT of ₹6,330 crore, Equity of ₹17,400 crore, and Total Debt of ₹550 crore in FY24. Calculate ROCE and interpret against UltraTech Cement (ROCE ~14%).",
+          "steps": [
+            "Capital Employed = 17,400 + 550 = ₹17,950 crore",
+            "ROCE = 6,330 / 17,950",
+            "= 0.3527 or 35.3%"
+          ],
+          "result": "35.3%",
+          "insight": "Asian Paints' ROCE of 35.3% versus UltraTech's ~14% (a 21 percentage point spread) explains the 50x vs. 25x earnings multiple gap. High ROCE signals durable competitive moat and pricing power; it justifies premium valuation because incremental capital deployed at such returns compounds wealth faster."
+        },
+        "sensitivity_note": "ROCE is the analyst's most honest profitability metric because it strips out capital structure. A highly levered business cannot hide behind leverage — ROCE measures the raw earning power of the deployed rupee."
+      },
+      {
+        "name": "Cash Conversion Ratio",
+        "formula": "Cash Conversion Ratio = Cash Flow from Operations / EBITDA",
+        "variables": [
+          {
+            "symbol": "CFO",
+            "meaning": "Cash Flow from Operations from the cash flow statement"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings Before Interest, Tax, Depreciation, and Amortisation"
+          }
+        ],
+        "plain_english": "Cash Conversion Ratio measures what fraction of reported EBITDA actually converts to cash from operations. A high ratio (80%+) means the reported profit is real and supported by cash; a falling ratio signals that earnings are being accrued (inflated receivables, inventory, or accruals) rather than converted to cash — a critical earnings quality red flag.",
+        "computation": [
+          "Step 1: Extract CFO from the cash flow statement (bottom line of operating activities)",
+          "Step 2: Extract or calculate EBITDA = EBIT + D&A (or Profit Before Tax + Interest + D&A + Tax if adjusting)",
+          "Step 3: Divide CFO by EBITDA; multiply by 100 for percentage. Healthy range is 75–100%"
+        ],
+        "worked_example": {
+          "problem": "Nestlé India reported CFO of ₹3,180 crore and EBITDA of ₹3,650 crore in FY23. Calculate the Cash Conversion Ratio and assess earnings quality.",
+          "steps": [
+            "Cash Conversion Ratio = 3,180 / 3,650",
+            "= 0.8712 or 87.1%"
+          ],
+          "result": "87.1%",
+          "insight": "At 87%, Nestlé converts nearly nine rupees of every ten rupees of EBITDA into cash — a hallmark of a healthy, consumer-facing business with strong pricing power and working capital management. If this ratio dropped below 70% for two consecutive years, it would signal deteriorating receivables collection, inventory bloat, or earnings manipulation."
+        },
+        "sensitivity_note": "This ratio is the single fastest earnings quality red-flag detector. If CFO is chronically below 70% of EBITDA, the reported profit is not fully real — something is being accrued that is not turning into cash."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+V → Paste Special dialog",
+        "Cmd+Shift+$ → Apply currency format",
+        "Ctrl+U → Edit active cell",
+        "Cmd+[ → Trace precedents"
+      ],
+      "windows": [
+        "Alt+E+S+V → Paste Values Only (strip formulas when comparing companies)",
+        "Ctrl+Shift+$ → Apply currency format with thousands separator",
+        "F2 → Edit active cell to trace formula logic",
+        "Ctrl+[ → Jump to cells that a formula depends on (trace precedents)"
+      ]
+    }
+  }
+}

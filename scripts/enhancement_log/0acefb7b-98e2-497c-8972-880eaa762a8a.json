@@ -1,0 +1,211 @@
+{
+  "id": "0acefb7b-98e2-497c-8972-880eaa762a8a",
+  "label": "M12 S7 | The Two Terminal Value Formulas Every Analyst Memorises",
+  "before": {
+    "formulas": [
+      {
+        "name": "Gordon Growth Terminal Value",
+        "formula": "TV (at end of Year n) = FCFF_(n+1) / (WACC - g)",
+        "variables": [
+          {
+            "symbol": "FCFF_(n+1)",
+            "meaning": "The free cash flow in the year AFTER the explicit forecast period. Computed as: Year n FCFF × (1 + g)"
+          },
+          {
+            "symbol": "WACC",
+            "meaning": "Weighted average cost of capital from Session 4. The discount rate appropriate for FCFF"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Perpetuity growth rate — the assumed constant growth of cash flows forever. Must be less than long-run nominal GDP growth"
+          }
+        ],
+        "worked_example": "For Asian Paints from the Session 6 forecast: Year 7 (FY33) FCFF = ₹9,200 cr. Assume terminal growth rate g = 5%, WACC = 11.65%. Year 8 FCFF = 9,200 × 1.05 = ₹9,660 cr. TV at end of FY33 = 9,660 / (0.1165 - 0.05) = 9,660 / 0.0665 = ₹1,45,263 cr. To bring this to today (Year 0), discount back 7 years at WACC: PV of TV = 1,45,263 / (1.1165)^7 = 1,45,263 / 2.1542 = ₹67,432 cr. This single number represents all of Asian Paints' cash flows from FY34 onwards in present value terms.",
+        "sensitivity_note": "Gordon Growth is mathematically explosive as g approaches WACC. With WACC = 11.65%: at g = 4%, multiplier is 13.2x; at g = 5%, it's 15.0x; at g = 6%, it's 17.7x; at g = 7%, it's 21.5x. Bumping g by 100bps can lift TV by 18-25%. This is why the perpetuity growth rate is the most-debated cell in any DCF — and why analysts always run sensitivity tables on it."
+      },
+      {
+        "name": "Implied Year n+1 FCFF (Step 1 of Gordon Growth)",
+        "formula": "FCFF_(n+1) = FCFF_n × (1 + g)",
+        "variables": [
+          {
+            "symbol": "FCFF_n",
+            "meaning": "Free cash flow in the final year of the explicit forecast period"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Perpetuity growth rate — same g used in the denominator"
+          }
+        ],
+        "worked_example": "If Asian Paints' FY33 (final explicit year) FCFF is ₹9,200 cr and you're assuming g = 5% perpetuity growth, then implied FY34 FCFF (which goes into the TV formula) = 9,200 × 1.05 = ₹9,660 cr. CRITICAL: this step assumes the company smoothly transitions from explicit growth to terminal-rate growth. If your year-7 explicit growth is still 8% but you're using 5% terminal, there's a discontinuity and the implied year 8 cash flow is artificially low.",
+        "sensitivity_note": "This is where the glide path discipline from Session 6 pays off. If your explicit forecast tapered cleanly to terminal-rate growth in year n, FCFF_(n+1) = FCFF_n × (1+g) is internally consistent. If year n still shows growth meaningfully above g, the step-down creates a jarring discontinuity that distorts terminal value."
+      },
+      {
+        "name": "Exit Multiple Terminal Value",
+        "formula": "TV (at end of Year n) = EBITDA_n × Exit Multiple (EV/EBITDA)",
+        "variables": [
+          {
+            "symbol": "EBITDA_n",
+            "meaning": "EBITDA in the final year of the explicit forecast period"
+          },
+          {
+            "symbol": "Exit Multiple",
+            "meaning": "A defensible forward EV/EBITDA multiple that represents what the business would trade at when fully mature"
+          }
+        ],
+        "worked_example": "For Asian Paints: FY33 EBITDA from Session 6 = ₹14,850 cr. A defensible terminal exit multiple is 18-22x EV/EBITDA, anchored on Asian Paints' historical trading range and global decorative paints peer multiples (Sherwin-Williams, AkzoNobel). Using 20x: TV at end of FY33 = 14,850 × 20 = ₹2,97,000 cr. PV of TV = 2,97,000 / (1.1165)^7 = ₹1,37,896 cr.",
+        "sensitivity_note": "Exit Multiple is sensitive to the multiple chosen. At Asian Paints FY33 EBITDA of ₹14,850 cr: 16x gives TV of ₹2,37,600 cr (PV ₹1,10,317 cr); 20x gives ₹2,97,000 cr (PV ₹1,37,896 cr); 24x gives ₹3,56,400 cr (PV ₹1,65,476 cr). The 8x range across reasonable multiples produces a 50% range in terminal value, which is why exit multiple selection itself requires triangulation across historical, peer, and steady-state benchmarks."
+      },
+      {
+        "name": "Implied Exit Multiple (Cross-Check on Gordon Growth)",
+        "formula": "Implied Exit Multiple = Gordon Growth TV / EBITDA_n",
+        "variables": [
+          {
+            "symbol": "Gordon Growth TV",
+            "meaning": "Terminal value computed via Gordon Growth"
+          },
+          {
+            "symbol": "EBITDA_n",
+            "meaning": "Final-year explicit-period EBITDA"
+          }
+        ],
+        "worked_example": "From above: Gordon Growth TV (at end of FY33) for Asian Paints = ₹1,45,263 cr. EBITDA in FY33 = ₹14,850 cr. Implied Exit Multiple = 1,45,263 / 14,850 = 9.78x. This is much LOWER than where Asian Paints currently trades (40x+ EV/EBITDA) or where global mature paints peers trade (18-22x). The implication: my Gordon Growth assumptions of 5% perpetuity growth at 11.65% WACC produce a terminal multiple far below what the market thinks Asian Paints is worth. Either my WACC is too high, my g is too low, or the market is materially overvaluing the stock — exactly the kind of question an analyst should investigate.",
+        "sensitivity_note": "Cross-checking implied exit multiples against historical and peer multiples is the single best way to sanity-check Gordon Growth assumptions. If implied multiple is meaningfully outside the 0.7x-1.3x range vs. peers, your assumptions are likely wrong somewhere."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=NPV(rate, value1, value2, ...)",
+        "Cmd + Shift + Enter — array formula entry",
+        "Cmd + Option + N — insert chart"
+      ],
+      "windows": [
+        "=NPV(rate, value1, value2, ...) — present value of irregular cash flows starting Year 1",
+        "= cell_ref / (WACC - g) — Gordon Growth formula in a single cell",
+        "Ctrl + Shift + Enter — array formula entry, useful for sensitivity tables",
+        "Alt + N + Q — insert a Recommended Chart for visualising TV vs explicit-period contribution"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Gordon Growth Terminal Value",
+        "formula": "TV (at end of Year n) = FCFF_(n+1) / (WACC - g)",
+        "variables": [
+          {
+            "symbol": "FCFF_(n+1)",
+            "meaning": "The free cash flow in the year AFTER the explicit forecast period. Computed as: Year n FCFF × (1 + g)"
+          },
+          {
+            "symbol": "WACC",
+            "meaning": "Weighted average cost of capital from Session 4. The discount rate appropriate for FCFF"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Perpetuity growth rate — the assumed constant growth of cash flows forever. Must be less than long-run nominal GDP growth"
+          }
+        ],
+        "plain_english": "Gordon Growth Terminal Value assumes your company enters a stable, perpetual growth phase from Year n+1 onwards, growing at a constant rate g forever. The formula capitalises Year n+1 free cash flow using the spread between your cost of capital (WACC) and terminal growth rate. This is the most widely used terminal value method because it forces you to explicitly choose a realistic perpetuity growth rate and is highly sensitive to small changes in that rate — making it intellectually honest about the power of long-term assumptions.",
+        "worked_example": {
+          "problem": "Asian Paints' Year 7 (FY33) FCFF is ₹9,200 cr. Assuming a terminal growth rate g = 5% and WACC = 11.65%, calculate the terminal value at the end of FY33, then discount it to present value.",
+          "steps": [
+            "Calculate Year 8 (FY34) FCFF: 9,200 × (1 + 0.05) = ₹9,660 cr",
+            "Apply Gordon Growth formula: TV = 9,660 / (0.1165 − 0.05) = 9,660 / 0.0665 = ₹1,45,263 cr",
+            "Discount back to present value over 7 years: PV of TV = 1,45,263 / (1.1165)^7 = 1,45,263 / 2.1542 = ₹67,432 cr"
+          ],
+          "result": "Terminal Value at end of FY33 = ₹1,45,263 cr; Present Value = ₹67,432 cr",
+          "insight": "This single discounted figure represents all cash flows from FY34 onwards in present-value terms. The sensitivity section below shows why a 1% change in g can swing this number by 18–25%, making the perpetuity growth rate assumption the most hotly debated cell in any DCF model."
+        },
+        "sensitivity_note": "Gordon Growth is mathematically explosive as g approaches WACC. With WACC = 11.65%: at g = 4%, multiplier is 13.2x; at g = 5%, it's 15.0x; at g = 6%, it's 17.7x; at g = 7%, it's 21.5x. Bumping g by 100bps can lift TV by 18-25%. This is why the perpetuity growth rate is the most-debated cell in any DCF — and why analysts always run sensitivity tables on it."
+      },
+      {
+        "name": "Implied Year n+1 FCFF (Step 1 of Gordon Growth)",
+        "formula": "FCFF_(n+1) = FCFF_n × (1 + g)",
+        "variables": [
+          {
+            "symbol": "FCFF_n",
+            "meaning": "Free cash flow in the final year of the explicit forecast period"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Perpetuity growth rate — same g used in the denominator"
+          }
+        ],
+        "plain_english": "Before you can apply the Gordon Growth formula, you must project one year beyond your explicit forecast to get the numerator. This formula simply grows the final explicit year's cash flow by the terminal growth rate, bridging the explicit forecast into perpetuity. It looks trivial but enforces a critical discipline: your Year n growth rate should already be close to g, otherwise this step introduces a discontinuity that distorts valuations.",
+        "worked_example": {
+          "problem": "Asian Paints' FY33 FCFF is ₹9,200 cr with an assumed perpetuity growth rate of 5%. Calculate the implied FY34 FCFF that feeds into the Gordon Growth terminal value formula.",
+          "steps": [
+            "Apply the formula: FCFF_(n+1) = 9,200 × (1.05) = ₹9,660 cr"
+          ],
+          "result": "Implied FY34 FCFF = ₹9,660 cr",
+          "insight": "This step assumes a smooth glide path from explicit to terminal growth. If your explicit forecast still shows 8% growth in Year 7, then jumping to 5% perpetuity creates a jarring cliff that artificially depresses the implied Year 8 cash flow and entire terminal value. Clean forecast tapering from Session 6 is essential for this step to be credible."
+        },
+        "sensitivity_note": "This is where the glide path discipline from Session 6 pays off. If your explicit forecast tapered cleanly to terminal-rate growth in year n, FCFF_(n+1) = FCFF_n × (1+g) is internally consistent. If year n still shows growth meaningfully above g, the step-down creates a jarring discontinuity that distorts terminal value."
+      },
+      {
+        "name": "Exit Multiple Terminal Value",
+        "formula": "TV (at end of Year n) = EBITDA_n × Exit Multiple (EV/EBITDA)",
+        "variables": [
+          {
+            "symbol": "EBITDA_n",
+            "meaning": "EBITDA in the final year of the explicit forecast period"
+          },
+          {
+            "symbol": "Exit Multiple",
+            "meaning": "A defensible forward EV/EBITDA multiple that represents what the business would trade at when fully mature"
+          }
+        ],
+        "plain_english": "Exit Multiple Terminal Value avoids the perpetuity growth assumption entirely by instead asking: at what earnings multiple would I be willing to sell this business at the end of my explicit forecast period? You multiply Year n EBITDA by a steady-state multiple (usually anchored on historical, peer, and industry benchmarks) to arrive at an enterprise value. This method is more intuitive for practitioners and works well when you have confidence in peer or historical multiples but less confidence in long-term growth rates.",
+        "worked_example": {
+          "problem": "Asian Paints' FY33 EBITDA is ₹14,850 cr. Global decorative paints peers (Sherwin-Williams, AkzoNobel) and Asian Paints' historical trading range suggest a defensible terminal EV/EBITDA of 20x. Calculate terminal value and discount to present value.",
+          "steps": [
+            "Apply the formula: TV = 14,850 × 20 = ₹2,97,000 cr",
+            "Discount back 7 years at WACC of 11.65%: PV of TV = 2,97,000 / (1.1165)^7 = 2,97,000 / 2.1542 = ₹1,37,896 cr"
+          ],
+          "result": "Terminal Value at end of FY33 = ₹2,97,000 cr; Present Value = ₹1,37,896 cr",
+          "insight": "This approach is grounded in what buyers actually pay for mature businesses. The wide range of defensible multiples (18x–22x) produces a proportional range in terminal value, underscoring why exit multiple selection requires triangulation across historical, peer, and steady-state benchmarks rather than picking an arbitrary number."
+        },
+        "sensitivity_note": "Exit Multiple is sensitive to the multiple chosen. At Asian Paints FY33 EBITDA of ₹14,850 cr: 16x gives TV of ₹2,37,600 cr (PV ₹1,10,317 cr); 20x gives ₹2,97,000 cr (PV ₹1,37,896 cr); 24x gives ₹3,56,400 cr (PV ₹1,65,476 cr). The 8x range across reasonable multiples produces a 50% range in terminal value, which is why exit multiple selection itself requires triangulation across historical, peer, and steady-state benchmarks."
+      },
+      {
+        "name": "Implied Exit Multiple (Cross-Check on Gordon Growth)",
+        "formula": "Implied Exit Multiple = Gordon Growth TV / EBITDA_n",
+        "variables": [
+          {
+            "symbol": "Gordon Growth TV",
+            "meaning": "Terminal value computed via Gordon Growth formula"
+          },
+          {
+            "symbol": "EBITDA_n",
+            "meaning": "Final-year explicit-period EBITDA"
+          }
+        ],
+        "plain_english": "This formula works backwards from your Gordon Growth terminal value to reveal what exit multiple your perpetuity assumptions implicitly embed. It is a powerful sanity check: if your Gordon Growth model produces an implied multiple far outside the range of historical, peer, or steady-state benchmarks, your assumptions (usually WACC or g) are likely unrealistic. This forces intellectual honesty and prevents you from hidden contradictions in your model.",
+        "worked_example": {
+          "problem": "Using the Gordon Growth TV for Asian Paints calculated earlier (₹1,45,263 cr at end of FY33) and FY33 EBITDA of ₹14,850 cr, calculate the implied exit multiple. Then compare it to current trading multiples and peer benchmarks.",
+          "steps": [
+            "Apply the formula: Implied Exit Multiple = 1,45,263 / 14,850 = 9.78x EV/EBITDA",
+            "Compare to benchmarks: Asian Paints currently trades at 40x+; global mature paints peers trade at 18–22x; Session 6 exit multiple assumptions used 20x",
+            "Interpret the gap: The 9.78x implied multiple is far below both current trading and defensible steady-state multiples"
+          ],
+          "result": "Implied Exit Multiple = 9.78x EV/EBITDA",
+          "insight": "The large gap between implied (9.78x) and defensible (18–22x) multiples signals that your WACC of 11.65% may be too high, your perpetuity growth of 5% too low, or the market is materially overvaluing the stock. This is exactly the question an analyst should investigate: it forces you to validate whether your discount rate and growth assumptions truly reflect reality or whether you need to recalibrate."
+        },
+        "sensitivity_note": "Cross-checking implied exit multiples against historical and peer multiples is the single best way to sanity-check Gordon Growth assumptions. If implied multiple is meaningfully outside the 0.7x–1.3x range vs. peers, your assumptions are likely wrong somewhere."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=NPV(rate, value1, value2, ...)",
+        "Cmd + Shift + Enter — array formula entry",
+        "Cmd + Option + N — insert chart"
+      ],
+      "windows": [
+        "=NPV(rate, value1, value2, ...) — present value of irregular cash flows starting Year 1",
+        "= cell_ref / (WACC - g) — Gordon Growth formula in a single cell",
+        "Ctrl + Shift + Enter — array formula entry, useful for sensitivity tables",
+        "Alt + N + Q — insert a Recommended Chart for visualising TV vs explicit-period contribution"
+      ]
+    }
+  }
+}

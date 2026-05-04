@@ -1,0 +1,201 @@
+{
+  "id": "b6f3928d-be4b-484d-ae41-cb93def0f076",
+  "label": "M7 S10 | The Quality of Earnings Metrics",
+  "before": {
+    "formulas": [
+      {
+        "name": "Total Accruals Ratio",
+        "formula": "Total Accruals Ratio = (Net Income − Cash Flow from Operations) / Average Total Assets",
+        "variables": [
+          {
+            "symbol": "Net Income",
+            "meaning": "Profit After Tax from the P&L, excluding discontinued operations"
+          },
+          {
+            "symbol": "Cash Flow from Operations",
+            "meaning": "CFO from the Cash Flow Statement (Session 7). For Ind AS, indirect method starting from PBT is standard."
+          },
+          {
+            "symbol": "Average Total Assets",
+            "meaning": "Average of opening and closing total assets for the period"
+          }
+        ],
+        "worked_example": "ABC Industries (hypothetical mid-cap) FY24:\\nNet Income: ₹420 cr\\nCFO: ₹285 cr\\nOpening Total Assets: ₹3,800 cr\\nClosing Total Assets: ₹4,200 cr\\nAverage Total Assets: ₹4,000 cr\\n\\nTotal Accruals = 420 − 285 = ₹135 cr\\nTotal Accruals Ratio = 135 / 4,000 = 3.4%\\n\\nTHRESHOLDS (from forensic accounting research):\\n• Below 3% — high earnings quality, earnings mostly cash-backed\\n• 3-5% — moderate quality, normal operational accruals\\n• 5-8% — elevated accruals, warrants investigation\\n• Above 8% — aggressive accruals, major earnings quality red flag\\n• Persistently above 10% — potential earnings management or fraud\\n\\nFor ABC, 3.4% is in the moderate range — acceptable but at the upper end of normal. The ₹135 cr gap between Net Income and CFO needs explanation — working capital expansion, one-off provisions reversing, tax timing. If the gap is driven by working capital bleed (Sessions 6-7 analysis), it's the kind of pattern that precedes earnings disappointment.",
+        "sensitivity_note": "Total Accruals Ratio is the single most diagnostic quality-of-earnings metric. A 10-percentage-point deterioration over 2-3 years (e.g., from 2% to 12%) has preceded every major Indian accounting scandal — Satyam, DHFL, Yes Bank (for specific line items), Manpasand Beverages, and multiple mid-cap stress situations."
+      },
+      {
+        "name": "Cash Realisation Ratio (CRR)",
+        "formula": "Cash Realisation Ratio = Cash Flow from Operations / Net Income, computed over rolling 3-year averages",
+        "variables": [
+          {
+            "symbol": "Cash Flow from Operations",
+            "meaning": "Trailing 3-year cumulative CFO"
+          },
+          {
+            "symbol": "Net Income",
+            "meaning": "Trailing 3-year cumulative Net Income"
+          }
+        ],
+        "worked_example": "HUL FY22-FY24 (3-year rolling):\\nCumulative Net Income: ₹27,180 cr\\nCumulative CFO: ₹28,400 cr\\nCRR = 28,400 / 27,180 = 1.04\\n\\nTCS FY22-FY24:\\nCumulative Net Income: ₹121,800 cr\\nCumulative CFO: ₹121,400 cr\\nCRR = 121,400 / 121,800 = 1.00\\n\\nManpasand Beverages FY15-FY17 (pre-collapse):\\nCumulative Net Income: ₹268 cr\\nCumulative CFO: ₹64 cr\\nCRR = 64 / 268 = 0.24\\n\\nINTERPRETATION:\\n• CRR ≥ 1.0 — exceptional quality, cash generation exceeds reported earnings\\n• CRR 0.85-1.0 — high quality, tight alignment\\n• CRR 0.7-0.85 — acceptable, some working capital bleed expected\\n• CRR 0.5-0.7 — elevated concern, material gap between earnings and cash\\n• CRR below 0.5 — severe quality issue, reported earnings not translating to cash\\n\\nHUL and TCS at ~1.0 CRR represent the gold standard. Manpasand's 0.24 preceded its collapse — 76% of reported earnings never materialised as cash.",
+        "sensitivity_note": "CRR is particularly powerful because 3-year rolling averages smooth out single-year volatility (e.g., tax timing, large working capital swings). Multi-year CRR tracking catches the 'slow drift' from high-quality to low-quality earnings that is often a multi-year pattern before crisis."
+      },
+      {
+        "name": "Accrual Decomposition — Working Capital vs Non-Working-Capital",
+        "formula": "WC-Driven Accrual = Change in Working Capital (Δ Receivables + Δ Inventory − Δ Payables)\\nNon-WC Accrual = Total Accruals − WC-Driven Accrual",
+        "variables": [
+          {
+            "symbol": "Change in Working Capital",
+            "meaning": "Increase in receivables and inventory, less increase in payables. Direct linkage from Session 6 analysis."
+          },
+          {
+            "symbol": "Total Accruals",
+            "meaning": "Net Income minus CFO"
+          },
+          {
+            "symbol": "Non-WC Accrual",
+            "meaning": "Accruals from non-working-capital sources — depreciation, provisions, impairment reversals, fair value adjustments, deferred tax"
+          }
+        ],
+        "worked_example": "Example Mid-cap Ltd FY24:\\nNet Income: ₹850 cr\\nCFO: ₹620 cr\\nTotal Accruals: ₹230 cr\\nΔ Receivables: +₹120 cr\\nΔ Inventory: +₹85 cr\\nΔ Payables: +₹35 cr\\nWC-Driven Accrual = 120 + 85 − 35 = ₹170 cr\\nNon-WC Accrual = 230 − 170 = ₹60 cr\\n\\nINSIGHT: Of the ₹230 cr total accrual gap, 74% is driven by working capital expansion (CCC deteriorating per Session 6), and 26% is non-working-capital items. The WC-driven portion is concerning because it reflects operational stress — receivables and inventory growing faster than business, payables contracting. The non-WC portion may be normal depreciation and provisions. The decomposition separates operational earnings quality issues from accounting policy issues.",
+        "sensitivity_note": "Decomposition reveals WHERE the earnings quality issue is. If total accruals are 5% of assets but almost entirely working capital-driven, the Session 6 framework applies. If they're non-working-capital driven (aggressive provisions, fair value adjustments, deferred tax), they're accounting-choice driven. Different root causes require different analytical responses."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Option+Return → New line in cell",
+        "Cmd+Shift+4 → Currency format",
+        "Cmd+Home → Jump to A1",
+        "Cmd+Option+C → Chart"
+      ],
+      "windows": [
+        "Alt+Enter → New line within a cell (for multi-metric summary tables)",
+        "Ctrl+Shift+$ → Format as currency with commas",
+        "Ctrl+Home → Jump to cell A1 (for quick navigation in QoE worksheets)",
+        "Alt+N+B → Insert bar chart (for multi-year accrual visualization)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Total Accruals Ratio",
+        "formula": "Total Accruals Ratio = (Net Income − Cash Flow from Operations) / Average Total Assets",
+        "variables": [
+          {
+            "symbol": "Net Income",
+            "meaning": "Profit After Tax from the P&L, excluding discontinued operations"
+          },
+          {
+            "symbol": "Cash Flow from Operations",
+            "meaning": "CFO from the Cash Flow Statement (Session 7). For Ind AS, indirect method starting from PBT is standard."
+          },
+          {
+            "symbol": "Average Total Assets",
+            "meaning": "Average of opening and closing total assets for the period"
+          }
+        ],
+        "plain_english": "This ratio measures what percentage of reported net income is backed by actual cash generation. A lower ratio indicates that most earnings converted to cash (high quality); a higher ratio signals that a large portion of earnings is trapped in non-cash accruals—receivables, inventory, provisions, or fair-value adjustments—suggesting either operational stress or aggressive accounting. For equity research, this is your first diagnostic check for earnings sustainability.",
+        "computation": [
+          "1. Calculate Total Accruals = Net Income − Cash Flow from Operations (the absolute accrual amount in rupees)",
+          "2. Calculate Average Total Assets = (Opening Total Assets + Closing Total Assets) / 2",
+          "3. Divide Total Accruals by Average Total Assets and express as a percentage"
+        ],
+        "worked_example": {
+          "problem": "ABC Industries (hypothetical mid-cap) FY24: Net Income ₹420 cr, CFO ₹285 cr, Opening Total Assets ₹3,800 cr, Closing Total Assets ₹4,200 cr. Assess earnings quality.",
+          "steps": [
+            "Average Total Assets = (3,800 + 4,200) / 2 = ₹4,000 cr",
+            "Total Accruals = 420 − 285 = ₹135 cr",
+            "Total Accruals Ratio = 135 / 4,000 = 0.0338 = 3.4%"
+          ],
+          "result": "3.4%",
+          "insight": "ABC is in the moderate quality range (3–5% threshold). The ₹135 cr gap between Net Income and CFO needs explanation through working capital analysis (Session 6). A 3.4% ratio is acceptable but at the upper end of normal for stable operations. If this ratio deteriorates to 5–8% over the next 2–3 years, it would warrant deeper forensic review. For reference, HUL and TCS typically range 1–3%; Satyam's ratio was above 12% in the years leading to its collapse."
+        },
+        "sensitivity_note": "Total Accruals Ratio is the single most diagnostic quality-of-earnings metric. A 10-percentage-point deterioration over 2-3 years (e.g., from 2% to 12%) has preceded every major Indian accounting scandal — Satyam, DHFL, Yes Bank (for specific line items), Manpasand Beverages, and multiple mid-cap stress situations."
+      },
+      {
+        "name": "Cash Realisation Ratio (CRR)",
+        "formula": "Cash Realisation Ratio = Cash Flow from Operations / Net Income, computed over rolling 3-year averages",
+        "variables": [
+          {
+            "symbol": "Cash Flow from Operations",
+            "meaning": "Trailing 3-year cumulative CFO"
+          },
+          {
+            "symbol": "Net Income",
+            "meaning": "Trailing 3-year cumulative Net Income"
+          }
+        ],
+        "plain_english": "CRR tells you what fraction of reported earnings actually converted to operating cash over a full three-year period. A CRR of 1.0 or above means cash generation equalled or exceeded reported profit—exceptional quality. A CRR below 0.7 signals that reported earnings are not translating to sustainable cash, often a precursor to profit warnings or balance-sheet stress. Rolling 3-year averages smooth single-year anomalies (tax timing, one-off provisions) and reveal deteriorating earnings quality trends.",
+        "computation": [
+          "1. Sum Net Income for the trailing 3 fiscal years",
+          "2. Sum CFO for the trailing 3 fiscal years",
+          "3. Divide cumulative CFO by cumulative Net Income"
+        ],
+        "worked_example": {
+          "problem": "Three Indian companies over FY22–FY24. Compare earnings quality using CRR: HUL (cumulative NI ₹27,180 cr, cumulative CFO ₹28,400 cr), TCS (cumulative NI ₹121,800 cr, cumulative CFO ₹121,400 cr), and Manpasand Beverages pre-collapse (cumulative NI ₹268 cr, cumulative CFO ₹64 cr).",
+          "steps": [
+            "HUL CRR = 28,400 / 27,180 = 1.045",
+            "TCS CRR = 121,400 / 121,800 = 0.997",
+            "Manpasand CRR = 64 / 268 = 0.239"
+          ],
+          "result": "HUL 1.04, TCS 1.00, Manpasand 0.24",
+          "insight": "HUL and TCS are gold-standard quality: both at or above 1.0, meaning their reported earnings are fully backed by cash or exceeded by it. Manpasand's 0.24 is a catastrophic red flag—only 24 paise of reported rupee earnings converted to cash over three years. This 76% gap persisted because of working-capital bleed (Session 6) and likely aggressive revenue recognition or provision reversals. Manpasand collapsed within 12–18 months. For any company showing CRR below 0.5, downgrade earnings credibility immediately."
+        },
+        "sensitivity_note": "CRR is particularly powerful because 3-year rolling averages smooth out single-year volatility (e.g., tax timing, large working capital swings). Multi-year CRR tracking catches the 'slow drift' from high-quality to low-quality earnings that is often a multi-year pattern before crisis."
+      },
+      {
+        "name": "Accrual Decomposition — Working Capital vs Non-Working-Capital",
+        "formula": "WC-Driven Accrual = Change in Working Capital (Δ Receivables + Δ Inventory − Δ Payables)\\nNon-WC Accrual = Total Accruals − WC-Driven Accrual",
+        "variables": [
+          {
+            "symbol": "Change in Working Capital",
+            "meaning": "Increase in receivables and inventory, less increase in payables. Direct linkage from Session 6 analysis."
+          },
+          {
+            "symbol": "Total Accruals",
+            "meaning": "Net Income minus CFO"
+          },
+          {
+            "symbol": "Non-WC Accrual",
+            "meaning": "Accruals from non-working-capital sources — depreciation, provisions, impairment reversals, fair value adjustments, deferred tax"
+          }
+        ],
+        "plain_english": "Not all accruals are equal. Working-capital accruals (growth in receivables and inventory without matching growth in payables) reflect operational stress and deteriorating cash conversion. Non-working-capital accruals (depreciation, provisions, fair-value adjustments) are accounting choices that may or may not be conservative. Decomposition tells you where the earnings quality issue originates—cash-collection weakness (operational red flag) or aggressive accounting policies (governance red flag)—and hence which session's framework to apply for deeper analysis.",
+        "computation": [
+          "1. Extract from Cash Flow Statement: Δ Receivables, Δ Inventory, Δ Payables for the period",
+          "2. Calculate WC-Driven Accrual = (Δ Receivables + Δ Inventory) − Δ Payables",
+          "3. Calculate Total Accruals = Net Income − CFO",
+          "4. Calculate Non-WC Accrual = Total Accruals − WC-Driven Accrual",
+          "5. Express each component as a percentage of Net Income or Average Total Assets for comparison"
+        ],
+        "worked_example": {
+          "problem": "Example Mid-cap Ltd FY24: Net Income ₹850 cr, CFO ₹620 cr, Receivables increase ₹120 cr, Inventory increase ₹85 cr, Payables increase ₹35 cr. Decompose accruals to identify the root cause of earnings quality.",
+          "steps": [
+            "Total Accruals = 850 − 620 = ₹230 cr",
+            "WC-Driven Accrual = (120 + 85) − 35 = ₹170 cr",
+            "Non-WC Accrual = 230 − 170 = ₹60 cr",
+            "WC as % of Total Accruals = 170 / 230 = 73.9%",
+            "Non-WC as % of Total Accruals = 60 / 230 = 26.1%"
+          ],
+          "result": "WC-driven ₹170 cr (74%), Non-WC ₹60 cr (26%)",
+          "insight": "The ₹230 cr accrual gap is dominantly working-capital driven: receivables and inventory grew substantially while payables remained flat or fell. This is a Session 6 operational red flag—the company is extending credit to customers, building unsold inventory, and squeezing suppliers, all signs of sales slowdown or competitive pressure. The non-WC portion (₹60 cr, likely normal depreciation and provisions) is benign. The analyst should immediately cross-reference with Days Sales Outstanding and Days Inventory Outstanding from Session 6 to confirm whether the CCC is deteriorating and whether this is a cyclical working-capital swing or structural demand weakness."
+        },
+        "sensitivity_note": "Decomposition reveals WHERE the earnings quality issue is. If total accruals are 5% of assets but almost entirely working capital-driven, the Session 6 framework applies—investigate cash conversion. If they're non-working-capital driven (aggressive provisions, fair value adjustments, deferred tax), they're accounting-choice driven. Different root causes require different analytical responses."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Option+Return → New line in cell",
+        "Cmd+Shift+4 → Currency format",
+        "Cmd+Home → Jump to A1",
+        "Cmd+Option+C → Chart"
+      ],
+      "windows": [
+        "Alt+Enter → New line within a cell (for multi-metric summary tables)",
+        "Ctrl+Shift+$ → Format as currency with commas",
+        "Ctrl+Home → Jump to cell A1 (for quick navigation in QoE worksheets)",
+        "Alt+N+B → Insert bar chart (for multi-year accrual visualization)"
+      ]
+    }
+  }
+}

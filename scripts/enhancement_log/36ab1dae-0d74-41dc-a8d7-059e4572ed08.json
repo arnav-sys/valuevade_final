@@ -1,0 +1,205 @@
+{
+  "id": "36ab1dae-0d74-41dc-a8d7-059e4572ed08",
+  "label": "M2 S6 | Key Regulatory Formulas & Thresholds",
+  "before": {
+    "formulas": [
+      {
+        "name": "SAST Open Offer Price (Minimum)",
+        "formula": "Open Offer Price = Highest of:\n(a) Highest price paid by acquirer for shares in the last 52 weeks\n(b) VWAP of target stock on the exchange for 60 trading days before the public announcement\n(c) Highest price paid under any shareholder agreement",
+        "worked_example": "Company X announces an open offer. Acquirer paid ₹425 in a block deal 3 months ago (highest in 52 weeks). 60-day VWAP on NSE = ₹410. No shareholder agreement purchases. Minimum open offer price = ₹425 (highest of the three)."
+      },
+      {
+        "name": "Minimum Public Shareholding (MPS)",
+        "formula": "Minimum Public Shareholding = 25% of total shares\nPromoter + Promoter Group holding must not exceed 75%.\nCompanies violating this must reduce promoter holding via OFS, bonus on non-promoter shares, or exchange-facilitated mechanism."
+      },
+      {
+        "name": "Insider Trading — Trading Window Closure",
+        "formula": "Trading Window closes: From end of every quarter until 48 hours after board meeting approving financial results.\nTypical closure: ~2–4 weeks before results + 48 hours after announcement.\nDesignated persons must also obtain pre-clearance and must not have a contra-trade within 6 months."
+      },
+      {
+        "name": "Research Analyst Personal Trading Restriction",
+        "formula": "No trading allowed: 30 days before publishing a research report on a stock.\nNo trading allowed: 5 days after publishing.\nTotal blackout: 35 days around each report publication.\nIf you cover 15 stocks and publish monthly reports, you are effectively restricted from trading in most of them most of the time."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "SAST Open Offer Price (Minimum)",
+        "formula": "Open Offer Price = Highest of:\n(a) Highest price paid by acquirer for shares in the last 52 weeks\n(b) VWAP of target stock on the exchange for 60 trading days before the public announcement\n(c) Highest price paid under any shareholder agreement",
+        "variables": [
+          {
+            "symbol": "Open Offer Price",
+            "meaning": "Minimum price at which the acquirer must offer shares to all public shareholders under SEBI's Substantial Acquisition of Shares and Takeover (SAST) regulations"
+          },
+          {
+            "symbol": "Highest price paid by acquirer (52 weeks)",
+            "meaning": "Maximum price the acquirer paid for target shares in any transaction during the 52-week period before open offer announcement"
+          },
+          {
+            "symbol": "VWAP (60 trading days)",
+            "meaning": "Volume-Weighted Average Price of the target stock calculated over the 60 trading days immediately preceding the public announcement of the acquisition"
+          },
+          {
+            "symbol": "Shareholder agreement price",
+            "meaning": "Highest price paid by acquirer under any formal agreement with shareholders (e.g., preferential allotments, founder pacts)"
+          }
+        ],
+        "plain_english": "SEBI's SAST regulations mandate that when an acquirer crosses 25% ownership, they must make an open offer at a price that is fair to public shareholders. The formula picks the highest of three benchmarks—recent acquisition price, market price (VWAP), or contractual agreements—to ensure no shareholder is left behind at a discount. This protects minority shareholders from dilution and maintains market integrity.",
+        "worked_example": {
+          "problem": "Company X announces an open offer after crossing 25% of TCS. Acquirer paid ₹3,850 in a block deal 3 months ago (highest in 52 weeks). 60-day VWAP on NSE = ₹3,780. No shareholder agreement purchases. What is the minimum open offer price?",
+          "steps": [
+            "Identify the highest price paid in last 52 weeks: ₹3,850",
+            "Identify the 60-day VWAP: ₹3,780",
+            "Identify the highest price under shareholder agreements: None (or ₹0)",
+            "Select the maximum of these three: max(₹3,850, ₹3,780, ₹0) = ₹3,850"
+          ],
+          "result": "Minimum open offer price = ₹3,850 per share",
+          "insight": "The acquirer must offer ₹3,850 to all public shareholders. The 52-week highest price prevails because it reflects the acquirer's own valuation of the company. This prevents the acquirer from getting a discount on public shares compared to their own recent purchases."
+        }
+      },
+      {
+        "name": "Minimum Public Shareholding (MPS)",
+        "formula": "Minimum Public Shareholding = 25% of total shares\nPromoter + Promoter Group holding must not exceed 75%.\nCompanies violating this must reduce promoter holding via OFS, bonus on non-promoter shares, or exchange-facilitated mechanism.",
+        "variables": [
+          {
+            "symbol": "Minimum Public Shareholding",
+            "meaning": "The minimum percentage of shares that must be held by the public (non-promoter, non-strategic investor shareholders) in a listed company as per BSE/NSE regulations"
+          },
+          {
+            "symbol": "Public Shareholding",
+            "meaning": "All shareholding other than promoter, promoter group, and strategic investor holdings"
+          },
+          {
+            "symbol": "Promoter + Promoter Group",
+            "meaning": "Direct and indirect holdings by promoters and their connected family members or entities, as defined under SEBI regulations"
+          },
+          {
+            "symbol": "Total Shares",
+            "meaning": "The total issued capital of the company"
+          }
+        ],
+        "plain_english": "Indian stock exchanges (BSE, NSE) require at least 25% of a listed company's shares to be held by the public to ensure broad-based ownership and market liquidity. Promoters cannot hold more than 75% to prevent them from becoming dictatorial insiders. If a company breaches this (e.g., through rights issues that dilute public holding), it must correct the violation through open offers, OFS, or other regulatory mechanisms within a prescribed timeline.",
+        "worked_example": {
+          "problem": "HUL (Hindustan Unilever) has 50 crore shares outstanding. Promoter Unilever holds 50% (25 crore shares). Public holds 45% (22.5 crore shares). Strategic investor holds 5% (2.5 crore shares). Is HUL compliant with minimum public shareholding rules?",
+          "steps": [
+            "Calculate public shareholding percentage: 22.5 crore / 50 crore = 45%",
+            "Compare to MPS requirement: 45% ≥ 25% ✓",
+            "Verify promoter + promoter group ≤ 75%: 50% ≤ 75% ✓",
+            "Confirm compliance: Yes"
+          ],
+          "result": "HUL is compliant. Public shareholding of 45% exceeds the 25% minimum.",
+          "insight": "The 25% MPS rule ensures that no single entity (promoter) can unilaterally control all decisions. It creates a minority check and supports active trading liquidity. Companies like HUL maintain higher public ownership partly to attract passive index funds and mutual funds, which now dominate Indian equity markets."
+        }
+      },
+      {
+        "name": "Insider Trading — Trading Window Closure",
+        "formula": "Trading Window closes: From end of every quarter until 48 hours after board meeting approving financial results.\nTypical closure: ~2–4 weeks before results + 48 hours after announcement.\nDesignated persons must also obtain pre-clearance and must not have a contra-trade within 6 months.",
+        "variables": [
+          {
+            "symbol": "Trading Window",
+            "meaning": "The period during which designated persons (directors, officers, employees with access to price-sensitive information) are permitted to trade in company securities"
+          },
+          {
+            "symbol": "Designated Persons",
+            "meaning": "Directors, officers, senior management, and employees with access to unpublished price-sensitive information (UPSI), as defined under SEBI (Prohibition of Insider Trading) Regulations"
+          },
+          {
+            "symbol": "Quarter End",
+            "meaning": "The last day of a financial quarter (March 31, June 30, September 30, December 31 for calendar-aligned companies)"
+          },
+          {
+            "symbol": "Board Meeting (Financial Results)",
+            "meaning": "The board's meeting to approve quarterly or annual financial statements and results, typically within 45 days of quarter-end per SEBI listing rules"
+          },
+          {
+            "symbol": "48 hours after announcement",
+            "meaning": "Two business days following the public disclosure of financial results on stock exchange platforms"
+          },
+          {
+            "symbol": "Pre-clearance",
+            "meaning": "Prior written approval from a Compliance Officer before a designated person executes any trade"
+          },
+          {
+            "symbol": "Contra-trade (6 months)",
+            "meaning": "A reversal transaction (e.g., buying after selling, or vice versa) in the same security within 6 calendar months of the original trade"
+          }
+        ],
+        "plain_english": "SEBI's insider trading rules prevent designated persons from trading on unpublished price-sensitive information (UPSI) about financial results. The trading window is closed (blackout period) from quarter-end until 48 hours after results are publicly announced, because during this window the management possesses material non-public information. Even when the window is open, designated persons must seek pre-clearance from the Compliance Officer and cannot quickly reverse trades (6-month gap required) to prevent appearance of market-timed speculation.",
+        "computation": [
+          "1. Identify the quarter-end date (e.g., 31 March for Q4).",
+          "2. Mark the start of window closure: end of quarter-end date (typically EOD 31 March).",
+          "3. Identify the expected board meeting date (usually within 30–45 days of quarter-end).",
+          "4. Identify the result announcement date (when results are uploaded to stock exchange).",
+          "5. Add 48 hours (two business days) to announcement date.",
+          "6. Trading window re-opens 48 hours after announcement.",
+          "7. Apply pre-clearance requirement and 6-month contra-trade restriction to all trades."
+        ],
+        "worked_example": {
+          "problem": "An employee of Infosys, designated as a senior manager, wants to trade during Q4 FY2024 (Jan–Mar 2024). Q4 ends 31 March 2024. Infosys board approves results on 18 April 2024. Results are announced on NSE/BSE on 18 April 2024 at 4:00 PM. When can the employee trade?",
+          "steps": [
+            "Window closure starts: End of 31 March 2024 (EOD)",
+            "Board approval date: 18 April 2024",
+            "Results announcement: 18 April 2024, 4:00 PM",
+            "48 hours after announcement: 20 April 2024, 4:00 PM (end of day 20 April)",
+            "Window re-opens: 21 April 2024 (or earliest next trading day)"
+          ],
+          "result": "The employee cannot trade from 31 March to 20 April 2024. Trading is allowed from 21 April 2024 onwards (subject to pre-clearance).",
+          "insight": "Even after the window opens, the employee must obtain written pre-clearance before each trade. If they sold shares on 25 April, they cannot buy the same shares before 25 October (6-month gap). This prevents 'pump and dump' or manipulation-like behaviour by insiders."
+        }
+      },
+      {
+        "name": "Research Analyst Personal Trading Restriction",
+        "formula": "No trading allowed: 30 days before publishing a research report on a stock.\nNo trading allowed: 5 days after publishing.\nTotal blackout: 35 days around each report publication.\nIf you cover 15 stocks and publish monthly reports, you are effectively restricted from trading in most of them most of the time.",
+        "variables": [
+          {
+            "symbol": "Research Analyst",
+            "meaning": "A person registered with SEBI (Category 2 or equivalent) who conducts equity research and publishes investment recommendations"
+          },
+          {
+            "symbol": "Personal Trading",
+            "meaning": "Purchases or sales of securities by the analyst (or their family members on a joint account) in their own interest, not on behalf of clients"
+          },
+          {
+            "symbol": "Report Publication",
+            "meaning": "The date on which a written research report is issued to clients or made available to the public"
+          },
+          {
+            "symbol": "30-day pre-publication blackout",
+            "meaning": "Period 30 calendar days before the date a research report is published during which the analyst cannot trade in the stock covered"
+          },
+          {
+            "symbol": "5-day post-publication blackout",
+            "meaning": "Period 5 calendar days after the date a research report is published during which the analyst cannot trade in the stock covered"
+          },
+          {
+            "symbol": "Blackout period (total)",
+            "meaning": "Combined 35-day restriction spanning 30 days pre-publication through 5 days post-publication"
+          }
+        ],
+        "plain_english": "SEBI's insider trading and conflict-of-interest rules mandate that research analysts cannot trade in stocks they cover within 30 days before and 5 days after publishing a report. This 35-day blackout prevents analysts from front-running their own recommendations (e.g., buying before a 'buy' rating or selling before a 'sell' rating). The rule protects investors from the perception and reality of self-dealing and ensures analysts are motivated by research quality, not personal profit.",
+        "computation": [
+          "1. Note the expected publication date of the research report.",
+          "2. Count back 30 calendar days: blackout starts 30 days before publication.",
+          "3. Count forward 5 calendar days from publication date: blackout ends 5 days after publication.",
+          "4. Total duration = 30 + 1 (publication day) + 5 = 36 calendar days (or 35 in shorthand).",
+          "5. Repeat this blackout for each report on the same stock."
+        ],
+        "worked_example": {
+          "problem": "An analyst at an Indian brokerage covers Bajaj Finance and publishes a research report on 15 May 2024 with a 'BUY' rating. When is the analyst barred from trading in Bajaj Finance shares?",
+          "steps": [
+            "Report publication date: 15 May 2024",
+            "Pre-publication blackout starts: 15 April 2024 (30 days before)",
+            "Pre-publication blackout ends: 14 May 2024 (day before publication)",
+            "Publication date: 15 May 2024",
+            "Post-publication blackout starts: 15 May 2024",
+            "Post-publication blackout ends: 20 May 2024 (5 days after)",
+            "Total restricted period: 15 April – 20 May 2024 (37 calendar days)"
+          ],
+          "result": "The analyst cannot buy or sell Bajaj Finance from 15 April to 20 May 2024.",
+          "insight": "If the analyst publishes monthly reports (e.g., every 15th), the blackout windows overlap significantly. For 12 monthly reports on the same stock, the analyst is effectively barred from personal trading in that stock for roughly 10–11 months per year. This is intentional: it prevents analysts from using research as a vehicle for personal enrichment."
+        }
+      }
+    ]
+  }
+}

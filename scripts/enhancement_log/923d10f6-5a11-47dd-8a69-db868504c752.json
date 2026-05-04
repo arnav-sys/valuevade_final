@@ -1,0 +1,321 @@
+{
+  "id": "923d10f6-5a11-47dd-8a69-db868504c752",
+  "label": "M10 S6 | The Currency Impact Formulas — Sensitivity, EPS Math, and He",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net Forex Revenue Exposure",
+        "formula": "Net Forex Exposure = (Forex Revenue percent - Forex Cost percent) x Net Profit Margin",
+        "variables": [
+          {
+            "symbol": "Forex Revenue percent",
+            "meaning": "Foreign currency revenue as percent of total revenue"
+          },
+          {
+            "symbol": "Forex Cost percent",
+            "meaning": "Foreign currency costs as percent of total revenue (raw materials + services)"
+          },
+          {
+            "symbol": "Net Profit Margin",
+            "meaning": "Net profit margin of the company"
+          }
+        ],
+        "worked_example": "Infosys (FY24 illustrative):\nForex Revenue percent = 96 percent\nForex Cost percent = 4 percent (small portion of internal salaries to overseas branches)\nNet Forex Revenue Exposure (gross) = 96 - 4 = 92 percent\nNet Profit Margin = 22 percent\n\nFor every 1 percent INR depreciation:\n- Revenue translates to more rupees: +0.92 percent on top line\n- Operating margin expansion since costs do not increase proportionally\n- Effective EPS uplift: approximately 1.2-1.5 percent per 1 percent depreciation\n\nAsian Paints (FY24 illustrative):\nForex Revenue percent = 5 percent (small export portion)\nForex Cost percent = 35 percent (raw materials)\nNet Forex Revenue Exposure (gross) = 5 - 35 = -30 percent\nNet Profit Margin = 11 percent\n\nFor every 1 percent INR depreciation:\n- Cost increases: +0.35 percent on cost base\n- Revenue benefit: +0.05 percent (small)\n- Net: cost increases approximately 0.30 percent on top of revenue\n- Margin compression: approximately 30 bps gross margin loss\n- EPS impact: -2.5 to -3.5 percent per 1 percent depreciation",
+        "sensitivity_note": "The asymmetry is striking. A 1 percent INR depreciation typically gives Infosys +1.2-1.5 percent EPS lift but costs Asian Paints 2.5-3.5 percent EPS hit. A 5 percent INR depreciation translates to roughly +6-8 percent Infosys EPS uplift and roughly -12-18 percent Asian Paints EPS hit. This is why pair trades around currency moves work — the differential is mathematically large and predictable."
+      },
+      {
+        "name": "Currency Translation EPS Impact (Exporters)",
+        "formula": "Delta EPS percent = (Delta INR/USD percent) x Operating Leverage x (Forex Revenue percent / Net Margin)",
+        "variables": [
+          {
+            "symbol": "Delta INR/USD percent",
+            "meaning": "Percentage change in INR/USD exchange rate"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "How fast costs scale with revenue. Approximately 0.7-0.85 for typical IT/pharma exporters"
+          },
+          {
+            "symbol": "Forex Revenue percent",
+            "meaning": "Forex revenue as percent of total revenue"
+          },
+          {
+            "symbol": "Net Margin",
+            "meaning": "Net profit margin"
+          }
+        ],
+        "worked_example": "TCS (FY24): Forex Revenue 88 percent, Net Margin 19.5 percent, Operating Leverage 0.78\n\nIf INR depreciates 5 percent from 83 to 87.15:\nGross revenue impact: +5 percent x 88 percent = +4.4 percent to revenue\nWith operating leverage: net margin expansion approximately 100-150 bps\nEPS Impact: +5 percent x 0.78 x (88 / 19.5) = approximately +17.6 percent\n\nThis is highly leveraged because while revenue grows by 4-5 percent (in INR terms), most costs are also in foreign currency or stable. Net profit grows 15-20 percent from a 5 percent currency move.\n\nValidation: TCS quarterly disclosures show that a 1 percent INR depreciation uplifts margins by approximately 25-30 bps with full pass-through to EPS over 1-2 quarters.",
+        "sensitivity_note": "This formula understates real impact for two reasons: (1) operating leverage is higher when forex costs are minimal, (2) hedging policies sometimes capture additional gains. A 5 percent depreciation can give +20-25 percent EPS uplift for IT majors when fully transmitted, but the visible quarterly impact is usually 60-70 percent of gross sensitivity due to hedging."
+      },
+      {
+        "name": "Cost Pressure on Importers",
+        "formula": "Delta Margin (bps) = -(Delta INR/USD percent) x Forex Cost percent",
+        "variables": [
+          {
+            "symbol": "Delta INR/USD percent",
+            "meaning": "Percentage change in INR/USD"
+          },
+          {
+            "symbol": "Forex Cost percent",
+            "meaning": "Foreign currency raw material as percent of revenue"
+          }
+        ],
+        "worked_example": "Asian Paints (FY24 illustrative):\nForex Cost percent = 35 percent of revenue\n\nIf INR depreciates 5 percent from 83 to 87.15:\nMargin compression = 5 x 35 percent = 175 bps gross margin compression\n\nThis assumes 100 percent pass-through which is never the case. With 60 percent pass-through:\nNet margin compression = 175 x 0.4 = 70 bps\nEPS impact: approximately -8 to -12 percent with operating leverage\n\nIndia 2022 episode validated this: INR went from 76 to 83 (about 9 percent depreciation). Asian Paints saw gross margin compress from 43 percent to 33 percent — approximately 1000 bps margin compression. Stock corrected 35-40 percent from its 2021 peak primarily due to this margin issue.\n\nMaruti Suzuki (FY24 illustrative):\nForex Cost percent = 22 percent (imported components, royalties)\n\nFor 5 percent depreciation:\nGross margin compression = 5 x 22 percent = 110 bps\nWith 70 percent pass-through: net margin compression 33 bps\nEPS impact: approximately -3 to -5 percent per 5 percent depreciation",
+        "sensitivity_note": "Pass-through ability is critical for importers. Companies with strong pricing power (HUL, Asian Paints in stable times) can pass through 70-85 percent of input cost inflation. Weak pricing power businesses (auto OEMs in competitive markets) absorb most of the inflation. Always check pass-through history before estimating impact."
+      },
+      {
+        "name": "Forex Translation Effect on Debt-Heavy Companies",
+        "formula": "Delta Reported Debt (INR) = Delta INR/USD x Foreign Currency Debt",
+        "variables": [
+          {
+            "symbol": "Delta INR/USD",
+            "meaning": "Change in INR/USD exchange rate (in rupees, e.g., +5)"
+          },
+          {
+            "symbol": "Foreign Currency Debt",
+            "meaning": "Total foreign currency-denominated debt outstanding"
+          }
+        ],
+        "worked_example": "Tata Steel (FY24 illustrative):\nForeign Currency Debt = 5.5 billion dollars = approximately 46000 crore at INR 83.6\n\nIf INR depreciates 5 percent from 83 to 87.15:\nNew INR value = 5.5 billion x 87.15 = approximately 47932 crore\nOld INR value = 46000 crore\nIncrease in reported debt = 47932 - 46000 = approximately 1932 crore\n\nThis appears as a forex translation loss on P&L (one-time accounting hit) and increases reported debt level. Annual impact:\n- Higher interest expense: 1932 x 9 percent (debt cost) = 174 crore additional interest\n- Net debt/equity ratio increases\n- Credit metrics weaken\n\nFor a company at 20x P/E with PAT of 16000 crore, translation losses of 1932 crore = 12 percent PAT hit — meaningful one-time impact.\n\nReliance Industries: Foreign currency debt of approximately 25 billion dollars. A 5 percent depreciation = 1.04 lakh crore additional reported debt — though much of this is partially hedged via natural hedge from refining product exports.",
+        "sensitivity_note": "Translation effects are accounting impacts but real cash flow concerns. Companies report higher debt and interest costs without any operational change. Credit rating agencies factor this in. Stock prices respond to both the EPS impact and the perceived increase in financial risk. Watch for highly leveraged companies during INR weakness — they face dual pressure."
+      },
+      {
+        "name": "INR-EUR/GBP Rate Dynamics for Multi-Currency Exposers",
+        "formula": "Effective Currency Impact = Sum of (Forex Revenue by Currency x Delta that Currency vs INR)",
+        "variables": [
+          {
+            "symbol": "Forex Revenue by Currency",
+            "meaning": "Revenue in each foreign currency as percent of total"
+          },
+          {
+            "symbol": "Delta that Currency vs INR",
+            "meaning": "Percentage change in that specific currency vs INR"
+          }
+        ],
+        "worked_example": "Mahindra & Mahindra (Auto + Tractor Group):\n- 30 percent revenue in INR (domestic)\n- 25 percent revenue in EUR (Europe operations)\n- 15 percent revenue in USD (some exports to US)\n- 30 percent revenue in other currencies (mostly GBP via JLR)\n\nIf INR depreciates 3 percent vs USD, but only 1 percent vs EUR:\nEUR revenue impact: 25 percent x 1 percent = +0.25 percent to revenue\nUSD revenue impact: 15 percent x 3 percent = +0.45 percent to revenue\nGBP impact varies by GBP-INR move\nNet impact: approximately +0.7-1.2 percent revenue, depending on GBP\n\nThis is why M&M has natural diversification — different currencies move differently. INR weakness vs USD does not automatically mean weakness vs EUR or GBP.\n\nFor Indian IT (TCS, Infosys), most contracts are USD-denominated, so USD weakness is the dominant signal. For pharma exporters (Sun Pharma, Lupin), USD is dominant. For autos with global operations (M&M, Tata Motors), the multi-currency picture matters.",
+        "sensitivity_note": "Multi-currency analysis is more sophisticated and yields clearer alpha for analysts who do the work. Most analysts default to INR vs USD analysis. Looking at INR vs EUR, GBP, JPY (especially for M&M, Tata Motors) reveals more nuanced picture. Currency cross-rates can compound or offset the INR/USD effect."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + ; -> today date",
+        "Cmd + Option + V -> paste special for transposing exposure data",
+        "Cmd + R -> fill right (for monthly forex tracking)",
+        "Cmd + Shift + 4 -> currency format"
+      ],
+      "windows": [
+        "Ctrl + ; -> insert today date for daily forex tracking",
+        "Alt + N + V -> insert pivot table for multi-stock currency sensitivity",
+        "F4 -> repeat last action (great for sector sensitivity tables)",
+        "Ctrl + Shift + 4 -> format as currency"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net Forex Revenue Exposure",
+        "formula": "Net Forex Exposure = (Forex Revenue percent - Forex Cost percent) x Net Profit Margin",
+        "variables": [
+          {
+            "symbol": "Forex Revenue percent",
+            "meaning": "Foreign currency revenue as percent of total revenue"
+          },
+          {
+            "symbol": "Forex Cost percent",
+            "meaning": "Foreign currency costs as percent of total revenue (raw materials + services)"
+          },
+          {
+            "symbol": "Net Profit Margin",
+            "meaning": "Net profit margin of the company"
+          }
+        ],
+        "plain_english": "This formula quantifies how much of your company's net profit is exposed to foreign currency moves. It tells you the net position after offsetting forex revenues against forex costs, then scaling by profitability. A positive number means the company benefits from INR depreciation; a negative number means it suffers. This matters because two companies with similar forex revenue can have vastly different currency risk depending on their cost structure.",
+        "worked_example": {
+          "problem": "Compare currency exposure of Infosys and Asian Paints using their FY24 financials.",
+          "steps": [
+            "Infosys: Forex Revenue 96%, Forex Cost 4%, Net Margin 22%",
+            "Net Forex Exposure = (96 - 4) × 22% = 92 × 0.22 = 20.24%",
+            "Interpretation: 1% INR depreciation lifts EPS by ~1.2–1.5% (operating leverage effect)",
+            "Asian Paints: Forex Revenue 5%, Forex Cost 35%, Net Margin 11%",
+            "Net Forex Exposure = (5 - 35) × 11% = -30 × 0.11 = -3.3%",
+            "Interpretation: 1% INR depreciation costs EPS ~2.5–3.5% (margin compression from input costs)"
+          ],
+          "result": "Infosys is a net exporter (positive exposure); Asian Paints is a net importer (negative exposure). Same 1% depreciation benefits one by ~1.3% EPS and hurts the other by ~3%.",
+          "insight": "This asymmetry is why pair trades work in India. During currency volatility, shorting importers and longing exporters captures a mathematically large and predictable differential. Always calculate this metric before commenting on currency impact."
+        },
+        "sensitivity_note": "The asymmetry is striking. A 1 percent INR depreciation typically gives Infosys +1.2-1.5 percent EPS lift but costs Asian Paints 2.5-3.5 percent EPS hit. A 5 percent INR depreciation translates to roughly +6-8 percent Infosys EPS uplift and roughly -12-18 percent Asian Paints EPS hit. This is why pair trades around currency moves work — the differential is mathematically large and predictable."
+      },
+      {
+        "name": "Currency Translation EPS Impact (Exporters)",
+        "formula": "Delta EPS percent = (Delta INR/USD percent) x Operating Leverage x (Forex Revenue percent / Net Margin)",
+        "variables": [
+          {
+            "symbol": "Delta INR/USD percent",
+            "meaning": "Percentage change in INR/USD exchange rate"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "How fast costs scale with revenue. Approximately 0.7-0.85 for typical IT/pharma exporters"
+          },
+          {
+            "symbol": "Forex Revenue percent",
+            "meaning": "Forex revenue as percent of total revenue"
+          },
+          {
+            "symbol": "Net Margin",
+            "meaning": "Net profit margin"
+          }
+        ],
+        "plain_english": "This formula shows how much of a currency move flows through to EPS for exporters. The key insight is the leverage: a small percentage revenue uplift (from currency translation) gets magnified through operating leverage and then divided by a thin net margin, creating outsized EPS moves. For a 5% INR depreciation in IT services (with 88% forex revenue and 19.5% net margin), the net profit can grow 15–20%, far exceeding the revenue growth. This is why exporters' earnings become highly sensitive to currency moves.",
+        "computation": [
+          "Step 1: Calculate gross revenue impact = Delta INR/USD percent × Forex Revenue percent",
+          "Step 2: Scale by operating leverage to get operating margin expansion (in percent)",
+          "Step 3: Divide by net margin to translate margin expansion into EPS percent impact",
+          "Step 4: For TCS example: 5% × 0.78 × (88 / 19.5) = 5 × 0.78 × 4.51 ≈ 17.6%"
+        ],
+        "worked_example": {
+          "problem": "Calculate EPS impact on TCS if INR depreciates 5% from 83 to 87.15.",
+          "steps": [
+            "TCS FY24 parameters: Forex Revenue 88%, Net Margin 19.5%, Operating Leverage 0.78",
+            "Gross revenue impact = 5% × 88% = 4.4% uplift in reported INR revenue",
+            "Operating margin expansion (with leverage) ≈ 100–150 bps from stable forex costs",
+            "EPS impact = 5% × 0.78 × (88 / 19.5) = 5 × 0.78 × 4.51 = 17.6%",
+            "Validation: TCS disclosures confirm ~25–30 bps margin uplift per 1% depreciation = ~5% EPS uplift per 5% depreciation after leverage"
+          ],
+          "result": "A 5% INR depreciation drives approximately 17.6% EPS uplift for TCS in the full-year model, though quarterly realization is 60–70% due to hedging policies.",
+          "insight": "Exporters have highly leveraged earnings to currency because (1) revenue grows instantly in INR terms, (2) most costs remain in USD, (3) thin net margins amplify the operating profit gains into large EPS swings. Always model this separately from operational earnings growth."
+        },
+        "sensitivity_note": "This formula understates real impact for two reasons: (1) operating leverage is higher when forex costs are minimal, (2) hedging policies sometimes capture additional gains. A 5 percent depreciation can give +20-25 percent EPS uplift for IT majors when fully transmitted, but the visible quarterly impact is usually 60-70 percent of gross sensitivity due to hedging."
+      },
+      {
+        "name": "Cost Pressure on Importers",
+        "formula": "Delta Margin (bps) = -(Delta INR/USD percent) x Forex Cost percent",
+        "variables": [
+          {
+            "symbol": "Delta INR/USD percent",
+            "meaning": "Percentage change in INR/USD"
+          },
+          {
+            "symbol": "Forex Cost percent",
+            "meaning": "Foreign currency raw material as percent of revenue"
+          }
+        ],
+        "plain_english": "For importers, currency depreciation directly compresses margins because input costs spike in rupee terms. This formula tells you how many basis points of gross margin are at risk for every 1% INR weakening. A company importing 35% of revenue in raw materials faces 175 bps gross margin compression per 5% depreciation—before any pricing power kicks in. This is why importers' stock prices often crash during INR weakness, regardless of operational performance.",
+        "computation": [
+          "Step 1: Identify foreign currency cost as percent of total revenue",
+          "Step 2: Multiply absolute currency depreciation (%) by this cost percentage",
+          "Step 3: Result is basis point margin compression (before pricing actions)",
+          "Step 4: Apply historical pass-through ratio (typically 60–75% for branded importers, 40–50% for commodities) to find net margin impact",
+          "Step 5: Convert net margin compression to EPS impact using current earnings level"
+        ],
+        "worked_example": {
+          "problem": "Estimate margin and EPS impact on Asian Paints if INR depreciates 5% from 83 to 87.15.",
+          "steps": [
+            "Asian Paints FY24: Forex Cost 35% of revenue, typical pass-through ~60%",
+            "Gross margin compression = 5% × 35% = 175 bps",
+            "Net margin compression (with 60% pass-through) = 175 × 0.4 = 70 bps",
+            "For PAT of ₹2,800 crore on revenue of ₹26,000 crore (10.8% net margin): 70 bps loss = ₹182 crore PAT hit",
+            "EPS impact = -182 / 2,800 = -6.5% (before operating leverage adjustments)",
+            "Historical validation: 2022 INR depreciation (76 to 83, ~9%) saw Asian Paints margins compress from 43% to 33% gross margin—1000 bps compression, stock down 35–40%"
+          ],
+          "result": "5% depreciation compresses Asian Paints net margin by ~70 bps and EPS by ~6–8%, assuming partial pricing power.",
+          "insight": "Importers suffer immediate and visible margin compression. Unlike exporters (where leverage magnifies gains), importers face a linear headwind. The key variable is pricing power. HUL and Asian Paints historically pass through 70–80%; auto OEMs pass through only 40–50%. Always model pass-through conservatively unless the company has proven pricing power in recent periods."
+        },
+        "sensitivity_note": "Pass-through ability is critical for importers. Companies with strong pricing power (HUL, Asian Paints in stable times) can pass through 70-85 percent of input cost inflation. Weak pricing power businesses (auto OEMs in competitive markets) absorb most of the inflation. Always check pass-through history before estimating impact."
+      },
+      {
+        "name": "Forex Translation Effect on Debt-Heavy Companies",
+        "formula": "Delta Reported Debt (INR) = Delta INR/USD x Foreign Currency Debt",
+        "variables": [
+          {
+            "symbol": "Delta INR/USD",
+            "meaning": "Change in INR/USD exchange rate (in rupees, e.g., +5)"
+          },
+          {
+            "symbol": "Foreign Currency Debt",
+            "meaning": "Total foreign currency-denominated debt outstanding"
+          }
+        ],
+        "plain_english": "When a company borrows in foreign currency (common for resource companies and global manufacturers), a weakening rupee instantly increases the INR value of that debt on the balance sheet. This is a pure translation effect—no actual cash flow outgo yet—but it inflates reported debt levels, worsens leverage ratios, and increases interest expense. For highly leveraged companies, this can trigger credit rating downgrades or covenant breaches. It matters because the market reacts to both the accounting impact and the real financial risk it signals.",
+        "computation": [
+          "Step 1: Identify total foreign currency debt (convert to USD if mixed currencies)",
+          "Step 2: Calculate new INR debt value = FX Debt × New Exchange Rate",
+          "Step 3: Calculate old INR debt value = FX Debt × Old Exchange Rate",
+          "Step 4: Delta = New Value − Old Value",
+          "Step 5: Annualized interest expense impact = Delta × Assumed Debt Cost (typically 7–9%)",
+          "Step 6: One-time P&L hit = Delta (recognized as forex translation loss in OCI/P&L depending on accounting treatment)"
+        ],
+        "worked_example": {
+          "problem": "Calculate debt and interest expense impact on Tata Steel if INR depreciates 5% from 83 to 87.15.",
+          "steps": [
+            "Tata Steel FX Debt: $5.5 billion (FY24 illustrative)",
+            "Old INR equivalent = $5.5B × 83 = ₹45,650 crore",
+            "New INR equivalent = $5.5B × 87.15 = ₹47,932.5 crore",
+            "Delta reported debt = ₹47,932.5 − ₹45,650 = ₹2,282.5 crore increase",
+            "Annual interest expense impact = ₹2,282.5 × 8.5% = ₹194 crore additional annual interest",
+            "One-time P&L impact (forex translation loss) = ₹2,282.5 crore (if recognized immediately)",
+            "For PAT of ₹16,000 crore, this is 12% earnings hit in the quarter of translation",
+            "Debt/Equity worsens; rating agencies flag increased leverage risk"
+          ],
+          "result": "5% INR depreciation increases Tata Steel's reported debt by ₹2,283 crore, annual interest expense by ₹194 crore, and creates one-time ₹2,283 crore forex translation loss.",
+          "insight": "For debt-heavy exporters (Tata Steel, Tata Motors), currency moves have dual impact: positive on earnings (from export realization) but negative on balance sheet (from FX debt translation). The market often focuses on the EPS benefit but ignores the debt risk. During INR weakness, check if currency gains are being offset by balance sheet deterioration and rising refinancing costs."
+        },
+        "sensitivity_note": "Translation effects are accounting impacts but real cash flow concerns. Companies report higher debt and interest costs without any operational change. Credit rating agencies factor this in. Stock prices respond to both the EPS impact and the perceived increase in financial risk. Watch for highly leveraged companies during INR weakness — they face dual pressure."
+      },
+      {
+        "name": "INR-EUR/GBP Rate Dynamics for Multi-Currency Exposers",
+        "formula": "Effective Currency Impact = Sum of (Forex Revenue by Currency x Delta that Currency vs INR)",
+        "variables": [
+          {
+            "symbol": "Forex Revenue by Currency",
+            "meaning": "Revenue in each foreign currency as percent of total"
+          },
+          {
+            "symbol": "Delta that Currency vs INR",
+            "meaning": "Percentage change in that specific currency vs INR"
+          }
+        ],
+        "plain_english": "Most analysts default to INR/USD analysis, but companies with global operations earn in multiple currencies (USD, EUR, GBP, JPY) that move independently against the rupee. This formula reminds you that INR weakness vs USD does not automatically mean weakness vs EUR or GBP. A company with 25% EUR revenue and 15% USD revenue will have a very different currency outcome depending on whether EUR strengthens or weakens relative to INR. This nuance separates careful analysts from the crowd.",
+        "computation": [
+          "Step 1: Break down revenue by currency (typically from management disclosures or 20-F filings)",
+          "Step 2: For each currency, find the percentage change vs INR over the period",
+          "Step 3: Multiply each currency's revenue % by its INR depreciation %",
+          "Step 4: Sum all weighted impacts to get net effective currency impact",
+          "Step 5: Apply margin expansion/compression logic as in earlier formulas",
+          "Example: 25% EUR at +1% movement + 15% USD at +3% movement + 60% INR = (0.25×1) + (0.15×3) + (0.60×0) = 0.25 + 0.45 = 0.7% net impact"
+        ],
+        "worked_example": {
+          "problem": "Calculate multi-currency exposure for Mahindra & Mahindra (FY24 illustrative) across USD, EUR, GBP, and INR.",
+          "steps": [
+            "M&M revenue split: 30% INR (domestic), 25% EUR (Europe), 15% USD (US exports), 30% GBP/other (JLR)",
+            "Scenario: INR depreciates 3% vs USD, 1% vs EUR, 2.5% vs GBP",
+            "EUR impact = 25% × 1% = +0.25% revenue",
+            "USD impact = 15% × 3% = +0.45% revenue",
+            "GBP/other impact = 30% × 2.5% = +0.75% revenue",
+            "INR domestic = 30% × 0% = 0%",
+            "Net effective currency impact = 0.25 + 0.45 + 0.75 = +1.45% net revenue uplift",
+            "Applies operating leverage and margin logic to derive EPS impact (~3–5% for M&M given 8–10% net margin)"
+          ],
+          "result": "M&M benefits from multi-currency diversification. Even if USD strengthens dramatically, EUR and GBP weakness could offset. Net impact is 1.45% revenue uplift from the scenario.",
+          "insight": "Multi-currency analysis is more tedious but yields alpha. Most sell-side analysts default to INR/USD because it is simple. For M&M, Tata Motors, and any true multinational, studying INR vs EUR, GBP, and JPY separately reveals the real story. A analyst who carefully tracks these cross-rates will beat consensus on earnings estimate revisions during currency volatility."
+        },
+        "sensitivity_note": "Multi-currency analysis is more sophisticated and yields clearer alpha for analysts who do the work. Most analysts default to INR vs USD analysis. Looking at INR vs EUR, GBP, JPY (especially for M&M, Tata Motors) reveals more nuanced picture. Currency cross-rates can compound or offset the INR/USD effect."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + ; -> today date",
+        "Cmd + Option + V -> paste special for transposing exposure data",
+        "Cmd + R -> fill right (for monthly forex tracking)",
+        "Cmd + Shift + 4 -> currency format"
+      ],
+      "windows": [
+        "Ctrl + ; -> insert today date for daily forex tracking",
+        "Alt + N + V -> insert pivot table for multi-stock currency sensitivity",
+        "F4 -> repeat last action (great for sector sensitivity tables)",
+        "Ctrl + Shift + 4 -> format as currency"
+      ]
+    }
+  }
+}

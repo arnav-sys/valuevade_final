@@ -1,0 +1,187 @@
+{
+  "id": "f0e3ffb7-8d39-4498-b9e3-95221b9415dc",
+  "label": "M7 S9 | Segment Metrics and Cross-Segment Comparisons",
+  "before": {
+    "formulas": [
+      {
+        "name": "Segment EBITDA Margin",
+        "formula": "Segment EBITDA Margin = Segment EBITDA / Segment Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Segment EBITDA",
+            "meaning": "Segment operating profit (results) plus segment depreciation and amortisation. For companies that disclose segment EBITDA directly, use the disclosed figure. For those disclosing only EBIT, add back segment depreciation."
+          },
+          {
+            "symbol": "Segment Revenue",
+            "meaning": "External revenue attributable to the segment. Exclude inter-segment revenue unless analysing vertical integration."
+          }
+        ],
+        "worked_example": "Reliance Industries FY24 Segment EBITDA Margins:\\nOil-to-Chemicals: Revenue ₹5,61,500 cr | EBITDA ₹62,400 cr | Margin 11.1%\\nJio (Digital Services): Revenue ₹1,19,800 cr | EBITDA ₹51,500 cr | Margin 43.0%\\nRetail: Revenue ₹3,06,500 cr | EBITDA ₹25,100 cr | Margin 8.2%\\nOil & Gas: Revenue ₹24,200 cr | EBITDA ₹15,800 cr | Margin 65.3%\\n\\nInsight: The four segments have wildly different margin profiles. Jio at 43% is telecom/platform economics. Retail at 8.2% is discount-retail economics (DMart-like thin margins, high turnover). Oil-to-Chemicals at 11.1% is commodity-cyclical economics. Oil & Gas at 65% is legacy upstream economics with depleting reserves. Consolidated EBITDA margin of ~16% is a meaningless average — it matches none of the underlying businesses.",
+        "sensitivity_note": "A 100 bps margin shift in Jio (the highest-margin segment) moves consolidated EBITDA by approximately ₹1,200 cr. A 100 bps margin shift in Oil-to-Chemicals (largest revenue) moves consolidated EBITDA by approximately ₹5,600 cr. Analysts forecasting consolidated margins without segment context systematically err on both size and direction of margin movements."
+      },
+      {
+        "name": "Segment ROCE",
+        "formula": "Segment ROCE = Segment EBIT / Segment Capital Employed",
+        "variables": [
+          {
+            "symbol": "Segment EBIT",
+            "meaning": "Segment operating profit (results) before centrally-allocated costs. Some companies disclose segment PBT; for ROCE comparison, use EBIT (before centrally-allocated finance costs)."
+          },
+          {
+            "symbol": "Segment Capital Employed",
+            "meaning": "Segment Assets minus Segment Non-interest-bearing Liabilities. Or equivalently, Segment Equity plus allocated Debt. For many Indian companies, segment ROCE requires analyst-level estimation as full capital allocation isn't disclosed."
+          }
+        ],
+        "worked_example": "ITC Ltd FY24 Segment ROCE:\\nFMCG-Cigarettes: Capital Employed ₹11,500 cr | EBIT ₹21,800 cr | ROCE ≈ 190% (near-infinite due to low capital intensity of cigarette manufacturing)\\nFMCG-Others: Capital Employed ₹6,800 cr | EBIT ₹1,090 cr | ROCE ≈ 16% (scaling consumer business)\\nHotels: Capital Employed ₹6,200 cr | EBITDA ~₹700 cr, EBIT ~₹400 cr | ROCE ≈ 6% (asset-heavy, cyclical)\\nPaperboards/Paper/Packaging: Capital Employed ₹9,800 cr | EBIT ₹1,850 cr | ROCE ≈ 19%\\nAgri: Capital Employed ₹4,500 cr | EBIT ₹820 cr | ROCE ≈ 18%\\n\\nInsight: Cigarettes is the cash cow with absurd ROCE — it throws off capital that can be redeployed. Hotels, at 6% ROCE (below cost of capital ~11-12%), is a capital-destroying segment subsidised by cigarettes. This is ITC's capital allocation challenge — the conglomerate structure hides the fact that Hotels earns below cost of capital while Cigarettes earns far above. In a standalone company, Hotels would face pressure to either improve returns or be exited. Within ITC, it's been patient capital for decades.",
+        "sensitivity_note": "Segment-level ROCE below cost of capital is value destructive even if EBITDA is positive. An ITC investor should mentally discount the Hotels segment to ~0.8-1.0x book value despite its earnings contribution, which changes the sum-of-parts valuation meaningfully."
+      },
+      {
+        "name": "Sum-of-the-Parts (SOTP) Valuation",
+        "formula": "SOTP Enterprise Value = Σ (Segment EBITDA × Segment-appropriate EV/EBITDA multiple) + Centrally-held Net Cash (or minus Net Debt)",
+        "variables": [
+          {
+            "symbol": "Segment EBITDA",
+            "meaning": "Latest normalised EBITDA for each segment"
+          },
+          {
+            "symbol": "Segment-appropriate Multiple",
+            "meaning": "EV/EBITDA multiple based on the segment's business model, growth, and risk profile. Not the consolidated multiple."
+          },
+          {
+            "symbol": "Centrally-held Net Cash/Debt",
+            "meaning": "Cash and debt held at the corporate level not directly attributable to segments"
+          }
+        ],
+        "worked_example": "ITC FY24 SOTP Valuation (illustrative, analyst estimates):\\nFMCG-Cigarettes: EBITDA ~₹22,200 cr × 17x (mature cash cow, regulatory headwinds) = ₹3,77,400 cr\\nFMCG-Others: EBITDA ~₹2,400 cr × 30x (scaling consumer growth) = ₹72,000 cr\\nHotels: EBITDA ~₹700 cr × 20x (recovery cycle, premium brand) = ₹14,000 cr\\nPaperboards/Paper: EBITDA ~₹2,800 cr × 10x (cyclical industrial) = ₹28,000 cr\\nAgri: EBITDA ~₹1,100 cr × 12x (agri-related) = ₹13,200 cr\\nAdd: Net Cash ~₹28,000 cr\\n\\nSOTP Enterprise Value: 377,400 + 72,000 + 14,000 + 28,000 + 13,200 + 28,000 = ₹5,32,600 cr\\n\\nAt FY24 EBITDA, implied blended EV/EBITDA = ₹5,32,600 / ₹29,000 = 18.4x — versus the consolidated multiple the market may be applying. Analysts who value ITC as 'cigarettes company at cigarettes multiple' systematically under-value the scaling FMCG-Others and Hotels recovery opportunity. Analysts who apply single consolidated multiple miss the mix implications.",
+        "sensitivity_note": "SOTP valuation is sensitive to segment-appropriate multiple assumptions. Changing FMCG-Others multiple from 30x to 25x reduces SOTP EV by ₹12,000 cr. Changing Cigarettes multiple from 17x to 15x reduces by ₹44,400 cr. Always present SOTP as a sensitivity range, not a point estimate, and disclose the multiple assumptions explicitly."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+V → Paste Special",
+        "Cmd+Shift+L → Toggle filter",
+        "Cmd+Shift+End → Select to end",
+        "Cmd+Option+P → PivotTable"
+      ],
+      "windows": [
+        "Alt+E+S+V → Paste values for segment data across years",
+        "Ctrl+Shift+L → Toggle filter for segment-level tables",
+        "Ctrl+Shift+End → Select from cursor to end of data (build segment databases)",
+        "Alt+N+V+T → Create pivot table for segment revenue/EBITDA aggregations"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Segment EBITDA Margin",
+        "formula": "Segment EBITDA Margin = Segment EBITDA / Segment Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Segment EBITDA",
+            "meaning": "Segment operating profit (results) plus segment depreciation and amortisation. For companies that disclose segment EBITDA directly, use the disclosed figure. For those disclosing only EBIT, add back segment depreciation."
+          },
+          {
+            "symbol": "Segment Revenue",
+            "meaning": "External revenue attributable to the segment. Exclude inter-segment revenue unless analysing vertical integration."
+          }
+        ],
+        "plain_english": "Segment EBITDA margin reveals the operational profitability of a single business unit in isolation, stripping away corporate overheads and financing decisions. For conglomerates like Reliance or ITC, consolidated margin is a meaningless blend—understanding segment margins exposes which parts of the business are truly profitable and which are margin-compressing. A telecom segment and a retail segment will never have comparable margins; the metric forces you to compare apples to apples within their own peer set.",
+        "worked_example": {
+          "problem": "Reliance Industries reports FY24 consolidated EBITDA margin of ~16%. Explain why this average is misleading and assess which segment drives margin volatility.",
+          "steps": [
+            "Extract segment revenues and EBITDA from annual report segment disclosures.",
+            "Calculate margin for Oil-to-Chemicals: ₹62,400 / ₹5,61,500 = 11.1%",
+            "Calculate margin for Jio: ₹51,500 / ₹1,19,800 = 43.0%",
+            "Calculate margin for Retail: ₹25,100 / ₹3,06,500 = 8.2%",
+            "Calculate margin for Oil & Gas: ₹15,800 / ₹24,200 = 65.3%",
+            "Observe the wide dispersion: Jio and Oil & Gas are high-margin; Retail is thin-margin.",
+            "Identify that Oil-to-Chemicals, despite lower margin, moves consolidated margin most due to sheer size (₹5.6 tr revenue)."
+          ],
+          "result": "Segment margins range from 8.2% (Retail) to 65.3% (Oil & Gas). The 16% consolidated figure is a distraction; it masks the fact that Retail operates at discount economics, while Oil & Gas operates legacy upstream economics. A 100 bps margin shift in Oil-to-Chemicals (largest by revenue) swings consolidated EBITDA by ~₹5,600 cr—far outweighing Jio's margin impact despite Jio's higher margin rate.",
+          "insight": "Consolidated metrics obscure segment drivers. For Reliance forecasting, segment-level margin assumptions are mandatory. Analysts who project 'flat consolidated margin + revenue growth' systematically misforecast total EBITDA because they ignore segment mix and cyclicality differences."
+        },
+        "sensitivity_note": "A 100 bps margin shift in Jio (the highest-margin segment) moves consolidated EBITDA by approximately ₹1,200 cr. A 100 bps margin shift in Oil-to-Chemicals (largest revenue) moves consolidated EBITDA by approximately ₹5,600 cr. Analysts forecasting consolidated margins without segment context systematically err on both size and direction of margin movements."
+      },
+      {
+        "name": "Segment ROCE",
+        "formula": "Segment ROCE = Segment EBIT / Segment Capital Employed",
+        "variables": [
+          {
+            "symbol": "Segment EBIT",
+            "meaning": "Segment operating profit (results) before centrally-allocated costs. Some companies disclose segment PBT; for ROCE comparison, use EBIT (before centrally-allocated finance costs)."
+          },
+          {
+            "symbol": "Segment Capital Employed",
+            "meaning": "Segment Assets minus Segment Non-interest-bearing Liabilities. Or equivalently, Segment Equity plus allocated Debt. For many Indian companies, segment ROCE requires analyst-level estimation as full capital allocation isn't disclosed."
+          }
+        ],
+        "plain_english": "Segment ROCE answers the critical question: does this business earn more than the cost of capital deployed in it? A segment earning 25% ROCE is value-creating; one earning 8% ROCE (below typical cost of capital) is value-destroying, even if EBITDA looks healthy. Within a conglomerate, some segments may be cash cows (high ROCE, funding other units) while others are capital traps (low ROCE, destroying value). This metric exposes which parts of the business should be reinvested in, which should be harvested for cash, and which should be exited.",
+        "worked_example": {
+          "problem": "ITC Ltd FY24: Assess segment capital efficiency and identify which segments are value-creating versus value-destroying, assuming ITC's cost of capital is ~11-12%.",
+          "steps": [
+            "Gather segment EBIT (or EBITDA less D&A) and segment capital employed from the annual report.",
+            "Calculate ROCE for Cigarettes: ₹21,800 / ₹11,500 = 190%",
+            "Calculate ROCE for FMCG-Others: ₹1,090 / ₹6,800 = 16%",
+            "Calculate ROCE for Hotels: ₹400 / ₹6,200 = 6.5%",
+            "Calculate ROCE for Paperboards/Paper/Packaging: ₹1,850 / ₹9,800 = 19%",
+            "Calculate ROCE for Agri: ₹820 / ₹4,500 = 18%",
+            "Compare each ROCE to cost of capital (11-12%). Identify Hotels as below cost of capital."
+          ],
+          "result": "Cigarettes ROCE ~190% (cash cow). FMCG-Others ~16%, Paperboards ~19%, Agri ~18% all above cost of capital (incremental value-creating). Hotels ~6.5% is below cost of capital—value-destroying despite positive EBITDA of ₹700 cr. The Hotels segment, when valued separately, should trade at a discount to its P&L contribution alone because it destroys shareholder value on a capital basis.",
+          "insight": "ITC is a conglomerate where Cigarettes (190% ROCE) subsidises Hotels (6.5% ROCE). In a standalone Hotels company, this asset base would either be forced to improve returns or be exited. Within ITC, it remains patient capital because cigarettes throws off so much cash. An investor performing sum-of-parts valuation must discount Hotels to ~0.8–1.0x book value despite earnings contribution, which materially changes intrinsic value."
+        },
+        "sensitivity_note": "Segment-level ROCE below cost of capital is value destructive even if EBITDA is positive. An ITC investor should mentally discount the Hotels segment to ~0.8-1.0x book value despite its earnings contribution, which changes the sum-of-parts valuation meaningfully."
+      },
+      {
+        "name": "Sum-of-the-Parts (SOTP) Valuation",
+        "formula": "SOTP Enterprise Value = Σ (Segment EBITDA × Segment-appropriate EV/EBITDA multiple) + Centrally-held Net Cash (or minus Net Debt)",
+        "variables": [
+          {
+            "symbol": "Segment EBITDA",
+            "meaning": "Latest normalised EBITDA for each segment"
+          },
+          {
+            "symbol": "Segment-appropriate Multiple",
+            "meaning": "EV/EBITDA multiple based on the segment's business model, growth, and risk profile. Not the consolidated multiple."
+          },
+          {
+            "symbol": "Centrally-held Net Cash/Debt",
+            "meaning": "Cash and debt held at the corporate level not directly attributable to segments"
+          }
+        ],
+        "plain_english": "SOTP valuation values each segment as if it were a standalone company, using multiples reflecting its own growth and risk profile, then sums the pieces. A mature cash-generative segment (e.g., cigarettes) deserves a lower multiple than a scaling growth segment (e.g., consumer staples scaling). Consolidated valuation—applying one multiple to blended EBITDA—systematically mis-prices conglomerates by ignoring mix effects. SOTP uncovers whether the market is under-valuing growth segments hidden inside a 'boring' conglomerate tag.",
+        "worked_example": {
+          "problem": "Value ITC Ltd using sum-of-the-parts, assuming the following segment multiples reflect comparable standalone companies: Cigarettes 17x, FMCG-Others 30x, Hotels 20x, Paperboards 10x, Agri 12x. Include ₹28,000 cr net cash.",
+          "steps": [
+            "Gather FY24 segment EBITDA: Cigarettes ₹22,200 cr, FMCG-Others ₹2,400 cr, Hotels ₹700 cr, Paperboards/Paper ₹2,800 cr, Agri ₹1,100 cr.",
+            "Apply Cigarettes multiple: ₹22,200 × 17x = ₹3,77,400 cr",
+            "Apply FMCG-Others multiple: ₹2,400 × 30x = ₹72,000 cr",
+            "Apply Hotels multiple: ₹700 × 20x = ₹14,000 cr",
+            "Apply Paperboards multiple: ₹2,800 × 10x = ₹28,000 cr",
+            "Apply Agri multiple: ₹1,100 × 12x = ₹13,200 cr",
+            "Sum segment values: ₹3,77,400 + ₹72,000 + ₹14,000 + ₹28,000 + ₹13,200 = ₹5,04,600 cr",
+            "Add centrally-held net cash: ₹5,04,600 + ₹28,000 = ₹5,32,600 cr"
+          ],
+          "result": "SOTP Enterprise Value = ₹5,32,600 cr. Blended EV/EBITDA = ₹5,32,600 / ₹29,000 (total EBITDA) = 18.4x. If the market is valuing ITC at 15x consolidated, it is undervaluing the business because it is under-weighting the 30x multiple applied to scaling FMCG-Others and the recovery upside in Hotels.",
+          "insight": "SOTP reveals valuation dislocations in conglomerates. Analysts who apply a single 'cigarettes company at cigarettes multiple' (say, 13x) systematically under-value ITC. Analysts who apply a single 'blended' multiple miss that growth and margin-expansion in FMCG-Others is worth 30x, not 13x. A 300 bps multiple spread (30x growth vs. 13x cash cow) on a segment growing 15–20% annually is economically material and drives mis-pricing."
+        },
+        "sensitivity_note": "SOTP valuation is sensitive to segment-appropriate multiple assumptions. Changing FMCG-Others multiple from 30x to 25x reduces SOTP EV by ₹12,000 cr. Changing Cigarettes multiple from 17x to 15x reduces by ₹44,400 cr. Always present SOTP as a sensitivity range, not a point estimate, and disclose the multiple assumptions explicitly."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+V → Paste Special",
+        "Cmd+Shift+L → Toggle filter",
+        "Cmd+Shift+End → Select to end",
+        "Cmd+Option+P → PivotTable"
+      ],
+      "windows": [
+        "Alt+E+S+V → Paste values for segment data across years",
+        "Ctrl+Shift+L → Toggle filter for segment-level tables",
+        "Ctrl+Shift+End → Select from cursor to end of data (build segment databases)",
+        "Alt+N+V+T → Create pivot table for segment revenue/EBITDA aggregations"
+      ]
+    }
+  }
+}

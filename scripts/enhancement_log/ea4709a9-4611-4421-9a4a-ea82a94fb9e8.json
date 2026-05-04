@@ -1,0 +1,213 @@
+{
+  "id": "ea4709a9-4611-4421-9a4a-ea82a94fb9e8",
+  "label": "M11 S4 | The Banking Analyst's Formula Toolkit — Every Calculation Yo",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net Interest Margin (NIM)",
+        "formula": "NIM = Net Interest Income / Average Interest-Earning Assets",
+        "variables": [
+          {
+            "symbol": "Net Interest Income (NII)",
+            "meaning": "Interest earned on loans, investments, and cash, minus interest paid on deposits and borrowings (annual figure)"
+          },
+          {
+            "symbol": "Average Interest-Earning Assets",
+            "meaning": "Average of opening and closing balance of advances + investments + cash with RBI + interbank loans (excluding fixed assets and non-earning items)"
+          }
+        ],
+        "worked_example": "HDFC Bank FY24: NII = 1,08,532 crore. Average Interest-Earning Assets = roughly 26,00,000 crore (averaging FY23 close and FY24 close). NIM = 1,08,532 / 26,00,000 = 4.18%. Compare to SBI FY24: NII = 1,59,876 crore. Average Interest-Earning Assets = roughly 51,80,000 crore. NIM = 1,59,876 / 51,80,000 = 3.09%. The 109 basis point gap (4.18% vs 3.09%) is the single biggest reason HDFC Bank trades at 2.7x P/BV while SBI trades at 1.5x P/BV — higher NIM mechanically translates to higher RoA, higher RoE, and higher multiple.",
+        "sensitivity_note": "NIM is highly sensitive to interest rate cycles. When RBI raises rates, banks with high CASA see NIM expand because deposit costs rise slowly while loan yields rise quickly. When rates fall, the dynamic reverses. NIM also depends on asset mix — retail unsecured loans (credit cards, personal loans) yield 14-18% while large corporate loans yield 8-9%. A bank shifting toward retail expands NIM structurally. Always look at NIM trend over 4-8 quarters, not just point-in-time."
+      },
+      {
+        "name": "Slippage Ratio (Annualised)",
+        "formula": "Slippage Ratio = (Fresh Slippages during the period × 4) / Opening Standard Advances",
+        "variables": [
+          {
+            "symbol": "Fresh Slippages",
+            "meaning": "Loans that became NPA during the quarter (disclosed in concall and investor presentation). Quarterly figure; multiply by 4 for annualised view"
+          },
+          {
+            "symbol": "Opening Standard Advances",
+            "meaning": "Total advances at start of period MINUS opening GNPA (i.e., the loan book that was still standard at the start)"
+          }
+        ],
+        "worked_example": "Bank ABC Q4FY24 disclosure: Fresh slippages = 800 crore. Opening standard advances = 4,00,000 crore. Quarterly slippage ratio = 800/4,00,000 = 0.2%. Annualised = 0.2% × 4 = 0.8%. This is excellent — well below the 1.5% threshold for healthy banks. Compare to Yes Bank FY19: Fresh slippages of around 25,000 crore against opening standard advances of around 2,40,000 crore. Annual slippage ratio = 25,000/2,40,000 = 10.4%. This was a flashing red signal a full year before the moratorium — slippage at 10% means roughly 10% of the loan book is going bad each year, which is mathematically incompatible with bank survival.",
+        "sensitivity_note": "Slippage is the leading indicator. GNPA is the lagging indicator. If you wait for GNPA to spike before forming a view, you are 6-9 months behind the curve. Track slippage every quarter from concall transcripts and investor presentations. A bank with stable 1% slippage for 8 consecutive quarters is structurally clean; a bank where slippage rises from 1.5% to 3% to 5% across 3 quarters is in early-stage stress regardless of headline GNPA."
+      },
+      {
+        "name": "Return on Assets (RoA) and Return on Equity (RoE) Decomposition",
+        "formula": "RoA = Net Profit / Average Total Assets    |    RoE = RoA × Leverage    |    Leverage = Average Total Assets / Average Equity",
+        "variables": [
+          {
+            "symbol": "RoA",
+            "meaning": "Universal banking profitability metric — comparable across banks regardless of size"
+          },
+          {
+            "symbol": "Leverage",
+            "meaning": "Times equity multiplied. Indian banks operate at 8-12x leverage typically (regulatory limits via Capital Adequacy Ratio)"
+          },
+          {
+            "symbol": "RoE",
+            "meaning": "Shareholder return metric. RoE = RoA × Leverage. A bank improving RoE through higher leverage (vs higher RoA) is increasing risk, not improving fundamentals"
+          }
+        ],
+        "worked_example": "HDFC Bank FY24: Net Profit = 60,812 crore. Average Total Assets = approximately 32,00,000 crore. Average Equity = approximately 3,50,000 crore. RoA = 60,812/32,00,000 = 1.90%. Leverage = 32,00,000/3,50,000 = 9.14x. RoE = 1.90% × 9.14 = 17.4%. Compare to SBI FY24: Net Profit = 61,077 crore. Average Total Assets = approximately 60,00,000 crore. Average Equity = approximately 3,50,000 crore (similar absolute equity to HDFC despite being twice the size). RoA = 61,077/60,00,000 = 1.02%. Leverage = 60,00,000/3,50,000 = 17.1x. RoE = 1.02% × 17.1 = 17.5%. Same RoE, very different quality. HDFC achieves it through high RoA and conservative leverage; SBI achieves it through low RoA and high leverage. The HDFC profile is structurally safer and supports higher P/BV multiples.",
+        "sensitivity_note": "Always decompose RoE into RoA × Leverage. Two banks with identical 17% RoE can have completely different risk profiles. The bank with 2% RoA and 8.5x leverage is much safer than the bank with 0.7% RoA and 24x leverage, even though headline RoE is the same. Yes Bank in 2018 reported RoE of 17% — but RoA was 1.6% and leverage was 10.6x. The RoE looked fine; the breakdown showed nothing alarming. The actual problem was hidden in slippage and NNPA, not in RoE decomposition. This is why no single metric works — you need the four pillars together."
+      },
+      {
+        "name": "Price-to-Book Value (P/BV) — The Primary Banking Multiple",
+        "formula": "P/BV = Market Cap / Book Value of Equity   OR   Per share: Stock Price / Book Value Per Share",
+        "variables": [
+          {
+            "symbol": "Book Value of Equity",
+            "meaning": "Net worth from balance sheet — share capital + reserves and surplus. Excludes intangibles for adjusted book value if needed"
+          },
+          {
+            "symbol": "Adjusted Book Value",
+            "meaning": "Book value minus net NPAs (NNPA) and minus any unrecognised stress (restructured loans, SMA-2 accounts). Used for stressed banks where reported book overstates economic value"
+          }
+        ],
+        "worked_example": "HDFC Bank Jan 2025: Stock price approximately 1,650. Book Value Per Share approximately 615. P/BV = 1,650/615 = 2.7x. SBI Jan 2025: Stock price approximately 770. Book Value Per Share approximately 510. P/BV = 770/510 = 1.5x. ICICI Bank Jan 2025: P/BV approximately 3.0x. Bandhan Bank Jan 2025: P/BV approximately 1.2x. Indian private banks historically range 2.0-4.0x P/BV; PSU banks historically range 0.7-1.8x. The wide range exists because P/BV directly reflects expected RoE — a bank with 18% sustainable RoE deserves a higher P/BV than a bank with 12%, mathematically. Rule of thumb: justified P/BV ≈ (RoE − Cost of Equity) / (Cost of Equity − Growth) — the Gordon growth model applied to banks.",
+        "sensitivity_note": "P/BV is the primary multiple but use it with care. For banks with deteriorating asset quality, ALWAYS calculate adjusted book value by subtracting NNPA and any obviously under-provisioned exposures. Yes Bank in 2019 traded at 0.8x reported P/BV which looked cheap, but adjusted P/BV after writing down stressed loans was 1.5-2x — actually expensive. Always cross-check P/BV against RoE — a bank trading at 2x P/BV with 12% RoE is expensive; the same bank at 2x with 18% RoE is reasonable. The justified P/BV must align with the sustainable RoE."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot table)",
+        "Cmd + Shift + L (Filters)",
+        "=AVERAGE(range)",
+        "Format → Conditional Formatting (Data Bars)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Insert pivot table for peer comparison)",
+        "Ctrl + Shift + L (Toggle filters)",
+        "=AVERAGE(range) for averaging interest-earning assets",
+        "Conditional Formatting → Data Bars (visualise NIM/RoA across peers)",
+        "Ctrl + Shift + 5 (% format for ratios)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net Interest Margin (NIM)",
+        "formula": "NIM = Net Interest Income / Average Interest-Earning Assets",
+        "variables": [
+          {
+            "symbol": "Net Interest Income (NII)",
+            "meaning": "Interest earned on loans, investments, and cash, minus interest paid on deposits and borrowings (annual figure)"
+          },
+          {
+            "symbol": "Average Interest-Earning Assets",
+            "meaning": "Average of opening and closing balance of advances + investments + cash with RBI + interbank loans (excluding fixed assets and non-earning items)"
+          }
+        ],
+        "plain_english": "NIM tells you what percentage of your interest-earning assets you are converting into net interest profit after all borrowing costs. It is the core profitability engine of any bank — a 4% NIM bank is structurally more profitable than a 3% NIM bank, all else equal, because every rupee of assets works harder. Rising NIM signals either better loan pricing power or disciplined deposit cost management; falling NIM is a red flag.",
+        "worked_example": "HDFC Bank FY24: NII = 1,08,532 crore. Average Interest-Earning Assets = roughly 26,00,000 crore (averaging FY23 close and FY24 close). NIM = 1,08,532 / 26,00,000 = 4.18%. Compare to SBI FY24: NII = 1,59,876 crore. Average Interest-Earning Assets = roughly 51,80,000 crore. NIM = 1,59,876 / 51,80,000 = 3.09%. The 109 basis point gap (4.18% vs 3.09%) is the single biggest reason HDFC Bank trades at 2.7x P/BV while SBI trades at 1.5x P/BV — higher NIM mechanically translates to higher RoA, higher RoE, and higher multiple.",
+        "sensitivity_note": "NIM is highly sensitive to interest rate cycles. When RBI raises rates, banks with high CASA see NIM expand because deposit costs rise slowly while loan yields rise quickly. When rates fall, the dynamic reverses. NIM also depends on asset mix — retail unsecured loans (credit cards, personal loans) yield 14-18% while large corporate loans yield 8-9%. A bank shifting toward retail expands NIM structurally. Always look at NIM trend over 4-8 quarters, not just point-in-time."
+      },
+      {
+        "name": "Slippage Ratio (Annualised)",
+        "formula": "Slippage Ratio = (Fresh Slippages during the period × 4) / Opening Standard Advances",
+        "variables": [
+          {
+            "symbol": "Fresh Slippages",
+            "meaning": "Loans that became NPA during the quarter (disclosed in concall and investor presentation). Quarterly figure; multiply by 4 for annualised view"
+          },
+          {
+            "symbol": "Opening Standard Advances",
+            "meaning": "Total advances at start of period MINUS opening GNPA (i.e., the loan book that was still standard at the start)"
+          }
+        ],
+        "plain_english": "Slippage ratio measures the rate at which new loans are turning bad — it is a leading indicator of credit stress, appearing 6-9 months before those bad loans show up in GNPA. A slippage ratio above 1.5% annualised is a warning signal; above 3% is acute stress. Unlike GNPA which lags, slippage is real-time and predictive.",
+        "worked_example": "Bank ABC Q4FY24 disclosure: Fresh slippages = 800 crore. Opening standard advances = 4,00,000 crore. Quarterly slippage ratio = 800/4,00,000 = 0.2%. Annualised = 0.2% × 4 = 0.8%. This is excellent — well below the 1.5% threshold for healthy banks. Compare to Yes Bank FY19: Fresh slippages of around 25,000 crore against opening standard advances of around 2,40,000 crore. Annual slippage ratio = 25,000/2,40,000 = 10.4%. This was a flashing red signal a full year before the moratorium — slippage at 10% means roughly 10% of the loan book is going bad each year, which is mathematically incompatible with bank survival.",
+        "sensitivity_note": "Slippage is the leading indicator. GNPA is the lagging indicator. If you wait for GNPA to spike before forming a view, you are 6-9 months behind the curve. Track slippage every quarter from concall transcripts and investor presentations. A bank with stable 1% slippage for 8 consecutive quarters is structurally clean; a bank where slippage rises from 1.5% to 3% to 5% across 3 quarters is in early-stage stress regardless of headline GNPA."
+      },
+      {
+        "name": "Return on Assets (RoA) and Return on Equity (RoE) Decomposition",
+        "formula": "RoA = Net Profit / Average Total Assets    |    RoE = RoA × Leverage    |    Leverage = Average Total Assets / Average Equity",
+        "variables": [
+          {
+            "symbol": "RoA",
+            "meaning": "Universal banking profitability metric — comparable across banks regardless of size"
+          },
+          {
+            "symbol": "RoE",
+            "meaning": "Shareholder return metric. RoE = RoA × Leverage. A bank improving RoE through higher leverage (vs higher RoA) is increasing risk, not improving fundamentals"
+          },
+          {
+            "symbol": "Leverage",
+            "meaning": "Times equity multiplied. Indian banks operate at 8-12x leverage typically (regulatory limits via Capital Adequacy Ratio)"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Consolidated after-tax profit for the period"
+          },
+          {
+            "symbol": "Average Total Assets",
+            "meaning": "Average of opening and closing total assets on the balance sheet"
+          },
+          {
+            "symbol": "Average Equity",
+            "meaning": "Average of opening and closing shareholders' equity (net worth)"
+          }
+        ],
+        "computation": [
+          "Calculate RoA = Net Profit ÷ Average Total Assets",
+          "Calculate Leverage = Average Total Assets ÷ Average Equity",
+          "Calculate RoE = RoA × Leverage (or directly: Net Profit ÷ Average Equity)"
+        ],
+        "plain_english": "This decomposition separates profitability (RoA) from financial structure (Leverage). Two banks can have identical RoE but very different safety profiles — one achieved through superior asset management, the other through aggressive leverage. This decomposition forces you to see the difference and ask: is the shareholder return coming from the core business being excellent, or from financial engineering?",
+        "worked_example": "HDFC Bank FY24: Net Profit = 60,812 crore. Average Total Assets = approximately 32,00,000 crore. Average Equity = approximately 3,50,000 crore. RoA = 60,812/32,00,000 = 1.90%. Leverage = 32,00,000/3,50,000 = 9.14x. RoE = 1.90% × 9.14 = 17.4%. Compare to SBI FY24: Net Profit = 61,077 crore. Average Total Assets = approximately 60,00,000 crore. Average Equity = approximately 3,50,000 crore (similar absolute equity to HDFC despite being twice the size). RoA = 61,077/60,00,000 = 1.02%. Leverage = 60,00,000/3,50,000 = 17.1x. RoE = 1.02% × 17.1 = 17.5%. Same RoE, very different quality. HDFC achieves it through high RoA and conservative leverage; SBI achieves it through low RoA and high leverage. The HDFC profile is structurally safer and supports higher P/BV multiples.",
+        "sensitivity_note": "Always decompose RoE into RoA × Leverage. Two banks with identical 17% RoE can have completely different risk profiles. The bank with 2% RoA and 8.5x leverage is much safer than the bank with 0.7% RoA and 24x leverage, even though headline RoE is the same. Yes Bank in 2018 reported RoE of 17% — but RoA was 1.6% and leverage was 10.6x. The RoE looked fine; the breakdown showed nothing alarming. The actual problem was hidden in slippage and NNPA, not in RoE decomposition. This is why no single metric works — you need the four pillars together."
+      },
+      {
+        "name": "Price-to-Book Value (P/BV) — The Primary Banking Multiple",
+        "formula": "P/BV = Market Cap / Book Value of Equity   OR   Per share: Stock Price / Book Value Per Share",
+        "variables": [
+          {
+            "symbol": "Market Cap",
+            "meaning": "Current stock price × number of shares outstanding"
+          },
+          {
+            "symbol": "Book Value of Equity",
+            "meaning": "Net worth from balance sheet — share capital + reserves and surplus. Excludes intangibles for adjusted book value if needed"
+          },
+          {
+            "symbol": "Stock Price",
+            "meaning": "Current market price per share"
+          },
+          {
+            "symbol": "Book Value Per Share",
+            "meaning": "Total shareholders' equity ÷ number of shares outstanding"
+          },
+          {
+            "symbol": "Adjusted Book Value",
+            "meaning": "Book value minus net NPAs (NNPA) and minus any unrecognised stress (restructured loans, SMA-2 accounts). Used for stressed banks where reported book overstates economic value"
+          }
+        ],
+        "plain_english": "P/BV is the ratio of what the market will pay for a bank to what the bank's balance sheet says it is worth. A P/BV of 2.0x means investors believe the bank's equity is worth twice its accounting value — they are paying a premium for expected future returns above cost of equity. For banks, this multiple moves with expected RoE; it is the clearest signal of market confidence in a bank's business model.",
+        "worked_example": "HDFC Bank Jan 2025: Stock price approximately 1,650. Book Value Per Share approximately 615. P/BV = 1,650/615 = 2.7x. SBI Jan 2025: Stock price approximately 770. Book Value Per Share approximately 510. P/BV = 770/510 = 1.5x. ICICI Bank Jan 2025: P/BV approximately 3.0x. Bandhan Bank Jan 2025: P/BV approximately 1.2x. Indian private banks historically range 2.0-4.0x P/BV; PSU banks historically range 0.7-1.8x. The wide range exists because P/BV directly reflects expected RoE — a bank with 18% sustainable RoE deserves a higher P/BV than a bank with 12%, mathematically. Rule of thumb: justified P/BV ≈ (RoE − Cost of Equity) / (Cost of Equity − Growth) — the Gordon growth model applied to banks.",
+        "sensitivity_note": "P/BV is the primary multiple but use it with care. For banks with deteriorating asset quality, ALWAYS calculate adjusted book value by subtracting NNPA and any obviously under-provisioned exposures. Yes Bank in 2019 traded at 0.8x reported P/BV which looked cheap, but adjusted P/BV after writing down stressed loans was 1.5-2x — actually expensive. Always cross-check P/BV against RoE — a bank trading at 2x P/BV with 12% RoE is expensive; the same bank at 2x with 18% RoE is reasonable. The justified P/BV must align with the sustainable RoE."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot table)",
+        "Cmd + Shift + L (Filters)",
+        "=AVERAGE(range)",
+        "Format → Conditional Formatting (Data Bars)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Insert pivot table for peer comparison)",
+        "Ctrl + Shift + L (Toggle filters)",
+        "=AVERAGE(range) for averaging interest-earning assets",
+        "Conditional Formatting → Data Bars (visualise NIM/RoA across peers)",
+        "Ctrl + Shift + 5 (% format for ratios)"
+      ]
+    }
+  }
+}

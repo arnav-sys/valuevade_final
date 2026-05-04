@@ -1,0 +1,210 @@
+{
+  "id": "6bd6484c-f85a-47bc-941a-116aa766dfa1",
+  "label": "M7 S8 | The Common-Size and Trend Formulas",
+  "before": {
+    "formulas": [
+      {
+        "name": "Common-Size P&L (Vertical Analysis)",
+        "formula": "Common-Size % = (Line Item / Revenue from Operations) × 100. For Balance Sheet: (Line Item / Total Assets) × 100",
+        "variables": [
+          {
+            "symbol": "Line Item",
+            "meaning": "The specific cost or asset category being analysed — e.g., Cost of Materials Consumed, Employee Benefits, Trade Receivables"
+          },
+          {
+            "symbol": "Revenue from Operations",
+            "meaning": "The base for P&L common-size. Use Revenue from Operations, NOT Total Income — Other Income distorts the analysis as covered in Session 2."
+          }
+        ],
+        "worked_example": "HUL FY24 Common-Size P&L:\\nRevenue from Operations = ₹60,980 cr (base = 100%)\\nCost of Materials Consumed = ₹22,460 cr = 36.8%\\nEmployee Benefits = ₹3,480 cr = 5.7%\\nAdvertising & Promotion = ₹5,490 cr = 9.0%\\nOther Operating Expenses = ₹14,280 cr = 23.4%\\n→ EBITDA = ₹15,270 cr = 25.1%\\nDepreciation = ₹1,080 cr = 1.8%\\n→ EBIT = ₹14,190 cr = 23.3%\\n\\nContrast with Jyothy Labs FY24:\\nCost of Materials = 52.3%\\nEmployee Benefits = 9.1%\\nA&P = 11.5%\\nOther OpEx = 12.8%\\n→ EBITDA = 14.3%\\n\\nThe common-size comparison immediately reveals why HUL is valued differently: 1,000 bps better gross margin (63.2% vs 47.7%) driven by scale, premiumisation, and category mix. This is the power of vertical analysis — absolute comparisons hide what percentage comparisons reveal.",
+        "sensitivity_note": "A 100 bps common-size shift in any major cost line translates directly to 100 bps EBITDA impact. For HUL's ₹61,000 cr revenue base, 100 bps equals ₹610 cr. Small common-size shifts therefore have material impact on absolute earnings."
+      },
+      {
+        "name": "Compound Annual Growth Rate (CAGR)",
+        "formula": "CAGR = (End Value / Start Value)^(1/n) − 1, where n = number of years between start and end",
+        "variables": [
+          {
+            "symbol": "End Value",
+            "meaning": "The value in the final year of the period being analysed"
+          },
+          {
+            "symbol": "Start Value",
+            "meaning": "The value in the base year"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of years in the compounding period. For 10 years of data (e.g., FY15 to FY25), n = 10. Be careful with inclusive/exclusive counting."
+          }
+        ],
+        "worked_example": "HUL Revenue CAGR, FY15 to FY24 (9 years):\\nFY15 Revenue: ₹31,972 cr\\nFY24 Revenue: ₹60,980 cr\\nCAGR = (60,980 / 31,972)^(1/9) − 1 = (1.9073)^(0.1111) − 1 = 1.0740 − 1 = 7.4%\\n\\nHUL EBITDA CAGR, FY15 to FY24 (9 years):\\nFY15 EBITDA: ₹5,819 cr\\nFY24 EBITDA: ₹15,270 cr\\nCAGR = (15,270 / 5,819)^(1/9) − 1 = (2.6242)^(0.1111) − 1 = 1.1128 − 1 = 11.3%\\n\\nCOMPARATIVE INSIGHT: HUL revenue CAGR was 7.4% while EBITDA CAGR was 11.3% — meaning EBITDA compounded approximately 390 bps faster than revenue over a decade. This is the compounding margin expansion story — structural premiumisation producing 'quality growth' that rewards patient holders through both earnings growth AND multiple expansion. Analysts looking at single-year 6-8% growth missed the compounding story that made HUL a 3x stock over this period.",
+        "sensitivity_note": "A 100 bps difference in CAGR over 10 years equates to approximately 10% difference in ending value. A company with 8% CAGR vs one with 10% CAGR produces materially different compounding over a decade — ₹100 becomes ₹216 vs ₹259."
+      },
+      {
+        "name": "Base-Year Indexed Trend Analysis",
+        "formula": "Indexed Value (year t) = (Value year t / Value base year) × 100. Base year is indexed at 100.",
+        "variables": [
+          {
+            "symbol": "Value year t",
+            "meaning": "The financial line item value in a specific year"
+          },
+          {
+            "symbol": "Value base year",
+            "meaning": "The value in the reference (base) year — set to 100"
+          }
+        ],
+        "worked_example": "HUL EBITDA Margin trajectory (FY15 = 100):\\nFY15 EBITDA Margin: 18.2% (Base, indexed = 100)\\nFY17: 20.1% → Indexed = (20.1/18.2) × 100 = 110\\nFY20: 24.1% → Indexed = (24.1/18.2) × 100 = 132\\nFY22: 24.7% → Indexed = 136\\nFY24: 25.1% → Indexed = 138\\n\\nVisualising this: 100 → 110 → 132 → 136 → 138. A consistent, monotonic rise in base-indexed margin over 9 years — the visual signal of structural margin expansion. Compare this with a cyclical business like a cement company where the same sequence might look like 100 → 125 → 85 → 135 → 90 — cyclical peaks and troughs that reveal a very different business character.",
+        "sensitivity_note": "Base-year indexing is especially powerful for visual analysis of multi-line-item trajectories. Plotting indexed values of revenue, EBITDA, PAT on one chart immediately reveals which lines are compounding faster and which are decelerating. A divergence between revenue index and EBITDA index signals margin expansion or compression."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+% → Percentage format",
+        "Fn+F11 → Insert chart",
+        "Cmd+Option+V → Paste Special",
+        "Cmd+T → Format as Table"
+      ],
+      "windows": [
+        "Ctrl+Shift+F → Format cells as percentage (core for common-size tables)",
+        "Alt+N+C → Insert column chart (for trend visualisation)",
+        "F11 → Create chart with default type from selection",
+        "Alt+H+V+S → Paste Special Values (lock historical data as you build)",
+        "Ctrl+T → Format as Table with automatic formatting"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Common-Size P&L (Vertical Analysis)",
+        "formula": "Common-Size % = (Line Item / Revenue from Operations) × 100. For Balance Sheet: (Line Item / Total Assets) × 100",
+        "variables": [
+          {
+            "symbol": "Line Item",
+            "meaning": "The specific cost or asset category being analysed — e.g., Cost of Materials Consumed, Employee Benefits, Trade Receivables"
+          },
+          {
+            "symbol": "Revenue from Operations",
+            "meaning": "The base for P&L common-size. Use Revenue from Operations, NOT Total Income — Other Income distorts the analysis as covered in Session 2."
+          },
+          {
+            "symbol": "Total Assets",
+            "meaning": "The denominator for balance sheet common-size analysis, set to represent 100%"
+          }
+        ],
+        "plain_english": "Common-size analysis restates every line item as a percentage of a base (revenue for P&L, total assets for balance sheet). It strips away scale differences, letting you compare a ₹1,000 cr company to a ₹100 cr competitor on a level footing. This reveals structural efficiency and cost discipline that absolute figures hide. For equity research, it is the first lens to spot whether a company earns better margins through operational excellence or merely because it is larger.",
+        "computation": [
+          "Identify your base: Revenue from Operations for P&L, Total Assets for Balance Sheet",
+          "For each line item, divide its absolute value by the base",
+          "Multiply by 100 to express as a percentage",
+          "Verify that major category subtotals (e.g., all operating costs + EBITDA) sum to 100% on a P&L, and all asset groups sum to 100% on a balance sheet"
+        ],
+        "worked_example": {
+          "problem": "Compare the operational cost structure of HUL and Jyothy Labs on a common-size basis for FY24. What does this reveal about their competitive positioning?",
+          "steps": [
+            "HUL FY24: Revenue from Operations = ₹60,980 cr (base = 100%)",
+            "HUL Cost of Materials Consumed = ₹22,460 cr → (22,460 / 60,980) × 100 = 36.8%",
+            "HUL Employee Benefits = ₹3,480 cr → (3,480 / 60,980) × 100 = 5.7%",
+            "HUL Advertising & Promotion = ₹5,490 cr → (5,490 / 60,980) × 100 = 9.0%",
+            "HUL Other Operating Expenses = ₹14,280 cr → (14,280 / 60,980) × 100 = 23.4%",
+            "HUL EBITDA = ₹15,270 cr → (15,270 / 60,980) × 100 = 25.1%",
+            "Jyothy Labs FY24: Cost of Materials = 52.3% of revenue, Employee Benefits = 9.1%, A&P = 11.5%, Other OpEx = 12.8%, EBITDA = 14.3%",
+            "Calculate the gap: HUL gross margin = 63.2%, Jyothy = 47.7% (1,550 bps difference)"
+          ],
+          "result": "HUL operates with a structurally superior cost base. Gross margin advantage of 1,550 bps, EBITDA margin of 25.1% vs Jyothy's 14.3% (1,080 bps), driven by scale, brand premium pricing, and category mix. HUL's 9.0% A&P spend (vs Jyothy's 11.5%) achieves disproportionately better brand recall due to scale efficiency.",
+          "insight": "Common-size comparison reveals that HUL is not merely a larger version of Jyothy Labs — it operates a fundamentally different business model. The margin differential is structural, not cyclical, and reflects decades of brand building, distribution scale, and operational leverage. An analyst relying only on absolute EBITDA numbers (₹15,270 cr vs smaller competitors) would miss the margin story that justifies HUL's premium valuation multiple. This is why common-size is the foundation of peer comparison in equity research."
+        },
+        "sensitivity_note": "A 100 bps common-size shift in any major cost line translates directly to 100 bps EBITDA impact. For HUL's ₹61,000 cr revenue base, 100 bps equals ₹610 cr. Small common-size shifts therefore have material impact on absolute earnings."
+      },
+      {
+        "name": "Compound Annual Growth Rate (CAGR)",
+        "formula": "CAGR = (End Value / Start Value)^(1/n) − 1, where n = number of years between start and end",
+        "variables": [
+          {
+            "symbol": "End Value",
+            "meaning": "The value in the final year of the period being analysed"
+          },
+          {
+            "symbol": "Start Value",
+            "meaning": "The value in the base year"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of years in the compounding period. For 10 years of data (e.g., FY15 to FY25), n = 10. Be careful with inclusive/exclusive counting."
+          }
+        ],
+        "plain_english": "CAGR measures the consistent annual growth rate that turns a starting value into an ending value over multiple years, accounting for compounding. Unlike simple average growth, CAGR reflects the reality that each year's gain builds on the prior year's base. For equity research, it reveals whether a company has sustained structural momentum or merely benefited from cyclical recovery. A 10% revenue CAGR over a decade is far more meaningful than a 15% jump in a single year.",
+        "computation": [
+          "Divide End Value by Start Value to get the total growth multiple",
+          "Raise this multiple to the power of (1/n), where n is the number of years",
+          "Subtract 1 and multiply by 100 to express as a percentage"
+        ],
+        "worked_example": {
+          "problem": "Calculate HUL's revenue and EBITDA CAGR over FY15 to FY24. What does the differential growth tell you about the quality of the business?",
+          "steps": [
+            "HUL FY15 Revenue: ₹31,972 cr; FY24 Revenue: ₹60,980 cr; Period = 9 years",
+            "Revenue CAGR = (60,980 / 31,972)^(1/9) − 1 = (1.9073)^(0.1111) − 1 = 1.0740 − 1 = 0.074 = 7.4%",
+            "HUL FY15 EBITDA: ₹5,819 cr; FY24 EBITDA: ₹15,270 cr; Period = 9 years",
+            "EBITDA CAGR = (15,270 / 5,819)^(1/9) − 1 = (2.6242)^(0.1111) − 1 = 1.1128 − 1 = 0.1128 = 11.3%",
+            "Differential = 11.3% − 7.4% = 390 bps EBITDA growing faster than revenue"
+          ],
+          "result": "HUL revenue compounded at 7.4% while EBITDA compounded at 11.3% over nine years. The 390 bps differential reflects sustained margin expansion — the company is not just growing the top line, it is converting that growth to profit with rising efficiency. Starting ₹100 of revenue in FY15 became ₹191 by FY24; starting ₹100 of EBITDA became ₹263.",
+          "insight": "This is the 'quality growth' story. HUL's investor returns came not from 7% revenue growth alone but from compounding margin expansion. A company with 7% revenue CAGR that simultaneously expands EBITDA margins by 300+ bps over a decade is demonstrating pricing power, cost control, and category premiumisation — hallmarks of a structural compounder. Single-year growth metrics miss this narrative. A analyst reviewing only FY24 results in isolation would see 6–8% growth and underestimate the stock. Understanding the 9-year CAGR architecture explains why HUL doubled its valuation multiple over this period."
+        },
+        "sensitivity_note": "A 100 bps difference in CAGR over 10 years equates to approximately 10% difference in ending value. A company with 8% CAGR vs one with 10% CAGR produces materially different compounding over a decade — ₹100 becomes ₹216 vs ₹259. Over 20 years, the divergence widens: ₹466 vs ₹673. This is why CAGR differences that appear small in annual terms compound into vast wealth differences over career horizons."
+      },
+      {
+        "name": "Base-Year Indexed Trend Analysis",
+        "formula": "Indexed Value (year t) = (Value year t / Value base year) × 100. Base year is indexed at 100.",
+        "variables": [
+          {
+            "symbol": "Value year t",
+            "meaning": "The financial line item value in a specific year"
+          },
+          {
+            "symbol": "Value base year",
+            "meaning": "The value in the reference (base) year — set to 100"
+          },
+          {
+            "symbol": "Indexed Value",
+            "meaning": "The normalized percentage representation of the line item in year t relative to the base year"
+          }
+        ],
+        "plain_english": "Base-year indexing normalizes a time series to 100 in year one, then tracks how that series grows or shrinks relative to that anchor. It is a visual and intuitive way to compare multiple lines (revenue, EBITDA, PAT) on a single chart without worrying about different scales. For a cyclical business, indexing reveals peaks and troughs; for a structural compounder, it shows monotonic climb. It is the simplest way to spot acceleration, deceleration, and structural breaks.",
+        "computation": [
+          "Choose a base year and set its value to 100",
+          "For each subsequent year, divide that year's value by the base year value and multiply by 100",
+          "Plot the indexed values on a line chart to visualize trends across multiple metrics on one scale"
+        ],
+        "worked_example": {
+          "problem": "Create an indexed trend chart for HUL's EBITDA margin from FY15 to FY24 (base year FY15 = 100). What does the trajectory tell you about business quality?",
+          "steps": [
+            "FY15 EBITDA Margin: 18.2% → Indexed = 100 (base year)",
+            "FY16 EBITDA Margin (assume 18.9%) → Indexed = (18.9 / 18.2) × 100 = 103.8",
+            "FY17 EBITDA Margin: 20.1% → Indexed = (20.1 / 18.2) × 100 = 110.4",
+            "FY20 EBITDA Margin: 24.1% → Indexed = (24.1 / 18.2) × 100 = 132.4",
+            "FY22 EBITDA Margin: 24.7% → Indexed = (24.7 / 18.2) × 100 = 135.7",
+            "FY24 EBITDA Margin: 25.1% → Indexed = (25.1 / 18.2) × 100 = 137.9"
+          ],
+          "result": "The indexed sequence: 100 → 103.8 → 110.4 → 132.4 → 135.7 → 137.9. A consistent, monotonic rise in EBITDA margin over nine years, with no reversals or cyclical deterioration. The margin expanded by 38% in relative terms (9 years, no peaks or troughs).",
+          "insight": "Contrast this with a cyclical business (e.g., a cement company's indexed margin might be 100 → 125 → 85 → 135 → 90). HUL's straight-line trajectory signals a structural business with pricing power and operational leverage, not a cyclical recovery. This visual pattern — one chart, one line, one consistent uptrend — is instantly recognizable to investors and underpins confidence in sustainable earnings. Indexed charts are often included in equity research notes because they communicate business quality in seconds, without needing spreadsheet literacy."
+        },
+        "sensitivity_note": "Base-year indexing is especially powerful for visual analysis of multi-line-item trajectories. Plotting indexed values of revenue, EBITDA, and PAT on one chart immediately reveals which lines are compounding faster and which are decelerating. A divergence between revenue index and EBITDA index signals margin expansion or compression. An index that plateaus signals deceleration, even if absolute rupee growth continues."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+% → Percentage format",
+        "Fn+F11 → Insert chart",
+        "Cmd+Option+V → Paste Special",
+        "Cmd+T → Format as Table"
+      ],
+      "windows": [
+        "Ctrl+Shift+F → Format cells as percentage (core for common-size tables)",
+        "Alt+N+C → Insert column chart (for trend visualisation)",
+        "F11 → Create chart with default type from selection",
+        "Alt+H+V+S → Paste Special Values (lock historical data as you build)",
+        "Ctrl+T → Format as Table with automatic formatting"
+      ]
+    }
+  }
+}

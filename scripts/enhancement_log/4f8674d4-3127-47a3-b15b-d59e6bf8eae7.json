@@ -1,0 +1,284 @@
+{
+  "id": "4f8674d4-3127-47a3-b15b-d59e6bf8eae7",
+  "label": "M10 S3 | The Transmission Mechanism — From Repo to Earnings, Decoded",
+  "before": {
+    "formulas": [
+      {
+        "name": "Bank NIM Sensitivity to Repo Change",
+        "formula": "Δ NIM (bps) ≈ Δ Repo (bps) × (Asset Repricing Speed - Liability Repricing Speed) × Net Earning Asset Ratio",
+        "variables": [
+          {
+            "symbol": "Δ Repo (bps)",
+            "meaning": "Change in repo rate in basis points"
+          },
+          {
+            "symbol": "Asset Repricing Speed",
+            "meaning": "Fraction of loan book that reprices within the measurement window (typically 6-12 months)"
+          },
+          {
+            "symbol": "Liability Repricing Speed",
+            "meaning": "Fraction of deposit book that reprices within the measurement window"
+          },
+          {
+            "symbol": "Net Earning Asset Ratio",
+            "meaning": "Net interest-earning assets as % of total assets"
+          }
+        ],
+        "worked_example": "HDFC Bank facing a 25 bps repo cut:\nAsset repricing speed (6-month window) = 60% (most loans MCLR-linked or repo-linked)\nLiability repricing speed (6-month window) = 35% (CASA share 47% does not reprice; FDs reprice slowly)\nNet Earning Asset Ratio = 92%\n\nNIM impact = -25 bps × (0.60 - 0.35) × 0.92 = -25 × 0.25 × 0.92 = -5.75 bps NIM compression\n\nOn HDFC Bank''s ₹24 lakh crore loan book, this translates to roughly ₹1,380 crore lower Net Interest Income annually — about 3.5% of FY24 NII. After tax, this is ₹1,034 crore lower PAT, or 2.5% lower EPS. At 19x P/E, that''s ₹38 lower target price.",
+        "sensitivity_note": "This is why bank stocks move sharply on rate decisions. The arithmetic is mechanical: faster asset repricing than liability repricing means NIMs follow rates closely. PSU banks with high CASA (40-45%) suffer most from cuts (their cheap deposits do not benefit) and benefit most from hikes. Private banks with lower CASA (35-40%) and higher proportion of EBLR-linked loans see more direct repricing on both sides."
+      },
+      {
+        "name": "Real Repo Rate (Predictor of Next MPC Move)",
+        "formula": "Real Repo Rate (%) = Nominal Repo Rate (%) - CPI Inflation Rate (%)",
+        "variables": [
+          {
+            "symbol": "Nominal Repo Rate",
+            "meaning": "Current repo rate set by RBI"
+          },
+          {
+            "symbol": "CPI Inflation",
+            "meaning": "Most recent month CPI YoY inflation"
+          }
+        ],
+        "worked_example": "Scenario A (Late 2022): Repo 6.25%, CPI 6.77%, Real Repo = -0.52%. Stimulative policy when economy was hot — clear signal that hikes were coming. RBI delivered 75 more bps in next 4 months.\n\nScenario B (Mid 2024): Repo 6.50%, CPI 4.83%, Real Repo = 1.67%. Mildly restrictive. Rate cut probability rises but not imminent unless growth slows materially.\n\nScenario C (Aspirational): Repo 6.50%, CPI 4.0%, Real Repo = 2.50%. Restrictive. RBI under pressure to start cutting.",
+        "sensitivity_note": "RBI''s implicit target real repo is 1.0-1.5%. Below 0.5% = hikes incoming. Above 2.0% = cuts incoming. Between 1.0-2.0% = data-dependent. This single ratio predicts MPC direction with 70-75% accuracy across the last decade."
+      },
+      {
+        "name": "Monetary Transmission Lag (Repo to Lending Rate)",
+        "formula": "Effective Lending Rate Change = Repo Change × Transmission Coefficient × (1 - Time Decay Factor)",
+        "variables": [
+          {
+            "symbol": "Transmission Coefficient",
+            "meaning": "Historical pass-through ratio for India: 60-80% in 6-12 months"
+          },
+          {
+            "symbol": "Time Decay Factor",
+            "meaning": "Fraction of expected change still un-transmitted at time T (decays from 1 to 0 over 6-12 months)"
+          }
+        ],
+        "worked_example": "A 100 bps cumulative repo hike (May 2022 to Feb 2023):\nMonth 0 (rate decision): Effective lending rate up 0 bps (zero immediate transmission)\nMonth 3: Up 30 bps (30% transmitted)\nMonth 6: Up 55 bps (55% transmitted)\nMonth 12: Up 75-80 bps (full bandwidth)\nMonth 18: Up 80-85 bps (terminal transmission)\n\nThis matches actual data: weighted average lending rate on outstanding loans rose from 8.69% in April 2022 to 9.61% by December 2023 — a 92 bps move on a 250 bps cumulative hike. Roughly 37% transmission over 18 months — lower than ideal because of liquidity surplus and competition.",
+        "sensitivity_note": "Transmission has historically been incomplete in India because of CASA-heavy bank funding (cheap deposits do not reprice with policy), fixed-rate loan stock, and competitive pricing pressure. The RBI has been pushing External Benchmark Lending Rate (EBLR) regime since 2019 to improve transmission, with mixed success."
+      },
+      {
+        "name": "Sector EPS Sensitivity to 100 bps Rate Move",
+        "formula": "Δ Sector EPS = Σ (Δ Interest Cost - Δ Interest Income) ÷ Net Profit",
+        "variables": [
+          {
+            "symbol": "Δ Interest Cost",
+            "meaning": "Change in interest expense from rate move (depends on debt repricing schedule)"
+          },
+          {
+            "symbol": "Δ Interest Income",
+            "meaning": "Change in interest income (mostly relevant for financials and cash-rich companies)"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "FY current/forward net profit base"
+          }
+        ],
+        "worked_example": "100 bps rate CUT impact on selected sectors:\n\nReal Estate (DLF, Godrej Properties): Average debt/equity 0.5-0.8x, debt cost 8-9%. EPS uplift: 8-15% (highly leveraged + demand uplift from cheaper home loans).\n\nNBFCs (Bajaj Finance, Cholamandalam): Wholesale funding cost falls 60-70 bps. Lending rates fall slower. Spread expansion of 30-40 bps. EPS uplift: 4-8%.\n\nAuto (Maruti, M&M): Indirect benefit through cheaper auto loans. Volume uplift 3-5%. EPS uplift: 3-6%.\n\nIT (TCS, Infosys): Negligible direct impact. Slight headwind via stronger INR if FII inflows pick up. EPS uplift: -1 to 0%.\n\nPSU Banks (SBI, BoB): Negative for short-term NIM (CASA does not benefit, asset yields fall). EPS impact: -3 to -5% over 6-9 months, then recovers as credit growth picks up.\n\nReal Estate is the highest beta sector to rates — both directly (cost of capital) and indirectly (demand). Always check leverage of your covered companies; rate moves create outsized EPS swings in leveraged businesses.",
+        "sensitivity_note": "These sensitivities are first-order. Second-order effects (multiple expansion from lower discount rates, FII flow shifts, currency effects) often double or triple the stock price impact. The 2019 RBI cutting cycle (135 bps cumulative cuts) drove a 22% rally in real estate stocks vs 12% in Nifty."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Ctrl + ` → toggle formula display",
+        "Cmd + = → recalculate",
+        "Cmd + Option + V → paste special",
+        "Cmd + Shift + L → toggle filters for sector sensitivity tables"
+      ],
+      "windows": [
+        "Ctrl + ~ → toggle formula display",
+        "F9 → recalculate workbook (essential when running NIM scenarios)",
+        "Alt + N + V → insert pivot table for sensitivity analysis",
+        "Ctrl + Alt + V → paste special (for currency/percent conversion)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Bank NIM Sensitivity to Repo Change",
+        "formula": "Δ NIM (bps) ≈ Δ Repo (bps) × (Asset Repricing Speed - Liability Repricing Speed) × Net Earning Asset Ratio",
+        "variables": [
+          {
+            "symbol": "Δ NIM (bps)",
+            "meaning": "Change in Net Interest Margin in basis points"
+          },
+          {
+            "symbol": "Δ Repo (bps)",
+            "meaning": "Change in repo rate in basis points"
+          },
+          {
+            "symbol": "Asset Repricing Speed",
+            "meaning": "Fraction of loan book that reprices within the measurement window (typically 6-12 months)"
+          },
+          {
+            "symbol": "Liability Repricing Speed",
+            "meaning": "Fraction of deposit book that reprices within the measurement window"
+          },
+          {
+            "symbol": "Net Earning Asset Ratio",
+            "meaning": "Net interest-earning assets as % of total assets"
+          }
+        ],
+        "plain_english": "This formula quantifies how much a bank's net interest margin compresses or expands when the repo rate changes. It captures the timing mismatch between when a bank reprices its loans versus its deposits—the core source of NIM sensitivity in India. Banks with loans that reprice quickly (MCLR-linked) but deposits that lag (high CASA, sticky savings) see outsized NIM compression during cuts and outsized expansion during hikes.",
+        "computation": [
+          "Calculate the repricing gap: (Asset Repricing Speed − Liability Repricing Speed)",
+          "Multiply by the net earning asset ratio to scale for balance sheet size",
+          "Multiply by the repo change in basis points",
+          "Result is the NIM compression/expansion in basis points"
+        ],
+        "worked_example": {
+          "problem": "HDFC Bank faces a 25 bps repo cut. Estimate the NIM impact.",
+          "steps": [
+            "Asset repricing speed (6-month window) = 60% (most loans MCLR-linked or repo-linked)",
+            "Liability repricing speed (6-month window) = 35% (CASA share 47% does not reprice; FDs reprice slowly)",
+            "Net Earning Asset Ratio = 92%",
+            "Repricing gap = 0.60 − 0.35 = 0.25",
+            "NIM impact = −25 bps × 0.25 × 0.92 = −5.75 bps"
+          ],
+          "result": "NIM compresses by 5.75 basis points",
+          "insight": "On HDFC Bank's ₹24 lakh crore loan book, this translates to roughly ₹1,380 crore lower Net Interest Income annually—about 3.5% of FY24 NII. After tax, this is ₹1,034 crore lower PAT, or 2.5% lower EPS. At 19x P/E, that's ₹38 lower target price. This is why bank stocks move sharply on rate decisions. The arithmetic is mechanical: faster asset repricing than liability repricing means NIMs follow rates closely. PSU banks with high CASA (40–45%) suffer most from cuts (their cheap deposits do not benefit) and benefit most from hikes. Private banks with lower CASA (35–40%) and higher proportion of EBLR-linked loans see more direct repricing on both sides."
+        },
+        "sensitivity_note": "This is why bank stocks move sharply on rate decisions. The arithmetic is mechanical: faster asset repricing than liability repricing means NIMs follow rates closely. PSU banks with high CASA (40-45%) suffer most from cuts (their cheap deposits do not benefit) and benefit most from hikes. Private banks with lower CASA (35-40%) and higher proportion of EBLR-linked loans see more direct repricing on both sides."
+      },
+      {
+        "name": "Real Repo Rate (Predictor of Next MPC Move)",
+        "formula": "Real Repo Rate (%) = Nominal Repo Rate (%) - CPI Inflation Rate (%)",
+        "variables": [
+          {
+            "symbol": "Real Repo Rate",
+            "meaning": "Inflation-adjusted repo rate; indicator of monetary policy stance"
+          },
+          {
+            "symbol": "Nominal Repo Rate",
+            "meaning": "Current repo rate set by RBI"
+          },
+          {
+            "symbol": "CPI Inflation",
+            "meaning": "Most recent month CPI YoY inflation"
+          }
+        ],
+        "plain_english": "The real repo rate strips away inflation to reveal the true cost of borrowing and lending in the economy. When the real rate is deeply negative, policy is stimulative; when it is highly positive, policy is restrictive. This single number predicts the RBI's next move better than most backward-looking economic indicators because the central bank targets a specific comfort zone for the real rate.",
+        "computation": [
+          "Obtain the current nominal repo rate from RBI website",
+          "Obtain the latest month-on-month CPI inflation (YoY basis)",
+          "Subtract CPI from nominal repo rate",
+          "Result is the real repo rate in percentage terms"
+        ],
+        "worked_example": {
+          "problem": "Predict RBI's rate direction using real repo under three scenarios.",
+          "steps": [
+            "Scenario A (Late 2022): Repo 6.25%, CPI 6.77%, Real Repo = 6.25 − 6.77 = −0.52%",
+            "Scenario B (Mid 2024): Repo 6.50%, CPI 4.83%, Real Repo = 6.50 − 4.83 = 1.67%",
+            "Scenario C (Restrictive): Repo 6.50%, CPI 4.0%, Real Repo = 6.50 − 4.0 = 2.50%"
+          ],
+          "result": "Scenario A signals stimulative policy (real rate negative); RBI delivers 75 bps more hikes within 4 months. Scenario B signals mild restriction; rate cuts possible if growth slows. Scenario C signals strong restriction; RBI under pressure to cut.",
+          "insight": "RBI's implicit target real repo is 1.0–1.5%. Below 0.5% = hikes incoming. Above 2.0% = cuts incoming. Between 1.0–2.0% = data-dependent. This single ratio predicts MPC direction with 70–75% accuracy across the last decade."
+        },
+        "sensitivity_note": "RBI's implicit target real repo is 1.0-1.5%. Below 0.5% = hikes incoming. Above 2.0% = cuts incoming. Between 1.0-2.0% = data-dependent. This single ratio predicts MPC direction with 70-75% accuracy across the last decade."
+      },
+      {
+        "name": "Monetary Transmission Lag (Repo to Lending Rate)",
+        "formula": "Effective Lending Rate Change = Repo Change × Transmission Coefficient × (1 - Time Decay Factor)",
+        "variables": [
+          {
+            "symbol": "Effective Lending Rate Change",
+            "meaning": "Actual percentage point change in average lending rates after accounting for time lags"
+          },
+          {
+            "symbol": "Repo Change",
+            "meaning": "Cumulative change in repo rate in basis points"
+          },
+          {
+            "symbol": "Transmission Coefficient",
+            "meaning": "Historical pass-through ratio for India: 60-80% in 6-12 months"
+          },
+          {
+            "symbol": "Time Decay Factor",
+            "meaning": "Fraction of expected change still un-transmitted at time T (decays from 1 to 0 over 6-12 months)"
+          }
+        ],
+        "plain_english": "Monetary policy does not flow through to borrowers instantly. Banks reprice gradually due to sticky deposits, existing loan contracts, and competitive dynamics. This formula models the lag between when the RBI moves rates and when actual lending rates move. In India, transmission is typically 60–80% complete within 12 months, with the remaining 20–40% taking another 6 months or never materializing at all.",
+        "computation": [
+          "Identify the total repo change in basis points",
+          "Apply the transmission coefficient (typically 0.60–0.80 for India)",
+          "Estimate the time decay factor based on months elapsed (starts at 1, decays toward 0 over 12 months)",
+          "Multiply: Repo Change × Transmission Coefficient × (1 − Time Decay Factor)",
+          "Result is the effective lending rate change to date"
+        ],
+        "worked_example": {
+          "problem": "Track the actual transmission of a 250 bps cumulative repo hike from May 2022 to February 2023.",
+          "steps": [
+            "Month 0 (rate decision): Effective lending rate up 0 bps (zero immediate transmission)",
+            "Month 3: 30% of 250 bps = 75 bps expected, but only 30 bps actually transmitted",
+            "Month 6: 55% of 250 bps = 137.5 bps expected, but 55 bps transmitted so far",
+            "Month 12: 75–80% of 250 bps = 187–200 bps expected, actual transmission 75–80 bps cumulative",
+            "Month 18: Terminal transmission 80–85 bps of the 250 bps increase"
+          ],
+          "result": "Weighted average lending rate on outstanding loans rose from 8.69% in April 2022 to 9.61% by December 2023—a 92 bps move on a 250 bps cumulative hike. Roughly 37% transmission over 18 months.",
+          "insight": "Transmission was lower than the 60–80% historical norm because of liquidity surplus and competitive pressure among private banks. PSU banks with captive deposit bases (high CASA) transmitted faster on the liability side but slower on the asset side due to priority-sector lending mandates. This asymmetry is why bank NIMs fell despite rising rates."
+        },
+        "sensitivity_note": "Transmission has historically been incomplete in India because of CASA-heavy bank funding (cheap deposits do not reprice with policy), fixed-rate loan stock, and competitive pricing pressure. The RBI has been pushing External Benchmark Lending Rate (EBLR) regime since 2019 to improve transmission, with mixed success."
+      },
+      {
+        "name": "Sector EPS Sensitivity to 100 bps Rate Move",
+        "formula": "Δ Sector EPS = Σ (Δ Interest Cost - Δ Interest Income) ÷ Net Profit",
+        "variables": [
+          {
+            "symbol": "Δ Sector EPS",
+            "meaning": "Percentage change in earnings per share for a sector from a rate move"
+          },
+          {
+            "symbol": "Δ Interest Cost",
+            "meaning": "Change in interest expense from rate move (depends on debt repricing schedule)"
+          },
+          {
+            "symbol": "Δ Interest Income",
+            "meaning": "Change in interest income (mostly relevant for financials and cash-rich companies)"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "FY current/forward net profit base"
+          }
+        ],
+        "plain_english": "Different sectors react very differently to rate changes based on their leverage and cash positions. Highly leveraged sectors like real estate and auto benefit dramatically from rate cuts because their cost of capital falls sharply. Banks face a more complex trade-off: their interest costs fall, but so do their lending spreads. IT companies with minimal debt and forex exposure actually face headwinds from rate cuts due to currency appreciation. This formula quantifies the direct P&L impact before market multiple re-rating.",
+        "computation": [
+          "Calculate the change in interest expense for a 100 bps rate move (based on sector debt levels and repricing schedule)",
+          "Calculate the change in interest income (relevant mainly for banks and financial companies)",
+          "Sum the net interest P&L impact",
+          "Divide by the sector's forward net profit base",
+          "Convert to percentage; this is the EPS sensitivity"
+        ],
+        "worked_example": {
+          "problem": "Estimate EPS impact of a 100 bps rate cut across selected Indian sectors.",
+          "steps": [
+            "Real Estate (DLF, Godrej Properties): Average debt/equity 0.5–0.8x, debt cost 8–9%. Home loan rates fall 80–100 bps; volumes rise 5–8%. Weighted impact: 8–15% EPS uplift.",
+            "NBFCs (Bajaj Finance, Cholamandalam): Wholesale funding cost falls 60–70 bps. Lending rates fall slower (transmission lag). Spread expansion of 30–40 bps. Impact: 4–8% EPS uplift.",
+            "Auto (Maruti, M&M): Minimal direct debt impact. Indirect benefit via cheaper auto loans (transmission lag 6–12 months). Volume uplift 3–5%. Impact: 3–6% EPS uplift.",
+            "IT (TCS, Infosys): Negligible debt. Headwind: stronger INR if FII inflows pick up (lower USD revenue in INR terms). Impact: −1 to 0%.",
+            "PSU Banks (SBI, BoB): Interest costs fall, but NIMs compress (CASA deposits do not benefit proportionately). Short-term NIM hit 40–60 bps. Impact: −3 to −5% over 6–9 months, then recovers as credit growth accelerates."
+          ],
+          "result": "Real estate is the highest beta sector to rates (both cost of capital and demand). Always check leverage of covered companies; rate moves create outsized EPS swings.",
+          "insight": "These sensitivities are first-order. Second-order effects (multiple expansion from lower discount rates, FII flow shifts, currency effects) often double or triple the stock price impact. The 2019 RBI cutting cycle (135 bps cumulative cuts) drove a 22% rally in real estate stocks vs 12% in Nifty. An analyst covering leveraged sectors must always run rate scenarios alongside earnings models."
+        },
+        "sensitivity_note": "These sensitivities are first-order. Second-order effects (multiple expansion from lower discount rates, FII flow shifts, currency effects) often double or triple the stock price impact. The 2019 RBI cutting cycle (135 bps cumulative cuts) drove a 22% rally in real estate stocks vs 12% in Nifty."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Ctrl + ` → toggle formula display",
+        "Cmd + = → recalculate",
+        "Cmd + Option + V → paste special",
+        "Cmd + Shift + L → toggle filters for sector sensitivity tables"
+      ],
+      "windows": [
+        "Ctrl + ~ → toggle formula display",
+        "F9 → recalculate workbook (essential when running NIM scenarios)",
+        "Alt + N + V → insert pivot table for sensitivity analysis",
+        "Ctrl + Alt + V → paste special (for currency/percent conversion)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "id": "d7fd8988-699a-43d6-8796-1d48c71b98cf",
+  "label": "M9 S4 | The Three Liquidity Formulas (With Worked Indian Examples)",
+  "before": {
+    "formulas": [
+      {
+        "name": "Current Ratio",
+        "formula": "Current Ratio = Current Assets / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Cash + Receivables + Inventory + Short-term Investments + Other Current Assets"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Trade Payables + Short-term Debt + Current Portion of Long-term Debt + Accrued Expenses + Taxes Payable"
+          }
+        ],
+        "worked_example": "Asian Paints FY23 (approximate): Current Assets = ₹9,200 Cr (Cash ₹5,100 Cr + Receivables ₹1,400 Cr + Inventory ₹2,400 Cr + Others ₹300 Cr). Current Liabilities = ₹5,800 Cr (Trade Payables ₹3,800 Cr + Short-term Debt ₹900 Cr + Others ₹1,100 Cr). Current Ratio = 9,200 / 5,800 = 1.59x. Healthy. Asian Paints generates enough current assets to cover short-term obligations 1.6 times over, with room to spare. Compare to Tata Motors FY20 at peak stress: Current Assets ₹52,000 Cr, Current Liabilities ₹75,000 Cr → Current Ratio = 0.69x. A ratio below 1.0x is a red flag — short-term obligations exceed short-term resources.",
+        "sensitivity_note": "Current Ratio is highly sensitive to inventory valuation and receivable aging policy. A company that ages receivables longer (booking them as current instead of writing them off) inflates the ratio artificially. Always check inventory days and DSO alongside Current Ratio to validate."
+      },
+      {
+        "name": "Quick Ratio (Acid Test)",
+        "formula": "Quick Ratio = (Current Assets - Inventory) / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Total short-term assets as defined in Current Ratio"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Raw materials + Work-in-progress + Finished goods + Stock-in-trade"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Same as Current Ratio"
+          }
+        ],
+        "worked_example": "Asian Paints FY23: Quick Ratio = (9,200 - 2,400) / 5,800 = 1.17x. Still comfortable. Asian Paints can cover its short-term obligations even if every last tin of paint sat unsold. Now compare to Mahindra & Mahindra at the peak of the auto slowdown in FY20: Current Assets ₹42,000 Cr including ₹8,000 Cr of dealer inventory; Current Liabilities ₹38,000 Cr. Current Ratio = 1.11x (looks tight but acceptable). Quick Ratio = (42,000 - 8,000) / 38,000 = 0.89x — below 1.0x. If auto demand stayed weak and dealers couldn't move inventory, M&M would be short on liquidity. The Quick Ratio revealed a stress that the Current Ratio hid.",
+        "sensitivity_note": "Quick Ratio is the most widely-used liquidity metric in credit analysis because inventory quality varies enormously by industry. For inventory-heavy businesses (auto, capital goods, retail), the gap between Current Ratio and Quick Ratio is often the real liquidity story. For asset-light businesses (IT, services), the two are nearly identical."
+      },
+      {
+        "name": "Cash Ratio",
+        "formula": "Cash Ratio = (Cash + Cash Equivalents) / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Cash",
+            "meaning": "Cash in hand + Balances with banks in current/savings accounts"
+          },
+          {
+            "symbol": "Cash Equivalents",
+            "meaning": "Liquid investments maturing within 90 days — T-bills, money market funds, liquid mutual fund units"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Same as above"
+          }
+        ],
+        "worked_example": "Infosys FY23: Cash + Cash Equivalents + Liquid Investments ≈ ₹22,000 Cr. Current Liabilities ≈ ₹19,000 Cr. Cash Ratio = 22,000 / 19,000 = 1.16x. Extraordinarily conservative — Infosys can pay every short-term obligation using just cash on hand. This is the profile of a cash-rich IT giant with no debt and no working capital stress. Compare to Vodafone Idea circa FY22: Cash ≈ ₹500 Cr, Current Liabilities ≈ ₹55,000 Cr. Cash Ratio = 500 / 55,000 = 0.009x. Less than 1% coverage — an existential liquidity crisis that no operational improvement could fix without massive equity infusion.",
+        "sensitivity_note": "Cash Ratio is the stress-test metric. For companies in cyclical industries (steel, auto, real estate) or facing sector distress, Cash Ratio becomes the primary liquidity measure. A rule of thumb: Cash Ratio below 0.05 for a company with material short-term debt is a screaming red flag — default risk is imminent."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Ctrl + Shift + 1 → number format",
+        "Cmd + Shift + P → paste values for ratio snapshots",
+        "Option + Cmd + → → group ratio rows for dashboard collapse",
+        "Cmd + Option + V → paste special for value-only reporting"
+      ],
+      "windows": [
+        "Ctrl + Shift + 1 → number format for ratio cells (2 decimal places)",
+        "Alt + H + FC → conditional formatting to flag Current Ratio below 1.0 in red",
+        "F5 → Go To Special → Formulas to audit all ratio calculations",
+        "Ctrl + [ → navigate to precedent cells when auditing Current Assets composition"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Current Ratio",
+        "formula": "Current Ratio = Current Assets / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Cash + Receivables + Inventory + Short-term Investments + Other Current Assets"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Trade Payables + Short-term Debt + Current Portion of Long-term Debt + Accrued Expenses + Taxes Payable"
+          }
+        ],
+        "plain_english": "The Current Ratio measures whether a company has enough short-term assets to cover its short-term obligations. A ratio above 1.0 means the company can theoretically pay all its dues within one year; a ratio below 1.0 signals potential liquidity stress. For Indian banks and credit rating agencies, a Current Ratio between 1.2x and 2.0x is typically considered healthy, depending on industry cash conversion cycles.",
+        "worked_example": {
+          "problem": "Asian Paints FY23: Current Assets = ₹9,200 Cr (Cash ₹5,100 Cr + Receivables ₹1,400 Cr + Inventory ₹2,400 Cr + Others ₹300 Cr). Current Liabilities = ₹5,800 Cr (Trade Payables ₹3,800 Cr + Short-term Debt ₹900 Cr + Others ₹1,100 Cr). What is the Current Ratio?",
+          "steps": [
+            "Sum all current assets: 5,100 + 1,400 + 2,400 + 300 = ₹9,200 Cr",
+            "Sum all current liabilities: 3,800 + 900 + 1,100 = ₹5,800 Cr",
+            "Divide current assets by current liabilities: 9,200 ÷ 5,800 = 1.59x"
+          ],
+          "result": "1.59x",
+          "insight": "Asian Paints generates ₹1.59 of current assets for every ₹1 of current liability, indicating strong short-term liquidity. Compare to Tata Motors FY20 at peak stress: Current Assets ₹52,000 Cr, Current Liabilities ₹75,000 Cr → Current Ratio = 0.69x. A ratio below 1.0x is a red flag—short-term obligations exceed short-term resources, signalling potential default risk if operations falter."
+        },
+        "sensitivity_note": "Current Ratio is highly sensitive to inventory valuation and receivable aging policy. A company that ages receivables longer (booking them as current instead of writing them off) inflates the ratio artificially. Always check inventory days and DSO alongside Current Ratio to validate."
+      },
+      {
+        "name": "Quick Ratio (Acid Test)",
+        "formula": "Quick Ratio = (Current Assets - Inventory) / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Total short-term assets as defined in Current Ratio"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Raw materials + Work-in-progress + Finished goods + Stock-in-trade"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Trade Payables + Short-term Debt + Current Portion of Long-term Debt + Accrued Expenses + Taxes Payable"
+          }
+        ],
+        "plain_english": "The Quick Ratio removes inventory—the least liquid current asset—to reveal true immediate liquidity. It answers the question: 'If the company had to pay all short-term obligations *right now*, without selling any inventory, could it?' For Indian manufacturing and retail companies, this metric often exposes liquidity stress that the Current Ratio masks, especially during demand downturns when inventory piles up unsold.",
+        "computation": [
+          "Subtract inventory from current assets to get 'quick assets' (cash, receivables, and liquid investments only)",
+          "Divide quick assets by current liabilities to obtain the ratio"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints FY23: Current Assets ₹9,200 Cr, Inventory ₹2,400 Cr, Current Liabilities ₹5,800 Cr. Calculate Quick Ratio. Also compare to Mahindra & Mahindra FY20 (auto slowdown): Current Assets ₹42,000 Cr (including ₹8,000 Cr dealer inventory), Current Liabilities ₹38,000 Cr.",
+          "steps": [
+            "Asian Paints: Subtract inventory from current assets: 9,200 - 2,400 = ₹6,800 Cr quick assets",
+            "Asian Paints: Divide by current liabilities: 6,800 ÷ 5,800 = 1.17x",
+            "M&M: Subtract inventory: 42,000 - 8,000 = ₹34,000 Cr quick assets",
+            "M&M: Divide by current liabilities: 34,000 ÷ 38,000 = 0.89x"
+          ],
+          "result": "Asian Paints 1.17x; M&M 0.89x",
+          "insight": "Asian Paints maintains strong quick liquidity even after excluding inventory. M&M's quick ratio fell below 1.0x during the auto slowdown, revealing hidden stress: while the Current Ratio of 1.11x looked acceptable, the Quick Ratio of 0.89x showed that if auto demand remained weak and dealers couldn't move inventory, M&M would face a liquidity crunch. This gap is where credit risk often hides."
+        },
+        "sensitivity_note": "Quick Ratio is the most widely-used liquidity metric in credit analysis because inventory quality varies enormously by industry. For inventory-heavy businesses (auto, capital goods, retail), the gap between Current Ratio and Quick Ratio is often the real liquidity story. For asset-light businesses (IT, services), the two are nearly identical."
+      },
+      {
+        "name": "Cash Ratio",
+        "formula": "Cash Ratio = (Cash + Cash Equivalents) / Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Cash",
+            "meaning": "Cash in hand + Balances with banks in current/savings accounts"
+          },
+          {
+            "symbol": "Cash Equivalents",
+            "meaning": "Liquid investments maturing within 90 days — T-bills, money market funds, liquid mutual fund units"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Trade Payables + Short-term Debt + Current Portion of Long-term Debt + Accrued Expenses + Taxes Payable"
+          }
+        ],
+        "plain_english": "The Cash Ratio is the most conservative liquidity measure—it counts only cash and near-cash (90-day liquid investments), excluding even receivables. It answers the ultimate stress-test question: 'What fraction of short-term obligations can the company pay *this instant* without collecting a rupee from customers or selling any inventory?' For distressed or cyclical companies, this metric often separates the solvent from the insolvent.",
+        "computation": [
+          "Locate cash and cash equivalents (liquid investments with ≤90-day maturity) from the balance sheet",
+          "Sum them into a single numerator",
+          "Divide by total current liabilities"
+        ],
+        "worked_example": {
+          "problem": "Infosys FY23: Cash + Cash Equivalents + Liquid Investments ≈ ₹22,000 Cr, Current Liabilities ≈ ₹19,000 Cr. Calculate Cash Ratio. Also compare to Vodafone Idea FY22 (sector crisis): Cash ≈ ₹500 Cr, Current Liabilities ≈ ₹55,000 Cr.",
+          "steps": [
+            "Infosys: Divide cash + equivalents by current liabilities: 22,000 ÷ 19,000 = 1.16x",
+            "Vodafone Idea: Divide cash by current liabilities: 500 ÷ 55,000 = 0.009x (or 0.9%)"
+          ],
+          "result": "Infosys 1.16x; Vodafone Idea 0.009x",
+          "insight": "Infosys, a cash-rich IT giant with zero debt and strong cash generation, boasts a Cash Ratio above 1.0x—it could pay every rupee of short-term obligation twice over using cash alone. Vodafone Idea's ratio of 0.009x is existential distress: the company could cover less than 1% of its current liabilities instantly. That mismatch, combined with negative FCF and spectrum payment obligations, made default imminent without a massive equity lifeline. For investors, Cash Ratio below 0.05x (with material short-term debt) is a screaming red flag."
+        },
+        "sensitivity_note": "Cash Ratio is the stress-test metric. For companies in cyclical industries (steel, auto, real estate) or facing sector distress, Cash Ratio becomes the primary liquidity measure. A rule of thumb: Cash Ratio below 0.05 for a company with material short-term debt is a screaming red flag—default risk is imminent."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Ctrl + Shift + 1 → number format",
+        "Cmd + Shift + P → paste values for ratio snapshots",
+        "Option + Cmd + → → group ratio rows for dashboard collapse",
+        "Cmd + Option + V → paste special for value-only reporting"
+      ],
+      "windows": [
+        "Ctrl + Shift + 1 → number format for ratio cells (2 decimal places)",
+        "Alt + H + FC → conditional formatting to flag Current Ratio below 1.0 in red",
+        "F5 → Go To Special → Formulas to audit all ratio calculations",
+        "Ctrl + [ → navigate to precedent cells when auditing Current Assets composition"
+      ]
+    }
+  }
+}

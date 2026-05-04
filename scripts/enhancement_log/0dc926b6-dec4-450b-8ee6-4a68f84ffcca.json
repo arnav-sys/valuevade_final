@@ -1,0 +1,129 @@
+{
+  "id": "0dc926b6-dec4-450b-8ee6-4a68f84ffcca",
+  "label": "M1 S14 | PED, HHI, and Lerner Index with Worked Examples",
+  "before": {
+    "formulas": [
+      {
+        "name": "Price Elasticity of Demand",
+        "formula": "PED = (% Change Qty Demanded) / (% Change Price)",
+        "analyst_note": "Rarely calculate with formula. Observe pricing events and track volume response in next 1-2 quarters. Consistent price hikes without volume loss = demonstrated inelastic demand = strongest buy signal.",
+        "worked_example": "Airtel raises recharge Rs 199 to Rs 219 (+10.1%). Subscribers drop 35.5cr to 34.8cr (-2.0%). PED = -2.0%/10.1% = -0.20. Highly inelastic -- strong pricing power."
+      },
+      {
+        "name": "Herfindahl-Hirschman Index (HHI)",
+        "formula": "HHI = Sum of (Market Share %)^2",
+        "benchmarks": {
+          "above_2500": "Highly Concentrated",
+          "below_1500": "Competitive",
+          "1500_to_2500": "Moderately Concentrated"
+        },
+        "worked_example": "Indian Telecom: Jio 40%, Airtel 33%, Vi 20%, Others 7%. HHI = 1600+1089+400+49 = 3,138. Highly concentrated oligopoly. Pricing power improving as consolidation deepens."
+      },
+      {
+        "name": "Lerner Index",
+        "range": "0 (perfect competition) to 1 (pure monopoly)",
+        "formula": "(Price - Marginal Cost) / Price",
+        "interpretation": "0.6 = 60% of price is markup. Luxury brands and patent-protected pharma often above 0.7."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Price Elasticity of Demand",
+        "formula": "PED = (% Change Qty Demanded) / (% Change Price)",
+        "variables": [
+          {
+            "symbol": "PED",
+            "meaning": "Price Elasticity of Demand; measures responsiveness of quantity demanded to price changes"
+          },
+          {
+            "symbol": "% Change Qty Demanded",
+            "meaning": "Percentage change in quantity demanded = ((New Qty − Old Qty) / Old Qty) × 100"
+          },
+          {
+            "symbol": "% Change Price",
+            "meaning": "Percentage change in price = ((New Price − Old Price) / Old Price) × 100"
+          }
+        ],
+        "plain_english": "PED tells you how much customers' buying behaviour changes when you raise or lower price. A PED of −0.5 means a 10% price increase cuts sales by only 5%, revealing inelastic demand—the holy grail for margins. PED < −1 signals elastic demand, where price hikes backfire. For equity research, observing PED through pricing actions is more revealing than any survey.",
+        "analyst_note": "Rarely calculate with formula. Observe pricing events and track volume response in next 1-2 quarters. Consistent price hikes without volume loss = demonstrated inelastic demand = strongest buy signal.",
+        "worked_example": {
+          "problem": "Airtel raises recharge Rs 199 to Rs 219. Subscribers drop 35.5 cr to 34.8 cr next quarter. Calculate PED and interpret.",
+          "steps": [
+            "% Change Price = ((219 − 199) / 199) × 100 = (20 / 199) × 100 = +10.1%",
+            "% Change Qty = ((34.8 − 35.5) / 35.5) × 100 = (−0.7 / 35.5) × 100 = −2.0%",
+            "PED = −2.0% / 10.1% = −0.198 ≈ −0.20"
+          ],
+          "result": "PED = −0.20 (highly inelastic)",
+          "insight": "A 10% price increase causes only 2% volume loss. This demonstrates strong pricing power—Airtel can raise prices without proportional customer loss. For equity research: inelastic demand (|PED| < 1) signals durable competitive advantage and margin expansion potential. This is a strong buy signal."
+        }
+      },
+      {
+        "name": "Herfindahl-Hirschman Index (HHI)",
+        "formula": "HHI = Sum of (Market Share %)^2",
+        "variables": [
+          {
+            "symbol": "HHI",
+            "meaning": "Herfindahl-Hirschman Index; measure of market concentration ranging from near-0 (highly fragmented) to 10,000 (monopoly)"
+          },
+          {
+            "symbol": "Market Share %",
+            "meaning": "Each firm's percentage share of total market revenue or volume"
+          }
+        ],
+        "plain_english": "HHI quantifies whether an industry is fragmented (many equal competitors) or concentrated (few dominant players). Higher HHI = fewer firms control more sales = less price competition = pricing power. In India, telecom HHI shifted from ~1,500 (2014, 9 players) to ~3,100 (2023, 3 players), enabling tariff hikes. HHI > 2,500 signals oligopoly—watch for tacit collusion on pricing.",
+        "computation": [
+          "Obtain each competitor's market share (as percentage of total market)",
+          "Square each market share: (Market Share %)²",
+          "Sum all squared values to get HHI",
+          "Note: HHI is unitless; use benchmarks below to interpret"
+        ],
+        "benchmarks": {
+          "above_2500": "Highly Concentrated",
+          "below_1500": "Competitive",
+          "1500_to_2500": "Moderately Concentrated"
+        },
+        "worked_example": {
+          "problem": "Indian Telecom market (2023): Jio 40%, Airtel 33%, Vi 20%, Others 7%. Calculate HHI and assess competitive intensity.",
+          "steps": [
+            "Jio: (40)² = 1,600",
+            "Airtel: (33)² = 1,089",
+            "Vi: (20)² = 400",
+            "Others: (7)² = 49",
+            "HHI = 1,600 + 1,089 + 400 + 49 = 3,138"
+          ],
+          "result": "HHI = 3,138 (highly concentrated oligopoly)",
+          "insight": "At 3,138, Indian telecom is a tight 3-player oligopoly well above the 2,500 threshold. This extreme concentration explains the 2021–2023 tariff increases (+25–40%) with minimal subscriber loss. For equity analysts: consolidation → HHI rise → pricing power → margin expansion. Jio and Airtel are in a durable duopoly; Vi's lower share and legacy cost structure make it vulnerable."
+        }
+      },
+      {
+        "name": "Lerner Index",
+        "formula": "(Price − Marginal Cost) / Price",
+        "variables": [
+          {
+            "symbol": "Price",
+            "meaning": "Average selling price per unit of product or service"
+          },
+          {
+            "symbol": "Marginal Cost",
+            "meaning": "Incremental cost to produce one additional unit; approximated as COGS/volume for steady-state operations"
+          }
+        ],
+        "plain_english": "The Lerner Index measures the percentage markup on marginal cost relative to price. A Lerner of 0.6 means 60% of the price is pure markup—pricing power in action. Perfect competition yields Lerner ≈ 0 (price = marginal cost); monopolies often exceed 0.7. For equity research, rising Lerner signals durable competitive advantage (brand, patent, network effects). Watch for compression if competition intensifies.",
+        "range": "0 (perfect competition) to 1 (pure monopoly)",
+        "interpretation": "0.6 = 60% of price is markup. Luxury brands and patent-protected pharma often above 0.7.",
+        "worked_example": {
+          "problem": "Asian Paints sells 1-litre Premium Emulsion at ₹500. Annual cost of goods sold is ₹120 crores on 3 crore litres sold. Estimate Lerner Index and interpret.",
+          "steps": [
+            "Price per unit = ₹500",
+            "Marginal Cost per unit = ₹120 crores / 3 crore litres = ₹40 per litre",
+            "Lerner = (₹500 − ₹40) / ₹500 = ₹460 / ₹500 = 0.92"
+          ],
+          "result": "Lerner Index = 0.92",
+          "insight": "A Lerner of 0.92 reveals exceptional pricing power: 92% of the price is markup over marginal cost. This near-monopoly level reflects Asian Paints' brand strength, distribution network, and customer switching costs in India's organised paint market. Such high Lerner is sustainable only with continued brand investment and innovation. Compare: if a generic paint maker has Lerner = 0.3, Asian Paints' 0.92 justifies a premium valuation multiple."
+        }
+      }
+    ]
+  }
+}

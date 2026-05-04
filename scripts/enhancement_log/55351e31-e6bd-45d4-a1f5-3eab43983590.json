@@ -1,0 +1,129 @@
+{
+  "id": "55351e31-e6bd-45d4-a1f5-3eab43983590",
+  "label": "M2 S1 | Key IPO Metrics",
+  "before": {
+    "formulas": [
+      {
+        "name": "Subscription Ratio",
+        "formula": "Subscription Ratio = Total Shares Applied For ÷ Total Shares Offered",
+        "sensitivity": "If subscription is below 1x (undersubscribed), the IPO may fail or the price may be revised downward. QIB subscription matters most — retail follows smart money.",
+        "plain_english": "If 100 crore shares were offered and investors applied for 3,800 crore shares, the subscription ratio is 38x. Higher subscription = more demand than supply = likely strong listing.",
+        "worked_example": "Retail portion offered ~₹3,281 crore. Retail investors applied for ~₹24,449 crore. Subscription = 24,449 / 3,281 = 7.45x."
+      },
+      {
+        "name": "Listing Day Return (Listing Gain/Loss)",
+        "formula": "Listing Day Return = [(Listing Price – Issue Price) ÷ Issue Price] × 100",
+        "analysts_note": "A massive listing gain doesn't mean the company is good — it means the IPO was underpriced. Consistent underpricing benefits institutional investors (who get larger allotments) at the expense of retail investors (who get lottery-based allotment and often buy more in the secondary market at inflated prices).",
+        "worked_example": "Zomato issue price = ₹76, listing price = ₹115. Return = [(115 – 76) / 76] × 100 = 51.3%."
+      },
+      {
+        "name": "Cost of Equity Capital via IPO",
+        "formula": "Effective Cost = Issue Expenses (BRLMs + legal + marketing) ÷ Total Funds Raised × 100",
+        "worked_example": "If Zomato spent ~₹175 crore on IPO expenses to raise ₹9,375 crore, the cost = 175/9375 × 100 = 1.87%. This is found in the 'Objects of the Issue' section of the RHP."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Subscription Ratio",
+        "formula": "Subscription Ratio = Total Shares Applied For ÷ Total Shares Offered",
+        "variables": [
+          {
+            "symbol": "Total Shares Applied For",
+            "meaning": "Aggregate number of shares (or value in rupees) that investors bid for during the subscription period"
+          },
+          {
+            "symbol": "Total Shares Offered",
+            "meaning": "Number of shares (or value in rupees) made available by the company in the IPO"
+          },
+          {
+            "symbol": "Subscription Ratio",
+            "meaning": "Multiple showing how many times the offer was oversubscribed; a ratio > 1 indicates excess demand"
+          }
+        ],
+        "sensitivity": "If subscription is below 1x (undersubscribed), the IPO may fail or the price may be revised downward. QIB subscription matters most — retail follows smart money.",
+        "plain_english": "If 100 crore shares were offered and investors applied for 3,800 crore shares, the subscription ratio is 38x. Higher subscription = more demand than supply = likely strong listing.",
+        "worked_example": {
+          "problem": "In a hypothetical IPO, the retail portion offered ₹3,281 crore. Retail investors applied for ₹24,449 crore. What is the retail subscription ratio?",
+          "steps": [
+            "Identify total amount applied for: ₹24,449 crore",
+            "Identify total amount offered: ₹3,281 crore",
+            "Divide applications by offer: 24,449 ÷ 3,281",
+            "Calculate the ratio: 7.45x"
+          ],
+          "result": "7.45x retail subscription",
+          "insight": "A 7.45x oversubscription in the retail category signals strong retail demand and typically predicts a strong listing day. However, retail investors often receive allotments via lottery and may miss out on shares if they don't bid high enough."
+        }
+      },
+      {
+        "name": "Listing Day Return (Listing Gain/Loss)",
+        "formula": "Listing Day Return = [(Listing Price – Issue Price) ÷ Issue Price] × 100",
+        "variables": [
+          {
+            "symbol": "Listing Price",
+            "meaning": "The closing price of the stock on the first day of trading on the stock exchange"
+          },
+          {
+            "symbol": "Issue Price",
+            "meaning": "The fixed price per share at which the IPO was offered to investors"
+          },
+          {
+            "symbol": "Listing Day Return",
+            "meaning": "The percentage gain or loss from the issue price to the listing price, expressed as a percentage"
+          }
+        ],
+        "plain_english": "This metric captures the one-day appreciation (or depreciation) from the IPO offer price to the first trading day close. A high listing day return often signals an underpriced IPO that benefited early allottees, but does not reflect the company's intrinsic quality — it merely reflects supply–demand dynamics and underpricing.",
+        "analysts_note": "A massive listing gain doesn't mean the company is good — it means the IPO was underpriced. Consistent underpricing benefits institutional investors (who get larger allotments) at the expense of retail investors (who get lottery-based allotment and often buy more in the secondary market at inflated prices).",
+        "worked_example": {
+          "problem": "Zomato's IPO was priced at ₹76 per share and closed at ₹115 on its listing day. What is the listing day return?",
+          "steps": [
+            "Identify issue price: ₹76",
+            "Identify listing price: ₹115",
+            "Calculate price difference: 115 – 76 = ₹39",
+            "Divide by issue price: 39 ÷ 76 = 0.5132",
+            "Convert to percentage: 0.5132 × 100 = 51.32%"
+          ],
+          "result": "51.3% listing day gain",
+          "insight": "Zomato's 51% pop on listing day suggests the IPO was significantly underpriced relative to first-day demand. Retail investors who received allotments made an instant 51% gain, but many who missed out bought at ₹115 or higher, locking in worse entry points."
+        }
+      },
+      {
+        "name": "Cost of Equity Capital via IPO",
+        "formula": "Effective Cost = Issue Expenses (BRLMs + legal + marketing) ÷ Total Funds Raised × 100",
+        "variables": [
+          {
+            "symbol": "Issue Expenses",
+            "meaning": "Total costs incurred to execute the IPO, including BRLM (Book Running Lead Manager) commissions, legal fees, regulatory filing fees, and marketing costs"
+          },
+          {
+            "symbol": "Total Funds Raised",
+            "meaning": "Gross proceeds from the IPO (Issue Price × Number of Shares Issued), before deducting expenses"
+          },
+          {
+            "symbol": "Effective Cost",
+            "meaning": "The percentage cost of raising capital via the IPO, relative to funds raised"
+          }
+        ],
+        "plain_english": "This metric quantifies the friction cost of going public. It answers the question: what fraction of the capital raised must the company 'spend' just to conduct the IPO? Lower effective costs are preferable; costs below 2% are typical for large Indian IPOs, while smaller IPOs may face 3–5% costs due to fixed regulatory overhead.",
+        "computation": [
+          "Identify total IPO expenses (sum of BRLM commission, legal costs, regulatory/stock exchange fees, advertising, and other advisory costs) — usually disclosed in the RHP/prospectus.",
+          "Identify gross funds raised (Issue Price × Number of Shares Offered).",
+          "Divide expenses by gross funds raised.",
+          "Multiply by 100 to express as a percentage."
+        ],
+        "worked_example": {
+          "problem": "Zomato spent approximately ₹175 crore on IPO expenses to raise ₹9,375 crore gross. What is the effective cost of capital for this IPO?",
+          "steps": [
+            "Identify total IPO expenses: ₹175 crore",
+            "Identify gross funds raised: ₹9,375 crore",
+            "Divide expenses by funds raised: 175 ÷ 9,375 = 0.01867",
+            "Convert to percentage: 0.01867 × 100 = 1.87%"
+          ],
+          "result": "Effective IPO cost = 1.87%",
+          "insight": "At 1.87%, Zomato's IPO cost was below the 2% threshold typical for large Indian IPOs, reflecting the deal's size and competitive BRLM bidding. This cost is disclosed in the 'Objects of the Issue' section of the Red Herring Prospectus (RHP) and the final prospectus. For comparison, smaller IPOs often face 2.5–4% costs due to economies of scale."
+        }
+      }
+    ]
+  }
+}

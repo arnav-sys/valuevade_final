@@ -1,0 +1,236 @@
+{
+  "id": "9c5b9ef7-991c-4cdc-a947-8e09d1f60982",
+  "label": "M12 S8 | The EV-to-Equity Bridge and the Target Price Formula",
+  "before": {
+    "formulas": [
+      {
+        "name": "The Full EV-to-Equity Bridge",
+        "formula": "Equity Value = EV - Net Debt - Minority Interest - Preferred Stock - Other Senior Claims + Non-Operating Assets",
+        "variables": [
+          {
+            "symbol": "EV",
+            "meaning": "Enterprise value from DCF (FCFF discounted at WACC)"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total interest-bearing debt minus cash and cash equivalents (use market value if listed, book value as practical approximation)"
+          },
+          {
+            "symbol": "Minority Interest",
+            "meaning": "Fair value of the non-controlling stake in consolidated subsidiaries — typically estimated using a P/E or P/B multiple on the minority share of subsidiary earnings"
+          },
+          {
+            "symbol": "Preferred Stock",
+            "meaning": "Fair value of preferred shares — hybrid securities ranking above common equity"
+          },
+          {
+            "symbol": "Other Senior Claims",
+            "meaning": "Pension underfunding, unfunded environmental liabilities, crystallising contingent liabilities"
+          },
+          {
+            "symbol": "Non-Operating Assets",
+            "meaning": "Fair value of investments in associates/JVs not consolidated, excess cash, investment real estate, listed equity stakes"
+          }
+        ],
+        "worked_example": "For Tata Motors (illustrative FY26 estimates): EV from DCF = ₹4,80,000 cr. Net Debt = ₹95,000 cr (consolidated debt minus cash). Minority Interest in JLR-related entities (fair value) = ₹15,000 cr. Investments in associates (Tata Technologies, Tata Capital — fair value of stake) = ₹35,000 cr. Equity Value = 4,80,000 - 95,000 - 15,000 + 35,000 = ₹4,05,000 cr. Notice how the four adjustments collectively moved equity value by ₹75,000 cr — about 16% of EV.",
+        "sensitivity_note": "The bridge's impact varies dramatically by business. For Asian Paints (low debt, no minorities, modest investments), the bridge moves equity value by less than 5%. For Tata Motors (significant debt, complex JV/associate structure), it moves by 15-20%. For pure holding companies like Bajaj Holdings, the bridge IS the analysis — most of the value sits in non-operating stakes."
+      },
+      {
+        "name": "Target Price Per Share",
+        "formula": "Target Price = Equity Value / Fully Diluted Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Equity Value",
+            "meaning": "From the bridge above"
+          },
+          {
+            "symbol": "Fully Diluted Shares",
+            "meaning": "Basic shares + dilution from ESOPs, warrants, convertibles, RSUs (treasury method)"
+          }
+        ],
+        "worked_example": "For TCS: Equity Value = ₹13,85,000 cr. Basic shares outstanding = 365 cr. Outstanding ESOPs (in-the-money) ≈ 1.2 cr shares with weighted average exercise price of ₹2,800. Treasury method dilution = 1.2 × (1 - 2,800/4,191) ≈ 0.4 cr shares. Fully Diluted Shares = 365 + 0.4 = 365.4 cr. Target Price = 13,85,000 / 365.4 = ₹3,790 per share. If junior used basic 365 cr instead, they'd get ₹3,795 — a small gap for TCS but materially larger for tech firms with bigger ESOP overhang.",
+        "sensitivity_note": "Dilution can range from negligible (well-managed FMCG and industrials, <0.5% dilution) to substantial (early-stage tech, growth-phase internet companies, even some IT services with aggressive ESOP plans, 3-7% dilution). For SBC-heavy companies, ignoring dilution understates true cost to equity holders."
+      },
+      {
+        "name": "Treasury Stock Method (for ESOP Dilution)",
+        "formula": "Net New Shares from Options = Outstanding Options × (1 - Strike Price / Current Market Price)",
+        "variables": [
+          {
+            "symbol": "Outstanding Options",
+            "meaning": "In-the-money options as of the latest disclosure"
+          },
+          {
+            "symbol": "Strike Price",
+            "meaning": "Weighted average exercise price"
+          },
+          {
+            "symbol": "Current Market Price",
+            "meaning": "Today's share price (or in some conventions, the target price you're computing)"
+          }
+        ],
+        "worked_example": "For TCS: 1.2 cr in-the-money options outstanding, weighted average strike ₹2,800. Current price ₹4,000. The treasury method assumes the exercise proceeds are used to buy back shares at the current market price. Net new shares = 1.2 × (1 - 2,800/4,000) = 1.2 × 0.30 = 0.36 cr ≈ 0.4 cr. So fully diluted share count is 365 + 0.4 = 365.4 cr.",
+        "sensitivity_note": "Treasury method understates dilution for deeply in-the-money options (where strike is far below market) — in those cases, the dilution feels closer to gross outstanding options. For more conservative analysis, some practitioners simply use gross outstanding options as the dilution number, especially for high-SBC technology companies."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SUMPRODUCT",
+        "Cmd + ; — today's date",
+        "Ctrl + I — insert row",
+        "F2 then Cmd + Shift + End — extend selection"
+      ],
+      "windows": [
+        "=SUMPRODUCT — clean way to compute weighted average strike across multiple ESOP grants",
+        "Ctrl + ; — insert today's date as a timestamp on bridge tabs",
+        "Alt + I + R — insert a row to add a new bridge line (e.g., a newly disclosed contingent liability)",
+        "F2 then Ctrl + Shift + End — extend selection from active cell to last used cell, useful for auditing bridge formulas"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "The Full EV-to-Equity Bridge",
+        "formula": "Equity Value = EV - Net Debt - Minority Interest - Preferred Stock - Other Senior Claims + Non-Operating Assets",
+        "variables": [
+          {
+            "symbol": "EV",
+            "meaning": "Enterprise value from DCF (FCFF discounted at WACC)"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total interest-bearing debt minus cash and cash equivalents (use market value if listed, book value as practical approximation)"
+          },
+          {
+            "symbol": "Minority Interest",
+            "meaning": "Fair value of the non-controlling stake in consolidated subsidiaries — typically estimated using a P/E or P/B multiple on the minority share of subsidiary earnings"
+          },
+          {
+            "symbol": "Preferred Stock",
+            "meaning": "Fair value of preferred shares — hybrid securities ranking above common equity"
+          },
+          {
+            "symbol": "Other Senior Claims",
+            "meaning": "Pension underfunding, unfunded environmental liabilities, crystallising contingent liabilities"
+          },
+          {
+            "symbol": "Non-Operating Assets",
+            "meaning": "Fair value of investments in associates/JVs not consolidated, excess cash, investment real estate, listed equity stakes"
+          }
+        ],
+        "plain_english": "This formula converts an enterprise value (the value of the entire business, as if financed 100% by equity) into the value available to common shareholders. It starts with EV, then subtracts all claims senior to equity (debt, preferred stock, minority stakes), and adds back non-operating assets that aren't already reflected in the EV calculation. The bridge is essential because DCF typically values the operating business as a whole; you must then systematically carve out what belongs to others and add back what sits on the balance sheet but outside operations.",
+        "computation": [
+          "Step 1: Begin with EV from your DCF model (typically FCFF discounted at WACC).",
+          "Step 2: Deduct Net Debt = (Total interest-bearing debt) − (Cash & equivalents). For conglomerate subsidiaries, isolate debt attributable to each unit.",
+          "Step 3: Deduct Minority Interest as fair value (use subsidiary-level P/E or P/B on the non-controlling percentage).",
+          "Step 4: Deduct Preferred Stock at its redemption value or fair value.",
+          "Step 5: Deduct Other Senior Claims (pension shortfalls, environmental reserves, contingent liabilities crystallised by your forecasts).",
+          "Step 6: Add Non-Operating Assets (fair value of associate stakes, excess cash not needed for working capital, real estate held for sale, listed equity holdings marked to market).",
+          "Step 7: The result is Equity Value attributable to common shareholders."
+        ],
+        "worked_example": {
+          "problem": "For Tata Motors (illustrative FY26 estimates), you have calculated EV from DCF at ₹4,80,000 cr. You now need to derive Equity Value.",
+          "steps": [
+            "EV (from DCF) = ₹4,80,000 cr",
+            "Less: Net Debt = Total debt ₹1,10,000 cr − Cash ₹15,000 cr = ₹95,000 cr",
+            "Less: Minority Interest (JLR-related entities, marked to market P/E) = ₹15,000 cr",
+            "Add: Non-Operating Assets (stake in Tata Technologies, Tata Capital, other associates at fair value) = ₹35,000 cr",
+            "Equity Value = ₹4,80,000 − ₹95,000 − ₹15,000 + ₹35,000 = ₹4,05,000 cr"
+          ],
+          "result": "Equity Value = ₹4,05,000 cr",
+          "insight": "The bridge adjustments collectively reduced equity value by ₹75,000 cr (about 16% of EV). For Tata Motors' complex structure — high leverage, minority stakes in JVs, and significant associate interests — the bridge is material. By contrast, for simpler companies like HUL or Asian Paints (low debt, few minorities, minimal non-operating assets), the bridge typically accounts for <5% of value. For holding companies like Bajaj Holdings, the bridge IS the analysis."
+        },
+        "sensitivity_note": "The bridge's impact varies dramatically by business. For Asian Paints (low debt, no minorities, modest investments), the bridge moves equity value by less than 5%. For Tata Motors (significant debt, complex JV/associate structure), it moves by 15-20%. For pure holding companies like Bajaj Holdings, the bridge IS the analysis — most of the value sits in non-operating stakes."
+      },
+      {
+        "name": "Target Price Per Share",
+        "formula": "Target Price = Equity Value / Fully Diluted Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Equity Value",
+            "meaning": "From the bridge above"
+          },
+          {
+            "symbol": "Fully Diluted Shares",
+            "meaning": "Basic shares + dilution from ESOPs, warrants, convertibles, RSUs (treasury method)"
+          }
+        ],
+        "plain_english": "This formula converts the total equity value into a per-share target by dividing by the full diluted share count. It is the final step in translating your DCF analysis into actionable share price guidance. Using fully diluted shares (not basic) ensures you account for all equity claims outstanding and gives a fair view of what each share is worth after all potential dilution settles.",
+        "computation": [
+          "Step 1: Take Equity Value from the EV-to-Equity bridge.",
+          "Step 2: Calculate Fully Diluted Shares = Basic Shares Outstanding + In-the-money Option Dilution (treasury method) + Warrant dilution (if material) + Convertible dilution (if not already netted in capital structure).",
+          "Step 3: Divide Equity Value by Fully Diluted Shares to get Target Price per share."
+        ],
+        "worked_example": {
+          "problem": "For TCS: You have derived Equity Value of ₹13,85,000 cr. The company has 365 cr basic shares outstanding. Outstanding in-the-money ESOPs are approximately 1.2 cr with a weighted average exercise price of ₹2,800. Current market price is ₹4,191. What is the target price per share?",
+          "steps": [
+            "Equity Value = ₹13,85,000 cr",
+            "Basic Shares Outstanding = 365 cr",
+            "Treasury method ESOP dilution: 1.2 cr × (1 − ₹2,800 / ₹4,191) = 1.2 × 0.333 = 0.4 cr shares",
+            "Fully Diluted Shares = 365 + 0.4 = 365.4 cr",
+            "Target Price = ₹13,85,000 cr / 365.4 cr = ₹3,790 per share"
+          ],
+          "result": "Target Price = ₹3,790 per share",
+          "insight": "If a junior analyst mistakenly used basic shares (365 cr instead of 365.4 cr), they would calculate ₹3,795 — a difference of only ₹5, or ~0.1%. For TCS this is immaterial because ESOP dilution is modest. However, for high-SBC technology and internet companies (where ESOP grants might represent 5–7% of shares outstanding), ignoring dilution can overstate target price by 200–500 bps. Always calculate fully diluted."
+        },
+        "sensitivity_note": "Dilution can range from negligible (well-managed FMCG and industrials, <0.5% dilution) to substantial (early-stage tech, growth-phase internet companies, even some IT services with aggressive ESOP plans, 3-7% dilution). For SBC-heavy companies, ignoring dilution understates true cost to equity holders."
+      },
+      {
+        "name": "Treasury Stock Method (for ESOP Dilution)",
+        "formula": "Net New Shares from Options = Outstanding Options × (1 - Strike Price / Current Market Price)",
+        "variables": [
+          {
+            "symbol": "Outstanding Options",
+            "meaning": "In-the-money options as of the latest disclosure"
+          },
+          {
+            "symbol": "Strike Price",
+            "meaning": "Weighted average exercise price"
+          },
+          {
+            "symbol": "Current Market Price",
+            "meaning": "Today's share price (or in some conventions, the target price you're computing)"
+          }
+        ],
+        "plain_english": "The treasury stock method models what happens when employees exercise in-the-money options: they pay the strike price, the company receives cash, and that cash is immediately used to buy back shares at the market price. The net new shares issued is the difference between gross shares (from exercise) and shares repurchased (from the proceeds). This method gives a conservative estimate of dilution, because it assumes the company always repurchases at the current market price; in reality, it might use the cash for operations or other purposes, making dilution larger.",
+        "computation": [
+          "Step 1: Identify all in-the-money options from the latest share plan disclosure. Exclude out-of-the-money options (strike price > current market price).",
+          "Step 2: Calculate the weighted average strike price across all in-the-money grants.",
+          "Step 3: Assume all in-the-money options are exercised. Gross new shares = Outstanding Options.",
+          "Step 4: Calculate the cash proceeds from exercise = Outstanding Options × Strike Price.",
+          "Step 5: Calculate shares repurchased with those proceeds = Cash Proceeds / Current Market Price = Outstanding Options × (Strike Price / Current Market Price).",
+          "Step 6: Net new shares = Gross new shares − Shares repurchased = Outstanding Options × (1 − Strike Price / Current Market Price)."
+        ],
+        "worked_example": {
+          "problem": "For TCS: 1.2 cr in-the-money options are outstanding with a weighted average strike of ₹2,800. The current share price (used for your target price model) is ₹4,000. How many net new shares result from treasury method dilution?",
+          "steps": [
+            "Outstanding in-the-money options = 1.2 cr",
+            "Weighted average strike price = ₹2,800",
+            "Current market price = ₹4,000",
+            "Gross new shares from exercise = 1.2 cr",
+            "Cash proceeds = 1.2 cr × ₹2,800 = ₹3,360 cr",
+            "Shares repurchased with proceeds = ₹3,360 cr / ₹4,000 = 0.84 cr",
+            "Net new shares = 1.2 − 0.84 = 0.36 cr ≈ 0.4 cr (rounded)"
+          ],
+          "result": "Net dilution = 0.4 cr shares, Fully Diluted Share Count = 365 + 0.4 = 365.4 cr",
+          "insight": "The treasury method is conservative: it assumes the company uses all exercise proceeds to repurchase. In a real scenario, TCS might allocate some of those proceeds to capex or M&A, leaving more shares outstanding (i.e., gross dilution closer to 1.2 cr). However, for mature tech and IT services firms with strong cash generation, the treasury method is a reasonable working assumption. Note: some analysts avoid the method entirely and use gross outstanding options to be more conservative, especially for SBC-heavy companies."
+        },
+        "sensitivity_note": "Treasury method understates dilution for deeply in-the-money options (where strike is far below market) — in those cases, the dilution feels closer to gross outstanding options. For more conservative analysis, some practitioners simply use gross outstanding options as the dilution number, especially for high-SBC technology companies."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SUMPRODUCT",
+        "Cmd + ; — today's date",
+        "Ctrl + I — insert row",
+        "F2 then Cmd + Shift + End — extend selection"
+      ],
+      "windows": [
+        "=SUMPRODUCT — clean way to compute weighted average strike across multiple ESOP grants",
+        "Ctrl + ; — insert today's date as a timestamp on bridge tabs",
+        "Alt + I + R — insert a row to add a new bridge line (e.g., a newly disclosed contingent liability)",
+        "F2 then Ctrl + Shift + End — extend selection from active cell to last used cell, useful for auditing bridge formulas"
+      ]
+    }
+  }
+}

@@ -1,0 +1,247 @@
+{
+  "id": "172fade2-1dc3-438b-9ed2-7d18f1178e08",
+  "label": "M11 S7 | The Auto Analyst's Calculation Toolkit — From Wholesales to ",
+  "before": {
+    "formulas": [
+      {
+        "name": "Wholesale-Retail Gap and Channel Stuffing Detection",
+        "formula": "Channel Stuffing Indicator = Cumulative Wholesales (3M) − Cumulative Retails (3M)     Inventory Days at Dealer = (Dealer Inventory Units × 30) / Monthly Retails",
+        "variables": [
+          {
+            "symbol": "Cumulative Wholesales 3M",
+            "meaning": "Sum of OEM dispatches over the trailing three months (from monthly press releases)"
+          },
+          {
+            "symbol": "Cumulative Retails 3M",
+            "meaning": "Sum of dealer-to-customer sales over the trailing three months (from FADA data)"
+          },
+          {
+            "symbol": "Inventory Days",
+            "meaning": "Number of days of dealer inventory at current retail run-rate. Normal range: 25-35 days. Above 45 days is high; above 60 days is alarming"
+          }
+        ],
+        "worked_example": "Maruti Suzuki Q3 FY24 example. Cumulative wholesales over Oct-Dec 2023: 4,98,000 units. Cumulative retails (FADA data) over same period: 4,40,000 units. Wholesale-Retail Gap: +58,000 units in 3 months. Implied dealer inventory increase: roughly 58,000 units. If average monthly retails are 1,46,000 and dealer inventory is 1,80,000 units, Inventory Days = (1,80,000 × 30) / 1,46,000 = 37 days — slightly elevated but within normal range. Compare to a hypothetical channel stuffing scenario: if wholesales over 3M were 5,40,000 vs retails of 4,40,000, the gap of 1,00,000 in 3 months would push inventory days to 55+ days — flashing yellow on channel stuffing. The OEM is dispatching faster than dealers can sell, which historically forces dispatch cuts in subsequent months. This is the leading indicator. When you see persistent wholesale-retail gaps for 3+ months and inventory days above 45, expect dispatch cuts (and earnings disappointments) within 1-2 quarters.",
+        "sensitivity_note": "The wholesale-retail gap is the single most important diagnostic in auto cyclical analysis. OEMs control wholesales directly — they can boost dispatches at quarter-end to hit targets. Retails reflect actual consumer demand. The gap is where channel stuffing hides. During the FY18-19 cyclical peak, multiple OEMs ran wholesale-retail gaps for 4-6 months before dispatches collapsed in FY20. Analysts who tracked the gap caught the cyclical turn 2 quarters before consensus. Always read both numbers, never just wholesales."
+      },
+      {
+        "name": "Operating Leverage in Auto OEMs",
+        "formula": "ΔEBITDA Margin (bps) ≈ Volume Growth × Operating Leverage Coefficient ± ASP/Mix Effect ± Raw Material Effect ± Currency Effect",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-on-year change in unit volumes (e.g., +15% means 15% more vehicles sold)"
+          },
+          {
+            "symbol": "Operating Leverage Coefficient",
+            "meaning": "Roughly 6-8 bps margin expansion per 1% volume growth for mass-market OEMs (high fixed costs); 3-5 bps for ancillaries (lower fixed cost base)"
+          },
+          {
+            "symbol": "ASP/Mix Effect",
+            "meaning": "Margin contribution from price hikes and mix shift to higher-priced models. Premium mix typically adds 30-80 bps margin"
+          },
+          {
+            "symbol": "Raw Material Effect",
+            "meaning": "Steel, aluminium, copper, rubber prices YoY. Raw materials are 60-70% of OEM cost base. 10% steel price decline can add 80-120 bps margin"
+          },
+          {
+            "symbol": "Currency Effect",
+            "meaning": "USD/INR for OEMs with import content. INR depreciation hurts margins for import-heavy OEMs (e.g., Maruti for components); helps export-tilted OEMs (Eicher Royal Enfield)"
+          }
+        ],
+        "worked_example": "Maruti Suzuki FY24: Volume growth +9%, ASP improvement +5% (mix to higher-priced models), raw material costs declining 6% YoY (steel and aluminium deflation). Implied EBITDA margin walk: Operating leverage 9% × 7 bps = +63 bps. Mix improvement +60 bps. Raw material tailwind: 65% of cost × 6% decline = +390 bps gross margin tailwind, of which roughly half captured by OEM = +195 bps. Sum: 63 + 60 + 195 = +318 bps margin expansion implied. Actual FY24 margin moved from 9.3% to 11.4%, a +210 bps expansion — consistent with the framework after accounting for some pass-through to consumers via discounts and competitive pricing pressure. The operating leverage framework explains roughly 70% of margin movement in any given year. The remainder is one-offs (pricing actions, currency, government incentives like SPVs and PLI scheme benefits).",
+        "sensitivity_note": "Operating leverage is asymmetric — it expands margins fast on the way up and crushes margins fast on the way down. Maruti's FY18 margin was 15.2% at the cyclical peak; FY20 margin compressed to 8.7% at the trough as volumes fell 16%. The 650 bps margin compression on a 16% volume decline implies operating de-leverage of roughly 40 bps per 1% volume decline. This is why peak earnings should never be extrapolated for cyclical OEMs. Always model through-cycle margins (FY18 to FY24 average) for fair value, not the most recent year's margin."
+      },
+      {
+        "name": "Ancillary Content Per Vehicle (CPV) and Wallet Share",
+        "formula": "Content Per Vehicle = Ancillary Revenue from OEM Customer / OEM Volume Sold     Wallet Share Growth = (CPV Current Year − CPV Prior Year) / CPV Prior Year",
+        "variables": [
+          {
+            "symbol": "Ancillary Revenue from OEM",
+            "meaning": "Revenue earned by ancillary from a specific OEM customer (disclosed in customer concentration breakdowns or estimated from segmental data)"
+          },
+          {
+            "symbol": "OEM Volume Sold",
+            "meaning": "Number of vehicles produced by the OEM customer in the same period"
+          },
+          {
+            "symbol": "CPV Growth Drivers",
+            "meaning": "(1) New product wins (electronics, advanced safety), (2) Volume mix shift to premium models with higher content, (3) Pricing increases on existing content"
+          }
+        ],
+        "worked_example": "Sona BLW Precision Forgings example. Sona supplies powertrain components (gears, differential, BLDC motors) to multiple OEMs including Maruti, Hero, TVS, Stellantis, Hyundai. Estimated CPV with Maruti: FY22: roughly 5,500 INR per vehicle. FY24: roughly 7,200 INR per vehicle. CPV growth: 31% over 2 years, or 14% CAGR. Driver: increasing share of higher-content components (BLDC motors for EVs, advanced gears for premium vehicles). This 14% CPV CAGR is in addition to Maruti's own volume growth (around 9% FY24). So Sona's revenue from Maruti grew approximately 23% in FY24 (volume + CPV growth) versus Maruti's standalone growth of 9%. This wallet share expansion is the structural growth lever for premium ancillaries beyond pure OEM volume cycles. Companies like Sona BLW, Sundram Fasteners, Endurance, and Bharat Forge have grown 12-18% per year over the past 5 years partly through CPV expansion and partly through diversifying customers. The premium ancillaries deserve higher multiples than pure OEMs because they capture both the OEM cycle and the structural CPV growth.",
+        "sensitivity_note": "Content Per Vehicle is the most underappreciated metric in Indian auto analysis. Most retail investors track OEM volumes and assume ancillary growth follows. But the strongest ancillaries grow 5-10 percentage points faster than their OEM customers through CPV expansion. This explains why ancillaries like Sona BLW or Endurance compounded at 20-30% over 2018-2023 while OEMs compounded at 8-12%. Always estimate CPV growth for ancillaries — it separates the structural growth stories from cyclical-only plays."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=SUMIFS(range, criteria)",
+        "Format → Conditional Formatting (Data Bars)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for monthly volume tracking across 12 OEMs)",
+        "=SUMIFS(range, criteria) for cumulative monthly aggregations",
+        "Conditional formatting Data Bars for monthly volume trends",
+        "=GROWTH(range) for cyclical trend extrapolation",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Wholesale-Retail Gap and Channel Stuffing Detection",
+        "formula": "Channel Stuffing Indicator = Cumulative Wholesales (3M) − Cumulative Retails (3M)     Inventory Days at Dealer = (Dealer Inventory Units × 30) / Monthly Retails",
+        "variables": [
+          {
+            "symbol": "Cumulative Wholesales 3M",
+            "meaning": "Sum of OEM dispatches over the trailing three months (from monthly press releases)"
+          },
+          {
+            "symbol": "Cumulative Retails 3M",
+            "meaning": "Sum of dealer-to-customer sales over the trailing three months (from FADA data)"
+          },
+          {
+            "symbol": "Dealer Inventory Units",
+            "meaning": "Total vehicles held by dealers at the end of the measurement period (estimated from inventory reports or derived from cumulative gap)"
+          },
+          {
+            "symbol": "Monthly Retails",
+            "meaning": "Average or most recent month's retail volumes sold to end customers"
+          },
+          {
+            "symbol": "Inventory Days",
+            "meaning": "Number of days of dealer inventory at current retail run-rate. Normal range: 25–35 days. Above 45 days is high; above 60 days is alarming"
+          }
+        ],
+        "plain_english": "The wholesale-retail gap reveals whether an OEM is pushing inventory into dealer channels faster than consumers are buying vehicles—a red flag for channel stuffing. Inventory Days measures how many days of sales volume the dealer network is holding; elevated levels (45+ days) suggest demand weakness or forced dispatch tactics. Together, these metrics are leading indicators of dispatch cuts and earnings disappointment 1–2 quarters ahead.",
+        "worked_example": {
+          "problem": "You are analyzing Maruti Suzuki's Q3 FY24 performance. Cumulative wholesales Oct–Dec 2023: 4,98,000 units. Cumulative retails (FADA): 4,40,000 units. Average monthly retails: 1,46,000 units. Estimated dealer inventory: 1,80,000 units. Calculate the wholesale-retail gap and inventory days. What does the reading signal?",
+          "steps": [
+            "Calculate Channel Stuffing Indicator: 4,98,000 − 4,40,000 = 58,000 units gap over 3 months.",
+            "Calculate Inventory Days: (1,80,000 × 30) / 1,46,000 = 36.99 ≈ 37 days.",
+            "Benchmark against normal range: 37 days is slightly elevated but still within the 25–35 day normal band; not alarming.",
+            "Compare to a channel stuffing scenario: if wholesales had been 5,40,000 vs retails 4,40,000, gap would be 1,00,000 units (33,300 per month), pushing inventory days to 55+—yellow flag for forced dispatch and pending cuts."
+          ],
+          "result": "Gap of 58,000 units (19,300/month) and 37 inventory days indicate mild inventory build but controlled demand environment. The reading is within acceptable bounds for Q3, a typically strong quarter. However, if this gap persists into Q4 and Q1, expect sequential dispatch reductions.",
+          "insight": "The wholesale-retail gap is the single most actionable leading indicator in auto cycle analysis. A 3-month persistent gap and inventory days above 45 historically precede dispatch cuts by 1–2 quarters. During FY18–19 cyclical peaks, OEMs maintained 40–60 day inventory for 4–6 months before collapse. Track this metric monthly; it catches consensus misses early."
+        },
+        "sensitivity_note": "The wholesale-retail gap is the single most important diagnostic in auto cyclical analysis. OEMs control wholesales directly — they can boost dispatches at quarter-end to hit targets. Retails reflect actual consumer demand. The gap is where channel stuffing hides. During the FY18-19 cyclical peak, multiple OEMs ran wholesale-retail gaps for 4-6 months before dispatches collapsed in FY20. Analysts who tracked the gap caught the cyclical turn 2 quarters before consensus. Always read both numbers, never just wholesales."
+      },
+      {
+        "name": "Operating Leverage in Auto OEMs",
+        "formula": "ΔEBITDA Margin (bps) ≈ Volume Growth × Operating Leverage Coefficient ± ASP/Mix Effect ± Raw Material Effect ± Currency Effect",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-on-year change in unit volumes expressed as a percentage (e.g., +15% means 15% more vehicles sold)"
+          },
+          {
+            "symbol": "Operating Leverage Coefficient",
+            "meaning": "Approximate margin expansion (in basis points) per 1% volume growth. Mass-market OEMs: 6–8 bps/1% volume (high fixed cost base); ancillaries: 3–5 bps/1% volume (lower fixed cost leverage)"
+          },
+          {
+            "symbol": "ASP/Mix Effect",
+            "meaning": "Margin contribution (in basis points) from price hikes and shift toward higher-priced or premium models. Typical contribution: 30–80 bps margin per annum"
+          },
+          {
+            "symbol": "Raw Material Effect",
+            "meaning": "Margin impact (in basis points) from commodity price movements. Raw materials represent 60–70% of OEM variable cost. A 10% decline in steel prices typically adds 80–120 bps margin benefit"
+          },
+          {
+            "symbol": "Currency Effect",
+            "meaning": "Margin impact from USD/INR exchange rate movements. INR depreciation hurts import-heavy OEMs (e.g., Maruti); helps export-oriented players (e.g., Royal Enfield, Eicher)"
+          }
+        ],
+        "plain_english": "Operating leverage quantifies how much margin expands when an auto OEM grows volumes, adjusted for pricing, raw material costs, and currency headwinds. Because fixed costs (plants, tooling, corporate overhead) don't scale linearly with volume, each additional unit sold drops more cash margin than the average. This leverage effect is powerful going up but brutal on the downside during cyclical downturns.",
+        "computation": [
+          "Estimate volume growth rate YoY (e.g., +9%).",
+          "Multiply by the OEM's operating leverage coefficient (typically 6–8 bps for mass-market players): 9% × 7 bps = 63 bps margin expansion.",
+          "Quantify ASP/mix benefit: e.g., if average selling price rose 5% and product mix shifted to higher-margin variants, estimate +60 bps.",
+          "Calculate raw material tailwind: if raw materials are 65% of cost and steel/aluminium prices declined 6%, margin impact ≈ 65% × 6% ÷ 2 (assuming partial pass-through) = ~195 bps.",
+          "Assess currency: if INR depreciated 4% and import content is 20%, add ~20–30 bps headwind for import-heavy OEMs.",
+          "Sum all effects: 63 + 60 + 195 − 20 = +298 bps implied EBITDA margin expansion."
+        ],
+        "worked_example": {
+          "problem": "Maruti Suzuki FY24 guidance: estimate EBITDA margin expansion using the operating leverage framework. Given: volume growth +9%, ASP improvement +5% (mix), raw material cost decline 6% YoY, currency headwind ~4% depreciation.",
+          "steps": [
+            "Operating leverage: 9% volume growth × 7 bps per 1% = +63 bps margin expansion.",
+            "Mix/ASP effect: 5% price growth × 12 bps per 1% ASP (typical for auto) = +60 bps.",
+            "Raw material tailwind: 65% of cost base × 6% deflation ÷ 2 (pass-through to consumer) = +195 bps gross margin benefit.",
+            "Currency headwind: 20% import content × 4% INR depreciation = −32 bps margin drag.",
+            "Other items (marketing, one-offs): assume neutral.",
+            "Total expected margin expansion: 63 + 60 + 195 − 32 = +286 bps."
+          ],
+          "result": "Implied EBITDA margin should expand ~280–300 bps. Maruti's actual margin movement was 9.3% (FY23) to 11.4% (FY24), a +210 bps change—slightly below the framework estimate, likely due to incremental discounting and competitive pricing pressure in H2 FY24.",
+          "insight": "The operating leverage framework explains 60–80% of OEM margin volatility in any given year. The remainder comes from one-off pricing actions, government incentives (e.g., PLI scheme), M&A, or external shocks. Use this framework to build through-cycle fair-value margins: never extrapolate current-year margin for a cyclical OEM. Instead, average margins across full cycle (e.g., FY18–FY24) and apply a normalized operating leverage to estimate normalized profitability."
+        },
+        "sensitivity_note": "Operating leverage is asymmetric — it expands margins fast on the way up and crushes margins fast on the way down. Maruti's FY18 margin was 15.2% at the cyclical peak; FY20 margin compressed to 8.7% at the trough as volumes fell 16%. The 650 bps margin compression on a 16% volume decline implies operating de-leverage of roughly 40 bps per 1% volume decline. This is why peak earnings should never be extrapolated for cyclical OEMs. Always model through-cycle margins (FY18 to FY24 average) for fair value, not the most recent year's margin."
+      },
+      {
+        "name": "Ancillary Content Per Vehicle (CPV) and Wallet Share",
+        "formula": "Content Per Vehicle = Ancillary Revenue from OEM Customer / OEM Volume Sold     Wallet Share Growth = (CPV Current Year − CPV Prior Year) / CPV Prior Year",
+        "variables": [
+          {
+            "symbol": "Ancillary Revenue from OEM Customer",
+            "meaning": "Annual revenue earned by the ancillary supplier from a specific OEM customer (disclosed in customer concentration breakdowns, segmental revenue, or estimated from public filings)"
+          },
+          {
+            "symbol": "OEM Volume Sold",
+            "meaning": "Number of vehicles (units) produced and sold by the OEM customer in the same period"
+          },
+          {
+            "symbol": "CPV Current Year",
+            "meaning": "Content per vehicle (in ₹ per unit) for the current year"
+          },
+          {
+            "symbol": "CPV Prior Year",
+            "meaning": "Content per vehicle (in ₹ per unit) for the prior year"
+          },
+          {
+            "symbol": "CPV Growth Drivers",
+            "meaning": "(1) New product wins (e.g., advanced electronics, BLDC motors, safety modules), (2) Volume mix shift toward premium or EV models with higher component content, (3) Pricing increases on existing content"
+          }
+        ],
+        "plain_english": "Content Per Vehicle (CPV) measures how much value (revenue) an ancillary supplier contributes per vehicle sold by an OEM. Growing CPV means the supplier is winning higher-margin or more complex parts, or capturing a larger share of the OEM's total component spend—a structural growth driver independent of OEM volume cycles. Ancillaries with rising CPV often compound 5–10 percentage points faster than their OEM customers.",
+        "computation": [
+          "Obtain ancillary revenue attributable to the specific OEM from investor presentations, annual reports (customer concentration section), or segment analysis.",
+          "Obtain OEM unit volumes for the same period from monthly press releases or annual filings.",
+          "Divide revenue by volume: e.g., ₹8,500 crore revenue ÷ 12.5 lakh units = ₹6,800 CPV.",
+          "Repeat for prior year to derive CPV growth rate.",
+          "Compare CPV growth to OEM volume growth; the difference is wallet share expansion (or contraction)."
+        ],
+        "worked_example": {
+          "problem": "Sona BLW Precision Forgings supplies powertrain and EV components to Maruti Suzuki. Estimate CPV growth and wallet share gains. Data: Sona's Maruti revenue FY22: ₹2,200 crore; Maruti volumes FY22: 4,000,000 units. Sona's Maruti revenue FY24: ₹2,900 crore; Maruti volumes FY24: 4,360,000 units.",
+          "steps": [
+            "CPV FY22: ₹2,200 crore ÷ 40 lakh units = ₹550 per vehicle.",
+            "CPV FY24: ₹2,900 crore ÷ 43.6 lakh units = ₹665.75 per vehicle.",
+            "CPV growth: (665.75 − 550) / 550 = 21% over 2 years, or ~10% CAGR.",
+            "Maruti volume growth FY22–FY24: (43.6 − 40) / 40 = 9% over 2 years, or ~4.5% CAGR.",
+            "Wallet share expansion: Sona's Maruti revenue growth (32% over 2 years) = volume growth (9%) + CPV growth (21%), confirming structural content expansion."
+          ],
+          "result": "CPV grew 10% CAGR while Maruti volumes grew 4.5% CAGR. This 5.5 percentage point gap is wallet share expansion—Sona captured higher-margin content (BLDC motors for EVs, advanced gears for premium trims). Sona's revenue from Maruti grew 32% over the same period, far outpacing Maruti's standalone 9% growth.",
+          "insight": "Premium ancillaries like Sona BLW, Sundram Fasteners, Endurance, and Bharat Forge have compounded at 20–30% annually over 2018–2024 largely through CPV expansion (10–15% per year) in addition to OEM volume growth (5–8% per year). This is why quality ancillaries deserve higher multiples (18–24x earnings) than OEMs (8–12x) despite similar leverage. CPV expansion reflects structural demand for EVs, safety modules, and advanced electronics—secular tailwinds lasting 5–10 years."
+        },
+        "sensitivity_note": "Content Per Vehicle is the most underappreciated metric in Indian auto analysis. Most retail investors track OEM volumes and assume ancillary growth follows. But the strongest ancillaries grow 5–10 percentage points faster than their OEM customers through CPV expansion. This explains why ancillaries like Sona BLW or Endurance compounded at 20–30% over 2018–2023 while OEMs compounded at 8–12%. Always estimate CPV growth for ancillaries — it separates the structural growth stories from cyclical-only plays."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=SUMIFS(range, criteria)",
+        "Format → Conditional Formatting (Data Bars)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for monthly volume tracking across 12 OEMs)",
+        "=SUMIFS(range, criteria) for cumulative monthly aggregations",
+        "Conditional formatting Data Bars for monthly volume trends",
+        "=GROWTH(range) for cyclical trend extrapolation",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  }
+}

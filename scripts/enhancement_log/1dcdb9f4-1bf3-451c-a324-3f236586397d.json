@@ -1,0 +1,226 @@
+{
+  "id": "1dcdb9f4-1bf3-451c-a324-3f236586397d",
+  "label": "M1 S1 | TVM Formulas: FV, PV, Annuity & Rule of 72",
+  "before": {
+    "formulas": [
+      {
+        "name": "Future Value (FV) — Compounding",
+        "excel": "=FV(0.12, 5, 0, -200000) returns ₹3,52,464. PV is entered as negative (cash outflow).",
+        "formula": "FV = PV × (1 + r)^n",
+        "variables": {
+          "n": "Number of compounding periods (usually years)",
+          "r": "Interest rate per period (expressed as a decimal — 8% = 0.08)",
+          "FV": "Future Value — what the money grows to",
+          "PV": "Present Value — the amount you start with today"
+        },
+        "sensitivity": [
+          "If r increases from 12% to 15%, FV jumps to ₹4,02,271 — a small rate change creates a big outcome change over time.",
+          "If n increases from 5 to 10 years (at 12%), FV becomes ₹6,21,170 — time is the most powerful variable."
+        ],
+        "worked_example": {
+          "steps": [
+            "FV = 2,00,000 × (1 + 0.12)^5",
+            "FV = 2,00,000 × (1.12)^5",
+            "FV = 2,00,000 × 1.7623",
+            "FV = ₹3,52,464"
+          ],
+          "insight": "12% × 5 years × ₹2,00,000 would give only ₹1,20,000 (simple interest). The extra ₹32,464 is compound interest — interest on interest.",
+          "problem": "You invest ₹2,00,000 in a mutual fund that returns 12% per year for 5 years."
+        }
+      },
+      {
+        "name": "Present Value (PV) — Discounting",
+        "excel": "=PV(0.10, 3, 0, -500000) returns ₹3,75,657. Quick NPV: =NPV(rate, value1, value2, ...) discounts a series of future cash flows.",
+        "formula": "PV = FV / (1 + r)^n",
+        "variables": {
+          "n": "Number of periods until you receive the cash flow",
+          "r": "Discount rate (the rate you use to 'shrink' the future cash flow back to today)",
+          "FV": "Future Value — the cash flow you expect to receive in the future",
+          "PV": "Present Value — the value today of a future cash flow"
+        },
+        "analyst_note": "In equity research, r is the company's cost of equity or WACC. A 1% change in the discount rate can move a stock's fair value by 15–25%.",
+        "worked_example": {
+          "steps": [
+            "PV = 5,00,000 / (1 + 0.10)^3",
+            "PV = 5,00,000 / 1.331",
+            "PV = ₹3,75,657"
+          ],
+          "insight": "If someone offers to sell you this payment stream for ₹4,00,000 today, you should say no — you'd be overpaying by ₹24,343.",
+          "problem": "A company promises to pay you ₹5,00,000 three years from now. Your required return is 10%."
+        }
+      },
+      {
+        "name": "Present Value of an Annuity",
+        "excel": "=PV(0.11, 10, -30, 0) returns ₹176.67",
+        "formula": "PV(Annuity) = PMT × [(1 - (1 + r)^-n) / r]",
+        "variables": {
+          "n": "Total number of payments",
+          "r": "Discount rate per period",
+          "PMT": "Payment per period (the equal recurring cash flow)"
+        },
+        "worked_example": {
+          "steps": [
+            "PV = 30 × [(1 - (1.11)^-10) / 0.11]",
+            "PV = 30 × [(1 - 0.3522) / 0.11]",
+            "PV = 30 × [0.6478 / 0.11]",
+            "PV = 30 × 5.889",
+            "PV = ₹176.67 per share"
+          ],
+          "insight": "Even though Infosys will pay ₹300 total over 10 years, those payments are only worth ₹176.67 today because each future payment is worth progressively less.",
+          "problem": "Infosys pays a consistent dividend of ₹30 per share per year for 10 years. Required return is 11%."
+        }
+      },
+      {
+        "name": "Rule of 72 (Quick Mental Math)",
+        "formula": "Years to double ≈ 72 / Interest Rate",
+        "examples": [
+          "At 12% return: 72 / 12 = 6 years to double",
+          "At 8% return: 72 / 8 = 9 years to double",
+          "At 6% (FD rate): 72 / 6 = 12 years (now you see why FDs don't build wealth)"
+        ],
+        "practical_use": "If someone pitches a stock saying 'it'll 4x in 8 years,' you can instantly calculate: that requires roughly 18% annual returns (72/4 years to double = 18%, and you need to double twice). Is 18% CAGR realistic?"
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Future Value (FV) — Compounding",
+        "excel": "=FV(0.12, 5, 0, -200000) returns ₹3,52,464. PV is entered as negative (cash outflow).",
+        "formula": "FV = PV × (1 + r)^n",
+        "variables": [
+          {
+            "symbol": "FV",
+            "meaning": "Future Value — what the money grows to after n periods"
+          },
+          {
+            "symbol": "PV",
+            "meaning": "Present Value — the amount you start with today (initial investment)"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Interest rate per period, expressed as a decimal (8% = 0.08)"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of compounding periods (usually years)"
+          }
+        ],
+        "plain_english": "This formula shows how money grows over time when interest is compounded — you earn returns not just on your original investment, but also on accumulated interest. The larger the interest rate or the longer the time period, the exponentially bigger the final amount becomes. This is why even small percentage differences in returns create massive wealth gaps over decades.",
+        "sensitivity": [
+          "If r increases from 12% to 15%, FV jumps to ₹4,02,271 — a small rate change creates a big outcome change over time.",
+          "If n increases from 5 to 10 years (at 12%), FV becomes ₹6,21,170 — time is the most powerful variable."
+        ],
+        "worked_example": {
+          "problem": "You invest ₹2,00,000 in a mutual fund that returns 12% per year for 5 years.",
+          "steps": [
+            "FV = 2,00,000 × (1 + 0.12)^5",
+            "FV = 2,00,000 × (1.12)^5",
+            "FV = 2,00,000 × 1.7623",
+            "FV = ₹3,52,464"
+          ],
+          "result": "₹3,52,464",
+          "insight": "12% × 5 years × ₹2,00,000 would give only ₹1,20,000 (simple interest). The extra ₹32,464 is compound interest — interest on interest."
+        }
+      },
+      {
+        "name": "Present Value (PV) — Discounting",
+        "excel": "=PV(0.10, 3, 0, -500000) returns ₹3,75,657. Quick NPV: =NPV(rate, value1, value2, ...) discounts a series of future cash flows.",
+        "formula": "PV = FV / (1 + r)^n",
+        "variables": [
+          {
+            "symbol": "PV",
+            "meaning": "Present Value — the value today of a future cash flow"
+          },
+          {
+            "symbol": "FV",
+            "meaning": "Future Value — the cash flow you expect to receive in the future"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate — the rate you use to 'shrink' the future cash flow back to today's value"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Number of periods until you receive the cash flow"
+          }
+        ],
+        "plain_english": "This formula reverses compounding: it tells you what a future cash flow is worth in today's money. The higher your discount rate (your required return) or the longer you must wait, the less that future money is worth today. In equity research, the discount rate reflects the company's cost of capital and your risk appetite — higher risk means higher discount rate, which drives down fair value.",
+        "analyst_note": "In equity research, r is the company's cost of equity or WACC. A 1% change in the discount rate can move a stock's fair value by 15–25%.",
+        "worked_example": {
+          "problem": "A company promises to pay you ₹5,00,000 three years from now. Your required return is 10%.",
+          "steps": [
+            "PV = 5,00,000 / (1 + 0.10)^3",
+            "PV = 5,00,000 / 1.331",
+            "PV = ₹3,75,657"
+          ],
+          "result": "₹3,75,657",
+          "insight": "If someone offers to sell you this payment stream for ₹4,00,000 today, you should say no — you'd be overpaying by ₹24,343."
+        }
+      },
+      {
+        "name": "Present Value of an Annuity",
+        "excel": "=PV(0.11, 10, -30, 0) returns ₹176.67",
+        "formula": "PV(Annuity) = PMT × [(1 - (1 + r)^-n) / r]",
+        "variables": [
+          {
+            "symbol": "PV(Annuity)",
+            "meaning": "Present Value of the annuity — what the stream of equal payments is worth today"
+          },
+          {
+            "symbol": "PMT",
+            "meaning": "Payment per period — the fixed, recurring cash flow received each period"
+          },
+          {
+            "symbol": "r",
+            "meaning": "Discount rate per period"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Total number of payments to be received"
+          }
+        ],
+        "plain_english": "This formula values a stream of equal, regular cash flows (like dividends or bond coupons) by discounting each one back to today and summing them. Each year's payment is worth less than the previous year because it arrives further in the future. This is crucial in dividend discount models — it shows why a stock paying ₹30 annually forever is not worth ₹30 × many years, but much less.",
+        "computation": [
+          "Calculate (1 + r)^-n — the discount factor for the final payment",
+          "Subtract from 1 to find the proportion of payments to be discounted",
+          "Divide by r to get the annuity multiplier",
+          "Multiply by PMT to get total present value"
+        ],
+        "worked_example": {
+          "problem": "Infosys pays a consistent dividend of ₹30 per share per year for 10 years. Required return is 11%.",
+          "steps": [
+            "PV = 30 × [(1 - (1.11)^-10) / 0.11]",
+            "PV = 30 × [(1 - 0.3522) / 0.11]",
+            "PV = 30 × [0.6478 / 0.11]",
+            "PV = 30 × 5.889",
+            "PV = ₹176.67 per share"
+          ],
+          "result": "₹176.67 per share",
+          "insight": "Even though Infosys will pay ₹300 total over 10 years, those payments are only worth ₹176.67 today because each future payment is worth progressively less."
+        }
+      },
+      {
+        "name": "Rule of 72 (Quick Mental Math)",
+        "formula": "Years to double ≈ 72 / Interest Rate",
+        "variables": [
+          {
+            "symbol": "Interest Rate",
+            "meaning": "The annual percentage return expressed as a whole number (e.g., 12 for 12%, not 0.12)"
+          },
+          {
+            "symbol": "Years to double",
+            "meaning": "Approximate time required for an investment to double at the given interest rate"
+          }
+        ],
+        "plain_english": "The Rule of 72 is a mental shortcut to estimate doubling time without a calculator. It works because 72 approximates the natural logarithm relationships in compound growth. For any return rate, dividing 72 by that rate gives you roughly how many years it takes to double your money — useful for quickly evaluating investment pitches and understanding the real power of different return rates.",
+        "examples": [
+          "At 12% return: 72 / 12 = 6 years to double",
+          "At 8% return: 72 / 8 = 9 years to double",
+          "At 6% (FD rate): 72 / 6 = 12 years (now you see why FDs don't build wealth)"
+        ],
+        "practical_use": "If someone pitches a stock saying 'it'll 4x in 8 years,' you can instantly calculate: that requires roughly 18% annual returns (72/4 years to double = 18%, and you need to double twice). Is 18% CAGR realistic?"
+      }
+    ]
+  }
+}

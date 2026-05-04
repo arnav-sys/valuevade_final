@@ -1,0 +1,251 @@
+{
+  "id": "fd708a3f-57fd-4e80-a590-2efdf8b3f33e",
+  "label": "M11 S11 | The Top-Down Allocator's Toolkit — From Macro To Sector Conv",
+  "before": {
+    "formulas": [
+      {
+        "name": "Macro-to-Sector Mapping Framework",
+        "formula": "Sector Conviction Score = Macro Driver Score × Sector Sensitivity × Cycle Position Modifier × Valuation Adjustment",
+        "variables": [
+          {
+            "symbol": "Macro Driver Score",
+            "meaning": "Composite score of relevant macro indicators for the sector (1-10 scale). For capital goods: PMI manufacturing, capex announcements, PLI commitments, IIP capital goods sub-index. For real estate: rural wages, urban income growth, interest rates, RERA-driven consolidation"
+          },
+          {
+            "symbol": "Sector Sensitivity",
+            "meaning": "How responsive the sector is to its key drivers. Cyclical sectors have high sensitivity (1.2-1.5x); defensive sectors have low sensitivity (0.5-0.8x); structural growth sectors (IT services historically) have moderate sensitivity"
+          },
+          {
+            "symbol": "Cycle Position Modifier",
+            "meaning": "Where the sector sits in its own sub-cycle. Early-cycle: 1.3x. Mid-cycle: 1.0x. Late-cycle: 0.7x. Trough: 0.9x with recovery optionality. Apply to base score"
+          },
+          {
+            "symbol": "Valuation Adjustment",
+            "meaning": "Sector valuation versus 5-year average. Trading 20%+ below average: +0.3 multiplier. Trading at average: 1.0x. Trading 20%+ above average: -0.2 multiplier. Captures relative attractiveness"
+          }
+        ],
+        "worked_example": "Indian Capital Goods sector conviction calculation in late 2024. Macro Driver Score: Manufacturing PMI at 55+ (above 50 expansion line) = 7/10; Capex announcements accelerating from PLI/defence/renewable = 8/10; IIP capital goods sub-index growing 9-10% YoY = 7/10. Average: 7.5. Sector Sensitivity: 1.4x (cyclical with high responsiveness to capex cycles). Cycle Position Modifier: 1.0x (mid-cycle expansion, with multi-year visibility). Valuation Adjustment: -0.1x (trading at premium to historical average given strong cycle). Sector Conviction: 7.5 × 1.4 × 1.0 × (1-0.1) = 9.45 — strong overweight signal. Compare to IT services in late 2024: Macro Driver Score 5.5 (US tech demand still soft), Sensitivity 0.7 (less cyclical than capital goods), Cycle Position 0.9 (recovery from trough), Valuation -0.1 (premium to global peers). Conviction: 5.5 × 0.7 × 0.9 × 0.9 = 3.1 — weak underweight signal. The framework explicitly captures the relative outperformance opportunity. Apply to all major sectors quarterly to refresh portfolio positioning. Compare conviction scores across sectors to identify overweight, neutral, underweight allocations.",
+        "sensitivity_note": "The conviction score framework requires honesty about each driver. Avoid confirmation bias — don't inflate macro scores to justify a preferred sector view. Refresh quarterly with updated indicators. Companies and sectors that score consistently high across multiple quarters are durable structural plays. Sectors with declining conviction over multiple quarters signal potential cyclical inflection. The framework is a discipline, not a prediction tool."
+      },
+      {
+        "name": "Sector Relative Valuation Versus Historical Bands",
+        "formula": "Sector Z-Score = (Current Sector P/E − 5-Year Average P/E) ÷ 5-Year Standard Deviation     where Z-Score above 1.0 indicates premium to history; below -1.0 indicates discount",
+        "variables": [
+          {
+            "symbol": "Current Sector P/E",
+            "meaning": "Forward 12-month P/E of the sector index (Nifty Bank, Nifty Auto, Nifty IT, Nifty Pharma, etc.) or weighted average of major constituents"
+          },
+          {
+            "symbol": "5-Year Average P/E",
+            "meaning": "Mean P/E of the same sector over the past 5 years — captures one full cycle for most sectors"
+          },
+          {
+            "symbol": "Standard Deviation",
+            "meaning": "Variability of P/E around the mean — captures the historical range. Higher SD means wider valuation bands"
+          },
+          {
+            "symbol": "Z-Score Range",
+            "meaning": "Z-score above +2: strongly overvalued; +1 to +2: moderately overvalued; -1 to +1: fair value; -1 to -2: moderately undervalued; below -2: deeply undervalued"
+          }
+        ],
+        "worked_example": "Indian sector relative valuation analysis in late 2024. Nifty Capital Goods Index forward P/E: 65x. 5-year average: 35x. Standard deviation: 12x. Z-Score: (65 - 35) / 12 = +2.5 — strongly overvalued versus history. Implication: cyclical strength reflected in valuation; further multiple expansion is unlikely. Nifty IT Index forward P/E: 28x. 5-year average: 30x. Standard deviation: 5x. Z-Score: (28 - 30) / 5 = -0.4 — fair value. Implication: IT sector at fair valuation following 2022-2024 underperformance; recovery thesis is set up. Nifty Bank forward P/E: 14x. 5-year average: 16x. Standard deviation: 2.5x. Z-Score: (14 - 16) / 2.5 = -0.8 — modestly undervalued. Implication: financial sector reasonable entry point. Combine z-scores with macro conviction scores to form positioning. High macro conviction + reasonable valuation = strong overweight (capital goods despite premium signals continued momentum). Moderate conviction + undervaluation = recovery opportunity (IT, banks). Apply quarterly to all major sectors.",
+        "sensitivity_note": "Z-scores are statistical anchors, not absolute targets. A sector trading at +2 standard deviations may continue further if cyclical strength persists; a sector at -1.5 may not mean-revert if structural challenges exist. Combine z-scores with cyclical positioning, macro drivers, and qualitative assessment. Z-scores work best as confirmation rather than primary trigger. Track quarterly evolution — sectors moving from -1 to +1 over 12 months indicate cyclical recovery; from +1 to -1 indicates cyclical normalisation."
+      },
+      {
+        "name": "Portfolio Construction From Sector Conviction",
+        "formula": "Sector Weight in Portfolio ≈ Benchmark Weight × (1 + Conviction Tilt)     where Conviction Tilt = (Sector Conviction Score − Median Conviction) ÷ Maximum Conviction × Maximum Tilt %",
+        "variables": [
+          {
+            "symbol": "Benchmark Weight",
+            "meaning": "Sector weight in benchmark index (Nifty 50 or Nifty 100). For example, Financials at ~30%, IT at ~14%, Energy at ~10%, FMCG at ~10%, Auto at ~7%, Pharma at ~5%, Capital Goods at ~5%"
+          },
+          {
+            "symbol": "Conviction Tilt",
+            "meaning": "How much above or below benchmark to position. Strong conviction (score above median + 2): +50% tilt; Moderate conviction: +20% tilt; Neutral: 0% tilt; Underweight: -20% to -50% tilt"
+          },
+          {
+            "symbol": "Maximum Tilt %",
+            "meaning": "Risk-management constraint on how far portfolio deviates from benchmark. Typical institutional portfolios use ±30-50% tilt limits — preventing extreme concentration risk while allowing meaningful active positioning"
+          }
+        ],
+        "worked_example": "Sector positioning example based on late 2024 analysis. Capital Goods conviction high (9.5); benchmark weight ~5%; conviction tilt +50% would push portfolio weight to 7.5%. IT services conviction lower (3.1); benchmark weight ~14%; conviction tilt -20% would push portfolio weight to 11.2%. Real Estate conviction moderate-strong (8); benchmark weight ~3% (with selective developers); conviction tilt +30% would push portfolio weight to 4%. Financials conviction moderate (6); benchmark weight ~30%; conviction tilt +10% would push portfolio weight to 33%. Pharma conviction moderate-low (5); benchmark weight ~5%; conviction tilt 0% maintains benchmark. Total active tilt across sectors: +5% in capital goods, -3% in IT, +1% in real estate, +3% in financials. The +6% net cyclical tilt with -3% IT compression captures the sector rotation positioning. The framework explicitly translates conviction scores into portfolio positioning. Refresh quarterly. Monitor performance. The 2022-2024 portfolio with strong cyclical tilt and IT compression captured the multi-bagger opportunity that the benchmark would have missed.",
+        "sensitivity_note": "Portfolio construction discipline is what separates a thesis from positioning. Many analysts have correct sector views but fail to translate them into actual portfolio tilts due to risk constraints, peer pressure, or fear of underperformance versus benchmark. Apply the framework explicitly with maximum tilt constraints; communicate the positioning to portfolio managers; track performance. Sectors with consistently high conviction across quarters can sustain larger tilts; sectors with declining conviction signal time to reduce tilt. The framework is the alpha; execution discipline is what captures it."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=AVERAGEIF(range, criteria)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for sector-level analysis across companies)",
+        "=AVERAGEIF(range, criteria) for macro indicator averaging",
+        "Conditional formatting Color Scales for sector heat map visualisation",
+        "=GROWTH(range) for trend extrapolation on macro indicators",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Macro-to-Sector Mapping Framework",
+        "formula": "Sector Conviction Score = Macro Driver Score × Sector Sensitivity × Cycle Position Modifier × Valuation Adjustment",
+        "variables": [
+          {
+            "symbol": "Macro Driver Score",
+            "meaning": "Composite score of relevant macro indicators for the sector (1-10 scale). For capital goods: PMI manufacturing, capex announcements, PLI commitments, IIP capital goods sub-index. For real estate: rural wages, urban income growth, interest rates, RERA-driven consolidation"
+          },
+          {
+            "symbol": "Sector Sensitivity",
+            "meaning": "How responsive the sector is to its key drivers. Cyclical sectors have high sensitivity (1.2-1.5x); defensive sectors have low sensitivity (0.5-0.8x); structural growth sectors (IT services historically) have moderate sensitivity"
+          },
+          {
+            "symbol": "Cycle Position Modifier",
+            "meaning": "Where the sector sits in its own sub-cycle. Early-cycle: 1.3x. Mid-cycle: 1.0x. Late-cycle: 0.7x. Trough: 0.9x with recovery optionality. Apply to base score"
+          },
+          {
+            "symbol": "Valuation Adjustment",
+            "meaning": "Sector valuation versus 5-year average. Trading 20%+ below average: +0.3 multiplier. Trading at average: 1.0x. Trading 20%+ above average: -0.2 multiplier. Captures relative attractiveness"
+          }
+        ],
+        "plain_english": "This framework quantifies your conviction that a sector will outperform by combining macroeconomic tailwinds, the sector's natural cyclicality, its position in its own cycle, and relative valuation. A high conviction score means the macro backdrop is strong, the sector is positioned to benefit, and valuation offers room to run—or at least isn't pricing in excessive optimism. It disciplines subjective views into a repeatable, comparable score across all sectors.",
+        "computation": [
+          "Step 1: Assign Macro Driver Score (1–10) based on relevant indicators for the sector; document which indicators and their current readings.",
+          "Step 2: Determine Sector Sensitivity multiplier (0.5–1.5x) based on historical cyclicality; cyclical sectors (capex-driven, commodity-linked) score 1.2–1.5x; defensive (FMCG, utilities) score 0.5–0.8x.",
+          "Step 3: Identify Cycle Position Modifier (0.7–1.3x) by comparing current data (capex, orders, capacity utilization, margin trends) to historical cycle patterns.",
+          "Step 4: Calculate Valuation Adjustment multiplier using current sector P/E versus 5-year mean; apply +0.3 if >20% below, 1.0x if at mean, or -0.2 if >20% above.",
+          "Step 5: Multiply all four components to yield Sector Conviction Score (typically 1–10 range)."
+        ],
+        "worked_example": {
+          "problem": "As a top-down allocator in late 2024, you want to compare conviction across capital goods and IT services to determine portfolio tilts. Calculate conviction scores for both sectors using current Indian market data.",
+          "steps": [
+            "Capital Goods: Macro Driver Score. PMI manufacturing at 55.2 (expansion) = 7/10; capex announcements from PLI, defence modernization = 8/10; IIP capital goods sub-index +9.5% YoY = 7/10. Average = 7.5.",
+            "Capital Goods: Sector Sensitivity = 1.4x (high cyclicality, capex-driven, responds sharply to rate cycles).",
+            "Capital Goods: Cycle Position Modifier = 1.0x (mid-cycle expansion, ~2–3 years of visibility from PLI and defence programmes).",
+            "Capital Goods: Valuation Adjustment. Current Nifty Capital Goods P/E = 65x; 5-year average = 35x; premium of +86%. Adjustment = -0.15x (moderately overvalued but justified by cycle strength).",
+            "Capital Goods Conviction = 7.5 × 1.4 × 1.0 × 0.85 = 8.93 → Strong Overweight signal.",
+            "IT Services: Macro Driver Score. US tech capex still soft = 5/10; India services demand recovery early = 6/10; rupee strength a headwind = 4/10. Average = 5.0.",
+            "IT Services: Sector Sensitivity = 0.7x (structural growth, less cyclical than commodities or capex).",
+            "IT Services: Cycle Position Modifier = 0.9x (exiting trough, but recovery gradual, not yet mid-cycle).",
+            "IT Services: Valuation Adjustment. Nifty IT P/E = 28x; 5-year average = 30x; trading at -6.7% discount. Adjustment = 1.0x (fair value).",
+            "IT Services Conviction = 5.0 × 0.7 × 0.9 × 1.0 = 3.15 → Weak Underweight signal."
+          ],
+          "result": "Capital Goods conviction 8.93 versus IT Services 3.15 clearly signals a relative overweight in cyclical capex beneficiaries and reduced exposure to structural IT services, capturing the 2024 macro rotation from tech to domestic capex.",
+          "insight": "High conviction scores sustained over 2–3 quarters indicate durable structural tailwinds (e.g., capex cycle, PLI ramp) and justify larger portfolio tilts. Declining conviction over successive quarters (macro deteriorating, cycle advancing, valuations rising) is a sell signal. The framework's power lies in quarterly refresh discipline—sectors that stay high-conviction are alpha; sectors that flip are inflection points."
+        },
+        "sensitivity_note": "The conviction score framework requires honesty about each driver. Avoid confirmation bias — don't inflate macro scores to justify a preferred sector view. Refresh quarterly with updated indicators. Companies and sectors that score consistently high across multiple quarters are durable structural plays. Sectors with declining conviction over multiple quarters signal potential cyclical inflection. The framework is a discipline, not a prediction tool."
+      },
+      {
+        "name": "Sector Relative Valuation Versus Historical Bands",
+        "formula": "Sector Z-Score = (Current Sector P/E − 5-Year Average P/E) ÷ 5-Year Standard Deviation     where Z-Score above 1.0 indicates premium to history; below -1.0 indicates discount",
+        "variables": [
+          {
+            "symbol": "Current Sector P/E",
+            "meaning": "Forward 12-month P/E of the sector index (Nifty Bank, Nifty Auto, Nifty IT, Nifty Pharma, etc.) or weighted average of major constituents"
+          },
+          {
+            "symbol": "5-Year Average P/E",
+            "meaning": "Mean P/E of the same sector over the past 5 years — captures one full cycle for most sectors"
+          },
+          {
+            "symbol": "5-Year Standard Deviation",
+            "meaning": "Variability of P/E around the mean — captures the historical range. Higher SD means wider valuation bands"
+          },
+          {
+            "symbol": "Z-Score Range",
+            "meaning": "Z-score above +2: strongly overvalued; +1 to +2: moderately overvalued; -1 to +1: fair value; -1 to -2: moderately undervalued; below -2: deeply undervalued"
+          }
+        ],
+        "plain_english": "The Z-score tells you how many standard deviations a sector's current valuation sits from its long-term average, in statistical terms. It's a quick way to identify whether a sector is priced as a bargain, fair, or bubble—relative to its own history. A Z-score near zero suggests equilibrium; extremes in either direction often precede mean reversion, though not always, especially in structural bull or bear markets.",
+        "computation": [
+          "Step 1: Gather forward P/E for the sector index or basket of major constituents; source from stock exchange data or financial service providers.",
+          "Step 2: Calculate the 5-year average P/E by taking the arithmetic mean of forward P/E values over the prior 60 months or 5 calendar years.",
+          "Step 3: Calculate 5-year standard deviation: SD = √[Σ(P/E_i − Average P/E)² ÷ (n−1)] where n = number of observations (typically 60 monthly or 5 annual).",
+          "Step 4: Subtract 5-year average from current P/E, then divide by standard deviation to yield Z-score.",
+          "Step 5: Interpret Z-score: ±1 is typical; ±2 is extreme; beyond ±2.5 is historically rare and often mean-reverting."
+        ],
+        "worked_example": {
+          "problem": "You are positioning a portfolio across Nifty Bank, Nifty IT, and Nifty Capital Goods in late 2024. Use relative valuation Z-scores to assess whether valuations are stretched or offer entry points.",
+          "steps": [
+            "Nifty Bank: Current forward P/E = 14.2x. 5-year average P/E = 16.0x. 5-year SD = 2.5x. Z-Score = (14.2 − 16.0) / 2.5 = −0.72 → Modestly undervalued.",
+            "Nifty IT: Current forward P/E = 28.0x. 5-year average P/E = 30.5x. 5-year SD = 5.2x. Z-Score = (28.0 − 30.5) / 5.2 = −0.48 → Fair value to slightly cheap.",
+            "Nifty Capital Goods: Current forward P/E = 65.0x. 5-year average P/E = 35.0x. 5-year SD = 12.0x. Z-Score = (65.0 − 35.0) / 12.0 = +2.50 → Strongly overvalued versus history."
+          ],
+          "result": "Banks and IT offer reasonable entry points (Z-scores between -1 and 0); capital goods is priced for perfection (+2.5 SD). This Z-score signal alone would suggest avoiding capital goods on valuation, but paired with strong macro conviction (9.0+ score), it indicates the cycle strength justifies the premium—a case where conviction overrides valuation-based caution.",
+          "insight": "Z-scores are anchors for discussion, not standalone buy/sell triggers. A sector at +2 SD may continue higher if the cycle is young; a sector at -2 SD may not recover if structural headwinds persist. Combine Z-scores with conviction scores: high conviction + negative Z-score = strong opportunity; high conviction + extreme positive Z-score = watch for inflection but don't fade; low conviction + positive Z-score = reduce allocation."
+        },
+        "sensitivity_note": "Z-scores are statistical anchors, not absolute targets. A sector trading at +2 standard deviations may continue further if cyclical strength persists; a sector at -1.5 may not mean-revert if structural challenges exist. Combine z-scores with cyclical positioning, macro drivers, and qualitative assessment. Z-scores work best as confirmation rather than primary trigger. Track quarterly evolution — sectors moving from -1 to +1 over 12 months indicate cyclical recovery; from +1 to -1 indicates cyclical normalisation."
+      },
+      {
+        "name": "Portfolio Construction From Sector Conviction",
+        "formula": "Sector Weight in Portfolio ≈ Benchmark Weight × (1 + Conviction Tilt)     where Conviction Tilt = (Sector Conviction Score − Median Conviction) ÷ Maximum Conviction × Maximum Tilt %",
+        "variables": [
+          {
+            "symbol": "Benchmark Weight",
+            "meaning": "Sector weight in benchmark index (Nifty 50 or Nifty 100). For example, Financials at ~30%, IT at ~14%, Energy at ~10%, FMCG at ~10%, Auto at ~7%, Pharma at ~5%, Capital Goods at ~5%"
+          },
+          {
+            "symbol": "Conviction Score",
+            "meaning": "The output from the Macro-to-Sector Mapping Framework; ranges typically 1–10 or 1–15 depending on calculation"
+          },
+          {
+            "symbol": "Median Conviction",
+            "meaning": "The median conviction score across all sectors covered in the analysis; acts as a neutral reference point"
+          },
+          {
+            "symbol": "Maximum Conviction",
+            "meaning": "The highest conviction score in the current universe; scales the tilt relative to strongest conviction"
+          },
+          {
+            "symbol": "Maximum Tilt %",
+            "meaning": "Risk-management constraint on how far portfolio deviates from benchmark. Typical institutional portfolios use ±30-50% tilt limits — preventing extreme concentration risk while allowing meaningful active positioning"
+          }
+        ],
+        "plain_english": "This formula translates your sector conviction scores into actual portfolio weights. Starting from the benchmark weight, you tilt up or down based on how much your conviction for that sector exceeds or falls short of the median. The maximum tilt constraint ensures you stay within acceptable risk limits while still expressing high-conviction views. It's the bridge between analysis and action.",
+        "computation": [
+          "Step 1: List all major sectors and their benchmark weights (Nifty 50 or Nifty 100 composition).",
+          "Step 2: Calculate conviction score for each sector using the Macro-to-Sector Mapping Framework (outputs typically 1–10 or 1–15).",
+          "Step 3: Determine median conviction score across all sectors (not mean—median is more robust to outliers).",
+          "Step 4: Identify the maximum conviction score in the universe.",
+          "Step 5: For each sector, calculate Conviction Tilt = (Sector Conviction Score − Median Conviction) ÷ Maximum Conviction × Maximum Tilt %.",
+          "Step 6: Multiply Benchmark Weight × (1 + Conviction Tilt) to obtain Portfolio Weight.",
+          "Step 7: Verify that portfolio weights sum to 100% and track active risk (tracking error) against benchmark."
+        ],
+        "worked_example": {
+          "problem": "You have conviction scores for five major sectors in late 2024 India. Translate them into portfolio positioning within a ±40% maximum tilt constraint.",
+          "steps": [
+            "Conviction scores: Capital Goods 9.0, Financials 6.5, FMCG 4.5, IT Services 3.0, Pharma 5.5. Median conviction = 5.5. Maximum conviction = 9.0.",
+            "Capital Goods: Benchmark weight 5%. Conviction Tilt = (9.0 − 5.5) / 9.0 × 40% = +15.56%. Portfolio weight = 5% × (1 + 0.1556) = 5.78% ≈ 6.0%.",
+            "Financials: Benchmark weight 30%. Conviction Tilt = (6.5 − 5.5) / 9.0 × 40% = +4.44%. Portfolio weight = 30% × (1 + 0.0444) = 31.33% ≈ 31%.",
+            "FMCG: Benchmark weight 10%. Conviction Tilt = (4.5 − 5.5) / 9.0 × 40% = −4.44%. Portfolio weight = 10% × (1 − 0.0444) = 9.56% ≈ 9.5%.",
+            "IT Services: Benchmark weight 14%. Conviction Tilt = (3.0 − 5.5) / 9.0 × 40% = −11.11%. Portfolio weight = 14% × (1 − 0.1111) = 12.44% ≈ 12%.",
+            "Pharma: Benchmark weight 5%. Conviction Tilt = (5.5 − 5.5) / 9.0 × 40% = 0%. Portfolio weight = 5% × (1 + 0) = 5%."
+          ],
+          "result": "Portfolio: Capital Goods 6% (+1% vs. benchmark), Financials 31% (+1% vs. benchmark), FMCG 9.5% (−0.5% vs. benchmark), IT Services 12% (−2% vs. benchmark), Pharma 5% (at benchmark). Net active tilt: +1.5% cyclical (capex + financials), −2.5% structural IT compression. Positioning captures the macro rotation from tech to domestic cyclicals without breaching risk limits.",
+          "insight": "Portfolio construction discipline separates conviction-driven alpha from unexecuted research. Conviction alone does not capture returns; positioning does. Sectors consistently scoring high are alpha sources; sectors with declining conviction over quarters are sell signals. Track the quarter-over-quarter evolution of both scores and weights—this discipline reveals whether you are early, right-timed, or late in sector rotations."
+        },
+        "sensitivity_note": "Portfolio construction discipline is what separates a thesis from positioning. Many analysts have correct sector views but fail to translate them into actual portfolio tilts due to risk constraints, peer pressure, or fear of underperformance versus benchmark. Apply the framework explicitly with maximum tilt constraints; communicate the positioning to portfolio managers; track performance. Sectors with consistently high conviction across quarters can sustain larger tilts; sectors with declining conviction signal time to reduce tilt. The framework is the alpha; execution discipline is what captures it."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=AVERAGEIF(range, criteria)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=GROWTH(range)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for sector-level analysis across companies)",
+        "=AVERAGEIF(range, criteria) for macro indicator averaging",
+        "Conditional formatting Color Scales for sector heat map visualisation",
+        "=GROWTH(range) for trend extrapolation on macro indicators",
+        "Ctrl + Shift + 5 (% format)"
+      ]
+    }
+  }
+}

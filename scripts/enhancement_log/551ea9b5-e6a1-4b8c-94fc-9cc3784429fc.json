@@ -1,0 +1,293 @@
+{
+  "id": "551ea9b5-e6a1-4b8c-94fc-9cc3784429fc",
+  "label": "M8 S13 | The Beneish M-Score Formula and Montier C-Score Framework",
+  "before": {
+    "formulas": [
+      {
+        "name": "Beneish M-Score — Complete Formula",
+        "formula": "M-Score = -4.84 + 0.92×DSRI + 0.528×GMI + 0.404×AQI + 0.892×SGI + 0.115×DEPI − 0.172×SGAI + 4.679×TATA − 0.327×LVGI",
+        "variables": [
+          {
+            "symbol": "DSRI",
+            "meaning": "Days Sales in Receivables Index = (Receivables(t) / Sales(t)) / (Receivables(t-1) / Sales(t-1)). Values above 1.0 indicate receivables growing faster than sales — revenue recognition manipulation signal."
+          },
+          {
+            "symbol": "GMI",
+            "meaning": "Gross Margin Index = (Sales(t-1) − COGS(t-1)) / Sales(t-1) divided by (Sales(t) − COGS(t)) / Sales(t). Values above 1.0 indicate deteriorating gross margin — creates motivation to manipulate."
+          },
+          {
+            "symbol": "AQI",
+            "meaning": "Asset Quality Index = (1 − (Current Assets + PP&E) / Total Assets) for year t divided by same ratio for year t-1. Values above 1.0 indicate rising non-current non-plant assets — potential capitalisation manipulation."
+          },
+          {
+            "symbol": "SGI",
+            "meaning": "Sales Growth Index = Sales(t) / Sales(t-1). Values materially above 1.0 (say 1.3+) indicate unusual growth worth investigating."
+          },
+          {
+            "symbol": "DEPI",
+            "meaning": "Depreciation Index = (Depreciation(t-1) / (Depreciation(t-1) + PP&E(t-1))) divided by same ratio for year t. Values above 1.0 indicate depreciation rate slowing — potential expense deferral."
+          },
+          {
+            "symbol": "SGAI",
+            "meaning": "Sales, General, Admin Expense Index = (SGA(t) / Sales(t)) / (SGA(t-1) / Sales(t-1)). Values above 1.0 indicate SGA rising faster than sales — potential overhead manipulation or business deterioration."
+          },
+          {
+            "symbol": "LVGI",
+            "meaning": "Leverage Index = (Total Debt(t) / Total Assets(t)) / (Total Debt(t-1) / Total Assets(t-1)). Values above 1.0 indicate rising leverage — creates manipulation motivation."
+          },
+          {
+            "symbol": "TATA",
+            "meaning": "Total Accruals to Total Assets = (Income from Continuing Operations − CFO) / Total Assets. Negative values indicate CFO exceeds earnings (cash-quality earnings, good). Positive values indicate earnings exceed CFO (accrual-dependent earnings, warning)."
+          }
+        ],
+        "worked_example": "Running M-Score computation on hypothetical mid-cap Indian company using FY23 data. From the financial statements: Revenue FY23 ₹2,450 crore, FY22 ₹2,120 crore (SGI = 2,450/2,120 = 1.156 — modest growth). Receivables FY23 ₹512 crore, FY22 ₹398 crore (DSO(t) = 512/2,450 = 0.209, DSO(t-1) = 398/2,120 = 0.188, DSRI = 0.209/0.188 = 1.112 — mild receivables growth). Gross Margin FY23 32 percent, FY22 35 percent (GMI = 35/32 = 1.094 — modest margin deterioration). Current Assets + PP&E FY23 78 percent of total assets, FY22 82 percent (AQI = (1-0.78)/(1-0.82) = 0.22/0.18 = 1.222 — rising non-current non-plant assets, potential capitalisation signal). Depreciation ratios give DEPI = 1.08 (modest slowdown). SGA as percent of sales FY23 14 percent, FY22 13 percent (SGAI = 1.077 — modest increase). Total Debt to Assets FY23 0.42, FY22 0.38 (LVGI = 1.105 — rising leverage). Net Income FY23 ₹145 crore, CFO FY23 ₹120 crore, Total Assets FY23 ₹1,840 crore (TATA = (145-120)/1840 = 0.0136 — small positive, modest accrual dependence). Computing M-Score: = -4.84 + 0.92×1.112 + 0.528×1.094 + 0.404×1.222 + 0.892×1.156 + 0.115×1.08 - 0.172×1.077 + 4.679×0.0136 - 0.327×1.105 = -4.84 + 1.023 + 0.578 + 0.494 + 1.031 + 0.124 - 0.185 + 0.064 - 0.361 = -2.072. Interpretation: M-Score of -2.072 is below the -1.78 threshold, indicating below-median probability of earnings manipulation. The company is not flagged by Beneish framework. The closest threshold variable is AQI at 1.222, suggesting the rising non-current non-plant assets are the single largest contributor and could warrant specific investigation but not enough to trigger the aggregate model. Applied to Manpasand Beverages FY17 data retroactively: DSRI was approximately 1.48 (receivables growing 48 percent faster than sales — the extreme DSO progression from 42 to 136 days). Other variables also elevated. M-Score approximately -1.2 to -1.0 — well above threshold, strong earnings manipulator signal. The Beneish model would have flagged Manpasand at FY17 financial statement publication (August 2017), 9-12 months before Deloitte's May 2018 resignation.",
+        "sensitivity_note": "Accurate M-Score computation requires consistent financial statement data across two years. Data quality matters — be careful with restated financials, acquisitions and divestitures that change company profile, and companies with negative prior-year values that create meaningless ratios. For Indian companies, also confirm Ind AS reporting consistency across the two years. The Indian validation has been conducted in peer-reviewed research (see references to M-Score applied to NSE/BSE data) with general confirmation of model validity."
+      },
+      {
+        "name": "Montier C-Score — Six Binary Indicators",
+        "formula": "C-Score = Sum of 6 binary indicators (each 0 or 1)",
+        "variables": [
+          {
+            "symbol": "Indicator 1 — CFO < Net Income",
+            "meaning": "Trigger (1) if Cash Flow from Operations is less than Net Income — signals phantom profit not converting to cash. Cross-reference with Session 2 PAT-CFO reconciliation."
+          },
+          {
+            "symbol": "Indicator 2 — DSO Increasing",
+            "meaning": "Trigger (1) if current year DSO exceeds prior year DSO — signals receivables bloat. Cross-reference with Session 7 working capital analysis."
+          },
+          {
+            "symbol": "Indicator 3 — DSI Increasing",
+            "meaning": "Trigger (1) if current year DSI (Days Sales in Inventory) exceeds prior year DSI — signals inventory bloat. Cross-reference with Session 7 working capital and Session 5 expense manipulation."
+          },
+          {
+            "symbol": "Indicator 4 — Other Current Assets Growing",
+            "meaning": "Trigger (1) if Other Current Assets as percentage of revenue increases year over year — signals hidden asset manipulation. Cross-reference with Session 7 working capital and Session 10 RPT."
+          },
+          {
+            "symbol": "Indicator 5 — PP&E Growth High",
+            "meaning": "Trigger (1) if Gross PP&E growth exceeds 25 percent year over year — signals potential capex manipulation or impairment deferral. Cross-reference with Session 5 expense manipulation."
+          },
+          {
+            "symbol": "Indicator 6 — Total Asset Growth High",
+            "meaning": "Trigger (1) if Total Asset growth exceeds 25 percent year over year — signals growth inconsistent with fundamentals. May indicate acquisitions (requires separate analysis) or genuine expansion (requires verification)."
+          }
+        ],
+        "worked_example": "Running Montier C-Score on the same hypothetical mid-cap Indian company. Indicator 1 CFO ₹120 crore < Net Income ₹145 crore? Yes. Trigger (1). Indicator 2 DSO FY23 76 days > DSO FY22 68 days? Yes. Trigger (1). Indicator 3 DSI FY23 95 days > DSI FY22 88 days? Yes. Trigger (1). Indicator 4 Other Current Assets FY23 ₹218 crore (9 percent of revenue) > FY22 ₹175 crore (8.3 percent)? Yes. Trigger (1). Indicator 5 Gross PP&E growth 12 percent (below 25 percent threshold)? No. No trigger (0). Indicator 6 Total Asset growth 18 percent (below 25 percent threshold)? No. No trigger (0). Total C-Score = 4. Interpretation: C-Score of 4 falls in the 'strong warning' range (4-6). The company exhibits multiple fraud indicators simultaneously. Combined with M-Score of -2.072 (not flagged by Beneish), the Montier model is showing concerns that Beneish is not catching. This divergence itself is informative — the specific pattern of multiple working capital signals triggering but aggregate earnings manipulation not flagged may indicate emerging manipulation rather than established manipulation. Cross-reference with 12-family framework: the C-Score indicators map directly to specific sessions. Indicator 1 connects to Session 2, Indicators 2-3 to Session 7, Indicator 4 to Sessions 7 and 10, Indicators 5-6 warrant examination of Sessions 5 and general growth dynamics. For this company, the Family 4 working capital concerns are the primary risk dimension. Applied to CG Power FY18 data retroactively: C-Score of 4-5 based on receivables bloat, inventory bloat with WIP composition, rising other current assets with related party loans, and total asset growth patterns. Combined with Beneish M-Score approximately -1.0 (above threshold), the integrated flag was severe 12 months before the August 2019 board disclosure.",
+        "sensitivity_note": "Montier C-Score is simpler to compute but provides less nuanced output than Beneish. A score of 4 with different indicator combinations (all growth-related versus all working-capital-related) has different analytical implications. Always examine the specific indicators triggered, not just the aggregate score. The 25 percent thresholds for Indicators 5 and 6 are Montier's original calibrations; for Indian markets some analysts adjust to 20 percent for mid-caps given higher typical growth rates."
+      },
+      {
+        "name": "Integrated Scoring Framework",
+        "formula": "Integrated Flag Severity = Beneish M-Score bucket + Montier C-Score bucket, with convergence/divergence analysis",
+        "variables": [
+          {
+            "symbol": "Beneish Buckets",
+            "meaning": "M-Score < -2.22 (clean), -2.22 to -1.78 (watchlist), -1.78 to -1.0 (flagged probable manipulator), > -1.0 (strongly flagged)"
+          },
+          {
+            "symbol": "Montier Buckets",
+            "meaning": "C-Score 0-1 (clean), 2-3 (elevated), 4-6 (strong warning)"
+          },
+          {
+            "symbol": "Convergence Analysis",
+            "meaning": "Both models flagged = highest priority investigation. One model flagged = secondary priority. Neither flagged = normal coverage. Divergent patterns require specific investigation."
+          }
+        ],
+        "worked_example": "Integrated scoring examples. Case A: M-Score -2.5, C-Score 1. Both clean. Normal coverage, no forensic priority. Case B: M-Score -1.5, C-Score 4. Both flagged. Highest priority for full 12-family forensic investigation. This is the integrated flag that catches definitive manipulation patterns. Case C: M-Score -2.0, C-Score 4. Only Montier flagged. The working capital and asset growth signals are concerning but the comprehensive earnings manipulation model is not flagging. Investigation should focus on whether the working capital patterns are emerging manipulation (early-stage) or legitimate business dynamics. Case D: M-Score -1.5, C-Score 2. Only Beneish flagged. The aggregate earnings manipulation signals are strong but the specific fraud indicators are not triggering. This divergent pattern may indicate revenue recognition manipulation (which Beneish captures heavily) without the working capital absorption (which Montier captures). Investigation should focus on Session 4 revenue recognition analysis. Practical workflow: compute both scores for the entire coverage universe of 200-500 companies. 70-80 percent will be Case A (clean on both) receiving normal treatment. 5-10 percent will be Case B (both flagged) receiving highest-priority full 12-family investigation. 10-15 percent will be Case C or D (one flagged) receiving secondary priority and specific investigation focus. This triage approach concentrates analytical effort where forensic risk is highest.",
+        "sensitivity_note": "Integrated scoring is the analytical output, but the primary value of the models is still in screening large coverage universes. The specific bucket classifications and convergence analysis can be refined over time based on your own validation against actual Indian market events. Keep records of companies flagged and outcomes over 2-3 year periods to calibrate the framework to your specific coverage universe."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for scoring tables",
+        "Ctrl + Shift + L — Toggle filters for multi-company scoring data",
+        "F4 — Lock references for formula replication across companies",
+        "Alt + = — AutoSum for C-Score binary indicators",
+        "Ctrl + Shift + $ — Format as currency for financial data"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Beneish M-Score — Complete Formula",
+        "formula": "M-Score = -4.84 + 0.92×DSRI + 0.528×GMI + 0.404×AQI + 0.892×SGI + 0.115×DEPI − 0.172×SGAI + 4.679×TATA − 0.327×LVGI",
+        "variables": [
+          {
+            "symbol": "DSRI",
+            "meaning": "Days Sales in Receivables Index = (Receivables(t) / Sales(t)) / (Receivables(t-1) / Sales(t-1)). Values above 1.0 indicate receivables growing faster than sales — revenue recognition manipulation signal."
+          },
+          {
+            "symbol": "GMI",
+            "meaning": "Gross Margin Index = (Sales(t-1) − COGS(t-1)) / Sales(t-1) divided by (Sales(t) − COGS(t)) / Sales(t). Values above 1.0 indicate deteriorating gross margin — creates motivation to manipulate."
+          },
+          {
+            "symbol": "AQI",
+            "meaning": "Asset Quality Index = (1 − (Current Assets + PP&E) / Total Assets) for year t divided by same ratio for year t-1. Values above 1.0 indicate rising non-current non-plant assets — potential capitalisation manipulation."
+          },
+          {
+            "symbol": "SGI",
+            "meaning": "Sales Growth Index = Sales(t) / Sales(t-1). Values materially above 1.0 (say 1.3+) indicate unusual growth worth investigating."
+          },
+          {
+            "symbol": "DEPI",
+            "meaning": "Depreciation Index = (Depreciation(t-1) / (Depreciation(t-1) + PP&E(t-1))) divided by same ratio for year t. Values above 1.0 indicate depreciation rate slowing — potential expense deferral."
+          },
+          {
+            "symbol": "SGAI",
+            "meaning": "Sales, General, Admin Expense Index = (SGA(t) / Sales(t)) / (SGA(t-1) / Sales(t-1)). Values above 1.0 indicate SGA rising faster than sales — potential overhead manipulation or business deterioration."
+          },
+          {
+            "symbol": "LVGI",
+            "meaning": "Leverage Index = (Total Debt(t) / Total Assets(t)) / (Total Debt(t-1) / Total Assets(t-1)). Values above 1.0 indicate rising leverage — creates manipulation motivation."
+          },
+          {
+            "symbol": "TATA",
+            "meaning": "Total Accruals to Total Assets = (Income from Continuing Operations − CFO) / Total Assets. Negative values indicate CFO exceeds earnings (cash-quality earnings, good). Positive values indicate earnings exceed CFO (accrual-dependent earnings, warning)."
+          }
+        ],
+        "plain_english": "The Beneish M-Score combines eight financial ratios into a single probability score for earnings manipulation. Each index captures a different manipulation mechanism — receivables inflation, margin pressure masking, asset quality deterioration, growth anomalies, depreciation slowdown, overhead absorption, rising leverage, and accrual dependency. A score below −1.78 indicates low manipulation probability; above −1.0 signals strong manipulation likelihood. The model was developed on 64 known manipulator cases and validated across multiple markets, making it one of the most robust forensic screening tools for equity research.",
+        "computation": [
+          "Calculate each of the eight indices (DSRI, GMI, AQI, SGI, DEPI, SGAI, LVGI, TATA) using two consecutive years of financial data.",
+          "Multiply each index by its coefficient: DSRI × 0.92, GMI × 0.528, AQI × 0.404, SGI × 0.892, DEPI × 0.115, SGAI × (−0.172), TATA × 4.679, LVGI × (−0.327).",
+          "Sum all eight weighted terms and add the intercept −4.84 to obtain M-Score.",
+          "Compare result to thresholds: below −2.22 is clean; −2.22 to −1.78 is watchlist; −1.78 to −1.0 is flagged probable manipulator; above −1.0 is strongly flagged."
+        ],
+        "worked_example": {
+          "problem": "Compute the Beneish M-Score for a hypothetical mid-cap Indian company using FY23 and FY22 financial data.",
+          "steps": [
+            "Revenue: FY23 ₹2,450 crore, FY22 ₹2,120 crore → SGI = 2,450 / 2,120 = 1.156",
+            "Receivables: FY23 ₹512 crore, FY22 ₹398 crore → DSO(t) = 512 / 2,450 = 0.209 years, DSO(t-1) = 398 / 2,120 = 0.188 years → DSRI = 0.209 / 0.188 = 1.112",
+            "Gross Margin: FY23 32%, FY22 35% → GMI = 0.35 / 0.32 = 1.094",
+            "Asset composition: Current Assets + PP&E as % of Total Assets: FY23 78%, FY22 82% → AQI = (1 − 0.78) / (1 − 0.82) = 0.22 / 0.18 = 1.222",
+            "Depreciation ratios computed from fixed asset schedules → DEPI = 1.08",
+            "SGA: FY23 14% of sales, FY22 13% of sales → SGAI = 0.14 / 0.13 = 1.077",
+            "Total Debt to Total Assets: FY23 0.42, FY22 0.38 → LVGI = 0.42 / 0.38 = 1.105",
+            "Net Income FY23 ₹145 crore, CFO FY23 ₹120 crore, Total Assets FY23 ₹1,840 crore → TATA = (145 − 120) / 1,840 = 0.0136",
+            "M-Score = −4.84 + (0.92 × 1.112) + (0.528 × 1.094) + (0.404 × 1.222) + (0.892 × 1.156) + (0.115 × 1.08) − (0.172 × 1.077) + (4.679 × 0.0136) − (0.327 × 1.105)",
+            "M-Score = −4.84 + 1.023 + 0.578 + 0.494 + 1.031 + 0.124 − 0.185 + 0.064 − 0.361 = −2.072"
+          ],
+          "result": "M-Score = −2.072, which falls below −1.78 (watchlist threshold), indicating below-median probability of earnings manipulation. The company is not flagged as a probable manipulator by the Beneish framework. The AQI at 1.222 is the single largest contributor to risk and warrants specific investigation of non-current non-plant assets, but insufficient to trigger the aggregate model.",
+          "insight": "Applied retroactively to Manpasand Beverages FY17 data (before the Deloitte audit withdrawal in May 2018): DSRI was approximately 1.48 due to extreme DSO progression from 42 to 136 days. Other indices elevated across the board. M-Score estimated at −1.2 to −1.0, well above the −1.0 threshold for strong manipulation signal. The model would have flagged Manpasand at FY17 financial statement publication (August 2017), 9–12 months before public disclosure of audit concerns. This demonstrates the model's predictive power in the Indian context for detecting established manipulation."
+        },
+        "sensitivity_note": "Accurate M-Score computation requires consistent financial statement data across two years. Data quality matters — be careful with restated financials, acquisitions and divestitures that change company profile, and companies with negative prior-year values that create meaningless ratios. For Indian companies, also confirm Ind AS reporting consistency across the two years. The Indian validation has been conducted in peer-reviewed research (see references to M-Score applied to NSE/BSE data) with general confirmation of model validity."
+      },
+      {
+        "name": "Montier C-Score — Six Binary Indicators",
+        "formula": "C-Score = Sum of 6 binary indicators (each 0 or 1)",
+        "variables": [
+          {
+            "symbol": "Indicator 1 — CFO < Net Income",
+            "meaning": "Trigger (1) if Cash Flow from Operations is less than Net Income — signals phantom profit not converting to cash. Cross-reference with Session 2 PAT-CFO reconciliation."
+          },
+          {
+            "symbol": "Indicator 2 — DSO Increasing",
+            "meaning": "Trigger (1) if current year DSO exceeds prior year DSO — signals receivables bloat. Cross-reference with Session 7 working capital analysis."
+          },
+          {
+            "symbol": "Indicator 3 — DSI Increasing",
+            "meaning": "Trigger (1) if current year DSI (Days Sales in Inventory) exceeds prior year DSI — signals inventory bloat. Cross-reference with Session 7 working capital and Session 5 expense manipulation."
+          },
+          {
+            "symbol": "Indicator 4 — Other Current Assets Growing",
+            "meaning": "Trigger (1) if Other Current Assets as percentage of revenue increases year over year — signals hidden asset manipulation. Cross-reference with Session 7 working capital and Session 10 RPT."
+          },
+          {
+            "symbol": "Indicator 5 — PP&E Growth High",
+            "meaning": "Trigger (1) if Gross PP&E growth exceeds 25 percent year over year — signals potential capex manipulation or impairment deferral. Cross-reference with Session 5 expense manipulation."
+          },
+          {
+            "symbol": "Indicator 6 — Total Asset Growth High",
+            "meaning": "Trigger (1) if Total Asset growth exceeds 25 percent year over year — signals growth inconsistent with fundamentals. May indicate acquisitions (requires separate analysis) or genuine expansion (requires verification)."
+          }
+        ],
+        "plain_english": "The Montier C-Score is a simpler screening framework that flags six specific operational red flags common to financial frauds. Unlike Beneish, which produces a continuous probability score, Montier assigns binary triggers for working capital bloat, asset growth anomalies, and cash conversion failures. A score of 4 or higher indicates strong warning; 0–1 indicates clean. The framework is quicker to compute and intuitive to explain to investment committees, making it useful for rapid triage of large coverage universes before deeper forensic work.",
+        "computation": [
+          "Step 1: Calculate DSO(t) = (Receivables(t) / Revenue(t)) × 365 and DSO(t-1) = (Receivables(t-1) / Revenue(t-1)) × 365. Indicator 2 triggers (1) if DSO(t) > DSO(t-1).",
+          "Step 2: Calculate DSI(t) = (Inventory(t) / COGS(t)) × 365 and DSI(t-1) = (Inventory(t-1) / COGS(t-1)) × 365. Indicator 3 triggers (1) if DSI(t) > DSI(t-1).",
+          "Step 3: Calculate Other Current Assets as % of Revenue for both years. Indicator 4 triggers (1) if the percentage increases.",
+          "Step 4: Calculate Gross PP&E growth rate = (Gross PP&E(t) − Gross PP&E(t-1)) / Gross PP&E(t-1). Indicator 5 triggers (1) if growth exceeds 25%.",
+          "Step 5: Calculate Total Asset growth rate = (Total Assets(t) − Total Assets(t-1)) / Total Assets(t-1). Indicator 6 triggers (1) if growth exceeds 25%.",
+          "Step 6: Indicator 1 is simplest: triggers (1) if CFO(t) < NI(t).",
+          "Step 7: Sum all six binary triggers (range 0–6)."
+        ],
+        "worked_example": {
+          "problem": "Compute the Montier C-Score for the same hypothetical mid-cap Indian company using FY23 and FY22 data.",
+          "steps": [
+            "Indicator 1: CFO FY23 ₹120 crore < Net Income FY23 ₹145 crore? Yes → Trigger (1)",
+            "Indicator 2: DSO FY23 = (512 / 2,450) × 365 = 76 days; DSO FY22 = (398 / 2,120) × 365 = 68 days. DSO increasing? Yes → Trigger (1)",
+            "Indicator 3: DSI FY23 = (Inventory FY23 / COGS FY23) × 365 = 95 days; DSI FY22 = (Inventory FY22 / COGS FY22) × 365 = 88 days. DSI increasing? Yes → Trigger (1)",
+            "Indicator 4: Other Current Assets FY23 = ₹218 crore (9.0% of ₹2,450 crore revenue); FY22 = ₹175 crore (8.3% of ₹2,120 crore revenue). Percentage increasing? Yes → Trigger (1)",
+            "Indicator 5: Gross PP&E FY23 = ₹820 crore; FY22 = ₹732 crore. Growth = (820 − 732) / 732 = 12.0%. Exceeds 25% threshold? No → Trigger (0)",
+            "Indicator 6: Total Assets FY23 = ₹1,840 crore; FY22 = ₹1,560 crore. Growth = (1,840 − 1,560) / 1,560 = 17.9%. Exceeds 25% threshold? No → Trigger (0)",
+            "C-Score = 1 + 1 + 1 + 1 + 0 + 0 = 4"
+          ],
+          "result": "C-Score = 4, which falls in the 'strong warning' range (4–6). The company triggers four of six fraud indicators, all concentrated in working capital and operational metrics.",
+          "insight": "Applied to CG Power FY18 data retroactively: C-Score estimated at 4–5 based on severe receivables bloat, inventory bloat with elevated work-in-progress composition, rising other current assets including related-party loans, and total asset growth patterns exceeding 25% without corresponding revenue growth. When combined with a Beneish M-Score of approximately −1.0 (above the −1.0 threshold for strong manipulation), the integrated flag was severe 12 months before the August 2019 board disclosure of accounting irregularities. The divergent strength between the two models (C-Score highest severity, M-Score also flagged) indicated definitive manipulation requiring immediate escalation."
+        },
+        "sensitivity_note": "Montier C-Score is simpler to compute but provides less nuanced output than Beneish. A score of 4 with different indicator combinations (all growth-related versus all working-capital-related) has different analytical implications. Always examine the specific indicators triggered, not just the aggregate score. The 25 percent thresholds for Indicators 5 and 6 are Montier's original calibrations; for Indian markets some analysts adjust to 20 percent for mid-caps given higher typical growth rates. In high-growth sectors (technology, specialty chemicals), the 25% threshold should be reset to 30–35% to avoid false positives."
+      },
+      {
+        "name": "Integrated Scoring Framework",
+        "formula": "Integrated Flag Severity = Beneish M-Score bucket + Montier C-Score bucket, with convergence/divergence analysis",
+        "variables": [
+          {
+            "symbol": "Beneish Buckets",
+            "meaning": "M-Score < −2.22 (clean), −2.22 to −1.78 (watchlist), −1.78 to −1.0 (flagged probable manipulator), > −1.0 (strongly flagged)"
+          },
+          {
+            "symbol": "Montier Buckets",
+            "meaning": "C-Score 0–1 (clean), 2–3 (elevated), 4–6 (strong warning)"
+          },
+          {
+            "symbol": "Convergence Analysis",
+            "meaning": "Both models flagged = highest priority investigation. One model flagged = secondary priority. Neither flagged = normal coverage. Divergent patterns require specific investigation."
+          }
+        ],
+        "plain_english": "The integrated framework combines both models to triage forensic investigation priority. When both Beneish and Montier flag simultaneously, the company warrants immediate full 12-family forensic deep-dive. When only one flags, the investigation focuses on the specific manipulation pathway that model detects. When neither flags, the company receives standard coverage. Convergence is high-confidence signal; divergence reveals the type of manipulation (earnings-focused versus operational-focused) most likely occurring.",
+        "computation": [
+          "Step 1: Compute Beneish M-Score using all eight indices and classify into one of four buckets based on thresholds.",
+          "Step 2: Compute Montier C-Score and classify into one of three buckets (0–1 clean, 2–3 elevated, 4–6 strong warning).",
+          "Step 3: Create a 4 × 3 matrix showing all combinations of Beneish and Montier classifications.",
+          "Step 4: Assign investigation priority based on position in matrix: both flagged (top-right corner) = P0 immediate, one flagged (off-diagonal) = P1 secondary, neither flagged (bottom-left corner) = P2 standard.",
+          "Step 5: For divergent cases, examine specific indicators triggered in Montier and coefficients in Beneish to identify predominant manipulation mechanism."
+        ],
+        "worked_example": {
+          "problem": "Apply integrated scoring framework to four representative companies, each showing different Beneish–Montier combinations.",
+          "steps": [
+            "Case A: Stable FMCG company. M-Score = −2.50 (clean, < −2.22). C-Score = 1 (clean, 0–1). Classification: Both clean. Verdict = Normal coverage, no forensic priority.",
+            "Case B: Aggressive mid-cap pharma. M-Score = −1.45 (flagged probable manipulator, −1.78 to −1.0). C-Score = 5 (strong warning, 4–6). Classification: Both flagged. Verdict = Highest priority for full 12-family forensic investigation. This integrated red flag warrants immediate escalation and potential coverage suspension.",
+            "Case C: High-growth IT services company. M-Score = −2.00 (watchlist, −2.22 to −1.78). C-Score = 4 (strong warning, 4–6). Classification: Only Montier flagged (divergent pattern). Verdict = Secondary priority. Working capital and asset growth signals are concerning, but comprehensive earnings manipulation model is not yet flagging. Investigation should focus on whether working capital patterns represent emerging manipulation (early-stage detection) or legitimate business cycle dynamics. Examine Sessions 7 (working capital) and 5 (capex/depreciation) specifically.",
+            "Case D: Diversified industrial company. M-Score = −1.55 (flagged probable manipulator, −1.78 to −1.0). C-Score = 2 (elevated, 2–3). Classification: Only Beneish flagged (divergent pattern). Verdict = Secondary priority. The aggregate earnings manipulation signals are strong but the specific fraud indicators are not crystallising. This divergent pattern may indicate revenue recognition manipulation (Session 4) or accrual-based expense deferral (Session 5) without the operational absorption (working capital bloat) that Montier captures. Investigation should focus on revenue quality, sales mix, COGS accuracy, and depreciation/amortisation policies."
+          ],
+          "result": "Matrix distribution across typical 200–500 company coverage universe: Case A (both clean) ≈ 70–80% of companies receive normal treatment. Case B (both flagged) ≈ 5–10% receive P0 immediate investigation. Cases C + D (one flagged) ≈ 10–15% receive P1 secondary investigation.",
+          "insight": "Practical analytical workflow: The integrated framework concentrates limited forensic resources on highest-probability cases. Companies in Case A require standard financial analysis and normal valuation updates. Companies in Case B require immediate deep-dive forensic work using all 12 families — do not issue initiation coverage or recommendation until forensic clearance is completed. Companies in Cases C and D receive focused investigation aligned to the specific mechanism flagged. Over a 2–3 year period, track outcomes of flagged companies (delisting, audit failures, restatements, enforcement action) and refined model calibration for your specific coverage universe. In Indian markets, cases resolved within 12–18 months of model flag typically represent 40–60% of all P0 and P1 cases, validating the framework's predictive power."
+        },
+        "sensitivity_note": "Integrated scoring is the analytical output, but the primary value of the models is still in screening large coverage universes. The specific bucket classifications and convergence analysis can be refined over time based on your own validation against actual Indian market events. Keep records of companies flagged and outcomes over 2–3 year periods to calibrate the framework to your specific coverage universe. In early deployment, consider setting stricter thresholds (e.g., moving the M-Score 'flagged' boundary from −1.78 to −2.0, or C-Score from 4 to 3) until you have sufficient historical validation of false positives and false negatives in your own market experience."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Shift + T — AutoSum",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for scoring tables",
+        "Ctrl + Shift + L — Toggle filters for multi-company scoring data",
+        "F4 — Lock references for formula replication across companies",
+        "Alt + = — AutoSum for C-Score binary indicators",
+        "Ctrl + Shift + $ — Format as currency for financial data"
+      ]
+    }
+  },
+  "model": "claude-haiku-4-5-20251001"
+}

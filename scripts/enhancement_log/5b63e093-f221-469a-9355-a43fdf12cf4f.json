@@ -1,0 +1,367 @@
+{
+  "id": "5b63e093-f221-469a-9355-a43fdf12cf4f",
+  "label": "M3 S4 | All Lookup Functions Side by Side",
+  "before": {
+    "shortcuts": [
+      {
+        "mac": "Same (ribbon)",
+        "action": "Evaluate formula step-by-step",
+        "windows": "Formulas → Evaluate Formula"
+      },
+      {
+        "mac": "F2",
+        "action": "Show formula in cell",
+        "windows": "F2 (enters edit mode)"
+      },
+      {
+        "mac": "⌘ + [",
+        "action": "Trace Precedents",
+        "windows": "Alt + M + P"
+      },
+      {
+        "mac": "Ctrl + `",
+        "action": "Toggle Formula View",
+        "windows": "Ctrl + `"
+      },
+      {
+        "mac": "Tab",
+        "action": "AutoComplete function name",
+        "windows": "Tab (after typing first letters)"
+      },
+      {
+        "mac": "⌘ + G or F5",
+        "action": "Named Range jump",
+        "windows": "Ctrl + G or F5"
+      }
+    ],
+    "functions_table": [
+      {
+        "syntax": "=VLOOKUP(val, table, col#, FALSE)",
+        "best_for": "Quick informal lookups",
+        "function": "VLOOKUP",
+        "direction": "Right only"
+      },
+      {
+        "syntax": "=HLOOKUP(val, table, row#, FALSE)",
+        "best_for": "Year-based horizontal tables",
+        "function": "HLOOKUP",
+        "direction": "Down only"
+      },
+      {
+        "syntax": "=MATCH(val, array, 0)",
+        "best_for": "Finding row/column position",
+        "function": "MATCH",
+        "direction": "Returns position only"
+      },
+      {
+        "syntax": "=INDEX(array, row, [col])",
+        "best_for": "Retrieving value at position",
+        "function": "INDEX",
+        "direction": "Any direction"
+      },
+      {
+        "syntax": "=INDEX(ret, MATCH(val, look, 0))",
+        "best_for": "Professional models (default choice)",
+        "function": "INDEX-MATCH",
+        "direction": "Any direction"
+      },
+      {
+        "syntax": "=XLOOKUP(val, look, ret, err)",
+        "best_for": "Modern Excel environments",
+        "function": "XLOOKUP",
+        "direction": "Any direction"
+      }
+    ],
+    "two_d_index_match": {
+      "syntax": "=INDEX(data_range, MATCH(row_lookup, row_headers, 0), MATCH(col_lookup, col_headers, 0))",
+      "example": "=INDEX(B2:F20, MATCH(\"Infosys\", A2:A20, 0), MATCH(\"FY24\", B1:F1, 0))",
+      "description": "The 2D INDEX-MATCH: The Pro Move. When you need to look up both a row AND a column dynamically.",
+      "explanation": "The first MATCH finds the row (Infosys). The second MATCH finds the column (FY24). INDEX retrieves the value at that intersection. This is the single most powerful lookup pattern in all of Excel."
+    }
+  },
+  "after": {
+    "shortcuts": [
+      {
+        "mac": "Same (ribbon)",
+        "action": "Evaluate formula step-by-step",
+        "windows": "Formulas → Evaluate Formula"
+      },
+      {
+        "mac": "F2",
+        "action": "Show formula in cell",
+        "windows": "F2 (enters edit mode)"
+      },
+      {
+        "mac": "⌘ + [",
+        "action": "Trace Precedents",
+        "windows": "Alt + M + P"
+      },
+      {
+        "mac": "Ctrl + `",
+        "action": "Toggle Formula View",
+        "windows": "Ctrl + `"
+      },
+      {
+        "mac": "Tab",
+        "action": "AutoComplete function name",
+        "windows": "Tab (after typing first letters)"
+      },
+      {
+        "mac": "⌘ + G or F5",
+        "action": "Named Range jump",
+        "windows": "Ctrl + G or F5"
+      }
+    ],
+    "functions_table": [
+      {
+        "syntax": "=VLOOKUP(val, table, col#, FALSE)",
+        "best_for": "Quick informal lookups",
+        "function": "VLOOKUP",
+        "direction": "Right only",
+        "variables": [
+          {
+            "symbol": "val",
+            "meaning": "The lookup value to search for (e.g., ticker, company name)"
+          },
+          {
+            "symbol": "table",
+            "meaning": "The table range where the first column contains the lookup value"
+          },
+          {
+            "symbol": "col#",
+            "meaning": "Column index number (counting from 1) of the value to return"
+          },
+          {
+            "symbol": "FALSE",
+            "meaning": "Exact match required (use FALSE for financial data)"
+          }
+        ],
+        "plain_english": "VLOOKUP searches for a value in the leftmost column of a table and returns a value from a column to its right. It is quick for simple one-off lookups but brittle if columns are inserted into the table, making it less suitable for professional financial models.",
+        "worked_example": {
+          "problem": "You have a table of Indian bank tickers and their latest P/E ratios. Find the P/E for ICICI Bank.",
+          "steps": [
+            "Set up: A1:B10 contains tickers (ICICIBANK, HDFCBANK, AXISBANK, etc.) in column A and P/E ratios in column B.",
+            "Formula: =VLOOKUP(\"ICICIBANK\", A1:B10, 2, FALSE)",
+            "VLOOKUP searches A1:A10 for \"ICICIBANK\", finds it in row 5, and returns the value from column 2 (column B)."
+          ],
+          "result": "Returns 18.5 (the P/E ratio for ICICI Bank)",
+          "insight": "VLOOKUP is simple but rigid. If someone later inserts a new column A between tickers and P/E, your formula breaks. Use INDEX-MATCH for production models."
+        }
+      },
+      {
+        "syntax": "=HLOOKUP(val, table, row#, FALSE)",
+        "best_for": "Year-based horizontal tables",
+        "function": "HLOOKUP",
+        "direction": "Down only",
+        "variables": [
+          {
+            "symbol": "val",
+            "meaning": "The lookup value to search for (e.g., fiscal year, metric name)"
+          },
+          {
+            "symbol": "table",
+            "meaning": "The table range where the first row contains the lookup value"
+          },
+          {
+            "symbol": "row#",
+            "meaning": "Row index number (counting from 1) of the value to return"
+          },
+          {
+            "symbol": "FALSE",
+            "meaning": "Exact match required"
+          }
+        ],
+        "plain_english": "HLOOKUP is the horizontal counterpart to VLOOKUP. It searches the top row of a table for a value and returns a result from a row below. Common in financial statements laid out with years as columns (FY23, FY24, FY25) and metrics as rows.",
+        "worked_example": {
+          "problem": "You have a table with fiscal years (FY23, FY24, FY25) across the top row and revenue amounts in the second row. Find revenue for FY24.",
+          "steps": [
+            "Set up: Row 1 contains FY23 in A1, FY24 in B1, FY25 in C1. Row 2 contains corresponding revenues (₹5000Cr, ₹5800Cr, ₹6500Cr).",
+            "Formula: =HLOOKUP(\"FY24\", A1:C2, 2, FALSE)",
+            "HLOOKUP searches row 1 for \"FY24\", finds it in B1, and returns the value from row 2 (B2)."
+          ],
+          "result": "Returns 5800 (revenue in crores for FY24)",
+          "insight": "HLOOKUP is useful for time-series layouts but shares VLOOKUP's vulnerability: inserting rows breaks the formula."
+        }
+      },
+      {
+        "syntax": "=MATCH(val, array, 0)",
+        "best_for": "Finding row/column position",
+        "function": "MATCH",
+        "direction": "Returns position only",
+        "variables": [
+          {
+            "symbol": "val",
+            "meaning": "The value to search for"
+          },
+          {
+            "symbol": "array",
+            "meaning": "The range (row or column) to search within"
+          },
+          {
+            "symbol": "0",
+            "meaning": "Exact match (0 = exact; 1 = less than; -1 = greater than)"
+          }
+        ],
+        "plain_english": "MATCH returns the position (row number or column number) of a value within an array. It does not return the value itself—only its location. MATCH is almost always paired with INDEX to create INDEX-MATCH, a professional lookup pattern.",
+        "worked_example": {
+          "problem": "In a row of company names (A1:E1 containing HUL, TCS, Infosys, Asian Paints, ITC), find the position of Infosys.",
+          "steps": [
+            "Formula: =MATCH(\"Infosys\", A1:E1, 0)",
+            "MATCH searches A1:E1 for \"Infosys\", finds it in the third cell (C1).",
+            "Returns 3 (the position within the array)"
+          ],
+          "result": "Returns 3",
+          "insight": "Alone, MATCH is not useful to an analyst. Its power emerges when used inside INDEX: =INDEX(value_array, MATCH(...)) gives you dynamic, flexible lookups."
+        }
+      },
+      {
+        "syntax": "=INDEX(array, row, [col])",
+        "best_for": "Retrieving value at position",
+        "function": "INDEX",
+        "direction": "Any direction",
+        "variables": [
+          {
+            "symbol": "array",
+            "meaning": "The range containing the value to retrieve"
+          },
+          {
+            "symbol": "row",
+            "meaning": "The row position (starting from 1) within the array"
+          },
+          {
+            "symbol": "col",
+            "meaning": "Optional. The column position (starting from 1) within the array. Omit for single-column/single-row arrays."
+          }
+        ],
+        "plain_english": "INDEX retrieves a value from an array at a specific row and column position. Unlike VLOOKUP or HLOOKUP, INDEX does not search—it directly accesses a cell by position. INDEX shines when paired with MATCH to create a dynamic, position-based lookup system.",
+        "worked_example": {
+          "problem": "You have a 3×3 table of metrics (B2:D4) with companies as rows and years as columns. Retrieve the value at row 2, column 3.",
+          "steps": [
+            "Set up: B2:D4 contains revenue data. Row 2 is TCS, column 3 is FY25.",
+            "Formula: =INDEX(B2:D4, 2, 3)",
+            "INDEX accesses the array B2:D4, moves to row 2 (second row in the range), column 3 (third column), and returns that value."
+          ],
+          "result": "Returns the TCS FY25 revenue value from D3",
+          "insight": "INDEX is powerful because it is not constrained to left-to-right or top-to-bottom like VLOOKUP/HLOOKUP. Use it with MATCH for professional models."
+        }
+      },
+      {
+        "syntax": "=INDEX(ret, MATCH(val, look, 0))",
+        "best_for": "Professional models (default choice)",
+        "function": "INDEX-MATCH",
+        "direction": "Any direction",
+        "variables": [
+          {
+            "symbol": "ret",
+            "meaning": "The return range containing the values you want to retrieve"
+          },
+          {
+            "symbol": "val",
+            "meaning": "The lookup value to search for"
+          },
+          {
+            "symbol": "look",
+            "meaning": "The lookup range (column or row) to search within"
+          },
+          {
+            "symbol": "0",
+            "meaning": "Exact match flag (0 = exact match)"
+          }
+        ],
+        "plain_english": "INDEX-MATCH combines INDEX's flexibility with MATCH's search capability. MATCH finds the position of a lookup value, and INDEX retrieves the corresponding value from a parallel array at that position. This is the industry-standard lookup pattern for professional financial models because it is flexible, robust, and survives column/row insertion.",
+        "worked_example": {
+          "problem": "You maintain a list of Indian IT companies and their latest market cap. Look up the market cap for Infosys.",
+          "steps": [
+            "Set up: Column A contains company names (TCS, Infosys, Wipro, HCL Tech). Column B contains market caps (₹12.5L Cr, ₹8.2L Cr, ₹3.1L Cr, ₹2.8L Cr).",
+            "Formula: =INDEX(B:B, MATCH(\"Infosys\", A:A, 0))",
+            "MATCH searches column A for \"Infosys\", returns position 2.",
+            "INDEX retrieves the 2nd value from column B."
+          ],
+          "result": "Returns ₹8.2L Cr",
+          "insight": "If a new company is inserted between rows, this formula still works. If you used VLOOKUP with a col# and a new column was inserted, you would break. Always prefer INDEX-MATCH in models."
+        }
+      },
+      {
+        "syntax": "=XLOOKUP(val, look, ret, err)",
+        "best_for": "Modern Excel environments",
+        "function": "XLOOKUP",
+        "direction": "Any direction",
+        "variables": [
+          {
+            "symbol": "val",
+            "meaning": "The lookup value to search for"
+          },
+          {
+            "symbol": "look",
+            "meaning": "The lookup array (column or row) to search within"
+          },
+          {
+            "symbol": "ret",
+            "meaning": "The return array containing the values to retrieve"
+          },
+          {
+            "symbol": "err",
+            "meaning": "Optional error value to return if lookup fails (e.g., \"N/A\")"
+          }
+        ],
+        "plain_english": "XLOOKUP is Microsoft's modern successor to VLOOKUP and INDEX-MATCH, available in recent Excel versions and Microsoft 365. It searches left-to-right by default (no column reordering needed), handles errors gracefully, and is more intuitive. For equity research in India, adoption depends on your firm's Excel version.",
+        "worked_example": {
+          "problem": "You have a table with ticker symbols and corresponding dividend yield. Look up the dividend yield for Reliance using XLOOKUP.",
+          "steps": [
+            "Set up: Column A contains tickers (Reliance, HDFC Bank, SBI, ICICI Bank). Column B contains dividend yields (2.8%, 2.3%, 4.1%, 2.9%).",
+            "Formula: =XLOOKUP(\"Reliance\", A:A, B:B, \"Not found\")",
+            "XLOOKUP searches column A for \"Reliance\", finds it in row 1, and returns the corresponding value from column B.",
+            "If Reliance is not found, it displays \"Not found\" instead of #N/A error."
+          ],
+          "result": "Returns 2.8%",
+          "insight": "XLOOKUP is cleaner than INDEX-MATCH and VLOOKUP but not universally available. Check your firm's Excel version. If you have Microsoft 365, prefer XLOOKUP for new models."
+        }
+      }
+    ],
+    "two_d_index_match": {
+      "syntax": "=INDEX(data_range, MATCH(row_lookup, row_headers, 0), MATCH(col_lookup, col_headers, 0))",
+      "example": "=INDEX(B2:F20, MATCH(\"Infosys\", A2:A20, 0), MATCH(\"FY24\", B1:F1, 0))",
+      "description": "The 2D INDEX-MATCH: The Pro Move. When you need to look up both a row AND a column dynamically.",
+      "explanation": "The first MATCH finds the row (Infosys). The second MATCH finds the column (FY24). INDEX retrieves the value at that intersection. This is the single most powerful lookup pattern in all of Excel.",
+      "variables": [
+        {
+          "symbol": "data_range",
+          "meaning": "The rectangular range of values to search within (e.g., B2:F20 for financial data)"
+        },
+        {
+          "symbol": "row_lookup",
+          "meaning": "The value to search for in the row headers (e.g., company name)"
+        },
+        {
+          "symbol": "row_headers",
+          "meaning": "The column containing row labels (e.g., A2:A20 with company names)"
+        },
+        {
+          "symbol": "col_lookup",
+          "meaning": "The value to search for in the column headers (e.g., fiscal year)"
+        },
+        {
+          "symbol": "col_headers",
+          "meaning": "The row containing column labels (e.g., B1:F1 with FY22, FY23, FY24, FY25)"
+        },
+        {
+          "symbol": "0",
+          "meaning": "Exact match flag for both MATCH functions"
+        }
+      ],
+      "plain_english": "Two-dimensional INDEX-MATCH dynamically retrieves a value from a matrix by matching both a row label and a column label. The first MATCH locates the correct row; the second MATCH locates the correct column. INDEX then returns the value at the intersection. This pattern is essential for financial analysis models where you need to pull metrics by company and fiscal year.",
+      "worked_example": {
+        "problem": "You have a consolidated financial table for five Indian consumer companies (HUL, ITC, Nestlé India, Godrej Industries, Britannia) across FY22–FY25 fiscal years. The actual data spans B2:F20 (data), column A contains company names, and row 1 contains fiscal years. Retrieve the revenue for ITC in FY24.",
+        "steps": [
+          "Set up: Row 1 (B1:F1) contains FY22, FY23, FY24, FY25. Column A (A2:A20) contains company names. Data range is B2:F20 (revenue figures in ₹ crores).",
+          "Formula: =INDEX(B2:F20, MATCH(\"ITC\", A2:A20, 0), MATCH(\"FY24\", B1:F1, 0))",
+          "First MATCH finds ITC in A2:A20, returns position 3 (if ITC is the 3rd company listed).",
+          "Second MATCH finds FY24 in B1:F1, returns position 3 (if FY24 is the 3rd year listed).",
+          "INDEX retrieves the value at row 3, column 3 of the data range B2:F20."
+        ],
+        "result": "Returns ₹14,500 Cr (ITC revenue for FY24, example figure)",
+        "insight": "2D INDEX-MATCH is the gold standard for financial comparison tables. If you add new companies or years, the formula adapts automatically—no manual column/row adjustment needed. Use this pattern for all multi-dimensional financial lookups in professional models."
+      }
+    }
+  }
+}

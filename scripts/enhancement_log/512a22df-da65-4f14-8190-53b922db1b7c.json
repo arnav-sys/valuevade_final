@@ -1,0 +1,207 @@
+{
+  "id": "512a22df-da65-4f14-8190-53b922db1b7c",
+  "label": "M7 S3 | The Volume-Price-Mix Decomposition",
+  "before": {
+    "formulas": [
+      {
+        "name": "Volume-Price-Mix (VPM) Decomposition",
+        "formula": "Revenue Growth % ≈ (1 + Volume Growth %) × (1 + Price Growth %) × (1 + Mix Effect %) − 1",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Growth in physical units sold — disclosed in concalls or computed from dispatch data / order fulfilment metrics"
+          },
+          {
+            "symbol": "Price Growth",
+            "meaning": "Growth in per-unit realisation at constant mix — often disclosed as 'pricing contribution' in FMCG/paints concalls"
+          },
+          {
+            "symbol": "Mix Effect",
+            "meaning": "Residual growth attributable to shift in product/channel composition — often calculated as plug figure after volume and price"
+          }
+        ],
+        "worked_example": "Asian Paints FY23:\\nReported Revenue Growth: 16.1%\\nVolume Growth (disclosed): 2.0%\\nPrice Growth (disclosed): 13.8%\\nMix Effect (residual): 16.1% − 2.0% − 13.8% ≈ 0.3%\\n\\nInsight: 14 out of 16 percentage points of growth came from price — almost entirely pass-through of titanium dioxide and monomer inflation, not genuine demand strength. When TiO2 prices cool in FY24, this 14% reverses, and reported growth collapses to mid-single digits. This is exactly what happened — FY24 revenue grew only 7.5%.",
+        "sensitivity_note": "For quick estimation in interviews, use additive approximation: Revenue Growth ≈ Volume + Price + Mix. Multiplicative precision matters only when growth rates exceed 20% — below that, additive is within 50 bps of actual."
+      },
+      {
+        "name": "Organic vs Inorganic Growth Split",
+        "formula": "Organic Growth % = (Current Revenue − Acquisition Revenue − FX Impact) / Prior Period Revenue − 1",
+        "variables": [
+          {
+            "symbol": "Acquisition Revenue",
+            "meaning": "Revenue contribution from companies acquired during the year, annualised if needed for like-for-like"
+          },
+          {
+            "symbol": "FX Impact",
+            "meaning": "Revenue variation caused by exchange rate movements, computed at constant currency"
+          },
+          {
+            "symbol": "Prior Period Revenue",
+            "meaning": "Base year revenue on which growth is measured"
+          }
+        ],
+        "worked_example": "Infosys FY23:\\nReported USD Revenue Growth: 15.4%\\nUSD Constant Currency Growth (stripping FX): 15.4%\\nINR Reported Revenue Growth: 20.7%\\nINR Organic Growth after FX adjustment: ~16.0%\\n\\nGap: The 20.7% INR headline is flattered by 470 bps of rupee depreciation. The real organic growth is 16%. For cross-company comparison in Indian IT, always anchor to constant currency USD growth or INR organic growth — the reported INR number is inflated by FX in most fiscal years.",
+        "sensitivity_note": "For exporters (IT services, pharma, specialty chemicals, textile), FX is the biggest distortion in reported INR revenue growth. Always demand constant-currency disclosures from the company or compute them yourself using period-average USD/INR rates."
+      },
+      {
+        "name": "Same-Store Sales Growth (SSSG) for Retail/QSR",
+        "formula": "SSSG % = (Current Period Sales from Stores Open >12 Months − Prior Period Sales from Same Stores) / Prior Period Sales from Same Stores",
+        "variables": [
+          {
+            "symbol": "Stores Open >12 Months",
+            "meaning": "Stores that were operational for the entire comparable period in both years — excludes stores opened in the current year"
+          }
+        ],
+        "worked_example": "Jubilant FoodWorks Q4 FY24:\\nTotal Revenue Growth: 9%\\nSSSG (Domino's India): −1.5%\\nNew Store Opening Contribution: 10.5%\\n\\nInsight: All of Jubilant's growth came from opening new stores. Existing stores actually saw a 1.5% sales decline. This is a classic retail red flag — the business is growing by opening outlets faster than it's losing per-store productivity. Eventually new-store additions slow, and the negative SSSG becomes the whole story. This is why SSSG is the single most-watched metric in QSR, retail, and consumer services.",
+        "sensitivity_note": "SSSG drives analyst verdicts in retail. Even a 100 bps miss on SSSG guidance can trigger 8–12% stock moves in names like DMart, Trent, Jubilant FoodWorks, and Titan. Watch for 'SSSG ex-inflation' disclosures that separate volume-based traffic from realisation."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+P → Insert PivotTable",
+        "Cmd+Shift+Enter → Array formula",
+        "Cmd+T → Convert to Table",
+        "Cmd+Option+V → Paste Special dialog"
+      ],
+      "windows": [
+        "Alt+N+V → Insert PivotTable (fast way to compute YoY by segment/geography)",
+        "Ctrl+Shift+Enter → Array formula for computing weighted average mix effects",
+        "Ctrl+T → Convert data to Excel Table (enables structured references for VPM)",
+        "Alt+E+S+F → Paste Special Formulas only (preserve formula logic during peer copy)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Volume-Price-Mix (VPM) Decomposition",
+        "formula": "Revenue Growth % ≈ (1 + Volume Growth %) × (1 + Price Growth %) × (1 + Mix Effect %) − 1",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Growth in physical units sold — disclosed in concalls or computed from dispatch data / order fulfilment metrics"
+          },
+          {
+            "symbol": "Price Growth",
+            "meaning": "Growth in per-unit realisation at constant mix — often disclosed as 'pricing contribution' in FMCG/paints concalls"
+          },
+          {
+            "symbol": "Mix Effect",
+            "meaning": "Residual growth attributable to shift in product/channel composition — often calculated as plug figure after volume and price"
+          }
+        ],
+        "plain_english": "This formula breaks down revenue growth into three distinct drivers: selling more units (volume), charging more per unit (price), and benefiting from a shift toward higher-margin or premium products (mix). The multiplicative structure captures how these effects compound — a 10% price increase and 5% volume growth combine to roughly 15.5%, not exactly 15%. This decomposition is crucial for equity research because reported revenue growth is nearly useless without understanding whether it came from real demand expansion or merely cost pass-through.",
+        "computation": [
+          "Identify or extract volume growth % from company disclosures, management commentary, or dispatch/order data",
+          "Identify or calculate price growth % as (current per-unit realisation − prior per-unit realisation) / prior per-unit realisation, holding product mix constant",
+          "Calculate mix effect as a residual: (Reported Revenue Growth % + 1) / [(1 + Volume %) × (1 + Price %)] − 1",
+          "Alternatively, use additive approximation for quick mental math: Revenue Growth ≈ Volume % + Price % + Mix %, accurate within ±0.5% for growth rates below 20%"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints reported 16.1% revenue growth in FY23. Management disclosed volume growth of 2.0% and price growth of 13.8%. What does the mix effect tell you about the sustainability of this growth?",
+          "steps": [
+            "Using the multiplicative formula: (1 + 0.020) × (1 + 0.138) × (1 + Mix Effect %) − 1 = 0.161",
+            "Solve for Mix Effect: (1.020 × 1.138 × (1 + Mix %)) = 1.161 → (1 + Mix %) = 1.161 / 1.161 ≈ 1.0003 → Mix Effect ≈ 0.3%",
+            "Alternatively, additive: 16.1% ≈ 2.0% + 13.8% + 0.3% ✓"
+          ],
+          "result": "Mix effect was negligible at 0.3%; 14 out of 16 percentage points of growth came from price increases alone.",
+          "insight": "This was almost entirely cost pass-through of titanium dioxide and monomer inflation — not organic demand growth. When TiO2 prices cooled in FY24, this 14% price contribution reversed sharply, and reported revenue growth collapsed to 7.5%. This is a classic case where headline growth masks underlying volume weakness. An analyst who mechanically anchored on 16% growth without decomposing VPM would have missed the cliff entirely."
+        },
+        "sensitivity_note": "For quick estimation in interviews, use additive approximation: Revenue Growth ≈ Volume + Price + Mix. Multiplicative precision matters only when growth rates exceed 20% — below that, additive is within 50 bps of actual."
+      },
+      {
+        "name": "Organic vs Inorganic Growth Split",
+        "formula": "Organic Growth % = (Current Revenue − Acquisition Revenue − FX Impact) / Prior Period Revenue − 1",
+        "variables": [
+          {
+            "symbol": "Current Revenue",
+            "meaning": "Total reported revenue in the current period"
+          },
+          {
+            "symbol": "Acquisition Revenue",
+            "meaning": "Revenue contribution from companies acquired during the year, annualised if needed for like-for-like comparison"
+          },
+          {
+            "symbol": "FX Impact",
+            "meaning": "Revenue variation caused by exchange rate movements, computed as (Constant Currency Revenue − Reported Revenue)"
+          },
+          {
+            "symbol": "Prior Period Revenue",
+            "meaning": "Base year revenue on which growth is measured, typically the preceding fiscal year"
+          }
+        ],
+        "plain_english": "Reported revenue growth can be inflated by two non-operational factors: acquisitions and currency movements. This formula strips them out to reveal the true organic growth of the existing business. For Indian exporters (IT services, pharmaceuticals, specialty chemicals), rupee depreciation can add hundreds of basis points of phantom growth to INR-reported numbers, obscuring a slower or even negative underlying expansion. Always demand or calculate constant-currency organic growth to see the real picture.",
+        "computation": [
+          "Obtain reported current-period revenue in the reporting currency (usually INR)",
+          "Subtract revenue from acquisitions completed during the period, typically disclosed in MD&A or investor presentations",
+          "Calculate FX impact: multiply prior-period revenue by (current-period USD/INR rate − prior-period USD/INR rate) / prior-period rate; subtract this from reported revenue",
+          "Divide adjusted revenue by prior-period revenue and subtract 1 to get organic growth %"
+        ],
+        "worked_example": {
+          "problem": "Infosys reported INR revenue growth of 20.7% in FY23, but management disclosed constant-currency USD growth of 15.4%. The INR/USD rate moved from 74.5 at the start to 82.0 by year-end. What was the organic growth and FX impact?",
+          "steps": [
+            "FX depreciation: (82.0 − 74.5) / 74.5 ≈ 10.1% rupee weakening over the year",
+            "If prior-period revenue was ₹100, constant-currency growth of 15.4% means organic revenue is ₹115.4 (in prior-year currency terms)",
+            "When converted at end-of-year rate (82/74.5), this appears as ₹115.4 × (82/74.5) ≈ ₹127.3 in reported INR, or 27.3% growth",
+            "Actual INR reported growth was 20.7%, so FX was a ~6–7 percentage-point tailwind (the 15.4% organic partially offset by rounding and intercompany dynamics)"
+          ],
+          "result": "Organic growth: ~15.4% (constant currency); FX-driven phantom growth: ~5–6 percentage points of the 20.7% headline.",
+          "insight": "An analyst reading only the 20.7% INR headline would overestimate real demand strength by 5–6 percentage points. This matters enormously for multi-year models: if you assume 20.7% growth can persist, you'll blow up your DCF. Always pivot to constant-currency metrics for IT, pharma, and any exporter-heavy portfolio. The 15.4% USD growth is the true growth rate; the INR number is a currency artifact."
+        },
+        "sensitivity_note": "For exporters (IT services, pharma, specialty chemicals, textile), FX is the biggest distortion in reported INR revenue growth. Always demand constant-currency disclosures from the company or compute them yourself using period-average USD/INR rates. A 5% rupee move can easily swing INR revenue growth by 300–500 bps."
+      },
+      {
+        "name": "Same-Store Sales Growth (SSSG) for Retail/QSR",
+        "formula": "SSSG % = (Current Period Sales from Stores Open >12 Months − Prior Period Sales from Same Stores) / Prior Period Sales from Same Stores",
+        "variables": [
+          {
+            "symbol": "Current Period Sales",
+            "meaning": "Total sales in the current period from stores that were operational for the entire comparable prior period"
+          },
+          {
+            "symbol": "Prior Period Sales",
+            "meaning": "Total sales in the prior period from the same set of mature stores (open >12 months in both periods)"
+          },
+          {
+            "symbol": "Stores Open >12 Months",
+            "meaning": "Stores that were operational for the entire comparable period in both years — excludes stores opened in the current year and closed stores"
+          }
+        ],
+        "plain_english": "SSSG measures how much customers are spending in stores that have been open for at least a year, holding the store base constant. It strips out the growth boost from new-store openings, revealing true per-store productivity and underlying customer demand. A retailer growing headline revenue 10% but seeing negative SSSG is actually losing sales in mature stores and relying entirely on new outlets to show growth — a major red flag because new-store rollout cannot accelerate forever, and the business will eventually face that negative SSSG as its entire reality.",
+        "computation": [
+          "From company disclosures, identify sales figures and store counts for the current period",
+          "Identify which stores were open and operating for the entire prior-period comparable window (usually >12 months old)",
+          "Calculate prior-period sales from only those same, mature stores",
+          "Calculate current-period sales from those same mature stores",
+          "Divide change by prior-period baseline: (Current − Prior) / Prior"
+        ],
+        "worked_example": {
+          "problem": "Jubilant FoodWorks (Domino's India franchise) reported total revenue growth of 9% in Q4 FY24. Management disclosed SSSG of −1.5% and noted new store contribution of 10.5%. What is the underlying health of the business?",
+          "steps": [
+            "Total growth of 9% = Contribution from mature stores + Contribution from new/growth stores",
+            "Mature stores (SSSG): −1.5%, meaning existing stores had 1.5% lower sales than prior year",
+            "New store contribution: +10.5%, meaning the net of new openings and closures added 10.5 percentage points of growth",
+            "Check: −1.5% + 10.5% ≈ 9.0% ✓"
+          ],
+          "result": "Headline revenue grew 9%; mature-store sales declined 1.5%; all growth came from new-store openings.",
+          "insight": "This is a major red flag. Jubilant's entire growth engine is new-store rolling; the existing estate is shrinking on a per-store basis. This typically signals either category saturation (too many Domino's outlets in key cities), competitive pressure, or customer fatigue. Eventually new-store openings slow (real estate, capital constraints, market saturation), and investors are left with negative SSSG as the primary driver. This is exactly what happened in late FY24–FY25; the stock suffered significant repricing. Analysts who ignored SSSG and only looked at 9% headline growth completely missed this deterioration."
+        },
+        "sensitivity_note": "SSSG drives analyst verdicts in retail, QSR, and consumer services. Even a 100 bps miss on SSSG guidance can trigger 8–12% stock moves in names like Dmart, Trent, Jubilant FoodWorks, Titan, and Bata. Watch for 'SSSG ex-inflation' or 'constant-price SSSG' disclosures that separate volume-based traffic growth from realisation/pricing growth. In high-inflation periods, nominal SSSG can mask volume declines."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+P → Insert PivotTable",
+        "Cmd+Shift+Enter → Array formula",
+        "Cmd+T → Convert to Table",
+        "Cmd+Option+V → Paste Special dialog"
+      ],
+      "windows": [
+        "Alt+N+V → Insert PivotTable (fast way to compute YoY by segment/geography)",
+        "Ctrl+Shift+Enter → Array formula for computing weighted average mix effects",
+        "Ctrl+T → Convert data to Excel Table (enables structured references for VPM)",
+        "Alt+E+S+F → Paste Special Formulas only (preserve formula logic during peer copy)"
+      ]
+    }
+  }
+}

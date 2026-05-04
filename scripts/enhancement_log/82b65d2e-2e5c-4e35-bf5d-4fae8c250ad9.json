@@ -1,0 +1,227 @@
+{
+  "id": "82b65d2e-2e5c-4e35-bf5d-4fae8c250ad9",
+  "label": "M5 S5 | The pledging formulas every analyst must know",
+  "before": {
+    "formulas": [
+      {
+        "name": "Pledging Ratio",
+        "formula": "Pledging Ratio = (Pledged Promoter Shares / Total Promoter Holding) × 100",
+        "variables": [
+          {
+            "symbol": "Pledged Promoter Shares",
+            "meaning": "Number of shares held by promoters that are currently pledged as collateral. Disclosed in the quarterly BSE/NSE filing."
+          },
+          {
+            "symbol": "Total Promoter Holding",
+            "meaning": "Total number of shares held by the promoter and promoter group. Disclosed in the quarterly shareholding pattern."
+          }
+        ],
+        "worked_example": "Suppose a mid-cap company has total promoter holding of 5.2 crore shares. Of these, 1.04 crore shares are pledged. Pledging Ratio = (1.04 / 5.2) × 100 = 20 percent. This is above the 15 percent threshold that typically indicates meaningful governance risk, and would trigger a downgrade in the governance score.",
+        "sensitivity_note": "The threshold matters. Below 5 percent — negligible governance concern. 5 to 15 percent — mild concern, watch for escalation. 15 to 30 percent — serious concern, governance score should be downgraded materially. Above 30 percent — systemic risk, warrants an Avoid regardless of business strength. Also note — pledging ratio can change fast. Always check the most recent quarter, not last year's number."
+      },
+      {
+        "name": "Net Unpledged Promoter Holding (as percentage of total shares outstanding)",
+        "formula": "Net Unpledged Ratio = ((Total Promoter Holding - Pledged Shares) / Total Shares Outstanding) × 100",
+        "variables": [
+          {
+            "symbol": "Total Promoter Holding",
+            "meaning": "Total number of shares held by promoter group. Disclosed quarterly."
+          },
+          {
+            "symbol": "Pledged Shares",
+            "meaning": "Pledged portion of promoter holding."
+          },
+          {
+            "symbol": "Total Shares Outstanding",
+            "meaning": "Full outstanding equity base of the company."
+          }
+        ],
+        "worked_example": "Same mid-cap company. Total promoter holding 5.2 crore shares. Pledged 1.04 crore shares. Total shares outstanding 12 crore shares. Net Unpledged Ratio = ((5.2 - 1.04) / 12) × 100 = 34.67 percent. This tells you that 34.67 percent of the company's equity is held by promoters in an economically unencumbered way — the rest is either non-promoter (54.67 percent) or promoter-but-pledged (8.67 percent).",
+        "sensitivity_note": "This metric is more informative than the gross promoter holding. A company with 52 percent gross promoter holding but 40 percent pledged has only about 31 percent economically clean promoter holding. The market sometimes looks at gross promoter holding and misreads the economic reality. Net Unpledged Ratio corrects this."
+      },
+      {
+        "name": "Promoter Pledging Velocity (Quarter-on-Quarter Change)",
+        "formula": "Pledging Velocity (pp change) = Pledging Ratio (this quarter) - Pledging Ratio (previous quarter)",
+        "variables": [
+          {
+            "symbol": "Pledging Ratio (this quarter)",
+            "meaning": "Most recent quarterly pledging percentage."
+          },
+          {
+            "symbol": "Pledging Ratio (previous quarter)",
+            "meaning": "Prior quarter pledging percentage."
+          }
+        ],
+        "worked_example": "Same mid-cap company. Pledging Ratio in Q2 = 20 percent. Pledging Ratio in Q1 = 14 percent. Velocity = 20 - 14 = +6 percentage points quarter-on-quarter. An increase of 6 percentage points in a single quarter is a significant escalation. Over two quarters of sequential rises, velocity is the single most predictive signal of stress at the promoter level.",
+        "sensitivity_note": "Direction matters more than level sometimes. A company at 25 percent pledging that has been stable for 8 quarters is less alarming than a company at 15 percent that has risen from 6 percent over the last 4 quarters. Rising velocity in a benign market (when everyone's pledging should be stable or falling) is a strong negative signal."
+      },
+      {
+        "name": "Margin Call Trigger Approximation",
+        "formula": "Stock Price Decline To Margin Call ≈ ((Collateral Coverage - Required Coverage) / Collateral Coverage) × 100",
+        "variables": [
+          {
+            "symbol": "Collateral Coverage",
+            "meaning": "Current value of pledged shares divided by outstanding loan. Disclosed informally in some filings; often approximated at 2.0x to 2.5x at the time of initial pledging."
+          },
+          {
+            "symbol": "Required Coverage",
+            "meaning": "Minimum coverage ratio the lender requires before demanding top-up. Typically 1.5x to 1.75x."
+          }
+        ],
+        "worked_example": "If pledged shares are valued at a 2.0x coverage of the loan (i.e., pledged share value is 2x the loan outstanding) and the lender requires 1.5x minimum, the stock can fall (2.0 - 1.5) / 2.0 = 25 percent before triggering a margin call. Below that, the lender demands cash top-up or invokes the pledge. Actual coverage ratios are often not publicly disclosed precisely, but this mental model helps you assess how vulnerable the stock is to a cascading fall in a market decline.",
+        "sensitivity_note": "This is an approximation for analytical thinking, not a precise formula — exact coverage terms vary by lender and pledge agreement. But the concept is critical — high-pledging promoter structures are fragile to stock-price declines, and a 25 to 35 percent fall in a broader market correction can trigger invocation cascades. This is what happened in Zee in January 2019. The analyst question is — how much room does this promoter have before forced selling begins."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+Enter: array formula",
+        "Cmd+Shift+T: insert SUM",
+        "Cmd+; : insert current date",
+        "Fn+F4 (while in formula): toggle absolute / relative reference",
+        "Cmd+Shift+F : toggle filters"
+      ],
+      "windows": [
+        "Ctrl+Shift+Enter: enter array formula for aggregate pledging calculations across multiple quarters",
+        "Alt+= : quick SUM",
+        "Ctrl+; : insert current date (for tracking when you last updated the pledging file)",
+        "F4 (while editing formula): lock cell reference with $$ (absolute reference, useful when pulling promoter holding across many rows)",
+        "Ctrl+Shift+L : toggle filters on / off for screening pledging data by sector"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Pledging Ratio",
+        "formula": "Pledging Ratio = (Pledged Promoter Shares / Total Promoter Holding) × 100",
+        "variables": [
+          {
+            "symbol": "Pledged Promoter Shares",
+            "meaning": "Number of shares held by promoters that are currently pledged as collateral. Disclosed in the quarterly BSE/NSE filing."
+          },
+          {
+            "symbol": "Total Promoter Holding",
+            "meaning": "Total number of shares held by the promoter and promoter group. Disclosed in the quarterly shareholding pattern."
+          }
+        ],
+        "plain_english": "Pledging Ratio tells you what fraction of a promoter's shareholding is locked up as collateral against loans. It is the single most important governance red flag in Indian equity research because high pledging creates asymmetric risk — the promoter's personal balance sheet can force a cascade of share sales that destabilises the company if stock prices fall. Every analyst must track this number quarterly.",
+        "worked_example": {
+          "problem": "A mid-cap company has total promoter holding of 5.2 crore shares. In Q3, 1.04 crore shares are pledged. What is the Pledging Ratio and what does it signal?",
+          "steps": [
+            "Identify Pledged Promoter Shares = 1.04 crore",
+            "Identify Total Promoter Holding = 5.2 crore",
+            "Calculate Pledging Ratio = (1.04 / 5.2) × 100 = 20%"
+          ],
+          "result": "Pledging Ratio = 20%",
+          "insight": "A 20% pledging ratio is above the 15% governance warning threshold. This company warrants a material downgrade in governance score. The promoter has mortgaged one-fifth of their stake — enough risk that a 25–30% stock price fall could trigger margin calls and forced selling."
+        },
+        "sensitivity_note": "The threshold matters. Below 5 percent — negligible governance concern. 5 to 15 percent — mild concern, watch for escalation. 15 to 30 percent — serious concern, governance score should be downgraded materially. Above 30 percent — systemic risk, warrants an Avoid regardless of business strength. Also note — pledging ratio can change fast. Always check the most recent quarter, not last year's number."
+      },
+      {
+        "name": "Net Unpledged Promoter Holding (as percentage of total shares outstanding)",
+        "formula": "Net Unpledged Ratio = ((Total Promoter Holding - Pledged Shares) / Total Shares Outstanding) × 100",
+        "variables": [
+          {
+            "symbol": "Total Promoter Holding",
+            "meaning": "Total number of shares held by promoter group. Disclosed quarterly."
+          },
+          {
+            "symbol": "Pledged Shares",
+            "meaning": "Pledged portion of promoter holding."
+          },
+          {
+            "symbol": "Total Shares Outstanding",
+            "meaning": "Full outstanding equity base of the company."
+          }
+        ],
+        "plain_english": "Net Unpledged Ratio shows what fraction of the company's total equity is owned by promoters in an economically unencumbered way. This is more meaningful than gross promoter holding because it tells you how much 'clean' promoter skin is actually in the game. A promoter with 52% gross holding but 40% pledged has only ~31% economically committed — a critical distinction that naive investors often miss.",
+        "worked_example": {
+          "problem": "Same mid-cap company. Total promoter holding 5.2 crore shares. Pledged 1.04 crore shares. Total shares outstanding 12 crore shares. What is the Net Unpledged Ratio?",
+          "steps": [
+            "Calculate Unpledged Promoter Shares = Total Promoter Holding - Pledged Shares = 5.2 - 1.04 = 4.16 crore",
+            "Identify Total Shares Outstanding = 12 crore",
+            "Calculate Net Unpledged Ratio = (4.16 / 12) × 100 = 34.67%"
+          ],
+          "result": "Net Unpledged Ratio = 34.67%",
+          "insight": "Only 34.67% of the company's equity is held by promoters cleanly. The remaining 54.33% is non-promoter (institutional, retail, HNI) and 8.67% is promoter-but-pledged. This breakdown shows the promoter's true economic commitment and liquidity cushion in a crisis."
+        },
+        "sensitivity_note": "This metric is more informative than the gross promoter holding. A company with 52 percent gross promoter holding but 40 percent pledged has only about 31 percent economically clean promoter holding. The market sometimes looks at gross promoter holding and misreads the economic reality. Net Unpledged Ratio corrects this."
+      },
+      {
+        "name": "Promoter Pledging Velocity (Quarter-on-Quarter Change)",
+        "formula": "Pledging Velocity (pp change) = Pledging Ratio (this quarter) - Pledging Ratio (previous quarter)",
+        "variables": [
+          {
+            "symbol": "Pledging Ratio (this quarter)",
+            "meaning": "Most recent quarterly pledging percentage."
+          },
+          {
+            "symbol": "Pledging Ratio (previous quarter)",
+            "meaning": "Prior quarter pledging percentage."
+          }
+        ],
+        "plain_english": "Pledging Velocity measures how fast pledging is rising or falling quarter-on-quarter. A rising velocity (e.g., +6 pp in one quarter) is a stress indicator — the promoter is tapping the collateral market rapidly, often a sign of liquidity pressure or margin call padding. Conversely, stable or falling velocity is reassuring. This forward-looking momentum signal is often more predictive than the absolute level.",
+        "worked_example": {
+          "problem": "Track pledging across four quarters for a mid-cap pharma company. Q4 pledging ratio: 8%. Q1: 10%. Q2: 14%. Q3: 20%. Calculate the velocity in each quarter after Q4.",
+          "steps": [
+            "Velocity Q1 = 10% - 8% = +2 pp",
+            "Velocity Q2 = 14% - 10% = +4 pp",
+            "Velocity Q3 = 20% - 14% = +6 pp"
+          ],
+          "result": "Three consecutive quarters of acceleration: +2pp → +4pp → +6pp",
+          "insight": "The velocity is accelerating. The promoter is pledging faster each quarter. Even though the absolute level at 20% is in the 'serious concern' band, the trajectory is worse — it signals deepening stress. This company would shift from a 'Review' to an 'Avoid' on governance grounds if the velocity continues."
+        },
+        "sensitivity_note": "Direction matters more than level sometimes. A company at 25 percent pledging that has been stable for 8 quarters is less alarming than a company at 15 percent that has risen from 6 percent over the last 4 quarters. Rising velocity in a benign market (when everyone's pledging should be stable or falling) is a strong negative signal."
+      },
+      {
+        "name": "Margin Call Trigger Approximation",
+        "formula": "Stock Price Decline To Margin Call ≈ ((Collateral Coverage - Required Coverage) / Collateral Coverage) × 100",
+        "variables": [
+          {
+            "symbol": "Collateral Coverage",
+            "meaning": "Current value of pledged shares divided by outstanding loan. Disclosed informally in some filings; often approximated at 2.0x to 2.5x at the time of initial pledging."
+          },
+          {
+            "symbol": "Required Coverage",
+            "meaning": "Minimum coverage ratio the lender requires before demanding top-up. Typically 1.5x to 1.75x."
+          }
+        ],
+        "plain_english": "This formula approximates how much the stock price can fall before lenders invoke margin calls and force the promoter to top up collateral or face automatic liquidation. It quantifies the fragility of a high-pledging structure to market volatility. In a 25–35% market correction, promoters with tight coverage ratios face cascading forced selling — the ultimate governance disaster.",
+        "computation": [
+          "Step 1: Estimate current collateral coverage (pledged share value ÷ outstanding loan). If not disclosed, use typical range of 2.0x to 2.5x.",
+          "Step 2: Identify required minimum coverage from lender agreement (typically 1.5x to 1.75x).",
+          "Step 3: Calculate headroom as a decimal: (Collateral Coverage - Required Coverage) ÷ Collateral Coverage.",
+          "Step 4: Multiply by 100 to express as percentage stock price decline tolerance."
+        ],
+        "worked_example": {
+          "problem": "A mid-cap FMCG company's promoter has pledged shares valued at ₹500 crore against a loan of ₹250 crore (coverage 2.0x). The lender's margin call threshold is 1.5x coverage. A market-wide correction begins. At what stock price decline percentage does the promoter face a margin call?",
+          "steps": [
+            "Collateral Coverage = 2.0x",
+            "Required Coverage = 1.5x",
+            "Calculate headroom = (2.0 - 1.5) / 2.0 = 0.5 / 2.0 = 0.25",
+            "Convert to percentage = 0.25 × 100 = 25%"
+          ],
+          "result": "Stock Price Decline To Margin Call ≈ 25%",
+          "insight": "The stock can fall 25% before the lender demands action. In a broader market correction of 30–40%, this promoter enters forced-selling mode. If multiple high-pledging promoters face margin calls simultaneously (as in the Zee episode of Jan 2019), the selling cascade can be severe. Analysts must monitor coverage ratios and market volatility in tandem."
+        },
+        "sensitivity_note": "This is an approximation for analytical thinking, not a precise formula — exact coverage terms vary by lender and pledge agreement. But the concept is critical — high-pledging promoter structures are fragile to stock-price declines, and a 25 to 35 percent fall in a broader market correction can trigger invocation cascades. This is what happened in Zee in January 2019. The analyst question is — how much room does this promoter have before forced selling begins."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+Enter: array formula",
+        "Cmd+Shift+T: insert SUM",
+        "Cmd+; : insert current date",
+        "Fn+F4 (while in formula): toggle absolute / relative reference",
+        "Cmd+Shift+F : toggle filters"
+      ],
+      "windows": [
+        "Ctrl+Shift+Enter: enter array formula for aggregate pledging calculations across multiple quarters",
+        "Alt+= : quick SUM",
+        "Ctrl+; : insert current date (for tracking when you last updated the pledging file)",
+        "F4 (while editing formula): lock cell reference with $$ (absolute reference, useful when pulling promoter holding across many rows)",
+        "Ctrl+Shift+L : toggle filters on / off for screening pledging data by sector"
+      ]
+    }
+  }
+}

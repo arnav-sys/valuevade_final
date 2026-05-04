@@ -1,0 +1,206 @@
+{
+  "id": "f4b3663a-de00-41ea-b2a2-e6bfff24a419",
+  "label": "M12 S14 | The Recommendation Formulas — Translating Football Field to ",
+  "before": {
+    "formulas": [
+      {
+        "name": "Methodology Range",
+        "formula": "Methodology Range = [Bear Case Target, Bull Case Target]",
+        "variables": [
+          {
+            "symbol": "Bear Case Target",
+            "meaning": "Lower bound of methodology range, typically from conservative assumption set"
+          },
+          {
+            "symbol": "Bull Case Target",
+            "meaning": "Upper bound of methodology range, typically from aggressive assumption set"
+          }
+        ],
+        "worked_example": "For Asian Paints DCF (from Session 9 sensitivity analysis): Bear ₹950, Base ₹1,382, Bull ₹1,750. Range = [₹950, ₹1,750]. The bar width on the football field corresponds to this range. Wider bars indicate methodology with more sensitivity to assumptions; narrower bars indicate tighter conviction.",
+        "sensitivity_note": "Range width is itself an analytical signal. DCF ranges of ±25-30% from base reflect typical sensitivity to WACC and terminal growth. Trading comps ranges typically tighter (±10-15% from peer median). Precedent transactions ranges depend on deal sample quality — wider when sample is small or distressed-deal-heavy."
+      },
+      {
+        "name": "Convergence Range",
+        "formula": "Convergence Range = Intersection of Methodologies' Ranges",
+        "variables": [
+          {
+            "symbol": "Methodology Ranges",
+            "meaning": "Ranges from each methodology applied"
+          },
+          {
+            "symbol": "Intersection",
+            "meaning": "The value range where most methodologies overlap"
+          }
+        ],
+        "worked_example": "For Asian Paints: DCF [₹950, ₹1,750], Global Mature Peer Comps [₹1,300, ₹1,500], Precedent Transactions Trading-Equivalent [₹1,800, ₹2,150]. The intersection of DCF and Global Mature Peer Comps is [₹1,300, ₹1,500] — these two methodologies converge in the ₹1,300-1,500 range. Indian Peer Comps [₹2,200, ₹2,600] doesn't overlap with this convergence range. The convergence range becomes the central fair-value zone for the analysis.",
+        "sensitivity_note": "The convergence range is the most analytically robust value zone — supported by multiple methodologies. If only 1-2 methodologies converge, the analytical confidence is moderate. If 4-5 methodologies converge, conviction is high. The presence or absence of convergence is itself information for the recommendation."
+      },
+      {
+        "name": "Recommendation Logic",
+        "formula": "Recommendation = Function of (Current Price, Convergence Range, Range of Each Methodology)",
+        "variables": [
+          {
+            "symbol": "Current Market Price",
+            "meaning": "Stock's current trading price"
+          },
+          {
+            "symbol": "Convergence Range",
+            "meaning": "Where most methodologies cluster"
+          },
+          {
+            "symbol": "Outlier Methodologies",
+            "meaning": "Methodologies that don't converge with main cluster — require explanation"
+          }
+        ],
+        "worked_example": "For Asian Paints: current price ₹2,920. DCF, Global Mature Peer Comps, and Precedent Transactions Trading-Equivalent cluster in approximately ₹1,300-1,950 range. Indian Peer Comps suggests ₹2,200-2,600 (outlier reflecting current sector pricing). Precedent Transactions Deal Multiple suggests ₹2,400-2,750 (controlling-stake interpretation). The dominant pattern: most methodologies indicate downside vs current price. Recommendation: SELL with target ₹1,500-1,700 (mid-convergence range), structural support across multiple methodologies, with implied premium of 30%+ to current trading reflecting either intangible value or market overvaluation.",
+        "sensitivity_note": "The recommendation isn't a mechanical output; it's an analytical judgment supported by the football field. The professional discipline: the football field makes the case visible, but the recommendation incorporates analytical context (catalysts, momentum, market sentiment, peer behaviour) beyond just the range comparison."
+      },
+      {
+        "name": "Investment Thesis Statement",
+        "formula": "Investment Thesis = Recommendation + Target Price + Catalyst + Risk + Time Horizon",
+        "variables": [
+          {
+            "symbol": "Recommendation",
+            "meaning": "BUY, HOLD, or SELL"
+          },
+          {
+            "symbol": "Target Price",
+            "meaning": "Expected fair value, often midpoint of convergence range"
+          },
+          {
+            "symbol": "Catalyst",
+            "meaning": "Specific event or trend that would close the price-value gap"
+          },
+          {
+            "symbol": "Risk",
+            "meaning": "What could break the call"
+          },
+          {
+            "symbol": "Time Horizon",
+            "meaning": "Typically 12 months for sell-side equity research"
+          }
+        ],
+        "worked_example": "For Asian Paints: 'SELL Asian Paints with target price ₹1,500. Three of five valuation methodologies (DCF, Global Mature Peer Comps, Precedent Transactions Trading-Equivalent) converge in the ₹1,300-1,950 range, suggesting current trading price of ₹2,920 reflects either premium for intangible category position or market overvaluation. Catalyst: continued underperformance of Birla Opus relative to expectations or broader Indian decorative paints sector multiple compression. Key risk: continued premiumisation accelerating beyond current trends, supporting maintained premium multiple. Time horizon: 12 months.'",
+        "sensitivity_note": "The investment thesis is the published recommendation that goes into research notes and IC presentations. The football field demonstrates analytical conviction; the thesis articulates the action and reasoning."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Insert → Charts → 100% Stacked Bar",
+        "Cmd + Shift + N for chart",
+        "Format → Chart Element → Add → Trendline",
+        "Cmd + Shift + B for bar chart"
+      ],
+      "windows": [
+        "Insert → Charts → Recommended Charts → 100% Stacked Bar (or build custom horizontal bar chart manually)",
+        "Format → Chart Element → Add → Trendline (for current price reference line)",
+        "Right-click on bar → Format Data Series → set Bar Width → 30-40% for clean visual hierarchy",
+        "Alt + N + V + B for inserting bar chart",
+        "Format → Conditional Formatting → on the data table to color-code methodologies"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Methodology Range",
+        "formula": "Methodology Range = [Bear Case Target, Bull Case Target]",
+        "variables": [
+          {
+            "symbol": "Bear Case Target",
+            "meaning": "Lower bound of methodology range, typically from conservative assumption set"
+          },
+          {
+            "symbol": "Bull Case Target",
+            "meaning": "Upper bound of methodology range, typically from aggressive assumption set"
+          }
+        ],
+        "plain_english": "A methodology range represents the lower and upper bounds of fair value produced by a single valuation method (DCF, trading comps, etc.) under conservative and optimistic assumptions respectively. The width of this range reflects how sensitive the methodology is to key assumptions like discount rates, growth rates, or comparable multiples. A narrow range suggests tight conviction; a wide range flags assumption sensitivity that deserves scrutiny.",
+        "worked_example": "For Asian Paints DCF (from Session 9 sensitivity analysis): Bear ₹950, Base ₹1,382, Bull ₹1,750. Range = [₹950, ₹1,750]. The bar width on the football field corresponds to this range. Wider bars indicate methodology with more sensitivity to assumptions; narrower bars indicate tighter conviction.",
+        "sensitivity_note": "Range width is itself an analytical signal. DCF ranges of ±25-30% from base reflect typical sensitivity to WACC and terminal growth. Trading comps ranges typically tighter (±10-15% from peer median). Precedent transactions ranges depend on deal sample quality — wider when sample is small or distressed-deal-heavy."
+      },
+      {
+        "name": "Convergence Range",
+        "formula": "Convergence Range = Intersection of Methodologies' Ranges",
+        "variables": [
+          {
+            "symbol": "Methodology Ranges",
+            "meaning": "Ranges from each methodology applied"
+          },
+          {
+            "symbol": "Intersection",
+            "meaning": "The value range where most methodologies overlap"
+          }
+        ],
+        "plain_english": "The convergence range is the price band where multiple valuation methodologies overlap or cluster together. It represents the most analytically robust fair-value zone because it is supported by independent approaches (intrinsic DCF, market comparables, transaction precedents). When methodologies converge, your conviction in that price range increases materially because the result is not dependent on a single method's assumptions.",
+        "worked_example": "For Asian Paints: DCF [₹950, ₹1,750], Global Mature Peer Comps [₹1,300, ₹1,500], Precedent Transactions Trading-Equivalent [₹1,800, ₹2,150]. The intersection of DCF and Global Mature Peer Comps is [₹1,300, ₹1,500] — these two methodologies converge in the ₹1,300-1,500 range. Indian Peer Comps [₹2,200, ₹2,600] doesn't overlap with this convergence range. The convergence range becomes the central fair-value zone for the analysis.",
+        "sensitivity_note": "The convergence range is the most analytically robust value zone — supported by multiple methodologies. If only 1-2 methodologies converge, the analytical confidence is moderate. If 4-5 methodologies converge, conviction is high. The presence or absence of convergence is itself information for the recommendation."
+      },
+      {
+        "name": "Recommendation Logic",
+        "formula": "Recommendation = Function of (Current Price, Convergence Range, Range of Each Methodology)",
+        "variables": [
+          {
+            "symbol": "Current Market Price",
+            "meaning": "Stock's current trading price"
+          },
+          {
+            "symbol": "Convergence Range",
+            "meaning": "Where most methodologies cluster"
+          },
+          {
+            "symbol": "Outlier Methodologies",
+            "meaning": "Methodologies that don't converge with main cluster — require explanation"
+          }
+        ],
+        "plain_english": "Your recommendation (BUY, HOLD, or SELL) emerges from comparing the current market price to your convergence range and the broader distribution of valuation ranges. If the stock trades well below the convergence range, it signals upside potential (BUY). If it trades within or near the range, it suggests fair value (HOLD). If it trades significantly above, it signals downside risk (SELL). Outlier methodologies that sit far from the convergence cluster require explanation — they may reflect unique market factors, control premiums, or analytical errors worth investigating.",
+        "worked_example": "For Asian Paints: current price ₹2,920. DCF, Global Mature Peer Comps, and Precedent Transactions Trading-Equivalent cluster in approximately ₹1,300-1,950 range. Indian Peer Comps suggests ₹2,200-2,600 (outlier reflecting current sector pricing). Precedent Transactions Deal Multiple suggests ₹2,400-2,750 (controlling-stake interpretation). The dominant pattern: most methodologies indicate downside vs current price. Recommendation: SELL with target ₹1,500-1,700 (mid-convergence range), structural support across multiple methodologies, with implied premium of 30%+ to current trading reflecting either intangible value or market overvaluation.",
+        "sensitivity_note": "The recommendation isn't a mechanical output; it's an analytical judgment supported by the football field. The professional discipline: the football field makes the case visible, but the recommendation incorporates analytical context (catalysts, momentum, market sentiment, peer behaviour) beyond just the range comparison."
+      },
+      {
+        "name": "Investment Thesis Statement",
+        "formula": "Investment Thesis = Recommendation + Target Price + Catalyst + Risk + Time Horizon",
+        "variables": [
+          {
+            "symbol": "Recommendation",
+            "meaning": "BUY, HOLD, or SELL"
+          },
+          {
+            "symbol": "Target Price",
+            "meaning": "Expected fair value, often midpoint of convergence range"
+          },
+          {
+            "symbol": "Catalyst",
+            "meaning": "Specific event or trend that would close the price-value gap"
+          },
+          {
+            "symbol": "Risk",
+            "meaning": "What could break the call"
+          },
+          {
+            "symbol": "Time Horizon",
+            "meaning": "Typically 12 months for sell-side equity research"
+          }
+        ],
+        "plain_english": "An investment thesis is a complete, publication-ready statement that combines your valuation work, recommendation, target price, and the specific reasons why the market might reprice the stock toward fair value. It articulates both the opportunity (or downside) and the risks that could derail your thesis, grounding your recommendation in catalysts and time frames rather than leaving it abstract. This thesis is what your portfolio managers, salespeople, and clients will act on — it must be clear, defendable, and specific.",
+        "worked_example": "For Asian Paints: 'SELL Asian Paints with target price ₹1,500. Three of five valuation methodologies (DCF, Global Mature Peer Comps, Precedent Transactions Trading-Equivalent) converge in the ₹1,300-1,950 range, suggesting current trading price of ₹2,920 reflects either premium for intangible category position or market overvaluation. Catalyst: continued underperformance of Birla Opus relative to expectations or broader Indian decorative paints sector multiple compression. Key risk: continued premiumisation accelerating beyond current trends, supporting maintained premium multiple. Time horizon: 12 months.'",
+        "sensitivity_note": "The investment thesis is the published recommendation that goes into research notes and IC presentations. The football field demonstrates analytical conviction; the thesis articulates the action and reasoning."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Insert → Charts → 100% Stacked Bar",
+        "Cmd + Shift + n for chart",
+        "Format → Chart Element → Add → Trendline",
+        "Cmd + Shift + B for bar chart"
+      ],
+      "windows": [
+        "Insert → Charts → Recommended Charts → 100% Stacked Bar (or build custom horizontal bar chart manually)",
+        "Format → Chart Element → Add → Trendline (for current price reference line)",
+        "Right-click on bar → Format Data Series → set Bar Width → 30-40% for clean visual hierarchy",
+        "Alt + N + V + B for inserting bar chart",
+        "Format → Conditional Formatting → on the data table to color-code methodologies"
+      ]
+    }
+  }
+}

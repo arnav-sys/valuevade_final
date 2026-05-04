@@ -1,0 +1,233 @@
+{
+  "id": "81778e94-85ce-4920-b24d-6c0d8cbd39ac",
+  "label": "M10 S2 | The Inflation Formulas — Calculation, Decomposition, and Sto",
+  "before": {
+    "formulas": [
+      {
+        "name": "Year-on-Year (YoY) Inflation Rate",
+        "formula": "Inflation Rate (%) = ((CPI_current - CPI_year_ago) / CPI_year_ago) × 100",
+        "variables": [
+          {
+            "symbol": "CPI_current",
+            "meaning": "Current month CPI index value"
+          },
+          {
+            "symbol": "CPI_year_ago",
+            "meaning": "CPI index value 12 months ago"
+          }
+        ],
+        "worked_example": "October 2022 CPI Index = 178.0\nOctober 2021 CPI Index = 166.7\nInflation Rate = ((178.0 - 166.7) / 166.7) × 100 = 6.78%\n\nThis matches the 6.77% headline that triggered the bond market reaction described in the hook.",
+        "sensitivity_note": "Always remember the base year: India's CPI base is currently 2012=100. A new base year revision (likely 2023-24=100) is expected — this will mechanically reset the absolute index numbers but not the inflation rate calculation methodology."
+      },
+      {
+        "name": "Weighted Contribution to Headline Inflation",
+        "formula": "Component Contribution (pp) = Component Inflation Rate (%) × Component Weight (%) / 100",
+        "variables": [
+          {
+            "symbol": "Component Inflation Rate",
+            "meaning": "YoY inflation rate of that specific category (e.g., Food, Fuel, Housing)"
+          },
+          {
+            "symbol": "Component Weight",
+            "meaning": "Weight of that category in total CPI basket"
+          },
+          {
+            "symbol": "pp",
+            "meaning": "Percentage points contribution to headline inflation"
+          }
+        ],
+        "worked_example": "October 2022 breakdown:\nFood inflation = 7.01%, Weight = 45.86%\nFood contribution = 7.01 × 45.86 / 100 = 3.21 pp\n\nFuel inflation = 9.93%, Weight = 6.84%\nFuel contribution = 9.93 × 6.84 / 100 = 0.68 pp\n\nCore inflation = 6.0%, Weight = 47.30% (everything else)\nCore contribution = 6.0 × 47.30 / 100 = 2.84 pp\n\nTotal = 3.21 + 0.68 + 2.84 = 6.73 pp ≈ 6.77% headline (rounding)\n\nThis decomposition tells you 47% of October 2022 inflation came from food alone — an analyst would immediately ask: is this monsoon-driven and reversing, or is it structural?",
+        "sensitivity_note": "If 50%+ of headline inflation is coming from food, expect mean-reversion within 2-3 months once supply normalises. If 50%+ is coming from core, the inflation is sticky and rate hikes are coming."
+      },
+      {
+        "name": "Real Interest Rate",
+        "formula": "Real Interest Rate (%) = Nominal Interest Rate (%) - CPI Inflation Rate (%)",
+        "variables": [
+          {
+            "symbol": "Nominal Interest Rate",
+            "meaning": "The headline rate quoted by RBI (e.g., repo) or by banks (e.g., FD rate)"
+          },
+          {
+            "symbol": "CPI Inflation",
+            "meaning": "Headline CPI YoY inflation rate"
+          }
+        ],
+        "worked_example": "Repo rate = 6.5%\nCPI Inflation = 5.5%\nReal Repo Rate = 6.5 - 5.5 = 1.0%\n\nThe RBI generally targets a positive real repo rate of 1-2% as 'neutral.' If real repo > 2%, monetary policy is restrictive (slowing the economy). If real repo < 0%, policy is stimulative (the central bank is paying you to hold debt, which is rare).",
+        "sensitivity_note": "Real interest rate is the single most important number for predicting RBI's next move. A real repo above 2% is rare and signals the RBI is preparing to cut. A real repo below 0% almost always precedes hikes. Track this monthly — it's a leading indicator of policy direction."
+      },
+      {
+        "name": "Inflation Pass-through to Corporate Margins",
+        "formula": "Margin Impact (bps) = (Input Cost Inflation - Output Price Pass-through) × Material Cost Ratio × 100",
+        "variables": [
+          {
+            "symbol": "Input Cost Inflation",
+            "meaning": "Inflation in the company's raw material costs (typically WPI-linked)"
+          },
+          {
+            "symbol": "Output Price Pass-through",
+            "meaning": "Percentage of input cost inflation the company can pass to customers via price increases"
+          },
+          {
+            "symbol": "Material Cost Ratio",
+            "meaning": "Raw materials as % of total revenue"
+          }
+        ],
+        "worked_example": "Asian Paints (FY23 illustrative example):\nInput cost inflation (crude derivatives, titanium dioxide) = 14%\nOutput price hikes taken = 8%\nMaterial cost ratio = 58% of revenue\nNet inflation pressure on margins = 14 - 8 = 6 percentage points\nMargin compression = 6% × 58% = ~3.48 percentage points\nGross margin moved from 43% to ~39.5% — exactly what happened.",
+        "sensitivity_note": "Pass-through ability is everything. Strong-brand FMCG (HUL, Nestle) typically passes through 70-80% of input cost inflation. Commoditised products (cement bag, basic steel) pass through 30-50%. Weak brands or government-controlled prices (some pharma, fertilisers) pass through 0-20% — these stocks get crushed in inflation spikes."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + 5 → percentage format",
+        "Cmd + Option + R → recalculate workbook",
+        "Cmd + ; → insert today's date",
+        "Cmd + R → fill right (useful for quarterly/monthly inflation tables)"
+      ],
+      "windows": [
+        "Ctrl + Shift + 5 → percentage format with 0 decimals",
+        "Alt + H + 0 → increase decimal places (useful for inflation precision)",
+        "F4 → repeat last action (great for applying same formula across categories)",
+        "Ctrl + ; → insert today's date (useful for dating CPI release tracking)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Year-on-Year (YoY) Inflation Rate",
+        "formula": "Inflation Rate (%) = ((CPI_current - CPI_year_ago) / CPI_year_ago) × 100",
+        "variables": [
+          {
+            "symbol": "CPI_current",
+            "meaning": "Current month CPI index value"
+          },
+          {
+            "symbol": "CPI_year_ago",
+            "meaning": "CPI index value 12 months ago"
+          }
+        ],
+        "plain_english": "YoY inflation measures how much the average price of a fixed basket of consumer goods and services has risen over the past 12 months. This is the headline inflation number that central banks, policymakers, and equity analysts track most closely because it directly influences interest rate decisions and consumer purchasing power. A rising YoY rate signals the RBI may tighten monetary policy, which typically pressures equities in rate-sensitive sectors.",
+        "worked_example": "October 2022 CPI Index = 178.0\nOctober 2021 CPI Index = 166.7\nInflation Rate = ((178.0 - 166.7) / 166.7) × 100 = 6.78%\n\nThis matches the 6.77% headline that triggered the bond market reaction described in the hook.",
+        "sensitivity_note": "Always remember the base year: India's CPI base is currently 2012=100. A new base year revision (likely 2023-24=100) is expected — this will mechanically reset the absolute index numbers but not the inflation rate calculation methodology."
+      },
+      {
+        "name": "Weighted Contribution to Headline Inflation",
+        "formula": "Component Contribution (pp) = Component Inflation Rate (%) × Component Weight (%) / 100",
+        "variables": [
+          {
+            "symbol": "Component Inflation Rate",
+            "meaning": "YoY inflation rate of that specific category (e.g., Food, Fuel, Housing)"
+          },
+          {
+            "symbol": "Component Weight",
+            "meaning": "Weight of that category in total CPI basket"
+          },
+          {
+            "symbol": "pp",
+            "meaning": "Percentage points contribution to headline inflation"
+          }
+        ],
+        "plain_english": "This formula decomposes headline inflation into its constituent parts, showing how much each category (food, fuel, core) contributes to the overall rate. For equity research, this is critical because it reveals the *source* of inflation and predicts its stickiness: food-driven inflation is temporary and reverses once supply normalises; core inflation is persistent and forces sustained rate hikes. A single decomposition can change your entire sector rotation.",
+        "computation": [
+          "Take the YoY inflation rate for each component category",
+          "Multiply by the component's weight in the CPI basket (expressed as a percentage)",
+          "Divide by 100 to convert to percentage points",
+          "Sum all component contributions — they should equal (approximately) the headline inflation rate"
+        ],
+        "worked_example": {
+          "problem": "October 2022 CPI inflation was 6.77%. Break down the contribution from Food, Fuel, and Core inflation.",
+          "steps": [
+            "Food inflation = 7.01%, Weight = 45.86% → Contribution = 7.01 × 45.86 / 100 = 3.21 pp",
+            "Fuel inflation = 9.93%, Weight = 6.84% → Contribution = 9.93 × 6.84 / 100 = 0.68 pp",
+            "Core inflation = 6.0%, Weight = 47.30% → Contribution = 6.0 × 47.30 / 100 = 2.84 pp",
+            "Total = 3.21 + 0.68 + 2.84 = 6.73 pp ≈ 6.77% headline (rounding)"
+          ],
+          "result": "Food: 3.21 pp, Fuel: 0.68 pp, Core: 2.84 pp. Total: 6.73 pp.",
+          "insight": "47% of October 2022 inflation came from food alone — an analyst would immediately ask: is this monsoon-driven and reversing, or is it structural? If food is >50% of headline, expect mean-reversion within 2–3 months. If food is <40% and core is rising, the RBI will hike aggressively."
+        },
+        "sensitivity_note": "If 50%+ of headline inflation is coming from food, expect mean-reversion within 2-3 months once supply normalises. If 50%+ is coming from core, the inflation is sticky and rate hikes are coming."
+      },
+      {
+        "name": "Real Interest Rate",
+        "formula": "Real Interest Rate (%) = Nominal Interest Rate (%) - CPI Inflation Rate (%)",
+        "variables": [
+          {
+            "symbol": "Nominal Interest Rate",
+            "meaning": "The headline rate quoted by RBI (e.g., repo) or by banks (e.g., FD rate)"
+          },
+          {
+            "symbol": "CPI Inflation",
+            "meaning": "Headline CPI YoY inflation rate"
+          }
+        ],
+        "plain_english": "Real interest rate tells you the true return on cash after accounting for inflation. It is the most important single variable in equity valuation because it sets the discount rate for all future cash flows: a falling real rate makes equities cheaper relative to bonds and vice versa. The RBI's entire policy stance can be read from the real repo rate: if it is >2%, the RBI is tightening; if it is negative, the RBI is in full accommodation mode.",
+        "computation": [
+          "Obtain the latest nominal interest rate (e.g., RBI repo rate or bank FD rate)",
+          "Obtain the latest YoY CPI inflation rate",
+          "Subtract CPI inflation from the nominal rate"
+        ],
+        "worked_example": {
+          "problem": "The RBI repo rate is 6.5% and headline CPI inflation is 5.5%. What is the real repo rate, and what does it tell us about monetary policy?",
+          "steps": [
+            "Real Repo Rate = Nominal Repo - CPI Inflation = 6.5% - 5.5% = 1.0%",
+            "Compare 1.0% to RBI's neutral real rate target of ~1–2%",
+            "At 1.0%, the real rate is at the lower end of neutral, suggesting RBI has tightened adequately but may need to hold or cut soon if inflation falls further"
+          ],
+          "result": "Real Repo Rate = 1.0%. This is neutral-to-slightly-accommodative.",
+          "insight": "The RBI generally targets a positive real repo rate of 1–2% as 'neutral.' If real repo >2%, monetary policy is restrictive (slowing the economy). If real repo <0%, policy is stimulative. Track this monthly — it is the single most important leading indicator of RBI's next move and equity market direction."
+        },
+        "sensitivity_note": "Real interest rate is the single most important number for predicting RBI's next move. A real repo above 2% is rare and signals the RBI is preparing to cut. A real repo below 0% almost always precedes hikes. Track this monthly — it's a leading indicator of policy direction."
+      },
+      {
+        "name": "Inflation Pass-through to Corporate Margins",
+        "formula": "Margin Impact (bps) = (Input Cost Inflation - Output Price Pass-through) × Material Cost Ratio × 100",
+        "variables": [
+          {
+            "symbol": "Input Cost Inflation",
+            "meaning": "Inflation in the company's raw material costs (typically WPI-linked)"
+          },
+          {
+            "symbol": "Output Price Pass-through",
+            "meaning": "Percentage of input cost inflation the company can pass to customers via price increases"
+          },
+          {
+            "symbol": "Material Cost Ratio",
+            "meaning": "Raw materials as % of total revenue"
+          }
+        ],
+        "plain_english": "This formula quantifies how much inflation will squeeze a company's margins when input costs rise faster than it can raise selling prices. It combines two critical dimensions: how much of the cost increase the company can pass on (brand strength and competitive position matter here) and how large raw materials are as a fraction of revenue. A high-margin company with strong brand pricing power (HUL, Nestlé) weathers inflation; a commoditised, low-margin business (cement, basic steel) gets crushed.",
+        "computation": [
+          "Calculate the net inflation pressure: (Input Cost Inflation % - Output Price Pass-through %)",
+          "Multiply by the Material Cost Ratio (expressed as a decimal, e.g., 0.58 for 58%)",
+          "Multiply by 100 to express the result in basis points or percentage points of margin compression"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints faces 14% inflation in crude derivatives and titanium dioxide. The company has raised output prices by 8% and raw materials represent 58% of revenue. By how many basis points will gross margin compress?",
+          "steps": [
+            "Net inflation pressure = 14% (input) − 8% (pass-through) = 6 percentage points unabsorbed",
+            "Material Cost Ratio = 58% of revenue = 0.58",
+            "Margin compression = 6% × 0.58 = 3.48 percentage points = 348 basis points",
+            "If gross margin was 43%, it falls to approximately 39.5%"
+          ],
+          "result": "Gross margin compresses by ~348 basis points (3.48 pp), from 43% to ~39.5%.",
+          "insight": "Asian Paints has strong brand pricing power and passed through 57% of input cost inflation (8% of 14%), but the sheer magnitude of raw material cost exposure (58% of revenue) meant margin compression was severe. Weak-brand or commoditised competitors would have compressed even more. This is why equity research focuses on pass-through ability during inflation cycles."
+        },
+        "sensitivity_note": "Pass-through ability is everything. Strong-brand FMCG (HUL, Nestle) typically passes through 70-80% of input cost inflation. Commoditised products (cement bag, basic steel) pass through 30-50%. Weak brands or government-controlled prices (some pharma, fertilisers) pass through 0-20% — these stocks get crushed in inflation spikes."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + 5 → percentage format",
+        "Cmd + Option + R → recalculate workbook",
+        "Cmd + ; → insert today's date",
+        "Cmd + R → fill right (useful for quarterly/monthly inflation tables)"
+      ],
+      "windows": [
+        "Ctrl + Shift + 5 → percentage format with 0 decimals",
+        "Alt + H + 0 → increase decimal places (useful for inflation precision)",
+        "F4 → repeat last action (great for applying same formula across categories)",
+        "Ctrl + ; → insert today's date (useful for dating CPI release tracking)"
+      ]
+    }
+  }
+}

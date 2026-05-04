@@ -1,0 +1,450 @@
+{
+  "id": "4a878b9a-8e9b-4d11-9d94-2c52ba74f100",
+  "label": "M1 S9 | Master Linkage Formulas and Bajaj Finance Mini-Model",
+  "before": {
+    "linkage_formulas": [
+      {
+        "name": "Retained Earnings Bridge",
+        "formula": "Closing RE = Opening RE + Net Profit - Dividends",
+        "connects": "P&L to BS"
+      },
+      {
+        "name": "PP&E Roll-Forward",
+        "formula": "Closing Net PP&E = Opening + Capex - D&A - Disposals",
+        "connects": "BS + CFS + P&L"
+      },
+      {
+        "name": "Debt Roll-Forward",
+        "formula": "Closing Debt = Opening + New Borrowings - Repayments",
+        "connects": "BS to CFS"
+      },
+      {
+        "name": "Cash Roll-Forward",
+        "formula": "Closing Cash = Opening + CFO + CFI + CFF",
+        "connects": "CFS to BS"
+      },
+      {
+        "name": "Working Capital to CFO",
+        "formula": "WC adjustment = -Change in Receivables - Change in Inventory + Change in Payables",
+        "connects": "BS to CFS"
+      },
+      {
+        "name": "Capex Derivation",
+        "formula": "Capex = Change in Net PP&E + D&A (if no disposals)",
+        "connects": "BS + P&L to CFS"
+      },
+      {
+        "name": "Tax Bridge",
+        "formula": "Tax Paid = Tax Expense + Opening Tax Payable - Closing Tax Payable",
+        "connects": "P&L + BS to CFS"
+      },
+      {
+        "name": "Interest Bridge",
+        "formula": "Interest Paid = Interest Expense + Opening Interest Payable - Closing Interest Payable",
+        "connects": "P&L + BS to CFS"
+      }
+    ],
+    "bajaj_finance_example": {
+      "events": "Disbursed 80,000 new loans, collected 60,000 repayments. New borrowings 25,000, repaid 10,000. Capex 1,000. Dividends 3,000. Write-offs 2,500.",
+      "opening_bs": {
+        "cash": "20,000",
+        "equity": "45,000",
+        "loan_book": "2,00,000",
+        "ppe_other": "5,000",
+        "borrowings": "1,70,000",
+        "other_liab": "10,000",
+        "total_assets": "2,25,000"
+      },
+      "linkage_traces": {
+        "cfo": "~negative 6,375 (normal for growing NBFC -- disbursements exceed collections)",
+        "ppe": "5,000 + 1,000 - 500 = 5,500",
+        "debt": "1,70,000 + 25,000 - 10,000 = 1,85,000",
+        "loan_book": "2,00,000 + 80,000 - 60,000 - 2,500 - 3,000 = ~2,14,500",
+        "re_bridge": "45,000 + 10,125 - 3,000 = 52,125"
+      },
+      "income_statement": {
+        "da": "500",
+        "nii": "22,000",
+        "pat": "10,125",
+        "pbt": "13,500",
+        "tax": "3,375",
+        "opex": "10,000",
+        "fee_income": "5,000",
+        "provisions": "3,000",
+        "interest_income": "40,000",
+        "interest_expense": "18,000"
+      }
+    }
+  },
+  "after": {
+    "linkage_formulas": [
+      {
+        "name": "Retained Earnings Bridge",
+        "formula": "Closing RE = Opening RE + Net Profit - Dividends",
+        "connects": "P&L to BS",
+        "variables": [
+          {
+            "symbol": "Closing RE",
+            "meaning": "Retained Earnings at period end"
+          },
+          {
+            "symbol": "Opening RE",
+            "meaning": "Retained Earnings at period start"
+          },
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit After Tax (PAT) for the period"
+          },
+          {
+            "symbol": "Dividends",
+            "meaning": "Cash dividends paid to shareholders during the period"
+          }
+        ],
+        "plain_english": "This formula tracks how retained earnings flow from the income statement to the balance sheet. Every rupee of profit either stays in the company (retained) or leaves as dividends. It bridges the P&L and balance sheet, ensuring the equity section reconciles correctly.",
+        "computation": [
+          "Start with opening retained earnings from prior period balance sheet",
+          "Add the current period's net profit (PAT from P&L)",
+          "Subtract dividends paid during the period",
+          "Result is closing retained earnings for balance sheet"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance had opening RE of ₹45,000 cr, earned PAT of ₹10,125 cr, and paid dividends of ₹3,000 cr. Calculate closing RE.",
+          "steps": [
+            "Opening RE = ₹45,000 cr",
+            "Add PAT = ₹10,125 cr",
+            "Subtract Dividends = ₹3,000 cr",
+            "Closing RE = ₹45,000 + ₹10,125 - ₹3,000 = ₹52,125 cr"
+          ],
+          "result": "₹52,125 cr",
+          "insight": "Bajaj retained ~71% of profits, reinvesting in growth while returning ~30% to shareholders—typical for high-growth NBFCs."
+        }
+      },
+      {
+        "name": "PP&E Roll-Forward",
+        "formula": "Closing Net PP&E = Opening + Capex - D&A - Disposals",
+        "connects": "BS + CFS + P&L",
+        "variables": [
+          {
+            "symbol": "Closing Net PP&E",
+            "meaning": "Property, Plant & Equipment at net book value at period end"
+          },
+          {
+            "symbol": "Opening",
+            "meaning": "Net PP&E at period start"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Capital expenditure (cash invested in fixed assets) during period"
+          },
+          {
+            "symbol": "D&A",
+            "meaning": "Depreciation and amortization expense for the period"
+          },
+          {
+            "symbol": "Disposals",
+            "meaning": "Net book value of fixed assets sold or retired during period"
+          }
+        ],
+        "plain_english": "This formula reconciles the balance sheet PP&E figure with capital expenditures (from cash flow) and depreciation (from P&L). It shows how asset growth, asset wear, and asset sales combine to determine the net PP&E balance. Critical for tracking capex intensity and asset base changes.",
+        "computation": [
+          "Start with opening net PP&E from prior balance sheet",
+          "Add capex (cash spent on new or improved assets)",
+          "Subtract D&A expense (non-cash reduction in asset value)",
+          "Subtract any net book value of assets disposed",
+          "Result is closing net PP&E for current balance sheet"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance had opening PP&E of ₹5,000 cr, spent ₹1,000 cr capex, recorded ₹500 cr D&A, and had no disposals. Calculate closing PP&E.",
+          "steps": [
+            "Opening PP&E = ₹5,000 cr",
+            "Add Capex = ₹1,000 cr",
+            "Subtract D&A = ₹500 cr",
+            "Subtract Disposals = ₹0 cr",
+            "Closing PP&E = ₹5,000 + ₹1,000 - ₹500 - ₹0 = ₹5,500 cr"
+          ],
+          "result": "₹5,500 cr",
+          "insight": "Net capex of ₹500 cr (₹1,000 - ₹500 D&A) indicates modest asset base growth, typical for an NBFC with focus on loan origination over branch expansion."
+        }
+      },
+      {
+        "name": "Debt Roll-Forward",
+        "formula": "Closing Debt = Opening + New Borrowings - Repayments",
+        "connects": "BS to CFS",
+        "variables": [
+          {
+            "symbol": "Closing Debt",
+            "meaning": "Total borrowings at period end"
+          },
+          {
+            "symbol": "Opening",
+            "meaning": "Total borrowings at period start"
+          },
+          {
+            "symbol": "New Borrowings",
+            "meaning": "Cash proceeds from new loans/bonds/bank borrowings during period"
+          },
+          {
+            "symbol": "Repayments",
+            "meaning": "Cash paid to repay principal on borrowings during period"
+          }
+        ],
+        "plain_english": "This formula reconciles debt movements between cash flow statements and balance sheets. It shows that the closing debt balance depends on the opening balance plus new funding minus debt repayments—all cash events. Essential for tracking debt financing and leverage trends.",
+        "computation": [
+          "Start with opening debt from prior balance sheet",
+          "Add new borrowings (cash inflow from debt issuance)",
+          "Subtract debt repayments (cash outflow for principal)",
+          "Result is closing debt balance for current balance sheet"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance had opening borrowings of ₹1,70,000 cr, raised ₹25,000 cr new borrowings, and repaid ₹10,000 cr. Calculate closing borrowings.",
+          "steps": [
+            "Opening Borrowings = ₹1,70,000 cr",
+            "Add New Borrowings = ₹25,000 cr",
+            "Subtract Repayments = ₹10,000 cr",
+            "Closing Borrowings = ₹1,70,000 + ₹25,000 - ₹10,000 = ₹1,85,000 cr"
+          ],
+          "result": "₹1,85,000 cr",
+          "insight": "Net debt increase of ₹15,000 cr (₹25,000 - ₹10,000) funded 80,000 new loan disbursements, showing Bajaj's growth strategy relies on incremental leverage."
+        }
+      },
+      {
+        "name": "Cash Roll-Forward",
+        "formula": "Closing Cash = Opening + CFO + CFI + CFF",
+        "connects": "CFS to BS",
+        "variables": [
+          {
+            "symbol": "Closing Cash",
+            "meaning": "Cash and equivalents at period end"
+          },
+          {
+            "symbol": "Opening",
+            "meaning": "Cash and equivalents at period start"
+          },
+          {
+            "symbol": "CFO",
+            "meaning": "Net cash from operations (from cash flow statement)"
+          },
+          {
+            "symbol": "CFI",
+            "meaning": "Net cash from investing (from cash flow statement)"
+          },
+          {
+            "symbol": "CFF",
+            "meaning": "Net cash from financing (from cash flow statement)"
+          }
+        ],
+        "plain_english": "The fundamental cash flow reconciliation: closing cash equals opening cash plus/minus all operating, investing, and financing cash flows. This links the full cash flow statement to the balance sheet cash line. It's the ultimate check on financial statement integrity.",
+        "computation": [
+          "Start with opening cash from prior period balance sheet",
+          "Add or subtract CFO (operations: collections, disbursements, opex payments, taxes)",
+          "Add or subtract CFI (investing: capex, asset sales)",
+          "Add or subtract CFF (financing: borrowings, repayments, dividends)",
+          "Result is closing cash for current period balance sheet"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance had opening cash of ₹20,000 cr. CFO was -₹6,375 cr (negative due to loan growth), CFI was -₹1,000 cr (capex), CFF was +₹15,000 cr (net new borrowings of ₹15,000 less dividends of ₹3,000 + other). Calculate closing cash.",
+          "steps": [
+            "Opening Cash = ₹20,000 cr",
+            "Add CFO = -₹6,375 cr",
+            "Add CFI = -₹1,000 cr",
+            "Add CFF = +₹15,000 cr (₹25,000 new debt - ₹10,000 repayment = ₹15,000)",
+            "Closing Cash = ₹20,000 - ₹6,375 - ₹1,000 + ₹15,000 = ₹27,625 cr"
+          ],
+          "result": "₹27,625 cr",
+          "insight": "Bajaj funded loan growth and capex through net borrowing (CFF positive), with operations absorbing cash. Closing cash rose to ₹27,625 cr, supporting future growth initiatives."
+        }
+      },
+      {
+        "name": "Working Capital to CFO",
+        "formula": "WC adjustment = -Change in Receivables - Change in Inventory + Change in Payables",
+        "connects": "BS to CFS",
+        "variables": [
+          {
+            "symbol": "WC adjustment",
+            "meaning": "Non-cash adjustment to operating cash flow for working capital movements"
+          },
+          {
+            "symbol": "Change in Receivables",
+            "meaning": "Increase (or decrease) in accounts receivable/customer loans"
+          },
+          {
+            "symbol": "Change in Inventory",
+            "meaning": "Increase (or decrease) in inventory balance"
+          },
+          {
+            "symbol": "Change in Payables",
+            "meaning": "Increase (or decrease) in accounts payable/accrued expenses"
+          }
+        ],
+        "plain_english": "Working capital ties up cash when assets grow or liabilities shrink, and releases cash when assets shrink or liabilities grow. This formula converts balance sheet working capital changes into a cash impact for the cash flow statement. An increase in receivables (or loans) consumes cash; an increase in payables generates cash.",
+        "computation": [
+          "Calculate change in receivables from balance sheet (closing minus opening)",
+          "Calculate change in inventory from balance sheet (closing minus opening)",
+          "Calculate change in payables from balance sheet (closing minus opening)",
+          "Apply formula: subtract receivables change, subtract inventory change, add payables change",
+          "Plug result into CFO as a line-item adjustment to net profit"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance's loan book (receivables) rose by ₹14,500 cr (2,00,000 + 80,000 - 60,000 - 2,500 = 2,14,500 vs opening 2,00,000). No inventory. Payables stable. What is the WC adjustment to CFO?",
+          "steps": [
+            "Change in Receivables (Loan Book) = ₹2,14,500 - ₹2,00,000 = ₹14,500 cr increase",
+            "Change in Inventory = ₹0",
+            "Change in Payables = ₹0 (assumed stable)",
+            "WC adjustment = -₹14,500 - ₹0 + ₹0 = -₹14,500 cr"
+          ],
+          "result": "-₹14,500 cr",
+          "insight": "The ₹14,500 cr growth in loan book consumed cash—a key reason Bajaj's CFO is negative. This is typical for a high-growth NBFC: disbursements exceed collections, tying up liquidity."
+        }
+      },
+      {
+        "name": "Capex Derivation",
+        "formula": "Capex = Change in Net PP&E + D&A (if no disposals)",
+        "connects": "BS + P&L to CFS",
+        "variables": [
+          {
+            "symbol": "Capex",
+            "meaning": "Capital expenditure (cash spent on fixed assets)"
+          },
+          {
+            "symbol": "Change in Net PP&E",
+            "meaning": "Closing Net PP&E minus Opening Net PP&E"
+          },
+          {
+            "symbol": "D&A",
+            "meaning": "Depreciation and amortization expense for the period"
+          }
+        ],
+        "plain_english": "When asset disposals are minimal or zero, capex can be reverse-engineered from the balance sheet and P&L. Net PP&E rises due to capex and falls due to D&A; adding them back recovers cash capex. Useful for validating capex figures or reconstructing them when CFS detail is sparse.",
+        "computation": [
+          "Calculate change in net PP&E from balance sheet (closing minus opening)",
+          "Obtain D&A expense from P&L",
+          "Add them: Capex ≈ Change in Net PP&E + D&A",
+          "Note: This assumes disposals are zero or immaterial; adjust downward if disposal proceeds exist"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance's Net PP&E rose from ₹5,000 cr to ₹5,500 cr. P&L shows ₹500 cr D&A. No significant asset sales. Calculate implied capex.",
+          "steps": [
+            "Change in Net PP&E = ₹5,500 - ₹5,000 = ₹500 cr",
+            "Add D&A = ₹500 cr",
+            "Capex = ₹500 + ₹500 = ₹1,000 cr"
+          ],
+          "result": "₹1,000 cr",
+          "insight": "This ₹1,000 cr capex figure matches the stated disbursement, confirming the balance sheet and P&L are internally consistent and validating the cash flow statement."
+        }
+      },
+      {
+        "name": "Tax Bridge",
+        "formula": "Tax Paid = Tax Expense + Opening Tax Payable - Closing Tax Payable",
+        "connects": "P&L + BS to CFS",
+        "variables": [
+          {
+            "symbol": "Tax Paid",
+            "meaning": "Actual cash paid for taxes during the period"
+          },
+          {
+            "symbol": "Tax Expense",
+            "meaning": "Tax provision/expense recorded in P&L for the period"
+          },
+          {
+            "symbol": "Opening Tax Payable",
+            "meaning": "Tax liabilities owed at period start (from prior period balance sheet)"
+          },
+          {
+            "symbol": "Closing Tax Payable",
+            "meaning": "Tax liabilities owed at period end (from current period balance sheet)"
+          }
+        ],
+        "plain_english": "Tax expense (P&L) and tax paid (cash) rarely match. This formula bridges them using the tax payable account on the balance sheet. If tax payable rises, less cash was paid than expensed; if tax payable falls, more cash was paid (including past liabilities). Essential for accurate operating cash flow.",
+        "computation": [
+          "Start with tax expense from P&L",
+          "Add opening tax payable from prior period balance sheet",
+          "Subtract closing tax payable from current period balance sheet",
+          "Result is actual cash tax paid in the period"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance recorded ₹3,375 cr tax expense. Opening tax payable was ₹1,200 cr. Closing tax payable is ₹850 cr. Calculate tax paid.",
+          "steps": [
+            "Tax Expense = ₹3,375 cr",
+            "Add Opening Tax Payable = ₹1,200 cr",
+            "Subtract Closing Tax Payable = ₹850 cr",
+            "Tax Paid = ₹3,375 + ₹1,200 - ₹850 = ₹3,725 cr"
+          ],
+          "result": "₹3,725 cr",
+          "insight": "Bajaj paid ₹3,725 cr in cash even though P&L expense was ₹3,375 cr. The ₹350 cr reduction in tax payable means it paid down prior liabilities—important for cash flow analysis."
+        }
+      },
+      {
+        "name": "Interest Bridge",
+        "formula": "Interest Paid = Interest Expense + Opening Interest Payable - Closing Interest Payable",
+        "connects": "P&L + BS to CFS",
+        "variables": [
+          {
+            "symbol": "Interest Paid",
+            "meaning": "Actual cash paid for interest during the period"
+          },
+          {
+            "symbol": "Interest Expense",
+            "meaning": "Interest expense recorded in P&L for the period"
+          },
+          {
+            "symbol": "Opening Interest Payable",
+            "meaning": "Interest liabilities owed at period start (from prior period balance sheet)"
+          },
+          {
+            "symbol": "Closing Interest Payable",
+            "meaning": "Interest liabilities owed at period end (from current period balance sheet)"
+          }
+        ],
+        "plain_english": "Interest expense flows through the P&L, but actual cash payment depends on timing. The interest payable account bridges accrual and cash. If payable rises, less cash was paid than expensed; if payable falls, more cash was paid. Critical for accurate CFO in debt-heavy businesses like NBFCs and banks.",
+        "computation": [
+          "Start with interest expense from P&L",
+          "Add opening interest payable from prior period balance sheet",
+          "Subtract closing interest payable from current period balance sheet",
+          "Result is actual cash interest paid in the period"
+        ],
+        "worked_example": {
+          "problem": "Bajaj Finance recorded ₹18,000 cr interest expense. Opening interest payable was ₹2,500 cr. Closing interest payable is ₹3,200 cr. Calculate interest paid.",
+          "steps": [
+            "Interest Expense = ₹18,000 cr",
+            "Add Opening Interest Payable = ₹2,500 cr",
+            "Subtract Closing Interest Payable = ₹3,200 cr",
+            "Interest Paid = ₹18,000 + ₹2,500 - ₹3,200 = ₹17,300 cr"
+          ],
+          "result": "₹17,300 cr",
+          "insight": "Bajaj paid ₹17,300 cr in cash despite ₹18,000 cr interest expense. The ₹700 cr increase in interest payable deferred some cash outflow—common when borrowing accelerates late in the period."
+        }
+      }
+    ],
+    "bajaj_finance_example": {
+      "events": "Disbursed 80,000 new loans, collected 60,000 repayments. New borrowings 25,000, repaid 10,000. Capex 1,000. Dividends 3,000. Write-offs 2,500.",
+      "opening_bs": {
+        "cash": "20,000",
+        "equity": "45,000",
+        "loan_book": "2,00,000",
+        "ppe_other": "5,000",
+        "borrowings": "1,70,000",
+        "other_liab": "10,000",
+        "total_assets": "2,25,000"
+      },
+      "linkage_traces": {
+        "cfo": "~negative 6,375 (normal for growing NBFC -- disbursements exceed collections)",
+        "ppe": "5,000 + 1,000 - 500 = 5,500",
+        "debt": "1,70,000 + 25,000 - 10,000 = 1,85,000",
+        "loan_book": "2,00,000 + 80,000 - 60,000 - 2,500 - 3,000 = ~2,14,500",
+        "re_bridge": "45,000 + 10,125 - 3,000 = 52,125"
+      },
+      "income_statement": {
+        "da": "500",
+        "nii": "22,000",
+        "pat": "10,125",
+        "pbt": "13,500",
+        "tax": "3,375",
+        "opex": "10,000",
+        "fee_income": "5,000",
+        "provisions": "3,000",
+        "interest_income": "40,000",
+        "interest_expense": "18,000"
+      }
+    }
+  }
+}

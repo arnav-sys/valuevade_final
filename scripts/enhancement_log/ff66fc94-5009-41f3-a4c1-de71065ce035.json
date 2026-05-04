@@ -1,0 +1,288 @@
+{
+  "id": "ff66fc94-5009-41f3-a4c1-de71065ce035",
+  "label": "M4 S8 | The Cash Flow Statement Build — Three Sections, Every Line T",
+  "before": {
+    "formulas": [
+      {
+        "name": "Cash Flow from Operations (Indirect Method)",
+        "formula": "CFO = Net Income + D&A + SBC + Other Non-Cash Items + Deferred Tax − Increase in Working Capital",
+        "variables": [
+          {
+            "symbol": "Net Income",
+            "meaning": "Bottom line of the Income Statement (IS Row 32 in our model)"
+          },
+          {
+            "symbol": "D&A",
+            "meaning": "Depreciation and Amortisation — non-cash charge, added back (IS Row 24, linked from PP&E Schedule)"
+          },
+          {
+            "symbol": "SBC",
+            "meaning": "Stock-Based Compensation / ESOP expense — non-cash, added back. Disclosed in AR Note on Employee Benefits. For Titan: minimal"
+          },
+          {
+            "symbol": "Other Non-Cash Items",
+            "meaning": "Impairments, write-offs, unrealised forex (gains/losses) — smaller items specific to company"
+          },
+          {
+            "symbol": "Deferred Tax",
+            "meaning": "Non-cash portion of tax expense — the difference between tax paid and tax booked on IS. Added back if positive"
+          },
+          {
+            "symbol": "Increase in Working Capital",
+            "meaning": "Year-over-year change in operating WC from Session 6 schedule — SUBTRACTED because WC growth consumes cash"
+          }
+        ],
+        "worked_example": "Titan FY25E Cash Flow from Operations. Net Income (from IS Row 32): ₹4,100 cr. D&A addback (from Schedules): ₹760 cr. SBC: ~₹20 cr (Titan has small ESOP program). Other non-cash: ~₹10 cr. Deferred Tax: ~₹30 cr. Increase in Working Capital (from Schedules row 19, Change in NWC): ₹782 cr. CFO = 4,100 + 760 + 20 + 10 + 30 − 782 = ₹4,138 cr. Check: CFO/PAT ratio = 4,138/4,100 = 101% — healthy, above 85-95% benchmark for FMCG/Retail which signals earnings are fully converting to cash. Contrast: if Titan's Change in WC were ₹2,000 cr (bad working capital year), CFO would be ₹2,920 cr and CFO/PAT would be 71% — warning zone.",
+        "sensitivity_note": "The CFO/PAT ratio is one of the strongest signal tests for a business. Consistently above 90% = cash-generative, healthy business (HUL, Titan, Asian Paints in good years). Below 75% for multiple years = warning sign (companies like PC Jeweller pre-collapse had CFO/PAT of 40-50%, sustained for 2+ years). When you see this gap, investigate immediately — it's almost always a working capital issue or exceptional item you haven't normalised."
+      },
+      {
+        "name": "Cash Flow from Investing (CFI)",
+        "formula": "CFI = −Capex − Acquisitions + Divestments ± Change in Investments",
+        "variables": [
+          {
+            "symbol": "Capex",
+            "meaning": "Total Capex from Session 6 Capex Schedule — OUTFLOW, hence negative sign"
+          },
+          {
+            "symbol": "Acquisitions",
+            "meaning": "Cash paid for business acquisitions — outflow. Titan acquired Caratlane majority stake in Aug 2023 — ₹4,600 cr outflow in FY24"
+          },
+          {
+            "symbol": "Divestments",
+            "meaning": "Cash received from selling businesses — inflow (positive)"
+          },
+          {
+            "symbol": "Change in Investments",
+            "meaning": "Movement in financial investments (mutual funds, FDs, bonds). Outflow if investments increased; inflow if liquidated"
+          }
+        ],
+        "worked_example": "Titan FY25E Cash Flow from Investing. Capex (from Schedules row 58 Total Capex): −₹1,902 cr. Acquisitions: ₹0 (Caratlane already consolidated). Divestments: ₹0. Change in Investments: ~−₹50 cr (modest increase in mutual fund investments). CFI = −1,902 + 0 + 0 − 50 = −₹1,952 cr. All outflows, which makes sense for a business actively investing in growth. Acquisitions can be lumpy — FY24 saw a ₹4,600 cr outflow for Caratlane; normal years are just capex.",
+        "sensitivity_note": "For acquisition-heavy companies (Adani, Ambuja, Reliance Retail), CFI can swing massively year to year. A mega-acquisition can create ₹10,000+ cr outflows in one year. For valuation, analysts typically normalise CFI by excluding one-time acquisitions and focusing on ongoing capex. Free Cash Flow to the Firm (FCFF) = CFO − Capex (excluding acquisitions) is the cleaner metric."
+      },
+      {
+        "name": "Cash Flow from Financing (CFF)",
+        "formula": "CFF = New Debt Issuances − Debt Repayments + Revolver Movement + Equity Issuances − Dividends Paid − Buybacks − Lease Principal Payments",
+        "variables": [
+          {
+            "symbol": "New Debt Issuances",
+            "meaning": "New term loans, bonds issued during the year — inflow"
+          },
+          {
+            "symbol": "Debt Repayments",
+            "meaning": "Scheduled principal repayments on term loans/bonds — outflow"
+          },
+          {
+            "symbol": "Revolver Movement",
+            "meaning": "From Debt Schedule Session 7 — positive for draw (inflow), negative for repayment (outflow)"
+          },
+          {
+            "symbol": "Equity Issuances",
+            "meaning": "New shares issued — inflow. For Titan: minimal, no equity raises expected"
+          },
+          {
+            "symbol": "Dividends Paid",
+            "meaning": "Cash dividends to shareholders — outflow. Must align with dividends shown in Retained Earnings roll"
+          },
+          {
+            "symbol": "Buybacks",
+            "meaning": "Share repurchases — outflow. Reduces share count and accumulated earnings"
+          },
+          {
+            "symbol": "Lease Principal",
+            "meaning": "Principal portion of lease payments under Ind-AS 116 — outflow"
+          }
+        ],
+        "worked_example": "Titan FY25E Cash Flow from Financing. New Debt Issuances: ₹0. Debt Repayments: −₹150 cr (scheduled term loan repayment from Debt Schedule). Revolver Movement: −₹226 cr (from Debt Schedule — surplus repaid revolver). Equity Issuances: ₹0. Dividends Paid: −₹1,640 cr (40% payout of PAT). Buybacks: ₹0. Lease Principal: −₹160 cr (from Lease Schedule). CFF = 0 − 150 − 226 + 0 − 1,640 + 0 − 160 = −₹2,176 cr. This is a big negative — Titan is returning substantial capital to shareholders and repaying debt.",
+        "sensitivity_note": "CFF shape tells you about capital allocation. Heavy positive CFF (Reliance Jio during 4G rollout) = company is raising capital to fund investment. Heavy negative CFF (Titan, HUL, mature FMCG) = company is returning capital. Neither is inherently good or bad — depends on the stage and investment opportunities. For valuation, CFF patterns inform dividend discount models and buyback yield calculations."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Alt + F9 (force recalculation)",
+        "Cmd + ` (toggle formula view)",
+        "Cmd + [ (trace precedents)"
+      ],
+      "windows": [
+        "Ctrl + Alt + F9 (force full recalculation — essential after building CFS to trigger iterative calc)",
+        "F9 (recalculate current sheet)",
+        "Ctrl + ~ (toggle formula view — useful for auditing CFS linkages)",
+        "Ctrl + [ (trace precedents — see where each CFS line pulls from)",
+        "Alt + F + I + T (view workbook statistics — how many formulas, circular references)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Cash Flow from Operations (Indirect Method)",
+        "formula": "CFO = Net Income + D&A + SBC + Other Non-Cash Items + Deferred Tax − Increase in Working Capital",
+        "variables": [
+          {
+            "symbol": "Net Income",
+            "meaning": "Bottom line of the Income Statement (IS Row 32 in our model)"
+          },
+          {
+            "symbol": "D&A",
+            "meaning": "Depreciation and Amortisation — non-cash charge, added back (IS Row 24, linked from PP&E Schedule)"
+          },
+          {
+            "symbol": "SBC",
+            "meaning": "Stock-Based Compensation / ESOP expense — non-cash, added back. Disclosed in AR Note on Employee Benefits. For Titan: minimal"
+          },
+          {
+            "symbol": "Other Non-Cash Items",
+            "meaning": "Impairments, write-offs, unrealised forex (gains/losses) — smaller items specific to company"
+          },
+          {
+            "symbol": "Deferred Tax",
+            "meaning": "Non-cash portion of tax expense — the difference between tax paid and tax booked on IS. Added back if positive"
+          },
+          {
+            "symbol": "Increase in Working Capital",
+            "meaning": "Year-over-year change in operating WC from Session 6 schedule — SUBTRACTED because WC growth consumes cash"
+          }
+        ],
+        "plain_english": "Operating cash flow is the cash your business actually generates from normal operations. The indirect method starts with accounting profit (Net Income) and adjusts for non-cash charges you added back (D&A, SBC) and working capital changes that consume or release cash. A healthy business converts earnings into cash consistently—when CFO is close to Net Income (ratio above 90%), it signals sustainable, high-quality earnings.",
+        "computation": [
+          "Start with Net Income from IS Row 32.",
+          "Add back all non-cash charges: D&A, SBC, impairments, unrealised losses.",
+          "Add back (or subtract) deferred tax changes: positive deferred tax expense is a source of cash.",
+          "Subtract the increase in operating Working Capital (AR + Inventory − AP). If WC grew, cash was used.",
+          "Sum all components to arrive at CFO."
+        ],
+        "worked_example": {
+          "problem": "Calculate Titan's CFO for FY25E given: Net Income ₹4,100 cr, D&A ₹760 cr, SBC ₹20 cr, Other non-cash items ₹10 cr, Deferred Tax ₹30 cr, Increase in Working Capital ₹782 cr.",
+          "steps": [
+            "Start: Net Income = ₹4,100 cr",
+            "Add D&A: 4,100 + 760 = ₹4,860 cr",
+            "Add SBC: 4,860 + 20 = ₹4,880 cr",
+            "Add Other non-cash: 4,880 + 10 = ₹4,890 cr",
+            "Add Deferred Tax: 4,890 + 30 = ₹4,920 cr",
+            "Subtract WC increase: 4,920 − 782 = ₹4,138 cr"
+          ],
+          "result": "CFO = ₹4,138 cr",
+          "insight": "CFO/PAT = 4,138 ÷ 4,100 = 101%, well above the 85–95% benchmark for FMCG/Retail. This signals Titan is converting earnings to cash effectively. If WC had grown to ₹2,000 cr instead (e.g., rapid inventory build), CFO would drop to ₹2,920 cr (CFO/PAT = 71%), signalling working capital distress—a red flag to investigate immediately."
+        },
+        "sensitivity_note": "The CFO/PAT ratio is one of the strongest signal tests for a business. Consistently above 90% = cash-generative, healthy business (HUL, Titan, Asian Paints in good years). Below 75% for multiple years = warning sign (companies like PC Jeweller pre-collapse had CFO/PAT of 40-50%, sustained for 2+ years). When you see this gap, investigate immediately — it's almost always a working capital issue or exceptional item you haven't normalised."
+      },
+      {
+        "name": "Cash Flow from Investing (CFI)",
+        "formula": "CFI = −Capex − Acquisitions + Divestments ± Change in Investments",
+        "variables": [
+          {
+            "symbol": "Capex",
+            "meaning": "Total Capex from Session 6 Capex Schedule — OUTFLOW, hence negative sign"
+          },
+          {
+            "symbol": "Acquisitions",
+            "meaning": "Cash paid for business acquisitions — outflow. Titan acquired Caratlane majority stake in Aug 2023 — ₹4,600 cr outflow in FY24"
+          },
+          {
+            "symbol": "Divestments",
+            "meaning": "Cash received from selling businesses — inflow (positive)"
+          },
+          {
+            "symbol": "Change in Investments",
+            "meaning": "Movement in financial investments (mutual funds, FDs, bonds). Outflow if investments increased; inflow if liquidated"
+          }
+        ],
+        "plain_english": "Investing cash flow shows how much cash the company spent or received on capital deployment—building factories, buying businesses, or investing surplus cash in financial instruments. A negative CFI is normal for growing companies; it reflects reinvestment in the business. The key is to separate recurring capex (which to compare against depreciation) from one-time acquisitions (which inflate CFI and should be adjusted when calculating Free Cash Flow).",
+        "computation": [
+          "Negate (make negative) total Capex from the Capex Schedule.",
+          "Negate (make negative) all cash paid for acquisitions.",
+          "Add (positive sign) all cash received from divestments or asset sales.",
+          "Subtract (make negative) increases in financial investments; add (positive) decreases (liquidations).",
+          "Sum all components to arrive at CFI."
+        ],
+        "worked_example": {
+          "problem": "Calculate Titan's CFI for FY25E given: Capex ₹1,902 cr, Acquisitions ₹0, Divestments ₹0, Change in financial Investments ₹50 cr (increase).",
+          "steps": [
+            "Negate Capex: −₹1,902 cr",
+            "Negate Acquisitions: −₹0 cr",
+            "Add Divestments: +₹0 cr",
+            "Negate increase in Investments: −₹50 cr",
+            "Sum: −1,902 + 0 + 0 − 50 = −₹1,952 cr"
+          ],
+          "result": "CFI = −₹1,952 cr",
+          "insight": "All outflows, typical for a business reinvesting in growth. Compare to FY24 when Titan acquired Caratlane for ₹4,600 cr, making CFI much worse that year. For valuation and FCFF calculation, exclude the Caratlane acquisition (one-time) and use only recurring capex to understand sustainable free cash flow generation."
+        },
+        "sensitivity_note": "For acquisition-heavy companies (Adani, Ambuja, Reliance Retail), CFI can swing massively year to year. A mega-acquisition can create ₹10,000+ cr outflows in one year. For valuation, analysts typically normalise CFI by excluding one-time acquisitions and focusing on ongoing capex. Free Cash Flow to the Firm (FCFF) = CFO − Capex (excluding acquisitions) is the cleaner metric."
+      },
+      {
+        "name": "Cash Flow from Financing (CFF)",
+        "formula": "CFF = New Debt Issuances − Debt Repayments + Revolver Movement + Equity Issuances − Dividends Paid − Buybacks − Lease Principal Payments",
+        "variables": [
+          {
+            "symbol": "New Debt Issuances",
+            "meaning": "New term loans, bonds issued during the year — inflow"
+          },
+          {
+            "symbol": "Debt Repayments",
+            "meaning": "Scheduled principal repayments on term loans/bonds — outflow"
+          },
+          {
+            "symbol": "Revolver Movement",
+            "meaning": "From Debt Schedule Session 7 — positive for draw (inflow), negative for repayment (outflow)"
+          },
+          {
+            "symbol": "Equity Issuances",
+            "meaning": "New shares issued — inflow. For Titan: minimal, no equity raises expected"
+          },
+          {
+            "symbol": "Dividends Paid",
+            "meaning": "Cash dividends to shareholders — outflow. Must align with dividends shown in Retained Earnings roll"
+          },
+          {
+            "symbol": "Buybacks",
+            "meaning": "Share repurchases — outflow. Reduces share count and accumulated earnings"
+          },
+          {
+            "symbol": "Lease Principal",
+            "meaning": "Principal portion of lease payments under Ind-AS 116 — outflow"
+          }
+        ],
+        "plain_english": "Financing cash flow tracks how the company raises and returns capital to investors—issuing or repaying debt, paying dividends, buying back shares, and managing lease obligations. It reveals capital allocation priorities: is the company investing borrowed cash to fuel growth, or returning free cash to shareholders? A large negative CFF combined with positive CFO signals a mature, cash-generative business returning value to owners.",
+        "computation": [
+          "Add cash received from new debt issuances (term loans, bonds, term sheets).",
+          "Subtract cash paid for scheduled debt repayments.",
+          "Add revolver draws or subtract revolver repayments per the Debt Schedule.",
+          "Add cash received from equity issuances.",
+          "Subtract all dividends paid to shareholders (must reconcile to Retained Earnings schedule).",
+          "Subtract all share buybacks.",
+          "Subtract the principal component of lease payments per Ind-AS 116 (from Lease Schedule).",
+          "Sum all components to arrive at CFF."
+        ],
+        "worked_example": {
+          "problem": "Calculate Titan's CFF for FY25E given: New Debt Issuances ₹0, Debt Repayments ₹150 cr, Revolver Movement −₹226 cr (repayment), Equity Issuances ₹0, Dividends Paid ₹1,640 cr, Buybacks ₹0, Lease Principal ₹160 cr.",
+          "steps": [
+            "Add new debt: +₹0 cr",
+            "Subtract debt repayments: −₹150 cr",
+            "Subtract revolver repayment: −₹226 cr (negative movement = repayment)",
+            "Add equity issuances: +₹0 cr",
+            "Subtract dividends: −₹1,640 cr",
+            "Subtract buybacks: −₹0 cr",
+            "Subtract lease principal: −₹160 cr",
+            "Sum: 0 − 150 − 226 + 0 − 1,640 + 0 − 160 = −₹2,176 cr"
+          ],
+          "result": "CFF = −₹2,176 cr",
+          "insight": "Large negative CFF signals Titan is returning substantial capital to shareholders (₹1,640 cr dividends) and steadily reducing leverage. This is typical of mature, cash-generative FMCG/Retail businesses. Contrast with Reliance Jio during 4G rollout (2015–2017), which had strongly positive CFF because the company was raising capital to fund massive capex. CFF shape and trend reflect business stage and capital strategy."
+        },
+        "sensitivity_note": "CFF shape tells you about capital allocation. Heavy positive CFF (Reliance Jio during 4G rollout) = company is raising capital to fund investment. Heavy negative CFF (Titan, HUL, mature FMCG) = company is returning capital. Neither is inherently good or bad — depends on the stage and investment opportunities. For valuation, CFF patterns inform dividend discount models and buyback yield calculations."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Alt + F9 (force recalculation)",
+        "Cmd + ` (toggle formula view)",
+        "Cmd + [ (trace precedents)"
+      ],
+      "windows": [
+        "Ctrl + Alt + F9 (force full recalculation — essential after building CFS to trigger iterative calc)",
+        "F9 (recalculate current sheet)",
+        "Ctrl + ~ (toggle formula view — useful for auditing CFS linkages)",
+        "Ctrl + [ (trace precedents — see where each CFS line pulls from)",
+        "Alt + F + I + T (view workbook statistics — how many formulas, circular references)"
+      ]
+    }
+  }
+}

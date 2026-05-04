@@ -1,0 +1,528 @@
+{
+  "id": "d23563f7-21c8-4286-a809-d74737b2ecbc",
+  "label": "M3 S11 | Data Validation, Conditional Formatting & Dashboard Skills",
+  "before": {
+    "skills": [
+      {
+        "skill": "Dropdown Lists — The Scenario Controller",
+        "steps": [
+          "Select the target cell (e.g., B1 for scenario selection)",
+          "Data tab → Data Validation",
+          "Under 'Allow,' choose 'List'",
+          "In 'Source,' type: Bull,Base,Bear (comma-separated)",
+          "Click OK — the cell now shows a dropdown arrow"
+        ],
+        "pro_tip": "Instead of typing options directly, point the Source to a named range: =ScenarioList. Adding a new scenario to the list automatically updates the dropdown. Create the list on a hidden 'Setup' sheet.",
+        "use_cases": [
+          {
+            "where": "Scenario toggle",
+            "options": "Bull, Base, Bear",
+            "connected_function": "SWITCH or CHOOSE references this cell"
+          },
+          {
+            "where": "Year selector",
+            "options": "FY2024, FY2025, FY2026",
+            "connected_function": "Filters data or changes reference year"
+          },
+          {
+            "where": "Currency toggle",
+            "options": "INR, USD, EUR",
+            "connected_function": "SWITCH multiplies by exchange rate"
+          },
+          {
+            "where": "Include/exclude flags",
+            "options": "Yes, No",
+            "connected_function": "IF checks this cell to add/remove line items"
+          },
+          {
+            "where": "Periodicity switch",
+            "options": "Quarterly, Annual",
+            "connected_function": "Changes time-axis granularity"
+          }
+        ],
+        "key_action": "Data → Data Validation → Allow: List → Source: Bull,Base,Bear"
+      },
+      {
+        "skill": "Numeric Constraints — The Input Guardrail",
+        "key_action": "Data Validation → Allow: Decimal → Between 0 and 1",
+        "common_rules": [
+          {
+            "max": 1.0,
+            "min": -0.5,
+            "why": "Revenue can't shrink >50% or grow >100% in a year",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "Growth Rate %"
+          },
+          {
+            "max": 0.5,
+            "min": 0,
+            "why": "Tax rate is 0–50% globally",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "Tax Rate"
+          },
+          {
+            "max": null,
+            "min": 0,
+            "why": "Shares must be positive integer",
+            "data": "Greater than",
+            "allow": "Whole Number",
+            "input": "Share Count"
+          },
+          {
+            "max": 0.2,
+            "min": 0.05,
+            "why": "WACC below 5% or above 20% is likely an error",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "WACC"
+          },
+          {
+            "max": 0.06,
+            "min": 0,
+            "why": "Can't exceed long-term GDP growth (~6%)",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "Terminal Growth"
+          }
+        ]
+      },
+      {
+        "skill": "Custom Validation Formulas — Smart Rules",
+        "examples": [
+          {
+            "rule": "Terminal growth < WACC",
+            "formula": "=TerminalGrowth<WACC",
+            "plain_english": "Terminal growth must be less than discount rate"
+          },
+          {
+            "rule": "Date must be in the future",
+            "formula": "=A1>TODAY()",
+            "plain_english": "Maturity date must be after today"
+          },
+          {
+            "rule": "Balance sheet balances",
+            "formula": "=ABS(Assets-Liabilities-Equity)<1",
+            "plain_english": "Assets = L + E within rounding tolerance"
+          },
+          {
+            "rule": "No duplicate company names",
+            "formula": "=COUNTIF(CompanyList,A1)<=1",
+            "plain_english": "Each company appears only once"
+          }
+        ],
+        "key_action": "Data Validation → Allow: Custom → Formula: =AND(B1>0, B1<B2)"
+      },
+      {
+        "skill": "Input Messages & Error Alerts",
+        "guidance": "Use Warning, not Stop, for experienced users. In models used by senior analysts or PMs, Warning alerts flag unusual inputs but don't block them — because sometimes a 60% growth rate IS correct (e.g., a startup). Stop alerts are for non-finance users.",
+        "input_message": "A tooltip that appears when the cell is selected. Shows guidance: 'Enter the revenue growth rate as a decimal (e.g., 0.12 for 12%)'. Set in Data Validation → Input Message tab.",
+        "error_alert_types": {
+          "stop": "Blocks entry entirely",
+          "warning": "Warns but allows override",
+          "information": "Informs only"
+        }
+      },
+      {
+        "skill": "Colour Scales (Heat Maps)",
+        "use_cases": [
+          {
+            "data": "Quarterly margins across 10 companies",
+            "reveals": "Which companies have the best/worst margins at a glance",
+            "colour_scale": "Green (high) → Red (low)"
+          },
+          {
+            "data": "Monthly returns for 50 stocks",
+            "reveals": "Performance clusters and outliers",
+            "colour_scale": "Green (+) → White (0) → Red (−)"
+          },
+          {
+            "data": "Correlation matrix",
+            "reveals": "Which stocks move together",
+            "colour_scale": "Dark blue (1.0) → White (0) → Dark red (−1.0)"
+          },
+          {
+            "data": "Receivables aging (days)",
+            "reveals": "Overdue accounts instantly visible",
+            "colour_scale": "Green (<30) → Yellow (30–60) → Red (>90)"
+          }
+        ],
+        "key_action": "Home → Conditional Formatting → Color Scales → Green-Yellow-Red"
+      },
+      {
+        "skill": "Icon Sets (Traffic Lights)",
+        "key_action": "Home → Conditional Formatting → Icon Sets → 3 Traffic Lights",
+        "customisation": "Right-click the icon set → 'Edit Formatting Rule' → change the threshold values. Default thresholds (33%/67%) are almost never useful for financial KPIs.",
+        "configurations": [
+          {
+            "kpi": "EBITDA Margin",
+            "red": "<12%",
+            "amber": "≥12%",
+            "green": "≥20%",
+            "monitors": "Profitability health"
+          },
+          {
+            "kpi": "Debt/Equity Ratio",
+            "red": "≥1.5x",
+            "amber": "<1.5x",
+            "green": "<0.5x",
+            "monitors": "Leverage risk (reverse: green = low)"
+          },
+          {
+            "kpi": "Revenue Growth",
+            "red": "<5%",
+            "amber": "≥5%",
+            "green": "≥15%",
+            "monitors": "Top-line momentum"
+          },
+          {
+            "kpi": "Interest Coverage",
+            "red": "≤3x",
+            "amber": ">3x",
+            "green": ">5x",
+            "monitors": "Debt service ability"
+          },
+          {
+            "kpi": "Working Capital Days",
+            "red": "≥60",
+            "amber": "<60",
+            "green": "<30",
+            "monitors": "Cash cycle efficiency"
+          }
+        ]
+      },
+      {
+        "skill": "Custom Formula Rules — The Power Tool",
+        "examples": [
+          {
+            "formula": "=$G2=\"BUY\"",
+            "formatting": "Light green fill",
+            "description": "Highlight entire row if stock is a BUY"
+          },
+          {
+            "formula": "=ABS($H2-$I2-$J2)>1",
+            "formatting": "Bold red font",
+            "description": "Red text if balance sheet doesn't balance"
+          },
+          {
+            "formula": "=$E2<$D2",
+            "formatting": "Amber fill",
+            "description": "Yellow if margin declined YoY"
+          },
+          {
+            "formula": "=COUNTIF(Portfolio,$A2)>0",
+            "formatting": "Bold navy font",
+            "description": "Bold if company is in the portfolio"
+          },
+          {
+            "formula": "=TODAY()-$B2>365",
+            "formatting": "Gray strikethrough",
+            "description": "Strikethrough if data is > 1 year old"
+          }
+        ],
+        "key_action": "Conditional Formatting → New Rule → Use a formula",
+        "dollar_sign_warning": "When you write =$G2=\"BUY\", the $ before G locks the column (always check column G) but the row reference is relative (moves with each row). If you write $G$2, every row checks the same cell. Always test your formula on the first AND last row."
+      },
+      {
+        "skill": "Dashboard Layout Principles",
+        "acid_test": "Show your dashboard to someone who didn't build it. Don't explain anything. Time how long it takes them to understand the main insight. If it's under 10 seconds, you've built a good dashboard.",
+        "definition": "A dashboard is a single page that gives the viewer everything they need to make a decision. Culmination of Sessions 9 (Pivot Tables), 10 (Charts), and 11 (Validation + Formatting).",
+        "design_rules": [
+          {
+            "rule": "One page, one story",
+            "example": "Sector overview: metrics + chart + ranking",
+            "meaning": "Everything fits on one screen/print page"
+          },
+          {
+            "rule": "Top-left = controls",
+            "example": "Scenario dropdown, year selector, sector filter",
+            "meaning": "Dropdowns and slicers go in the top-left corner"
+          },
+          {
+            "rule": "KPIs first",
+            "example": "Revenue: ₹2.4L Cr │ EBITDA Margin: 24.5% │ PE: 28.5x",
+            "meaning": "Big numbers across the top row"
+          },
+          {
+            "rule": "Charts centre",
+            "example": "Revenue trend line, segment breakdown bar",
+            "meaning": "Visual elements in the middle/centre area"
+          },
+          {
+            "rule": "Detail tables bottom",
+            "example": "Company-level data table with sorting",
+            "meaning": "Supporting data at the bottom for drill-down"
+          },
+          {
+            "rule": "No scrolling",
+            "example": "Freeze panes, hide helper columns",
+            "meaning": "The viewer should not need to scroll horizontally"
+          }
+        ]
+      }
+    ]
+  },
+  "after": {
+    "skills": [
+      {
+        "skill": "Dropdown Lists — The Scenario Controller",
+        "steps": [
+          "Select the target cell (e.g., B1 for scenario selection)",
+          "Data tab → Data Validation",
+          "Under 'Allow,' choose 'List'",
+          "In 'Source,' type: Bull,Base,Bear (comma-separated)",
+          "Click OK — the cell now shows a dropdown arrow"
+        ],
+        "pro_tip": "Instead of typing options directly, point the Source to a named range: =ScenarioList. Adding a new scenario to the list automatically updates the dropdown. Create the list on a hidden 'Setup' sheet.",
+        "use_cases": [
+          {
+            "where": "Scenario toggle",
+            "options": "Bull, Base, Bear",
+            "connected_function": "SWITCH or CHOOSE references this cell"
+          },
+          {
+            "where": "Year selector",
+            "options": "FY2024, FY2025, FY2026",
+            "connected_function": "Filters data or changes reference year"
+          },
+          {
+            "where": "Currency toggle",
+            "options": "INR, USD, EUR",
+            "connected_function": "SWITCH multiplies by exchange rate"
+          },
+          {
+            "where": "Include/exclude flags",
+            "options": "Yes, No",
+            "connected_function": "IF checks this cell to add/remove line items"
+          },
+          {
+            "where": "Periodicity switch",
+            "options": "Quarterly, Annual",
+            "connected_function": "Changes time-axis granularity"
+          }
+        ],
+        "key_action": "Data → Data Validation → Allow: List → Source: Bull,Base,Bear"
+      },
+      {
+        "skill": "Numeric Constraints — The Input Guardrail",
+        "key_action": "Data Validation → Allow: Decimal → Between 0 and 1",
+        "common_rules": [
+          {
+            "max": 1.0,
+            "min": -0.5,
+            "why": "Revenue can't shrink >50% or grow >100% in a year",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "Growth Rate %"
+          },
+          {
+            "max": 0.5,
+            "min": 0,
+            "why": "Tax rate is 0–50% globally",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "Tax Rate"
+          },
+          {
+            "max": null,
+            "min": 0,
+            "why": "Shares must be positive integer",
+            "data": "Greater than",
+            "allow": "Whole Number",
+            "input": "Share Count"
+          },
+          {
+            "max": 0.2,
+            "min": 0.05,
+            "why": "WACC below 5% or above 20% is likely an error",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "WACC"
+          },
+          {
+            "max": 0.06,
+            "min": 0,
+            "why": "Can't exceed long-term GDP growth (~6%)",
+            "data": "Between",
+            "allow": "Decimal",
+            "input": "Terminal Growth"
+          }
+        ]
+      },
+      {
+        "skill": "Custom Validation Formulas — Smart Rules",
+        "examples": [
+          {
+            "rule": "Terminal growth < WACC",
+            "formula": "=TerminalGrowth<WACC",
+            "plain_english": "Terminal growth must be less than discount rate"
+          },
+          {
+            "rule": "Date must be in the future",
+            "formula": "=A1>TODAY()",
+            "plain_english": "Maturity date must be after today"
+          },
+          {
+            "rule": "Balance sheet balances",
+            "formula": "=ABS(Assets-Liabilities-Equity)<1",
+            "plain_english": "Assets = L + E within rounding tolerance"
+          },
+          {
+            "rule": "No duplicate company names",
+            "formula": "=COUNTIF(CompanyList,A1)<=1",
+            "plain_english": "Each company appears only once"
+          }
+        ],
+        "key_action": "Data Validation → Allow: Custom → Formula: =AND(B1>0, B1<B2)"
+      },
+      {
+        "skill": "Input Messages & Error Alerts",
+        "guidance": "Use Warning, not Stop, for experienced users. In models used by senior analysts or PMs, Warning alerts flag unusual inputs but don't block them — because sometimes a 60% growth rate IS correct (e.g., a startup). Stop alerts are for non-finance users.",
+        "input_message": "A tooltip that appears when the cell is selected. Shows guidance: 'Enter the revenue growth rate as a decimal (e.g., 0.12 for 12%)'. Set in Data Validation → Input Message tab.",
+        "error_alert_types": {
+          "stop": "Blocks entry entirely",
+          "warning": "Warns but allows override",
+          "information": "Informs only"
+        }
+      },
+      {
+        "skill": "Colour Scales (Heat Maps)",
+        "use_cases": [
+          {
+            "data": "Quarterly margins across 10 companies",
+            "reveals": "Which companies have the best/worst margins at a glance",
+            "colour_scale": "Green (high) → Red (low)"
+          },
+          {
+            "data": "Monthly returns for 50 stocks",
+            "reveals": "Performance clusters and outliers",
+            "colour_scale": "Green (+) → White (0) → Red (−)"
+          },
+          {
+            "data": "Correlation matrix",
+            "reveals": "Which stocks move together",
+            "colour_scale": "Dark blue (1.0) → White (0) → Dark red (−1.0)"
+          },
+          {
+            "data": "Receivables aging (days)",
+            "reveals": "Overdue accounts instantly visible",
+            "colour_scale": "Green (<30) → Yellow (30–60) → Red (>90)"
+          }
+        ],
+        "key_action": "Home → Conditional Formatting → Color Scales → Green-Yellow-Red"
+      },
+      {
+        "skill": "Icon Sets (Traffic Lights)",
+        "key_action": "Home → Conditional Formatting → Icon Sets → 3 Traffic Lights",
+        "customisation": "Right-click the icon set → 'Edit Formatting Rule' → change the threshold values. Default thresholds (33%/67%) are almost never useful for financial KPIs.",
+        "configurations": [
+          {
+            "kpi": "EBITDA Margin",
+            "red": "<12%",
+            "amber": "≥12%",
+            "green": "≥20%",
+            "monitors": "Profitability health"
+          },
+          {
+            "kpi": "Debt/Equity Ratio",
+            "red": "≥1.5x",
+            "amber": "<1.5x",
+            "green": "<0.5x",
+            "monitors": "Leverage risk (reverse: green = low)"
+          },
+          {
+            "kpi": "Revenue Growth",
+            "red": "<5%",
+            "amber": "≥5%",
+            "green": "≥15%",
+            "monitors": "Top-line momentum"
+          },
+          {
+            "kpi": "Interest Coverage",
+            "red": "≤3x",
+            "amber": ">3x",
+            "green": ">5x",
+            "monitors": "Debt service ability"
+          },
+          {
+            "kpi": "Working Capital Days",
+            "red": "≥60",
+            "amber": "<60",
+            "green": "<30",
+            "monitors": "Cash cycle efficiency"
+          }
+        ]
+      },
+      {
+        "skill": "Custom Formula Rules — The Power Tool",
+        "examples": [
+          {
+            "formula": "=$G2=\"BUY\"",
+            "formatting": "Light green fill",
+            "description": "Highlight entire row if stock is a BUY"
+          },
+          {
+            "formula": "=ABS($H2-$I2-$J2)>1",
+            "formatting": "Bold red font",
+            "description": "Red text if balance sheet doesn't balance"
+          },
+          {
+            "formula": "=$E2<$D2",
+            "formatting": "Amber fill",
+            "description": "Yellow if margin declined YoY"
+          },
+          {
+            "formula": "=COUNTIF(Portfolio,$A2)>0",
+            "formatting": "Bold navy font",
+            "description": "Bold if company is in the portfolio"
+          },
+          {
+            "formula": "=TODAY()-$B2>365",
+            "formatting": "Gray strikethrough",
+            "description": "Strikethrough if data is > 1 year old"
+          }
+        ],
+        "key_action": "Conditional Formatting → New Rule → Use a formula",
+        "dollar_sign_warning": "When you write =$G2=\"BUY\", the $ before G locks the column (always check column G) but the row reference is relative (moves with each row). If you write $G$2, every row checks the same cell. Always test your formula on the first AND last row."
+      },
+      {
+        "skill": "Dashboard Layout Principles",
+        "acid_test": "Show your dashboard to someone who didn't build it. Don't explain anything. Time how long it takes them to understand the main insight. If it's under 10 seconds, you've built a good dashboard.",
+        "definition": "A dashboard is a single page that gives the viewer everything they need to make a decision. Culmination of Sessions 9 (Pivot Tables), 10 (Charts), and 11 (Validation + Formatting).",
+        "design_rules": [
+          {
+            "rule": "One page, one story",
+            "example": "Sector overview: metrics + chart + ranking",
+            "meaning": "Everything fits on one screen/print page"
+          },
+          {
+            "rule": "Top-left = controls",
+            "example": "Scenario dropdown, year selector, sector filter",
+            "meaning": "Dropdowns and slicers go in the top-left corner"
+          },
+          {
+            "rule": "KPIs first",
+            "example": "Revenue: ₹2.4L Cr │ EBITDA Margin: 24.5% │ PE: 28.5x",
+            "meaning": "Big numbers across the top row"
+          },
+          {
+            "rule": "Charts centre",
+            "example": "Revenue trend line, segment breakdown bar",
+            "meaning": "Visual elements in the middle/centre area"
+          },
+          {
+            "rule": "Detail tables bottom",
+            "example": "Company-level data table with sorting",
+            "meaning": "Supporting data at the bottom for drill-down"
+          },
+          {
+            "rule": "No scrolling",
+            "example": "Freeze panes, hide helper columns",
+            "meaning": "The viewer should not need to scroll horizontally"
+          }
+        ]
+      }
+    ]
+  }
+}

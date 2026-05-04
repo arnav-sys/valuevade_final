@@ -1,0 +1,154 @@
+{
+  "id": "d5f458d9-7d1f-46b6-8e47-abad77223da8",
+  "label": "M2 S7 | Behavioral Finance Metrics for Analysts",
+  "before": {
+    "formulas": [
+      {
+        "name": "India VIX (Volatility Index)",
+        "formula": "India VIX = Market's expectation of near-term volatility, derived from Nifty option prices.",
+        "interpretation": "VIX < 13: Market is complacent (potential euphoria — be cautious)\nVIX 13–20: Normal range\nVIX 20–30: Elevated fear (potential correction — monitor closely)\nVIX > 30: Panic (potential capitulation — historically a buying zone)\nMarch 2020 peak VIX: ~84. That was maximum panic."
+      },
+      {
+        "name": "Equity Mutual Fund Flow Sentiment",
+        "formula": "MF Equity Flow Sentiment = (Current Month Net Equity Inflow – 12-Month Average Inflow) / 12-Month Average Inflow × 100",
+        "interpretation": "Positive & rising: Increasing optimism (potential euphoria if extreme)\nNegative & falling: Increasing pessimism (potential capitulation if extreme)"
+      },
+      {
+        "name": "Put-Call Ratio (PCR)",
+        "formula": "PCR = Total Put Open Interest / Total Call Open Interest",
+        "interpretation": "PCR > 1.3: Excessive puts (bearish sentiment — contrarian bullish signal)\nPCR 0.8–1.2: Neutral\nPCR < 0.7: Excessive calls (bullish sentiment — contrarian bearish signal)\nExtreme PCR readings are often contrarian indicators."
+      },
+      {
+        "name": "Nifty P/E as Sentiment Gauge",
+        "interpretation": "Below 15x: Deep value / panic ('blood in the streets') — rare, last seen March 2020\n15–20x: Reasonable / attractive\n20–25x: Fair value / moderate optimism\n25–30x: Elevated / late-cycle optimism\nAbove 30x: Euphoria / extreme caution warranted\nAlways cross-reference with composition changes and interest rate environment."
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "India VIX (Volatility Index)",
+        "formula": "India VIX = Market's expectation of near-term volatility, derived from Nifty option prices.",
+        "interpretation": "VIX < 13: Market is complacent (potential euphoria — be cautious)\nVIX 13–20: Normal range\nVIX 20–30: Elevated fear (potential correction — monitor closely)\nVIX > 30: Panic (potential capitulation — historically a buying zone)\nMarch 2020 peak VIX: ~84. That was maximum panic.",
+        "variables": [
+          {
+            "symbol": "India VIX",
+            "meaning": "Volatility Index calculated from Nifty 50 index option prices, measures expected 30-day volatility"
+          }
+        ],
+        "plain_english": "India VIX quantifies the market's fear or complacency at any given moment. A low VIX suggests investors feel safe (and may be overconfident), while a high VIX signals panic and distress — often coinciding with market bottoms. For equity researchers, extreme VIX readings are powerful contrarian signals: very high VIX often precedes rallies.",
+        "worked_example": {
+          "problem": "During a market downturn, India VIX spikes to 35. An analyst wonders if this is a buying opportunity or a sign of further decline.",
+          "steps": [
+            "Note that VIX > 30 historically enters 'panic capitulation' territory.",
+            "Check if the spike is driven by single-stock or sector crisis (idiosyncratic) or broad market shock (systemic).",
+            "Review bond yield trends and central bank signals; if RBI signals easing, liquidity may return quickly.",
+            "Cross-reference with Put-Call Ratio; a PCR > 1.5 with VIX > 30 often precedes a rally within 2–4 weeks."
+          ],
+          "result": "VIX > 30 combined with extreme options positioning typically signals capitulation, presenting a contrarian long opportunity for quality large-caps with 2-3 month horizon.",
+          "insight": "Emotion-driven selloffs are temporary; institutional dry powder and value hunters usually step in once panic readings are reached."
+        }
+      },
+      {
+        "name": "Equity Mutual Fund Flow Sentiment",
+        "formula": "MF Equity Flow Sentiment = (Current Month Net Equity Inflow – 12-Month Average Inflow) / 12-Month Average Inflow × 100",
+        "interpretation": "Positive & rising: Increasing optimism (potential euphoria if extreme)\nNegative & falling: Increasing pessimism (potential capitulation if extreme)",
+        "variables": [
+          {
+            "symbol": "Current Month Net Equity Inflow",
+            "meaning": "Net inflow into equity mutual funds (SIPs + lump-sum minus redemptions) in the current month, in ₹"
+          },
+          {
+            "symbol": "12-Month Average Inflow",
+            "meaning": "Average monthly net equity inflow over the trailing 12 months, in ₹"
+          }
+        ],
+        "plain_english": "This metric captures retail investor sentiment via mutual fund flows. When flows are well above the 12-month average, retail investors are flooding into equities (often a late-cycle warning). When flows collapse below average, fear has set in (sometimes a contrarian buy signal). For equity researchers, tracking MF flow deviations helps identify sentiment extremes before the broader market turns.",
+        "computation": [
+          "Sum all net equity MF inflows (SIP + lump-sum) for the current month.",
+          "Calculate the average of net monthly inflows for the past 12 months.",
+          "Subtract the 12-month average from the current month inflow.",
+          "Divide the difference by the 12-month average and multiply by 100 to get a percentage deviation."
+        ],
+        "worked_example": {
+          "problem": "In November 2023, Indian equity mutual fund schemes recorded ₹12,000 crore net inflow. The 12-month average inflow is ₹8,000 crore. Calculate sentiment.",
+          "steps": [
+            "Current Month Inflow = ₹12,000 crore",
+            "12-Month Average = ₹8,000 crore",
+            "Difference = ₹12,000 – ₹8,000 = ₹4,000 crore",
+            "Sentiment = (₹4,000 / ₹8,000) × 100 = +50%"
+          ],
+          "result": "MF Flow Sentiment = +50%, indicating inflows are 50% above the 12-month average.",
+          "insight": "A +50% reading signals strong retail optimism; if sustained and rising further, it may suggest late-cycle euphoria. Combine with market valuation (Nifty P/E) to assess risk: if flows are +50% AND Nifty P/E > 28, consider trimming equity exposure or rotating to defensive sectors."
+        }
+      },
+      {
+        "name": "Put-Call Ratio (PCR)",
+        "formula": "PCR = Total Put Open Interest / Total Call Open Interest",
+        "interpretation": "PCR > 1.3: Excessive puts (bearish sentiment — contrarian bullish signal)\nPCR 0.8–1.2: Neutral\nPCR < 0.7: Excessive calls (bullish sentiment — contrarian bearish signal)\nExtreme PCR readings are often contrarian indicators.",
+        "variables": [
+          {
+            "symbol": "Total Put Open Interest",
+            "meaning": "Sum of open contracts for all put options (Nifty 50 or individual stocks)"
+          },
+          {
+            "symbol": "Total Call Open Interest",
+            "meaning": "Sum of open contracts for all call options (Nifty 50 or individual stocks)"
+          },
+          {
+            "symbol": "PCR",
+            "meaning": "Put-Call Ratio; a ratio > 1 means more puts are open than calls, indicating net bearish positioning"
+          }
+        ],
+        "plain_english": "The Put-Call Ratio reveals whether traders (particularly hedgers and speculators) are betting on upside (calls) or downside (puts). A high PCR (> 1.3) means many put buyers are protecting against losses — classic fear. A low PCR (< 0.7) means call buyers outnumber put buyers — classic greed. Like VIX, extreme PCR readings often invert: excessive puts precede rallies, and excessive calls precede pullbacks. Equity researchers use PCR as a short-term contrarian tool.",
+        "computation": [
+          "Obtain total open interest for all put options on Nifty 50 (or a specific stock).",
+          "Obtain total open interest for all call options on the same index/stock.",
+          "Divide total put open interest by total call open interest.",
+          "Compare the resulting PCR to the neutral range (0.8–1.2) to identify sentiment extremes."
+        ],
+        "worked_example": {
+          "problem": "On a given day, Nifty 50 options show total put open interest of 1.8 crore contracts and total call open interest of 1.2 crore contracts. Calculate PCR and interpret.",
+          "steps": [
+            "Total Put Open Interest = 1.8 crore contracts",
+            "Total Call Open Interest = 1.2 crore contracts",
+            "PCR = 1.8 / 1.2 = 1.5"
+          ],
+          "result": "PCR = 1.5, which exceeds the 1.3 threshold, signalling excessive bearish positioning.",
+          "insight": "A PCR of 1.5 is a contrarian bullish signal; historically, when PCR spikes > 1.4 alongside elevated VIX, a relief rally often follows within 5–10 trading days. Cross-check with sector rotation data: if large-cap defensives (FMCG, utilities) have been outperforming, watch for a rotational swing into financials or IT when PCR normalises."
+        }
+      },
+      {
+        "name": "Nifty P/E as Sentiment Gauge",
+        "interpretation": "Below 15x: Deep value / panic ('blood in the streets') — rare, last seen March 2020\n15–20x: Reasonable / attractive\n20–25x: Fair value / moderate optimism\n25–30x: Elevated / late-cycle optimism\nAbove 30x: Euphoria / extreme caution warranted\nAlways cross-reference with composition changes and interest rate environment.",
+        "variables": [
+          {
+            "symbol": "Nifty P/E",
+            "meaning": "Price-to-Earnings ratio of Nifty 50 index; current market price divided by trailing 12-month earnings per share"
+          },
+          {
+            "symbol": "Fair Value Range",
+            "meaning": "Historical median Nifty P/E, typically 18–22x during normal market cycles"
+          }
+        ],
+        "plain_english": "Nifty P/E is the single most useful sentiment gauge for India equity research. A low P/E (below 15x) signals capitulation and extreme value; a high P/E (above 28x) signals euphoria and stretched valuations. Equity researchers use this metric to identify market turning points: when P/E reaches extremes, contrarian opportunities emerge. Always adjust for interest rates and earnings growth expectations; a higher P/E is justified if RBI is cutting rates or earnings growth accelerates.",
+        "computation": [
+          "Obtain the current Nifty 50 index level.",
+          "Calculate (or obtain) trailing 12-month consolidated earnings of Nifty 50 constituents.",
+          "Divide index level by total trailing earnings to derive earnings per index point.",
+          "Multiply by 100 to express as a forward or trailing P/E multiple."
+        ],
+        "worked_example": {
+          "problem": "Nifty 50 is trading at 20,000. Trailing 12-month consolidated earnings of Nifty 50 companies total ₹1,000 per index point. Estimate Nifty P/E and sentiment.",
+          "steps": [
+            "Nifty Index Level = 20,000",
+            "Trailing 12-Month EPS (per index point) = ₹1,000",
+            "Nifty P/E = 20,000 / 1,000 = 20x"
+          ],
+          "result": "Nifty P/E = 20x, which falls in the 'Fair Value / Moderate Optimism' band (20–25x).",
+          "insight": "At 20x, Nifty is fairly valued if earnings growth is positive and RBI's policy stance is neutral. If earnings are forecast to grow 12–15% YoY and inflation is stable, 20x is justified. However, if growth slows to 5% or rates rise further, downside to 18–19x is plausible. Monitor quarter-on-quarter earnings revisions; if Q2/Q3 season downgrades exceed +2%, expect P/E compression to 18–19x."
+        }
+      }
+    ]
+  }
+}

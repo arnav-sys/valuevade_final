@@ -1,0 +1,239 @@
+{
+  "id": "437c999b-579f-4e4f-a6d7-1d39f9647f74",
+  "label": "M8 S6 | The Four Ratios That Reveal the Cookie Jar",
+  "before": {
+    "formulas": [
+      {
+        "name": "Provision Coverage Ratio (PCR)",
+        "formula": "PCR = Total Provisions / Gross NPAs × 100",
+        "variables": [
+          {
+            "symbol": "Total Provisions",
+            "meaning": "Cumulative provisions held against loans on the balance sheet, disclosed in notes on loan loss provisions"
+          },
+          {
+            "symbol": "Gross NPAs",
+            "meaning": "Total gross non-performing assets, disclosed in quarterly results and annual report asset quality notes"
+          }
+        ],
+        "worked_example": "Running PCR on three Indian banks, FY23. HDFC Bank: Total Provisions ₹19,410 crore against Gross NPAs of ₹18,019 crore = PCR of 108 percent. Very high — HDFC holds more provisions than its GNPA balance, signalling conservative recognition with buffer for Stage 2 migration. ICICI Bank: Total Provisions ₹39,230 crore against GNPAs of ₹26,962 crore = PCR of 146 percent. Even more conservative. Yes Bank FY19 (peak distress): Total Provisions ₹3,815 crore against GNPAs of ₹7,882 crore = PCR of 48 percent. Markedly below peer — inadequate coverage of known bad loans. Historical Yes Bank FY18: Total Provisions ₹1,890 crore against GNPAs of ₹2,627 crore = PCR of 72 percent. Below peers but above collapse-period level. The PCR trajectory from 72 percent (FY18) to 48 percent (FY19) to requiring ₹15,000+ crore of fresh provisioning (FY20) shows the jar running empty. The analyst lesson — PCR persistently below peer median (typically 70-80 percent for private banks, 65-75 percent for PSU banks) signals either that reported GNPAs understate actual asset quality issues, or that provisions are under-built relative to known risks. Both interpretations are bearish.",
+        "sensitivity_note": "PCR alone is not sufficient — a bank can maintain high PCR while aggressively writing off bad loans (which removes them from both the numerator and denominator). Always check PCR in conjunction with net NPA ratio and provision expense trend."
+      },
+      {
+        "name": "Provision Expense Ratio (Credit Cost)",
+        "formula": "Credit Cost = Provision Expense / Average Advances × 10000 (in basis points)",
+        "variables": [
+          {
+            "symbol": "Provision Expense",
+            "meaning": "Provisions created during the period, flowing through the P&L (not the balance sheet provisions balance)"
+          },
+          {
+            "symbol": "Average Advances",
+            "meaning": "(Opening Advances + Closing Advances) / 2 for the period"
+          }
+        ],
+        "worked_example": "For HDFC Bank FY23: Provision expense ₹11,920 crore against average advances of ₹14,40,000 crore = credit cost of 83 bps. This is consistent with HDFC's historical through-the-cycle credit cost range of 70-100 bps, indicating normal-environment provisioning. For Yes Bank FY17 (the jar-filling years): Provision expense ₹2,085 crore against average advances of ₹1,66,500 crore = 125 bps. For Yes Bank FY19 (jar running empty): Provision expense ₹5,778 crore against average advances of ₹2,35,000 crore = 246 bps. For Yes Bank FY20 (jar empty, reality arriving): Provision expense ₹37,765 crore against average advances of ₹1,70,000 crore = 2,221 bps. Credit cost of 2,221 bps — more than 22 percentage points of the loan book — is among the highest ever reported by an Indian bank outside regulatory write-offs. The pattern reveals the manipulation. Normal private banks operate at 70-120 bps credit cost; Yes Bank operated at 120-250 bps during 2017-2019 (already elevated but smoothed) before the 2,221 bps blowout in FY20. The cumulative credit cost across FY15-FY20 for Yes Bank was substantially higher than what reported quarterly numbers would have suggested — the reality was accumulating; the reporting was smoothing.",
+        "sensitivity_note": "Credit cost volatility matters as much as absolute level. A bank reporting 100 bps credit cost every year for 5 years is implausibly stable — real credit cycles produce natural volatility. Smoothness of credit cost across economic cycles is itself a cookie-jar signal."
+      },
+      {
+        "name": "Stage Migration Ratio (Ind AS 109)",
+        "formula": "Stage 2 + Stage 3 Ratio = (Stage 2 Assets + Stage 3 Assets) / Total Loan Book × 100",
+        "variables": [
+          {
+            "symbol": "Stage 2 Assets",
+            "meaning": "Loans classified as showing significant increase in credit risk, requiring lifetime ECL provisioning"
+          },
+          {
+            "symbol": "Stage 3 Assets",
+            "meaning": "Loans classified as credit-impaired, requiring full lifetime ECL provisioning at account-specific level"
+          },
+          {
+            "symbol": "Total Loan Book",
+            "meaning": "Gross advances including all stages"
+          }
+        ],
+        "worked_example": "Under Ind AS 109, banks must disclose stage-wise loan classification. For HDFC Bank FY23: Stage 2 assets 1.8 percent of book, Stage 3 assets 1.1 percent, total Stage 2+3 ratio 2.9 percent. For Kotak Mahindra Bank FY23: Stage 2 at 2.1 percent, Stage 3 at 1.7 percent, total 3.8 percent. These represent a healthy acknowledgment of stressed-but-not-defaulted assets. For a hypothetical mid-cap bank reporting Stage 2 at 0.5 percent and Stage 3 at 0.8 percent, total 1.3 percent, in the same economic environment — the anomaly is the unusually low Stage 2 classification. Stage 2 is the 'watchlist' — loans showing early stress that may migrate to default. A bank reporting very low Stage 2 in an environment where peers report 2-3 percent is either genuinely cleaner or systematically delaying stage migration. The delayed migration is the cookie-jar mechanism — keeping provisioning low today by classifying genuinely stressed loans as Stage 1. Detection: compare Stage 2 ratios across banks operating in similar segments and geographies. Material outliers deserve scrutiny. Cross-check against the bank's disclosure of SMA-1 and SMA-2 (Special Mention Accounts — RBI classification) if available.",
+        "sensitivity_note": "Stage 2 classification is highly judgement-dependent. The standard requires 'significant' credit risk increase without defining significant. Two banks with identical loan books can report very different Stage 2 ratios based solely on management philosophy. Always pair Stage 2 analysis with actual default experience over the following 2-3 years."
+      },
+      {
+        "name": "Specific vs General Provision Mix",
+        "formula": "General Provision Ratio = General Provisions / Total Provisions × 100",
+        "variables": [
+          {
+            "symbol": "General Provisions",
+            "meaning": "Provisions not tied to specific identified losses — includes macro-prudential, counter-cyclical, and contingency provisions"
+          },
+          {
+            "symbol": "Total Provisions",
+            "meaning": "All provisions held on the balance sheet, specific plus general"
+          }
+        ],
+        "worked_example": "For HDFC Bank FY23: General provisions roughly ₹8,200 crore out of total provisions ₹19,410 crore = 42 percent general. ICICI Bank: general provisions ₹15,600 crore of ₹39,230 crore = 40 percent. These are conservative buffer levels built during profitable periods to provide flexibility in weaker periods. For Yes Bank FY18: general provisions ₹240 crore of ₹1,890 crore = 13 percent. Dramatically below peer — the bank was not building general buffer during its high-growth phase, meaning it had no cushion when specific losses materialised. The historical pattern reveals the manipulation philosophy: peer banks were building jars during good times (conservative and defensible); Yes Bank was not building any jar, relying on continuing profitability to avoid specific provisioning requirements. When the environment turned, peers had buffers to absorb shocks; Yes Bank did not. Detection: low general provision ratio during high-growth, high-profit periods signals management unwilling to build prudential buffers — a risk management red flag even separate from cookie-jar analysis.",
+        "sensitivity_note": "General provisions can also be manipulated in the opposite direction — building very large general buffers during profitable periods and releasing them selectively in weak quarters to smooth earnings. Both extremes (too low and too high) relative to peers warrant investigation."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Ctrl + V — Paste Special",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for PCR comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-bank quarterly data",
+        "F4 — Lock peer averages when benchmarking",
+        "Alt + E, S, V — Paste Special Values for quarterly reported data",
+        "Ctrl + Shift + $ — Format numbers as currency for readability"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Provision Coverage Ratio (PCR)",
+        "formula": "PCR = Total Provisions / Gross NPAs × 100",
+        "variables": [
+          {
+            "symbol": "Total Provisions",
+            "meaning": "Cumulative provisions held against loans on the balance sheet, disclosed in notes on loan loss provisions"
+          },
+          {
+            "symbol": "Gross NPAs",
+            "meaning": "Total gross non-performing assets, disclosed in quarterly results and annual report asset quality notes"
+          }
+        ],
+        "plain_english": "PCR tells you how much cash a bank has set aside as a buffer against every rupee of bad loans it has already acknowledged. A PCR above 70–80 percent signals that the bank has prudently reserved for known trouble; below 50 percent suggests either that bad loans are understated or provisions are dangerously thin. The ratio is a direct window into whether the 'cookie jar' — hidden provisions built during good times — exists or has been emptied.",
+        "worked_example": {
+          "problem": "Compare provision adequacy across three Indian banks in FY23. Which bank's PCR signals potential underprovisioning?",
+          "steps": [
+            "HDFC Bank FY23: Total Provisions ₹19,410 crore ÷ Gross NPAs ₹18,019 crore × 100 = 108%",
+            "ICICI Bank FY23: Total Provisions ₹39,230 crore ÷ Gross NPAs ₹26,962 crore × 100 = 146%",
+            "Yes Bank FY19: Total Provisions ₹3,815 crore ÷ Gross NPAs ₹7,882 crore × 100 = 48%",
+            "Yes Bank FY18 (comparison): Total Provisions ₹1,890 crore ÷ Gross NPAs ₹2,627 crore × 100 = 72%"
+          ],
+          "result": "HDFC and ICICI both maintain PCR above peer median (70–80% for private banks), signalling conservative coverage. Yes Bank's 48% in FY19 and deteriorating trajectory (72% → 48%) reveal provisions running dry relative to mounting bad loans.",
+          "insight": "PCR persistently below peer median signals either that reported GNPAs understate true asset quality or that provisions are inadequate relative to known risks — both are bearish. Yes Bank's inability to maintain 70%+ coverage while bad loans surged was a crucial early warning sign of the 2020 capital crisis."
+        },
+        "sensitivity_note": "PCR alone is not sufficient — a bank can maintain high PCR while aggressively writing off bad loans (which removes them from both the numerator and denominator). Always check PCR in conjunction with net NPA ratio and provision expense trend."
+      },
+      {
+        "name": "Provision Expense Ratio (Credit Cost)",
+        "formula": "Credit Cost = Provision Expense / Average Advances × 10000 (in basis points)",
+        "variables": [
+          {
+            "symbol": "Provision Expense",
+            "meaning": "Provisions created during the period, flowing through the P&L (not the balance sheet provisions balance)"
+          },
+          {
+            "symbol": "Average Advances",
+            "meaning": "(Opening Advances + Closing Advances) / 2 for the period"
+          }
+        ],
+        "plain_english": "Credit cost measures the annual 'cost of doing business' in lending — expressed as basis points of the loan book. A stable credit cost of 70–120 bps year after year is normal; but implausibly smooth credit costs across economic cycles, or sudden spikes, indicate either real deterioration or historical smoothing via the cookie jar. The formula reveals whether provisions are being built fairly (proportional to losses) or manipulated (deferred then accelerated).",
+        "computation": [
+          "Identify provision expense from the P&L statement (often labeled as 'Provisions & Contingencies' or 'Credit Cost').",
+          "Calculate average advances: (Opening Advances + Closing Advances) / 2.",
+          "Divide provision expense by average advances, then multiply by 10,000 to convert to basis points."
+        ],
+        "worked_example": {
+          "problem": "Analyse Yes Bank's credit cost trajectory from FY17 to FY20 to identify cookie-jar depletion.",
+          "steps": [
+            "Yes Bank FY17: Provision expense ₹2,085 crore ÷ average advances ₹1,66,500 crore × 10,000 = 125 bps",
+            "Yes Bank FY19: Provision expense ₹5,778 crore ÷ average advances ₹2,35,000 crore × 10,000 = 246 bps",
+            "Yes Bank FY20: Provision expense ₹37,765 crore ÷ average advances ₹1,70,000 crore × 10,000 = 2,221 bps",
+            "Peer comparison (HDFC FY23): ₹11,920 crore ÷ ₹14,40,000 crore × 10,000 = 83 bps (consistent with peer normal range of 70–100 bps)"
+          ],
+          "result": "Yes Bank's credit cost escalated from 125 bps (FY17, elevated but smoothed) → 246 bps (FY19, stress visible) → 2,221 bps (FY20, reality arriving). The 2,221 bps represents over 22 percentage points of the loan book — among the highest non-regulatory write-offs by an Indian bank.",
+          "insight": "The pattern reveals systematic manipulation: Yes Bank's credit cost during 2017–2019 was already high relative to 70–100 bps peer range, but still smoothed. The FY20 blowout shows that cumulative losses were deferred via the cookie jar during prior years. Peer banks operating at stable 70–120 bps across cycles build genuine buffers; Yes Bank's 125 bps followed by 2,221 bps shows the jar was never full."
+        },
+        "sensitivity_note": "Credit cost volatility matters as much as absolute level. A bank reporting 100 bps credit cost every year for 5 years is implausibly stable — real credit cycles produce natural volatility. Smoothness of credit cost across economic cycles is itself a cookie-jar signal."
+      },
+      {
+        "name": "Stage Migration Ratio (Ind AS 109)",
+        "formula": "Stage 2 + Stage 3 Ratio = (Stage 2 Assets + Stage 3 Assets) / Total Loan Book × 100",
+        "variables": [
+          {
+            "symbol": "Stage 2 Assets",
+            "meaning": "Loans classified as showing significant increase in credit risk, requiring lifetime ECL provisioning"
+          },
+          {
+            "symbol": "Stage 3 Assets",
+            "meaning": "Loans classified as credit-impaired, requiring full lifetime ECL provisioning at account-specific level"
+          },
+          {
+            "symbol": "Total Loan Book",
+            "meaning": "Gross advances including all stages"
+          }
+        ],
+        "plain_english": "Stage migration ratio shows what fraction of a bank's loan book has already signalled trouble (Stage 2 = stressed-but-not-yet-defaulted; Stage 3 = already defaulted). A bank deliberately keeping Stage 2 classification low relative to peers is deferring the admission of stress — a classic cookie-jar mechanism. Stage 2 is the 'watchlist' where true asset quality problems first appear; watching this ratio across quarters reveals whether management is facing problems honestly or hiding them.",
+        "computation": [
+          "Locate Stage 2 and Stage 3 asset balances from the loan stage disclosures in the bank's financial notes.",
+          "Sum Stage 2 + Stage 3 assets.",
+          "Divide by total gross loan book (all stages combined).",
+          "Multiply by 100 to express as a percentage."
+        ],
+        "worked_example": {
+          "problem": "A mid-cap bank reports Stage 2 at 0.5%, Stage 3 at 0.8% (total 1.3%) in FY23. Peers in the same segment report 2–3%. Is this a red flag?",
+          "steps": [
+            "HDFC Bank FY23: Stage 2 = 1.8%, Stage 3 = 1.1%, Total = 2.9%",
+            "Kotak Mahindra Bank FY23: Stage 2 = 2.1%, Stage 3 = 1.7%, Total = 3.8%",
+            "Hypothetical mid-cap bank: Stage 2 = 0.5%, Stage 3 = 0.8%, Total = 1.3%",
+            "Peer median for comparable segment: 2–3%"
+          ],
+          "result": "The mid-cap bank's 1.3% ratio is a material outlier below peer median, despite operating in the same economic environment and loan segments.",
+          "insight": "Either the bank's loan book is genuinely superior (unlikely across an entire cohort) or Stage 2 classification is being deferred — loans showing early stress that should migrate to Stage 2 are being held in Stage 1 to postpone provisioning. This is a classic cookie-jar mechanism under Ind AS 109. Detection: compare Stage 2 ratios across banks over 2–3 years, then cross-check against actual default rates in the following periods. Delayed Stage 2 admission correlates with future loan losses that were hidden."
+        },
+        "sensitivity_note": "Stage 2 classification is highly judgement-dependent. The standard requires 'significant' credit risk increase without defining significant. Two banks with identical loan books can report very different Stage 2 ratios based solely on management philosophy. Always pair Stage 2 analysis with actual default experience over the following 2–3 years."
+      },
+      {
+        "name": "Specific vs General Provision Mix",
+        "formula": "General Provision Ratio = General Provisions / Total Provisions × 100",
+        "variables": [
+          {
+            "symbol": "General Provisions",
+            "meaning": "Provisions not tied to specific identified losses — includes macro-prudential, counter-cyclical, and contingency provisions"
+          },
+          {
+            "symbol": "Total Provisions",
+            "meaning": "All provisions held on the balance sheet, specific plus general"
+          }
+        ],
+        "plain_english": "This ratio reveals whether a bank has been building prudential 'buffers' during good times (high general provisions) or living hand-to-mouth (low general provisions). A bank with a low general provision ratio during high-growth, profitable periods is not building a cookie jar at all — it is betting on continuous prosperity. When the cycle turns, such banks lack shock absorbers and must provision aggressively, destroying earnings and triggering capital stress.",
+        "computation": [
+          "Locate general provisions from the loan loss provision note (often disclosed separately from specific provisions).",
+          "Locate total provisions (specific + general).",
+          "Divide general by total and multiply by 100."
+        ],
+        "worked_example": {
+          "problem": "Compare general provision ratios for HDFC Bank, ICICI Bank, and Yes Bank during their high-growth periods. What does the divergence reveal?",
+          "steps": [
+            "HDFC Bank FY23: General provisions ₹8,200 crore ÷ Total provisions ₹19,410 crore × 100 = 42%",
+            "ICICI Bank FY23: General provisions ₹15,600 crore ÷ Total provisions ₹39,230 crore × 100 = 40%",
+            "Yes Bank FY18 (its growth period before crisis): General provisions ₹240 crore ÷ Total provisions ₹1,890 crore × 100 = 13%"
+          ],
+          "result": "HDFC and ICICI both maintain 40–42% general provisions (40–42% of the jar is discretionary buffer built during profitable periods). Yes Bank held only 13% general provisions — the jar was almost entirely specific, tied to already-identified problems.",
+          "insight": "The contrast is stark. HDFC and ICICI were building prudential buffers during high-growth, high-profit periods (conservative, defensible to regulators). Yes Bank was not. When credit quality deteriorated, HDFC and ICICI could release general provisions or use them to smooth earnings; Yes Bank had no such cushion and was forced into aggressive specific provisioning (₹37,765 crore in FY20). The low general provision ratio during FY18 was a direct signal that Yes Bank's management was unwilling to build defensive buffers — a risk management red flag independent of cookie-jar analysis, but directly relevant to understanding the bank's 2020 capital crisis."
+        },
+        "sensitivity_note": "General provisions can also be manipulated in the opposite direction — building very large general buffers during profitable periods and releasing them selectively in weak quarters to smooth earnings. Both extremes (too low and too high) relative to peers warrant investigation."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + 0 — Apply borders",
+        "Cmd + Shift + L — Toggle filters",
+        "Cmd + T — Lock references",
+        "Cmd + Ctrl + V — Paste Special",
+        "Cmd + Shift + $ — Format as currency"
+      ],
+      "windows": [
+        "Alt + H, B, A — Apply borders for PCR comparison tables",
+        "Ctrl + Shift + L — Toggle filters on multi-bank quarterly data",
+        "F4 — Lock peer averages when benchmarking",
+        "Alt + E, S, V — Paste Special Values for quarterly reported data",
+        "Ctrl + Shift + $ — Format numbers as currency for readability"
+      ]
+    }
+  }
+}

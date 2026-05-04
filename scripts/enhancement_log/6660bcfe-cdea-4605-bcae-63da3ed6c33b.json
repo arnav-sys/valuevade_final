@@ -1,0 +1,156 @@
+{
+  "id": "6660bcfe-cdea-4605-bcae-63da3ed6c33b",
+  "label": "M11 S1 | Decomposing Stock Returns — The Sector Attribution Formula",
+  "before": {
+    "formulas": [
+      {
+        "name": "Stock Return Decomposition (Brinson Framework)",
+        "formula": "R_stock = R_market + R_sector_relative + R_stock_specific",
+        "variables": [
+          {
+            "symbol": "R_stock",
+            "meaning": "Total return of the stock over the period"
+          },
+          {
+            "symbol": "R_market",
+            "meaning": "Return of the broad market index (e.g. Nifty 50)"
+          },
+          {
+            "symbol": "R_sector_relative",
+            "meaning": "Return of the sector index minus the market return (the sector premium or discount)"
+          },
+          {
+            "symbol": "R_stock_specific",
+            "meaning": "Return of the stock minus the sector index return (the stock-specific alpha)"
+          }
+        ],
+        "worked_example": "Consider Asian Paints over FY24. Asian Paints stock return: -5%. Nifty 50 return: +28%. Nifty FMCG (closest sector proxy) return: +18%. Decomposition: R_market = +28%. R_sector_relative = 18% - 28% = -10% (FMCG underperformed broader market). R_stock_specific = -5% - 18% = -23% (Asian Paints underperformed even its own sector, due to Grasim/Birla Opus entry threat). Of the -33% gap between Asian Paints and Nifty, -10% came from sector, -23% from stock-specific factors. The analyst lesson: even getting the stock call right requires getting the sector call right first.",
+        "sensitivity_note": "When the sector is in a strong up-cycle (e.g. PSU banks in FY23-24, +60% sector return), even mediocre stocks deliver strong returns. When the sector is in a down-cycle (e.g. IT services in FY23, -20% sector return), even Tier-1 names struggle. This is why sector calls compound — getting the sector right gives you a 60-70% head start on the stock call."
+      },
+      {
+        "name": "Sector Multiple Premium/Discount Formula",
+        "formula": "Sector Premium = (Sector P/E − Market P/E) ÷ Market P/E × 100",
+        "variables": [
+          {
+            "symbol": "Sector P/E",
+            "meaning": "Forward 1-year P/E ratio of the sector index"
+          },
+          {
+            "symbol": "Market P/E",
+            "meaning": "Forward 1-year P/E ratio of the broad market (Nifty 50)"
+          }
+        ],
+        "worked_example": "Nifty FMCG forward P/E: 42x. Nifty 50 forward P/E: 21x. Sector Premium = (42 - 21) / 21 × 100 = 100%. FMCG trades at a 100% premium to the market. This premium is the market's pricing of FMCG's structural advantages — defensive earnings, brand moats, low capital intensity. When this premium expands beyond historical bands (FMCG has historically traded at 60-90% premium), it signals overheating. When it contracts below the band, it signals a potential entry point.",
+        "sensitivity_note": "Sector premiums are not static — they expand and contract with the market's appetite for defensiveness vs cyclicality. In risk-off markets (recession fears, geopolitical stress), defensive sectors like FMCG and Pharma command higher premiums. In risk-on markets (recovery, falling rates), cyclical sectors like Auto, Metals, and Real Estate close the gap and even trade at premiums to defensives."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + T (AutoSum on Mac)",
+        "Ctrl + Shift + 5 (Apply percentage format)",
+        "Cmd + T (Lock cell reference)"
+      ],
+      "windows": [
+        "Alt + = (AutoSum for return calculations)",
+        "Ctrl + Shift + 5 (Apply percentage format)",
+        "F4 (Lock cell reference for sector index when computing relative returns)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Stock Return Decomposition (Brinson Framework)",
+        "formula": "R_stock = R_market + R_sector_relative + R_stock_specific",
+        "variables": [
+          {
+            "symbol": "R_stock",
+            "meaning": "Total return of the stock over the period"
+          },
+          {
+            "symbol": "R_market",
+            "meaning": "Return of the broad market index (e.g. Nifty 50)"
+          },
+          {
+            "symbol": "R_sector_relative",
+            "meaning": "Return of the sector index minus the market return (the sector premium or discount)"
+          },
+          {
+            "symbol": "R_stock_specific",
+            "meaning": "Return of the stock minus the sector index return (the stock-specific alpha)"
+          }
+        ],
+        "plain_english": "This formula breaks down your stock's total return into three independent sources: the broad market's movement, the sector's out/under-performance relative to the market, and the company's own idiosyncratic performance relative to its peers. In equity research, it isolates what you can and cannot control — you may have the sector call right but the stock call wrong, or vice versa. This decomposition forces you to diagnose attribution: was poor performance due to macro headwinds (negative R_market), sector rotation (negative R_sector_relative), or execution missteps (negative R_stock_specific)?",
+        "computation": [
+          "Step 1: Obtain R_stock (the stock's actual return over the period from price data or portfolio tracker).",
+          "Step 2: Obtain R_market (Nifty 50 or other broad index return for the same period).",
+          "Step 3: Obtain the sector index return (e.g. Nifty FMCG, Nifty IT, Nifty Bank for the same period).",
+          "Step 4: Calculate R_sector_relative = Sector Return − R_market.",
+          "Step 5: Calculate R_stock_specific = R_stock − Sector Return.",
+          "Step 6: Verify: R_stock should equal R_market + R_sector_relative + R_stock_specific (allowing for rounding)."
+        ],
+        "worked_example": {
+          "problem": "Analyze Asian Paints' underperformance vs. Nifty 50 in FY24 using the Brinson decomposition.",
+          "steps": [
+            "Asian Paints stock return: −5%",
+            "Nifty 50 return: +28%",
+            "Nifty FMCG return: +18%",
+            "R_sector_relative = 18% − 28% = −10%",
+            "R_stock_specific = −5% − 18% = −23%",
+            "Verify: 28% + (−10%) + (−23%) = −5% ✓"
+          ],
+          "result": "Asian Paints returned −5%, underperforming Nifty 50 by 33 percentage points. Of this gap, −10 pp came from sector underperformance (FMCG lagged Nifty), and −23 pp from stock-specific weakness (Asian Paints lagged even FMCG, due to margin compression and Grasim's Birla Opus entry threat).",
+          "insight": "The decomposition reveals that Asian Paints faced a double headwind: sector rotation away from FMCG, plus company-specific execution issues. An analyst who correctly called the FMCG rotation but held Asian Paints would still have underperformed; the stock call required both sector conviction and company-level analysis. This teaches humility: getting the sector right is necessary but not sufficient."
+        },
+        "sensitivity_note": "When the sector is in a strong up-cycle (e.g. PSU banks in FY23-24, +60% sector return), even mediocre stocks deliver strong returns. When the sector is in a down-cycle (e.g. IT services in FY23, -20% sector return), even Tier-1 names struggle. This is why sector calls compound — getting the sector right gives you a 60-70% head start on the stock call."
+      },
+      {
+        "name": "Sector Multiple Premium/Discount Formula",
+        "formula": "Sector Premium = (Sector P/E − Market P/E) ÷ Market P/E × 100",
+        "variables": [
+          {
+            "symbol": "Sector P/E",
+            "meaning": "Forward 1-year P/E ratio of the sector index"
+          },
+          {
+            "symbol": "Market P/E",
+            "meaning": "Forward 1-year P/E ratio of the broad market (Nifty 50)"
+          }
+        ],
+        "plain_english": "This metric quantifies whether a sector is expensive or cheap relative to the broader market in percentage terms. A positive premium means the sector commands a valuation multiple above the market average — typically justified by superior earnings growth, lower volatility, or stronger moats. In India, defensive sectors like FMCG and Pharma historically trade at 60–90% premiums; cyclical sectors like Auto and Metals rarely trade above market multiples except in early recovery cycles. Tracking premium expansion and contraction helps you spot mean-reversion opportunities and identifies when a sector is pricing in overoptimistic growth expectations.",
+        "computation": [
+          "Step 1: Obtain the sector's forward P/E (from market data: BSE, NSE, or Bloomberg).",
+          "Step 2: Obtain the market's forward P/E (Nifty 50 consensus forward P/E).",
+          "Step 3: Calculate the numerator: Sector P/E − Market P/E.",
+          "Step 4: Divide by Market P/E.",
+          "Step 5: Multiply by 100 to express as a percentage."
+        ],
+        "worked_example": {
+          "problem": "Assess whether Nifty FMCG is overvalued relative to the Nifty 50 based on multiple premium.",
+          "steps": [
+            "Nifty FMCG forward P/E: 42x",
+            "Nifty 50 forward P/E: 21x",
+            "Numerator: 42 − 21 = 21",
+            "Divide by market P/E: 21 ÷ 21 = 1.0",
+            "Express as percentage: 1.0 × 100 = 100%"
+          ],
+          "result": "Nifty FMCG trades at a 100% premium to Nifty 50.",
+          "insight": "FMCG historically has traded at a 60–90% premium. A 100% premium suggests either (a) markets are pricing in durable structural acceleration in FMCG growth, or (b) risk-off sentiment is inflating defensive valuations. An analyst should investigate: Is earnings growth really justifying the extra 10–40 pp of premium? If earnings disappoint, the premium contracts and FMCG stocks correct even if the market is flat. Conversely, if the premium compresses back to 70%, FMCG stocks underperform the market by 15–20% even if earnings are flat. This sensitivity is crucial for tactical stock selection within a sector."
+        },
+        "sensitivity_note": "Sector premiums are not static — they expand and contract with the market's appetite for defensiveness vs cyclicality. In risk-off markets (recession fears, geopolitical stress), defensive sectors like FMCG and Pharma command higher premiums. In risk-on markets (recovery, falling rates), cyclical sectors like Auto, Metals, and Real Estate close the gap and even trade at premiums to defensives."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + T (AutoSum on Mac)",
+        "Ctrl + Shift + 5 (Apply percentage format)",
+        "Cmd + T (Lock cell reference)"
+      ],
+      "windows": [
+        "Alt + = (AutoSum for return calculations)",
+        "Ctrl + Shift + 5 (Apply percentage format)",
+        "F4 (Lock cell reference for sector index when computing relative returns)"
+      ]
+    }
+  }
+}

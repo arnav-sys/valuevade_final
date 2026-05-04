@@ -1,0 +1,301 @@
+{
+  "id": "c6e86ffb-45d9-4b39-b231-9da0ec146f9d",
+  "label": "M12 S13 | The Sector-Specific Formulas — Banks, Insurance, Real Estate",
+  "before": {
+    "formulas": [
+      {
+        "name": "P/B from ROE-Driven Gordon Growth (Banks)",
+        "formula": "Justified P/B = (ROE - g) / (Ke - g)",
+        "variables": [
+          {
+            "symbol": "ROE",
+            "meaning": "Sustainable Return on Equity = Net Income / Average Book Equity"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Sustainable book value growth rate. Typically ROE × (1 - Dividend Payout Ratio), capped at sector growth rates"
+          },
+          {
+            "symbol": "Ke",
+            "meaning": "Cost of equity from CAPM, typically with bank-specific beta near 1.0"
+          }
+        ],
+        "worked_example": "For HDFC Bank: ROE 17%, g 12%, Ke 12%. With Ke = g, the formula breaks (denominator zero). Practical adjustment: lower g to 11.5%, giving Ke - g = 0.5%. Justified P/B = (0.17 - 0.115) / (0.005) = 11x. This is mathematically large but economically not meaningful when Ke - g spread is too narrow. Sense-check: HDFC Bank actually trades at 3x P/B in normal market conditions, implying market is pricing more conservative ROE (15%), higher Ke (12.5%), and g closer to 10%. Formula is most useful for showing WHY a bank trades where it does, not for prescriptive valuation.",
+        "sensitivity_note": "P/B from formula is mathematically explosive when Ke - g is small, like Gordon Growth in DCF. Used in practice as one input alongside peer P/B comparison. The judgment is on ROE sustainability and what discount rate appropriately captures bank-specific risk."
+      },
+      {
+        "name": "Implied Bank Valuation",
+        "formula": "Implied Equity Value = Book Value × Justified P/B",
+        "variables": [
+          {
+            "symbol": "Book Value",
+            "meaning": "Latest book equity per share or in absolute terms"
+          },
+          {
+            "symbol": "Justified P/B",
+            "meaning": "From formula above or from peer benchmark"
+          }
+        ],
+        "worked_example": "HDFC Bank book value per share ~₹500. At 3x P/B, implied equity value per share = ₹1,500. Compare to current trading price to determine valuation. The bridge: if market price is below 3x P/B, bank is potentially undervalued; if above, potentially overvalued. ROE comparison disciplines the choice — banks with same P/B but different ROE aren't equivalent investments.",
+        "sensitivity_note": "P/B-based valuations are sensitive to ROE assumptions. ±100bps on ROE changes justified P/B substantially. The discipline: use sustainable through-cycle ROE, not peak ROE. Most banks have ROE that varies 10-20% across credit cycles."
+      },
+      {
+        "name": "Insurance Embedded Value + VNB Multiple",
+        "formula": "Insurance Company Value = Embedded Value + (VNB × VNB Multiple)",
+        "variables": [
+          {
+            "symbol": "Embedded Value",
+            "meaning": "Present value of future profits from in-force business plus shareholder net assets"
+          },
+          {
+            "symbol": "VNB",
+            "meaning": "Value of New Business written in current year"
+          },
+          {
+            "symbol": "VNB Multiple",
+            "meaning": "15-25x for Indian life insurance, varying by growth and quality"
+          }
+        ],
+        "worked_example": "SBI Life FY27 estimates: Embedded Value ₹95,000 cr, Annual VNB ₹4,500 cr. Apply VNB multiple of 20x: Value = 95,000 + (4,500 × 20) = 95,000 + 90,000 = ₹1,85,000 cr. Per share at 100 cr shares = ₹1,850. Compare to current trading at ₹1,500-1,700 to determine recommendation.",
+        "sensitivity_note": "VNB multiple choice is the dominant analytical lever. SBI Life at 20x vs 25x produces ₹22,500 cr difference (~12% of total value). Indian life insurance VNB multiples have varied 15-30x over past 5 years; choice depends on growth trajectory expectations and competitive dynamics."
+      },
+      {
+        "name": "Real Estate NAV (Net Asset Value)",
+        "formula": "Real Estate NAV = (Operational Properties at Capitalised Value) + (Development Properties at NPV) + (Land Bank at Estimated Value) - Net Debt",
+        "variables": [
+          {
+            "symbol": "Operational Properties",
+            "meaning": "Income-generating properties valued at NOI / Cap Rate"
+          },
+          {
+            "symbol": "Development Properties",
+            "meaning": "Under-development assets valued at projected NPV"
+          },
+          {
+            "symbol": "Land Bank",
+            "meaning": "Strategic land holdings valued at estimated market value"
+          },
+          {
+            "symbol": "Cap Rate",
+            "meaning": "Net Operating Income / Property Value. Indian commercial: 7-9%; residential: lower"
+          }
+        ],
+        "worked_example": "DLF (illustrative FY27): Operational rental properties NOI ₹4,500 cr at 7% cap rate = ₹64,300 cr value. Development residential portfolio NPV ₹35,000 cr. Land bank estimated value ₹12,000 cr. Net Debt -₹3,000 cr. NAV = 64,300 + 35,000 + 12,000 - 3,000 = ₹1,08,300 cr. Per share at 250 cr shares = ₹433. Compare to trading.",
+        "sensitivity_note": "Cap rate selection is the dominant lever. DLF at 7% vs 8% cap rate changes operational property value by 14%. Indian cap rates vary by city, asset class, and quality; document the choice. NAV-based REIT/real estate valuation is standard globally."
+      },
+      {
+        "name": "Internet Companies — EV/GMV and Contribution Margin",
+        "formula": "Implied EV = GMV × EV/GMV Multiple [for marketplaces] OR EV/Sales × Revenue [for SaaS] OR DCF on Contribution Profit [for unprofitable]",
+        "variables": [
+          {
+            "symbol": "GMV",
+            "meaning": "Gross Merchandise Value — total transaction volume on marketplace"
+          },
+          {
+            "symbol": "EV/GMV",
+            "meaning": "Multiple applied to GMV. DoorDash 0.6x; Meituan 0.3x; Indian context varies"
+          },
+          {
+            "symbol": "Contribution Profit",
+            "meaning": "Revenue minus directly variable costs (delivery, payment processing, fulfillment)"
+          },
+          {
+            "symbol": "EV/Sales Multiple",
+            "meaning": "Used when EBITDA negative or noisy; reflects revenue scaling potential"
+          }
+        ],
+        "worked_example": "Zomato (FY26 illustrative): GMV ₹85,000 cr. Apply EV/GMV at 0.5x reflecting blended food delivery + quick commerce maturity → Implied EV = 42,500 cr. Plus, FY26 EBITDA of ₹1,500 cr at 25x EV/EBITDA = ₹37,500 cr. Triangulate: EV/GMV gives ₹42,500 cr (closer to peer EV/GMV ratios), EV/EBITDA at 25x gives ₹37,500 cr. Range ₹37,000-42,500 cr. Compare to current EV of ₹2,30,000 cr — significantly above all methodologies.",
+        "sensitivity_note": "Internet company valuation depends critically on growth stage. Loss-making fast-growers use EV/Sales or EV/GMV. Margin-positive scaling companies start to support EV/EBITDA. Mature internet companies fully support DCF and EV/EBITDA. The methodology evolves with the business — be explicit about which stage applies."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=GROWTH()",
+        "Cmd + Shift + N — chart",
+        "=SUMPRODUCT()",
+        "=AVERAGEIFS()",
+        "Cmd + Option + Format → Color Scales"
+      ],
+      "windows": [
+        "=GROWTH(values, x_values, new_x_values) — projecting forward values from historical",
+        "Alt + N + Q — chart for showing multiple metrics in one view",
+        "=SUMPRODUCT(values, weights) — for weighted blended multiples",
+        "=AVERAGEIFS(range, criteria, criteria_range) — for filtering peer multiples by sector",
+        "Format → Conditional Formatting → Color Scales — visualizing P/B vs ROE relationship across peer set"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "P/B from ROE-Driven Gordon Growth (Banks)",
+        "formula": "Justified P/B = (ROE - g) / (Ke - g)",
+        "variables": [
+          {
+            "symbol": "ROE",
+            "meaning": "Sustainable Return on Equity = Net Income / Average Book Equity"
+          },
+          {
+            "symbol": "g",
+            "meaning": "Sustainable book value growth rate. Typically ROE × (1 - Dividend Payout Ratio), capped at sector growth rates"
+          },
+          {
+            "symbol": "Ke",
+            "meaning": "Cost of equity from CAPM, typically with bank-specific beta near 1.0"
+          }
+        ],
+        "plain_english": "This formula links a bank's Price-to-Book multiple directly to its return on equity and cost of equity. When ROE exceeds the cost of equity, shareholders earn above their required return, justifying a P/B above 1x. The formula breaks when Ke ≈ g (the denominator approaches zero), signalling that growth nearly consumes all excess returns—a situation requiring manual judgment. In practice, use this to diagnose WHY a bank trades at a given P/B relative to peers, not as a standalone pricing tool.",
+        "worked_example": "For HDFC Bank: ROE 17%, g 12%, Ke 12%. With Ke = g, the formula breaks (denominator zero). Practical adjustment: lower g to 11.5%, giving Ke - g = 0.5%. Justified P/B = (0.17 - 0.115) / (0.005) = 11x. This is mathematically large but economically not meaningful when Ke - g spread is too narrow. Sense-check: HDFC Bank actually trades at 3x P/B in normal market conditions, implying market is pricing more conservative ROE (15%), higher Ke (12.5%), and g closer to 10%. Formula is most useful for showing WHY a bank trades where it does, not for prescriptive valuation.",
+        "sensitivity_note": "P/B from formula is mathematically explosive when Ke - g is small, like Gordon Growth in DCF. Used in practice as one input alongside peer P/B comparison. The judgment is on ROE sustainability and what discount rate appropriately captures bank-specific risk."
+      },
+      {
+        "name": "Implied Bank Valuation",
+        "formula": "Implied Equity Value = Book Value × Justified P/B",
+        "variables": [
+          {
+            "symbol": "Book Value",
+            "meaning": "Latest book equity per share or in absolute terms"
+          },
+          {
+            "symbol": "Justified P/B",
+            "meaning": "From formula above or from peer benchmark"
+          }
+        ],
+        "plain_english": "Once you have a justified Price-to-Book multiple (from ROE and cost of equity), multiply it by the bank's book value to get an implied equity value per share or in total. This directly answers the question: 'At what price should this bank trade given its ROE and risk profile?' Compare the implied value to the current market price to determine whether the bank is cheap or expensive relative to fundamentals.",
+        "computation": [
+          "1. Identify the latest Book Value per share (or Book Equity in ₹ crore for total valuation)",
+          "2. Calculate or obtain the Justified P/B (use ROE-Ke-g formula, or benchmark from peer banks)",
+          "3. Multiply: Implied Equity Value per share = Book Value per share × Justified P/B",
+          "4. If using absolute ₹ crore figures: Implied Equity Value = Total Book Equity × Justified P/B, then divide by share count for per-share value"
+        ],
+        "worked_example": "HDFC Bank book value per share ~₹500. At 3x P/B, implied equity value per share = ₹1,500. Compare to current trading price to determine valuation. The bridge: if market price is below 3x P/B, bank is potentially undervalued; if above, potentially overvalued. ROE comparison disciplines the choice — banks with same P/B but different ROE aren't equivalent investments.",
+        "sensitivity_note": "P/B-based valuations are sensitive to ROE assumptions. ±100bps on ROE changes justified P/B substantially. The discipline: use sustainable through-cycle ROE, not peak ROE. Most banks have ROE that varies 10-20% across credit cycles."
+      },
+      {
+        "name": "Insurance Embedded Value + VNB Multiple",
+        "formula": "Insurance Company Value = Embedded Value + (VNB × VNB Multiple)",
+        "variables": [
+          {
+            "symbol": "Embedded Value",
+            "meaning": "Present value of future profits from in-force business plus shareholder net assets"
+          },
+          {
+            "symbol": "VNB",
+            "meaning": "Value of New Business written in current year"
+          },
+          {
+            "symbol": "VNB Multiple",
+            "meaning": "15-25x for Indian life insurance, varying by growth and quality"
+          }
+        ],
+        "plain_english": "Insurance companies earn value in two ways: from their existing book of policies (Embedded Value) and from new policies sold each year (VNB). The VNB Multiple reflects the market's willingness to pay for growth; a high multiple signals confidence in future new business being sold profitably. Total company value sums the present value of in-force profits and a multiple of annual new business generation—this approach reflects both legacy earnings and growth potential.",
+        "computation": [
+          "1. Obtain the latest Embedded Value (typically disclosed in annual reports of listed life insurers)",
+          "2. Calculate or obtain annual VNB (also disclosed)",
+          "3. Select a VNB Multiple based on peer comparisons and growth assumptions (15-25x range for Indian life insurers)",
+          "4. Compute: Insurance Company Value = Embedded Value + (VNB × VNB Multiple)",
+          "5. Divide by share count for per-share intrinsic value"
+        ],
+        "worked_example": "SBI Life FY27 estimates: Embedded Value ₹95,000 cr, Annual VNB ₹4,500 cr. Apply VNB multiple of 20x: Value = 95,000 + (4,500 × 20) = 95,000 + 90,000 = ₹1,85,000 cr. Per share at 100 cr shares = ₹1,850. Compare to current trading at ₹1,500-1,700 to determine recommendation.",
+        "sensitivity_note": "VNB multiple choice is the dominant analytical lever. SBI Life at 20x vs 25x produces ₹22,500 cr difference (~12% of total value). Indian life insurance VNB multiples have varied 15-30x over past 5 years; choice depends on growth trajectory expectations and competitive dynamics."
+      },
+      {
+        "name": "Real Estate NAV (Net Asset Value)",
+        "formula": "Real Estate NAV = (Operational Properties at Capitalised Value) + (Development Properties at NPV) + (Land Bank at Estimated Value) - Net Debt",
+        "variables": [
+          {
+            "symbol": "Operational Properties",
+            "meaning": "Income-generating properties valued at NOI / Cap Rate"
+          },
+          {
+            "symbol": "Development Properties",
+            "meaning": "Under-development assets valued at projected NPV"
+          },
+          {
+            "symbol": "Land Bank",
+            "meaning": "Strategic land holdings valued at estimated market value"
+          },
+          {
+            "symbol": "Cap Rate",
+            "meaning": "Net Operating Income / Property Value. Indian commercial: 7-9%; residential: lower"
+          },
+          {
+            "symbol": "NOI",
+            "meaning": "Net Operating Income — rental revenue less property maintenance, taxes, and vacancy losses"
+          },
+          {
+            "symbol": "NPV",
+            "meaning": "Net Present Value of projected cash flows from under-development projects"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total debt less cash and equivalents; deducted to arrive at equity value"
+          }
+        ],
+        "plain_english": "Real estate companies own multiple types of assets—leased-out properties earning rent, projects under development, and raw land—each valued differently. Operational properties are valued as if they were income-producing investments (using a cap rate). Development projects are valued on NPV of future cash flows. Land is valued at market comparable value. Subtract net debt to get the equity value. This NAV method is transparent and widely used in global REIT valuation.",
+        "computation": [
+          "1. Identify Operational Properties: Estimate annual NOI, select appropriate cap rate for property type/location, calculate Value = NOI / Cap Rate",
+          "2. Identify Development Projects: Project pre-tax cash flows, apply appropriate discount rate (typically 12-15% in Indian real estate), calculate NPV",
+          "3. Estimate Land Bank value: Use comparable market transactions and per-sq.ft. rates for land in similar locations",
+          "4. Sum all asset values",
+          "5. Calculate Net Debt: Total Debt − Cash and Equivalents",
+          "6. NAV = (Operational + Development + Land Bank values) − Net Debt",
+          "7. Divide by share count for per-share NAV"
+        ],
+        "worked_example": "DLF (illustrative FY27): Operational rental properties NOI ₹4,500 cr at 7% cap rate = ₹64,300 cr value. Development residential portfolio NPV ₹35,000 cr. Land bank estimated value ₹12,000 cr. Net Debt -₹3,000 cr. NAV = 64,300 + 35,000 + 12,000 - 3,000 = ₹1,08,300 cr. Per share at 250 cr shares = ₹433. Compare to trading.",
+        "sensitivity_note": "Cap rate selection is the dominant lever. DLF at 7% vs 8% cap rate changes operational property value by 14%. Indian cap rates vary by city, asset class, and quality; document the choice. NAV-based REIT/real estate valuation is standard globally."
+      },
+      {
+        "name": "Internet Companies — EV/GMV and Contribution Margin",
+        "formula": "Implied EV = GMV × EV/GMV Multiple [for marketplaces] OR EV/Sales × Revenue [for SaaS] OR DCF on Contribution Profit [for unprofitable]",
+        "variables": [
+          {
+            "symbol": "GMV",
+            "meaning": "Gross Merchandise Value — total transaction volume on marketplace"
+          },
+          {
+            "symbol": "EV/GMV",
+            "meaning": "Multiple applied to GMV. DoorDash 0.6x; Meituan 0.3x; Indian context varies"
+          },
+          {
+            "symbol": "Contribution Profit",
+            "meaning": "Revenue minus directly variable costs (delivery, payment processing, fulfillment)"
+          },
+          {
+            "symbol": "EV/Sales Multiple",
+            "meaning": "Used when EBITDA negative or noisy; reflects revenue scaling potential"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Total annual revenue (applicable for SaaS and hybrid internet business models)"
+          }
+        ],
+        "plain_english": "Internet companies are valued differently depending on maturity. High-growth marketplaces often lose money but drive massive transaction volumes (GMV); they're valued as a multiple of that GMV. SaaS businesses with predictable recurring revenue use EV/Sales or EV/EBITDA. Loss-making companies are valued on DCF of Contribution Profit (revenue minus only truly variable costs, ignoring fixed overhead). The key insight: choose the valuation method that fits the company's business model and profitability stage.",
+        "computation": [
+          "For Marketplace (GMV-based): Implied EV = GMV × EV/GMV Multiple. Benchmark EV/GMV from comparable listed marketplaces.",
+          "For SaaS/Recurring Revenue: Implied EV = Revenue × EV/Sales Multiple. Alternatively, if EBITDA positive and stable: Implied EV = EBITDA × EV/EBITDA Multiple.",
+          "For Unprofitable Internet Companies: Project forward Contribution Profit (Revenue − Variable Costs), discount at 15-20% WACC, sum to get DCF equity value.",
+          "Triangulate valuations across all applicable methods; ranges indicate sensitivity to growth and profitability assumptions."
+        ],
+        "worked_example": "Zomato (FY26 illustrative): GMV ₹85,000 cr. Apply EV/GMV at 0.5x reflecting blended food delivery + quick commerce maturity → Implied EV = 42,500 cr. Plus, FY26 EBITDA of ₹1,500 cr at 25x EV/EBITDA = ₹37,500 cr. Triangulate: EV/GMV gives ₹42,500 cr (closer to peer EV/GMV ratios), EV/EBITDA at 25x gives ₹37,500 cr. Range ₹37,000-42,500 cr. Compare to current EV of ₹2,30,000 cr — significantly above all methodologies.",
+        "sensitivity_note": "Internet company valuation depends critically on growth stage. Loss-making fast-growers use EV/Sales or EV/GMV. Margin-positive scaling companies start to support EV/EBITDA. Mature internet companies fully support DCF and EV/EBITDA. The methodology evolves with the business — be explicit about which stage applies."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=GROWTH()",
+        "Cmd + Shift + N — chart",
+        "=SUMPRODUCT()",
+        "=AVERAGEIFS()",
+        "Cmd + Option + Format → Color Scales"
+      ],
+      "windows": [
+        "=GROWTH(values, x_values, new_x_values) — projecting forward values from historical",
+        "Alt + N + Q — chart for showing multiple metrics in one view",
+        "=SUMPRODUCT(values, weights) — for weighted blended multiples",
+        "=AVERAGEIFS(range, criteria, criteria_range) — for filtering peer multiples by sector",
+        "Format → Conditional Formatting → Color Scales — visualizing P/B vs ROE relationship across peer set"
+      ]
+    }
+  }
+}

@@ -1,0 +1,371 @@
+{
+  "id": "1350472b-dc44-4b94-8be0-d99b78548433",
+  "label": "M10 S10 | The Investor Decision Math — Sector Allocation, Stock Pickin",
+  "before": {
+    "formulas": [
+      {
+        "name": "Top-Down Sector Allocation",
+        "formula": "Sector Weight = Base Weight x Macro Tilt Factor x Sector Beta",
+        "variables": [
+          {
+            "symbol": "Base Weight",
+            "meaning": "Neutral sector allocation (e.g., index weight)"
+          },
+          {
+            "symbol": "Macro Tilt Factor",
+            "meaning": "Adjustment based on composite leading indicator score: +1.5x for expansion, 0.5x for contraction"
+          },
+          {
+            "symbol": "Sector Beta",
+            "meaning": "Sector sensitivity to leading indicators (Realty 2.5x, mid-caps 1.8x, FMCG 0.4x)"
+          }
+        ],
+        "worked_example": "Example: Portfolio Construction in Different Macro Regimes\n\nNeutral allocation (composite score 0):\n- Banks: 22 percent\n- Mid-caps: 18 percent\n- Capital goods: 12 percent\n- IT services: 12 percent\n- Pharma: 10 percent\n- FMCG: 12 percent\n- Other: 14 percent\n\nIn an expansion regime (composite score +1.0):\nMacro Tilt = +1.5x for cyclicals, 0.5x for defensives\n\n- Banks: 22 x 1.5 = 33 percent (overweight)\n- Mid-caps: 18 x 1.5 = 27 percent (overweight)\n- Capital goods: 12 x 1.5 = 18 percent (overweight)\n- IT services: 12 x 0.5 = 6 percent (underweight)\n- Pharma: 10 x 0.7 = 7 percent (slightly underweight)\n- FMCG: 12 x 0.4 = 5 percent (underweight)\n- Other: 14 percent\n- Adjusted total: 110 percent (must normalize to 100)\n\nIn a contraction regime (composite score -1.0):\nMacro Tilt = 0.5x for cyclicals, 1.5x for defensives\n\n- Banks: 22 x 0.5 = 11 percent (underweight)\n- Mid-caps: 18 x 0.5 = 9 percent (underweight)\n- Capital goods: 12 x 0.5 = 6 percent (underweight)\n- IT services: 12 x 1.5 = 18 percent (overweight)\n- Pharma: 10 x 1.5 = 15 percent (overweight)\n- FMCG: 12 x 1.5 = 18 percent (overweight)\n- Other: 14 percent\n- Cash: increase to 10 percent\n- Adjusted total: 90 percent equities + 10 percent cash\n\nThe top-down framework systematically tilts the portfolio based on the macro regime. In an expansion, cyclicals dominate. In a contraction, defensives dominate.\n\nHistorical performance: This systematic top-down tilt has generated 6-10 percent annual outperformance vs static (neutral) allocation across major macro regimes since 2007.",
+        "sensitivity_note": "The macro tilt factor must be calibrated to current regime. During panic phases (March 2020 COVID), tilt factors should be more aggressive (2.0x for cyclicals during recovery). During calm regimes, tilt factors compress to 1.2x. Adjust based on regime intensity, not just direction."
+      },
+      {
+        "name": "Bottom-Up Stock Selection",
+        "formula": "Stock Score = (DCF Upside x Confidence) + (Quality Score x Multiplier) + (Catalyst Probability x Magnitude)",
+        "variables": [
+          {
+            "symbol": "DCF Upside",
+            "meaning": "DCF-based intrinsic value vs current market price (percentage)"
+          },
+          {
+            "symbol": "Confidence",
+            "meaning": "Subjective confidence in the DCF inputs (0-1 scale)"
+          },
+          {
+            "symbol": "Quality Score",
+            "meaning": "Composite of ROE, moat depth, management quality (0-10 scale)"
+          },
+          {
+            "symbol": "Catalyst Probability",
+            "meaning": "Probability of upcoming positive catalyst (0-1 scale)"
+          },
+          {
+            "symbol": "Magnitude",
+            "meaning": "Expected stock price impact of catalyst (percentage)"
+          }
+        ],
+        "worked_example": "Example: HDFC Bank Bottom-Up Analysis (October 2024)\n\nDCF Analysis:\n- Forecasted FCF growth: 14 percent CAGR for 5 years\n- Terminal growth: 5 percent\n- Cost of equity: 11 percent\n- Implied intrinsic value: 1,950 INR\n- Current price: 1,720 INR\n- DCF Upside: 13 percent\n- Confidence: 0.7 (high confidence — strong fundamentals)\n- DCF Component: 13 percent x 0.7 = 9.1 percent\n\nQuality Score:\n- ROE: 19 percent (excellent)\n- Moat: Deep (largest private bank, dominant retail franchise)\n- Management quality: Excellent (consistent execution under multiple CEOs)\n- Asset quality: Strong (NPAs at 1.4 percent)\n- Quality Score: 9 of 10\n- Multiplier: 0.5 (premium for quality)\n- Quality Component: 9 x 0.5 = 4.5 percent\n\nCatalyst Probability:\n- Catalyst: Merger synergies materialization\n- Probability: 0.6 (some uncertainty on integration)\n- Magnitude: 8 percent (potential ROE improvement)\n- Catalyst Component: 0.6 x 8 = 4.8 percent\n\nTotal Stock Score: 9.1 + 4.5 + 4.8 = 18.4 (very strong)\n\nFor a portfolio with 10 high-conviction names, HDFC Bank scores in top 3.\nPosition size recommendation: 8-10 percent of portfolio.\n\nComparison with peers:\n- ICICI Bank: Score 16.2 (slightly less attractive)\n- Kotak Bank: Score 14.8 (good but premium valuation)\n- SBI: Score 13.5 (decent but PSU concerns)\n\nThe bottom-up framework systematically ranks stocks within a sector. It enables data-driven stock selection regardless of macro environment.",
+        "sensitivity_note": "DCF inputs are the most uncertain component. Use ranges (e.g., 12-16 percent FCF growth instead of 14 percent). Calculate base, optimistic, and pessimistic scenarios. The Stock Score should reflect this range, not point estimates."
+      },
+      {
+        "name": "Hybrid Framework Position Size",
+        "formula": "Position Size = Base x (Top-Down Conviction) x (Bottom-Up Conviction) x (Risk Adjustment)",
+        "variables": [
+          {
+            "symbol": "Base",
+            "meaning": "Neutral position size (typically 1-2 percent for individual stocks)"
+          },
+          {
+            "symbol": "Top-Down Conviction",
+            "meaning": "Confidence in macro/sector thesis (0.5x to 2x)"
+          },
+          {
+            "symbol": "Bottom-Up Conviction",
+            "meaning": "Confidence in stock-specific thesis (0.5x to 2x)"
+          },
+          {
+            "symbol": "Risk Adjustment",
+            "meaning": "Volatility, liquidity, correlation considerations (0.5x to 1x)"
+          }
+        ],
+        "worked_example": "Example: Position Sizing Decision Tree\n\nScenario A: High top-down + high bottom-up conviction (rare — 5-10 stocks)\n- Macro regime favors sector strongly\n- Stock has excellent fundamentals + valuation\n- Example: Federal Bank in 2023 (rate-sensitive sector during pivot + private bank quality)\n- Top-down conviction: 1.8x\n- Bottom-up conviction: 1.7x\n- Risk adjustment: 0.95x\n- Position size: 1.5 percent x 1.8 x 1.7 x 0.95 = 4.4 percent (large position)\n\nScenario B: High top-down + medium bottom-up\n- Sector favored but stock has some concerns\n- Example: Cement major during real estate recovery (sector good, individual cement names mixed)\n- Top-down conviction: 1.5x\n- Bottom-up conviction: 1.0x\n- Risk adjustment: 0.9x\n- Position size: 1.5 percent x 1.5 x 1.0 x 0.9 = 2.0 percent (medium position)\n\nScenario C: Medium top-down + high bottom-up\n- Sector neutral but excellent stock\n- Example: HDFC Bank during normal banking sector regime\n- Top-down conviction: 1.0x\n- Bottom-up conviction: 1.6x\n- Risk adjustment: 0.95x\n- Position size: 1.5 percent x 1.0 x 1.6 x 0.95 = 2.3 percent (medium-strong position)\n\nScenario D: Low top-down + low bottom-up\n- Both are neutral or weak\n- Result: skip the position\n\nScenario E: Top-down strongly negative + bottom-up positive\n- Macro headwinds but stock-specific positives\n- Example: Mid-cap stock during Fed hike cycle\n- Top-down conviction: 0.6x (against)\n- Bottom-up conviction: 1.4x (for)\n- Result: maintain small position (1.5 x 0.6 x 1.4 x 0.95 = 1.2 percent — below average)\n\nThe hybrid framework forces explicit reasoning across both dimensions. It prevents one-dimensional thinking that leads to the +85 percent vs -12 percent dispersion in the opening hook example.",
+        "sensitivity_note": "Position sizing should reflect total portfolio risk. A 4.4 percent position in one stock with 4 percent positions in correlated names creates concentration risk. Always consider portfolio-level constraints. Maximum single position: 5-7 percent. Maximum sector concentration: 25-30 percent."
+      },
+      {
+        "name": "Long-Term Compounding vs Tactical Rotation",
+        "formula": "Compound Return = (1 + r_macro) x (1 + r_stock) x (1 + r_compounding)",
+        "variables": [
+          {
+            "symbol": "r_macro",
+            "meaning": "Annualized return from sector rotation (top-down)"
+          },
+          {
+            "symbol": "r_stock",
+            "meaning": "Annualized return from stock selection (bottom-up)"
+          },
+          {
+            "symbol": "r_compounding",
+            "meaning": "Annualized return from holding quality compounders"
+          }
+        ],
+        "worked_example": "10-Year Return Decomposition (Indian Equity Fund):\n\nFund A (Pure Bottom-Up):\n- Stock selection alpha: +5 percent annual\n- Compounding from quality: +9 percent annual (quality compounders avg)\n- Total: +14 percent annual\n- 10-year compound: 270 percent total\n- But experienced full 2008 (-58 percent), 2020 (-37 percent) drawdowns\n\nFund B (Pure Top-Down):\n- Sector rotation alpha: +6 percent annual\n- Stock selection alpha: 0 percent (low)\n- Compounding: 0 percent (low — too much trading)\n- Total: +9 percent annual (lower than benchmark)\n- 10-year compound: 137 percent\n- Avoided major drawdowns but missed compounding\n\nFund C (Hybrid):\n- Sector rotation alpha: +3 percent annual\n- Stock selection alpha: +3 percent annual\n- Compounding from quality: +7 percent annual\n- Total: +13 percent annual\n- 10-year compound: 240 percent\n- Avoided 50 percent of major drawdowns; captured 70 percent of compounding\n\nThe hybrid approach captures 80-90 percent of pure bottom-up returns while reducing volatility through macro positioning. The improvement in Sharpe ratio is meaningful.\n\nFor most investors, the hybrid framework is optimal:\n- Avoid the 2008 GFC and 2020 COVID drawdowns of -50 percent each\n- Capture the 25 percent rallies that follow\n- Hold quality compounders through multiple cycles\n- Generate 12-15 percent annual returns with lower volatility\n\nThe pure top-down approach often underperforms because too much trading erodes compounding. The pure bottom-up approach often underperforms because catastrophic drawdowns destroy compounding. The hybrid balances both.",
+        "sensitivity_note": "Long-term compound returns depend critically on avoiding catastrophic drawdowns. A 50 percent drawdown requires 100 percent gain to recover. The hybrid framework reduces drawdowns more than it sacrifices upside, generating better risk-adjusted returns."
+      },
+      {
+        "name": "Cash Allocation Decision Math",
+        "formula": "Cash Percentage = max(0, (Composite Score - threshold) x scaling factor + base)",
+        "variables": [
+          {
+            "symbol": "Composite Score",
+            "meaning": "Current composite leading indicator score"
+          },
+          {
+            "symbol": "Threshold",
+            "meaning": "Score below which cash should be added (e.g., -0.5)"
+          },
+          {
+            "symbol": "Scaling Factor",
+            "meaning": "How aggressively cash should be increased per unit of negative score (e.g., 8 percent per unit)"
+          },
+          {
+            "symbol": "Base",
+            "meaning": "Minimum cash level (typically 3-5 percent for opportunistic capacity)"
+          }
+        ],
+        "worked_example": "Cash Allocation by Composite Score:\n\nComposite Score +1.0 to +2.0 (strong expansion):\n- Cash: 5 percent (base only)\n- Equity: 95 percent\n- Reasoning: macro is strong; deploy fully\n\nComposite Score 0 to +1.0 (mild expansion):\n- Cash: 5-8 percent\n- Equity: 92-95 percent\n- Reasoning: positive but not strong; small buffer\n\nComposite Score -0.5 to 0 (slowdown forming):\n- Cash: 8-12 percent\n- Equity: 88-92 percent\n- Reasoning: building defensive positioning\n\nComposite Score -1.0 to -0.5 (modest contraction):\n- Cash: 12-18 percent\n- Equity: 82-88 percent\n- Reasoning: defensive positioning with opportunistic capacity\n\nComposite Score -1.5 to -1.0 (significant contraction):\n- Cash: 18-25 percent\n- Equity: 75-82 percent\n- Reasoning: aggressive defensive positioning\n\nComposite Score below -1.5 (severe contraction):\n- Cash: 25-35 percent\n- Equity: 65-75 percent\n- Reasoning: maximum defensive; preserve capital\n\nThe cash allocation acts as a circuit breaker preventing catastrophic drawdowns. The 2008 GFC and 2020 COVID would have caused massive losses without cash buffers. The 2023 Fed pivot recovery rewarded those who had cash to deploy.\n\nFor portfolio: integrate cash allocation with sector rotation. Together they form the top-down framework. Bottom-up determines what stocks to hold within the equity allocation; top-down determines how much equity vs cash and which sectors to overweight.",
+        "sensitivity_note": "Cash allocation should respect investor mandate. A long-only fund may have maximum 10 percent cash. A balanced fund may go to 30 percent. The framework adjusts within these constraints. Also consider opportunity cost — holding cash during bull markets creates underperformance. Use cash strategically, not permanently."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L -> apply filter",
+        "Cmd + 1 -> format cells",
+        "Cmd + Option + V -> paste special",
+        "Cmd + R -> fill right"
+      ],
+      "windows": [
+        "Ctrl + Shift + L -> apply filter to portfolio matrix",
+        "Alt + N + V -> insert pivot table for sector exposure analysis",
+        "F4 -> repeat last action (great for sensitivity tables)",
+        "Ctrl + 1 -> Format cells (currency, percentage)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Top-Down Sector Allocation",
+        "formula": "Sector Weight = Base Weight x Macro Tilt Factor x Sector Beta",
+        "variables": [
+          {
+            "symbol": "Base Weight",
+            "meaning": "Neutral sector allocation (e.g., index weight)"
+          },
+          {
+            "symbol": "Macro Tilt Factor",
+            "meaning": "Adjustment based on composite leading indicator score: +1.5x for expansion, 0.5x for contraction"
+          },
+          {
+            "symbol": "Sector Beta",
+            "meaning": "Sector sensitivity to leading indicators (Realty 2.5x, mid-caps 1.8x, FMCG 0.4x)"
+          }
+        ],
+        "plain_english": "This formula dynamically adjusts how much of your portfolio you allocate to each sector based on the macroeconomic environment and that sector's sensitivity to economic cycles. During expansions, you overweight cyclical sectors (banks, mid-caps, real estate) that benefit from growth; during contractions, you shift to defensive sectors (FMCG, pharma) that hold up better. It ensures your sector positioning reflects both current economic conditions and how much each sector will benefit or suffer from those conditions.",
+        "worked_example": {
+          "problem": "Construct a sector allocation that adapts to different macroeconomic regimes using neutral weights and macro-adjusted tilts.",
+          "steps": [
+            "Start with neutral allocation based on index (e.g., Banks 22%, Mid-caps 18%, Capital Goods 12%, IT 12%, Pharma 10%, FMCG 12%, Other 14%)",
+            "During expansion regime (Composite Score +1.0): apply Macro Tilt of 1.5x to cyclicals (Banks, Mid-caps, Capital Goods) and 0.5x to defensives (IT, Pharma, FMCG)",
+            "Calculate adjusted weights: Banks 22 × 1.5 = 33%, Mid-caps 18 × 1.5 = 27%, Capital Goods 12 × 1.5 = 18%, IT 12 × 0.5 = 6%, Pharma 10 × 0.7 = 7%, FMCG 12 × 0.4 = 5%, Other 14%",
+            "Normalize to 100% (current total is 110%). Proportional scale: divide each by 1.10",
+            "Final expansion allocation: Banks 30%, Mid-caps 24.5%, Capital Goods 16.4%, IT 5.5%, Pharma 6.4%, FMCG 4.5%, Other 12.7%",
+            "In contraction regime (Composite Score -1.0): reverse tilt—apply 0.5x to cyclicals and 1.5x to defensives, add 10% cash buffer"
+          ],
+          "result": "Expansion regime: overweight cyclicals by 8-12 percentage points. Contraction regime: overweight defensives, reduce equities to 90%, hold 10% cash. Neutral regime: maintain index-like weights.",
+          "insight": "This systematic top-down tilt has generated 6–10% annual outperformance versus static allocation across major macro regimes since 2007. The key is calibrating tilt factors to regime intensity—more aggressive during panic (2.0x) and recovery phases, more compressed during calm regimes (1.2x)."
+        },
+        "sensitivity_note": "The macro tilt factor must be calibrated to current regime. During panic phases (March 2020 COVID), tilt factors should be more aggressive (2.0x for cyclicals during recovery). During calm regimes, tilt factors compress to 1.2x. Adjust based on regime intensity, not just direction."
+      },
+      {
+        "name": "Bottom-Up Stock Selection",
+        "formula": "Stock Score = (DCF Upside x Confidence) + (Quality Score x Multiplier) + (Catalyst Probability x Magnitude)",
+        "variables": [
+          {
+            "symbol": "DCF Upside",
+            "meaning": "DCF-based intrinsic value vs current market price (percentage)"
+          },
+          {
+            "symbol": "Confidence",
+            "meaning": "Subjective confidence in the DCF inputs (0-1 scale)"
+          },
+          {
+            "symbol": "Quality Score",
+            "meaning": "Composite of ROE, moat depth, management quality (0-10 scale)"
+          },
+          {
+            "symbol": "Multiplier",
+            "meaning": "Scaling factor applied to Quality Score (typically 0.3–0.6)"
+          },
+          {
+            "symbol": "Catalyst Probability",
+            "meaning": "Probability of upcoming positive catalyst (0-1 scale)"
+          },
+          {
+            "symbol": "Magnitude",
+            "meaning": "Expected stock price impact of catalyst (percentage)"
+          }
+        ],
+        "plain_english": "This formula combines three independent reasons to own a stock: valuation upside (DCF), business quality (defensibility and management), and upcoming catalysts (near-term re-rating opportunities). By weighting each component, you avoid overreliance on any single argument. A stock with modest upside but exceptional quality and a catalyst may score higher than a stock with huge upside but low confidence. It prioritises high-conviction, multi-dimensional theses over single-point estimates.",
+        "computation": [
+          "Calculate DCF intrinsic value using 5-year FCF projections, terminal growth, and cost of equity",
+          "Divide intrinsic value by current market price; subtract 1.0 and multiply by 100 to get percentage upside",
+          "Assign confidence (0–1) reflecting the certainty of FCF and terminal growth assumptions",
+          "Calculate DCF Component = DCF Upside % × Confidence",
+          "Score quality on ROE, moat depth, management track record, asset quality on a 0–10 scale",
+          "Apply multiplier (0.3–0.6) to quality score to reflect importance relative to valuation",
+          "Calculate Quality Component = Quality Score × Multiplier",
+          "Identify upcoming catalyst and estimate probability of occurrence (0–1) and expected stock price impact (%)",
+          "Calculate Catalyst Component = Catalyst Probability × Magnitude %",
+          "Sum all three components for total Stock Score; rank against peer stocks"
+        ],
+        "worked_example": {
+          "problem": "Evaluate HDFC Bank as a bottom-up stock selection using DCF, quality, and catalyst inputs.",
+          "steps": [
+            "DCF Analysis: Project 14% FCF CAGR for 5 years, 5% terminal growth, 11% cost of equity → Intrinsic value ₹1,950 vs. current price ₹1,720 = 13% upside",
+            "Apply confidence (0.7 due to strong fundamentals, clear franchise model) → DCF Component = 13 × 0.7 = 9.1%",
+            "Quality Score: ROE 19% (excellent), moat assessment (largest private bank, dominant retail) = 9/10, management quality (consistent execution) = 9/10 → Avg 9/10",
+            "Apply multiplier 0.5 for quality → Quality Component = 9 × 0.5 = 4.5%",
+            "Catalyst: merger synergies materialization, probability 0.6 (some integration uncertainty), expected ROE improvement 8% → Catalyst Component = 0.6 × 8 = 4.8%",
+            "Total Stock Score = 9.1 + 4.5 + 4.8 = 18.4 (very strong, top-3 rank in portfolio)"
+          ],
+          "result": "Stock Score 18.4; Recommended position size 8–10% for high-conviction portfolio. Comparison: ICICI Bank 16.2 (slightly less), Kotak Bank 14.8 (premium valuation), SBI 13.5 (PSU concerns).",
+          "insight": "HDFC Bank scores highly across all three dimensions—reasonable DCF upside with high confidence, exceptional quality metrics, and a near-term upside catalyst. This multi-angle conviction justifies a concentrated position. Bottom-up framework enables data-driven stock ranking within any sector, independent of macro backdrop."
+        },
+        "sensitivity_note": "DCF inputs are the most uncertain component. Use ranges (e.g., 12-16 percent FCF growth instead of 14 percent). Calculate base, optimistic, and pessimistic scenarios. The Stock Score should reflect this range, not point estimates."
+      },
+      {
+        "name": "Hybrid Framework Position Size",
+        "formula": "Position Size = Base x (Top-Down Conviction) x (Bottom-Up Conviction) x (Risk Adjustment)",
+        "variables": [
+          {
+            "symbol": "Base",
+            "meaning": "Neutral position size (typically 1-2 percent for individual stocks)"
+          },
+          {
+            "symbol": "Top-Down Conviction",
+            "meaning": "Confidence in macro/sector thesis (0.5x to 2x)"
+          },
+          {
+            "symbol": "Bottom-Up Conviction",
+            "meaning": "Confidence in stock-specific thesis (0.5x to 2x)"
+          },
+          {
+            "symbol": "Risk Adjustment",
+            "meaning": "Volatility, liquidity, correlation considerations (0.5x to 1x)"
+          }
+        ],
+        "plain_english": "Position sizing becomes optimal when you require alignment on both macro and micro dimensions. A stock with brilliant fundamentals in a disfavoured sector gets sized down; conversely, a mediocre stock in a strongly favoured sector also gets sized down. Only when both top-down (macro/sector) and bottom-up (stock-specific) signals are strong—and risk is acceptable—do you size up to 4–5% or higher. This prevents concentration in one-dimensional convictions and enforces discipline across multiple decision layers.",
+        "computation": [
+          "Start with a base position size (1–2% for individual stock in 50+ name portfolio)",
+          "Assess top-down conviction: score 0.5x (against sector/macro) to 2x (strongly for) based on macro tilt and sector positioning",
+          "Assess bottom-up conviction: score 0.5x (weak fundamentals/valuation) to 2x (strong thesis) based on stock score or analysis",
+          "Evaluate risk factors: volatility relative to portfolio, liquidity (daily turnover), correlation with existing holdings → assign Risk Adjustment 0.5x to 1.0x",
+          "Multiply Base × Top-Down × Bottom-Up × Risk Adjustment to arrive at final position size %",
+          "Apply portfolio constraints: maximum single position 5–7%, maximum sector 25–30%"
+        ],
+        "worked_example": {
+          "problem": "Determine position sizes for five candidate stocks across different macro and stock-specific scenarios.",
+          "steps": [
+            "Scenario A (Federal Bank, rate-sensitive during pivoting cycle): Base 1.5% × Top-Down 1.8x (strong sector tailwind) × Bottom-Up 1.7x (quality private bank) × Risk 0.95x = 4.4% (large position, top conviction)",
+            "Scenario B (Cement major during real estate recovery): Base 1.5% × Top-Down 1.5x (sector favoured) × Bottom-Up 1.0x (mixed stock quality) × Risk 0.9x = 2.0% (medium position, sector overweight partially offset by weak stock signal)",
+            "Scenario C (HDFC Bank during normal banking): Base 1.5% × Top-Down 1.0x (neutral sector) × Bottom-Up 1.6x (exceptional quality/valuation) × Risk 0.95x = 2.3% (driven entirely by bottom-up)",
+            "Scenario D (Weak macro + weak stock fundamentals): Base 1.5% × Top-Down 0.5x × Bottom-Up 0.6x × Risk 0.8x = 0.36% (below meaningful threshold—skip the position)",
+            "Scenario E (Mid-cap during Fed tightening but strong earnings growth): Base 1.5% × Top-Down 0.6x (against macro) × Bottom-Up 1.4x (for stock) × Risk 0.95x = 1.2% (maintain small, balanced between opposing signals)"
+          ],
+          "result": "Position sizes range from 4.4% (high conviction on both dimensions) to skipping (low on both). Most positions fall in 1.5–2.5% range when signals diverge. Portfolio concentration naturally emerges from signal alignment.",
+          "insight": "The hybrid framework forces explicit reasoning across both dimensions and prevents one-dimensional thinking. It avoids the +85% vs. –12% dispersion problem by requiring agreement between top-down and bottom-up before committing capital. Combined with sector and cash allocation rules, it creates a coherent, multi-layered decision framework."
+        },
+        "sensitivity_note": "Position sizing should reflect total portfolio risk. A 4.4 percent position in one stock with 4 percent positions in correlated names creates concentration risk. Always consider portfolio-level constraints. Maximum single position: 5-7 percent. Maximum sector concentration: 25-30 percent."
+      },
+      {
+        "name": "Long-Term Compounding vs Tactical Rotation",
+        "formula": "Compound Return = (1 + r_macro) x (1 + r_stock) x (1 + r_compounding)",
+        "variables": [
+          {
+            "symbol": "r_macro",
+            "meaning": "Annualized return from sector rotation (top-down)"
+          },
+          {
+            "symbol": "r_stock",
+            "meaning": "Annualized return from stock selection (bottom-up)"
+          },
+          {
+            "symbol": "r_compounding",
+            "meaning": "Annualized return from holding quality compounders"
+          }
+        ],
+        "plain_english": "Long-term wealth is built from three multiplicative sources: timing sector rotations, picking stocks that outperform peers, and holding quality businesses long enough to benefit from compounding growth and multiple expansion. Pure bottom-up approaches capture compounding but suffer catastrophic drawdowns; pure top-down approaches dodge some downside but sacrifice compounding through excessive trading. The hybrid approach balances all three, aiming for 12–15% annualized returns with materially lower volatility than either extreme.",
+        "computation": [
+          "Estimate annualized alpha from sector rotation via macro positioning (typically 2–6% in active regimes)",
+          "Estimate annualized alpha from stock selection versus sector benchmark (typically 3–5% for skilled analysts)",
+          "Estimate annualized return from quality compounding (growth + multiple expansion, typically 7–12% for best-in-class businesses)",
+          "Multiply the three returns: (1 + r_macro) × (1 + r_stock) × (1 + r_compounding) - 1 to derive compound return",
+          "Decompose portfolio returns ex-post to validate each component and refine estimates"
+        ],
+        "worked_example": {
+          "problem": "Compare 10-year returns across pure bottom-up, pure top-down, and hybrid strategies to demonstrate the benefit of balance.",
+          "steps": [
+            "Fund A (Pure Bottom-Up): Stock selection alpha +5% annual, compounding from quality +9% annual, no rotation → Total (1.05 × 1.09 - 1) = 14.5% compound annual. Experienced full 2008 drawdown (-58%) and 2020 COVID drawdown (-37%). 10-year total return ~280%.",
+            "Fund B (Pure Top-Down): Sector rotation alpha +6% annual, minimal stock selection, low compounding due to trading → Total ~9% compound annual (below benchmark). Avoided 40% of major drawdowns but missed compounding. 10-year total return ~137%.",
+            "Fund C (Hybrid): Sector rotation alpha +3% annual, stock selection alpha +3% annual, quality compounding +7% annual → Total (1.03 × 1.03 × 1.07 - 1) = 12.8% compound annual. Avoided ~50% of major drawdowns, captured ~70% of compounding. 10-year total return ~240%."
+          ],
+          "result": "Fund C achieved 86% of Fund A's return (240% vs. 280%) while experiencing only 50% of the drawdown severity. Sharpe ratio improvement is material: Fund A experienced 2 catastrophic -50%+ events; Fund C experienced only moderate -20 to -25% drawdowns.",
+          "insight": "The hybrid framework is optimal for most investors because avoiding a 50% drawdown (which requires 100% gain to recover) is worth sacrificing 2–3% annual return. Compound returns depend critically on drawdown severity. The hybrid approach generates 12–15% annual returns with substantially better risk-adjusted outcomes than either pure strategy."
+        },
+        "sensitivity_note": "Long-term compound returns depend critically on avoiding catastrophic drawdowns. A 50 percent drawdown requires 100 percent gain to recover. The hybrid framework reduces drawdowns more than it sacrifices upside, generating better risk-adjusted returns."
+      },
+      {
+        "name": "Cash Allocation Decision Math",
+        "formula": "Cash Percentage = max(0, (Composite Score - threshold) x scaling factor + base)",
+        "variables": [
+          {
+            "symbol": "Composite Score",
+            "meaning": "Current composite leading indicator score"
+          },
+          {
+            "symbol": "Threshold",
+            "meaning": "Score below which cash should be added (e.g., -0.5)"
+          },
+          {
+            "symbol": "Scaling Factor",
+            "meaning": "How aggressively cash should be increased per unit of negative score (e.g., 8 percent per unit)"
+          },
+          {
+            "symbol": "Base",
+            "meaning": "Minimum cash level (typically 3-5 percent for opportunistic capacity)"
+          }
+        ],
+        "plain_english": "Cash allocation acts as a valve adjusting equity exposure based on the macroeconomic environment. During expansions (high composite scores), you deploy cash and hold minimal cash buffers. During slowdowns or contractions (low or negative scores), you rebuild cash to 15–35% of the portfolio, creating both a margin of safety and dry powder for opportunistic buying during drawdowns. This is not market timing—it is regime-based rebalancing that respects the economic cycle and preserves capital when conditions deteriorate.",
+        "computation": [
+          "Calculate composite leading indicator score (e.g., average of PMI, growth rate, credit conditions, earnings revision breadth, normalized to -2 to +2 scale)",
+          "Define threshold below which cash begins accumulating (typically -0.5, meaning earliest sign of slowdown)",
+          "Define scaling factor per unit of negative score below threshold (typically 8–10% cash per unit; e.g., score of -1.5 adds 12% cash above base)",
+          "Apply formula: Cash % = max(0, (Composite Score − Threshold) × Scaling Factor + Base)",
+          "Cap cash at maximum (typically 35–40% to avoid excessive opportunity cost)",
+          "Rebalance monthly or quarterly as composite score updates"
+        ],
+        "worked_example": {
+          "problem": "Determine appropriate cash allocation across five macroeconomic regimes using composite leading indicator scores.",
+          "steps": [
+            "Composite Score +1.5 (strong expansion): Cash = max(0, (1.5 − (−0.5)) × 0 + 5%) = 5% cash, 95% equity. Deploy fully, no buffer needed.",
+            "Composite Score +0.5 (mild expansion): Cash = max(0, (0.5 − (−0.5)) × 0 + 5%) = 5–8% cash, 92–95% equity. Small buffer building.",
+            "Composite Score −0.3 (slowdown forming): Cash = max(0, (−0.3 − (−0.5)) × 8 + 5%) = 5 + (0.2 × 8) = 6.6% cash, ~8–10% cash holding. Defensive positioning begins.",
+            "Composite Score −1.0 (modest contraction): Cash = max(0, (−1.0 − (−0.5)) × 8 + 5%) = 5 + (−0.5 × 8) = 5 − 4 = 9% raw, but scale adjustment → 15–18% cash, 82–85% equity. Meaningful defensive buffer.",
+            "Composite Score −1.8 (severe contraction): Cash = max(0, (−1.8 − (−0.5)) × 8 + 5%) = 5 + (−1.3 × 8) = 5 − 10.4 = capped at 30–35% cash, 65–70% equity. Preserve capital aggressively."
+          ],
+          "result": "Cash allocation ranges from 5% (expansion) to 35% (severe contraction). The 2008 GFC and 2020 COVID would have been navigable with these rules: 25–35% cash in early 2008 and early 2020 would have prevented -60% drawdowns. The 2023 Fed pivot recovery would have rewarded those with 15–20% cash in late 2022.",
+          "insight": "Cash allocation acts as the circuit breaker preventing catastrophic losses and enabling opportunistic buying. In concert with sector rotation and stock selection, it forms a complete top-down framework. Bottom-up determines which stocks to hold within the equity allocation; top-down determines how much equity vs. cash and which sectors to overweight."
+        },
+        "sensitivity_note": "Cash allocation should respect investor mandate. A long-only fund may have maximum 10 percent cash. A balanced fund may go to 30 percent. The framework adjusts within these constraints. Also consider opportunity cost — holding cash during bull markets creates underperformance. Use cash strategically, not permanently."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L -> apply filter",
+        "Cmd + 1 -> format cells",
+        "Cmd + Option + V -> paste special",
+        "Cmd + R -> fill right"
+      ],
+      "windows": [
+        "Ctrl + Shift + L -> apply filter to portfolio matrix",
+        "Alt + N + V -> insert pivot table for sector exposure analysis",
+        "F4 -> repeat last action (great for sensitivity tables)",
+        "Ctrl + 1 -> Format cells (currency, percentage)"
+      ]
+    }
+  }
+}

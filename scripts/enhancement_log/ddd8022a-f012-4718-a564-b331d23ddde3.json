@@ -1,0 +1,352 @@
+{
+  "id": "ddd8022a-f012-4718-a564-b331d23ddde3",
+  "label": "M1 S13 | Statistics Formulas with Nifty Monthly Returns Worked Exampl",
+  "before": {
+    "formulas": [
+      {
+        "name": "Mean",
+        "excel": "=AVERAGE(range)",
+        "formula": "Sum of X / n"
+      },
+      {
+        "name": "Variance (Sample)",
+        "note": "Bessel correction: n-1 prevents underestimating variance from sample",
+        "excel": "=VAR.S(range)",
+        "formula": "Sum of (Xi - Mean)^2 / (n-1)"
+      },
+      {
+        "name": "Standard Deviation",
+        "excel": "=STDEV.S(range)",
+        "formula": "Square root of Variance"
+      },
+      {
+        "name": "Correlation",
+        "excel": "=CORREL(range1, range2)",
+        "range": "-1 to +1",
+        "formula": "Sum[(Xi-Xbar)(Yi-Ybar)] / sqrt[Sum(Xi-Xbar)^2 x Sum(Yi-Ybar)^2]"
+      },
+      {
+        "name": "Regression Slope (Beta)",
+        "excel": "=SLOPE(known_ys, known_xs)",
+        "formula": "Sum[(Xi-Xbar)(Yi-Ybar)] / Sum(Xi-Xbar)^2"
+      },
+      {
+        "name": "Regression Intercept (Alpha)",
+        "excel": "=INTERCEPT(known_ys, known_xs)",
+        "formula": "Ybar - Beta x Xbar"
+      },
+      {
+        "name": "R-squared",
+        "excel": "=RSQ(known_ys, known_xs)",
+        "formula": "Proportion of Y variance explained by X"
+      },
+      {
+        "name": "Annualise Monthly Std Dev",
+        "note": "Volatility scales with square root of time",
+        "formula": "Monthly sigma x sqrt(12)"
+      }
+    ],
+    "worked_example": {
+      "data": "Nifty 50 monthly returns: +3%, -1%, +4%, +2%, -2%, +6%",
+      "step1": "Mean = 12/6 = 2.0%",
+      "step2": "Squared deviations: 1.00, 9.00, 4.00, 0.00, 16.00, 16.00. Sum = 46.00",
+      "step3": "Sample variance = 46.00/5 = 9.20",
+      "step4": "Std dev = sqrt(9.20) = 3.03% monthly",
+      "step5": "Annualised = 3.03% x sqrt(12) = 10.5% annual volatility"
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Mean",
+        "excel": "=AVERAGE(range)",
+        "formula": "Sum of X / n",
+        "variables": [
+          {
+            "symbol": "X",
+            "meaning": "Individual data values"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Total number of observations"
+          }
+        ],
+        "plain_english": "The mean is the average of all observations—the central value around which data points cluster. In equity research, it tells you the typical return or metric over a period, forming the baseline for measuring volatility and performance.",
+        "computation": [
+          "Add all values together",
+          "Divide by the count of observations"
+        ],
+        "worked_example": {
+          "problem": "Nifty 50 monthly returns: +3%, −1%, +4%, +2%, −2%, +6%. Calculate mean return.",
+          "steps": [
+            "Sum = 3 + (−1) + 4 + 2 + (−2) + 6 = 12",
+            "Count = 6 months",
+            "Mean = 12 ÷ 6 = 2.0%"
+          ],
+          "result": "2.0% average monthly return",
+          "insight": "Over this 6-month period, Nifty 50 averaged a 2% monthly gain. This anchors variance and risk calculations."
+        }
+      },
+      {
+        "name": "Variance (Sample)",
+        "note": "Bessel correction: n-1 prevents underestimating variance from sample",
+        "excel": "=VAR.S(range)",
+        "formula": "Sum of (Xi - Mean)^2 / (n-1)",
+        "variables": [
+          {
+            "symbol": "Xi",
+            "meaning": "Individual observation i"
+          },
+          {
+            "symbol": "Mean",
+            "meaning": "Average of all observations"
+          },
+          {
+            "symbol": "n",
+            "meaning": "Total number of observations"
+          }
+        ],
+        "plain_english": "Variance measures how spread out returns are from the mean. It quantifies data dispersion—higher variance means more unpredictability. In equity research, it underpins risk measurement and portfolio decisions. We divide by (n−1) for samples to avoid downward bias.",
+        "computation": [
+          "Calculate deviations: subtract Mean from each Xi",
+          "Square each deviation",
+          "Sum all squared deviations",
+          "Divide by (n−1) for sample variance"
+        ],
+        "worked_example": {
+          "problem": "From Nifty returns {+3%, −1%, +4%, +2%, −2%, +6%} with mean 2.0%, calculate sample variance.",
+          "steps": [
+            "Deviations: (3−2)=1, (−1−2)=−3, (4−2)=2, (2−2)=0, (−2−2)=−4, (6−2)=4",
+            "Squared deviations: 1, 9, 4, 0, 16, 16",
+            "Sum of squares = 1+9+4+0+16+16 = 46",
+            "Sample variance = 46 ÷ (6−1) = 46 ÷ 5 = 9.20"
+          ],
+          "result": "9.20 (in percentage-squared units)",
+          "insight": "This variance of 9.20 is relatively high, indicating Nifty returns in this period were quite volatile around the 2% mean."
+        }
+      },
+      {
+        "name": "Standard Deviation",
+        "excel": "=STDEV.S(range)",
+        "formula": "Square root of Variance",
+        "variables": [
+          {
+            "symbol": "Variance",
+            "meaning": "Squared deviations from mean, divided by (n−1)"
+          }
+        ],
+        "plain_english": "Standard deviation converts variance back into the original units (e.g., percentage returns), making it intuitive. It is the most common measure of volatility in finance—higher standard deviation means riskier, more unpredictable returns.",
+        "computation": [
+          "Calculate or retrieve variance",
+          "Take its square root"
+        ],
+        "worked_example": {
+          "problem": "From the sample variance of 9.20, calculate standard deviation.",
+          "steps": [
+            "Std Dev = √9.20",
+            "Std Dev ≈ 3.03%"
+          ],
+          "result": "3.03% monthly standard deviation",
+          "insight": "Monthly returns deviate from the 2% mean by roughly ±3.03%, indicating moderate volatility for Nifty in this sample."
+        }
+      },
+      {
+        "name": "Correlation",
+        "excel": "=CORREL(range1, range2)",
+        "range": "-1 to +1",
+        "formula": "Sum[(Xi-Xbar)(Yi-Ybar)] / sqrt[Sum(Xi-Xbar)^2 x Sum(Yi-Ybar)^2]",
+        "variables": [
+          {
+            "symbol": "Xi",
+            "meaning": "Individual value of variable X"
+          },
+          {
+            "symbol": "Yi",
+            "meaning": "Individual value of variable Y"
+          },
+          {
+            "symbol": "Xbar",
+            "meaning": "Mean of variable X"
+          },
+          {
+            "symbol": "Ybar",
+            "meaning": "Mean of variable Y"
+          }
+        ],
+        "plain_english": "Correlation measures how two variables move together, ranging from −1 (perfect inverse) to +1 (perfect positive). In equity research, it reveals portfolio diversification potential: low or negative correlation between assets reduces portfolio risk.",
+        "computation": [
+          "Calculate deviations of X from its mean and Y from its mean",
+          "Multiply paired deviations (co-movement numerator)",
+          "Sum these products",
+          "Calculate sum of squared X deviations and sum of squared Y deviations",
+          "Divide covariance by the square root of the product of the two sums"
+        ],
+        "worked_example": {
+          "problem": "Nifty 50 monthly returns: {+3%, −1%, +4%, +2%, −2%, +6%} and Bank Nifty returns: {+2%, −2%, +5%, +1%, −3%, +7%}. Calculate correlation.",
+          "steps": [
+            "Nifty mean = 2.0%, Bank Nifty mean = 2.67%",
+            "Nifty deviations: {+1, −3, +2, 0, −4, +4}",
+            "Bank Nifty deviations: {−0.67, −4.67, +2.33, −1.67, −5.67, +4.33}",
+            "Sum of products (co-movement): (1×−0.67) + (−3×−4.67) + (2×2.33) + (0×−1.67) + (−4×−5.67) + (4×4.33) = −0.67 + 14.01 + 4.66 + 0 + 22.68 + 17.32 = 58",
+            "Sum of Nifty squared deviations = 46; Sum of BankNifty squared deviations ≈ 80.67",
+            "Correlation = 58 / √(46 × 80.67) ≈ 58 / 60.8 ≈ 0.95"
+          ],
+          "result": "Correlation ≈ 0.95",
+          "insight": "Very high positive correlation (0.95) indicates Nifty and Bank Nifty move almost in lockstep. Limited diversification benefit from holding both in a portfolio."
+        }
+      },
+      {
+        "name": "Regression Slope (Beta)",
+        "excel": "=SLOPE(known_ys, known_xs)",
+        "formula": "Sum[(Xi-Xbar)(Yi-Ybar)] / Sum(Xi-Xbar)^2",
+        "variables": [
+          {
+            "symbol": "Xi",
+            "meaning": "Market or independent variable (e.g., Nifty return)"
+          },
+          {
+            "symbol": "Yi",
+            "meaning": "Stock or dependent variable (e.g., TCS return)"
+          },
+          {
+            "symbol": "Xbar",
+            "meaning": "Mean of independent variable"
+          },
+          {
+            "symbol": "Ybar",
+            "meaning": "Mean of dependent variable"
+          }
+        ],
+        "plain_english": "Regression slope (beta) tells you how much a stock moves for each 1% move in the market. A beta of 1.2 means the stock is 20% more volatile than the market; 0.8 means 20% less volatile. It is crucial for estimating systematic risk and cost of equity.",
+        "computation": [
+          "Calculate deviations of X (market) and Y (stock) from their respective means",
+          "Multiply each pair of deviations",
+          "Sum the products (numerator)",
+          "Sum squared X deviations (denominator)",
+          "Divide numerator by denominator"
+        ],
+        "worked_example": {
+          "problem": "Market (Nifty) returns: {+3%, −1%, +4%, +2%, −2%, +6%}; TCS returns: {+4%, −2%, +6%, +2%, −1%, +8%}. Calculate beta.",
+          "steps": [
+            "Nifty mean = 2.0%, TCS mean = 2.83%",
+            "Nifty deviations: {+1, −3, +2, 0, −4, +4}; TCS deviations: {+1.17, −4.83, +3.17, −0.83, −3.83, +5.17}",
+            "Sum of products: (1×1.17) + (−3×−4.83) + (2×3.17) + (0×−0.83) + (−4×−3.83) + (4×5.17) = 1.17 + 14.49 + 6.34 + 0 + 15.32 + 20.68 = 58",
+            "Sum of Nifty squared deviations = 46",
+            "Beta = 58 ÷ 46 ≈ 1.26"
+          ],
+          "result": "Beta ≈ 1.26",
+          "insight": "TCS is 26% more volatile than Nifty, meaning it amplifies market movements. Higher systematic risk demands a higher expected return."
+        }
+      },
+      {
+        "name": "Regression Intercept (Alpha)",
+        "excel": "=INTERCEPT(known_ys, known_xs)",
+        "formula": "Ybar - Beta x Xbar",
+        "variables": [
+          {
+            "symbol": "Ybar",
+            "meaning": "Mean of dependent variable (stock return)"
+          },
+          {
+            "symbol": "Beta",
+            "meaning": "Regression slope coefficient"
+          },
+          {
+            "symbol": "Xbar",
+            "meaning": "Mean of independent variable (market return)"
+          }
+        ],
+        "plain_english": "The intercept (alpha) is the expected return of a stock when the market return is zero. It captures the stock's excess return not explained by systematic market risk—a positive alpha suggests outperformance, though it may reflect luck or hidden risk.",
+        "computation": [
+          "Calculate the mean of the dependent variable (Ybar)",
+          "Multiply beta by the mean of the independent variable (Xbar)",
+          "Subtract the product from Ybar"
+        ],
+        "worked_example": {
+          "problem": "From the previous regression: Nifty mean = 2.0%, TCS mean = 2.83%, Beta = 1.26. Calculate alpha.",
+          "steps": [
+            "Alpha = Ybar − (Beta × Xbar)",
+            "Alpha = 2.83 − (1.26 × 2.0)",
+            "Alpha = 2.83 − 2.52 = 0.31%"
+          ],
+          "result": "Alpha ≈ 0.31%",
+          "insight": "TCS has a small positive alpha of 0.31% monthly, suggesting it delivered slightly more return than its beta-based market risk would predict—though the sample is small and this may not be statistically significant."
+        }
+      },
+      {
+        "name": "R-squared",
+        "excel": "=RSQ(known_ys, known_xs)",
+        "formula": "Proportion of Y variance explained by X",
+        "variables": [
+          {
+            "symbol": "Y",
+            "meaning": "Dependent variable (stock return)"
+          },
+          {
+            "symbol": "X",
+            "meaning": "Independent variable (market return)"
+          },
+          {
+            "symbol": "R²",
+            "meaning": "Coefficient of determination (0 to 1)"
+          }
+        ],
+        "plain_english": "R-squared tells you what fraction of a stock's variance is explained by market movements. An R² of 0.70 means 70% of the stock's ups and downs come from the market; the remaining 30% is company-specific (idiosyncratic) risk. Higher R² suggests the market model is more reliable.",
+        "computation": [
+          "Fit a regression line of Y on X",
+          "Calculate predicted values using the regression equation",
+          "Compute the sum of squared residuals (Y_actual − Y_predicted)²",
+          "Compute total sum of squares (Y_actual − Ybar)²",
+          "R² = 1 − (sum of squared residuals / total sum of squares), or equivalently: R² = Correlation²"
+        ],
+        "worked_example": {
+          "problem": "From Nifty vs. TCS regression with correlation ≈ 0.95, calculate R-squared.",
+          "steps": [
+            "R² = Correlation²",
+            "R² = (0.95)² = 0.9025"
+          ],
+          "result": "R² ≈ 0.90",
+          "insight": "About 90% of TCS's monthly return variance is explained by Nifty movements, leaving only 10% to company-specific factors. This high R² indicates TCS returns are strongly tied to the broader market."
+        }
+      },
+      {
+        "name": "Annualise Monthly Std Dev",
+        "note": "Volatility scales with square root of time",
+        "formula": "Monthly sigma x sqrt(12)",
+        "variables": [
+          {
+            "symbol": "Monthly sigma",
+            "meaning": "Standard deviation of monthly returns"
+          },
+          {
+            "symbol": "sqrt(12)",
+            "meaning": "Square root of 12 months per year"
+          }
+        ],
+        "plain_english": "Monthly volatility can be annualized by scaling it by the square root of time (√12 for a year). This assumes returns are independent month-to-month. Annualized volatility is the standard way to compare risk across assets and time horizons in equity research.",
+        "computation": [
+          "Calculate or obtain monthly standard deviation",
+          "Multiply by √12 (approximately 3.464)"
+        ],
+        "worked_example": {
+          "problem": "Nifty 50 monthly standard deviation is 3.03%. Annualize it.",
+          "steps": [
+            "Annualised Std Dev = 3.03% × √12",
+            "√12 ≈ 3.464",
+            "Annualised Std Dev = 3.03% × 3.464 ≈ 10.5%"
+          ],
+          "result": "10.5% annualized volatility",
+          "insight": "The monthly volatility of 3.03% compounds to an annualized volatility of 10.5%. This is the number used in CAPM, portfolio risk calculations, and earnings volatility models."
+        }
+      }
+    ],
+    "worked_example": {
+      "data": "Nifty 50 monthly returns: +3%, -1%, +4%, +2%, -2%, +6%",
+      "step1": "Mean = 12/6 = 2.0%",
+      "step2": "Squared deviations: 1.00, 9.00, 4.00, 0.00, 16.00, 16.00. Sum = 46.00",
+      "step3": "Sample variance = 46.00/5 = 9.20",
+      "step4": "Std dev = sqrt(9.20) = 3.03% monthly",
+      "step5": "Annualised = 3.03% x sqrt(12) = 10.5% annual volatility"
+    }
+  }
+}

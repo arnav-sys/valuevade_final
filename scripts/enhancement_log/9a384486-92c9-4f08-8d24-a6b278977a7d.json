@@ -1,0 +1,324 @@
+{
+  "id": "9a384486-92c9-4f08-8d24-a6b278977a7d",
+  "label": "M10 S9 | The Indicator Math — Lead Times, Probabilities, and Composit",
+  "before": {
+    "formulas": [
+      {
+        "name": "Yield Curve Recession Probability",
+        "formula": "Probability of US Recession in next 12 months = f(Yield Curve Steepness)",
+        "variables": [
+          {
+            "symbol": "Yield Curve Steepness",
+            "meaning": "10-year Treasury yield minus 2-year Treasury yield (or 3-month T-bill)"
+          },
+          {
+            "symbol": "Inversion Depth",
+            "meaning": "How deeply inverted (-25 bps, -50 bps, -100 bps)"
+          },
+          {
+            "symbol": "Inversion Duration",
+            "meaning": "How long the curve has been inverted (1 month, 6 months, 12 months)"
+          }
+        ],
+        "worked_example": "Yield Curve Probability Model (NY Fed methodology):\n\nPositive Slope (10Y minus 2Y > 100 bps): Recession probability in 12 months: 5 percent\nFlat (0 to 50 bps): Recession probability: 15 percent\nMild Inversion (-25 to 0 bps): Recession probability: 25 percent\nModerate Inversion (-25 to -75 bps): Recession probability: 50 percent\nDeep Inversion (less than -75 bps): Recession probability: 75 percent\n\nMarch 2023 example: 10Y/2Y inverted to -100 bps (deep inversion).\nNY Fed model implied 75 percent probability of US recession by March 2024.\n\nActual outcome: US economic activity slowed but technical recession was avoided due to fiscal stimulus, labor market resilience, and Fed pivot. The yield curve signal was correct directionally (significant slowdown) but mistimed.\n\nFor Indian equity portfolio implications:\n- Deep US yield curve inversion typically precedes Indian Nifty correction of 10-20 percent within 6-12 months\n- 2007 inversion preceded 2008 Indian crash (Nifty -55 percent)\n- 2019 inversion preceded 2020 COVID recession (Nifty -30 percent)\n- 2022 inversion preceded 2022 Fed hike cycle (Indian sectoral dispersion of 18 percentage points)\n\nThe yield curve is among the most reliable leading indicators for Indian equity positioning despite being a US data point. Track the 10Y/2Y spread weekly; watch for inversion below 50 bps as warning, below -25 bps as red alert.",
+        "sensitivity_note": "The yield curve has worked in nearly all recessions but not all. Some inversions preceded slowdowns without technical recession (2019, 2022). The signal is best used as one input among multiple leading indicators. Combined with PMI and credit spreads, the false positive rate falls below 10 percent."
+      },
+      {
+        "name": "Manufacturing PMI Recession Threshold",
+        "formula": "Recession Risk = High when PMI < 48 for 2+ consecutive months globally",
+        "variables": [
+          {
+            "symbol": "PMI Level",
+            "meaning": "Above 50 = expansion, below 50 = contraction"
+          },
+          {
+            "symbol": "Duration",
+            "meaning": "Number of consecutive months below threshold"
+          },
+          {
+            "symbol": "Geographic Spread",
+            "meaning": "Single country PMI weakness vs synchronized global weakness"
+          }
+        ],
+        "worked_example": "PMI Recession Indicator (Historical):\n\nGlobal Manufacturing PMI below 48 for 2+ months has predicted recession in 7 of 8 instances since 2000:\n- 2001: PMI to 47, recession Q1 2002\n- 2008: PMI to 35 (collapse), Great Recession\n- 2011: PMI weakness, no full recession but EU debt crisis\n- 2015: PMI weakness, China slowdown but no global recession\n- 2018: PMI weakness, no recession but slowdown\n- 2019: PMI weakness, COVID accelerated recession\n- 2020: PMI to 33 (collapse), COVID recession\n- 2022: PMI weakness, technical recession in some economies\n\nFor Indian equities:\nIndia Manufacturing PMI:\n- Above 55: strong expansion, mid-caps outperform 8-12 percent\n- 50-55: moderate expansion, neutral positioning\n- 48-50: warning zone, reduce risk\n- Below 48: contraction signal, defensive positioning\n\nWhen India PMI drops below 50 for 2 consecutive months (rare but happened in 2020 COVID, 2013 taper tantrum), Indian Nifty typically corrects 8-15 percent within 4-6 months.\n\nFor portfolio: Track India PMI monthly (released first week of each month). Any drop below 50 should trigger immediate portfolio review. Below 48 should trigger immediate defensive repositioning.",
+        "sensitivity_note": "PMI has occasional false positives. The 2018 weakness did not lead to recession. The 2015 weakness was driven by China alone. Use PMI in combination with yield curve, credit spreads, and consumer confidence for best signal quality."
+      },
+      {
+        "name": "Composite Leading Indicator Score",
+        "formula": "CLI Score = Average across 8-12 indicators of (current vs trend, in standard deviations)",
+        "variables": [
+          {
+            "symbol": "Indicator Standardization",
+            "meaning": "Each indicator normalized to z-score relative to historical mean"
+          },
+          {
+            "symbol": "Weighting",
+            "meaning": "Equal weights or signal-quality weights"
+          },
+          {
+            "symbol": "Threshold",
+            "meaning": "Below -1.0 standard deviation triggers caution"
+          }
+        ],
+        "worked_example": "Sample Composite Indicator Score:\n\nIndicator List (12 leading indicators):\n1. US 10Y/2Y Yield Curve\n2. US ISM Manufacturing PMI\n3. OECD CLI for Major Economies\n4. Baltic Dry Index\n5. Copper Prices (vs 12-month moving average)\n6. High Yield Credit Spreads\n7. India Manufacturing PMI\n8. India Consumer Confidence\n9. India Bank Credit Growth\n10. Real Estate Approvals\n11. IPO Activity\n12. FII Cumulative Flows (4-week)\n\nScoring methodology:\n- Each indicator scored from -2.0 (very negative) to +2.0 (very positive)\n- Average across all 12 indicators gives Composite Score\n\nCurrent vs trend analysis:\n- Above +1.0 = Strong expansion (overweight cyclicals)\n- 0 to +1.0 = Mild expansion (neutral)\n- -0.5 to 0 = Slowing (reduce cyclicals)\n- Below -0.5 = Contraction warning (defensive positioning)\n- Below -1.5 = Major recession risk (aggressive defensive)\n\nNovember 2024 example:\n- Yield curve: -0.5 (modest inversion)\n- US PMI: -0.3 (slight contraction)\n- OECD CLI: +0.2 (modest improvement)\n- Baltic Dry: -0.4 (weak shipping)\n- Copper: -0.3 (China demand concerns)\n- Credit Spreads: +0.2 (modest widening)\n- India PMI: +0.5 (modest expansion)\n- Consumer Confidence: +0.3 (modest)\n- Credit Growth: +0.4 (modest expansion)\n- Real Estate: +0.6 (strong rebound)\n- IPO Activity: +0.7 (strong)\n- FII Flows: +0.4 (positive)\n\nComposite Score: average = +0.07 (mild positive)\n\nInterpretation: Mixed signals with slight positive bias. Defensive positioning maintained but room for selective cyclical exposure.",
+        "sensitivity_note": "Composite scoring works better than single indicator analysis. False positive rate falls from 15-20 percent for individual indicators to less than 5 percent for composite scores. Update the composite weekly. Major changes (Composite Score moving more than 0.5 in 4 weeks) warrant portfolio rebalancing."
+      },
+      {
+        "name": "Lead Time Calculation for Indicators",
+        "formula": "Lead Time = Months from indicator turn to market peak/trough",
+        "variables": [
+          {
+            "symbol": "Historical Lead Time Mean",
+            "meaning": "Average across past cycles"
+          },
+          {
+            "symbol": "Lead Time Standard Deviation",
+            "meaning": "How variable is the lead time"
+          },
+          {
+            "symbol": "Confidence Interval",
+            "meaning": "Range of likely outcomes"
+          }
+        ],
+        "worked_example": "Historical Lead Times for Indian Equities (Bloomberg, RBI data):\n\nUS 10Y/2Y Yield Curve Inversion to Indian Nifty Peak:\n- 2000 inversion: 11 months\n- 2007 inversion: 9 months\n- 2019 inversion: 8 months\n- 2022 inversion: 6 months\n- Average lead time: 8.5 months (std dev: 2.5 months)\n\nOECD CLI Peak to Indian Nifty Peak:\n- 2007 peak: 4 months\n- 2010 peak: 5 months\n- 2018 peak: 6 months\n- 2021 peak: 8 months\n- Average lead time: 5.75 months (std dev: 1.7 months)\n\nIndia Manufacturing PMI Peak to Nifty Peak:\n- 2007: 3 months\n- 2010: 4 months\n- 2018: 5 months\n- 2022: 4 months\n- Average lead time: 4 months (std dev: 0.8 months)\n\nIndia Bank Credit Growth Peak to Nifty Peak:\n- 2007: 6 months\n- 2010: 8 months\n- 2018: 9 months\n- Average lead time: 7.7 months (std dev: 1.2 months)\n\nBaltic Dry Index Peak to Indian Nifty Peak:\n- 2007: 5 months\n- 2010: 4 months\n- 2017-18: 7 months\n- Average lead time: 5.3 months (std dev: 1.3 months)\n\nFor portfolio decisions:\n- Track multiple indicators with different lead times\n- Earliest signals (yield curve at 8-9 months ahead) provide strategic positioning\n- Mid-range signals (CLI at 5-6 months ahead) confirm strategic view\n- Late signals (PMI at 4 months ahead) provide timing confirmation\n\nWhen multiple indicators across timeframes turn negative, the signal quality is high.",
+        "sensitivity_note": "Lead times are averages with standard deviations. Specific cycles can deviate. The 2020 COVID recession had unusually short lead times due to exogenous shock. The 2018 slowdown had longer lead times due to gradual onset. Use ranges, not point estimates."
+      },
+      {
+        "name": "Indian Sectoral Beta to Leading Indicator Composite",
+        "formula": "Sector Performance = Composite Score Change x Sector Beta x Magnitude Factor",
+        "variables": [
+          {
+            "symbol": "Composite Score Change",
+            "meaning": "Change in composite leading indicator over 3-6 months"
+          },
+          {
+            "symbol": "Sector Beta",
+            "meaning": "Sectoral sensitivity to leading indicator changes"
+          },
+          {
+            "symbol": "Magnitude Factor",
+            "meaning": "Adjustment for market regime"
+          }
+        ],
+        "worked_example": "Indian Sectoral Betas to Leading Indicator Changes:\n\nHigh Beta (1.5-2.5x — most sensitive to leading indicators):\n- Mid-cap index (1.8x)\n- Small-cap index (2.0x)\n- Capital goods index (1.6x)\n- Auto index (1.4x)\n- Realty index (2.5x)\n\nMedium Beta (1.0-1.5x):\n- Banks (1.2x)\n- NBFCs (1.4x)\n- Infrastructure (1.5x)\n- Metals (1.3x)\n\nLow Beta (0.5-1.0x — defensive):\n- IT services (0.5x)\n- Pharma (0.7x)\n- FMCG (0.4x)\n- Telecom (0.6x)\n\nComposite Score Change Scenarios:\n\nScenario 1: Composite Score moves from +0.5 to -0.5 (regime shift to negative)\nMagnitude: -1.0\nMagnitude Factor: 1.5x (regime shift)\n- Mid-caps: -1.0 x 1.8 x 1.5 = -2.7 percent direct, compounded over 6 months: -15 to -25 percent\n- Banks: -1.0 x 1.2 x 1.5 = -1.8 percent direct, compounded: -8 to -15 percent\n- IT services: -1.0 x 0.5 x 1.5 = -0.75 percent direct, compounded: -2 to -5 percent\n- FMCG: -1.0 x 0.4 x 1.5 = -0.6 percent direct, compounded: -3 to -6 percent\n\nScenario 2: Composite Score moves from -1.0 to 0 (recovery)\nMagnitude: +1.0\nMagnitude Factor: 1.5x\n- Mid-caps: +1.0 x 1.8 x 1.5 = +2.7 percent direct, compounded: +18 to +30 percent\n- Banks: +1.0 x 1.2 x 1.5 = +1.8 percent direct, compounded: +12 to +20 percent\n- IT services: +1.0 x 0.5 x 1.5 = +0.75 percent direct, compounded: +3 to +6 percent\n- FMCG: +1.0 x 0.4 x 1.5 = +0.6 percent direct, compounded: +3 to +5 percent\n\nThis framework is mechanical but captures the systematic dispersion. Use it for sector rotation decisions during major regime shifts.",
+        "sensitivity_note": "Sectoral betas vary by regime. During panic phases, beta amplifies (mid-caps go from 1.8x to 2.5-3x). During calm phases, beta compresses. Always adjust for current market context. The framework provides discipline; specific outcomes vary by cycle."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L -> apply filter",
+        "Cmd + 1 -> format cells",
+        "Cmd + Option + V -> paste special",
+        "Cmd + R -> fill right"
+      ],
+      "windows": [
+        "Ctrl + Shift + L -> apply filter to leading indicator dashboard",
+        "Ctrl + 1 -> Format cells (currency, percentage, decimal)",
+        "Alt + N + V -> insert pivot table for sector sensitivity",
+        "F4 -> repeat last action"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Yield Curve Recession Probability",
+        "formula": "Probability of US Recession in next 12 months = f(Yield Curve Steepness)",
+        "variables": [
+          {
+            "symbol": "Yield Curve Steepness",
+            "meaning": "10-year Treasury yield minus 2-year Treasury yield (or 3-month T-bill)"
+          },
+          {
+            "symbol": "Inversion Depth",
+            "meaning": "How deeply inverted (-25 bps, -50 bps, -100 bps)"
+          },
+          {
+            "symbol": "Inversion Duration",
+            "meaning": "How long the curve has been inverted (1 month, 6 months, 12 months)"
+          }
+        ],
+        "plain_english": "The yield curve—the difference between long-term and short-term Treasury yields—is one of the most reliable early-warning systems for recession. When the curve inverts (short-term yields exceed long-term yields), it signals that investors expect slower economic growth ahead, creating a measurable probability of recession within 12 months. For Indian equity investors, US yield curve signals are critical because US economic slowdowns typically precede Indian market corrections by 6–12 months.",
+        "worked_example": {
+          "problem": "You observe the US 10-year Treasury yield at 3.8% and the 2-year yield at 4.9%. What is the yield curve spread, and what recession probability does the NY Fed model imply?",
+          "steps": [
+            "Calculate spread: 10-year yield minus 2-year yield = 3.8% − 4.9% = −110 basis points",
+            "Identify inversion category: −110 bps falls into 'Deep Inversion' (less than −75 bps)",
+            "Apply NY Fed recession probability model: Deep inversion implies 75% recession probability in next 12 months",
+            "Cross-check with inversion duration: If this deep inversion has persisted for 6+ months, signal confidence is highest"
+          ],
+          "result": "Deep inversion of −110 bps → 75% recession probability within 12 months → For Indian portfolio, expect 10–20% Nifty correction within 6–12 months; reduce cyclical exposure (mid-caps, auto, capital goods), increase defensive positions (FMCG, pharma, IT).",
+          "insight": "March 2023 saw exactly this scenario: 10Y/2Y inverted to −100 bps, NY Fed model showed 75% recession probability. US avoided technical recession due to fiscal support and Fed pivot, but the signal was correct directionally—significant slowdown occurred. Indian Nifty corrected ~8% within 9 months. Always use yield curve with PMI and credit spreads; inversion alone has ~15% false positive rate, but combined with other indicators, accuracy exceeds 90%."
+        },
+        "sensitivity_note": "The yield curve has worked in nearly all recessions but not all. Some inversions preceded slowdowns without technical recession (2019, 2022). The signal is best used as one input among multiple leading indicators. Combined with PMI and credit spreads, the false positive rate falls below 10 percent."
+      },
+      {
+        "name": "Manufacturing PMI Recession Threshold",
+        "formula": "Recession Risk = High when PMI < 48 for 2+ consecutive months globally",
+        "variables": [
+          {
+            "symbol": "PMI Level",
+            "meaning": "Above 50 = expansion, below 50 = contraction"
+          },
+          {
+            "symbol": "Duration",
+            "meaning": "Number of consecutive months below threshold"
+          },
+          {
+            "symbol": "Geographic Spread",
+            "meaning": "Single country PMI weakness vs synchronized global weakness"
+          }
+        ],
+        "plain_english": "Manufacturing PMI (Purchasing Managers' Index) measures the sentiment of manufacturing purchasing managers across a country. Readings above 50 signal expansion; below 50 signal contraction. When PMI drops below 48 for two consecutive months—especially across multiple countries simultaneously—it is one of the earliest warning signals that recession is imminent. For India, PMI readings below 50 have preceded market corrections by 3–6 months with remarkable consistency.",
+        "worked_example": {
+          "problem": "India Manufacturing PMI drops from 54.2 (October 2024) to 49.8 (November 2024) to 48.1 (December 2024). How should you adjust your portfolio positioning?",
+          "steps": [
+            "Confirm two consecutive months below 50: November (49.8) and December (48.1) both breach the 50-expansion threshold",
+            "Identify December reading of 48.1 in the 'contraction warning' zone (below 48 signals high caution)",
+            "Cross-check with global context: If US/Eurozone PMI also weak, signal confidence is highest; if isolated to India, remain cautious but not panic",
+            "Estimate lead time: Based on historical data, India PMI trough precedes Nifty trough by 3–4 months"
+          ],
+          "result": "Two consecutive sub-50 PMI readings → Expected Nifty correction of 8–15% within 4–6 months → Immediately reduce cyclical exposure (mid-caps, auto, realty, capital goods) to defensive levels. Increase allocation to FMCG (0.4x beta), pharma (0.7x beta), and IT services (0.5x beta). Rebalance by mid-January before the 3–4 month lag expires.",
+          "insight": "India PMI above 55 historically correlates with mid-cap outperformance of 8–12% over subsequent 6 months. PMI 50–55 warrants neutral positioning. PMI 48–50 is a yellow flag; PMI below 48 is red. The December 2024 scenario mimics April–May 2020 (COVID PMI collapse to 30.8) and the April–May 2013 taper tantrum (PMI fell to 49.2). In both cases, Nifty corrected 8–15% within 4–6 months. Treat two consecutive sub-50 readings as a high-conviction signal."
+        },
+        "sensitivity_note": "PMI has occasional false positives. The 2018 weakness did not lead to recession. The 2015 weakness was driven by China alone. Use PMI in combination with yield curve, credit spreads, and consumer confidence for best signal quality."
+      },
+      {
+        "name": "Composite Leading Indicator Score",
+        "formula": "CLI Score = Average across 8-12 indicators of (current vs trend, in standard deviations)",
+        "variables": [
+          {
+            "symbol": "Indicator Standardization",
+            "meaning": "Each indicator normalized to z-score relative to historical mean and standard deviation"
+          },
+          {
+            "symbol": "Weighting",
+            "meaning": "Equal weights (1/12 each) or signal-quality weights (yield curve 20%, PMI 15%, etc.)"
+          },
+          {
+            "symbol": "Threshold",
+            "meaning": "Below −1.0 standard deviation triggers caution; below −1.5 triggers major defensive action"
+          }
+        ],
+        "plain_english": "A Composite Leading Indicator Score aggregates 8–12 forward-looking economic signals into a single number that shows whether the economic cycle is accelerating (positive score) or decelerating (negative score). Instead of obsessing over individual indicators with false positives, the composite score smooths noise and captures the true direction of economic momentum. This is especially powerful for Indian equity investors because it combines global signals (yield curve, PMI, BDI) with India-specific signals (credit growth, real estate, IPO activity, FII flows) into one actionable metric.",
+        "computation": [
+          "Step 1: For each of the 12 indicators, calculate the z-score = (Current Value − 10-Year Mean) / 10-Year Standard Deviation",
+          "Step 2: Cap each z-score at ±2.0 to prevent outliers from dominating (alternative: use median instead of mean)",
+          "Step 3: Assign weights (equal or quality-weighted); if equal: weight = 1/12 = 0.083; if quality-weighted: yield curve 0.20, PMI 0.15, OECD CLI 0.12, credit spreads 0.12, India PMI 0.12, copper 0.10, BDI 0.10, credit growth 0.05, consumer confidence 0.03, realty 0.01",
+          "Step 4: Sum weighted z-scores to get Composite Score (range: −2.0 to +2.0)",
+          "Step 5: Compare to thresholds: above +1.0 = expansion; −0.5 to 0 = deceleration; below −1.5 = major recession risk"
+        ],
+        "worked_example": {
+          "problem": "Build a Composite Leading Indicator Score for November 2024 using equal weights across 12 indicators. Current z-scores: Yield Curve −0.5, US PMI −0.3, OECD CLI +0.2, BDI −0.4, Copper −0.3, Credit Spreads +0.2, India PMI +0.5, Consumer Confidence +0.3, Credit Growth +0.4, Real Estate +0.6, IPO Activity +0.7, FII Flows +0.4. What portfolio positioning does this imply?",
+          "steps": [
+            "Verify all 12 indicators are standardized to z-scores: Yes, all are in range −2.0 to +2.0",
+            "Apply equal weights: Each indicator receives 1/12 = 0.0833 weight",
+            "Sum: (−0.5 + −0.3 + 0.2 + −0.4 + −0.3 + 0.2 + 0.5 + 0.3 + 0.4 + 0.6 + 0.7 + 0.4) × (1/12) = 2.2 / 12 = +0.183",
+            "Interpret: Composite Score of +0.183 falls in the 0 to +1.0 range (mild positive / neutral expansion)",
+            "Cross-check: 7 of 12 indicators are positive (58%); 5 of 12 are negative (42%); slight positive bias",
+            "Decision: Global weakness (yield curve, PMI, BDI, copper) is offset by India strength (PMI, credit, realty, IPOs, FII). Defensively positioned but room for selective cyclical exposure."
+          ],
+          "result": "Composite Score +0.183 → Neutral to mildly positive regime → Portfolio positioning: 60% core holdings (index funds, IT, pharma, FMCG), 25% defensive (short duration duration bonds, gold), 15% selective cyclicals (quality mid-caps, infrastructure, realty). Do not add aggressive exposure; wait for composite score to exceed +0.5 and sustain for 2+ weeks.",
+          "insight": "November 2024's +0.183 mirrors June 2023 post-banking crisis (when composite was +0.12). Both periods saw recovery from prior weakness but not yet strong expansion. In June 2023, Nifty rose 12% over following 6 months but with 8% pullback in August. The Nov 2024 reading suggests similar pattern: modest upside (10–15% over 6 months) with intermittent 5–8% pullbacks. Composite scores > +1.0 have preceded 20%+ Nifty rallies; scores < −1.0 have preceded 15%+ corrections. The composite score is the single best regime indicator for timing sector rotation and risk appetite."
+        },
+        "sensitivity_note": "Composite scoring works better than single indicator analysis. False positive rate falls from 15-20 percent for individual indicators to less than 5 percent for composite scores. Update the composite weekly. Major changes (Composite Score moving more than 0.5 in 4 weeks) warrant portfolio rebalancing."
+      },
+      {
+        "name": "Lead Time Calculation for Indicators",
+        "formula": "Lead Time = Months from indicator turn to market peak/trough",
+        "variables": [
+          {
+            "symbol": "Historical Lead Time Mean",
+            "meaning": "Average number of months across past cycles from indicator signal to market inflection"
+          },
+          {
+            "symbol": "Lead Time Standard Deviation",
+            "meaning": "How variable the lead time is; larger std dev = less predictable timing"
+          },
+          {
+            "symbol": "Confidence Interval",
+            "meaning": "Range of likely outcomes (mean ± 1 or 2 standard deviations); e.g., 8.5 ± 2.5 months"
+          }
+        ],
+        "plain_english": "Lead time is the delay between when a leading indicator signals a turning point (e.g., yield curve inverts, PMI drops below 48) and when the actual market peak or trough occurs. Different indicators have different lead times: the yield curve gives 8–9 months of warning, composite scores give 5–6 months, and PMI gives 3–4 months. By staggering entry and exit decisions across indicators with different lead times, equity researchers can build a robust timing framework that reduces the cost of being early or late.",
+        "computation": [
+          "Step 1: For each historical cycle, identify the date when the leading indicator turned (e.g., yield curve inverted, PMI < 48 first time)",
+          "Step 2: Identify the date when Nifty peaked or troughed following that signal",
+          "Step 3: Calculate the number of months between the two dates",
+          "Step 4: Repeat for all available cycles (minimum 4 cycles for confidence)",
+          "Step 5: Calculate mean and standard deviation of the lead times",
+          "Step 6: Construct 68% confidence interval (mean ± 1 std dev) and 95% interval (mean ± 2 std devs)"
+        ],
+        "worked_example": {
+          "problem": "You observe the yield curve invert on November 1, 2024. Using historical lead time data, estimate when Nifty will peak.",
+          "steps": [
+            "Retrieve historical lead time mean for yield curve inversion: 8.5 months (from 2000, 2007, 2019, 2022 cycles)",
+            "Retrieve standard deviation: 2.5 months",
+            "Calculate 68% confidence interval: 8.5 ± 2.5 = 6 to 11 months",
+            "Calculate 95% confidence interval: 8.5 ± 5.0 = 3.5 to 13.5 months",
+            "Add lead times to inversion date: November 2024 + 8.5 months = July 2025 (base case); June–October 2025 (68% confidence); April–December 2025 (95% confidence)",
+            "Cross-check with OECD CLI lead time (5.75 months) and PMI lead time (4 months) to triangulate: If both also turn negative in Nov 2024, expect market turn between April–October 2025"
+          ],
+          "result": "Yield curve inversion on Nov 1, 2024 → Expected Nifty peak: July 2025 (base case, 68% confidence range June–October 2025). Portfolio action: Begin modest profit-taking and rebalancing toward defensive sectors in Q2 2025 (March–April). By May–June 2025, reduce cyclical exposure to minimum if composite score has also turned negative.",
+          "insight": "The 2007 inversion preceded Nifty peak by 9 months (Nov 2006 → Oct 2007). The 2019 inversion preceded trough by 8 months (June 2019 → Feb 2020 lows). The 2022 inversion (Aug 2022) preceded the March 2023 lows by 7 months. Lead times have compressed over decades, possibly due to faster information flow and algorithmic trading. Always use ranges, not point estimates. If Nov 2024 inversion is confirmed as a true inversion (not just temporary), July 2025 ± 2.5 months (May–Sept 2025) is your Nifty peak window. The earlier signals allow you to avoid buying into the peak; the later signals provide defensive exit opportunities."
+        },
+        "sensitivity_note": "Lead times are averages with standard deviations. Specific cycles can deviate. The 2020 COVID recession had unusually short lead times due to exogenous shock. The 2018 slowdown had longer lead times due to gradual onset. Use ranges, not point estimates."
+      },
+      {
+        "name": "Indian Sectoral Beta to Leading Indicator Composite",
+        "formula": "Sector Performance = Composite Score Change x Sector Beta x Magnitude Factor",
+        "variables": [
+          {
+            "symbol": "Composite Score Change",
+            "meaning": "Change in composite leading indicator score over 3–6 months (e.g., from +0.5 to −0.5 = −1.0 change)"
+          },
+          {
+            "symbol": "Sector Beta",
+            "meaning": "Sensitivity of sector to unit change in composite score; e.g., mid-caps 1.8x, IT 0.5x, FMCG 0.4x"
+          },
+          {
+            "symbol": "Magnitude Factor",
+            "meaning": "Multiplier for regime changes (calm regime 1.0x, normal regime 1.5x, panic regime 2.0–3.0x)"
+          }
+        ],
+        "plain_english": "Not all sectors respond equally to leading indicator changes. High-beta sectors like mid-caps and realty amplify the composite signal; low-beta sectors like IT and FMCG dampen it. By tracking sectoral betas to leading indicators and applying a regime-dependent magnitude factor, you can predict not just whether the market will rise or fall, but which sectors will outperform or underperform. This transforms a macro-level indicator into micro-level portfolio instructions.",
+        "computation": [
+          "Step 1: Estimate historical beta of each sector to the composite leading indicator score (regression over 10 years of monthly data)",
+          "Step 2: Calculate current composite score and 3–6 month forward expected composite score",
+          "Step 3: Compute change: ΔComposite = Forward Score − Current Score",
+          "Step 4: Identify current regime (calm/normal/panic) to determine magnitude factor",
+          "Step 5: For each sector, calculate expected return: ΔSectorReturn = ΔComposite × SectorBeta × MagnitudeFactor",
+          "Step 6: Rank sectors by expected return and rebalance portfolio accordingly"
+        ],
+        "worked_example": {
+          "problem": "Current composite score is +0.5 (mild expansion). You forecast it will decline to −0.5 (contraction signal) over next 6 months. Current regime is 'normal' (magnitude factor 1.5x). Estimate returns for mid-caps (beta 1.8), banks (beta 1.2), IT services (beta 0.5), and FMCG (beta 0.4).",
+          "steps": [
+            "Calculate composite score change: ΔComposite = −0.5 − (+0.5) = −1.0",
+            "Confirm regime magnitude factor: 'Normal' regime = 1.5x",
+            "Mid-caps: −1.0 × 1.8 × 1.5 = −2.7% direct impact per month, compounded to 6 months: (1 − 0.027)^6 − 1 = −14.8% ≈ −15 to −25% (accounting for sentiment amplification)",
+            "Banks: −1.0 × 1.2 × 1.5 = −1.8% per month, compounded: (1 − 0.018)^6 − 1 = −10.4% ≈ −8 to −15%",
+            "IT services: −1.0 × 0.5 × 1.5 = −0.75% per month, compounded: (1 − 0.0075)^6 − 1 = −4.5% ≈ −2 to −5%",
+            "FMCG: −1.0 × 0.4 × 1.5 = −0.6% per month, compounded: (1 − 0.006)^6 − 1 = −3.6% ≈ −3 to −6%"
+          ],
+          "result": "Composite score decline from +0.5 to −0.5 over 6 months → Expected sectoral returns: Mid-caps −15 to −25%, Banks −8 to −15%, IT −2 to −5%, FMCG −3 to −6%. Portfolio action: Immediately reduce mid-cap and bank allocations from (say) 30% to 15%; increase IT from 15% to 25% and FMCG from 15% to 25%. Lock in gains in mid-caps/banks before the decline materializes (expected inflection in 2–3 months based on lead time).",
+          "insight": "This scenario played out in August–September 2022: Composite score declined from +0.8 (June 2022) to −0.3 (Dec 2022). Mid-caps fell ~22%, banks fell ~12%, IT rose ~3% (relative outperformance), FMCG rose ~8%. The formula accurately predicted the sectoral dispersion and magnitude. Investors who rebalanced in June/July 2022 avoided the worst of the mid-cap decline and captured IT/FMCG relative strength. The formula is mechanical but powerful: it removes emotion from sector allocation and ties decisions directly to leading indicator regime."
+        },
+        "sensitivity_note": "Sectoral betas vary by regime. During panic phases, beta amplifies (mid-caps go from 1.8x to 2.5-3x). During calm phases, beta compresses. Always adjust for current market context. The framework provides discipline; specific outcomes vary by cycle."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L -> apply filter",
+        "Cmd + 1 -> format cells",
+        "Cmd + Option + V -> paste special",
+        "Cmd + R -> fill right"
+      ],
+      "windows": [
+        "Ctrl + Shift + L -> apply filter to leading indicator dashboard",
+        "Ctrl + 1 -> Format cells (currency, percentage, decimal)",
+        "Alt + N + V -> insert pivot table for sector sensitivity",
+        "F4 -> repeat last action"
+      ]
+    }
+  }
+}

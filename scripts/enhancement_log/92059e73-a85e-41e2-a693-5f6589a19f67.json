@@ -1,0 +1,371 @@
+{
+  "id": "92059e73-a85e-41e2-a693-5f6589a19f67",
+  "label": "M10 S7 | The Commodity Sensitivity Math — From Brent Move to EPS Impa",
+  "before": {
+    "formulas": [
+      {
+        "name": "Crude Sensitivity for Downstream Importers",
+        "formula": "EPS Impact percent = (Crude Move dollar/bbl x Crude Cost percent of Revenue x Pass-through Loss percent) / Net Margin percent x Operating Leverage",
+        "variables": [
+          {
+            "symbol": "Crude Move dollar/bbl",
+            "meaning": "Change in Brent or relevant crude benchmark in dollars per barrel"
+          },
+          {
+            "symbol": "Crude Cost percent of Revenue",
+            "meaning": "Crude-derivative inputs as percent of company revenue"
+          },
+          {
+            "symbol": "Pass-through Loss percent",
+            "meaning": "Portion of crude cost increase NOT passed to customers (1 minus pass-through ability)"
+          },
+          {
+            "symbol": "Net Margin percent",
+            "meaning": "Net profit margin of the company"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "Ratio of operating margin response to revenue change. Typically 1.2-1.5x"
+          }
+        ],
+        "worked_example": "Asian Paints (FY24 illustrative):\n- Crude derivatives as percent of revenue: 25 percent (TIO2 plus monomers plus other crude-derivatives)\n- Pass-through ability: 70 percent (strong pricing power)\n- Pass-through Loss: 30 percent\n- Net Margin: 11 percent\n- Operating Leverage: 1.3x\n\nIf Brent rises 20 dollars/bbl (from 80 to 100):\nProduct cost increase as percent of revenue: 20/80 x 25 percent = 6.25 percent of revenue\nPortion NOT passed to customers: 6.25 percent x 30 percent = 1.88 percent of revenue\nMargin compression: 1.88 percent of revenue\nEPS Impact: 1.88 percent / 11 percent x 1.3 = 22 percent compression\n\nThis is approximately right. In practice, full crude pass-through takes 2-3 quarters and interim margins compress by 12-20 percent. Asian Paints during 2022 crude spike saw 40 percent stock correction and 20-25 percent EPS compression.\n\nIndiGo Aviation (FY24 illustrative):\n- Crude derivatives (jet fuel) as percent of revenue: 45 percent\n- Pass-through ability: 30 percent (limited fuel surcharge mechanism, lagged)\n- Pass-through Loss: 70 percent\n- Net Margin: 5 percent (volatile)\n- Operating Leverage: 1.5x\n\nIf Brent rises 20 dollars/bbl:\nJet fuel cost increase: 20/80 x 45 percent = 11.25 percent of revenue\nPortion NOT passed: 11.25 percent x 70 percent = 7.88 percent of revenue\nMargin compression: 7.88 percent\nEPS Impact: 7.88 percent / 5 percent x 1.5 = 236 percent compression\n\nThis appears extreme but reflects reality. IndiGo during 2022 crude spike saw 40-50 percent stock correction and quarterly losses where they previously had small profits. Some quarters had effectively zero or negative EPS.",
+        "sensitivity_note": "The asymmetry between strong-pricing-power (Asian Paints, HUL) and weak-pricing-power (IndiGo, SpiceJet) companies is dramatic. A 20 dollar/bbl crude spike compresses Asian Paints EPS by 20 percent but devastates IndiGo EPS by 200 percent plus. The same crude move creates radically different sectoral dispersion."
+      },
+      {
+        "name": "Upstream Producer Margin Expansion",
+        "formula": "EPS Impact percent = (Crude Move dollar/bbl x Crude Production volume x Realization Capture percent) / Current PAT",
+        "variables": [
+          {
+            "symbol": "Crude Production volume",
+            "meaning": "Annual crude production in barrels"
+          },
+          {
+            "symbol": "Realization Capture percent",
+            "meaning": "Portion of crude price that flows to revenue. Typically 70-85 percent for ONGC due to subsidies and government share"
+          },
+          {
+            "symbol": "Current PAT",
+            "meaning": "Current profit after tax"
+          }
+        ],
+        "worked_example": "ONGC (FY24 illustrative):\n- Crude production: 18.4 million tonnes (approximately 130 million barrels annually)\n- Realization Capture: 75 percent (subsidies and government share account for 25 percent)\n- Current PAT: 38000 crore\n\nIf Brent rises 20 dollars/bbl (from 80 to 100):\nIncremental revenue per barrel: 20 dollars x 75 percent = 15 dollars per barrel\nTotal incremental revenue: 130 million x 15 = 1.95 billion dollars = 16500 crore\nAt 60 percent operating margin: 9900 crore additional EBITDA\nAt 25 percent corporate tax: 7425 crore additional PAT\n\nEPS Impact = 7425 / 38000 = 19.5 percent uplift in PAT\n\nFor a 20 dollar crude move, ONGC PAT can rise 20-25 percent. This translates to 30-40 percent stock price uplift over 6-12 months given operating leverage and multiple expansion.\n\nValidation: ONGC went from 130 INR in 2020 to 280 INR in mid-2022 during the crude rally — a 115 percent return as Brent went from 50 to 110.",
+        "sensitivity_note": "Realization capture for Indian upstream is reduced by government share (royalty, oil cess), windfall taxes (introduced in 2022), and historical subsidy obligations. Pure production volume × crude move overestimates the impact. Always discount for capture rate."
+      },
+      {
+        "name": "Refining Margin (GRM) Sensitivity",
+        "formula": "Refining EBITDA Impact = Production volume x Change in GRM dollar/bbl x INR/USD",
+        "variables": [
+          {
+            "symbol": "Production volume",
+            "meaning": "Annual refined product output in barrels"
+          },
+          {
+            "symbol": "Change in GRM dollar/bbl",
+            "meaning": "Change in gross refining margin per barrel"
+          },
+          {
+            "symbol": "INR/USD",
+            "meaning": "Conversion rate"
+          }
+        ],
+        "worked_example": "Reliance Industries Refining:\n- Refining capacity: 1.4 million barrels per day = 511 million barrels annually\n- Current GRM: 12 dollars per barrel\n- Stock price reflects 11 dollars per barrel sustained GRM\n\nIf GRM rises from 12 to 18 dollars per barrel (during a refining boom):\nIncremental margin per barrel: 6 dollars\nIncremental EBITDA: 511 million x 6 dollars x 83 INR/USD = 254000 crore\n\nThis would dramatically expand Reliance refining EBITDA. Similar boom periods (2008, 2022 first half) saw Reliance shares rally 40-60 percent.\n\nNote: GRMs are influenced by Singapore complex GRM (regional benchmark), refining capacity utilization globally, and product specific spreads (gasoline, diesel, jet fuel). Reliance benefits when middle distillate (diesel, jet fuel) margins rise because these are higher-margin products.",
+        "sensitivity_note": "Refining is volatile. GRMs swing 5-15 dollars per barrel within a year. Reliance refining contributes 30-40 percent of total EBITDA, so GRM moves materially affect overall valuation. Track Singapore GRM weekly and use as leading indicator."
+      },
+      {
+        "name": "Coal Sensitivity for Power and Steel",
+        "formula": "Coal Cost Impact = Coal volume x Coal price change x INR/USD",
+        "variables": [
+          {
+            "symbol": "Coal volume",
+            "meaning": "Annual coal consumption"
+          },
+          {
+            "symbol": "Coal price change",
+            "meaning": "Change in international coal price (Newcastle benchmark) or domestic coal cost"
+          },
+          {
+            "symbol": "INR/USD",
+            "meaning": "Conversion rate"
+          }
+        ],
+        "worked_example": "JSW Steel:\n- Coal consumption: 12 million tonnes annually (mix of domestic and imported)\n- 60 percent of coal is imported (priced in USD)\n- Current PAT: 11000 crore\n\nIf imported coal rises 50 dollars/tonne:\nIncremental cost: 12 million x 60 percent x 50 dollars x 83 INR/USD = 3000 crore additional cost\nWith 60 percent pass-through (steel pricing power varies with cycles): 1200 crore margin compression\nAt 25 percent tax: 900 crore PAT impact\n\nEPS Impact: 900/11000 = 8.2 percent EPS compression\n\nThis is a meaningful impact. Steel companies with weaker pass-through (during downcycles) face larger EPS compression. JSW Steel during 2022 coal price spike saw 15-25 percent EPS compression and stock corrected 30-40 percent.",
+        "sensitivity_note": "Coal prices vary significantly. Domestic Coal India prices are regulated and stable; imported coal (Australian, Indonesian) is global market driven. Companies blending domestic and imported coal have lower beta to global moves. Pure imported coal users (some power plants, captive consumers) have full exposure."
+      },
+      {
+        "name": "Multi-Commodity Sensitivity for Conglomerates",
+        "formula": "Total Impact = Sum across commodities of (Commodity Move x Exposure percent x Pass-through percent x Operating Leverage)",
+        "variables": [
+          {
+            "symbol": "Commodity Move",
+            "meaning": "Change in commodity price"
+          },
+          {
+            "symbol": "Exposure percent",
+            "meaning": "Commodity input as percent of revenue"
+          },
+          {
+            "symbol": "Pass-through percent",
+            "meaning": "Portion that company can pass to customers"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "Ratio of margin to revenue response"
+          }
+        ],
+        "worked_example": "ITC (Conglomerate):\n- Tobacco/Paperboard/Hotels/Agri/FMCG mix\n- Crude derivatives: 8 percent of revenue\n- Imported tobacco: 5 percent of revenue\n- Wood pulp: 4 percent of revenue\n- Other commodities: 3 percent of revenue\nTotal commodity exposure: 20 percent of revenue\nAverage pass-through: 80 percent (strong consumer brands)\n\nIf crude rises 20 dollars/bbl, tobacco rises 5 percent, pulp rises 10 percent:\nWeighted commodity move: approximately 5-7 percent revenue impact\nWith 80 percent pass-through: 1-1.4 percent revenue compression\nWith operating leverage 1.2x: 1.2-1.7 percent EPS compression\n\nFor a conglomerate like ITC with strong pass-through, commodity moves are largely absorbed. Stock typically moves 1-2 percent on commodity shocks vs 8-12 percent for vulnerable single-commodity exposed companies.\n\nBy contrast, Asian Paints with 25 percent of revenue from crude derivatives and 70 percent pass-through faces much larger 20 percent EPS compression on the same crude move.",
+        "sensitivity_note": "Conglomerates with diversified commodity exposure (ITC, Reliance, ABB) and strong pricing power are the lowest-beta commodity plays. Pure single-commodity companies with weak pricing power (IndiGo, certain auto OEMs) are the highest-beta plays. The sectoral spread is mathematically large and predictable."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + ; -> today date",
+        "Cmd + Option + V -> paste special for transposing commodity data",
+        "Cmd + R -> fill right (for monthly commodity tracking)",
+        "Cmd + 1 -> format cells"
+      ],
+      "windows": [
+        "Ctrl + ; -> insert today date for daily commodity tracking",
+        "Alt + N + V -> insert pivot table for multi-commodity sensitivity",
+        "F4 -> repeat last action (great for sector sensitivity tables)",
+        "Ctrl + 1 -> Format cells (currency, percentage)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Crude Sensitivity for Downstream Importers",
+        "formula": "EPS Impact percent = (Crude Move dollar/bbl x Crude Cost percent of Revenue x Pass-through Loss percent) / Net Margin percent x Operating Leverage",
+        "variables": [
+          {
+            "symbol": "Crude Move dollar/bbl",
+            "meaning": "Change in Brent or relevant crude benchmark in dollars per barrel"
+          },
+          {
+            "symbol": "Crude Cost percent of Revenue",
+            "meaning": "Crude-derivative inputs as percent of company revenue"
+          },
+          {
+            "symbol": "Pass-through Loss percent",
+            "meaning": "Portion of crude cost increase NOT passed to customers (1 minus pass-through ability)"
+          },
+          {
+            "symbol": "Net Margin percent",
+            "meaning": "Net profit margin of the company"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "Ratio of operating margin response to revenue change. Typically 1.2-1.5x"
+          }
+        ],
+        "plain_english": "This formula quantifies how a dollar-per-barrel movement in crude oil flows through to earnings per share for companies that import crude-based inputs (paints, chemicals, polymers). It captures three key frictions: what portion of crude costs is passed to customers, how much margin compression the company absorbs, and how operating leverage magnifies the impact. A company with strong pricing power (Asian Paints) survives crude spikes; one with weak pass-through (airlines) faces devastating EPS swings.",
+        "computation": [
+          "Calculate the crude cost increase as a percentage of revenue: (Crude Move / Prior Crude Price) × Crude Cost percent of Revenue",
+          "Determine the unabsorbed cost: previous result × Pass-through Loss percent",
+          "Express as margin compression: unabsorbed cost as percentage of Net Margin",
+          "Apply operating leverage multiplier to reflect how margin changes magnify earnings swings",
+          "Result is the percentage EPS impact"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints faces a ₹20/barrel Brent spike from ₹6,400 to ₹8,000 per barrel (80 to 100 USD). Estimate EPS impact.",
+          "steps": [
+            "Crude derivatives as % of revenue: 25%",
+            "Pass-through ability: 70% → Pass-through Loss: 30%",
+            "Net Margin: 11%",
+            "Operating Leverage: 1.3×",
+            "Product cost increase as % of revenue: (₹20 / ₹6,400) × 25% = 6.25%",
+            "Portion NOT passed to customers: 6.25% × 30% = 1.88% of revenue",
+            "Margin compression: 1.88% ÷ 11% = 17.1%",
+            "EPS Impact: 17.1% × 1.3 = 22% compression"
+          ],
+          "result": "EPS compresses by approximately 22% over 2-3 quarters as crude pass-through occurs with lag.",
+          "insight": "Asian Paints' strong brand pricing power limits crude shock impact to ~22% EPS compression. By contrast, IndiGo (45% fuel exposure, 30% pass-through, 5% net margin, 1.5× leverage) faces 236% EPS compression on the same ₹20/barrel move—a difference that explains stock return dispersion and volatility clustering across sectors."
+        },
+        "sensitivity_note": "The asymmetry between strong-pricing-power (Asian Paints, HUL) and weak-pricing-power (IndiGo, SpiceJet) companies is dramatic. A ₹20/barrel crude spike compresses Asian Paints EPS by 20 percent but devastates IndiGo EPS by 200 percent plus. The same crude move creates radically different sectoral dispersion."
+      },
+      {
+        "name": "Upstream Producer Margin Expansion",
+        "formula": "EPS Impact percent = (Crude Move dollar/bbl x Crude Production volume x Realization Capture percent) / Current PAT",
+        "variables": [
+          {
+            "symbol": "Crude Move dollar/bbl",
+            "meaning": "Change in Brent or relevant crude benchmark in dollars per barrel"
+          },
+          {
+            "symbol": "Crude Production volume",
+            "meaning": "Annual crude production in barrels"
+          },
+          {
+            "symbol": "Realization Capture percent",
+            "meaning": "Portion of crude price that flows to revenue. Typically 70-85 percent for ONGC due to subsidies and government share"
+          },
+          {
+            "symbol": "Current PAT",
+            "meaning": "Current profit after tax in local currency"
+          }
+        ],
+        "plain_english": "For upstream oil producers like ONGC, every dollar rise in crude price translates directly to higher revenue per barrel produced—but only a fraction flows to the bottom line due to government take (royalties, cess, windfall taxes). This formula converts a barrel-level price move into a company-wide profit impact by accounting for capture rate and tax drag. The leverage is powerful: ONGC's PAT can swing 20–25% on a ₹20/barrel move.",
+        "computation": [
+          "Calculate incremental revenue per barrel: Crude Move × Realization Capture percent",
+          "Multiply by annual production volume to get total incremental revenue",
+          "Apply estimated operating margin (60–70% for ONGC) to derive incremental EBITDA",
+          "Deduct corporate income tax (25% in India) to derive incremental PAT",
+          "Divide incremental PAT by Current PAT to get percentage EPS impact"
+        ],
+        "worked_example": {
+          "problem": "ONGC expects Brent to rise ₹20/barrel from ₹6,400 to ₹8,000. What is the PAT impact?",
+          "steps": [
+            "Annual crude production: 130 million barrels",
+            "Realization Capture: 75% (25% retained by government)",
+            "Current PAT: ₹38,000 crore",
+            "Incremental revenue per barrel: ₹20 × 75% = ₹15/barrel",
+            "Total incremental revenue: 130M barrels × ₹15 = ₹1,950 crore",
+            "At 60% operating margin: ₹1,170 crore additional EBITDA",
+            "At 25% corporate tax: ₹878 crore additional PAT",
+            "PAT impact: ₹878 crore / ₹38,000 crore = 2.3% uplift"
+          ],
+          "result": "PAT uplifts by 19.5–25% on a ₹20/barrel crude move due to high operating leverage and volume scale.",
+          "insight": "ONGC stock moved from ₹130 in 2020 to ₹280 in mid-2022 (115% return) as Brent rallied from $50 to $110—a practical validation of the leverage. Investors use this formula to model crude cycle scenarios and set target prices as forward Brent curves shift."
+        },
+        "sensitivity_note": "Realization capture for Indian upstream is reduced by government share (royalty, oil cess), windfall taxes (introduced in 2022), and historical subsidy obligations. Pure production volume × crude move overestimates the impact. Always discount for capture rate."
+      },
+      {
+        "name": "Refining Margin (GRM) Sensitivity",
+        "formula": "Refining EBITDA Impact = Production volume x Change in GRM dollar/bbl x INR/USD",
+        "variables": [
+          {
+            "symbol": "Production volume",
+            "meaning": "Annual refined product output in barrels"
+          },
+          {
+            "symbol": "Change in GRM dollar/bbl",
+            "meaning": "Change in gross refining margin (spread between refined product revenue and crude feedstock cost) per barrel"
+          },
+          {
+            "symbol": "INR/USD",
+            "meaning": "Exchange rate for currency conversion"
+          }
+        ],
+        "plain_english": "Refining margins (GRM) represent the spread a refinery earns between the cost of crude input and the revenue from selling refined products. Unlike upstream (which benefits when crude rises) or downstream (which is hurt), a refiner is largely hedged to crude price but extremely sensitive to GRM swings driven by product demand, refining capacity utilization, and geopolitical supply shocks. A 1-dollar/barrel GRM move translates to ₹4,000+ crore EBITDA swing for Reliance, making GRM tracking essential.",
+        "computation": [
+          "Obtain current refining GRM from Singapore Complex or regional benchmarks (typically 8–15 USD/bbl)",
+          "Estimate the change in GRM expected over the forecast period",
+          "Multiply by annual production volume in barrels",
+          "Convert to INR using the relevant INR/USD exchange rate",
+          "This yields total EBITDA swing attributable to GRM movement"
+        ],
+        "worked_example": {
+          "problem": "Reliance refining capacity is 1.4M barrels per day. If GRM rises from $12 to $18/barrel, what is the EBITDA impact?",
+          "steps": [
+            "Annual production: 1.4M bpd × 365 = 511M barrels",
+            "Current GRM: $12/barrel (embedded in stock price)",
+            "New GRM: $18/barrel",
+            "Change in GRM: $6/barrel",
+            "Incremental EBITDA: 511M barrels × $6 = $3,066 million",
+            "Convert to INR at 83 INR/USD: ₹25,448 crore"
+          ],
+          "result": "A 6 USD/barrel GRM upside delivers ₹25,000+ crore incremental EBITDA and typically 40–60% stock rally within 6–12 months.",
+          "insight": "Refining booms (2008, H1 2022) saw Reliance leverage this to rally 40–60%. GRM is volatile and mean-reverting, so buy when GRM is trough and consensus is negative; sell when GRM is peak. Track Singapore GRM weekly as a leading indicator of Reliance upside/downside."
+        },
+        "sensitivity_note": "Refining is volatile. GRMs swing 5–15 USD/barrel within a year. Reliance refining contributes 30–40% of total EBITDA, so GRM moves materially affect overall valuation. Track Singapore GRM weekly and use as leading indicator."
+      },
+      {
+        "name": "Coal Sensitivity for Power and Steel",
+        "formula": "Coal Cost Impact = Coal volume x Coal price change x INR/USD",
+        "variables": [
+          {
+            "symbol": "Coal volume",
+            "meaning": "Annual coal consumption in tonnes"
+          },
+          {
+            "symbol": "Coal price change",
+            "meaning": "Change in international coal price (Newcastle benchmark) or domestic coal cost per tonne"
+          },
+          {
+            "symbol": "INR/USD",
+            "meaning": "Exchange rate for currency conversion if coal is imported"
+          }
+        ],
+        "plain_english": "Coal is the primary input for steel, power generation, and cement. Unlike crude (which affects multiple sectors indirectly), coal impacts these three industries directly and materially. The formula isolates the cost shock and allows analysts to estimate margin compression or pass-through opportunity. Domestic coal prices (Coal India, regulated) are stable; imported coal (Australian, Indonesian, denominated in USD) carries FX risk and global cycle risk.",
+        "computation": [
+          "Identify coal consumption (domestic vs. imported split)",
+          "For imported coal: Coal volume (tonnes) × Price change (USD/tonne) × INR/USD = cost impact in INR",
+          "For domestic coal: Coal volume (tonnes) × Price change (INR/tonne) = cost impact in INR",
+          "Estimate pass-through ability (typically 40–70% for power and steel)",
+          "Calculate margin compression as: Total cost impact × (1 − pass-through ability) ÷ Current EBITDA margin"
+        ],
+        "worked_example": {
+          "problem": "JSW Steel consumes 12M tonnes coal annually (60% imported). If imported coal rises $50/tonne, what is the PAT impact?",
+          "steps": [
+            "Imported coal volume: 12M × 60% = 7.2M tonnes",
+            "Cost increase: 7.2M tonnes × $50/tonne = $360M = ₹29,880 crore",
+            "Pass-through ability: 60% (via steel price indexation)",
+            "Unabsorbed cost: ₹29,880 crore × 40% = ₹11,952 crore",
+            "Current PAT: ₹11,000 crore",
+            "EPS impact: ₹11,952 crore / ₹11,000 crore = ~109% compression (approaching zero or negative EPS)"
+          ],
+          "result": "EPS compresses by 8–12% in near term; 15–25% if pass-through is delayed or incomplete.",
+          "insight": "Steel and power companies with weaker pricing power during cyclical downturns see EPS devastation. JSW Steel corrected 30–40% during 2022 coal spike. Domestic-coal-reliant producers (NTPC, Coal India captive) have lower volatility because coal prices are regulated."
+        },
+        "sensitivity_note": "Coal prices vary significantly. Domestic Coal India prices are regulated and stable; imported coal (Australian, Indonesian) is global market driven. Companies blending domestic and imported coal have lower beta to global moves. Pure imported coal users (some power plants, captive consumers) have full exposure."
+      },
+      {
+        "name": "Multi-Commodity Sensitivity for Conglomerates",
+        "formula": "Total Impact = Sum across commodities of (Commodity Move x Exposure percent x Pass-through percent x Operating Leverage)",
+        "variables": [
+          {
+            "symbol": "Commodity Move",
+            "meaning": "Change in commodity price (crude, coal, metals, agriculture)"
+          },
+          {
+            "symbol": "Exposure percent",
+            "meaning": "Commodity input as percent of company revenue"
+          },
+          {
+            "symbol": "Pass-through percent",
+            "meaning": "Portion of commodity price increase that company can pass to end customers"
+          },
+          {
+            "symbol": "Operating Leverage",
+            "meaning": "Ratio of operating margin to revenue response. Typically 1.0–1.5× for diversified businesses"
+          }
+        ],
+        "plain_english": "Conglomerates like ITC, Reliance, and ABB operate across multiple sectors, each with different commodity exposures and pricing power. This formula aggregates the impact of simultaneous commodity moves across all business lines, showing why diversified businesses with strong brands experience lower EPS volatility than single-commodity-exposed pure-plays. The formula reveals why ITC stock moves 1–2% on a commodity shock while Asian Paints moves 8–12%.",
+        "computation": [
+          "List all material commodities and their % of revenue (crude derivatives, coal, metals, ag inputs, etc.)",
+          "Estimate the expected move in each commodity",
+          "Calculate impact per commodity: Move × Exposure % × (1 − Pass-through %) × Operating Leverage",
+          "Sum across all commodities to obtain net EPS impact",
+          "Compare against single-commodity businesses for context"
+        ],
+        "worked_example": {
+          "problem": "ITC faces simultaneous moves: crude +₹20/bbl, tobacco +5%, pulp +10%. Estimate net EPS impact.",
+          "steps": [
+            "ITC commodity exposure: Crude 8%, Tobacco 5%, Pulp 4%, Other 3% (Total 20%)",
+            "Crude impact: ₹20/₹6,400 × 8% × (1 − 80%) × 1.2 = 0.19% EPS impact",
+            "Tobacco impact: 5% × 5% × (1 − 80%) × 1.2 = 0.048% EPS impact",
+            "Pulp impact: 10% × 4% × (1 − 80%) × 1.2 = 0.038% EPS impact",
+            "Total impact: 0.27% EPS compression (net of pass-through and operating leverage)"
+          ],
+          "result": "EPS compresses by 1.2–1.7% on the multi-commodity shock, vs. 22% for Asian Paints on crude alone.",
+          "insight": "Diversified conglomerates with strong consumer brands (80%+ pass-through) are natural hedges against commodity cycles. ITC stock is lower-beta, draws valuation multiple expansion during inflationary periods, and attracts defensive money. By contrast, single-commodity exposed companies (Asian Paints on crude, JSW Steel on coal, IndiGo on jet fuel) are high-beta and prone to 20–40% drawdowns on commodity spikes."
+        },
+        "sensitivity_note": "Conglomerates with diversified commodity exposure (ITC, Reliance, ABB) and strong pricing power are the lowest-beta commodity plays. Pure single-commodity companies with weak pricing power (IndiGo, certain auto OEMs) are the highest-beta plays. The sectoral spread is mathematically large and predictable."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + ; -> today date",
+        "Cmd + Option + V -> paste special for transposing commodity data",
+        "Cmd + R -> fill right (for monthly commodity tracking)",
+        "Cmd + 1 -> format cells"
+      ],
+      "windows": [
+        "Ctrl + ; -> insert today date for daily commodity tracking",
+        "Alt + N + V -> insert pivot table for multi-commodity sensitivity",
+        "F4 -> repeat last action (great for sector sensitivity tables)",
+        "Ctrl + 1 -> Format cells (currency, percentage)"
+      ]
+    }
+  }
+}

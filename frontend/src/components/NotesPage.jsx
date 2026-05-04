@@ -381,8 +381,14 @@ function FormulaSubCard({ f, idx }) {
   const name = f.name || f.formula_name || f.title || `Formula ${idx + 1}`;
   const display = f.display || f.formula_display || f.formula || f.equation || f.expression;
   const variables = f.variables || f.vars || f.symbols || [];
+  const plainEnglish = f.plain_english || f.intuition;
+  const tells = f.tells; // legacy short "what it tells you"
+  const computation = Array.isArray(f.computation) ? f.computation : null;
   const notes = f.notes || f.note || f.description || f.explanation;
   const example = f.example || f.example_calculation || f.worked_example;
+  const sensitivity = f.sensitivity || f.sensitivity_note;
+  const analystNote = f.analyst_note;
+  const excel = f.excel;
 
   return (
     <div className="glass-card rounded-2xl p-5 border-[#6A5CFF]/15">
@@ -396,8 +402,15 @@ function FormulaSubCard({ f, idx }) {
         </div>
       )}
 
+      {tells && !plainEnglish && (
+        <p className="text-xs font-bricolage text-[var(--color-text)] mb-3">
+          <span className="text-[#6A5CFF] font-semibold">Tells you: </span>{tells}
+        </p>
+      )}
+
       {variables.length > 0 && (
         <div className="space-y-1.5 mb-3">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-1">Variables</div>
           {variables.map((v, i) => (
             <div key={i} className="flex items-start gap-3 text-xs font-bricolage">
               <code className="font-mono text-[#6A5CFF] font-semibold bg-[#6A5CFF]/10 px-2 py-0.5 rounded shrink-0">
@@ -413,6 +426,24 @@ function FormulaSubCard({ f, idx }) {
         </div>
       )}
 
+      {plainEnglish && (
+        <div className="mt-3 rounded-lg p-3 bg-[#6A5CFF]/5 border border-[#6A5CFF]/15">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1">In Plain English</div>
+          <p className="text-xs font-bricolage text-[var(--color-text)] leading-relaxed">{plainEnglish}</p>
+        </div>
+      )}
+
+      {computation && computation.length > 0 && (
+        <div className="mt-3 rounded-lg p-3 bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">How to Compute</div>
+          <ol className="space-y-1 list-decimal list-inside">
+            {computation.map((step, i) => (
+              <li key={i} className="text-xs font-bricolage text-[var(--color-text)] leading-relaxed">{step}</li>
+            ))}
+          </ol>
+        </div>
+      )}
+
       {notes && (
         <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed mt-2 italic">
           {notes}
@@ -421,12 +452,31 @@ function FormulaSubCard({ f, idx }) {
 
       {example && typeof example === 'object' && (
         <div className="mt-3 rounded-lg p-3 bg-[var(--color-surface)]/50 border border-[var(--color-border)]">
-          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">Example</div>
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">Worked Example</div>
           <ExtraFieldValue value={example} accent="#6A5CFF" />
         </div>
       )}
       {example && typeof example === 'string' && (
-        <p className="text-xs font-bricolage text-[var(--color-text)] mt-3">{example}</p>
+        <p className="text-xs font-bricolage text-[var(--color-text)] mt-3 whitespace-pre-wrap">{example}</p>
+      )}
+
+      {sensitivity && (
+        <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed mt-3">
+          <span className="text-[#FF6AC1] font-semibold">Sensitivity: </span>
+          {typeof sensitivity === 'string' ? sensitivity : (Array.isArray(sensitivity) ? sensitivity.join(' ') : '')}
+        </p>
+      )}
+
+      {analystNote && (
+        <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed mt-2">
+          <span className="text-[#246BFD] font-semibold">Analyst Note: </span>{analystNote}
+        </p>
+      )}
+
+      {excel && (
+        <p className="text-xs font-mono text-[var(--color-text-muted)] mt-3 bg-[var(--color-bg-primary)]/60 px-2 py-1 rounded">
+          Excel: {excel}
+        </p>
       )}
     </div>
   );

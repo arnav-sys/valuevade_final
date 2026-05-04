@@ -1,0 +1,184 @@
+{
+  "id": "46ae2d0f-a69e-4b7c-9785-a25bd84cdec0",
+  "label": "M5 S6 | The compensation metrics every analyst must compute",
+  "before": {
+    "formulas": [
+      {
+        "name": "Compensation as Percentage of PAT",
+        "formula": "Compensation / PAT Ratio = (Total KMP Compensation or CEO Compensation) / PAT × 100",
+        "variables": [
+          {
+            "symbol": "Total KMP Compensation",
+            "meaning": "Sum of compensation paid to all Key Managerial Personnel — MD, CEO, CFO, whole-time directors, company secretary. Disclosed in the Directors Report and Report on Corporate Governance."
+          },
+          {
+            "symbol": "CEO Compensation",
+            "meaning": "Total compensation paid to the MD/CEO, including fixed pay, variable pay, ESOP values, and perquisites."
+          },
+          {
+            "symbol": "PAT",
+            "meaning": "Profit After Tax of the listed entity for the financial year being analysed. Use consolidated PAT for the most economically meaningful ratio."
+          }
+        ],
+        "worked_example": "A mid-cap consumer products company has reported PAT of ₹240 crore for FY24. Total KMP compensation disclosed in the annual report is ₹18.4 crore, of which the MD received ₹11.2 crore. Total KMP compensation as percentage of PAT = 18.4 / 240 × 100 = 7.67 percent. CEO compensation as percentage of PAT = 11.2 / 240 × 100 = 4.67 percent. Both ratios are elevated relative to the general benchmarks (total KMP under 5 percent, CEO under 2 percent). This would warrant a downgrade to the governance score unless there is compelling context (for example, major performance outperformance that justifies elevated payouts under a disclosed formula).",
+        "sensitivity_note": "Benchmarks should be applied with sector and size context. Large-cap companies with ₹5,000 crore plus PAT typically show CEO compensation at 0.1 to 0.5 percent of PAT. Mid-caps with ₹200 to 500 crore PAT typically show 1 to 3 percent. Small-caps with sub-₹100 crore PAT can show 3 to 7 percent for legitimate structural reasons. What matters most is whether the ratio has trended up or down over 3 to 5 years alongside company performance."
+      },
+      {
+        "name": "Fixed-to-Variable Split Ratio",
+        "formula": "Fixed Pay Percentage = Fixed Pay / Total Compensation × 100, Variable Pay Percentage = 100 - Fixed Pay Percentage",
+        "variables": [
+          {
+            "symbol": "Fixed Pay",
+            "meaning": "Base salary plus guaranteed allowances — the portion of compensation that will be paid regardless of company or individual performance."
+          },
+          {
+            "symbol": "Total Compensation",
+            "meaning": "Fixed Pay plus Variable Pay plus ESOP/RSU value realised in the year plus Perquisites."
+          }
+        ],
+        "worked_example": "The same MD received fixed salary of ₹4.5 crore, variable bonus of ₹2.8 crore, ESOPs valued at vesting worth ₹3.2 crore, and perquisites of ₹0.7 crore. Total compensation = 4.5 + 2.8 + 3.2 + 0.7 = ₹11.2 crore. Fixed pay percentage = 4.5 / 11.2 × 100 = 40.2 percent. Variable pay (including stock) = 59.8 percent. This is a reasonable structure — majority of compensation is at risk. A package where fixed is 85 percent and everything else is tiny is the negative structure that should raise flags.",
+        "sensitivity_note": "The quality of the variable pay matters as much as the split. A 60 percent variable with weak KPIs is worse than a 45 percent variable with rigorous ROE and multi-year EPS conditions. Always evaluate the structure alongside what the variable is actually measuring against."
+      },
+      {
+        "name": "Annual ESOP Dilution",
+        "formula": "Annual ESOP Dilution = Shares Issued on ESOP Exercise in the Year / Total Shares Outstanding (Beginning of Year) × 100",
+        "variables": [
+          {
+            "symbol": "Shares Issued on ESOP Exercise",
+            "meaning": "New shares issued to ESOP holders who exercised their options during the year. Disclosed in the Share Capital section of the annual report."
+          },
+          {
+            "symbol": "Total Shares Outstanding",
+            "meaning": "Total shares outstanding at the start of the financial year."
+          }
+        ],
+        "worked_example": "A mid-cap IT services company had 12.0 crore shares outstanding at the start of FY24. During the year, 18 lakh shares were issued on ESOP exercise. Annual ESOP Dilution = 0.18 / 12.0 × 100 = 1.5 percent. This is slightly above the 1 percent threshold that typically warrants monitoring. Over 5 years of 1.5 percent annual dilution, the existing shareholder stake is diluted by approximately 7.2 percent cumulatively. For a ₹50,000 crore market cap company, that represents approximately ₹3,600 crore of value transferred to ESOP holders, which should be evaluated against the operational value that was delivered over that period.",
+        "sensitivity_note": "Some dilution is healthy — ESOPs are a legitimate way to attract and retain talent. The question is whether dilution is proportionate to value creation. A 1.5 percent annual dilution in a company compounding EPS at 20 percent may be well justified. The same dilution in a company with flat earnings is dilutive without benefit. Always assess dilution alongside per-share value growth."
+      },
+      {
+        "name": "CEO Pay Ratio",
+        "formula": "CEO Pay Ratio = CEO Compensation / Median Employee Compensation",
+        "variables": [
+          {
+            "symbol": "CEO Compensation",
+            "meaning": "Total annual compensation of the CEO/MD including all components."
+          },
+          {
+            "symbol": "Median Employee Compensation",
+            "meaning": "The median annual compensation of all employees in the company. Mandatory disclosure in the Directors Report for listed Indian companies."
+          }
+        ],
+        "worked_example": "A mid-cap company's CEO was paid ₹11.2 crore. The median employee compensation disclosed in the Directors Report was ₹8.5 lakh. CEO Pay Ratio = 11.2 crore / 8.5 lakh = 1,120 / 8.5 = 132 times. This is within the moderate range (typically 100 to 300 times for Indian mid-caps). Ratios above 500 times are very high by Indian standards and often indicate governance concerns. Ratios above 1,000 times are typically associated with very specific structural explanations (founder-promoter with large ESOP realisation, company in capital-intensive sector with low median pay) and should be examined on their merits.",
+        "sensitivity_note": "The pay ratio is most meaningful when tracked over time and compared with peers. A ratio that has risen from 80 to 250 times over 5 years while median pay has been flat is a signal that executive compensation is growing disproportionately. Compare the ratio to direct sector peers — if your company ratio is double the sector average, investigate why."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+F : filters",
+        "Cmd+Shift+T : SUM",
+        "Cmd+1 : Format Cells",
+        "Fn+F4 (in formula): absolute reference toggle",
+        "Cmd+Shift+Enter : array formulas"
+      ],
+      "windows": [
+        "Ctrl+Shift+L : toggle filters for screening companies by compensation ratio",
+        "Alt+= : quick SUM of compensation line items",
+        "Ctrl+1 : open Format Cells dialog for formatting compensation as percentage",
+        "F4 (in formula): lock cell reference with $$ for dragging formulas across KMP rows",
+        "Ctrl+Shift+Enter : array formula for aggregate compensation calculations"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Compensation as Percentage of PAT",
+        "formula": "Compensation / PAT Ratio = (Total KMP Compensation or CEO Compensation) / PAT × 100",
+        "variables": [
+          {
+            "symbol": "Total KMP Compensation",
+            "meaning": "Sum of compensation paid to all Key Managerial Personnel — MD, CEO, CFO, whole-time directors, company secretary. Disclosed in the Directors Report and Report on Corporate Governance."
+          },
+          {
+            "symbol": "CEO Compensation",
+            "meaning": "Total compensation paid to the MD/CEO, including fixed pay, variable pay, ESOP values, and perquisites."
+          },
+          {
+            "symbol": "PAT",
+            "meaning": "Profit After Tax of the listed entity for the financial year being analysed. Use consolidated PAT for the most economically meaningful ratio."
+          }
+        ],
+        "plain_english": "This ratio tells you what fraction of a company's profits are being paid out to its top executives. A high ratio means executives are taking a large share of profits; a low ratio means profits are being retained or distributed to shareholders. It matters because extreme ratios can signal either excessive management compensation (governance concern) or lean management structures (possibly poor retention). Comparing the ratio over time and against peers helps identify whether compensation practice is in line with company performance and market norms.",
+        "worked_example": "A mid-cap consumer products company has reported PAT of ₹240 crore for FY24. Total KMP compensation disclosed in the annual report is ₹18.4 crore, of which the MD received ₹11.2 crore. Total KMP compensation as percentage of PAT = 18.4 / 240 × 100 = 7.67 percent. CEO compensation as percentage of PAT = 11.2 / 240 × 100 = 4.67 percent. Both ratios are elevated relative to the general benchmarks (total KMP under 5 percent, CEO under 2 percent). This would warrant a downgrade to the governance score unless there is compelling context (for example, major performance outperformance that justifies elevated payouts under a disclosed formula).",
+        "sensitivity_note": "Benchmarks should be applied with sector and size context. Large-cap companies with ₹5,000 crore plus PAT typically show CEO compensation at 0.1 to 0.5 percent of PAT. Mid-caps with ₹200 to 500 crore PAT typically show 1 to 3 percent. Small-caps with sub-₹100 crore PAT can show 3 to 7 percent for legitimate structural reasons. What matters most is whether the ratio has trended up or down over 3 to 5 years alongside company performance."
+      },
+      {
+        "name": "Fixed-to-Variable Split Ratio",
+        "formula": "Fixed Pay Percentage = Fixed Pay / Total Compensation × 100, Variable Pay Percentage = 100 - Fixed Pay Percentage",
+        "variables": [
+          {
+            "symbol": "Fixed Pay",
+            "meaning": "Base salary plus guaranteed allowances — the portion of compensation that will be paid regardless of company or individual performance."
+          },
+          {
+            "symbol": "Total Compensation",
+            "meaning": "Fixed Pay plus Variable Pay plus ESOP/RSU value realised in the year plus Perquisites."
+          }
+        ],
+        "plain_english": "This ratio shows what percentage of an executive's total pay is locked in (fixed) versus at risk (variable based on performance). A higher variable percentage means the executive's pay moves with business results — aligning their incentives with shareholder outcomes. A very high fixed percentage can indicate weak accountability. The split is important for assessing whether compensation actually motivates better business performance or simply guarantees payouts regardless of results.",
+        "worked_example": "The same MD received fixed salary of ₹4.5 crore, variable bonus of ₹2.8 crore, ESOPs valued at vesting worth ₹3.2 crore, and perquisites of ₹0.7 crore. Total compensation = 4.5 + 2.8 + 3.2 + 0.7 = ₹11.2 crore. Fixed pay percentage = 4.5 / 11.2 × 100 = 40.2 percent. Variable pay (including stock) = 59.8 percent. This is a reasonable structure — majority of compensation is at risk. A package where fixed is 85 percent and everything else is tiny is the negative structure that should raise flags.",
+        "sensitivity_note": "The quality of the variable pay matters as much as the split. A 60 percent variable with weak KPIs is worse than a 45 percent variable with rigorous ROE and multi-year EPS conditions. Always evaluate the structure alongside what the variable is actually measuring against."
+      },
+      {
+        "name": "Annual ESOP Dilution",
+        "formula": "Annual ESOP Dilution = Shares Issued on ESOP Exercise in the Year / Total Shares Outstanding (Beginning of Year) × 100",
+        "variables": [
+          {
+            "symbol": "Shares Issued on ESOP Exercise",
+            "meaning": "New shares issued to ESOP holders who exercised their options during the year. Disclosed in the Share Capital section of the annual report."
+          },
+          {
+            "symbol": "Total Shares Outstanding",
+            "meaning": "Total shares outstanding at the start of the financial year."
+          }
+        ],
+        "plain_english": "This ratio measures what percentage of the company's shares are being handed out to ESOP holders each year. Cumulated over multiple years, ongoing annual dilution reduces the ownership stake of existing shareholders. It matters because while ESOPs are a legitimate retention tool, excessive dilution can destroy shareholder value if the company is not growing earnings fast enough to offset it. The key question is whether the dilution is justified by the talent and retention value it delivers.",
+        "worked_example": "A mid-cap IT services company had 12.0 crore shares outstanding at the start of FY24. During the year, 18 lakh shares were issued on ESOP exercise. Annual ESOP Dilution = 0.18 / 12.0 × 100 = 1.5 percent. This is slightly above the 1 percent threshold that typically warrants monitoring. Over 5 years of 1.5 percent annual dilution, the existing shareholder stake is diluted by approximately 7.2 percent cumulatively. For a ₹50,000 crore market cap company, that represents approximately ₹3,600 crore of value transferred to ESOP holders, which should be evaluated against the operational value that was delivered over that period.",
+        "sensitivity_note": "Some dilution is healthy — ESOPs are a legitimate way to attract and retain talent. The question is whether dilution is proportionate to value creation. A 1.5 percent annual dilution in a company compounding EPS at 20 percent may be well justified. The same dilution in a company with flat earnings is dilutive without benefit. Always assess dilution alongside per-share value growth."
+      },
+      {
+        "name": "CEO Pay Ratio",
+        "formula": "CEO Pay Ratio = CEO Compensation / Median Employee Compensation",
+        "variables": [
+          {
+            "symbol": "CEO Compensation",
+            "meaning": "Total annual compensation of the CEO/MD including all components."
+          },
+          {
+            "symbol": "Median Employee Compensation",
+            "meaning": "The median annual compensation of all employees in the company. Mandatory disclosure in the Directors Report for listed Indian companies."
+          }
+        ],
+        "plain_english": "This ratio expresses the CEO's total compensation as a multiple of what the median employee earns. A ratio of 100 times means the CEO earns 100 times the typical employee salary. It matters because extreme ratios can indicate poor talent retention or morale risk among the broader workforce, and may signal governance misalignment. It is also a simple proxy for whether executive compensation is reasonable relative to the organisation as a whole, independent of company size or profitability.",
+        "worked_example": "A mid-cap company's CEO was paid ₹11.2 crore. The median employee compensation disclosed in the Directors Report was ₹8.5 lakh. CEO Pay Ratio = 11.2 crore / 8.5 lakh = 1,120 / 8.5 = 132 times. This is within the moderate range (typically 100 to 300 times for Indian mid-caps). Ratios above 500 times are very high by Indian standards and often indicate governance concerns. Ratios above 1,000 times are typically associated with very specific structural explanations (founder-promoter with large ESOP realisation, company in capital-intensive sector with low median pay) and should be examined on their merits.",
+        "sensitivity_note": "The pay ratio is most meaningful when tracked over time and compared with peers. A ratio that has risen from 80 to 250 times over 5 years while median pay has been flat is a signal that executive compensation is growing disproportionately. Compare the ratio to direct sector peers — if your company ratio is double the sector average, investigate why."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Shift+F : filters",
+        "Cmd+Shift+T : SUM",
+        "Cmd+1 : Format Cells",
+        "Fn+F4 (in formula): absolute reference toggle",
+        "Cmd+Shift+Enter : array formulas"
+      ],
+      "windows": [
+        "Ctrl+Shift+L : toggle filters for screening companies by compensation ratio",
+        "Alt+= : quick SUM of compensation line items",
+        "Ctrl+1 : open Format Cells dialog for formatting compensation as percentage",
+        "F4 (in formula): lock cell reference with $$ for dragging formulas across KMP rows",
+        "Ctrl+Shift+Enter : array formula for aggregate compensation calculations"
+      ]
+    }
+  }
+}

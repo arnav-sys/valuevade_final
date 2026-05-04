@@ -1,0 +1,282 @@
+{
+  "id": "caf6c90b-b55b-4315-9d80-6f6143a6be27",
+  "label": "M13 S7 | Decomposition Formulas — Revenue, ROCE, Cash Flow Quality",
+  "before": {
+    "formulas": [
+      {
+        "name": "Revenue Growth Decomposition",
+        "formula": "Revenue Growth (%) = Volume Growth (%) + Price-Mix Growth (%) + FX/Geography Effect (%) + Inorganic Contribution (%)\n\nWhere:\n  Total Reported Growth = Sum of organic and inorganic components\n  Volume x Price approximately equals Reported Revenue (multiplicative, but additive at small percentage approximation)",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-over-year change in physical units sold (cars, KL of paint, kg of cement, billable headcount, transactions, subscribers)"
+          },
+          {
+            "symbol": "Price-Mix Growth",
+            "meaning": "Combined effect of pricing actions and product/customer mix shift — premiumisation lifts realisation per unit"
+          },
+          {
+            "symbol": "FX/Geography Effect",
+            "meaning": "Translation impact on USD or foreign currency revenue when reported in INR; or geographic mix effect for multi-country businesses"
+          },
+          {
+            "symbol": "Inorganic Contribution",
+            "meaning": "Revenue from acquisitions consolidated during the period — must be reported separately for organic growth analysis"
+          }
+        ],
+        "worked_example": "Worked Example — Asian Paints FY26 Revenue Decomposition:\n\nReported Revenue Growth FY26: 14.5% (Rs. 35,200 cr to Rs. 40,300 cr)\n\nDecomposition (from company disclosure and management commentary):\n  Volume Growth (decoratives): +9.8%\n  Price-Mix (premiumisation): +2.5%\n  Adjacencies (home decor, bath, kitchen): +1.2%\n  International business: +1.0%\n  Total Organic: +14.5%\n  Inorganic: 0% (no acquisitions in FY26)\n  Reported: 14.5%\n\nAnalytical Interpretation: The decomposition reveals that volume growth alone contributed 68% of total revenue growth, with price-mix and adjacencies providing the remaining tailwinds. The 9.8% volume growth is well above industry growth of approximately 8%, suggesting market share gains in the core decorative coatings category. Premiumisation contribution of 2.5% reflects the structural shift toward emulsions and luxury SKUs. Adjacencies contribution of 1.2% is small relative to the strategic emphasis but shows early traction. The absence of inorganic contribution confirms growth quality — this is purely organic.",
+        "sensitivity_note": "The decomposition matters because identical reported growth rates can have completely different quality profiles. A 14.5% growth that is 14% volume + 0.5% price reflects healthy underlying demand. The same 14.5% that is 4% volume + 10.5% price (heavy price-led) suggests demand weakness offset by pricing — and is concerning. Always force the decomposition; do not accept the headline number as your analysis."
+      },
+      {
+        "name": "DuPont Decomposition of Return on Capital Employed (ROCE)",
+        "formula": "ROCE = (EBIT / Sales) x (Sales / Capital Employed)\n      = EBIT Margin x Capital Turnover\n\nAlternative for ROE:\nROE = (Net Income / Sales) x (Sales / Total Assets) x (Total Assets / Equity)\n    = Net Margin x Asset Turnover x Equity Multiplier",
+        "variables": [
+          {
+            "symbol": "EBIT Margin",
+            "meaning": "Earnings Before Interest and Tax divided by Sales — measures operational profitability"
+          },
+          {
+            "symbol": "Capital Turnover",
+            "meaning": "Sales divided by Capital Employed (debt + equity) — measures how efficiently capital generates revenue"
+          },
+          {
+            "symbol": "Capital Employed",
+            "meaning": "Total debt plus equity, or alternatively total assets minus current liabilities; the total capital deployed in the business"
+          }
+        ],
+        "worked_example": "Worked Example — Asian Paints DuPont Trajectory FY24-FY27E:\n\nFY24A:\n  EBIT: Rs. 6,100 cr; Sales: Rs. 35,000 cr; Capital Employed: Rs. 22,500 cr\n  EBIT Margin = 6,100/35,000 = 17.4%\n  Capital Turnover = 35,000/22,500 = 1.56x\n  ROCE = 17.4% x 1.56 = 27.1%\n\nFY26E:\n  EBIT: Rs. 8,260 cr; Sales: Rs. 40,300 cr; Capital Employed: Rs. 29,000 cr\n  EBIT Margin = 8,260/40,300 = 20.5%\n  Capital Turnover = 40,300/29,000 = 1.39x\n  ROCE = 20.5% x 1.39 = 28.5%\n\nFY27E (Senior Forecast):\n  EBIT: Rs. 10,860 cr; Sales: Rs. 46,800 cr; Capital Employed: Rs. 33,800 cr\n  EBIT Margin = 10,860/46,800 = 23.2%\n  Capital Turnover = 46,800/33,800 = 1.38x\n  ROCE = 23.2% x 1.38 = 32.0%\n\nAnalytical Interpretation: The ROCE expansion from 27.1% to 32.0% over FY24-FY27E is driven entirely by EBIT margin expansion (17.4% to 23.2%, contributing all 490 bps of ROCE improvement) while capital turnover slightly compresses (1.56x to 1.38x as capital employed grows ahead of sales). This is consistent with the senior thesis on capital efficiency inflection — margin expansion is doing all the analytical work. Critically, capital turnover is NOT improving, which is a watch flag — if margin expansion fails to materialise, ROCE would actually decline.",
+        "sensitivity_note": "DuPont matters because aggregate ROCE moves can mask offsetting drivers. A company can show stable ROCE while EBIT margin compresses (offset by higher leverage), which is a quality deterioration disguised as stability. Always decompose ROCE into its drivers — and watch for the leverage trap, where ROE rises only because the equity multiplier is increasing (more debt, not more efficiency)."
+      },
+      {
+        "name": "Operating Cash Flow Conversion",
+        "formula": "OCF Conversion (%) = Operating Cash Flow / EBITDA x 100\n\nFCF Conversion (%) = Free Cash Flow / Net Income x 100\nWhere FCF = Operating Cash Flow - Capex",
+        "variables": [
+          {
+            "symbol": "Operating Cash Flow",
+            "meaning": "Cash generated from operating activities — from the cash flow statement, after working capital changes and tax payments"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings before interest, taxes, depreciation, amortisation — from the P&L"
+          },
+          {
+            "symbol": "Free Cash Flow",
+            "meaning": "OCF minus capital expenditure; the cash available to equity and debt holders after maintaining and growing the business"
+          },
+          {
+            "symbol": "Net Income",
+            "meaning": "PAT (profit after tax) from the P&L"
+          }
+        ],
+        "worked_example": "Worked Example — Asian Paints Cash Flow Quality FY24-FY26:\n\nFY24:\n  EBITDA: Rs. 6,930 cr; OCF: Rs. 5,400 cr; Capex: Rs. 1,750 cr; PAT: Rs. 4,520 cr\n  OCF Conversion = 5,400/6,930 = 77.9%\n  FCF = 5,400 - 1,750 = 3,650 cr\n  FCF Conversion = 3,650/4,520 = 80.8%\n\nFY26:\n  EBITDA: Rs. 8,665 cr; OCF: Rs. 7,450 cr; Capex: Rs. 2,500 cr; PAT: Rs. 5,400 cr\n  OCF Conversion = 7,450/8,665 = 86.0%\n  FCF = 7,450 - 2,500 = 4,950 cr\n  FCF Conversion = 4,950/5,400 = 91.7%\n\nAnalytical Interpretation: OCF conversion improved from 77.9% to 86.0% over FY24-FY26 — a 800+ bps improvement. This is high-quality earnings improvement: cash is keeping pace with reported profits, working capital is stable or improving. FCF conversion at 91.7% in FY26 is exceptional — nearly all reported PAT is cash-backed even after capex. This data supports the quality of the margin expansion narrative. If OCF conversion had declined while EBITDA grew, the EBITDA growth would be quality-questionable.",
+        "sensitivity_note": "Conversion ratios are critical because they distinguish accounting profits from economic profits. Companies with stable and high conversion (80%+) generate cash to fund growth, dividends, and buybacks. Companies with declining conversion are increasingly reliant on working capital release or accounting accruals — the historical pattern preceding most accounting frauds. As a rule: OCF conversion below 70% deserves explicit investigation. FCF conversion below 60% suggests the reported PAT is materially overstating cash economics."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + V for Paste Special (for ratio analysis layout)",
+        "Cmd + ; to insert today date",
+        "Cmd + Option + R to increase decimal",
+        "F4 (or Cmd + T) to toggle absolute reference",
+        "Cmd + Shift + F to add filter to data range",
+        "Cmd + Option + P to insert PivotTable"
+      ],
+      "windows": [
+        "Alt + N + V to insert PivotTable for ratio decomposition",
+        "Ctrl + ; to insert today date for as-of dating",
+        "Alt + H + 0 + 0 to increase decimal precision",
+        "F4 to toggle absolute reference (lock cell ref for ratio formulas)",
+        "Ctrl + Shift + L to add filter to data table for sorting ratios",
+        "Alt + JF + V for Calculated Field in PivotTable (for derived ratios)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Revenue Growth Decomposition",
+        "formula": "Revenue Growth (%) = Volume Growth (%) + Price-Mix Growth (%) + FX/Geography Effect (%) + Inorganic Contribution (%)\n\nWhere:\n  Total Reported Growth = Sum of organic and inorganic components\n  Volume x Price approximately equals Reported Revenue (multiplicative, but additive at small percentage approximation)",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-over-year change in physical units sold (cars, KL of paint, kg of cement, billable headcount, transactions, subscribers)"
+          },
+          {
+            "symbol": "Price-Mix Growth",
+            "meaning": "Combined effect of pricing actions and product/customer mix shift — premiumisation lifts realisation per unit"
+          },
+          {
+            "symbol": "FX/Geography Effect",
+            "meaning": "Translation impact on USD or foreign currency revenue when reported in INR; or geographic mix effect for multi-country businesses"
+          },
+          {
+            "symbol": "Inorganic Contribution",
+            "meaning": "Revenue from acquisitions consolidated during the period — must be reported separately for organic growth analysis"
+          }
+        ],
+        "plain_english": "Revenue growth decomposition separates what drives headline revenue growth into four levers: the core volume of goods sold, price and product mix effects, foreign exchange translation, and acquisitions. This matters because identical reported growth can hide entirely different underlying business health — strong volume growth with stable margins is far superior to margin compression offset by heavy price increases.",
+        "worked_example": {
+          "problem": "Asian Paints reported FY26 revenue growth of 14.5% (Rs. 35,200 cr to Rs. 40,300 cr). Decompose this growth and assess its quality.",
+          "steps": [
+            "Extract volume growth from management commentary or volume disclosure: +9.8% (decoratives core business volume expansion)",
+            "Identify price-mix contribution: +2.5% (weighted mix of pricing actions and premiumisation into higher-margin emulsion SKUs)",
+            "Quantify adjacencies/new businesses: +1.2% (home décor, bath, kitchen, sanitaryware contributions)",
+            "Measure international business contribution: +1.0% (overseas subsidiaries and exports growth)",
+            "Verify inorganic contribution: 0% (no material acquisitions in FY26)",
+            "Sum: 9.8% + 2.5% + 1.2% + 1.0% + 0% = 14.5% (matches reported)"
+          ],
+          "result": "Organic revenue growth of 14.5%; volume-driven (9.8% or 67% of total growth); price-mix providing 2.5% (17%); adjacencies and international each contributing 1.2% and 1.0%. Zero inorganic contribution.",
+          "insight": "The decomposition reveals growth quality is strong: volume expansion of 9.8% exceeds industry growth (~8%), suggesting genuine market share gains in core decorative coatings. Price-mix of 2.5% is healthy premiumisation, not distress pricing. Absence of inorganic contribution confirms this is earned growth, not acquisition-masked organic slowdown. Flag: adjacencies contribution at only 1.2% is small relative to strategic positioning, warranting tracking in FY27E forecasts."
+        },
+        "sensitivity_note": "The decomposition matters because identical reported growth rates can have completely different quality profiles. A 14.5% growth that is 14% volume + 0.5% price reflects healthy underlying demand. The same 14.5% that is 4% volume + 10.5% price (heavy price-led) suggests demand weakness offset by pricing — and is concerning. Always force the decomposition; do not accept the headline number as your analysis."
+      },
+      {
+        "name": "DuPont Decomposition of Return on Capital Employed (ROCE)",
+        "formula": "ROCE = (EBIT / Sales) x (Sales / Capital Employed)\n      = EBIT Margin x Capital Turnover\n\nAlternative for ROE:\nROE = (Net Income / Sales) x (Sales / Total Assets) x (Total Assets / Equity)\n    = Net Margin x Asset Turnover x Equity Multiplier",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings before interest and tax; operating profit after COGS and operating expenses"
+          },
+          {
+            "symbol": "Sales",
+            "meaning": "Total revenue (net of returns and excise where applicable under GST regime)"
+          },
+          {
+            "symbol": "EBIT Margin",
+            "meaning": "EBIT divided by Sales — measures operational profitability as a percentage of revenue"
+          },
+          {
+            "symbol": "Capital Employed",
+            "meaning": "Total debt plus equity, or equivalently total assets minus current liabilities; the total capital deployed in the business"
+          },
+          {
+            "symbol": "Capital Turnover",
+            "meaning": "Sales divided by Capital Employed — measures how efficiently capital generates revenue"
+          },
+          {
+            "symbol": "ROCE",
+            "meaning": "Return on Capital Employed; the after-tax operating return generated on all capital (debt and equity) invested"
+          },
+          {
+            "symbol": "Net Income",
+            "meaning": "PAT (profit after tax) from the P&L"
+          },
+          {
+            "symbol": "Total Assets",
+            "meaning": "Sum of all assets on the balance sheet"
+          },
+          {
+            "symbol": "Equity",
+            "meaning": "Total shareholders' equity (share capital plus reserves and surplus)"
+          },
+          {
+            "symbol": "Asset Turnover",
+            "meaning": "Sales divided by Total Assets — indicates revenue generated per rupee of assets"
+          },
+          {
+            "symbol": "Equity Multiplier",
+            "meaning": "Total Assets divided by Equity — measures financial leverage (ratio of total assets to equity capital)"
+          }
+        ],
+        "plain_english": "DuPont decomposition breaks down ROCE (or ROE) into its underlying operational and financial drivers. ROCE = margin × turnover tells you that return comes from two levers: how much profit you squeeze from each rupee of sales (margin), and how many rupees of sales you generate from each rupee of capital (turnover). This is powerful because it shows whether improving returns are driven by operational excellence (margin expansion) or just by using more leverage — very different risk profiles.",
+        "computation": [
+          "Step 1: Calculate EBIT Margin = EBIT ÷ Sales",
+          "Step 2: Calculate Capital Turnover = Sales ÷ Capital Employed",
+          "Step 3: Multiply EBIT Margin × Capital Turnover = ROCE",
+          "Step 4 (optional): Analyse whether ROCE improvement is margin-led or turnover-led by comparing period-over-period changes in each ratio"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints FY24 ROCE was 27.1%. By FY27E, management expects it to reach 32.0%. Decompose the drivers of this 490 bps improvement and assess sustainability.",
+          "steps": [
+            "FY24: EBIT Rs. 6,100 cr, Sales Rs. 35,000 cr, Capital Employed Rs. 22,500 cr",
+            "FY24 EBIT Margin = 6,100 ÷ 35,000 = 17.4%",
+            "FY24 Capital Turnover = 35,000 ÷ 22,500 = 1.56x",
+            "FY24 ROCE = 17.4% × 1.56x = 27.1%",
+            "FY26: EBIT Rs. 8,260 cr, Sales Rs. 40,300 cr, Capital Employed Rs. 29,000 cr",
+            "FY26 EBIT Margin = 8,260 ÷ 40,300 = 20.5% (improvement of 310 bps vs. FY24)",
+            "FY26 Capital Turnover = 40,300 ÷ 29,000 = 1.39x (decline of 17 bps vs. FY24)",
+            "FY26 ROCE = 20.5% × 1.39x = 28.5% (190 bps improvement vs. FY24)",
+            "FY27E: EBIT Rs. 10,860 cr, Sales Rs. 46,800 cr, Capital Employed Rs. 33,800 cr",
+            "FY27E EBIT Margin = 10,860 ÷ 46,800 = 23.2% (improvement of 580 bps vs. FY24)",
+            "FY27E Capital Turnover = 46,800 ÷ 33,800 = 1.38x (decline of 18 bps vs. FY24)",
+            "FY27E ROCE = 23.2% × 1.38x = 32.0% (improvement of 490 bps vs. FY24)"
+          ],
+          "result": "FY24–FY27E ROCE improves from 27.1% to 32.0% (+490 bps). EBIT margin expands from 17.4% to 23.2% (+580 bps; this is the dominant driver). Capital turnover compresses from 1.56x to 1.38x (−18 bps; structural deterioration masked by margin expansion).",
+          "insight": "The ROCE improvement is entirely margin-led, not turnover-led. This is consistent with the operational thesis: scale, mix, and manufacturing footprint optimisation drive margin expansion while capital intensity rises (expected in a capex cycle to support growth). However, this makes ROCE sustainability sensitive to margin maintenance; if EBIT margin expansion stalls at FY26 levels, ROCE would decline to ~27.8% despite revenue growth. Watch FY27 EBITDA margin carefully — if it rolls over, the ROCE expansion narrative breaks."
+        },
+        "sensitivity_note": "DuPont matters because aggregate ROCE moves can mask offsetting drivers. A company can show stable ROCE while EBIT margin compresses (offset by higher leverage), which is a quality deterioration disguised as stability. Always decompose ROCE into its drivers — and watch for the leverage trap, where ROE rises only because the equity multiplier is increasing (more debt, not more efficiency)."
+      },
+      {
+        "name": "Operating Cash Flow Conversion",
+        "formula": "OCF Conversion (%) = Operating Cash Flow / EBITDA × 100\n\nFCF Conversion (%) = Free Cash Flow / Net Income × 100\nWhere FCF = Operating Cash Flow − Capex",
+        "variables": [
+          {
+            "symbol": "Operating Cash Flow",
+            "meaning": "Cash generated from operating activities — from the cash flow statement, after working capital changes and tax payments"
+          },
+          {
+            "symbol": "EBITDA",
+            "meaning": "Earnings before interest, taxes, depreciation, amortisation — from the P&L"
+          },
+          {
+            "symbol": "Free Cash Flow (FCF)",
+            "meaning": "Operating cash flow minus capital expenditure; the cash available to equity and debt holders after maintaining and growing the business"
+          },
+          {
+            "symbol": "Capex",
+            "meaning": "Capital expenditure — cash invested in property, plant, equipment, and other fixed assets"
+          },
+          {
+            "symbol": "Net Income",
+            "meaning": "PAT (profit after tax) from the P&L"
+          }
+        ],
+        "plain_english": "Cash flow conversion ratios measure what percentage of reported earnings actually translate into cash. OCF conversion shows the quality of EBITDA (is depreciation real, or are working capital accruals inflating the number?), while FCF conversion reveals the cash residue after reinvestment. High and stable conversion (80%+ for OCF) signals business health and accounting integrity; declining conversion is a red flag for working capital build, inventory bloat, or just poor earnings quality.",
+        "computation": [
+          "Step 1: Extract Operating Cash Flow from the Cash Flow Statement",
+          "Step 2: Extract EBITDA from the P&L (or calculate: EBIT + D&A)",
+          "Step 3: Calculate OCF Conversion = Operating Cash Flow ÷ EBITDA × 100",
+          "Step 4: Extract Capex from the Cash Flow Statement (investing activities)",
+          "Step 5: Calculate Free Cash Flow = Operating Cash Flow − Capex",
+          "Step 6: Extract Net Income (PAT) from the P&L",
+          "Step 7: Calculate FCF Conversion = Free Cash Flow ÷ Net Income × 100"
+        ],
+        "worked_example": {
+          "problem": "Asian Paints reported EBITDA of Rs. 6,930 cr and PAT of Rs. 4,520 cr in FY24, and EBITDA of Rs. 8,665 cr and PAT of Rs. 5,400 cr in FY26. Operating cash flow was Rs. 5,400 cr (FY24) and Rs. 7,450 cr (FY26); capex was Rs. 1,750 cr (FY24) and Rs. 2,500 cr (FY26). Assess the cash quality trajectory.",
+          "steps": [
+            "FY24: OCF = Rs. 5,400 cr, EBITDA = Rs. 6,930 cr",
+            "FY24 OCF Conversion = 5,400 ÷ 6,930 × 100 = 77.9%",
+            "FY24: FCF = 5,400 − 1,750 = Rs. 3,650 cr, PAT = Rs. 4,520 cr",
+            "FY24 FCF Conversion = 3,650 ÷ 4,520 × 100 = 80.8%",
+            "FY26: OCF = Rs. 7,450 cr, EBITDA = Rs. 8,665 cr",
+            "FY26 OCF Conversion = 7,450 ÷ 8,665 × 100 = 86.0% (improvement of 810 bps)",
+            "FY26: FCF = 7,450 − 2,500 = Rs. 4,950 cr, PAT = Rs. 5,400 cr",
+            "FY26 FCF Conversion = 4,950 ÷ 5,400 × 100 = 91.7% (improvement of 1,090 bps)"
+          ],
+          "result": "OCF conversion improved from 77.9% (FY24) to 86.0% (FY26), a gain of 810 bps. FCF conversion improved from 80.8% to 91.7%, a gain of 1,090 bps. Both conversions are elevated and moving in the right direction.",
+          "insight": "The improvement in conversion ratios is a quality validation of the earnings growth narrative. OCF growing faster than EBITDA (growth of 38% vs. EBITDA growth of 25%) suggests working capital is releasing cash rather than consuming it — possible drivers include improved receivables collection, better inventory management, or strong payables management. FCF conversion at 91.7% in FY26 is exceptional: of every rupee of PAT, 91.7 paise is available for debt reduction, dividends, or buybacks after reinvestment. This supports the thesis that margin expansion is backed by operational efficiency, not accounting. Contrast this with a declining conversion scenario (e.g., 77% to 65%): even if reported EBITDA grew, cash flow stagnation would signal deteriorating business quality."
+        },
+        "sensitivity_note": "Conversion ratios are critical because they distinguish accounting profits from economic profits. Companies with stable and high conversion (80%+) generate cash to fund growth, dividends, and buybacks. Companies with declining conversion are increasingly reliant on working capital release or accounting accruals — the historical pattern preceding most accounting frauds. As a rule: OCF conversion below 70% deserves explicit investigation. FCF conversion below 60% suggests the reported PAT is materially overstating cash economics."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + V for Paste Special (for ratio analysis layout)",
+        "Cmd + ; to insert today date",
+        "Cmd + Option + R to increase decimal",
+        "F4 (or Cmd + T) to toggle absolute reference",
+        "Cmd + Shift + F to add filter to data range",
+        "Cmd + Option + P to insert PivotTable"
+      ],
+      "windows": [
+        "Alt + N + V to insert PivotTable for ratio decomposition",
+        "Ctrl + ; to insert today date for as-of dating",
+        "Alt + H + 0 + 0 to increase decimal precision",
+        "F4 to toggle absolute reference (lock cell ref for ratio formulas)",
+        "Ctrl + Shift + L to add filter to data table for sorting ratios",
+        "Alt + JF + V for Calculated Field in PivotTable (for derived ratios)"
+      ]
+    }
+  }
+}

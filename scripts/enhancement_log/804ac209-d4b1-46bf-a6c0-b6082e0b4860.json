@@ -1,0 +1,246 @@
+{
+  "id": "804ac209-d4b1-46bf-a6c0-b6082e0b4860",
+  "label": "M9 S2 | The Profitability Formula Arsenal",
+  "before": {
+    "formulas": [
+      {
+        "name": "Gross Margin",
+        "formula": "Gross Margin = (Revenue - COGS) / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales/turnover for the period"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — raw materials, direct labour, manufacturing overhead"
+          }
+        ],
+        "worked_example": "HUL FY23: Revenue = ₹58,154 Cr, COGS = ₹27,742 Cr. Gross Margin = (58,154 - 27,742) / 58,154 = 52.3%. This extraordinary margin reflects HUL's brand premium — consumers pay for Surf, Dove, Lifebuoy at prices far above their raw material cost. Compare to Tata Steel (~22%) where pricing is dictated by global commodity cycles.",
+        "sensitivity_note": "Gross margin is the first line of defence — if raw material costs rise and the company cannot pass it to consumers, this ratio compresses and every ratio below it compresses with it. Track this quarterly for FMCG and commodity businesses."
+      },
+      {
+        "name": "Operating Margin (EBIT Margin)",
+        "formula": "Operating Margin = EBIT / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax = Revenue - COGS - Operating Expenses"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales/turnover"
+          }
+        ],
+        "worked_example": "Infosys FY23: Revenue = ₹1,46,767 Cr, EBIT = ₹31,039 Cr. Operating Margin = 31,039 / 1,46,767 = 21.1%. For Indian IT services, 20-25% is world-class. TCS runs slightly higher (~24%), Wipro lower (~16%). The spread reflects execution quality and pricing discipline.",
+        "sensitivity_note": "Operating Margin is the truest measure of business quality — it excludes financing decisions (interest) and tax-regime differences. When comparing companies in the same industry, operating margin is usually your first stop."
+      },
+      {
+        "name": "Net Margin",
+        "formula": "Net Margin = Net Profit / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit After Tax attributable to shareholders"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales"
+          }
+        ],
+        "worked_example": "Asian Paints FY23: Revenue = ₹34,488 Cr, Net Profit = ₹4,106 Cr. Net Margin = 4,106 / 34,488 = 11.9%. Exceptional for paints industry where raw material (titanium dioxide, resins) is a large cost. Berger runs 8-9%, Kansai 5-6%. Net margin converts to cash and dividends — it matters for the shareholder directly.",
+        "sensitivity_note": "Net margin is affected by one-time items, tax rate changes, and interest costs. Always cross-check against operating margin to see if the net number is stable or contains noise."
+      },
+      {
+        "name": "ROE — Return on Equity",
+        "formula": "ROE = Net Profit / Average Shareholders' Equity × 100",
+        "variables": [
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit After Tax"
+          },
+          {
+            "symbol": "Average Shareholders' Equity",
+            "meaning": "(Opening Equity + Closing Equity) / 2"
+          }
+        ],
+        "worked_example": "Bajaj Finance FY23: Net Profit = ₹11,508 Cr, Average Equity = ₹54,000 Cr (approx). ROE = 11,508 / 54,000 = 21.3%. Strong for an NBFC — comparable to HDFC Bank. But remember: Bajaj Finance runs 6x leverage, so a chunk of this ROE is leverage-driven. ROCE tells a cleaner story.",
+        "sensitivity_note": "ROE = Net Margin × Asset Turnover × Equity Multiplier (DuPont). A company can boost ROE by taking debt — so always pair ROE with D/E. That analysis is the core of Session 3."
+      },
+      {
+        "name": "ROCE — Return on Capital Employed",
+        "formula": "ROCE = EBIT / (Shareholders' Equity + Total Debt) × 100",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Operating Profit — pre-interest, pre-tax"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "Net worth = Share Capital + Reserves"
+          },
+          {
+            "symbol": "Total Debt",
+            "meaning": "Short-term + Long-term borrowings"
+          }
+        ],
+        "worked_example": "Asian Paints FY23: EBIT = ₹5,500 Cr, Equity = ₹13,500 Cr, Debt = ₹1,700 Cr. Capital Employed = ₹15,200 Cr. ROCE = 5,500 / 15,200 = 36.2%. One of India's highest — and sustained for two decades. This is why Asian Paints trades at 50x+ P/E. The market pays a fortune for durable 30%+ ROCE.",
+        "sensitivity_note": "ROCE is leverage-neutral — it does not reward or punish financial engineering. That makes it the cleanest cross-company comparison tool for non-financial businesses. Always pull 5-year ROCE trends, not just one year."
+      },
+      {
+        "name": "ROIC — Return on Invested Capital",
+        "formula": "ROIC = NOPAT / Invested Capital × 100",
+        "variables": [
+          {
+            "symbol": "NOPAT",
+            "meaning": "Net Operating Profit After Tax = EBIT × (1 - Tax Rate)"
+          },
+          {
+            "symbol": "Invested Capital",
+            "meaning": "Equity + Debt - Cash & Investments (only operating capital)"
+          }
+        ],
+        "worked_example": "TCS FY23: EBIT = ₹52,100 Cr, Tax Rate = 25%, NOPAT = 52,100 × 0.75 = ₹39,075 Cr. Invested Capital (ex-cash) = ~₹60,000 Cr (TCS holds huge cash). ROIC = 39,075 / 60,000 = 65.1%. TCS is the extreme case — almost no fixed assets, enormous operating leverage. This ROIC is why TCS trades at 28x+ earnings.",
+        "sensitivity_note": "ROIC strips out cash hoards that mechanically lower ROCE. For cash-rich companies like TCS and Infosys, ROIC reveals the true underlying capital efficiency that ROCE understates."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + % → percentage format",
+        "Fn + F4 → absolute reference",
+        "Cmd + Arrow → navigate to column ends",
+        "Cmd + Shift + P → paste special for value-only ratios"
+      ],
+      "windows": [
+        "Ctrl + Shift + % → apply percentage format to margin cells",
+        "F4 → lock reference to shared denominator (e.g. revenue) when building margin stack",
+        "Ctrl + Arrow → jump to end of column while pulling multi-year data",
+        "Alt + N + V → insert pivot table for industry median calculations"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Gross Margin",
+        "formula": "Gross Margin = (Revenue - COGS) / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales/turnover for the period"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — raw materials, direct labour, manufacturing overhead"
+          }
+        ],
+        "plain_english": "Gross margin shows what percentage of every rupee of sales remains after paying for the direct cost to make the product. A high gross margin (40%+) signals strong pricing power or low production costs; a low margin (15%–25%) suggests commoditized products or intense input cost pressure. For equity research, gross margin trends reveal whether a company can protect profitability when raw material costs spike.",
+        "worked_example": "HUL FY23: Revenue = ₹58,154 Cr, COGS = ₹27,742 Cr. Gross Margin = (58,154 - 27,742) / 58,154 = 52.3%. This extraordinary margin reflects HUL's brand premium — consumers pay for Surf, Dove, Lifebuoy at prices far above their raw material cost. Compare to Tata Steel (~22%) where pricing is dictated by global commodity cycles.",
+        "sensitivity_note": "Gross margin is the first line of defence — if raw material costs rise and the company cannot pass it to consumers, this ratio compresses and every ratio below it compresses with it. Track this quarterly for FMCG and commodity businesses."
+      },
+      {
+        "name": "Operating Margin (EBIT Margin)",
+        "formula": "Operating Margin = EBIT / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax = Revenue - COGS - Operating Expenses"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales/turnover"
+          }
+        ],
+        "plain_english": "Operating margin reveals the percentage of sales converted to operating profit, after all production and business-running costs but before financing and tax. It isolates the efficiency of core operations, making it the most comparable metric across companies with different capital structures or tax regimes. A widening operating margin indicates improving operational execution; a narrowing one signals rising costs or pricing pressure.",
+        "worked_example": "Infosys FY23: Revenue = ₹1,46,767 Cr, EBIT = ₹31,039 Cr. Operating Margin = 31,039 / 1,46,767 = 21.1%. For Indian IT services, 20-25% is world-class. TCS runs slightly higher (~24%), Wipro lower (~16%). The spread reflects execution quality and pricing discipline.",
+        "sensitivity_note": "Operating Margin is the truest measure of business quality — it excludes financing decisions (interest) and tax-regime differences. When comparing companies in the same industry, operating margin is usually your first stop."
+      },
+      {
+        "name": "Net Margin",
+        "formula": "Net Margin = Net Profit / Revenue × 100",
+        "variables": [
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit After Tax attributable to shareholders"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales"
+          }
+        ],
+        "plain_english": "Net margin is the bottom-line efficiency ratio — it shows how many rupees of profit a company keeps for shareholders from each rupee of sales. This is the margin that ultimately flows to equity holders as earnings and cash dividends. Net margin is affected by interest, taxes, and one-time items, so always compare it to operating margin to detect distortions.",
+        "worked_example": "Asian Paints FY23: Revenue = ₹34,488 Cr, Net Profit = ₹4,106 Cr. Net Margin = 4,106 / 34,488 = 11.9%. Exceptional for paints industry where raw material (titanium dioxide, resins) is a large cost. Berger runs 8-9%, Kansai 5-6%. Net margin converts to cash and dividends — it matters for the shareholder directly.",
+        "sensitivity_note": "Net margin is affected by one-time items, tax rate changes, and interest costs. Always cross-check against operating margin to see if the net number is stable or contains noise."
+      },
+      {
+        "name": "ROE — Return on Equity",
+        "formula": "ROE = Net Profit / Average Shareholders' Equity × 100",
+        "variables": [
+          {
+            "symbol": "Net Profit",
+            "meaning": "Profit After Tax"
+          },
+          {
+            "symbol": "Average Shareholders' Equity",
+            "meaning": "(Opening Equity + Closing Equity) / 2"
+          }
+        ],
+        "plain_english": "ROE measures how much profit a company generates for each rupee of shareholder capital invested in the business. It answers the investor's core question: 'What return am I earning on my money?' However, ROE can be inflated through debt leverage, so it must always be paired with the company's financial leverage ratio (D/E) to reveal whether returns are sustainable or artificially boosted.",
+        "worked_example": "Bajaj Finance FY23: Net Profit = ₹11,508 Cr, Average Equity = ₹54,000 Cr (approx). ROE = 11,508 / 54,000 = 21.3%. Strong for an NBFC — comparable to HDFC Bank. But remember: Bajaj Finance runs 6x leverage, so a chunk of this ROE is leverage-driven. ROCE tells a cleaner story.",
+        "sensitivity_note": "ROE = Net Margin × Asset Turnover × Equity Multiplier (DuPont). A company can boost ROE by taking debt — so always pair ROE with D/E. That analysis is the core of Session 3."
+      },
+      {
+        "name": "ROCE — Return on Capital Employed",
+        "formula": "ROCE = EBIT / (Shareholders' Equity + Total Debt) × 100",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Operating Profit — pre-interest, pre-tax"
+          },
+          {
+            "symbol": "Shareholders' Equity",
+            "meaning": "Net worth = Share Capital + Reserves"
+          },
+          {
+            "symbol": "Total Debt",
+            "meaning": "Short-term + Long-term borrowings"
+          }
+        ],
+        "plain_english": "ROCE shows the operating return generated by every rupee of capital (equity plus debt) invested in the business. Unlike ROE, it is leverage-neutral — it does not reward or punish financial engineering. ROCE is the gold standard for comparing businesses with different debt levels; a ROCE persistently above 20% signals a company with a sustainable competitive moat. Compare ROCE to the company's WACC to see if management is creating or destroying value.",
+        "worked_example": "Asian Paints FY23: EBIT = ₹5,500 Cr, Equity = ₹13,500 Cr, Debt = ₹1,700 Cr. Capital Employed = ₹15,200 Cr. ROCE = 5,500 / 15,200 = 36.2%. One of India's highest — and sustained for two decades. This is why Asian Paints trades at 50x+ P/E. The market pays a fortune for durable 30%+ ROCE.",
+        "sensitivity_note": "ROCE is leverage-neutral — it does not reward or punish financial engineering. That makes it the cleanest cross-company comparison tool for non-financial businesses. Always pull 5-year ROCE trends, not just one year."
+      },
+      {
+        "name": "ROIC — Return on Invested Capital",
+        "formula": "ROIC = NOPAT / Invested Capital × 100",
+        "variables": [
+          {
+            "symbol": "NOPAT",
+            "meaning": "Net Operating Profit After Tax = EBIT × (1 - Tax Rate)"
+          },
+          {
+            "symbol": "Invested Capital",
+            "meaning": "Equity + Debt - Cash & Investments (only operating capital)"
+          }
+        ],
+        "plain_english": "ROIC refines ROCE by excluding cash hoards and non-operating assets, measuring return only on capital actively deployed in the business. For asset-light, cash-rich companies like TCS and Infosys, ROIC reveals the true operational efficiency better than ROCE, which can be mechanically depressed by large cash balances. ROIC is essential for valuing tech and services companies.",
+        "worked_example": "TCS FY23: EBIT = ₹52,100 Cr, Tax Rate = 25%, NOPAT = 52,100 × 0.75 = ₹39,075 Cr. Invested Capital (ex-cash) = ~₹60,000 Cr (TCS holds huge cash). ROIC = 39,075 / 60,000 = 65.1%. TCS is the extreme case — almost no fixed assets, enormous operating leverage. This ROIC is why TCS trades at 28x+ earnings.",
+        "sensitivity_note": "ROIC strips out cash hoards that mechanically lower ROCE. For cash-rich companies like TCS and Infosys, ROIC reveals the true underlying capital efficiency that ROCE understates."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + % → percentage format",
+        "Fn + F4 → absolute reference",
+        "Cmd + Arrow → navigate to column ends",
+        "Cmd + Shift + P → paste special for value-only ratios"
+      ],
+      "windows": [
+        "Ctrl + Shift + % → apply percentage format to margin cells",
+        "F4 → lock reference to shared denominator (e.g. revenue) when building margin stack",
+        "Ctrl + Arrow → jump to end of column while pulling multi-year data",
+        "Alt + N + V → insert pivot table for industry median calculations"
+      ]
+    }
+  }
+}

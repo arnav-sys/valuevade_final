@@ -1,0 +1,183 @@
+{
+  "id": "908dcd2d-46b4-44d9-8e99-d4ee81f1a880",
+  "label": "M7 S5 | The Core Balance Sheet Ratios",
+  "before": {
+    "formulas": [
+      {
+        "name": "Net Debt / Equity",
+        "formula": "Net Debt / Equity = (Total Debt − Cash & Liquid Investments) / Total Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "All interest-bearing borrowings — long-term borrowings, short-term borrowings, current maturities of long-term debt, lease liabilities under Ind AS 116"
+          },
+          {
+            "symbol": "Cash & Liquid Investments",
+            "meaning": "Cash and cash equivalents plus marketable securities that can be monetised within 90 days without meaningful loss"
+          },
+          {
+            "symbol": "Total Shareholders' Equity",
+            "meaning": "Share capital plus Other Equity (reserves, retained earnings, OCI). Exclude minority interest for standalone entity analysis."
+          }
+        ],
+        "worked_example": "Reliance Industries FY24:\\nTotal Borrowings: ₹3,12,640 cr\\nCash & Marketable Investments: ₹1,19,400 cr\\nNet Debt: ₹1,93,240 cr\\nTotal Equity: ₹7,88,310 cr\\nNet Debt / Equity = 193,240 / 788,310 = 0.25x\\n\\nContext: Reliance post-Jio-Platforms-stake-sale deleveraging, from a net-debt/equity of 0.85x in FY20 to 0.25x in FY24. For a large Indian corporate, 0.25x is conservative. Compare with Vedanta at ~1.1x (highly leveraged), Tata Steel at ~0.9x, Adani Enterprises at ~1.5x (project-finance heavy), HDFC Bank at ~8x (financial institution — fundamentally different framework).",
+        "sensitivity_note": "For non-financial corporates, Net Debt/Equity below 0.5x is conservative, 0.5-1.0x is moderate, 1.0-1.5x is stretched, above 1.5x is high-risk. For financial institutions, the framework completely changes — equity acts as a buffer against loan losses, and leverage is measured through Tier 1 capital ratios."
+      },
+      {
+        "name": "Debt / EBITDA and Interest Coverage",
+        "formula": "Net Debt / EBITDA = Net Debt / Trailing 12-Month EBITDA. Interest Coverage = EBITDA / Finance Costs",
+        "variables": [
+          {
+            "symbol": "Trailing EBITDA",
+            "meaning": "Last four quarters of EBITDA, giving a current cash-flow proxy rather than a point-in-time annual number"
+          },
+          {
+            "symbol": "Finance Costs",
+            "meaning": "Interest expense on borrowings plus lease liability interest under Ind AS 116 plus any other finance-related charges"
+          }
+        ],
+        "worked_example": "Vodafone Idea FY24:\\nNet Debt (including deferred spectrum and AGR liabilities): ₹2,03,500 cr\\nEBITDA (adjusted): ₹8,350 cr\\nNet Debt / EBITDA = 24.4x\\nFinance Costs: ₹23,100 cr\\nInterest Coverage: 8,350 / 23,100 = 0.36x\\n\\nInterpretation: Vodafone Idea cannot service its interest obligations from operating cash flow — interest coverage below 1.0x means the business is structurally insolvent without equity infusion or debt restructuring. A Net Debt/EBITDA of 24.4x means the company would need approximately 24 years of EBITDA (at current levels) to repay net debt — economically unrepayable without capital restructuring. This is why VI has repeatedly required promoter and government intervention.",
+        "sensitivity_note": "For industrial corporates, Net Debt/EBITDA below 2.0x is conservative, 2.0-3.0x is moderate, 3.0-4.5x is stretched, above 4.5x triggers rating watch. Interest Coverage below 2.0x is stress, below 1.5x is distress, below 1.0x is economic insolvency."
+      },
+      {
+        "name": "Book Value per Share and Tangible Book Value",
+        "formula": "Book Value per Share = Total Equity / Diluted Shares Outstanding. Tangible Book Value per Share = (Total Equity − Goodwill − Intangible Assets) / Diluted Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Goodwill",
+            "meaning": "Premium paid over fair value of net assets in an acquisition. Not amortised under Ind AS 103 but tested annually for impairment."
+          },
+          {
+            "symbol": "Intangible Assets",
+            "meaning": "Brand values, customer relationships, technology, mining rights — assets without physical form. Some are productive, some are accounting constructs."
+          }
+        ],
+        "worked_example": "HDFC Bank FY24 (post-merger):\\nTotal Equity: ₹4,44,490 cr\\nGoodwill: ₹74,200 cr (from HDFC merger)\\nOther Intangibles: ₹11,000 cr\\nTangible Equity: 444,490 − 74,200 − 11,000 = ₹3,59,290 cr\\nDiluted Shares: 760 cr\\nBook Value per Share: 444,490 / 760 = ₹585\\nTangible Book Value per Share: 359,290 / 760 = ₹473\\n\\nInterpretation: The 19% gap between book and tangible book is entirely merger-related goodwill. For banks, tangible book is the regulator-relevant metric (Basel III Tier 1), and for conservative valuation, analysts often use P/TB rather than P/B.",
+        "sensitivity_note": "P/B multiples vary by sector: banks trade at 1.5-4.0x P/B, FMCG at 15-40x P/B, commodity cyclicals at 1.0-2.5x P/B. For financial sector analysis, always use P/TB — goodwill from M&A doesn't create loss-absorbing capital."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+V → Paste Special dialog",
+        "Cmd+1 → Format cells",
+        "Cmd+T → Toggle absolute reference",
+        "Cmd+Shift+7 → Apply outside borders"
+      ],
+      "windows": [
+        "Alt+E+S+N → Paste Special Values and Number formats (for balance sheet peer comparisons)",
+        "F4 while editing → Toggle absolute/relative references",
+        "Ctrl+1 → Format cells quickly (currency, percentages, accounting)",
+        "Alt+N+V → Insert pivot table (fast way to compute sector averages)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Net Debt / Equity",
+        "formula": "Net Debt / Equity = (Total Debt − Cash & Liquid Investments) / Total Shareholders' Equity",
+        "variables": [
+          {
+            "symbol": "Total Debt",
+            "meaning": "All interest-bearing borrowings — long-term borrowings, short-term borrowings, current maturities of long-term debt, lease liabilities under Ind AS 116"
+          },
+          {
+            "symbol": "Cash & Liquid Investments",
+            "meaning": "Cash and cash equivalents plus marketable securities that can be monetised within 90 days without meaningful loss"
+          },
+          {
+            "symbol": "Total Shareholders' Equity",
+            "meaning": "Share capital plus Other Equity (reserves, retained earnings, OCI). Exclude minority interest for standalone entity analysis."
+          }
+        ],
+        "plain_english": "Net Debt/Equity measures how much net debt (after cash) is balanced against shareholder capital. A low ratio (below 0.5x) signals financial conservatism and buffer against downturns; a high ratio (above 1.5x) means debt dominates equity and leaves little room for operational stress. For Indian corporates, this ratio matters because it directly influences credit ratings, borrowing costs, and dividend capacity.",
+        "worked_example": {
+          "problem": "Reliance Industries FY24: Total Borrowings ₹3,12,640 cr, Cash & Marketable Investments ₹1,19,400 cr, Total Equity ₹7,88,310 cr. Calculate Net Debt/Equity and assess leverage profile.",
+          "steps": [
+            "Calculate Net Debt: Total Debt − Cash = ₹3,12,640 cr − ₹1,19,400 cr = ₹1,93,240 cr",
+            "Apply ratio formula: Net Debt / Equity = ₹1,93,240 cr / ₹7,88,310 cr",
+            "Compute: 193,240 / 788,310 = 0.245x ≈ 0.25x"
+          ],
+          "result": "Net Debt/Equity = 0.25x",
+          "insight": "Reliance's leverage has fallen dramatically from 0.85x in FY20 to 0.25x in FY24, reflecting successful deleveraging post-Jio Platforms stake sale. At 0.25x, Reliance is in the conservative band. For context: Vedanta trades at ~1.1x (mining cyclical, higher leverage tolerance), Tata Steel at ~0.9x (steel cycle recovery phase), Adani Enterprises at ~1.5x (project-finance model), HDFC Bank at ~8x (financial institution — fundamentally different framework where equity acts as loss buffer)."
+        },
+        "sensitivity_note": "For non-financial corporates, Net Debt/Equity below 0.5x is conservative, 0.5-1.0x is moderate, 1.0-1.5x is stretched, above 1.5x is high-risk. For financial institutions, the framework completely changes — equity acts as a buffer against loan losses, and leverage is measured through Tier 1 capital ratios."
+      },
+      {
+        "name": "Debt / EBITDA and Interest Coverage",
+        "formula": "Net Debt / EBITDA = Net Debt / Trailing 12-Month EBITDA. Interest Coverage = EBITDA / Finance Costs",
+        "variables": [
+          {
+            "symbol": "Trailing EBITDA",
+            "meaning": "Last four quarters of EBITDA, giving a current cash-flow proxy rather than a point-in-time annual number"
+          },
+          {
+            "symbol": "Finance Costs",
+            "meaning": "Interest expense on borrowings plus lease liability interest under Ind AS 116 plus any other finance-related charges"
+          }
+        ],
+        "plain_english": "Net Debt/EBITDA shows how many years of operating cash flow it would take to repay net debt at current levels. Interest Coverage shows whether the business generates enough EBITDA to cover interest payments comfortably. Together, they reveal the business's capacity to service debt: a ratio above 4x EBITDA or interest coverage below 2x flags distress risk.",
+        "worked_example": {
+          "problem": "Vodafone Idea FY24: Net Debt (including spectrum and AGR liabilities) ₹2,03,500 cr, Adjusted EBITDA ₹8,350 cr, Finance Costs ₹23,100 cr. Calculate Net Debt/EBITDA and Interest Coverage to assess solvency.",
+          "steps": [
+            "Calculate Net Debt/EBITDA: ₹2,03,500 cr / ₹8,350 cr = 24.4x",
+            "Calculate Interest Coverage: ₹8,350 cr / ₹23,100 cr = 0.36x",
+            "Compare Interest Coverage to 1.0x threshold and Net Debt/EBITDA to 4.5x stress level"
+          ],
+          "result": "Net Debt/EBITDA = 24.4x; Interest Coverage = 0.36x",
+          "insight": "Vodafone Idea is economically insolvent: interest coverage below 1.0x means the business cannot service interest from operating cash flow. At 24.4x EBITDA, repayment is impossible without debt restructuring — it would take 24 years at current EBITDA just to repay gross debt. This company exemplifies the intersection of spectrum leverage (high fixed cost), AGR penalty liability, and intense 4G tariff competition. Without sustained government/promoter support or major debt forgiveness, the business cannot survive. Analysts downgraded VI to 'distress' rating in 2023–24."
+        },
+        "sensitivity_note": "For industrial corporates, Net Debt/EBITDA below 2.0x is conservative, 2.0-3.0x is moderate, 3.0-4.5x is stretched, above 4.5x triggers rating watch. Interest Coverage below 2.0x is stress, below 1.5x is distress, below 1.0x is economic insolvency."
+      },
+      {
+        "name": "Book Value per Share and Tangible Book Value",
+        "formula": "Book Value per Share = Total Equity / Diluted Shares Outstanding. Tangible Book Value per Share = (Total Equity − Goodwill − Intangible Assets) / Diluted Shares Outstanding",
+        "variables": [
+          {
+            "symbol": "Goodwill",
+            "meaning": "Premium paid over fair value of net assets in an acquisition. Not amortised under Ind AS 103 but tested annually for impairment."
+          },
+          {
+            "symbol": "Intangible Assets",
+            "meaning": "Brand values, customer relationships, technology, mining rights — assets without physical form. Some are productive, some are accounting constructs."
+          },
+          {
+            "symbol": "Total Equity",
+            "meaning": "Share capital plus all reserves and retained earnings on the balance sheet"
+          },
+          {
+            "symbol": "Diluted Shares Outstanding",
+            "meaning": "Common shares issued plus in-the-money options, convertibles, and warrants, adjusted for treasury stock"
+          }
+        ],
+        "plain_english": "Book Value per Share represents the per-share equity cushion — theoretically what each shareholder owns on a liquidation basis. Tangible Book Value strips out goodwill and intangibles to show only hard assets (property, plant, inventory, receivables, cash). For banks and financial institutions, regulators focus on Tangible Book Value because goodwill from mergers doesn't absorb losses — only hard equity does. For industrial companies, the gap between Book and Tangible Book reveals acquisition-driven goodwill.",
+        "worked_example": {
+          "problem": "HDFC Bank FY24 (post-merger with HDFC Ltd): Total Equity ₹4,44,490 cr, Goodwill ₹74,200 cr, Other Intangibles ₹11,000 cr, Diluted Shares Outstanding 760 cr. Calculate Book Value per Share and Tangible Book Value per Share.",
+          "steps": [
+            "Calculate Book Value per Share: ₹4,44,490 cr / 760 cr shares = ₹585 per share",
+            "Calculate Tangible Equity: ₹4,44,490 cr − ₹74,200 cr − ₹11,000 cr = ₹3,59,290 cr",
+            "Calculate Tangible Book Value per Share: ₹3,59,290 cr / 760 cr shares = ₹473 per share",
+            "Calculate gap: (585 − 473) / 473 = 23.8% goodwill discount"
+          ],
+          "result": "Book Value per Share = ₹585; Tangible Book Value per Share = ₹473",
+          "insight": "The 19% gap between book and tangible book reflects the HDFC merger goodwill integration. For banks, regulators (RBI) and sophisticated analysts prefer Tangible Book Value because goodwill is not counted in Basel III Tier 1 capital — it cannot absorb loan losses. When valuing HDFC Bank, most institutional investors use P/TB multiples (1.8–2.5x) rather than P/B, because the intangible equity doesn't improve solvency. Goodwill impairment risk is low here (strong merger synergies), but in distressed M&A (e.g., Vijaya Bank–Dena Bank–Bank of Baroda), goodwill write-downs can wipe out book value entirely."
+        },
+        "sensitivity_note": "P/B multiples vary by sector: banks trade at 1.5-4.0x P/B (but better valued on P/TB), FMCG at 15-40x P/B (due to brand intangibles), commodity cyclicals at 1.0-2.5x P/B. For financial sector analysis, always use P/TB — goodwill from M&A doesn't create loss-absorbing capital."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+V → Paste Special dialog",
+        "Cmd+1 → Format cells",
+        "Cmd+T → Toggle absolute reference",
+        "Cmd+Shift+7 → Apply outside borders"
+      ],
+      "windows": [
+        "Alt+E+S+N → Paste Special Values and Number formats (for balance sheet peer comparisons)",
+        "F4 while editing → Toggle absolute/relative references",
+        "Ctrl+1 → Format cells quickly (currency, percentages, accounting)",
+        "Alt+N+V → Insert pivot table (fast way to compute sector averages)"
+      ]
+    }
+  }
+}

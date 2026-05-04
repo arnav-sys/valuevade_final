@@ -1,0 +1,228 @@
+{
+  "id": "06aa5797-7831-44da-a5a2-425640bb3a9f",
+  "label": "M7 S11 | The Return Formula Stack and the DuPont Decomposition",
+  "before": {
+    "formulas": [
+      {
+        "name": "Return on Capital Employed (ROCE)",
+        "formula": "ROCE = EBIT / Average Capital Employed\\nWhere Capital Employed = Shareholders' Equity + Total Debt (Long-term + Short-term)\\nOR equivalently: Total Assets − Non-Interest-Bearing Current Liabilities",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax from the P&L. Represents operating profit available to all capital providers before financing and tax decisions."
+          },
+          {
+            "symbol": "Capital Employed",
+            "meaning": "The total capital invested in operations — equity capital plus interest-bearing debt. Average of opening and closing balances for the period."
+          }
+        ],
+        "worked_example": "Asian Paints FY24:\\nEBIT: ₹6,880 cr\\nShareholders' Equity (avg): ₹18,620 cr\\nTotal Debt (avg): ₹2,850 cr\\nCapital Employed (avg): ₹21,470 cr\\n\\nROCE = 6,880 / 21,470 = 32.0%\\n\\nInterpretation: Asian Paints generates ₹32 of pre-tax operating profit for every ₹100 of capital invested in operations. This is among the highest ROCE levels in Indian equity markets, driven by: (a) strong brand-driven pricing power (gross margin 38-42%), (b) efficient working capital management (slightly negative to modestly positive CCC), (c) asset-light manufacturing (shared facilities, outsourced packaging), (d) distribution scale economies (40,000+ dealers).\\n\\nPeer context (FY24):\\n• Asian Paints: 32%\\n• Berger Paints: 18%\\n• Kansai Nerolac: 15%\\n• Indigo Paints: 17%\\n\\nThe 14-17 percentage point gap versus peers is the quantitative measure of Asian Paints' franchise strength. Over 10 years, compounding at 30% ROCE versus 15% means total capital earns double the returns — which is why Asian Paints has delivered approximately 25% total-return CAGR over multiple decades.",
+        "sensitivity_note": "A 200 bps deterioration in ROCE (30% to 28%) on a ₹21,470 cr capital base represents ₹430 cr of foregone annual earnings — nearly 10% of current EBIT. ROCE deterioration is therefore both a leading indicator of business quality change AND a direct driver of earnings impact."
+      },
+      {
+        "name": "The DuPont Decomposition of ROE",
+        "formula": "ROE = Net Profit Margin × Asset Turnover × Equity Multiplier\\nROE = (Net Income / Revenue) × (Revenue / Average Assets) × (Average Assets / Average Equity)",
+        "variables": [
+          {
+            "symbol": "Net Profit Margin",
+            "meaning": "Net Income divided by Revenue — measures profitability"
+          },
+          {
+            "symbol": "Asset Turnover",
+            "meaning": "Revenue divided by Average Total Assets — measures asset efficiency (how much revenue is generated per rupee of assets)"
+          },
+          {
+            "symbol": "Equity Multiplier",
+            "meaning": "Average Total Assets divided by Average Equity — measures leverage (how much total assets are supported by each rupee of equity)"
+          }
+        ],
+        "worked_example": "HUL FY24 DuPont Decomposition:\\nNet Profit Margin: 10,280 / 60,980 = 16.9%\\nAsset Turnover: 60,980 / 34,580 = 1.76x\\nEquity Multiplier: 34,580 / 12,050 = 2.87x\\n\\nROE = 16.9% × 1.76 × 2.87 = 85.3%\\n\\nCheck: ROE = 10,280 / 12,050 = 85.3% ✓\\n\\nTCS FY24 DuPont Decomposition:\\nNet Profit Margin: 46,099 / 240,893 = 19.1%\\nAsset Turnover: 240,893 / 1,28,200 = 1.88x\\nEquity Multiplier: 1,28,200 / 98,340 = 1.30x\\n\\nROE = 19.1% × 1.88 × 1.30 = 46.7%\\n\\nINSIGHT: HUL and TCS have similar net profit margins (16.9% vs 19.1%) and similar asset turnover (1.76 vs 1.88). The massive ROE difference (85% vs 47%) is almost entirely explained by the equity multiplier — HUL operates with 2.87x assets to equity (high operating leverage through payables and consumer goods financing), TCS operates with only 1.30x (cash-rich, low-debt IT services structure). This is a leverage-driven ROE difference, not an operational difference. DuPont reveals this clearly where raw ROE comparison misleads.",
+        "sensitivity_note": "DuPont decomposition is the most useful tool for understanding WHY two companies have different ROE. Without it, comparing ROE across leverage-different companies is analytically meaningless."
+      },
+      {
+        "name": "ROIC vs WACC — The Value Creation Test",
+        "formula": "Value Creation = (ROIC − WACC) × Invested Capital\\nROIC = NOPAT / Invested Capital\\nNOPAT = EBIT × (1 − Effective Tax Rate)\\nWACC = [E/(E+D)] × Cost of Equity + [D/(E+D)] × Cost of Debt × (1 − Tax)",
+        "variables": [
+          {
+            "symbol": "NOPAT",
+            "meaning": "Net Operating Profit After Tax — operating profit adjusted for tax, excluding interest effects"
+          },
+          {
+            "symbol": "Invested Capital",
+            "meaning": "Equity + Interest-bearing Debt − Excess Cash. Represents the capital actually invested in operations."
+          },
+          {
+            "symbol": "WACC",
+            "meaning": "The blended cost of capital — typically 11-13% for Indian corporates"
+          }
+        ],
+        "worked_example": "TCS FY24 Value Creation Analysis:\\nEBIT: ₹55,000 cr\\nEffective Tax Rate: 25.17%\\nNOPAT = 55,000 × (1 − 0.2517) = ₹41,157 cr\\nEquity: ₹98,340 cr\\nDebt: ₹3,750 cr\\nExcess Cash: ~₹35,000 cr (TCS is cash-rich)\\nInvested Capital = 98,340 + 3,750 − 35,000 = ₹67,090 cr\\nROIC = 41,157 / 67,090 = 61.3%\\n\\nWACC for TCS (assume): ~10% (low-risk cash-rich services business)\\n\\nValue Creation Spread: ROIC − WACC = 61.3% − 10.0% = 51.3 percentage points\\n\\nInterpretation: TCS earns 51 percentage points above its cost of capital. Over a year, this represents (51.3% × 67,090 cr) = ₹34,400 cr of economic value added. This is why TCS trades at premium multiples — the compounding of 51% spread over WACC creates enormous long-term shareholder value.",
+        "sensitivity_note": "Value creation is fundamentally about the spread (ROIC − WACC), not the absolute ROIC. A company earning 15% ROIC vs 12% WACC (3 pp spread) creates more value than a company earning 25% ROIC vs 30% WACC (−5 pp spread). The spread times Invested Capital = economic value added annually."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Fn+F11 → Insert chart",
+        "Cmd+Shift+5 → Percentage format",
+        "Cmd+D → Fill down",
+        "Cmd+B → Bold (for emphasis in ROCE dashboards)"
+      ],
+      "windows": [
+        "Alt+N+N → Insert line chart (for multi-year ROCE trend)",
+        "Ctrl+Shift+% → Format as percentage",
+        "Alt+H+A+L → Align Left (for formatted tables)",
+        "Ctrl+D → Fill down (useful for copying ROCE formulas across years)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Return on Capital Employed (ROCE)",
+        "formula": "ROCE = EBIT / Average Capital Employed\nWhere Capital Employed = Shareholders' Equity + Total Debt (Long-term + Short-term)\nOR equivalently: Total Assets − Non-Interest-Bearing Current Liabilities",
+        "variables": [
+          {
+            "symbol": "EBIT",
+            "meaning": "Earnings Before Interest and Tax from the P&L. Represents operating profit available to all capital providers before financing and tax decisions."
+          },
+          {
+            "symbol": "Capital Employed",
+            "meaning": "The total capital invested in operations — equity capital plus interest-bearing debt. Average of opening and closing balances for the period."
+          }
+        ],
+        "plain_english": "ROCE tells you how much pre-tax operating profit a company generates for every rupee of capital (equity and debt) invested in its business. A higher ROCE indicates the business is deploying capital efficiently and earning strong returns above its cost of capital. For long-term equity investors, ROCE is a key measure of franchise quality — companies with consistently high ROCE (25%+) and stable or growing capital bases compound wealth faster than those with lower or deteriorating ROCE.",
+        "worked_example": {
+          "problem": "Calculate ROCE for Asian Paints FY24 and interpret the result against peer ROCE levels.",
+          "steps": [
+            "EBIT from P&L: ₹6,880 cr",
+            "Shareholders' Equity (opening): ₹17,450 cr; (closing): ₹19,790 cr; Average: ₹18,620 cr",
+            "Total Debt (opening): ₹2,600 cr; (closing): ₹3,100 cr; Average: ₹2,850 cr",
+            "Capital Employed (average): ₹18,620 cr + ₹2,850 cr = ₹21,470 cr",
+            "ROCE = ₹6,880 cr / ₹21,470 cr = 0.320 or 32.0%"
+          ],
+          "result": "32.0%",
+          "insight": "Asian Paints generates ₹32 of pre-tax operating profit for every ₹100 of capital invested in operations. This is among the highest ROCE levels in Indian equity markets, driven by: (a) strong brand-driven pricing power (gross margin 38-42%), (b) efficient working capital management (slightly negative to modestly positive CCC), (c) asset-light manufacturing (shared facilities, outsourced packaging), (d) distribution scale economies (40,000+ dealers).\n\nPeer context (FY24):\n• Asian Paints: 32%\n• Berger Paints: 18%\n• Kansai Nerolac: 15%\n• Indigo Paints: 17%\n\nThe 14-17 percentage point gap versus peers is the quantitative measure of Asian Paints' franchise strength. Over 10 years, compounding at 30% ROCE versus 15% means total capital earns double the returns — which is why Asian Paints has delivered approximately 25% total-return CAGR over multiple decades."
+        },
+        "sensitivity_note": "A 200 bps deterioration in ROCE (30% to 28%) on a ₹21,470 cr capital base represents ₹430 cr of foregone annual earnings — nearly 10% of current EBIT. ROCE deterioration is therefore both a leading indicator of business quality change AND a direct driver of earnings impact."
+      },
+      {
+        "name": "The DuPont Decomposition of ROE",
+        "formula": "ROE = Net Profit Margin × Asset Turnover × Equity Multiplier\nROE = (Net Income / Revenue) × (Revenue / Average Assets) × (Average Assets / Average Equity)",
+        "variables": [
+          {
+            "symbol": "Net Profit Margin",
+            "meaning": "Net Income divided by Revenue — measures profitability"
+          },
+          {
+            "symbol": "Asset Turnover",
+            "meaning": "Revenue divided by Average Total Assets — measures asset efficiency (how much revenue is generated per rupee of assets)"
+          },
+          {
+            "symbol": "Equity Multiplier",
+            "meaning": "Average Total Assets divided by Average Equity — measures leverage (how much total assets are supported by each rupee of equity)"
+          }
+        ],
+        "plain_english": "DuPont decomposition breaks down ROE into three independent drivers: profitability (how much profit you make per rupee of sales), efficiency (how much revenue you generate per rupee of assets), and leverage (how much you borrow relative to equity). This three-part view reveals the real source of ROE differences — whether two companies have different ROE because of operating margins, asset turns, or leverage decisions. Without DuPont, comparing ROE across companies with different capital structures is analytically misleading.",
+        "computation": [
+          "Calculate Net Profit Margin: Net Income / Revenue",
+          "Calculate Asset Turnover: Revenue / Average Total Assets",
+          "Calculate Equity Multiplier: Average Total Assets / Average Equity",
+          "Multiply all three ratios: Margin × Turnover × Multiplier = ROE",
+          "Verify by calculating ROE directly: Net Income / Average Equity (should match)"
+        ],
+        "worked_example": {
+          "problem": "Decompose ROE for HUL and TCS to understand why their returns differ despite similar profitability.",
+          "steps": [
+            "HUL FY24 — Net Profit Margin: ₹10,280 cr / ₹60,980 cr = 16.9%",
+            "HUL FY24 — Asset Turnover: ₹60,980 cr / ₹34,580 cr = 1.76x",
+            "HUL FY24 — Equity Multiplier: ₹34,580 cr / ₹12,050 cr = 2.87x",
+            "HUL ROE via DuPont: 16.9% × 1.76 × 2.87 = 85.3%",
+            "HUL ROE direct check: ₹10,280 cr / ₹12,050 cr = 85.3% ✓",
+            "TCS FY24 — Net Profit Margin: ₹46,099 cr / ₹240,893 cr = 19.1%",
+            "TCS FY24 — Asset Turnover: ₹240,893 cr / ₹1,28,200 cr = 1.88x",
+            "TCS FY24 — Equity Multiplier: ₹1,28,200 cr / ₹98,340 cr = 1.30x",
+            "TCS ROE via DuPont: 19.1% × 1.88 × 1.30 = 46.7%"
+          ],
+          "result": "HUL ROE: 85.3% (driven by 2.87x leverage); TCS ROE: 46.7% (driven by low 1.30x leverage)",
+          "insight": "HUL and TCS have similar net profit margins (16.9% vs 19.1%) and similar asset turnover (1.76 vs 1.88). The massive ROE difference (85% vs 47%) is almost entirely explained by the equity multiplier — HUL operates with 2.87x assets to equity (high operating leverage through payables and consumer goods financing), TCS operates with only 1.30x (cash-rich, low-debt IT services structure). This is a leverage-driven ROE difference, not an operational difference. DuPont reveals this clearly where raw ROE comparison misleads."
+        },
+        "sensitivity_note": "DuPont decomposition is the most useful tool for understanding WHY two companies have different ROE. Without it, comparing ROE across leverage-different companies is analytically meaningless."
+      },
+      {
+        "name": "ROIC vs WACC — The Value Creation Test",
+        "formula": "Value Creation = (ROIC − WACC) × Invested Capital\nROIC = NOPAT / Invested Capital\nNOPAT = EBIT × (1 − Effective Tax Rate)\nWACC = [E/(E+D)] × Cost of Equity + [D/(E+D)] × Cost of Debt × (1 − Tax)",
+        "variables": [
+          {
+            "symbol": "ROIC",
+            "meaning": "Return on Invested Capital — the after-tax return earned on all capital (equity and debt) deployed in operations"
+          },
+          {
+            "symbol": "NOPAT",
+            "meaning": "Net Operating Profit After Tax — operating profit adjusted for tax, excluding interest effects"
+          },
+          {
+            "symbol": "Invested Capital",
+            "meaning": "Equity + Interest-bearing Debt − Excess Cash. Represents the capital actually invested in operations."
+          },
+          {
+            "symbol": "WACC",
+            "meaning": "The blended cost of capital — typically 11-13% for Indian corporates"
+          },
+          {
+            "symbol": "Cost of Equity",
+            "meaning": "The required return demanded by equity shareholders, typically calculated via CAPM"
+          },
+          {
+            "symbol": "Cost of Debt",
+            "meaning": "The weighted average interest rate on borrowed funds"
+          }
+        ],
+        "plain_english": "The spread between ROIC and WACC (the spread) is the true measure of whether a company is creating shareholder value. If ROIC exceeds WACC, the business earns more than its cost of capital — surplus value is created. If ROIC falls below WACC, capital is being destroyed. The magnitude of the spread, multiplied by invested capital, equals the economic value added annually. This is why ROIC-WACC analysis is far superior to P/E or P/B for assessing franchise quality — it directly measures whether management is deploying capital productively.",
+        "computation": [
+          "Extract EBIT from the P&L and calculate Effective Tax Rate (Total Tax / EBT)",
+          "Calculate NOPAT: EBIT × (1 − Effective Tax Rate)",
+          "Sum Shareholders' Equity + Interest-bearing Debt from balance sheet",
+          "Deduct Excess Cash (typically hold at least 2-3% of revenue for operations)",
+          "Invested Capital = Equity + Debt − Excess Cash",
+          "Calculate ROIC: NOPAT / Invested Capital",
+          "Estimate WACC using market data (Cost of Equity from CAPM, Cost of Debt from bond yields or borrowing rates, tax rate, capital structure proportions)",
+          "Calculate spread: ROIC − WACC",
+          "Economic Value Added (annual): Spread × Invested Capital"
+        ],
+        "worked_example": {
+          "problem": "Calculate ROIC, WACC, and value creation spread for TCS FY24 to assess how much economic value is being created annually.",
+          "steps": [
+            "EBIT from FY24 P&L: ₹55,000 cr",
+            "Total Tax / EBT: Effective Tax Rate = 25.17%",
+            "NOPAT = ₹55,000 cr × (1 − 0.2517) = ₹41,157 cr",
+            "Shareholders' Equity (average): ₹98,340 cr",
+            "Interest-bearing Debt (average): ₹3,750 cr",
+            "Excess Cash (TCS cash-rich position): ~₹35,000 cr",
+            "Invested Capital = ₹98,340 cr + ₹3,750 cr − ₹35,000 cr = ₹67,090 cr",
+            "ROIC = ₹41,157 cr / ₹67,090 cr = 61.3%",
+            "WACC for TCS (estimated based on low-risk cash-rich services business profile): ~10.0%",
+            "Value Creation Spread = 61.3% − 10.0% = 51.3 percentage points",
+            "Economic Value Added (annual) = 51.3% × ₹67,090 cr = ₹34,400 cr"
+          ],
+          "result": "ROIC: 61.3%; WACC: 10.0%; Spread: 51.3 pp; Annual EVA: ₹34,400 cr",
+          "insight": "TCS earns 51 percentage points above its cost of capital. Over a year, this represents ₹34,400 cr of economic value added. This is why TCS trades at premium multiples — the compounding of 51% spread over WACC creates enormous long-term shareholder value. In contrast, a lower-quality business earning 15% ROIC against a 12% WACC (3 pp spread) creates substantially less EVA. The ROIC-WACC framework shows that franchise quality is ultimately about earning multiples above your cost of capital, not absolute ROIC alone."
+        },
+        "sensitivity_note": "Value creation is fundamentally about the spread (ROIC − WACC), not the absolute ROIC. A company earning 15% ROIC vs 12% WACC (3 pp spread) creates more value than a company earning 25% ROIC vs 30% WACC (−5 pp spread). The spread times Invested Capital = economic value added annually."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Fn+F11 → Insert chart",
+        "Cmd+Shift+5 → Percentage format",
+        "Cmd+D → Fill down",
+        "Cmd+B → Bold (for emphasis in ROCE dashboards)"
+      ],
+      "windows": [
+        "Alt+N+N → Insert line chart (for multi-year ROCE trend)",
+        "Ctrl+Shift+% → Format as percentage",
+        "Alt+H+A+L → Align Left (for formatted tables)",
+        "Ctrl+D → Fill down (useful for copying ROCE formulas across years)"
+      ]
+    }
+  }
+}

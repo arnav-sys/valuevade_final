@@ -1,0 +1,144 @@
+{
+  "id": "f9fa6869-ea40-4799-b149-f08dc361c285",
+  "label": "M2 S2 | Key Secondary Market Metrics",
+  "before": {
+    "formulas": [
+      {
+        "name": "Bid-Ask Spread",
+        "formula": "Bid-Ask Spread = Best Ask Price – Best Bid Price\nBid-Ask Spread (%) = [(Ask – Bid) / Ask] × 100",
+        "sensitivity": "Spread widens during market stress, at open/close, and for illiquid stocks. A spread above 1% is a red flag for liquidity. Above 3% means you're trading in a swamp.",
+        "worked_example": "TCS Best Bid = ₹3,798, Best Ask = ₹3,800. Spread = ₹2. Spread (%) = (2/3800) × 100 = 0.053%. This is extremely tight — TCS is one of the most liquid stocks on NSE."
+      },
+      {
+        "name": "Impact Cost",
+        "formula": "Impact Cost (%) = [(Actual Execution Price – Ideal Price) / Ideal Price] × 100\nIdeal Price = (Best Bid + Best Ask) / 2",
+        "analyst_note": "Impact cost is how NSE decides Nifty 50 eligibility. A stock must have an average impact cost of 0.50% or less on a ₹10 crore order over the last 6 months. This is why only highly liquid stocks make it into the benchmark index.",
+        "worked_example": "Ideal Price of TCS = (3798 + 3800) / 2 = ₹3,799. You place a market buy for 50,000 shares, but there are only 3,200 shares at ₹3,800. You end up buying across multiple price levels. Your average execution price might be ₹3,803. Impact cost = [(3803 – 3799) / 3799] × 100 = 0.105%."
+      },
+      {
+        "name": "Traded Volume, Turnover & VWAP",
+        "formula": "Volume = Total number of shares traded in a day\nTurnover = Total value of shares traded = Sum of (Price × Quantity) for each trade\nVWAP = Turnover / Volume",
+        "excel_shortcut": "If you have tick-by-tick data in Excel, VWAP = SUMPRODUCT(Price, Quantity) / SUM(Quantity).",
+        "worked_example": "TCS trades 50 lakh shares in a day with total turnover of ₹1,900 crore. VWAP = 1,900 crore / 50 lakh = ₹3,800. Institutional investors benchmark their execution against VWAP — buying below VWAP is 'good execution.'"
+      }
+    ]
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Bid-Ask Spread",
+        "formula": "Bid-Ask Spread = Best Ask Price – Best Bid Price\nBid-Ask Spread (%) = [(Ask – Bid) / Ask] × 100",
+        "variables": [
+          {
+            "symbol": "Best Ask Price",
+            "meaning": "The lowest price at which a seller is willing to sell (the price you pay to buy immediately)"
+          },
+          {
+            "symbol": "Best Bid Price",
+            "meaning": "The highest price at which a buyer is willing to buy (the price you receive to sell immediately)"
+          },
+          {
+            "symbol": "Ask",
+            "meaning": "Same as Best Ask Price; the offering price"
+          },
+          {
+            "symbol": "Bid",
+            "meaning": "Same as Best Bid Price; the bidding price"
+          }
+        ],
+        "plain_english": "The bid-ask spread is the gap between what buyers are willing to pay and what sellers are asking—it's the invisible cost of immediacy. The wider this gap, the harder it is to move in and out of a stock without losing money. For a liquid stock like TCS, this spread is razor-thin; for a mid-cap or small-cap, it can be substantial, making it expensive to trade.",
+        "sensitivity": "Spread widens during market stress, at open/close, and for illiquid stocks. A spread above 1% is a red flag for liquidity. Above 3% means you're trading in a swamp.",
+        "worked_example": {
+          "problem": "TCS trades on NSE. The best bid is ₹3,798 and the best ask is ₹3,800. What is the bid-ask spread in absolute terms and as a percentage?",
+          "steps": [
+            "Absolute spread = ₹3,800 − ₹3,798 = ₹2",
+            "Percentage spread = (₹2 / ₹3,800) × 100 = 0.0526%"
+          ],
+          "result": "Bid-ask spread = ₹2 (absolute) or 0.053% (percentage)",
+          "insight": "This is extremely tight — TCS is one of the most liquid stocks on NSE. For comparison, a smaller liquid-cap stock might have a spread of ₹0.50 on a ₹1,500 share price (0.033%), while a less-liquid small-cap might have ₹5 on ₹500 (1.0%), a material cost per round-trip."
+        }
+      },
+      {
+        "name": "Impact Cost",
+        "formula": "Impact Cost (%) = [(Actual Execution Price – Ideal Price) / Ideal Price] × 100\nIdeal Price = (Best Bid + Best Ask) / 2",
+        "variables": [
+          {
+            "symbol": "Actual Execution Price",
+            "meaning": "The weighted-average price at which your full order was filled (accounting for partial fills at multiple price levels)"
+          },
+          {
+            "symbol": "Ideal Price",
+            "meaning": "The midpoint between best bid and best ask; the 'fair' price with zero market impact"
+          },
+          {
+            "symbol": "Best Bid",
+            "meaning": "The highest price a buyer is willing to pay right now"
+          },
+          {
+            "symbol": "Best Ask",
+            "meaning": "The lowest price a seller is willing to accept right now"
+          }
+        ],
+        "plain_english": "Impact cost is the real price you pay for moving the market when you execute a large order. Unlike the simple bid-ask spread, it reflects the slippage from hitting multiple price levels as you work through your order. NSE uses impact cost to decide which stocks deserve index inclusion—this metric forces high liquidity standards and protects retail investors.",
+        "analyst_note": "Impact cost is how NSE decides Nifty 50 eligibility. A stock must have an average impact cost of 0.50% or less on a ₹10 crore order over the last 6 months. This is why only highly liquid stocks make it into the benchmark index.",
+        "worked_example": {
+          "problem": "You want to buy 50,000 TCS shares at NSE. The best bid is ₹3,798 and the best ask is ₹3,800. Only 3,200 shares are available at ₹3,800; deeper in the order book, more shares sit at progressively higher prices. After your order executes across multiple price levels, your weighted-average execution price is ₹3,803. What is the impact cost?",
+          "steps": [
+            "Calculate ideal price = (₹3,798 + ₹3,800) / 2 = ₹3,799",
+            "Actual execution price = ₹3,803 (from order book slippage)",
+            "Impact cost (%) = [(₹3,803 − ₹3,799) / ₹3,799] × 100 = (₹4 / ₹3,799) × 100 = 0.1053%"
+          ],
+          "result": "Impact cost = 0.105%",
+          "insight": "Even though the bid-ask spread was only ₹2, the large order (50,000 shares) consumed liquidity and pushed the average execution price up by ₹4. For a ₹10 crore order on a less-liquid stock, impact cost could easily exceed 1%, making it unsuitable for index funds. This is why NSE's impact cost rule is crucial for market microstructure."
+        }
+      },
+      {
+        "name": "Traded Volume, Turnover & VWAP",
+        "formula": "Volume = Total number of shares traded in a day\nTurnover = Total value of shares traded = Sum of (Price × Quantity) for each trade\nVWAP = Turnover / Volume",
+        "variables": [
+          {
+            "symbol": "Volume",
+            "meaning": "Total number of shares or units traded during a period (e.g., one trading day)"
+          },
+          {
+            "symbol": "Price",
+            "meaning": "The execution price for each individual trade or trade block"
+          },
+          {
+            "symbol": "Quantity",
+            "meaning": "The number of shares traded in each individual trade or trade block"
+          },
+          {
+            "symbol": "Turnover",
+            "meaning": "Aggregate rupee value of all shares traded (sum of price × quantity for each trade)"
+          },
+          {
+            "symbol": "VWAP",
+            "meaning": "Volume-Weighted Average Price; the average price paid per share across all trades, weighted by volume at each price"
+          }
+        ],
+        "plain_english": "Volume and turnover measure the intensity and monetary scale of trading activity. VWAP is the true average cost per share when many trades happen at different prices throughout the day. Institutional investors obsess over VWAP because it's an objective, volume-weighted benchmark—beating it means smarter execution and better returns for clients.",
+        "computation": [
+          "For each trade i, calculate Price_i × Quantity_i",
+          "Sum all (Price_i × Quantity_i) to get total Turnover",
+          "Sum all Quantity_i to get total Volume",
+          "Divide Turnover by Volume to get VWAP"
+        ],
+        "excel_shortcut": "If you have tick-by-tick data in Excel, VWAP = SUMPRODUCT(Price, Quantity) / SUM(Quantity).",
+        "worked_example": {
+          "problem": "TCS trades during a single trading day: 20 lakh shares at ₹3,800, 15 lakh shares at ₹3,802, and 15 lakh shares at ₹3,798. What is the total turnover, volume, and VWAP?",
+          "steps": [
+            "Trade 1: ₹3,800 × 20 lakh = ₹76 crore",
+            "Trade 2: ₹3,802 × 15 lakh = ₹57.03 crore",
+            "Trade 3: ₹3,798 × 15 lakh = ₹56.97 crore",
+            "Total Turnover = ₹76 + ₹57.03 + ₹56.97 = ₹190 crore",
+            "Total Volume = 20 lakh + 15 lakh + 15 lakh = 50 lakh shares",
+            "VWAP = ₹190 crore / 50 lakh shares = ₹3,800"
+          ],
+          "result": "Volume = 50 lakh shares, Turnover = ₹190 crore, VWAP = ₹3,800",
+          "insight": "Even though trades occurred at three different prices (₹3,798, ₹3,800, ₹3,802), the volume-weighted result is exactly ₹3,800 because the buy volumes at the higher and lower prices balanced out. An institutional trader who bought 50 lakh shares and achieved a VWAP of ₹3,800 has matched the market perfectly — no alpha, no slippage. This is often considered good execution in India's institutional trading world."
+        }
+      }
+    ]
+  }
+}

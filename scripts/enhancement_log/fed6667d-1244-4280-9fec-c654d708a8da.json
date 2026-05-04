@@ -1,0 +1,212 @@
+{
+  "id": "fed6667d-1244-4280-9fec-c654d708a8da",
+  "label": "M11 S6 | The FMCG Analyst's Calculation Toolkit — From Volume-Price-M",
+  "before": {
+    "formulas": [
+      {
+        "name": "Volume-Price-Mix (VPM) Decomposition of Revenue Growth",
+        "formula": "Revenue Growth = (1 + Volume Growth) × (1 + Price Growth) × (1 + Mix Effect) − 1     ≈     Volume Growth + Price Growth + Mix Effect (for small numbers)",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-on-year change in physical units sold (e.g., +5% means 5% more units)"
+          },
+          {
+            "symbol": "Price Growth",
+            "meaning": "Like-for-like price change on existing products (e.g., +4% means average product price up 4%)"
+          },
+          {
+            "symbol": "Mix Effect",
+            "meaning": "Change in product mix toward higher or lower priced SKUs (e.g., +2% means consumers buying more premium variants)"
+          }
+        ],
+        "worked_example": "HUL FY24 reported revenue growth of 2% year-on-year. Decomposition disclosed by management: Volume Growth +2%, Price Growth flat at 0% (deflationary inputs), Mix Effect 0%. Sum: 2 + 0 + 0 = 2%. The story: HUL's revenue growth in FY24 was entirely volume-led, with no help from pricing. This is healthy in absolute terms (volume is the highest-quality growth) but reflects weak pricing power in a deflationary input environment. Compare to Asian Paints FY24: Revenue growth 3.6% with Volume +9%, Price -5%, Mix -0.4%. The implication: Asian Paints had to cut prices to drive volume. The 9% volume growth looks great in isolation but the -5% pricing tells the deeper story — competitive intensity from Birla Opus is forcing price cuts to defend share. Volume looks pretty; price tells the truth.",
+        "sensitivity_note": "The VPM decomposition is the most important diagnostic in FMCG analysis. A company growing 10% revenue with 8% volume + 2% price is dramatically different from a company growing 10% revenue with 1% volume + 9% price. The first is real demand; the second is price-led 'growth' that often masks volume weakness. Always demand the decomposition. Most Indian FMCG companies disclose this in concall presentations or analyst meets — if a company does not disclose, that itself is a yellow flag."
+      },
+      {
+        "name": "Gross Margin Sensitivity to Input Costs",
+        "formula": "ΔGross Margin (in basis points) ≈ Input Cost % of Revenue × ΔInput Cost % × (-1)    [negative because cost up = margin down]",
+        "variables": [
+          {
+            "symbol": "Input Cost % of Revenue",
+            "meaning": "What percentage of revenue is consumed by the relevant input (e.g., palm oil is 18-22% of soap company revenue)"
+          },
+          {
+            "symbol": "ΔInput Cost %",
+            "meaning": "Year-on-year percentage change in input cost (e.g., palm oil up 30% means +30%)"
+          },
+          {
+            "symbol": "Pricing Pass-Through",
+            "meaning": "Adjustment factor: companies with pricing power can pass through 70-100% of input cost increases; weak players pass through only 40-60%"
+          }
+        ],
+        "worked_example": "Marico FY23: Copra (raw coconut) is approximately 35% of revenue cost for Marico (Parachute coconut oil business). Copra prices rose ~25% YoY. Implied gross margin compression = 35% × 25% = 875 basis points if no pricing pass-through. Marico actually saw gross margin compress by approximately 400-500 bps — meaning they passed through roughly 50% of the cost increase via price hikes. This is the test of pricing power. Compare to HUL on palm oil cycles: HUL passes through approximately 70-80% of palm oil increases due to stronger pricing power, market position, and category leadership. The gross margin sensitivity is a measurable proxy for pricing power. Track this across cycles — companies that consistently pass through 70%+ of input cost moves have durable pricing power; those at 40-50% pass-through have structural weakness.",
+        "sensitivity_note": "Gross margin trends across input cost cycles reveal pricing power. In an input cost spike (e.g., 2022 commodity surge), look at which companies maintained gross margin (strong pricing power, market leaders like HUL, Asian Paints, Nestle India) versus which saw margin compress sharply (weaker players unable to pass through costs). When inputs deflate (e.g., 2024 palm oil normalisation), strong players hold pricing and expand margin; weak players get forced into price cuts and gross margin moves up only mechanically. The asymmetry across cycles is the structural test."
+      },
+      {
+        "name": "Premiumisation Contribution to Mix",
+        "formula": "Mix Contribution to Revenue Growth = (Premium Category Growth − Total Category Growth) × Premium Category % of Revenue",
+        "variables": [
+          {
+            "symbol": "Premium Category Growth",
+            "meaning": "Growth rate of premium-tier products (typically priced 50%+ above mass-market)"
+          },
+          {
+            "symbol": "Total Category Growth",
+            "meaning": "Overall company or category revenue growth"
+          },
+          {
+            "symbol": "Premium Category % of Revenue",
+            "meaning": "Percentage of total revenue from premium products"
+          }
+        ],
+        "worked_example": "HUL Beauty and Wellbeing segment FY24: Premium portfolio grew at 14% YoY, total segment grew at 6%. Premium portfolio is 35% of segment revenue. Mix Contribution = (14% − 6%) × 35% = 2.8% — meaning premiumisation alone added 280 basis points to segment growth. Without the premium tilt, segment growth would have been closer to 3.2% rather than 6%. This is the structural growth lever in Indian FMCG — as urban incomes rise, consumers trade up from mass to premium, and companies with premium portfolios capture disproportionate growth. Asian Paints' Royale (premium) and Apex Ultima (super-premium) are similarly the growth drivers within decorative paints. Track premium portfolio share by company — for HUL it's 35-40%, for Britannia premium biscuits roughly 30%, for Marico Parachute Advansed and Hair & Care premium variants roughly 25%.",
+        "sensitivity_note": "Premiumisation is the structural growth thesis for Indian FMCG over the next decade. As per capita income crosses 3,000 USD (currently around 2,500 USD), the share of premium spending typically inflects. The companies positioned in premium categories with established brands will compound faster than those stuck in mass-market commoditised categories. Track premium category growth versus mass — when the gap is 600+ basis points sustained, premiumisation is real and structural. When premium and mass grow at similar rates, premiumisation has stalled (often a recession or income compression signal)."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=GROWTH(range)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=AVERAGEIFS(range, criteria)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for VPM analysis across categories)",
+        "=GROWTH(range) for trend extrapolation",
+        "Conditional formatting Color Scales for gross margin trends",
+        "=AVERAGEIFS(range, criteria) for multi-criteria averages",
+        "Ctrl + Shift + 5 (% format for VPM display)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Volume-Price-Mix (VPM) Decomposition of Revenue Growth",
+        "formula": "Revenue Growth = (1 + Volume Growth) × (1 + Price Growth) × (1 + Mix Effect) − 1     ≈     Volume Growth + Price Growth + Mix Effect (for small numbers)",
+        "variables": [
+          {
+            "symbol": "Volume Growth",
+            "meaning": "Year-on-year change in physical units sold (e.g., +5% means 5% more units)"
+          },
+          {
+            "symbol": "Price Growth",
+            "meaning": "Like-for-like price change on existing products (e.g., +4% means average product price up 4%)"
+          },
+          {
+            "symbol": "Mix Effect",
+            "meaning": "Change in product mix toward higher or lower priced SKUs (e.g., +2% means consumers buying more premium variants)"
+          }
+        ],
+        "plain_english": "VPM decomposition breaks down total revenue growth into three sources: genuine demand for more units (volume), price increases that the market accepts (price), and shifts in what customers buy (mix). This matters because 10% revenue growth from 8% volume is fundamentally different from 10% from 9% price—one reflects real demand, the other reflects pricing power or input cost pass-through masking weak unit growth. In Indian FMCG, volume is the highest-quality growth signal.",
+        "worked_example": {
+          "problem": "HUL reported FY24 revenue growth of 2% YoY. Decompose the growth and interpret what it tells you about demand and pricing power.",
+          "steps": [
+            "Identify disclosed components: Volume Growth +2%, Price Growth 0% (flat), Mix Effect 0%.",
+            "Verify additivity: 2% + 0% + 0% = 2% reported growth. ✓",
+            "Interpret volume: +2% unit growth in a deflationary commodity environment signals resilient consumer demand.",
+            "Interpret price: 0% pricing with flat inputs suggests HUL chose not to raise prices despite holding pricing power, likely to defend volume market share.",
+            "Interpret mix: 0% mix effect indicates no significant shift toward premium variants—growth was broadly balanced across categories."
+          ],
+          "result": "HUL's FY24 growth was entirely volume-led with neutral pricing and no mix tilt. This reflects a conservative pricing stance in a weak macroeconomic environment, prioritising volume and market share defence over margin expansion.",
+          "insight": "Compare to Asian Paints FY24: Revenue growth 3.6% with Volume +9%, Price −5%, Mix −0.4%. Asian Paints' massive 9% volume growth is partially offset by −5% pricing—indicating competitive pressure (from new entrants like Birla Opus) forced them to cut prices to defend share. HUL's 2% volume + 0% price is a stronger signal of pricing power despite lower headline growth. Always separate the quality of growth from the magnitude."
+        },
+        "sensitivity_note": "The VPM decomposition is the most important diagnostic in FMCG analysis. A company growing 10% revenue with 8% volume + 2% price is dramatically different from a company growing 10% revenue with 1% volume + 9% price. The first is real demand; the second is price-led 'growth' that often masks volume weakness. Always demand the decomposition. Most Indian FMCG companies disclose this in concall presentations or analyst meets — if a company does not disclose, that itself is a yellow flag."
+      },
+      {
+        "name": "Gross Margin Sensitivity to Input Costs",
+        "formula": "ΔGross Margin (in basis points) ≈ Input Cost % of Revenue × ΔInput Cost % × (-1)    [negative because cost up = margin down]",
+        "variables": [
+          {
+            "symbol": "Input Cost % of Revenue",
+            "meaning": "What percentage of revenue is consumed by the relevant input (e.g., palm oil is 18-22% of soap company revenue)"
+          },
+          {
+            "symbol": "ΔInput Cost %",
+            "meaning": "Year-on-year percentage change in input cost (e.g., palm oil up 30% means +30%)"
+          },
+          {
+            "symbol": "Pricing Pass-Through",
+            "meaning": "Adjustment factor: companies with pricing power can pass through 70-100% of input cost increases; weak players pass through only 40-60%"
+          }
+        ],
+        "plain_english": "When input costs rise (e.g., oil, sugar, packaging), a company's gross margin can either compress, stay flat, or expand depending on whether it can raise prices without losing volume. This formula quantifies the relationship: if inputs are 35% of your cost base and rise 20%, your gross margin will fall by ~700 basis points unless you pass some of that cost to customers. The pass-through percentage reveals your pricing power—high-leverage brands pass through 70%+, weak players absorb more of the blow.",
+        "computation": [
+          "Step 1: Identify the material input cost as a percentage of total revenue (e.g., copra = 35% of Marico revenue).",
+          "Step 2: Calculate the YoY percentage change in input cost price (e.g., copra up 25% = ΔInput Cost % = +25%).",
+          "Step 3: Multiply: 35% × 25% = 875 basis points of potential gross margin compression.",
+          "Step 4: Apply pass-through rate (e.g., 50% = company raises prices to offset 50% of cost increase). Actual margin impact = 875 bps × (1 − 0.50) = 437.5 bps compression.",
+          "Step 5: Compare actual reported margin change to the modelled compression. Variance indicates pass-through success or input cost timing mismatches."
+        ],
+        "worked_example": {
+          "problem": "Marico FY23: Copra prices surged ~25% YoY. Copra is ~35% of Marico's COGS. Reported gross margin compressed by 400–500 bps. What does this tell you about Marico's pricing power?",
+          "steps": [
+            "Calculate unmitigated margin impact: 35% × 25% = 875 basis points of compression if Marico absorbed the entire cost increase.",
+            "Observed compression: 400–500 bps.",
+            "Implied pass-through: (875 − 450) / 875 = ~48% of cost increase was passed to customers via price increases.",
+            "Benchmark: HUL on palm oil cycles typically achieves 70–80% pass-through due to stronger brand leverage and market position."
+          ],
+          "result": "Marico achieved ~50% pass-through, materially lower than HUL's 70–80%. This indicates Marico has weaker pricing power, likely due to smaller scale, lower brand penetration in urban markets, and higher distribution to rural/sub-urban channels where price sensitivity is higher.",
+          "insight": "Track pass-through rates across multiple input cost cycles (FY22, FY23, FY24). Companies with consistent 70%+ pass-through have durable pricing power and will maintain relative margin resilience in inflationary environments. Companies stuck at 40–50% pass-through face structural margin pressure and will see ROCE compression over time. This is a key differentiator between Tier-1 (HUL, Nestle India, ITC) and Tier-2 FMCG players."
+        },
+        "sensitivity_note": "Gross margin trends across input cost cycles reveal pricing power. In an input cost spike (e.g., 2022 commodity surge), look at which companies maintained gross margin (strong pricing power, market leaders like HUL, Asian Paints, Nestle India) versus which saw margin compress sharply (weaker players unable to pass through costs). When inputs deflate (e.g., 2024 palm oil normalisation), strong players hold pricing and expand margin; weak players get forced into price cuts and gross margin moves up only mechanically. The asymmetry across cycles is the structural test."
+      },
+      {
+        "name": "Premiumisation Contribution to Mix",
+        "formula": "Mix Contribution to Revenue Growth = (Premium Category Growth − Total Category Growth) × Premium Category % of Revenue",
+        "variables": [
+          {
+            "symbol": "Premium Category Growth",
+            "meaning": "Growth rate of premium-tier products (typically priced 50%+ above mass-market)"
+          },
+          {
+            "symbol": "Total Category Growth",
+            "meaning": "Overall company or category revenue growth"
+          },
+          {
+            "symbol": "Premium Category % of Revenue",
+            "meaning": "Percentage of total revenue from premium products"
+          }
+        ],
+        "plain_english": "Premiumisation measures how much of a company's revenue growth is driven by customers trading up to higher-priced, higher-margin products rather than buying more units at existing price points. When premium products grow much faster than the overall category, the company benefits from a favourable mix shift—a portion of growth comes from higher-margin sales even if unit volume is modest. This is the structural growth lever in scaling Indian consumer businesses.",
+        "computation": [
+          "Step 1: Identify premium category revenue growth rate (e.g., HUL premium beauty products grew 14% YoY).",
+          "Step 2: Identify total segment/company revenue growth (e.g., HUL Beauty segment grew 6% YoY).",
+          "Step 3: Calculate growth spread: 14% − 6% = 8 percentage points.",
+          "Step 4: Multiply by premium category's revenue share: 8% × 35% = 2.8 percentage points.",
+          "Step 5: Interpret: Premium products contributed 280 basis points of the 600 basis point total growth, meaning without the mix shift toward premium, total growth would have been ~3.2%."
+        ],
+        "worked_example": {
+          "problem": "HUL Beauty and Wellbeing segment FY24: Premium portfolio grew 14% YoY, total segment grew 6%, premium is 35% of segment revenue. How much of the segment's growth came from premiumisation?",
+          "steps": [
+            "Growth spread (premium vs. total): 14% − 6% = 8 percentage points.",
+            "Premium portfolio share: 35% of segment revenue.",
+            "Mix contribution: 8% × 35% = 2.8 percentage points of the 6% total growth.",
+            "Implied mass-market growth: If premium is 2.8 pp out of 6 pp, then mass-market contributed ~3.2 pp, indicating mass is growing at approximately (6% − 2.8%) / 65% ≈ 4.9%."
+          ],
+          "result": "Premiumisation contributed 280 basis points (2.8 pp) of HUL Beauty's 600 basis point (6%) total segment growth. Without the shift toward premium, segment growth would have been only ~3.2%—nearly half the reported rate.",
+          "insight": "This is the structural growth thesis for Indian FMCG over the next decade. As per capita income crosses USD 3,000 (currently ~USD 2,500), the share of premium spending inflects sharply. HUL, Asian Paints (Royale, Apex Ultima), Britannia (premium biscuits), and Marico (Parachute Advanced, Hair & Care premium) all benefit from this secular shift. Track premium portfolio growth relative to mass across multiple quarters—when the gap sustains at 600+ basis points, premiumisation is structural and not a cyclical shift. Companies positioned in premium categories with established brands (Lakme, Maybelline, Clinic Plus, Revlon) will compound faster than those stuck in mass-market commoditised segments."
+        },
+        "sensitivity_note": "Premiumisation is the structural growth thesis for Indian FMCG over the next decade. As per capita income crosses 3,000 USD (currently around 2,500 USD), the share of premium spending typically inflects. The companies positioned in premium categories with established brands will compound faster than those stuck in mass-market commoditised categories. Track premium category growth versus mass — when the gap is 600+ basis points sustained, premiumisation is real and structural. When premium and mass grow at similar rates, premiumisation has stalled (often a recession or income compression signal)."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Option + P (Pivot)",
+        "=GROWTH(range)",
+        "Format → Conditional Formatting (Color Scales)",
+        "=AVERAGEIFS(range, criteria)",
+        "Cmd + Shift + 5 (% format)"
+      ],
+      "windows": [
+        "Alt + N + V (Pivot for VPM analysis across categories)",
+        "=GROWTH(range) for trend extrapolation",
+        "Conditional formatting Color Scales for gross margin trends",
+        "=AVERAGEIFS(range, criteria) for multi-criteria averages",
+        "Ctrl + Shift + 5 (% format for VPM display)"
+      ]
+    }
+  }
+}

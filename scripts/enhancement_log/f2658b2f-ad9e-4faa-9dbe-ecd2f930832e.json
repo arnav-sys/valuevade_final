@@ -1,0 +1,216 @@
+{
+  "id": "f2658b2f-ad9e-4faa-9dbe-ecd2f930832e",
+  "label": "M7 S13 | The FSA Scorecard Scoring System — Thresholds and Calculatio",
+  "before": {
+    "formulas": [
+      {
+        "name": "Pillar 1 — Earnings Power and Stability Scoring",
+        "formula": "Score (1-5) based on:\\n• 5-year Revenue CAGR\\n• EBITDA margin level and trajectory\\n• Earnings volatility (standard deviation / mean of EBITDA)\\n• Sector-relative performance",
+        "variables": [
+          {
+            "symbol": "5-year Revenue CAGR",
+            "meaning": "Compound Annual Growth Rate of revenue over 5 years"
+          },
+          {
+            "symbol": "EBITDA margin",
+            "meaning": "Average EBITDA margin over 5 years and current year"
+          },
+          {
+            "symbol": "Earnings Volatility",
+            "meaning": "Standard deviation of EBITDA / mean EBITDA across 5 years"
+          }
+        ],
+        "worked_example": "Scoring thresholds:\\n\\n5 (Premium): Revenue CAGR > 15% AND EBITDA margin > 25% AND Volatility < 15%\\n  Examples: Asian Paints, Pidilite, Page Industries\\n  \\n4 (Good): Revenue CAGR 10-15% AND EBITDA margin 20-25% AND Volatility 15-25%\\n  Examples: HUL, Dabur, Marico\\n  \\n3 (Acceptable): Revenue CAGR 5-10% AND EBITDA margin 15-20% AND Volatility 25-40%\\n  Examples: UltraTech Cement, Sun Pharma\\n  \\n2 (Weak): Revenue CAGR 0-5% AND EBITDA margin 10-15% AND Volatility 40-60%\\n  Examples: Many mid-cap industrials\\n  \\n1 (Poor): Revenue declining OR EBITDA margin < 10% OR Volatility > 60%\\n  Examples: Distressed companies\\n\\nFor a hypothetical Indian consumer company with:\\n- Revenue CAGR: 12% (meets Good)\\n- EBITDA margin avg: 22% (meets Good)\\n- Volatility: 18% (meets Good)\\n- Sector-relative: in line\\nScore = 4 (Good)",
+        "sensitivity_note": "Pillar 1 is particularly important for identifying compounders. A Premium Quality business must score 4 or 5 on this pillar. A business scoring 1-2 on earnings power has structural issues regardless of other pillars."
+      },
+      {
+        "name": "Pillar 5 — Return on Capital Scoring",
+        "formula": "Score (1-5) based on:\\n• 5-year average ROCE\\n• ROIC vs WACC spread (annualised)\\n• DuPont decomposition quality\\n• Incremental ROCE trajectory",
+        "variables": [
+          {
+            "symbol": "5-year average ROCE",
+            "meaning": "Simple average of ROCE across 5 fiscal years"
+          },
+          {
+            "symbol": "ROIC vs WACC spread",
+            "meaning": "ROIC minus WACC, annualised"
+          },
+          {
+            "symbol": "DuPont quality",
+            "meaning": "Operational drivers (margin, turnover) vs leverage-driven"
+          }
+        ],
+        "worked_example": "Scoring thresholds:\\n\\n5 (Premium): Average ROCE > 25% AND ROIC-WACC spread > 12 pp AND operational (not leverage) driven\\n  Examples: Asian Paints, HUL, Nestlé, Page Industries, TCS\\n  \\n4 (Good): Average ROCE 18-25% AND ROIC-WACC spread 6-12 pp AND mixed drivers\\n  Examples: Dabur, Marico, Sun Pharma, UltraTech\\n  \\n3 (Acceptable): Average ROCE 12-18% AND ROIC-WACC spread 2-6 pp\\n  Examples: Bharti Airtel, Bajaj Auto, L&T\\n  \\n2 (Weak): Average ROCE 8-12% AND ROIC-WACC spread 0-2 pp\\n  Examples: Utility-like returns, most mid-cap industrials\\n  \\n1 (Poor): Average ROCE < 8% OR ROIC below WACC (value destroying)\\n  Examples: Legacy telecom, distressed, PSU banks in trough\\n\\nFor a hypothetical specialty chemicals company with:\\n- 5-year avg ROCE: 20% (Good threshold)\\n- ROIC: 16%, WACC: 12%, Spread: 4 pp (Acceptable threshold)\\n- DuPont: 80% operational, 20% leverage-driven (Good)\\nScore = 3.5, round to 4 (Good)",
+        "sensitivity_note": "Pillar 5 is often the single most predictive of long-term shareholder returns. Companies scoring 5 on this pillar (sustained ROIC > WACC by 12 pp+) tend to be multi-decade compounders. Companies scoring 1-2 rarely deliver meaningful long-term returns regardless of apparent valuation."
+      },
+      {
+        "name": "Integrated Scorecard Total and Classification",
+        "formula": "Total Score = Sum of all 7 pillar scores (max 35)\\n\\nClassification:\\n• 28-35: Premium Quality\\n• 22-27: Good Quality\\n• 16-21: Acceptable Quality\\n• 10-15: Weak Quality\\n• Below 10: Poor Quality\\n\\nAdjusted Score = Total Score × (1 + Trajectory Adjustment)\\nTrajectory Adjustment = -20% to +20% based on 3-year quality trajectory",
+        "variables": [
+          {
+            "symbol": "Trajectory Adjustment",
+            "meaning": "Reflects whether quality is improving (+ adjustment) or deteriorating (- adjustment) over 3 years"
+          },
+          {
+            "symbol": "Quality Trend",
+            "meaning": "Direction and magnitude of pillar score changes over 3 years"
+          }
+        ],
+        "worked_example": "Asian Paints Scorecard (hypothetical synthesis):\\nPillar 1 (Earnings Power): 5 — stable 12-15% growth, 20-22% margins, low volatility\\nPillar 2 (Cost Structure): 4 — moderate operational leverage, TiO2 sensitivity\\nPillar 3 (Working Capital): 5 — tight CCC, near-zero to slightly negative\\nPillar 4 (Cash Flow): 5 — CRR consistently 0.95-1.05, conservative accruals\\nPillar 5 (Returns): 5 — sustained 30%+ ROCE, 13+ pp ROIC-WACC spread\\nPillar 6 (Balance Sheet): 5 — net cash position, no covenant concerns\\nPillar 7 (Quality/Governance): 5 — pristine audit, transparent disclosures\\nTotal: 5+4+5+5+5+5+5 = 34\\n\\nClassification: PREMIUM QUALITY (28-35)\\nTrajectory Adjustment: +5% (stable premium quality, no concerns)\\nAdjusted Score: 34 × 1.05 = 35.7 (capped at perfect score)\\n\\nFor a stressed mid-cap specialty chemicals name:\\nPillar 1: 3, Pillar 2: 2, Pillar 3: 2, Pillar 4: 2, Pillar 5: 3, Pillar 6: 2, Pillar 7: 3\\nTotal: 17\\nClassification: Acceptable (16-21)\\nTrajectory Adjustment: -15% (deteriorating over 3 years)\\nAdjusted Score: 14.5 → Weak Quality\\n\\nThe trajectory adjustment is crucial — it distinguishes between stable mediocre and improving mediocre businesses, or between stable premium and deteriorating premium.",
+        "sensitivity_note": "The classification is not a rigid score but a risk-return profile. Premium Quality implies confident long-term holding at appropriate valuation. Good Quality implies selective investment with valuation discipline. Acceptable Quality implies either trade or avoid depending on cycle. Weak/Poor Quality requires special situations or avoidance."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+F → Create Formula (for weighted scoring)",
+        "Cmd+E → AutoSum",
+        "Cmd+Shift+# → Date format for trajectory tracking",
+        "Cmd+Shift+$ → Currency format"
+      ],
+      "windows": [
+        "Alt+N+V+T → Insert Pivot Table (for multi-company scorecard comparison)",
+        "Ctrl+Shift+! → Format as number with 2 decimals",
+        "Alt+H+M+M → Merge and Center (for pillar section headers)",
+        "F4 → Lock cell reference when writing scoring formulas"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Pillar 1 — Earnings Power and Stability Scoring",
+        "formula": "Score (1-5) based on:\n• 5-year Revenue CAGR\n• EBITDA margin level and trajectory\n• Earnings volatility (standard deviation / mean of EBITDA)\n• Sector-relative performance",
+        "variables": [
+          {
+            "symbol": "5-year Revenue CAGR",
+            "meaning": "Compound Annual Growth Rate of revenue over 5 years"
+          },
+          {
+            "symbol": "EBITDA margin",
+            "meaning": "Average EBITDA margin over 5 years and current year"
+          },
+          {
+            "symbol": "Earnings Volatility",
+            "meaning": "Standard deviation of EBITDA / mean EBITDA across 5 years"
+          }
+        ],
+        "plain_english": "This pillar measures whether a company can consistently grow revenues and maintain stable, expanding profitability. High earnings power (fast growth, high margins, low volatility) indicates a business with competitive advantages and predictable cash generation. In India's competitive landscape, companies scoring 4–5 on this pillar tend to be market leaders with durable advantages—think Asian Paints or TCS—whereas lower scores suggest cyclical or commodity-like characteristics.",
+        "computation": [
+          "Calculate 5-year Revenue CAGR: (Year 5 Revenue / Year 0 Revenue)^(1/5) − 1",
+          "Calculate average EBITDA margin: mean of (EBITDA / Revenue) for years 1–5",
+          "Calculate earnings volatility: (standard deviation of annual EBITDA) / (mean EBITDA)",
+          "Compare each metric to sector benchmarks; map to score 1–5 using thresholds"
+        ],
+        "worked_example": {
+          "problem": "Score Pillar 1 for a hypothetical Indian consumer company with 5-year data.",
+          "steps": [
+            "Gather data: Revenue Years 1–5 (₹100 Cr → ₹160 Cr), EBITDA margins 20%, 21%, 22%, 23%, 22%, EBITDA values ₹20 Cr, ₹21 Cr, ₹22 Cr, ₹23 Cr, ₹22 Cr",
+            "Calculate Revenue CAGR: (160/100)^(1/5) − 1 = 9.86% ≈ 10% (Good threshold)",
+            "Calculate average EBITDA margin: (20+21+22+23+22)/5 = 21.6% (Good threshold)",
+            "Calculate earnings volatility: EBITDA std dev = 0.94 Cr, mean = 21.6 Cr, volatility = 0.94/21.6 = 4.4% << 15% threshold (Very strong)",
+            "Assess sector-relative performance: in line with peer set",
+            "Map to threshold: Revenue 10% (Good), Margin 21.6% (Good), Volatility 4.4% (Premium), Relative standing (in line) → Score 4"
+          ],
+          "result": "Score = 4 (Good)",
+          "insight": "The combination of mid-teens growth, stable 21–22% margins, and very low earnings volatility signals a quality compounder with pricing power and operational discipline. This mirrors real Indian consumer leaders such as HUL and Dabur."
+        },
+        "sensitivity_note": "Pillar 1 is particularly important for identifying compounders. A Premium Quality business must score 4 or 5 on this pillar. A business scoring 1-2 on earnings power has structural issues regardless of other pillars."
+      },
+      {
+        "name": "Pillar 5 — Return on Capital Scoring",
+        "formula": "Score (1-5) based on:\n• 5-year average ROCE\n• ROIC vs WACC spread (annualised)\n• DuPont decomposition quality\n• Incremental ROCE trajectory",
+        "variables": [
+          {
+            "symbol": "5-year average ROCE",
+            "meaning": "Simple average of ROCE across 5 fiscal years"
+          },
+          {
+            "symbol": "ROIC vs WACC spread",
+            "meaning": "ROIC minus WACC, annualised (in percentage points)"
+          },
+          {
+            "symbol": "DuPont quality",
+            "meaning": "Operational drivers (margin, turnover) vs leverage-driven returns"
+          }
+        ],
+        "plain_english": "This pillar answers whether a company genuinely earns above its cost of capital on incremental investment. A wide ROIC–WACC spread (10+ pp) proves the business creates economic value with each rupee deployed. DuPont decomposition reveals whether those returns come from operational excellence (margins, asset turns) or leverage. In India's diverse market, companies like TCS and Asian Paints consistently deliver 20–30% ROCE, far exceeding their 8–10% cost of capital, making them compounding machines.",
+        "computation": [
+          "Calculate ROCE for each year: EBIT × (1 − Tax Rate) / (Equity + Net Debt)",
+          "Calculate 5-year average ROCE: mean of annual ROCE figures",
+          "Estimate WACC: (E/V) × Cost of Equity + (D/V) × Cost of Debt × (1 − Tax Rate)",
+          "Calculate ROIC–WACC spread: ROIC − WACC (in pp)",
+          "Decompose ROIC into margin × turnover × leverage; compare margin and turnover trends to assess operational vs leverage drivers"
+        ],
+        "worked_example": {
+          "problem": "Score Pillar 5 for a hypothetical Indian specialty chemicals company.",
+          "steps": [
+            "Gather data: 5-year ROCE values 18%, 19%, 21%, 22%, 20% (avg = 20%); EBIT = ₹50 Cr, tax rate 25%, equity = ₹150 Cr, net debt = ₹30 Cr; cost of equity 12%, cost of debt 7%",
+            "Calculate WACC: E/V = 150/180 = 83.3%, D/V = 30/180 = 16.7%; WACC = 0.833 × 12% + 0.167 × 7% × 0.75 = 9.9% + 0.875% = 10.78% ≈ 11%",
+            "ROIC–WACC spread: 20% − 11% = 9 pp (Good threshold, not quite Premium)",
+            "DuPont decomposition: ROCE = (EBIT margin × Asset turnover × Leverage); assume margin 15% (operational), turnover 1.2× (operational), leverage 1.2× (modest) → 80% operational, 20% leverage-driven (Good)",
+            "Incremental ROCE: check if recent years (21–22%) exceed older years (18–19%) → improving trajectory (Good signal)"
+          ],
+          "result": "Score = 4 (Good)",
+          "insight": "A 9 pp spread and 20% ROCE indicate genuine economic value creation, driven primarily by operational excellence rather than balance sheet leverage. The improving trajectory suggests reinvestment is productive. This company would be a worthy addition to a quality portfolio at appropriate valuation."
+        },
+        "sensitivity_note": "Pillar 5 is often the single most predictive of long-term shareholder returns. Companies scoring 5 on this pillar (sustained ROIC > WACC by 12 pp+) tend to be multi-decade compounders. Companies scoring 1-2 rarely deliver meaningful long-term returns regardless of apparent valuation."
+      },
+      {
+        "name": "Integrated Scorecard Total and Classification",
+        "formula": "Total Score = Sum of all 7 pillar scores (max 35)\n\nClassification:\n• 28-35: Premium Quality\n• 22-27: Good Quality\n• 16-21: Acceptable Quality\n• 10-15: Weak Quality\n• Below 10: Poor Quality\n\nAdjusted Score = Total Score × (1 + Trajectory Adjustment)\nTrajectory Adjustment = −20% to +20% based on 3-year quality trajectory",
+        "variables": [
+          {
+            "symbol": "Total Score",
+            "meaning": "Sum of numerical scores (1–5) across all 7 pillars (minimum 7, maximum 35)"
+          },
+          {
+            "symbol": "Trajectory Adjustment",
+            "meaning": "Reflects whether quality is improving (+ adjustment) or deteriorating (− adjustment) over 3 years; ranges from −20% to +20%"
+          },
+          {
+            "symbol": "Quality Trend",
+            "meaning": "Direction and magnitude of pillar score changes over 3 years (improving, stable, or deteriorating)"
+          }
+        ],
+        "plain_english": "The integrated scorecard condenses seven dimensions of business quality into a single 1–35 score and classification. A score of 28+ (Premium) identifies businesses with durable competitive advantages, high returns, and stable cash generation—the kind of companies worth holding for decades. The trajectory adjustment adds forward-looking insight: a Premium company improving further is even better; a Premium company deteriorating raises red flags. This holistic framework helps distinguish between genuinely outstanding businesses and those in temporary trouble.",
+        "computation": [
+          "Score each of the 7 pillars independently using their respective thresholds and metrics, yielding 7 scores of 1–5",
+          "Sum the 7 pillar scores to obtain Total Score (range 7–35)",
+          "Map Total Score to Quality Classification using the 5 ranges defined above",
+          "Calculate 3-year quality trend: measure average change in pillar scores year-over-year (improving → +5% to +20%, stable → 0%, deteriorating → −5% to −20%)",
+          "Apply Trajectory Adjustment: Adjusted Score = Total Score × (1 + Trajectory Adjustment %)"
+        ],
+        "worked_example": {
+          "problem": "Score two Indian companies using the full integrated FSA Scorecard and apply trajectory adjustments.",
+          "steps": [
+            "Asian Paints (Premium scenario): Pillar 1 (Earnings Power) = 5, Pillar 2 (Cost Structure) = 4, Pillar 3 (Working Capital) = 5, Pillar 4 (Cash Flow) = 5, Pillar 5 (Returns) = 5, Pillar 6 (Balance Sheet) = 5, Pillar 7 (Quality/Governance) = 5",
+            "Asian Paints Total: 5+4+5+5+5+5+5 = 34 (Premium Quality, 28–35 range)",
+            "Asian Paints 3-year trend: all pillars 4–5, no deterioration, stable premium positioning → Trajectory Adjustment = +5%",
+            "Asian Paints Adjusted Score: 34 × 1.05 = 35.7 (capped at 35, perfect)",
+            "Mid-cap specialty chemicals (Acceptable scenario): Pillar 1 = 3, Pillar 2 = 2, Pillar 3 = 2, Pillar 4 = 2, Pillar 5 = 3, Pillar 6 = 2, Pillar 7 = 3",
+            "Mid-cap Total: 3+2+2+2+3+2+3 = 17 (Acceptable Quality, 16–21 range)",
+            "Mid-cap 3-year trend: Pillar 1 declined from 4 to 3, Pillar 5 declined from 4 to 3, others flat or weak → Trajectory Adjustment = −15%",
+            "Mid-cap Adjusted Score: 17 × 0.85 = 14.45, rounds to 14 (now Weak Quality, 10–15 range)"
+          ],
+          "result": "Asian Paints Adjusted Score = 35 (Premium); Mid-cap Adjusted Score = 14 (Weak). The adjustment reveals that the mid-cap, despite appearing Acceptable on unadjusted score, is actually weakening and should be downgraded.",
+          "insight": "Trajectory adjustment is powerful for early-warning signals. A company drifting from Premium to Good, or from Good to Acceptable, may merit a sell or reduce action even before it hits a lower classification. Conversely, a company stabilizing or improving within a quality tier becomes more attractive. This forward-looking lens is critical for portfolio management in India's dynamic markets, where competitive positions shift faster than annual financial statements reveal."
+        },
+        "sensitivity_note": "The classification is not a rigid score but a risk-return profile. Premium Quality implies confident long-term holding at appropriate valuation. Good Quality implies selective investment with valuation discipline. Acceptable Quality implies either trade or avoid depending on cycle. Weak/Poor Quality requires special situations or avoidance."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd+Option+F → Create Formula (for weighted scoring)",
+        "Cmd+E → AutoSum",
+        "Cmd+Shift+# → Date format for trajectory tracking",
+        "Cmd+Shift+$ → Currency format"
+      ],
+      "windows": [
+        "Alt+N+V+T → Insert Pivot Table (for multi-company scorecard comparison)",
+        "Ctrl+Shift+! → Format as number with 2 decimals",
+        "Alt+H+M+M → Merge and Center (for pillar section headers)",
+        "F4 → Lock cell reference when writing scoring formulas"
+      ]
+    }
+  }
+}

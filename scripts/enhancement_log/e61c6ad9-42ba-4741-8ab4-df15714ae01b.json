@@ -1,0 +1,348 @@
+{
+  "id": "e61c6ad9-42ba-4741-8ab4-df15714ae01b",
+  "label": "M9 S6 | The Efficiency Formula Arsenal (With Indian Worked Examples)",
+  "before": {
+    "formulas": [
+      {
+        "name": "Asset Turnover",
+        "formula": "Asset Turnover = Revenue / Average Total Assets",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales / turnover for the period"
+          },
+          {
+            "symbol": "Average Total Assets",
+            "meaning": "(Opening Total Assets + Closing Total Assets) / 2"
+          }
+        ],
+        "worked_example": "DMart FY23: Revenue = ₹42,840 Cr, Opening Assets = ₹9,800 Cr, Closing Assets = ₹11,300 Cr. Average Assets = ₹10,550 Cr. Asset Turnover = 42,840 / 10,550 = 4.06x. Every rupee of DMart's assets generates ₹4.06 of revenue per year — exceptional retail efficiency. Compare Tata Steel FY23: Revenue ₹2,43,000 Cr, Average Assets ₹2,60,000 Cr. Asset Turnover = 0.94x — each rupee of steel plant generates less than one rupee of revenue annually because steel is brutally asset-heavy. Same metric, completely different business characteristics. The ratio tells you immediately whether you're analysing a capital-light business (retail, IT services, consumer) or a capital-heavy one (steel, power, cement, infrastructure).",
+        "sensitivity_note": "Asset Turnover is the single biggest driver of DuPont's turnover lever. A 0.5x improvement in Asset Turnover (say from 1.5x to 2.0x) translates to 33% improvement in ROCE, holding margins constant. That's why asset-light businesses command premium valuations."
+      },
+      {
+        "name": "Days Inventory Outstanding (DIO)",
+        "formula": "DIO = (Average Inventory / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Average Inventory",
+            "meaning": "(Opening Inventory + Closing Inventory) / 2"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — raw materials + direct labour + manufacturing overhead"
+          }
+        ],
+        "worked_example": "DMart FY23: Average Inventory ≈ ₹2,850 Cr, COGS ≈ ₹36,420 Cr. DIO = (2,850 / 36,420) × 365 = 28.5 days. DMart sells its inventory every ~4 weeks — extraordinary for a 330+ store retailer. Compare Maruti Suzuki FY23: Average Inventory ≈ ₹4,500 Cr, COGS ≈ ₹95,000 Cr. DIO = (4,500 / 95,000) × 365 = 17.3 days. Maruti's JIT system is even faster. Contrast with a capital goods firm like Thermax: Inventory ≈ ₹1,400 Cr, COGS ≈ ₹3,800 Cr. DIO = 135 days — projects take months of WIP build-up. Each industry has its natural DIO range.",
+        "sensitivity_note": "Rising DIO trend is one of the earliest warning signs of channel stuffing or declining demand. A company showing DIO rising from 45 to 70 days over 3 years has either inventory obsolescence risk or is pushing stock to dealers to book revenue — both are yellow flags."
+      },
+      {
+        "name": "Days Sales Outstanding (DSO)",
+        "formula": "DSO = (Average Trade Receivables / Revenue) × 365",
+        "variables": [
+          {
+            "symbol": "Average Receivables",
+            "meaning": "(Opening Trade Receivables + Closing Trade Receivables) / 2"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales"
+          }
+        ],
+        "worked_example": "HUL FY23: Average Receivables ≈ ₹2,300 Cr, Revenue = ₹58,154 Cr. DSO = (2,300 / 58,154) × 365 = 14.4 days. Consumers buy groceries at the till — HUL collects almost immediately. Compare to L&T FY23: Average Receivables ≈ ₹41,000 Cr, Revenue ≈ ₹1,84,000 Cr. DSO = 81.4 days — L&T serves large government infrastructure clients with long payment cycles. Industry norms: B2C retail 0-5 days, FMCG 10-20 days, B2B manufacturing 45-75 days, infrastructure 90-150 days, government-heavy businesses >150 days.",
+        "sensitivity_note": "DSO expansion is the single most reliable early warning of revenue quality issues. If DSO jumps from 45 to 75 days while revenue grows, the company is likely booking aggressive revenue that customers haven't paid for. Always validate revenue growth against DSO trend."
+      },
+      {
+        "name": "Days Payable Outstanding (DPO)",
+        "formula": "DPO = (Average Trade Payables / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Average Payables",
+            "meaning": "(Opening Trade Payables + Closing Trade Payables) / 2"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold"
+          }
+        ],
+        "worked_example": "DMart FY23: Average Payables ≈ ₹5,400 Cr, COGS ≈ ₹36,420 Cr. DPO = (5,400 / 36,420) × 365 = 54.1 days. DMart takes about 8 weeks to pay suppliers. HUL FY23: Average Payables ≈ ₹8,500 Cr, COGS ≈ ₹27,742 Cr. DPO = 111.8 days — HUL enjoys ~4 months of supplier credit, one of the strongest DPO profiles in Indian industry. Compare to a commoditised manufacturer: Payables ₹800 Cr, COGS ₹6,000 Cr. DPO = 48.7 days — no pricing power with suppliers.",
+        "sensitivity_note": "Rising DPO that's voluntary (driven by scale/bargaining power like HUL) is a strength. Rising DPO that's involuntary (company stretching payments because cash is tight) is a distress signal. Cross-check DPO expansion with cash flow trends to distinguish the two."
+      },
+      {
+        "name": "Cash Conversion Cycle (CCC)",
+        "formula": "CCC = DIO + DSO - DPO",
+        "variables": [
+          {
+            "symbol": "DIO",
+            "meaning": "Days Inventory Outstanding"
+          },
+          {
+            "symbol": "DSO",
+            "meaning": "Days Sales Outstanding"
+          },
+          {
+            "symbol": "DPO",
+            "meaning": "Days Payable Outstanding"
+          }
+        ],
+        "worked_example": "DMart FY23: DIO = 28.5 + DSO = 2.5 (cash retail) - DPO = 54.1 = -23.1 days. NEGATIVE CCC — suppliers fund DMart's operations for 23 days on average. Every rupee of revenue DMart generates sits as working capital cushion. HUL FY23: DIO = 35 + DSO = 14 - DPO = 112 = -63 days. Extraordinary — HUL runs 2 months of supplier-funded operations. Asian Paints FY23: DIO = 55 + DSO = 15 - DPO = 45 = +25 days. Positive but tight — paints business has dealer inventory. A stressed mid-cap: DIO = 110 + DSO = 85 - DPO = 55 = +140 days. The company needs 4+ months of cash tied up in working capital — a massive capital drag.",
+        "sensitivity_note": "A CCC improvement of 10 days on a ₹10,000 Cr revenue business frees up ~₹270 Cr of working capital — cash that can fund growth or pay down debt. This is why CFOs obsess over working capital management. And it's why investors prize businesses with durable negative CCC — those companies compound without needing external capital."
+      },
+      {
+        "name": "Fixed Asset Turnover",
+        "formula": "Fixed Asset Turnover = Revenue / Average Net Fixed Assets",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales"
+          },
+          {
+            "symbol": "Net Fixed Assets",
+            "meaning": "Property, Plant & Equipment (net of accumulated depreciation) + Capital Work-in-Progress"
+          }
+        ],
+        "worked_example": "Infosys FY23: Revenue = ₹1,46,767 Cr, Net Fixed Assets ≈ ₹13,500 Cr. Fixed Asset Turnover = 10.87x — each rupee of office buildings and IT infrastructure generates ₹10.87 of revenue. That's what 'asset-light' really means. Compare NTPC FY23: Revenue ₹1,75,000 Cr, Net Fixed Assets ≈ ₹2,85,000 Cr. Fixed Asset Turnover = 0.61x — each rupee of power plant generates only ₹0.61 of revenue. Contrast reveals business model fundamentally. Also reveals why power sector needs long-dated debt and low-cost capital to earn adequate returns.",
+        "sensitivity_note": "Fixed Asset Turnover is particularly revealing when comparing companies within the same industry. If two cement manufacturers both run at Fixed Asset Turnover of 1.2x while a third runs at 0.8x, the third has either underutilised capacity, overpaid capex, or older/less efficient assets — all concerning for ROCE trajectory."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter activation",
+        "Cmd + Shift + 4 → currency format",
+        "Fn + F4 → absolute reference",
+        "Cmd + Shift + ; → insert current date"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → filter for peer efficiency comparison",
+        "F4 → lock revenue cell when dragging DIO/DSO/DPO across years",
+        "Alt + H + A + C → align numbers right for clean ratio tables",
+        "Ctrl + ; → insert today's date for model last-updated stamp"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Asset Turnover",
+        "formula": "Asset Turnover = Revenue / Average Total Assets",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales / turnover for the period"
+          },
+          {
+            "symbol": "Average Total Assets",
+            "meaning": "(Opening Total Assets + Closing Total Assets) / 2"
+          }
+        ],
+        "plain_english": "Asset Turnover measures how much revenue a company generates from each rupee of assets deployed. A higher ratio means the business converts its asset base into sales more efficiently — whether through fast inventory turns (retail), high capacity utilisation (manufacturing), or minimal fixed asset requirements (services). This metric immediately distinguishes between asset-light businesses (which command premium valuations) and capital-heavy industries.",
+        "computation": [
+          "Calculate opening total assets from balance sheet at start of fiscal year",
+          "Calculate closing total assets from balance sheet at end of fiscal year",
+          "Sum both and divide by 2 to find average total assets",
+          "Divide annual revenue by average total assets",
+          "Express as decimal (e.g., 4.06x means ₹4.06 revenue per ₹1 of assets)"
+        ],
+        "worked_example": {
+          "problem": "Compare Asset Turnover efficiency between DMart (retail) and Tata Steel (capital-heavy manufacturing) in FY23.",
+          "steps": [
+            "DMart FY23: Revenue = ₹42,840 Cr; Opening Total Assets = ₹9,800 Cr; Closing Total Assets = ₹11,300 Cr",
+            "DMart Average Assets = (₹9,800 + ₹11,300) / 2 = ₹10,550 Cr",
+            "DMart Asset Turnover = ₹42,840 / ₹10,550 = 4.06x",
+            "Tata Steel FY23: Revenue = ₹2,43,000 Cr; Average Assets = ₹2,60,000 Cr",
+            "Tata Steel Asset Turnover = ₹2,43,000 / ₹2,60,000 = 0.94x"
+          ],
+          "result": "DMart: 4.06x; Tata Steel: 0.94x",
+          "insight": "Every rupee of DMart's assets generates ₹4.06 of revenue per year — exceptional retail efficiency. Tata Steel's ratio of 0.94x reflects that steel production is brutally asset-heavy: each rupee of steel plant generates less than one rupee of revenue annually due to massive capital requirements. Same metric, completely different business characteristics. This ratio tells you immediately whether you're analysing a capital-light business (retail, IT services, consumer) or capital-heavy one (steel, power, cement, infrastructure)."
+        },
+        "sensitivity_note": "Asset Turnover is the single biggest driver of DuPont's turnover lever. A 0.5x improvement in Asset Turnover (say from 1.5x to 2.0x) translates to 33% improvement in ROCE, holding margins constant. That's why asset-light businesses command premium valuations."
+      },
+      {
+        "name": "Days Inventory Outstanding (DIO)",
+        "formula": "DIO = (Average Inventory / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Average Inventory",
+            "meaning": "(Opening Inventory + Closing Inventory) / 2"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold — raw materials + direct labour + manufacturing overhead"
+          }
+        ],
+        "plain_english": "DIO measures how many days, on average, inventory sits on shelves or in warehouses before being sold. Lower DIO is generally better — it means capital is tied up for fewer days and obsolescence risk is lower. However, DIO must be interpreted within industry context: fast-moving consumer goods turn inventory in weeks, while capital goods projects may carry inventory for months due to long manufacturing cycles.",
+        "computation": [
+          "Calculate opening inventory from balance sheet at fiscal year start",
+          "Calculate closing inventory from balance sheet at fiscal year end",
+          "Average them: (Opening + Closing) / 2",
+          "Divide average inventory by annual COGS",
+          "Multiply by 365 to convert to days"
+        ],
+        "worked_example": {
+          "problem": "Calculate DIO for three companies with different inventory profiles: DMart (retail), Maruti Suzuki (automotive JIT), and Thermax (capital goods).",
+          "steps": [
+            "DMart FY23: Average Inventory = ₹2,850 Cr; COGS = ₹36,420 Cr; DIO = (₹2,850 / ₹36,420) × 365 = 28.5 days",
+            "Maruti Suzuki FY23: Average Inventory = ₹4,500 Cr; COGS = ₹95,000 Cr; DIO = (₹4,500 / ₹95,000) × 365 = 17.3 days",
+            "Thermax FY23: Average Inventory = ₹1,400 Cr; COGS = ₹3,800 Cr; DIO = (₹1,400 / ₹3,800) × 365 = 135 days"
+          ],
+          "result": "DMart: 28.5 days; Maruti Suzuki: 17.3 days; Thermax: 135 days",
+          "insight": "DMart sells its inventory every ~4 weeks — extraordinary for a 330+ store retailer managing diverse SKUs. Maruti's JIT system is even faster at 17.3 days, reflecting automotive just-in-time discipline. Thermax's 135 days reflects that capital goods projects involve months of work-in-progress (WIP) buildup before completion. Each industry has its natural DIO range; comparing across industries is misleading. Within-industry trends matter most: rising DIO may signal obsolescence or weakening demand."
+        },
+        "sensitivity_note": "Rising DIO trend is one of the earliest warning signs of channel stuffing or declining demand. A company showing DIO rising from 45 to 70 days over 3 years has either inventory obsolescence risk or is pushing stock to dealers to book revenue — both are yellow flags."
+      },
+      {
+        "name": "Days Sales Outstanding (DSO)",
+        "formula": "DSO = (Average Trade Receivables / Revenue) × 365",
+        "variables": [
+          {
+            "symbol": "Average Receivables",
+            "meaning": "(Opening Trade Receivables + Closing Trade Receivables) / 2"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales"
+          }
+        ],
+        "plain_english": "DSO measures how many days, on average, a company waits to collect cash after making a sale. It reflects credit terms offered to customers. Lower DSO means faster cash conversion and lower credit risk. However, DSO varies dramatically by business model: B2C retailers collect instantly (low DSO), while companies serving government or large infrastructure clients may wait 90+ days.",
+        "computation": [
+          "Calculate opening trade receivables from balance sheet at fiscal year start",
+          "Calculate closing trade receivables from balance sheet at fiscal year end",
+          "Average them: (Opening + Closing) / 2",
+          "Divide average receivables by annual revenue",
+          "Multiply by 365 to convert to days"
+        ],
+        "worked_example": {
+          "problem": "Compare DSO across four businesses with fundamentally different customer payment cycles: HUL (FMCG retail), L&T (infrastructure B2B), a typical manufacturing firm, and a government-contract business.",
+          "steps": [
+            "HUL FY23: Average Receivables = ₹2,300 Cr; Revenue = ₹58,154 Cr; DSO = (₹2,300 / ₹58,154) × 365 = 14.4 days",
+            "L&T FY23: Average Receivables = ₹41,000 Cr; Revenue = ₹1,84,000 Cr; DSO = (₹41,000 / ₹1,84,000) × 365 = 81.4 days",
+            "Typical B2B manufacturing: Receivables ₹6,000 Cr; Revenue ₹50,000 Cr; DSO = 43.8 days",
+            "Government-heavy business: Receivables ₹15,000 Cr; Revenue ₹50,000 Cr; DSO = 109.5 days"
+          ],
+          "result": "HUL: 14.4 days; L&T: 81.4 days; Typical B2B: 43.8 days; Government-heavy: 109.5 days",
+          "insight": "HUL collects almost immediately because consumers buy at the till — groceries are paid before collection. L&T's 81-day DSO reflects long payment cycles with large government and corporate infrastructure clients. Industry norms: B2C retail 0–5 days, FMCG 10–20 days, B2B manufacturing 45–75 days, infrastructure 90–150 days, government-heavy businesses >150 days. Comparing HUL (FMCG) to L&T (infrastructure) on absolute DSO is meaningless; instead, compare each to peers."
+        },
+        "sensitivity_note": "DSO expansion is the single most reliable early warning of revenue quality issues. If DSO jumps from 45 to 75 days while revenue grows, the company is likely booking aggressive revenue that customers haven't paid for. Always validate revenue growth against DSO trend."
+      },
+      {
+        "name": "Days Payable Outstanding (DPO)",
+        "formula": "DPO = (Average Trade Payables / Cost of Goods Sold) × 365",
+        "variables": [
+          {
+            "symbol": "Average Payables",
+            "meaning": "(Opening Trade Payables + Closing Trade Payables) / 2"
+          },
+          {
+            "symbol": "COGS",
+            "meaning": "Cost of Goods Sold"
+          }
+        ],
+        "plain_english": "DPO measures how many days a company takes to pay its suppliers after receiving goods. Higher DPO means the company uses supplier credit as free financing — a working capital advantage. However, context matters: a large, profitable company with strong bargaining power naturally has higher DPO (HUL, Nestlé), while a smaller or weaker company may have high DPO involuntarily (distress signal).",
+        "computation": [
+          "Calculate opening trade payables from balance sheet at fiscal year start",
+          "Calculate closing trade payables from balance sheet at fiscal year end",
+          "Average them: (Opening + Closing) / 2",
+          "Divide average payables by annual COGS",
+          "Multiply by 365 to convert to days"
+        ],
+        "worked_example": {
+          "problem": "Analyse DPO across three companies: DMart (strong retail bargaining power), HUL (diversified FMCG with supplier scale), and a mid-cap commoditised manufacturer (weak pricing power).",
+          "steps": [
+            "DMart FY23: Average Payables = ₹5,400 Cr; COGS = ₹36,420 Cr; DPO = (₹5,400 / ₹36,420) × 365 = 54.1 days",
+            "HUL FY23: Average Payables = ₹8,500 Cr; COGS = ₹27,742 Cr; DPO = (₹8,500 / ₹27,742) × 365 = 111.8 days",
+            "Mid-cap commoditised manufacturer: Payables = ₹800 Cr; COGS = ₹6,000 Cr; DPO = (₹800 / ₹6,000) × 365 = 48.7 days"
+          ],
+          "result": "DMart: 54.1 days; HUL: 111.8 days; Mid-cap: 48.7 days",
+          "insight": "DMart takes about 8 weeks to pay suppliers — respectable for a large retailer. HUL's DPO of 111.8 days (~4 months) reflects one of the strongest supplier-credit profiles in Indian industry due to its scale and brand power with vendors. The mid-cap's 48.7 days shows minimal pricing power with suppliers due to commoditised product and smaller scale. Rising DPO driven by scale/bargaining power is a strength; rising DPO from suppliers being stretched or the company's cash deteriorating is a distress signal."
+        },
+        "sensitivity_note": "Rising DPO that's voluntary (driven by scale/bargaining power like HUL) is a strength. Rising DPO that's involuntary (company stretching payments because cash is tight) is a distress signal. Cross-check DPO expansion with cash flow trends to distinguish the two."
+      },
+      {
+        "name": "Cash Conversion Cycle (CCC)",
+        "formula": "CCC = DIO + DSO - DPO",
+        "variables": [
+          {
+            "symbol": "DIO",
+            "meaning": "Days Inventory Outstanding"
+          },
+          {
+            "symbol": "DSO",
+            "meaning": "Days Sales Outstanding"
+          },
+          {
+            "symbol": "DPO",
+            "meaning": "Days Payable Outstanding"
+          }
+        ],
+        "plain_english": "CCC measures the number of days between when a company pays suppliers and when it collects cash from customers. A negative CCC means suppliers fund the business's operations — the best-in-class scenario. A positive CCC means the company must finance operations itself (working capital drag). CCC is one of the most powerful drivers of cash generation and business quality.",
+        "computation": [
+          "Calculate DIO (days inventory outstanding)",
+          "Calculate DSO (days sales outstanding)",
+          "Calculate DPO (days payable outstanding)",
+          "Apply formula: CCC = DIO + DSO − DPO",
+          "Interpret: Negative CCC = supplier-funded (excellent); Positive CCC = internally financed (cash drag)"
+        ],
+        "worked_example": {
+          "problem": "Calculate CCC for four companies spanning different industries: DMart (retail, negative CCC expected), HUL (FMCG, strong brand), Asian Paints (discretionary, mixed CCC), and a stressed mid-cap (CCC headwind).",
+          "steps": [
+            "DMart FY23: DIO = 28.5 days; DSO = 2.5 days (cash retail); DPO = 54.1 days; CCC = 28.5 + 2.5 − 54.1 = −23.1 days",
+            "HUL FY23: DIO = 35 days; DSO = 14 days; DPO = 112 days; CCC = 35 + 14 − 112 = −63 days",
+            "Asian Paints FY23: DIO = 55 days; DSO = 15 days; DPO = 45 days; CCC = 55 + 15 − 45 = +25 days",
+            "Stressed mid-cap: DIO = 110 days; DSO = 85 days; DPO = 55 days; CCC = 110 + 85 − 55 = +140 days"
+          ],
+          "result": "DMart: −23.1 days; HUL: −63 days; Asian Paints: +25 days; Stressed mid-cap: +140 days",
+          "insight": "Negative CCC — suppliers fund DMart's and HUL's operations for 23 and 63 days respectively. Every rupee of revenue they generate sits as working capital cushion (free financing). Asian Paints' positive but tight CCC of +25 days reflects paints business with dealer inventory and modest credit terms. The stressed mid-cap's +140 days is catastrophic: the company needs 4+ months of cash tied up in working capital — a massive capital drag that starves growth investment and increases leverage. This is why CFOs obsess over working capital management. Investors prize businesses with durable negative CCC — those compound without needing external capital."
+        },
+        "sensitivity_note": "A CCC improvement of 10 days on a ₹10,000 Cr revenue business frees up ~₹270 Cr of working capital — cash that can fund growth or pay down debt. This is why CFOs obsess over working capital management. And it's why investors prize businesses with durable negative CCC — those companies compound without needing external capital."
+      },
+      {
+        "name": "Fixed Asset Turnover",
+        "formula": "Fixed Asset Turnover = Revenue / Average Net Fixed Assets",
+        "variables": [
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales"
+          },
+          {
+            "symbol": "Net Fixed Assets",
+            "meaning": "Property, Plant & Equipment (net of accumulated depreciation) + Capital Work-in-Progress"
+          }
+        ],
+        "plain_english": "Fixed Asset Turnover measures how much revenue a company generates from each rupee of its fixed asset base (buildings, machinery, equipment). A high ratio signals an asset-light business model or highly efficient asset utilisation. A low ratio suggests capital-intensity, underutilised capacity, or older assets. This metric is especially revealing when comparing companies within the same industry.",
+        "computation": [
+          "Calculate opening net fixed assets from balance sheet (Property, Plant & Equipment, net of depreciation)",
+          "Calculate closing net fixed assets from balance sheet",
+          "Include Capital Work-in-Progress in both opening and closing values",
+          "Average them: (Opening + Closing) / 2",
+          "Divide annual revenue by average net fixed assets",
+          "Express as multiple (e.g., 10.87x means ₹10.87 revenue per ₹1 of fixed assets)"
+        ],
+        "worked_example": {
+          "problem": "Compare Fixed Asset Turnover between Infosys (asset-light IT services) and NTPC (capital-intensive power generation) in FY23.",
+          "steps": [
+            "Infosys FY23: Revenue = ₹1,46,767 Cr; Net Fixed Assets = ₹13,500 Cr",
+            "Infosys Fixed Asset Turnover = ₹1,46,767 / ₹13,500 = 10.87x",
+            "NTPC FY23: Revenue = ₹1,75,000 Cr; Net Fixed Assets = ₹2,85,000 Cr",
+            "NTPC Fixed Asset Turnover = ₹1,75,000 / ₹2,85,000 = 0.61x"
+          ],
+          "result": "Infosys: 10.87x; NTPC: 0.61x",
+          "insight": "Infosys generates ₹10.87 of revenue from each rupee of office buildings and IT infrastructure — demonstrating what 'asset-light' truly means in practice. NTPC's ratio of 0.61x reflects that power generation requires massive long-dated capital investment: each rupee of power plant generates only ₹0.61 of revenue. This contrast reveals business models fundamentally. It also explains why power sector requires long-dated debt at low-cost capital to earn adequate returns. Within industries, comparing Fixed Asset Turnover reveals efficiency differences: two cement plants with identical product quality and prices will differ in profitability largely due to fixed asset efficiency."
+        },
+        "sensitivity_note": "Fixed Asset Turnover is particularly revealing when comparing companies within the same industry. If two cement manufacturers both run at Fixed Asset Turnover of 1.2x while a third runs at 0.8x, the third has either underutilised capacity, overpaid capex, or older/less efficient assets — all concerning for ROCE trajectory."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → filter activation",
+        "Cmd + Shift + 4 → currency format",
+        "Fn + F4 → absolute reference",
+        "Cmd + Shift + ; → insert current date"
+      ],
+      "windows": [
+        "Ctrl + Shift + L → filter for peer efficiency comparison",
+        "F4 → lock revenue cell when dragging DIO/DSO/DPO across years",
+        "Alt + H + A + C → align numbers right for clean ratio tables",
+        "Ctrl + ; → insert today's date for model last-updated stamp"
+      ]
+    }
+  }
+}

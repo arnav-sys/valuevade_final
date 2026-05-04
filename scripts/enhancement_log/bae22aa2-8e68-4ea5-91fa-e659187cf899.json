@@ -1,0 +1,326 @@
+{
+  "id": "bae22aa2-8e68-4ea5-91fa-e659187cf899",
+  "label": "M3 S9 | Pivot Table Skills & Techniques",
+  "before": {
+    "skills": [
+      {
+        "skill": "Creating Your First Pivot Table",
+        "detail": "Select any cell in your data first — Excel auto-detects the range. Once created, you see a field list on the right. Drag 'Sector' to Rows, 'Revenue' to Values. Instantly: a summary of total revenue by sector.",
+        "shortcut": "Alt+N+V (Windows)",
+        "key_action": "Insert → PivotTable → Select Data → New Worksheet"
+      },
+      {
+        "skill": "Changing the Aggregation",
+        "how_to": "Right-click any value in the pivot table → Value Field Settings → choose your aggregation",
+        "options": [
+          {
+            "aggregation": "Sum",
+            "when_to_use": "Revenue, volume, total capex",
+            "what_it_does": "Adds all values"
+          },
+          {
+            "aggregation": "Average",
+            "when_to_use": "Average margin, average PE ratio",
+            "what_it_does": "Arithmetic mean"
+          },
+          {
+            "aggregation": "Count",
+            "when_to_use": "Number of companies, number of trades",
+            "what_it_does": "Counts entries"
+          },
+          {
+            "aggregation": "Max / Min",
+            "when_to_use": "Peak price, minimum EBITDA",
+            "what_it_does": "Highest / lowest value"
+          },
+          {
+            "aggregation": "StdDev",
+            "when_to_use": "Volatility of returns",
+            "what_it_does": "Standard deviation"
+          }
+        ]
+      },
+      {
+        "skill": "Grouping Dates",
+        "detail": "Converts 365 dates into 4 quarters or 12 months instantly. Essential for quarterly financial analysis.",
+        "key_action": "Right-click any date → Group → Select Months, Quarters, Years",
+        "indian_fy_trick": "Excel groups by calendar year by default. For Indian FY (Apr–Mar), add a helper column: =IF(MONTH(Date)>=4, YEAR(Date), YEAR(Date)-1) and pivot on that."
+      },
+      {
+        "trap": "Calculated fields operate on AGGREGATED values. Sum(Profit)/Sum(Revenue) is the correct weighted average. For row-level calculations (like median margin), add the column to source data first.",
+        "skill": "Calculated Fields",
+        "detail": "Creates a formula that operates on the summarised values, not on individual rows.",
+        "examples": [
+          {
+            "name": "Profit Margin",
+            "formula": "= Profit / Revenue",
+            "use_case": "Margin analysis by sector"
+          },
+          {
+            "name": "Revenue Per Employee",
+            "formula": "= Revenue / Employees",
+            "use_case": "Productivity benchmarking"
+          },
+          {
+            "name": "Upside %",
+            "formula": "= (TargetPrice - CMP) / CMP",
+            "use_case": "Screening for undervalued stocks"
+          },
+          {
+            "name": "YoY Growth",
+            "formula": "= (ThisYear - LastYear) / LastYear",
+            "use_case": "Growth trend analysis"
+          }
+        ],
+        "key_action": "PivotTable Analyze → Fields, Items & Sets → Calculated Field"
+      },
+      {
+        "skill": "Slicers — The One-Click Filter",
+        "detail": "Visual filter buttons that sit next to your pivot table. Click 'IT' and the entire table filters to the IT sector.",
+        "pro_tip": "One slicer can control multiple pivot tables. Right-click the slicer → Report Connections → check all pivots you want it to filter. This is how dashboards work.",
+        "key_action": "PivotTable Analyze → Insert Slicer → Select Fields",
+        "slicers_vs_filters": "Filters are hidden in a small dropdown. Slicers are big, visible buttons. For anything you share with others (PMs, MDs, clients), use slicers."
+      },
+      {
+        "skill": "Sorting, Filtering, and Top N",
+        "actions": [
+          {
+            "how": "Right-click → Sort → Largest to Smallest",
+            "action": "Sort by value",
+            "use_case": "Rank sectors by revenue"
+          },
+          {
+            "how": "Row Label dropdown → Value Filters → Top 10",
+            "action": "Top 10 filter",
+            "use_case": "Show only the 10 biggest companies"
+          },
+          {
+            "how": "Row Label dropdown → Label Filters → Contains",
+            "action": "Label filter",
+            "use_case": "Filter to companies starting with 'T'"
+          },
+          {
+            "how": "Row Label dropdown → Date Filters → This Quarter",
+            "action": "Date filter",
+            "use_case": "Show only current quarter data"
+          }
+        ]
+      },
+      {
+        "skill": "Pivot Charts",
+        "detail": "A chart linked to a pivot table. When you filter the pivot, the chart updates automatically.",
+        "key_action": "PivotTable Analyze → PivotChart → Select Chart Type",
+        "dashboard_pattern": "2–3 pivot tables + 2–3 pivot charts + shared slicers = a one-page interactive dashboard. This is how institutional equity research desks present sector overviews to portfolio managers."
+      }
+    ]
+  },
+  "after": {
+    "skills": [
+      {
+        "skill": "Creating Your First Pivot Table",
+        "detail": "Select any cell in your data first — Excel auto-detects the range. Once created, you see a field list on the right. Drag 'Sector' to Rows, 'Revenue' to Values. Instantly: a summary of total revenue by sector.",
+        "shortcut": "Alt+N+V (Windows)",
+        "key_action": "Insert → PivotTable → Select Data → New Worksheet",
+        "plain_english": "A pivot table automatically groups and summarizes raw data without writing formulas. In equity research, this lets you instantly see total revenue by sector, count of companies by market cap bracket, or average margins by industry—critical for sector analysis and screening."
+      },
+      {
+        "skill": "Changing the Aggregation",
+        "how_to": "Right-click any value in the pivot table → Value Field Settings → choose your aggregation",
+        "options": [
+          {
+            "aggregation": "Sum",
+            "when_to_use": "Revenue, volume, total capex",
+            "what_it_does": "Adds all values",
+            "plain_english": "Totals all entries. Use for cumulative metrics like total sales, total debt, or total market cap across companies in a sector."
+          },
+          {
+            "aggregation": "Average",
+            "when_to_use": "Average margin, average PE ratio",
+            "what_it_does": "Arithmetic mean",
+            "plain_english": "Calculates the mean. Essential for understanding central tendency—e.g., average EBITDA margin across 50 IT companies tells you typical profitability."
+          },
+          {
+            "aggregation": "Count",
+            "when_to_use": "Number of companies, number of trades",
+            "what_it_does": "Counts entries",
+            "plain_english": "Counts how many data points exist in each group. Useful for sample size validation—if only 2 companies have data, that average is unreliable."
+          },
+          {
+            "aggregation": "Max / Min",
+            "when_to_use": "Peak price, minimum EBITDA",
+            "what_it_does": "Highest / lowest value",
+            "plain_english": "Finds the extreme values. Use to identify outliers (e.g., highest P/E in the sector) or safe-guard scenarios (minimum free cash flow)."
+          },
+          {
+            "aggregation": "StdDev",
+            "when_to_use": "Volatility of returns",
+            "what_it_does": "Standard deviation",
+            "plain_english": "Measures dispersion around the mean. High standard deviation in sector returns means wide divergence in stock performance; low means stocks move together."
+          }
+        ]
+      },
+      {
+        "skill": "Grouping Dates",
+        "detail": "Converts 365 dates into 4 quarters or 12 months instantly. Essential for quarterly financial analysis.",
+        "key_action": "Right-click any date → Group → Select Months, Quarters, Years",
+        "plain_english": "Pivot tables can automatically roll up daily or transaction-level dates into monthly, quarterly, or annual buckets. This is essential for equity analysis because financial statements come quarterly; grouping dates lets you match trading volumes or prices to fiscal periods.",
+        "indian_fy_trick": "Excel groups by calendar year by default. For Indian FY (Apr–Mar), add a helper column: =IF(MONTH(Date)>=4, YEAR(Date), YEAR(Date)-1) and pivot on that."
+      },
+      {
+        "skill": "Calculated Fields",
+        "detail": "Creates a formula that operates on the summarised values, not on individual rows.",
+        "trap": "Calculated fields operate on AGGREGATED values. Sum(Profit)/Sum(Revenue) is the correct weighted average. For row-level calculations (like median margin), add the column to source data first.",
+        "key_action": "PivotTable Analyze → Fields, Items & Sets → Calculated Field",
+        "plain_english": "Calculated fields let you build new metrics from aggregated pivot values—for example, dividing total profit by total revenue to get margin, or dividing revenue by employee count to get productivity. This is faster than creating helper columns and lets you add instant what-if analysis.",
+        "examples": [
+          {
+            "name": "Profit Margin",
+            "formula": "= Profit / Revenue",
+            "use_case": "Margin analysis by sector",
+            "worked_example": {
+              "problem": "A pivot showing total Profit and total Revenue for three sectors: Pharma, Auto, Banking. Calculate margin by sector.",
+              "steps": [
+                "Drag 'Sector' to Rows; drag 'Profit' and 'Revenue' to Values (both as Sum).",
+                "Create Calculated Field: name = 'Profit Margin', formula = Profit / Revenue.",
+                "Drag 'Profit Margin' to Values.",
+                "Result: Profit Margin appears as a third value column, one row per sector."
+              ],
+              "result": "Pharma margin: 22%, Auto margin: 8%, Banking margin: 35%.",
+              "insight": "Banking has the highest margin, suggesting better pricing power or cost discipline. Auto's thin margins indicate competitive pressure typical of that sector."
+            }
+          },
+          {
+            "name": "Revenue Per Employee",
+            "formula": "= Revenue / Employees",
+            "use_case": "Productivity benchmarking",
+            "worked_example": {
+              "problem": "Compare labor productivity across three IT service companies: TCS, Infosys, and HCL. Use a pivot to aggregate their revenue and headcount by company, then calculate revenue per employee.",
+              "steps": [
+                "Source data: one row per company with FY23 Revenue (₹) and Employees (#).",
+                "Create pivot: Rows = Company, Values = Sum(Revenue), Sum(Employees).",
+                "Add Calculated Field: 'Revenue Per Employee' = Revenue / Employees.",
+                "The pivot now shows each company's aggregate revenue, total headcount, and calculated revenue per FTE."
+              ],
+              "result": "TCS: ₹3.2 Cr/emp, Infosys: ₹2.8 Cr/emp, HCL: ₹2.5 Cr/emp.",
+              "insight": "TCS generates more revenue per employee, possibly due to higher utilization rates or better offshore mix. Infosys is mid-range; HCL may employ more junior staff or have lower-margin service lines."
+            }
+          },
+          {
+            "name": "Upside %",
+            "formula": "= (TargetPrice - CMP) / CMP",
+            "use_case": "Screening for undervalued stocks",
+            "worked_example": {
+              "problem": "You have a list of 20 IT stocks with CMP and analyst target prices. Use a pivot to calculate upside % by sector, then filter for >30% upside opportunities.",
+              "steps": [
+                "Source: one row per stock (Company, Sector, CMP, TargetPrice).",
+                "Pivot: Rows = Sector, Values = Average(CMP), Average(TargetPrice).",
+                "Calculated Field: 'Upside%' = (TargetPrice - CMP) / CMP * 100.",
+                "Add Upside% to Values; sort descending to see highest-conviction sectors."
+              ],
+              "result": "IT sector shows 15% average upside; Pharma 28%; Auto −5% (downside).",
+              "insight": "Pharma consensus is most bullish; Auto is under pressure. This pivot takes seconds and updates live if new target prices arrive."
+            }
+          },
+          {
+            "name": "YoY Growth",
+            "formula": "= (ThisYear - LastYear) / LastYear",
+            "use_case": "Growth trend analysis",
+            "worked_example": {
+              "problem": "Quarterly revenue data for 5 FMCG companies across FY22 and FY23. Calculate YoY growth by company and quarter.",
+              "steps": [
+                "Source: rows for each (Company, Quarter, FY, Revenue). Ensure FY is a separate column.",
+                "Create pivot: Rows = Company + Quarter; Columns = FY; Values = Sum(Revenue).",
+                "This creates a side-by-side comparison of FY22 vs FY23 revenue.",
+                "Add Calculated Field: 'YoY%' = (FY23Revenue - FY22Revenue) / FY22Revenue * 100."
+              ],
+              "result": "HUL Q1 FY23: +8% YoY; ITC Q1 FY23: +12% YoY; Britannia Q1 FY23: +5% YoY.",
+              "insight": "ITC outpaced HUL in Q1, possibly due to pricing or volume gains. Britannia's slower growth may warrant deeper dive into margins and volume mix."
+            }
+          }
+        ]
+      },
+      {
+        "skill": "Slicers — The One-Click Filter",
+        "detail": "Visual filter buttons that sit next to your pivot table. Click 'IT' and the entire table filters to the IT sector.",
+        "pro_tip": "One slicer can control multiple pivot tables. Right-click the slicer → Report Connections → check all pivots you want it to filter. This is how dashboards work.",
+        "key_action": "PivotTable Analyze → Insert Slicer → Select Fields",
+        "slicers_vs_filters": "Filters are hidden in a small dropdown. Slicers are big, visible buttons. For anything you share with others (PMs, MDs, clients), use slicers.",
+        "plain_english": "Slicers are big, clickable filter buttons that sit visibly next to your pivot table. Unlike hidden dropdowns, they make the active filter obvious at a glance. In client pitches or internal dashboards, slicers are far clearer: one click on 'Banking' filters all connected pivots and charts instantly."
+      },
+      {
+        "skill": "Sorting, Filtering, and Top N",
+        "plain_english": "Pivot tables let you sort values (highest revenue first), filter to a subset (top 10 companies, specific date range, or label match), and dynamically show/hide rows. This is essential for rapid screening: build one pivot with all 100 stocks, then toggle to see only the top 20 by market cap or only companies with positive earnings growth.",
+        "actions": [
+          {
+            "how": "Right-click → Sort → Largest to Smallest",
+            "action": "Sort by value",
+            "use_case": "Rank sectors by revenue",
+            "worked_example": {
+              "problem": "You have a pivot table showing total revenue by sector. Sort to rank sectors from highest to lowest revenue.",
+              "steps": [
+                "Right-click any value cell in the pivot (e.g., a Revenue number).",
+                "Select Sort → Sort Largest to Smallest.",
+                "The pivot re-orders all rows so that the sector with the highest aggregate revenue appears first."
+              ],
+              "result": "IT (₹8.5L Cr) > Banking (₹7.2L Cr) > Pharma (₹2.1L Cr) > Auto (₹1.8L Cr).",
+              "insight": "Immediately visible which sectors dominate the data. Use this for sector weightings in a portfolio or market opportunity sizing."
+            }
+          },
+          {
+            "how": "Row Label dropdown → Value Filters → Top 10",
+            "action": "Top 10 filter",
+            "use_case": "Show only the 10 biggest companies",
+            "worked_example": {
+              "problem": "A pivot table with 150 listed companies and their revenue. You want to focus analysis on the top 10 by size.",
+              "steps": [
+                "Click the Row Label dropdown (where company names are listed).",
+                "Select Value Filters → Top 10.",
+                "The pivot instantly shows only the 10 companies with the highest aggregate values."
+              ],
+              "result": "Display shrinks from 150 rows to 10. Reliance, TCS, HDFC, Infosys, HUL, ITC, SBI, ICICI Bank, Bajaj Finance, Asian Paints.",
+              "insight": "Concentrates analysis on India's largest caps. Easier to present to senior stakeholders; also reveals concentration risk if top 10 companies account for 70%+ of sector value."
+            }
+          },
+          {
+            "how": "Row Label dropdown → Label Filters → Contains",
+            "action": "Label filter",
+            "use_case": "Filter to companies starting with 'T'",
+            "worked_example": {
+              "problem": "You need to isolate all companies whose names start with 'T' (e.g., TCS, Tata Motors, Titan) from a 100-company pivot.",
+              "steps": [
+                "Click the Row Label dropdown.",
+                "Select Label Filters → Contains.",
+                "Type 'T' (or use Begins with 'T').",
+                "Pivot shows only rows where company name starts with T."
+              ],
+              "result": "Pivot filters to: TCS, Tata Motors, Titan, Tata Steel, TVS, etc.",
+              "insight": "Useful for quick sub-group analysis or when testing a hypothesis (e.g., 'Are Tata group companies more capital-intensive?'). Saves time versus manual scrolling."
+            }
+          },
+          {
+            "how": "Row Label dropdown → Date Filters → This Quarter",
+            "action": "Date filter",
+            "use_case": "Show only current quarter data",
+            "worked_example": {
+              "problem": "A pivot with 3 years of daily trading volumes. You want to see only Q4 FY24 (Jan–Mar 2024) to analyze recent momentum.",
+              "steps": [
+                "Click the Row Label dropdown (date field).",
+                "Select Date Filters → This Quarter (or specify a range: Jan 1 - Mar 31, 2024).",
+                "Pivot updates to show only trades and volumes for that quarter."
+              ],
+              "result": "Aggregate volume, count, average price, volatility—all recalculated for Q4 FY24 only.",
+              "insight": "Quick way to pivot from annual view to latest quarter. Essential for momentum analysis or rebalancing decisions."
+            }
+          }
+        ]
+      },
+      {
+        "skill": "Pivot Charts",
+        "detail": "A chart linked to a pivot table. When you filter the pivot, the chart updates automatically.",
+        "key_action": "PivotTable Analyze → PivotChart → Select Chart Type",
+        "plain_english": "A pivot chart is a live visualization locked to a pivot table. Filter the pivot to 'Pharma' and the chart redraws instantly. This is how dashboards work: users click a slicer, the pivot and its charts update together, and a static report becomes interactive.",
+        "dashboard_pattern": "2–3 pivot tables + 2–3 pivot charts + shared slicers = a one-page interactive dashboard. This is how institutional equity research desks present sector overviews to portfolio managers."
+      }
+    ]
+  }
+}

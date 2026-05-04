@@ -1,0 +1,226 @@
+{
+  "id": "65c0aac8-1cf8-4683-9a8e-71041f035869",
+  "label": "M9 S7 | The Working Capital System Formulas",
+  "before": {
+    "formulas": [
+      {
+        "name": "Working Capital",
+        "formula": "Working Capital = Current Assets - Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Cash + Marketable Securities + Receivables + Inventory + Other Current Assets"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Trade Payables + Short-term Debt + Current Portion of Long-term Debt + Accrued Expenses + Other Current Liabilities"
+          }
+        ],
+        "worked_example": "HUL FY23: Current Assets = ₹15,850 Cr (Cash ₹3,500 + Receivables ₹2,300 + Inventory ₹3,550 + Others ₹6,500). Current Liabilities = ₹19,200 Cr (Trade Payables ₹8,500 + Others ₹10,700). Working Capital = 15,850 - 19,200 = -₹3,350 Cr. Negative ₹3,350 crore. Contrast with L&T FY23: CA = ₹1,35,000 Cr, CL = ₹85,000 Cr. Working Capital = +₹50,000 Cr. Same country, same time period, radically different working capital structures — because of radically different business models (FMCG mass distribution vs project-based infrastructure EPC).",
+        "sensitivity_note": "The headline number is only meaningful alongside composition analysis. HUL's -₹3,350 Cr is strategic strength (trade payables of ₹8,500 Cr to thousands of happy suppliers). A distressed company's -₹3,350 Cr could reflect stretched supplier payments, short-term debt building up, or accrued liabilities piling. Always decompose."
+      },
+      {
+        "name": "Operating Working Capital",
+        "formula": "Operating Working Capital = Trade Receivables + Inventory - Trade Payables",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "Amounts owed by customers for goods/services sold"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Raw materials + Work-in-progress + Finished goods + Stock-in-trade"
+          },
+          {
+            "symbol": "Trade Payables",
+            "meaning": "Amounts owed to suppliers — excludes debt, accruals, taxes"
+          }
+        ],
+        "worked_example": "DMart FY23: Trade Receivables ≈ ₹290 Cr, Inventory ≈ ₹2,850 Cr, Trade Payables ≈ ₹5,400 Cr. OWC = 290 + 2,850 - 5,400 = -₹2,260 Cr. Pure operational negative working capital — suppliers fund ₹2,260 crore of operations. No debt, no cash trickery — genuine supplier credit enabling the business to grow without external financing. This is the cleanest measure of working capital moat because it strips out cash hoarding and debt-related noise.",
+        "sensitivity_note": "Always prefer Operating Working Capital over headline Working Capital for evaluating business quality. The OWC metric isolates how efficiently the business's operational cycle consumes or generates capital, independent of capital structure decisions. A company with huge cash holdings (Infosys, TCS) might show positive Working Capital purely from cash — but its OWC could be low or negative, revealing the true operational efficiency."
+      },
+      {
+        "name": "Working Capital Intensity",
+        "formula": "Working Capital Intensity = Working Capital / Revenue (expressed as %)",
+        "variables": [
+          {
+            "symbol": "Working Capital",
+            "meaning": "As defined above"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales for the period"
+          }
+        ],
+        "worked_example": "HUL FY23: WC = -₹3,350 Cr, Revenue = ₹58,154 Cr. WC Intensity = -3,350/58,154 = -5.8%. Meaning for every ₹100 of revenue, HUL has ₹5.8 of negative working capital — supplier-funded operations. Compare L&T FY23: WC = ₹50,000 Cr, Revenue = ₹1,84,000 Cr. WC Intensity = 27.2% — for every ₹100 of revenue, ₹27 is tied up in working capital. Infrastructure EPC requires massive working capital because projects take 2-3 years and payment cycles are long. Cross-industry comparison: FMCG typically -5% to -15%, IT services 15-25%, capital goods 25-40%, infrastructure 30-50%.",
+        "sensitivity_note": "Watch the trend. A company's WC Intensity increasing from 15% to 25% over 3 years is a warning — the business is becoming more capital-intensive, often because of deteriorating cash collection or aggressive revenue recognition. Declining WC Intensity (becoming more negative for FMCG, or less positive for others) signals improving working capital management."
+      },
+      {
+        "name": "Incremental Working Capital",
+        "formula": "Incremental WC = ΔWorking Capital / ΔRevenue",
+        "variables": [
+          {
+            "symbol": "ΔWorking Capital",
+            "meaning": "Change in WC year-over-year (WC_Current - WC_Prior)"
+          },
+          {
+            "symbol": "ΔRevenue",
+            "meaning": "Change in Revenue year-over-year"
+          }
+        ],
+        "worked_example": "Company A grew revenue from ₹5,000 Cr to ₹6,000 Cr (ΔRevenue = ₹1,000 Cr). Working Capital went from ₹800 Cr to ₹1,000 Cr (ΔWC = ₹200 Cr). Incremental WC = 200/1,000 = 20%. Meaning for every additional ₹100 of revenue, the company needs an additional ₹20 of working capital. Now compare Company B which grew revenue from ₹5,000 Cr to ₹6,000 Cr but Working Capital jumped from ₹800 Cr to ₹1,350 Cr. Incremental WC = 550/1,000 = 55%. For every additional ₹100 of revenue, ₹55 of additional capital is consumed — meaning only ₹45 flows to shareholders. Company A is a scalable business; Company B is a capital-heavy growth trap.",
+        "sensitivity_note": "Incremental WC is one of the most underrated metrics in Indian equity research. A company with low Incremental WC (below 15-20%) can grow profitably without external financing. A company with high Incremental WC (above 30%) needs debt or equity issuance to fund growth — diluting existing shareholders. Always compute Incremental WC over 3-5 years to spot deterioration patterns."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → apply filter for peer analysis",
+        "Cmd + Option + V → paste special values only",
+        "Fn + F4 → absolute reference lock",
+        "Cmd + Shift + 5 → percentage format"
+      ],
+      "windows": [
+        "Ctrl + Shift + ( → unhide row for deeper component analysis",
+        "F4 → lock denominators when dragging WC Intensity across years",
+        "Alt + N + V → insert pivot table for industry median comparison",
+        "Ctrl + Shift + 5 → apply percentage format to WC Intensity"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Working Capital",
+        "formula": "Working Capital = Current Assets - Current Liabilities",
+        "variables": [
+          {
+            "symbol": "Current Assets",
+            "meaning": "Cash + Marketable Securities + Receivables + Inventory + Other Current Assets"
+          },
+          {
+            "symbol": "Current Liabilities",
+            "meaning": "Trade Payables + Short-term Debt + Current Portion of Long-term Debt + Accrued Expenses + Other Current Liabilities"
+          }
+        ],
+        "plain_english": "Working Capital tells you how many rupees of short-term assets the company has available to cover short-term obligations. Positive working capital means the company can comfortably meet obligations; negative working capital (common in efficient FMCG and retail businesses) means suppliers and short-term creditors are effectively funding operations. It is the liquidity snapshot every creditor and analyst must monitor.",
+        "worked_example": {
+          "problem": "Compare the working capital positions of HUL (FMCG) and L&T (infrastructure EPC) in FY23.",
+          "steps": [
+            "HUL FY23: Current Assets = ₹15,850 Cr (Cash ₹3,500 + Receivables ₹2,300 + Inventory ₹3,550 + Others ₹6,500)",
+            "HUL FY23: Current Liabilities = ₹19,200 Cr (Trade Payables ₹8,500 + Others ₹10,700)",
+            "HUL Working Capital = 15,850 - 19,200 = -₹3,350 Cr",
+            "L&T FY23: Current Assets = ₹1,35,000 Cr; Current Liabilities = ₹85,000 Cr",
+            "L&T Working Capital = 135,000 - 85,000 = +₹50,000 Cr"
+          ],
+          "result": "HUL: -₹3,350 Cr; L&T: +₹50,000 Cr",
+          "insight": "Radically different working capital structures driven by business model. HUL's negative WC reflects strong supplier relationships and rapid inventory turnover in FMCG distribution. L&T's large positive WC is necessary for multi-year infrastructure projects with long payment cycles. Same country, same time period, opposite capital structures — context is everything."
+        },
+        "sensitivity_note": "The headline number is only meaningful alongside composition analysis. HUL's -₹3,350 Cr is strategic strength (trade payables of ₹8,500 Cr to thousands of happy suppliers). A distressed company's -₹3,350 Cr could reflect stretched supplier payments, short-term debt building up, or accrued liabilities piling. Always decompose."
+      },
+      {
+        "name": "Operating Working Capital",
+        "formula": "Operating Working Capital = Trade Receivables + Inventory - Trade Payables",
+        "variables": [
+          {
+            "symbol": "Trade Receivables",
+            "meaning": "Amounts owed by customers for goods/services sold"
+          },
+          {
+            "symbol": "Inventory",
+            "meaning": "Raw materials + Work-in-progress + Finished goods + Stock-in-trade"
+          },
+          {
+            "symbol": "Trade Payables",
+            "meaning": "Amounts owed to suppliers — excludes debt, accruals, taxes"
+          }
+        ],
+        "plain_english": "Operating Working Capital isolates the capital consumed (or generated) purely by the operational cycle — purchasing inventory, selling it, collecting from customers, and paying suppliers. It strips away cash hoarding and debt decisions, revealing the true efficiency of how a business converts supplier credit and inventory into customer cash. This is the cleanest lens for comparing business quality across peers.",
+        "worked_example": {
+          "problem": "Evaluate DMart's working capital efficiency in FY23 and understand how supplier credit funds growth.",
+          "steps": [
+            "DMart FY23: Trade Receivables ≈ ₹290 Cr (minimal due to cash sales model)",
+            "DMart FY23: Inventory ≈ ₹2,850 Cr (stock on hand across stores)",
+            "DMart FY23: Trade Payables ≈ ₹5,400 Cr (supplier credit)",
+            "Operating WC = 290 + 2,850 - 5,400 = -₹2,260 Cr"
+          ],
+          "result": "-₹2,260 Cr negative operating working capital",
+          "insight": "Pure operational negative working capital with no debt or cash hoarding involved. Suppliers fund ₹2,260 crore of the business's operations. This is a genuine working capital moat — DMart collects cash from retail customers before paying suppliers, creating a self-funding machine. The business grows without external financing or dilution."
+        },
+        "sensitivity_note": "Always prefer Operating Working Capital over headline Working Capital for evaluating business quality. The OWC metric isolates how efficiently the business's operational cycle consumes or generates capital, independent of capital structure decisions. A company with huge cash holdings (Infosys, TCS) might show positive Working Capital purely from cash — but its OWC could be low or negative, revealing the true operational efficiency."
+      },
+      {
+        "name": "Working Capital Intensity",
+        "formula": "Working Capital Intensity = Working Capital / Revenue (expressed as %)",
+        "variables": [
+          {
+            "symbol": "Working Capital",
+            "meaning": "Current Assets - Current Liabilities"
+          },
+          {
+            "symbol": "Revenue",
+            "meaning": "Net sales for the period"
+          }
+        ],
+        "plain_english": "Working Capital Intensity tells you how much working capital (as a percentage of annual sales) a business requires to operate. A low or negative percentage signals an efficient, scalable business that doesn't tie up much capital per rupee of revenue. A high percentage means the business is capital-intensive, requiring significant investment in receivables and inventory relative to sales. This metric is invaluable for cross-industry and peer comparison.",
+        "worked_example": {
+          "problem": "Compare working capital intensity across three business models: FMCG (HUL), infrastructure (L&T), and IT services.",
+          "steps": [
+            "HUL FY23: WC = -₹3,350 Cr, Revenue = ₹58,154 Cr. WC Intensity = -3,350 / 58,154 = -5.8%",
+            "L&T FY23: WC = ₹50,000 Cr, Revenue = ₹1,84,000 Cr. WC Intensity = 50,000 / 184,000 = 27.2%",
+            "Typical IT services (e.g., TCS): WC Intensity ≈ 15-20%",
+            "Typical capital goods: WC Intensity ≈ 25-40%"
+          ],
+          "result": "FMCG: -5.8%; Infrastructure EPC: 27.2%; IT services: 15-20%",
+          "insight": "HUL's negative intensity reflects supplier-funded operations in fast-moving goods. L&T's 27.2% is necessary because infrastructure projects take 2-3 years; the company must fund mobilization and equipment before customer payments arrive. IT services sits in the middle: software is asset-light but involves upfront investment in talent and delivery infrastructure. Intensity benchmarks vary dramatically by industry; always compare within sector."
+        },
+        "sensitivity_note": "Watch the trend. A company's WC Intensity increasing from 15% to 25% over 3 years is a warning — the business is becoming more capital-intensive, often because of deteriorating cash collection or aggressive revenue recognition. Declining WC Intensity (becoming more negative for FMCG, or less positive for others) signals improving working capital management."
+      },
+      {
+        "name": "Incremental Working Capital",
+        "formula": "Incremental WC = ΔWorking Capital / ΔRevenue",
+        "variables": [
+          {
+            "symbol": "ΔWorking Capital",
+            "meaning": "Change in WC year-over-year (WC_Current - WC_Prior)"
+          },
+          {
+            "symbol": "ΔRevenue",
+            "meaning": "Change in Revenue year-over-year"
+          }
+        ],
+        "plain_english": "Incremental Working Capital quantifies how much additional working capital a company must invest for every rupee of incremental revenue. A low ratio (below 15%) means new revenue is highly profitable and self-funding. A high ratio (above 40%) means most incremental revenue is consumed by working capital — money that doesn't reach shareholders. This metric is critical for assessing whether growth is profitable or a capital trap.",
+        "computation": [
+          "Calculate ΔWorking Capital: subtract prior-year Working Capital from current-year Working Capital",
+          "Calculate ΔRevenue: subtract prior-year Revenue from current-year Revenue",
+          "Divide ΔWorking Capital by ΔRevenue; express as a decimal or percentage"
+        ],
+        "worked_example": {
+          "problem": "Compare two companies with identical revenue growth but vastly different working capital appetite.",
+          "steps": [
+            "Company A: Revenue grew ₹5,000 Cr → ₹6,000 Cr (ΔRevenue = ₹1,000 Cr). Working Capital moved ₹800 Cr → ₹1,000 Cr (ΔWC = ₹200 Cr). Incremental WC = 200 / 1,000 = 20%",
+            "Company B: Revenue grew ₹5,000 Cr → ₹6,000 Cr (ΔRevenue = ₹1,000 Cr). Working Capital moved ₹800 Cr → ₹1,350 Cr (ΔWC = ₹550 Cr). Incremental WC = 550 / 1,000 = 55%",
+            "Company A: For ₹100 of new revenue, ₹20 tied up in WC, ₹80 available for profit/reinvestment",
+            "Company B: For ₹100 of new revenue, ₹55 tied up in WC, only ₹45 available for profit/reinvestment"
+          ],
+          "result": "Company A: 20% Incremental WC; Company B: 55% Incremental WC",
+          "insight": "Company A is a scalable business with efficient working capital management — it can fund growth from operations. Company B is a growth trap: rapid revenue expansion requires constant capital injection (debt or equity), diluting existing shareholders. Over 5 years, Company A compounds value; Company B destroys it through dilution."
+        },
+        "sensitivity_note": "Incremental WC is one of the most underrated metrics in Indian equity research. A company with low Incremental WC (below 15-20%) can grow profitably without external financing. A company with high Incremental WC (above 30%) needs debt or equity issuance to fund growth — diluting existing shareholders. Always compute Incremental WC over 3-5 years to spot deterioration patterns."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + L → apply filter for peer analysis",
+        "Cmd + Option + V → paste special values only",
+        "Fn + F4 → absolute reference lock",
+        "Cmd + Shift + 5 → percentage format"
+      ],
+      "windows": [
+        "Ctrl + Shift + ( → unhide row for deeper component analysis",
+        "F4 → lock denominators when dragging WC Intensity across years",
+        "Alt + N + V → insert pivot table for industry median comparison",
+        "Ctrl + Shift + 5 → apply percentage format to WC Intensity"
+      ]
+    }
+  }
+}

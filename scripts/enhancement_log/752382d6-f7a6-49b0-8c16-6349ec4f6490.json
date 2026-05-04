@@ -1,0 +1,263 @@
+{
+  "id": "752382d6-f7a6-49b0-8c16-6349ec4f6490",
+  "label": "M12 S12 | The SOTP Math — Building from Segments to Per-Share Target",
+  "before": {
+    "formulas": [
+      {
+        "name": "Segment-Level Enterprise Value",
+        "formula": "Segment EV = Segment Forward Metric × Segment-Appropriate Multiple",
+        "variables": [
+          {
+            "symbol": "Segment Forward Metric",
+            "meaning": "The segment's forward-looking financial metric appropriate to its valuation methodology — EBITDA for capital-intensive segments, Sales for growth segments, Net Income for stable profitable segments"
+          },
+          {
+            "symbol": "Segment-Appropriate Multiple",
+            "meaning": "The multiple appropriate to that segment's economics, derived from segment-specific peer comparison"
+          }
+        ],
+        "worked_example": "For Reliance's Jio segment (illustrative FY27 estimates): FY27 EBITDA ₹65,000 cr. Telecom peer multiples: Bharti Airtel 8-9x, T-Mobile US 7-8x, telecom peer median 8x EV/EBITDA. Segment EV = 65,000 × 8 = ₹5,20,000 cr. For O2C segment: FY27 EBITDA ₹70,000 cr. Refining/petrochemicals peers globally: Reliance's O2C peers in refining trade at 5-7x; using midpoint 6x. Segment EV = 70,000 × 6 = ₹4,20,000 cr. The two segments together contribute ₹9,40,000 cr to Reliance's total EV — but with completely different methodologies and risk profiles.",
+        "sensitivity_note": "Segment multiple selection drives the answer. Within reasonable peer ranges, telecom multiple variation of 7x to 9x changes Jio segment EV by ±12.5%. Same for O2C variation between 5x and 7x — about ±17% segment EV impact. Document the multiple choice for each segment with peer-specific reasoning."
+      },
+      {
+        "name": "Holdco Adjustments — Corporate Items",
+        "formula": "Adjusted SOTP EV = Sum of Segment EVs - Corporate Costs (Capitalised) + Investments at Fair Value",
+        "variables": [
+          {
+            "symbol": "Sum of Segment EVs",
+            "meaning": "Total of all segment-level EV values"
+          },
+          {
+            "symbol": "Corporate Costs Capitalised",
+            "meaning": "Holdco overhead, corporate-level expenses not allocated to segments — capitalised at typical multiple, often 10x EBITDA equivalent"
+          },
+          {
+            "symbol": "Investments at Fair Value",
+            "meaning": "Strategic investments not included in any operating segment, valued at market"
+          }
+        ],
+        "worked_example": "For Reliance: Sum of Segment EVs (illustrative): O2C ₹4,20,000 cr + Jio ₹5,20,000 cr + Retail ₹4,80,000 cr + Digital/Media ₹40,000 cr + New Energy ₹50,000 cr = ₹15,10,000 cr. Corporate costs (annual unallocated overhead): ~₹3,000 cr → capitalised at 10x = ₹30,000 cr drag. Investments in unconsolidated entities at fair value: ~₹15,000 cr addition. Adjusted SOTP EV = 15,10,000 - 30,000 + 15,000 = ₹14,95,000 cr.",
+        "sensitivity_note": "Corporate cost capitalisation methodology matters. Some practitioners use 10x EBITDA equivalent (treating corporate as a cost with implied perpetuity value); others apply lower multiples (5-7x) reflecting that corporate costs may decline. The choice depends on whether corporate structure is seen as essential or as eliminable overhead."
+      },
+      {
+        "name": "Bridge to Equity Value",
+        "formula": "SOTP Equity Value = Adjusted SOTP EV - Net Debt - Minority Interest + Non-Operating Assets",
+        "variables": [
+          {
+            "symbol": "Adjusted SOTP EV",
+            "meaning": "From above"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total debt minus excess cash (same as Session 8 bridge mechanics)"
+          },
+          {
+            "symbol": "Minority Interest",
+            "meaning": "Fair value of minority stakes in consolidated subsidiaries"
+          },
+          {
+            "symbol": "Non-Operating Assets",
+            "meaning": "Investments in associates and JVs not included in any operating segment"
+          }
+        ],
+        "worked_example": "For Reliance (illustrative): Adjusted SOTP EV ₹14,95,000 cr. Net Debt ~₹2,50,000 cr (consolidated debt minus excess cash). Minority Interest ~₹40,000 cr (Reliance Industrial Services and other minorities at fair value). Non-Operating Investments ~₹15,000 cr. SOTP Equity Value = 14,95,000 - 2,50,000 - 40,000 + 15,000 = ₹12,20,000 cr. Per share = 12,20,000 / 676 cr fully diluted shares ≈ ₹1,805 per share.",
+        "sensitivity_note": "For diversified groups like Reliance, the bridge magnitude is meaningful (₹275,000 cr swing on net debt alone). Net debt allocation across segments matters too — debt at the consolidated level may not be evenly distributable to each segment economically. For deeper SOTP analysis, allocate debt to each segment based on its capital structure profile."
+      },
+      {
+        "name": "Holdco Discount Application (For Pure Holdcos)",
+        "formula": "Holdco Equity Value = NAV × (1 - Holdco Discount)",
+        "variables": [
+          {
+            "symbol": "NAV",
+            "meaning": "Sum of fair values of underlying stakes, minus holdco-level debt"
+          },
+          {
+            "symbol": "Holdco Discount",
+            "meaning": "Typical 15-25% for Indian holdcos, calibrated for governance, tax friction, capital allocation track record"
+          }
+        ],
+        "worked_example": "For Bajaj Holdings & Investments: stakes in Bajaj Auto, Bajaj Finance, Bajaj Finserv, etc. Sum of fair values of underlying stakes (proportional ownership × market caps): approximately ₹80,000 cr. No meaningful holdco-level debt. NAV = ₹80,000 cr. Apply 25% holdco discount (Indian pure holdco, average capital allocation track record): Holdco Equity Value = 80,000 × 0.75 = ₹60,000 cr. Per share at ~11.1 cr shares ≈ ₹5,400 per share. Compare to current trading price typically in similar range, confirming the holdco discount mechanic.",
+        "sensitivity_note": "Holdco discount is the dominant analytical decision for pure holdcos. A 25% discount produces ₹60,000 cr equity value; 15% discount produces ₹68,000 cr (₹720 per share difference). Calibrate the discount based on documented criteria — governance quality, capital allocation history, tax/structural friction. Justify with explicit reasoning."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SUMIF()",
+        "=INDEX(MATCH())",
+        "Cmd + Shift + T for pivot tables",
+        "Cmd + Shift + + for inserting rows",
+        "=SUMPRODUCT()"
+      ],
+      "windows": [
+        "=SUMIF(range, criteria, sum_range) — clean way to aggregate segment values by category (operating segments only, exclude corporate)",
+        "=INDEX(MATCH()) for two-way segment lookup tables",
+        "Alt + N + V + T for pivot tables organising segment data",
+        "Ctrl + Shift + + to insert rows for new segments as company structure evolves",
+        "=SUMPRODUCT for weighted average multiple across segments based on EBITDA contribution"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "Segment-Level Enterprise Value",
+        "formula": "Segment EV = Segment Forward Metric × Segment-Appropriate Multiple",
+        "variables": [
+          {
+            "symbol": "Segment EV",
+            "meaning": "The enterprise value attributable to a single operating segment"
+          },
+          {
+            "symbol": "Segment Forward Metric",
+            "meaning": "The segment's forward-looking financial metric appropriate to its valuation methodology — EBITDA for capital-intensive segments, Sales for growth segments, Net Income for stable profitable segments"
+          },
+          {
+            "symbol": "Segment-Appropriate Multiple",
+            "meaning": "The multiple appropriate to that segment's economics, derived from segment-specific peer comparison"
+          }
+        ],
+        "plain_english": "Each operating segment of a diversified company has its own business model, competitive dynamics, and risk profile. Rather than apply one company-wide multiple, SOTP values each segment independently using a multiple that reflects its peers—telecom peers for telecom, refining peers for refining. This captures the true economic value of each piece before reassembling them.",
+        "worked_example": {
+          "problem": "Value Reliance's Jio and O2C segments for FY27 using segment-level multiples.",
+          "steps": [
+            "Jio segment: FY27 EBITDA forecast ₹65,000 cr. Peer multiples (Bharti Airtel, Vodafone Idea, global telecom peers): 8x EV/EBITDA median.",
+            "Jio Segment EV = 65,000 × 8 = ₹5,20,000 cr.",
+            "O2C segment: FY27 EBITDA forecast ₹70,000 cr. Refining and petrochemicals peers globally: 5–7x EV/EBITDA; use midpoint 6x.",
+            "O2C Segment EV = 70,000 × 6 = ₹4,20,000 cr.",
+            "Sum of two segments = ₹5,20,000 cr + ₹4,20,000 cr = ₹9,40,000 cr."
+          ],
+          "result": "Jio valued at ₹5,20,000 cr; O2C valued at ₹4,20,000 cr; combined ₹9,40,000 cr.",
+          "insight": "Different segments command different multiples because their earnings quality, growth, and capital intensity differ. Jio (high-growth telecom) trades on a higher multiple than mature refining; using one blended multiple would either overprice refining or underprice telecom."
+        },
+        "sensitivity_note": "Segment multiple selection drives the answer. Within reasonable peer ranges, telecom multiple variation of 7x to 9x changes Jio segment EV by ±12.5%. Same for O2C variation between 5x and 7x — about ±17% segment EV impact. Document the multiple choice for each segment with peer-specific reasoning."
+      },
+      {
+        "name": "Holdco Adjustments — Corporate Items",
+        "formula": "Adjusted SOTP EV = Sum of Segment EVs - Corporate Costs (Capitalised) + Investments at Fair Value",
+        "variables": [
+          {
+            "symbol": "Sum of Segment EVs",
+            "meaning": "Total of all segment-level EV values calculated via segment multiples"
+          },
+          {
+            "symbol": "Corporate Costs (Capitalised)",
+            "meaning": "Holdco overhead, corporate-level expenses not allocated to segments — typically capitalised at 10x EBITDA equivalent (or alternative multiple reflecting permanence and nature of overhead)"
+          },
+          {
+            "symbol": "Investments at Fair Value",
+            "meaning": "Strategic investments not included in any operating segment, valued at market or NAV"
+          },
+          {
+            "symbol": "Adjusted SOTP EV",
+            "meaning": "Sum of all segment values minus consolidated corporate drag, plus standalone investments"
+          }
+        ],
+        "plain_english": "When you add up segment EVs, you capture operating assets but omit corporate-level costs (board, HR, finance staff, head office) that sit above the segments. These costs deserve a value discount—they represent a cash drag with no direct revenue driver. Additionally, the company may own strategic investments (stakes in JVs, listed holdings, real estate) not within any segment. This formula nets out corporate drag and adds back these standalone investments to arrive at true corporate-level enterprise value.",
+        "worked_example": {
+          "problem": "Adjust Reliance's sum of segment EVs for corporate costs and unconsolidated investments.",
+          "steps": [
+            "Sum of Segment EVs: O2C ₹4,20,000 cr + Jio ₹5,20,000 cr + Retail ₹4,80,000 cr + Digital/Media ₹40,000 cr + New Energy ₹50,000 cr = ₹15,10,000 cr.",
+            "Corporate-level overhead (unallocated): estimate ~₹3,000 cr annual run-rate (board, corporate finance, HR, legal, compliance).",
+            "Capitalise corporate costs at 10x (treating as a pseudo-perpetuity cost): ₹3,000 cr × 10 = ₹30,000 cr value drag.",
+            "Investments in unconsolidated entities (fair value): ₹15,000 cr (e.g., listed stakes, JV interests).",
+            "Adjusted SOTP EV = 15,10,000 - 30,000 + 15,000 = ₹14,95,000 cr."
+          ],
+          "result": "₹14,95,000 cr adjusted SOTP EV after corporate adjustments.",
+          "insight": "Corporate overhead is not free; capitalising it as a cost drag reflects that managing multiple segments carries a centre cost. The ₹30,000 cr deduction (2% of gross SOTP) is realistic for a large, diversified conglomerate; pure operating companies might see lower or zero corporate drag."
+        },
+        "sensitivity_note": "Corporate cost capitalisation methodology matters. Some practitioners use 10x EBITDA equivalent (treating corporate as a cost with implied perpetuity value); others apply lower multiples (5–7x) reflecting that corporate costs may decline. The choice depends on whether corporate structure is seen as essential or as eliminable overhead. A shift from 10x to 7x capitalisation changes the value impact by ₹9,000 cr per ₹3,000 cr of annual costs."
+      },
+      {
+        "name": "Bridge to Equity Value",
+        "formula": "SOTP Equity Value = Adjusted SOTP EV - Net Debt - Minority Interest + Non-Operating Assets",
+        "variables": [
+          {
+            "symbol": "Adjusted SOTP EV",
+            "meaning": "Enterprise value from segment build-up, post-corporate adjustments (from formula above)"
+          },
+          {
+            "symbol": "Net Debt",
+            "meaning": "Total financial debt (bank loans, bonds, etc.) minus excess cash and liquid investments; standard DCF bridge mechanics"
+          },
+          {
+            "symbol": "Minority Interest",
+            "meaning": "Fair value of minority stakes in consolidated subsidiaries (non-controlling interests on balance sheet)"
+          },
+          {
+            "symbol": "Non-Operating Assets",
+            "meaning": "Investments in associates and JVs at fair value, not included in any segment EV; also includes surplus real estate, IP assets valued separately"
+          },
+          {
+            "symbol": "SOTP Equity Value",
+            "meaning": "Total attributable to parent shareholders"
+          }
+        ],
+        "plain_english": "Segment EVs represent value to all capital providers (debt and equity). To get to equity value for shareholders, you subtract what debt holders and minorities own, then add back non-operating assets that belong fully to shareholders. This is the same bridge structure used in DCF; here it's applied to the sum-of-parts valuation to ensure clean attribution to equity.",
+        "worked_example": {
+          "problem": "Calculate Reliance's SOTP equity value from adjusted EV.",
+          "steps": [
+            "Adjusted SOTP EV = ₹14,95,000 cr (from prior formula).",
+            "Net Debt: Total debt ~₹3,80,000 cr, excess cash ~₹1,30,000 cr → Net Debt = 3,80,000 - 1,30,000 = ₹2,50,000 cr.",
+            "Minority Interest: Reliance Industrial Services and other minorities at fair value ~₹40,000 cr.",
+            "Non-Operating Assets: Investments in associates/JVs not in operating segments, valued at ~₹15,000 cr.",
+            "SOTP Equity Value = 14,95,000 - 2,50,000 - 40,000 + 15,000 = ₹12,20,000 cr.",
+            "Divide by fully diluted shares outstanding (676 cr) = ₹12,20,000 cr / 676 cr ≈ ₹1,805 per share."
+          ],
+          "result": "SOTP Equity Value ₹12,20,000 cr; per-share value ₹1,805.",
+          "insight": "The bridge from EV to equity value is material in a leveraged conglomerate: net debt of ₹2,50,000 cr and minorities of ₹40,000 cr together represent ~20% of SOTP EV, showing why capital structure and ownership assumptions are critical in SOTP valuation."
+        },
+        "sensitivity_note": "For diversified groups like Reliance, the bridge magnitude is meaningful (₹275,000 cr swing on net debt alone). Net debt allocation across segments matters too — debt at the consolidated level may not be evenly distributable to each segment economically. For deeper SOTP analysis, allocate debt to each segment based on its capital structure profile."
+      },
+      {
+        "name": "Holdco Discount Application (For Pure Holdcos)",
+        "formula": "Holdco Equity Value = NAV × (1 - Holdco Discount)",
+        "variables": [
+          {
+            "symbol": "NAV",
+            "meaning": "Sum of fair values of underlying stakes (proportional ownership × market or fair values of subsidiaries and investments), minus holdco-level debt"
+          },
+          {
+            "symbol": "Holdco Discount",
+            "meaning": "Typical 15–25% for Indian holdcos; reflects governance risk, tax friction, capital allocation inefficiency, and structural complexity. Calibrated case-by-case."
+          },
+          {
+            "symbol": "Holdco Equity Value",
+            "meaning": "Fair value of equity after applying discount to NAV"
+          }
+        ],
+        "plain_english": "Pure holding companies (like Bajaj Holdings) don't operate any business themselves; they own stakes in subsidiaries and investments. In theory, their equity value should equal the sum of what they own (NAV). But in practice, markets discount pure holdcos by 15–25% because of management inefficiency, tax drag on dividends, governance concerns, and limited strategic rationale. This formula captures that real-world discount empirically observed in Indian markets.",
+        "worked_example": {
+          "problem": "Value Bajaj Holdings & Investments using the holdco approach.",
+          "steps": [
+            "Calculate NAV: Bajaj Auto stake (60% ownership) at ₹30,000 cr market cap = ₹18,000 cr. Bajaj Finance stake (48% ownership) at ₹25,000 cr market cap = ₹12,000 cr. Bajaj Finserv stake (95% ownership) at ₹40,000 cr market cap = ₹38,000 cr. Other investments and cash ~₹12,000 cr.",
+            "Sum of fair values = 18,000 + 12,000 + 38,000 + 12,000 = ₹80,000 cr.",
+            "Holdco-level debt: negligible.",
+            "NAV = ₹80,000 cr.",
+            "Apply holdco discount: Indian pure holdco, average capital allocation track record, some governance concerns → 25% discount.",
+            "Holdco Equity Value = 80,000 × (1 - 0.25) = 80,000 × 0.75 = ₹60,000 cr.",
+            "Per share: ₹60,000 cr / 11.1 cr shares ≈ ₹5,400 per share."
+          ],
+          "result": "Holdco Equity Value ₹60,000 cr; per share ~₹5,400.",
+          "insight": "Bajaj Holdings trades at a 25% discount to the sum of its parts because the holding structure creates friction (dividend taxes, limited operational synergy, capital allocation inefficiency). This discount is observed empirically; it's not an arbitrary haircut but reflects real economic costs of holdco ownership structure."
+        },
+        "sensitivity_note": "Holdco discount is the dominant analytical decision for pure holdcos. A 25% discount produces ₹60,000 cr equity value; 15% discount produces ₹68,000 cr (₹630 per share difference). Calibrate the discount based on documented criteria — governance quality, capital allocation history, tax/structural friction, management track record of synergy realisation. Justify with explicit reasoning and peer comparison."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "=SUMIF()",
+        "=INDEX(MATCH())",
+        "Cmd + Shift + T for pivot tables",
+        "Cmd + Shift + + for inserting rows",
+        "=SUMPRODUCT()"
+      ],
+      "windows": [
+        "=SUMIF(range, criteria, sum_range) — clean way to aggregate segment values by category (operating segments only, exclude corporate)",
+        "=INDEX(MATCH()) for two-way segment lookup tables",
+        "Alt + N + V + T for pivot tables organising segment data",
+        "Ctrl + Shift + + to insert rows for new segments as company structure evolves",
+        "=SUMPRODUCT for weighted average multiple across segments based on EBITDA contribution"
+      ]
+    }
+  }
+}

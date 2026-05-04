@@ -1,0 +1,151 @@
+{
+  "id": "bcd4e8c0-1765-4770-96bf-c3ef5e66309c",
+  "label": "M11 S2 | The Classification Decision Logic — Three Tests to Place Any",
+  "before": {
+    "formulas": [
+      {
+        "name": "GICS Primary Sector Test (Revenue-Based Rule)",
+        "formula": "Primary Sector = Sector contributing > 50% of consolidated revenue OR > 50% of consolidated EBITDA, whichever is more representative of business identity",
+        "variables": [
+          {
+            "symbol": "Revenue Share",
+            "meaning": "Percentage of total consolidated revenue from each business segment (use latest annual report segment disclosures)"
+          },
+          {
+            "symbol": "EBITDA Share",
+            "meaning": "Percentage of total consolidated EBITDA from each business segment (better for cases where revenue mix and profit mix diverge)"
+          },
+          {
+            "symbol": "Tiebreaker",
+            "meaning": "When neither segment crosses 50%, classify by primary EBITDA contributor, growth driver, and management commentary"
+          }
+        ],
+        "worked_example": "Reliance Industries FY24 segment data: O2C (Oil-to-Chemicals): Revenue ~52%, EBITDA ~37%. Digital Services (Jio): Revenue ~14%, EBITDA ~32%. Retail: Revenue ~26%, EBITDA ~17%. Oil & Gas E&P: Revenue ~3%, EBITDA ~6%. Other: ~5%/8%. Applying the 50% rule on revenue: O2C dominates at 52%, so GICS Primary Sector = Energy. But EBITDA tells a different story — O2C is only 37% of EBITDA, with Digital Services and Retail combined contributing 49%. This is why GICS classifies Reliance under Energy (revenue rule) but most analysts also track it as a Conglomerate with sum-of-parts (SOTP) valuation. The key insight: the classification rule gives you a label, but the analyst must understand the underlying mix to value it correctly. A pure Energy multiple on Reliance would dramatically undervalue the Jio and Retail businesses — which is exactly why Reliance was historically considered 'undervalued' for years until the SOTP narrative caught on.",
+        "sensitivity_note": "Classification can shift over time as business mix evolves. Bajaj Finance was once classified deep in NBFC peer groups; as it scaled, it got reclassified into broader Financials and started benchmarking against private banks — its multiple expanded materially. Watch for 'reclassification triggers': segment crosses 50%, listed subsidiary spin-off, large acquisition in a different sector, or formal MSCI/Nifty index reclassification."
+      },
+      {
+        "name": "Cyclical vs Defensive Decision Rule (Earnings Volatility Test)",
+        "formula": "Earnings Cyclicality = StDev(Annual EBITDA Growth, 10-year period) ÷ Mean(Annual EBITDA Growth, 10-year period). If ratio > 2.0 → Cyclical. If ratio < 0.7 → Defensive. Between → Semi-Cyclical / Structural Growth.",
+        "variables": [
+          {
+            "symbol": "StDev",
+            "meaning": "Standard deviation of year-on-year EBITDA growth rates over a 10-year window — captures volatility"
+          },
+          {
+            "symbol": "Mean",
+            "meaning": "Average year-on-year EBITDA growth rate over the same window — captures trend"
+          },
+          {
+            "symbol": "Coefficient of Variation",
+            "meaning": "The ratio is technically the coefficient of variation; higher values mean earnings swing dramatically relative to their average"
+          }
+        ],
+        "worked_example": "Tata Steel 10-year EBITDA growth (FY15 to FY24): swings from -45% to +180%. StDev ≈ 75%, Mean ≈ 18%. Ratio = 75/18 = 4.2 → clearly Cyclical. HUL 10-year EBITDA growth: ranges from +6% to +14%. StDev ≈ 3%, Mean ≈ 9%. Ratio = 3/9 = 0.33 → clearly Defensive. TCS 10-year EBITDA growth: ranges from +8% to +22%. StDev ≈ 5%, Mean ≈ 13%. Ratio = 5/13 = 0.38 → Defensive characteristics, but with secular growth → classified as Structural Growth. The ratio gives you an objective, data-driven taxonomy beyond gut feel.",
+        "sensitivity_note": "10-year window is critical — shorter windows can mislead. Indian Banks looked Defensive on a 5-year window from 2019-2024 (post-NPA cleanup) but were extremely Cyclical on a 10-year window including the 2014-2018 NPA crisis. Always extend the window to capture at least one full cycle."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + F (Filter)",
+        "Cmd + Shift + L (Toggle filters)",
+        "=STDEV.S(range) / AVERAGE(range)",
+        "Cmd + T (Structured table)"
+      ],
+      "windows": [
+        "Alt + D + F + F (Apply filter to peer set)",
+        "Ctrl + Shift + L (Toggle filters)",
+        "=STDEV.S(range) / AVERAGE(range) (Coefficient of variation)",
+        "Ctrl + T (Convert to structured table)"
+      ]
+    }
+  },
+  "after": {
+    "formulas": [
+      {
+        "name": "GICS Primary Sector Test (Revenue-Based Rule)",
+        "formula": "Primary Sector = Sector contributing > 50% of consolidated revenue OR > 50% of consolidated EBITDA, whichever is more representative of business identity",
+        "variables": [
+          {
+            "symbol": "Revenue Share",
+            "meaning": "Percentage of total consolidated revenue from each business segment (use latest annual report segment disclosures)"
+          },
+          {
+            "symbol": "EBITDA Share",
+            "meaning": "Percentage of total consolidated EBITDA from each business segment (better for cases where revenue mix and profit mix diverge)"
+          },
+          {
+            "symbol": "Tiebreaker",
+            "meaning": "When neither segment crosses 50%, classify by primary EBITDA contributor, growth driver, and management commentary"
+          }
+        ],
+        "plain_english": "This test determines a company's primary industry classification by looking at which business segment dominates either revenue or EBITDA. A segment that generates more than 50% of total revenue (or EBITDA, if profit composition better reflects the business) becomes the primary sector label for valuation and peer comparison. This matters because conglomerates like Reliance or Bajaj have multiple large divisions — using the 50% rule ensures you classify by actual profit engine, not just revenue, and highlights when a company's complexity demands a sum-of-the-parts valuation instead.",
+        "worked_example": {
+          "problem": "Classify Reliance Industries' primary GICS sector using FY24 segment data.",
+          "steps": [
+            "Gather consolidated segment data: O2C (Oil-to-Chemicals) Revenue 52%, EBITDA 37%; Jio Digital Services Revenue 14%, EBITDA 32%; Retail Revenue 26%, EBITDA 17%; Oil & Gas E&P Revenue 3%, EBITDA 6%; Other Revenue 5%, EBITDA 8%.",
+            "Apply 50% revenue rule: O2C at 52% exceeds the threshold on revenue alone.",
+            "Cross-check EBITDA composition: O2C is only 37% of EBITDA; Jio (32%) and Retail (17%) combined = 49% — nearly half the profit pool.",
+            "Conclusion: GICS classifies Reliance under Energy (revenue rule dominates), but recognize the EBITDA distribution signals a hidden Conglomerate structure.",
+            "Valuation implication: A pure Energy sector multiple would undervalue Jio and Retail — use sum-of-the-parts to value each division separately and sum to intrinsic value."
+          ],
+          "result": "Primary Sector = Energy (by 50% revenue rule). However, analyst must note Conglomerate complexity: Jio + Retail = 49% EBITDA; do NOT apply Energy multiples uniformly.",
+          "insight": "Classification is a label for peer benchmarking, not a valuation tool. The real alpha comes from recognizing when that label masks hidden value (Reliance as Conglomerate before SOTP became consensus) or when a reclassification event (Jio IPO, Retail spin-off) could re-rate multiples materially."
+        },
+        "sensitivity_note": "Classification can shift over time as business mix evolves. Bajaj Finance was once classified deep in NBFC peer groups; as it scaled, it got reclassified into broader Financials and started benchmarking against private banks — its multiple expanded materially. Watch for 'reclassification triggers': segment crosses 50%, listed subsidiary spin-off, large acquisition in a different sector, or formal MSCI/Nifty index reclassification."
+      },
+      {
+        "name": "Cyclical vs Defensive Decision Rule (Earnings Volatility Test)",
+        "formula": "Earnings Cyclicality = StDev(Annual EBITDA Growth, 10-year period) ÷ Mean(Annual EBITDA Growth, 10-year period). If ratio > 2.0 → Cyclical. If ratio < 0.7 → Defensive. Between → Semi-Cyclical / Structural Growth.",
+        "variables": [
+          {
+            "symbol": "StDev",
+            "meaning": "Standard deviation of year-on-year EBITDA growth rates over a 10-year window — captures volatility"
+          },
+          {
+            "symbol": "Mean",
+            "meaning": "Average year-on-year EBITDA growth rate over the same window — captures trend"
+          },
+          {
+            "symbol": "Coefficient of Variation",
+            "meaning": "The ratio is technically the coefficient of variation; higher values mean earnings swing dramatically relative to their average"
+          }
+        ],
+        "plain_english": "This test quantifies whether a company's earnings are stable or volatile by dividing the standard deviation of growth rates by the average growth rate. A high ratio (>2.0) means earnings swing wildly year to year relative to the trend — classic cyclical. A low ratio (<0.7) means earnings grow steadily with little deviation — classic defensive. This matters because cyclical stocks require timing (buy at trough) and deserve lower multiples, while defensive stocks support premium multiples because earnings are predictable and recession-resistant.",
+        "computation": [
+          "Collect 10 years of annual EBITDA figures (FY15 to FY24 for most Indian companies).",
+          "Calculate year-on-year EBITDA growth rate for each year: (EBITDA_year_N − EBITDA_year_N−1) / EBITDA_year_N−1.",
+          "Compute Mean of all 10 growth rates using =AVERAGE().",
+          "Compute StDev (sample) of all 10 growth rates using =STDEV.S().",
+          "Divide StDev by Mean to get Coefficient of Variation.",
+          "Classify: ratio > 2.0 = Cyclical; ratio < 0.7 = Defensive; 0.7 to 2.0 = Semi-Cyclical or Structural Growth."
+        ],
+        "worked_example": {
+          "problem": "Classify Tata Steel, HUL, and TCS by cyclicality using 10-year EBITDA growth data (FY15–FY24).",
+          "steps": [
+            "Tata Steel: 10-year EBITDA swings from −45% (trough year) to +180% (peak year). StDev ≈ 75%, Mean ≈ 18%. Coefficient of Variation = 75 / 18 = 4.2.",
+            "HUL: 10-year EBITDA growth ranges from +6% to +14%, very tight. StDev ≈ 3%, Mean ≈ 9%. Coefficient of Variation = 3 / 9 ≈ 0.33.",
+            "TCS: 10-year EBITDA growth ranges from +8% to +22%, moderate swing. StDev ≈ 5%, Mean ≈ 13%. Coefficient of Variation = 5 / 13 ≈ 0.38.",
+            "Apply thresholds: Tata Steel (4.2 >> 2.0) = Cyclical. HUL (0.33 << 0.7) = Defensive. TCS (0.38 << 0.7, but note secular growth trend) = Defensive with structural growth characteristics."
+          ],
+          "result": "Tata Steel: Cyclical (high volatility, lower multiple ~5–7x EV/EBITDA in downturns, 8–10x in upturns). HUL: Defensive (stable growth, premium multiple ~25–28x P/E). TCS: Defensive + Structural (steady growth, multiple ~20–24x P/E).",
+          "insight": "The 10-year window captures full market cycles. Tata Steel's cyclicality means buy after steel price crashes, sell before margin compression. HUL's defensiveness justifies holding through recessions because earnings don't crater. TCS's low ratio with 12%+ CAGR shows a rare combination: stable, predictable, and growing — the gold standard for tech services."
+        },
+        "sensitivity_note": "10-year window is critical — shorter windows can mislead. Indian Banks looked Defensive on a 5-year window from 2019-2024 (post-NPA cleanup) but were extremely Cyclical on a 10-year window including the 2014-2018 NPA crisis. Always extend the window to capture at least one full cycle."
+      }
+    ],
+    "excel_shortcuts": {
+      "mac": [
+        "Cmd + Shift + F (Filter)",
+        "Cmd + Shift + L (Toggle filters)",
+        "=STDEV.S(range) / AVERAGE(range)",
+        "Cmd + T (Structured table)"
+      ],
+      "windows": [
+        "Alt + D + F + F (Apply filter to peer set)",
+        "Ctrl + Shift + L (Toggle filters)",
+        "=STDEV.S(range) / AVERAGE(range) (Coefficient of variation)",
+        "Ctrl + T (Convert to structured table)"
+      ]
+    }
+  }
+}
