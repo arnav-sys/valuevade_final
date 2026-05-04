@@ -244,6 +244,19 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - DocumentSim.jsx already supports both documents natively — zero frontend changes required
 - Verified end-to-end via /app/scripts/verify_s78_sims.py — schema, highlight matching, task explanations, and arithmetic all pass
 
+### Phase 21 - Module 1 / Session 10 Simulation Replacement (Feb 2026)
+- DELETED prior decision-making sim "Corporate Finance Essentials — Capital Structure Analyst Simulation" (id 0bbf18c6-..., session 3b749a86-...) which had broken/incomplete config
+- INSERTED new `decision_making` sim "Capital Structure Workshop — Funding ChaiBro's National Rollout" (id a2da2ae6-...) — fictional Indian tea/coffee chain ChaiBro Beverages CFO scenario
+- Clean 3-decision linear flow (no branching, simple to follow as user requested):
+  - D1 Funding Mix (3 options: 100% debt / 100% equity / 60-40 mix)
+  - D2 Debt Tenure (3 options: 3yr / 5yr / 7yr)
+  - D3 Capex Pacing (3 options: aggressive 12mo / balanced 18mo / conservative 24mo) — all terminal
+- Three scoring dimensions: cost_efficiency, financial_flexibility, shareholder_value (consistent across all options)
+- Score range: max +8 (all-optimal path C→B→B), min −5 (all-worst path B→A→A); 4 outcome bands mapped at −10/0/4/7 → Capital Structure Damaged → Mixed → Solid → Textbook
+- Includes scenario_context, initial_data tiles (capex required, EBITDA, net debt, D/E, outlets, markets), per-option consequence narrative, score_impact triple, and Board-verdict outcome with full narrative
+- DecisionMakingSim.jsx already supports this schema natively — zero frontend changes required
+- Verified via /app/scripts/replace_s10_simulation.py: structural checks pass; every non-terminal option has valid next_decision link; optimal path totals exactly max_total (8); 4 outcome bands sorted correctly
+
 
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
