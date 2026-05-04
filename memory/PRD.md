@@ -257,6 +257,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - DecisionMakingSim.jsx already supports this schema natively — zero frontend changes required
 - Verified via /app/scripts/replace_s10_simulation.py: structural checks pass; every non-terminal option has valid next_decision link; optimal path totals exactly max_total (8); 4 outcome bands sorted correctly
 
+### Phase 22 - Module 1 / Sessions 14 & 15 Simulation Replacements (Feb 2026)
+- DELETED prior simulations:
+  - S14 Microeconomics: old decision-making sim id 6986ffbc-... (broken/incomplete config)
+  - S15 Macroeconomics: old decision-making sim id 34199ce6-... (broken/incomplete config)
+- INSERTED new simple, complete `decision_making` sims (3 sequential decisions, all linear, last-decision terminal — same pattern as ChaiBro):
+  - S14 (id 89b5ceaf-...): "Industry Position Workshop — Sizing SunChem Paints in Your Coverage" — analyst initiation flow on a fictional Indian decorative-paints mid-cap. D1 Industry Structure (oligopoly vs commodity vs monopoly) → D2 Pricing-Power Signal (read March +8% hike + industry follow-through) → D3 Position Sizing (overweight / equal / underweight). Dimensions: analytical_rigor, moat_signal_read, conviction_quality. Outcome bands: Initiation Withdrawn → Caveated → Solid → Best-in-Class
+  - S15 (id 1b3fe7cf-...): "Macro-to-Market Workshop — Trading the RBI's Surprise 50 bps Hike" — Friday-2:30PM trading-floor scenario with curve flattening, INR move, sector rotation. D1 Yield-Curve Read (flattener vs steepener vs parallel) → D2 Sector Rotation (private banks vs growth tech vs wait) → D3 Equity Duration Trim (long-duration growth vs value vs no action). Dimensions: macro_framework, transmission_logic, timing_quality. Outcome bands: Macro Misfired → Mixed → Solid → Top-Decile
+- Both include scenario_context, initial_data tiles (industry stats / yield-curve numbers respectively), per-option consequence narrative, score_impact triple, terminal Board/CIO verdict
+- DecisionMakingSim.jsx supports both natively — zero frontend changes required
+- Verified via /app/scripts/replace_s14_15_simulations.py: structural checks pass; every non-terminal option has valid next_decision; optimal paths reach top outcome band; worst paths reach bottom band
+
 
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
