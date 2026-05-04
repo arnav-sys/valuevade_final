@@ -283,6 +283,13 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Verified via /app/scripts/replace_s14_15_simulations.py: structural checks pass; every non-terminal option has valid next_decision; optimal paths reach top outcome band; worst paths reach bottom band
 
 
+### Phase 24 - AI Generation "Invalid API Key" Fix (Feb 2026)
+- **Root cause**: `/app/backend/.env` was missing a newline between `EMERGENT_LLM_KEY` and `SUPABASE_SERVICE_ROLE_KEY`, so `os.environ['EMERGENT_LLM_KEY']` was being read as `sk-emergent-9D489F2856aA371C5DSUPABASE_SERVICE_ROLE_KEY=eyJ...` — a corrupted, invalid key. This caused `litellm.AuthenticationError: Invalid API key` on all Emergent-LLM-key-backed endpoints (customize/generate, visual/generate, interview/evaluate).
+- **Fix**: Inserted a newline between the two keys in `.env` and restarted the backend supervisor. Real key is `sk-emergent-9D489F2856aA371C5D` (verified via `emergent_integrations_manager`).
+- **Verification (curl, all PASS)**: `POST /api/customize/generate` returns valid customization plan JSON; `POST /api/visual/generate` returns ~600KB base64 jpeg from Gemini Nano Banana; `POST /api/interview/evaluate` returns differentiated 1-5 scores + answer-specific feedback bullets. All three previously failed with "Invalid API key".
+- Note: prior agent had also updated stale Anthropic model strings to `claude-sonnet-4-5-20250929`; that change was correct but the actual blocker was the corrupted env value.
+
+## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
 - P2: Post-login redirect logic review (currently /courses; consider /dashboard)
