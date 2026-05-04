@@ -234,6 +234,16 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - DocumentSim.jsx already renders this schema natively (document_data → paper-style P&L with FY24/FY23 columns and section totals; interactive_highlights → click-to-reveal tooltips on underlined items; tasks → right-side panel with submit/feedback/next flow); SimulationStartPage already wired with FileText icon + blue accent for document type — NO frontend code changes needed
 - Verified shape via /app/scripts/verify_s6_sim.py: all line-item ids match all highlight ids, all tasks have explanations or sample answers, structural checks pass
 
+### Phase 20 - Module 1 / Sessions 7 & 8 Simulation Replacements (Feb 2026)
+- DELETED prior simulations:
+  - S7 (Balance Sheet, session 9559a9ba-...): old `decision_making` sim id 2640edac-...
+  - S8 (Cash Flow Statement, session 4af45899-...): old `interactive` sim id 499e93bf-...
+- INSERTED new `document`-type simulations (both follow the same schema as S6):
+  - S7: "Balance Sheet Forensics — Diagnosing TitanWorks' Financial Health" (sim id e6697f5b-...) — fictional jewelry mid-cap TitanWorks Ltd; 6 sections (Equity, Non-Current Liabilities, Current Liabilities, Non-Current Assets, Current Assets, BS Total); 8 line-item highlights; 11 tasks (current ratio, quick ratio, interest-bearing debt, net debt, D/E, NWC, ROU identification, BVPS, inventory days, capital employed, free-text BS quality note with sample answer); all numerics cross-checked (CR=1.88, QR=0.65, Net Debt=−₹700 cr, BVPS=₹129.1, Inv Days=197, Cap Employed=₹14,589 cr)
+  - S8: "Cash Flow Forensics — Following the Money at RangoorPaints" (sim id 0e9dfa08-...) — fictional decorative-paints mid-cap RangoorPaints Ltd; 4 sections (CFO indirect-method walk with WC sub-lines, CFI, CFF, Reconciliation); 12 line-item highlights; 12 tasks (Net CFO, cash conversion CFO/PAT, FCF, D&A line ID, net capex, net long-term debt, shareholder payout, WC drag, acquisition spend, closing cash, FCF yield, free-text quality note with sample answer); all numerics cross-checked (CFO=₹4,780, FCF=₹2,980, WC drag=−₹370, closing cash=₹1,800 cr; full statement reconciles)
+- DocumentSim.jsx already supports both documents natively — zero frontend changes required
+- Verified end-to-end via /app/scripts/verify_s78_sims.py — schema, highlight matching, task explanations, and arithmetic all pass
+
 
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
