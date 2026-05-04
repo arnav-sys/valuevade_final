@@ -225,6 +225,15 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Verified in DB: 150/150 follow the template; length range 1.2k–3.1k chars (avg 1.8k); audit logs in /app/scripts/quiz_log/{question_id}.json
 - Frontend already renders `whitespace-pre-wrap` in QuizPage and QuizCompletePage so section breaks display cleanly without code changes
 
+### Phase 19 - Module 1 / Session 6 Simulation Replacement (Feb 2026)
+- DELETED the existing `interactive` sim "The Income Statement Deep Dive" for session_id c3a21f75-... (id ddd47a8d-...)
+- INSERTED a new `document`-type simulation: "Income Statement Forensics — Reading BharatBites' P&L Like an Analyst"
+- Rich content: fictional Indian biscuits/snacks mid-cap (BharatBites Ltd) FY24 vs FY23 P&L with 6 sections (Revenue, COGS, Operating Expenses, Finance & Exceptional, Profit & Tax, Per Share); 8 interactive line-item highlights (tooltips on Revenue from Operations, Other Income, inventory change, advertising, D&A, finance cost, exceptional item, tax expense)
+- 12 tasks covering full income-statement workflow: 9 numerical (gross profit, gross margin, EBITDA, EBITDA margin, EBIT, other-income / PBT %, ETR, normalised PAT, EPS, operating-leverage multiple), 1 text identification (other-income line), 1 free-text Quality-of-Earnings analyst note with sample answer
+- All numerical answers are internally consistent (GP = 4820 − 2475 = 2345, GM% = 48.7, EBITDA = 1035, EBITDA% = 21.5, EBIT = 870, ETR = 25.5%, normalised PAT = 759 cr, EPS = ₹34.13)
+- DocumentSim.jsx already renders this schema natively (document_data → paper-style P&L with FY24/FY23 columns and section totals; interactive_highlights → click-to-reveal tooltips on underlined items; tasks → right-side panel with submit/feedback/next flow); SimulationStartPage already wired with FileText icon + blue accent for document type — NO frontend code changes needed
+- Verified shape via /app/scripts/verify_s6_sim.py: all line-item ids match all highlight ids, all tasks have explanations or sample answers, structural checks pass
+
 
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
