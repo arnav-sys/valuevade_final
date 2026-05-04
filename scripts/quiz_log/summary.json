@@ -1,0 +1,902 @@
+[
+  {
+    "id": "0f3d1e66-d864-485f-a6f3-fca4ace840e1",
+    "status": "enhanced",
+    "label": "S1 Q1: You have ₹50,000 today and invest it at 8% per annum for 3 y",
+    "seconds": 4.9
+  },
+  {
+    "id": "4617254b-18e6-4762-911f-d41d0c3ccf10",
+    "status": "enhanced",
+    "label": "S1 Q4: Using the Rule of 72, approximately how many years does it t",
+    "seconds": 5.6
+  },
+  {
+    "id": "be5a352a-4053-4f48-bcac-c159a3aaf152",
+    "status": "enhanced",
+    "label": "S1 Q3: A company will generate ₹10,00,000 in free cash flow exactly",
+    "seconds": 6.4
+  },
+  {
+    "id": "2ac9da6f-056b-4f8b-a84a-b92653758a7b",
+    "status": "enhanced",
+    "label": "S1 Q2: What does the discount rate represent in the TVM formula?",
+    "seconds": 6.7
+  },
+  {
+    "id": "33fa7dcc-4dd3-465b-8544-66541e5bee1b",
+    "status": "enhanced",
+    "label": "S1 Q5: An FD offers 7.2% per annum compounded quarterly. What is th",
+    "seconds": 5.4
+  },
+  {
+    "id": "cad0e704-224e-4653-9c31-3aaab3731fa5",
+    "status": "enhanced",
+    "label": "S1 Q7: A perpetuity pays ₹50,000 per year forever. The discount rat",
+    "seconds": 4.4
+  },
+  {
+    "id": "7a05b230-3886-448f-b1c4-b9431481b123",
+    "status": "enhanced",
+    "label": "S1 Q6: You are building a DCF model. Free cash flows: Year 1: ₹100 ",
+    "seconds": 6.2
+  },
+  {
+    "id": "7429b02a-7012-4410-8768-895ae6fe87b8",
+    "status": "enhanced",
+    "label": "S1 Q8: Which of the following best explains why ₹1,000 today is wor",
+    "seconds": 5.9
+  },
+  {
+    "id": "a7f86857-eb63-4625-aada-5dd55fe324ee",
+    "status": "enhanced",
+    "label": "S1 Q10: You receive ₹5,000 per month for 3 years from a rental prope",
+    "seconds": 5.7
+  },
+  {
+    "id": "0abdac4c-c9b4-4eed-8d5f-9e22661b764a",
+    "status": "enhanced",
+    "label": "S2 Q1: You buy a stock at ₹200, receive a ₹10 dividend, and sell it",
+    "seconds": 5.2
+  },
+  {
+    "id": "c9e316db-4602-45bc-8c0a-9bde11549708",
+    "status": "enhanced",
+    "label": "S2 Q2: Which of the following best describes 'systematic risk'?",
+    "seconds": 4.8
+  },
+  {
+    "id": "429cfe82-e51e-44d5-a16a-0c797118bff7",
+    "status": "enhanced",
+    "label": "S1 Q9: Two analysts are valuing HDFC Bank. Analyst A uses 11% disco",
+    "seconds": 7.6
+  },
+  {
+    "id": "8c54dd12-9555-451f-bb79-b12c275e63b5",
+    "status": "enhanced",
+    "label": "S2 Q3: An analyst projects three scenarios: 40% chance of +20% retu",
+    "seconds": 4.9
+  },
+  {
+    "id": "28db646d-b94e-4924-9c29-9cfafe674305",
+    "status": "enhanced",
+    "label": "S2 Q4: A portfolio returns 16% with a standard deviation of 22%. Th",
+    "seconds": 4.8
+  },
+  {
+    "id": "3b7025ad-14ef-48cc-86ff-03bed6cccbb8",
+    "status": "enhanced",
+    "label": "S2 Q5: Using CAPM, calculate the cost of equity for a company with ",
+    "seconds": 5.5
+  },
+  {
+    "id": "e5dc257b-2325-498f-8093-0a9dd1dcd8e5",
+    "status": "enhanced",
+    "label": "S2 Q6: Two stocks have the same expected return of 15%. Stock A has",
+    "seconds": 5.4
+  },
+  {
+    "id": "9324ba6e-b797-4af9-bb67-9818093bb282",
+    "status": "enhanced",
+    "label": "S2 Q8: What does a Sharpe ratio of 0 mean?",
+    "seconds": 4.4
+  },
+  {
+    "id": "cf7e8cc5-c113-4dff-a839-1ac048ebb3ce",
+    "status": "enhanced",
+    "label": "S2 Q7: A stock has a beta of 0.6. If the market falls by 10%, how m",
+    "seconds": 5.2
+  },
+  {
+    "id": "195fafa4-270a-46ba-8f49-ce90a8c2cc35",
+    "status": "enhanced",
+    "label": "S2 Q10: An investor holds 50 stocks across 10 sectors. They add 10 m",
+    "seconds": 5.9
+  },
+  {
+    "id": "4522f605-40ad-4f05-989e-56445f084160",
+    "status": "enhanced",
+    "label": "S2 Q9: An Indian mid-cap pharma company has raw beta of 0.55 (3-yea",
+    "seconds": 6.7
+  },
+  {
+    "id": "55da30e2-84fb-4fed-84ca-47f908241dc3",
+    "status": "enhanced",
+    "label": "S3 Q1: Which of the following best describes a 'business model'?",
+    "seconds": 4.4
+  },
+  {
+    "id": "0e35d591-0ae7-4be1-a683-66e9133c3031",
+    "status": "enhanced",
+    "label": "S3 Q2: TCS generates revenue primarily through which model?",
+    "seconds": 6.8
+  },
+  {
+    "id": "aac53ad2-0b21-49b1-b898-42eea4b96821",
+    "status": "enhanced",
+    "label": "S3 Q4: Which business model type typically has the highest operatin",
+    "seconds": 6.4
+  },
+  {
+    "id": "52192229-8a1b-4009-ab8a-68e0c238ac4c",
+    "status": "enhanced",
+    "label": "S3 Q3: A company spends ₹500 crore on S&M and acquires 25 lakh new ",
+    "seconds": 7.2
+  },
+  {
+    "id": "d18cd107-588a-4d3f-914b-795630934a6c",
+    "status": "enhanced",
+    "label": "S3 Q5: A hotel has fixed costs ₹10 crore/year, variable cost ₹800/r",
+    "seconds": 5.9
+  },
+  {
+    "id": "fa777063-901f-40aa-81b8-3e1139f10f90",
+    "status": "enhanced",
+    "label": "S3 Q6: What is 'take rate' in the context of a marketplace business",
+    "seconds": 4.6
+  },
+  {
+    "id": "b9337458-f0fc-48bd-aa25-90e457effda8",
+    "status": "enhanced",
+    "label": "S3 Q7: Company X: Revenue ₹1,000cr, Variable Costs ₹400cr, Fixed Co",
+    "seconds": 6.2
+  },
+  {
+    "id": "67847f98-c125-47c5-8392-6d0906110dae",
+    "status": "enhanced",
+    "label": "S3 Q8: Why is DMart's EBITDA margin higher than Big Bazaar's despit",
+    "seconds": 6.2
+  },
+  {
+    "id": "f209bf1b-c271-4e9d-bec4-57e16a2f306e",
+    "status": "enhanced",
+    "label": "S3 Q9: An early-stage Indian SaaS company has ₹200cr ARR, 120% NRR,",
+    "seconds": 6.0
+  },
+  {
+    "id": "619eb616-dfba-412e-a24e-5b3fb430ebbf",
+    "status": "enhanced",
+    "label": "S3 Q10: A company has negative contribution margins on every unit. I",
+    "seconds": 6.8
+  },
+  {
+    "id": "c6b5720e-5bf5-4b7b-85c6-412f56b6402b",
+    "status": "enhanced",
+    "label": "S4 Q1: A friend tells you: \"I want to know how much profit Reliance",
+    "seconds": 4.3
+  },
+  {
+    "id": "941c68d9-682c-4348-b7d3-3c16438282a9",
+    "status": "enhanced",
+    "label": "S4 Q2: Which of the following statements correctly describes the ti",
+    "seconds": 4.3
+  },
+  {
+    "id": "9d480bed-9241-4838-a821-326a4ff590ef",
+    "status": "enhanced",
+    "label": "S4 Q3: The fundamental accounting equation that the Balance Sheet m",
+    "seconds": 4.6
+  },
+  {
+    "id": "cc58c168-3ccb-4c47-bc5f-3ac64c316b06",
+    "status": "enhanced",
+    "label": "S4 Q4: TCS reports a Net Profit of ₹46,099 Cr on its Income Stateme",
+    "seconds": 5.5
+  },
+  {
+    "id": "5e1491e8-7250-41c3-98c4-f527d547caa9",
+    "status": "enhanced",
+    "label": "S4 Q6: The Cash Flow Statement is divided into three sections. Whic",
+    "seconds": 4.7
+  },
+  {
+    "id": "aace02d2-9385-4cb8-bbae-685e86dd81b5",
+    "status": "enhanced",
+    "label": "S4 Q5: Zomato reports a Net Profit of ₹351 Cr in FY24 but its Cash ",
+    "seconds": 5.9
+  },
+  {
+    "id": "3d7c5a2e-e284-4d38-abb4-95404caffa32",
+    "status": "enhanced",
+    "label": "S4 Q7: A small-cap Indian textile company reports rising Net Profit",
+    "seconds": 5.9
+  },
+  {
+    "id": "57c820b0-5065-4f13-b1a4-3da265667e8e",
+    "status": "enhanced",
+    "label": "S4 Q9: You are reviewing a hypothetical Indian FMCG company. The In",
+    "seconds": 4.1
+  },
+  {
+    "id": "439ef42e-f854-47c2-8db6-b7d2e21f9a59",
+    "status": "enhanced",
+    "label": "S4 Q8: HDFC Bank's Balance Sheet shows Total Assets of ₹36 lakh Cr ",
+    "seconds": 6.6
+  },
+  {
+    "id": "e1c59fac-f090-453c-b1fe-d770ba2350e1",
+    "status": "enhanced",
+    "label": "S5 Q1: A consulting firm completes a project for a client on March ",
+    "seconds": 4.4
+  },
+  {
+    "id": "e9215ef4-064a-4ce5-be55-7945fe3edec2",
+    "status": "enhanced",
+    "label": "S4 Q10: You are a junior analyst evaluating Britannia Industries for",
+    "seconds": 6.0
+  },
+  {
+    "id": "52f3f348-8cf1-48c0-bb22-160aff0710d3",
+    "status": "enhanced",
+    "label": "S5 Q2: Britannia buys ₹50 Cr of wheat flour in March 2024 to make b",
+    "seconds": 5.5
+  },
+  {
+    "id": "14b4ccf2-119a-44ba-8d61-dbcd59d8eac3",
+    "status": "enhanced",
+    "label": "S5 Q3: A company's auditor includes a \"material uncertainty regardi",
+    "seconds": 4.5
+  },
+  {
+    "id": "98a68e8f-a968-4843-89ab-8534d41134bf",
+    "status": "enhanced",
+    "label": "S5 Q4: Tata Motors holds inventory that originally cost ₹500 Cr. Du",
+    "seconds": 5.4
+  },
+  {
+    "id": "c392fd52-fcbf-4902-b0b8-6a3448508cc0",
+    "status": "enhanced",
+    "label": "S5 Q5: A company sells goods worth ₹100 Cr to a related-party entit",
+    "seconds": 6.3
+  },
+  {
+    "id": "5dca21bb-481b-47d3-b724-f4fe5d66da17",
+    "status": "enhanced",
+    "label": "S5 Q6: A mid-cap auto company changes its inventory valuation metho",
+    "seconds": 6.1
+  },
+  {
+    "id": "4e065d2d-3a7f-434e-9ec8-93e5e0d16e6e",
+    "status": "enhanced",
+    "label": "S5 Q7: An Indian small-cap company reports the following: Revenue ₹",
+    "seconds": 9.0
+  },
+  {
+    "id": "8187780d-a2bc-4569-9a2c-39c6c464ee86",
+    "status": "enhanced",
+    "label": "S5 Q8: A listed company with consolidated turnover of ₹10,000 Cr en",
+    "seconds": 7.7
+  },
+  {
+    "id": "bd73aa92-5524-4e6b-8842-0dd9fb499838",
+    "status": "enhanced",
+    "label": "S5 Q10: Which of the following best captures why accrual accounting,",
+    "seconds": 6.3
+  },
+  {
+    "id": "123a2cb0-c72a-4261-b4d7-91e51033f629",
+    "status": "enhanced",
+    "label": "S6 Q1: Revenue 500cr, COGS 300cr. Gross Margin?",
+    "seconds": 4.2
+  },
+  {
+    "id": "a105b78a-da84-41ca-b88e-f9c69bc969c8",
+    "status": "enhanced",
+    "label": "S6 Q2: Which is NOT included in COGS for a manufacturing company?",
+    "seconds": 4.4
+  },
+  {
+    "id": "e741a7c9-6f5c-4ad3-b254-6ad2f9350d4a",
+    "status": "enhanced",
+    "label": "S6 Q3: Revenue 1000cr, COGS 550cr, OpEx (excl D&A) 200cr, D&A 50cr,",
+    "seconds": 4.1
+  },
+  {
+    "id": "5ae1a176-c714-49b9-a441-3610aeb352f3",
+    "status": "enhanced",
+    "label": "S5 Q9: You are analysing Infosys's balance sheet. Unbilled Revenue ",
+    "seconds": 13.9
+  },
+  {
+    "id": "8b7cfc79-a4f2-4209-b50e-88c5d7ec37b9",
+    "status": "enhanced",
+    "label": "S6 Q5: Company reports 200cr exceptional income from selling land. ",
+    "seconds": 5.0
+  },
+  {
+    "id": "70446e41-e527-4392-9924-db5820d1fa6e",
+    "status": "enhanced",
+    "label": "S6 Q4: Infosys employee costs grow 6.4% while revenue grows 4.7%. T",
+    "seconds": 6.6
+  },
+  {
+    "id": "e1b74796-a883-4dc7-84f6-548780017b17",
+    "status": "enhanced",
+    "label": "S6 Q6: EBT 400cr, Tax Expense 80cr. Statutory rate 25.17%. Effectiv",
+    "seconds": 4.6
+  },
+  {
+    "id": "6fc5dd24-306e-49f7-9dfe-7f653f0fa070",
+    "status": "enhanced",
+    "label": "S6 Q8: EPS is calculated as:",
+    "seconds": 4.8
+  },
+  {
+    "id": "2f6ddba9-96a0-4094-a1dd-cb1f5d8cbee9",
+    "status": "enhanced",
+    "label": "S6 Q7: Airline: EBITDA 2000cr, D&A 1200cr, Interest 1500cr, Capex 1",
+    "seconds": 7.1
+  },
+  {
+    "id": "6df7de2c-44ff-4ea2-a248-11043c41efe1",
+    "status": "enhanced",
+    "label": "S6 Q10: Under Ind AS 115, when does a real estate developer recognis",
+    "seconds": 5.0
+  },
+  {
+    "id": "9b9a0caa-bbcc-47d1-bb18-d6a52630200d",
+    "status": "enhanced",
+    "label": "S7 Q1: The accounting equation states that:",
+    "seconds": 4.0
+  },
+  {
+    "id": "0db7f267-77d8-4766-95ab-181ef7567c51",
+    "status": "enhanced",
+    "label": "S7 Q2: Which of the following is a Current Asset?",
+    "seconds": 3.9
+  },
+  {
+    "id": "401a83fd-02ae-495e-92a4-a6bbada801a4",
+    "status": "enhanced",
+    "label": "S6 Q9: Company A: Revenue 10,000cr, Gross Margin 60%, Op Margin 20%",
+    "seconds": 8.5
+  },
+  {
+    "id": "ad59152c-c171-466a-9be0-da4c48b209e9",
+    "status": "enhanced",
+    "label": "S7 Q3: Current Assets 8,000cr (Inventory 5,000cr), Current Liabilit",
+    "seconds": 3.9
+  },
+  {
+    "id": "d6985a20-c964-41d2-8ce1-d82bab843312",
+    "status": "enhanced",
+    "label": "S7 Q4: Which would INCREASE Debt-to-Equity ratio?",
+    "seconds": 3.7
+  },
+  {
+    "id": "6d750b69-8335-4e38-bb28-e8b2c18a9ba9",
+    "status": "enhanced",
+    "label": "S7 Q5: Total Assets 20,000cr, Total Liabilities 22,000cr. This impl",
+    "seconds": 4.7
+  },
+  {
+    "id": "a5cc9208-1eb5-4ef6-b5ae-8340c7a5302f",
+    "status": "enhanced",
+    "label": "S7 Q6: CWIP growing 5 years while PP&E stays flat. Most likely indi",
+    "seconds": 5.8
+  },
+  {
+    "id": "f2cb17ba-08f8-49cf-b7bf-caef32b3779e",
+    "status": "enhanced",
+    "label": "S7 Q7: Goodwill appears on balance sheet when:",
+    "seconds": 5.7
+  },
+  {
+    "id": "335be9d1-3d6c-4d8c-9443-5a31edac0feb",
+    "status": "enhanced",
+    "label": "S7 Q8: Under Ind AS 116, a 10-year office lease impacts the balance",
+    "seconds": 6.2
+  },
+  {
+    "id": "18ec81e3-9d5f-47e9-a5db-b0ffd659c131",
+    "status": "enhanced",
+    "label": "S7 Q9: Company A: 10,000cr equity (8,000cr securities premium from ",
+    "seconds": 5.2
+  },
+  {
+    "id": "cbfddcc7-d930-445e-89da-76972cabaee1",
+    "status": "enhanced",
+    "label": "S7 Q10: Retail company has negative working capital. This most likel",
+    "seconds": 4.4
+  },
+  {
+    "id": "6383468b-d729-4f68-a099-d1940908cc2e",
+    "status": "enhanced",
+    "label": "S8 Q1: Which is added back to Net Profit when calculating CFO (indi",
+    "seconds": 4.3
+  },
+  {
+    "id": "eddfa7e6-0211-4aac-99ed-80bce858ef4c",
+    "status": "enhanced",
+    "label": "S8 Q2: Free Cash Flow (FCF) is calculated as:",
+    "seconds": 6.0
+  },
+  {
+    "id": "f8eaea48-e46d-4cd9-840c-9aab95439c26",
+    "status": "enhanced",
+    "label": "S8 Q4: PAT Rs 800cr, CFO Rs 350cr. CFO/PAT ratio is:",
+    "seconds": 5.4
+  },
+  {
+    "id": "5d3e581a-e42c-4d9d-b9c7-cd957240d24d",
+    "status": "enhanced",
+    "label": "S8 Q5: CFO 5,000cr, Capex 4,500cr, Dividends 2,000cr, New Borrowing",
+    "seconds": 5.9
+  },
+  {
+    "id": "5465e138-e090-427e-99d7-20a9a854d510",
+    "status": "enhanced",
+    "label": "S8 Q7: Which CFS section includes purchase of a new factory?",
+    "seconds": 4.0
+  },
+  {
+    "id": "e6001ffb-e997-4fe8-957c-7a0b63e79739",
+    "status": "enhanced",
+    "label": "S8 Q6: IT company: CFO 10,000cr, D&A 2,000cr, Capex 1,500cr. Capex ",
+    "seconds": 7.4
+  },
+  {
+    "id": "c395acb4-e736-4026-9cf8-4c96481c6b40",
+    "status": "enhanced",
+    "label": "S8 Q8: Under Ind AS 116, how do operating lease payments change in ",
+    "seconds": 7.0
+  },
+  {
+    "id": "a7e8d23b-da63-4594-b55e-0ac507fe28b3",
+    "status": "enhanced",
+    "label": "S8 Q3: Trade receivables increased Rs 200cr during the year. In CFO",
+    "seconds": 17.1
+  },
+  {
+    "id": "db00d1a8-f0b9-4c33-ba04-1d0ccaee4f2b",
+    "status": "enhanced",
+    "label": "S8 Q9: Cash flow pattern: CFO negative, CFI positive, CFF positive.",
+    "seconds": 7.4
+  },
+  {
+    "id": "7417dc05-a2dd-4b47-81d5-4c573c278188",
+    "status": "enhanced",
+    "label": "S8 Q10: FCF 2,000cr, Market Cap 80,000cr, FCF grows 15% for 5 years.",
+    "seconds": 4.7
+  },
+  {
+    "id": "21b9e10f-bf4a-4e72-bc8e-93f5f637b282",
+    "status": "enhanced",
+    "label": "S9 Q1: Net Profit from the Income Statement flows into which line o",
+    "seconds": 5.5
+  },
+  {
+    "id": "0a922ea4-04f6-42b8-9df0-b760b67f1370",
+    "status": "enhanced",
+    "label": "S9 Q3: Opening RE 5,000cr, Net Profit 1,200cr, Dividends 400cr. Clo",
+    "seconds": 4.8
+  },
+  {
+    "id": "7cd87538-bfb0-4467-82ba-0094f471796b",
+    "status": "enhanced",
+    "label": "S9 Q2: Depreciation appears on which financial statement(s)?",
+    "seconds": 5.6
+  },
+  {
+    "id": "763ba01a-60b6-4615-b9e0-dc352ee9828b",
+    "status": "enhanced",
+    "label": "S9 Q4: Opening Net PP&E 8,000cr, Capex 2,000cr, D&A 800cr, no dispo",
+    "seconds": 5.3
+  },
+  {
+    "id": "db48bc3b-038e-4333-bc91-2554e22943ad",
+    "status": "enhanced",
+    "label": "S9 Q8: Company purchases inventory Rs 500cr on credit. Immediate Ba",
+    "seconds": 4.7
+  },
+  {
+    "id": "5bb4708d-2978-4ebc-8e93-06e725a66fb5",
+    "status": "enhanced",
+    "label": "S9 Q5: Trade receivables increase Rs 300cr. Effect on Cash Flow Sta",
+    "seconds": 8.1
+  },
+  {
+    "id": "a7f2c13a-ff7f-41e8-b382-a0ea2c84f2e3",
+    "status": "enhanced",
+    "label": "S9 Q7: In a circular 3-statement model, which creates the circulari",
+    "seconds": 6.3
+  },
+  {
+    "id": "5b8dae77-ee95-4efc-b734-ac2bec76fbb7",
+    "status": "enhanced",
+    "label": "S9 Q6: BS closing cash 2,500cr. CFS shows opening 3,000cr and net c",
+    "seconds": 8.4
+  },
+  {
+    "id": "856851d6-adb0-492f-96c8-ec36df7e3033",
+    "status": "enhanced",
+    "label": "S10 Q1: Which is a characteristic of equity financing?",
+    "seconds": 4.7
+  },
+  {
+    "id": "d9552f88-25f1-47bf-a4c3-cd7590e6ecc6",
+    "status": "enhanced",
+    "label": "S9 Q9: Revenue grew 20% but CFO declined 15%. Receivables grew 45%.",
+    "seconds": 6.3
+  },
+  {
+    "id": "62609e65-0cb2-46ce-a263-2fe69a929d88",
+    "status": "enhanced",
+    "label": "S9 Q10: Equity grew 2,000cr but Net Profit only 500cr, no dividends.",
+    "seconds": 6.3
+  },
+  {
+    "id": "fa503ea1-44ba-423c-9280-7770c9b62df6",
+    "status": "enhanced",
+    "label": "S10 Q2: Pecking Order Theory suggests companies prefer capital in th",
+    "seconds": 5.9
+  },
+  {
+    "id": "c1ac8ae1-3c0e-44f6-8d75-c6fed042f0f4",
+    "status": "enhanced",
+    "label": "S10 Q3: EBIT 800cr, Interest 200cr. Interest Coverage Ratio?",
+    "seconds": 4.5
+  },
+  {
+    "id": "45b8f474-8634-4d5b-88c9-97421ff3346c",
+    "status": "enhanced",
+    "label": "S10 Q4: Borrow 1,000cr at 10%, tax rate 25%. Annual tax shield?",
+    "seconds": 4.9
+  },
+  {
+    "id": "7d90b895-85aa-4352-bdac-25a30b332b4e",
+    "status": "enhanced",
+    "label": "S10 Q5: Which statement about share buybacks is INCORRECT?",
+    "seconds": 4.8
+  },
+  {
+    "id": "07167c7b-079d-458b-9754-447d75375eaf",
+    "status": "enhanced",
+    "label": "S10 Q6: Company has ROA 8%, cost of debt 10%. Increasing leverage wi",
+    "seconds": 5.5
+  },
+  {
+    "id": "48e15ce7-589b-47a4-bb0e-9df7a640224d",
+    "status": "enhanced",
+    "label": "S10 Q7: Dividends 500cr, FCF 300cr. The 200cr gap is most likely fun",
+    "seconds": 5.2
+  },
+  {
+    "id": "3715aef8-cfd1-46ac-82b0-7224cd9fefda",
+    "status": "enhanced",
+    "label": "S10 Q8: FCCBs are best described as:",
+    "seconds": 5.2
+  },
+  {
+    "id": "0b927afd-48d4-4a16-a6b0-4f6aa0e901f3",
+    "status": "enhanced",
+    "label": "S10 Q9: Promoter pledges 65% of holding, stock drops 20%. Most likel",
+    "seconds": 26.4
+  },
+  {
+    "id": "680cae5a-d9c6-4492-94da-93cf555a63e8",
+    "status": "enhanced",
+    "label": "S10 Q10: ROE 20%, Payout Ratio 40%. Sustainable Growth Rate?",
+    "seconds": 25.0
+  },
+  {
+    "id": "c71ac6a5-2756-435c-a502-8d8fb166ed33",
+    "status": "enhanced",
+    "label": "S11 Q1: What does WACC stand for?",
+    "seconds": 35.2
+  },
+  {
+    "id": "23161d77-f8aa-4ac7-beea-b26af7c2ac20",
+    "status": "enhanced",
+    "label": "S11 Q2: Why is cost of debt multiplied by (1-Tax Rate) in WACC?",
+    "seconds": 34.8
+  },
+  {
+    "id": "1d1ac6da-460a-4d2e-940f-b64a2f59283e",
+    "status": "enhanced",
+    "label": "S11 Q3: Market cap 200cr, debt 100cr, Re 14%, pre-tax Rd 9%, tax 30%",
+    "seconds": 13.6
+  },
+  {
+    "id": "ea4890f1-fde8-4a69-9f59-0ee112c2d217",
+    "status": "enhanced",
+    "label": "S11 Q4: Beta 1.2, Rf 7%, ERP 6%. Cost of equity?",
+    "seconds": 4.3
+  },
+  {
+    "id": "2a966124-0206-455c-9a80-22a0bad031b9",
+    "status": "enhanced",
+    "label": "S11 Q7: WACC is 12%. New project returns 10%. Management should:",
+    "seconds": 8.4
+  },
+  {
+    "id": "0840d2ea-f9b8-4040-b606-1e437658b77c",
+    "status": "enhanced",
+    "label": "S11 Q8: Why prefer Damodaran ERP over historical average returns min",
+    "seconds": 6.6
+  },
+  {
+    "id": "5e4a2c46-d040-4c91-b28a-6bcd576cf52e",
+    "status": "enhanced",
+    "label": "S11 Q9: Bloomberg adjusted beta formula: 0.67 x Raw + 0.33 x 1.0. Ra",
+    "seconds": 4.6
+  },
+  {
+    "id": "57bd2d06-fdfd-4776-bd1b-eaba8b13cbc1",
+    "status": "enhanced",
+    "label": "S11 Q10: Company WACC 11%, plans to move D/E from 0.2 to 1.0. Effect ",
+    "seconds": 6.5
+  },
+  {
+    "id": "034d5677-6779-4d6d-a2c6-8e979baa02c2",
+    "status": "enhanced",
+    "label": "S12 Q1: Bond coupon rate 6%, face value Rs 1,000. Annual coupon paym",
+    "seconds": 4.5
+  },
+  {
+    "id": "bc25d4f7-6a69-4b63-a961-3f145646126c",
+    "status": "enhanced",
+    "label": "S12 Q2: What happens to bond market price when interest rates rise?",
+    "seconds": 4.5
+  },
+  {
+    "id": "d6e804ec-4bc0-4cf7-bab7-c287561567ba",
+    "status": "enhanced",
+    "label": "S12 Q3: 3-year bond, face Rs 100, coupon 8%, market yield 10%. Bond ",
+    "seconds": 5.5
+  },
+  {
+    "id": "7e253a5a-da7b-4b62-b4d8-f11582e757b4",
+    "status": "enhanced",
+    "label": "S12 Q5: What does an inverted yield curve typically signal?",
+    "seconds": 3.9
+  },
+  {
+    "id": "baf0d892-5d04-45f9-aabb-884cdfbb1950",
+    "status": "enhanced",
+    "label": "S12 Q4: Which bond has highest duration (most price sensitivity)?",
+    "seconds": 7.2
+  },
+  {
+    "id": "f61f7d76-83e9-4af5-a28a-dff2bfd4a766",
+    "status": "enhanced",
+    "label": "S12 Q6: India 10-year G-Sec yields 7.0%. AAA corporate bond yields 7",
+    "seconds": 5.0
+  },
+  {
+    "id": "a38f192c-f986-4ace-84d3-58e6d4755c74",
+    "status": "enhanced",
+    "label": "S11 Q5: Company X: E=500cr, D=500cr, Re=16%, Rd=10%, Tc=25%. Company",
+    "seconds": 34.5
+  },
+  {
+    "id": "5c606e6a-6dcf-41fc-83c2-ca4dc3a94af5",
+    "status": "enhanced",
+    "label": "S12 Q7: RBI cuts repo rate by 50 bps. Which sector MOST likely sees ",
+    "seconds": 5.8
+  },
+  {
+    "id": "e85c2a4c-feec-4cc6-a64e-06c37add3790",
+    "status": "enhanced",
+    "label": "S12 Q8: Modified duration 6.5. Yields rise 50 bps (0.5%). Approximat",
+    "seconds": 4.8
+  },
+  {
+    "id": "b373a98a-5b01-469e-9602-6aee9419fd1b",
+    "status": "enhanced",
+    "label": "S12 Q10: Bond current yield 7.5%, coupon rate 8%. What can you infer ",
+    "seconds": 5.3
+  },
+  {
+    "id": "bdd415c7-6271-4f22-9f98-eaeaadd66eb8",
+    "status": "enhanced",
+    "label": "S11 Q6: Which is NOT an input to CAPM?",
+    "seconds": 40.5
+  },
+  {
+    "id": "9541e67f-8b3a-4b60-80e3-491973ffb690",
+    "status": "enhanced",
+    "label": "S12 Q9: Most appropriate risk-free rate for 10-year DCF of Indian co",
+    "seconds": 6.3
+  },
+  {
+    "id": "57b8f4ca-ae65-4fee-ba05-31fa0d2f3239",
+    "status": "enhanced",
+    "label": "S13 Q1: PE ratios of 10 companies: 12,14,15,16,18,19,20,22,25,120. W",
+    "seconds": 4.9
+  },
+  {
+    "id": "c7cecafe-4913-43ca-ad26-761261c6b7da",
+    "status": "enhanced",
+    "label": "S13 Q2: Stock returns +10%, -5%, +15%, -10% over 4 years. Arithmetic",
+    "seconds": 4.5
+  },
+  {
+    "id": "fbece18d-de79-4563-835e-a7c7de6f325d",
+    "status": "enhanced",
+    "label": "S13 Q5: Correlation of -0.85 between two variables means:",
+    "seconds": 3.6
+  },
+  {
+    "id": "a83e544e-8b2f-4703-ae79-d4f13e1eb193",
+    "status": "enhanced",
+    "label": "S13 Q4: Regression of TCS on Nifty: R2=0.48, beta=0.72. What does R2",
+    "seconds": 5.6
+  },
+  {
+    "id": "13506b17-34d3-4279-a3fa-aec95f8c6409",
+    "status": "enhanced",
+    "label": "S13 Q3: Monthly returns: +2%, +4%, -1%, +3%, +2%. Sample standard de",
+    "seconds": 6.0
+  },
+  {
+    "id": "55f60aa7-cd6b-443e-9c43-cdac5363adff",
+    "status": "enhanced",
+    "label": "S13 Q6: Stock returns +50% Year 1, -33% Year 2. Arithmetic mean +8.5",
+    "seconds": 5.6
+  },
+  {
+    "id": "a92a2f32-2d54-4f36-bac4-cb7b6c0a69be",
+    "status": "enhanced",
+    "label": "S13 Q7: To annualise monthly standard deviation, multiply by:",
+    "seconds": 4.9
+  },
+  {
+    "id": "29585ed4-d6e9-45fa-bd32-1ec91ca81749",
+    "status": "enhanced",
+    "label": "S13 Q8: Umbrella sales and IT stock prices have correlation +0.70 ov",
+    "seconds": 5.9
+  },
+  {
+    "id": "b1f42437-c2db-424c-a424-4d5453c2b32f",
+    "status": "enhanced",
+    "label": "S13 Q9: Mid-cap regression: beta=1.4, R2=0.15, p-value=0.08. Use thi",
+    "seconds": 7.1
+  },
+  {
+    "id": "a541ac7e-8deb-4be5-b8ee-b05707da8f8a",
+    "status": "enhanced",
+    "label": "S14 Q1: 10% price increase causes 5% quantity decrease. PED is:",
+    "seconds": 4.4
+  },
+  {
+    "id": "f3d470ea-12d3-48df-be4d-db2e100c1870",
+    "status": "enhanced",
+    "label": "S13 Q10: Portfolio manager says fund returned 18% CAGR over 10 years.",
+    "seconds": 5.6
+  },
+  {
+    "id": "1a2a9808-e544-49e7-9ed2-9743cdcf8e8a",
+    "status": "enhanced",
+    "label": "S14 Q2: Which market structure gives MOST pricing power?",
+    "seconds": 4.8
+  },
+  {
+    "id": "e1e44cdf-9b2e-4db6-99aa-b5eff5597ba5",
+    "status": "enhanced",
+    "label": "S14 Q4: In Porter Five Forces, which force MOST directly explains As",
+    "seconds": 5.9
+  },
+  {
+    "id": "49f7d9ac-b8cb-4084-a88f-7e3da6fafd11",
+    "status": "enhanced",
+    "label": "S14 Q5: HHI for Indian telecom (Jio 40%, Airtel 33%, Vi 20%, Others ",
+    "seconds": 5.4
+  },
+  {
+    "id": "3a25cd33-e097-4f59-b7a2-8577d77e7299",
+    "status": "enhanced",
+    "label": "S14 Q3: ITC raises cigarette prices 12% after excise hike. Volumes d",
+    "seconds": 7.6
+  },
+  {
+    "id": "a4f62841-4993-4a91-afb3-8c24f9177666",
+    "status": "enhanced",
+    "label": "S14 Q6: Company A in perfect competition and Company B a monopolist ",
+    "seconds": 6.1
+  },
+  {
+    "id": "b96fea40-0072-4c92-a4d4-96adbdcb5a95",
+    "status": "enhanced",
+    "label": "S14 Q7: Cross-price elasticity between Jio and Airtel is positive an",
+    "seconds": 5.5
+  },
+  {
+    "id": "d767c341-b5bc-447a-8d8c-13bbffcc950c",
+    "status": "enhanced",
+    "label": "S14 Q9: Zomato raises platform fees Rs 5 to Rs 10 with minimal volum",
+    "seconds": 6.6
+  },
+  {
+    "id": "a8a1175d-2fb4-40bf-85ef-9f74836b6aed",
+    "status": "enhanced",
+    "label": "S14 Q8: Indian cement capacity utilisation at 65%. Most likely impac",
+    "seconds": 7.3
+  },
+  {
+    "id": "d97ae61e-5ff9-4865-a230-6bc1e615b7ef",
+    "status": "enhanced",
+    "label": "S14 Q10: EV startup claims Indian auto market is Rs 7 lakh crore, jus",
+    "seconds": 5.6
+  },
+  {
+    "id": "f217d0d1-6fd8-4058-970c-f31d41c31b0d",
+    "status": "enhanced",
+    "label": "S15 Q1: GDP = C + I + G + (X-M). What does C represent?",
+    "seconds": 3.8
+  },
+  {
+    "id": "9f4babb0-b17c-4b27-91e4-0a613a626e30",
+    "status": "enhanced",
+    "label": "S15 Q3: Repo rate 6.5%, CPI 5.0%. Real interest rate is:",
+    "seconds": 4.0
+  },
+  {
+    "id": "61f7592a-10ca-4167-b39e-c2a99cda5298",
+    "status": "enhanced",
+    "label": "S15 Q2: RBI primary mandate for monetary policy is:",
+    "seconds": 4.8
+  },
+  {
+    "id": "8ae7736f-da8d-41b4-bdd5-fe4283910cf0",
+    "status": "enhanced",
+    "label": "S15 Q4: Brent crude rises $75 to $100/barrel. Most likely immediate ",
+    "seconds": 5.6
+  },
+  {
+    "id": "28383c04-0254-4af5-9c2c-fe2061d85568",
+    "status": "enhanced",
+    "label": "S15 Q6: Which high-frequency indicator leads official GDP data?",
+    "seconds": 4.8
+  },
+  {
+    "id": "0e485257-dbd6-4d32-b305-9a4b62f6a38f",
+    "status": "enhanced",
+    "label": "S15 Q5: US Fed raises rate by 75 bps. Most likely transmission to In",
+    "seconds": 8.4
+  },
+  {
+    "id": "65a70bfc-f731-48f0-9226-c739600a6192",
+    "status": "enhanced",
+    "label": "S15 Q7: During rising interest rate environment, most appropriate se",
+    "seconds": 5.9
+  },
+  {
+    "id": "f00d67dd-c435-475c-b95f-598163a5b3df",
+    "status": "enhanced",
+    "label": "S15 Q8: Government announces fiscal deficit reduction from 5.9% to 5",
+    "seconds": 7.4
+  },
+  {
+    "id": "2b6dc7c3-9a41-4c46-94fb-9d15876fa54a",
+    "status": "enhanced",
+    "label": "S15 Q9: CPI inflation 4.5% while WPI 10%. What does divergence signa",
+    "seconds": 6.5
+  },
+  {
+    "id": "3026837e-3e3b-4ee6-923e-a3533759bccd",
+    "status": "enhanced",
+    "label": "S15 Q10: INR depreciates 83/$ to 88/$. Which company benefits MOST?",
+    "seconds": 7.0
+  }
+]

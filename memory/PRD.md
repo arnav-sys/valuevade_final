@@ -218,6 +218,13 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Audit trail: per-card before/after JSON snapshots in /app/scripts/enhancement_log/{card_id}.json + run summary in summary.json
 - Verified end-to-end: TVM formula card renders Variables, In Plain English, Worked Example sections correctly in the Notes review flow
 
+### Phase 18 - Module 1 Quiz Explanation Enhancement (Feb 2026)
+- All 150 Module 1 quiz questions (15 sessions × 10 questions) had their `explanation` field rewritten to a consistent six-section template: Formula (named, general form, variables defined inline) → Step-by-step substitution → Result → Why this is correct → Why the others are wrong (per-option A/B/C/D breakdown) → Intuition (analyst-level mental model)
+- Pure-conceptual questions get "Concept:" instead of Formula and skip the calculation steps; rest of the template preserved
+- Driven via Claude Haiku 4.5 (emergentintegrations / EMERGENT_LLM_KEY) at concurrency=4; full sweep in ~2 minutes (avg 6.9s/question)
+- Verified in DB: 150/150 follow the template; length range 1.2k–3.1k chars (avg 1.8k); audit logs in /app/scripts/quiz_log/{question_id}.json
+- Frontend already renders `whitespace-pre-wrap` in QuizPage and QuizCompletePage so section breaks display cleanly without code changes
+
 
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

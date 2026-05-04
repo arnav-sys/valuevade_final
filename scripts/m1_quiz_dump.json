@@ -1,0 +1,2702 @@
+[
+  {
+    "id": "0f3d1e66-d864-485f-a6f3-fca4ace840e1",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "You have ₹50,000 today and invest it at 8% per annum for 3 years (compounded annually). What is the future value?",
+    "options": [
+      "₹54,000",
+      "₹62,985",
+      "₹63,000",
+      "₹62,000"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "FV = 50,000 × (1.08)^3 = 50,000 × 1.2597 = ₹62,985. A (₹54,000) is simple interest for one year. C (₹63,000) is rough rounding. D (₹62,000) underestimates compounding.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "2ac9da6f-056b-4f8b-a84a-b92653758a7b",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "What does the discount rate represent in the TVM formula?",
+    "options": [
+      "The inflation rate only",
+      "The rate at which future cash flows are reduced to their present value, reflecting opportunity cost, inflation, and risk",
+      "The government bond yield",
+      "The rate of return on the stock market index"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "The discount rate captures all three components: opportunity cost, inflation, and risk. Option A is only one component. Option C (government bond yield) is the risk-free rate — just one building block. Option D is a market return, not a company-specific discount rate.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "be5a352a-4053-4f48-bcac-c159a3aaf152",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "A company will generate ₹10,00,000 in free cash flow exactly 4 years from now. If the appropriate discount rate is 12%, what is the present value of this cash flow?",
+    "options": [
+      "₹6,35,518",
+      "₹7,11,780",
+      "₹7,00,000",
+      "₹6,00,000"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "PV = 10,00,000 / (1.12)^4 = 10,00,000 / 1.5735 = ₹6,35,518. B would be approximately PV at 9%. C naively subtracts 30%. D underestimates.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "4617254b-18e6-4762-911f-d41d0c3ccf10",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "Using the Rule of 72, approximately how many years does it take to double your money at 9% annual return?",
+    "options": [
+      "9 years",
+      "7.2 years",
+      "8 years",
+      "10 years"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "72 / 9 = 8 years. The exact answer is 8.04 years (ln(2)/ln(1.09)). A confuses rate with time. B incorrectly divides 72 by 10. D significantly overestimates.",
+    "difficulty": "easy",
+    "order_index": 4,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "33fa7dcc-4dd3-465b-8544-66541e5bee1b",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "An FD offers 7.2% per annum compounded quarterly. What is the Effective Annual Rate (EAR)?",
+    "options": [
+      "7.20%",
+      "7.40%",
+      "7.39%",
+      "7.50%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "EAR = (1 + 0.072/4)^4 - 1 = (1.018)^4 - 1 = 7.396% ≈ 7.40%. A is the nominal rate. C rounds incorrectly. D overestimates the compounding benefit.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "7a05b230-3886-448f-b1c4-b9431481b123",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "You are building a DCF model. Free cash flows: Year 1: ₹100 crore, Year 2: ₹120 crore, Year 3: ₹140 crore. Discount rate is 10%. What is the total present value of these three cash flows?",
+    "options": [
+      "₹360.00 crore",
+      "₹295.27 crore",
+      "₹280.42 crore",
+      "₹312.75 crore"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "PV(Y1) = 100/1.10 = 90.91, PV(Y2) = 120/1.21 = 99.17, PV(Y3) = 140/1.331 = 105.19. Total = ₹295.27 crore. A is the undiscounted sum. C over-discounts. D is incorrect.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "cad0e704-224e-4653-9c31-3aaab3731fa5",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "A perpetuity pays ₹50,000 per year forever. The discount rate is 8%. What is the present value?",
+    "options": [
+      "₹6,25,000",
+      "₹5,00,000",
+      "₹4,00,000",
+      "₹8,00,000"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "PV of perpetuity = Cash Flow / Discount Rate = 50,000 / 0.08 = ₹6,25,000. B uses 10%. C uses 12.5%. D mistakenly multiplies instead of dividing.",
+    "difficulty": "medium",
+    "order_index": 7,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "7429b02a-7012-4410-8768-895ae6fe87b8",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "Which of the following best explains why ₹1,000 today is worth more than ₹1,000 a year from now?",
+    "options": [
+      "Because prices of goods always decrease over time",
+      "Because of opportunity cost — the ₹1,000 can be invested to earn returns",
+      "Because the government guarantees higher value for money held today",
+      "Because banks always pay interest on deposits"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Opportunity cost is the primary driver of TVM — money available today can be invested to earn returns. A is backward (prices increase). C is made up. D is too narrow; TVM applies even without banks.",
+    "difficulty": "easy",
+    "order_index": 8,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "429cfe82-e51e-44d5-a16a-0c797118bff7",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "Two analysts are valuing HDFC Bank. Analyst A uses 11% discount rate, Analyst B uses 13%. Both project identical cash flows of ₹25,000 crore per year for 10 years. Approximately how much higher will Analyst A's valuation be?",
+    "options": [
+      "About 2% higher",
+      "About 7–8% higher",
+      "About 10–12% higher",
+      "About 20% higher"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Analyst A PV = 25,000 × 5.889 = ₹1,47,225 cr. Analyst B PV = 25,000 × 5.426 = ₹1,35,650 cr. Difference: (1,47,225 - 1,35,650)/1,35,650 ≈ 8.53%. A mere 2% change in discount rate produces ~8% valuation change. With terminal values, the gap would be even larger.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "a7f86857-eb63-4625-aada-5dd55fe324ee",
+    "session_id": "10ead237-b2fe-4535-8a21-8eec2536cd72",
+    "question": "You receive ₹5,000 per month for 3 years from a rental property. The annual discount rate is 12%. What is the correct way to set up the present value calculation?",
+    "options": [
+      "PV = 5,000 × [(1 - (1.12)^-3) / 0.12]",
+      "PV = 5,000 × [(1 - (1.01)^-36) / 0.01]",
+      "PV = 60,000 × [(1 - (1.12)^-3) / 0.12]",
+      "PV = 5,000 × 36 / 1.12"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Since payments are monthly, convert to monthly terms: r = 12%/12 = 1% per month, n = 36 months. A mixes monthly payment with annual rate/periods. C annualises the payment but is less precise. D is not how PV works.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-12T16:16:46.392719+00:00",
+    "_session_title": "Time Value of Money",
+    "_session_order": 1
+  },
+  {
+    "id": "0abdac4c-c9b4-4eed-8d5f-9e22661b764a",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "You buy a stock at ₹200, receive a ₹10 dividend, and sell it at ₹240. What is your holding period return?",
+    "options": [
+      "20.0%",
+      "25.0%",
+      "22.5%",
+      "15.0%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "HPR = (240 - 200 + 10) / 200 = 50 / 200 = 25.0%. Option A (20%) forgets the dividend — calculates only capital gain. Always include dividends in return calculations.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "c9e316db-4602-45bc-8c0a-9bde11549708",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "Which of the following best describes 'systematic risk'?",
+    "options": [
+      "The risk that a company's CEO resigns unexpectedly",
+      "The risk of a factory fire destroying a company's inventory",
+      "The risk of a recession causing all stock prices to decline",
+      "The risk that a company's new product launch fails"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Systematic risk affects the entire market — recessions, interest rate changes, geopolitical crises cause broad declines. Options A, B, and D are company-specific (unsystematic/idiosyncratic) risk, which can be diversified away.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "8c54dd12-9555-451f-bb79-b12c275e63b5",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "An analyst projects three scenarios: 40% chance of +20% return, 35% chance of +5% return, and 25% chance of -10% return. What is the expected return?",
+    "options": [
+      "5.00%",
+      "7.25%",
+      "8.25%",
+      "9.25%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "E(R) = (0.40 × 20%) + (0.35 × 5%) + (0.25 × -10%) = 8.0% + 1.75% + (-2.5%) = 7.25%. Option A (5.0%) is the simple average ignoring probability weights.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "28db646d-b94e-4924-9c29-9cfafe674305",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "A portfolio returns 16% with a standard deviation of 22%. The risk-free rate is 7%. What is the Sharpe ratio?",
+    "options": [
+      "0.73",
+      "0.41",
+      "0.64",
+      "0.50"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Sharpe = (16% - 7%) / 22% = 9/22 = 0.41. Option A (0.73) forgets to subtract the risk-free rate (uses 16/22). Sharpe measures excess return per unit of risk, not total return.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "3b7025ad-14ef-48cc-86ff-03bed6cccbb8",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "Using CAPM, calculate the cost of equity for a company with β = 1.15, Rf = 7.2%, and market return = 13%.",
+    "options": [
+      "13.87%",
+      "13.00%",
+      "14.50%",
+      "13.88%"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "E(R) = 7.2% + 1.15 × (13% - 7.2%) = 7.2% + 1.15 × 5.8% = 7.2% + 6.67% = 13.87%. Option B (13%) is just the market return — only correct if β = 1.0.",
+    "difficulty": "hard",
+    "order_index": 5,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "e5dc257b-2325-498f-8093-0a9dd1dcd8e5",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "Two stocks have the same expected return of 15%. Stock A has σ = 25%, Stock B has σ = 15%. Which is the better investment?",
+    "options": [
+      "Stock A, because higher risk means higher potential upside",
+      "Stock B, because it delivers the same return with less risk",
+      "They are equal because they have the same expected return",
+      "Cannot determine without knowing their betas"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "When two investments have the same expected return, the one with lower risk (σ) is unambiguously better — this is the principle of dominance. Stock B dominates Stock A. Higher risk doesn't help when returns are equal.",
+    "difficulty": "medium",
+    "order_index": 6,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "cf7e8cc5-c113-4dff-a839-1ac048ebb3ce",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "A stock has a beta of 0.6. If the market falls by 10%, how much would you expect this stock to fall, approximately?",
+    "options": [
+      "10%",
+      "6%",
+      "16%",
+      "4%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Beta measures sensitivity to market movements. β=0.6 means the stock moves about 60% as much as the market. Market falls 10% → stock falls approximately 0.6 × 10% = 6%. This is an approximation — actual moves can differ.",
+    "difficulty": "medium",
+    "order_index": 7,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "9324ba6e-b797-4af9-bb67-9818093bb282",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "What does a Sharpe ratio of 0 mean?",
+    "options": [
+      "The investment lost money",
+      "The investment earned exactly the risk-free rate",
+      "The investment had zero risk",
+      "The investment had zero return"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Sharpe = (Rp - Rf) / σ. If Sharpe = 0, then Rp = Rf. You took on risk but earned no excess return — a poor outcome. The investment could have earned 7% (positive) that just matched Rf. Zero risk would make σ=0, making Sharpe undefined.",
+    "difficulty": "easy",
+    "order_index": 8,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "4522f605-40ad-4f05-989e-56445f084160",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "An Indian mid-cap pharma company has raw beta of 0.55 (3-year weekly vs Nifty 50). Sector average beta is 0.72. What beta would you use in your DCF?",
+    "options": [
+      "0.55 — company-specific beta is always most accurate",
+      "0.72 — sector beta is always more reliable",
+      "0.65–0.72 — blending company and sector data with judgment",
+      "1.0 — all stocks converge to market beta over time"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "No analyst blindly uses a single beta. Raw beta for mid-caps can be unreliable due to thin volumes. Sector average is more stable. Most analysts blend: start with sector average (0.72), check company-specific risk factors, consider Blume adjustment, and land on 0.65–0.72.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "195fafa4-270a-46ba-8f49-ce90a8c2cc35",
+    "session_id": "081d48c1-4ce7-4fec-b8df-de49a8cdc0ab",
+    "question": "An investor holds 50 stocks across 10 sectors. They add 10 more. By approximately how much does portfolio risk decrease?",
+    "options": [
+      "20% — they added 20% more stocks",
+      "Marginally — most diversification benefit is already captured at 30 stocks",
+      "Significantly — more stocks always means less risk",
+      "Not at all — risk is determined by beta, not number of stocks"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Most unsystematic risk is eliminated by 20–30 well-diversified stocks. Going from 50 to 60 stocks reduces risk by a tiny amount — the portfolio is already well-diversified. The marginal benefit declines sharply after ~25–30 stocks.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-12T16:38:56.328436+00:00",
+    "_session_title": "Risk & Return Fundamentals",
+    "_session_order": 2
+  },
+  {
+    "id": "55da30e2-84fb-4fed-84ca-47f908241dc3",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "Which of the following best describes a 'business model'?",
+    "options": [
+      "The product a company sells",
+      "The complete system of how a company creates, delivers, and captures value as revenue and profit",
+      "The company's marketing strategy",
+      "The company's organisational structure"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "A business model encompasses the entire value creation and capture mechanism — value proposition, revenue model, cost structure, and competitive moat. Option A is only the product. C is only go-to-market. D is internal structure.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "0e35d591-0ae7-4be1-a683-66e9133c3031",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "TCS generates revenue primarily through which model?",
+    "options": [
+      "Advertising revenue from users of its platforms",
+      "Selling software licences as one-time purchases",
+      "Billing clients for IT services based on time, projects, or managed contracts",
+      "Earning transaction commissions as a marketplace"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "TCS is an IT services company — billing clients for consulting, development, and managed services. Key metrics are utilisation rate and revenue per employee. Options A, B, D describe entirely different business models.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "52192229-8a1b-4009-ab8a-68e0c238ac4c",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "A company spends ₹500 crore on S&M and acquires 25 lakh new customers. ARPU is ₹400/month, gross margin 30%, monthly churn 5%. What is the CLTV/CAC ratio?",
+    "options": [
+      "1.2x",
+      "2.4x",
+      "3.6x",
+      "1.8x"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "CAC = ₹500cr / 25L = ₹2,000. Gross profit/month = ₹400 × 30% = ₹120. CLTV = ₹120 / 0.05 = ₹2,400. CLTV/CAC = 2,400/2,000 = 1.2x. Unhealthy — barely recovers acquisition cost. C (3.6x) uses ARPU directly without gross margin — a common error.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "aac53ad2-0b21-49b1-b898-42eea4b96821",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "Which business model type typically has the highest operating leverage?",
+    "options": [
+      "IT services (TCS, Infosys)",
+      "SaaS / Software subscription (Zoho, Freshworks)",
+      "Grocery retail (DMart)",
+      "Logistics (Delhivery)"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "SaaS has overwhelmingly fixed costs (engineering, cloud infra). Marginal cost per additional subscriber is near zero. 20% revenue increase can produce 40-60% profit increase. IT services scales linearly with headcount. Grocery has high variable costs.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "d18cd107-588a-4d3f-914b-795630934a6c",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "A hotel has fixed costs ₹10 crore/year, variable cost ₹800/room-night, average rate ₹4,000, 200 rooms. At what occupancy does it break even? (365 days)",
+    "options": [
+      "42%",
+      "38%",
+      "47%",
+      "55%"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "Contribution margin/room-night = ₹4,000 - ₹800 = ₹3,200. Total room-nights = 200 × 365 = 73,000. Break-even = ₹10,00,00,000 / ₹3,200 = 31,250. Occupancy = 31,250/73,000 = 42.8% ≈ 42%. Beyond this, every room-night generates ₹3,200 pure operating profit — illustrating operating leverage.",
+    "difficulty": "hard",
+    "order_index": 5,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "fa777063-901f-40aa-81b8-3e1139f10f90",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "What is 'take rate' in the context of a marketplace business?",
+    "options": [
+      "The percentage of customers who return for a second purchase",
+      "The commission the platform charges on each transaction",
+      "The tax rate applicable to marketplace transactions",
+      "The rate at which the marketplace acquires new sellers"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Take rate = Platform Revenue / GMV. It's the fraction of each transaction the marketplace keeps. If Nykaa's take rate is 20% and a customer buys ₹1,000, Nykaa keeps ₹200 as revenue.",
+    "difficulty": "easy",
+    "order_index": 6,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "b9337458-f0fc-48bd-aa25-90e457effda8",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "Company X: Revenue ₹1,000cr, Variable Costs ₹400cr, Fixed Costs ₹300cr. If revenue grows 15% (cost proportions same), what is approximate operating profit growth?",
+    "options": [
+      "15%",
+      "25%",
+      "30%",
+      "20%"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Current OP = 1,000-400-300 = ₹300cr. New revenue = ₹1,150cr. New variable = ₹460cr (scales with revenue). Fixed stays ₹300cr. New OP = 1,150-460-300 = ₹390cr. Growth = (390-300)/300 = 30%. DOL = 30%/15% = 2.0x. 15% revenue increase → 30% profit increase.",
+    "difficulty": "hard",
+    "order_index": 7,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "67847f98-c125-47c5-8392-6d0906110dae",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "Why is DMart's EBITDA margin higher than Big Bazaar's despite having a LOWER gross margin?",
+    "options": [
+      "DMart has lower tax rates",
+      "DMart owns its stores with lower fixed costs/sq ft and has much higher inventory turnover",
+      "DMart charges higher prices in premium locations",
+      "Big Bazaar spends more on advertising"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "DMart owns ~90% of stores (vs Big Bazaar's leased model) avoiding escalating rents, and has ~14x inventory turnover (vs 6-8x) reducing working capital. Lower gross margin is by design — lowest prices drive footfall and volume. Tax rates don't affect EBITDA (pre-tax).",
+    "difficulty": "medium",
+    "order_index": 8,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "f209bf1b-c271-4e9d-bec4-57e16a2f306e",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "An early-stage Indian SaaS company has ₹200cr ARR, 120% NRR, but negative EBITDA of -₹50cr. Which valuation metric is most appropriate?",
+    "options": [
+      "PE ratio",
+      "EV/EBITDA",
+      "Price-to-Book Value",
+      "EV/ARR (or EV/Revenue)"
+    ],
+    "correct_answer_index": 3,
+    "explanation": "PE and EV/EBITDA are meaningless with negative earnings/EBITDA. P/BV is irrelevant for SaaS whose value lies in customer relationships, not balance sheet. EV/ARR values the recurring revenue base — the core asset. 120% NRR is very positive (existing customers spending 20% more each year).",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "619eb616-dfba-412e-a24e-5b3fb430ebbf",
+    "session_id": "1381f79a-54d6-4e49-a437-fe8558e9fdfd",
+    "question": "A company has negative contribution margins on every unit. It plans to 'grow into profitability' by scaling volume. Will this work?",
+    "options": [
+      "Yes — higher volume spreads fixed costs, eventually turning profitable",
+      "No — if contribution margin is negative, every additional unit increases total loss",
+      "Maybe — depends on whether the company can raise prices later",
+      "Yes — most successful startups were initially unprofitable"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "If contribution margin (revenue minus variable costs per unit) is negative, you lose money on every sale BEFORE fixed costs. Scaling multiplies the per-unit loss. Fixed cost leverage only helps with positive contribution margin. Option D is misleading — successful startups had positive contribution margins; they were unprofitable due to fixed cost investments, not per-unit losses.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-12T16:51:18.235055+00:00",
+    "_session_title": "How Businesses Make Money — Business Models & Unit Economics",
+    "_session_order": 3
+  },
+  {
+    "id": "c6b5720e-5bf5-4b7b-85c6-412f56b6402b",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "A friend tells you: \"I want to know how much profit Reliance made last year.\" Which of the three financial statements should you open first?",
+    "options": [
+      "Balance Sheet",
+      "Income Statement (Profit & Loss Statement)",
+      "Cash Flow Statement",
+      "Statement of Changes in Equity"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "The Income Statement (also called the Profit & Loss Statement) shows revenues minus expenses over a period of time, ending in Net Profit — exactly what your friend asked for. Option A is wrong: the Balance Sheet is a snapshot of assets, liabilities, and equity at a single point in time — it shows what the company owns and owes, not what it earned. Option C is wrong: the Cash Flow Statement shows cash movements, not profit (a company can be profitable on paper but cash-poor, and vice versa). Option D is wrong: the Statement of Changes in Equity tracks shareholder equity movements — relevant, but not the primary place to find profit. Memorise this: P&L = performance over time, Balance Sheet = position at a point, Cash Flow = cash movement over time.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "941c68d9-682c-4348-b7d3-3c16438282a9",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "Which of the following statements correctly describes the time dimension of the Balance Sheet?",
+    "options": [
+      "It shows performance over a financial year",
+      "It is a snapshot at a specific point in time, usually the last day of the reporting period",
+      "It tracks cash movements over a quarter",
+      "It projects future earnings for the next 5 years"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "The Balance Sheet is a snapshot — it tells you the financial position of a company on a specific date (usually March 31 in India, or December 31 globally). Think of it like a photograph: it captures what the company owns (assets), owes (liabilities), and what belongs to shareholders (equity) at that exact moment. Option A is wrong because performance over a period is the Income Statement. Option C is wrong because cash movements over a period belong to the Cash Flow Statement. Option D is wrong because financial statements report historical reality, not future projections — projections live in analyst models and forecasts, not audited statements.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "9d480bed-9241-4838-a821-326a4ff590ef",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "The fundamental accounting equation that the Balance Sheet must always satisfy is:",
+    "options": [
+      "Assets = Revenue - Expenses",
+      "Assets = Liabilities + Equity",
+      "Assets + Liabilities = Equity",
+      "Cash + Inventory = Net Profit"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Assets = Liabilities + Equity is the bedrock identity of accounting — it must balance every single time, which is literally why it is called the \"Balance\" Sheet. The logic: everything a company owns (Assets) was funded either by borrowing (Liabilities) or by shareholders putting in money plus retained profits (Equity). Option A is wrong — that is the Income Statement logic. Option C is mathematically nonsensical and would mean assets and liabilities together equal equity, which contradicts the actual definition. Option D mixes line items from different statements and is not an equation at all. If your Balance Sheet does not balance, you have made an error somewhere — guaranteed.",
+    "difficulty": "easy",
+    "order_index": 3,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "cc58c168-3ccb-4c47-bc5f-3ac64c316b06",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "TCS reports a Net Profit of ₹46,099 Cr on its Income Statement for FY24. Where does this number flow next, and how does it connect the three statements?",
+    "options": [
+      "It is added to Cash on the Balance Sheet directly",
+      "It flows to Retained Earnings under Equity on the Balance Sheet, and is the starting point of the Cash Flow Statement",
+      "It appears as Revenue on next year's Income Statement",
+      "It is recorded as a liability since it must be paid to shareholders"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Net Profit is the critical link between all three statements. It flows two ways: (1) On the Balance Sheet, Net Profit (minus dividends paid) gets added to Retained Earnings within Shareholder Equity — this is how the company's accumulated profits build up over years. (2) On the Cash Flow Statement, Net Profit is the starting point of the Cash Flow from Operations section, after which non-cash items (like depreciation) and working capital changes are adjusted. Option A is wrong because Net Profit is an accounting measure, not cash — they are very different (accrual vs cash basis). Option C is wrong because last year's profit does not become next year's revenue. Option D is wrong because dividends are declared at management's discretion, not automatically owed. Mastering this linkage is the foundation of 3-statement modelling — coming up in Module 4.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "aace02d2-9385-4cb8-bbae-685e86dd81b5",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "Zomato reports a Net Profit of ₹351 Cr in FY24 but its Cash Flow from Operations is ₹820 Cr. Which of the following best explains why these two numbers differ?",
+    "options": [
+      "The company made an accounting error",
+      "Profit is calculated on accrual basis (revenue/expense when earned/incurred), while cash flow tracks actual cash movements — non-cash items like depreciation and working capital changes cause the gap",
+      "Cash flow always equals profit; this would be a red flag",
+      "The auditor restated the numbers"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "The gap between Net Profit and Cash Flow from Operations is normal and expected — it exists because accounting follows the accrual principle (record revenue when earned, expense when incurred), while cash flow tracks actual money in and out of the bank. The bridge between them includes: depreciation/amortisation (expense in P&L but no cash leaves), changes in working capital (e.g., a rise in receivables means revenue booked but cash not yet received), and non-cash provisions. In Zomato's case, depreciation on its tech assets and movements in payables likely drive CFO above Net Profit. Option A is wrong — this is not an error, it is how accounting works. Option C is dangerously wrong — if CFO consistently equals or exceeds profit by a healthy margin, that is actually a sign of high earnings quality. Option D would only matter if there was a restatement, which is not implied here.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "5e1491e8-7250-41c3-98c4-f527d547caa9",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "The Cash Flow Statement is divided into three sections. Which of the following correctly maps the activity to its section?",
+    "options": [
+      "Buying a new factory → Cash Flow from Operations",
+      "Issuing new equity shares → Cash Flow from Investing",
+      "Paying interest on a loan → Cash Flow from Financing (under Indian GAAP/Ind AS)",
+      "Receiving cash from customers → Cash Flow from Investing"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Under Indian GAAP and Ind AS, interest paid is classified under Cash Flow from Financing Activities (CFF) for non-financial companies — this is a key India-specific nuance. Under US GAAP, interest paid sits under Operations (CFO), so global comparisons require an adjustment. Option A is wrong: buying a factory is a capital expenditure and goes under Cash Flow from Investing (CFI), not Operations. Option B is wrong: issuing equity is a financing activity (raising money from shareholders), so it belongs in CFF, not CFI. Option D is wrong: cash from customers is the lifeblood of the business and belongs in CFO, not Investing. Quick rule of thumb: CFO = day-to-day business, CFI = buying/selling long-term assets, CFF = dealing with lenders and shareholders.",
+    "difficulty": "medium",
+    "order_index": 6,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "3d7c5a2e-e284-4d38-abb4-95404caffa32",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "A small-cap Indian textile company reports rising Net Profit for three consecutive years, but its Cash Flow from Operations has been negative each year. As an analyst, what is the most likely concern?",
+    "options": [
+      "This is normal for growth companies and not a concern",
+      "Profits may be inflated through aggressive revenue recognition or growing receivables that are not converting to cash — a classic earnings quality red flag",
+      "The company should issue more equity to fix this",
+      "This means the company is overpaying its taxes"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "This pattern — rising profits with persistently negative CFO — is one of the most reliable forensic accounting red flags in the Indian small-cap and mid-cap space. It often signals: (1) Aggressive revenue recognition (booking sales that have not actually happened or are not collectible), (2) Receivables ballooning faster than sales (customers not paying, but revenue is still recorded), (3) Inventory build-up being capitalised rather than expensed, or (4) Outright fraud. Several Indian corporate scandals — including Satyam and various delisted SME stocks — showed exactly this pattern before unravelling. Option A is wrong: even high-growth companies should show CFO trending toward positive over time; persistent negative CFO with rising profits is not \"normal\". Option C is wrong and irrelevant — issuing equity does not fix earnings quality issues. Option D is wrong because tax overpayment would not cause this divergence pattern. The lesson: always cross-check Net Profit against CFO. We will go much deeper into this in Module 8 (Red Flag Analysis).",
+    "difficulty": "hard",
+    "order_index": 7,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "439ef42e-f854-47c2-8db6-b7d2e21f9a59",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "HDFC Bank's Balance Sheet shows Total Assets of ₹36 lakh Cr and Total Equity of ₹4.5 lakh Cr at year-end. From this, what can you infer about the company?",
+    "options": [
+      "The company has approximately ₹31.5 lakh Cr in liabilities, giving a debt-heavy structure typical of banks where deposits are the main liability",
+      "The company is highly profitable",
+      "The company has no cash flow problems",
+      "The company is undervalued in the market"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "Using the accounting equation (Assets = Liabilities + Equity), Liabilities = ₹36 lakh Cr - ₹4.5 lakh Cr = ₹31.5 lakh Cr. This is normal and expected for a bank because customer deposits are recorded as liabilities (the bank owes that money back to depositors) — banks intentionally operate with very high leverage, often 8-12x equity, because their business model is to take deposits at low cost and lend them out at higher rates. Comparing this to a software company like Infosys (which is nearly debt-free) would be misleading without sector context. Option B is wrong — Balance Sheet alone does not tell you profitability; you would need the Income Statement. Option C is wrong — Balance Sheet does not show cash flow trends; you need the Cash Flow Statement. Option D is wrong — valuation requires market price comparison, which is not in financial statements at all. Always interpret Balance Sheet ratios in sector context — what looks alarming for a tech firm is normal for a bank. We will explore this fully in Module 11 (Sector Analysis).",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "57c820b0-5065-4f13-b1a4-3da265667e8e",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "You are reviewing a hypothetical Indian FMCG company. The Income Statement shows Depreciation of ₹200 Cr. On the Cash Flow Statement, what should you expect to see, and why?",
+    "options": [
+      "Depreciation should appear as a cash outflow of ₹200 Cr under Investing Activities",
+      "Depreciation should be added back to Net Profit in Cash Flow from Operations because it is a non-cash expense",
+      "Depreciation should not appear in the Cash Flow Statement at all",
+      "Depreciation should appear as a cash inflow of ₹200 Cr under Financing Activities"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Depreciation is a non-cash expense — it reduces Net Profit on the Income Statement (reflecting wear and tear of assets) but no actual cash leaves the company in that period. The cash already left when the asset was purchased years ago (which would have shown up as Capex under CFI back then). On the indirect method Cash Flow Statement (used by virtually all Indian companies under Ind AS), the structure is: Start with Net Profit → Add back non-cash expenses like Depreciation and Amortisation → Adjust for working capital changes → Arrive at Cash Flow from Operations. Option A confuses depreciation with capex — capex is the cash outflow, depreciation is just the accounting allocation of that prior outflow. Option C is wrong because depreciation absolutely appears, just as an add-back. Option D makes no sense — depreciation is never a cash inflow and never a financing activity. This add-back logic is one of the most tested concepts in equity research interviews — burn it into memory.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "e9215ef4-064a-4ce5-be55-7945fe3edec2",
+    "session_id": "bdb283ca-fc6c-420a-bfee-c93e68be6e8e",
+    "question": "You are a junior analyst evaluating Britannia Industries for a potential investment. Your senior tells you: \"Don't look at any single statement in isolation.\" What is the most accurate interpretation of this advice?",
+    "options": [
+      "Always read all three statements together because each tells an incomplete story alone — profit without cash flow can mislead, balance sheet without income statement hides performance, cash flow without context misses accruals",
+      "Only the Cash Flow Statement matters; ignore the others",
+      "Read all three but focus only on the most recent year",
+      "The senior is suggesting you read competitor statements first"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "This is one of the most important mindsets in equity research. The three statements are designed to be read together because each one captures a different dimension of the business: the Income Statement shows performance (did we make money?), the Balance Sheet shows position (what do we own and owe?), and the Cash Flow Statement shows cash reality (did the profit translate into actual cash?). A company can look profitable on the P&L while drowning in receivables on the Balance Sheet and bleeding cash on the Cash Flow Statement — Kingfisher Airlines and several real estate companies showed exactly this divergence before collapsing. Option B is wrong and dangerous — focusing only on cash flow ignores accrual-based profitability and financial structure. Option C is wrong — analysts always look at trends across 5-10 years to spot patterns. Option D misinterprets the advice — competitor analysis comes later (Module 11), not in place of statement integration. The analyst's mantra: \"Triangulate the truth across all three statements.\"",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-28T11:49:12.70609+00:00",
+    "_session_title": "Introduction to Financial Statements (The Big Three)",
+    "_session_order": 4
+  },
+  {
+    "id": "e1c59fac-f090-453c-b1fe-d770ba2350e1",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "A consulting firm completes a project for a client on March 28, 2024 and sends an invoice for ₹10 lakh. The client pays the invoice on April 25, 2024. Under accrual accounting, when should the firm recognise the revenue?",
+    "options": [
+      "April 25, 2024 — when cash is received",
+      "March 28, 2024 — when the service was delivered",
+      "March 31, 2024 — at the end of the financial year",
+      "It depends on the firm's preference"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Under accrual accounting, revenue is recognised when it is EARNED — i.e., when the service is delivered or the goods are transferred, regardless of when cash arrives. The firm completed the project on March 28, so the revenue belongs in FY24, not FY25. The unpaid invoice creates a Receivable on the March 31 balance sheet. Option A is wrong because that is cash basis accounting, which listed companies do not use. Option C is wrong because revenue recognition is event-driven, not calendar-driven. Option D is wrong because Ind AS does not allow management discretion on timing of recognition for a completed service. This single concept is what separates accrual from cash accounting and why a company can be profitable on the P&L while running out of cash.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "52f3f348-8cf1-48c0-bb22-160aff0710d3",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "Britannia buys ₹50 Cr of wheat flour in March 2024 to make biscuits. By March 31, only ₹35 Cr worth of flour has been used in biscuits that were sold during the year. Under the matching principle, what amount should be recorded as Cost of Goods Sold (COGS) in FY24?",
+    "options": [
+      "₹50 Cr — full purchase amount",
+      "₹35 Cr — only the flour consumed in goods sold",
+      "₹15 Cr — the unused flour",
+      "Nothing, because the flour will be used next year"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "The matching principle states that expenses must be recorded in the same period as the revenues they helped generate. Britannia generated revenue from biscuits made using ₹35 Cr of flour, so only ₹35 Cr is the matched expense for FY24. The remaining ₹15 Cr of flour stays on the balance sheet as Inventory (a current asset) and becomes COGS only when the future biscuits are sold. Option A is wrong because expensing the full purchase ignores matching and would distort margins. Option C is the inventory value, not the COGS. Option D is wrong because the consumed portion absolutely should be recognised. This is the same logic that drives depreciation — costs are spread to match the revenue they generate.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "14b4ccf2-119a-44ba-8d61-dbcd59d8eac3",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "A company's auditor includes a \"material uncertainty regarding going concern\" note in the audit report. As an analyst, what does this signal?",
+    "options": [
+      "The company is performing exceptionally well and is a buy candidate",
+      "The auditor has substantial doubt about the company's ability to continue operations for the next 12 months",
+      "It is a routine disclosure required for all listed companies",
+      "It means the company is changing its accounting policies"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "A going concern qualification is one of the most serious warnings an auditor can issue. It means there is substantial doubt about the company's ability to continue operations for the next 12 months — usually because of severe liquidity issues, default risk, or operational losses. Companies like Yes Bank, IL&FS, DHFL, and Zomato (FY22) have all received such notes at various points. Option A is the opposite of the truth — this is a major red flag. Option C is wrong because going concern qualifications are exception, not routine — most healthy companies receive a clean audit report. Option D is wrong because policy changes are disclosed in the Notes to Accounts, not flagged via going concern. As an analyst, always read the audit report first — it is short, free, and tells you more about hidden risks than 100 pages of MD&A.",
+    "difficulty": "easy",
+    "order_index": 3,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "98a68e8f-a968-4843-89ab-8534d41134bf",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "Tata Motors holds inventory that originally cost ₹500 Cr. Due to a market downturn, the realisable value of this inventory has dropped to ₹350 Cr. Under the conservatism principle (Ind AS 2), at what value should the inventory be reported on the balance sheet?",
+    "options": [
+      "₹500 Cr — original cost, since the asset has not been sold",
+      "₹350 Cr — the lower of cost or net realisable value",
+      "₹425 Cr — the average of cost and realisable value",
+      "₹500 Cr until the inventory is actually sold at a loss"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Ind AS 2 (Inventories) requires inventory to be valued at the LOWER of cost or net realisable value. This is the conservatism principle in action: when there is a probable loss, recognise it immediately; when there is a possible gain, wait. So Tata Motors must write down the inventory from ₹500 Cr to ₹350 Cr, taking a ₹150 Cr hit to the P&L now. Option A is wrong because it violates conservatism — it would overstate assets and understate losses. Option C is mathematically arbitrary and not allowed by any accounting standard. Option D is wrong because conservatism explicitly demands you recognise the loss when probable, not when realised. This is exactly what happens when JLR sales slow — Tata Motors writes down inventory and dealer stock, which is why their margins are so volatile.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "c392fd52-fcbf-4902-b0b8-6a3448508cc0",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "A company sells goods worth ₹100 Cr to a related-party entity, with a contractual obligation to repurchase them in 6 months at ₹105 Cr. Under Ind AS, how should this transaction be recorded?",
+    "options": [
+      "As ₹100 Cr revenue and a separate ₹105 Cr repurchase commitment",
+      "As a financing arrangement (essentially a secured loan of ₹100 Cr at 10% annualised), with no revenue recognition",
+      "As ₹100 Cr revenue today and ₹105 Cr cost in 6 months",
+      "As ₹5 Cr profit in the year of repurchase"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "This is a classic substance-over-form question, and the answer is Option B. The legal form is a sale-and-repurchase, but the economic substance is unmistakable: the company is using the goods as collateral to borrow ₹100 Cr for 6 months, with ₹5 Cr (10% annualised) being the effective interest cost. Under Ind AS 115 and the substance-over-form principle, this must be recorded as a financing arrangement — a liability of ₹100 Cr is recognised, the goods stay on the balance sheet, and ₹5 Cr is recognised as interest expense over 6 months. No revenue is recognised because no real sale has occurred — the company never gave up control. Option A and C ignore substance and would inflate revenue artificially. Option D ignores the financing nature entirely. Several Indian corporate frauds — including parts of the Satyam case — involved exactly such circular sale-repurchase structures designed to inflate revenue.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "5dca21bb-481b-47d3-b724-f4fe5d66da17",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "A mid-cap auto company changes its inventory valuation method from FIFO (First-In-First-Out) to Weighted Average, resulting in a ₹40 Cr boost to current-year profit. The company does not disclose this change in the Notes to Accounts. Which accounting principle has been violated, and what should an analyst do?",
+    "options": [
+      "No principle is violated — companies can change methods freely",
+      "The Consistency principle is violated; the analyst should adjust the comparative numbers and flag the disclosure failure as a governance red flag",
+      "Only the Matching principle is violated",
+      "It is fine as long as the auditor signed off"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "The Consistency principle requires companies to use the same accounting methods year over year. Changes are permitted but MUST be disclosed in the Notes to Accounts, with the reason and quantitative impact stated, so that analysts can adjust comparative numbers. Failing to disclose is a serious governance failure — and a violation of consistency. Option A is wrong: changes are allowed but disclosure is mandatory. Option C confuses matching (which deals with expense timing) with consistency (which deals with method continuity). Option D is dangerous — auditor sign-off does not absolve the company of disclosure obligations, and analysts have caught material non-disclosures that auditors missed. The forensic analyst's response: restate the prior-year inventory using the new method to make trends comparable, then flag the under-disclosure publicly or to compliance. This is the kind of insight that wins research awards.",
+    "difficulty": "medium",
+    "order_index": 6,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "4e065d2d-3a7f-434e-9ec8-93e5e0d16e6e",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "An Indian small-cap company reports the following: Revenue ₹500 Cr (up 25% YoY), Net Profit ₹80 Cr (up 30% YoY), Cash from Operations ₹15 Cr (down from ₹70 Cr last year). Trade Receivables grew from ₹120 Cr to ₹220 Cr. As an analyst, what is the most likely interpretation?",
+    "options": [
+      "The company is in a high-growth phase and the metrics are healthy",
+      "The company may be recognising sales it cannot collect — receivables grew ₹100 Cr against profit growth of only ₹18 Cr, suggesting aggressive revenue recognition or channel stuffing",
+      "The decline in CFO is a one-off working capital quirk and should be ignored",
+      "The company should issue more equity to fund the gap"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "This is a textbook earnings quality red flag. Receivables grew by ₹100 Cr (a 83% jump) while revenue grew only 25%. That means days-of-sales-outstanding (DSO) ballooned — customers are taking much longer to pay, OR the company is booking sales that may never collect. Cash from Operations crashed from ₹70 Cr to ₹15 Cr while Net Profit rose — the gap between accrual profit and cash reality has exploded. This pattern is exactly what preceded several Indian small-cap collapses: the company is recognising revenue (legally permissible under accrual rules) for sales that are not converting to cash. It could be channel stuffing (forcing distributors to take excess inventory), it could be related-party fictitious sales (Satyam-style), or it could be lax credit policies in pursuit of revenue growth. Option A is dangerously naive — high growth does not justify a 4x deterioration in working capital efficiency. Option C contradicts the data — a ₹55 Cr decline in CFO during 25% revenue growth is not a quirk. Option D treats a symptom, not the disease. The analyst's next step: dig into receivables ageing, top-customer concentration, and related-party transactions in the Notes to Accounts.",
+    "difficulty": "hard",
+    "order_index": 7,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "8187780d-a2bc-4569-9a2c-39c6c464ee86",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "A listed company with consolidated turnover of ₹10,000 Cr enters into a related-party transaction worth ₹120 Cr with a promoter-controlled entity. Management classifies this as \"not material\" and does not seek shareholder approval. Under SEBI's Listing Regulations, is this defensible? (Use the standard 10% of consolidated turnover materiality threshold for related-party transactions.)",
+    "options": [
+      "Yes — ₹120 Cr is small compared to ₹10,000 Cr revenue",
+      "No — under SEBI rules, related-party transactions exceeding 10% of consolidated turnover (or other prescribed thresholds) require disclosure and shareholder approval; even if below threshold, omnibus approval and audit committee review are still required",
+      "Yes — only transactions above ₹500 Cr need approval",
+      "It depends on what the auditor decides"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "This question tests whether students understand that materiality is not a vague concept — it has quantified regulatory thresholds. Under SEBI's Listing Regulations and the Companies Act, related-party transactions above prescribed thresholds (commonly cited as 10% of consolidated turnover, but always check the latest SEBI circular for the exact current threshold) require both audit committee review and shareholder approval. ₹120 Cr is 1.2% of ₹10,000 Cr turnover — likely below the 10% materiality threshold, but related-party transactions still require audit committee review and omnibus approval mechanisms regardless of size, and the company must disclose them in the Annual Report. Calling it \"not material\" without going through the proper governance process is a violation of disclosure norms. Option A is naive — materiality has rules, not just intuition. Option C is fabricated — there is no such absolute threshold. Option D wrongly outsources judgment to the auditor. As an analyst, always cross-check related-party disclosures against SEBI thresholds and look at the audit committee composition. Several Indian governance scandals — Religare, Vakrangee, parts of the Adani-Hindenburg dispute — involved related-party transactions where materiality was disputed. Note: SEBI thresholds are periodically revised; always verify the current rule.",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "5ae1a176-c714-49b9-a441-3610aeb352f3",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "You are analysing Infosys's balance sheet. Unbilled Revenue (a current asset) has grown from ₹4,500 Cr to ₹7,200 Cr while Revenue grew only 12%. Days Sales Outstanding (DSO) on traditional Trade Receivables is stable. What is the most likely interpretation?",
+    "options": [
+      "A red flag — Infosys is fabricating revenue",
+      "Infosys has won more fixed-price contracts where work is being delivered ahead of billing milestones, which is normal under Ind AS 115 — but the analyst should monitor whether unbilled revenue eventually converts to receivables and then to cash",
+      "The company is about to default on its debt",
+      "The auditor is going to qualify the financial statements"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Unbilled Revenue arises under Ind AS 115 (Revenue from Contracts with Customers) when a company has performed services or transferred control of goods but cannot yet bill the customer because contractual milestones haven't been reached. For IT services firms like Infosys, TCS, and Wipro, this is normal — fixed-price contracts often have milestone-based billing where work is delivered ahead of invoicing. The fact that traditional DSO is stable rules out the \"channel stuffing\" interpretation. The growth in Unbilled Revenue likely reflects business mix shift toward fixed-price contracts. However, an analyst must still monitor: (1) whether Unbilled Revenue eventually converts to Trade Receivables and then to cash, (2) whether the conversion cycle is lengthening, and (3) whether the contracts have any cancellation or scope-reduction risk. Option A is overly suspicious — Unbilled Revenue is a legitimate Ind AS line item, not fabrication. Option C and D are unrelated overreactions. The sophisticated analyst checks the cash flow statement and the contract assets disclosure in the Notes to confirm conversion patterns over 4-6 quarters.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "bd73aa92-5524-4e6b-8842-0dd9fb499838",
+    "session_id": "33fb3527-8304-4e1e-8a85-5c02f73870f6",
+    "question": "Which of the following best captures why accrual accounting, despite being more complex than cash accounting, is mandatory for listed companies in India and globally?",
+    "options": [
+      "It allows companies to legally manipulate profit",
+      "It produces a more accurate picture of economic performance and financial position by matching revenues with the expenses incurred to generate them, enabling meaningful comparison across periods and companies",
+      "It is required only because Indian regulators copied Western practices",
+      "It is easier to audit than cash accounting"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Accrual accounting is mandatory because it captures economic reality — not just cash movement. By recognising revenue when earned and expenses when incurred, accrual accounting produces a faithful representation of how a business actually performed in a period, even when cash timing distorts the picture. This is what allows analysts to compare TCS's performance to Infosys's, or one quarter to another, in a meaningful way. Cash basis accounting would make a company that just collected on a 5-year-old invoice look more profitable than one that just delivered ₹500 Cr of fresh services — clearly nonsensical for performance evaluation. Option A is cynical and wrong — accrual accounting requires more judgment, but the principles (matching, conservatism, substance over form) are designed to constrain manipulation, not enable it. Option C is wrong — accrual accounting is universal across all major capital markets (US GAAP, IFRS, Ind AS) because economic logic, not regulatory copying, demands it. Option D is wrong — accrual accounting is harder to audit, which is why audit fees are high and audit standards are detailed. The deeper truth: accrual is the price you pay for economic accuracy in a world where business and cash do not move in lockstep.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-28T12:31:32.765709+00:00",
+    "_session_title": "Accounting Principles & Accrual Concepts",
+    "_session_order": 5
+  },
+  {
+    "id": "123a2cb0-c72a-4261-b4d7-91e51033f629",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Revenue 500cr, COGS 300cr. Gross Margin?",
+    "options": [
+      "60%",
+      "40%",
+      "37.5%",
+      "166.7%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "GP = 500-300 = 200. GM = 200/500 = 40%. A incorrectly uses COGS/Revenue. D divides Revenue by COGS.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "a105b78a-da84-41ca-b88e-f9c69bc969c8",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Which is NOT included in COGS for a manufacturing company?",
+    "options": [
+      "Raw material cost",
+      "Factory workers wages",
+      "CEO salary",
+      "Factory electricity bill"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "CEO salary is SGA expense, not direct production cost. Raw materials, factory wages, factory utilities are all direct production costs in COGS.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "e741a7c9-6f5c-4ad3-b254-6ad2f9350d4a",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Revenue 1000cr, COGS 550cr, OpEx (excl D&A) 200cr, D&A 50cr, Interest 30cr, Other Income 10cr, Tax 45cr. EBITDA Margin?",
+    "options": [
+      "20%",
+      "25%",
+      "45%",
+      "15%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "EBITDA = 1000-550-200 = 250cr. Margin = 250/1000 = 25%. A (20%) subtracts D&A. C (45%) is Gross Margin. D subtracts interest and tax too.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "70446e41-e527-4392-9924-db5820d1fa6e",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Infosys employee costs grow 6.4% while revenue grows 4.7%. This typically leads to:",
+    "options": [
+      "EBITDA margin expansion",
+      "EBITDA margin compression",
+      "No impact on EBITDA margin",
+      "Higher gross profit margin"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Major cost growing faster than revenue puts downward pressure on margins. Infosys offset by cutting subcontracting, but default expectation is compression.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "8b7cfc79-a4f2-4209-b50e-88c5d7ec37b9",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Company reports 200cr exceptional income from selling land. Analyst should:",
+    "options": [
+      "Add to revenue",
+      "Include in EBITDA",
+      "Strip out for normalised earnings",
+      "Ignore income statement entirely"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Exceptional items are one-time, non-recurring. Strip out for sustainable earning power assessment. Adding to revenue or EBITDA overstates operational performance.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "e1b74796-a883-4dc7-84f6-548780017b17",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "EBT 400cr, Tax Expense 80cr. Statutory rate 25.17%. Effective Tax Rate?",
+    "options": [
+      "25.17%",
+      "20%",
+      "22%",
+      "80%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "ETR = 80/400 = 20%. Below statutory rate -- investigate: tax holidays, SEZ benefits, carry-forward losses, MAT credits.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "2f6ddba9-96a0-4094-a1dd-cb1f5d8cbee9",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Airline: EBITDA 2000cr, D&A 1200cr, Interest 1500cr, Capex 1800cr. Why is EBITDA misleading?",
+    "options": [
+      "Airline has no revenue",
+      "D&A, interest, and capex are massive -- EBITDA far removed from actual cash",
+      "EBITDA includes tax",
+      "Airlines cannot have positive EBITDA"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "EBIT = 800cr. EBT = 800-1500 = -700cr (loss). After capex, FCF deeply negative. EBITDA paints misleadingly positive picture for capital-intensive, leveraged businesses. The Vodafone Idea / Jet Airways trap.",
+    "difficulty": "hard",
+    "order_index": 7,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "6fc5dd24-306e-49f7-9dfe-7f653f0fa070",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "EPS is calculated as:",
+    "options": [
+      "Revenue / Shares",
+      "EBITDA / Shares",
+      "Net Profit (PAT) / Outstanding Shares",
+      "Gross Profit / Shares"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "EPS uses Net Profit (PAT) -- the profit attributable to equity shareholders. Revenue, EBITDA, or Gross Profit do not represent actual earnings available to shareholders.",
+    "difficulty": "easy",
+    "order_index": 8,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "401a83fd-02ae-495e-92a4-a6bbada801a4",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Company A: Revenue 10,000cr, Gross Margin 60%, Op Margin 20%. Company B: Revenue 10,000cr, Gross Margin 30%, Op Margin 20%. 10% revenue drop (COGS variable, OpEx fixed). Which Op Margin falls more?",
+    "options": [
+      "Company A",
+      "Company B",
+      "Both fall equally",
+      "Neither affected"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "A: New GP = 9000x60% = 5400. OpEx = 4000 (original GP 6000 - EBIT 2000). New EBIT = 1400, margin 15.6% (fell 440 bps). B: New GP = 9000x30% = 2700. OpEx = 1000. New EBIT = 1700, margin 18.9% (fell 110 bps). A has higher fixed OpEx (higher operating leverage), margin falls more.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "6df7de2c-44ff-4ea2-a248-11043c41efe1",
+    "session_id": "c3a21f75-1dac-4656-9264-1cb37ed802c1",
+    "question": "Under Ind AS 115, when does a real estate developer recognise revenue for a residential flat?",
+    "options": [
+      "When customer books and pays token",
+      "When construction reaches 50%",
+      "When possession/control transfers to buyer",
+      "When customer takes home loan"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Revenue recognised when control transfers -- at handover/possession for most Indian residential real estate. Not at booking, construction milestone, or financing arrangement. Why real estate revenue is lumpy.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T02:41:17.173643+00:00",
+    "_session_title": "The Income Statement Deep Dive",
+    "_session_order": 6
+  },
+  {
+    "id": "9b9a0caa-bbcc-47d1-bb18-d6a52630200d",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "The accounting equation states that:",
+    "options": [
+      "Assets = Liabilities - Equity",
+      "Assets = Liabilities + Equity",
+      "Assets + Liabilities = Equity",
+      "Equity = Assets + Liabilities"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Assets = Liabilities + Equity. Everything owned is funded by creditors or owners. A subtracts equity (wrong). C and D reverse or confuse the equation.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "0db7f267-77d8-4766-95ab-181ef7567c51",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Which of the following is a Current Asset?",
+    "options": [
+      "Factory building",
+      "Goodwill from acquisition",
+      "Trade Receivables",
+      "Patent"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Trade Receivables = amounts owed by customers, collected within 12 months. Factory (PP&E), Goodwill, Patent are all non-current.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "ad59152c-c171-466a-9be0-da4c48b209e9",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Current Assets 8,000cr (Inventory 5,000cr), Current Liabilities 4,000cr. Quick Ratio?",
+    "options": [
+      "2.0x",
+      "0.75x",
+      "1.25x",
+      "3.0x"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Quick Ratio = (8,000-5,000)/4,000 = 3,000/4,000 = 0.75x. A (2.0x) is the Current Ratio (8,000/4,000). Quick excludes inventory.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "d6985a20-c964-41d2-8ce1-d82bab843312",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Which would INCREASE Debt-to-Equity ratio?",
+    "options": [
+      "Retaining more profits",
+      "Taking a new long-term bank loan",
+      "Issuing new equity shares",
+      "Repaying an existing loan"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "New loan increases debt, equity unchanged, D/E rises. Retaining profits increases equity (D/E falls). New shares increase equity (falls). Repaying reduces debt (falls).",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "6d750b69-8335-4e38-bb28-e8b2c18a9ba9",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Total Assets 20,000cr, Total Liabilities 22,000cr. This implies:",
+    "options": [
+      "Very profitable company",
+      "Negative shareholders equity",
+      "Balance sheet error",
+      "No debt"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Equity = 20,000-22,000 = -2,000cr. Negative equity = owes more than owns (Vodafone Idea situation). BS still balances. Can be profitable and still have negative equity from accumulated losses.",
+    "difficulty": "hard",
+    "order_index": 5,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "a5cc9208-1eb5-4ef6-b5ae-8340c7a5302f",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "CWIP growing 5 years while PP&E stays flat. Most likely indicates:",
+    "options": [
+      "Aggressive capacity investment",
+      "Assets being capitalised properly",
+      "Projects stalled or costs being parked in CWIP to avoid expensing",
+      "Paying off debt"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Normally CWIP transfers to PP&E on completion. CWIP rising without PP&E increase = projects stalled or costs parked to inflate profits. Classic red flag (Module 8). A would show PP&E rising too.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "f2cb17ba-08f8-49cf-b7bf-caef32b3779e",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Goodwill appears on balance sheet when:",
+    "options": [
+      "Company builds strong brand internally",
+      "Company acquires another for more than fair value of net assets",
+      "Stock price rises above book value",
+      "Company receives trademark registration"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Goodwill only from acquisitions -- excess paid over fair value. Internally generated goodwill never capitalised under Ind AS/IFRS. Stock price changes do not affect BS. Trademarks are separate intangibles.",
+    "difficulty": "easy",
+    "order_index": 7,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "335be9d1-3d6c-4d8c-9443-5a31edac0feb",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Under Ind AS 116, a 10-year office lease impacts the balance sheet by:",
+    "options": [
+      "Only rental expense on P&L, no BS impact",
+      "Increase in both assets (ROU) and liabilities (Lease Liability)",
+      "Increase in equity",
+      "Decrease in total assets"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Ind AS 116 capitalises operating leases. ROU Asset (non-current) and Lease Liability (non-current) both increase, keeping BS balanced. A was old treatment under AS 19.",
+    "difficulty": "medium",
+    "order_index": 8,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "18ec81e3-9d5f-47e9-a5db-b0ffd659c131",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Company A: 10,000cr equity (8,000cr securities premium from QIP). Company B: 10,000cr equity (8,000cr retained earnings). Higher quality?",
+    "options": [
+      "A -- raised capital from investors",
+      "B -- equity earned through profits",
+      "Both equal since total same",
+      "Equity quality is irrelevant"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Retained earnings = profits generated and reinvested, proves business model works. Securities premium from QIP = company went to market, often because business could not self-fund. QIP dilutes existing shareholders. Composition matters for quality analysis.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "cbfddcc7-d930-445e-89da-76972cabaee1",
+    "session_id": "9559a9ba-a909-4f8c-9346-4219bf23852a",
+    "question": "Retail company has negative working capital. This most likely means:",
+    "options": [
+      "Always financial distress",
+      "Operational efficiency -- collects cash before paying suppliers",
+      "Accounting error",
+      "Impossible for profitable company"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "DMart, Amazon collect cash immediately, pay suppliers in 30-60 days. Structural negative WC = competitive advantage using supplier money. Not always distress -- depends on business model. Not an error or impossible.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T03:04:29.23854+00:00",
+    "_session_title": "The Balance Sheet Deep Dive",
+    "_session_order": 7
+  },
+  {
+    "id": "6383468b-d729-4f68-a099-d1940908cc2e",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "Which is added back to Net Profit when calculating CFO (indirect method)?",
+    "options": [
+      "Revenue",
+      "Depreciation & Amortisation",
+      "Dividends paid",
+      "Capital expenditure"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "D&A is non-cash charge reducing profit but no actual cash outflow. Added back to reconcile to operating cash. Revenue is already in PAT. Dividends are CFF. Capex is CFI.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "eddfa7e6-0211-4aac-99ed-80bce858ef4c",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "Free Cash Flow (FCF) is calculated as:",
+    "options": [
+      "Net Profit - Dividends",
+      "EBITDA - Tax",
+      "CFO - Capex",
+      "Revenue - Total Expenses"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "FCF = CFO minus Capex. Cash left after operational and investment needs. A is retained earnings. B misses working capital and interest. D is closer to operating profit.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "a7e8d23b-da63-4594-b55e-0ac507fe28b3",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "Trade receivables increased Rs 200cr during the year. In CFO this is:",
+    "options": [
+      "Cash inflow of Rs 200cr",
+      "Cash outflow of Rs 200cr",
+      "No impact on CFO",
+      "A financing activity"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Receivables increase = revenue recorded but cash not collected. Already in PAT (overstating cash), so subtract Rs 200cr. Equivalent to cash that should have come in but did not.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "f8eaea48-e46d-4cd9-840c-9aab95439c26",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "PAT Rs 800cr, CFO Rs 350cr. CFO/PAT ratio is:",
+    "options": [
+      "2.29x -- excellent",
+      "0.44x -- concerning",
+      "0.44x -- excellent",
+      "2.29x -- concerning"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "350/800 = 0.44x. Below 0.8x threshold -- concerning. Only 44% of profit converted to cash. 56% locked in receivables/inventory or indicates manipulation. Satyam-era levels warrant forensic analysis.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "5d3e581a-e42c-4d9d-b9c7-cd957240d24d",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "CFO 5,000cr, Capex 4,500cr, Dividends 2,000cr, New Borrowings 1,500cr. Is dividend sustainable?",
+    "options": [
+      "Yes -- CFO exceeds dividends",
+      "No -- FCF (500cr) is far below dividends (2,000cr)",
+      "Yes -- borrowings cover the gap",
+      "No -- company has negative CFO"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "FCF = 5,000-4,500 = 500cr. Dividends 2,000cr are 4x FCF. Gap of 1,500cr covered by borrowing. Borrowing to pay dividends is unsustainable and increases financial risk.",
+    "difficulty": "hard",
+    "order_index": 5,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "e6001ffb-e997-4fe8-957c-7a0b63e79739",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "IT company: CFO 10,000cr, D&A 2,000cr, Capex 1,500cr. Capex < D&A suggests:",
+    "options": [
+      "Underinvesting -- capex below D&A",
+      "Normal for asset-light IT companies",
+      "Should spend more on capex",
+      "Both A and C"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "For IT, primary asset is human capital (P&L cost), not physical assets. Capex/D&A slightly below 1.0x is normal because D&A includes software amortisation and ROU assets. For steel or cement, capex < D&A would indicate underinvestment. Context matters.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "5465e138-e090-427e-99d7-20a9a854d510",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "Which CFS section includes purchase of a new factory?",
+    "options": [
+      "Operating Activities",
+      "Investing Activities",
+      "Financing Activities",
+      "Not on the CFS"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Capex (new factory) is in Cash Flow from Investing Activities as an outflow. Not operational (long-term investment). Not financing (asset acquisition not capital structure).",
+    "difficulty": "easy",
+    "order_index": 7,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "c395acb4-e736-4026-9cf8-4c96481c6b40",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "Under Ind AS 116, how do operating lease payments change in CFS?",
+    "options": [
+      "No change -- still in CFO as rent",
+      "CFO increases and CFF decreases (principal moved to CFF)",
+      "CFO decreases and CFF increases",
+      "All lease payments move to CFI"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Under Ind AS 116, previously single rent expense in CFO is split: interest portion may stay in CFO, principal repayment moves to CFF. CFO looks better (higher), CFF looks worse. Total outflow same but classification changes. Analysts must adjust for comparability.",
+    "difficulty": "medium",
+    "order_index": 8,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "db00d1a8-f0b9-4c33-ba04-1d0ccaee4f2b",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "Cash flow pattern: CFO negative, CFI positive, CFF positive. This indicates:",
+    "options": [
+      "Healthy growing company",
+      "Mature cash cow",
+      "Financial distress -- selling assets and borrowing to survive",
+      "Startup investing in growth"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Negative CFO = not generating operating cash. Positive CFI = selling assets (liquidating). Positive CFF = raising capital (borrowing/issuing equity). Screams distress. Jet Airways and Vodafone Idea pattern.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "7417dc05-a2dd-4b47-81d5-4c573c278188",
+    "session_id": "4af45899-19ee-4ab1-bb85-92b29c995557",
+    "question": "FCF 2,000cr, Market Cap 80,000cr, FCF grows 15% for 5 years. Year 5 FCF?",
+    "options": [
+      "Rs 3,000cr",
+      "Rs 4,023cr",
+      "Rs 3,500cr",
+      "Rs 5,000cr"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Year 5 FCF = 2,000 x (1.15)^5 = 2,000 x 2.0114 = Rs 4,023cr. Compound growth -- FCF roughly doubles in 5 years (Rule of 72: 72/15 = 4.8 years). Core DCF logic from Module 12.",
+    "difficulty": "hard",
+    "order_index": 10,
+    "created_at": "2026-04-13T03:15:32.831472+00:00",
+    "_session_title": "The Cash Flow Statement Deep Dive",
+    "_session_order": 8
+  },
+  {
+    "id": "21b9e10f-bf4a-4e72-bc8e-93f5f637b282",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Net Profit from the Income Statement flows into which line on the Balance Sheet?",
+    "options": [
+      "Cash & Cash Equivalents",
+      "Trade Receivables",
+      "Retained Earnings (Reserves & Surplus)",
+      "Long-Term Borrowings"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Net profit added to Retained Earnings in Equity on BS. Cash affected through CFS not directly from profit. Receivables affected by revenue. Borrowings unrelated to profit.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "7cd87538-bfb0-4467-82ba-0094f471796b",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Depreciation appears on which financial statement(s)?",
+    "options": [
+      "Only Income Statement",
+      "Only Balance Sheet",
+      "All three: P&L as expense, BS as accumulated depreciation, CFS as add-back to CFO",
+      "Only Cash Flow Statement"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "D&A is the ultimate linking item. P&L expense (reduces profit), BS accumulated depreciation (reduces net PP&E), CFS add-back (non-cash). Understanding this triple role is key to linking.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "0a922ea4-04f6-42b8-9df0-b760b67f1370",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Opening RE 5,000cr, Net Profit 1,200cr, Dividends 400cr. Closing RE?",
+    "options": [
+      "6,200cr",
+      "5,800cr",
+      "6,600cr",
+      "4,200cr"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Closing RE = 5,000 + 1,200 - 400 = 5,800cr. A forgets to subtract dividends. C adds dividends. D subtracts both from opening.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "763ba01a-60b6-4615-b9e0-dc352ee9828b",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Opening Net PP&E 8,000cr, Capex 2,000cr, D&A 800cr, no disposals. Closing Net PP&E?",
+    "options": [
+      "10,000cr",
+      "9,200cr",
+      "7,200cr",
+      "9,600cr"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Closing = 8,000 + 2,000 - 800 - 0 = 9,200cr. A ignores depreciation. C subtracts capex. PP&E roll-forward is essential linkage formula.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "5bb4708d-2978-4ebc-8e93-06e725a66fb5",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Trade receivables increase Rs 300cr. Effect on Cash Flow Statement?",
+    "options": [
+      "Cash inflow 300cr in CFO",
+      "Cash outflow 300cr in CFO",
+      "Cash inflow 300cr in CFI",
+      "No effect"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Receivables increase = revenue recognised but cash not collected. Since CFO starts with PAT (which includes this revenue), subtract 300cr to adjust to cash. Working capital adjustment section of CFO.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "5b8dae77-ee95-4efc-b734-ac2bec76fbb7",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "BS closing cash 2,500cr. CFS shows opening 3,000cr and net change -800cr. What does discrepancy indicate?",
+    "options": [
+      "Company performing well",
+      "Possible forex effect, error, or unreported cash movement",
+      "Normal and expected",
+      "Company has more cash than reported"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Closing should be 3,000-800 = 2,200cr but BS shows 2,500cr. Gap of 300cr could be: forex effects on foreign currency cash, reclassification, or error. If unexplained, cash figure is suspicious (recall Satyam phantom cash).",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "a7f2c13a-ff7f-41e8-b382-a0ea2c84f2e3",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "In a circular 3-statement model, which creates the circularity?",
+    "options": [
+      "Revenue to Receivables to WC adjustment",
+      "Interest expense to Net profit to Cash flow to Debt balance to Interest expense",
+      "Depreciation to Net PP&E to PP&E roll-forward",
+      "Dividends to Retained Earnings to Equity"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Classic circular loop: interest depends on debt, debt depends on cash flow shortfall, cash flow depends on net profit, profit depends on interest. A to B to C to D to A. Others are linear chains.",
+    "difficulty": "hard",
+    "order_index": 7,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "db48bc3b-038e-4333-bc91-2554e22943ad",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Company purchases inventory Rs 500cr on credit. Immediate Balance Sheet effect?",
+    "options": [
+      "Inventory +500, Cash -500",
+      "Inventory +500, Trade Payables +500",
+      "COGS +500, Revenue +500",
+      "No BS impact until sold"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Credit purchase: no cash moves. Inventory (asset) +500, Payables (liability) +500. Both sides increase equally. COGS only when sold. A would be cash purchase.",
+    "difficulty": "easy",
+    "order_index": 8,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "d9552f88-25f1-47bf-a4c3-cd7590e6ecc6",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Revenue grew 20% but CFO declined 15%. Receivables grew 45%. Most likely conclusion?",
+    "options": [
+      "Investing heavily in growth",
+      "Aggressive revenue recognition or collection problems",
+      "Working capital efficiency improved",
+      "Paid too many dividends"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Receivables growing 2.25x revenue growth. Customers not paying or revenue not collectible. Drains CFO via working capital subtraction. A does not explain receivables disconnect. C is opposite. D affects CFF not CFO.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "62609e65-0cb2-46ce-a263-2fe69a929d88",
+    "session_id": "a8f12ec8-42d3-48b8-a67a-ee833a966ebe",
+    "question": "Equity grew 2,000cr but Net Profit only 500cr, no dividends. Most likely explanation?",
+    "options": [
+      "Retained all profits",
+      "New equity issuance (QIP/rights/ESOP) or large OCI gains",
+      "Accounting error",
+      "Reduced debt"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Equity grew 2,000 but profit only explains 500. Remaining 1,500 must come from outside P&L: new share issuance (share capital + premium) or OCI gains. A explains only 500. Debt reduction does not directly affect equity.",
+    "difficulty": "hard",
+    "order_index": 10,
+    "created_at": "2026-04-13T03:27:16.554942+00:00",
+    "_session_title": "Linking the Three Statements",
+    "_session_order": 9
+  },
+  {
+    "id": "856851d6-adb0-492f-96c8-ec36df7e3033",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Which is a characteristic of equity financing?",
+    "options": [
+      "Fixed interest payments required",
+      "Tax-deductible cost",
+      "No mandatory repayment obligation",
+      "Lowers cost of capital immediately"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Equity has no fixed repayment obligation. Dividends discretionary. A describes debt. B wrong -- dividends NOT deductible. D incorrect -- equity raises WACC (more expensive than debt).",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "fa503ea1-44ba-423c-9280-7770c9b62df6",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Pecking Order Theory suggests companies prefer capital in this order:",
+    "options": [
+      "Equity then Debt then Internal",
+      "Internal then Debt then Equity",
+      "Debt then Internal then Equity",
+      "Internal then Equity then Debt"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Internal funds first (cheapest, no dilution), then debt (cheaper than equity, tax-deductible), then equity (most expensive, dilutive) as last resort.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "c1ac8ae1-3c0e-44f6-8d75-c6fed042f0f4",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "EBIT 800cr, Interest 200cr. Interest Coverage Ratio?",
+    "options": [
+      "0.25x",
+      "4.0x",
+      "2.5x",
+      "6.0x"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "800/200 = 4.0x. Earns 4x interest obligation -- comfortable. Below 2.0x is warning. A inverts the ratio.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "45b8f474-8634-4d5b-88c9-97421ff3346c",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Borrow 1,000cr at 10%, tax rate 25%. Annual tax shield?",
+    "options": [
+      "250cr",
+      "25cr",
+      "75cr",
+      "100cr"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Interest = 1,000 x 10% = 100cr. Tax Shield = 100 x 25% = 25cr. Saves 25cr in taxes annually. A applies tax rate to principal. D is total interest not shield.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "7d90b895-85aa-4352-bdac-25a30b332b4e",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Which statement about share buybacks is INCORRECT?",
+    "options": [
+      "Reduce shares outstanding",
+      "Increase EPS for remaining shareholders",
+      "Always value-accretive for shareholders",
+      "India has 20% buyback tax"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "NOT always value-accretive. If company buys at inflated prices (above intrinsic value), destroys value. Only accretive when purchased below intrinsic value. Others are correct factual statements.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "07167c7b-079d-458b-9754-447d75375eaf",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Company has ROA 8%, cost of debt 10%. Increasing leverage will:",
+    "options": [
+      "Increase ROE (leverage amplifies)",
+      "Decrease ROE (ROA < cost of debt destroys value)",
+      "No effect",
+      "Increase then decrease"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "When ROA (8%) < cost of debt (10%), every rupee borrowed earns less than it costs. 2% gap comes from shareholders pockets. ROE only increases from leverage when ROA exceeds cost of debt.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "48e15ce7-589b-47a4-bb0e-9df7a640224d",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Dividends 500cr, FCF 300cr. The 200cr gap is most likely funded by:",
+    "options": [
+      "Increasing retained earnings",
+      "Drawing down cash reserves or new debt",
+      "Revenue growth",
+      "Depreciation add-back"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Dividends exceed FCF by 200cr -- must come from cash on BS or borrowing. A is wrong (dividends reduce RE). Revenue growth and depreciation are P&L/CFO concepts not direct dividend funding sources.",
+    "difficulty": "hard",
+    "order_index": 7,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "3715aef8-cfd1-46ac-82b0-7224cd9fefda",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "FCCBs are best described as:",
+    "options": [
+      "Pure equity in rupees",
+      "Pure debt with no conversion",
+      "Hybrid: foreign-currency debt convertible to equity",
+      "RBI government bonds"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "FCCBs are debt in foreign currency with option to convert to equity. Carry currency risk (rupee depreciation increases repayment) and conversion risk (stock below conversion price forces cash repayment).",
+    "difficulty": "easy",
+    "order_index": 8,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "0b927afd-48d4-4a16-a6b0-4f6aa0e901f3",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "Promoter pledges 65% of holding, stock drops 20%. Most likely consequence?",
+    "options": [
+      "No impact",
+      "Margin calls forcing more pledging or selling, creating downward pressure",
+      "Revenue decline",
+      "Debt automatically increases"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Pledged shares lose value -> margin calls -> more collateral or forced selling -> more price pressure -> more margin calls. Self-reinforcing downward spiral. Revenue and company debt not directly affected but market confidence collapses.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "680cae5a-d9c6-4492-94da-93cf555a63e8",
+    "session_id": "3b749a86-8d68-448d-9ac0-052400b63b34",
+    "question": "ROE 20%, Payout Ratio 40%. Sustainable Growth Rate?",
+    "options": [
+      "8%",
+      "12%",
+      "20%",
+      "40%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "SGR = ROE x Retention = 20% x (1-0.40) = 20% x 0.60 = 12%. Can grow 12%/year without external capital. Faster growth requires debt or equity.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T04:07:11.872936+00:00",
+    "_session_title": "Corporate Finance Essentials — How Companies Fund Themselves",
+    "_session_order": 10
+  },
+  {
+    "id": "c71ac6a5-2756-435c-a502-8d8fb166ed33",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "What does WACC stand for?",
+    "options": [
+      "Weighted Adjusted Cost of Capital",
+      "Weighted Average Cost of Capital",
+      "Weighted Average Cost of Credit",
+      "Weighted Annual Cost of Capital"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Weighted Average Cost of Capital. Blends cost of all capital sources (debt and equity) by proportion.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "23161d77-f8aa-4ac7-beea-b26af7c2ac20",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Why is cost of debt multiplied by (1-Tax Rate) in WACC?",
+    "options": [
+      "Interest income taxable for bondholders",
+      "Interest expense is tax-deductible for the company",
+      "Debt is riskier than equity",
+      "Companies negotiate lower rates after tax"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Interest reduces taxable income, creating tax shield. 10 interest at 25% tax saves 2.50, effective cost 7.50. A is about bondholder tax. C is wrong (debt less risky). D is nonsensical.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "1d1ac6da-460a-4d2e-940f-b64a2f59283e",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Market cap 200cr, debt 100cr, Re 14%, pre-tax Rd 9%, tax 30%. WACC?",
+    "options": [
+      "11.43%",
+      "12.10%",
+      "11.44%",
+      "10.50%"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "E/V=200/300=66.67%. D/V=100/300=33.33%. After-tax Rd=9%x0.70=6.30%. WACC=(66.67%x14%)+(33.33%x6.30%)=9.33%+2.10%=11.43%.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "ea4890f1-fde8-4a69-9f59-0ee112c2d217",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Beta 1.2, Rf 7%, ERP 6%. Cost of equity?",
+    "options": [
+      "13.0%",
+      "13.2%",
+      "14.2%",
+      "14.0%"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Re = 7% + 1.2 x 6% = 7% + 7.2% = 14.2%. A adds beta to ERP incorrectly. D drops decimal.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "a38f192c-f986-4ace-84d3-58e6d4755c74",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Company X: E=500cr, D=500cr, Re=16%, Rd=10%, Tc=25%. Company Y: E=900cr, D=100cr, Re=12%, Rd=8%, Tc=25%. Lower WACC?",
+    "options": [
+      "X (WACC=11.75%)",
+      "Y (WACC=11.40%)",
+      "X (WACC=13.00%)",
+      "Same WACC"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "X: (50%x16%)+(50%x10%x0.75)=8%+3.75%=11.75%. Y: (90%x12%)+(10%x8%x0.75)=10.8%+0.6%=11.40%. Y lower despite less debt because its cost of equity is significantly lower. WACC is not just about capital structure -- business risk matters.",
+    "difficulty": "hard",
+    "order_index": 5,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "bdd415c7-6271-4f22-9f98-eaeaadd66eb8",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Which is NOT an input to CAPM?",
+    "options": [
+      "Risk-free rate",
+      "Beta",
+      "Debt-to-equity ratio",
+      "Equity risk premium"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "CAPM = Rf + Beta x ERP. Uses Rf, Beta, ERP. D/E affects WACC weights and levered beta but is not a direct CAPM input.",
+    "difficulty": "easy",
+    "order_index": 6,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "2a966124-0206-455c-9a80-22a0bad031b9",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "WACC is 12%. New project returns 10%. Management should:",
+    "options": [
+      "Accept -- 10% is good",
+      "Reject -- destroys shareholder value",
+      "Accept if strategic",
+      "Depends on the project beta"
+    ],
+    "correct_answer_index": 3,
+    "explanation": "Best answer: depends on project beta. WACC is hurdle for average-risk projects. If this project is lower-risk, a lower hurdle might apply. B is textbook answer (10% < 12% = reject) and acceptable in basic interviews. D is more nuanced and sophisticated.",
+    "difficulty": "medium",
+    "order_index": 7,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "0840d2ea-f9b8-4040-b606-1e437658b77c",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Why prefer Damodaran ERP over historical average returns minus Rf?",
+    "options": [
+      "Uses more recent data",
+      "Historical averages include survivorship bias, not forward-looking",
+      "Numbers are always higher",
+      "Historical returns not available for India"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Historical averages suffer from survivorship bias (only study markets that survived), look-ahead bias, may not reflect current risk. Damodaran uses implied ERP from current prices and expected cash flows -- forward-looking. A is partially true but not core reason.",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "5e4a2c46-d040-4c91-b28a-6bcd576cf52e",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Bloomberg adjusted beta formula: 0.67 x Raw + 0.33 x 1.0. Raw beta 1.5, adjusted beta?",
+    "options": [
+      "1.33",
+      "1.34",
+      "1.50",
+      "1.17"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "0.67 x 1.5 + 0.33 x 1.0 = 1.005 + 0.33 = 1.335, rounds to 1.34. Adjustment nudges extreme betas toward 1.0 reflecting mean reversion.",
+    "difficulty": "medium",
+    "order_index": 9,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "57bd2d06-fdfd-4776-bd1b-eaba8b13cbc1",
+    "session_id": "1f19a640-1fcd-44ab-85ff-bffbbb228334",
+    "question": "Company WACC 11%, plans to move D/E from 0.2 to 1.0. Effect on WACC?",
+    "options": [
+      "Definitely decrease -- debt cheaper",
+      "Definitely increase -- higher risk",
+      "Could decrease initially (tax shield) but may increase if excessive",
+      "Stays same -- value unchanged"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "U-curve concept. Moderate debt lowers WACC (tax shield). But 0.2 to 1.0 is aggressive -- Rd rises (lenders demand more), beta rises (equity riskier). Net effect depends on specifics. A ignores risk. B ignores initial benefit. D is frictionless M&M world.",
+    "difficulty": "hard",
+    "order_index": 10,
+    "created_at": "2026-04-13T04:14:50.236979+00:00",
+    "_session_title": "Cost of Capital & WACC Intuition",
+    "_session_order": 11
+  },
+  {
+    "id": "034d5677-6779-4d6d-a2c6-8e979baa02c2",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "Bond coupon rate 6%, face value Rs 1,000. Annual coupon payment?",
+    "options": [
+      "Rs 6",
+      "Rs 60",
+      "Rs 600",
+      "Rs 6,000"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Coupon = 6% x 1,000 = Rs 60. A confuses percentage with rupee amount. C and D use wrong multipliers.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "bc25d4f7-6a69-4b63-a961-3f145646126c",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "What happens to bond market price when interest rates rise?",
+    "options": [
+      "Price rises",
+      "Price falls",
+      "Price stays same",
+      "Depends on credit rating"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Fundamental inverse relationship. Existing bonds with lower fixed coupons become less attractive, prices fall to adjust effective yield upward. D confuses credit risk with interest rate risk.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "d6e804ec-4bc0-4cf7-bab7-c287561567ba",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "3-year bond, face Rs 100, coupon 8%, market yield 10%. Bond trades at:",
+    "options": [
+      "Par",
+      "Premium",
+      "Discount",
+      "Cannot determine"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Yield (10%) > coupon (8%), bond must trade below par (discount) to compensate buyer for below-market coupon. At par means coupon=yield. Premium means coupon>yield.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "baf0d892-5d04-45f9-aabb-884cdfbb1950",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "Which bond has highest duration (most price sensitivity)?",
+    "options": [
+      "2-year 8% coupon",
+      "10-year 8% coupon",
+      "10-year 2% coupon",
+      "2-year zero-coupon"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Duration increases with longer maturity and decreases with higher coupons. 10-year 2% coupon has longest maturity and lowest coupon -- virtually all value from distant principal repayment. Highest duration.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "7e253a5a-da7b-4b62-b4d8-f11582e757b4",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "What does an inverted yield curve typically signal?",
+    "options": [
+      "Strong economic growth",
+      "Impending recession",
+      "Rising inflation",
+      "Central bank rate hikes"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Inverted (short > long rates) means market expects rate cuts due to economic slowdown/recession. Preceded every US recession since 1970. A describes normal/steep curve. C and D are causes not signals.",
+    "difficulty": "easy",
+    "order_index": 5,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "f61f7d76-83e9-4af5-a28a-dff2bfd4a766",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "India 10-year G-Sec yields 7.0%. AAA corporate bond yields 7.8%. Credit spread?",
+    "options": [
+      "0.8% or 80 basis points",
+      "7.8%",
+      "14.8%",
+      "0.08%"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "Credit spread = Corporate - Government = 7.8% - 7.0% = 0.8% = 80 bps. 1 percentage point = 100 bps. B is full corporate yield. C adds both. D confuses percentage with decimal.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "5c606e6a-6dcf-41fc-83c2-ca4dc3a94af5",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "RBI cuts repo rate by 50 bps. Which sector MOST likely sees stock prices decline short-term?",
+    "options": [
+      "Real estate",
+      "IT services",
+      "Banking (NIM compression risk)",
+      "FMCG"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Rate cuts mean banks must lower lending rates. If lending rates fall faster than deposit rates, NIM compresses hurting earnings. Real estate benefits (cheaper loans). IT neutral to Indian rates. FMCG rate-insensitive.",
+    "difficulty": "medium",
+    "order_index": 7,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "e85c2a4c-feec-4cc6-a64e-06c37add3790",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "Modified duration 6.5. Yields rise 50 bps (0.5%). Approximate price change?",
+    "options": [
+      "+3.25%",
+      "-3.25%",
+      "+6.50%",
+      "-0.325%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Price change = -Modified Duration x Change in Yield = -6.5 x 0.005 = -0.0325 = -3.25%. Negative sign critical: rising yields cause falling prices. A reverses sign. C uses full duration as pct. D misplaces decimal.",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "9541e67f-8b3a-4b60-80e3-491973ffb690",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "Most appropriate risk-free rate for 10-year DCF of Indian company with INR cash flows?",
+    "options": [
+      "US 10-year Treasury (~4.3%)",
+      "India 91-day T-bill (~6.5%)",
+      "India 10-year G-Sec (~7.0%)",
+      "India AAA corporate bond (~7.8%)"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Must match currency (INR) and duration (10 years). A is wrong currency (USD). B is right currency wrong duration (91 days). D includes credit spread (not risk-free). Only C matches both.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "b373a98a-5b01-469e-9602-6aee9419fd1b",
+    "session_id": "76d9023b-b6a6-46e6-9aef-b05c50777111",
+    "question": "Bond current yield 7.5%, coupon rate 8%. What can you infer about market price?",
+    "options": [
+      "Trading at par",
+      "Trading at discount",
+      "Trading at premium",
+      "Cannot determine"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Current Yield = Coupon/Price. If CY (7.5%) < Coupon Rate (8%), denominator (Price) must be higher than face value. Price = 8/0.075 = Rs 106.67 (above Rs 100 par). Bond is at premium. B would be true if CY > coupon.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T04:25:58.790685+00:00",
+    "_session_title": "Interest Rates, Bonds & the Yield Curve (What Equity Analysts Must Know)",
+    "_session_order": 12
+  },
+  {
+    "id": "57b8f4ca-ae65-4fee-ba05-31fa0d2f3239",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "PE ratios of 10 companies: 12,14,15,16,18,19,20,22,25,120. Which central tendency measure for comparable set?",
+    "options": [
+      "Mean",
+      "Median",
+      "Mode",
+      "Geometric mean"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Median. PE 120 is massive outlier pulling mean to ~28.1 (describes none). Median = (18+19)/2 = 18.5 -- far more representative. Mode not applicable (no repeats). Geometric mean not used for cross-sectional PE.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "c7cecafe-4913-43ca-ad26-761261c6b7da",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Stock returns +10%, -5%, +15%, -10% over 4 years. Arithmetic mean annual return?",
+    "options": [
+      "2.5%",
+      "5.0%",
+      "10.0%",
+      "0%"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "Mean = (10-5+15-10)/4 = 10/4 = 2.5%. B doubles correct answer. C picks first return. D would require perfect cancellation.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "13506b17-34d3-4279-a3fa-aec95f8c6409",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Monthly returns: +2%, +4%, -1%, +3%, +2%. Sample standard deviation is approximately:",
+    "options": [
+      "1.58%",
+      "1.87%",
+      "2.00%",
+      "3.16%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Mean=2%. Deviations: 0,2,-3,1,0. Squared: 0,4,9,1,0=14. Sample var=14/4=3.5. Sample std=sqrt(3.5)=1.87%. A uses population formula. D incorrect calculation.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "a83e544e-8b2f-4703-ae79-d4f13e1eb193",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Regression of TCS on Nifty: R2=0.48, beta=0.72. What does R2 tell you?",
+    "options": [
+      "TCS has 48% upside potential",
+      "48% of TCS return variation explained by market movements",
+      "TCS beats market 48% of time",
+      "48% chance beta is correct"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "R2 = proportion of dependent variable variation explained by independent variable. 48% of TCS fluctuations from broad market, 52% is company-specific. A confuses with price target. C with win rate. D with confidence.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "fbece18d-de79-4563-835e-a7c7de6f325d",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Correlation of -0.85 between two variables means:",
+    "options": [
+      "No relationship",
+      "Strong opposite directional movement",
+      "One causes the other to decline",
+      "Weak relationship"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "-0.85 is strong negative: when one goes up, other reliably goes down. A describes r~0. C conflates correlation with causation. D incorrect -- anything above +/-0.7 is strong.",
+    "difficulty": "easy",
+    "order_index": 5,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "55f60aa7-cd6b-443e-9c43-cdac5363adff",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Stock returns +50% Year 1, -33% Year 2. Arithmetic mean +8.5%. CAGR is:",
+    "options": [
+      "+8.5%",
+      "+4.2%",
+      "~0%",
+      "-1.2%"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Rs 100 -> 150 -> ~100.5. CAGR = (100.5/100)^(1/2)-1 = ~0.25% ~ 0%. Arithmetic mean 8.5% massively overstates due to volatility drag.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "a92a2f32-2d54-4f36-bac4-cb7b6c0a69be",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "To annualise monthly standard deviation, multiply by:",
+    "options": [
+      "12",
+      "sqrt(12)",
+      "12 squared",
+      "1/12"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "sqrt(12) = ~3.464. Volatility scales with square root of time (returns assumed independent). If monthly sigma=3%, annual=3%xsqrt(12)=10.4%. A vastly overstates. C absurd. D reduces.",
+    "difficulty": "medium",
+    "order_index": 7,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "29585ed4-d6e9-45fa-bd32-1ec91ca81749",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Umbrella sales and IT stock prices have correlation +0.70 over 5 years. Best conclusion?",
+    "options": [
+      "Umbrellas drive IT stocks up",
+      "IT growth drives umbrella purchases",
+      "Both may be driven by common factor or correlation is spurious",
+      "Relationship too weak to matter"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Classic spurious correlation. No logical causal mechanism. Both could be coincidentally trending upward. 0.70 is statistically strong which makes it MORE dangerous -- tempting to use. A and B assert causation. D wrong (0.70 is strong).",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "b1f42437-c2db-424c-a424-4d5453c2b32f",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Mid-cap regression: beta=1.4, R2=0.15, p-value=0.08. Use this beta in CAPM?",
+    "options": [
+      "Yes, 1.4 reasonable for mid-cap",
+      "No -- R2 very low and p-value exceeds 0.05, estimate unreliable",
+      "Yes, after Bloomberg adjustment",
+      "No -- mid-caps should never use CAPM"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "R2=0.15 means only 15% explained by market -- poor fit. P-value 0.08 means 8% chance relationship is random -- above 5% threshold. Beta is statistically unreliable. Use industry average from Damodaran instead. C does not fix fundamental unreliability. D too extreme.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "f3d470ea-12d3-48df-be4d-db2e100c1870",
+    "session_id": "a3762198-b9e8-4128-b7fc-1d2555ad7fd7",
+    "question": "Portfolio manager says fund returned 18% CAGR over 10 years. What bias to suspect?",
+    "options": [
+      "Anchoring bias",
+      "Survivorship bias",
+      "Confirmation bias",
+      "Recency bias"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Survivorship bias. Fund survived 10 years (probably performed well). Funds that underperformed and were merged/closed are invisible. The 18% figure only looks at the winner. A, C, D are real biases but do not address data selection issue.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T04:36:37.732454+00:00",
+    "_session_title": "Basic Statistics & Data Thinking for Analysts",
+    "_session_order": 13
+  },
+  {
+    "id": "a541ac7e-8deb-4be5-b8ee-b05707da8f8a",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "10% price increase causes 5% quantity decrease. PED is:",
+    "options": [
+      "-2.0",
+      "-0.5",
+      "+0.5",
+      "+2.0"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "PED = -5%/10% = -0.5. |PED|=0.5 < 1 so inelastic. A reverses fraction. C and D incorrectly use positive signs. Negative reflects inverse price-quantity relationship.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "1a2a9808-e544-49e7-9ed2-9743cdcf8e8a",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "Which market structure gives MOST pricing power?",
+    "options": [
+      "Perfect competition",
+      "Monopolistic competition",
+      "Oligopoly",
+      "Monopoly"
+    ],
+    "correct_answer_index": 3,
+    "explanation": "Monopolist = sole seller, no direct competition, maximum price-setting ability. Perfect competition = zero (price-taker). Monopolistic = some via differentiation. Oligopoly = significant but constrained by rivals.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "3a25cd33-e097-4f59-b7a2-8577d77e7299",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "ITC raises cigarette prices 12% after excise hike. Volumes decline only 2%. This indicates:",
+    "options": [
+      "Elastic demand",
+      "Unit elastic",
+      "Inelastic demand",
+      "Perfectly elastic"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "PED = -2%/12% = -0.17. |PED|=0.17, well below 1 = highly inelastic. Revenue rose ~10%. ITC cigarette business = one of strongest moats in Indian equities.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "e1e44cdf-9b2e-4db6-99aa-b5eff5597ba5",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "In Porter Five Forces, which force MOST directly explains Asian Paints 20%+ EBITDA margins for 15+ years?",
+    "options": [
+      "High threat of substitutes",
+      "High supplier power",
+      "Low threat of new entrants due to distribution network",
+      "High rivalry"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Asian Paints 1.5 lakh+ dealer distribution network built over decades = enormous entry barrier. Grasim investing Rs 10,000+ crore still struggling. A, B, D are all LOW in paints -- helps, but C is the defining advantage.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "49f7d9ac-b8cb-4084-a88f-7e3da6fafd11",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "HHI for Indian telecom (Jio 40%, Airtel 33%, Vi 20%, Others 7%) is approximately:",
+    "options": [
+      "100",
+      "1,000",
+      "3,138",
+      "10,000"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "HHI = 40^2+33^2+20^2+7^2 = 1600+1089+400+49 = 3,138. Above 2,500 = highly concentrated. A requires 100 equal firms. D = pure monopoly. High HHI explains improving pricing discipline post-consolidation.",
+    "difficulty": "medium",
+    "order_index": 5,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "a4f62841-4993-4a91-afb3-8c24f9177666",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "Company A in perfect competition and Company B a monopolist both earn Rs 100cr EBITDA. Which should trade at higher PE and why?",
+    "options": [
+      "A -- competitive markets more efficient",
+      "B -- monopoly earnings more sustainable and predictable",
+      "Same multiple since EBITDA identical",
+      "Cannot determine"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Monopolist earnings protected by barriers and no competitors -- more durable. In perfect competition, supernormal profits attract entrants until margins go to zero. A EBITDA is at risk of being competed away. Market pays premium for certainty and sustainability.",
+    "difficulty": "hard",
+    "order_index": 6,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "b96fea40-0072-4c92-a4d4-96adbdcb5a95",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "Cross-price elasticity between Jio and Airtel is positive and high. This means:",
+    "options": [
+      "Complementary products",
+      "Substitute products",
+      "Unrelated",
+      "Jio prices higher than Airtel"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Positive cross-price elasticity: Jio price rises -> Airtel demand increases (customers switch). Definition of substitutes. Complements have negative cross-elasticity (price of one rises, demand for both falls).",
+    "difficulty": "easy",
+    "order_index": 7,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "a8a1175d-2fb4-40bf-85ef-9f74836b6aed",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "Indian cement capacity utilisation at 65%. Most likely impact on prices and margins?",
+    "options": [
+      "Prices rise sharply due to strong demand",
+      "Prices under pressure due to excess supply",
+      "Margins expand as fixed costs spread",
+      "Producers immediately shut excess capacity"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "65% utilisation = 35% idle = severe overcapacity. Producers compete for volume to cover fixed costs, pressing prices down. Cement prices typically firm only when utilisation crosses 75-80%. D rarely happens quickly in capital-intensive industries.",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "d767c341-b5bc-447a-8d8c-13bbffcc950c",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "Zomato raises platform fees Rs 5 to Rs 10 with minimal volume impact. Best explanation?",
+    "options": [
+      "High supply of restaurants and low demand",
+      "High switching costs, network effects, and limited alternatives creating inelastic demand",
+      "Perfect competition in food delivery",
+      "Elastic demand with price-sensitive customers"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Multiple reinforcing factors: switching costs (saved addresses, preferences, payments), network effects (more restaurants = better selection = more users), limited alternatives (only Swiggy, similar prices). Together create highly inelastic platform demand.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "d97ae61e-5ff9-4865-a230-6bc1e615b7ef",
+    "session_id": "84ea3aa7-c0a2-4800-8283-86affa1b9473",
+    "question": "EV startup claims Indian auto market is Rs 7 lakh crore, just need 0.5% = Rs 3,500 crore company. Primary flaw?",
+    "options": [
+      "Auto market actually smaller",
+      "Confuses TAM with SAM/SOM",
+      "EVs are substitutes for traditional cars",
+      "0.5% too ambitious"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Rs 7L crore includes trucks, tractors, two-wheelers, luxury, commercial vehicles. Mid-range EV startup SAM might be Rs 50,000-80,000 crore and SOM even smaller against Tata Motors, Hyundai, MG. The just need X% fallacy is the most common pitch deck trick.",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T05:01:21.154524+00:00",
+    "_session_title": "Microeconomics for Equity Analysts",
+    "_session_order": 14
+  },
+  {
+    "id": "f217d0d1-6fd8-4058-970c-f31d41c31b0d",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "GDP = C + I + G + (X-M). What does C represent?",
+    "options": [
+      "Corporate investment",
+      "Household consumption spending",
+      "Central bank reserves",
+      "Capital expenditure"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "C = household Consumption expenditure. Largest component of India GDP at ~57%. A describes I (Investment). C is not in GDP equation. D is part of I.",
+    "difficulty": "easy",
+    "order_index": 1,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "61f7592a-10ca-4167-b39e-c2a99cda5298",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "RBI primary mandate for monetary policy is:",
+    "options": [
+      "Maximising GDP growth",
+      "Maintaining price stability (inflation targeting)",
+      "Keeping rupee stable",
+      "Reducing fiscal deficit"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Primary objective: price stability with CPI target 4% +/-2%. Growth is secondary. Currency management is handled but not primary mandate. Fiscal deficit is government responsibility.",
+    "difficulty": "easy",
+    "order_index": 2,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "9f4babb0-b17c-4b27-91e4-0a613a626e30",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "Repo rate 6.5%, CPI 5.0%. Real interest rate is:",
+    "options": [
+      "11.5%",
+      "1.5%",
+      "-1.5%",
+      "6.5%"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Real rate = Nominal - Inflation = 6.5%-5.0% = 1.5%. A adds them. C reverses. D ignores inflation. Positive real rate means savers earn real return, attracts foreign capital.",
+    "difficulty": "medium",
+    "order_index": 3,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "8ae7736f-da8d-41b4-bdd5-fe4283910cf0",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "Brent crude rises $75 to $100/barrel. Most likely immediate effect on India?",
+    "options": [
+      "Current account surplus widens",
+      "Rupee strengthens",
+      "Import bill rises, widening CAD",
+      "RBI cuts rates to support growth"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "India imports ~85% crude. $25 increase massively raises import bill widening CAD. A is backward (India has deficit). B is opposite (more dollar outflows weaken rupee). D wrong because higher oil is inflationary making RBI hawkish.",
+    "difficulty": "medium",
+    "order_index": 4,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "0e485257-dbd6-4d32-b305-9a4b62f6a38f",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "US Fed raises rate by 75 bps. Most likely transmission to Indian equities?",
+    "options": [
+      "No impact -- Indian markets domestic only",
+      "FPIs sell Indian equities for higher-yielding US assets, pressuring stocks and rupee",
+      "Indian companies directly face higher borrowing costs",
+      "Indian GDP accelerates"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Higher US rates make Treasuries more attractive. FPIs reallocate from EM to US, creating selling pressure. Played out dramatically in 2022. A is naive (India integrated with global flows). C is indirect. D has no basis.",
+    "difficulty": "hard",
+    "order_index": 5,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "28383c04-0254-4af5-9c2c-fe2061d85568",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "Which high-frequency indicator leads official GDP data?",
+    "options": [
+      "Monthly GST collections",
+      "Annual report filings",
+      "Census data",
+      "Company quarterly earnings"
+    ],
+    "correct_answer_index": 0,
+    "explanation": "GST collections released monthly, directly reflect consumption and business activity. Available 1-2 weeks after month-end vs GDP 60 days after quarter. B is backward-looking. C is decadal. D is company-specific.",
+    "difficulty": "easy",
+    "order_index": 6,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "65a70bfc-f731-48f0-9226-c739600a6192",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "During rising interest rate environment, most appropriate sector rotation?",
+    "options": [
+      "Overweight IT and Pharma (defensives)",
+      "Overweight Real Estate and Auto (rate-sensitives)",
+      "Overweight Banks (NIM expansion) and underweight long-duration growth stocks",
+      "Overweight all equally"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "Rising rates expand bank NIMs (reprice loans faster than deposits). Long-duration growth stocks (IT, tech) suffer from heavier discounting. A partially right but misses bank benefit. B wrong (rate-sensitives hurt). D ignores cycle.",
+    "difficulty": "medium",
+    "order_index": 7,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "f00d67dd-c435-475c-b95f-598163a5b3df",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "Government announces fiscal deficit reduction from 5.9% to 5.1% of GDP. Most likely market reaction?",
+    "options": [
+      "Negative -- less government spending",
+      "Positive for bonds and equities -- lower borrowing means lower yields and WACC",
+      "No impact",
+      "Only positive for PSU stocks"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "Lower deficit = less government borrowing = less G-Sec supply = bond yields drop. Lower yields = lower Rf = lower WACC = higher equity valuations. Exactly what happened Feb 2024 -- yields dropped 15 bps, equities rallied. A partially valid but yield benefit dominates.",
+    "difficulty": "hard",
+    "order_index": 8,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "2b6dc7c3-9a41-4c46-94fb-9d15876fa54a",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "CPI inflation 4.5% while WPI 10%. What does divergence signal for corporate margins?",
+    "options": [
+      "Margins expand -- CPI under control",
+      "Margins squeezed -- input costs (WPI) rising faster than output prices (CPI)",
+      "No impact",
+      "Companies should cut production"
+    ],
+    "correct_answer_index": 1,
+    "explanation": "WPI = input costs. CPI = output prices. WPI >> CPI means companies absorbing cost increases without fully passing on. Margin compression. Happened 2021-22 across FMCG, auto, chemicals. A ignores input side.",
+    "difficulty": "hard",
+    "order_index": 9,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  },
+  {
+    "id": "3026837e-3e3b-4ee6-923e-a3533759bccd",
+    "session_id": "d6342f68-8850-45c3-b96f-9a4505a580c9",
+    "question": "INR depreciates 83/$ to 88/$. Which company benefits MOST?",
+    "options": [
+      "Indian Oil (imports crude in USD)",
+      "DLF (domestic real estate)",
+      "TCS (earns revenue in USD, costs in INR)",
+      "Adani Enterprises (USD-denominated debt)"
+    ],
+    "correct_answer_index": 2,
+    "explanation": "TCS earns ~95% revenue in foreign currencies, pays most costs in INR. Rupee weakening 83 to 88: each dollar converts to more rupees, boosting margins ~150-200 bps. IOCL hurt (pays more for oil). DLF neutral. Adani hurt (USD debt costlier).",
+    "difficulty": "medium",
+    "order_index": 10,
+    "created_at": "2026-04-13T05:16:55.939502+00:00",
+    "_session_title": "Macroeconomics for Equity Analysts",
+    "_session_order": 15
+  }
+]
