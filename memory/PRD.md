@@ -257,6 +257,20 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - DecisionMakingSim.jsx already supports this schema natively — zero frontend changes required
 - Verified via /app/scripts/replace_s10_simulation.py: structural checks pass; every non-terminal option has valid next_decision link; optimal path totals exactly max_total (8); 4 outcome bands sorted correctly
 
+### Phase 23 - Module 1 Sessions 1, 2, 4, 9, 11, 12, 13 Simulation Replacements (Feb 2026)
+- DELETED 7 prior `interactive`-type simulations and replaced with topic-aligned new sims:
+  - S1 TVM → `decision_making` "TVM Workshop — Growing ₹10 Lakh for a 5-Year Home Down-Payment" (vehicle / compounding frequency / front-loading; optimal totals 14)
+  - S2 Risk & Return → `decision_making` "Risk & Return Workshop — Picking Among Three Stock Scenarios" (compute E(R) / σ / risk-adjusted; aligned with the post-update S2 notes covering only HPR, E(R), σ — no Sharpe/CAPM)
+  - S4 Big Three → `document` "The Big Three — Identifying Where Each Line Lives in GreenLeaf Foods" (3 statements side-by-side, 10 tooltips, 10 identification + computation tasks)
+  - S9 Linking the Three → `document` "Linking the Three Statements — A FY25 Roll-Forward Exercise" (opening BS + FY25 P&L + FY25 CFS; tasks roll forward closing R&S, PP&E, LT Debt, Cash)
+  - S11 WACC → `decision_making` "WACC Workshop — Setting the Discount Rate for an Acquisition" (sector beta / after-tax Rd / market-value weights; converges on WACC ≈ 12.6%)
+  - S12 Yield Curve → `decision_making` "Yield Curve Reading Workshop — Three Curve Shapes, Three Signals" (inverted = recession / steepening = reflation / flat = late-cycle warning)
+  - S13 Statistics → `decision_making` "Stats Workshop — Three Quick-Fire Calls Every Analyst Faces" (median for skewed / correlation ≠ causation / p-value framing)
+- All 5 decision-making sims: 3 sequential linear decisions × 3 options, 4 outcome bands each, scoring dimensions consistent across all decisions per sim
+- Both document sims: 3 sections (P&L / BS / CFS or BS-open / P&L / CFS), 7–10 interactive tooltips, 9–10 mixed identification/computation/free-text tasks with sample answers
+- DocumentSim.jsx and DecisionMakingSim.jsx already support these schemas natively — zero frontend changes
+- Verified via /app/scripts/replace_m1_seven_sims.py: all `next_decision` links valid; optimal paths reach top outcome band; all highlight IDs match line-item IDs; all tasks have explanation or sample_answer
+
 ### Phase 22 - Module 1 / Sessions 14 & 15 Simulation Replacements (Feb 2026)
 - DELETED prior simulations:
   - S14 Microeconomics: old decision-making sim id 6986ffbc-... (broken/incomplete config)
