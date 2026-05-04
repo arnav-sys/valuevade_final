@@ -354,7 +354,7 @@ async def generate_customization(req: CustomizeRequest):
             api_key=EMERGENT_LLM_KEY,
             session_id=f"customize-{uuid.uuid4()}",
             system_message=CUSTOMIZE_SYSTEM_PROMPT,
-        ).with_model("anthropic", "claude-4-sonnet-20250514")
+        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
 
         response = await chat.send_message(UserMessage(text=user_message_text))
 
@@ -546,7 +546,7 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
             api_key=EMERGENT_LLM_KEY,
             session_id=f"interview-eval-{uuid.uuid4()}",
             system_message=INTERVIEW_EVAL_SYSTEM_PROMPT,
-        ).with_model("anthropic", "claude-4-sonnet-20250514")
+        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
 
         response = await chat.send_message(UserMessage(text=user_message_text))
 

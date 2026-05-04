@@ -16,7 +16,7 @@ NO `excel_shortcuts` field at the top level (per user instruction for S6 and S12
 
 # =====================================================================
 # SESSION 2 — Risk & Return: keep ONLY HPR, Expected Return, Std Dev
-# id=444fdbc8-ee54-4d36-bc6c-4155d36e23ce
+# id=finance-copilot-32
 # Remove Sharpe Ratio and CAPM entirely. Update title.
 # =====================================================================
 S2_TITLE = "Risk & Return Formulas: HPR, Expected Return, Standard Deviation"
@@ -119,7 +119,7 @@ S2_CONTENT = {
 
 # =====================================================================
 # SESSION 6 — Income Statement (HUL): add variables/meanings to every metric
-# id=2a57ec87-50f8-4e92-8b9c-7e8f7840a730
+# id=finance-copilot-32
 # NO excel_shortcuts field.
 # =====================================================================
 S6_TITLE = "Income Statement Formulas and HUL Worked Example"
@@ -385,7 +385,7 @@ S6_CONTENT = {
 
 # =====================================================================
 # SESSION 12 (M10 S4) — Yield Curve Formulas: full rewrite
-# id=c0ff08d9-9381-412e-a4a6-d64b10e27bba
+# id=finance-copilot-32
 # Comprehensive variables, plain-English, computation, worked example
 # for each of the 5 formulas. NO excel_shortcuts field.
 # =====================================================================
