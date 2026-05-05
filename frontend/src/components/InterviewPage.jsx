@@ -99,7 +99,7 @@ export default function InterviewPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [, setSession] = useState(null);
+  const [session, setSession] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
 

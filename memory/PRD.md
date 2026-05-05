@@ -297,6 +297,12 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - `isChunkLoadError` helper covers: `ChunkLoadError`, "Loading chunk X failed", "Loading CSS chunk X failed", "Failed to fetch dynamically imported module", "Importing a module script failed".
 - Verified: lint clean, login screen loads on preview URL.
 
+### Phase 26 - InterviewPage `Can't find variable: session` Fix (Feb 2026)
+- **Bug**: Clicking "Start Interview" threw `ReferenceError: Can't find variable: session` (Safari) caught by ErrorBoundary.
+- **Root cause**: `/app/frontend/src/components/InterviewPage.jsx:102` had `const [, setSession] = useState(null);` — a previous unused-vars cleanup dropped the `session` value from the destructuring, but lines 161 (`!!session?.interview_completed`) and 625 (`session?.interview_score`) still referenced it. ESLint's no-undef didn't catch it (likely because `session` resembles a removed global).
+- **Fix**: Restored `const [session, setSession] = useState(null);`. `setSession(sess)` on line 132 already populates it from the `user_sessions` fetch, so `isReview` and the review-mode score banner now resolve correctly.
+- Audited the rest of `components/` for the same `[, setX]` pattern — none found.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
