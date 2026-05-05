@@ -1,5 +1,5 @@
 import "@/App.css";
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
@@ -10,6 +10,7 @@ import SessionPhaseGuard from "@/components/SessionPhaseGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
+import lazyWithRetry from "@/utils/lazyWithRetry";
 
 // Public (eager-load: small, fast, frequent entry points)
 import LandingPage from "@/components/LandingPage";
@@ -19,35 +20,35 @@ import AdminDashboard from "@/components/AdminDashboard";
 import NotFoundPage from "@/components/NotFoundPage";
 
 // Authenticated — lazy loaded for faster initial bundle
-const CoursesPage = lazy(() => import("@/components/CoursesPage"));
-const CourseDetailsPage = lazy(() => import("@/components/CourseDetailsPage"));
-const CustomizePage = lazy(() => import("@/components/CustomizePage"));
-const PreviewPage = lazy(() => import("@/components/PreviewPage"));
-const ConfirmPage = lazy(() => import("@/components/ConfirmPage"));
-const LoadingPage = lazy(() => import("@/components/LoadingPage"));
-const EnrolledPage = lazy(() => import("@/components/EnrolledPage"));
-const DashboardPage = lazy(() => import("@/components/DashboardPage"));
-const SessionStartPage = lazy(() => import("@/components/SessionStartPage"));
-const NotesPage = lazy(() => import("@/components/NotesPage"));
-const NotesCompletePage = lazy(() => import("@/components/NotesCompletePage"));
-const QuizStartPage = lazy(() => import("@/components/QuizStartPage"));
-const QuizPage = lazy(() => import("@/components/QuizPage"));
-const QuizCompletePage = lazy(() => import("@/components/QuizCompletePage"));
-const InterviewStartPage = lazy(() => import("@/components/InterviewStartPage"));
-const InterviewPage = lazy(() => import("@/components/InterviewPage"));
-const InterviewCompletePage = lazy(() => import("@/components/InterviewCompletePage"));
-const SimulationStartPage = lazy(() => import("@/components/SimulationStartPage"));
-const SimulationPage = lazy(() => import("@/components/SimulationPage"));
-const SimulationCompletePage = lazy(() => import("@/components/SimulationCompletePage"));
-const SessionCompletePage = lazy(() => import("@/components/SessionCompletePage"));
-const ModuleProjectStartPage = lazy(() => import("@/components/ModuleProjectStartPage"));
-const ModuleProjectTasksPage = lazy(() => import("@/components/ModuleProjectTasksPage"));
-const ModuleProjectCompletePage = lazy(() => import("@/components/ModuleProjectCompletePage"));
-const CapstoneStartPage = lazy(() => import("@/components/CapstoneStartPage"));
-const CapstoneTasksPage = lazy(() => import("@/components/CapstoneTasksPage"));
-const CapstoneCompletePage = lazy(() => import("@/components/CapstoneCompletePage"));
-const ProfilePage = lazy(() => import("@/components/ProfilePage"));
-const SettingsPage = lazy(() => import("@/components/SettingsPage"));
+const CoursesPage = lazyWithRetry(() => import("@/components/CoursesPage"));
+const CourseDetailsPage = lazyWithRetry(() => import("@/components/CourseDetailsPage"));
+const CustomizePage = lazyWithRetry(() => import("@/components/CustomizePage"));
+const PreviewPage = lazyWithRetry(() => import("@/components/PreviewPage"));
+const ConfirmPage = lazyWithRetry(() => import("@/components/ConfirmPage"));
+const LoadingPage = lazyWithRetry(() => import("@/components/LoadingPage"));
+const EnrolledPage = lazyWithRetry(() => import("@/components/EnrolledPage"));
+const DashboardPage = lazyWithRetry(() => import("@/components/DashboardPage"));
+const SessionStartPage = lazyWithRetry(() => import("@/components/SessionStartPage"));
+const NotesPage = lazyWithRetry(() => import("@/components/NotesPage"));
+const NotesCompletePage = lazyWithRetry(() => import("@/components/NotesCompletePage"));
+const QuizStartPage = lazyWithRetry(() => import("@/components/QuizStartPage"));
+const QuizPage = lazyWithRetry(() => import("@/components/QuizPage"));
+const QuizCompletePage = lazyWithRetry(() => import("@/components/QuizCompletePage"));
+const InterviewStartPage = lazyWithRetry(() => import("@/components/InterviewStartPage"));
+const InterviewPage = lazyWithRetry(() => import("@/components/InterviewPage"));
+const InterviewCompletePage = lazyWithRetry(() => import("@/components/InterviewCompletePage"));
+const SimulationStartPage = lazyWithRetry(() => import("@/components/SimulationStartPage"));
+const SimulationPage = lazyWithRetry(() => import("@/components/SimulationPage"));
+const SimulationCompletePage = lazyWithRetry(() => import("@/components/SimulationCompletePage"));
+const SessionCompletePage = lazyWithRetry(() => import("@/components/SessionCompletePage"));
+const ModuleProjectStartPage = lazyWithRetry(() => import("@/components/ModuleProjectStartPage"));
+const ModuleProjectTasksPage = lazyWithRetry(() => import("@/components/ModuleProjectTasksPage"));
+const ModuleProjectCompletePage = lazyWithRetry(() => import("@/components/ModuleProjectCompletePage"));
+const CapstoneStartPage = lazyWithRetry(() => import("@/components/CapstoneStartPage"));
+const CapstoneTasksPage = lazyWithRetry(() => import("@/components/CapstoneTasksPage"));
+const CapstoneCompletePage = lazyWithRetry(() => import("@/components/CapstoneCompletePage"));
+const ProfilePage = lazyWithRetry(() => import("@/components/ProfilePage"));
+const SettingsPage = lazyWithRetry(() => import("@/components/SettingsPage"));
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (

@@ -289,6 +289,14 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - **Verification (curl, all PASS)**: `POST /api/customize/generate` returns valid customization plan JSON; `POST /api/visual/generate` returns ~600KB base64 jpeg from Gemini Nano Banana; `POST /api/interview/evaluate` returns differentiated 1-5 scores + answer-specific feedback bullets. All three previously failed with "Invalid API key".
 - Note: prior agent had also updated stale Anthropic model strings to `claude-sonnet-4-5-20250929`; that change was correct but the actual blocker was the corrupted env value.
 
+### Phase 25 - Stale-Chunk Self-Heal (Feb 2026)
+- **Issue**: Production users on `valuevade.com` saw "A glitch in the cosmos / Loading chunk 261 failed" the first time they navigated to a lazy-loaded route after a redeploy. Cause: their open tab still held the old `index.html`, but Vercel/CDN had already replaced the JS chunks with new content-hashed filenames, so `import('./NotesPage')` 404'd.
+- **Fix**: New `/app/frontend/src/utils/lazyWithRetry.js` wraps `React.lazy` with chunk-failure detection. On `ChunkLoadError` it sets a sessionStorage flag (`vv-chunk-reloaded`) and triggers `window.location.reload()` once, returning a never-resolving promise so the ErrorBoundary doesn't flash. Second failure in the same session bubbles up normally so we don't reload-loop on a real outage.
+- All 29 `lazy()` calls in `/app/frontend/src/App.js` swapped to `lazyWithRetry()`.
+- `ErrorBoundary` (`/app/frontend/src/components/ErrorBoundary.jsx`) now also runs the same one-time reload as a safety net for any chunk error that leaks through (e.g. non-route lazy imports).
+- `isChunkLoadError` helper covers: `ChunkLoadError`, "Loading chunk X failed", "Loading CSS chunk X failed", "Failed to fetch dynamically imported module", "Importing a module script failed".
+- Verified: lint clean, login screen loads on preview URL.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

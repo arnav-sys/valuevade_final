@@ -1,5 +1,8 @@
 import { Component } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { isChunkLoadError } from '@/utils/lazyWithRetry';
+
+const RELOAD_FLAG = 'vv-chunk-reloaded';
 
 export default class ErrorBoundary extends Component {
   constructor(props) {
@@ -14,6 +17,15 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     // eslint-disable-next-line no-console
     console.error('[ErrorBoundary]', error, info);
+
+    // Self-heal stale-deploy chunk failures: hard-reload once to pick up new index.html.
+    if (isChunkLoadError(error)) {
+      const alreadyReloaded = window.sessionStorage.getItem(RELOAD_FLAG);
+      if (!alreadyReloaded) {
+        window.sessionStorage.setItem(RELOAD_FLAG, '1');
+        window.location.reload();
+      }
+    }
   }
 
   handleReset = () => {
