@@ -321,6 +321,18 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
   - Enrollment check block was already guarded by `if (user?.id)`, so anonymous visitors just see the "Sign up to Enroll" path without DB noise.
 - Verified end-to-end via Playwright on preview URL as an anonymous visitor: page loads, `detail-title` renders, CTA says "Sign up to Enroll", header has Log in + Sign up, Sign Out hidden, zero console errors.
 
+### Phase 29 - Module 1 / Session 3 Simulation Replacement (Feb 2026)
+- DELETED the prior broken `decision_making` sim `a2c36b44-…` ("Business Models & Unit Economics — Analyst Decision Simulation") — its config used the legacy `rounds` / `scoring_rubric` schema that DecisionMakingSim.jsx doesn't render natively, so it fell through to GenericRenderer (the "incomplete" experience the user reported).
+- INSERTED new `decision_making` sim `7d8a94c0-…`: "Unit Economics Workshop — Reading the Margins of Three Indian Businesses" — analyst-desk scenario with 3 sequential linear decisions × 3 options (last decision terminal):
+  - D1 Classify ZohoFlow (B2B SaaS): SaaS / services-led / marketplace — uses gross margin + NRR + auto-renewal as discriminators (optimal: SaaS, +9)
+  - D2 Spot the red flag at BlushBerry (D2C beauty, ₹950 AOV / ₹720 CAC / 32% contribution / 18% repeat / 1.4 reorders): CAC payback OK / LTV/CAC < 1 / margin too low — optimal: LTV/CAC < 1 (+9), with full math worked into the consequence
+  - D3 Capital allocation at DukanBazaar (B2B grocery marketplace, 4.2% take-rate, ₹600 cr cash): push GMV / lift take-rate / pivot to inventory — optimal: lift take-rate (+13)
+- Three scoring dimensions (consistent across all 9 options): model_fluency, unit_economics_intuition, capital_discipline. max_total=+31, min_total=-13. 4 outcome bands sorted at -20/0/12/22 → Initiation Withdrawn → Caveated Pass → Solid Initiation → Best-in-Class Coverage.
+- Includes scenario_context (analyst desk frame), initial_data tiles (tools/lens/time/coverage), per-option consequence narrative (with quantitative justification), score_impact triple, and terminal Head-of-Research verdict.
+- Required NOT-NULL DB columns supplied: `scenario` (analyst-desk framing), `instructions` (decision flow + scoring), `objectives` (6 learning outcomes).
+- Verified via /app/scripts/replace_s3_simulation.py: optimal-path total = max_total exactly; worst-path total = min_total exactly; all next_decision links valid; consistent scoring dimensions across all options; outcome bands sorted and reachable.
+- DecisionMakingSim.jsx renders this natively — zero frontend changes; the Phase 27 "See optimal path" panel works on it too.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
