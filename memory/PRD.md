@@ -333,6 +333,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Verified via /app/scripts/replace_s3_simulation.py: optimal-path total = max_total exactly; worst-path total = min_total exactly; all next_decision links valid; consistent scoring dimensions across all options; outcome bands sorted and reachable.
 - DecisionMakingSim.jsx renders this natively — zero frontend changes; the Phase 27 "See optimal path" panel works on it too.
 
+### Phase 30 - Module 1 / Session 5 Simulation Replacement (Feb 2026)
+- DELETED prior broken `decision_making` sim `87a88631-…` ("Accounting Principles & Accrual Concepts — Forensic Analyst Simulation") — used the legacy `rounds`/`scoring_rubric`/`simulation_structure` schema that DecisionMakingSim.jsx falls back to GenericRenderer for.
+- INSERTED new structured `decision_making` sim `9fc48c1a-…`: "Accrual Accounting Workshop — Three Calls That Decide Earnings Quality":
+  - D1 Revenue Recognition (Ind AS 115): CloudKonnect — ₹3.6 cr 3-year SaaS contract billed upfront on 31 Mar; CFO wants to book all ₹3.6 cr in Q4. Options: book all / book 1 yr / defer all & recognise ₹0.1 cr/month over 36 months. Optimal: defer all (+9)
+  - D2 Conservatism on Inventory (Ind AS 2): AmbarSteel — ₹400 cr inventory at cost vs ₹320 cr NRV. Options: hold at cost / write down to NRV / average. Optimal: write down (+11)
+  - D3 Earnings Quality via Accrual Ratio: PrithviGears — PAT ₹500 cr, CFO ₹150 cr, total assets ₹3,500 cr (accrual ratio = 10%), receivable days 60→95, customer concentration 52→78%. Options: Clean / Red Flag / Need more data. Optimal: Red Flag with quantitative justification (+12)
+- Three scoring dimensions (consistent across 9 options): recognition_discipline, conservatism_bias, accrual_forensics. max_total=+32, min_total=-20. 4 outcome bands at -25/0/14/24 → Earnings Note Pulled → Notes Issued With Caveats → Solid Earnings-Quality Coverage → Top-of-Desk Forensic Note.
+- Required NOT-NULL DB columns supplied: `scenario` (forensic-analyst desk frame), `instructions` (scoring + flow), `objectives` (6 learning outcomes incl. Ind AS 115 / Ind AS 2 / Accrual Ratio framework).
+- Verified via /app/scripts/replace_s5_simulation.py: optimal/worst totals match exactly, all next_decision links valid, all 9 options use consistent scoring dimensions.
+- DecisionMakingSim.jsx renders natively; "See optimal path" panel from Phase 27 works on it too.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
