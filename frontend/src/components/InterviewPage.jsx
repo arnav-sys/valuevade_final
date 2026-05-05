@@ -141,7 +141,8 @@ export default function InterviewPage() {
           .from('master_interview_questions')
           .select('*')
           .eq('session_id', sess.master_session_id)
-          .order('order_index');
+          .order('order_index')
+          .limit(5);
         if (qErr) throw qErr;
         if (!mounted) return;
         setQuestions(qs || []);

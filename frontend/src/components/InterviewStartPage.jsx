@@ -51,7 +51,7 @@ export default function InterviewStartPage() {
             .select('*', { count: 'exact', head: true })
             .eq('session_id', sess.master_session_id);
           if (qErr) throw qErr;
-          if (mounted) setQuestionCount(count || 0);
+          if (mounted) setQuestionCount(Math.min(count || 0, 5));
         }
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load interview');

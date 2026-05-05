@@ -379,6 +379,23 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
   - Kept the small "Visual" pill badge for category orientation (consistent with other card types)
 - Lint clean.
 
+### Phase 34 - S2 Content Cleanup + Quiz/Interview Cap + Hook Card Fix (Feb 2026)
+
+**Task 1: M1 S2 (Risk & Return) — removed CAPM and Sharpe ratio questions**
+- DB: ran `/app/scripts/clean_s2_capm_sharpe.py`. Quiz: deleted 3 (Sharpe ratio compute, CAPM cost-of-equity, Sharpe ratio meaning) → 10 → 7 questions. Interview: deleted 4 (CAPM Infosys walk-through, Sharpe-ratio + beta comparison, Sharpe-ratio computation, "why CAPM uses beta") → 10 → 6 questions.
+- Aligns S2 quiz/interview pool with PRD Phase 17 / 23 — S2 notes only teach HPR, E(R), σ; no Sharpe / CAPM.
+
+**Task 2: Quiz and Interview now cap at top 5 questions per session**
+- `QuizPage.jsx` and `InterviewPage.jsx` fetch with `.limit(5)` on the Supabase query (so users never see more than 5 even if the pool has 10).
+- `QuizStartPage.jsx` and `InterviewStartPage.jsx` clamp the displayed question count via `Math.min(count, 5)` so the "Questions: 5" stat on the start screen matches the actual experience.
+- Pool size in DB intact — no questions deleted; the cap is purely a presentation/UX limit.
+
+**Task 3: S4 and S5 Hook cards rendered title-only — UI bug, not data**
+- Diagnosis: both DB rows have full content (`narrative` + `intrigue_hook` fields), but `HookCard` in `NotesPage.jsx` only mapped `scenario/setup/story` and `insight/aha/main_text/text` and `why_it_matters/matters/importance/call_to_action`. Neither `narrative` nor `intrigue_hook` had an alias — so both fields silently dropped, leaving only the section title visible.
+- Fix: added `narrative` to the scenario-slot fallback chain and `intrigue_hook` to the why-it-matters-slot fallback chain. Two-line change, zero behavior change for cards that already worked.
+
+Lint clean across all 5 modified files; smoke-tested — bundle compiles, no console errors.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

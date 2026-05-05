@@ -178,9 +178,9 @@ function NestedValue({ value }) {
 function HookCard({ content, title }) {
   const c = content || {};
   // Known aliases
-  const scenario = c.scenario || c.setup || c.story;
+  const scenario = c.scenario || c.setup || c.story || c.narrative;
   const insight = c.insight || c.aha || c.main_text || c.text;
-  const why_it_matters = c.why_it_matters || c.matters || c.importance || c.call_to_action;
+  const why_it_matters = c.why_it_matters || c.matters || c.importance || c.call_to_action || c.intrigue_hook;
   // Fallbacks for alt schemas
   const sub_text = c.sub_text || c.subtitle || c.description || c.subheading;
   return (
