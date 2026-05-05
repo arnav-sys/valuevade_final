@@ -344,6 +344,18 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - Verified via /app/scripts/replace_s5_simulation.py: optimal/worst totals match exactly, all next_decision links valid, all 9 options use consistent scoring dimensions.
 - DecisionMakingSim.jsx renders natively; "See optimal path" panel from Phase 27 works on it too.
 
+### Phase 31 - M1 Simulation Audit Sweep + S12 Re-replacement (Feb 2026)
+- Created `/app/scripts/audit_simulations.py` — a reusable validator that scans every sim in `master_simulations` and flags any whose `config` either:
+  1. contains LEGACY keys (`rounds`, `scoring_rubric`, `simulation_structure`, `design_theme`, `modules`), or
+  2. is missing the renderer-required keys for its sim_type (decision_making → `decision_points` + `scoring`; document → `document_data` + `tasks`; excel → `tasks`; interactive → `exercise_type`).
+- **M1 audit caught 1 broken sim**: S12 (Yield Curve) was still on legacy `interactive` `modules`/`slider_interactive` schema even though PRD Phase 23 claimed it had been replaced — the prior change apparently didn't persist. Replaced via `/app/scripts/replace_s12_simulation.py` with structured `decision_making` sim "Yield Curve Reading Workshop — Three Curve Shapes, Three Equity Calls":
+  - D1 Inverted curve (10Y-3M = -135 bps for 4 months) → optimal: high recession risk, trim cyclicals (+11)
+  - D2 Bull-steepener (Fed cuts 50 bps) → optimal: rotate into private banks for NIM expansion (+12)
+  - D3 Bear-flattener (long end rising, short flat) → optimal: trim long-duration growth, rotate into value (+13)
+  - Dimensions: macro_framework, transmission_logic, timing_quality. max +36 / min -17. 4 outcome bands at -25/0/16/28.
+- **Final M1 status: 15/15 sims pass the audit** ✓
+- **Cross-module audit findings** (informational, not yet fixed): full-platform sweep flagged 154 broken sims in M2–M13 (mostly excel sims missing `tasks` and document sims missing `document_data`/`tasks`) plus 25 missing sims in M14 & M15. Audit is committed for future cleanup runs.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
