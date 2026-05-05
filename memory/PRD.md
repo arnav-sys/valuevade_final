@@ -356,6 +356,18 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - **Final M1 status: 15/15 sims pass the audit** ✓
 - **Cross-module audit findings** (informational, not yet fixed): full-platform sweep flagged 154 broken sims in M2–M13 (mostly excel sims missing `tasks` and document sims missing `document_data`/`tasks`) plus 25 missing sims in M14 & M15. Audit is committed for future cleanup runs.
 
+### Phase 32 - Pre-Deploy Sim-Audit GitHub Action (Feb 2026)
+- Refactored `/app/scripts/audit_simulations.py` to be CI-safe:
+  - Reads `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` from env vars (no hardcoded keys); fails fast (exit 2) with a clear message if either is missing.
+  - New `--modules` flag accepts a comma-separated list of module order_index values (e.g. `--modules 1,2,7`) so the gate can opt modules in as content is cleaned.
+  - New `--allow-missing` flag lets advisory runs tolerate sessions without sims (M14/M15 are still being authored).
+  - Verified exit codes: M1 strict → 0, M2 strict → 1, missing-secrets → 2, M14 with `--allow-missing` → 0.
+- New workflow `/app/.github/workflows/audit-simulations.yml` runs on every push/PR to `main` and on manual dispatch:
+  - **`audit-strict`** job: blocks the build. Currently gates **Module 1 only** — extend by editing the `--modules` flag in the workflow as more modules are cleaned.
+  - **`audit-advisory`** job: full-platform sweep with `--allow-missing`, runs after strict gate, never blocks (`continue-on-error: true`). Surfaces M2–M13 cleanup progress in every CI run.
+- New README at `/app/.github/workflows/README.md` documents required secrets (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`), how to add modules to the gate, and how to dry-run locally.
+- Net effect: any future content edit on Supabase that ships a `decision_making` sim without `decision_points`, an excel sim without `tasks`, or any sim with a legacy key (`rounds`/`scoring_rubric`/`simulation_structure`/`design_theme`/`modules`) fails CI before reaching production. The exact recurrence we hit on S12 (PRD-claimed-fixed-but-DB-still-broken) is now mechanically impossible for cleaned modules.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

@@ -1,0 +1,75 @@
+name: Audit Simulations
+
+# Pre-deploy gate that catches sim configs whose schema doesn't match the
+# React renderer expectations. If a recent content edit on Supabase ships a
+# decision_making sim without `decision_points`, an excel sim without `tasks`,
+# or any sim with a legacy key (rounds / scoring_rubric / simulation_structure
+# / design_theme / modules), this job fails — preventing the change from
+# reaching production.
+#
+# Required GitHub Secrets (set in repo Settings → Secrets and variables → Actions):
+#   • SUPABASE_URL                 e.g. https://xxx.supabase.co
+#   • SUPABASE_SERVICE_ROLE_KEY    Service role key (bypasses RLS for the read-only audit)
+#
+# Strict-audit modules are listed in the matrix below. As more modules are
+# brought up to spec, add their order_index here so they are gated too.
+# Module 1 is currently the only fully-cleaned module; M2–M15 still have
+# known content gaps (tracked in PRD), so they're audited in a non-blocking
+# advisory job further down.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:    # manual run from the Actions tab
+
+jobs:
+  audit-strict:
+    name: Strict audit (must pass before deploy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run audit on cleaned modules
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::error::SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY secrets must be set in repo settings"
+            exit 2
+          fi
+          # Modules listed here MUST pass the audit. Add more as content is cleaned.
+          python3 scripts/audit_simulations.py --modules 1
+
+  audit-advisory:
+    name: Advisory audit (informational, never blocks)
+    runs-on: ubuntu-latest
+    continue-on-error: true   # never fails the workflow
+    needs: audit-strict       # only run if strict gate passed
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Full-platform audit (informational)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          # Allow missing sims (modules 14 & 15 are still being built)
+          # and tolerate broken sims (M2–M13 cleanup is on the roadmap).
+          # This job's purpose is visibility: the summary shows up in the
+          # workflow run so we can see the cleanup progress over time.
+          python3 scripts/audit_simulations.py --allow-missing || true
