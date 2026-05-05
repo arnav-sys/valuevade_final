@@ -55,21 +55,38 @@ export default function DecisionMakingSim({ config, title, onComplete }) {
 
   const scores = useMemo(() => accumulateScores(history, scoring), [history, scoring]);
 
-  // Build "optimal path" — pick highest total score per decision
-  const optimalPathIds = useMemo(() => {
-    if (!showOptimal) return new Set();
-    const ids = new Set();
-    decisionPoints.forEach((d) => {
+  // Build "optimal path" — walk the decision tree from the first decision, picking
+  // the highest-scoring option at each step (sum of score_impact values).
+  // Linear/converging configs the platform uses always produce a single chain.
+  const optimalPath = useMemo(() => {
+    const chain = [];
+    const seen = new Set();
+    let did = decisionPoints[0]?.id || null;
+    while (did && decisionsById[did] && !seen.has(did)) {
+      seen.add(did);
+      const d = decisionsById[did];
       let best = null;
       let bestScore = -Infinity;
       (d.options || []).forEach((o) => {
-        const s = Object.values(o.score_impact || {}).reduce((a, b) => a + b, 0);
+        const s = Object.values(o.score_impact || {}).reduce((a, b) => a + (typeof b === 'number' ? b : 0), 0);
         if (s > bestScore) { bestScore = s; best = o; }
       });
-      if (best) ids.add(`${d.id}:${best.id}`);
-    });
-    return ids;
-  }, [decisionPoints, showOptimal]);
+      if (!best) break;
+      chain.push({ decision: d, option: best, score: bestScore });
+      did = best.is_terminal ? null : best.next_decision;
+    }
+    return chain;
+  }, [decisionPoints, decisionsById]);
+
+  const optimalPathIds = useMemo(() => {
+    if (!showOptimal) return new Set();
+    return new Set(optimalPath.map((step) => `${step.decision.id}:${step.option.id}`));
+  }, [optimalPath, showOptimal]);
+
+  const optimalTotal = useMemo(
+    () => optimalPath.reduce((sum, step) => sum + step.score, 0),
+    [optimalPath],
+  );
 
   if (!hasStructured) {
     return <GenericRenderer config={config} title={title} typeLabel="Decision Making" onComplete={onComplete} />;
@@ -210,6 +227,86 @@ export default function DecisionMakingSim({ config, title, onComplete }) {
               Complete Simulation <ArrowRight size={15} />
             </button>
           </div>
+
+          {showOptimal && optimalPath.length > 0 && (
+            <div
+              className="rounded-2xl p-5 sm:p-6 bg-[var(--color-success)]/5 border border-[var(--color-success)]/30 animate-vv-fade-up"
+              data-testid="decision-optimal-panel"
+            >
+              <div className="flex items-center justify-between gap-3 mb-4 flex-wrap">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)] text-[10px] font-mono uppercase tracking-[0.2em]">
+                  <CheckCircle2 size={11} /> Optimal path
+                </div>
+                <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                  Total: <span className="text-[var(--color-success)] font-bold">+{optimalTotal}</span>
+                </div>
+              </div>
+
+              <ol className="space-y-3">
+                {optimalPath.map((step, i) => {
+                  const userPick = history.find((h) => h.decision?.id === step.decision.id);
+                  const matched = userPick && userPick.option?.id === step.option.id;
+                  return (
+                    <li
+                      key={step.decision.id}
+                      className="flex gap-3 items-start"
+                      data-testid={`decision-optimal-step-${i}`}
+                    >
+                      <div className="w-7 h-7 shrink-0 rounded-lg bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 flex items-center justify-center text-[11px] font-mono font-bold text-[var(--color-success)]">
+                        {i + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-0.5">
+                          {step.decision.title || step.decision.id}
+                        </div>
+                        <div className="font-clash text-sm sm:text-base font-semibold text-[var(--color-text)] flex items-center gap-2 flex-wrap">
+                          <CheckCircle2 size={14} className="text-[var(--color-success)] shrink-0" />
+                          <span>{step.option.label}</span>
+                          {userPick && (
+                            <span
+                              className={`inline-flex items-center text-[9px] font-mono uppercase tracking-[0.15em] rounded-full px-2 py-0.5 border ${
+                                matched
+                                  ? 'bg-[var(--color-success)]/10 border-[var(--color-success)]/25 text-[var(--color-success)]'
+                                  : 'bg-[#EF4444]/10 border-[#EF4444]/25 text-[#EF4444]'
+                              }`}
+                            >
+                              {matched ? 'You picked this' : `You picked: ${userPick.option?.label || '—'}`}
+                            </span>
+                          )}
+                        </div>
+                        {step.option.description && (
+                          <p className="text-xs sm:text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed mt-1">
+                            {step.option.description}
+                          </p>
+                        )}
+                        {step.option.consequence && (
+                          <p className="text-xs sm:text-sm font-bricolage text-[var(--color-text)]/80 leading-relaxed mt-1.5 whitespace-pre-wrap">
+                            {step.option.consequence}
+                          </p>
+                        )}
+                        {step.option.score_impact && Object.keys(step.option.score_impact).length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1.5">
+                            {Object.entries(step.option.score_impact).map(([dim, val]) => (
+                              <span
+                                key={dim}
+                                className={`inline-flex items-center text-[9px] font-mono uppercase tracking-[0.12em] rounded-full px-2 py-0.5 border ${
+                                  val >= 0
+                                    ? 'bg-[var(--color-success)]/10 border-[var(--color-success)]/25 text-[var(--color-success)]'
+                                    : 'bg-[#EF4444]/10 border-[#EF4444]/25 text-[#EF4444]'
+                                }`}
+                              >
+                                {dim.replace(/_/g, ' ')} {val > 0 ? '+' : ''}{val}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
         </div>
       )}
 

@@ -303,6 +303,15 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - **Fix**: Restored `const [session, setSession] = useState(null);`. `setSession(sess)` on line 132 already populates it from the `user_sessions` fetch, so `isReview` and the review-mode score banner now resolve correctly.
 - Audited the rest of `components/` for the same `[, setX]` pattern — none found.
 
+### Phase 27 - "See optimal path" actually shows the path (Feb 2026)
+- **Bug**: On the terminal outcome screen of any decision_making sim, clicking "See optimal path" did nothing — the toggle only highlighted optimal options in the active-decision block, but that block is unmounted once `isTerminal === true`.
+- **Fix in `/app/frontend/src/components/simulations/DecisionMakingSim.jsx`**:
+  - New `optimalPath` memo walks the decision graph from the first decision, picking the option with the highest sum of `score_impact` at each step, following `next_decision` until terminal (matches the linear/converging pattern of all 5 platform sims). Cycle-safe via `seen` set.
+  - On the terminal screen, when `showOptimal` is true, renders a dedicated panel under the toggle: numbered step list with decision title, optimal option label + description + consequence + score-impact pills, plus a "You picked this" / "You picked: …" badge per step comparing user's choice to the optimal.
+  - Header shows "Total: +N" using the optimal-path total score for context.
+  - Mobile-friendly (flex-wrap badges, responsive padding); fully theme-aware via CSS vars.
+- Lint clean; no console errors after change.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
