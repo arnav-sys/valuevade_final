@@ -676,21 +676,22 @@ function VisualCard({ content, title: topTitle, cardId }) {
     return () => { cancelled = true; };
   }, [shouldGenerate, cardId, displayTitle, promptDescription, apiBase, content]);
 
+  // Pick the single best 2-3 line summary from whatever the card provides.
+  // Priority: explicit description -> caption -> harvested longest text.
+  // Line-clamp at 3 lines (CSS) keeps it visually compact regardless of length.
+  const summary = useMemo(() => {
+    const candidates = [];
+    if (typeof description === 'string' && description.trim()) candidates.push(description.trim());
+    if (typeof caption === 'string' && caption.trim()) candidates.push(caption.trim());
+    if (!candidates.length && promptDescription) candidates.push(promptDescription);
+    return candidates[0] || '';
+  }, [description, caption, promptDescription]);
+
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20 text-center" data-testid="card-visual">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <FileText size={11} /> Visual
       </div>
-      {displayTitle && (
-        <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-3">
-          {displayTitle}
-        </h2>
-      )}
-      {(description || promptDescription) && (
-        <p className="text-sm text-[var(--color-text-muted)] font-bricolage max-w-xl mx-auto mb-6">
-          {description || promptDescription}
-        </p>
-      )}
       <div className="rounded-2xl bg-[var(--color-surface)]/50 border border-[var(--color-border)] p-4 sm:p-6 flex items-center justify-center min-h-[320px] overflow-hidden relative">
         {svg_content ? (
           <div
@@ -701,7 +702,7 @@ function VisualCard({ content, title: topTitle, cardId }) {
         ) : finalImageUrl ? (
           <img
             src={finalImageUrl}
-            alt={alt_text || title || 'Visual'}
+            alt={alt_text || displayTitle || 'Visual'}
             className="max-w-full h-auto rounded-xl shadow-[0_8px_32px_rgba(36,107,253,0.15)]"
             data-testid="visual-img"
           />
@@ -753,14 +754,19 @@ function VisualCard({ content, title: topTitle, cardId }) {
           <span className="text-xs text-[var(--color-text-faint)] font-mono">NO VISUAL</span>
         )}
       </div>
-      {caption && (
-        <p className="text-xs text-[var(--color-text-muted)] font-bricolage italic mt-4">{caption}</p>
+      {summary && (
+        <p
+          className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed mt-5 max-w-xl mx-auto overflow-hidden"
+          style={{
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+          }}
+          data-testid="visual-summary"
+        >
+          {summary}
+        </p>
       )}
-      <ExtraFields
-        content={content}
-        handled={['title', 'description', 'svg_content', 'image_url', 'caption', 'alt_text']}
-        accent="#246BFD"
-      />
     </div>
   );
 }

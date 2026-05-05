@@ -368,6 +368,17 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 - New README at `/app/.github/workflows/README.md` documents required secrets (`SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`), how to add modules to the gate, and how to dry-run locally.
 - Net effect: any future content edit on Supabase that ships a `decision_making` sim without `decision_points`, an excel sim without `tasks`, or any sim with a legacy key (`rounds`/`scoring_rubric`/`simulation_structure`/`design_theme`/`modules`) fails CI before reaching production. The exact recurrence we hit on S12 (PRD-claimed-fixed-but-DB-still-broken) is now mechanically impossible for cleaned modules.
 
+### Phase 33 - Visual Card Slim Down (Feb 2026)
+- User feedback: "in visual card many text are also shown. remove all the text and keep only visual. only show 2-3 lines summarising the image nothing more."
+- Updated `VisualCard` in `/app/frontend/src/components/NotesPage.jsx`:
+  - Removed the large `<h2>` title
+  - Removed the long description block
+  - Removed the separate caption block
+  - Removed `<ExtraFields>` (which dumped any unhandled content fields as raw text)
+  - Added a single 2-3 line summary BELOW the image, picked from `description → caption → harvested promptDescription`, line-clamped to 3 lines via `-webkit-line-clamp` so it stays compact regardless of source length
+  - Kept the small "Visual" pill badge for category orientation (consistent with other card types)
+- Lint clean.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
