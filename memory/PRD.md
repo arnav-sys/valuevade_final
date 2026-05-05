@@ -312,6 +312,15 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
   - Mobile-friendly (flex-wrap badges, responsive padding); fully theme-aware via CSS vars.
 - Lint clean; no console errors after change.
 
+### Phase 28 - Course Details Page Now Publicly Accessible (Feb 2026)
+- **Issue**: `/course/:courseId` required login to view — visitors landing from ads/SEO got bounced to /login before seeing the course content, killing conversion.
+- **Fix**:
+  - Removed `ProtectedRoute` wrapper from the `/course/:courseId` route in `/app/frontend/src/App.js`. Course list (`/courses`) was already public; now course details matches.
+  - `CourseDetailsPage.jsx` header: renders **Log in** + **Sign up** buttons when `user` is null, otherwise keeps the existing Sign Out button.
+  - Both the hero CTA and the sticky mobile CTA now route logged-out users to `/signup` (with label **"Sign up to Enroll"**) instead of `/course/:id/customize` (which still requires auth + would bounce to /login).
+  - Enrollment check block was already guarded by `if (user?.id)`, so anonymous visitors just see the "Sign up to Enroll" path without DB noise.
+- Verified end-to-end via Playwright on preview URL as an anonymous visitor: page loads, `detail-title` renders, CTA says "Sign up to Enroll", header has Log in + Sign up, Sign Out hidden, zero console errors.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

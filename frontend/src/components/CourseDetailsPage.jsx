@@ -173,13 +173,32 @@ export default function CourseDetailsPage() {
                 {profile.full_name}
               </span>
             )}
-            <button
-              onClick={signOut}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage"
-              data-testid="detail-signout-button"
-            >
-              <LogOut size={16} /> Sign Out
-            </button>
+            {user ? (
+              <button
+                onClick={signOut}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage"
+                data-testid="detail-signout-button"
+              >
+                <LogOut size={16} /> Sign Out
+              </button>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage"
+                  data-testid="detail-login-link"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/signup"
+                  className="px-3 py-1.5 rounded-lg text-sm font-semibold font-bricolage bg-[var(--color-primary)] text-white hover:shadow-[0_0_20px_rgba(36,107,253,0.35)] transition-all"
+                  data-testid="detail-signup-link"
+                >
+                  Sign up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </header>
@@ -262,11 +281,11 @@ export default function CourseDetailsPage() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => navigate(`/course/${courseId}/customize`)}
+                    onClick={() => navigate(user ? `/course/${courseId}/customize` : '/signup')}
                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
                     data-testid="detail-customize-enroll"
                   >
-                    Customize & Enroll <ArrowRight size={16} />
+                    {user ? 'Customize & Enroll' : 'Sign up to Enroll'} <ArrowRight size={16} />
                   </button>
                 )}
               </section>
@@ -440,11 +459,11 @@ export default function CourseDetailsPage() {
             </button>
           ) : (
             <button
-              onClick={() => navigate(`/course/${courseId}/customize`)}
+              onClick={() => navigate(user ? `/course/${courseId}/customize` : '/signup')}
               className="w-full py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage flex items-center justify-center gap-2 hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
               data-testid="detail-mobile-enroll-btn"
             >
-              Customize & Enroll <ArrowRight size={16} />
+              {user ? 'Customize & Enroll' : 'Sign up to Enroll'} <ArrowRight size={16} />
             </button>
           )}
         </div>

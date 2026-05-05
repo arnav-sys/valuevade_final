@@ -94,7 +94,7 @@ function App() {
 
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
                   <Route path="/courses" element={<CoursesPage />} />
-                  <Route path="/course/:courseId" element={<ProtectedRoute><CourseDetailsPage /></ProtectedRoute>} />
+                  <Route path="/course/:courseId" element={<CourseDetailsPage />} />
                   <Route path="/course/:courseId/customize" element={<ProtectedRoute><CustomizePage /></ProtectedRoute>} />
                   <Route path="/course/:courseId/preview" element={<ProtectedRoute><PreviewPage /></ProtectedRoute>} />
                   <Route path="/course/:courseId/confirm" element={<ProtectedRoute><ConfirmPage /></ProtectedRoute>} />
