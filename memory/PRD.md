@@ -491,6 +491,17 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - testagent2026 is at S1 only — magazine-style cards, interview cap, decision_making sims, document sims, and module-project gate render path could not be exercised end-to-end in the QA run
 - Recommended future: seed a fresh test user past M1 S6 to fully exercise the regenerated S7-S15 content
 
+### Phase 40 - Module Project "updated_at does not exist" Fix (Feb 2026)
+- Bug report screenshot: "ERROR: column user_module_projects.updated_at does not exist" when trying to start a module project.
+- **Root cause**: 4 components called `.order('updated_at', ...)` against tables whose schemas don't have an `updated_at` column:
+  - `user_module_projects` columns: `id, user_module_id, master_project_id, tasks_progress, is_completed, started_at, completed_at` (NO updated_at)
+  - `user_enrollments` columns: `id, user_id, master_path_id, title, customization_answers, customization_prompt, ai_customization_plan, status, enrolled_at, completed_at` (NO updated_at)
+- **Fix**:
+  - `ModuleProjectStartPage.jsx`, `ModuleProjectTasksPage.jsx`, `ModuleProjectCompletePage.jsx`: dropped the `.order('updated_at')` clause entirely. The query is filtered by `user_module_id` which uniquely identifies one project per user_module — no ordering needed.
+  - `CapstoneCompletePage.jsx`: replaced `.order('updated_at')` with `.order('enrolled_at')` (a column that actually exists on `user_enrollments`).
+- Verified via grep: no remaining `.order('updated_at')` calls in the codebase. Lint clean.
+- Module project Start / Tasks / Complete flows now load.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

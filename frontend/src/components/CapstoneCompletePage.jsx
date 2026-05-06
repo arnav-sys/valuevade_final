@@ -266,7 +266,7 @@ export default function CapstoneCompletePage() {
           .select('*')
           .eq('user_id', user.id)
           .in('status', ['completed', 'active'])
-          .order('updated_at', { ascending: false });
+          .order('enrolled_at', { ascending: false });
         if (enrErr) throw enrErr;
         if (!mounted) return;
 
