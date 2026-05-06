@@ -145,7 +145,8 @@ export default function InterviewPage() {
           .limit(5);
         if (qErr) throw qErr;
         if (!mounted) return;
-        setQuestions(qs || []);
+        // Defense-in-depth: cap at 5 even if upstream returns more.
+        setQuestions((qs || []).slice(0, 5));
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load interview');
       } finally {
