@@ -410,6 +410,22 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
   - **S10 Corporate Finance**: hook, concept (8 terms), 5 formulas (Interest Coverage, tax shield, ROE, SGR, D/E), deep-dive (6 sections), example (11 rows, 4 analysis bullets)
 - All generated content uses canonical alias field names so the existing renderers display every block (no silent drops like Phase 34's `narrative`/`intrigue_hook` issue).
 
+### Phase 36 - S11–S15 Notes Card Regeneration (Feb 2026)
+- Same generator pipeline as Phase 35, applied to the 5 dense topic-heavy sessions: S11 Cost of Capital & WACC, S12 Bonds/Yield Curve, S13 Statistics, S14 Microeconomics, S15 Macroeconomics.
+- Strengthened prompt for these complex topics:
+  - Mandatory storytelling (concrete scenes, real Indian companies, real numbers)
+  - Everyday analogies (EMI, ATM, Zomato order, Airtel recharge, IPL auction) BEFORE formal definitions
+  - First mention of any technical term must include a one-line plain-English translation in parentheses
+  - Self-audit step that maps every quiz/interview/sim question to a specific card before outputting
+- All 5 sessions generated and applied successfully via Claude Haiku 4.5; LLM key was topped up after first attempt hit budget cap.
+- Final state (verified via DB round-trip):
+  - **S11 WACC**: hook 367c scenario, 8 key terms, 4 formulas (WACC, Cost of Equity CAPM, After-tax Cost of Debt, weighted average), 6 deep-dive sections, 9-row example
+  - **S12 Bonds**: hook 452c scenario, 8 terms, 5 formulas (bond price, current yield, YTM, modified duration, price change), 6 sections, 9-row example
+  - **S13 Statistics**: hook 334c scenario, 8 terms, 7 formulas (mean, median, σ, variance, correlation, regression, z-score), 6 sections, 8-row example
+  - **S14 Microeconomics**: hook 328c scenario, 8 terms, 4 formulas (price elasticity, CR4, gross margin, contribution margin), 5 sections, 8-row example
+  - **S15 Macroeconomics**: hook 362c scenario, 8 terms, 5 formulas (real GDP growth, real interest rate, output gap, inflation, fiscal deficit), 6 sections, 7-row example
+- All cards use canonical alias field names → renderers display every block.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
