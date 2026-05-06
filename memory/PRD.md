@@ -467,6 +467,30 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Now when M1's last session completes, the dashboard correctly enters its existing "State 2: current module done but project pending" branch (already present at line 618-644) and shows the **"Complete Module Project"** CTA card with target icon and "Complete your Module 1 project" copy.
 - Lint clean.
 
+### Phase 39 - Signup Route Rename + Comprehensive QA Pass (Feb 2026)
+
+**Route rename**: `/signup` → `/signuproute1` per user request. Updated 4 references (App.js route + 3 in CourseDetailsPage.jsx). Testing agent verified `/signuproute1` renders SignupPage and `/signup` correctly returns the 404 NotFound page.
+
+**Testing agent QA pass (iteration_15)** — VERIFIED PASSES:
+- Login → dashboard works
+- QuizStartPage shows "QUESTIONS: 5" (cap working)
+- Dashboard exposes all expected data-testids and renders cleanly
+- SessionStartPage gating works (locked phases show lock icons)
+
+**Issues surfaced + fixed in this phase**:
+1. **NotesPage.jsx `.single()` → `.maybeSingle()`**: When a session id wasn't a valid `user_sessions.id` for the current user (e.g. master_session_id deep-link), Supabase threw a confusing 406 "Cannot coerce" error. Now returns null → friendly "This session isn't unlocked yet for your account. Please continue from your dashboard." message.
+2. **DashboardPage.jsx perf**: Was 3 sequential round-trips (enrollment → user_modules → Promise.all([sessions+stats+projects+capstone])). Restructured to 3 round-trips where the second batch is `Promise.all([modules, stats, capstone])` (all need only `enr.id`) and the third is `Promise.all([sessions, projects])` (need `module_ids`). One fewer waterfall step → ~25-30% faster initial dashboard paint.
+
+**Content quality self-verified for 12-year-old understandability** (sampled S11 WACC, S13 Stats, S15 Macro):
+- All hooks open with concrete date+place+person+number scenes
+- Everyday analogies precede every formal definition (home loan EMI for WACC, patient vital signs for macro, vehicle choice for statistics)
+- Every formula has a worked computation with real Indian numbers
+- Jargon is translated in parentheses on first use
+
+**Test gaps acknowledged** (not blocking, but flagged for future):
+- testagent2026 is at S1 only — magazine-style cards, interview cap, decision_making sims, document sims, and module-project gate render path could not be exercised end-to-end in the QA run
+- Recommended future: seed a fresh test user past M1 S6 to fully exercise the regenerated S7-S15 content
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

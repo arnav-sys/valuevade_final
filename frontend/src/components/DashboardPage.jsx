@@ -224,21 +224,35 @@ export default function DashboardPage() {
       }
       setEnrollment(enr);
 
-      // 2. Modules
-      const { data: mods, error: modErr } = await supabase
-        .from('user_modules')
-        .select('*')
-        .eq('enrollment_id', enr.id)
-        .eq('is_removed', false)
-        .order('order_index');
-      if (modErr) throw modErr;
-      const moduleList = mods || [];
+      // 2-4. Modules + stats + capstone all depend only on enr.id — fetch in parallel.
+      const [modsRes, statsRes, capstoneRes] = await Promise.all([
+        supabase
+          .from('user_modules')
+          .select('*')
+          .eq('enrollment_id', enr.id)
+          .eq('is_removed', false)
+          .order('order_index'),
+        supabase.from('user_stats').select('*').eq('enrollment_id', enr.id).maybeSingle().then(
+          (r) => r,
+          () => ({ data: null }),
+        ),
+        supabase
+          .from('user_capstone_projects')
+          .select('*')
+          .eq('enrollment_id', enr.id)
+          .maybeSingle()
+          .then((r) => r, () => ({ data: null })),
+      ]);
+      if (modsRes.error) throw modsRes.error;
+      const moduleList = modsRes.data || [];
       setModules(moduleList);
+      setStats(statsRes.data || null);
+      setCapstone(capstoneRes.data || null);
 
       const moduleIds = moduleList.map((m) => m.id);
 
-      // 3-6. Run remaining queries in parallel with graceful failure
-      const [sessionsRes, statsRes, projectsRes, capstoneRes] = await Promise.all([
+      // 5-6. Sessions + module-projects need module ids — last parallel batch.
+      const [sessionsRes, projectsRes] = await Promise.all([
         moduleIds.length
           ? supabase
               .from('user_sessions')
@@ -247,10 +261,6 @@ export default function DashboardPage() {
               .in('user_module_id', moduleIds)
               .order('order_index')
           : Promise.resolve({ data: [] }),
-        supabase.from('user_stats').select('*').eq('enrollment_id', enr.id).maybeSingle().then(
-          (r) => r,
-          () => ({ data: null })
-        ),
         moduleIds.length
           ? supabase
               .from('user_module_projects')
@@ -258,18 +268,10 @@ export default function DashboardPage() {
               .in('user_module_id', moduleIds)
               .then((r) => r, () => ({ data: [] }))
           : Promise.resolve({ data: [] }),
-        supabase
-          .from('user_capstone_projects')
-          .select('*')
-          .eq('enrollment_id', enr.id)
-          .maybeSingle()
-          .then((r) => r, () => ({ data: null })),
       ]);
 
       setSessions(sessionsRes.data || []);
-      setStats(statsRes.data || null);
       setModuleProjects(projectsRes.data || []);
-      setCapstone(capstoneRes.data || null);
     } catch (err) {
       console.error('Dashboard fetch error:', err);
       setError(err.message || 'Failed to load dashboard');

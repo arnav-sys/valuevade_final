@@ -1489,9 +1489,14 @@ export default function NotesPage() {
           .from('user_sessions')
           .select('*')
           .eq('id', sessionId)
-          .single();
+          .maybeSingle();
         if (sErr) throw sErr;
         if (!mounted) return;
+        if (!sess) {
+          setError("This session isn't unlocked yet for your account. Please continue from your dashboard.");
+          setLoading(false);
+          return;
+        }
         setSession(sess);
 
         if (!sess.master_session_id) {
