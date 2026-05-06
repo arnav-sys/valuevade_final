@@ -13,6 +13,43 @@ import {
 // HELPER: ExtraFields — renders any content keys not already handled,
 // so unknown/new fields still show up instead of being silently dropped.
 // -----------------------------------------------------------
+
+// splitLede(text) → ["First sentence.", " The remaining text..."]
+// Used to give long paragraphs a magazine-style "lede" treatment where the
+// first sentence reads bigger / heavier and pulls the eye in.
+function splitLede(text) {
+  if (!text || typeof text !== 'string') return [text || '', ''];
+  // Common abbreviations we should NOT treat as sentence boundaries.
+  const ABBR = /(?:Mr|Mrs|Ms|Dr|Prof|Sr|Jr|Inc|Ltd|Co|Corp|St|vs|etc|i\.e|e\.g|U\.S|U\.K)\.$/;
+  // Walk forward, finding sentence-end candidates.
+  let i = 0;
+  const len = text.length;
+  while (i < len) {
+    const ch = text[i];
+    if (ch === '.' || ch === '!' || ch === '?') {
+      // Need following whitespace + uppercase to count as a real boundary.
+      const nextSpace = text[i + 1];
+      const nextChar = text[i + 2];
+      if (nextSpace && /\s/.test(nextSpace) && nextChar && /[A-Z₹"'(]/.test(nextChar)) {
+        const candidate = text.slice(0, i + 1);
+        // Reject if the lede ends with a known abbreviation.
+        if (!ABBR.test(candidate)) {
+          // Reject very short ledes (< 30 chars) — likely a stray short opener.
+          if (candidate.length >= 30 && candidate.length < text.length - 4) {
+            return [candidate, text.slice(i + 1).trim()];
+          }
+        }
+      }
+    }
+    i += 1;
+  }
+  return [text, ''];
+}
+
+// Section accent rotation — used by deep-dive and example cards so each
+// section feels visually distinct rather than a uniform wall.
+const SECTION_ACCENTS = ['#246BFD', '#6A5CFF', '#FF6AC1', '#22C55E', '#F59E0B', '#0EA5E9'];
+
 function humanize(key) {
   return String(key).replace(/[_-]+/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 }
@@ -204,14 +241,22 @@ function HookCard({ content, title }) {
             {title}
           </h2>
         )}
-        {scenario && (
-          <div className="mb-5 pl-4 border-l-2 border-[#FF6AC1]/40">
-            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF6AC1] mb-1.5">The Scenario</div>
-            <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed">
-              {scenario}
-            </p>
-          </div>
-        )}
+        {scenario && (() => {
+          const [lede, rest] = splitLede(scenario);
+          return (
+            <div className="mb-6 pl-5 border-l-[3px] border-[#FF6AC1]/50 relative">
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#FF6AC1] mb-2">The Scenario</div>
+              <p className="font-clash text-xl sm:text-2xl text-[var(--color-text)] font-semibold leading-[1.3] mb-2" data-testid="hook-scenario-lede">
+                {lede}
+              </p>
+              {rest && (
+                <p className="text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
+                  {rest}
+                </p>
+              )}
+            </div>
+          );
+        })()}
         {insight && (
           <div className="mb-5 glass-card rounded-xl p-4 border-[#6A5CFF]/25">
             <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">
@@ -270,11 +315,30 @@ function ConceptCard({ content, title }) {
           {displayHeading}
         </h2>
       )}
-      {definition && (
-        <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-5">
-          {definition}
-        </p>
-      )}
+      {definition && (() => {
+        // Split on existing paragraph breaks first; fall back to a sentence-based lede.
+        const paragraphs = definition.split(/\n\n+/).map((p) => p.trim()).filter(Boolean);
+        const first = paragraphs[0] || definition;
+        const restParas = paragraphs.slice(1);
+        return (
+          <div className="mb-7 max-w-3xl">
+            <p className="font-bricolage text-lg sm:text-xl text-[var(--color-text)] font-semibold leading-[1.55]">
+              <span className="float-left font-clash text-[64px] sm:text-[72px] font-bold leading-[0.85] mr-3 mt-1.5 bg-gradient-to-br from-[#246BFD] to-[#6A5CFF] bg-clip-text text-transparent select-none">
+                {(first || ' ').trim().charAt(0)}
+              </span>
+              {(first || '').trim().slice(1)}
+            </p>
+            {restParas.map((p, i) => (
+              <p
+                key={i}
+                className="text-base font-bricolage text-[var(--color-text-muted)] leading-relaxed mt-4 clear-left"
+              >
+                {p}
+              </p>
+            ))}
+          </div>
+        );
+      })()}
 
       {analogy && (
         <div className="rounded-xl p-4 bg-[#FF6AC1]/6 border border-[#FF6AC1]/20 mb-5 flex gap-3">
@@ -336,21 +400,33 @@ function ConceptCard({ content, title }) {
       )}
 
       {key_terms.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5" data-testid="concept-key-terms">
-          {key_terms.map((t, i) => {
-            const term = typeof t === 'string' ? t : (t.term || t.name || t.key || '');
-            const def = typeof t === 'string' ? '' : (t.definition || t.meaning || t.description || t.value || '');
-            return (
-              <div key={i} className="glass-card rounded-xl p-4 border-[var(--color-border)]">
-                {term && (
-                  <div className="text-xs font-mono uppercase tracking-[0.1em] text-[#246BFD] mb-1.5">{term}</div>
-                )}
-                {def && (
-                  <div className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">{def}</div>
-                )}
-              </div>
-            );
-          })}
+        <div className="mb-6" data-testid="concept-key-terms">
+          <div className="text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-3">
+            Vocabulary you'll keep using
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {key_terms.map((t, i) => {
+              const term = typeof t === 'string' ? t : (t.term || t.name || t.key || '');
+              const def = typeof t === 'string' ? '' : (t.definition || t.meaning || t.description || t.value || '');
+              const accent = SECTION_ACCENTS[i % SECTION_ACCENTS.length];
+              return (
+                <div
+                  key={i}
+                  className="group rounded-2xl p-4 border border-[var(--color-border)] bg-[var(--color-surface)]/40 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_24px_rgba(36,107,253,0.08)]"
+                  style={{ borderLeftWidth: '3px', borderLeftColor: `${accent}66` }}
+                >
+                  {term && (
+                    <div className="text-[11px] font-mono uppercase tracking-[0.12em] mb-1.5 transition-colors" style={{ color: accent }}>
+                      {term}
+                    </div>
+                  )}
+                  {def && (
+                    <div className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{def}</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
 
@@ -362,11 +438,12 @@ function ConceptCard({ content, title }) {
       )}
 
       {core_principle && (
-        <div className="rounded-xl p-5 bg-[#246BFD]/5 border-l-4 border-[#246BFD]" data-testid="concept-principle">
-          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-2">
-            <Sparkles size={11} /> Key Insight
+        <div className="relative rounded-2xl p-6 sm:p-7 bg-gradient-to-br from-[#246BFD]/8 via-[#6A5CFF]/5 to-transparent border border-[#246BFD]/25 overflow-hidden" data-testid="concept-principle">
+          <span className="absolute -top-4 left-4 font-clash text-7xl text-[#246BFD]/20 leading-none select-none pointer-events-none">"</span>
+          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-2 relative">
+            <Sparkles size={11} /> The takeaway
           </div>
-          <p className="text-base font-bricolage text-[var(--color-text)] leading-relaxed italic">
+          <p className="font-clash text-lg sm:text-xl text-[var(--color-text)] font-semibold leading-snug relative">
             {core_principle}
           </p>
         </div>
@@ -383,7 +460,9 @@ function FormulaSubCard({ f, idx }) {
   const variables = f.variables || f.vars || f.symbols || [];
   const plainEnglish = f.plain_english || f.intuition;
   const tells = f.tells; // legacy short "what it tells you"
-  const computation = Array.isArray(f.computation) ? f.computation : null;
+  const computation = Array.isArray(f.computation)
+    ? f.computation
+    : (typeof f.computation === 'string' && f.computation.trim() ? [f.computation] : null);
   const notes = f.notes || f.note || f.description || f.explanation;
   const example = f.example || f.example_calculation || f.worked_example;
   const sensitivity = f.sensitivity || f.sensitivity_note;
@@ -427,20 +506,28 @@ function FormulaSubCard({ f, idx }) {
       )}
 
       {plainEnglish && (
-        <div className="mt-3 rounded-lg p-3 bg-[#6A5CFF]/5 border border-[#6A5CFF]/15">
-          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1">In Plain English</div>
-          <p className="text-xs font-bricolage text-[var(--color-text)] leading-relaxed">{plainEnglish}</p>
+        <div className="mt-3 rounded-xl p-4 bg-gradient-to-br from-[#6A5CFF]/8 to-transparent border border-[#6A5CFF]/20">
+          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-2">
+            <Sparkles size={11} /> In plain English
+          </div>
+          <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{plainEnglish}</p>
         </div>
       )}
 
       {computation && computation.length > 0 && (
-        <div className="mt-3 rounded-lg p-3 bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
-          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-1.5">How to Compute</div>
-          <ol className="space-y-1 list-decimal list-inside">
-            {computation.map((step, i) => (
-              <li key={i} className="text-xs font-bricolage text-[var(--color-text)] leading-relaxed">{step}</li>
-            ))}
-          </ol>
+        <div className="mt-3 rounded-xl p-4 bg-[#22C55E]/6 border border-[#22C55E]/20">
+          <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.2em] text-[#22C55E] mb-2">
+            <Target size={11} /> Let's plug in real numbers
+          </div>
+          {computation.length === 1 ? (
+            <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed whitespace-pre-wrap">{computation[0]}</p>
+          ) : (
+            <ol className="space-y-1.5 list-decimal list-inside">
+              {computation.map((step, i) => (
+                <li key={i} className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{step}</li>
+              ))}
+            </ol>
+          )}
         </div>
       )}
 
@@ -774,67 +861,82 @@ function VisualCard({ content, title: topTitle, cardId }) {
 function DeepDiveCard({ content, title }) {
   const { heading, introduction, sections = [], bottom_line } = content || {};
   const displayHeading = heading || title;
-  const [openIdx, setOpenIdx] = useState(() => new Set(sections.map((_, i) => i)));
-
-  const toggle = (i) => {
-    setOpenIdx((prev) => {
-      const next = new Set(prev);
-      if (next.has(i)) next.delete(i); else next.add(i);
-      return next;
-    });
-  };
 
   return (
-    <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20 max-h-[70vh] overflow-y-auto" data-testid="card-deepdive">
+    <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20 max-h-[78vh] overflow-y-auto" data-testid="card-deepdive">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6A5CFF]/10 border border-[#6A5CFF]/25 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <TrendingUp size={11} /> Deep Dive
       </div>
       {displayHeading && (
-        <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-4">
+        <h2 className="font-clash text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-text)] leading-[1.15] mb-4">
           {displayHeading}
         </h2>
       )}
       {introduction && (
-        <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-6">
+        <p className="text-base sm:text-lg text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-8 max-w-3xl">
           {introduction}
         </p>
       )}
 
-      <div className="space-y-2 mb-6" data-testid="deepdive-sections">
+      <div className="space-y-10" data-testid="deepdive-sections">
         {sections.map((sec, i) => {
-          const isOpen = openIdx.has(i);
           const subheading = sec.subheading || sec.heading || sec.title || `Section ${i + 1}`;
           const body = sec.content || sec.text || sec.body || '';
+          const accent = SECTION_ACCENTS[i % SECTION_ACCENTS.length];
+          const [lede, rest] = splitLede(body);
           return (
-            <div key={i} className="glass-card rounded-xl overflow-hidden border-[var(--color-border)]">
-              <button
-                onClick={() => toggle(i)}
-                className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-[var(--color-surface)] transition-colors"
-              >
-                <span className="font-clash text-sm font-semibold text-[var(--color-text)]">
-                  {subheading}
+            <article key={i} className="grid grid-cols-[auto_1fr] gap-4 sm:gap-5 group">
+              <div className="flex flex-col items-center pt-1">
+                <span
+                  className="font-clash text-3xl sm:text-4xl font-bold leading-none transition-transform duration-200 group-hover:scale-105"
+                  style={{ color: accent }}
+                >
+                  {String(i + 1).padStart(2, '0')}
                 </span>
-                <ArrowRight
-                  size={14}
-                  className={`text-[var(--color-text-muted)] shrink-0 transition-transform ${isOpen ? 'rotate-90' : ''}`}
-                />
-              </button>
-              {isOpen && body && (
-                <div className="px-4 pb-4 pt-1 text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed whitespace-pre-wrap">
-                  {body}
-                </div>
-              )}
-            </div>
+                {i < sections.length - 1 && (
+                  <span
+                    className="w-px flex-1 mt-3 opacity-30"
+                    style={{ background: `linear-gradient(180deg, ${accent}, transparent)` }}
+                  />
+                )}
+              </div>
+              <div className="min-w-0 pb-2">
+                <h3
+                  className="font-clash text-lg sm:text-xl font-semibold mb-3 leading-snug"
+                  style={{ color: 'var(--color-text)' }}
+                >
+                  <span
+                    className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
+                    style={{ background: accent }}
+                  />
+                  {subheading}
+                </h3>
+                {lede && (
+                  <p
+                    className="font-bricolage text-base sm:text-lg text-[var(--color-text)] leading-relaxed mb-2 font-medium"
+                    style={{ borderLeft: `2px solid ${accent}40`, paddingLeft: '14px' }}
+                  >
+                    {lede}
+                  </p>
+                )}
+                {rest && (
+                  <p className="font-bricolage text-sm sm:text-base text-[var(--color-text-muted)] leading-relaxed pl-[14px] whitespace-pre-wrap">
+                    {rest}
+                  </p>
+                )}
+              </div>
+            </article>
           );
         })}
       </div>
 
       {bottom_line && (
-        <div className="rounded-xl p-5 bg-gradient-to-br from-[#6A5CFF]/10 to-[#246BFD]/5 border border-[#6A5CFF]/25">
-          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-2">
-            Bottom Line
+        <div className="mt-10 rounded-2xl p-6 bg-gradient-to-br from-[#6A5CFF]/12 via-[#246BFD]/6 to-transparent border border-[#6A5CFF]/30 relative overflow-hidden">
+          <span className="absolute -top-2 left-4 font-clash text-6xl text-[#6A5CFF]/25 leading-none select-none pointer-events-none">"</span>
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#6A5CFF] mb-2 relative">
+            Bottom line
           </div>
-          <p className="text-base font-bricolage text-[var(--color-text)] font-medium leading-relaxed">
+          <p className="font-clash text-base sm:text-lg font-semibold text-[var(--color-text)] leading-relaxed relative">
             {bottom_line}
           </p>
         </div>
@@ -847,8 +949,10 @@ function ExampleCard({ content, title }) {
   const c = content || {};
   const company_name = c.company_name || c.company || c.subject;
   const displayCompany = company_name || title;
-  const situation = c.situation || c.context || c.description || c.scenario || c.body || c.introduction;
+  const situation = c.situation || c.context || c.description || c.scenario || c.body || c.introduction || c.story;
   const dataDict = c.data || c.inputs || c.givens;
+  // New schema (Phase 35+): data may be { headers: [...], rows: [[...]] }
+  const isTabular = dataDict && typeof dataDict === 'object' && Array.isArray(dataDict.headers) && Array.isArray(dataDict.rows);
   let analysis = c.analysis || c.walkthrough_steps || c.steps || c.walkthrough || [];
   // Defensive: some authored content stores analysis as a single string paragraph.
   // Normalize to array so the renderer below can safely .map().
@@ -865,7 +969,7 @@ function ExampleCard({ content, title }) {
 
   const handled = [
     'company_name', 'company', 'subject',
-    'situation', 'context', 'description', 'scenario', 'body', 'introduction',
+    'situation', 'context', 'description', 'scenario', 'body', 'introduction', 'story',
     'data', 'inputs', 'givens',
     'analysis', 'walkthrough_steps', 'steps', 'walkthrough',
     'verdict', 'conclusion',
@@ -877,7 +981,7 @@ function ExampleCard({ content, title }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-example">
-      <div className="flex items-center justify-between flex-wrap gap-3 mb-5">
+      <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em]">
           <FileText size={11} /> Real Example
         </div>
@@ -888,16 +992,67 @@ function ExampleCard({ content, title }) {
         )}
       </div>
 
-      {situation && (
-        <div className="mb-5">
-          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-1.5">The Situation</div>
-          <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed">
-            {situation}
-          </p>
+      {situation && (() => {
+        const [lede, rest] = splitLede(situation);
+        return (
+          <div className="mb-6 rounded-2xl p-5 sm:p-6 bg-gradient-to-br from-[#246BFD]/6 to-transparent border border-[#246BFD]/15">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-2">The story</div>
+            <p className="font-clash text-lg sm:text-xl text-[var(--color-text)] font-semibold leading-snug mb-2">
+              {lede}
+            </p>
+            {rest && (
+              <p className="text-base font-bricolage text-[var(--color-text-muted)] leading-relaxed">{rest}</p>
+            )}
+          </div>
+        );
+      })()}
+
+      {isTabular && (
+        <div className="mb-6 rounded-2xl border border-[var(--color-border)] overflow-hidden bg-[var(--color-surface)]/30" data-testid="example-table">
+          <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] px-4 sm:px-5 pt-4">
+            Side by side
+          </div>
+          <div className="overflow-x-auto px-2 sm:px-3 pb-3 pt-2">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr>
+                  {dataDict.headers.map((h, i) => (
+                    <th
+                      key={i}
+                      className={`text-left text-xs font-mono uppercase tracking-[0.1em] px-3 py-2 border-b border-[var(--color-border)] ${i === 0 ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)] font-semibold'}`}
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {dataDict.rows.map((row, r) => (
+                  <tr
+                    key={r}
+                    className={`group transition-colors ${r % 2 === 1 ? 'bg-[var(--color-surface)]/40' : ''} hover:bg-[#246BFD]/5`}
+                  >
+                    {row.map((cell, ci) => (
+                      <td
+                        key={ci}
+                        className={`text-sm px-3 py-2.5 border-b border-[var(--color-border)]/50 ${ci === 0 ? 'font-bricolage text-[var(--color-text)] font-medium' : 'font-mono text-[var(--color-text)]'}`}
+                      >
+                        {ci === 0 ? cell : (
+                          <span className="bg-[#246BFD]/0 group-hover:bg-[#246BFD]/8 px-1 rounded transition-colors">
+                            {String(cell)}
+                          </span>
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
-      {dataDict && typeof dataDict === 'object' && !Array.isArray(dataDict) && (
+      {!isTabular && dataDict && typeof dataDict === 'object' && !Array.isArray(dataDict) && (
         <div className="glass-card rounded-xl p-4 border-[var(--color-border)] mb-5" data-testid="example-data">
           <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-3">
             Inputs
@@ -934,48 +1089,56 @@ function ExampleCard({ content, title }) {
       )}
 
       {analysis.length > 0 && (
-        <div className="mb-5">
+        <div className="mb-6">
           <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#246BFD] mb-3">
-            Analysis
+            What the numbers tell us
           </div>
-          <ol className="space-y-3" data-testid="example-analysis">
+          <div className="space-y-3" data-testid="example-analysis">
             {analysis.map((s, i) => {
+              const accent = SECTION_ACCENTS[i % SECTION_ACCENTS.length];
               if (typeof s === 'string') {
                 return (
-                  <li key={i} className="flex items-start gap-3 glass-card rounded-xl p-4 border-[var(--color-border)]">
-                    <div className="w-7 h-7 rounded-lg bg-[#246BFD]/15 border border-[#246BFD]/30 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
-                      {i + 1}
-                    </div>
-                    <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed flex-1">{s}</p>
-                  </li>
+                  <div
+                    key={i}
+                    className="grid grid-cols-[auto_1fr] gap-4 rounded-2xl p-4 sm:p-5 bg-[var(--color-surface)]/40 border border-[var(--color-border)]"
+                    style={{ borderLeftWidth: '3px', borderLeftColor: `${accent}66` }}
+                  >
+                    <span className="font-clash text-2xl sm:text-3xl font-bold leading-none" style={{ color: accent }}>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className="text-sm sm:text-base font-bricolage text-[var(--color-text)] leading-relaxed">{s}</p>
+                  </div>
                 );
               }
               const stepNum = s.step || s.number || i + 1;
               const label = s.label || s.title || s.heading || s.name;
               const value = s.value || s.result || s.output || s.amount;
               const explanation = s.explanation || s.description || s.reasoning || s.text || s.body || s.content || s.commentary;
-              // Fallback: if none of the above matched, show any remaining string/number fields
               const knownKeys = new Set(['step', 'number', 'label', 'title', 'heading', 'name', 'value', 'result', 'output', 'amount', 'explanation', 'description', 'reasoning', 'text', 'body', 'content', 'commentary']);
               const extraEntries = Object.entries(s).filter(
                 ([k, v]) => !knownKeys.has(k) && (typeof v === 'string' || typeof v === 'number') && v !== ''
               );
               const hasKnownBody = label || value != null || explanation;
               return (
-                <li key={i} className="flex items-start gap-4 glass-card rounded-xl p-4 border-[var(--color-border)]">
-                  <div className="w-7 h-7 rounded-lg bg-[#246BFD]/15 border border-[#246BFD]/30 text-[#246BFD] flex items-center justify-center text-xs font-mono font-semibold shrink-0">
-                    {stepNum}
-                  </div>
+                <div
+                  key={i}
+                  className="grid grid-cols-[auto_1fr] gap-4 rounded-2xl p-4 sm:p-5 bg-[var(--color-surface)]/40 border border-[var(--color-border)]"
+                  style={{ borderLeftWidth: '3px', borderLeftColor: `${accent}66` }}
+                >
+                  <span className="font-clash text-2xl sm:text-3xl font-bold leading-none" style={{ color: accent }}>
+                    {String(stepNum).padStart(2, '0')}
+                  </span>
                   <div className="flex-1 min-w-0">
                     {label && (
                       <div className="text-xs font-mono uppercase tracking-[0.1em] text-[var(--color-text-muted)] mb-1">{label}</div>
                     )}
                     {value != null && (
-                      <div className="font-mono text-sm text-[#246BFD] font-semibold bg-[#246BFD]/8 px-2 py-1 rounded inline-block mb-2 break-words max-w-full">
+                      <div className="font-mono text-sm font-semibold px-2 py-1 rounded inline-block mb-2 break-words max-w-full" style={{ color: accent, background: `${accent}14` }}>
                         {formatValue(value)}
                       </div>
                     )}
                     {explanation && (
-                      <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{explanation}</p>
+                      <p className="text-sm sm:text-base font-bricolage text-[var(--color-text)] leading-relaxed">{explanation}</p>
                     )}
                     {!hasKnownBody && extraEntries.length > 0 && (
                       <div className="space-y-1.5">
@@ -990,10 +1153,10 @@ function ExampleCard({ content, title }) {
                       </div>
                     )}
                   </div>
-                </li>
+                </div>
               );
             })}
-          </ol>
+          </div>
         </div>
       )}
 

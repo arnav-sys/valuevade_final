@@ -426,6 +426,35 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
   - **S15 Macroeconomics**: hook 362c scenario, 8 terms, 5 formulas (real GDP growth, real interest rate, output gap, inflation, fiscal deficit), 6 sections, 7-row example
 - All cards use canonical alias field names → renderers display every block.
 
+### Phase 37 - Notes Card "Magazine Read" Redesign (Feb 2026)
+- User feedback: "right now notes cards are not fun to read. make changes in ui so even the long cards are fun to read and engaging and not feel like textbook."
+- Centralised helper added at the top of `NotesPage.jsx`:
+  - `splitLede(text)` — splits a paragraph into `[firstSentence, rest]` while ignoring common abbreviations (Mr., Inc., e.g., etc.) and rejecting overly short ledes (<30 chars).
+  - `SECTION_ACCENTS` — 6-colour palette (blue/purple/pink/green/amber/sky) used for alternating section accents so each card has visual rhythm instead of a single uniform colour.
+- **HookCard** scenario: large lede typography (font-clash text-2xl) + body in muted weight, with a thicker pink left-border bar so it reads like a magazine pull-quote.
+- **ConceptCard**:
+  - Definition: 64–72px gradient drop-cap on first character; first paragraph reads as a bold lede; subsequent `\n\n`-separated paragraphs render as muted body. Max-width capped to `max-w-3xl` for readability.
+  - Key-terms: each term gets a unique accent colour from the rotation; cards have a coloured left-border, hover lift (`-translate-y-0.5`), and shadow on hover.
+  - Core-principle: pull-quote with oversized opening `"` glyph, gradient background, accent border.
+- **FormulaSubCard**:
+  - `plain_english` block now styled with gradient bg + Sparkles icon + "In plain English" label (was a flat sub-card).
+  - `computation` accepts both string AND array shapes; rendered with a "Let's plug in real numbers" Target-icon callout in green accent.
+- **DeepDiveCard** (biggest change):
+  - Removed the accordion entirely — every section renders open by default.
+  - Each section has a big `01 / 02 / 03` numeral in the rotating accent colour with a vertical gradient line connecting consecutive sections.
+  - Section heading has an accent bullet dot.
+  - First sentence renders as a quoted lede (accent left-border, larger font); rest renders as muted body. `whitespace-pre-wrap` preserves any authored line breaks.
+  - Bottom-line block becomes a true pull-quote with oversized `"` and gradient bg.
+  - Card max-height bumped to 78vh for breathing room.
+- **ExampleCard**:
+  - Added `story` to the situation-aliases (was silently dropping the new schema's `story` field).
+  - The new `data: { headers, rows }` shape now renders as an actual styled comparison table with zebra-striped rows + hover row highlight + monospace numeric cells.
+  - Old dict-shape `data` still works as a fallback.
+  - Situation/story now uses the lede treatment in a gradient callout.
+  - Analysis bullets restructured as numbered insight cards with rotating accent (`01 / 02 / 03 ...`) and accent left-border — each insight feels like a discrete take, not a textbook list.
+- All 5 cards use the same `SECTION_ACCENTS` palette so the entire notes flow has a coherent visual identity instead of a single accent everywhere.
+- Verified via end-to-end Playwright on preview: hook, concept, deep-dive, example all render cleanly with no console errors.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
