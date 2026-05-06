@@ -396,6 +396,20 @@ Premium landing page + waitlist + AI-powered career learning platform for financ
 
 Lint clean across all 5 modified files; smoke-tested — bundle compiles, no console errors.
 
+### Phase 35 - S7/S8/S10 Notes Card Regeneration (Feb 2026)
+- User feedback: "in module 1 session 7 balance sheet, session 8 cash flow, session 10 corporate finance essentials change hook card, concept card, formula card, deep dive card and example card. right now they are too complex and not fun and engaging to read. change content and delete existing supabase data and insert new cards data."
+- Built `/app/scripts/regenerate_session_cards.py` — uses Claude Haiku 4.5 via `emergentintegrations` LlmChat to generate all 5 cards in one structured-JSON shot per session.
+  - Prompt feeds the LLM the session's full quiz/interview/sim coverage so the generated cards collectively let a learner answer every question.
+  - Output validates against the renderer's expected schemas (canonical aliases: `scenario`/`insight`/`why_it_matters` for hook; `heading`/`definition`/`key_terms`/`core_principle` for concept; `formulas[]` for formula; `sections[]` for deep-dive; `story`/`data`/`analysis` for example).
+  - Wrote artefacts to `/tmp/vv_cards_<session_id>.json` for review before DB apply.
+- DB apply: deletes the 5 existing cards (hook/concept/formula/deep-dive/example) and inserts new ones with preserved `order_index` and a NOT-NULL `title` derived from `content.heading` or sensible defaults.
+- Initially tried Sonnet 4.5; got 502 Bad Gateway from Emergent gateway on the large prompt — switched to Haiku 4.5 which completed each session in ~30s reliably (matching PRD note: "Claude Haiku 4.5 is highly recommended for fast JSON structuring").
+- Final state across all 3 sessions:
+  - **S7 Balance Sheet**: hook (3 slots, ~280-chars scenario), concept (8 key terms), formula (5 formulas inc. accounting equation, current/quick ratio, D/E, BVPS), deep-dive (6 sections w/ TCS, Vodafone Idea, IL&FS, Bajaj Auto anecdotes), example (10-row Titan vs TitanWorks comparison + 4 analysis bullets)
+  - **S8 Cash Flow**: hook, concept (8 terms), 5 formulas (CFO indirect, FCF, FCF yield, sustainable dividend, CFO/PAT), deep-dive (6 sections), example (11 rows, 5 analysis bullets)
+  - **S10 Corporate Finance**: hook, concept (8 terms), 5 formulas (Interest Coverage, tax shield, ROE, SGR, D/E), deep-dive (6 sections), example (11 rows, 4 analysis bullets)
+- All generated content uses canonical alias field names so the existing renderers display every block (no silent drops like Phase 34's `narrative`/`intrigue_hook` issue).
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
