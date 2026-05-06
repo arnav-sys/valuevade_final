@@ -122,8 +122,19 @@ CRITICAL RULES:
 - Use the EXACT keys above. No extras.
 - Be FUN: short sentences, concrete anecdotes, narrative voice. Avoid academic dryness.
 - Be SIMPLE: a smart 18-year-old should understand. NO unexplained jargon.
+- These finance topics are inherently complex — your job is to make them feel obvious.
+  Pretend you're explaining to a sharp friend over coffee, not lecturing in a classroom.
+  Use everyday analogies (EMI, ATM, Zomato order, Airtel recharge, IPL auction) before
+  the formal definition. The first time any technical term appears, give it a one-line
+  plain-English translation in parentheses.
 - Be COMPLETE: the 5 cards together must let a learner answer every quiz / interview /
-  simulation question listed in the briefing. Audit yourself before outputting.
+  simulation question listed in the briefing. Audit yourself before outputting — for each
+  question, mentally tag which card teaches the answer. If any question isn't covered,
+  add a key_term, formula, or deep-dive section to cover it.
+- STORYTELLING IS NON-NEGOTIABLE. Every hook MUST open with a concrete scene (date,
+  place, person, number). Every deep-dive section should reference a real Indian company
+  by name where possible. Every formula's `computation` must use real numbers, not
+  placeholders.
 """
 
 
