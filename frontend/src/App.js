@@ -87,7 +87,7 @@ function App() {
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
-                  <Route path="/signup" element={<SignupPage />} />
+                  <Route path="/signuproute1" element={<SignupPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/referral" element={<AdminDashboard />} />
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />

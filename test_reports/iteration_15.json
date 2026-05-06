@@ -1,0 +1,55 @@
+{
+  "summary": "Frontend QA pass after signup-route rename, magazine-style notes redesign, 5-question quiz/interview cap, and module-project gate fix. Verified routing, login, dashboard rendering, session page, quiz-start cap. Could NOT exhaustively verify the new magazine-style notes cards / interview-cap / simulations / module-project gate because testagent2026 has only Session 1 (Time Value of Money) with notes phase completed; quiz/interview/simulation phases for S1 are locked until prerequisites complete, and S7/S11/S13 (the regenerated sessions main agent flagged) belong to later modules that are not yet unlocked for this user. Direct deep-link navigation to /session/<master_session_id>/notes returns a Supabase 406 (Cannot coerce to single JSON object) because NotesPage queries user_sessions by id, not master_sessions — so the session ids quoted in the request (e.g. 9559a9ba... for S7) cannot be opened directly without seeding a user_sessions row.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Direct deep-link to /session/<id>/notes",
+        "issue": "If <id> is not a valid user_sessions row id for the logged-in user, NotesPage shows 'Couldn\u2019t load notes — Cannot coerce the result to a single JSON object' instead of a friendly 404 / not-enrolled message. Repro: log in as testagent2026, visit /session/9559a9ba-a909-4f8c-9346-4219bf23852a/notes (S7 master id from the request). Two Supabase 406 calls fire against user_sessions. Recommend either a) replace .single() with .maybeSingle() and surface a clearer 'session not unlocked yet' state, or b) accept master_session_id and resolve to the per-user row server-side.",
+        "affected_selectors": ["[data-testid=notes-error]"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Dashboard initial render",
+        "issues": [
+          "Skeleton loaders remain visible for ~8\u201312 seconds before content (continue-learning-card, dashboard-module-timeline, dashboard-capstone) appears. No console errors, no failed network calls \u2014 just slow due to 8 sequential Supabase queries (profiles \u2192 enrollments \u2192 user_modules \u2192 user_stats \u2192 user_sessions \u2192 user_capstone_projects \u2192 user_module_projects). Consider parallelising independent queries with Promise.all or a single RPC, otherwise dashboard feels janky on every load."
+        ]
+      }
+    ]
+  },
+  "test_report_links": ["/app/test_reports/iteration_15.json"],
+  "action_items": [
+    "VERIFIED PASS: /signuproute1 renders SignupPage; /signup correctly returns the NotFound (404) page with data-testid=not-found-page.",
+    "VERIFIED PASS: Login with testagent2026@gmail.com / TestPass123! lands on /dashboard.",
+    "VERIFIED PASS: QuizStartPage shows 'QUESTIONS: 5' (confirms 5-question cap on the start screen).",
+    "VERIFIED PASS: Dashboard exposes the correct data-testids (continue-learning-card, continue-learning-btn, dashboard-stats, dashboard-module-timeline, dashboard-module-0, session-item-0-phase-notes/quiz/interview/simulation, dashboard-capstone). Currently no complete-project-btn because user is mid-Module 1 \u2014 expected.",
+    "VERIFIED PASS: SessionStartPage renders correctly with 4-phase journey card; locked phases (interview, simulation) properly show lock icons; notes phase shows REVIEW status after completion.",
+    "NOT VERIFIED (blocked by user state): Magazine-style 8 notes-card types (hook lede + insight + why_it_matters, concept drop-cap + key_terms + core_principle pull-quote, formula 'plug in real numbers' callout, visual, deep-dive numbered 01/02/03 sections, example {headers,rows} table + insight cards, mistake, summary). User has only S1 TVM notes completed; S7/S11/S13 are in later locked modules. Recommend main agent either (a) seed testagent2026 to a later session and re-run, or (b) self-test by visiting these notes pages while logged in as a user enrolled past M1 S6.",
+    "NOT VERIFIED: Quiz mid-flow 'Question N of 5' counter (would require taking the quiz; main agent can self-test). Cap is confirmed on the start screen only.",
+    "NOT VERIFIED: InterviewStartPage 5-question cap (interview phase is locked for S1; deep-link redirected back to /quiz/start due to gating).",
+    "NOT VERIFIED: DecisionMakingSim renderer for S2/S3/S5/S12 (all locked for testagent2026).",
+    "NOT VERIFIED: Document-sim load for S6/S7/S8 (all locked).",
+    "NOT VERIFIED: Module-Project gate on dashboard. Testagent2026 has only S1 of 15 done; the 'Complete Module Project' card cannot appear yet. Logic does NOT crash partway through (dashboard renders cleanly), but the actual project-pending render path (DashboardPage.jsx 618-644) was not exercised. Recommend seeding a test user at M1.S15.simulation = complete to exercise this gate.",
+    "FIX RECOMMENDED: Replace .single() with .maybeSingle() in NotesPage.jsx (line ~1491) so a missing user_sessions row produces a clearer empty/not-unlocked state instead of '406 Cannot coerce' error.",
+    "PERF RECOMMENDED: Parallelise the 8 sequential Supabase reads on DashboardPage so initial paint is <3s instead of ~10s."
+  ],
+  "critical_code_review_comments": [
+    "NotesPage.jsx queries user_sessions.id with .single() \u2014 any unknown id surfaces a confusing JSON-coerce error to the user; should be .maybeSingle() with a friendly fallback.",
+    "Dashboard load is sequential and slow (~10s) before content appears; users see skeletons during what feels like a hang. Parallelise independent queries.",
+    "Route rename is clean: only /signuproute1 is registered in App.js and the catch-all 404 covers /signup correctly; CourseDetailsPage and Header CTAs are off-screen for this user but the render path of /signup\u2192404 is verified.",
+    "SessionStartPage gating correctly locks interview/simulation phases until quiz passes \u2014 good UX with lock icons and disabled state."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "N/A (frontend-only request)",
+    "frontend": "5/14 spec items fully verified, 8/14 not reachable due to test-user state, 1/14 minor issue (deep-link error UX). No critical bugs found in code paths that were reachable."
+  },
+  "test_credentials": "testagent2026@gmail.com / TestPass123! \u2014 enrolled in 'Equity Research Analyst' (path id 5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c), only S1 TVM notes completed. To exercise the rest of the spec a user with later progress is needed.",
+  "seed_data_creation": "None. Recommend main agent seed testagent2026 (or a fresh user) to: complete S1.quiz/interview/sim, unlock and complete S7 notes, and complete all 15 sessions of M1 to exercise the module-project gate.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Confirmed PASS: (1) /signuproute1 renders SignupPage, (2) /signup\u2192404 NotFound, (3) login works, (4) Dashboard renders all expected testids after ~10s, (5) QuizStartPage shows QUESTIONS:5, (6) SessionStartPage gating works. UNVERIFIED (blocked by progress state): magazine notes cards, interview-cap, decision-making + document sims, module-project gate. To unblock: seed a user with later progress via /app/scripts/audit_simulations.py or directly insert user_sessions rows for later sessions; then re-run notes carousel test on resolved user_sessions ids (NOT the master_session ids the request listed). Note: master ids 9559a9ba (S7), 1f19a640 (S11), a3762198 (S13) cannot be deep-linked \u2014 NotesPage expects user_sessions.id.",
+  "rca of the issue": "The 'NotesPage 406' error reproduced via direct deep-link is not a regression \u2014 it's a result of the URL convention: NotesPage.jsx line 1489-1495 does supabase.from('user_sessions').select('*').eq('id', sessionId).single(). When a master_session_id is passed, no row matches and Supabase returns 406 with PostgREST 'Cannot coerce the result to a single JSON object'. Fix: use .maybeSingle() and render an explicit 'This session is not unlocked yet' state, OR add a redirect that resolves master_session_id\u2192user_sessions.id for the current user before loading."
+}

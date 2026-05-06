@@ -191,7 +191,7 @@ export default function CourseDetailsPage() {
                   Log in
                 </Link>
                 <Link
-                  to="/signup"
+                  to="/signuproute1"
                   className="px-3 py-1.5 rounded-lg text-sm font-semibold font-bricolage bg-[var(--color-primary)] text-white hover:shadow-[0_0_20px_rgba(36,107,253,0.35)] transition-all"
                   data-testid="detail-signup-link"
                 >
@@ -281,7 +281,7 @@ export default function CourseDetailsPage() {
                   </button>
                 ) : (
                   <button
-                    onClick={() => navigate(user ? `/course/${courseId}/customize` : '/signup')}
+                    onClick={() => navigate(user ? `/course/${courseId}/customize` : '/signuproute1')}
                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
                     data-testid="detail-customize-enroll"
                   >
@@ -459,7 +459,7 @@ export default function CourseDetailsPage() {
             </button>
           ) : (
             <button
-              onClick={() => navigate(user ? `/course/${courseId}/customize` : '/signup')}
+              onClick={() => navigate(user ? `/course/${courseId}/customize` : '/signuproute1')}
               className="w-full py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage flex items-center justify-center gap-2 hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
               data-testid="detail-mobile-enroll-btn"
             >
