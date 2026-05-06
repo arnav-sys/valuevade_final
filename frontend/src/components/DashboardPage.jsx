@@ -44,6 +44,13 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
   const total = activeSessions.length;
   const pct = total ? Math.round((completedCount / total) * 100) : 0;
   const isComplete = module.is_completed || (total > 0 && completedCount === total);
+  // Completed modules are expandable so the user can revisit any phase of any
+  // session; default-collapsed to keep the dashboard scannable but click the
+  // card header to open. Active module remains expanded by default.
+  const [revisitOpen, setRevisitOpen] = useState(false);
+  const sessionsExpanded = (isActive || revisitOpen) && !isLocked;
+  const showSessionList = sessionsExpanded && activeSessions.length > 0;
+  const headerInteractive = isComplete && !isLocked;
 
   return (
     <div
@@ -52,7 +59,19 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
       } ${isActive ? 'border-[var(--color-primary)]/40 shadow-[0_0_32px_rgba(36,107,253,0.12)]' : ''}`}
       data-testid={`dashboard-module-${module.order_index}`}
     >
-      <div className="flex items-start gap-4">
+      <div
+        className={`flex items-start gap-4 ${headerInteractive ? 'cursor-pointer select-none' : ''}`}
+        onClick={headerInteractive ? () => setRevisitOpen((v) => !v) : undefined}
+        role={headerInteractive ? 'button' : undefined}
+        tabIndex={headerInteractive ? 0 : -1}
+        onKeyDown={headerInteractive ? (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            setRevisitOpen((v) => !v);
+          }
+        } : undefined}
+        data-testid={headerInteractive ? `module-revisit-toggle-${module.order_index}` : undefined}
+      >
         {/* Status icon */}
         <div className="shrink-0">
           {isComplete ? (
@@ -79,7 +98,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
         {/* Body */}
         <div className="flex-1 min-w-0">
           <div className="flex items-start justify-between gap-3 mb-2">
-            <div>
+            <div className="min-w-0">
               <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-0.5">
                 Module {module.order_index + 1}
               </div>
@@ -87,9 +106,18 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
                 {module.title}
               </h3>
             </div>
-            <span className="text-xs font-mono text-[var(--color-text-muted)] shrink-0 pt-1">
-              {completedCount}/{total}
-            </span>
+            <div className="flex items-center gap-2 shrink-0 pt-1">
+              <span className="text-xs font-mono text-[var(--color-text-muted)]">
+                {completedCount}/{total}
+              </span>
+              {headerInteractive && (
+                <ArrowRight
+                  size={14}
+                  className={`text-[var(--color-text-muted)] transition-transform duration-200 ${revisitOpen ? 'rotate-90' : ''}`}
+                  aria-hidden="true"
+                />
+              )}
+            </div>
           </div>
 
           {/* Progress bar */}
@@ -104,8 +132,20 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
             />
           </div>
 
-          {/* Expanded sessions for active module */}
-          {isActive && activeSessions.length > 0 && (
+          {isComplete && !revisitOpen && (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setRevisitOpen(true); }}
+              className="text-[11px] font-mono uppercase tracking-[0.15em] text-[var(--color-primary)] hover:text-[var(--color-text)] transition-colors"
+              data-testid={`module-revisit-btn-${module.order_index}`}
+            >
+              Revisit notes & questions →
+            </button>
+          )}
+
+          {/* Session list — shown for the active module by default and for any
+              completed module the user has expanded via the header click. */}
+          {showSessionList && (
             <div className="mt-4 space-y-1.5" data-testid={`module-sessions-${module.order_index}`}>
               {activeSessions.map((s, sidx) => {
                 const phases = ['notes', 'quiz', 'interview', 'simulation'];
@@ -113,9 +153,10 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
                   <Link
                     key={s.id}
                     to={`/session/${s.id}/start`}
+                    onClick={(e) => e.stopPropagation()}
                     className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-all border ${
                       s.is_completed
-                        ? 'bg-[var(--color-success)]/5 border-[var(--color-success)]/15'
+                        ? 'bg-[var(--color-success)]/5 border-[var(--color-success)]/15 hover:border-[var(--color-success)]/30 hover:bg-[var(--color-success)]/10'
                         : 'bg-[var(--color-surface)]/50 border-[var(--color-border)] hover:border-[var(--color-primary)]/30 hover:bg-[var(--color-surface)]'
                     }`}
                     data-testid={`session-item-${sidx}`}
@@ -130,7 +171,6 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
                       {phases.map((ph) => {
                         const done = s[`${ph}_completed`];
                         const Icon = PHASE_META[ph].icon;
-                        // Hybrid: quiz is "attempted" (yellow) when completed but score < 70
                         const attempted = done && ph === 'quiz' && (s.quiz_score ?? 100) < 70;
                         return (
                           <span

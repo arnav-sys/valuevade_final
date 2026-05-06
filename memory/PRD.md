@@ -502,6 +502,20 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Verified via grep: no remaining `.order('updated_at')` calls in the codebase. Lint clean.
 - Module project Start / Tasks / Complete flows now load.
 
+### Phase 41 - Revisit Completed Module Notes / Questions (Feb 2026)
+- User report: "right now when module is complete I cannot revisit its notes and questions fix it" (×2).
+- **Root cause**: `ModuleCard` in `DashboardPage.jsx:108` only rendered the per-session link list when `isActive` was true (i.e. for the currently-in-progress module). Once a module flipped to `isComplete=true`, the session list collapsed, leaving no UI path to click into any of its session-phase pages. SessionPhaseGuard already permits revisits to completed phases — the only gap was Dashboard discoverability.
+- **Fix**: Made `ModuleCard` toggleable for completed modules:
+  - New per-card local state `revisitOpen` (default false).
+  - When `isComplete && !isLocked`, the entire header becomes click-to-toggle (cursor pointer, role=button, Enter/Space key support, rotating chevron icon).
+  - When collapsed, a secondary "Revisit notes & questions →" link is shown to make the affordance unmistakable.
+  - Session list now renders for `(isActive || revisitOpen) && !isLocked`.
+  - Active module remains expanded by default — no behavior change for in-progress modules.
+  - Click on a session-link inside the expansion stops propagation so it doesn't accidentally collapse the card.
+  - Completed sessions get a subtle hover affordance (border + bg green-tint shift) when hovered.
+- New testids: `module-revisit-toggle-{idx}` (header), `module-revisit-btn-{idx}` (collapsed CTA).
+- Lint clean; smoke-tested on preview — dashboard renders without errors.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
