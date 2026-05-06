@@ -455,6 +455,18 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - All 5 cards use the same `SECTION_ACCENTS` palette so the entire notes flow has a coherent visual identity instead of a single accent everywhere.
 - Verified via end-to-end Playwright on preview: hook, concept, deep-dive, example all render cleanly with no console errors.
 
+### Phase 38 - Module Project Gate Fix (Feb 2026)
+- User report: "when I complete full module 1 in dashboard it starts with module 2 session 1 notes. option to start module project is not showing in dashboard."
+- **Root cause**: `ConfirmPage.jsx` (the enrollment flow) clones `master_modules → user_modules` and `master_sessions → user_sessions`, but NEVER seeds `user_module_projects`. So when M1's last session completed:
+  1. Dashboard's pending-project gate at `DashboardPage.jsx:344-349` looks up `projectMap[m.id]` — undefined.
+  2. Falsy check fails → loop continues to next module → bounces user to M2 S1.
+  3. Manual navigation to `/module/<id>/project/start` would also throw "No project found for this module yet".
+- **DB audit**: 41 user_modules across 8 enrollments, but `user_module_projects` table had **0 rows**.
+- **Backfill (one-time)**: `/app/scripts/backfill_user_module_projects.py` — for every non-removed user_module whose master_module_id has a `master_module_projects` row, inserts a `user_module_projects` row with `is_completed=false, started_at=null`. Idempotent. Inserted 41 rows on first run.
+- **Forward fix in `ConfirmPage.jsx`**: After cloning sessions/modules during enrollment, fetch the just-inserted user_modules with their master_module_id, look up the matching master_module_projects.id, and bulk-insert one user_module_projects row per module. Wrapped in try/catch so a seed failure doesn't break the enrollment.
+- Now when M1's last session completes, the dashboard correctly enters its existing "State 2: current module done but project pending" branch (already present at line 618-644) and shows the **"Complete Module Project"** CTA card with target icon and "Complete your Module 1 project" copy.
+- Lint clean.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

@@ -167,6 +167,60 @@ export default function ConfirmPage() {
         }
       }
 
+      // 5. Seed user_module_projects — one row per user_module that has a
+      //    corresponding master_module_project. Without this row the dashboard
+      //    "pending project" gate can't fire when a module's sessions all
+      //    complete, and the user gets bounced straight to the next module.
+      //    We re-fetch user_modules here (with master_module_id) so we can map
+      //    each one to its master_module_projects.id.
+      try {
+        const { data: seededMods, error: seededErr } = await supabase
+          .from('user_modules')
+          .select('id, master_module_id')
+          .eq('enrollment_id', enrollmentId);
+        if (seededErr) throw seededErr;
+
+        const masterModuleIds = (seededMods || [])
+          .map((m) => m.master_module_id)
+          .filter(Boolean);
+
+        if (masterModuleIds.length > 0) {
+          const { data: masterProjects, error: mpErr } = await supabase
+            .from('master_module_projects')
+            .select('id, module_id')
+            .in('module_id', masterModuleIds);
+          if (mpErr) throw mpErr;
+
+          const projectByMaster = {};
+          (masterProjects || []).forEach((p) => { projectByMaster[p.module_id] = p.id; });
+
+          const projectRows = (seededMods || [])
+            .map((um) => {
+              const masterProjectId = projectByMaster[um.master_module_id];
+              if (!masterProjectId) return null;
+              return {
+                user_module_id: um.id,
+                master_project_id: masterProjectId,
+                is_completed: false,
+                started_at: null,
+              };
+            })
+            .filter(Boolean);
+
+          if (projectRows.length > 0) {
+            const { error: ump_err } = await supabase
+              .from('user_module_projects')
+              .insert(projectRows);
+            if (ump_err) throw ump_err;
+          }
+        }
+      } catch (seedErr) {
+        // Non-fatal: log but don't break enrollment. The backfill script can
+        // catch any rows that didn't get seeded here.
+        // eslint-disable-next-line no-console
+        console.warn('[Enrollment] user_module_projects seed failed:', seedErr);
+      }
+
       // Navigate to loading page
       navigate(`/course/${courseId}/loading`, {
         state: { courseTitle, enrollmentId },
