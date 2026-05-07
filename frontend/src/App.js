@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
+import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
 import SessionPhaseGuard from "@/components/SessionPhaseGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
@@ -87,8 +88,8 @@ function App() {
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
-                  <Route path="/signuproute1" element={<SignupPage />} />
-                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signuproute1" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
+                  <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                   <Route path="/referral" element={<AdminDashboard />} />
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />
 
