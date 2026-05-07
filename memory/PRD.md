@@ -516,6 +516,17 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - New testids: `module-revisit-toggle-{idx}` (header), `module-revisit-btn-{idx}` (collapsed CTA).
 - Lint clean; smoke-tested on preview — dashboard renders without errors.
 
+## Phase: Safari "Load failed" Auth Resilience (May 2026)
+**Issue**: Users on Safari (production) intermittently saw "Load failed" when clicking "Create Account" on `/signuproute1`. Root cause: Safari surfaces transient cross-origin fetch failures with the message `"Load failed"` (Safari's wording for `TypeError: Failed to fetch`). Supabase auth requests occasionally drop on flaky networks / Safari ITP / HTTP3 hiccups.
+
+**Fix in `/app/frontend/src/contexts/AuthContext.jsx`**:
+- Added `withRetry()` helper that retries transient network errors up to 2x with linear backoff (800ms, 1600ms).
+- Wrapped both `signUp` and `signIn` calls in `withRetry`.
+- Map errors matching `/load failed|failed to fetch|network|networkerror|timeout|abort/i` → user-facing message: `"Connection issue. Please check your internet and try again."`.
+- Fallthrough behavior preserved: non-network errors (e.g., "User already registered", "Invalid login credentials") surface unchanged.
+- Verified happy-path signup still works on preview after change.
+
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

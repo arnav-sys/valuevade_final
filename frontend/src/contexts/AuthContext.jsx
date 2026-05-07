@@ -74,21 +74,83 @@ export function AuthProvider({ children }) {
     };
   }, [done, fetchProfile]);
 
+  // Safari frequently drops cross-origin fetches on flaky networks ("Load failed",
+  // "Failed to fetch", "NetworkError"). Retry transient network errors and surface
+  // a friendly message so users aren't stuck on a cryptic error.
+  const NETWORK_ERROR_PATTERNS = /load failed|failed to fetch|network|networkerror|timeout|abort/i;
+  const isTransientNetworkError = (err) =>
+    err && typeof err.message === 'string' && NETWORK_ERROR_PATTERNS.test(err.message);
+  const FRIENDLY_NETWORK_MESSAGE =
+    "Connection issue. Please check your internet and try again.";
+
+  const withRetry = async (fn, { retries = 2, delayMs = 800 } = {}) => {
+    let lastErr;
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        const result = await fn();
+        // supabase-js returns { data, error } — retry only if error is transient
+        if (result?.error && isTransientNetworkError(result.error) && attempt < retries) {
+          await new Promise((r) => setTimeout(r, delayMs * (attempt + 1)));
+          continue;
+        }
+        return result;
+      } catch (err) {
+        lastErr = err;
+        if (isTransientNetworkError(err) && attempt < retries) {
+          await new Promise((r) => setTimeout(r, delayMs * (attempt + 1)));
+          continue;
+        }
+        throw err;
+      }
+    }
+    throw lastErr;
+  };
+
   const signUp = async ({ email, password, fullName }) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName } },
-    });
-    if (error) return { error };
-    return { data };
+    try {
+      const { data, error } = await withRetry(() =>
+        supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { full_name: fullName } },
+        })
+      );
+      if (error) {
+        if (isTransientNetworkError(error)) {
+          return { error: { ...error, message: FRIENDLY_NETWORK_MESSAGE } };
+        }
+        return { error };
+      }
+      return { data };
+    } catch (err) {
+      return {
+        error: {
+          message: isTransientNetworkError(err) ? FRIENDLY_NETWORK_MESSAGE : (err?.message || 'Sign up failed'),
+        },
+      };
+    }
   };
 
   const signIn = async ({ email, password }) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) return { error };
-    if (data.user) await fetchProfile(data.user.id);
-    return { data };
+    try {
+      const { data, error } = await withRetry(() =>
+        supabase.auth.signInWithPassword({ email, password })
+      );
+      if (error) {
+        if (isTransientNetworkError(error)) {
+          return { error: { ...error, message: FRIENDLY_NETWORK_MESSAGE } };
+        }
+        return { error };
+      }
+      if (data.user) await fetchProfile(data.user.id);
+      return { data };
+    } catch (err) {
+      return {
+        error: {
+          message: isTransientNetworkError(err) ? FRIENDLY_NETWORK_MESSAGE : (err?.message || 'Sign in failed'),
+        },
+      };
+    }
   };
 
   const signOut = async () => {
