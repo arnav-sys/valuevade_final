@@ -527,6 +527,22 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Verified happy-path signup still works on preview after change.
 
 
+## Phase: Module 1 Visual Pre-generation (May 2026)
+**Goal**: Eliminate "Generating visual..." wait time for users in Module 1 by pre-generating all 15 visual card images and persisting them to `master_notes_cards.content.image_url`.
+
+**Implementation** (`/app/scripts/pregenerate_m1_visuals.py`):
+- Fetches Module 1 sessions → all `master_notes_cards` rows where `card_type='visual'`.
+- Mirrors the client-side prompt-building logic in `NotesPage.jsx` `VisualCard` (title + harvested description from nested content fields).
+- Calls existing `POST /api/visual/generate` (Gemini Nano Banana) and PATCHes the returned data URL back into `content.image_url` via Supabase service role.
+- Idempotent: skips cards that already have `image_url` or `svg_content`. `--force` flag re-generates.
+- Single-card mode via `--card <id>`. Module override via `--module-order <n>`.
+
+**Result**: 14/15 generated successfully. 1 card (S14 Microeconomics — Porter Pentagon) failed mid-run because the Emergent Universal Key budget hit its cap. Re-run after top-up:
+```bash
+python3 scripts/pregenerate_m1_visuals.py --card fe971b61-7c69-4612-aa45-19fc92b8c47c
+```
+Frontend `VisualCard` already reads `content.image_url` first, so users now see images instantly without a generation wait.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
