@@ -362,6 +362,315 @@ Return a single JSON object. Output raw JSON only — no markdown, no preamble.
 }"""
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Input-side validation: deterministically enforces the rules from the prompt
+# AFTER the LLM responds. Guards against hallucination, missed removals, and
+# illegal actions (e.g. removing locked M14/M15).
+# ─────────────────────────────────────────────────────────────────────────────
+def _extract_answers(req_answers):
+    """Map req.answers → dict of question keys (q1..q13) → normalized value."""
+    keymap = [
+        ("q1_background", "finance background"),
+        ("q2_goal", "career goal"),
+        ("q3_statements", "3 financial statements"),
+        ("q4_excel", "excel skill"),
+        ("q5_modelling", "model from scratch"),
+        ("q6_accounting", "accounting & accrual"),
+        ("q7_ratios", "ratio & fsa"),
+        ("q8_valuation", "valuation methods"),
+        ("q9_annual_reports", "annual reports & concalls"),
+        ("q10_markets", "indian markets"),
+        ("q11_sectors", "sectors do you want"),
+        ("q12_certs", "certifications"),
+        ("q13_emphasis", "emphasis"),
+    ]
+    out = {}
+    for a in req_answers or []:
+        text = (a.get("question_text") or "").lower()
+        val = a.get("answer")
+        for key, needle in keymap:
+            if needle in text:
+                out[key] = val
+                break
+    return out
+
+
+def _compute_required_actions(ans, course):
+    """Apply rule set deterministically. Returns:
+       (required_remove_modules: set[int], cert_force_keep: set[int],
+        required_remove_sessions: dict[mod_num] -> set[session_number],
+        flags: list[str])"""
+    flags = []
+    # Beginner suppression: skip session-level removals from M1/M7/M9/M10
+    beginner = ans.get("q1_background") == "beginner"
+    if beginner:
+        flags.append("beginner_suppress")
+
+    rm_mods = set()
+    rm_sess = {}  # mod_num -> set of session_numbers (1-indexed)
+
+    def add_sess(mod_num, *sess_nums):
+        rm_sess.setdefault(mod_num, set()).update(sess_nums)
+
+    # ── A) Module-level removals
+    if ans.get("q1_background") in ("fin_grad", "professional"):
+        rm_mods.add(1)
+    if ans.get("q1_background") == "professional":
+        rm_mods.add(2)
+    if ans.get("q4_excel") == "expert":
+        rm_mods.add(3)
+    if ans.get("q5_modelling") == "confident":
+        rm_mods.add(4)
+    if ans.get("q9_annual_reports") == "analyst":
+        rm_mods.add(6)
+    if ans.get("q10_markets") == "deep":
+        rm_mods.update({2, 10})
+
+    emphasis = ans.get("q13_emphasis") or {}
+    if isinstance(emphasis, dict):
+        if (emphasis.get("governance") or 3) <= 2:
+            rm_mods.add(5)
+        if (emphasis.get("reports") or 3) <= 2:
+            rm_mods.add(13)
+        if (emphasis.get("sectors") or 3) <= 2 and ans.get("q2_goal") not in ("er_sell", "er_buy"):
+            rm_mods.add(11)
+
+    # ── B) Session-level removals (only when parent module is NOT being removed)
+    if 1 not in rm_mods and not beginner:
+        if ans.get("q1_background") == "commerce":
+            add_sess(1, 5)
+        q3 = ans.get("q3_statements")
+        if q3 == "confident":
+            add_sess(1, 4, 6, 7, 8, 9)
+        elif q3 == "read_no_link":
+            add_sess(1, 4, 6, 7, 8)  # keep S9
+        if ans.get("q6_accounting") in ("comfortable", "advanced", "expert"):
+            add_sess(1, 5)
+        if ans.get("q10_markets") == "deep":
+            add_sess(1, 12, 15)
+
+    if 2 not in rm_mods:
+        if ans.get("q10_markets") == "basic":
+            add_sess(2, 4)
+        elif ans.get("q10_markets") == "moderate":
+            add_sess(2, 1, 2, 3, 4, 5)
+
+    if 3 not in rm_mods:
+        if ans.get("q4_excel") == "intermediate":
+            add_sess(3, 1, 2, 3, 4, 5)
+        elif ans.get("q4_excel") == "advanced":
+            add_sess(3, 1, 2, 3, 4, 5, 6, 7, 8)
+
+    if 4 not in rm_mods:
+        if ans.get("q5_modelling") == "tutorial":
+            add_sess(4, 1, 2)
+        elif ans.get("q5_modelling") == "basic":
+            add_sess(4, 1, 2, 3)
+
+    if 6 not in rm_mods:
+        if ans.get("q9_annual_reports") == "chairman":
+            add_sess(6, 1, 2, 3)
+        elif ans.get("q9_annual_reports") == "mda":
+            add_sess(6, 1, 2, 3, 4, 5)
+
+    if 7 not in rm_mods and not beginner:
+        if ans.get("q6_accounting") == "advanced":
+            add_sess(7, 1, 2)
+        elif ans.get("q6_accounting") == "expert":
+            add_sess(7, 1, 2, 3, 4, 5)
+
+    if 9 not in rm_mods and not beginner:
+        if ans.get("q7_ratios") == "comfortable":
+            add_sess(9, 1, 2, 3)
+        elif ans.get("q7_ratios") == "advanced":
+            add_sess(9, 1, 2, 3, 4, 5)
+
+    if 10 not in rm_mods and not beginner:
+        if ans.get("q10_markets") == "moderate":
+            add_sess(10, 1, 2, 3)
+
+    # M11 sector pick: keep only selected sectors
+    if 11 not in rm_mods:
+        sectors = ans.get("q11_sectors") or []
+        if isinstance(sectors, str):
+            sectors = [s.strip() for s in sectors.split(",") if s.strip()]
+        if sectors and "all" not in sectors:
+            # Mapping: banking→S4, it→S5, fmcg→S6, auto→S7, pharma→S8, energy→S9, infra→S10
+            sector_to_sess = {"banking": 4, "it": 5, "fmcg": 6, "auto": 7, "pharma": 8, "energy": 9, "infra": 10}
+            kept = {sector_to_sess[s] for s in sectors if s in sector_to_sess}
+            for sess_num in (4, 5, 6, 7, 8, 9, 10):
+                if sess_num not in kept:
+                    add_sess(11, sess_num)
+
+    # M12 valuation methods
+    if 12 not in rm_mods:
+        vmethods = ans.get("q8_valuation") or []
+        if isinstance(vmethods, str):
+            vmethods = [v.strip() for v in vmethods.split(",") if v.strip()]
+        if "dcf" in vmethods:
+            add_sess(12, 6, 7, 8)
+        if "comps" in vmethods:
+            add_sess(12, 10)
+        if "precedent" in vmethods:
+            add_sess(12, 11)
+        if "sotp" in vmethods:
+            add_sess(12, 12)
+        if "sector_specific" in vmethods:
+            add_sess(12, 13)
+
+    # ── C) Certification override — force-keep modules
+    cert_keep = set()
+    certs = ans.get("q12_certs") or []
+    if isinstance(certs, str):
+        certs = [c.strip() for c in certs.split(",") if c.strip()]
+    if "cfa" in certs:
+        cert_keep.update({7, 9, 10, 12})
+    if "frm" in certs:
+        cert_keep.update({8, 10})
+    if "ca" in certs:
+        cert_keep.update({1, 7})
+
+    # Apply cert override at module level
+    if cert_keep & rm_mods:
+        flags.append("cert_override")
+        rm_mods -= cert_keep
+
+    # Never remove locked modules
+    if rm_mods & {14, 15}:
+        flags.append("locked_violation_prevented")
+        rm_mods -= {14, 15}
+
+    return rm_mods, cert_keep, rm_sess, flags
+
+
+def _validate_and_normalize_plan(plan, req):
+    """Reconcile Claude's plan with deterministic rules. Mutates and returns plan."""
+    ans = _extract_answers(req.answers)
+    course = req.course_structure or []
+    # Build session_id lookup: (mod_num, sess_num) -> {id, title}
+    sess_lookup = {}
+    mod_titles = {}
+    for i, mod in enumerate(course, 1):
+        mod_titles[i] = mod.get("title", "")
+        for j, s in enumerate(mod.get("master_sessions", []) or [], 1):
+            sess_lookup[(i, j)] = {"id": s.get("id", ""), "title": s.get("title", "")}
+
+    required_rm_mods, cert_keep, required_rm_sess, flags = _compute_required_actions(ans, course)
+
+    # Start from LLM-provided plan
+    actions = list(plan.get("customisation_plan") or [])
+
+    # 1) Strip any actions targeting locked modules (M14, M15) — sessions or modules
+    cleaned = []
+    for a in actions:
+        if a.get("module_number") in (14, 15):
+            flags.append("dropped_locked_action")
+            continue
+        cleaned.append(a)
+    actions = cleaned
+
+    # 2) Strip module-level removals that conflict with cert_keep
+    actions = [a for a in actions if not (a.get("action") == "remove_module" and a.get("module_number") in cert_keep)]
+
+    # 3) Add MISSING module-level removals
+    have_rm_mods = {a.get("module_number") for a in actions if a.get("action") == "remove_module"}
+    for m in required_rm_mods:
+        if m not in have_rm_mods:
+            actions.append({
+                "action": "remove_module",
+                "module_number": m,
+                "module_title": mod_titles.get(m, ""),
+                "reason": "Enforced by deterministic validator (rule trigger matched).",
+            })
+            flags.append(f"added_remove_module_M{m}")
+
+    # 4) Drop session-level removals targeting modules that are now being removed (redundant)
+    final_rm_mods = {a.get("module_number") for a in actions if a.get("action") == "remove_module"}
+    actions = [a for a in actions if not (a.get("action") == "remove_session" and a.get("module_number") in final_rm_mods)]
+
+    # 5) Add MISSING session-level removals
+    have_rm_sess = set()
+    for a in actions:
+        if a.get("action") == "remove_session":
+            sid = a.get("session_id")
+            if sid:
+                have_rm_sess.add(sid)
+    for mod_num, sess_nums in required_rm_sess.items():
+        if mod_num in final_rm_mods:
+            continue
+        for sess_num in sess_nums:
+            entry = sess_lookup.get((mod_num, sess_num))
+            if not entry or not entry["id"]:
+                continue
+            if entry["id"] in have_rm_sess:
+                continue
+            actions.append({
+                "action": "remove_session",
+                "module_number": mod_num,
+                "module_title": mod_titles.get(mod_num, ""),
+                "session_id": entry["id"],
+                "session_title": entry["title"],
+                "reason": "Enforced by deterministic validator (already covered by user's answers).",
+            })
+            flags.append(f"added_remove_session_M{mod_num}S{sess_num}")
+
+    # 6) Enforce min-session floor (≥60): if we'd fall below, back off session-level removals (newest first)
+    total_sessions_in_course = sum(len(m.get("master_sessions") or []) for m in course)
+    removed_sessions_count = sum(len((m.get("master_sessions") or [])) for i, m in enumerate(course, 1) if i in final_rm_mods)
+    removed_sessions_count += sum(1 for a in actions if a.get("action") == "remove_session")
+    remaining = total_sessions_in_course - removed_sessions_count
+    if remaining < 60:
+        flags.append("min_session_floor_triggered")
+        # Drop trailing remove_session actions until we're back at >=60
+        kept = []
+        # Walk actions in reverse and drop remove_session entries one by one
+        for a in reversed(actions):
+            if a.get("action") == "remove_session" and remaining < 60:
+                remaining += 1
+                continue  # skip this removal (drop it)
+            kept.append(a)
+        actions = list(reversed(kept))
+
+    plan["customisation_plan"] = actions
+
+    # 7) Rebuild final_modules summary deterministically (more reliable than trusting LLM)
+    final_modules = []
+    final_rm_mods = {a.get("module_number") for a in actions if a.get("action") == "remove_module"}
+    sess_removed_count_by_mod = {}
+    for a in actions:
+        if a.get("action") == "remove_session":
+            sess_removed_count_by_mod[a.get("module_number")] = sess_removed_count_by_mod.get(a.get("module_number"), 0) + 1
+    position = 0
+    total_final_sessions = 0
+    for i, mod in enumerate(course, 1):
+        total_in_mod = len(mod.get("master_sessions") or [])
+        if i in final_rm_mods:
+            status = "removed"
+            final_count = 0
+            sess_removed = total_in_mod
+        else:
+            position += 1
+            status = "locked" if i in (14, 15) else "kept"
+            sess_removed = sess_removed_count_by_mod.get(i, 0)
+            final_count = max(0, total_in_mod - sess_removed)
+            total_final_sessions += final_count
+        final_modules.append({
+            "position": position if status != "removed" else None,
+            "module_number": i,
+            "module_title": mod.get("title", ""),
+            "status": status,
+            "sessions_removed": sess_removed,
+            "final_session_count": final_count,
+        })
+    plan["final_modules"] = final_modules
+    plan["total_modules_final"] = sum(1 for m in final_modules if m["status"] != "removed")
+    plan["total_sessions_final"] = total_final_sessions
+    plan["locked_modules"] = [14, 15]
+    existing_flags = list(plan.get("conservative_flags") or [])
+    plan["conservative_flags"] = existing_flags + flags
+    return plan
+
+
 @api_router.post("/customize/generate")
 async def generate_customization(req: CustomizeRequest):
     if not EMERGENT_LLM_KEY:
@@ -422,15 +731,31 @@ async def generate_customization(req: CustomizeRequest):
             response_text = '\n'.join(lines)
 
         plan = json_module.loads(response_text)
+        plan = _validate_and_normalize_plan(plan, req)
         return plan
 
     except json_module.JSONDecodeError as e:
         logger.error(f"Failed to parse LLM response: {e}")
         logger.error(f"Raw response: {response_text[:500]}")
-        raise HTTPException(status_code=500, detail="Failed to parse AI response. Please try again.")
+        # Fall back to a deterministic plan — validator can build a complete plan
+        # from an empty Claude response.
+        fallback = _validate_and_normalize_plan({
+            "user_profile_summary": "Generated from your answers (AI summariser unavailable). Path personalised by rule engine.",
+            "customisation_plan": [],
+            "final_modules": [],
+            "conservative_flags": ["llm_parse_failed_fallback"],
+        }, req)
+        return fallback
     except Exception as e:
         logger.error(f"LLM call failed: {e}")
-        raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")
+        # Same fallback for any LLM error (502, budget exceeded, timeout, etc.)
+        fallback = _validate_and_normalize_plan({
+            "user_profile_summary": "Generated from your answers (AI summariser unavailable). Path personalised by rule engine.",
+            "customisation_plan": [],
+            "final_modules": [],
+            "conservative_flags": ["llm_unavailable_fallback"],
+        }, req)
+        return fallback
 
 
 # ---------------- Visual Card Image Generation ----------------

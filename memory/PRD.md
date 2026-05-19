@@ -542,6 +542,27 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Questionnaire renders with progress dots (1 of 5)
 - Questions pulled correctly from Supabase
 
+## Phase: Deterministic Validator + LLM Fallback (May 2026)
+**Why**: LLM is non-deterministic and may hallucinate, miss removals, or hit budget/502s. A pure-Python rule engine guarantees correctness regardless of LLM state.
+
+**Implementation** (`/app/backend/server.py`):
+- `_extract_answers()` — parses `req.answers` and maps question_text → q1…q13 keys.
+- `_compute_required_actions()` — applies the **exact** rule set from the system prompt deterministically. Returns `(required_remove_modules, cert_force_keep, required_remove_sessions, flags)`.
+- `_validate_and_normalize_plan()` — reconciles Claude's plan with rule output:
+  1. Strips actions targeting locked M14/M15
+  2. Strips module removals that conflict with cert force-keep (CFA/FRM/CA)
+  3. Injects missing module-level removals
+  4. Drops session removals inside removed modules (dedupe)
+  5. Injects missing session-level removals
+  6. Enforces ≥60 session floor (backs off newest removals if below)
+  7. Rebuilds `final_modules` summary deterministically
+- Endpoint now **gracefully falls back** to a validator-only plan on any LLM failure (budget exceeded, 502, parse error, timeout). Users always get a personalised plan.
+
+**Tests** (`/app/backend/tests/test_customise_validator.py`):
+- 8 unit tests covering: fin_grad M1 removal, professional all-removals, CFA cert override, locked module protection, session-level removals, beginner suppression, summary rebuild, redundant-action dedupe. All passing.
+
+**End-to-end verified**: `/api/customize/generate` returned a correct personalised plan in 181s **with the LLM completely down** (budget exceeded). For the fin_grad+ER+CFA+IT/FMCG/Pharma profile: 14 modules kept, 125 sessions, 33 session-level removals across 8 modules.
+
 ## Phase: Comprehensive Customisation Question System (May 2026)
 **Goal**: Replace the old 11 questions that only drove **module-level** removals with a fresh, comprehensive 13-question system that drives **both module-level AND session-level** customisation across the full 15-module / 173-session Equity Research curriculum.
 
