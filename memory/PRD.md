@@ -542,6 +542,28 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Questionnaire renders with progress dots (1 of 5)
 - Questions pulled correctly from Supabase
 
+## Phase: Comprehensive Customisation Question System (May 2026)
+**Goal**: Replace the old 11 questions that only drove **module-level** removals with a fresh, comprehensive 13-question system that drives **both module-level AND session-level** customisation across the full 15-module / 173-session Equity Research curriculum.
+
+**DB seed** (`/app/scripts/seed_equity_research_questions.py`):
+- Deletes all existing `master_customization_questions` for the Equity Research path
+- Inserts 13 new questions: 9 single_select, 3 multi_select, 1 rating_grid
+- Question keys cover: background, career goal, statements comfort, Excel, modelling, accounting, ratios, valuation methods (multi), annual reports, Indian markets, sector focus (multi), certifications (multi), output emphasis (6-row rating grid)
+- Each question's `purpose` field documents the exact session/module triggers so the LLM can apply targeted removals
+
+**Backend prompt rewrite** (`/app/backend/server.py` `CUSTOMIZE_SYSTEM_PROMPT`, ~250 lines):
+- Module index reference (M1-M15) baked into prompt
+- Ordered decision logic: (A) module-level removals → (B) session-level removals scoped per module → (C) certification override (force-keep) → (D) reorder logic → (E) conservative rules (beginner suppress, ≥60-session floor, never remove M14/M15)
+- Session-level rules cover: M1 S4-S9 (Big Three), M2 S1-S5 (markets), M3 S1-S8 (Excel basics→intermediate), M4 S1-S3 (modelling intro), M6 S1-S5 (AR anatomy), M7 S1-S5 (FSA intro), M9 S1-S5 (ratio intros), M10 S1-S3 (macro intros), M11 sector-pick keep-list, M12 by valuation method.
+- Output schema unchanged so `ConfirmPage` `remove_session` / `remove_module` / `reorder_module` logic still applies without changes.
+
+**UI smoke test** (fresh signup → /customize):
+- All 13 questions render correctly across 6 steps (3 questions per step + free-text)
+- Multi-select checkboxes work, rating grid (6 rows × 5 cols Skip→Must-have) renders perfectly
+- "Generate My Personalized Path" CTA on step 6
+
+⚠️ **Live LLM end-to-end test BLOCKED**: Emergent Universal Key budget hit cap again (the LLM gateway 502'd, retries consumed remaining budget). Code path is correct — a small Claude ping succeeds — only large `/customize/generate` calls fail until top-up. After top-up, the flow will work without any further changes.
+
 ## Phase: Module 1 Visual Pre-generation (May 2026)
 **Goal**: Eliminate "Generating visual..." wait time for users in Module 1 by pre-generating all 15 visual card images and persisting them to `master_notes_cards.content.image_url`.
 
