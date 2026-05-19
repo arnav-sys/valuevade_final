@@ -143,22 +143,13 @@ export default function CourseDetailsPage() {
   );
   const totalHours = course?.estimated_hours || Math.round(totalMinutes / 60) || 0;
 
-  // Direct-enroll handler: skip the question/LLM customisation flow and clone the
-  // full master path 1:1. Hands ConfirmPage an empty plan so it does no removals.
-  const enrollDirect = () => {
+  // Route to the AI customization questionnaire (logged-in) or to login (logged-out).
+  const goCustomize = () => {
     if (!user) {
       navigate('/login');
       return;
     }
-    navigate(`/course/${courseId}/confirm`, {
-      state: {
-        plan: { customisation_plan: [], summary: 'Full course (no customisation)' },
-        answers: [],
-        freeText: '',
-        courseStructure: modules,
-        courseTitle: course?.title || '',
-      },
-    });
+    navigate(`/course/${courseId}/customize`);
   };
 
   const isEnrolled = enrollment?.status === 'active';
@@ -299,11 +290,11 @@ export default function CourseDetailsPage() {
                   </button>
                 ) : (
                   <button
-                    onClick={enrollDirect}
+                    onClick={goCustomize}
                     className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
                     data-testid="detail-customize-enroll"
                   >
-                    {user ? 'Enroll' : 'Sign up to Enroll'} <ArrowRight size={16} />
+                    {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
                   </button>
                 )}
               </section>
@@ -477,11 +468,11 @@ export default function CourseDetailsPage() {
             </button>
           ) : (
             <button
-              onClick={enrollDirect}
+              onClick={goCustomize}
               className="w-full py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage flex items-center justify-center gap-2 hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
               data-testid="detail-mobile-enroll-btn"
             >
-              {user ? 'Enroll' : 'Sign up to Enroll'} <ArrowRight size={16} />
+              {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
             </button>
           )}
         </div>

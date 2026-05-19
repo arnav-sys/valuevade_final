@@ -527,6 +527,21 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Verified happy-path signup still works on preview after change.
 
 
+## Phase: Restore LLM Customization Flow (May 2026)
+**User decision reversed**: Previously the customize/preview pages were stubbed to redirect-only (direct enroll). User asked to bring back the AI customization questionnaire.
+
+**Restored from commit `1007e0a^`**:
+- `/app/frontend/src/components/CustomizePage.jsx` (464 lines) — full questionnaire with `master_customization_questions` (11 questions for Equity Research path), groups into steps of 3 + a free-text step, then navigates to `/preview` with answers.
+- `/app/frontend/src/components/PreviewPage.jsx` (405 lines) — calls `POST /api/customize/generate` (Claude), shows the AI's customisation plan (remove/reorder/add badges), then navigates to `/confirm`.
+- `/app/frontend/src/components/CourseDetailsPage.jsx` — replaced `enrollDirect()` with `goCustomize()`:
+  - Logged-out → `/login` (preserves recent UX fix)
+  - Logged-in → `/course/:id/customize`
+  - CTA label: "Customize & Enroll" (logged-in) / "Login to Enroll" (logged-out)
+
+**Smoke-tested on preview** (fresh signup → course detail → "Customize & Enroll" → /customize):
+- Questionnaire renders with progress dots (1 of 5)
+- Questions pulled correctly from Supabase
+
 ## Phase: Module 1 Visual Pre-generation (May 2026)
 **Goal**: Eliminate "Generating visual..." wait time for users in Module 1 by pre-generating all 15 visual card images and persisting them to `master_notes_cards.content.image_url`.
 
