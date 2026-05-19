@@ -542,6 +542,15 @@ Lint clean across all 5 modified files; smoke-tested — bundle compiles, no con
 - Questionnaire renders with progress dots (1 of 5)
 - Questions pulled correctly from Supabase
 
+## Phase: Customise Endpoint — Claude Haiku 4.5 + Side-by-Side Verified (May 2026)
+- Switched `/api/customize/generate` from `claude-sonnet-4-5-20250929` → `claude-haiku-4-5-20251001`. Sonnet was timing out at the LLM gateway's 60s limit on the ~37K-char prompt (large system prompt + course structure). Haiku finishes in ~30s.
+- Validator handles all correctness; LLM only adds nicer per-action `reason` strings + occasional extra-aggressive removals.
+- **Verified side-by-side**: same finance-grad+ER+CFA profile through (A) Haiku+validator vs (B) validator-only:
+  - A: 13 modules, 122 sessions, removes M1+M2, 29 session-level removals, Claude-authored reason text
+  - B: 14 modules, 125 sessions, removes M1, 33 session-level removals, templated reason text
+  - Both honour CFA force-keep (M7/M9/M10/M12), M14/M15 lock, ≥60 floor
+- Result: customise endpoint is now production-ready and fault-tolerant.
+
 ## Phase: Deterministic Validator + LLM Fallback (May 2026)
 **Why**: LLM is non-deterministic and may hallucinate, miss removals, or hit budget/502s. A pure-Python rule engine guarantees correctness regardless of LLM state.
 

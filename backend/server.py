@@ -719,7 +719,7 @@ async def generate_customization(req: CustomizeRequest):
             api_key=EMERGENT_LLM_KEY,
             session_id=f"customize-{uuid.uuid4()}",
             system_message=CUSTOMIZE_SYSTEM_PROMPT,
-        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
 
         response = await chat.send_message(UserMessage(text=user_message_text))
 
