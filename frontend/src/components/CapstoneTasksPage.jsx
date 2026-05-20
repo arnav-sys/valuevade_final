@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
+import { useXP } from '../contexts/XPContext';
+import { XP_REASONS } from '../utils/xp';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
 import TaskCard from './projects/TaskCard';
@@ -24,6 +26,7 @@ export default function CapstoneTasksPage() {
   const [collapsed, setCollapsed] = useState({});
   const [saving, setSaving] = useState(false);
   const [completing, setCompleting] = useState(false);
+  const { awardXP } = useXP();
 
   useEffect(() => {
     let mounted = true;
@@ -149,6 +152,18 @@ export default function CapstoneTasksPage() {
           .from('user_enrollments')
           .update({ status: 'completed', completed_at: new Date().toISOString() })
           .eq('id', enrollment.id);
+      }
+
+      // +300 XP for capstone (fires toast + sound + level-up via XPContext)
+      try {
+        await awardXP({
+          amount: 300,
+          reason: XP_REASONS.capstone_complete,
+          source_id: capstone.id,
+          meta: { master_capstone_id: masterCapstone?.id || null },
+        });
+      } catch (xpErr) {
+        console.warn('[capstone] XP award failed (non-fatal):', xpErr?.message || xpErr);
       }
 
       navigate('/capstone/complete');

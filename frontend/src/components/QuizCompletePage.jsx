@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useXP } from '../contexts/XPContext';
 import { markPhaseComplete } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
@@ -116,6 +117,7 @@ export default function QuizCompletePage() {
   const [expandedIdx, setExpandedIdx] = useState(null);
   const [saved, setSaved] = useState(false);
   const [nextRoute, setNextRoute] = useState({ phase: 'interview', route: 'interview/start', label: 'Interview' });
+  const { awardXP } = useXP();
 
   // Save results once. Quiz is marked "completed" on ANY attempt
   // (hybrid model). Pass/fail is derived from quiz_score >= 70.
@@ -124,11 +126,20 @@ export default function QuizCompletePage() {
     async function save() {
       if (saved || !user?.id || !sessionId || total === 0) return;
       try {
-        const res = await markPhaseComplete(sessionId, 'quiz', { quiz_score: pctScore });
+        const res = await markPhaseComplete(sessionId, 'quiz', {
+          quiz_score: pctScore,
+          quiz_correct: score,
+          quiz_attempted: total,
+        });
         if (!res?.success) {
           console.error('[quiz] markPhaseComplete failed:', res?.error);
         } else if (mounted && res.data) {
           setNextRoute(getNextPhaseRoute(res.data, 'quiz'));
+          // Fire XP intents (toast + sound + level-up handled in XPContext)
+          for (const intent of (res.xp_intents || [])) {
+            // eslint-disable-next-line no-await-in-loop
+            await awardXP(intent);
+          }
         }
       } catch (err) {
         console.error('[quiz] save error:', err);

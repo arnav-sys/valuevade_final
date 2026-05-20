@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { XPProvider } from "@/contexts/XPContext";
+import { SoundProvider } from "@/contexts/SoundContext";
+import XPRoot from "@/components/gamification/XPRoot";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
@@ -71,19 +74,22 @@ function App() {
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
-            <Toaster
-              position="top-center"
-              toastOptions={{
-                style: {
-                  background: 'var(--glass-bg)',
-                  backdropFilter: 'blur(20px)',
-                  border: '1px solid var(--glass-border)',
-                  color: 'var(--color-text)',
-                  fontFamily: "'Bricolage Grotesque', sans-serif",
-                },
-              }}
-            />
-            <Suspense fallback={<RouteLoader />}>
+            <SoundProvider>
+              <XPProvider>
+                <Toaster
+                  position="top-center"
+                  toastOptions={{
+                    style: {
+                      background: 'var(--glass-bg)',
+                      backdropFilter: 'blur(20px)',
+                      border: '1px solid var(--glass-border)',
+                      color: 'var(--color-text)',
+                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                    },
+                  }}
+                />
+                <XPRoot />
+                <Suspense fallback={<RouteLoader />}>
               <PageTransition>
                 <Routes>
                   {/* Public */}
@@ -140,6 +146,8 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+              </XPProvider>
+            </SoundProvider>
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>

@@ -654,6 +654,63 @@ User confirmed the gamification roadmap: XP engine, streaks, badges, daily chall
 
 **No frontend changes in this phase.** Pure schema lay-down. Phase 1 will wire `awardXP()` calls at every "complete" event in `utils/progress.js`.
 
+### Phase 43 — XP Engine + Level System + Dopamine UX Spine (May 2026)
+
+Phase 1 of the gamification roadmap. Plugs into the Phase 42 schema. No new FastAPI endpoints for XP itself — the frontend talks directly to the `award_xp` RPC. One read-only debug route was added (`GET /api/health/xp`) purely for the testing agent.
+
+**New frontend files:**
+- `frontend/src/utils/xp.js` — `awardXP()` wrapper around the `award_xp` RPC, plus pure helpers `computeQuizXP()`, `getLevelInfo()`, `loadLevels()` (cached), `todayISTKey()`. Exports `XP_REASONS` mirroring the P0 enum.
+- `frontend/src/contexts/SoundContext.jsx` — `playSound(slug)` for `xp_gain` / `level_up`. Persisted in localStorage as `vv_sound_enabled` (default true). Gated by first user gesture (browser autoplay rules). Preloads audio elements on mount.
+- `frontend/src/contexts/XPContext.jsx` — global `{ xp, level, levelName, levelColor, nextLevelName, nextThreshold, xpToNext, progressPct, isMaxLevel, awardXP, refresh, triggerXPParticle, pendingLevelUp, clearLevelUp, xpParticle, clearParticle }`. Surfaces toast + sound + level-up overlay automatically when awardXP returns `did_level_up`. Handles daily_login (+25 once per IST day, stamps `user_stats.last_login_at_ist`) and signup_bonus backfill (+10 if `total_xp === 0` AND no prior `signup_bonus` event) on mount. Idempotent across reloads via per-event ledger pre-check.
+- `frontend/src/components/gamification/XPBar.jsx` — animated progress bar with level icon + name + total_xp/next_threshold + persistent nudge ("**N XP away from Level X — <next_level_name>**"). `variant='compact'` for sidebar use. Honours `prefers-reduced-motion` (jumps straight to value instead of animating).
+- `frontend/src/components/gamification/XPGainParticle.jsx` — floating "+N XP" gradient pill that spawns at (x, y), floats up ~80px, fades over 1.2s. Reduced-motion users see only the fade.
+- `frontend/src/components/gamification/LevelUpOverlay.jsx` — full-screen "LEVEL UP!" modal: Clash Display headline, level name + icon in level color, "Continue" CTA, dual-corner `canvas-confetti` burst + secondary cascade, plays `level_up.wav` via SoundContext. Auto-dismisses after 6s OR on CTA / scrim click. Reduced-motion users see no confetti and a fade-only entrance.
+- `frontend/src/components/gamification/XPRoot.jsx` — mount-once root inside `<XPProvider>` that hosts the overlay + particle so any awardXP call from any page surfaces UI in the same global layer.
+
+**Modified files:**
+- `frontend/src/App.js` — wrapped `<App />` with `<SoundProvider><XPProvider><XPRoot/>…</XPProvider></SoundProvider>` inside the existing `<AuthProvider>`.
+- `frontend/src/utils/progress.js` — `markPhaseComplete()` now returns an additional `xp_intents` array. Each intent is `{ amount, reason, source_id, meta }`. Callers loop through it and call `xp.awardXP(intent)` so toast / sound / level-up fire in the UI layer (markPhaseComplete itself never calls the RPC — keeps the rule logic central without coupling to React).
+  - Quiz complete: `10 * correct + 2 * attempted + random(-5..+5)`, clamped ≥ 0. Reason `quiz_correct`. `correct` and `attempted` come from the caller (QuizCompletePage already has both).
+  - Simulation complete: +100. Reason `simulation_complete`.
+  - Session fully complete (all 4 phases done): +50. Reason `session_complete`. Fired in the SAME call as the 4th phase, so the user sees the per-phase XP toast first, then the session-complete toast.
+- `frontend/src/components/QuizCompletePage.jsx` — passes `quiz_correct` + `quiz_attempted` into `markPhaseComplete`; loops `xp_intents` through `xp.awardXP()`.
+- `frontend/src/components/SimulationPage.jsx` — same loop after `markPhaseComplete`.
+- `frontend/src/components/CapstoneTasksPage.jsx` — capstone completion is gated outside markPhaseComplete (uses a direct supabase update for `user_capstone_projects.is_completed`), so it fires `awardXP({ amount: 300, reason: 'capstone_complete' })` inline after the `user_enrollments.status = 'completed'` write.
+- `frontend/src/components/DashboardPage.jsx` — `<XPBar />` placed between "Continue learning" card and the existing stat tiles (the eye-grabber slot, just below the welcome heading).
+- `frontend/src/components/ProfilePage.jsx` — `<XPBar />` placed above the 4-tile stats grid, inside the enrollment-only branch.
+- `frontend/src/components/SettingsPage.jsx` — added a real `<SoundToggle />` row above the existing "Coming soon" hero, fully wired to SoundContext, with a preview-on-enable behaviour and gradient/grey button state.
+- `backend/server.py` — added `GET /api/health/xp?user_id=<uuid>` (read-only) returning `{ total_xp, current_level, events_count, summed_xp_from_events, expected_level_from_sum, matches, stats, ledger_breakdown }`. Uses the service-role key against PostgREST; lets the tester verify ledger integrity with one curl call.
+
+**New static assets:**
+- `frontend/public/sounds/xp_gain.wav` (22 KB) — two-tone blip, ~250ms.
+- `frontend/public/sounds/level_up.wav` (119 KB) — C-major arpeggio + sustained chord, ~1.5s.
+- `frontend/public/sounds/SOUNDS_LICENSE.md` — CC0, both files synthesised programmatically by `scripts/generate_gamification_sounds.py` (pure stdlib, no third-party samples).
+
+**Other:**
+- `/app/memory/auth_testing.md` — new doc for the tester explaining Supabase Auth, the localStorage key `sb-yuadeybycbfqlkdpxbkv-auth-token`, and the `/api/health/xp` verification endpoint.
+- `/app/memory/test_credentials.md` — unchanged (still `testagent2026@gmail.com / TestPass123!`).
+- `package.json` — added `canvas-confetti` dependency.
+
+**XP rule table (live in this build):**
+
+| Trigger | XP | Reason |
+|---|---|---|
+| Quiz phase complete | `10 * correct + 2 * attempted ± random(0..5)` (clamped ≥ 0) | `quiz_correct` |
+| Simulation phase complete | +100 | `simulation_complete` |
+| Session fully complete (all 4 phases) | +50 | `session_complete` |
+| Capstone complete | +300 | `capstone_complete` |
+| Daily login (first auth load of the IST day) | +25, once per day | `daily_login` |
+| Signup bonus / one-time backfill for existing users | +10 | `signup_bonus` |
+| Notes / Interview phase complete | (skipped in P1 per brief) | — |
+
+**Design / accessibility decisions:**
+- All toast + confetti + particle animations respect `prefers-reduced-motion`.
+- Sound never plays before the first user gesture (matches every browser's autoplay policy). The SoundContext flips a `userHasInteracted` flag on first `pointerdown` / `keydown` / `touchstart` anywhere on the page.
+- Default sound state is **ON** (per user direction). The toggle lives in Settings and persists across reloads.
+- Toasts use the existing Sonner instance — no new toast library, no new style override.
+
+**One small deviation from the brief:** the brief asked for `awardXP({...})` to also be fired from the signup flow. The `XPContext` mount path already handles this idempotently (it pre-checks for any prior `signup_bonus` event in `user_xp_events` before firing) — and firing it from the signup form would create a stale ledger event before the user has a `user_stats` row (the row is only created when the user enrolls). So we route the signup bonus exclusively through the mount path, which works correctly for both new signups (fires after enrollment) and existing-user backfill (fires on the next authenticated page load). This was a brief-spec call-out — flagging it explicitly so it can be revisited in P2 if you want the ledger stamped earlier.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

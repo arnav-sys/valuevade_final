@@ -1,12 +1,66 @@
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { Settings, Sparkles, ArrowRight, Mail, Bell, Shield } from 'lucide-react';
+import { Settings, Sparkles, ArrowRight, Mail, Bell, Shield, Volume2, VolumeX } from 'lucide-react';
+import { useSound } from '../contexts/SoundContext';
 
 const COMING_SOON = [
   { icon: Bell, label: 'Email notifications', hint: 'Daily streak reminders and session nudges.' },
   { icon: Shield, label: 'Privacy controls', hint: 'Manage your data, exports, and account deletion.' },
   { icon: Mail, label: 'Contact preferences', hint: 'Choose what product updates you receive.' },
 ];
+
+function SoundToggle() {
+  const { enabled, toggleEnabled, playSound } = useSound();
+  return (
+    <button
+      type="button"
+      onClick={() => {
+        const wasEnabled = enabled;
+        toggleEnabled();
+        if (!wasEnabled) {
+          // Preview the sound on enable so user knows it works
+          setTimeout(() => playSound('xp_gain'), 50);
+        }
+      }}
+      className="glass-card rounded-2xl p-5 mb-4 w-full text-left flex items-center gap-4 hover:border-[var(--color-primary)]/40 transition-all"
+      data-testid="settings-sound-toggle"
+      aria-pressed={enabled}
+    >
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all"
+        style={{
+          background: enabled
+            ? 'linear-gradient(135deg, var(--color-primary), var(--color-accent-purple))'
+            : 'var(--color-surface)',
+          color: enabled ? '#fff' : 'var(--color-text-muted)',
+        }}
+      >
+        {enabled ? <Volume2 size={20} /> : <VolumeX size={20} />}
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="font-clash text-sm sm:text-base font-semibold text-[var(--color-text)]" data-testid="settings-sound-label">
+          Sound effects
+        </div>
+        <div className="text-xs font-bricolage text-[var(--color-text-muted)] mt-0.5">
+          Play subtle pops for XP gains and a celebratory chord on level ups.
+        </div>
+      </div>
+      <span
+        className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors"
+        style={{
+          background: enabled ? 'var(--color-primary)' : 'var(--color-border)',
+        }}
+        data-testid="settings-sound-track"
+      >
+        <span
+          className="inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform absolute top-0.5"
+          style={{ left: enabled ? '22px' : '2px' }}
+          data-testid="settings-sound-thumb"
+        />
+      </span>
+    </button>
+  );
+}
 
 export default function SettingsPage() {
   return (
@@ -26,6 +80,8 @@ export default function SettingsPage() {
               Fine-tune your Valuevade experience.
             </p>
           </div>
+
+          <SoundToggle />
 
           {/* Coming soon hero */}
           <div

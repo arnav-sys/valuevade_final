@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { getNextPhase, computeStreak, updateStats } from '../utils/progress';
 import Sidebar from './Sidebar';
+import XPBar from './gamification/XPBar';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
@@ -496,6 +497,11 @@ export default function DashboardPage() {
                   projectByModule={projectByModule}
                   onNavigate={navigate}
                 />
+              </section>
+
+              {/* XP bar — the eye-grabber */}
+              <section>
+                <XPBar />
               </section>
 
               {/* Stats */}

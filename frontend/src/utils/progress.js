@@ -1,8 +1,19 @@
 import { supabase } from '../lib/supabase';
+import { computeQuizXP, XP_REASONS } from './xp';
 
 /**
  * Progress utility functions used across all session screens.
  * All functions are async and return { success, data?, error? }.
+ *
+ * As of Phase 1 these also compute the XP awards a phase transition should
+ * earn and return them as `xp_intents` (a list of { amount, reason,
+ * source_id, meta } objects). The caller (a page using useXP()) is expected
+ * to loop through `xp_intents` and call `xp.awardXP(intent)` for each so
+ * that toasts / sounds / level-up overlay fire in the UI layer.
+ *
+ * markPhaseComplete itself never calls the award_xp RPC directly — it just
+ * tells callers what should be awarded. This keeps the centralised rule
+ * logic here while letting the UI layer own all dopamine feedback.
  */
 
 const PHASE_FIELDS = {
@@ -26,7 +37,9 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
   try {
     const updatePayload = { [field]: true };
     if (scoreData && typeof scoreData === 'object') {
-      Object.assign(updatePayload, scoreData);
+      // strip non-DB fields (xp metadata) before writing
+      const { quiz_correct: _qc, quiz_attempted: _qa, ...rest } = scoreData;
+      Object.assign(updatePayload, rest);
     }
 
     // Update the phase flag
@@ -45,6 +58,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       updated.interview_completed &&
       updated.simulation_completed;
 
+    let sessionJustCompleted = false;
     if (allDone && !updated.is_completed) {
       const { data: completed, error: cErr } = await supabase
         .from('user_sessions')
@@ -54,12 +68,44 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
         .single();
       if (cErr) throw cErr;
 
+      sessionJustCompleted = true;
       if (completed?.user_module_id) {
         await checkModuleCompletion(completed.user_module_id);
       }
     }
 
-    return { success: true, data: updated };
+    // ----- XP intents (callers loop and fire via XPContext.awardXP) -----
+    const xp_intents = [];
+    if (phase === 'quiz') {
+      const correct = Number(scoreData?.quiz_correct) || 0;
+      const attempted = Number(scoreData?.quiz_attempted) || 0;
+      const amount = computeQuizXP({ correct, attempted });
+      if (amount > 0) {
+        xp_intents.push({
+          amount,
+          reason: XP_REASONS.quiz_correct,
+          source_id: userSessionId,
+          meta: { correct, attempted, quiz_score: scoreData?.quiz_score ?? null },
+        });
+      }
+    } else if (phase === 'simulation') {
+      xp_intents.push({
+        amount: 100,
+        reason: XP_REASONS.simulation_complete,
+        source_id: userSessionId,
+        meta: { simulation_score: scoreData?.simulation_score ?? null },
+      });
+    }
+    if (sessionJustCompleted) {
+      xp_intents.push({
+        amount: 50,
+        reason: XP_REASONS.session_complete,
+        source_id: userSessionId,
+        meta: {},
+      });
+    }
+
+    return { success: true, data: updated, xp_intents };
   } catch (err) {
     return { success: false, error: err.message || String(err) };
   }

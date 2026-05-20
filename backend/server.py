@@ -86,6 +86,96 @@ async def root():
     return {"message": "Valuevade API"}
 
 
+# ---------------------------------------------------------------------------
+# Gamification (XP) — read-only debug endpoint for the testing agent.
+# Uses the Supabase service-role key against the PostgREST API to bypass RLS,
+# returning a one-shot integrity snapshot of the user's XP state.
+# ---------------------------------------------------------------------------
+import urllib.request as _urlreq
+import urllib.error as _urlerr
+import urllib.parse as _urlparse
+import json as _json
+
+_SUPABASE_REST = os.environ.get("REACT_APP_SUPABASE_URL") or "https://yuadeybycbfqlkdpxbkv.supabase.co"
+_SUPABASE_SR = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+
+
+def _supabase_get(path: str):
+    """Minimal GET helper against PostgREST using the service-role key."""
+    if not _SUPABASE_SR:
+        raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+    url = f"{_SUPABASE_REST}/rest/v1/{path}"
+    req = _urlreq.Request(
+        url,
+        headers={
+            "apikey": _SUPABASE_SR,
+            "Authorization": f"Bearer {_SUPABASE_SR}",
+            "Accept": "application/json",
+        },
+    )
+    try:
+        with _urlreq.urlopen(req, timeout=15) as r:
+            return _json.loads(r.read().decode("utf-8"))
+    except _urlerr.HTTPError as e:
+        raise HTTPException(status_code=e.code, detail=e.read().decode("utf-8"))
+
+
+@api_router.get("/health/xp")
+async def health_xp(user_id: str):
+    """Return the XP state for the given user_id and report whether the
+    derived numbers (level, summed ledger XP) match user_stats."""
+    try:
+        # Defensive UUID validation so we don't shovel garbage at PostgREST.
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="user_id must be a uuid")
+
+    stats_rows = _supabase_get(
+        f"user_stats?user_id=eq.{_urlparse.quote(user_id)}&select=total_xp,current_level,current_streak_days,longest_streak_days,streak_freeze_tokens,daily_goal_minutes,last_login_at_ist"
+    )
+    events = _supabase_get(
+        f"user_xp_events?user_id=eq.{_urlparse.quote(user_id)}&select=amount,reason&order=created_at.desc"
+    )
+    levels = _supabase_get("master_levels?select=level_number,xp_threshold,name&order=level_number")
+
+    stats = (stats_rows or [None])[0]
+    summed = sum(int(e.get("amount") or 0) for e in (events or []))
+    events_count = len(events or [])
+
+    # Derive expected level from summed XP using master_levels thresholds.
+    expected_level = 1
+    for L in levels or []:
+        if summed >= int(L.get("xp_threshold") or 0):
+            expected_level = int(L.get("level_number") or 1)
+
+    total_xp = int((stats or {}).get("total_xp") or 0)
+    current_level = int((stats or {}).get("current_level") or 1)
+    matches = (stats is not None) and (total_xp == summed) and (current_level == expected_level)
+
+    return {
+        "user_id": user_id,
+        "user_stats_row_exists": stats is not None,
+        "total_xp": total_xp,
+        "current_level": current_level,
+        "events_count": events_count,
+        "summed_xp_from_events": summed,
+        "expected_level_from_sum": expected_level,
+        "matches": matches,
+        "stats": stats,
+        "ledger_breakdown": _ledger_breakdown(events or []),
+    }
+
+
+def _ledger_breakdown(events):
+    counts = {}
+    sums = {}
+    for e in events:
+        r = e.get("reason") or "?"
+        counts[r] = counts.get(r, 0) + 1
+        sums[r] = sums.get(r, 0) + int(e.get("amount") or 0)
+    return {r: {"count": counts[r], "xp": sums[r]} for r in counts}
+
+
 @api_router.post("/admin/login")
 async def admin_login(creds: AdminLogin):
     if creds.email == ADMIN_EMAIL and creds.password == ADMIN_PASSWORD:

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useXP } from '../contexts/XPContext';
 import { supabase } from '../lib/supabase';
 import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
@@ -32,6 +33,7 @@ export default function SimulationPage() {
   const [sim, setSim] = useState(null);
   const [progress, setProgress] = useState({ correct: 0, total: 0 });
   const [saving, setSaving] = useState(false);
+  const { awardXP } = useXP();
 
   // Track active time on this page → user_stats.total_time_minutes
   useTimeTracking(user?.id);
@@ -90,6 +92,11 @@ export default function SimulationPage() {
       const res = await markPhaseComplete(sessionId, 'simulation', scoreData);
       if (!res?.success) {
         console.error('[simulation] markPhaseComplete failed:', res?.error);
+      } else {
+        for (const intent of (res.xp_intents || [])) {
+          // eslint-disable-next-line no-await-in-loop
+          await awardXP(intent);
+        }
       }
       navigate(`/session/${sessionId}/simulation/complete`, {
         state: { tasks_completed, tasks_total, accuracy, sim_type: sim?.sim_type, title: sim?.title },

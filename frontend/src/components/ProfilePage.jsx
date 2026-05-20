@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
+import XPBar from './gamification/XPBar';
 import {
   User, Mail, Pencil, Check, X, Loader2, LogOut, Sun, Moon, Flame, Clock,
   BookOpen, Layers, Trophy, Rocket, Sparkles, Calendar, AlertCircle, RefreshCw,
@@ -391,6 +392,10 @@ export default function ProfilePage() {
 
             {!loading && !error && enrollment && (
               <>
+                {/* XP bar */}
+                <div className="mb-5" data-testid="profile-xp-bar-wrap">
+                  <XPBar />
+                </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-5" data-testid="profile-stats-grid">
                   <StatCard
                     icon={BookOpen}
