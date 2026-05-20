@@ -8,6 +8,7 @@ import Sidebar from './Sidebar';
 import XPBar from './gamification/XPBar';
 import StreakCounter from './gamification/StreakCounter';
 import BadgeCabinet from './gamification/BadgeCabinet';
+import ActivityHeatmap from './gamification/ActivityHeatmap';
 import {
   User, Mail, Pencil, Check, X, Loader2, LogOut, Sun, Moon, Flame, Clock,
   BookOpen, Layers, Trophy, Rocket, Sparkles, Calendar, AlertCircle, RefreshCw,
@@ -337,6 +338,7 @@ export default function ProfilePage() {
           {/* Learning journey */}
           <div className="mb-6">
             <BadgeCabinet className="mb-6" />
+            <ActivityHeatmap />
             <div className="flex items-end justify-between mb-4">
               <div>
                 <h3 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)]">

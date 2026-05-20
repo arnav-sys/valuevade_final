@@ -118,15 +118,24 @@ that code so the call still goes through the canonical update funnel. This
 means the Dashboard card can show more than 3 entries during a manual test.
 For a clean test, use the codes returned by `pick_daily_challenges`.
 
-### Health probe
+## Phase 47 — Constellation Map + Activity Heatmap + Session Summary
 
+- Dashboard now shows `<ModuleConstellationMap />` between Daily Challenges and Stats.
+- `/journey` route shows the fullscreen variant.
+- Profile shows `<ActivityHeatmap />` below the Badge Cabinet (90-day grid, IST-anchored).
+- SessionCompletePage shows `<SessionCompleteSummaryCard />` between phase scores and module callout.
+- `GET /api/health/journey?user_id=<uuid>` returns `{modules, heatmap, next_milestone, today_ist}`.
+
+Test user `13a690c4-…` currently has only 1 enrolled module (M0 — Foundations) at 100% completion. To exercise the constellation richness, the tester may want to enroll a fresh test user via the normal signup flow or seed additional `user_modules` rows (one per `master_modules` row in the same `user_enrollments`) — but the current single-node render is also a valid acceptance case for "renders correctly with however many modules the user has".
+
+Realtime heatmap smoke:
+```sql
+-- Force a heatmap cell to light up for tomorrow (or any date in the 90-day window):
+insert into public.user_daily_activity (user_id, activity_date, xp_earned, sessions_completed, minutes_spent, events_count)
+values ('13a690c4-96d7-4827-8117-fde4f696e999', current_date - 5, 200, 2, 22, 7)
+on conflict (user_id, activity_date) do update set xp_earned = excluded.xp_earned;
+-- Profile page heatmap should update within 1-2s without reload (purple high-activity cell).
 ```
-GET /api/health/challenges?user_id=13a690c4-96d7-4827-8117-fde4f696e999
-→ {today_ist, challenges:[{code,title,progress_current,target_value,
-                          is_completed,xp_reward,...} × 3],
-   all_complete, completed_count, daily_champion_glow_until,
-   daily_champion_glow_active, daily_champion_days_total,
-   daily_champion_streak}
-```
+
 
 

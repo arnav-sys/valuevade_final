@@ -142,7 +142,7 @@ export default function XPBar({ variant = 'default', className = '' }) {
 
       <div className="h-2.5 rounded-full bg-[var(--color-surface)] overflow-hidden" data-testid="xp-bar-progress">
         <div
-          className="h-full rounded-full transition-[width] duration-1000 ease-out"
+          className={`h-full rounded-full transition-[width] duration-1000 ease-out ${!isMaxLevel && xpToNext < 25 ? 'vv-xp-bar-near-pulse' : ''}`}
           style={{
             width: `${animPct}%`,
             background: `linear-gradient(90deg, ${levelColor}, var(--color-accent-purple), var(--color-accent-pink))`,
@@ -153,14 +153,24 @@ export default function XPBar({ variant = 'default', className = '' }) {
 
       <div className="mt-3 flex items-center justify-between gap-3">
         {isMaxLevel ? (
-          <div className="text-[12px] font-mono text-[var(--color-accent-pink)]">
-            Max level reached — you're a CIO
+          <div className="text-[12px] font-bricolage text-[var(--color-accent-pink)] flex items-center gap-1" data-testid="xp-bar-max-level">
+            <Trophy size={11} /> You've reached CIO — the summit of finance. Keep grinding!
           </div>
         ) : (
-          <div className="text-[12px] font-bricolage text-[var(--color-text-muted)]" data-testid="xp-bar-nudge">
-            <span className="font-semibold text-[var(--color-text)]">{xpToNext.toLocaleString()} XP</span>
-            {' '}away from Level {level + 1}
-            {nextLevelName && <> — <span style={{ color: 'var(--color-accent-purple)' }}>{nextLevelName}</span></>}
+          <div className="text-[12px] font-bricolage text-[var(--color-text-muted)] flex items-center gap-2 flex-wrap" data-testid="xp-bar-nudge">
+            <span>
+              <span className="font-semibold text-[var(--color-text)]">{xpToNext.toLocaleString()} XP</span>
+              {' '}away from Level {level + 1}
+              {nextLevelName && <> — <span style={{ color: 'var(--color-accent-purple)' }}>{nextLevelName}</span></>}
+            </span>
+            {xpToNext < 100 && (
+              <span
+                className="inline-flex items-center gap-1 rounded-full bg-[var(--color-accent-pink)]/15 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.12em] text-[var(--color-accent-pink)]"
+                data-testid="xp-bar-near-pill"
+              >
+                ⚡ So close!
+              </span>
+            )}
           </div>
         )}
         <div className="text-[11px] font-mono text-[var(--color-text-faint)] shrink-0">

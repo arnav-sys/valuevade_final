@@ -10,6 +10,7 @@ import DailyGoalModal from './gamification/DailyGoalModal';
 import DailyGoalTracker from './gamification/DailyGoalTracker';
 import NearMissBanner from './gamification/NearMissBanner';
 import DailyChallengesCard from './gamification/DailyChallengesCard';
+import ModuleConstellationMap from './gamification/ModuleConstellationMap';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
@@ -527,6 +528,11 @@ export default function DashboardPage() {
               {/* Daily Challenges */}
               <section className="mt-6">
                 <DailyChallengesCard />
+              </section>
+
+              {/* Module Constellation */}
+              <section className="mt-6">
+                <ModuleConstellationMap />
               </section>
 
               {/* Stats */}

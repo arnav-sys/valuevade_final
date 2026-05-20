@@ -396,3 +396,16 @@ body.custom-cursor * {
   .vv-champion-glow { animation: none; }
 }
 
+/* XP bar near-level pulse: pulses the gradient fill subtly when the user is
+   within 25 XP of the next level threshold (Phase 47 near-miss nudge). */
+@keyframes vv-xp-near-pulse {
+  0%, 100% { filter: brightness(1) saturate(1) }
+  50%      { filter: brightness(1.15) saturate(1.1) }
+}
+.vv-xp-bar-near-pulse {
+  animation: vv-xp-near-pulse 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .vv-xp-bar-near-pulse { animation: none; }
+}
+

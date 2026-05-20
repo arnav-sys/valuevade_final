@@ -387,6 +387,98 @@ async def health_challenges(user_id: str):
     }
 
 
+@api_router.get("/health/journey")
+async def health_journey(user_id: str):
+    """Return the user's full learning-journey snapshot for the
+    ModuleConstellationMap + ActivityHeatmap + next-milestone widgets.
+    Service-role-backed read."""
+    try:
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="user_id must be a uuid")
+
+    user_id_q = _urlparse.quote(user_id)
+    # Modules: read via the v_module_progress_summary view (RLS bypassed by service role).
+    modules_rows = _supabase_get(
+        f"v_module_progress_summary?user_id=eq.{user_id_q}"
+        f"&select=user_module_id,order_index,module_code,module_title,is_completed,is_unlocked,"
+        f"sessions_total,sessions_completed_n,completion_percent,last_activity_at,"
+        f"time_spent_minutes,xp_earned_in_module&order=order_index"
+    ) or []
+
+    # Heatmap: last 90 days of user_daily_activity.
+    now_utc = datetime.now(timezone.utc)
+    ist_offset = timedelta(hours=5, minutes=30)
+    today_ist = (now_utc + ist_offset).date()
+    since = (today_ist - timedelta(days=89)).isoformat()
+    heatmap_rows = _supabase_get(
+        f"user_daily_activity?user_id=eq.{user_id_q}"
+        f"&activity_date=gte.{since}"
+        f"&select=activity_date,xp_earned,sessions_completed,minutes_spent"
+        f"&order=activity_date"
+    ) or []
+
+    # Stats for next-milestone calc.
+    stats_rows = _supabase_get(
+        f"user_stats?user_id=eq.{user_id_q}&select=total_xp,current_level,current_streak_days,longest_streak_days"
+    ) or []
+    stats = (stats_rows or [None])[0] or {}
+
+    # Next milestone heuristic — pick the smallest absolute delta.
+    LEVEL_NAMES = ['Trainee','Equity Apprentice','Equity Analyst','Senior Analyst','Associate','VP','Director','MD','Partner','CIO']
+    LEVEL_THRESHOLDS = [0, 250, 600, 1200, 2000, 3200, 5000, 7500, 11000, 16000]
+    next_milestone = None
+    candidates = []
+    cur_level = stats.get("current_level") or 1
+    idx = max(0, min(len(LEVEL_THRESHOLDS) - 1, cur_level - 1))
+    if idx < len(LEVEL_THRESHOLDS) - 1:
+        next_thresh = LEVEL_THRESHOLDS[idx + 1]
+        xp_to = max(0, next_thresh - (stats.get("total_xp") or 0))
+        if xp_to > 0:
+            candidates.append({"type": "level", "label": f"{xp_to} XP to {LEVEL_NAMES[idx + 1]}",
+                                "delta": xp_to, "target": next_thresh})
+    streak = stats.get("current_streak_days") or 0
+    for m in (3, 7, 14, 30, 60, 100):
+        if m > streak:
+            d = m - streak
+            unit = "day" if d == 1 else "days"
+            candidates.append({"type": "streak",
+                                "label": f"{d} {unit} to {m}-day streak",
+                                "delta": d * 100,
+                                "target": m})
+            break
+    if candidates:
+        candidates.sort(key=lambda c: c["delta"])
+        next_milestone = candidates[0]
+
+    return {
+        "user_id": user_id,
+        "today_ist": today_ist.isoformat(),
+        "modules": [{
+            "user_module_id": m["user_module_id"],
+            "order_index": m["order_index"],
+            "code": m["module_code"],
+            "title": m["module_title"],
+            "is_completed": bool(m["is_completed"]),
+            "is_unlocked": bool(m["is_unlocked"]),
+            "sessions_total": m["sessions_total"] or 0,
+            "sessions_completed_n": m["sessions_completed_n"] or 0,
+            "completion_percent": m["completion_percent"] or 0,
+            "last_activity_at": m["last_activity_at"],
+            "time_spent_minutes": m["time_spent_minutes"] or 0,
+            "xp_earned_in_module": m["xp_earned_in_module"] or 0,
+        } for m in modules_rows],
+        "heatmap": [{
+            "date_ist": r["activity_date"],
+            "xp_earned": r["xp_earned"] or 0,
+            "sessions_completed": r["sessions_completed"] or 0,
+            "minutes_spent": r["minutes_spent"] or 0,
+        } for r in heatmap_rows],
+        "next_milestone": next_milestone,
+    }
+
+
+
 
 
 

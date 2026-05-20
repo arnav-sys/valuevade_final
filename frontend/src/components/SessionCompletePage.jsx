@@ -1,7 +1,8 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import SessionCompleteSummaryCard from './gamification/SessionCompleteSummaryCard';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase,
@@ -58,6 +59,11 @@ export default function SessionCompletePage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  // Anchor the gamification summary card to when the user first landed here.
+  // markPhaseComplete writes XP events ~immediately before this page mounts,
+  // so 60s back from mount covers the last awardXP loop + streak + badges
+  // + daily-challenge updates.
+  const sessionStartTsRef = useRef(Date.now() - 60_000);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -245,6 +251,9 @@ export default function SessionCompletePage() {
             })}
           </div>
         </div>
+
+        {/* Gamification summary (Phase 47) */}
+        <SessionCompleteSummaryCard sessionStartTs={sessionStartTsRef.current} />
 
         {/* Module-complete callout */}
         {moduleComplete && module && (

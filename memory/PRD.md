@@ -956,3 +956,92 @@ C. **Backend**: `GET /api/health/challenges?user_id=<uuid>` returns `{today_ist,
 
 Frontend lint clean across all touched files; webpack: 1 unchanged warning (pre-existing simulations/ exhaustive-deps).
 
+
+
+---
+
+### Phase 47 — Module Constellation + Activity Heatmap + Session Summary (May 2026)
+
+**FINAL gamification phase. After this, single end-of-build human QA pass for visual/audio polish.**
+
+**Scope delivered**
+
+A. **Migration `0009_p5_polish.sql`** (HTTP 201)
+- `user_daily_activity` added to `supabase_realtime` publication with `REPLICA IDENTITY FULL` — heatmap re-renders today's cell live.
+- View `v_module_progress_summary` (`security_invoker = true`) joins `user_modules` × `master_modules` × aggregated `user_sessions` per RLS-scoped user. Columns: `user_module_id, user_id, enrollment_id, master_module_id, order_index, module_code (= "M" || order_index), module_title, module_description, is_completed, completed_at, is_added_by_ai, prerequisite_order, is_unlocked, sessions_total, sessions_completed_n, completion_percent, last_activity_at, time_spent_minutes (sum of master_sessions.estimated_minutes for completed sessions), xp_earned_in_module (sum of user_xp_events.amount where source_id ∈ this module's user_sessions)`.
+- Verifier `0009_verify.sql` returns ALL CHECKS PASSED.
+
+B. **`<ModuleConstellationMap />`** (`/app/frontend/src/components/gamification/ModuleConstellationMap.jsx`)
+- SVG layout in 1000×500 viewBox. **Layout strategy: hand-tuned organic S-curve** through 15 positions (`NODE_POSITIONS` array) — a zig-zag from bottom-left up to top-right and back down, intentionally jittered so it reads as constellation, not a chain. Modules beyond index 14 fall back to a Fibonacci-angle spiral so any custom path size still renders gracefully.
+- Each node styled by status: completed = pulsing gold star + gold halo, in_progress (started, not done) = faster-pulsing blue star + blue halo, unlocked-but-not-started = dim white star, locked = dark gray + null-glyph. Stroke + label opacity match the tier.
+- Connecting lines between adjacent modules in order_index: gold (both completed) > blue (any in-progress) > dim gray (any locked).
+- Subtle starfield backdrop (35 fixed dots) + the dashboard's existing radial-orb gradient.
+- Click a node → glass popover with completion %, XP earned, time spent, last activity, "Continue →" CTA (routes to `/module/<user_module_id>`). Locked modules show "Complete M<n-1> first" instead. Click outside / X / Escape closes.
+- Subscribes to `user_modules` + `user_sessions` realtime; auto-refreshes on phase/session completion.
+- Mounted on Dashboard between Daily Challenges and Stats; full-screen variant on new `/journey` route via `<JourneyPage />`.
+- `prefers-reduced-motion`: no node pulse animations.
+
+C. **`<ActivityHeatmap />`** (`/app/frontend/src/components/gamification/ActivityHeatmap.jsx`)
+- 90-day GitHub-style grid (13 columns × 7 rows). Anchored to today_ist in the last column. Subscribes to `user_daily_activity` realtime so today's cell updates live; tester can `insert into user_daily_activity ... activity_date = today_ist` and see it appear within 1-2s.
+- XP-based 5-tier bucketing per cell:
+  - 0 → `#1a2030` (inactive navy)
+  - 1-25 → `#1f5733` (low green)
+  - 26-75 → `#2d9145` (mid green)
+  - 76-150 → `#3ed05b` (bright green)
+  - 151+ → `#9c6bff` (purple, high-activity bonus tier)
+- Tooltip + `aria-label` per cell: "12 May 2026 IST — 87 XP, 3 sessions, 18 min". Focusable buttons with focus ring for keyboard nav.
+- Month labels (Apr / May / …) emitted on the first column of each new IST month. Legend below.
+- Mounted on Profile below the Badge Cabinet.
+
+D. **`<SessionCompleteSummaryCard />`** (`/app/frontend/src/components/gamification/SessionCompleteSummaryCard.jsx`)
+- Anchored to a `sessionStartTsRef` set at page mount minus 60s (covers the awardXP loop + streak update + badge eval + daily-challenge updates that fire just before this page renders).
+- Renders ONLY if there's something to celebrate (XP > 0 OR badge unlock OR daily challenge state).
+- Sections (responsive grid 2-col desktop / stacked mobile):
+  - **+N XP earned this session** — big gradient number + per-reason chips ("+12 quiz", "+100 simulation", "+50 session complete", "+10 daily login").
+  - **Streak** — current/longest with flame icon.
+  - **Daily Goal** — minutes vs goal with progress bar + ✓ when hit.
+  - **Daily Challenges** — `2/3 done — finish 1 more for Daily Champion!` or `Daily Champion claimed!`.
+  - **Next milestone** — smallest-delta candidate among (xp-to-next-level, days-to-next-streak-milestone, units-to-next-near-miss-badge ≥50% progress). Picks the lowest absolute effort.
+  - **Badges unlocked this session** — amber chip list (icon + name + rarity). Hidden when empty.
+- Mounted inside SessionCompletePage between the per-phase scores and the module-complete callout.
+
+E. **XPBar "So close!" polish**
+- `xpToNext < 100` → an `⚡ So close!` accent-pink pill renders next to the nudge text (`data-testid="xp-bar-near-pill"`).
+- `xpToNext < 25` → the gradient fill itself pulses (`.vv-xp-bar-near-pulse` CSS keyframes, `prefers-reduced-motion` honoured).
+- Max-level state (CIO) → replaces nudge with "🏆 You've reached CIO — the summit of finance. Keep grinding!" (`data-testid="xp-bar-max-level"`).
+
+F. **`GET /api/health/journey?user_id=<uuid>`** — returns the spec'd shape:
+```
+{user_id, today_ist,
+ modules: [{user_module_id, order_index, code, title, is_completed, is_unlocked,
+            sessions_total, sessions_completed_n, completion_percent,
+            last_activity_at, time_spent_minutes, xp_earned_in_module} × N],
+ heatmap: [{date_ist, xp_earned, sessions_completed, minutes_spent} × ≤90],
+ next_milestone: {type, label, delta, target} | null}
+```
+Service-role-backed via `_supabase_get`.
+
+**Smoke (curl localhost) — test user `13a690c4-…`**:
+- `/api/health/journey` → 1 module ("M0 — Foundations of Finance, Accounting & Economics"): completed=true, unlocked=true, 1/1 sessions, 100%, 272 XP, 50 min. Heatmap: 2 rows (today=738 XP / 1 session / 5 min, yesterday=0). Next milestone: `2 days to 3-day streak` (after pluralisation fix).
+- Frontend lint clean across all 9 touched files. Webpack: 1 unchanged warning.
+
+**Realtime publication after Phase 47**: `user_badges`, `user_stats`, `user_xp_events`, `user_streak_events`, `user_daily_challenges`, `user_daily_activity` (all `REPLICA IDENTITY FULL` where transition detection matters).
+
+**Files added**
+- `/app/scripts/migrations/0009_p5_polish.sql`, `0009_verify.sql`
+- `/app/frontend/src/components/gamification/ModuleConstellationMap.jsx`
+- `/app/frontend/src/components/gamification/ActivityHeatmap.jsx`
+- `/app/frontend/src/components/gamification/SessionCompleteSummaryCard.jsx`
+- `/app/frontend/src/components/JourneyPage.jsx`
+
+**Files modified**
+- `backend/server.py` (+ `/api/health/journey`)
+- `frontend/src/App.js` (+ `/journey` route)
+- `frontend/src/App.css` (+ `.vv-xp-bar-near-pulse`)
+- `frontend/src/components/DashboardPage.jsx` (+ ModuleConstellationMap)
+- `frontend/src/components/ProfilePage.jsx` (+ ActivityHeatmap)
+- `frontend/src/components/SessionCompletePage.jsx` (+ SessionCompleteSummaryCard)
+- `frontend/src/components/gamification/XPBar.jsx` (so-close pill + near-pulse + CIO copy)
+
+**This closes the gamification build (P0 → P5).** Next: end-of-build human QA pass for visual/audio polish.
+

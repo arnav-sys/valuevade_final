@@ -58,6 +58,7 @@ const CapstoneStartPage = lazyWithRetry(() => import("@/components/CapstoneStart
 const CapstoneTasksPage = lazyWithRetry(() => import("@/components/CapstoneTasksPage"));
 const CapstoneCompletePage = lazyWithRetry(() => import("@/components/CapstoneCompletePage"));
 const ProfilePage = lazyWithRetry(() => import("@/components/ProfilePage"));
+const JourneyPage = lazyWithRetry(() => import("@/components/JourneyPage"));
 const SettingsPage = lazyWithRetry(() => import("@/components/SettingsPage"));
 
 /** Wraps a learning route in auth + enrollment guards. */
@@ -125,6 +126,7 @@ function App() {
 
                   {/* Account (auth only) */}
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                  <Route path="/journey" element={<ProtectedRoute><JourneyPage /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 
                   {/* Learning (auth + enrollment required) */}
