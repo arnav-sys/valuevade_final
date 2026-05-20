@@ -711,6 +711,24 @@ Phase 1 of the gamification roadmap. Plugs into the Phase 42 schema. No new Fast
 
 **One small deviation from the brief:** the brief asked for `awardXP({...})` to also be fired from the signup flow. The `XPContext` mount path already handles this idempotently (it pre-checks for any prior `signup_bonus` event in `user_xp_events` before firing) — and firing it from the signup form would create a stale ledger event before the user has a `user_stats` row (the row is only created when the user enrolls). So we route the signup bonus exclusively through the mount path, which works correctly for both new signups (fires after enrollment) and existing-user backfill (fires on the next authenticated page load). This was a brief-spec call-out — flagging it explicitly so it can be revisited in P2 if you want the ledger stamped earlier.
 
+#### Phase 43 — Fix pass (May 2026, post-tester regression)
+
+Tester verified P0 + P1 backend solid (variance, idempotency, integrity all green). Two UX bugs reported and fixed in this pass:
+
+1. **Sonner XP toast did not appear on QuizComplete.** Two root causes: (a) the `<Toaster>` mount in `App.js` was at `position="top-center"` while the per-toast call passed `position: 'bottom-right'`; sonner doesn't reliably honour per-toast position overrides when they conflict with the Toaster's own setting, so the toast was rendering off-viewport or not at all. (b) `richColors` was off so the success styling was muted. Fix: `<Toaster richColors position="bottom-right" duration={2200} closeButton={false} />` with the per-toast position override removed. XPContext continues to be the single funnel that fires the toast on every successful `awardXP` — toast copy is now title `+{N} XP` + subtitle (friendly per-reason label like "Quiz answers locked in", "Session complete!", "Welcome to Valuevade!", etc.), duration aligned to 2200 ms across the Toaster.
+2. **Quiz retake surfaced a runtime error.** Root cause: `markPhaseComplete()` was unconditionally emitting a `quiz_correct` XP intent every time it was called for the quiz phase, regardless of whether the phase was already complete. On a retake the phase was already true → markPhaseComplete still queued a new XP intent → the caller looped into `awardXP()` → duplicate ledger event was written AND a non-deterministic error path could fire when concurrent renders raced. Fix: `markPhaseComplete()` now does a pre-SELECT to read the current state, only emits phase-specific xp_intents when the phase **actually transitions false→true**, and only emits `session_complete` when the session **just** flipped (not on retakes). Return shape gained a `was_retake: boolean` field for callers that want to vary their UX. End result: retakes return `xp_intents: []` → no awardXP call → no toast → no duplicate ledger event → no runtime error.
+
+**Bonus hardening in the same pass:** added a `force: true` option to `playSound()` so the Settings page's "preview on enable" can play the sample sound through the still-disabled closure (stale-closure pitfall when the toggle flips and the timeout fires before React re-renders the captured callback).
+
+Files touched:
+- `frontend/src/App.js` — Toaster prop change (`richColors`, `bottom-right`, `duration=2200`, `closeButton=false`).
+- `frontend/src/contexts/XPContext.jsx` — friendlier REASON_LABELS map; toast call now uses `description` for the subtitle and no per-call position override.
+- `frontend/src/contexts/SoundContext.jsx` — `playSound(slug, { force })` option.
+- `frontend/src/components/SettingsPage.jsx` — preview-on-enable now uses `playSound('xp_gain', { force: true })`.
+- `frontend/src/utils/progress.js` — `markPhaseComplete()` pre-SELECTs old state; gates xp_intents on actual transitions; returns `was_retake` flag.
+
+No backend / schema / RPC changes in this pass.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
