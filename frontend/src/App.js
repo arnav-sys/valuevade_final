@@ -7,8 +7,10 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { XPProvider } from "@/contexts/XPContext";
 import { SoundProvider } from "@/contexts/SoundContext";
 import { StreakProvider } from "@/contexts/StreakContext";
+import { BadgeProvider } from "@/contexts/BadgeContext";
 import XPRoot from "@/components/gamification/XPRoot";
 import StreakRoot from "@/components/gamification/StreakRoot";
+import BadgeRoot from "@/components/gamification/BadgeRoot";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
@@ -79,6 +81,7 @@ function App() {
             <SoundProvider>
               <XPProvider>
                 <StreakProvider>
+                <BadgeProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -96,6 +99,7 @@ function App() {
                 />
                 <XPRoot />
                 <StreakRoot />
+                <BadgeRoot />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
                 <Routes>

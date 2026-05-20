@@ -147,7 +147,45 @@ def make_streak_milestone():
     write_wav(OUT / "streak_milestone.wav", samples)
 
 
+# 4) badge_unlock.wav — satisfying "ding" with bell sustain, ~0.9s
+def make_badge_unlock():
+    # Quick rise (60ms) then bell-like sustained chord (~700ms) for richness.
+    gliss = fade(tone(1046.50, 60, sweep_end=1318.51), attack_ms=2, release_ms=20)
+    bell = fade(
+        mix(
+            tone(1567.98, 700),                       # G6
+            tone(1975.53, 700),                       # B6
+            tone(2349.32, 700, vibrato=True),         # D7 sparkle
+        ),
+        attack_ms=4, release_ms=520,
+    )
+    samples = gliss + [0.0] * int(SR * 0.02) + bell
+    samples = mix(samples, gain=0.95)
+    write_wav(OUT / "badge_unlock.wav", samples)
+
+
 if __name__ == "__main__":
     make_xp_gain()
     make_level_up()
     make_streak_milestone()
+    make_badge_unlock()
+
+
+# 4) badge_unlock.wav — satisfying "ding" with reverb, ~1s, distinct from level_up
+def make_badge_unlock():
+    # Two-stage ding: pitched glissando + bell-like sustain.
+    # Glissando (60ms): C6 -> E6, quick rise.
+    gliss = fade(tone(1046.50, 60, sweep_end=1318.51), attack_ms=2, release_ms=20)
+    # Bell strike (700ms): G6 + B6 stacked with a beating overtone (long release).
+    bell = fade(
+        mix(
+            tone(1567.98, 700),                       # G6
+            tone(1975.53, 700),                       # B6
+            tone(2349.32, 700, vibrato=True),         # D7 sparkle
+        ),
+        attack_ms=4, release_ms=520,
+    )
+    # Small noise burst at the strike point for "click" texture.
+    samples = gliss + [0.0] * int(SR * 0.02) + bell
+    samples = mix(samples, gain=0.95)
+    write_wav(OUT / "badge_unlock.wav", samples)

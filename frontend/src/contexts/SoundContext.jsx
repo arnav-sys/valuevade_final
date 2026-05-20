@@ -15,6 +15,7 @@ const SOUND_SOURCES = {
   xp_gain: '/sounds/xp_gain.wav',
   level_up: '/sounds/level_up.wav',
   streak_milestone: '/sounds/streak_milestone.wav',
+  badge_unlock: '/sounds/badge_unlock.wav',
 };
 
 const STORAGE_KEY = 'vv_sound_enabled';
