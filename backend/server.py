@@ -176,6 +176,39 @@ def _ledger_breakdown(events):
     return {r: {"count": counts[r], "xp": sums[r]} for r in counts}
 
 
+@api_router.get("/health/streak")
+async def health_streak(user_id: str):
+    """Return the streak state for the given user_id and the last 5 streak events.
+    Read-only; uses service-role to bypass RLS so the tester can verify state."""
+    try:
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="user_id must be a uuid")
+
+    stats_rows = _supabase_get(
+        f"user_stats?user_id=eq.{_urlparse.quote(user_id)}&select=current_streak_days,longest_streak_days,streak_freeze_tokens,last_streak_freeze_earned_at,auto_spend_freeze,last_streak_break_at,last_streak_break_lost_days,daily_goal_minutes,daily_goal_modal_dismissed"
+    )
+    events = _supabase_get(
+        f"user_streak_events?user_id=eq.{_urlparse.quote(user_id)}&select=event_type,streak_days_at_event,freeze_tokens_at_event,meta,created_at&order=created_at.desc&limit=5"
+    )
+    stats = (stats_rows or [None])[0]
+
+    return {
+        "user_id": user_id,
+        "user_stats_row_exists": stats is not None,
+        "current_streak_days": (stats or {}).get("current_streak_days", 0),
+        "longest_streak_days": (stats or {}).get("longest_streak_days", 0),
+        "freeze_tokens": (stats or {}).get("streak_freeze_tokens", 0),
+        "auto_spend_freeze": (stats or {}).get("auto_spend_freeze", True),
+        "daily_goal_minutes": (stats or {}).get("daily_goal_minutes"),
+        "last_streak_break_at": (stats or {}).get("last_streak_break_at"),
+        "last_streak_break_lost_days": (stats or {}).get("last_streak_break_lost_days", 0),
+        "last_streak_event": (events or [None])[0],
+        "recent_streak_events": events or [],
+        "stats": stats,
+    }
+
+
 @api_router.post("/admin/login")
 async def admin_login(creds: AdminLogin):
     if creds.email == ADMIN_EMAIL and creds.password == ADMIN_PASSWORD:

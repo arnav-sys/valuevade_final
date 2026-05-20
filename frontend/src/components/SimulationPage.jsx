@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
+import { triggerStreakUpdate } from '../utils/streakBus';
 import { supabase } from '../lib/supabase';
 import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
@@ -97,6 +98,7 @@ export default function SimulationPage() {
           // eslint-disable-next-line no-await-in-loop
           await awardXP(intent);
         }
+        try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
       }
       navigate(`/session/${sessionId}/simulation/complete`, {
         state: { tasks_completed, tasks_total, accuracy, sim_type: sim?.sim_type, title: sim?.title },

@@ -729,6 +729,65 @@ Files touched:
 
 No backend / schema / RPC changes in this pass.
 
+### Phase 44 — Streak Engine + Daily Goal + Behavioural Hooks (May 2026)
+
+Phase 2 of the gamification roadmap. Adds the streak system, freeze mechanic, milestone overlays, shame card (loss-aversion recovery hook), daily-goal commitment device, and the daily-goal progress tracker.  All state in Supabase Postgres — no new FastAPI mutating routes.
+
+**Migration `/app/scripts/migrations/0002_streak_engine.sql`** (idempotent, applied + verified):
+- New table `user_streak_events` — append-only ledger (`incremented`, `broken`, `freeze_consumed`, `freeze_earned`, `milestone_hit`, `manual_freeze_used`, `backfill_complete`). RLS: owner-SELECT only; all writes flow through SECURITY DEFINER RPCs.
+- New `user_stats` columns: `auto_spend_freeze` (boolean default true), `daily_goal_modal_dismissed` (boolean default false), `last_streak_break_at` (timestamptz), `last_streak_break_lost_days` (int default 0). The Phase 0 columns `streak_freeze_tokens` and `last_streak_freeze_earned_at` are now actively used.
+- New one-row table `public.app_settings(key, value)` seeded with `('allow_dev_rpcs', 'true')` — Supabase doesn't permit `ALTER DATABASE` from the service role so we use a regular table instead of a GUC. Same effect, same gate semantic.
+- **Updated `award_xp` RPC**: now also bumps `user_daily_activity.minutes_spent` from `meta.minutes` (clamped 0..240 per call). All other behaviour identical.
+- New RPC `update_streak_on_activity(p_user_id)` — single mutation funnel for streak state. Same-day idempotent (checks ledger), handles +1 increments, auto-spends freezes (when `auto_spend_freeze=true` and tokens ≥ missed days), accrues +1 token every 10 IST days (cap 5), records exact `fire_3` / `flame_7` / `legendary_30` milestone transitions, and surfaces `was_broken` with `lost_days` / `lost_xp_value` (lost_days × 25) when no freeze applies.
+- New RPC `consume_streak_freeze(p_user_id)` — manual freeze use; only valid when the break occurred today IST and the user has ≥1 token. Restores streak to `last_streak_break_lost_days + 1`.
+- New RPC `backfill_streak_from_history(p_user_id)` — one-time per user; mirrors the JS `computeStreak()` semantics (anchor at today, else yesterday, else streak 0; count consecutive prior days with activity). Writes a synthetic `incremented` event dated at the anchor day so post-backfill activity correctly continues from the backfilled streak instead of treating today as the first-ever activity. Idempotency via `backfill_complete` event.
+- New dev-only RPC `dev_simulate_streak_day(p_user_id, p_days_back)` — gated by `app_settings.allow_dev_rpcs='true'`. Upserts a `user_daily_activity` row and a synthetic `incremented` event dated at `today - p_days_back` IST so the tester can exercise gap/freeze/break transitions without waiting wall-clock days.
+
+**Frontend new files:**
+- `src/utils/streakBus.js` — module-scoped attach/trigger bus so XPContext can fire `update_streak_on_activity` without importing StreakContext (circular).
+- `src/contexts/StreakContext.jsx` — exposes `{ currentStreak, longestStreak, freezeTokens, autoSpendFreeze, milestoneTier (0..3), updateOnActivity, consumeFreeze, refresh, pendingMilestone, pendingShame, ... }`. Loads streak fields on mount, fires `backfill_streak_from_history` idempotently when `current_streak_days === 0`, registers itself with the streakBus.
+- `src/components/gamification/StreakCounter.jsx` — tier-themed flame + count + freeze-token badge with a click-to-open popover showing longest streak / freeze accrual policy / auto-spend status.
+- `src/components/gamification/StreakMilestoneOverlay.jsx` — full-screen overlay for fire_3 (orange, 100 confetti particles), flame_7 (gold, 180 particles + sustained), legendary_30 (cosmic purple-blue, 280 particles + secondary cascade). Auto-dismiss 7s, reduced-motion aware. Plays `streak_milestone.wav`.
+- `src/components/gamification/ShameCard.jsx` — loss-aversion recovery modal. Title "Streak broken 💔", body shows lost N-day streak + ~lost_xp_value XP "gone", offers "Use Streak Freeze (N left)" CTA (when tokens > 0 AND break was today) and "Rebuild from today" CTA. Auto-fires `consumeFreeze` RPC.
+- `src/components/gamification/DailyGoalModal.jsx` — first-load commitment device. Three cards (5 / 10 / 15 min, 10 recommended). "Set my goal" writes `daily_goal_minutes`, "Maybe later" sets default 10 + flips `daily_goal_modal_dismissed=true`. Both paths idempotent. Toast on confirm.
+- `src/components/gamification/DailyGoalTracker.jsx` — small horizontal progress bar under XPBar showing today's minutes vs goal. Re-polls every 30s. Goal-hit toast fires once per IST day (deduped in localStorage). Gold gradient + "GOAL REACHED" pill at ≥100%.
+- `src/components/gamification/StreakRoot.jsx` — mount-once root holding `<StreakMilestoneOverlay />` + `<ShameCard />`, placed inside `<StreakProvider>` in App.js so the overlays surface anywhere they fire.
+- `frontend/public/sounds/streak_milestone.wav` (~70 KB) — 4-note rising bell + high sparkle, generated by extended `scripts/generate_gamification_sounds.py`.
+
+**Modified files:**
+- `App.js` — added `<StreakProvider>` (inside `<XPProvider>`) and `<StreakRoot />`.
+- `src/contexts/SoundContext.jsx` — added `streak_milestone` slug.
+- `src/contexts/XPContext.jsx` — after the `daily_login` award + last_login stamp, fires `triggerStreakUpdate()` (fire-and-forget; StreakProvider may not be mounted yet, bus no-ops gracefully).
+- `src/utils/progress.js` — `markPhaseComplete` xp_intents now include `meta.minutes` (quiz=5, simulation=10, session_complete=0 to avoid double-counting). Phase-transition gating from Phase 43 fix-pass preserved.
+- `src/components/QuizCompletePage.jsx` / `SimulationPage.jsx` / `CapstoneTasksPage.jsx` — each fires `triggerStreakUpdate()` once after the XP intents loop (per brief: once per markPhaseComplete activity event, not per intent).
+- `src/components/SettingsPage.jsx` — new `<AutoSpendToggle />` row above the existing Sound effects toggle.
+- `src/components/DashboardPage.jsx` — `<StreakCounter />` placed beside `<XPBar />` (responsive: side-by-side on ≥640px, stacked below on mobile). `<DailyGoalTracker />` placed under the XPBar. `<DailyGoalModal />` mounted at the page root so it surfaces on first qualifying load.
+- `src/components/ProfilePage.jsx` — `<StreakCounter />` placed beside `<XPBar />` in the header strip.
+- `backend/server.py` — new `GET /api/health/streak?user_id=<uuid>` returning `{ current_streak_days, longest_streak_days, freeze_tokens, auto_spend_freeze, daily_goal_minutes, last_streak_break_at, last_streak_break_lost_days, last_streak_event, recent_streak_events[5], stats }`.
+
+**XP "minutes" wiring (2.11):**
+- Quiz intent → meta.minutes=5
+- Simulation intent → meta.minutes=10
+- Session-complete intent → meta.minutes=0
+- Capstone intent → meta.minutes=0
+- Notes / Interview phases — no XP and no minutes (deliberate, P1 brief).
+
+**Behavioural hooks active in this build:**
+- Loss aversion: ShameCard dollar-equivalent ("~250 XP gone") on miss.
+- Commitment device: DailyGoalModal as first-load forcing function.
+- Variable reward: quiz XP keeps ±5 variance from P1.
+- Progress endowed: signup_bonus + streak backfill on first load.
+- Sunk-cost amplifier: longer current_streak makes the ShameCard hurt more.
+
+**Idempotency callouts:**
+- `update_streak_on_activity` keyed on a same-IST-day ledger event check → safe to call multiple times per activity.
+- `backfill_streak_from_history` keyed on `backfill_complete` event → safe to mount/remount StreakProvider repeatedly.
+- `award_xp` minutes bump capped at 240 per call to defend against a hostile caller passing 60×60.
+
+**Operational notes:**
+- The migration was applied via the Supabase Management API + PAT path established in Phase 42 (the SUPABASE_DB_URL postgres password is still a placeholder and not used).
+- `app_settings` row `allow_dev_rpcs=true` is required for `dev_simulate_streak_day`. Flip to `'false'` (via the SQL editor or service role) when we want to harden for prod.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { Settings, Sparkles, ArrowRight, Mail, Bell, Shield, Volume2, VolumeX } from 'lucide-react';
+import { Settings, Sparkles, ArrowRight, Mail, Bell, Shield, Volume2, VolumeX, Snowflake } from 'lucide-react';
 import { useSound } from '../contexts/SoundContext';
+import { useStreak } from '../contexts/StreakContext';
+import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
+import { useState } from 'react';
 
 const COMING_SOON = [
   { icon: Bell, label: 'Email notifications', hint: 'Daily streak reminders and session nudges.' },
@@ -64,6 +68,63 @@ function SoundToggle() {
   );
 }
 
+function AutoSpendToggle() {
+  const { autoSpendFreeze, refresh } = useStreak();
+  const { user } = useAuth();
+  const [pending, setPending] = useState(false);
+
+  const toggle = async () => {
+    if (!user?.id || pending) return;
+    setPending(true);
+    try {
+      await supabase.from('user_stats').update({ auto_spend_freeze: !autoSpendFreeze }).eq('user_id', user.id);
+      await refresh();
+    } finally {
+      setPending(false);
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      disabled={pending}
+      className="glass-card rounded-2xl p-5 mb-4 w-full text-left flex items-center gap-4 hover:border-[var(--color-primary)]/40 transition-all disabled:opacity-60"
+      data-testid="settings-autospend-toggle"
+      aria-pressed={autoSpendFreeze}
+    >
+      <div
+        className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 transition-all"
+        style={{
+          background: autoSpendFreeze
+            ? 'linear-gradient(135deg, var(--color-primary), var(--color-accent-purple))'
+            : 'var(--color-surface)',
+          color: autoSpendFreeze ? '#fff' : 'var(--color-text-muted)',
+        }}
+      >
+        <Snowflake size={20} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="font-clash text-sm sm:text-base font-semibold text-[var(--color-text)]">
+          Auto-spend Streak Freeze on miss
+        </div>
+        <div className="text-xs font-bricolage text-[var(--color-text-muted)] mt-0.5">
+          Use a freeze token automatically when you miss a day so your streak stays alive.
+        </div>
+      </div>
+      <span
+        className="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors"
+        style={{ background: autoSpendFreeze ? 'var(--color-primary)' : 'var(--color-border)' }}
+      >
+        <span
+          className="inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform absolute top-0.5"
+          style={{ left: autoSpendFreeze ? '22px' : '2px' }}
+        />
+      </span>
+    </button>
+  );
+}
+
 export default function SettingsPage() {
   return (
     <div className="flex min-h-screen bg-[var(--bg-primary)] relative" data-testid="settings-page">
@@ -84,6 +145,7 @@ export default function SettingsPage() {
           </div>
 
           <SoundToggle />
+          <AutoSpendToggle />
 
           {/* Coming soon hero */}
           <div

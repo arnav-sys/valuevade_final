@@ -5,6 +5,8 @@ Files in this directory:
 * `xp_gain.wav` (~22 KB) — two-tone Duolingo-style "blip" played for any XP award.
 * `level_up.wav` (~119 KB) — ascending C-major arpeggio + sustained chord, played
   for level-up overlays.
+* `streak_milestone.wav` (~70 KB) — 4-note rising bell + high sparkle, played on
+  3 / 7 / 30-day streak overlays.
 
 ## License
 

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
+import { triggerStreakUpdate } from '../utils/streakBus';
 import { XP_REASONS } from '../utils/xp';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
@@ -160,8 +161,9 @@ export default function CapstoneTasksPage() {
           amount: 300,
           reason: XP_REASONS.capstone_complete,
           source_id: capstone.id,
-          meta: { master_capstone_id: masterCapstone?.id || null },
+          meta: { master_capstone_id: masterCapstone?.id || null, minutes: 0 },
         });
+        try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
       } catch (xpErr) {
         console.warn('[capstone] XP award failed (non-fatal):', xpErr?.message || xpErr);
       }

@@ -14,6 +14,7 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState, useCal
 const SOUND_SOURCES = {
   xp_gain: '/sounds/xp_gain.wav',
   level_up: '/sounds/level_up.wav',
+  streak_milestone: '/sounds/streak_milestone.wav',
 };
 
 const STORAGE_KEY = 'vv_sound_enabled';

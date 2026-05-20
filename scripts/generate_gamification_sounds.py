@@ -118,6 +118,36 @@ def make_level_up():
     write_wav(OUT / "level_up.wav", samples)
 
 
+# 3) streak_milestone.wav — quick rising chime, ~1.5s, distinct from level_up
+def make_streak_milestone():
+    # Bell-like 4-note rising line (D5 -> F#5 -> A5 -> D6), each ~280ms with overlap
+    NOTES = [587.33, 739.99, 880.00, 1174.66]
+    note_dur_ms = 280
+    overlap_ms = 70
+    note_n = int(SR * note_dur_ms / 1000)
+    overlap_n = int(SR * overlap_ms / 1000)
+
+    track = [0.0] * (note_n * len(NOTES) + 100)
+    cursor = 0
+    for f in NOTES:
+        envelope = fade(tone(f, note_dur_ms), attack_ms=2, release_ms=180)
+        for i, v in enumerate(envelope):
+            if cursor + i < len(track):
+                track[cursor + i] += v
+        cursor += note_n - overlap_n
+
+    # Sparkle: small high blip on top at 200ms
+    sparkle = fade(tone(2200, 120, sweep_end=2640), attack_ms=4, release_ms=80)
+    start = int(SR * 0.2)
+    for i, v in enumerate(sparkle):
+        if start + i < len(track):
+            track[start + i] += v * 0.6
+
+    samples = mix(track, gain=1.0)
+    write_wav(OUT / "streak_milestone.wav", samples)
+
+
 if __name__ == "__main__":
     make_xp_gain()
     make_level_up()
+    make_streak_milestone()

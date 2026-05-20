@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { useAuth } from './AuthContext';
 import { useSound } from './SoundContext';
 import { supabase } from '../lib/supabase';
+import { triggerStreakUpdate } from '../utils/streakBus';
 import {
   awardXP as awardXPRaw,
   getLevelInfo,
@@ -187,7 +188,7 @@ export function XPProvider({ children }) {
       }
       dailyLoginFiredRef.current = true;
       // Award first so the ledger is the source of truth, then stamp last_login_at_ist.
-      await awardXP({ amount: 25, reason: XP_REASONS.daily_login, meta: { ist_day: today } });
+      await awardXP({ amount: 25, reason: XP_REASONS.daily_login, meta: { ist_day: today, minutes: 0 } });
       try {
         await supabase
           .from('user_stats')
@@ -197,6 +198,10 @@ export function XPProvider({ children }) {
       } catch (err) {
         console.warn('[xp] last_login stamp failed:', err?.message || err);
       }
+      // Daily login also counts as activity for the streak engine.
+      // triggerStreakUpdate is fire-and-forget — StreakContext owns the
+      // refresh + milestone/shame overlay surfacing.
+      try { await triggerStreakUpdate(); } catch { /* StreakProvider may not be mounted yet */ }
     })();
 
     return () => { cancelled = true; };

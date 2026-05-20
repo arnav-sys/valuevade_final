@@ -99,7 +99,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
             amount,
             reason: XP_REASONS.quiz_correct,
             source_id: userSessionId,
-            meta: { correct, attempted, quiz_score: scoreData?.quiz_score ?? null },
+            meta: { correct, attempted, quiz_score: scoreData?.quiz_score ?? null, minutes: 5 },
           });
         }
       } else if (phase === 'simulation') {
@@ -107,7 +107,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
           amount: 100,
           reason: XP_REASONS.simulation_complete,
           source_id: userSessionId,
-          meta: { simulation_score: scoreData?.simulation_score ?? null },
+          meta: { simulation_score: scoreData?.simulation_score ?? null, minutes: 10 },
         });
       }
     }
@@ -116,7 +116,8 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
         amount: 50,
         reason: XP_REASONS.session_complete,
         source_id: userSessionId,
-        meta: {},
+        // session_complete doesn't add minutes — quiz/simulation already did.
+        meta: { minutes: 0 },
       });
     }
 

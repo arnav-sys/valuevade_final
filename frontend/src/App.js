@@ -6,7 +6,9 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { XPProvider } from "@/contexts/XPContext";
 import { SoundProvider } from "@/contexts/SoundContext";
+import { StreakProvider } from "@/contexts/StreakContext";
 import XPRoot from "@/components/gamification/XPRoot";
+import StreakRoot from "@/components/gamification/StreakRoot";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
@@ -76,6 +78,7 @@ function App() {
           <AuthProvider>
             <SoundProvider>
               <XPProvider>
+                <StreakProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -92,6 +95,7 @@ function App() {
                   }}
                 />
                 <XPRoot />
+                <StreakRoot />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
                 <Routes>
@@ -149,6 +153,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </StreakProvider>
               </XPProvider>
             </SoundProvider>
           </AuthProvider>

@@ -6,6 +6,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
 import XPBar from './gamification/XPBar';
+import StreakCounter from './gamification/StreakCounter';
 import {
   User, Mail, Pencil, Check, X, Loader2, LogOut, Sun, Moon, Flame, Clock,
   BookOpen, Layers, Trophy, Rocket, Sparkles, Calendar, AlertCircle, RefreshCw,
@@ -393,8 +394,16 @@ export default function ProfilePage() {
             {!loading && !error && enrollment && (
               <>
                 {/* XP bar */}
-                <div className="mb-5" data-testid="profile-xp-bar-wrap">
-                  <XPBar />
+                <div className="mb-5 flex items-start gap-3" data-testid="profile-xp-bar-wrap">
+                  <div className="flex-1 min-w-0">
+                    <XPBar />
+                  </div>
+                  <div className="hidden sm:block shrink-0 pt-1">
+                    <StreakCounter />
+                  </div>
+                </div>
+                <div className="sm:hidden mb-3">
+                  <StreakCounter />
                 </div>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-5" data-testid="profile-stats-grid">
                   <StatCard

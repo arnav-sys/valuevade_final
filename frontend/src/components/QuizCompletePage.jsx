@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
+import { triggerStreakUpdate } from '../utils/streakBus';
 import { markPhaseComplete } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
@@ -140,6 +141,9 @@ export default function QuizCompletePage() {
             // eslint-disable-next-line no-await-in-loop
             await awardXP(intent);
           }
+          // Streak engine: fire ONCE per markPhaseComplete activity event.
+          // No-ops gracefully (returns ok:false) if StreakProvider isn't mounted.
+          try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
         }
       } catch (err) {
         console.error('[quiz] save error:', err);

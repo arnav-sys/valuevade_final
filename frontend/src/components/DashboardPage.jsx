@@ -5,6 +5,9 @@ import { supabase } from '../lib/supabase';
 import { getNextPhase, computeStreak, updateStats } from '../utils/progress';
 import Sidebar from './Sidebar';
 import XPBar from './gamification/XPBar';
+import StreakCounter from './gamification/StreakCounter';
+import DailyGoalModal from './gamification/DailyGoalModal';
+import DailyGoalTracker from './gamification/DailyGoalTracker';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
@@ -427,6 +430,7 @@ export default function DashboardPage() {
       <div className="absolute bottom-[-10%] left-[20%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[120px] pointer-events-none" />
 
       <Sidebar />
+      <DailyGoalModal />
 
       {/* Main content */}
       <main className="flex-1 min-w-0 relative z-10 pt-16 lg:pt-0">
@@ -501,7 +505,18 @@ export default function DashboardPage() {
 
               {/* XP bar — the eye-grabber */}
               <section>
-                <XPBar />
+                <div className="flex items-start gap-3">
+                  <div className="flex-1 min-w-0">
+                    <XPBar />
+                  </div>
+                  <div className="hidden sm:block shrink-0 pt-1">
+                    <StreakCounter />
+                  </div>
+                </div>
+                <div className="sm:hidden mt-3">
+                  <StreakCounter />
+                </div>
+                <DailyGoalTracker />
               </section>
 
               {/* Stats */}
