@@ -3,7 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { checkCapstoneUnlock } from '../utils/progress';
+import { checkCapstoneUnlock, updateDailyChallengesForPhase } from '../utils/progress';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import Sidebar from './Sidebar';
 import TaskCard from './projects/TaskCard';
@@ -134,6 +134,9 @@ export default function ModuleProjectTasksPage() {
           source_event: 'module_project_complete',
           module_id: moduleId,
         });
+      } catch { /* fire-and-forget */ }
+      try {
+        await updateDailyChallengesForPhase(user.id, 'module_project_complete', {});
       } catch { /* fire-and-forget */ }
 
       navigate(`/module/${moduleId}/project/complete`);

@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
+import { updateDailyChallengesForPhase } from '../utils/progress';
 import { supabase } from '../lib/supabase';
 import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
@@ -106,6 +107,12 @@ export default function SimulationPage() {
             session_id: sessionId,
             simulation_score: scoreData.simulation_score,
           });
+        } catch { /* fire-and-forget */ }
+        try {
+          await updateDailyChallengesForPhase(user.id, 'simulation', { minutes: 10 });
+          if ((res.xp_intents || []).some((x) => x.reason === 'session_complete')) {
+            await updateDailyChallengesForPhase(user.id, 'session_complete', {});
+          }
         } catch { /* fire-and-forget */ }
       }
       navigate(`/session/${sessionId}/simulation/complete`, {

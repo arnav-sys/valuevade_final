@@ -67,3 +67,66 @@ update public.user_badges
 Invariant: `is_unlocked` and `earned_at` must move together. The
 `/api/health/badges` endpoint counts only rows where both are non-null.
 
+## Phase 46 — Daily Challenges + Daily Champion (May 2026)
+
+### Today's fresh test pick (prepped via prep_p4_tester.sql)
+
+Test user `13a690c4-96d7-4827-8117-fde4f696e999` has these 3 fresh
+`user_daily_challenges` rows for today's IST date (codes will rotate on
+`dev_reset_daily_challenges` + re-pick):
+
+| code               | type                      | target | XP  |
+|--------------------|---------------------------|--------|-----|
+| daily_notes_1      | notes_completed           | 1      | +10 |
+| daily_quiz_3       | quiz_questions_answered   | 3      | +10 |
+| daily_quiz_perfect | quiz_score_threshold      | 80     | +20 |
+
+Daily Champion badge has been reverted so it can unlock fresh during the test pass.
+
+### Test recipe — Daily Champion flow (no UI play-through needed)
+
+```sql
+-- Resets today's picks AND clears the 24-hr glow window.
+select public.dev_reset_daily_challenges(
+  '13a690c4-96d7-4827-8117-fde4f696e999'::uuid
+);
+
+-- Optionally inspect what was just picked:
+select public.pick_daily_challenges(
+  '13a690c4-96d7-4827-8117-fde4f696e999'::uuid
+);
+
+-- Force-complete all 3. The 3rd call returns:
+--   {daily_champion_triggered: true,
+--    badges: {newly_unlocked: [{code:"daily_champion", rarity:"rare", ...}]}}
+-- and atomically:
+--  • awards +75 XP (daily_champion_bonus)
+--  • sets user_stats.daily_champion_glow_until = now() + 24h
+--  • fires evaluate_badges → unlocks daily_champion badge (also surfaces
+--    in the BadgeUnlockOverlay via the realtime subscription).
+select public.dev_force_complete_daily_challenge(
+  '13a690c4-96d7-4827-8117-fde4f696e999'::uuid, 'daily_notes_1');
+select public.dev_force_complete_daily_challenge(
+  '13a690c4-96d7-4827-8117-fde4f696e999'::uuid, 'daily_quiz_3');
+select public.dev_force_complete_daily_challenge(
+  '13a690c4-96d7-4827-8117-fde4f696e999'::uuid, 'daily_quiz_perfect');
+```
+
+Caveat: if a `dev_force_complete_daily_challenge` is called with a code that
+is NOT in today's pick, it inserts a fresh `user_daily_challenges` row for
+that code so the call still goes through the canonical update funnel. This
+means the Dashboard card can show more than 3 entries during a manual test.
+For a clean test, use the codes returned by `pick_daily_challenges`.
+
+### Health probe
+
+```
+GET /api/health/challenges?user_id=13a690c4-96d7-4827-8117-fde4f696e999
+→ {today_ist, challenges:[{code,title,progress_current,target_value,
+                          is_completed,xp_reward,...} × 3],
+   all_complete, completed_count, daily_champion_glow_until,
+   daily_champion_glow_active, daily_champion_days_total,
+   daily_champion_streak}
+```
+
+

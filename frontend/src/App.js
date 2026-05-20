@@ -8,9 +8,11 @@ import { XPProvider } from "@/contexts/XPContext";
 import { SoundProvider } from "@/contexts/SoundContext";
 import { StreakProvider } from "@/contexts/StreakContext";
 import { BadgeProvider } from "@/contexts/BadgeContext";
+import { DailyChallengesProvider } from "@/contexts/DailyChallengesContext";
 import XPRoot from "@/components/gamification/XPRoot";
 import StreakRoot from "@/components/gamification/StreakRoot";
 import BadgeRoot from "@/components/gamification/BadgeRoot";
+import DailyChampionRoot from "@/components/gamification/DailyChampionRoot";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
@@ -82,6 +84,7 @@ function App() {
               <XPProvider>
                 <StreakProvider>
                 <BadgeProvider>
+                <DailyChallengesProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -100,6 +103,7 @@ function App() {
                 <XPRoot />
                 <StreakRoot />
                 <BadgeRoot />
+                <DailyChampionRoot />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
                 <Routes>
@@ -157,6 +161,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </DailyChallengesProvider>
                 </BadgeProvider>
                 </StreakProvider>
               </XPProvider>

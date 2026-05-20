@@ -16,6 +16,7 @@ const SOUND_SOURCES = {
   level_up: '/sounds/level_up.wav',
   streak_milestone: '/sounds/streak_milestone.wav',
   badge_unlock: '/sounds/badge_unlock.wav',
+  daily_champion: '/sounds/daily_champion.wav',
 };
 
 const STORAGE_KEY = 'vv_sound_enabled';

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { markPhaseComplete } from '../utils/progress';
+import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import useTimeTracking from '../utils/useTimeTracking';
 import {
@@ -1550,6 +1550,9 @@ export default function NotesPage() {
           source_event: 'notes_complete',
           session_id: session.id,
         });
+      } catch { /* fire-and-forget */ }
+      try {
+        await updateDailyChallengesForPhase(user.id, 'notes', { minutes: Math.max(1, Math.round(timeSpent / 60)) });
       } catch { /* fire-and-forget */ }
     } catch (e) {
       // still navigate

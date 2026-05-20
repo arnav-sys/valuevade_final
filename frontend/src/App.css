@@ -366,3 +366,33 @@ body.custom-cursor * {
 .theme-transition {
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+/* Daily Champion 24-hr glow ring on level icon (Phase 46).
+   Pulses gold/amber to signal the active +75 XP champion state. Respects
+   prefers-reduced-motion: shows a static ring instead of the pulse. */
+.vv-champion-glow {
+  position: relative;
+  box-shadow:
+    0 0 0 2px rgba(251, 191, 36, .55),
+    0 0 14px 4px rgba(251, 191, 36, .35),
+    0 4px 16px rgba(36, 107, 253, .2);
+  animation: vv-champion-pulse 2.2s ease-in-out infinite;
+}
+@keyframes vv-champion-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 0 2px rgba(251, 191, 36, .55),
+      0 0 12px 3px rgba(251, 191, 36, .3),
+      0 4px 16px rgba(36, 107, 253, .2);
+  }
+  50% {
+    box-shadow:
+      0 0 0 3px rgba(251, 191, 36, .75),
+      0 0 22px 8px rgba(251, 191, 36, .55),
+      0 4px 16px rgba(36, 107, 253, .2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vv-champion-glow { animation: none; }
+}
+

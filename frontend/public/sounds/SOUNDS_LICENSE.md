@@ -7,6 +7,11 @@ Files in this directory:
   for level-up overlays.
 * `streak_milestone.wav` (~70 KB) — 4-note rising bell + high sparkle, played on
   3 / 7 / 30-day streak overlays.
+* `badge_unlock.wav` — short triumphant sting played when a badge unlocks.
+* `daily_champion.wav` — currently a **placeholder copy of `badge_unlock.wav`**
+  (Phase 46) until a distinct ~1.5s gold-fanfare CC0 sample is dropped in.
+  Replace this file in place; SoundContext picks it up automatically.
+
 
 ## License
 

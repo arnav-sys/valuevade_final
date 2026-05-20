@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useXP } from '../../contexts/XPContext';
-import { Trophy } from 'lucide-react';
+import { useDailyChallenges } from '../../contexts/DailyChallengesContext';
+import { Trophy, Crown } from 'lucide-react';
 
 /**
  * Animated XP progress bar.
@@ -28,6 +29,8 @@ export default function XPBar({ variant = 'default', className = '' }) {
     isMaxLevel,
     bootstrapping,
   } = useXP();
+  const { glowActive } = useDailyChallenges();
+  const championGlowClass = glowActive ? 'vv-champion-glow' : '';
 
   const [animPct, setAnimPct] = useState(0);
   useEffect(() => {
@@ -95,7 +98,7 @@ export default function XPBar({ variant = 'default', className = '' }) {
       <div className="flex items-start justify-between gap-4 mb-4">
         <div className="flex items-center gap-3 min-w-0">
           <div
-            className="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-clash text-xl font-bold text-white shadow-[0_4px_16px_rgba(36,107,253,0.2)]"
+            className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-clash text-xl font-bold text-white shadow-[0_4px_16px_rgba(36,107,253,0.2)] ${championGlowClass}`}
             style={{
               background: `linear-gradient(135deg, ${levelColor}, var(--color-accent-purple))`,
             }}
@@ -104,8 +107,17 @@ export default function XPBar({ variant = 'default', className = '' }) {
             {isMaxLevel ? <Trophy size={20} /> : level}
           </div>
           <div className="min-w-0">
-            <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-0.5">
+            <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-0.5 flex items-center gap-1.5">
               Level {level}
+              {glowActive && (
+                <span
+                  className="inline-flex items-center gap-0.5 text-amber-300"
+                  title="Daily Champion (24-hr glow)"
+                  data-testid="xp-bar-champion-crown"
+                >
+                  <Crown size={11} strokeWidth={2.4} />
+                </span>
+              )}
             </div>
             <div
               className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] truncate"

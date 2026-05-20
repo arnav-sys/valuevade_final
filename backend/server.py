@@ -13,7 +13,7 @@ import re
 import string
 import hashlib
 import jwt
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import random
 
 ROOT_DIR = Path(__file__).parent
@@ -285,6 +285,107 @@ async def health_badges(user_id: str):
         "near_miss_top5": near_miss[:5],
         "recent_unlocked_top10": unlocked[:10],
     }
+
+
+@api_router.get("/health/challenges")
+async def health_challenges(user_id: str):
+    """Return today's daily-challenge state for the given user_id (Asia/Kolkata
+    date), plus the all-time count of IST days where all 3 challenges were
+    completed (daily_champion_streak). Read-only via service-role."""
+    try:
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="user_id must be a uuid")
+
+    # Compute today's IST date the same way Postgres does in the RPC.
+    now_utc = datetime.now(timezone.utc)
+    ist_offset = timedelta(hours=5, minutes=30)
+    today_ist = (now_utc + ist_offset).date().isoformat()
+
+    user_id_q = _urlparse.quote(user_id)
+    # Today's challenges joined with master metadata.
+    today_rows = _supabase_get(
+        f"user_daily_challenges?user_id=eq.{user_id_q}"
+        f"&challenge_date=eq.{today_ist}"
+        f"&select=id,challenge_id,progress_current,target_value,is_completed,completed_at,"
+        f"master_daily_challenges(code,title,description,challenge_type,xp_reward)"
+    ) or []
+    # All-time per-day completed counts (for daily_champion_streak).
+    history_rows = _supabase_get(
+        f"user_daily_challenges?user_id=eq.{user_id_q}&is_completed=eq.true"
+        f"&select=challenge_date"
+    ) or []
+    # Glow window from user_stats.
+    stats_rows = _supabase_get(
+        f"user_stats?user_id=eq.{user_id_q}&select=daily_champion_glow_until,total_xp,current_level,p3_catchup_done"
+    ) or []
+    stats = (stats_rows or [None])[0] or {}
+
+    challenges = []
+    for r in today_rows:
+        mdc = r.get("master_daily_challenges") or {}
+        challenges.append({
+            "code": mdc.get("code"),
+            "title": mdc.get("title"),
+            "description": mdc.get("description"),
+            "challenge_type": mdc.get("challenge_type"),
+            "progress_current": r.get("progress_current") or 0,
+            "target_value": r.get("target_value") or 0,
+            "is_completed": bool(r.get("is_completed")),
+            "completed_at": r.get("completed_at"),
+            "xp_reward": mdc.get("xp_reward") or 0,
+        })
+
+    # Count days where the user had >= 3 completed challenges.
+    by_date = {}
+    for r in history_rows:
+        d = r.get("challenge_date")
+        if d:
+            by_date[d] = by_date.get(d, 0) + 1
+    champion_days = sorted([d for d, n in by_date.items() if n >= 3], reverse=True)
+
+    # Consecutive-day streak ending today_ist (or yesterday for tolerance).
+    streak = 0
+    if champion_days:
+        cursor = datetime.fromisoformat(today_ist).date()
+        for _ in range(len(champion_days)):
+            if cursor.isoformat() in champion_days:
+                streak += 1
+                cursor = cursor - timedelta(days=1)
+            else:
+                # Allow today to be unfinished — anchor streak from yesterday.
+                if streak == 0 and cursor.isoformat() == today_ist:
+                    cursor = cursor - timedelta(days=1)
+                    continue
+                break
+
+    all_complete = (len(challenges) >= 3) and all(c["is_completed"] for c in challenges)
+    glow_until = stats.get("daily_champion_glow_until")
+    glow_active = False
+    if glow_until:
+        try:
+            glow_dt = datetime.fromisoformat(glow_until.replace("Z", "+00:00"))
+            glow_active = glow_dt > now_utc
+        except ValueError:
+            glow_active = False
+
+    return {
+        "user_id": user_id,
+        "today_ist": today_ist,
+        "challenges": challenges,
+        "all_complete": all_complete,
+        "completed_count": sum(1 for c in challenges if c["is_completed"]),
+        "daily_champion_glow_until": glow_until,
+        "daily_champion_glow_active": glow_active,
+        "daily_champion_days_total": len(champion_days),
+        "daily_champion_streak": streak,
+        "user_stats": {
+            "total_xp": stats.get("total_xp", 0),
+            "current_level": stats.get("current_level", 1),
+            "p3_catchup_done": stats.get("p3_catchup_done", False),
+        },
+    }
+
 
 
 

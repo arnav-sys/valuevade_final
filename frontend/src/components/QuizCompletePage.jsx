@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
-import { markPhaseComplete } from '../utils/progress';
+import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, BookOpen, Sparkles,
@@ -152,6 +152,18 @@ export default function QuizCompletePage() {
               session_id: sessionId,
               quiz_score: pctScore,
             });
+          } catch { /* fire-and-forget */ }
+          // Daily challenges: quiz-related + session-complete + minutes_spent.
+          try {
+            await updateDailyChallengesForPhase(user.id, 'quiz', {
+              quiz_correct: score,
+              quiz_attempted: total,
+              quiz_score: pctScore,
+              minutes: 5,
+            });
+            if ((res.xp_intents || []).some((x) => x.reason === 'session_complete')) {
+              await updateDailyChallengesForPhase(user.id, 'session_complete', {});
+            }
           } catch { /* fire-and-forget */ }
         }
       } catch (err) {

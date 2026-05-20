@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { markPhaseComplete, getNextPhaseRoute } from '../utils/progress';
+import { markPhaseComplete, getNextPhaseRoute, updateDailyChallengesForPhase } from '../utils/progress';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { aggregateScores } from '../utils/interviewEval';
 import {
@@ -111,6 +111,9 @@ export default function InterviewCompletePage() {
               session_id: sessionId,
               interview_score: Math.round(scores.overall),
             });
+          } catch { /* fire-and-forget */ }
+          try {
+            await updateDailyChallengesForPhase(user.id, 'interview', { minutes: 5 });
           } catch { /* fire-and-forget */ }
         }
       } catch (err) {

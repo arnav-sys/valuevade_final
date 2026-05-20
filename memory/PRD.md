@@ -890,3 +890,69 @@ near_miss_top5: [five_day_grinder 3/5 60%]
 - P3: Migrate waitlist from MongoDB to Supabase
 - P3: Refactor DashboardPage.jsx (~670 lines) — extract ContinueLearningCard / ModuleCard / StatCard into /components/dashboard/
 - P3: Use useRef-based lock in QuizCompletePage save() instead of state flag (StrictMode double-mount hardening)
+
+
+---
+
+### Phase 46 — Daily Challenges + Daily Champion (May 2026)
+
+**Scope delivered**
+
+A. **Migration `0007_daily_challenges.sql` + `0008_update_dc_evaluate_badges.sql`** (HTTP 201 both)
+- Seeds 15 module-agnostic templates into `master_daily_challenges` with codes/types/targets/xp_rewards as specified. CHECK constraint on `challenge_type` extended via DROP+ADD to include `flashcards_reviewed`, `interview_completed`, `capstone_task_complete` (in addition to the existing P0 types).
+- `pick_daily_challenges(p_user_id uuid)` — idempotent per `(user_id, today_ist)` picker. Returns `{today_ist, challenges: [{id, code, title, description, challenge_type, progress_current, target_value, is_completed, completed_at, xp_reward}]}`. Inserts 3 random rows on first call of the day; replays return the existing 3.
+- `update_daily_challenge_progress(p_user_id uuid, p_challenge_type text, p_increment int, p_meta jsonb)` — single funnel for all progress mutations. Handles `quiz_score_threshold` semantics (compares `p_meta.quiz_score >= target_value` instead of incrementing). On just-completed: awards `xp_reward` via `award_xp(reason='daily_challenge_complete')`. After the loop, if `completed count for today >= 3` AND `glow_until is null/past`: awards +75 XP (`daily_champion_bonus`), sets `user_stats.daily_champion_glow_until = now() + 24h`, and calls `evaluate_badges({source_event:'daily_champion_triggered'})` so the `daily_champion` badge unlocks atomically. Returns `{today_ist, challenges_updated, newly_completed, daily_champion_triggered, completed_count, badges}`.
+- `evaluate_badges` updated — `daily_champion` case counts distinct `challenge_date` rows where the user has 3 completed challenges; `gte=1` unlocks on first champion day.
+- `dev_force_complete_daily_challenge(p_user_id, p_challenge_code)` and `dev_reset_daily_challenges(p_user_id)` for tester use. Both gated by `app_settings.allow_dev_rpcs='true'`.
+- Realtime: `user_daily_challenges` added to `supabase_realtime` publication, `REPLICA IDENTITY FULL` set so `payload.old` carries the previous progress for transition detection.
+
+**Verifier**: `/app/scripts/migrations/0007_verify.sql` returns ALL CHECKS PASSED with 15 master rows seeded.
+
+B. **Frontend wiring**
+- `src/contexts/DailyChallengesContext.jsx` — calls `pick_daily_challenges` on mount, subscribes to `user_daily_challenges` + `user_stats` realtime. On `daily_champion_glow_until` newly-set transition (future timestamp greater than old), enqueues `activeChampion` and fires `daily_champion.wav`. Exposes `{challenges, allComplete, completedCount, championGlowUntil, glowActive, activeChampion, dismissChampion, refresh}`.
+- `src/components/gamification/DailyChallengesCard.jsx` — mounts on Dashboard below the welcome/StreakCounter section, above stats. Renders 3 challenge sub-cards with title, description, progress bar, XP reward chip. Full-card gradient + "Daily Champion!" pill when all 3 complete. Live updates via Realtime.
+- `src/components/gamification/DailyChampionOverlay.jsx` + `DailyChampionRoot.jsx` — full-screen gold/orange modal mounted at App-root (sibling of XPRoot/StreakRoot/BadgeRoot). Trophy icon, 3s confetti shower, 5s auto-dismiss + Continue CTA. `prefers-reduced-motion`: drops confetti and the trophy spin animation; fade-only.
+- `XPBar.jsx` — when `glowActive` is true, the level icon gets `.vv-champion-glow` (pulsing gold ring) and a Crown next to "Level N" label. CSS in `App.css` with `prefers-reduced-motion` fallback to static ring.
+- `progress.js` — new `updateDailyChallengesForPhase(userId, phase, meta)` helper that maps phase-complete events to the right `update_daily_challenge_progress` RPC calls (quiz / simulation / notes / interview / session_complete / module_project_complete / capstone_task_complete / minutes_spent). Each completion page (QuizCompletePage, SimulationPage, InterviewCompletePage, NotesPage, ModuleProjectTasksPage, CapstoneTasksPage) now calls it after the existing `awardXP + triggerStreakUpdate + triggerBadgeEvaluation` chain.
+- `App.js` — `<DailyChallengesProvider>` wraps the tree below `<BadgeProvider>`; `<DailyChampionRoot />` mounted as the 4th App-root sibling.
+- `SoundContext.jsx` — `daily_champion` source added (`/sounds/daily_champion.wav` is currently a placeholder copy of `badge_unlock.wav` — documented in `SOUNDS_LICENSE.md`).
+
+C. **Backend**: `GET /api/health/challenges?user_id=<uuid>` returns `{today_ist, challenges:[…], all_complete, completed_count, daily_champion_glow_until, daily_champion_glow_active, daily_champion_days_total, daily_champion_streak, user_stats:{total_xp, current_level, p3_catchup_done}}`.
+
+**Smoke (localhost curl)**
+
+```
+1) pick_daily_challenges → 3 distinct rows for today_ist (idempotent on replay).
+2) dev_force_complete_daily_challenge × 3 → final call returns:
+     {daily_champion_triggered: true,
+      badges: {newly_unlocked: [{code:"daily_champion",rarity:"rare",…}]}}
+3) total_xp delta: +130 (25+20+10 challenge XP + 75 champion bonus + 0 badge bonus)
+4) /api/health/challenges → all_complete:true, glow_active:true, days_total:1, streak:1
+5) /api/health/badges → unlocked_total +1 (daily_champion appears first in recent_unlocked)
+```
+
+**Behavioural hooks active**: Daily salience (must-check) · Goal gradient (3-bar progress) · Variable reward (random nightly pick from 15) · Recovery (champion path even with broken streak).
+
+**Out of scope (NOT built)**: constellation map, activity heatmap, multi-day champion streak badge, challenge freeze, module-scoped picking (all 15 templates remain module-agnostic).
+
+**Files added**
+- `/app/scripts/migrations/0007_daily_challenges.sql`
+- `/app/scripts/migrations/0007_verify.sql`
+- `/app/scripts/migrations/0008_update_dc_evaluate_badges.sql`
+- `/app/frontend/src/contexts/DailyChallengesContext.jsx`
+- `/app/frontend/src/components/gamification/DailyChallengesCard.jsx`
+- `/app/frontend/src/components/gamification/DailyChampionOverlay.jsx`
+- `/app/frontend/src/components/gamification/DailyChampionRoot.jsx`
+- `/app/frontend/public/sounds/daily_champion.wav` (placeholder)
+
+**Files modified**
+- `backend/server.py` (added `/api/health/challenges`)
+- `frontend/src/App.js`, `frontend/src/App.css`
+- `frontend/src/contexts/SoundContext.jsx`
+- `frontend/src/utils/progress.js` (added `updateDailyChallengesForPhase`)
+- `frontend/src/components/gamification/XPBar.jsx` (glow ring + Crown badge)
+- `frontend/src/components/DashboardPage.jsx` (DailyChallengesCard mount)
+- `frontend/src/components/{QuizCompletePage,SimulationPage,InterviewCompletePage,NotesPage,ModuleProjectTasksPage,CapstoneTasksPage}.jsx` — call `updateDailyChallengesForPhase`.
+
+Frontend lint clean across all touched files; webpack: 1 unchanged warning (pre-existing simulations/ exhaustive-deps).
+

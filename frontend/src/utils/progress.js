@@ -2,6 +2,58 @@ import { supabase } from '../lib/supabase';
 import { computeQuizXP, XP_REASONS } from './xp';
 
 /**
+ * Daily-challenge progress helper.
+ *
+ * Pages call this from their phase-complete handler AFTER the awardXP loop
+ * fires. The update_daily_challenge_progress RPC is idempotent per
+ * (user_id, challenge_id, today_ist) and won't pay XP twice for the same
+ * challenge — completed rows short-circuit at the SQL layer.
+ *
+ * Mapping is centralised here so each completion page only needs the user_id,
+ * the phase tag, and any meta it already has on hand.
+ */
+export async function updateDailyChallengesForPhase(userId, phase, meta = {}) {
+  if (!userId || !phase) return;
+  const calls = [];
+  if (phase === 'quiz') {
+    const correct = Number(meta?.quiz_correct) || 0;
+    const attempted = Number(meta?.quiz_attempted) || 0;
+    const answered = correct + attempted;
+    if (answered > 0) {
+      calls.push(['quiz_questions_answered', answered, {}]);
+    }
+    if (meta?.quiz_score != null) {
+      calls.push(['quiz_score_threshold', 0, { quiz_score: meta.quiz_score }]);
+    }
+  } else if (phase === 'simulation') {
+    calls.push(['simulation_completed', 1, {}]);
+  } else if (phase === 'notes') {
+    calls.push(['notes_completed', 1, {}]);
+    calls.push(['flashcards_reviewed', Number(meta?.flashcards_reviewed) || 1, {}]);
+  } else if (phase === 'interview') {
+    calls.push(['interview_completed', 1, {}]);
+  } else if (phase === 'session_complete') {
+    calls.push(['sessions_completed', 1, {}]);
+  } else if (phase === 'module_project_complete' || phase === 'capstone_task_complete') {
+    calls.push(['capstone_task_complete', 1, {}]);
+  }
+  const minutes = Number(meta?.minutes) || 0;
+  if (minutes > 0) {
+    calls.push(['minutes_spent', minutes, {}]);
+  }
+  await Promise.all(calls.map(([type, inc, m]) =>
+    supabase.rpc('update_daily_challenge_progress', {
+      p_user_id: userId,
+      p_challenge_type: type,
+      p_increment: inc,
+      p_meta: m,
+    }).then((r) => {
+      if (r.error) console.warn('[dc] update failed:', type, r.error.message);
+    }).catch((err) => console.warn('[dc] update threw:', type, err?.message))
+  ));
+}
+
+/**
  * Progress utility functions used across all session screens.
  * All functions are async and return { success, data?, error? }.
  *
