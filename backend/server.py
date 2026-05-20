@@ -27,7 +27,11 @@ ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
 ADMIN_SECRET = os.environ.get('ADMIN_SECRET')
 
-app = FastAPI()
+app = FastAPI(
+    openapi_url="/api/openapi.json",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+)
 api_router = APIRouter(prefix="/api")
 security = HTTPBearer()
 

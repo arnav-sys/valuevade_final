@@ -610,6 +610,50 @@ python3 scripts/pregenerate_m1_visuals.py --card fe971b61-7c69-4612-aa45-19fc92b
 ```
 Frontend `VisualCard` already reads `content.image_url` first, so users now see images instantly without a generation wait.
 
+### Phase 42 - Gamification Schema Foundation (May 2026)
+
+User confirmed the gamification roadmap: XP engine, streaks, badges, daily challenges, level system, dopamine notifications. **No leaderboard in this build.** Launch-day reset — no historical XP backfill. All state lives in Supabase Postgres (matches the pattern of every other `user_*` table).
+
+**Migration artefacts** (idempotent, checked into the repo for the first time):
+- `/app/scripts/migrations/0001_gamification_foundation.sql` — full schema (7 tables, 9 user_stats columns, RLS, RPC, level seed)
+- `/app/scripts/migrations/0001_verify.sql` — single-query verification that returns `ALL CHECKS PASSED` on success
+- `/app/scripts/migrations/apply_migration.py` — psycopg2-based applier (uses pooler connection because Supabase deprecated DNS on the direct host)
+- `/app/scripts/migrations/README.md` — usage docs
+
+**New tables (all in `public` schema)**:
+1. `master_levels` — 6-row lookup: Junior Analyst (0) → Research Associate (500) → Equity Analyst (1500) → Senior Analyst (3500) → Portfolio Manager (7000) → CIO (12000). Seeded in the migration itself.
+2. `user_xp_events` — append-only XP ledger; `reason` enum check covers 13 award types (session_complete, quiz_correct, quiz_attempt, simulation_complete, daily_login, capstone_complete, module_complete, daily_challenge_complete, daily_champion_bonus, signup_bonus, badge_unlock_bonus, streak_milestone, manual_adjust). Index on `(user_id, created_at desc)` and `(user_id, reason)`.
+3. `master_badges` — definitions only (no rows; seeded in Phase 3). `category` ∈ {knowledge, speed, consistency, social, secret}, `rarity` ∈ {common, rare, epic, legendary}, `criteria_json` for machine-readable unlock spec, `is_secret`, `bonus_xp`.
+4. `user_badges` — per-user progress/unlock state. `unique (user_id, badge_id)`.
+5. `master_daily_challenges` — templates only (no rows; seeded in Phase 4). `challenge_type` ∈ {quiz_questions_answered, sessions_completed, flashcards_reviewed, quiz_score_threshold, minutes_spent, simulation_completed, notes_completed}. Optional `module_scope` FK to `master_modules`.
+6. `user_daily_challenges` — date-keyed per-user instances. `unique (user_id, challenge_id, challenge_date)`. Partial index on open challenges (`is_completed = false`).
+7. `user_daily_activity` — heatmap source of truth AND streak source of truth. `unique (user_id, activity_date)`. Tracks xp_earned, sessions_completed, minutes_spent, events_count per IST day.
+
+**New `user_stats` columns** (all idempotent ADD IF NOT EXISTS):
+- `total_xp int default 0`
+- `current_level int default 1`
+- `current_streak_days int default 0` (already existed from prior PRD; no-op when present)
+- `longest_streak_days int default 0` (already existed; no-op when present)
+- `streak_freeze_tokens int default 0`
+- `last_streak_freeze_earned_at timestamptz`
+- `daily_goal_minutes int`
+- `last_login_at_ist timestamptz`
+- `daily_champion_glow_until timestamptz`
+
+**RLS conventions** (mirrors existing `user_modules` / `user_sessions`):
+- Every `user_*` table: SELECT/INSERT/UPDATE policies on `auth.uid() = user_id`, no DELETE.
+- `master_levels`, `master_badges`, `master_daily_challenges`: read-only for `authenticated`; writes go through service-role bypass.
+
+**`award_xp()` RPC** (the single mutation funnel for Phase 1+):
+- Signature: `award_xp(p_user_id uuid, p_amount int, p_reason text, p_source_id uuid default null, p_meta jsonb default '{}')` → `jsonb`.
+- `SECURITY DEFINER` with `search_path = public` locked; granted to `authenticated` + `service_role`, revoked from `public`.
+- Inside: (a) auth guard rejects callers awarding XP to anyone but themselves (service role bypasses since `auth.uid()` is null), (b) validates reason against the same enum as the table CHECK, (c) inserts the ledger event, (d) bumps `user_stats.total_xp` and recomputes `current_level` from the `master_levels` thresholds, (e) upserts today's `user_daily_activity` row (IST date) so the heatmap stays consistent with the ledger. Returns `{did_level_up, old_level, new_level, total_xp, user_stats}`.
+- Gracefully no-ops if the user has no `user_stats` row yet (returns `{updated: false, reason: 'no_user_stats_row'}`) — Phase 1 will wire the upsert path on the frontend.
+
+**Operational note**: applying the migration requires a real Postgres connection (the pooler at `aws-0-ap-south-1.pooler.supabase.com:6543`). The PostgREST REST API (which all existing scripts use) cannot run DDL. Direct host `db.<ref>.supabase.co:5432` has no public DNS on this project. The `SUPABASE_URL` value in `.env` is in `postgresql://postgres:[YOUR-PASSWORD]@...` form — the postgres password is the missing piece. Once provided, `SUPABASE_DB_URL=<pooler-uri> python3 scripts/migrations/apply_migration.py 0001_gamification_foundation.sql` applies it in one shot.
+
+**No frontend changes in this phase.** Pure schema lay-down. Phase 1 will wire `awardXP()` calls at every "complete" event in `utils/progress.js`.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop
