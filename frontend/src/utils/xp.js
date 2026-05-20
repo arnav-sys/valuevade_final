@@ -160,35 +160,79 @@ export async function loadLevels() {
 /**
  * Given a level number + total XP, return what the UI needs to render.
  * Pure-derived from master_levels; no side effects.
+ *
+ * Bulletproof: if `levels` hasn't loaded yet (token race / RLS quirk),
+ * fall back to the hard-coded seed defaults so we never throw on `.name`
+ * during the hydration window.  XPContext + XPBar both consume this and
+ * a null-prop access would surface as a React error overlay.
  */
+const HARDCODED_FALLBACK_LEVELS = [
+  { level_number: 1, name: 'Junior Analyst',     xp_threshold: 0,     color_hex: '#9CA3AF', icon_slug: 'junior_analyst' },
+  { level_number: 2, name: 'Research Associate', xp_threshold: 500,   color_hex: '#246BFD', icon_slug: 'research_associate' },
+  { level_number: 3, name: 'Equity Analyst',     xp_threshold: 1500,  color_hex: '#6A5CFF', icon_slug: 'equity_analyst' },
+  { level_number: 4, name: 'Senior Analyst',     xp_threshold: 3500,  color_hex: '#FF6AC1', icon_slug: 'senior_analyst' },
+  { level_number: 5, name: 'Portfolio Manager',  xp_threshold: 7000,  color_hex: '#F59E0B', icon_slug: 'portfolio_manager' },
+  { level_number: 6, name: 'CIO',                xp_threshold: 12000, color_hex: '#10B981', icon_slug: 'cio' },
+];
+
+const SAFE_LEVEL_INFO = Object.freeze({
+  level_name: 'Junior Analyst',
+  level_icon: 'junior_analyst',
+  level_color: '#246BFD',
+  next_level_name: 'Research Associate',
+  next_threshold: 500,
+  xp_to_next: 500,
+  progress_pct: 0,
+  is_max_level: false,
+});
+
 export async function getLevelInfo(current_level, total_xp) {
-  const levels = await loadLevels();
-  const sorted = [...levels].sort((a, b) => a.level_number - b.level_number);
+  let levels = [];
+  try {
+    levels = await loadLevels();
+  } catch {
+    levels = [];
+  }
+  // Hardening: if the table query returned an empty array (auth race, RLS
+  // hiccup, or the cache hasn't populated yet) use the hard-coded seed.
+  // Same six rows the migration inserts via ON CONFLICT, so behaviour is
+  // identical to a healthy DB read.
+  if (!Array.isArray(levels) || levels.length === 0) {
+    levels = HARDCODED_FALLBACK_LEVELS;
+  }
+
+  const sorted = [...levels].sort((a, b) => (a.level_number || 0) - (b.level_number || 0));
+  // Defensive: if sorting somehow produces nothing, fall back outright.
+  if (sorted.length === 0) return { ...SAFE_LEVEL_INFO };
+
   const max = sorted[sorted.length - 1];
-  const cur = sorted.find((l) => l.level_number === current_level)
-           || sorted[sorted.length - 1];
-  const next = sorted.find((l) => l.level_number === current_level + 1);
+  const safeLevel = Number.isFinite(current_level) ? current_level : 1;
+  const safeXp = Number.isFinite(total_xp) ? total_xp : 0;
+
+  const cur = sorted.find((l) => l.level_number === safeLevel) || sorted[0];
+  const next = sorted.find((l) => l.level_number === (safeLevel + 1));
+
   if (!next) {
     return {
-      level_name: cur.name,
-      level_icon: cur.icon_slug || null,
-      level_color: cur.color_hex || '#246BFD',
+      level_name: cur?.name || 'CIO',
+      level_icon: cur?.icon_slug || null,
+      level_color: cur?.color_hex || '#10B981',
       next_level_name: null,
-      next_threshold: max.xp_threshold,
+      next_threshold: max?.xp_threshold ?? 12000,
       xp_to_next: 0,
       progress_pct: 100,
       is_max_level: true,
     };
   }
-  const span = Math.max(1, next.xp_threshold - cur.xp_threshold);
-  const into = Math.max(0, total_xp - cur.xp_threshold);
+  const span = Math.max(1, (next.xp_threshold ?? 0) - (cur?.xp_threshold ?? 0));
+  const into = Math.max(0, safeXp - (cur?.xp_threshold ?? 0));
   return {
-    level_name: cur.name,
-    level_icon: cur.icon_slug || null,
-    level_color: cur.color_hex || '#246BFD',
-    next_level_name: next.name,
-    next_threshold: next.xp_threshold,
-    xp_to_next: Math.max(0, next.xp_threshold - total_xp),
+    level_name: cur?.name || 'Junior Analyst',
+    level_icon: cur?.icon_slug || null,
+    level_color: cur?.color_hex || '#246BFD',
+    next_level_name: next?.name || null,
+    next_threshold: next.xp_threshold ?? 0,
+    xp_to_next: Math.max(0, (next.xp_threshold ?? 0) - safeXp),
     progress_pct: Math.min(100, Math.round((into / span) * 100)),
     is_max_level: false,
   };
