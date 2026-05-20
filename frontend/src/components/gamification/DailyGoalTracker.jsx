@@ -80,7 +80,7 @@ export default function DailyGoalTracker() {
     <div className="glass-card rounded-2xl p-4 mt-3" data-testid="daily-goal-tracker">
       <div className="flex items-center justify-between mb-2">
         <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
-          <Target size={12} /> Today\u2019s goal
+          <Target size={12} /> Today's goal
         </div>
         <div className="text-xs font-mono" style={{ color: hit ? '#F59E0B' : 'var(--color-text)' }}>
           {minutesToday} / {goal} min
@@ -100,7 +100,7 @@ export default function DailyGoalTracker() {
       </div>
       {hit && (
         <div className="mt-2 text-[11px] font-mono tracking-wider text-[#F59E0B]" data-testid="daily-goal-hit-pill">
-          GOAL REACHED \u00b7 Consistency compounds.
+          GOAL REACHED · Consistency compounds.
         </div>
       )}
     </div>

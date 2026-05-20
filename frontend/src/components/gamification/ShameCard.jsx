@@ -61,14 +61,14 @@ export default function ShameCard() {
           </div>
         </div>
         <p className="text-sm font-bricolage text-[var(--color-text-muted)] mb-2">
-          That\u2019s roughly{' '}
+          That's roughly{' '}
           <span className="font-mono font-semibold text-[var(--color-text)]">
-            {lost_xp_value.toLocaleString()} XP
+            {(lost_xp_value || 0).toLocaleString()} XP
           </span>{' '}
           of daily-login bonus gone.
         </p>
         <p className="text-xs font-bricolage text-[var(--color-text-faint)] mb-5">
-          Tip: Earn a freeze every 10 days. They auto-spend by default \u2014 you can also use one now to restore today.
+          Tip: Earn a freeze every 10 days. They auto-spend by default — you can also use one now to restore today.
         </p>
 
         {canFreeze && (

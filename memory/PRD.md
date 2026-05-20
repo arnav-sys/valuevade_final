@@ -788,6 +788,28 @@ Phase 2 of the gamification roadmap. Adds the streak system, freeze mechanic, mi
 - The migration was applied via the Supabase Management API + PAT path established in Phase 42 (the SUPABASE_DB_URL postgres password is still a placeholder and not used).
 - `app_settings` row `allow_dev_rpcs=true` is required for `dev_simulate_streak_day`. Flip to `'false'` (via the SQL editor or service role) when we want to harden for prod.
 
+#### Phase 44 — Fix pass (May 2026, post-tester regression)
+
+Tester reported two issues. Both fixed in `0003_streak_engine_fix.sql` + frontend hardening.
+
+1. **TC2 FAIL → FIX**: `dev_simulate_streak_day` only inserted activity rows + synthetic ledger events; the cached `user_stats.current_streak_days` was never bumped. So `update_streak_on_activity` (which previously trusted the cached counter as input) saw `cached=0` even after two simulated days and incorrectly returned `current=1` instead of `3`. Per tester's option (b), `update_streak_on_activity` was rewritten to derive the streak from `user_daily_activity` rows directly — the cached counter is now a *result*, not an *input*. The function:
+   - Defensively upserts today's `user_daily_activity` row (zero values) so the engine is self-contained.
+   - Walks back from today over `user_daily_activity` using a `row_number / days_back` window-function pattern to count the literal consecutive run.
+   - If there's a gap (>1 day to most-recent-prior activity), computes the prior consecutive run ending at that prior date, then either applies freeze tokens (bridging the gap) or marks the streak broken with `lost_days = prior_consecutive_run`.
+   - Milestone gating compares `v_new_streak > v_prior_current` so same-day repeat calls don't re-fire `fire_3` / `flame_7` / `legendary_30`.
+   - Ledger events only inserted on actual transitions.
+   - Verified end-to-end against live DB with 5 scenarios: TC2 reproduces `current=3, milestone='fire_3'`; broken-no-tokens returns `was_broken=true, lost_days=3, lost_xp_value=75, current=1`; freeze-bridge consumes 2 tokens and returns `current=6`; auto-spend-off keeps tokens and breaks; 7-day milestone correctly emits `flame_7`; same-day re-call emits zero new ledger events.
+
+2. **Dashboard runtime overlay (WARN) → defensive hardening**: I was unable to reproduce the overlay live (the Emergent preview was in "resting" state during both the diagnostic Playwright pass and the verification pass). Static analysis surfaced four likely candidates and all were patched:
+   - **JSX-text unicode escapes** that were never interpreted as escapes: `\u00d7` → literal `×` (StreakCounter freeze badge), `\u2019` → literal `'`, `\u00b7` → literal `·` (DailyGoalTracker labels), `\u2014` → literal `—` (ShameCard tip). These would render as the raw six-character escape sequence in the UI — not strictly a runtime error but a candidate for what the tester noticed.
+   - **Null-safe `.toLocaleString()`**: `{lost_xp_value.toLocaleString()}` in ShameCard now guards with `{(lost_xp_value || 0).toLocaleString()}` so a malformed RPC response can't throw a TypeError.
+   - **State consistency**: the TC2 fix above means `update_streak_on_activity` can no longer return an internally inconsistent payload (e.g. cached drift causing `was_broken=true` with weird `lost_days`), which removes a class of edge cases the ShameCard could mis-render.
+   - **Bus race**: confirmed the streak bus correctly returns `{ok:false, reason:'no_updater'}` when called before StreakProvider mounts; no throw path on the consumer side.
+
+   The tester will rerun the dashboard smoke check post-deploy. If the overlay reappears, capture the exact error string + stack trace from the dev overlay iframe and we'll patch the specific call site.
+
+**Migration applied:** `/app/scripts/migrations/0003_streak_engine_fix.sql` via Management API (HTTP 201). Schema is unchanged; only the body of `update_streak_on_activity()` was rewritten via `CREATE OR REPLACE FUNCTION`.
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

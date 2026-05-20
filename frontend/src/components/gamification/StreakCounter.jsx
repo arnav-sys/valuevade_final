@@ -89,7 +89,7 @@ export default function StreakCounter({ className = '' }) {
             data-testid="streak-freeze-badge"
           >
             <Snowflake size={10} />
-            \u00d7{freezeTokens}
+            ×{freezeTokens}
           </span>
         )}
       </button>
