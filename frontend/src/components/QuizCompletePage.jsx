@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { markPhaseComplete } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
@@ -144,6 +145,14 @@ export default function QuizCompletePage() {
           // Streak engine: fire ONCE per markPhaseComplete activity event.
           // No-ops gracefully (returns ok:false) if StreakProvider isn't mounted.
           try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
+          // Badge engine: fire ONCE per phase complete (debounced to 150ms).
+          try {
+            await triggerBadgeEvaluation({
+              source_event: 'quiz_complete',
+              session_id: sessionId,
+              quiz_score: pctScore,
+            });
+          } catch { /* fire-and-forget */ }
         }
       } catch (err) {
         console.error('[quiz] save error:', err);

@@ -209,6 +209,83 @@ async def health_streak(user_id: str):
     }
 
 
+@api_router.get("/health/badges")
+async def health_badges(user_id: str):
+    """Return badge engine state for the given user_id.
+    Includes: total master badges, unlocked count by rarity/category, near-miss
+    candidates (progress >= 50%), p3_catchup_done flag, and the 10 most-recently
+    earned badges. Read-only; uses service-role to bypass RLS so the tester /
+    main agent can verify state without auth context."""
+    try:
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="user_id must be a uuid")
+
+    masters = _supabase_get(
+        "master_badges?select=id,code,name,category,rarity,is_secret,progress_target,display_order&order=display_order"
+    ) or []
+    user_rows = _supabase_get(
+        f"user_badges?user_id=eq.{_urlparse.quote(user_id)}&select=badge_id,progress_current,progress_target,is_unlocked,earned_at"
+    ) or []
+    stats_rows = _supabase_get(
+        f"user_stats?user_id=eq.{_urlparse.quote(user_id)}&select=p3_catchup_done,total_xp,current_level"
+    ) or []
+    stats = (stats_rows or [None])[0]
+
+    by_user = {r["badge_id"]: r for r in user_rows}
+
+    unlocked = []
+    near_miss = []
+    by_rarity = {"common": 0, "rare": 0, "epic": 0, "legendary": 0}
+    by_category = {}
+    for m in masters:
+        ub = by_user.get(m["id"]) or {}
+        is_unlocked = bool(ub.get("is_unlocked"))
+        target = ub.get("progress_target") or m.get("progress_target") or 1
+        current = ub.get("progress_current") or 0
+        pct = (current / target * 100.0) if target > 0 else 0.0
+        if is_unlocked:
+            by_rarity[m["rarity"]] = by_rarity.get(m["rarity"], 0) + 1
+            by_category[m["category"]] = by_category.get(m["category"], 0) + 1
+            unlocked.append({
+                "code": m["code"],
+                "name": m["name"],
+                "rarity": m["rarity"],
+                "category": m["category"],
+                "earned_at": ub.get("earned_at"),
+            })
+        elif not m.get("is_secret") and pct >= 50.0 and current < target:
+            near_miss.append({
+                "code": m["code"],
+                "name": m["name"],
+                "rarity": m["rarity"],
+                "category": m["category"],
+                "progress_current": current,
+                "progress_target": target,
+                "progress_pct": round(pct, 1),
+            })
+
+    unlocked.sort(key=lambda r: (r["earned_at"] or ""), reverse=True)
+    near_miss.sort(key=lambda r: r["progress_pct"], reverse=True)
+
+    return {
+        "user_id": user_id,
+        "user_stats_row_exists": stats is not None,
+        "p3_catchup_done": (stats or {}).get("p3_catchup_done", False),
+        "total_xp": (stats or {}).get("total_xp", 0),
+        "current_level": (stats or {}).get("current_level", 1),
+        "master_badges_total": len(masters),
+        "unlocked_total": len(unlocked),
+        "unlocked_by_rarity": by_rarity,
+        "unlocked_by_category": by_category,
+        "near_miss_count": len(near_miss),
+        "near_miss_top5": near_miss[:5],
+        "recent_unlocked_top10": unlocked[:10],
+    }
+
+
+
+
 @api_router.post("/admin/login")
 async def admin_login(creds: AdminLogin):
     if creds.email == ADMIN_EMAIL and creds.password == ADMIN_PASSWORD:

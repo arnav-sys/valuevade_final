@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete, getNextPhaseRoute } from '../utils/progress';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { aggregateScores } from '../utils/interviewEval';
 import {
   ArrowRight, RotateCcw, CheckCircle2, AlertTriangle, Sparkles,
@@ -104,6 +105,13 @@ export default function InterviewCompletePage() {
           console.error('[interview] markPhaseComplete failed:', res?.error);
         } else if (mounted && res.data) {
           setNextRoute(getNextPhaseRoute(res.data, 'interview'));
+          try {
+            await triggerBadgeEvaluation({
+              source_event: 'interview_complete',
+              session_id: sessionId,
+              interview_score: Math.round(scores.overall),
+            });
+          } catch { /* fire-and-forget */ }
         }
       } catch (err) {
         console.error('[interview] save error:', err);

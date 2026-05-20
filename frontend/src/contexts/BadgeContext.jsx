@@ -14,6 +14,10 @@ function istNowMeta() {
   };
 }
 
+// Small gap between consecutive badge-unlock overlays so they don't feel
+// like a slideshow when several unlock in the same tick (catch-up flow).
+const QUEUE_GAP_MS = 350;
+
 const BadgeContext = createContext(null);
 
 export function BadgeProvider({ children }) {
@@ -26,7 +30,12 @@ export function BadgeProvider({ children }) {
   const [activeUnlock, setActiveUnlock] = useState(null);
   const [nearMiss, setNearMiss] = useState([]);
 
+  // Re-entrancy guard so the same mount doesn't fire the catch-up twice if
+  // refresh() resolves before the DB flag write lands. (Persistence lives in
+  // user_stats.p3_catchup_done — this is just an in-tab fuse.)
   const catchupFiredRef = useRef(false);
+  // Cooldown between consecutive overlays in the unlock queue.
+  const gapTimerRef = useRef(null);
 
   const refresh = useCallback(async () => {
     if (!user?.id) { setBadges([]); return []; }
@@ -91,19 +100,19 @@ export function BadgeProvider({ children }) {
         });
       }
       await refresh();
-      return data;
+      return { ok: true, newly_unlocked: newly, near_miss: miss, ...data };
     } catch (err) {
       console.warn('[badges] evaluate threw:', err?.message || err);
       return { ok: false, reason: err?.message || String(err) };
     }
   }, [user?.id, refresh]);
 
-  // Initial load + one-time catch-up evaluation per user-session.
+  // Initial load + persistent one-time catch-up evaluation per user.
   useEffect(() => {
     if (authLoading) return;
     if (!user?.id) {
       setBootstrapping(false);
-      return;
+      return undefined;
     }
     let alive = true;
     (async () => {
@@ -111,27 +120,66 @@ export function BadgeProvider({ children }) {
       if (!alive) return;
       if (!catchupFiredRef.current) {
         catchupFiredRef.current = true;
-        await evaluate({ source_event: 'mount_catchup' });
+        // Persistence: skip when user_stats.p3_catchup_done is already true.
+        let catchupNeeded = true;
+        try {
+          const { data: row } = await supabase
+            .from('user_stats')
+            .select('p3_catchup_done')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          if (row && row.p3_catchup_done === true) catchupNeeded = false;
+        } catch (err) {
+          // Column may not exist on an older deployment — fall through and try.
+          console.warn('[badges] p3_catchup_done probe failed:', err?.message || err);
+        }
+        if (catchupNeeded) {
+          const result = await evaluate({ source_event: 'p3_catchup' });
+          if (!alive) return;
+          const count = (result && result.newly_unlocked && result.newly_unlocked.length) || 0;
+          console.info(`[badges] p3_catchup unlocked ${count} badge(s)`);
+          try {
+            await supabase
+              .from('user_stats')
+              .update({ p3_catchup_done: true })
+              .eq('user_id', user.id);
+          } catch (err) {
+            // If the flag write fails the catch-up will re-run next mount.
+            // That's still idempotent at the RPC layer (already-unlocked
+            // badges short-circuit on `if v_was_unlocked then continue`).
+            console.warn('[badges] p3_catchup_done write failed:', err?.message || err);
+          }
+        }
       }
       if (alive) setBootstrapping(false);
     })();
     return () => { alive = false; };
   }, [user?.id, authLoading, refresh, evaluate]);
 
-  // Bus wiring so XPContext / StreakContext / pages can call evaluate.
+  // Bus wiring so XPContext / progress.js / pages can call evaluate.
   useEffect(() => {
     setBadgeEvaluator(evaluate);
     return () => clearBadgeEvaluator(evaluate);
   }, [evaluate]);
 
-  // Drain the unlock queue one at a time.
+  // Drain the unlock queue one at a time, with a small inter-overlay gap.
   useEffect(() => {
-    if (activeUnlock) return;
-    if (unlockQueue.length === 0) return;
-    const [head, ...rest] = unlockQueue;
-    setActiveUnlock(head);
-    setUnlockQueue(rest);
-    playSound('badge_unlock');
+    if (activeUnlock) return undefined;
+    if (unlockQueue.length === 0) return undefined;
+    if (gapTimerRef.current) return undefined;
+    gapTimerRef.current = setTimeout(() => {
+      gapTimerRef.current = null;
+      setUnlockQueue((q) => {
+        if (q.length === 0) return q;
+        const [head, ...rest] = q;
+        setActiveUnlock(head);
+        playSound('badge_unlock');
+        return rest;
+      });
+    }, QUEUE_GAP_MS);
+    return () => {
+      if (gapTimerRef.current) { clearTimeout(gapTimerRef.current); gapTimerRef.current = null; }
+    };
   }, [activeUnlock, unlockQueue, playSound]);
 
   const dismissActiveUnlock = useCallback(() => {

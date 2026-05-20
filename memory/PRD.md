@@ -810,6 +810,40 @@ Tester reported two issues. Both fixed in `0003_streak_engine_fix.sql` + fronten
 
 **Migration applied:** `/app/scripts/migrations/0003_streak_engine_fix.sql` via Management API (HTTP 201). Schema is unchanged; only the body of `update_streak_on_activity()` was rewritten via `CREATE OR REPLACE FUNCTION`.
 
+
+### Phase 45 — Badge & Achievement Engine wiring (May 2026)
+
+**Goal:** Take the dormant Phase 3 badge schema + components (built but unmounted in Phase 44) and wire them into the live user flow so badges actually unlock, get celebrated, and surface on Profile / Dashboard.
+
+**Guardrails honoured:**
+1. **De-duped evaluator calls per tick** — single mutation funnel via `badgeBus.triggerBadgeEvaluation()` with a 150ms debounce + context merging. Coincident triggers from `awardXP` loop + `triggerStreakUpdate` + page-level fire collapse into ONE `evaluate_badges` RPC call.
+2. **Wiring policy:**
+   - Phase-completion pages (`QuizCompletePage`, `SimulationPage`, `InterviewCompletePage`, `NotesPage`, `ModuleProjectTasksPage`, `CapstoneTasksPage`) are the canonical funnel. They fire `triggerBadgeEvaluation({source_event, session_id, scores...})` AFTER `markPhaseComplete` + `awardXP` loop + `triggerStreakUpdate`.
+   - `XPContext.awardXP` fires the evaluator ONLY for non-phase reasons via `BADGE_EVAL_REASONS_FROM_XP` allowlist: `signup_bonus`, `daily_login`, `daily_challenge_complete`, `daily_champion_bonus`, `streak_milestone`, `manual_adjust`. Phase events are skipped to avoid double-firing.
+   - `StreakContext` does NOT fire the evaluator (it always co-occurs with progress.js / XP events).
+3. **Persistent catch-up sweep** — first authenticated load post-Phase 45 deploy fires `evaluate_badges({source_event:'p3_catchup'})` once per user, persisted via `user_stats.p3_catchup_done bool`. Newly-unlocked badges queue through `<BadgeUnlockOverlay />` one at a time with a 350ms inter-modal gap.
+4. **Dev RPC for tester** — `dev_force_unlock_badge(uuid, text)` was already in 0004; migration 0005 ensures `app_settings.allow_dev_rpcs='true'` so the QA tester can validate overlay rendering per rarity (common → legendary) without earning each badge organically.
+
+**Migration applied:** `/app/scripts/migrations/0005_badges_wiring.sql` via Management API (HTTP 201). Adds `user_stats.p3_catchup_done` column + sets `app_settings.allow_dev_rpcs='true'`.
+
+**Files touched:**
+- `frontend/src/App.js` — fixed missing `</BadgeProvider>` closing tag (App was not compiling).
+- `frontend/src/utils/badgeBus.js` — rewritten with 150ms debounce + context merging.
+- `frontend/src/contexts/BadgeContext.jsx` — DB-backed catch-up persistence via `user_stats.p3_catchup_done`; queue gap (350ms) between overlays.
+- `frontend/src/contexts/XPContext.jsx` — fires `triggerBadgeEvaluation` only for `BADGE_EVAL_REASONS_FROM_XP` allowlist.
+- `frontend/src/components/gamification/NearMissBanner.jsx` — fixed `\u00b7` escape rendered literally as text in JSX.
+- `frontend/src/components/ProfilePage.jsx` — mounts `<BadgeCabinet />` above the Learning Journey card.
+- `frontend/src/components/DashboardPage.jsx` — mounts `<NearMissBanner userId={user?.id} />` inside the welcome section (below `DailyGoalTracker`).
+- `frontend/src/components/{QuizCompletePage,SimulationPage,InterviewCompletePage,NotesPage,ModuleProjectTasksPage,CapstoneTasksPage}.jsx` — call `triggerBadgeEvaluation({source_event, ...})` after the awardXP loop + streak update.
+- `backend/server.py` — added `GET /api/health/badges?user_id=<uuid>` returning master/unlocked counts by rarity & category, `p3_catchup_done` flag, near-miss top-5, and recent unlocked top-10. Read-only via service-role (mirrors `/health/xp` + `/health/streak` shape).
+
+**Smoke validation (internal):**
+- Local curl `GET http://localhost:8001/api/health/badges?user_id=13a690c4-96d7-4827-8117-fde4f696e999` → HTTP 200; user has 23 master badges, 7 unlocked (5 common, 2 rare), `p3_catchup_done=false`, 1 near-miss (5-Day Grinder at 60%).
+- Webpack: `compiled with 1 warning` (pre-existing react-hooks/exhaustive-deps in simulations/, unrelated).
+- Frontend lint: ✅ No issues found across all touched files.
+- Note: external preview URL was in "Preview Unavailable / agent resting" state during smoke — services run cleanly on localhost:3000 / localhost:8001; testing agent will wake the preview when it runs.
+
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

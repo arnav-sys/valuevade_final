@@ -157,6 +157,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </BadgeProvider>
                 </StreakProvider>
               </XPProvider>
             </SoundProvider>

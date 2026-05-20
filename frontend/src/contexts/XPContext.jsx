@@ -4,6 +4,7 @@ import { useAuth } from './AuthContext';
 import { useSound } from './SoundContext';
 import { supabase } from '../lib/supabase';
 import { triggerStreakUpdate } from '../utils/streakBus';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import {
   awardXP as awardXPRaw,
   getLevelInfo,
@@ -29,6 +30,20 @@ const REASON_LABELS = {
   streak_milestone: 'Streak milestone!',
   manual_adjust: 'XP updated',
 };
+
+// Reasons that fire the badge evaluator from XPContext (non-phase XP events).
+// Phase-related reasons (quiz_correct, simulation_complete, session_complete,
+// module_complete, capstone_complete, badge_unlock_bonus) are already covered
+// by the page-level triggerBadgeEvaluation calls inside markPhaseComplete
+// flows, so we skip them here to avoid double-firing the RPC.
+const BADGE_EVAL_REASONS_FROM_XP = new Set([
+  'signup_bonus',
+  'daily_login',
+  'daily_challenge_complete',
+  'daily_champion_bonus',
+  'streak_milestone',
+  'manual_adjust',
+]);
 
 const XPContext = createContext(null);
 
@@ -143,6 +158,15 @@ export function XPProvider({ children }) {
         y: origin.y,
         key: Date.now() + Math.random(),
       });
+    }
+
+    // Fire badge evaluator for non-phase XP events only. Phase events
+    // (quiz/sim/session/module/capstone) trigger the evaluator from their
+    // own pages, so firing again here would just duplicate the RPC call.
+    if (BADGE_EVAL_REASONS_FROM_XP.has(reason)) {
+      try {
+        await triggerBadgeEvaluation({ source_event: reason });
+      } catch { /* fire-and-forget */ }
     }
 
     return result;

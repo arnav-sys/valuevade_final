@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete } from '../utils/progress';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import useTimeTracking from '../utils/useTimeTracking';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, AlertTriangle, Sparkles,
@@ -1544,6 +1545,12 @@ export default function NotesPage() {
     const timeSpent = Math.round((Date.now() - startedAt) / 1000);
     try {
       await markPhaseComplete(session.id, 'notes');
+      try {
+        await triggerBadgeEvaluation({
+          source_event: 'notes_complete',
+          session_id: session.id,
+        });
+      } catch { /* fire-and-forget */ }
     } catch (e) {
       // still navigate
     }

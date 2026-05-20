@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { supabase } from '../lib/supabase';
 import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
@@ -99,6 +100,13 @@ export default function SimulationPage() {
           await awardXP(intent);
         }
         try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
+        try {
+          await triggerBadgeEvaluation({
+            source_event: 'simulation_complete',
+            session_id: sessionId,
+            simulation_score: scoreData.simulation_score,
+          });
+        } catch { /* fire-and-forget */ }
       }
       navigate(`/session/${sessionId}/simulation/complete`, {
         state: { tasks_completed, tasks_total, accuracy, sim_type: sim?.sim_type, title: sim?.title },

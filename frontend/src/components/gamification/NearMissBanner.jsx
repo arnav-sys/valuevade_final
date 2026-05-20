@@ -56,7 +56,7 @@ export default function NearMissBanner({ userId }) {
           <Sparkles size={11} /> So close!
         </div>
         <div className="font-clash text-base font-bold text-[var(--color-text)] leading-tight">
-          {top.progress_current}/{top.progress_target} \u00b7 {top.name}
+          {top.progress_current}/{top.progress_target} · {top.name}
         </div>
         <div className="text-xs font-bricolage text-[var(--color-text-muted)] mt-0.5">
           {top.description}

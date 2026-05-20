@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { XP_REASONS } from '../utils/xp';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
@@ -164,6 +165,12 @@ export default function CapstoneTasksPage() {
           meta: { master_capstone_id: masterCapstone?.id || null, minutes: 0 },
         });
         try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
+        try {
+          await triggerBadgeEvaluation({
+            source_event: 'capstone_complete',
+            capstone_id: capstone.id,
+          });
+        } catch { /* fire-and-forget */ }
       } catch (xpErr) {
         console.warn('[capstone] XP award failed (non-fatal):', xpErr?.message || xpErr);
       }

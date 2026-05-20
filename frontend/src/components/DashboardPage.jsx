@@ -8,6 +8,7 @@ import XPBar from './gamification/XPBar';
 import StreakCounter from './gamification/StreakCounter';
 import DailyGoalModal from './gamification/DailyGoalModal';
 import DailyGoalTracker from './gamification/DailyGoalTracker';
+import NearMissBanner from './gamification/NearMissBanner';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
@@ -517,6 +518,9 @@ export default function DashboardPage() {
                   <StreakCounter />
                 </div>
                 <DailyGoalTracker />
+                <div className="mt-3">
+                  <NearMissBanner userId={user?.id} />
+                </div>
               </section>
 
               {/* Stats */}

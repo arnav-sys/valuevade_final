@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { checkCapstoneUnlock } from '../utils/progress';
+import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import Sidebar from './Sidebar';
 import TaskCard from './projects/TaskCard';
 import {
@@ -126,6 +127,14 @@ export default function ModuleProjectTasksPage() {
       if (module?.enrollment_id) {
         await checkCapstoneUnlock(module.enrollment_id);
       }
+
+      // Badge engine — module_complete + any_module_complete + capstone gate
+      try {
+        await triggerBadgeEvaluation({
+          source_event: 'module_project_complete',
+          module_id: moduleId,
+        });
+      } catch { /* fire-and-forget */ }
 
       navigate(`/module/${moduleId}/project/complete`);
     } catch (err) {
