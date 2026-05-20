@@ -18,8 +18,10 @@ function SoundToggle() {
         const wasEnabled = enabled;
         toggleEnabled();
         if (!wasEnabled) {
-          // Preview the sound on enable so user knows it works
-          setTimeout(() => playSound('xp_gain'), 50);
+          // Preview the sound on enable so user knows it works.
+          // `force: true` bypasses the stale-closure check since the new
+          // enabled=true state hasn't flushed into playSound's closure yet.
+          setTimeout(() => playSound('xp_gain', { force: true }), 80);
         }
       }}
       className="glass-card rounded-2xl p-5 mb-4 w-full text-left flex items-center gap-4 hover:border-[var(--color-primary)]/40 transition-all"

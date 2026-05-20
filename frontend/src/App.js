@@ -77,7 +77,10 @@ function App() {
             <SoundProvider>
               <XPProvider>
                 <Toaster
-                  position="top-center"
+                  richColors
+                  position="bottom-right"
+                  duration={2200}
+                  closeButton={false}
                   toastOptions={{
                     style: {
                       background: 'var(--glass-bg)',

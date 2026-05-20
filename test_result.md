@@ -101,3 +101,45 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+frontend:
+  - task: "XP toast on quiz completion (P1 fix verification)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/QuizCompletePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "BLOCKED — Could not execute the regression. The public preview URL (REACT_APP_BACKEND_URL = https://cf567bbc-e3e0-4693-bcc4-b9a70f4f37cb.preview.emergentagent.com) is returning 404 from Cloudflare/Framer instead of routing to the container. Browser visit renders the platform 'Preview Unavailable!!! Our Agent is resting after inactivity. Visit app.emergent.sh and restart the app to wake it up' page. Local services are healthy (supervisor: backend RUNNING, frontend RUNNING; curl http://localhost:3000/ -> 200; curl http://localhost:8001/api/ -> 200). 5 retries against the preview URL all returned 404 (cf-ray header, server: cloudflare). The browser_automation tool can only reach the public preview URL, so the test cannot proceed until the preview is woken up at the platform level."
+
+  - task: "Quiz retake idempotency (no runtime error, no duplicate XP toast)"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/QuizCompletePage.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "BLOCKED — same preview-unavailability issue as the XP toast test. Code inspection of QuizCompletePage.jsx shows awardXP is called from a useEffect (line ~138-141) gated on intents; cannot verify runtime behavior without a live preview."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 1
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "XP toast on quiz completion (P1 fix verification)"
+    - "Quiz retake idempotency (no runtime error, no duplicate XP toast)"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "testing"
+      message: "Regression run BLOCKED by infra: the preview URL https://cf567bbc-e3e0-4693-bcc4-b9a70f4f37cb.preview.emergentagent.com returns 404 (Cloudflare/Framer) and the browser shows 'Preview Unavailable!!!'. Local services are running fine on localhost:3000 and localhost:8001/api. Please wake the preview via app.emergent.sh (or have user restart the app), then re-invoke the testing agent. No source files were modified."

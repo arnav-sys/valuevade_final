@@ -35,6 +35,20 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
   if (!field) return { success: false, error: `Unknown phase: ${phase}` };
 
   try {
+    // 1) Read current state so we can tell a real transition from a retake.
+    const { data: before, error: selErr } = await supabase
+      .from('user_sessions')
+      .select('id, notes_completed, quiz_completed, interview_completed, simulation_completed, is_completed')
+      .eq('id', userSessionId)
+      .maybeSingle();
+    if (selErr) throw selErr;
+    if (!before) return { success: false, error: `user_session ${userSessionId} not found` };
+    const phaseWasAlreadyComplete = !!before[field];
+    const sessionWasAlreadyComplete = !!before.is_completed;
+
+    // Always allow score / metadata updates on retakes (so the displayed
+    // score is current), but the boolean flag itself only flips false→true
+    // the first time.
     const updatePayload = { [field]: true };
     if (scoreData && typeof scoreData === 'object') {
       // strip non-DB fields (xp metadata) before writing
@@ -42,7 +56,6 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       Object.assign(updatePayload, rest);
     }
 
-    // Update the phase flag
     const { data: updated, error: updErr } = await supabase
       .from('user_sessions')
       .update(updatePayload)
@@ -51,7 +64,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       .single();
     if (updErr) throw updErr;
 
-    // Check if all 4 phases now complete
+    // 2) Did this update just flip the session to "all phases done"?
     const allDone =
       updated.notes_completed &&
       updated.quiz_completed &&
@@ -59,7 +72,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       updated.simulation_completed;
 
     let sessionJustCompleted = false;
-    if (allDone && !updated.is_completed) {
+    if (allDone && !sessionWasAlreadyComplete) {
       const { data: completed, error: cErr } = await supabase
         .from('user_sessions')
         .update({ is_completed: true, completed_at: new Date().toISOString() })
@@ -74,27 +87,29 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       }
     }
 
-    // ----- XP intents (callers loop and fire via XPContext.awardXP) -----
+    // 3) XP intents — ONLY emitted on actual state transitions, never on retakes.
     const xp_intents = [];
-    if (phase === 'quiz') {
-      const correct = Number(scoreData?.quiz_correct) || 0;
-      const attempted = Number(scoreData?.quiz_attempted) || 0;
-      const amount = computeQuizXP({ correct, attempted });
-      if (amount > 0) {
+    if (!phaseWasAlreadyComplete) {
+      if (phase === 'quiz') {
+        const correct = Number(scoreData?.quiz_correct) || 0;
+        const attempted = Number(scoreData?.quiz_attempted) || 0;
+        const amount = computeQuizXP({ correct, attempted });
+        if (amount > 0) {
+          xp_intents.push({
+            amount,
+            reason: XP_REASONS.quiz_correct,
+            source_id: userSessionId,
+            meta: { correct, attempted, quiz_score: scoreData?.quiz_score ?? null },
+          });
+        }
+      } else if (phase === 'simulation') {
         xp_intents.push({
-          amount,
-          reason: XP_REASONS.quiz_correct,
+          amount: 100,
+          reason: XP_REASONS.simulation_complete,
           source_id: userSessionId,
-          meta: { correct, attempted, quiz_score: scoreData?.quiz_score ?? null },
+          meta: { simulation_score: scoreData?.simulation_score ?? null },
         });
       }
-    } else if (phase === 'simulation') {
-      xp_intents.push({
-        amount: 100,
-        reason: XP_REASONS.simulation_complete,
-        source_id: userSessionId,
-        meta: { simulation_score: scoreData?.simulation_score ?? null },
-      });
     }
     if (sessionJustCompleted) {
       xp_intents.push({
@@ -105,7 +120,13 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       });
     }
 
-    return { success: true, data: updated, xp_intents };
+    return {
+      success: true,
+      data: updated,
+      xp_intents,
+      // Surfaced so callers can show "no XP this time" UX if they want.
+      was_retake: phaseWasAlreadyComplete,
+    };
   } catch (err) {
     return { success: false, error: err.message || String(err) };
   }

@@ -11,21 +11,22 @@ import {
   XP_REASONS,
 } from '../utils/xp';
 
-// Toast labels per reason so we get "+50 XP — Session complete" copy.
+// Title + subtitle copy per reason. The brief asked for friendly subtitles
+// so the dopamine signal feels handcrafted, not telemetric.
 const REASON_LABELS = {
-  session_complete: 'Session complete',
-  quiz_correct: 'Quiz complete',
-  quiz_attempt: 'Quiz attempt',
-  simulation_complete: 'Simulation complete',
-  daily_login: 'Daily login',
-  capstone_complete: 'Capstone complete',
-  module_complete: 'Module complete',
-  daily_challenge_complete: 'Daily challenge',
-  daily_champion_bonus: 'Daily Champion',
-  signup_bonus: 'Welcome bonus',
-  badge_unlock_bonus: 'Badge unlock',
-  streak_milestone: 'Streak milestone',
-  manual_adjust: 'Adjustment',
+  session_complete: 'Session complete!',
+  quiz_correct: 'Quiz answers locked in',
+  quiz_attempt: 'Quiz attempted',
+  simulation_complete: 'Simulation submitted!',
+  daily_login: 'Welcome back!',
+  capstone_complete: 'Capstone complete!',
+  module_complete: 'Module complete!',
+  daily_challenge_complete: 'Daily challenge done!',
+  daily_champion_bonus: "Today's champion",
+  signup_bonus: 'Welcome to Valuevade!',
+  badge_unlock_bonus: 'Badge unlocked',
+  streak_milestone: 'Streak milestone!',
+  manual_adjust: 'XP updated',
 };
 
 const XPContext = createContext(null);
@@ -99,12 +100,17 @@ export function XPProvider({ children }) {
     await refreshStats();
 
     if (!silent) {
-      const label = REASON_LABELS[reason] || 'XP';
+      const label = REASON_LABELS[reason] || 'XP earned';
       const amt = result.awarded_amount;
       if (amt > 0) {
-        toast.success(`+${amt} XP \u2014 ${label}`, {
-          duration: 2000,
-          position: 'bottom-right',
+        // Toast is fired by XPContext as a side effect of EVERY successful
+        // awardXP, so call sites (QuizComplete / SimulationPage /
+        // CapstoneTasksPage / daily-login / signup-backfill) all surface UX
+        // for free.  Position + duration + theme come from the Toaster mount
+        // in App.js so toasts stay consistent across the app.
+        toast.success(`+${amt} XP`, {
+          description: label,
+          duration: 2200,
         });
         playSound('xp_gain');
       }

@@ -63,8 +63,12 @@ export function SoundProvider({ children }) {
     try { localStorage.setItem(STORAGE_KEY, String(enabled)); } catch { /* private mode */ }
   }, [enabled]);
 
-  const playSound = useCallback((slug) => {
-    if (!enabled || !userHasInteracted) return;
+  const playSound = useCallback((slug, opts = {}) => {
+    // `force=true` plays even when sound is disabled — used by the Settings
+    // toggle to preview the sound immediately after enabling it (the new
+    // enabled state hasn't flushed into our callback's closure yet).
+    if (!opts.force && !enabled) return;
+    if (!userHasInteracted) return;
     const a = audiosRef.current[slug];
     if (!a) return;
     try {
