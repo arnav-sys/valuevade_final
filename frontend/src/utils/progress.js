@@ -88,6 +88,14 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
     }
 
     // 3) XP intents — ONLY emitted on actual state transitions, never on retakes.
+    //
+    // The gate is `!phaseWasAlreadyComplete` (captured from the SELECT above
+    // before the UPDATE flips the boolean). If a user re-takes a quiz on a
+    // session whose `quiz_completed` is already true, xp_intents is [] and
+    // the QuizCompletePage's awardXP loop is a no-op. This is by design —
+    // retakes don't pay XP (P1 fix-pass). Look here first if a tester reports
+    // "completed a quiz, got 0 XP": confirm the user_session.quiz_completed
+    // was false BEFORE markPhaseComplete ran.
     const xp_intents = [];
     if (!phaseWasAlreadyComplete) {
       if (phase === 'quiz') {

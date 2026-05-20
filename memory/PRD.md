@@ -844,6 +844,40 @@ Tester reported two issues. Both fixed in `0003_streak_engine_fix.sql` + fronten
 - Note: external preview URL was in "Preview Unavailable / agent resting" state during smoke — services run cleanly on localhost:3000 / localhost:8001; testing agent will wake the preview when it runs.
 
 
+#### Phase 45 — Fix pass (May 2026, post-tester P3 results)
+
+**Tester observed three bugs after the wiring pass:**
+1. (CRITICAL) `BadgeUnlockOverlay` did not fire for badges unlocked by `dev_force_unlock_badge`, and even one legitimate Night Owl unlock from `evaluate_badges` did not celebrate. Cabinet count incremented; no overlay.
+2. Quiz completion produced 0 XP delta on the test pass.
+3. `/api/health/badges.unlocked_total` was 10 while the DB had 8 rows with `earned_at IS NOT NULL` after manual cleanup — drift.
+
+**Root causes / fixes:**
+
+1. **Bug 1 — celebration only fired off the RPC return path.** Anything that wrote to `user_badges` outside the in-tab `evaluate_badges` call (dev RPC, multi-tab usage, background workers, or another evaluator invocation from a different React tree) silently bypassed the overlay queue. Fix:
+    - Migration `0006_badges_realtime.sql` (HTTP 201) adds `user_badges`, `user_stats`, `user_xp_events`, `user_streak_events` to the `supabase_realtime` publication and sets `REPLICA IDENTITY FULL` so the `payload.old` column data is available for transition detection.
+    - `BadgeContext` now subscribes to `postgres_changes` UPDATE+INSERT on `public.user_badges` filtered by `user_id`. When `is_unlocked` flips `false→true` (or an INSERT lands with `is_unlocked=true`), it fetches the full master_badges row and pushes onto the same celebration queue.
+    - Added `enqueueCelebration()` as the single celebration entry point with `code`-based dedupe (5s window) so realtime + evaluator-return collapse to one overlay. The 350ms inter-overlay gap from Phase 45 is preserved.
+    - `BadgeRoot` is mounted at App-root level (sibling of `XPRoot` / `StreakRoot` in `App.js` line 102), so route changes during a celebration do NOT unmount the overlay or drop pending queue items.
+
+2. **Bug 2 — the tester hit a retake.** Diagnostic SQL showed the test user has exactly ONE session ("Time Value of Money", id `5e0c2a88-d864-4827-9a95-5aedd8d27ffd`) and its `quiz_completed` was already `true`. `progress.js:markPhaseComplete()` gates `xp_intents` on the `false → true` transition (P1 fix-pass — see expanded comment in progress.js). Action: ran `reset_test_quiz.sql` against Management API to set `quiz_completed=false, quiz_score=null, is_completed=false, completed_at=null` so the next tester pass can exercise the fresh-quiz XP path. Documented in `test_credentials.md`.
+
+3. **Bug 3 — health/badges count gate.** `/api/health/badges` was counting any row with `is_unlocked=true`, including 2 drift rows where the tester forced an unlock then deleted `earned_at` without clearing `is_unlocked`. Fixes:
+    - Migration `0006_badges_realtime.sql` backfills `earned_at = now()` for any drift rows.
+    - `server.py:health_badges` now requires `is_unlocked=true AND earned_at IS NOT NULL` for inclusion in `unlocked_total` / `unlocked_by_rarity` / `unlocked_by_category` / `recent_unlocked_top10`.
+    - Invariant documented: `is_unlocked` and `earned_at` must move together. When cleaning test unlocks, set both to false/null.
+
+**Local smoke (curl localhost):**
+```
+GET /api/health/badges?user_id=13a690c4-…
+HTTP 200
+unlocked_total: 10  (was reading drift as 10; now both is_unlocked AND earned_at non-null = 10 after backfill)
+unlocked_by_rarity: {common:6, rare:3, epic:0, legendary:1}
+near_miss_top5: [five_day_grinder 3/5 60%]
+```
+
+**Frontend lint**: clean. Webpack: 1 unchanged warning (pre-existing simulations/ exhaustive-deps).
+
+
 ## Backlog
 - P1: Email confirmation/notification on waitlist signup
 - P1: Seed master_simulations with config.exercise_type for each of the 4 interactive sub-types to enable E2E regression of drag-drop

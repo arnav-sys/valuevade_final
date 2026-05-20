@@ -240,7 +240,10 @@ async def health_badges(user_id: str):
     by_category = {}
     for m in masters:
         ub = by_user.get(m["id"]) or {}
-        is_unlocked = bool(ub.get("is_unlocked"))
+        # "Unlocked" is the AND of both columns: is_unlocked AND earned_at.
+        # Either alone is a drift signal — Phase 45 fix-pass added a backfill
+        # migration (0006) to make these move together always.
+        is_unlocked = bool(ub.get("is_unlocked")) and ub.get("earned_at") is not None
         target = ub.get("progress_target") or m.get("progress_target") or 1
         current = ub.get("progress_current") or 0
         pct = (current / target * 100.0) if target > 0 else 0.0

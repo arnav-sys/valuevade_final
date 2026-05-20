@@ -17,6 +17,10 @@ function istNowMeta() {
 // Small gap between consecutive badge-unlock overlays so they don't feel
 // like a slideshow when several unlock in the same tick (catch-up flow).
 const QUEUE_GAP_MS = 350;
+// De-dupe window for the same badge code across realtime + evaluator return.
+// A real unlock fires both paths within ~50-300ms; this stops it from
+// celebrating twice while still allowing future re-unlocks (e.g. dev resets).
+const DEDUPE_WINDOW_MS = 5000;
 
 const BadgeContext = createContext(null);
 
@@ -36,6 +40,11 @@ export function BadgeProvider({ children }) {
   const catchupFiredRef = useRef(false);
   // Cooldown between consecutive overlays in the unlock queue.
   const gapTimerRef = useRef(null);
+  // Dedupe map: badge_code -> last-celebrated timestamp (ms epoch).
+  // Collapses the realtime path + evaluator-return path for the same unlock
+  // into a single celebration. Also prevents a dev_force_unlock_badge that
+  // reverts and re-unlocks within 5s from blowing up the queue.
+  const recentlyCelebratedRef = useRef(new Map());
 
   const refresh = useCallback(async () => {
     if (!user?.id) { setBadges([]); return []; }
@@ -73,6 +82,41 @@ export function BadgeProvider({ children }) {
     return merged;
   }, [user?.id]);
 
+  // Single celebration enqueue point. Dedupes on badge `code` within a 5s
+  // window so realtime + evaluator-return can both call us safely. Source is
+  // either {code,name,…} (evaluator return shape) or a master_badges row id.
+  const enqueueCelebration = useCallback(async (source) => {
+    let payload = null;
+    if (source && typeof source === 'object' && source.code) {
+      // Came from evaluate_badges return — already has all fields.
+      payload = source;
+    } else if (typeof source === 'string') {
+      // Came from realtime — string is a master_badges.id (uuid). Fetch row.
+      const { data, error } = await supabase
+        .from('master_badges')
+        .select('code, name, description, category, rarity, icon_slug, is_secret, bonus_xp')
+        .eq('id', source)
+        .maybeSingle();
+      if (error || !data) {
+        console.warn('[badges] enqueue: master fetch failed for', source, error?.message);
+        return;
+      }
+      payload = data;
+    } else {
+      return;
+    }
+    if (!payload?.code) return;
+    const now = Date.now();
+    const last = recentlyCelebratedRef.current.get(payload.code) || 0;
+    if (now - last < DEDUPE_WINDOW_MS) return;
+    recentlyCelebratedRef.current.set(payload.code, now);
+    // Garbage-collect stale entries so the map doesn't grow unbounded.
+    for (const [c, ts] of recentlyCelebratedRef.current.entries()) {
+      if (now - ts > 60_000) recentlyCelebratedRef.current.delete(c);
+    }
+    setUnlockQueue((q) => [...q, payload]);
+  }, []);
+
   // Single mutation funnel: call RPC, enqueue any newly_unlocked, store near_miss.
   const evaluate = useCallback(async (context = {}) => {
     if (!user?.id) return { ok: false, reason: 'no_user' };
@@ -88,12 +132,16 @@ export function BadgeProvider({ children }) {
       }
       const newly = data?.newly_unlocked || [];
       const miss = data?.near_miss || [];
-      if (newly.length > 0) {
-        setUnlockQueue((q) => [...q, ...newly]);
+      // Fast path: enqueue celebrations directly from RPC return.
+      // The realtime subscription below ALSO listens for the user_badges UPDATE
+      // event that this RPC just triggered. enqueueCelebration() dedupes on
+      // `code` within DEDUPE_WINDOW_MS so we never double-celebrate.
+      for (const n of newly) {
+        // eslint-disable-next-line no-await-in-loop
+        await enqueueCelebration(n);
       }
       if (miss.length > 0) {
         setNearMiss((prev) => {
-          // Dedupe by code; replace existing entries with newer values.
           const map = new Map(prev.map((m) => [m.code, m]));
           miss.forEach((m) => map.set(m.code, m));
           return Array.from(map.values());
@@ -105,7 +153,7 @@ export function BadgeProvider({ children }) {
       console.warn('[badges] evaluate threw:', err?.message || err);
       return { ok: false, reason: err?.message || String(err) };
     }
-  }, [user?.id, refresh]);
+  }, [user?.id, refresh, enqueueCelebration]);
 
   // Initial load + persistent one-time catch-up evaluation per user.
   useEffect(() => {
@@ -120,7 +168,6 @@ export function BadgeProvider({ children }) {
       if (!alive) return;
       if (!catchupFiredRef.current) {
         catchupFiredRef.current = true;
-        // Persistence: skip when user_stats.p3_catchup_done is already true.
         let catchupNeeded = true;
         try {
           const { data: row } = await supabase
@@ -130,7 +177,6 @@ export function BadgeProvider({ children }) {
             .maybeSingle();
           if (row && row.p3_catchup_done === true) catchupNeeded = false;
         } catch (err) {
-          // Column may not exist on an older deployment — fall through and try.
           console.warn('[badges] p3_catchup_done probe failed:', err?.message || err);
         }
         if (catchupNeeded) {
@@ -144,9 +190,6 @@ export function BadgeProvider({ children }) {
               .update({ p3_catchup_done: true })
               .eq('user_id', user.id);
           } catch (err) {
-            // If the flag write fails the catch-up will re-run next mount.
-            // That's still idempotent at the RPC layer (already-unlocked
-            // badges short-circuit on `if v_was_unlocked then continue`).
             console.warn('[badges] p3_catchup_done write failed:', err?.message || err);
           }
         }
@@ -155,6 +198,55 @@ export function BadgeProvider({ children }) {
     })();
     return () => { alive = false; };
   }, [user?.id, authLoading, refresh, evaluate]);
+
+  // Realtime subscription on user_badges so ANY path that flips is_unlocked
+  // (dev_force_unlock_badge, multi-tab, background job, evaluator RPC) fires
+  // the celebration. This is the canonical "did I just earn something?" signal.
+  useEffect(() => {
+    if (!user?.id) return undefined;
+    const channel = supabase
+      .channel(`user_badges:${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'user_badges',
+          filter: `user_id=eq.${user.id}`,
+        },
+        async (payload) => {
+          const newRow = payload.new || {};
+          const oldRow = payload.old || {};
+          if (newRow.is_unlocked && !oldRow.is_unlocked) {
+            await enqueueCelebration(newRow.badge_id);
+            await refresh();
+          } else if (newRow.progress_current !== oldRow.progress_current) {
+            // progress moved — just refresh, no celebration
+            await refresh();
+          }
+        }
+      )
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'user_badges',
+          filter: `user_id=eq.${user.id}`,
+        },
+        async (payload) => {
+          const newRow = payload.new || {};
+          if (newRow.is_unlocked) {
+            await enqueueCelebration(newRow.badge_id);
+          }
+          await refresh();
+        }
+      )
+      .subscribe();
+    return () => {
+      try { supabase.removeChannel(channel); } catch { /* noop */ }
+    };
+  }, [user?.id, enqueueCelebration, refresh]);
 
   // Bus wiring so XPContext / progress.js / pages can call evaluate.
   useEffect(() => {

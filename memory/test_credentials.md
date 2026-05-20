@@ -30,3 +30,40 @@ Notes for testing agent:
   `evaluate_badges` so the celebration overlay + sound + queue gap fire end-to-end.
 - Health endpoint: `GET /api/health/badges?user_id=<uuid>` returns counts by
   rarity & category, `p3_catchup_done`, near-miss top-5, recent unlocked top-10.
+
+## Phase 45 fix-pass — reset state for Bug 2 retest (May 2026)
+
+The test user has exactly ONE session ("Time Value of Money",
+`5e0c2a88-d864-4827-9a95-5aedd8d27ffd`). Its quiz state has been reset to
+fresh (`quiz_completed=false, is_completed=false, quiz_score=null`) so the
+tester can exercise the fresh-quiz XP path. To reset again later:
+
+```sql
+update public.user_sessions
+   set quiz_completed=false, is_completed=false, quiz_score=null, completed_at=null
+ where id = '5e0c2a88-d864-4827-9a95-5aedd8d27ffd';
+```
+
+## Bug 1 retest — overlay celebration (Phase 45 fix-pass)
+
+The BadgeContext now subscribes to `postgres_changes` on `public.user_badges`
+filtered by `user_id`. ANY write that flips `is_unlocked` `false→true` fires
+the overlay. To validate:
+
+```sql
+-- Force unlock; the celebration must appear within 1-2 seconds.
+select public.dev_force_unlock_badge(
+  '13a690c4-96d7-4827-8117-fde4f696e999'::uuid,
+  'sprint_quiz'
+);
+
+-- Cleanup pattern — set BOTH columns together so /api/health/badges doesn't drift:
+update public.user_badges
+   set is_unlocked=false, earned_at=null, progress_current=0
+ where user_id='13a690c4-96d7-4827-8117-fde4f696e999'::uuid
+   and badge_id=(select id from public.master_badges where code='sprint_quiz');
+```
+
+Invariant: `is_unlocked` and `earned_at` must move together. The
+`/api/health/badges` endpoint counts only rows where both are non-null.
+
