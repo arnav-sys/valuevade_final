@@ -88,3 +88,59 @@ Do NOT hardcode anything. Frontend reads the backend URL from
 `REACT_APP_BACKEND_URL` in `/app/frontend/.env`. Backend health is
 `GET /api/`. The kubernetes ingress maps `/api/*` to backend:8001
 automatically.
+
+
+
+## Phase 52 — `/api/doubts/*` Bearer convention
+
+The Doubts Session endpoints are the **first** Valuevade APIs that require
+the end-user's Supabase JWT as a Bearer token. (All prior `/api/*` routes
+were either public or service-role-on-the-server.)
+
+### Endpoints affected
+
+* `POST /api/doubts/start`
+* `POST /api/doubts/ask`
+* `POST /api/doubts/end`
+
+(`GET /api/health/doubts?user_id=<uuid>` is the **exception** — it uses the
+service role on the server, no Bearer needed, for ops + tester convenience.)
+
+### Required header
+
+```
+Authorization: Bearer <access_token>
+Content-Type: application/json
+```
+
+### Where to harvest `<access_token>` (Playwright / tester)
+
+After driving the login form, read `localStorage.getItem('sb-yuadeybycbfqlkdpxbkv-auth-token')`,
+parse it as JSON, and use `.access_token`. Example Playwright snippet:
+
+```python
+raw = await page.evaluate("() => localStorage.getItem('sb-yuadeybycbfqlkdpxbkv-auth-token')")
+token = json.loads(raw)["access_token"]
+```
+
+If you have to drive the form anyway, **a cleaner approach** is to let the
+React app open the DoubtsSession modal itself (which already harvests the
+token correctly via `supabase.auth.getSession()`); then your assertions
+just need to watch for `[data-testid="doubts-session-modal"]`,
+`[data-testid="doubts-thread"]`, `[data-testid="doubts-msg-assistant"]`,
+`[data-testid="doubts-send"]`, etc.
+
+### Error envelope
+
+The FastAPI dependency `get_supabase_user` (defined in `/app/backend/server.py`)
+resolves the JWT by calling `GET <SUPABASE_URL>/auth/v1/user` with the user
+token. Failure modes:
+
+* No Authorization header / not `Bearer …` → **401 `missing bearer token`**
+* Invalid / expired token → **401 `invalid or expired token`**
+* Quota exhausted (`/start` only) → **429** with body `{"detail":{"reason":"quota_exhausted","sessions_today":5,"limit":5}}`
+
+Server-side never trusts a `user_id` body field on these routes — the
+authoritative `user_id` is always the `id` claim from the resolved JWT.
+This means the tester can't "log in as A but pass body user_id of B"; any
+such attempt would just act for user A.
