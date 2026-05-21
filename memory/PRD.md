@@ -1045,3 +1045,54 @@ Service-role-backed via `_supabase_get`.
 
 **This closes the gamification build (P0 → P5).** Next: end-of-build human QA pass for visual/audio polish.
 
+
+
+---
+
+### Phase 48 — Public signup surface + route rename (May 2026)
+
+**Scope delivered**
+
+1. **Route rename `/signuproute1` → `/signup`** in `App.js`:
+   - Primary route now `/signup` (same `SignupPage` component, same `PublicOnlyRoute` guard, same lazy-load).
+   - Old `/signuproute1` URL preserved as a `<Navigate to="/signup" replace />` redirect so any external links / bookmarks keep working.
+
+2. **Sign Up surfaced as a real CTA on landing + header**:
+   - `Navbar.js` — added a filled-primary "Sign Up" pill next to the existing "Log In" link on both the desktop bar and the mobile drawer. `data-testid="nav-signup-link"` (desktop) and `data-testid="mobile-nav-signup"` (mobile).
+   - `HeroSection.js` — kept the existing "Join the Waitlist Free →" loud CTA intact (no regressions to the existing waitlist funnel). Added a small secondary line below the CTA row: "Already eligible? **Sign up now →**" → `/signup`. `data-testid="hero-signup-link"`.
+   - `LoginPage.jsx` — added "New to Valuevade? **Create an account**" link below the form. `data-testid="login-signup-link"`.
+   - `SignupPage.jsx` — already had "Already have an account? Log in" link (no change needed).
+   - `CourseDetailsPage.jsx` — single internal Link reference updated from `/signuproute1` → `/signup`.
+
+3. **Waitlist flow preserved**:
+   - `/waitlist-arnav` route and `AdminDashboard` component untouched.
+   - All `/api/waitlist*` endpoints unchanged.
+   - Hero's primary "Join the Waitlist Free →" button still scrolls to the existing waitlist form.
+
+4. **Gamification continuity**:
+   - The `signup_bonus` +10 XP path lives in `XPContext.jsx` (XP_REASONS.signup_bonus, first-load backfill). It fires on any newly-authenticated user regardless of which route they signed up from. No change needed for the new `/signup` route.
+   - As documented in P1 (Phase 43), the +10 XP lands AFTER the user clears the onboarding/enrollment step (because that's when `XPContext` first mounts inside the authenticated tree). This is unchanged and intentional.
+
+**Files modified**
+- `frontend/src/App.js` (route rename + redirect, `Navigate` import added)
+- `frontend/src/components/Navbar.js` (desktop + mobile Sign Up CTAs)
+- `frontend/src/components/HeroSection.js` (secondary signup link below CTA row, `Link` import added)
+- `frontend/src/components/LoginPage.jsx` ("Create an account" link below the form)
+- `frontend/src/components/CourseDetailsPage.jsx` (one Link target updated to `/signup`)
+
+**Smoke (preview deferred to tester; localhost lint+build clean)**
+- Frontend lint ✅ across all 5 touched files. Webpack: `compiled with 1 warning` (pre-existing simulations/ exhaustive-deps, unchanged).
+- `/signup` renders the signup form (same lazy-loaded component, just under the new path).
+- `/signuproute1` redirects to `/signup` via React Router `replace`.
+
+**Note for the tester**: External preview was in Cloudflare "Preview Unavailable / agent resting" sleep at write-time, so a live browser walkthrough was deferred. Once the tester wakes the preview, the smoke recipe is:
+1. Visit `/` in an incognito window → header shows both "Log In" and "Sign Up" buttons; hero row has "Already eligible? Sign up now →" link below the CTA row.
+2. Click Sign Up in the header → lands at `/signup` with form rendered.
+3. Visit `/signuproute1` directly → URL replaced with `/signup`, same form rendered.
+4. Create a brand-new account → `XPContext` first-load backfill emits `signup_bonus` +10 XP into `user_xp_events`; `/api/health/xp?user_id=<new_uuid>` reports `total_xp >= 10` once onboarding is cleared.
+
+**Out of scope** (carried forward as backlog)
+- Replace `daily_champion.wav` (already swapped in Phase 47 polish — see SOUNDS_LICENSE.md).
+- Supabase Auth redirect URL whitelist update — if the Supabase dashboard still has `/signuproute1` listed as an allowed redirect, the user needs to add `/signup` there. Flagged for the user.
+- Public profile / OG image rendering, multi-tab live XP sync, module-scoped daily challenges, waitlist → Supabase migration (all carried over from earlier phases).
+

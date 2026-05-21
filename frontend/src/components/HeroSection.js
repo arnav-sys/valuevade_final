@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
 
 export default function HeroSection({ onJoinWaitlist }) {
@@ -122,6 +123,18 @@ export default function HeroSection({ onJoinWaitlist }) {
               See How It Works <ArrowRight size={18} />
             </button>
           </div>
+
+          {/* Secondary signup CTA — for users with direct access */}
+          <p className="text-sm text-[var(--color-text-muted)] mb-8 font-bricolage text-center lg:text-left">
+            Already eligible?{' '}
+            <Link
+              to="/signup"
+              className="text-[var(--color-primary)] hover:underline font-semibold"
+              data-testid="hero-signup-link"
+            >
+              Sign up now →
+            </Link>
+          </p>
 
           {/* Social proof */}
           <div className="flex items-center gap-3 justify-center lg:justify-start">

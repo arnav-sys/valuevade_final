@@ -111,10 +111,17 @@ export default function Navbar({ onJoinWaitlist }) {
             <>
               <Link
                 to="/login"
-                className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
+                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
                 data-testid="nav-login-link"
               >
                 Log In
+              </Link>
+              <Link
+                to="/signup"
+                className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
+                data-testid="nav-signup-link"
+              >
+                Sign Up
               </Link>
             </>
           )}
@@ -194,10 +201,18 @@ export default function Navbar({ onJoinWaitlist }) {
               <Link
                 to="/login"
                 onClick={() => setMenuOpen(false)}
-                className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
+                className="px-8 py-3 bg-[var(--color-surface)] text-[var(--color-text)] font-semibold rounded-full text-lg font-bricolage border border-[var(--color-border)]"
                 data-testid="mobile-nav-login"
               >
                 Log In
+              </Link>
+              <Link
+                to="/signup"
+                onClick={() => setMenuOpen(false)}
+                className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
+                data-testid="mobile-nav-signup"
+              >
+                Sign Up
               </Link>
             </>
           )}

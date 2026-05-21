@@ -1,6 +1,6 @@
 import "@/App.css";
 import { Suspense } from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
@@ -110,7 +110,8 @@ function App() {
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
-                  <Route path="/signuproute1" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
+                  <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
+                  <Route path="/signuproute1" element={<Navigate to="/signup" replace />} />
                   <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                   <Route path="/referral" element={<AdminDashboard />} />
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />

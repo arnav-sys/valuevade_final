@@ -164,11 +164,71 @@ def make_badge_unlock():
     write_wav(OUT / "badge_unlock.wav", samples)
 
 
+# 5) daily_champion.wav — gold fanfare for Daily Champion overlay.
+#    Distinct from level_up (which is a clean arpeggio→chord) and badge_unlock
+#    (which is a bell ding). This one is BRASSY + RHYTHMIC: a herald-style
+#    triplet "ta-ta-TA!" using stacked harmonics on perfect fifths (the
+#    classic V→I cadence), then a sustained brassy "TADA" major-chord resolve.
+#    Target ~1.4s total.
+def make_daily_champion():
+    def brassy(freq, ms, vibrato=False, sweep_end=None):
+        """Brassy tone = sum of harmonics 1,2,3,4 with decaying amplitudes.
+        Stacking integer multiples gives a sawtooth-flavoured spectrum that
+        reads as 'horn' to the ear instead of pure sine 'flute'."""
+        harmonics = [
+            (1.0, 1.0),   # fundamental — strongest
+            (2.0, 0.55),  # octave
+            (3.0, 0.35),  # twelfth (fifth-up)
+            (4.0, 0.18),  # double octave
+        ]
+        out = None
+        for mult, amp in harmonics:
+            t = tone(freq * mult, ms,
+                     vibrato=vibrato,
+                     sweep_end=(sweep_end * mult) if sweep_end is not None else None)
+            t = [v * amp for v in t]
+            if out is None:
+                out = t
+            else:
+                out = [a + b for a, b in zip(out, t)]
+        return out
+
+    # Triplet herald: G4 → C5 → G5 (root, fifth, octave) — classic fanfare.
+    # First two are short staccato hits, third is a longer accent.
+    g4, c5, g5 = 392.00, 523.25, 783.99
+    ta1 = fade(brassy(g4, 110), attack_ms=3, release_ms=70)
+    ta2 = fade(brassy(c5, 110), attack_ms=3, release_ms=70)
+    ta3 = fade(brassy(g5, 220, sweep_end=g5 * 1.02), attack_ms=3, release_ms=160)
+    gap = [0.0] * int(SR * 0.025)
+    herald = ta1 + gap + ta2 + gap + ta3
+
+    # Big "TADA" resolution chord: C major (C5, E5, G5, C6) held for ~850ms
+    # with mild vibrato on the top octave for shimmer. Brassy stack again for
+    # richness; longer release for the gold/triumphant tail.
+    chord_ms = 850
+    chord = fade(
+        mix(
+            brassy(523.25, chord_ms),                # C5
+            brassy(659.25, chord_ms),                # E5
+            brassy(783.99, chord_ms),                # G5
+            brassy(1046.50, chord_ms, vibrato=True), # C6 sparkle
+        ),
+        attack_ms=8,
+        release_ms=500,
+    )
+
+    samples = herald + [0.0] * int(SR * 0.05) + chord
+    samples = mix(samples, gain=1.0)
+    write_wav(OUT / "daily_champion.wav", samples)
+
+
+
 if __name__ == "__main__":
     make_xp_gain()
     make_level_up()
     make_streak_milestone()
     make_badge_unlock()
+    make_daily_champion()
 
 
 # 4) badge_unlock.wav — satisfying "ding" with reverb, ~1s, distinct from level_up
