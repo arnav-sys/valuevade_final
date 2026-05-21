@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  Trophy, Sparkles, Flame, Award, Target, Clock, Activity, Share2, Copy,
-  Check, Linkedin, ExternalLink, Lock, ChevronRight, BookOpen, Star,
+  Trophy, Sparkles, Flame, Award, Target, Clock, Activity, Copy,
+  Check, ExternalLink, Lock, ChevronRight, BookOpen, Star,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -113,8 +113,6 @@ export default function PortfolioPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [savingShare, setSavingShare] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   const fetchPortfolio = useCallback(async () => {
     setLoading(true); setError(null);
@@ -133,11 +131,6 @@ export default function PortfolioPage() {
   useEffect(() => { if (user?.id) fetchPortfolio(); }, [user?.id, fetchPortfolio]);
 
   const firstName = useMemo(() => (data?.full_name || '').split(' ')[0] || 'Analyst', [data]);
-  const publicUrl = useMemo(() => {
-    if (!data?.portfolio_share_slug) return null;
-    if (typeof window !== 'undefined') return `${window.location.origin}/p/${data.portfolio_share_slug}`;
-    return `/p/${data.portfolio_share_slug}`;
-  }, [data]);
 
   const memberSinceYM = useMemo(() => {
     if (!data?.member_since) return '';
@@ -148,49 +141,6 @@ export default function PortfolioPage() {
   }, [data]);
 
   const totalHours = Math.max(0, Math.round((data?.total_time_minutes || 0) / 60));
-
-  const shareText = useMemo(() => {
-    if (!data) return '';
-    const level = data.level_name || `Level ${data.current_level}`;
-    const mods = data.modules_completed || 0;
-    return `Just hit Level ${data.current_level} (${level}) on Valuevade — ${mods} modules into my finance training.${publicUrl ? ' ' + publicUrl : ''}`;
-  }, [data, publicUrl]);
-
-  const onTogglePublic = useCallback(async (enabled) => {
-    setSavingShare(true);
-    try {
-      const res = await authedFetch('/api/portfolio/share', { method: 'POST', body: JSON.stringify({ enabled }) });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json?.detail || 'failed');
-      setData((d) => ({ ...d,
-        portfolio_public: json.portfolio_public,
-        portfolio_share_slug: json.share_slug || d?.portfolio_share_slug,
-      }));
-    } catch (e) { setError(e.message); }
-    finally { setSavingShare(false); }
-  }, []);
-
-  const onCopyUrl = useCallback(() => {
-    if (publicUrl && navigator?.clipboard) {
-      navigator.clipboard.writeText(publicUrl);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    }
-  }, [publicUrl]);
-
-  const onCopyShareText = useCallback(() => {
-    if (navigator?.clipboard) {
-      navigator.clipboard.writeText(shareText);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1600);
-    }
-  }, [shareText]);
-
-  const onLinkedIn = useCallback(() => {
-    const url = publicUrl || (typeof window !== 'undefined' ? window.location.origin : '');
-    const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}&summary=${encodeURIComponent(shareText)}`;
-    window.open(linkedinUrl, '_blank', 'noopener,noreferrer');
-  }, [publicUrl, shareText]);
 
   if (loading) {
     return (
@@ -231,9 +181,10 @@ export default function PortfolioPage() {
   const interviewAvg = data?.avg_interview_score || 0;
 
   return (
-    <div className="min-h-screen pl-0 sm:pl-[60px] lg:pl-[250px] transition-[padding] duration-200" data-testid="portfolio-page">
+    <div className="flex min-h-screen bg-[var(--bg-primary)]" data-testid="portfolio-page">
       <Sidebar />
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10 sm:space-y-12">
+      <main className="flex-1 min-w-0 relative z-10 pt-16 lg:pt-0">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-10 space-y-10 sm:space-y-12">
 
         {/* 1. Hero */}
         <section className="relative" data-testid="portfolio-hero">
@@ -435,55 +386,10 @@ export default function PortfolioPage() {
           </div>
         </section>
 
-        {/* 10. Share */}
-        <section data-testid="portfolio-share-section">
-          <h2 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] mb-3">Share your portfolio</h2>
-          <div className="rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur p-5">
-            <label className="flex items-center justify-between gap-4">
-              <div>
-                <div className="font-clash text-base font-bold text-[var(--color-text)]">Make my portfolio public</div>
-                <div className="text-xs text-[var(--color-text-muted)] font-bricolage mt-0.5">
-                  {data.portfolio_public
-                    ? 'Anyone with the link can view your stats, badges, and skills.'
-                    : 'Your portfolio is private. Toggle on to get a shareable link.'}
-                </div>
-              </div>
-              <button
-                onClick={() => onTogglePublic(!data.portfolio_public)}
-                disabled={savingShare}
-                role="switch"
-                aria-checked={!!data.portfolio_public}
-                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${data.portfolio_public ? 'bg-[var(--color-primary)]' : 'bg-[var(--glass-border)]'}`}
-                data-testid="portfolio-share-toggle"
-              >
-                <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform ${data.portfolio_public ? 'translate-x-5' : ''}`} />
-              </button>
-            </label>
-
-            {data.portfolio_public && publicUrl && (
-              <div className="mt-4 space-y-3" data-testid="portfolio-share-controls">
-                <div className="flex items-stretch gap-2">
-                  <div className="flex-1 rounded-xl border border-[var(--glass-border)] bg-[var(--bg-secondary)]/40 px-3 py-2 font-mono text-xs text-[var(--color-text)] truncate" data-testid="portfolio-public-url">
-                    {publicUrl}
-                  </div>
-                  <button onClick={onCopyUrl} className="rounded-xl border border-[var(--glass-border)] bg-[var(--glass-bg)] hover:bg-[var(--color-surface)] px-3 text-xs font-semibold flex items-center gap-1" data-testid="portfolio-copy-url">
-                    {copied ? <Check size={12} className="text-green-400" /> : <Copy size={12} />} {copied ? 'Copied' : 'Copy'}
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button onClick={onLinkedIn} className="inline-flex items-center gap-1.5 rounded-full bg-[#0a66c2] hover:brightness-110 text-white px-4 py-2 text-xs font-semibold" data-testid="portfolio-linkedin-btn">
-                    <Linkedin size={12} /> Share to LinkedIn
-                  </button>
-                  <button onClick={onCopyShareText} className="inline-flex items-center gap-1.5 rounded-full border border-[var(--glass-border)] bg-[var(--glass-bg)] hover:bg-[var(--color-surface)] text-[var(--color-text)] px-4 py-2 text-xs font-semibold" data-testid="portfolio-copy-share-text">
-                    <Share2 size={12} /> Copy share text
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+        {/* 10. Share section removed (P53 fix); backend kept for future use. */}
 
       </div>
+      </main>
     </div>
   );
 }

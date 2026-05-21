@@ -1624,6 +1624,8 @@ exact `member_since` (replaced by month/year string only).
 | 9 | **Quotable highlights** — 4 click-to-copy headline cards (hours, modules, streak, level) | — | `portfolio-headlines`, `headline-hours`, `headline-modules`, `headline-streak`, `headline-level` |
 | 10 | **Share section** — Toggle ("Make my portfolio public") + Copy URL + Share to LinkedIn + Copy share text | — | `portfolio-share-section`, `portfolio-share-toggle`, `portfolio-public-url`, `portfolio-copy-url`, `portfolio-linkedin-btn`, `portfolio-copy-share-text` |
 
+> **P53 post-launch fix (May 2026):** Share toggle removed from the UI; backend (`/api/portfolio/share`, `/api/portfolio/public/<slug>`, slug column) retained for future use.
+
 **Authed fetch helper** uses `supabase.auth.getSession()` → `access_token` →
 `Authorization: Bearer …` (same pattern as DoubtsSession).
 
