@@ -1,15 +1,15 @@
 {
   "tutor_name": "Pari",
   "tutor_title": "Your AI Finance Tutor",
-  "generated_at": "2026-05-21",
-  "style": "Pixar/DreamWorks semi-realistic 3D illustration, 1024x1024 PNG",
+  "generated_at": "2026-05-21 (v3 \u2014 straight slightly-wavy hair, fairer complexion)",
+  "style": "Pixar/DreamWorks semi-realistic 3D illustration, 1024x1024 PNG \u2014 v3",
   "poses": [
     {
       "slug": "pari_idle",
       "caption": "Friendly idle stance, ready to help.",
       "file": "/tutor/pari_idle.png",
-      "md5": "c47746864d9fb75893cb556e55c20363",
-      "bytes": 1148395
+      "md5": "e175b857937bbe69cf77e086f558f76e",
+      "bytes": 1186036
     },
     {
       "slug": "pari_waving",
