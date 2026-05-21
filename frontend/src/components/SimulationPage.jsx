@@ -42,6 +42,7 @@ export default function SimulationPage() {
   const [sim, setSim] = useState(null);
   const [progress, setProgress] = useState({ correct: 0, total: 0 });
   const [saving, setSaving] = useState(false);
+  const [submittedScore, setSubmittedScore] = useState(null); // P56: drives Pari post-submit pose
   const { awardXP } = useXP();
 
   // Track active time on this page → user_stats.total_time_minutes
@@ -86,6 +87,9 @@ export default function SimulationPage() {
   }, [sessionId, user?.id]);
 
   const handleComplete = async ({ tasks_completed, tasks_total, accuracy }) => {
+    // P56: snapshot the score immediately so Pari's pose flips even before
+    // the DB write returns.
+    setSubmittedScore(Math.round((accuracy || 0) * 100));
     if (saving) return;
     // In review mode (already completed once) — skip the DB write and just
     // navigate the user back to the session start page.
@@ -231,10 +235,13 @@ export default function SimulationPage() {
       </div>
 
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-24">
-        {/* P55 — Pari sets the brief */}
+        {/* P55 — Pari sets the brief; P56 — pose flips on post-submit */}
         <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-start gap-3" data-testid="simulation-pari-brief">
           <AvatarPersona
-            pose="simulation_brief"
+            pose={submittedScore === null
+              ? 'simulation_brief'
+              : (submittedScore >= 90 ? 'celebrating'
+                : (submittedScore >= 70 ? 'encouraging' : 'listening'))}
             size="md"
             position="inline"
             showSpeechBubble={false}
@@ -242,11 +249,17 @@ export default function SimulationPage() {
           />
           <div className="flex-1 min-w-0">
             <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
-              Pari sets the scene
+              {submittedScore === null ? 'Pari sets the scene' : 'Pari · Result'}
             </div>
             <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
-              Here's what we're working on — read the brief carefully, then start.
-              {sim.title && <span className="block mt-1 font-semibold">{sim.title}</span>}
+              {submittedScore === null
+                ? <>Here's what we're working on — read the brief carefully, then start.
+                  {sim.title && <span className="block mt-1 font-semibold">{sim.title}</span>}</>
+                : submittedScore >= 90
+                  ? `Excellent decisions — your simulation matched the optimal path closely. ${submittedScore}/100.`
+                  : submittedScore >= 70
+                    ? `Solid work — ${submittedScore}/100. Let's review where you diverged from the optimal path.`
+                    : `Some of your choices need a second look — ${submittedScore}/100. Let me walk through them with you.`}
             </div>
           </div>
         </div>
@@ -276,8 +289,11 @@ export default function SimulationPage() {
                 sim_brief: sim.title || '',
                 sim_type: sim.sim_type || '',
                 user_submission: progress || null,
-                score: typeof progress?.correct === 'number' && progress?.total
-                  ? Math.round((progress.correct / Math.max(progress.total, 1)) * 100) : null,
+                score: submittedScore !== null
+                  ? submittedScore
+                  : (typeof progress?.correct === 'number' && progress?.total
+                      ? Math.round((progress.correct / Math.max(progress.total, 1)) * 100)
+                      : null),
               },
             })}
             className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold font-bricolage transition-colors"

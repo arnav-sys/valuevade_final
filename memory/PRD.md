@@ -1959,3 +1959,103 @@ Cost impact: zero new LLM calls; the prompt grew by ~1 line per turn (~10–15 t
 
 Webpack: `compiled with 1 warning` (pre-existing react-hooks/exhaustive-deps warnings unchanged from P54). Zero new errors. Zero new warnings.
 
+
+---
+
+### Phase 56 — Notes UI: Pari Teaches + Sim Post-Submit Pose Flip (May 2026)
+
+The final item from the original P54 brief. Closes out the gamification-layer
+roadmap so Pari now talks to the student on **every** non-trivial surface:
+dashboard, quiz, interview, simulation, notes (all 8 card types), portfolio,
+welcome, and daily news.
+
+#### P1 ✅ Sim post-submit pose flip (5-minute fix)
+
+- `SimulationPage.jsx` — new `const [submittedScore, setSubmittedScore] = useState(null)`.
+- `handleComplete` wraps with `setSubmittedScore(Math.round((accuracy || 0) * 100))` before the DB write, so Pari's pose flips immediately on submit (even before the server round-trip lands).
+- Pari hero pose + label + message now branches on `submittedScore`:
+  - `null` (pre-submit) → `simulation_brief` + *"Pari sets the scene"* + brief copy
+  - `≥ 90` → `celebrating` + *"Pari · Result"* + *"Excellent decisions — your simulation matched the optimal path closely. {score}/100."*
+  - `70–89` → `encouraging` + *"Solid work — {score}/100. Let's review where you diverged from the optimal path."*
+  - `< 70` → `listening` + *"Some of your choices need a second look — {score}/100. Let me walk through them with you."*
+- The launcher button's `attempt_context.score` now prefers the authoritative `submittedScore` over the in-progress `progress.correct / progress.total` estimate.
+
+#### P2 ✅ Notes UI — all 8 card types wired
+
+Created two reusable components:
+
+- **`tutor/PariTeachingHeader.jsx`** — single small horizontal card (avatar + intro line + "Pari teaching" subtitle). Driven by `cardType` prop via the `NOTES_CARD_PARI` registry:
+
+  | Card type | Pose | Intro line |
+  |---|---|---|
+  | `hook` | `asking` | *"Here's something worth thinking about…"* |
+  | `concept` | `explaining` | *"Let me explain "{title}" to you…"* |
+  | `formula` | `thinking` | *"Here's the formula — let me walk you through it…"* |
+  | `visual` | `explaining` | *"See how this works visually?"* |
+  | `deep_dive` | `thinking` | *"Deeper layer — stay with me…"* |
+  | `example` | `explaining` | *"Real example to make this stick…"* |
+  | `mistake` | `listening` | *"A common mistake students make…"* |
+  | `summary` | `encouraging` | *"Quick recap of what we covered…"* |
+
+  Test-id pattern: `pari-teaching-{cardType}`.
+
+- **`tutor/AskPariAboutCard.jsx`** — small launcher pill (`MessageCircleQuestion` icon + "Ask Pari about this"). Wires `openDoubts({phase:'notes', attemptContext: {card_type, card_title, card_content}})`. The `card_content` payload is JSON-stringified + truncated to 1600 chars to keep the doubt-session attempt_context lightweight while still giving Pari enough grounding to reference the specific card.
+  Test-id pattern: `ask-pari-about-{cardType}`.
+
+#### Wiring in `NotesPage.jsx` (each card type)
+
+| # | Renderer | Header inserted above | Button inserted before closing `</div>` |
+|---|---|---|---|
+| 1 | `HookCard` | line ~234 | ✅ |
+| 2 | `ConceptCard` | line ~317 | ✅ |
+| 3 | `FormulaCard` | line ~611 | ✅ |
+| 4 | `SummaryCard` | line ~1357 | ✅ |
+| 5 | `VisualCard` | line ~798 | ✅ |
+| 6 | `DeepDiveCard` | line ~887 | ✅ |
+| 7 | `ExampleCard` | line ~1002 | ✅ |
+| 8 | `MistakeCard` | line ~1252 | ✅ |
+
+All 8 ✅ shipped — well within the time-box (the symmetric pattern made the
+remaining 4 nearly free after the top 4 landed).
+
+#### Footprint
+
+Each `<PariTeachingHeader>` is ~64–80 px tall — adds barely any vertical
+push to the existing card layout (the existing badge label is still the
+first eye-catcher). The teach-header sits **between** the wrapper `<div>`
+and the existing badge label (Hook / Concept / Formula / etc.), so the
+visual rhythm of the card stays consistent.
+
+#### Files
+
+**Added**
+- `frontend/src/components/tutor/PariTeachingHeader.jsx`
+- `frontend/src/components/tutor/AskPariAboutCard.jsx`
+
+**Modified**
+- `frontend/src/components/SimulationPage.jsx` — `+` `submittedScore` state + post-submit pose flip + label/message branching + authoritative score in launcher payload.
+- `frontend/src/components/NotesPage.jsx` — `+` imports for the 2 new components, `+` 8 × `<PariTeachingHeader>` + 8 × `<AskPariAboutCard>`.
+
+#### Compile
+
+`webpack compiled with 1 warning` — same 4 pre-existing `react-hooks/exhaustive-deps` warnings (`NotesPage.jsx:1597`, `QuizCompletePage.jsx:181`, `DoubtsSession.jsx:217`, `SimulationPage.jsx:181` — all carried from earlier phases). Zero new errors. Zero new warnings.
+
+#### Done — full Pari coverage map
+
+| Surface | Pari shows up via |
+|---|---|
+| First enrollment | `PariWelcomeModal` (full-screen waving) — P54 |
+| Daily | `DailyNewsModal` (auto-opens once/IST day, +30 XP read incentive) — P54 |
+| Dashboard | bottom-right avatar (clickable to open doubts) — P54 |
+| Notes (8 card types) | per-card `PariTeachingHeader` + `AskPariAboutCard` — **P56** |
+| Quiz (per question) | top-of-card `quiz-pari-asks` (pose flips on reveal) — P55 |
+| Quiz result | `quiz-complete-pari-hero` + per-wrong-Q "Ask Pari" — P55 |
+| Interview | `interview-pari-header` + "Pari · Mock Interview" — P55 |
+| Interview result | `interview-complete-pari-hero` + per-Q "Ask Pari" — P55 |
+| Simulation | `simulation-pari-brief` + post-submit pose flip — **P56** |
+| Session complete | existing `<AskPariButton>` — P52 |
+| Portfolio hero | `encouraging` Pari with speech bubble — P53 |
+| Tutor toggle | Settings "Show AI tutor" — P51 |
+
+The gamification + tutor layer is feature-complete for the original P54 brief.
+

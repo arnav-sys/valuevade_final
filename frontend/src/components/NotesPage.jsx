@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
+import PariTeachingHeader from './tutor/PariTeachingHeader';
+import AskPariAboutCard from './tutor/AskPariAboutCard';
 import AskPariButton from './tutor/AskPariButton';
 
 // -----------------------------------------------------------
@@ -237,6 +239,7 @@ function HookCard({ content, title }) {
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#6A5CFF] opacity-20 blur-[120px] rounded-full" />
 
       <div className="relative z-10">
+        <PariTeachingHeader cardType="hook" cardTitle={title} accent="#FF6AC1" />
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/15 border border-[#FF6AC1]/30 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
           <Zap size={11} /> Hook
         </div>
@@ -284,6 +287,9 @@ function HookCard({ content, title }) {
             {sub_text}
           </p>
         )}
+        <div className="mt-6 flex justify-end">
+          <AskPariAboutCard cardType="hook" cardTitle={title} cardContent={content} />
+        </div>
       </div>
     </div>
   );
@@ -311,6 +317,7 @@ function ConceptCard({ content, title }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-concept">
+      <PariTeachingHeader cardType="concept" cardTitle={displayHeading} accent="#246BFD" />
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <Target size={11} /> Concept
       </div>
@@ -454,6 +461,9 @@ function ConceptCard({ content, title }) {
       )}
 
       <ExtraFields content={c} handled={handled} accent="#246BFD" />
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="concept" cardTitle={displayHeading} cardContent={content} />
+      </div>
     </div>
   );
 }
@@ -596,6 +606,7 @@ function FormulaCard({ content, title }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20" data-testid="card-formula">
+      <PariTeachingHeader cardType="formula" cardTitle={displayName || title} accent="#6A5CFF" />
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6A5CFF]/10 border border-[#6A5CFF]/25 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <TrendingUp size={11} /> Formula
       </div>
@@ -679,6 +690,9 @@ function FormulaCard({ content, title }) {
       )}
 
       <ExtraFields content={c} handled={handled} accent="#6A5CFF" />
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="formula" cardTitle={displayName || title} cardContent={content} />
+      </div>
     </div>
   );
 }
@@ -780,6 +794,7 @@ function VisualCard({ content, title: topTitle, cardId }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20 text-center" data-testid="card-visual">
+      <PariTeachingHeader cardType="visual" cardTitle={displayTitle} accent="#246BFD" className="text-left" />
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <FileText size={11} /> Visual
       </div>
@@ -858,6 +873,9 @@ function VisualCard({ content, title: topTitle, cardId }) {
           {summary}
         </p>
       )}
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="visual" cardTitle={displayTitle} cardContent={content} />
+      </div>
     </div>
   );
 }
@@ -868,6 +886,7 @@ function DeepDiveCard({ content, title }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#6A5CFF]/20 max-h-[78vh] overflow-y-auto" data-testid="card-deepdive">
+      <PariTeachingHeader cardType="deep_dive" cardTitle={displayHeading} accent="#6A5CFF" />
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#6A5CFF]/10 border border-[#6A5CFF]/25 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <TrendingUp size={11} /> Deep Dive
       </div>
@@ -945,6 +964,9 @@ function DeepDiveCard({ content, title }) {
           </p>
         </div>
       )}
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="deep_dive" cardTitle={displayHeading} cardContent={content} />
+      </div>
     </div>
   );
 }
@@ -985,6 +1007,7 @@ function ExampleCard({ content, title }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#246BFD]/20" data-testid="card-example">
+      <PariTeachingHeader cardType="example" cardTitle={displayCompany || title} accent="#246BFD" />
       <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#246BFD]/10 border border-[#246BFD]/25 text-[#246BFD] text-[10px] font-mono uppercase tracking-[0.2em]">
           <FileText size={11} /> Real Example
@@ -1212,6 +1235,9 @@ function ExampleCard({ content, title }) {
       )}
 
       <ExtraFields content={c} handled={handled} accent="#246BFD" />
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="example" cardTitle={displayCompany || title} cardContent={content} />
+      </div>
     </div>
   );
 }
@@ -1237,6 +1263,7 @@ function MistakeCard({ content, title }) {
 
   return (
     <div className="w-full rounded-3xl p-6 sm:p-10 glass-card border-[#FF6AC1]/20" data-testid="card-mistake">
+      <PariTeachingHeader cardType="mistake" cardTitle={displayTitle} accent="#FF6AC1" />
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FF6AC1]/10 border border-[#FF6AC1]/25 text-[#FF6AC1] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <AlertTriangle size={11} /> Common Mistake
       </div>
@@ -1317,6 +1344,9 @@ function MistakeCard({ content, title }) {
       )}
 
       <ExtraFields content={c} handled={handled} accent="#FF6AC1" />
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="mistake" cardTitle={displayTitle} cardContent={content} />
+      </div>
     </div>
   );
 }
@@ -1346,6 +1376,7 @@ function SummaryCard({ content, title }) {
       <div className="absolute inset-0 rounded-3xl border-2 bg-clip-border pointer-events-none" style={{
         borderImage: 'linear-gradient(135deg, #246BFD, #6A5CFF, #FF6AC1) 1',
       }} />
+      <PariTeachingHeader cardType="summary" cardTitle={displayTitle} accent="#6A5CFF" />
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-[#246BFD]/15 to-[#FF6AC1]/15 border border-[#6A5CFF]/30 text-[#6A5CFF] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
         <Sparkles size={11} /> Summary
       </div>
@@ -1394,6 +1425,9 @@ function SummaryCard({ content, title }) {
           <ArrowRight size={12} /> UP NEXT: <span className="text-[var(--color-text)]">{next_preview}</span>
         </div>
       )}
+      <div className="mt-6 flex justify-end">
+        <AskPariAboutCard cardType="summary" cardTitle={displayTitle} cardContent={content} />
+      </div>
     </div>
   );
 }
