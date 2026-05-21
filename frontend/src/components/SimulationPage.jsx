@@ -19,6 +19,7 @@ import InteractiveSim from './simulations/InteractiveSim';
 import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
 import useTimeTracking from '../utils/useTimeTracking';
+import AskTaraButton from './tutor/AskTaraButton';
 
 const TYPE_META = {
   excel: { label: 'Excel', Icon: FileSpreadsheet, color: '#10B981' },
@@ -242,6 +243,9 @@ export default function SimulationPage() {
         {!['excel', 'document', 'decision_making', 'interactive'].includes(sim.sim_type) && (
           <GenericRenderer config={config} title={sim.title} typeLabel={sim.sim_type || 'Simulation'} onComplete={handleComplete} />
         )}
+        <div className="mt-6">
+          <AskTaraButton phase="simulation" courseSessionId={sessionId} variant="card" />
+        </div>
       </main>
       {(() => {
         const t = resolveTutorPhase('simulation_intro');

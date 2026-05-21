@@ -19,6 +19,7 @@ import {
   HelpCircle, MessageSquare, Wrench, Rocket, Loader2,
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
+import AskTaraButton from './tutor/AskTaraButton';
 
 const PHASE_META = {
   notes: { label: 'Notes', icon: FileText, path: 'notes' },
@@ -676,6 +677,9 @@ export default function DashboardPage() {
           />
         );
       })()}
+      <div className="fixed bottom-6 right-24 z-30" data-testid="dashboard-ask-tara-floating">
+        <AskTaraButton phase="dashboard" variant="pill" />
+      </div>
     </div>
   );
 }

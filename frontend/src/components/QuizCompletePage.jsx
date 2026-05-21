@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
+import AskTaraButton from './tutor/AskTaraButton';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
@@ -311,6 +312,14 @@ export default function QuizCompletePage() {
 
         {/* CTAs */}
         <div className="flex flex-col gap-3" data-testid="quiz-complete-ctas">
+          <AskTaraButton
+            phase="quiz"
+            courseSessionId={sessionId}
+            variant="card"
+            autoPrompt={pctScore < 70}
+            autoPromptCopy={pctScore < 70 ? "Want me to clarify anything you missed?" : null}
+            className="mb-1"
+          />
           {passed ? (
             <button
               onClick={() => navigate(`/session/${sessionId}/${nextRoute.route}`)}

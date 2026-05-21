@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import SessionCompleteSummaryCard from './gamification/SessionCompleteSummaryCard';
 import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
+import AskTaraButton from './tutor/AskTaraButton';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase,
@@ -256,6 +257,9 @@ export default function SessionCompletePage() {
 
         {/* Gamification summary (Phase 47) */}
         <SessionCompleteSummaryCard sessionStartTs={sessionStartTsRef.current} />
+        <div className="mt-2 mb-6">
+          <AskTaraButton phase="notes" courseSessionId={sessionId} variant="card" />
+        </div>
 
         {/* Tutor — celebrating beside the summary */}
         {(() => {

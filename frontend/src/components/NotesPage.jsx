@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
+import AskTaraButton from './tutor/AskTaraButton';
 
 // -----------------------------------------------------------
 // HELPER: ExtraFields — renders any content keys not already handled,
@@ -1708,6 +1709,9 @@ export default function NotesPage() {
               </button>
             </div>
           )}
+        </div>
+        <div className="mt-8 max-w-3xl mx-auto px-4">
+          <AskTaraButton phase="notes" courseSessionId={sessionId} variant="card" />
         </div>
       </main>
       {(() => {

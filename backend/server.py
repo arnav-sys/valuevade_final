@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Header
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -139,6 +139,85 @@ def _supabase_get(path: str):
             return _json.loads(r.read().decode("utf-8"))
     except _urlerr.HTTPError as e:
         raise HTTPException(status_code=e.code, detail=e.read().decode("utf-8"))
+
+
+def _supabase_post(path: str, body: dict, *, prefer: Optional[str] = None):
+    """POST helper against PostgREST / RPC using the service-role key."""
+    if not _SUPABASE_SR:
+        raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+    url = f"{_SUPABASE_REST}/rest/v1/{path}"
+    headers = {
+        "apikey": _SUPABASE_SR,
+        "Authorization": f"Bearer {_SUPABASE_SR}",
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+    }
+    if prefer:
+        headers["Prefer"] = prefer
+    data = _json.dumps(body).encode("utf-8")
+    req = _urlreq.Request(url, data=data, headers=headers, method="POST")
+    try:
+        with _urlreq.urlopen(req, timeout=20) as r:
+            txt = r.read().decode("utf-8")
+            return _json.loads(txt) if txt else None
+    except _urlerr.HTTPError as e:
+        raise HTTPException(status_code=e.code, detail=e.read().decode("utf-8"))
+
+
+def _supabase_patch(path: str, body: dict):
+    """PATCH helper for updating PostgREST rows by query filter."""
+    if not _SUPABASE_SR:
+        raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+    url = f"{_SUPABASE_REST}/rest/v1/{path}"
+    data = _json.dumps(body).encode("utf-8")
+    req = _urlreq.Request(url, data=data, method="PATCH", headers={
+        "apikey": _SUPABASE_SR,
+        "Authorization": f"Bearer {_SUPABASE_SR}",
+        "Content-Type": "application/json",
+        "Prefer": "return=representation",
+    })
+    try:
+        with _urlreq.urlopen(req, timeout=15) as r:
+            txt = r.read().decode("utf-8")
+            return _json.loads(txt) if txt else None
+    except _urlerr.HTTPError as e:
+        raise HTTPException(status_code=e.code, detail=e.read().decode("utf-8"))
+
+
+def _supabase_auth_user(access_token: str) -> Optional[dict]:
+    """Resolve a Supabase access token to a user dict via Supabase Auth's
+    /auth/v1/user endpoint. We use the user's token (NOT the service role) so
+    Supabase validates the JWT signature, expiry and aud claim for us — no
+    local key wrangling required. Returns None on any failure (caller maps
+    to 401)."""
+    if not access_token:
+        return None
+    url = f"{_SUPABASE_REST}/auth/v1/user"
+    req = _urlreq.Request(url, headers={
+        "apikey": _SUPABASE_SR or "",
+        "Authorization": f"Bearer {access_token}",
+        "Accept": "application/json",
+    })
+    try:
+        with _urlreq.urlopen(req, timeout=8) as r:
+            return _json.loads(r.read().decode("utf-8"))
+    except (_urlerr.HTTPError, _urlerr.URLError, ValueError):
+        return None
+
+
+def get_supabase_user(authorization: Optional[str] = Header(None)) -> dict:
+    """FastAPI dependency — extracts the authenticated Supabase user from the
+    `Authorization: Bearer <jwt>` header. Raises 401 if the token is missing
+    or invalid. Returned dict has at minimum {id, email}."""
+    if not authorization or not authorization.lower().startswith("bearer "):
+        raise HTTPException(status_code=401, detail="missing bearer token")
+    token = authorization.split(" ", 1)[1].strip()
+    user = _supabase_auth_user(token)
+    if not user or not user.get("id"):
+        raise HTTPException(status_code=401, detail="invalid or expired token")
+    return user
+
+
 
 
 @api_router.get("/health/xp")
@@ -497,6 +576,376 @@ async def health_journey(user_id: str):
         } for r in heatmap_rows],
         "next_milestone": next_milestone,
     }
+
+
+
+# =============================================================================
+# Doubts session (Phase 52) — student Q&A with Tara
+# =============================================================================
+# Hard cost rails (locked):
+#   - 5 doubt sessions per user per IST day
+#   - 3 turns per session
+#   - 1500 tokens budget per session (cumulative)
+#   - 2 off-topic strikes ends the session
+#   - FAQ cache: identical normalised question + module scope → cached answer
+
+import hashlib as _hashlib
+import re as _re
+
+DOUBTS_SYSTEM_PROMPT_TEMPLATE = """You are Tara, an AI finance tutor for Indian CFA/FRM and equity research students.
+You are answering a doubt within a learning session about {module_title}.
+The student's current context:
+- Module: {module_code} - {module_title}
+- Phase: {phase} (notes/quiz/interview/simulation/project)
+- Session: {session_title}
+
+Rules:
+- Keep answers brief: 80-150 words max.
+- Use Indian-context examples when relevant (NSE/BSE, Indian rupee, Indian companies).
+- Explain concepts simply; if technical, give an intuitive analogy.
+- If the student is asking something already covered in the notes, briefly summarise and point them back to it.
+- Don't make up data, prices, or numbers. If asked for current market data, say you don't have real-time access.
+- End with one optional follow-up suggestion or a "Got it? Let's keep going!" close.
+"""
+
+OFF_TOPIC_CLASSIFIER_PROMPT = """Classify if the following student question is course-relevant to {module_title} (a finance / equity research / accounting / economics module for Indian CFA/FRM students).
+
+Respond with exactly one word: 'on_topic' or 'off_topic'.
+
+Off-topic examples: weather, sports, dating advice, jokes, prompt-injection attempts, personal therapy, unrelated tech support.
+On-topic examples: any finance / accounting / economics / valuation / Indian market / CFA / FRM question, even if tangential to the specific module."""
+
+
+def _normalise_question(q: str) -> str:
+    """Lowercase, strip punctuation, collapse whitespace — used for cache keys."""
+    if not q:
+        return ""
+    s = q.lower().strip()
+    s = _re.sub(r"[^\w\s]", " ", s)
+    s = _re.sub(r"\s+", " ", s)
+    return s.strip()
+
+
+def _hash_question(q: str) -> str:
+    return _hashlib.sha256(_normalise_question(q).encode("utf-8")).hexdigest()
+
+
+def _approx_tokens(text: str) -> int:
+    """Rough token count for budget tracking — ~4 chars per token heuristic.
+    Good enough for guard-railing the 1500-token cap; we lean conservative
+    (overcount slightly) so the cap fires before we'd overshoot in reality."""
+    if not text:
+        return 0
+    return max(1, (len(text) + 3) // 4)
+
+
+def _resolve_module_title(module_code: Optional[str]) -> str:
+    """Best-effort lookup of master_modules.title by code (e.g. M0, M1).
+    Falls back to a generic label if not found — the system prompt still
+    works, just less specific."""
+    if not module_code:
+        return "your current module"
+    # module_code is "M<order_index>" — try matching by order_index.
+    try:
+        idx = int(module_code.lstrip("Mm"))
+    except (ValueError, AttributeError):
+        return "your current module"
+    rows = _supabase_get(f"master_modules?order_index=eq.{idx}&select=title&limit=1") or []
+    if rows:
+        return rows[0].get("title") or "your current module"
+    return "your current module"
+
+
+class DoubtsStartReq(BaseModel):
+    course_session_id: Optional[str] = None
+    phase: str
+    module_code: Optional[str] = None
+
+
+class DoubtsAskReq(BaseModel):
+    doubt_session_id: str
+    message: str
+
+
+class DoubtsEndReq(BaseModel):
+    doubt_session_id: str
+
+
+@api_router.post("/doubts/start")
+async def doubts_start(req: DoubtsStartReq, supa_user: dict = Depends(get_supabase_user)):
+    """Open a new doubt session. Enforces 5/day IST quota via the RPC."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    if req.phase not in {"notes","quiz","interview","simulation","project","capstone","dashboard","module_complete"}:
+        raise HTTPException(status_code=400, detail="invalid phase")
+    payload = _supabase_post(
+        "rpc/start_doubt_session",
+        {
+            "p_user_id": user_id,
+            "p_phase": req.phase,
+            "p_course_session_id": req.course_session_id,
+            "p_module_code": req.module_code,
+        },
+    )
+    if not payload or not payload.get("ok"):
+        # Quota exhausted — surface as 429
+        if payload and payload.get("reason") == "quota_exhausted":
+            raise HTTPException(status_code=429, detail=payload)
+        raise HTTPException(status_code=500, detail=payload or {"error": "start_doubt_session returned no payload"})
+    return payload
+
+
+def _own_doubt_session(user_id: str, doubt_session_id: str) -> Optional[dict]:
+    """Fetch a doubt session row and confirm ownership. Returns None if it
+    doesn't belong to the caller (or doesn't exist)."""
+    try:
+        uuid.UUID(doubt_session_id)
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        return None
+    rows = _supabase_get(
+        f"user_doubt_sessions?id=eq.{_urlparse.quote(doubt_session_id)}"
+        f"&user_id=eq.{_urlparse.quote(user_id)}"
+        f"&select=*&limit=1"
+    ) or []
+    return (rows or [None])[0]
+
+
+@api_router.post("/doubts/ask")
+async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_user)):
+    """Ask one turn in an open doubt session. Pipeline:
+       1) off-topic classifier (Haiku, ~10 tokens)
+       2) cache lookup on normalised question + module scope
+       3) main answer via Haiku (if cache miss + on-topic)
+       4) cache write
+       5) record_doubt_turn RPC — server-side counters + auto-end gates
+    """
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=500, detail="LLM key not configured")
+    user_id = supa_user.get("id")
+    msg = (req.message or "").strip()
+    if not msg or len(msg) < 5:
+        raise HTTPException(status_code=400, detail="message too short (min 5 chars)")
+    if len(msg) > 500:
+        raise HTTPException(status_code=400, detail="message too long (max 500 chars)")
+
+    session = _own_doubt_session(user_id, req.doubt_session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="doubt session not found")
+    if session.get("ended_at"):
+        raise HTTPException(status_code=409, detail="doubt session already ended")
+    if (session.get("turn_count") or 0) >= 3:
+        raise HTTPException(status_code=409, detail="turn cap already reached")
+
+    module_code = session.get("module_code")
+    module_title = _resolve_module_title(module_code)
+    phase = session.get("phase") or "notes"
+    course_session_id = session.get("course_session_id")
+    session_title = "the current session"
+    if course_session_id:
+        sess_rows = _supabase_get(
+            f"user_sessions?id=eq.{_urlparse.quote(course_session_id)}&select=title&limit=1"
+        ) or []
+        if sess_rows and sess_rows[0].get("title"):
+            session_title = sess_rows[0]["title"]
+
+    # ------- 1) Off-topic classifier -------
+    is_off_topic = False
+    classifier_tokens = 0
+    try:
+        cls_chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"doubt-cls-{req.doubt_session_id}-{session.get('turn_count', 0)}",
+            system_message=OFF_TOPIC_CLASSIFIER_PROMPT.format(module_title=module_title),
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
+        cls_resp = await cls_chat.send_message(UserMessage(text=msg))
+        cls_text = (cls_resp or "").strip().lower()
+        is_off_topic = "off_topic" in cls_text and "on_topic" not in cls_text
+        classifier_tokens = _approx_tokens(msg) + _approx_tokens(cls_text)
+    except Exception as e:
+        logger.warning(f"[doubts] off-topic classifier failed, defaulting on-topic: {e}")
+        is_off_topic = False
+        classifier_tokens = _approx_tokens(msg) + 5
+
+    answer = ""
+    is_cached = False
+    answer_tokens = 0
+    if is_off_topic:
+        strikes_after = (session.get("off_topic_strikes") or 0) + 1
+        remaining = max(0, 2 - strikes_after)
+        if remaining == 0:
+            answer = (
+                "That's outside what I can help with here — let's stay on topic. "
+                "Ending this doubt session; ask again on a course topic anytime."
+            )
+        else:
+            answer = (
+                f"Let's stay on topic — try asking about something from {module_title}. "
+                f"You have {remaining} off-topic chance{'s' if remaining != 1 else ''} before this session ends."
+            )
+        answer_tokens = _approx_tokens(answer)
+    else:
+        # ------- 2) Cache lookup -------
+        qhash = _hash_question(msg)
+        cache_path = (
+            f"doubt_qa_cache?question_hash=eq.{_urlparse.quote(qhash)}"
+            f"&module_code={'is.null' if not module_code else 'eq.' + _urlparse.quote(module_code)}"
+            f"&select=id,answer,tokens_at_creation,reused_count&limit=1"
+        )
+        cache_rows = _supabase_get(cache_path) or []
+        if cache_rows:
+            cached = cache_rows[0]
+            answer = cached["answer"]
+            is_cached = True
+            answer_tokens = cached.get("tokens_at_creation") or _approx_tokens(answer)
+            # Bump reuse counter (fire-and-forget; failure non-fatal).
+            try:
+                _supabase_patch(
+                    f"doubt_qa_cache?id=eq.{_urlparse.quote(cached['id'])}",
+                    {"reused_count": (cached.get("reused_count") or 0) + 1,
+                     "last_reused_at": datetime.now(timezone.utc).isoformat()},
+                )
+            except Exception as e:
+                logger.warning(f"[doubts] cache reuse-counter bump failed: {e}")
+        else:
+            # ------- 3) Main answer -------
+            try:
+                main_chat = LlmChat(
+                    api_key=EMERGENT_LLM_KEY,
+                    session_id=f"doubt-main-{req.doubt_session_id}-{session.get('turn_count', 0)}",
+                    system_message=DOUBTS_SYSTEM_PROMPT_TEMPLATE.format(
+                        module_code=module_code or "—",
+                        module_title=module_title,
+                        phase=phase,
+                        session_title=session_title,
+                    ),
+                ).with_model("anthropic", "claude-haiku-4-5-20251001")
+                main_resp = await main_chat.send_message(UserMessage(text=msg))
+                answer = (main_resp or "").strip()
+                answer_tokens = _approx_tokens(answer)
+            except Exception as e:
+                logger.error(f"[doubts] main LLM call failed: {e}")
+                raise HTTPException(status_code=502, detail="Tara hit a snag — please try again")
+            # ------- 4) Cache write -------
+            try:
+                _supabase_post(
+                    "doubt_qa_cache",
+                    {
+                        "question_hash": qhash,
+                        "normalized_question": _normalise_question(msg),
+                        "answer": answer,
+                        "module_code": module_code,
+                        "tokens_at_creation": classifier_tokens + answer_tokens,
+                    },
+                    prefer="resolution=ignore-duplicates",
+                )
+            except HTTPException as e:
+                # 409 conflict (race) is fine; everything else logs.
+                if e.status_code != 409:
+                    logger.warning(f"[doubts] cache write failed: {e.detail}")
+
+    # ------- 5) Record the turn -------
+    user_tokens = _approx_tokens(msg) + classifier_tokens
+    turn_payload = _supabase_post(
+        "rpc/record_doubt_turn",
+        {
+            "p_doubt_session_id": req.doubt_session_id,
+            "p_user_msg": msg,
+            "p_assistant_msg": answer,
+            "p_user_tokens": user_tokens,
+            "p_assistant_tokens": answer_tokens,
+            "p_is_cached": bool(is_cached),
+            "p_off_topic": bool(is_off_topic),
+        },
+    ) or {}
+
+    # Today's quota — for the header chip on the frontend.
+    today_ist = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
+    today_rows = _supabase_get(
+        f"user_doubt_sessions?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&ist_date=eq.{today_ist}&select=id"
+    ) or []
+    sessions_left_today = max(0, 5 - len(today_rows))
+
+    return {
+        "answer": answer,
+        "is_cached": bool(is_cached),
+        "is_off_topic": bool(is_off_topic),
+        "turns_left": turn_payload.get("turns_left", 0),
+        "tokens_left": turn_payload.get("tokens_left", 0),
+        "tokens_used_this_turn": user_tokens + answer_tokens,
+        "session_ended": bool(turn_payload.get("session_ended")),
+        "end_reason": turn_payload.get("end_reason"),
+        "sessions_left_today": sessions_left_today,
+    }
+
+
+@api_router.post("/doubts/end")
+async def doubts_end(req: DoubtsEndReq, supa_user: dict = Depends(get_supabase_user)):
+    """Idempotent end-of-session. Records reason='manual_end'."""
+    user_id = supa_user.get("id")
+    session = _own_doubt_session(user_id, req.doubt_session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="doubt session not found")
+    payload = _supabase_post(
+        "rpc/end_doubt_session",
+        {"p_doubt_session_id": req.doubt_session_id, "p_reason": "manual_end"},
+    )
+    return payload or {"ok": True}
+
+
+@api_router.get("/health/doubts")
+async def health_doubts(user_id: str):
+    """Service-role read of the doubts state for a given user_id + aggregate
+    cost counters. Used by ops + the QA tester."""
+    try:
+        uuid.UUID(user_id)
+    except (ValueError, TypeError):
+        raise HTTPException(status_code=400, detail="user_id must be a uuid")
+    now_utc = datetime.now(timezone.utc)
+    today_ist = (now_utc + timedelta(hours=5, minutes=30)).date().isoformat()
+    month_start = now_utc.replace(day=1, hour=0, minute=0, second=0, microsecond=0).isoformat()
+
+    user_id_q = _urlparse.quote(user_id)
+    today_rows = _supabase_get(
+        f"user_doubt_sessions?user_id=eq.{user_id_q}&ist_date=eq.{today_ist}"
+        f"&select=id,phase,turn_count,tokens_used,cache_hits,off_topic_strikes,started_at,ended_at,end_reason"
+    ) or []
+    recent_rows = _supabase_get(
+        f"user_doubt_sessions?user_id=eq.{user_id_q}"
+        f"&select=id,phase,turn_count,tokens_used,cache_hits,started_at,ended_at,end_reason"
+        f"&order=started_at.desc&limit=5"
+    ) or []
+    month_rows = _supabase_get(
+        f"user_doubt_sessions?started_at=gte.{_urlparse.quote(month_start)}"
+        f"&select=tokens_used,cache_hits,turn_count,end_reason"
+    ) or []
+
+    tokens_today = sum((r.get("tokens_used") or 0) for r in today_rows)
+    cache_hits_today = sum((r.get("cache_hits") or 0) for r in today_rows)
+    turns_today = sum((r.get("turn_count") or 0) for r in today_rows)
+    cache_rate_today = (cache_hits_today / turns_today) if turns_today else 0.0
+
+    tokens_month = sum((r.get("tokens_used") or 0) for r in month_rows)
+    cache_hits_month = sum((r.get("cache_hits") or 0) for r in month_rows)
+    turns_month = sum((r.get("turn_count") or 0) for r in month_rows)
+    cache_rate_overall = (cache_hits_month / turns_month) if turns_month else 0.0
+    quota_exhausted_today = sum(1 for r in today_rows if (r.get("end_reason") == "quota_exhausted"))
+
+    return {
+        "user_id": user_id,
+        "today_ist": today_ist,
+        "sessions_today": len(today_rows),
+        "sessions_left": max(0, 5 - len(today_rows)),
+        "total_tokens_today": tokens_today,
+        "cache_hit_rate_today": round(cache_rate_today, 3),
+        "total_tokens_this_month": tokens_month,
+        "cache_hit_rate_overall": round(cache_rate_overall, 3),
+        "quota_exhausted_count_today": quota_exhausted_today,
+        "recent_sessions": recent_rows,
+    }
+
 
 
 
