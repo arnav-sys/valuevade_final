@@ -126,6 +126,25 @@ export default function InterviewStartPage() {
                 <span className="text-[var(--color-text)]">Interview</span>
               </div>
 
+              {/* P59 P1: Pari header — interviewer mode (start view) */}
+              <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-center gap-3" data-testid="interview-pari-header">
+                <AvatarPersona
+                  pose="interviewer"
+                  size="md"
+                  position="inline"
+                  showSpeechBubble={false}
+                  ariaLabel="Pari"
+                />
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
+                    Your interviewer
+                  </div>
+                  <div className="text-xs sm:text-sm text-[var(--color-text)] font-bricolage leading-relaxed">
+                    I'm Pari — your mock interviewer for this session. I'll ask you questions one at a time; take your time on each answer.
+                  </div>
+                </div>
+              </div>
+
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 text-[var(--color-accent-purple)] text-[10px] font-mono uppercase tracking-[0.2em] mb-5">
                 <MessageSquare size={12} /> Phase 3 of 4
               </div>

@@ -139,6 +139,11 @@ export default function AvatarPersona({
     return () => clearTimeout(t);
   }, [message, autoDismissMs, bubbleDismissed]);
 
+  // P59: subtle parallax on cursor move (md/lg only, disabled under reduced-motion).
+  // useState must be declared BEFORE the `if (!enabled) return null` below,
+  // hence the conditional `enableParallax` check is deferred to render time.
+  const [parallax, setParallax] = useState({ x: 0, y: 0 });
+
   if (!enabled) return null;
 
   const sizeCfg = SIZE_MAP[size] || SIZE_MAP.md;
@@ -161,6 +166,16 @@ export default function AvatarPersona({
   const hoverWiggle = !reducedMotion && (size === 'lg' || size === 'fullscreen') ? 'vv-avatar-hover-wiggle' : '';
   const hoverScale = !reducedMotion && interactive ? 'vv-avatar-hover-scale' : '';
 
+  const enableParallax = !reducedMotion && (size === 'md' || size === 'lg' || size === 'fullscreen');
+  const onMouseMoveParallax = enableParallax ? (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const dx = (e.clientX - (r.left + r.width / 2)) / r.width;   // -0.5 .. +0.5
+    const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
+    // Cap at ±3deg horizontal, ±2deg vertical — subtle.
+    setParallax({ x: Math.max(-3, Math.min(3, dx * 6)), y: Math.max(-2, Math.min(2, dy * -4)) });
+  } : undefined;
+  const onMouseLeaveParallax = enableParallax ? () => setParallax({ x: 0, y: 0 }) : undefined;
+
   const completeTypewriter = () => {
     if (typingTimerRef.current) {
       clearInterval(typingTimerRef.current);
@@ -176,10 +191,23 @@ export default function AvatarPersona({
         <button
           type="button"
           onClick={effectiveOnClick || undefined}
+          onMouseMove={onMouseMoveParallax}
+          onMouseLeave={onMouseLeaveParallax}
           aria-label={ariaLabel || `${TUTOR_NAME}, your AI tutor`}
           className={`relative ${sizeCfg.box} flex-shrink-0 ${interactive ? 'cursor-pointer' : 'cursor-default'} ${hoverWiggle} ${hoverScale} transition-transform duration-200`}
           data-testid="tutor-persona-avatar"
-          style={{ background: 'transparent', border: 'none', padding: 0, filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.35))' }}
+          style={{
+            background: 'transparent',
+            border: 'none',
+            padding: 0,
+            // P59: stronger drop-shadow + perspective parallax (capped to ±3°/±2°).
+            filter: 'drop-shadow(0 10px 22px rgba(0,0,0,0.45)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))',
+            transform: enableParallax
+              ? `perspective(800px) rotateY(${parallax.x}deg) rotateX(${parallax.y}deg)`
+              : undefined,
+            transformStyle: 'preserve-3d',
+            willChange: enableParallax ? 'transform' : undefined,
+          }}
         >
           {previousSlug && (
             <img

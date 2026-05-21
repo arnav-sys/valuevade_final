@@ -2190,3 +2190,51 @@ Filter test-ids: `review-filter-all`, `review-filter-quiz`, etc.
 - Edge cases (verified by code-read): `country_code=null` → falls back to `IN`; Marketaux returns 0 items → chain skips to NewsAPI → GNews → fallback placeholder; any HTTP error (429/403/etc.) caught + logged + chain continues.
 - Test user's `country_code` restored to `IN` after the US switch test.
 
+
+---
+
+### Phase 59 — InterviewStart Pari header + 3D regen attempt (May 2026)
+
+#### P1 ✅ InterviewStartPage Pari header
+
+- Added an `interview-pari-header` block to `InterviewStartPage.jsx` mirroring the one already in `InterviewPage.jsx` (in-progress view).
+- Pose: `interviewer`, size `md`, inline. Speech-bubble copy: *"I'm Pari — your mock interviewer for this session. I'll ask you questions one at a time; take your time on each answer."*
+- Placed above the existing "Phase 3 of 4" chip and below the floating tutor avatar — so the tester's `[data-testid="interview-pari-header"]` selector now resolves on **both** the start and in-progress views.
+
+#### P2 — 3D avatar regen attempt: REVERTED (honest assessment)
+
+**Outcome**: tried, dramatic regression, reverted, kept original `pari_*.png` set.
+
+**Process**:
+1. Backed up all 12 `pari_*.png` → `pari_*_v1.png`.
+2. Generated batch 1 (6 of 12 poses: idle / waving / explaining / asking / listening / thinking) via nano-banana with **4 reference inputs per call** (the 3 user-uploaded reference photos + the current `pari_idle_v1.png` as a style baseline).
+3. Prompt template was the new "photorealistic CGI character render in Unreal Engine 5 / Pixar Soul style" version with explicit face-match instructions, hair/glasses/wardrobe lock, studio three-point lighting, and the "must look like the SAME REAL PERSON" anchor.
+
+**Honest visual verdict on batch 1**: 5 of 6 generations came back as a **male character** (curly hair + glasses + visible beard stubble + masculine jawline), despite the reference photos clearly showing a young woman. Only `pari_explaining` rendered in the correct gender and even there the face was a different person. This is a clear gender-misclassification + identity drift — the model treated the 4-image reference set as ambiguous and defaulted to a generic male studio character.
+
+**Decision** (per user's guardrail: *"if after the first generation pass the result looks worse than the originals, DON'T iterate — just revert + ship the CSS polish + be honest"*):
+- Did **NOT** attempt batch 2 (the remaining 6 poses).
+- Did **NOT** download the batch 1 results (they remained at temporary nano-banana URLs).
+- Original `pari_*.png` files are unmodified (verified: `md5(pari_idle.png) == md5(pari_idle_v1.png)`).
+- Removed the `pari_*_v1.png` backup files since the live set is unchanged.
+- **No `MANIFEST.json` change** — the manifest still describes the original v1 set, which is what ships.
+
+**Likely root cause**: even with 3 reference photos + a 4th of the current avatar, the multi-reference instruction in the prompt template ("EXACT face match to the reference photos") is hard for current nano-banana / Gemini image-gen to honor — especially when "Unreal Engine 5 / Pixar Soul style" + "3D CGI character" steer the model toward its strongest training-distribution prior (which appears to be a male studio render). A successful regen attempt would likely need: (a) a model with stronger face-identity preservation (e.g. fine-tuned LoRA on the reference person), (b) explicit "female character" + ethnicity tokens in the prompt, or (c) image-to-image inpaint workflow rather than text-conditioned multi-reference. None of those fit a single-pass budget.
+
+#### CSS polish (shipped regardless of regen outcome)
+
+`AvatarPersona.jsx` upgraded:
+- **Drop-shadow** intensified: was `drop-shadow(0 6px 14px rgba(0,0,0,0.35))`, now layered `drop-shadow(0 10px 22px rgba(0,0,0,0.45)) drop-shadow(0 2px 4px rgba(0,0,0,0.25))` — gives a clearer "lifted off the page" depth.
+- **Perspective parallax**: `transform: perspective(800px) rotateY(<dx>) rotateX(<dy>)` driven by `onMouseMove` over the avatar button. Mouse position normalised to ±0.5, capped at **±3°** horizontal and **±2°** vertical — subtle, not garish. Enabled on `md`/`lg`/`fullscreen` sizes only. Resets on `onMouseLeave`. Disabled entirely under `prefers-reduced-motion: reduce`.
+- **Hooks-order safety**: the `useState({x:0,y:0})` for parallax was moved **before** the early `if (!enabled) return null` guard so React's hooks rules-of-order is preserved.
+
+#### Files
+
+- `frontend/src/components/InterviewStartPage.jsx` — `+` `interview-pari-header` block.
+- `frontend/src/components/tutor/AvatarPersona.jsx` — `+` parallax state + handlers, `+` deeper drop-shadow, hooks reordered for safety.
+- `memory/PRD.md` — this entry.
+
+#### Compile
+
+`webpack compiled with 1 warning` — same 4 pre-existing `react-hooks/exhaustive-deps` warnings. Zero new errors. Zero new warnings.
+
