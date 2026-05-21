@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import {
   Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
-  Sun, Moon, ChevronLeft,
+  Sun, Moon, ChevronLeft, Trophy,
 } from 'lucide-react';
 
 /**
@@ -73,6 +73,7 @@ export default function Sidebar() {
         expandable: true,
       },
       { label: 'Profile', icon: User, path: '/profile', testid: 'nav-profile' },
+      { label: 'Portfolio', icon: Trophy, path: '/portfolio', testid: 'nav-portfolio' },
       { label: 'Settings', icon: Settings, path: '/settings', testid: 'nav-settings' },
     ],
     [enrollment]

@@ -61,6 +61,8 @@ const CapstoneCompletePage = lazyWithRetry(() => import("@/components/CapstoneCo
 const ProfilePage = lazyWithRetry(() => import("@/components/ProfilePage"));
 const JourneyPage = lazyWithRetry(() => import("@/components/JourneyPage"));
 const SettingsPage = lazyWithRetry(() => import("@/components/SettingsPage"));
+const PortfolioPage = lazyWithRetry(() => import("@/components/PortfolioPage"));
+const PublicPortfolioPage = lazyWithRetry(() => import("@/components/PublicPortfolioPage"));
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (
@@ -118,6 +120,9 @@ function App() {
                   <Route path="/referral" element={<AdminDashboard />} />
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />
 
+                  {/* Public portfolio share (no auth) */}
+                  <Route path="/p/:slug" element={<PublicPortfolioPage />} />
+
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
                   <Route path="/courses" element={<CoursesPage />} />
                   <Route path="/course/:courseId" element={<CourseDetailsPage />} />
@@ -129,6 +134,7 @@ function App() {
 
                   {/* Account (auth only) */}
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                  <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
                   <Route path="/journey" element={<ProtectedRoute><JourneyPage /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 

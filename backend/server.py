@@ -947,6 +947,206 @@ async def health_doubts(user_id: str):
     }
 
 
+# =============================================================================
+# Portfolio (Phase 53) — aggregated showcase + public share slug
+# =============================================================================
+
+import secrets as _secrets
+
+
+_PORTFOLIO_VIEW_FIELDS = (
+    "user_id,full_name,email,avatar_url,member_since,portfolio_public,"
+    "portfolio_share_slug,total_xp,current_level,level_name,level_icon_slug,"
+    "level_color_hex,next_level_threshold,next_level_name,xp_to_next,"
+    "current_streak_days,longest_streak_days,streak_freeze_tokens,"
+    "daily_champion_days_total,modules_completed,modules_in_progress,"
+    "modules_enrolled,total_xp_in_modules,total_time_minutes,sessions_completed,"
+    "sessions_total,avg_quiz_score,avg_interview_score,avg_simulation_score,"
+    "module_projects_completed,last_module_project_at,capstone_completed,"
+    "capstone_completed_at,capstone_started_at,badges_total,badges_common,"
+    "badges_rare,badges_epic,badges_legendary,recent_badges,skills_earned,"
+    "modules,active_days_last_90,heatmap_90"
+)
+
+
+def _redact_public_portfolio(row: dict) -> dict:
+    """Strip anything that shouldn't be exposed on the public /p/<slug> URL.
+    Keeps the showcase-worthy bits; drops email, freeze tokens, exact
+    xp_to_next, sensitive cohort signals."""
+    if not row:
+        return row
+    # Member-since → month/year string only (e.g. "May 2026").
+    member_since = row.get("member_since")
+    member_since_ym = None
+    if member_since:
+        try:
+            dt = datetime.fromisoformat(member_since.replace("Z", "+00:00"))
+            member_since_ym = dt.strftime("%B %Y")
+        except (ValueError, TypeError):
+            member_since_ym = None
+    return {
+        "full_name": row.get("full_name") or "Valuevade Analyst",
+        "avatar_url": row.get("avatar_url"),
+        "member_since_ym": member_since_ym,
+        # Level
+        "total_xp": row.get("total_xp") or 0,
+        "current_level": row.get("current_level") or 1,
+        "level_name": row.get("level_name"),
+        "level_icon_slug": row.get("level_icon_slug"),
+        "level_color_hex": row.get("level_color_hex"),
+        # Streak
+        "current_streak_days": row.get("current_streak_days") or 0,
+        "longest_streak_days": row.get("longest_streak_days") or 0,
+        # Daily Champion
+        "daily_champion_days_total": row.get("daily_champion_days_total") or 0,
+        # Modules
+        "modules_completed": row.get("modules_completed") or 0,
+        "modules_enrolled": row.get("modules_enrolled") or 0,
+        "total_time_minutes": row.get("total_time_minutes") or 0,
+        # Sessions (just completion count; no avg scores)
+        "sessions_completed": row.get("sessions_completed") or 0,
+        # Projects
+        "module_projects_completed": row.get("module_projects_completed") or 0,
+        "capstone_completed": bool(row.get("capstone_completed")),
+        "capstone_completed_at": row.get("capstone_completed_at"),
+        # Badges (totals only; recent_badges already lists code/name which is
+        # fine to expose since badges are public concepts).
+        "badges_total": row.get("badges_total") or 0,
+        "badges_common": row.get("badges_common") or 0,
+        "badges_rare": row.get("badges_rare") or 0,
+        "badges_epic": row.get("badges_epic") or 0,
+        "badges_legendary": row.get("badges_legendary") or 0,
+        "recent_badges": row.get("recent_badges") or [],
+        # Skills & modules (public)
+        "skills_earned": row.get("skills_earned") or [],
+        "modules": [
+            {k: v for k, v in m.items() if k in {
+                "order_index", "code", "title", "is_completed",
+                "completion_percent", "sessions_total", "sessions_completed_n",
+            }} for m in (row.get("modules") or [])
+        ],
+        # Heatmap (public, anonymous activity pattern)
+        "active_days_last_90": row.get("active_days_last_90") or 0,
+        "heatmap_90": row.get("heatmap_90") or [],
+    }
+
+
+def _generate_share_slug() -> str:
+    """8-char lowercase alphanumeric. ~3.6e12 keyspace — collision-free in practice
+    but we still retry on conflict at the DB layer."""
+    alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
+    return "".join(_secrets.choice(alphabet) for _ in range(8))
+
+
+class PortfolioShareReq(BaseModel):
+    enabled: bool
+
+
+@api_router.get("/portfolio/me")
+async def portfolio_me(supa_user: dict = Depends(get_supabase_user)):
+    """Aggregated portfolio for the authenticated user."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    rows = _supabase_get(
+        f"v_user_portfolio?user_id=eq.{_urlparse.quote(user_id)}&select={_PORTFOLIO_VIEW_FIELDS}&limit=1"
+    ) or []
+    if not rows:
+        # First-time user without a user_stats row — return a stub so the page
+        # still renders with empty states.
+        prof = _supabase_get(
+            f"profiles?id=eq.{_urlparse.quote(user_id)}&select=full_name,email,avatar_url,created_at,portfolio_public,portfolio_share_slug&limit=1"
+        ) or []
+        p = (prof or [{}])[0]
+        return {
+            "user_id": user_id,
+            "full_name": p.get("full_name"),
+            "email": p.get("email"),
+            "avatar_url": p.get("avatar_url"),
+            "member_since": p.get("created_at"),
+            "portfolio_public": bool(p.get("portfolio_public")),
+            "portfolio_share_slug": p.get("portfolio_share_slug"),
+            "total_xp": 0, "current_level": 1, "level_name": None,
+            "modules_completed": 0, "modules_enrolled": 0, "modules": [],
+            "sessions_completed": 0, "sessions_total": 0,
+            "skills_earned": [], "recent_badges": [], "badges_total": 0,
+            "active_days_last_90": 0, "heatmap_90": [],
+        }
+    return rows[0]
+
+
+@api_router.post("/portfolio/share")
+async def portfolio_share(req: PortfolioShareReq, supa_user: dict = Depends(get_supabase_user)):
+    """Toggle the public-share opt-in. Generates a slug on first opt-in."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+
+    prof = _supabase_get(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}&select=portfolio_share_slug,portfolio_public&limit=1"
+    ) or []
+    current = (prof or [{}])[0]
+
+    update_body: dict = {"portfolio_public": bool(req.enabled)}
+    if req.enabled and not current.get("portfolio_share_slug"):
+        # Generate a unique slug; retry up to 5 times on collision.
+        for _ in range(5):
+            candidate = _generate_share_slug()
+            taken = _supabase_get(
+                f"profiles?portfolio_share_slug=eq.{candidate}&select=id&limit=1"
+            ) or []
+            if not taken:
+                update_body["portfolio_share_slug"] = candidate
+                break
+        else:
+            raise HTTPException(status_code=500, detail="could not allocate a unique share slug")
+
+    _supabase_patch(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}",
+        update_body,
+    )
+
+    new_prof = _supabase_get(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}&select=portfolio_public,portfolio_share_slug&limit=1"
+    ) or []
+    np = (new_prof or [{}])[0]
+    slug = np.get("portfolio_share_slug")
+
+    # Build the public URL — the frontend uses /p/<slug> on its own origin.
+    origin = os.environ.get("PUBLIC_APP_ORIGIN") or os.environ.get("REACT_APP_PUBLIC_ORIGIN") or ""
+    public_url = f"{origin.rstrip('/')}/p/{slug}" if (origin and slug) else (f"/p/{slug}" if slug else None)
+
+    return {
+        "portfolio_public": bool(np.get("portfolio_public")),
+        "share_slug": slug,
+        "public_url": public_url,
+    }
+
+
+@api_router.get("/portfolio/public/{share_slug}")
+async def portfolio_public(share_slug: str):
+    """Public, no-auth read of a portfolio by share slug. Returns redacted data.
+    404 when slug is unknown or the owner has opted out of public sharing."""
+    if not share_slug or len(share_slug) < 6:
+        raise HTTPException(status_code=404, detail="portfolio not found")
+    # Resolve slug → user_id (service-role read so we don't rely on the anon policy).
+    prof_rows = _supabase_get(
+        f"profiles?portfolio_share_slug=eq.{_urlparse.quote(share_slug)}"
+        f"&portfolio_public=eq.true&select=id&limit=1"
+    ) or []
+    if not prof_rows:
+        raise HTTPException(status_code=404, detail="portfolio not found")
+    user_id = prof_rows[0]["id"]
+    rows = _supabase_get(
+        f"v_user_portfolio?user_id=eq.{_urlparse.quote(user_id)}&select={_PORTFOLIO_VIEW_FIELDS}&limit=1"
+    ) or []
+    if not rows:
+        raise HTTPException(status_code=404, detail="portfolio not found")
+    return _redact_public_portfolio(rows[0])
+
+
+
+
 
 
 

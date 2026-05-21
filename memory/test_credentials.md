@@ -260,3 +260,70 @@ curl -s -X POST "$API_URL/api/doubts/ask" \
 
 
 
+
+
+## Phase 53 — Portfolio Screen (May 2026)
+
+Pages: `/portfolio` (auth) and `/p/:slug` (public).
+Endpoints: `GET /api/portfolio/me` (Bearer), `POST /api/portfolio/share` (Bearer), `GET /api/portfolio/public/{slug}` (no auth).
+
+### Tester recipe — full happy path
+
+```bash
+API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -f2)
+TOKEN="<paste from localStorage[sb-yuadeybycbfqlkdpxbkv-auth-token].access_token>"
+
+# 1) Aggregated portfolio
+curl -s "$API_URL/api/portfolio/me" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
+
+# 2) Enable share + grab slug
+SLUG=$(curl -s -X POST "$API_URL/api/portfolio/share" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"enabled":true}' | python3 -c "import sys,json;print(json.load(sys.stdin)['share_slug'])")
+echo "Slug: $SLUG"
+
+# 3) Public, no-auth read
+curl -s "$API_URL/api/portfolio/public/$SLUG" | python3 -m json.tool
+
+# 4) Toggle off → next read should 404
+curl -s -X POST "$API_URL/api/portfolio/share" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"enabled":false}'
+curl -s "$API_URL/api/portfolio/public/$SLUG"
+# → {"detail":"portfolio not found"}
+
+# 5) Re-enable → SAME slug is returned (slug is persistent)
+curl -s -X POST "$API_URL/api/portfolio/share" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"enabled":true}'
+```
+
+### Frontend manual smoke
+
+1. Log in as `testagent2026@gmail.com`.
+2. Click **Portfolio** in the sidebar (`[data-testid="nav-portfolio"]`) → routes to `/portfolio`.
+3. Confirm sections are present (each has a testid):
+   - `portfolio-hero` — name, level pill, streak chip, Tara avatar with speech bubble
+   - `portfolio-stats-grid` — 8 tiles (`stat-xp`, `stat-modules`, `stat-sessions`, `stat-badges`, `stat-streak`, `stat-time`, `stat-active`, `stat-champion`)
+   - `portfolio-skills` — skill pills (or empty state when 0 modules complete)
+   - `portfolio-journey` — full module constellation map
+   - `portfolio-projects` — Capstone card (locked when not complete) + Module-projects card
+   - `portfolio-interview` — radar chart OR empty state
+   - `portfolio-badges` — full BadgeCabinet
+   - `portfolio-heatmap` — 90-day activity heatmap
+   - `portfolio-headlines` — 4 click-to-copy headline cards
+   - `portfolio-share-section` — toggle + share controls
+4. Toggle `portfolio-share-toggle` ON → confirm `portfolio-public-url` appears with `/p/<slug>`.
+5. Open the public URL in **incognito** → confirm `public-portfolio-page` renders, name + stats + skills + map + capstone + recent badges + heatmap visible, NO email shown.
+6. Click `portfolio-linkedin-btn` → opens LinkedIn share dialog in new tab (pre-filled with text + URL).
+7. Click `portfolio-copy-share-text` → text copied (toast shows "Copied").
+8. Toggle the share OFF → reload public URL in incognito → should now hit `public-portfolio-notfound` page.
+
+### LinkedIn share text format
+
+```
+Just hit Level {N} ({Level Name}) on Valuevade — {modules_completed} modules into my finance training. {public_url}
+```
+
+The button opens `https://www.linkedin.com/sharing/share-offsite/?url=…&summary=…`.
+

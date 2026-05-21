@@ -1511,3 +1511,227 @@ i.e. both the `turn_cap_reached` and `manual_end` paths have already triggered c
 - Multi-language (Tara responds in English only for now; system prompt's Indian-context examples mention Indian companies in English)
 - Voice input on mobile
 - Doubt thread persistence beyond the modal (users currently can't review past doubt threads in their profile — backlog)
+
+---
+
+### Phase 53 — User Portfolio Screen (May 2026)
+
+A LinkedIn-ready, share-worthy showcase of everything a user has done on
+Valuevade. Aggregated from one Postgres view, rendered on a magazine-style
+`/portfolio` page (private) plus a redacted public mirror at `/p/<slug>`.
+
+#### DB layer — migration `0013_portfolio_view.sql`
+
+**Schema additions**
+
+| Object | Change |
+|---|---|
+| `master_modules.skill_tags text[]` | New column (idempotent), seeded for all 15 modules. |
+| `profiles.portfolio_public bool default false` | Public-share opt-in. |
+| `profiles.portfolio_share_slug text` | 8-char lowercase alphanumeric slug, partial-unique (only when non-null). |
+| `ux_profiles_portfolio_share_slug` | Partial unique index (`WHERE portfolio_share_slug IS NOT NULL`). |
+| Policy `profiles_update_own_portfolio` | Owner-only UPDATE. |
+| Policy `profiles_public_portfolio_slug` | Narrow anon SELECT (only rows with `portfolio_public=true`). |
+
+**Skill-tag seed (M1–M15)**
+
+| Module | Tags |
+|---|---|
+| M1 | Finance Foundations · Accounting Basics · Economics · Time Value of Money |
+| M2 | Capital Markets · IPO Mechanics · Indian Market Structure · SEBI Regulation |
+| M3 | Excel for Finance · Spreadsheet Modelling · Keyboard Shortcuts · VLOOKUP & PivotTables |
+| M4 | 3-Statement Modelling · Financial Modelling · Forecasting · Modeling Best Practices |
+| M5 | Corporate Governance · Management Quality · Ind AS Disclosures · Promoter Analysis |
+| M6 | Annual Report Reading · Concall Analysis · MDA Decoding · Footnote Forensics |
+| M7 | Financial Statement Analysis · Income Statement · Balance Sheet · Cash Flow Statement |
+| M8 | Forensic Accounting · Red Flag Detection · Earnings Quality · Accrual Analysis |
+| M9 | Ratio Analysis · DuPont Framework · Leverage & Liquidity · Working Capital Cycle |
+| M10 | Macroeconomics · GDP & Inflation · Monetary Policy · Yield Curves |
+| M11 | Sector Analysis · Porter Five Forces · Industry Lifecycle · Competitive Moats |
+| M12 | Equity Valuation · DCF · Relative Valuation · Multiples Analysis |
+| M13 | Investment Memos · PowerPoint · Report Writing · Pitch Decks |
+| M14 | Resume Building · LinkedIn Strategy · Finance Networking · Interview Prep |
+| M15 | AI for Finance · Prompt Engineering · ChatGPT for Analysts · LLM Workflows |
+
+**`v_user_portfolio` (security_invoker=true)** — single-row-per-user JOIN of:
+
+| CTE | Source | Yields |
+|---|---|---|
+| `ue` | `user_enrollments` (distinct-on latest, prefer active) | enrollment scope |
+| `mods` | `v_module_progress_summary` | modules_completed / in_progress / enrolled / XP / time |
+| `sess` | `user_sessions` joined via `user_modules` | sessions_completed / total + jsonb-safe avg quiz/interview/sim scores |
+| `mod_projs` | `user_module_projects` | module_projects_completed, last_module_project_at |
+| `cap` | `user_capstone_projects` | capstone_completed, completed_at, started_at |
+| `badges_rollup` | `user_badges` + `master_badges` | totals by rarity (common/rare/epic/legendary) |
+| `recent_badges` | same | jsonb array of all unlocks (code, name, rarity, category, icon_slug, earned_at) ordered DESC by earned_at |
+| `champ` | `user_daily_challenges` | distinct days where the user completed ≥3 picks → Daily Champion count |
+| `activity` | `user_daily_activity` | active_days_last_90 + jsonb heatmap rows |
+| `skills` | `v_module_progress_summary` × `master_modules.skill_tags` | DISTINCT skill_tags from completed modules |
+| `mod_list` | `v_module_progress_summary` | compact jsonb list (order_index, code, title, completion %, XP, completed_at) for the journey block |
+
+Outer SELECT joins `user_stats`, `profiles`, `master_levels` (current + next),
+and the 11 CTEs. **`security_invoker=true`** → calling as the authenticated
+user via PostgREST returns only that user's row; service-role calls (backend)
+bypass RLS and can fetch by any `user_id`.
+
+**JSONB score-extraction guard** (drift trap to avoid): `user_sessions.quiz_score`
+/ `interview_score` / `simulation_score` historically stored either a bare
+number or an object like `{"score": 80}`. The view's `case jsonb_typeof(…) when 'number' …
+when 'object' and ? 'score' …` pattern handles both forms — do **not** simplify
+back to `::text::numeric`, that will throw on object-shaped rows.
+
+#### Backend endpoints (in `/app/backend/server.py`)
+
+| Endpoint | Auth | Returns |
+|---|---|---|
+| `GET /api/portfolio/me` | Bearer (Supabase JWT) | Full row from `v_user_portfolio` for the calling user. If `user_stats` is absent (brand-new user), returns a stub row with zeroed counters so the UI still renders. |
+| `POST /api/portfolio/share` | Bearer | Body `{enabled: bool}`. On first enable, generates an 8-char `[a-z0-9]` slug (retries up to 5× on collision via partial-unique index). Returns `{portfolio_public, share_slug, public_url}`. |
+| `GET /api/portfolio/public/{slug}` | **None** | Resolves slug → user_id (service-role read, `portfolio_public=true` required), then fetches and **redacts** the portfolio row before returning. 404 on unknown slug, opted-out user, or missing portfolio. |
+
+**Public redaction policy** (`_redact_public_portfolio` in `server.py`):
+
+Kept: name (defaults to "Valuevade Analyst"), avatar URL, level number/name/color,
+streak (current/longest), Daily Champion count, modules_completed/enrolled,
+total_time_minutes, sessions_completed, module_projects_completed,
+capstone_completed + completed_at, badge counts by rarity, recent_badges array
+(code/name/rarity are public concepts), skills_earned, modules (only
+order_index/code/title/is_completed/completion_percent/sessions counts —
+**no XP, no completed_at per module**), active_days_last_90, heatmap_90.
+
+Stripped: email, exact total_xp_in_modules per module, xp_to_next,
+streak_freeze_tokens, avg quiz/interview/simulation scores, sessions_total,
+exact `member_since` (replaced by month/year string only).
+
+#### Frontend
+
+**Pages added**
+
+- `frontend/src/components/PortfolioPage.jsx` — private, auth-gated, mounted at `/portfolio`.
+- `frontend/src/components/PublicPortfolioPage.jsx` — public, no-auth, mounted at `/p/:slug`.
+
+**Section anatomy of `<PortfolioPage />`**
+
+| # | Section | Reuses | data-testid |
+|---|---|---|---|
+| 1 | **Hero** — name, level badge (`Star` icon + level color), streak chip, Daily Champion chip, "Finance Analyst in training since <Month YYYY>", inline Tara `encouraging` pose with speech bubble | `<AvatarPersona />` | `portfolio-hero`, `portfolio-name`, `portfolio-level-badge`, `portfolio-streak-chip` |
+| 2 | **Stats grid** — 8 tiles in 2/3/4-col responsive grid: XP, Modules (X/15), Sessions, Badges (X/23) + rarity sub-line, Longest streak, Time invested (h), Active days/90, Daily Champion | — | `stat-xp`, `stat-modules`, `stat-sessions`, `stat-badges`, `stat-streak`, `stat-time`, `stat-active`, `stat-champion` |
+| 3 | **Skills earned** — flex-wrap of glass pills from completed modules. Empty state with Tara avatar + nudge | `<AvatarPersona />` | `portfolio-skills` |
+| 4 | **Module journey** — full `<ModuleConstellationMap />` in its non-fullscreen render mode | `<ModuleConstellationMap />` | `portfolio-journey` |
+| 5 | **Projects portfolio** — Capstone card (gradient when earned, locked-state with "Complete all modules" prompt otherwise) + Module-projects card | — | `portfolio-projects`, `portfolio-capstone-card`, `portfolio-modproj-card` |
+| 6 | **Interview performance radar** — small 3-axis SVG radar; empty state when no interviews | inline SVG | `portfolio-interview` |
+| 7 | **Badge cabinet** | `<BadgeCabinet />` | `portfolio-badges` |
+| 8 | **90-day activity heatmap** | `<ActivityHeatmap />` | `portfolio-heatmap` |
+| 9 | **Quotable highlights** — 4 click-to-copy headline cards (hours, modules, streak, level) | — | `portfolio-headlines`, `headline-hours`, `headline-modules`, `headline-streak`, `headline-level` |
+| 10 | **Share section** — Toggle ("Make my portfolio public") + Copy URL + Share to LinkedIn + Copy share text | — | `portfolio-share-section`, `portfolio-share-toggle`, `portfolio-public-url`, `portfolio-copy-url`, `portfolio-linkedin-btn`, `portfolio-copy-share-text` |
+
+**Authed fetch helper** uses `supabase.auth.getSession()` → `access_token` →
+`Authorization: Bearer …` (same pattern as DoubtsSession).
+
+**Public view `<PublicPortfolioPage />`** is a stripped-down mirror with:
+- Same hero shape (no email anywhere, "member_since_ym" only).
+- Same 8-tile stat grid.
+- Skill pills.
+- A **lightweight module map** rendered inline (no constellation SVG fetch
+  loop — just `<M1>…<M15>` numbered nodes coloured by status) to keep the
+  bundle weightless for first-time link visitors.
+- Capstone + module-projects cards.
+- Top-8 badges (read-only).
+- Inline 90-day heatmap (re-implementation, not the React-tied component, so
+  no auth dependencies leak).
+- Footer: *"Powered by Valuevade — Train your finance career"* linking to `/`.
+- 404 page when slug unknown / private: lock icon + CTA to landing.
+
+**Sidebar** entry added between **Profile** and **Settings** —
+`{ label: 'Portfolio', icon: Trophy, path: '/portfolio', testid: 'nav-portfolio' }`
+in `Sidebar.jsx`.
+
+**Routing** (`App.js`):
+- `/portfolio` → `<ProtectedRoute><PortfolioPage/></ProtectedRoute>`
+- `/p/:slug` → `<PublicPortfolioPage/>` (no `ProtectedRoute` wrapper, mounted
+  alongside `/landing` and `/login` in the public route block)
+
+#### Share-slug semantics
+
+- Slug is 8 lowercase alphanumeric chars (`a-z0-9`). Keyspace ~2.8×10¹² — collision
+  effectively impossible at expected scale, but we still retry up to 5× per
+  generation against the unique index.
+- Slug is **persistent** once generated. Toggling off → on reuses the
+  existing slug. Slugs are not currently rotated (revoke / regenerate is a
+  v2 affordance).
+- Anyone with the slug can read the redacted portfolio while `portfolio_public=true`.
+- Toggling off immediately 404s the public URL (next request).
+
+#### Public URL composition
+
+- Backend: `${PUBLIC_APP_ORIGIN || ''}/p/<slug>`. If `PUBLIC_APP_ORIGIN` env
+  is unset (current preview), the API returns the path-only `/p/<slug>` and
+  the frontend prepends `window.location.origin` client-side to build the
+  shareable URL.
+
+#### Tester recipe
+
+```bash
+API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -f2)
+TOKEN="<paste from localStorage[sb-yuadeybycbfqlkdpxbkv-auth-token].access_token>"
+
+# 1) Aggregated /me
+curl -s "$API_URL/api/portfolio/me" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
+
+# 2) Enable public sharing → grab slug
+curl -s -X POST "$API_URL/api/portfolio/share" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"enabled":true}'
+# → {"portfolio_public":true,"share_slug":"0y5mu2im","public_url":"/p/0y5mu2im"}
+
+# 3) Public read (no auth)
+curl -s "$API_URL/api/portfolio/public/0y5mu2im" | python3 -m json.tool
+
+# 4) Disable → public URL 404s
+curl -s -X POST "$API_URL/api/portfolio/share" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"enabled":false}'
+curl -s "$API_URL/api/portfolio/public/0y5mu2im"
+# → {"detail":"portfolio not found"}
+```
+
+**Live smoke (test user) — `/api/portfolio/me` for `testagent2026@gmail.com` on 2026-05-21**:
+
+```json
+{
+  "user_id": "13a690c4-…", "full_name": "Test Agent User",
+  "total_xp": 942, "current_level": 2, "level_name": "Research Associate",
+  "modules_completed": 1, "modules_enrolled": 16,
+  "sessions_completed": 0, "sessions_total": 174,
+  "badges_total": 8, "badges_common": 5, "badges_rare": 3,
+  "skills_earned": ["Accounting Basics","Economics","Finance Foundations","Time Value of Money"],
+  "daily_champion_days_total": 0, "active_days_last_90": 1,
+  "portfolio_public": true, "portfolio_share_slug": "0y5mu2im"
+}
+```
+
+`/p/0y5mu2im` returns redacted (no email, member_since_ym = "April 2026").
+
+#### Out of scope (deferred)
+
+- PDF export of the portfolio (v2)
+- Custom themes / layouts (v2)
+- Multi-user comparison ("compare with friend") (v2)
+- Recruiter-targeted features (resume import, recruiter view) (v3)
+- Real-time view counter on public URLs (v2)
+- Custom OG image / Twitter card per portfolio (v2 — needs a server-side image render)
+
+#### Files
+
+**Added**
+
+- `/app/scripts/migrations/0013_portfolio_view.sql`
+- `/app/scripts/migrations/0013_verify.sql`
+- `/app/frontend/src/components/PortfolioPage.jsx`
+- `/app/frontend/src/components/PublicPortfolioPage.jsx`
+
+**Modified**
+
+- `/app/backend/server.py` — `+` `_redact_public_portfolio`, `_generate_share_slug`, 3 endpoints.
+- `/app/frontend/src/App.js` — `+` lazy imports + 2 routes.
+- `/app/frontend/src/components/Sidebar.jsx` — `+` Portfolio nav entry (Trophy icon).
+
