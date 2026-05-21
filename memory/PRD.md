@@ -2179,3 +2179,14 @@ Filter test-ids: `review-filter-all`, `review-filter-quiz`, etc.
 
 `webpack compiled with 1 warning` — same 4 pre-existing `react-hooks/exhaustive-deps` warnings. Zero new errors. Zero new warnings.
 
+
+---
+
+### Phase 58 — Marketaux key wired; real news live (May 2026)
+
+- `MARKETAUX_KEY` added to `/app/backend/.env`. Smoke confirmed on both **IN** (Indian rupee / Nifty / oil / large-cap stocks headlines from `thehindubusinessline.com` + `economictimes.indiatimes.com`) and **US** (Blue Owl Private Credit + Star Bulk Carriers earnings from `seekingalpha.com`).
+- **Drift trap fix**: Marketaux's Cloudflare WAF returns HTTP 403 (code 1010) for the default Python `urllib` User-Agent. Added a real-browser `User-Agent` (`Mozilla/5.0 (compatible; Valuevade/1.0; +https://valuevade.com)`) to `_fetch_news_raw` via the `_headers` dict — applied to the Marketaux `_urlreq.Request(url, headers=_headers)` call. NewsAPI + GNews remain plain (no key needed today, but they'd also benefit from the same header when wired up — done preemptively via the shared `_headers`).
+- Cache verified: second call for `(IN, 2026-05-21)` returned `from_cache=True` in ~1.5s (no upstream call). Both `(IN, today)` and `(US, today)` rows persisted in `daily_news_cache`, source=`marketaux`.
+- Edge cases (verified by code-read): `country_code=null` → falls back to `IN`; Marketaux returns 0 items → chain skips to NewsAPI → GNews → fallback placeholder; any HTTP error (429/403/etc.) caught + logged + chain continues.
+- Test user's `country_code` restored to `IN` after the US switch test.
+

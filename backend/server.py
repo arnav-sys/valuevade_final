@@ -1113,8 +1113,11 @@ Headlines:
 
 
 def _fetch_news_raw(country_code: str):
-    """Best-effort fetch from a chain of free news APIs. Returns (items, source_label)."""
+    """Best-effort fetch from a chain of free news APIs. Returns (items, source_label).
+    All upstream calls send a real User-Agent — Marketaux's Cloudflare WAF
+    blocks the default urllib agent with HTTP 403 (code 1010)."""
     cc = (country_code or "IN").lower()
+    _headers = {"User-Agent": "Mozilla/5.0 (compatible; Valuevade/1.0; +https://valuevade.com)"}
     marketaux_key = os.environ.get("MARKETAUX_KEY")
     if marketaux_key:
         try:
@@ -1123,7 +1126,7 @@ def _fetch_news_raw(country_code: str):
                 f"?countries={cc}&filter_entities=true&language=en&limit=7"
                 f"&api_token={marketaux_key}"
             )
-            req = _urlreq.Request(url)
+            req = _urlreq.Request(url, headers=_headers)
             with _urlreq.urlopen(req, timeout=12) as r:
                 data = _json.loads(r.read().decode())
             arts = data.get("data") or []
