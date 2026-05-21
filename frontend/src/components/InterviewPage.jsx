@@ -11,6 +11,8 @@ import {
   CheckCircle2, AlertTriangle, ChevronDown, ChevronUp, Sparkles,
   User as UserIcon, Briefcase,
 } from 'lucide-react';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 
 const MIN_CHARS = 50;
 const MAX_CHARS = 2000; // ~300–350 words — plenty for a thorough finance answer
@@ -650,6 +652,10 @@ export default function InterviewPage() {
           )}
         </div>
       </main>
+      {(() => {
+        const t = resolveTutorPhase('interview_intro');
+        return <AvatarPersona pose={t?.pose || 'interviewer'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
 
       <style>{`
         @keyframes vvTypingBounce { 0%, 60%, 100% { transform: translateY(0); opacity: .4; } 30% { transform: translateY(-4px); opacity: 1; } }

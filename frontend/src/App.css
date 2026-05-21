@@ -409,3 +409,31 @@ body.custom-cursor * {
   .vv-xp-bar-near-pulse { animation: none; }
 }
 
+/* Phase 51 — AvatarPersona micro-animations.
+   Breathing: 4s subtle scale, gives static images a sense of life.
+   Cross-fade: 250ms transition between poses without a jarring swap.
+   Hover wiggle: light tilt on hover for the larger sizes only.
+   Caret: blinking insertion bar shown while the typewriter is still running.
+   prefers-reduced-motion drops all of it. */
+@keyframes vv-avatar-breathe-kf {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.015); }
+}
+.vv-avatar-breathing { animation: vv-avatar-breathe-kf 4s ease-in-out infinite; }
+.vv-avatar-fade { transition: opacity 250ms ease-in-out; }
+.vv-avatar-fade-in { opacity: 1; }
+.vv-avatar-fade-out { opacity: 0; pointer-events: none; }
+.vv-avatar-hover-wiggle { transition: transform 200ms ease; }
+.vv-avatar-hover-wiggle:hover { transform: rotate(-3deg) scale(1.03); }
+@keyframes vv-avatar-caret-kf {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 0.25; }
+}
+.vv-avatar-caret { animation: vv-avatar-caret-kf 700ms ease-in-out infinite; vertical-align: text-bottom; }
+@media (prefers-reduced-motion: reduce) {
+  .vv-avatar-breathing,
+  .vv-avatar-caret,
+  .vv-avatar-hover-wiggle { animation: none; transition: none; }
+  .vv-avatar-hover-wiggle:hover { transform: none; }
+}
+

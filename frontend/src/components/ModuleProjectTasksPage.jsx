@@ -11,6 +11,8 @@ import {
   ArrowLeft, ArrowRight, AlertCircle, RefreshCw, Briefcase, Trophy,
   CheckCircle2, Loader2,
 } from 'lucide-react';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import { Skeleton } from './ui/skeleton';
 
 export default function ModuleProjectTasksPage() {
@@ -289,6 +291,10 @@ export default function ModuleProjectTasksPage() {
           )}
         </div>
       </main>
+      {(() => {
+        const t = resolveTutorPhase('project_intro');
+        return <AvatarPersona pose={t?.pose || 'simulation_brief'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
     </div>
   );
 }

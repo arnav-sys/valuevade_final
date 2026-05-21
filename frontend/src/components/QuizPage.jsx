@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import useTimeTracking from '../utils/useTimeTracking';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, XCircle, Lightbulb,
   Loader2, AlertCircle, RefreshCw,
@@ -376,6 +378,22 @@ export default function QuizPage() {
           </div>
         </div>
       </main>
+
+      {/* Tutor — pose flips between asking → encouraging/listening per submission state */}
+      {(() => {
+        const phase = !reviewSubmitted
+          ? 'quiz_intro'
+          : (reviewSelected === correctIndex ? 'quiz_correct' : 'quiz_wrong');
+        const t = resolveTutorPhase(phase);
+        return (
+          <AvatarPersona
+            pose={t?.pose || 'asking'}
+            size="sm"
+            position="bottom-right"
+            message={t?.message}
+          />
+        );
+      })()}
 
       <style>{`
         @keyframes vvFadeUp { 0% { opacity: 0; transform: translateY(8px); } 100% { opacity: 1; transform: translateY(0); } }

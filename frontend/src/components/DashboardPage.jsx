@@ -11,6 +11,8 @@ import DailyGoalTracker from './gamification/DailyGoalTracker';
 import NearMissBanner from './gamification/NearMissBanner';
 import DailyChallengesCard from './gamification/DailyChallengesCard';
 import ModuleConstellationMap from './gamification/ModuleConstellationMap';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
@@ -659,6 +661,20 @@ export default function DashboardPage() {
           )}
         </div>
       </main>
+      {(() => {
+        const t = resolveTutorPhase('dashboard_greeting', {
+          first_name: profile?.full_name?.split(' ')[0] || profile?.first_name,
+          full_name: profile?.full_name,
+        });
+        return (
+          <AvatarPersona
+            pose={t?.pose || 'idle'}
+            size="sm"
+            position="bottom-right"
+            message={t?.message}
+          />
+        );
+      })()}
     </div>
   );
 }

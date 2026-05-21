@@ -14,6 +14,8 @@ import {
   ArrowLeft, ArrowRight, AlertCircle, RefreshCw, Trophy, CheckCircle2, Loader2,
   ChevronDown, ChevronRight, Layers,
 } from 'lucide-react';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import { Skeleton } from './ui/skeleton';
 
 export default function CapstoneTasksPage() {
@@ -405,6 +407,10 @@ export default function CapstoneTasksPage() {
           )}
         </div>
       </main>
+      {(() => {
+        const t = resolveTutorPhase('project_intro');
+        return <AvatarPersona pose={t?.pose || 'simulation_brief'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
     </div>
   );
 }

@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SessionCompleteSummaryCard from './gamification/SessionCompleteSummaryCard';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase,
@@ -254,6 +256,21 @@ export default function SessionCompletePage() {
 
         {/* Gamification summary (Phase 47) */}
         <SessionCompleteSummaryCard sessionStartTs={sessionStartTsRef.current} />
+
+        {/* Tutor — celebrating beside the summary */}
+        {(() => {
+          const t = resolveTutorPhase('session_complete');
+          return (
+            <div className="flex justify-center -mt-2 mb-8">
+              <AvatarPersona
+                pose={t?.pose || 'celebrating'}
+                size="md"
+                position="inline"
+                message={t?.message}
+              />
+            </div>
+          );
+        })()}
 
         {/* Module-complete callout */}
         {moduleComplete && module && (

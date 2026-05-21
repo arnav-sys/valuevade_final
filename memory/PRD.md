@@ -1118,3 +1118,97 @@ Service-role-backed via `_supabase_get`.
 
 **No client code changed.** This is a pure schema safety net.
 
+
+
+---
+
+### Phase 51 — AI Tutor Persona "Tara" (visual layer) (May 2026)
+
+**FIRST major non-gamification feature**: stylized animated tutor character present across every learning surface. Doubts session (LLM feature) is Phase 52.
+
+**User decisions locked**
+- Option C: single stylized illustration with subtle CSS animations. NOT photoreal video, NOT 3D-rigged.
+- Likeness consent confirmed (3 reference photos used).
+- Silent for now — no TTS, no audio. Pure visual + glass speech bubble.
+- Name: **Tara** (Sanskrit "star" — ties to the Phase 47 constellation map). Stored as `TUTOR_NAME` constant for single-line renaming.
+
+**Scope delivered**
+
+A. **12 character poses generated via nano-banana** (Gemini image edit) using the 3 user reference photos. Strategy: generated `tara_idle` first as the canonical character, then used the rendered idle PNG + the 3 originals as references for all 11 remaining poses to lock character consistency.
+- Style spec for every prompt: "Pixar/DreamWorks semi-realistic 3D illustration, NOT photoreal NOT anime NOT cartoon, soft pastel sky-blue to lavender radial-gradient background fading to edges, clean studio lighting, character centered, 1024×1024 PNG".
+- All 12 saved to `/app/frontend/public/tutor/<slug>.png`. Total ~12MB.
+- `MANIFEST.json` (also at `/tutor/MANIFEST.json`) lists slug + caption + file path + MD5 hash + bytes for each pose.
+
+**Pose registry** (all 12 reachable at `/tutor/tara_<slug>.png` on the dev server, HTTP 200 confirmed):
+| Slug | Use |
+|---|---|
+| `tara_idle` | neutral default presence |
+| `tara_waving` | welcome / greeting |
+| `tara_explaining` | mid-concept gesture |
+| `tara_asking` | question framing |
+| `tara_listening` | attentive after user response |
+| `tara_thinking` | pondering, finger to chin |
+| `tara_encouraging` | thumbs-up for correct answer |
+| `tara_celebrating` | both arms up, session/module/capstone complete |
+| `tara_interviewer` | poised, clipboard, interview pages |
+| `tara_simulation_brief` | pointing at chart, simulation/project briefing |
+| `tara_apology` | apologetic shrug (P52 off-topic redirects) |
+| `tara_goodbye` | farewell wave |
+
+B. **`<AvatarPersona />`** (`/app/frontend/src/components/tutor/AvatarPersona.jsx`)
+- Props: `pose`, `size` (`sm`|`md`|`lg`|`fullscreen`), `message`, `position` (`bottom-right`|`bottom-left`|`top-right`|`top-left`|`inline`), `showSpeechBubble`, `onMessageEnd`, `ariaLabel`, `onClick`, `bubbleDismissable`.
+- Cross-fade between poses (250ms opacity transition with the previous PNG mounted alongside the new one until the fade completes).
+- Glass-style speech bubble with **typewriter reveal** at ~30ms/char + dismissible X icon + blinking caret while typing. Click bubble to skip typewriter to the end.
+- CSS micro-animations: breathing (4s scale 1 → 1.015), hover wiggle (`-3deg` rotate, `lg`+`fullscreen` only), caret blink. All driven by `.vv-avatar-*` classes in `App.css` so the JS layer stays small. `prefers-reduced-motion` disables all three.
+- Returns `null` when the user has toggled the persona off (`vv_tutor_enabled` localStorage key).
+
+C. **`TutorContext`** (`/app/frontend/src/contexts/TutorContext.jsx`)
+- Exposes `{ currentPose, currentMessage, enabled, setEnabled, setTutor, clearTutor, TUTOR_NAME, TUTOR_TITLE }`.
+- Persisted toggle via `localStorage.vv_tutor_enabled` (default true).
+- **`TUTOR_PHASES` registry**: 15 phase → `{pose, message(payload)}` entries covering `notes_intro`, `notes_card`, `quiz_intro`, `quiz_correct`, `quiz_wrong`, `interview_intro`, `simulation_intro`, `project_intro`, `session_complete`, `module_complete`, `capstone_complete`, `dashboard_greeting`, `journey`, `apology`, `goodbye`, `idle`. Helper `resolveTutorPhase(key, payload)` returns `{pose, message}` or null.
+- `TutorProvider` mounted at App-root inside `<DailyChallengesProvider>` so it has access to the authenticated user.
+
+D. **Integration touchpoints** (9 pages wired)
+- `DashboardPage.jsx` — small bottom-right floating avatar with `dashboard_greeting` pose + personalized message ("Welcome back, &lt;first_name&gt;.").
+- `QuizPage.jsx` — pose flips with submission state: `asking` while reviewing → `encouraging` on correct → `listening` on incorrect, all bottom-right.
+- `InterviewStartPage.jsx` + `InterviewPage.jsx` — `interviewer` pose, bottom-right.
+- `SimulationPage.jsx` — `simulation_brief` pose, bottom-right.
+- `ModuleProjectTasksPage.jsx` + `CapstoneTasksPage.jsx` — `simulation_brief` pose (project_intro phase), bottom-right.
+- `NotesPage.jsx` — `explaining` pose, bottom-right with intro framing message.
+- `SessionCompletePage.jsx` — `celebrating` pose, inline `md` size next to the SessionCompleteSummaryCard.
+- `JourneyPage.jsx` — `idle` pose with a "X modules done, keep going" message.
+
+E. **Settings toggle** — `SettingsPage.jsx`: new `<TutorToggle />` block sandwiched between SoundToggle and AutoSpendToggle. Shows Tara's idle PNG as a thumbnail, the toggle label "Show AI tutor", and a sub-label that updates with the on/off state. `data-testid="settings-tutor-toggle"`.
+
+**Files added**
+- `/app/frontend/public/tutor/` — 12 PNGs + `MANIFEST.json`
+- `/app/frontend/src/components/tutor/AvatarPersona.jsx`
+- `/app/frontend/src/contexts/TutorContext.jsx`
+
+**Files modified**
+- `/app/frontend/src/App.js` — `TutorProvider` mounted inside `DailyChallengesProvider`.
+- `/app/frontend/src/App.css` — `.vv-avatar-breathing`, `.vv-avatar-fade-in/out`, `.vv-avatar-hover-wiggle`, `.vv-avatar-caret` keyframes + `prefers-reduced-motion` fallbacks.
+- 9 page files wired with `<AvatarPersona />` + `resolveTutorPhase` (see Integration touchpoints).
+- `/app/frontend/src/components/SettingsPage.jsx` — new TutorToggle.
+
+**Smoke (localhost)**
+- All 12 PNGs served HTTP 200 with file sizes ~870KB–1.2MB each (high-detail Pixar-style renders).
+- `MANIFEST.json` served HTTP 200; 12 entries with MD5 hashes for cache busting.
+- Frontend webpack: `compiled with 1 warning` (pre-existing NotesPage.jsx exhaustive-deps, unchanged).
+- Frontend lint ✅ clean across all 13 touched JS/JSX files.
+
+**Out of scope (deferred to P52+)**
+- Doubts session (P52 — RAG-backed LLM Q&A).
+- TTS / audio.
+- Lottie/Rive rigged animations.
+- User-side avatar customization.
+- Multiple personas / pick-your-tutor.
+
+**Tester smoke recipe**
+1. Visit `/dashboard` (incognito after a tester login) → Tara appears bottom-right with a waving pose + welcome message that types out.
+2. Click the speech bubble → typewriter skips to end.
+3. Click X on the bubble → bubble dismisses, character stays.
+4. Visit `/notes/<session>`, `/quiz/<session>`, `/interview/<session>`, `/simulation/<session>`, `/module/<id>/project`, `/journey` → Tara appears with the appropriate pose per page.
+5. Visit Settings → toggle "Show AI tutor" off → reload any learning page → no Tara visible. Toggle back on → she returns.
+6. macOS System Settings → Accessibility → "Reduce motion" → reload → breathing/fade animations disable; static images only. Typewriter renders message instantly.
+

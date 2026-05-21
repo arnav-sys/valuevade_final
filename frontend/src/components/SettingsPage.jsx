@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import { Settings, Sparkles, ArrowRight, Mail, Bell, Shield, Volume2, VolumeX, Snowflake } from 'lucide-react';
 import { useSound } from '../contexts/SoundContext';
 import { useStreak } from '../contexts/StreakContext';
+import { useTutor, TUTOR_NAME } from '../contexts/TutorContext';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useState } from 'react';
@@ -62,6 +63,47 @@ function SoundToggle() {
           className="inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform absolute top-0.5"
           style={{ left: enabled ? '22px' : '2px' }}
           data-testid="settings-sound-thumb"
+        />
+      </span>
+    </button>
+  );
+}
+
+function TutorToggle() {
+  const { enabled, setEnabled } = useTutor();
+  return (
+    <button
+      type="button"
+      onClick={() => setEnabled(!enabled)}
+      className="glass-card rounded-2xl p-5 mb-4 w-full text-left flex items-center gap-4 hover:border-[var(--color-primary)]/40 transition-all"
+      data-testid="settings-tutor-toggle"
+      aria-pressed={enabled}
+    >
+      <div
+        className="w-12 h-12 rounded-xl overflow-hidden shrink-0 transition-all bg-[var(--color-surface)] flex items-center justify-center"
+        style={{
+          background: enabled
+            ? 'linear-gradient(135deg, var(--color-primary), var(--color-accent-purple))'
+            : 'var(--color-surface)',
+        }}
+      >
+        <img src="/tutor/tara_idle.png" alt="" className="w-12 h-12 object-cover" style={{ opacity: enabled ? 1 : 0.55 }} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className="text-base font-clash font-bold text-[var(--color-text)] mb-0.5">Show AI tutor</div>
+        <div className="text-sm text-[var(--color-text-muted)]">
+          {enabled
+            ? `${TUTOR_NAME} appears on lessons, quizzes, interviews and simulations.`
+            : `${TUTOR_NAME} is hidden. You'll learn without the on-screen persona.`}
+        </div>
+      </div>
+      <span
+        className="relative inline-block w-12 h-6 rounded-full transition-colors shrink-0"
+        style={{ background: enabled ? 'var(--color-primary)' : 'var(--color-border)' }}
+      >
+        <span
+          className="inline-block h-5 w-5 transform rounded-full bg-white shadow-md transition-transform absolute top-0.5"
+          style={{ left: enabled ? '22px' : '2px' }}
         />
       </span>
     </button>
@@ -145,6 +187,7 @@ export default function SettingsPage() {
           </div>
 
           <SoundToggle />
+          <TutorToggle />
           <AutoSpendToggle />
 
           {/* Coming soon hero */}

@@ -6,6 +6,8 @@ import { triggerStreakUpdate } from '../utils/streakBus';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { updateDailyChallengesForPhase } from '../utils/progress';
 import { supabase } from '../lib/supabase';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
   FileSpreadsheet, FileText, GitBranch, MousePointerClick,
@@ -241,6 +243,10 @@ export default function SimulationPage() {
           <GenericRenderer config={config} title={sim.title} typeLabel={sim.sim_type || 'Simulation'} onComplete={handleComplete} />
         )}
       </main>
+      {(() => {
+        const t = resolveTutorPhase('simulation_intro');
+        return <AvatarPersona pose={t?.pose || 'simulation_brief'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
     </div>
   );
 }

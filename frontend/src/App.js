@@ -9,6 +9,7 @@ import { SoundProvider } from "@/contexts/SoundContext";
 import { StreakProvider } from "@/contexts/StreakContext";
 import { BadgeProvider } from "@/contexts/BadgeContext";
 import { DailyChallengesProvider } from "@/contexts/DailyChallengesContext";
+import { TutorProvider } from "@/contexts/TutorContext";
 import XPRoot from "@/components/gamification/XPRoot";
 import StreakRoot from "@/components/gamification/StreakRoot";
 import BadgeRoot from "@/components/gamification/BadgeRoot";
@@ -86,6 +87,7 @@ function App() {
                 <StreakProvider>
                 <BadgeProvider>
                 <DailyChallengesProvider>
+                <TutorProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -164,6 +166,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </TutorProvider>
                 </DailyChallengesProvider>
                 </BadgeProvider>
                 </StreakProvider>

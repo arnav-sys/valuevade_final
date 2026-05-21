@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowLeft, ArrowRight, MessageSquare, Clock, User, Sparkles,
   AlertCircle, RefreshCw, PlayCircle, ChevronDown, ChevronUp,
@@ -228,6 +230,11 @@ export default function InterviewStartPage() {
           )}
         </div>
       </main>
+
+      {(() => {
+        const t = resolveTutorPhase('interview_intro');
+        return <AvatarPersona pose={t?.pose || 'interviewer'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
 
       <style>{`
         @keyframes vvSlideIn { 0% { opacity: 0; transform: translateY(-6px); } 100% { opacity: 1; transform: translateY(0); } }

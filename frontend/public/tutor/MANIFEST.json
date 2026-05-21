@@ -1,0 +1,92 @@
+{
+  "tutor_name": "Tara",
+  "tutor_title": "Your AI Finance Tutor",
+  "generated_at": "2026-05-21",
+  "style": "Pixar/DreamWorks semi-realistic 3D illustration, 1024x1024 PNG",
+  "poses": [
+    {
+      "slug": "tara_idle",
+      "caption": "Friendly idle stance, ready to help.",
+      "file": "/tutor/tara_idle.png",
+      "md5": "c47746864d9fb75893cb556e55c20363",
+      "bytes": 1148395
+    },
+    {
+      "slug": "tara_waving",
+      "caption": "Warm welcome wave.",
+      "file": "/tutor/tara_waving.png",
+      "md5": "078bb505bf3a266b5f560019b71ee7ef",
+      "bytes": 1086704
+    },
+    {
+      "slug": "tara_explaining",
+      "caption": "Mid-gesture, walking you through a concept.",
+      "file": "/tutor/tara_explaining.png",
+      "md5": "a2f2c996dcd29932b2801be60a5d986e",
+      "bytes": 906014
+    },
+    {
+      "slug": "tara_asking",
+      "caption": "Curious, posing a question.",
+      "file": "/tutor/tara_asking.png",
+      "md5": "98ef9a215eb099222a0e25d52bc6e291",
+      "bytes": 1164696
+    },
+    {
+      "slug": "tara_listening",
+      "caption": "Attentive, hands gently folded.",
+      "file": "/tutor/tara_listening.png",
+      "md5": "bd5462fe2ebf157a8b6cd09679a1efcd",
+      "bytes": 1083100
+    },
+    {
+      "slug": "tara_thinking",
+      "caption": "Pondering, finger to chin.",
+      "file": "/tutor/tara_thinking.png",
+      "md5": "e3ac8cb3bec7621079712ccddcab9b60",
+      "bytes": 1110775
+    },
+    {
+      "slug": "tara_encouraging",
+      "caption": "Thumbs-up, you've got this.",
+      "file": "/tutor/tara_encouraging.png",
+      "md5": "91f51fe96f6234fca84dfccfdbd35cfd",
+      "bytes": 994023
+    },
+    {
+      "slug": "tara_celebrating",
+      "caption": "Both arms up \u2014 proud of you.",
+      "file": "/tutor/tara_celebrating.png",
+      "md5": "bb44a48c5024419538cd51d5a6057992",
+      "bytes": 1023911
+    },
+    {
+      "slug": "tara_interviewer",
+      "caption": "Professional interviewer stance.",
+      "file": "/tutor/tara_interviewer.png",
+      "md5": "1ab550e9c04884a1b0c9558083f81cca",
+      "bytes": 990368
+    },
+    {
+      "slug": "tara_simulation_brief",
+      "caption": "Briefing pose, walking through a scenario.",
+      "file": "/tutor/tara_simulation_brief.png",
+      "md5": "ddf16397006f39f8389c61dc46eb3065",
+      "bytes": 973693
+    },
+    {
+      "slug": "tara_apology",
+      "caption": "Gentle apology \u2014 I can only help with course material.",
+      "file": "/tutor/tara_apology.png",
+      "md5": "4231cf9ff00038bbb396fcd1f2d52bcb",
+      "bytes": 931268
+    },
+    {
+      "slug": "tara_goodbye",
+      "caption": "Warm farewell wave.",
+      "file": "/tutor/tara_goodbye.png",
+      "md5": "6c6c8d49bfbb4744f1d51dbbf1b923ad",
+      "bytes": 869630
+    }
+  ]
+}

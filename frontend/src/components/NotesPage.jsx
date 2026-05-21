@@ -9,6 +9,8 @@ import {
   ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, AlertTriangle, Sparkles,
   Zap, TrendingUp, Target, FileText, Loader2, AlertCircle, RefreshCw, X,
 } from 'lucide-react';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 
 // -----------------------------------------------------------
 // HELPER: ExtraFields — renders any content keys not already handled,
@@ -1708,6 +1710,10 @@ export default function NotesPage() {
           )}
         </div>
       </main>
+      {(() => {
+        const t = resolveTutorPhase('notes_intro');
+        return <AvatarPersona pose={t?.pose || 'explaining'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
 
       {/* Bottom nav bar */}
       {!loading && !error && total > 0 && (

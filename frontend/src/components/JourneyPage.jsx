@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import Sidebar from './Sidebar';
 import ModuleConstellationMap from './gamification/ModuleConstellationMap';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 
 export default function JourneyPage() {
   const navigate = useNavigate();
@@ -26,6 +28,10 @@ export default function JourneyPage() {
         </header>
         <ModuleConstellationMap fullscreen />
       </main>
+      {(() => {
+        const t = resolveTutorPhase('journey');
+        return <AvatarPersona pose={t?.pose || 'idle'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
     </div>
   );
 }
