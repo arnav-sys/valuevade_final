@@ -230,7 +230,7 @@ export default function PortfolioPage() {
                   position="inline"
                   message={`Here's your finance journey so far, ${firstName}.`}
                   showSpeechBubble={true}
-                  ariaLabel="Tara — your finance tutor"
+                  ariaLabel="Pari — your finance tutor"
                 />
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function PortfolioPage() {
             </div>
           ) : (
             <div className="rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <AvatarPersona pose="encouraging" size="sm" position="inline" showSpeechBubble={false} ariaLabel="Tara" />
+              <AvatarPersona pose="encouraging" size="sm" position="inline" showSpeechBubble={false} ariaLabel="Pari" />
               <div className="text-sm text-[var(--color-text-muted)] font-bricolage">Complete your first module to earn your first skill. Each module unlocks 3–4 finance skills.</div>
             </div>
           )}

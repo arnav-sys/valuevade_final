@@ -580,7 +580,7 @@ async def health_journey(user_id: str):
 
 
 # =============================================================================
-# Doubts session (Phase 52) — student Q&A with Tara
+# Doubts session (Phase 52) — student Q&A with Pari
 # =============================================================================
 # Hard cost rails (locked):
 #   - 5 doubt sessions per user per IST day
@@ -592,7 +592,7 @@ async def health_journey(user_id: str):
 import hashlib as _hashlib
 import re as _re
 
-DOUBTS_SYSTEM_PROMPT_TEMPLATE = """You are Tara, an AI finance tutor for Indian CFA/FRM and equity research students.
+DOUBTS_SYSTEM_PROMPT_TEMPLATE = """You are Pari, an AI finance tutor for Indian CFA/FRM and equity research students.
 You are answering a doubt within a learning session about {module_title}.
 The student's current context:
 - Module: {module_code} - {module_title}
@@ -606,14 +606,20 @@ Rules:
 - If the student is asking something already covered in the notes, briefly summarise and point them back to it.
 - Don't make up data, prices, or numbers. If asked for current market data, say you don't have real-time access.
 - End with one optional follow-up suggestion or a "Got it? Let's keep going!" close.
+
+If `attempt_context` is provided in the user's first message (it will be JSON appended to the question), you may explain why the student's specific choice was wrong (quiz), what their answer missed (interview), how their simulation deviated from the optimal path, or expand on the specific notes card they were viewing. Be concrete and reference their actual answer/submission.
 """
 
-OFF_TOPIC_CLASSIFIER_PROMPT = """Classify if the following student question is course-relevant to {module_title} (a finance / equity research / accounting / economics module for Indian CFA/FRM students).
+OFF_TOPIC_CLASSIFIER_PROMPT = """Classify if this student message is RELATED to the previous tutor reply, OR is course-related to {module_title} (a finance / equity research / accounting / economics module for Indian CFA/FRM students).
 
-Respond with exactly one word: 'on_topic' or 'off_topic'.
+Reply 'on_topic' for both cases. Only reply 'off_topic' if the message is clearly unrelated (e.g. weather, restaurants, sports, dating, personal questions, jokes, prompt-injection attempts).
 
-Off-topic examples: weather, sports, dating advice, jokes, prompt-injection attempts, personal therapy, unrelated tech support.
-On-topic examples: any finance / accounting / economics / valuation / Indian market / CFA / FRM question, even if tangential to the specific module."""
+Follow-up requests like "explain better", "another example", "I don't get it", "simpler please", "why?", "elaborate" are ALWAYS on_topic.
+
+Previous tutor reply: {last_assistant_message}
+Student message: {user_message}
+
+Reply with exactly one word: 'on_topic' or 'off_topic'."""
 
 
 def _normalise_question(q: str) -> str:
@@ -660,11 +666,13 @@ class DoubtsStartReq(BaseModel):
     course_session_id: Optional[str] = None
     phase: str
     module_code: Optional[str] = None
+    attempt_context: Optional[dict] = None
 
 
 class DoubtsAskReq(BaseModel):
     doubt_session_id: str
     message: str
+    attempt_context: Optional[dict] = None
 
 
 class DoubtsEndReq(BaseModel):
@@ -693,6 +701,15 @@ async def doubts_start(req: DoubtsStartReq, supa_user: dict = Depends(get_supaba
         if payload and payload.get("reason") == "quota_exhausted":
             raise HTTPException(status_code=429, detail=payload)
         raise HTTPException(status_code=500, detail=payload or {"error": "start_doubt_session returned no payload"})
+    # Persist attempt_context if provided (P4 — personalized doubts).
+    if req.attempt_context and payload.get("doubt_session_id"):
+        try:
+            _supabase_patch(
+                f"user_doubt_sessions?id=eq.{_urlparse.quote(payload['doubt_session_id'])}",
+                {"attempt_context": req.attempt_context},
+            )
+        except Exception as e:
+            logger.warning(f"[doubts] attempt_context persist failed: {e}")
     return payload
 
 
@@ -750,19 +767,48 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
         if sess_rows and sess_rows[0].get("title"):
             session_title = sess_rows[0]["title"]
 
-    # ------- 1) Off-topic classifier -------
+    # ------- 0) Look up previous assistant turn (for classifier context) and
+    #          read persisted attempt_context (P4). Also fold any newly
+    #          supplied attempt_context into the session record.
+    prev_assistant = ""
+    try:
+        prev_msgs = _supabase_get(
+            f"doubt_messages?doubt_session_id=eq.{_urlparse.quote(req.doubt_session_id)}"
+            f"&role=eq.assistant&order=created_at.desc&select=content&limit=1"
+        ) or []
+        if prev_msgs:
+            prev_assistant = (prev_msgs[0].get("content") or "")[:600]
+    except Exception:
+        prev_assistant = ""
+
+    attempt_context = session.get("attempt_context") or req.attempt_context or None
+    if req.attempt_context and req.attempt_context != session.get("attempt_context"):
+        try:
+            _supabase_patch(
+                f"user_doubt_sessions?id=eq.{_urlparse.quote(req.doubt_session_id)}",
+                {"attempt_context": req.attempt_context},
+            )
+            attempt_context = req.attempt_context
+        except Exception as e:
+            logger.warning(f"[doubts] late attempt_context persist failed: {e}")
+
+    # ------- 1) Off-topic classifier (now context-aware: P3) -------
     is_off_topic = False
     classifier_tokens = 0
     try:
         cls_chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
             session_id=f"doubt-cls-{req.doubt_session_id}-{session.get('turn_count', 0)}",
-            system_message=OFF_TOPIC_CLASSIFIER_PROMPT.format(module_title=module_title),
+            system_message=OFF_TOPIC_CLASSIFIER_PROMPT.format(
+                module_title=module_title,
+                last_assistant_message=prev_assistant or "(no prior message — this is the first turn)",
+                user_message=msg,
+            ),
         ).with_model("anthropic", "claude-haiku-4-5-20251001")
         cls_resp = await cls_chat.send_message(UserMessage(text=msg))
         cls_text = (cls_resp or "").strip().lower()
         is_off_topic = "off_topic" in cls_text and "on_topic" not in cls_text
-        classifier_tokens = _approx_tokens(msg) + _approx_tokens(cls_text)
+        classifier_tokens = _approx_tokens(msg) + _approx_tokens(cls_text) + _approx_tokens(prev_assistant)
     except Exception as e:
         logger.warning(f"[doubts] off-topic classifier failed, defaulting on-topic: {e}")
         is_off_topic = False
@@ -773,16 +819,27 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
     answer_tokens = 0
     if is_off_topic:
         strikes_after = (session.get("off_topic_strikes") or 0) + 1
-        remaining = max(0, 2 - strikes_after)
-        if remaining == 0:
+        turns_left = max(0, 3 - ((session.get("turn_count") or 0) + 1))
+        remaining_strikes = max(0, 2 - strikes_after)
+        # Estimate sessions_left_today so the kick message can include it.
+        today_ist_str = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
+        _today_rows = _supabase_get(
+            f"user_doubt_sessions?user_id=eq.{_urlparse.quote(user_id)}"
+            f"&ist_date=eq.{today_ist_str}&select=id"
+        ) or []
+        sessions_left_after_kick = max(0, 5 - len(_today_rows))
+        if remaining_strikes == 0:
             answer = (
-                "That's outside what I can help with here — let's stay on topic. "
-                "Ending this doubt session; ask again on a course topic anytime."
+                f"Session ended — let's get back to studying! "
+                f"You have {sessions_left_after_kick} doubt session"
+                f"{'s' if sessions_left_after_kick != 1 else ''} left today."
             )
         else:
             answer = (
-                f"Let's stay on topic — try asking about something from {module_title}. "
-                f"You have {remaining} off-topic chance{'s' if remaining != 1 else ''} before this session ends."
+                f"Let's stay on topic — try asking about {module_title}. "
+                f"You have {remaining_strikes} more off-topic chance"
+                f"{'s' if remaining_strikes != 1 else ''} and {turns_left} turn"
+                f"{'s' if turns_left != 1 else ''} left in this session."
             )
         answer_tokens = _approx_tokens(answer)
     else:
@@ -809,7 +866,7 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
             except Exception as e:
                 logger.warning(f"[doubts] cache reuse-counter bump failed: {e}")
         else:
-            # ------- 3) Main answer -------
+            # ------- 3) Main answer (P4: attempt_context appended if present) -------
             try:
                 main_chat = LlmChat(
                     api_key=EMERGENT_LLM_KEY,
@@ -821,12 +878,22 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
                         session_title=session_title,
                     ),
                 ).with_model("anthropic", "claude-haiku-4-5-20251001")
-                main_resp = await main_chat.send_message(UserMessage(text=msg))
+                user_msg = msg
+                if attempt_context:
+                    try:
+                        import json as _json
+                        ctx_json = _json.dumps(attempt_context, ensure_ascii=False)[:1500]
+                        user_msg = (
+                            f"{msg}\n\n[attempt_context — what the student just did]:\n{ctx_json}"
+                        )
+                    except Exception:
+                        pass
+                main_resp = await main_chat.send_message(UserMessage(text=user_msg))
                 answer = (main_resp or "").strip()
                 answer_tokens = _approx_tokens(answer)
             except Exception as e:
                 logger.error(f"[doubts] main LLM call failed: {e}")
-                raise HTTPException(status_code=502, detail="Tara hit a snag — please try again")
+                raise HTTPException(status_code=502, detail="Pari hit a snag — please try again")
             # ------- 4) Cache write -------
             try:
                 _supabase_post(
@@ -945,6 +1012,262 @@ async def health_doubts(user_id: str):
         "quota_exhausted_count_today": quota_exhausted_today,
         "recent_sessions": recent_rows,
     }
+
+
+# =============================================================================
+# Pari Welcome + Country (Phase 54 P1 + P7a)
+# =============================================================================
+
+class CountryUpdateReq(BaseModel):
+    country_code: str
+
+
+@api_router.get("/me/pari_welcome")
+async def pari_welcome_get(supa_user: dict = Depends(get_supabase_user)):
+    """Return whether the welcome modal should display for the current user."""
+    user_id = supa_user.get("id")
+    rows = _supabase_get(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}"
+        f"&select=pari_welcomed_at,country_code&limit=1"
+    ) or []
+    p = (rows or [{}])[0]
+    return {
+        "should_show_welcome": not bool(p.get("pari_welcomed_at")),
+        "pari_welcomed_at": p.get("pari_welcomed_at"),
+        "country_code": p.get("country_code"),
+    }
+
+
+@api_router.post("/me/pari_welcome/ack")
+async def pari_welcome_ack(supa_user: dict = Depends(get_supabase_user)):
+    """Mark Pari's welcome as acknowledged for the current user."""
+    user_id = supa_user.get("id")
+    now_iso = datetime.now(timezone.utc).isoformat()
+    _supabase_patch(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}",
+        {"pari_welcomed_at": now_iso},
+    )
+    return {"ok": True, "pari_welcomed_at": now_iso}
+
+
+@api_router.post("/me/country")
+async def update_country(req: CountryUpdateReq, supa_user: dict = Depends(get_supabase_user)):
+    """Update profiles.country_code (ISO-2: IN, US, GB, SG, AE, ...)."""
+    user_id = supa_user.get("id")
+    code = (req.country_code or "").upper().strip()[:2]
+    if not _re.fullmatch(r"[A-Z]{2}", code):
+        raise HTTPException(status_code=400, detail="invalid country code (expected ISO-2)")
+    _supabase_patch(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}",
+        {"country_code": code},
+    )
+    return {"ok": True, "country_code": code}
+
+
+# =============================================================================
+# Daily Finance News (Phase 54 P7b)
+# =============================================================================
+
+NEWS_SUMMARY_PROMPT = """Summarize the following finance headlines for a finance student in {country}. For each item, produce:
+- title (verbatim or lightly cleaned)
+- summary: 2 short lines (max 25 words each), plain language, no jargon
+- why_matters: 1 sentence explaining why a finance student should care
+- source: the publisher
+- url: the article link
+
+Return ONLY a JSON array (no prose, no markdown fence) with this shape:
+[{{"title":"...","summary":"...","why_matters":"...","source":"...","url":"..."}}, ...]
+
+Headlines:
+{headlines_json}
+"""
+
+
+def _fetch_news_raw(country_code: str):
+    """Best-effort fetch from a chain of free news APIs. Returns (items, source_label)."""
+    cc = (country_code or "IN").lower()
+    marketaux_key = os.environ.get("MARKETAUX_KEY")
+    if marketaux_key:
+        try:
+            url = (
+                f"https://api.marketaux.com/v1/news/all"
+                f"?countries={cc}&filter_entities=true&language=en&limit=7"
+                f"&api_token={marketaux_key}"
+            )
+            req = _urlreq.Request(url)
+            with _urlreq.urlopen(req, timeout=12) as r:
+                data = _json.loads(r.read().decode())
+            arts = data.get("data") or []
+            items = [
+                {"title": a.get("title"), "url": a.get("url"),
+                 "source": (a.get("source") or "Marketaux"),
+                 "snippet": a.get("description") or a.get("snippet") or ""}
+                for a in arts if a.get("title") and a.get("url")
+            ][:7]
+            if items:
+                return items, "marketaux"
+        except Exception as e:
+            logger.warning(f"[news] marketaux failed: {e}")
+    newsapi_key = os.environ.get("NEWSAPI_KEY")
+    if newsapi_key:
+        try:
+            url = (
+                f"https://newsapi.org/v2/top-headlines"
+                f"?category=business&country={cc}&pageSize=7&apiKey={newsapi_key}"
+            )
+            req = _urlreq.Request(url)
+            with _urlreq.urlopen(req, timeout=12) as r:
+                data = _json.loads(r.read().decode())
+            arts = data.get("articles") or []
+            items = [
+                {"title": a.get("title"), "url": a.get("url"),
+                 "source": ((a.get("source") or {}).get("name") or "NewsAPI"),
+                 "snippet": a.get("description") or ""}
+                for a in arts if a.get("title") and a.get("url")
+            ][:7]
+            if items:
+                return items, "newsapi"
+        except Exception as e:
+            logger.warning(f"[news] newsapi failed: {e}")
+    gnews_key = os.environ.get("GNEWS_KEY")
+    if gnews_key:
+        try:
+            url = (
+                f"https://gnews.io/api/v4/top-headlines"
+                f"?topic=business&country={cc}&lang=en&max=7&apikey={gnews_key}"
+            )
+            req = _urlreq.Request(url)
+            with _urlreq.urlopen(req, timeout=12) as r:
+                data = _json.loads(r.read().decode())
+            arts = data.get("articles") or []
+            items = [
+                {"title": a.get("title"), "url": a.get("url"),
+                 "source": ((a.get("source") or {}).get("name") or "GNews"),
+                 "snippet": a.get("description") or ""}
+                for a in arts if a.get("title") and a.get("url")
+            ][:7]
+            if items:
+                return items, "gnews"
+        except Exception as e:
+            logger.warning(f"[news] gnews failed: {e}")
+    return ([{
+        "title": "News API not configured",
+        "url": "",
+        "source": "Valuevade",
+        "snippet": "Set MARKETAUX_KEY, NEWSAPI_KEY, or GNEWS_KEY in backend/.env to enable real finance headlines.",
+    }], "fallback")
+
+
+async def _summarize_news(items, country_code):
+    """Run Haiku over the raw headlines + snippets and parse the JSON array
+    out of the reply. Falls back to a stub summary on any failure."""
+    if not EMERGENT_LLM_KEY or not items:
+        return [
+            {"title": it.get("title") or "", "summary": (it.get("snippet") or "")[:160],
+             "why_matters": "", "source": it.get("source") or "", "url": it.get("url") or ""}
+            for it in items
+        ]
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"news-{country_code}-{datetime.now(timezone.utc).date().isoformat()}",
+            system_message=NEWS_SUMMARY_PROMPT.format(
+                country=country_code or "India",
+                headlines_json=_json.dumps(items, ensure_ascii=False)[:6000],
+            ),
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
+        resp = await chat.send_message(UserMessage(text="Generate the summaries now. Return JSON only."))
+        text = (resp or "").strip()
+        if text.startswith("```"):
+            text = _re.sub(r"^```(?:json)?\s*", "", text)
+            text = _re.sub(r"\s*```\s*$", "", text)
+        parsed = _json.loads(text)
+        if isinstance(parsed, list) and parsed:
+            return parsed
+    except Exception as e:
+        logger.warning(f"[news] summarizer failed: {e}")
+    return [
+        {"title": it.get("title") or "", "summary": (it.get("snippet") or "")[:160],
+         "why_matters": "", "source": it.get("source") or "", "url": it.get("url") or ""}
+        for it in items
+    ]
+
+
+@api_router.get("/news/today")
+async def news_today(supa_user: dict = Depends(get_supabase_user)):
+    """Return today's curated finance headlines for the user's country."""
+    user_id = supa_user.get("id")
+    prof = _supabase_get(
+        f"profiles?id=eq.{_urlparse.quote(user_id)}&select=country_code&limit=1"
+    ) or []
+    country = ((prof or [{}])[0].get("country_code") or "IN").upper()
+    today_ist = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
+    cache_rows = _supabase_get(
+        f"daily_news_cache?country_code=eq.{country}&date_ist=eq.{today_ist}"
+        f"&select=items,source,fetched_at&limit=1"
+    ) or []
+    if cache_rows and cache_rows[0].get("items"):
+        reads = _supabase_get(
+            f"user_news_reads?user_id=eq.{_urlparse.quote(user_id)}"
+            f"&news_date_ist=eq.{today_ist}&select=read_at,xp_awarded&limit=1"
+        ) or []
+        return {
+            "country_code": country, "date_ist": today_ist,
+            "items": cache_rows[0]["items"], "source": cache_rows[0].get("source"),
+            "from_cache": True, "already_read_today": bool(reads),
+        }
+    raw_items, source_label = _fetch_news_raw(country)
+    summarised = await _summarize_news(raw_items, country)
+    try:
+        _supabase_post(
+            "daily_news_cache",
+            {"country_code": country, "date_ist": today_ist,
+             "items": summarised, "source": source_label},
+            prefer="resolution=ignore-duplicates",
+        )
+    except Exception as e:
+        logger.warning(f"[news] cache write failed: {e}")
+    return {
+        "country_code": country, "date_ist": today_ist,
+        "items": summarised, "source": source_label,
+        "from_cache": False, "already_read_today": False,
+    }
+
+
+@api_router.post("/news/mark_read")
+async def news_mark_read(supa_user: dict = Depends(get_supabase_user)):
+    """Bump per-user reads counter and award +30 XP once per IST day."""
+    user_id = supa_user.get("id")
+    rpc = _supabase_post("rpc/record_news_read", {"p_user_id": user_id}) or {}
+    xp_awarded_now = bool(rpc.get("xp_awarded_now"))
+    total_reads = rpc.get("total_reads", 0)
+    if xp_awarded_now:
+        try:
+            _supabase_post(
+                "rpc/award_xp",
+                {"p_user_id": user_id, "p_event_type": "news_read", "p_amount": 30,
+                 "p_event_source_id": None, "p_event_source_label": rpc.get("today_ist"),
+                 "p_metadata": {"reads_total": total_reads}},
+            )
+        except Exception as e:
+            logger.warning(f"[news] award_xp failed: {e}")
+    try:
+        if total_reads >= 7:
+            _supabase_post(
+                "rpc/evaluate_badge",
+                {"p_user_id": user_id, "p_badge_code": "news_buff", "p_force": False},
+            )
+    except Exception as e:
+        logger.warning(f"[news] news_buff badge eval failed: {e}")
+    return {
+        "ok": True, "today_ist": rpc.get("today_ist"),
+        "xp_awarded_now": xp_awarded_now,
+        "xp_amount": 30 if xp_awarded_now else 0,
+        "total_reads": total_reads,
+    }
+
+
+
 
 
 # =============================================================================

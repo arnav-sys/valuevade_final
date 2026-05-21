@@ -19,7 +19,7 @@ import InteractiveSim from './simulations/InteractiveSim';
 import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
 import useTimeTracking from '../utils/useTimeTracking';
-import AskTaraButton from './tutor/AskTaraButton';
+import AskPariButton from './tutor/AskPariButton';
 
 const TYPE_META = {
   excel: { label: 'Excel', Icon: FileSpreadsheet, color: '#10B981' },
@@ -244,7 +244,7 @@ export default function SimulationPage() {
           <GenericRenderer config={config} title={sim.title} typeLabel={sim.sim_type || 'Simulation'} onComplete={handleComplete} />
         )}
         <div className="mt-6">
-          <AskTaraButton phase="simulation" courseSessionId={sessionId} variant="card" />
+          <AskPariButton phase="simulation" courseSessionId={sessionId} variant="card" />
         </div>
       </main>
       {(() => {

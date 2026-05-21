@@ -87,7 +87,7 @@ function TutorToggle() {
             : 'var(--color-surface)',
         }}
       >
-        <img src="/tutor/tara_idle.png" alt="" className="w-12 h-12 object-cover" style={{ opacity: enabled ? 1 : 0.55 }} />
+        <img src="/tutor/pari_idle.png" alt="" className="w-12 h-12 object-cover" style={{ opacity: enabled ? 1 : 0.55 }} />
       </div>
       <div className="flex-1 min-w-0">
         <div className="text-base font-clash font-bold text-[var(--color-text)] mb-0.5">Show AI tutor</div>

@@ -10,6 +10,7 @@ import { StreakProvider } from "@/contexts/StreakContext";
 import { BadgeProvider } from "@/contexts/BadgeContext";
 import { DailyChallengesProvider } from "@/contexts/DailyChallengesContext";
 import { TutorProvider } from "@/contexts/TutorContext";
+import { DoubtsLauncherProvider } from "@/contexts/DoubtsLauncherContext";
 import XPRoot from "@/components/gamification/XPRoot";
 import StreakRoot from "@/components/gamification/StreakRoot";
 import BadgeRoot from "@/components/gamification/BadgeRoot";
@@ -90,6 +91,7 @@ function App() {
                 <BadgeProvider>
                 <DailyChallengesProvider>
                 <TutorProvider>
+                <DoubtsLauncherProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -172,6 +174,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </DoubtsLauncherProvider>
                 </TutorProvider>
                 </DailyChallengesProvider>
                 </BadgeProvider>

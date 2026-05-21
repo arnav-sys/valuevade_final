@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
-import AskTaraButton from './tutor/AskTaraButton';
+import AskPariButton from './tutor/AskPariButton';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
@@ -312,7 +312,7 @@ export default function QuizCompletePage() {
 
         {/* CTAs */}
         <div className="flex flex-col gap-3" data-testid="quiz-complete-ctas">
-          <AskTaraButton
+          <AskPariButton
             phase="quiz"
             courseSessionId={sessionId}
             variant="card"

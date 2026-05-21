@@ -1,16 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
+import { useDoubtsLauncher } from '../../contexts/DoubtsLauncherContext';
 
 // Phase 51 — AvatarPersona
 //
-// Renders Tara, the AI tutor persona, as a stylized 3D-illustration character
+// Renders Pari, the AI tutor persona, as a stylized 3D-illustration character
 // with subtle CSS-driven micro-animations and an optional glass speech bubble.
 // All pose images live at /tutor/<slug>.png and are pre-generated via
 // nano-banana with the user's reference photos.
 //
 // Props
-//   pose             — one of the manifest slugs (without the `tara_` prefix
+//   pose             — one of the manifest slugs (without the `pari_` prefix
 //                      OR with it; both forms accepted)
 //   size             — 'sm' | 'md' | 'lg' | 'fullscreen'
 //   message          — optional string. When provided, a speech bubble renders
@@ -20,7 +21,7 @@ import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
 //   showSpeechBubble — bool. If false, message is ignored.
 //   onMessageEnd     — called when the typewriter completes. No-op default;
 //                      Phase 52 (Doubts) will use it to chain TTS.
-//   ariaLabel        — overrides the default "Tara, your AI tutor" announce.
+//   ariaLabel        — overrides the default "Pari, your AI tutor" announce.
 //   onClick          — optional click handler for the avatar itself.
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
@@ -30,10 +31,10 @@ function prefersReducedMotion() {
   return window.matchMedia(REDUCED_MOTION_QUERY).matches;
 }
 
-// Normalise pose names: accept both "idle" and "tara_idle".
+// Normalise pose names: accept both "idle" and "pari_idle".
 function normalizePoseSlug(pose) {
-  if (!pose) return 'tara_idle';
-  return pose.startsWith('tara_') ? pose : `tara_${pose}`;
+  if (!pose) return 'pari_idle';
+  return pose.startsWith('pari_') ? pose : `pari_${pose}`;
 }
 
 const SIZE_MAP = {
@@ -63,8 +64,14 @@ export default function AvatarPersona({
   className = '',
   bubbleDismissable = true,
   autoDismissMs = null,
+  clickToOpenDoubts = false,
+  doubtsPhase = 'dashboard',
+  doubtsModuleCode = null,
+  doubtsCourseSessionId = null,
+  doubtsAttemptContext = null,
 }) {
   const { enabled } = useTutor();
+  const { openDoubts } = useDoubtsLauncher();
   const reducedMotion = useMemo(prefersReducedMotion, []);
 
   // Cross-fade between poses: keep both the current and the next image
@@ -137,9 +144,22 @@ export default function AvatarPersona({
   const sizeCfg = SIZE_MAP[size] || SIZE_MAP.md;
   const posCfg = POSITION_CLASSES[position] || POSITION_CLASSES.inline;
   const showBubble = showSpeechBubble && message && !bubbleDismissed;
-  const interactive = !!onClick;
+
+  // P54: when clickToOpenDoubts is true and no explicit onClick, route the
+  // avatar click to the DoubtsLauncher.
+  const effectiveOnClick = onClick || (clickToOpenDoubts
+    ? () => openDoubts({
+        phase: doubtsPhase,
+        moduleCode: doubtsModuleCode,
+        courseSessionId: doubtsCourseSessionId,
+        attemptContext: doubtsAttemptContext,
+      })
+    : null);
+
+  const interactive = !!effectiveOnClick;
   const animClass = reducedMotion ? '' : 'vv-avatar-breathing';
   const hoverWiggle = !reducedMotion && (size === 'lg' || size === 'fullscreen') ? 'vv-avatar-hover-wiggle' : '';
+  const hoverScale = !reducedMotion && interactive ? 'vv-avatar-hover-scale' : '';
 
   const completeTypewriter = () => {
     if (typingTimerRef.current) {
@@ -155,11 +175,11 @@ export default function AvatarPersona({
       <div className={`flex ${size === 'fullscreen' ? 'flex-col items-center gap-3' : 'items-end gap-3'}`}>
         <button
           type="button"
-          onClick={onClick || undefined}
+          onClick={effectiveOnClick || undefined}
           aria-label={ariaLabel || `${TUTOR_NAME}, your AI tutor`}
-          className={`relative ${sizeCfg.box} flex-shrink-0 ${interactive ? 'cursor-pointer' : 'cursor-default'} ${hoverWiggle}`}
+          className={`relative ${sizeCfg.box} flex-shrink-0 ${interactive ? 'cursor-pointer' : 'cursor-default'} ${hoverWiggle} ${hoverScale} transition-transform duration-200`}
           data-testid="tutor-persona-avatar"
-          style={{ background: 'transparent', border: 'none', padding: 0 }}
+          style={{ background: 'transparent', border: 'none', padding: 0, filter: 'drop-shadow(0 6px 14px rgba(0,0,0,0.35))' }}
         >
           {previousSlug && (
             <img
@@ -174,7 +194,7 @@ export default function AvatarPersona({
           <img
             key={`cur-${activeSlug}`}
             src={`/tutor/${activeSlug}.png`}
-            alt={`${TUTOR_NAME}, ${activeSlug.replace('tara_', '').replace('_', ' ')}`}
+            alt={`${TUTOR_NAME}, ${activeSlug.replace('pari_', '').replace('_', ' ')}`}
             className={`relative ${sizeCfg.img} object-contain rounded-full vv-avatar-fade vv-avatar-fade-in ${animClass}`}
             draggable={false}
           />

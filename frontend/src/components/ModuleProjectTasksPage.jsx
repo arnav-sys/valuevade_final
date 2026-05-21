@@ -293,7 +293,7 @@ export default function ModuleProjectTasksPage() {
       </main>
       {(() => {
         // When the module has no project to render (empty / loading / error
-        // state), switch Tara to an apology pose with a clarifying message
+        // state), switch Pari to an apology pose with a clarifying message
         // so she never looks confused on an empty page.
         const hasProject = !!masterProject && !loading && !error;
         const phase = hasProject ? 'project_intro' : 'apology';

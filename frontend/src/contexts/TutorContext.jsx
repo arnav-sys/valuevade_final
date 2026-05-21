@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 // Persona constants — single source of truth. Renaming the tutor is a
 // one-line change here.
-export const TUTOR_NAME = 'Tara';
+export const TUTOR_NAME = 'Pari';
 export const TUTOR_TITLE = 'Your AI Finance Tutor';
 
 // LocalStorage flag so users can disable the persona from settings.

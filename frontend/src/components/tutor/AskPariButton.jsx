@@ -17,7 +17,7 @@ import DoubtsSession from './DoubtsSession';
 //                     auto-dismisses after 8s. Set true on quiz/sim < 70%.
 //   autoPromptCopy    optional override for the banner copy.
 
-export default function AskTaraButton({
+export default function AskPariButton({
   phase = 'dashboard',
   moduleCode = null,
   courseSessionId = null,
@@ -54,7 +54,7 @@ export default function AskTaraButton({
           data-testid="ask-tara-btn-card"
         >
           <div className="w-10 h-10 rounded-full overflow-hidden shrink-0">
-            <img src="/tutor/tara_listening.png" alt="" className="w-10 h-10 object-cover" />
+            <img src="/tutor/pari_listening.png" alt="" className="w-10 h-10 object-cover" />
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-sm font-clash font-bold text-[var(--color-text)]">Ask {TUTOR_NAME} a doubt?</div>

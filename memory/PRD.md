@@ -1737,3 +1737,129 @@ curl -s "$API_URL/api/portfolio/public/0y5mu2im"
 - `/app/frontend/src/App.js` — `+` lazy imports + 2 routes.
 - `/app/frontend/src/components/Sidebar.jsx` — `+` Portfolio nav entry (Trophy icon).
 
+
+---
+
+### Phase 54 — Pari Tutor + Personalized Doubts + Finance News (May 2026)
+
+**Pre-flight rename**: Tara → Pari across the entire stack.
+
+- `TUTOR_NAME = "Pari"` constant (was already in `TutorContext.jsx`; values flipped).
+- `/app/frontend/public/tutor/` — all 12 image files renamed `tara_*.png` → `pari_*.png`. `MANIFEST.json` updated. Old files deleted (recoverable from git history; not kept as `_v1` backups because P8 was skipped — see below).
+- Bulk sed: every `"Tara"` → `"Pari"`, every `tara_` → `pari_`, every `AskTara` → `AskPari` across all `.jsx`/`.js`/`.py`/`.json` under `frontend/src/`, `backend/server.py`, and the tutor manifest.
+- `AskTaraButton.jsx` renamed to `AskPariButton.jsx` (component name + filename + every import).
+- System prompt in `server.py` (`DOUBTS_SYSTEM_PROMPT_TEMPLATE`): "You are Pari, an AI finance tutor…" and error string "Pari hit a snag — please try again."
+
+#### Migration `0014_p54_combined.sql` (single consolidated patch)
+
+- `profiles.pari_welcomed_at timestamptz` (P1 gate)
+- `profiles.country_code text` (P7a — ISO-2)
+- `user_doubt_sessions.attempt_context jsonb` (P4)
+- `daily_news_cache(country_code, date_ist, items jsonb, source, fetched_at)` with `unique (country_code, date_ist)` (P7b)
+- `user_news_reads(user_id, news_date_ist, read_at, read_count, xp_awarded)` PK on `(user_id, news_date_ist)` (P7b)
+- RLS on the 2 new news tables; `daily_news_cache` is anon-readable, `user_news_reads` is owner-only-readable.
+- New RPC `record_news_read(p_user_id uuid)` — atomic per-day upsert that bumps `read_count`, sets `xp_awarded=true` once, returns `{today_ist, xp_awarded_now, total_reads}`.
+- New badge `news_buff` — `common · consistency`, criteria `{"type":"news_reads_gte","gte":7}`. Note: column was `criteria_json` (not `criteria`) — the first migration apply caught this and was corrected.
+
+Applied via `python3 apply_migration_via_api.py 0014_p54_combined.sql` → HTTP 201, 0 rows.
+
+#### What shipped — by priority
+
+**P1 ✅ Welcome screen on first enrollment**
+- `<PariWelcomeModal />` in `tutor/PariWelcomeModal.jsx` — full-screen waving Pari, single CTA.
+- Mounted on `<DashboardPage />` (it self-fetches `GET /api/me/pari_welcome` and renders only when `should_show_welcome=true`).
+- Dismiss → `POST /api/me/pari_welcome/ack` stamps `profiles.pari_welcomed_at` (UTC ISO).
+- Verified live: first render correctly shows the modal; dismissing it survives a hard reload.
+
+**P2 ✅ Avatar = doubts trigger**
+- New `<DoubtsLauncherProvider>` wraps the entire app (between `TutorProvider` and the routed `<Suspense>`).
+- `useDoubtsLauncher()` exposes `openDoubts({phase, moduleCode, courseSessionId, attemptContext})` that:
+  1. starts a doubt session via `POST /api/doubts/start`,
+  2. mounts a single shared `<DoubtsSession>` modal in a portal,
+  3. surfaces 429 quota errors as a non-blocking toast.
+- `<AvatarPersona>` gained `clickToOpenDoubts`, `doubtsPhase`, `doubtsModuleCode`, `doubtsCourseSessionId`, `doubtsAttemptContext` props. When `clickToOpenDoubts` is true and no explicit `onClick` is provided, the avatar wires its click to the launcher.
+- Dashboard's old `<AskPariButton phase="dashboard" variant="pill" />` floating pill — removed. The bottom-right Pari avatar is now the entry point. (`dashboard-ask-tara-floating` testid no longer renders.)
+- The page-level `<AskPariButton>` mounts on Notes / Quiz / Session / Simulation are kept as a clearer visible CTA on those surfaces; both pathways open the same launcher modal.
+
+**P3 ✅ Rephrase classifier + remaining-count warnings**
+- `OFF_TOPIC_CLASSIFIER_PROMPT` rewrote: now receives `{module_title, last_assistant_message, user_message}` and explicitly lists follow-up forms (`"explain better"`, `"another example"`, `"I don't get it"`, etc.) as always-on_topic.
+- `/api/doubts/ask` now queries the last assistant message before classifying.
+- Strike messages now include actionable counts:
+  - Strike 1: *"Let's stay on topic — try asking about {module_title}. You have 1 more off-topic chance and {turns_left} turn(s) left in this session."*
+  - Strike 2 (kick): *"Session ended — let's get back to studying! You have {N} doubt session(s) left today."*
+
+**P4 ✅ Personalized doubt context**
+- `DoubtsStartReq` and `DoubtsAskReq` both accept `attempt_context: dict | None`.
+- `/api/doubts/start` persists `attempt_context` to `user_doubt_sessions.attempt_context` on session create.
+- `/api/doubts/ask` reads the persisted context (or accepts a fresh one on the first ask) and appends it to the user message as `[attempt_context — what the student just did]: {JSON}\n`.
+- System prompt extended: *"If `attempt_context` is provided in the user's first message, you may explain why the student's specific choice was wrong (quiz), what their answer missed (interview), how their simulation deviated from the optimal path, or expand on the specific notes card they were viewing. Be concrete and reference their actual answer/submission."*
+- Frontend `DoubtsLauncher` accepts `attemptContext`; `<AvatarPersona clickToOpenDoubts doubtsAttemptContext={...}>` forwards it.
+- `<DoubtsSession>` also forwards `attemptContext` on the first ask if the launcher didn't pre-start the session.
+
+**P5 ⏸️ Pari leads quiz/interview/sim/results — DEFERRED to P55**
+- Context-budget reason: the existing AskPariButton pattern + the new clickable-avatar provide functional Q&A entry points on every surface listed; the deep visual wrapping (Pari posing as interviewer / per-dimension grader / sim debrief presenter) is a multi-file UI rebuild that didn't fit the remaining budget.
+- What ships: the avatars on Notes/Quiz/Session/Simulation already render in pose-appropriate states via `resolveTutorPhase(...)`. They are clickable to open Pari, and the `attempt_context` plumbing is in place — so per-page surfaces can be re-skinned later with zero schema change.
+
+**P6 ⏸️ Notes UI: Pari teaches — DEFERRED**
+- Time-box hit: `NotesPage.jsx` is ~1700 lines with 8 card types; wiring `<PariTeachingHeader>` and the per-card-type pose mapping cleanly would have required a half-rewrite. The user's brief explicitly authorised deferral if it ran long.
+- Mitigation: the bottom-of-page `<AskPariButton phase="notes" />` continues to render on `NotesPage.jsx`, plus the dashboard-level Pari avatar is clickable.
+
+**P7a ✅ Country question**
+- `POST /api/me/country` validates ISO-2 and updates `profiles.country_code`.
+- `GET /api/me/pari_welcome` co-returns the current `country_code` so the welcome flow can chain into a country prompt later.
+- *Note*: the customize wizard UI prompt was NOT added; the column + endpoint are live, and the next phase / customize-wizard refactor can surface the question. Today the default `IN` from the news endpoint covers Indian users (the majority) without prompting.
+
+**P7b ✅ Daily Finance News**
+- `<DailyNewsModal />` in `tutor/DailyNewsModal.jsx`. Auto-opens on dashboard mount, once per IST day (LocalStorage gate `vv_news_seen_<date>`).
+- `GET /api/news/today` — cache hit → returns the (country, today_ist) cached row; cache miss → tries Marketaux → NewsAPI → GNews → fallback placeholder, then Haiku-summarises the top 5-7 headlines into `[{title, summary, why_matters, source, url}]` and writes the cache.
+- `POST /api/news/mark_read` calls `record_news_read` RPC + awards +30 XP once per IST day via `award_xp` + best-effort triggers `evaluate_badge('news_buff')` at ≥ 7 reads.
+- Source label is surfaced in the modal footer when `source='fallback'` so you can tell at a glance whether real news is loading.
+
+**API keys** (all three are optional; first one set wins, otherwise fallback placeholder):
+- `MARKETAUX_KEY` (finance-focused) — sign up at https://www.marketaux.com/, 100 req/day free
+- `NEWSAPI_KEY` (business category) — https://newsapi.org/, 100 req/day dev
+- `GNEWS_KEY` (business topic) — https://gnews.io/, 100 req/day
+- Add any one to `/app/backend/.env` and the cache populates immediately on the next `/api/news/today` call.
+
+Live smoke (test user, IN):
+```bash
+$ curl "$API_URL/api/news/today" -H "Authorization: Bearer $TOKEN"
+{ "country_code": "IN", "date_ist": "2026-05-21",
+  "items": [ {"title":"News API not configured", "summary":"Set MARKETAUX_KEY…"} ],
+  "source": "fallback", "from_cache": false }
+```
+
+**P8 ⏸️ 3D avatar regen — SKIPPED**
+- Per the user's brief: "if <30% credits remain, skip P8 entirely." Skipped to preserve budget for the must-do items (P1-P4) which are higher-value, lower-risk.
+- CSS-only depth: `vv-avatar-hover-scale` keyframes added (scale 1.06 on hover, 0.97 on active, with cubic-bezier easing). Also stronger `filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35))` on every avatar render. These give a "more 3D" feel without burning credits on 12 nano-banana iterations.
+
+#### Files
+
+**Migrations / DB**
+- `/app/scripts/migrations/0014_p54_combined.sql` — single consolidated apply.
+
+**Backend (`server.py`)**
+- New endpoints: `/api/me/pari_welcome` (GET/POST ack), `/api/me/country`, `/api/news/today`, `/api/news/mark_read`.
+- New RPC: `public.record_news_read(uuid)`.
+- New badge seed: `news_buff` (common · consistency).
+- `DoubtsStartReq` + `DoubtsAskReq` extended with `attempt_context: Optional[dict]`.
+- `OFF_TOPIC_CLASSIFIER_PROMPT` rewritten with `last_assistant_message` context.
+- `DOUBTS_SYSTEM_PROMPT_TEMPLATE` extended with the `attempt_context` instruction.
+- Strike-message templates rewritten with actionable counts.
+- Free-news chain: `_fetch_news_raw()` + `_summarize_news()` helpers.
+
+**Frontend**
+- `tutor/PariWelcomeModal.jsx` (new) — auto-fetching one-time welcome.
+- `tutor/DailyNewsModal.jsx` (new) — daily news + +30 XP CTA.
+- `contexts/DoubtsLauncherContext.jsx` (new) — app-level launcher provider.
+- `tutor/AvatarPersona.jsx` — `+` `clickToOpenDoubts` + drop-shadow + hover-scale.
+- `tutor/DoubtsSession.jsx` — accept pre-started `doubtSession` + `attemptContext`; pass context on first ask.
+- `DashboardPage.jsx` — `-` floating AskPariButton pill; `+` clickable avatar; `+` PariWelcomeModal; `+` DailyNewsModal (auto-open per IST day).
+- `App.js` — `+` `<DoubtsLauncherProvider>` wrapping `<Suspense>`.
+- `App.css` — `+` `.vv-avatar-hover-scale` keyframes.
+- Rename: `tutor/AskTaraButton.jsx` → `tutor/AskPariButton.jsx`; all 12 PNGs `tara_*.png` → `pari_*.png`; `MANIFEST.json` keys + slugs updated.
+
+#### Cost rails preserved
+
+The doubts pipeline still respects: 5 sessions/IST-day, 3 turns/session, 1500 tokens/session, 2 off-topic strikes. The classifier now adds ~30 tokens per ask for `last_assistant_message` context — negligible (~$0.00003/turn).
+

@@ -6,7 +6,7 @@ import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
 
 // Phase 52 — DoubtsSession
 //
-// Modal-style chat panel: large Tara on the left, message thread on the right,
+// Modal-style chat panel: large Pari on the left, message thread on the right,
 // input at the bottom. Pose updates with the conversation state:
 //   listening      → idle / waiting for the user to type
 //   thinking       → request in flight to /api/doubts/ask
@@ -75,25 +75,28 @@ function ChatBubble({ role, content, isCached, isOffTopic, animate }) {
 }
 
 export default function DoubtsSession({
-  open,
+  open = true,
   onClose,
   phase = 'notes',
   courseSessionId = null,
   moduleCode = null,
+  doubtSession = null,         // P54: pre-started session (from DoubtsLauncher)
+  attemptContext = null,       // P54: personalized doubts context
 }) {
   const { enabled } = useTutor();
-  const [bootstrapping, setBootstrapping] = useState(true);
-  const [sessionId, setSessionId] = useState(null);
+  const [bootstrapping, setBootstrapping] = useState(!doubtSession);
+  const [sessionId, setSessionId] = useState(doubtSession?.doubt_session_id || null);
   const [error, setError] = useState(null);
   const [quotaExhausted, setQuotaExhausted] = useState(false);
   const [messages, setMessages] = useState([]); // {role, content, isCached?, isOffTopic?, animate?}
   const [input, setInput] = useState('');
-  const [turnsLeft, setTurnsLeft] = useState(3);
-  const [tokensLeft, setTokensLeft] = useState(1500);
-  const [sessionsLeftToday, setSessionsLeftToday] = useState(null);
+  const [turnsLeft, setTurnsLeft] = useState(doubtSession?.turns_left ?? 3);
+  const [tokensLeft, setTokensLeft] = useState(doubtSession?.tokens_left ?? 1500);
+  const [sessionsLeftToday, setSessionsLeftToday] = useState(doubtSession?.sessions_left_today ?? null);
   const [pending, setPending] = useState(false);
   const [sessionEnded, setSessionEnded] = useState(false);
   const [endReason, setEndReason] = useState(null);
+  const [firstAskSent, setFirstAskSent] = useState(false);  // P54: send attemptContext on first ask
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
   const autoCloseRef = useRef(null);
@@ -102,6 +105,15 @@ export default function DoubtsSession({
   useEffect(() => {
     if (!open || !enabled) return undefined;
     if (sessionId) { setBootstrapping(false); return undefined; }
+    if (doubtSession?.doubt_session_id) {
+      // Launcher already started the session — just hydrate state.
+      setSessionId(doubtSession.doubt_session_id);
+      setTurnsLeft(doubtSession.turns_left ?? 3);
+      setTokensLeft(doubtSession.tokens_left ?? 1500);
+      setSessionsLeftToday(doubtSession.sessions_left_today ?? null);
+      setBootstrapping(false);
+      return undefined;
+    }
     let alive = true;
     (async () => {
       setBootstrapping(true);
@@ -113,6 +125,7 @@ export default function DoubtsSession({
           phase,
           course_session_id: courseSessionId,
           module_code: moduleCode,
+          attempt_context: attemptContext,
         });
         if (!alive) return;
         if (status === 429 || (data?.detail && data.detail.reason === 'quota_exhausted')) {
@@ -133,7 +146,7 @@ export default function DoubtsSession({
       }
     })();
     return () => { alive = false; };
-  }, [open, enabled, phase, courseSessionId, moduleCode, sessionId]);
+  }, [open, enabled, phase, courseSessionId, moduleCode, sessionId, doubtSession, attemptContext]);
 
   // Auto-scroll on new messages.
   useEffect(() => {
@@ -165,13 +178,19 @@ export default function DoubtsSession({
     setMessages((m) => [...m, { role: 'user', content: msg }]);
     setPending(true);
     try {
-      const { ok, status, data } = await authedFetch('/api/doubts/ask', {
+      const askBody = {
         doubt_session_id: sessionId, message: msg,
-      });
+      };
+      // P54: send attempt_context with the FIRST ask (if not already persisted via /start).
+      if (!firstAskSent && attemptContext && !doubtSession?.doubt_session_id) {
+        askBody.attempt_context = attemptContext;
+      }
+      const { ok, status, data } = await authedFetch('/api/doubts/ask', askBody);
+      if (!firstAskSent) setFirstAskSent(true);
       if (!ok) {
         setMessages((m) => [...m, {
           role: 'assistant',
-          content: status >= 500 ? "Tara hit a snag — please try again." : (data?.detail || 'Something went wrong.'),
+          content: status >= 500 ? "Pari hit a snag — please try again." : (data?.detail || 'Something went wrong.'),
           isError: true,
         }]);
       } else {
@@ -248,7 +267,7 @@ export default function DoubtsSession({
 
         {/* Body */}
         <div className="flex-1 flex flex-col sm:flex-row min-h-0">
-          {/* Tara */}
+          {/* Pari */}
           <aside className="flex flex-col items-center justify-center sm:w-1/3 px-4 py-4 sm:py-6 border-b sm:border-b-0 sm:border-r border-[var(--color-border)] bg-[var(--color-surface)]">
             <AvatarPersona
               pose={pose}

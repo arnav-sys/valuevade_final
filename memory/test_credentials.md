@@ -327,3 +327,131 @@ Just hit Level {N} ({Level Name}) on Valuevade — {modules_completed} modules i
 
 The button opens `https://www.linkedin.com/sharing/share-offsite/?url=…&summary=…`.
 
+
+
+## Phase 54 — Pari rename + Welcome + News (May 2026)
+
+### Verify the Pari rename
+
+```bash
+# 1) No "Tara" strings in code or manifest
+grep -rEn 'Tara|tara_' /app/frontend/src /app/backend/server.py /app/frontend/public/tutor 2>/dev/null
+# → only acceptable hits are inside comments or strings explicitly marked
+#   "P54 renamed" — there should be no live Tara strings.
+
+# 2) All 12 PNGs are pari_* (not tara_*)
+ls /app/frontend/public/tutor | grep '\.png' | sort
+# → pari_apology.png, pari_asking.png, ... pari_waving.png (12 files)
+
+# 3) MANIFEST.json reports tutor_name=Pari
+head -2 /app/frontend/public/tutor/MANIFEST.json
+# → "tutor_name": "Pari"
+```
+
+### Welcome modal
+
+```bash
+API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -f2)
+TOKEN="<paste from localStorage>"
+
+# 1) First-time user: should_show_welcome=true
+curl -s "$API_URL/api/me/pari_welcome" -H "Authorization: Bearer $TOKEN"
+# → {"should_show_welcome":true,"pari_welcomed_at":null,"country_code":null}
+
+# 2) Acknowledge
+curl -s -X POST "$API_URL/api/me/pari_welcome/ack" -H "Authorization: Bearer $TOKEN" -d '{}'
+# → {"ok":true,"pari_welcomed_at":"2026-05-21T..."}
+
+# 3) Second call: should_show_welcome=false
+curl -s "$API_URL/api/me/pari_welcome" -H "Authorization: Bearer $TOKEN"
+# → {"should_show_welcome":false,...}
+```
+
+Reset for re-testing (service-role):
+```sql
+update public.profiles set pari_welcomed_at = null where id = '13a690c4-96d7-4827-8117-fde4f696e999';
+```
+
+### Country update
+
+```bash
+curl -s -X POST "$API_URL/api/me/country" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"country_code":"IN"}'
+# → {"ok":true,"country_code":"IN"}
+
+# Invalid → 400
+curl -s -X POST "$API_URL/api/me/country" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"country_code":"INDIA"}'
+# → {"detail":"invalid country code (expected ISO-2)"}
+```
+
+### Daily news
+
+```bash
+# Fetch + auto-cache for today
+curl -s "$API_URL/api/news/today" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
+
+# Mark as read (awards +30 XP once per IST day)
+curl -s -X POST "$API_URL/api/news/mark_read" -H "Authorization: Bearer $TOKEN" -d '{}'
+# → {"ok":true,"today_ist":"2026-05-21","xp_awarded_now":true,"xp_amount":30,"total_reads":1}
+
+# Second call same day → xp_awarded_now=false, xp_amount=0, total_reads bumps
+curl -s -X POST "$API_URL/api/news/mark_read" -H "Authorization: Bearer $TOKEN" -d '{}'
+```
+
+### Enable real news (optional)
+
+Without any key set, the modal shows a single placeholder item:
+```
+"News API not configured" — Set MARKETAUX_KEY, NEWSAPI_KEY, or GNEWS_KEY in backend/.env to enable real finance headlines.
+```
+
+To enable real headlines, sign up for ONE of these free tiers and add to `/app/backend/.env`:
+
+| Provider | Free tier | Best for | URL |
+|---|---|---|---|
+| Marketaux | 100 req/day | Finance-focused | https://www.marketaux.com/ |
+| NewsAPI.org | 100 req/day (dev) | Business category | https://newsapi.org/ |
+| GNews.io | 100 req/day | General business | https://gnews.io/ |
+
+Then `sudo supervisorctl restart backend` and re-call `/api/news/today` — it'll repopulate the cache with real headlines and Pari's summaries.
+
+### Reset news quota for retesting
+
+```sql
+delete from public.user_news_reads where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+delete from public.daily_news_cache where date_ist = (now() at time zone 'Asia/Kolkata')::date;
+```
+
+### Doubts attempt_context (P4)
+
+```bash
+# Start a doubt session with quiz attempt context (the LLM will now know the
+# student's specific wrong answer).
+curl -s -X POST "$API_URL/api/doubts/start" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"phase":"quiz","module_code":"M1","attempt_context":{
+        "question_text":"What is the time value of money?",
+        "options":["…","…","…","…"],
+        "user_choice_index":1,
+        "correct_index":2,
+        "explanation_existing":"TVM means a rupee today is worth more than..."
+      }}'
+# → returns doubt_session_id. The first /ask now sees this context.
+
+# Follow-up classification test (P3):
+curl -s -X POST "$API_URL/api/doubts/ask" -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"doubt_session_id":"<uuid>","message":"explain better"}'
+# → classifier flags on_topic (was incorrectly off_topic before P54).
+
+# Off-topic with remaining-count warning:
+curl -s -X POST "$API_URL/api/doubts/ask" -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"doubt_session_id":"<uuid>","message":"What is the weather in Mumbai?"}'
+# → is_off_topic:true, answer mentions
+#   "You have 1 more off-topic chance and N turn(s) left in this session."
+```
+

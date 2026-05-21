@@ -12,6 +12,8 @@ import NearMissBanner from './gamification/NearMissBanner';
 import DailyChallengesCard from './gamification/DailyChallengesCard';
 import ModuleConstellationMap from './gamification/ModuleConstellationMap';
 import AvatarPersona from './tutor/AvatarPersona';
+import PariWelcomeModal from './tutor/PariWelcomeModal';
+import DailyNewsModal from './tutor/DailyNewsModal';
 import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
@@ -19,7 +21,7 @@ import {
   HelpCircle, MessageSquare, Wrench, Rocket, Loader2,
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
-import AskTaraButton from './tutor/AskTaraButton';
+import AskPariButton from './tutor/AskPariButton'; // P54: kept for legacy refs, no longer rendered on dashboard
 
 const PHASE_META = {
   notes: { label: 'Notes', icon: FileText, path: 'notes' },
@@ -252,6 +254,22 @@ export default function DashboardPage() {
   const [stats, setStats] = useState(null);
   const [moduleProjects, setModuleProjects] = useState([]);
   const [capstone, setCapstone] = useState(null);
+  // P54 P7b: Daily News modal — auto-open once per IST day.
+  const [newsOpen, setNewsOpen] = useState(false);
+  useEffect(() => {
+    if (!user?.id) return;
+    try {
+      const todayIst = new Date(Date.now() + (5.5 * 60 - new Date().getTimezoneOffset()) * 60000)
+        .toISOString().slice(0, 10);
+      const seen = localStorage.getItem(`vv_news_seen_${todayIst}`);
+      if (!seen) {
+        const t = setTimeout(() => setNewsOpen(true), 1800);
+        return () => clearTimeout(t);
+      }
+    } catch { /* localStorage may be unavailable — skip auto-open */ }
+    return undefined;
+  }, [user?.id]);
+  const refreshXP = () => { /* XPRoot auto-refreshes via Realtime; no-op placeholder */ };
 
   const fetchAll = async () => {
     if (!user?.id) return;
@@ -674,12 +692,18 @@ export default function DashboardPage() {
             position="bottom-right"
             message={t?.message}
             autoDismissMs={6000}
+            clickToOpenDoubts
+            doubtsPhase="dashboard"
           />
         );
       })()}
-      <div className="fixed bottom-6 right-24 z-30" data-testid="dashboard-ask-tara-floating">
-        <AskTaraButton phase="dashboard" variant="pill" />
-      </div>
+      {/* P54 P2: "Ask Pari" pill removed — the avatar itself is now the entry point. */}
+      <PariWelcomeModal />
+      <DailyNewsModal
+        open={newsOpen}
+        onClose={() => setNewsOpen(false)}
+        onMarkRead={() => { refreshXP?.(); }}
+      />
     </div>
   );
 }
