@@ -5,9 +5,11 @@ import { supabase } from '../lib/supabase';
 import { markPhaseComplete, getNextPhaseRoute, updateDailyChallengesForPhase } from '../utils/progress';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { aggregateScores } from '../utils/interviewEval';
+import AvatarPersona from './tutor/AvatarPersona';
+import { useDoubtsLauncher } from '../contexts/DoubtsLauncherContext';
 import {
   ArrowRight, RotateCcw, CheckCircle2, AlertTriangle, Sparkles,
-  Brain, MessageCircle, ListTree, Trophy,
+  Brain, MessageCircle, ListTree, Trophy, MessageCircleQuestion,
 } from 'lucide-react';
 
 function ScoreRing({ value, label, Icon, color }) {
@@ -84,6 +86,7 @@ export default function InterviewCompletePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+  const { openDoubts } = useDoubtsLauncher();
 
   const { results = [] } = location.state || {};
 
@@ -147,6 +150,25 @@ export default function InterviewCompletePage() {
             {feedback.body}
           </p>
 
+          {/* P55 — Pari hero: per-dimension result delivered by Pari */}
+          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-4 sm:p-5 mb-6 flex items-center gap-4 text-left" data-testid="interview-complete-pari-hero">
+            <AvatarPersona
+              pose="explaining"
+              size="md"
+              position="inline"
+              showSpeechBubble={false}
+              ariaLabel="Pari"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
+                Pari delivers your scores
+              </div>
+              <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+                Here's how you did. Technical: <strong>{scores.technical}/5</strong> · Communication: <strong>{scores.communication}/5</strong> · Structure: <strong>{scores.structure}/5</strong>. Let me show you what went well and what to sharpen next time.
+              </div>
+            </div>
+          </div>
+
           <div className="glass-card rounded-2xl p-6 sm:p-8 mb-6" data-testid="interview-score-grid">
             <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-5">Overall breakdown</div>
             <div className="grid grid-cols-3 gap-4 sm:gap-6">
@@ -189,6 +211,24 @@ export default function InterviewCompletePage() {
                   >
                     {r.scores.overall}/5
                   </span>
+                  <button
+                    type="button"
+                    onClick={() => openDoubts({
+                      phase: 'interview',
+                      courseSessionId: sessionId,
+                      attemptContext: {
+                        question_text: r.questionText,
+                        user_answer: r.userAnswer || r.answer || '',
+                        evaluation: r.scores,
+                        feedback_existing: r.feedback || null,
+                      },
+                    })}
+                    className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-2 py-1 text-[10px] font-semibold font-bricolage transition-colors"
+                    title="Ask Pari to elaborate"
+                    data-testid={`interview-ask-pari-${i}`}
+                  >
+                    <MessageCircleQuestion size={10} /> Ask Pari
+                  </button>
                 </div>
               ))}
             </div>

@@ -5,11 +5,13 @@ import { useXP } from '../contexts/XPContext';
 import { triggerStreakUpdate } from '../utils/streakBus';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import AskPariButton from './tutor/AskPariButton';
+import AvatarPersona from './tutor/AvatarPersona';
+import { useDoubtsLauncher } from '../contexts/DoubtsLauncherContext';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, BookOpen, Sparkles,
-  ChevronDown, ChevronUp, Trophy,
+  ChevronDown, ChevronUp, Trophy, MessageCircleQuestion,
 } from 'lucide-react';
 
 const PASS_THRESHOLD = 0.7;
@@ -102,6 +104,7 @@ export default function QuizCompletePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { user } = useAuth();
+  const { openDoubts } = useDoubtsLauncher();
 
   const { answers = [], questions = [] } = location.state || {};
 
@@ -221,6 +224,29 @@ export default function QuizCompletePage() {
               : 'The hardest questions teach the most. Revisit the notes and take another shot whenever you\'re ready.'}
           </p>
 
+          {/* P55 — Pari hero, score-tier-aware */}
+          <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-4 sm:p-5 mb-8 flex items-center gap-4 text-left" data-testid="quiz-complete-pari-hero">
+            <AvatarPersona
+              pose={pctScore >= 90 ? 'celebrating' : (pctScore >= 70 ? 'encouraging' : 'listening')}
+              size="md"
+              position="inline"
+              showSpeechBubble={false}
+              ariaLabel="Pari"
+            />
+            <div className="flex-1 min-w-0">
+              <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
+                Pari says
+              </div>
+              <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+                {pctScore >= 90
+                  ? `Outstanding — you crushed it. ${score}/${total} nailed.`
+                  : pctScore >= 70
+                    ? `Good work — ${score}/${total}. Let's review the ones you missed.`
+                    : `Tough one — ${score}/${total}. Let me help you understand the misses.`}
+              </div>
+            </div>
+          </div>
+
           <CircularScore score={score} total={total} passed={passed} />
 
           <div className="mt-5 text-sm text-[var(--color-text-muted)] font-bricolage" data-testid="quiz-score-summary">
@@ -300,6 +326,26 @@ export default function QuizCompletePage() {
                               {qq.explanation}
                             </div>
                           </div>
+                        )}
+                        {!isCorrect && (
+                          <button
+                            type="button"
+                            onClick={() => openDoubts({
+                              phase: 'quiz',
+                              courseSessionId: sessionId,
+                              attemptContext: {
+                                question_text: qq.question,
+                                options: qq.options,
+                                user_choice_index: a?.selected_index ?? null,
+                                correct_index: qq.correct_answer_index,
+                                explanation_existing: qq.explanation || null,
+                              },
+                            })}
+                            className="inline-flex items-center gap-1.5 mt-2 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold font-bricolage transition-colors"
+                            data-testid={`quiz-ask-pari-${i}`}
+                          >
+                            <MessageCircleQuestion size={12} /> Ask Pari about this question
+                          </button>
                         )}
                       </div>
                     )}

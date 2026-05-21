@@ -242,6 +242,31 @@ export default function QuizPage() {
       </div>
 
       <main className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
+        {/* P55: Pari leads each question */}
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-6 flex items-start gap-3" data-testid="quiz-pari-asks">
+          <AvatarPersona
+            pose={reviewSubmitted
+              ? (reviewSelected === correctIndex ? 'encouraging' : 'listening')
+              : 'asking'}
+            size="sm"
+            position="inline"
+            showSpeechBubble={false}
+            ariaLabel="Pari"
+          />
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
+              Pari asks
+            </div>
+            <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+              {reviewSubmitted
+                ? (reviewSelected === correctIndex
+                    ? "Spot on — that's exactly right."
+                    : "Not quite — let's review the right answer.")
+                : "Take your time. Pick the option that fits best."}
+            </div>
+          </div>
+        </div>
+
         {/* Question text */}
         <div key={`q-${idx}`} className="animate-vv-fade-up">
           <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-3">

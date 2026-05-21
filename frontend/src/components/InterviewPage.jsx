@@ -337,7 +337,7 @@ export default function InterviewPage() {
             <div className="flex items-center gap-2.5" data-testid="interview-header-interviewer">
               <InterviewerAvatar size={32} />
               <div className="text-left hidden sm:block">
-                <div className="font-clash text-sm font-semibold text-[var(--color-text)] leading-tight">Mock Interview</div>
+                <div className="font-clash text-sm font-semibold text-[var(--color-text)] leading-tight">Pari · Mock Interview</div>
                 <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">Senior Analyst</div>
               </div>
             </div>
@@ -361,6 +361,25 @@ export default function InterviewPage() {
       </div>
 
       <main ref={scrollRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-24">
+        {/* P55: Pari header — interviewer mode */}
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-center gap-3" data-testid="interview-pari-header">
+          <AvatarPersona
+            pose="interviewer"
+            size="sm"
+            position="inline"
+            showSpeechBubble={false}
+            ariaLabel="Pari"
+          />
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
+              Pari is interviewing you
+            </div>
+            <div className="text-xs sm:text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">
+              Take your time on each answer — structure it like an analyst would.
+            </div>
+          </div>
+        </div>
+
         {/* Previous exchanges */}
         {results.length > 0 && idx > 0 && (
           <div className="mb-6" data-testid="interview-prev-list">

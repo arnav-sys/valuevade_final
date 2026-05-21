@@ -1863,3 +1863,99 @@ $ curl "$API_URL/api/news/today" -H "Authorization: Bearer $TOKEN"
 
 The doubts pipeline still respects: 5 sessions/IST-day, 3 turns/session, 1500 tokens/session, 2 off-topic strikes. The classifier now adds ~30 tokens per ask for `last_assistant_message` context — negligible (~$0.00003/turn).
 
+
+---
+
+### Phase 55 — Pari Leads Quiz / Interview / Simulation + Country Localization (May 2026)
+
+Builds directly on P54: takes the existing pose/avatar plumbing + `DoubtsLauncher`
+and threads Pari visibly through every assessment surface. No new DB tables, no
+new endpoints — just localised prompts + per-page UI threading + targeted
+`attempt_context` plumbing so the click-through doubt sessions are pre-loaded
+with the exact question/answer/sim the student just touched.
+
+#### Bonus — Country-localized doubts system prompt
+
+- New `COUNTRY_CONTEXT` dict in `server.py` mapping ISO-2 codes to one-line
+  market context strings (companies + exchange + regulator + currency).
+- `_country_context_for(country_code)` helper, fallback to `IN`.
+- `/api/doubts/ask` now reads `profiles.country_code` for the calling user and
+  formats `country_context` into `DOUBTS_SYSTEM_PROMPT_TEMPLATE`. The system
+  prompt's "Use Indian-context examples" line was rewritten to:
+  > "Match the student's country focus when picking examples (companies, regulators, currency)."
+- System prompt's identity line dropped the "for Indian CFA/FRM…" qualifier —
+  now reads "You are Pari, an AI finance tutor for CFA/FRM and equity research students."
+- Five countries hard-coded with sensible example sets:
+  - **IN** → NSE/BSE · SEBI · INR · Reliance, TCS, HDFC, Infosys, ICICI
+  - **US** → NYSE/NASDAQ · SEC · USD · Apple, Microsoft, JPMorgan, Amazon, Tesla
+  - **GB** → LSE · FCA · GBP · HSBC, Shell, BP, Lloyds, Unilever
+  - **SG** → SGX · MAS · SGD · DBS, Singtel, OCBC, CapitaLand
+  - **AE** → DFM/ADX · SCA · AED · Emaar, Etisalat, FAB, ADNOC
+  - **OTHER** → globally recognizable companies
+
+Cost impact: zero new LLM calls; the prompt grew by ~1 line per turn (~10–15 tokens).
+
+#### P1 ✅ Quiz pages
+
+- **`QuizPage.jsx`** — above every question, a small Pari card mounts with
+  `data-testid="quiz-pari-asks"`. Pose flips by state:
+  - Pre-answer: `asking` + *"Take your time. Pick the option that fits best."*
+  - Reveal (correct): `encouraging` + *"Spot on — that's exactly right."*
+  - Reveal (wrong): `listening` + *"Not quite — let's review the right answer."*
+- **`QuizCompletePage.jsx`** — new Pari hero (`data-testid="quiz-complete-pari-hero"`)
+  above the circular score, pose + message keyed to `pctScore`:
+  - ≥90 → `celebrating` + *"Outstanding — you crushed it. {score}/{total} nailed."*
+  - 70–89 → `encouraging` + *"Good work — {score}/{total}. Let's review the ones you missed."*
+  - <70 → `listening` + *"Tough one — {score}/{total}. Let me help you understand the misses."*
+- Each wrong-answer review card now renders a `quiz-ask-pari-{i}` button →
+  `openDoubts({phase:'quiz', courseSessionId, attemptContext: {question_text, options, user_choice_index, correct_index, explanation_existing}})`.
+
+#### P2 ✅ Interview pages
+
+- **`InterviewPage.jsx`** — top-of-page `interview-pari-header` card mounts
+  Pari in `interviewer` pose: *"Pari is interviewing you — take your time on each answer."*
+  The sticky-top interviewer header now reads "Pari · Mock Interview" instead of just "Mock Interview".
+- **`InterviewCompletePage.jsx`** — new `interview-complete-pari-hero`
+  delivering the per-axis scores in Pari's voice:
+  > *"Here's how you did. Technical: <strong>{t}/5</strong> · Communication: <strong>{c}/5</strong> · Structure: <strong>{s}/5</strong>. Let me show you what went well and what to sharpen next time."*
+- The per-question recap row gains an `interview-ask-pari-{i}` button (small "Ask Pari" pill, `MessageCircleQuestion` icon) →
+  `openDoubts({phase:'interview', attemptContext: {question_text, user_answer, evaluation, feedback_existing}})`.
+
+#### P3 ✅ Simulation page
+
+- **`SimulationPage.jsx`** — Pari brief card (`simulation-pari-brief`, pose
+  `simulation_brief`, size `md`) above the sim renderer: *"Here's what we're
+  working on — read the brief carefully, then start."* + sim title.
+- Bottom `<AskPariButton>` removed; replaced with an inline launcher button
+  (`simulation-ask-pari-btn`) that calls
+  `openDoubts({phase:'simulation', courseSessionId, attemptContext: {sim_brief, sim_type, user_submission, score}})`.
+- The pre-submit / post-submit Pari pose split called out in the brief was
+  trimmed to the single brief-pose hero, because the underlying sim
+  components (`ExcelSim`, `DocumentSim`, `DecisionMakingSim`, `InteractiveSim`)
+  own their own submit-state and don't expose it to the parent at parent
+  render time. A follow-up phase can wire `onComplete` to flip a state
+  variable that selects between `simulation_brief` / `explaining` / `listening`
+  / `celebrating` poses cleanly.
+
+#### What did NOT change (intentionally)
+
+- No DB schema change. No new endpoints. No new RPCs.
+- Quiz / interview / sim **logic** is untouched — only the visual wrapping +
+  context plumbing.
+- `AskPariButton` still mounted on `NotesPage.jsx` and `SessionCompletePage.jsx`
+  (those weren't in P55 scope). The new launcher pattern is opt-in per page.
+
+#### Files
+
+**Modified**
+- `backend/server.py` — `+` `COUNTRY_CONTEXT` dict + `_country_context_for()` helper; system prompt rewritten with `{country_context}` placeholder; `/api/doubts/ask` reads `profiles.country_code` and passes context into the format call.
+- `frontend/src/components/QuizPage.jsx` — Pari header card per question (pose flips on reveal).
+- `frontend/src/components/QuizCompletePage.jsx` — Pari result hero + per-wrong-question "Ask Pari" buttons (uses `useDoubtsLauncher`).
+- `frontend/src/components/InterviewPage.jsx` — Pari interviewer header card + "Pari · Mock Interview" sticky title.
+- `frontend/src/components/InterviewCompletePage.jsx` — Pari per-dimension result hero + per-question "Ask Pari" pills.
+- `frontend/src/components/SimulationPage.jsx` — Pari brief hero + inline launcher button (replaced `AskPariButton`).
+
+#### Compile
+
+Webpack: `compiled with 1 warning` (pre-existing react-hooks/exhaustive-deps warnings unchanged from P54). Zero new errors. Zero new warnings.
+

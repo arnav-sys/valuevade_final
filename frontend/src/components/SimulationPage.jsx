@@ -7,6 +7,7 @@ import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { updateDailyChallengesForPhase } from '../utils/progress';
 import { supabase } from '../lib/supabase';
 import AvatarPersona from './tutor/AvatarPersona';
+import { useDoubtsLauncher } from '../contexts/DoubtsLauncherContext';
 import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
@@ -19,7 +20,8 @@ import InteractiveSim from './simulations/InteractiveSim';
 import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
 import useTimeTracking from '../utils/useTimeTracking';
-import AskPariButton from './tutor/AskPariButton';
+// AskPariButton no longer mounted here (P55) — replaced by inline launcher button.
+// import AskPariButton from './tutor/AskPariButton';
 
 const TYPE_META = {
   excel: { label: 'Excel', Icon: FileSpreadsheet, color: '#10B981' },
@@ -32,6 +34,7 @@ export default function SimulationPage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { openDoubts } = useDoubtsLauncher();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -228,6 +231,26 @@ export default function SimulationPage() {
       </div>
 
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-24">
+        {/* P55 — Pari sets the brief */}
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-start gap-3" data-testid="simulation-pari-brief">
+          <AvatarPersona
+            pose="simulation_brief"
+            size="md"
+            position="inline"
+            showSpeechBubble={false}
+            ariaLabel="Pari"
+          />
+          <div className="flex-1 min-w-0">
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-1">
+              Pari sets the scene
+            </div>
+            <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
+              Here's what we're working on — read the brief carefully, then start.
+              {sim.title && <span className="block mt-1 font-semibold">{sim.title}</span>}
+            </div>
+          </div>
+        </div>
+
         {sim.sim_type === 'excel' && (
           <ExcelSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
@@ -243,8 +266,25 @@ export default function SimulationPage() {
         {!['excel', 'document', 'decision_making', 'interactive'].includes(sim.sim_type) && (
           <GenericRenderer config={config} title={sim.title} typeLabel={sim.sim_type || 'Simulation'} onComplete={handleComplete} />
         )}
-        <div className="mt-6">
-          <AskPariButton phase="simulation" courseSessionId={sessionId} variant="card" />
+        <div className="mt-6 flex justify-center">
+          <button
+            type="button"
+            onClick={() => openDoubts({
+              phase: 'simulation',
+              courseSessionId: sessionId,
+              attemptContext: {
+                sim_brief: sim.title || '',
+                sim_type: sim.sim_type || '',
+                user_submission: progress || null,
+                score: typeof progress?.correct === 'number' && progress?.total
+                  ? Math.round((progress.correct / Math.max(progress.total, 1)) * 100) : null,
+              },
+            })}
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold font-bricolage transition-colors"
+            data-testid="simulation-ask-pari-btn"
+          >
+            Ask Pari about this simulation
+          </button>
         </div>
       </main>
       {(() => {
