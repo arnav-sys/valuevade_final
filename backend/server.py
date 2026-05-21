@@ -1497,6 +1497,58 @@ async def portfolio_public(share_slug: str):
     return _redact_public_portfolio(rows[0])
 
 
+# =============================================================================
+# Pari's Review Notes (Phase 57) — study cabinet of every Pari answer
+# =============================================================================
+
+@api_router.get("/portfolio/review_notes")
+async def portfolio_review_notes(
+    phase: Optional[str] = None,
+    module_code: Optional[str] = None,
+    limit: int = 50,
+    supa_user: dict = Depends(get_supabase_user),
+):
+    """Return up to `limit` (max 100) most-recent Pari assistant replies for the
+    calling user, with paired user question + best-available topic label."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    capped_limit = max(1, min(int(limit or 50), 100))
+    query_parts = [
+        f"user_id=eq.{_urlparse.quote(user_id)}",
+        "select=id,doubt_session_id,phase,module_code,topic,user_question,pari_answer,is_cached,created_at",
+        "order=created_at.desc",
+        f"limit={capped_limit}",
+    ]
+    if phase:
+        valid_phases = {"notes", "quiz", "interview", "simulation", "dashboard", "project", "capstone", "module_complete"}
+        if phase not in valid_phases:
+            raise HTTPException(status_code=400, detail=f"invalid phase: {phase}")
+        query_parts.append(f"phase=eq.{phase}")
+    if module_code:
+        if not _re.fullmatch(r"[A-Za-z0-9_-]{1,16}", module_code):
+            raise HTTPException(status_code=400, detail="invalid module_code")
+        query_parts.append(f"module_code=eq.{module_code}")
+    rows = _supabase_get(f"v_user_review_notes?{'&'.join(query_parts)}") or []
+    # Best-effort stats — cheap counts on the same view, no auth filter needed
+    # because v_user_review_notes is security_invoker=true and our service-role
+    # call inherits the user filter.
+    all_rows = _supabase_get(
+        f"v_user_review_notes?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&select=topic,created_at&limit=500"
+    ) or []
+    unique_topics = len({(r.get("topic") or "").lower() for r in all_rows if r.get("topic")})
+    return {
+        "items": rows,
+        "total_count": len(all_rows),
+        "unique_topics": unique_topics,
+        "most_recent_at": all_rows[0]["created_at"] if all_rows else None,
+    }
+
+
+
+
+
 
 
 

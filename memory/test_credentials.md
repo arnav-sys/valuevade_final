@@ -455,3 +455,67 @@ curl -s -X POST "$API_URL/api/doubts/ask" -H "Authorization: Bearer $TOKEN" \
 #   "You have 1 more off-topic chance and N turn(s) left in this session."
 ```
 
+
+
+## Phase 57 — Pari's Review Notes Tab (May 2026)
+
+Page at `/review`. Endpoint `GET /api/portfolio/review_notes` (Bearer required).
+
+### Tester recipe
+
+```bash
+API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -f2)
+TOKEN="<paste from localStorage>"
+
+# Default fetch (50 most-recent)
+curl -s "$API_URL/api/portfolio/review_notes" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool | head -40
+
+# Phase filter
+curl -s "$API_URL/api/portfolio/review_notes?phase=quiz&limit=5" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
+
+# Module filter
+curl -s "$API_URL/api/portfolio/review_notes?module_code=M1" -H "Authorization: Bearer $TOKEN" | python3 -m json.tool
+
+# Invalid phase → 400
+curl -s "$API_URL/api/portfolio/review_notes?phase=junk" -H "Authorization: Bearer $TOKEN"
+# → {"detail":"invalid phase: junk"}
+```
+
+### Frontend manual smoke
+
+1. Log in as `testagent2026@gmail.com`.
+2. Sidebar → click "Review Notes" (`[data-testid="nav-review-notes"]`) → routes to `/review`.
+3. Confirm sections render: `review-notes-hero`, `review-stats-strip` (3 tiles), `review-filters`, `review-list`.
+4. Click `review-filter-quiz` → list narrows to quiz-phase rows only.
+5. Type "WACC" into `review-search-input` → list narrows to rows mentioning WACC.
+6. Module dropdown (`review-module-filter`) → pick a module → list narrows.
+7. Click "Read more" on any card with a >240-char Pari answer → card expands.
+8. Visit `/portfolio` → scroll to "Pari's review notes" tile (`portfolio-review-tile`) → click → routes to `/review`.
+
+### Sample SQL seed (only if the test user has 0 doubt sessions)
+
+```sql
+-- Run as service-role / SQL editor. Replace the UUID if needed.
+do $$
+declare
+  v_uid uuid := '13a690c4-96d7-4827-8117-fde4f696e999';
+  v_sid uuid;
+begin
+  insert into public.user_doubt_sessions
+    (user_id, phase, module_code, ist_date, turn_count, started_at,
+     attempt_context)
+  values
+    (v_uid, 'quiz', 'M1', (now() at time zone 'Asia/Kolkata')::date, 1, now(),
+     '{"question_text":"What is WACC?","user_choice_index":1,"correct_index":2}'::jsonb)
+  returning id into v_sid;
+
+  insert into public.doubt_messages (doubt_session_id, role, content, tokens, is_cached, created_at) values
+    (v_sid, 'user', 'explain me the time value of money', 12, false, now() - interval '5 minutes'),
+    (v_sid, 'assistant', 'Time Value of Money (TVM) is the idea that a rupee today is worth more than a rupee tomorrow because today''s rupee can be invested to earn interest. Discount future cash flows back to present value using a discount rate.', 60, false, now() - interval '4 minutes'),
+    (v_sid, 'user', 'simpler please', 4, false, now() - interval '3 minutes'),
+    (v_sid, 'assistant', 'Imagine someone offers you ₹100 today or ₹100 next year. You''d pick today — because you can put it in a savings account at 6% and end up with ₹106. That difference IS the time value of money.', 55, false, now() - interval '2 minutes');
+end$$;
+```
+
+After running, hit `/api/portfolio/review_notes` — you should see at least 2 new rows.
+

@@ -2059,3 +2059,123 @@ visual rhythm of the card stays consistent.
 
 The gamification + tutor layer is feature-complete for the original P54 brief.
 
+
+---
+
+### Phase 57 — Pari's Review Notes Tab (May 2026)
+
+The retention loop you flagged in P56: every `attempt_context` + Pari reply
+now surfaces as a study-card cabinet at `/review`. No new tables — just one
+view, one endpoint, one page.
+
+#### Migration `0015_review_notes_view.sql`
+
+`v_user_review_notes` (security_invoker=true): one row per assistant message
+in `doubt_messages`. Per row:
+
+| Column | Source |
+|---|---|
+| `id` | `doubt_messages.id` |
+| `user_id` | `user_doubt_sessions.user_id` |
+| `doubt_session_id` | join key |
+| `phase` | `user_doubt_sessions.phase` |
+| `module_code` | `user_doubt_sessions.module_code` |
+| `topic` | `coalesce(attempt_context->>'card_title', attempt_context->>'question_text', attempt_context->>'sim_brief', initcap(phase) || ' — ' || module_code)` |
+| `user_question` | preceding user message (paired via `LAG` window function over `(doubt_session_id, created_at, id)`) |
+| `pari_answer` | `doubt_messages.content` |
+| `is_cached` | `doubt_messages.is_cached` |
+| `created_at` | `doubt_messages.created_at` |
+
+Filter: `role = 'assistant'` AND `length(content) > 12` (skips trivial empty
+replies). Sort: `created_at desc`.
+
+Applied via Management API → HTTP 201. `0015_verify.sql` confirms the view
+exists and returns rows for the test user.
+
+Sample row (test user, IST 2026-05-21):
+```
+phase   | module_code | topic            | user_q_preview                        | pari_preview
+quiz    | M1          | What is WACC?    | "explain me time value of money"      | # Time Value of Money (TVM) explained
+notes   | M0          | Notes — M0       | "What is WACC?"                       | # WACC Explained · WACC = Weighted Avg
+```
+
+#### Endpoint `GET /api/portfolio/review_notes`
+
+Auth: Bearer required.
+Query params: `?phase=<notes|quiz|interview|simulation|dashboard|project|capstone|module_complete>`, `?module_code=<M1|M2|...>`, `?limit=<1-100, default 50>`.
+
+Returns:
+
+```json
+{
+  "items": [
+    {"id":"<uuid>", "doubt_session_id":"<uuid>", "phase":"quiz", "module_code":"M1",
+     "topic":"What is WACC?", "user_question":"explain me TVM", "pari_answer":"…",
+     "is_cached":false, "created_at":"2026-05-21T14:35:02.934001+00:00"},
+    ...
+  ],
+  "total_count": 12,
+  "unique_topics": 3,
+  "most_recent_at": "2026-05-21T14:35:02.934001+00:00"
+}
+```
+
+Validation: 400 on invalid `phase`, 400 on `module_code` not matching `[A-Za-z0-9_-]{1,16}`. The endpoint piggy-backs on `v_user_review_notes`'s `security_invoker=true` — service-role calls explicitly filter by `user_id`, so no leakage.
+
+#### `<ReviewNotesPage />` at `/review`
+
+Sections (all with `data-testid`):
+
+| # | Section | Notes |
+|---|---|---|
+| 1 | `review-notes-hero` | Pari (`encouraging`, `md`) + heading "Pari's Review Notes" + subtitle |
+| 2 | `review-stats-strip` | 3 tiles: Answers · Unique topics · Most recent |
+| 3 | `review-filters` | 6 phase chips (All/Notes/Quiz/Interview/Simulation/Dashboard) + module dropdown (auto-populated from user's items) + search input |
+| 4 | `review-list` | List of `<ReviewCard>`s — Phase chip + module chip + topic (Clash Display) + "Your question:" (italic) + "Pari said:" (200-char preview with "Read more" expander). `timeAgo()` helper for IST-relative timestamps ("6h ago", "yesterday", "3 May 2026"). |
+| — | `review-empty` | Pari (`listening`, `md`) + "Ask me anything during a session and I'll save my answer here…" + CTA to /dashboard |
+| — | `review-error` | Inline red error card on fetch failure |
+
+Search is **client-side substring** match against topic + user_question +
+pari_answer (no extra round-trip). Module dropdown auto-populates from the
+items currently in scope (only shows modules the user has actually asked
+about).
+
+Per-card test-ids: `review-card-{id}`, `review-expand-{id}`.
+Filter test-ids: `review-filter-all`, `review-filter-quiz`, etc.
+
+#### Navigation
+
+- `<Sidebar />` — `Library` icon, label "Review Notes", `data-testid="nav-review-notes"`,
+  inserted between Portfolio and Settings.
+- `<PortfolioPage />` — new `portfolio-review-tile` card just before the
+  "Quotable highlights" section. Self-fetches `GET /api/portfolio/review_notes?limit=1`
+  to get the total count; shows either "N answer(s) saved · Tap to revisit…"
+  or "Start asking Pari · Every answer from Pari gets saved here…" based on
+  count. Tapping routes to `/review`.
+
+#### Files
+
+**Added**
+- `/app/scripts/migrations/0015_review_notes_view.sql`
+- `/app/scripts/migrations/0015_verify.sql`
+- `/app/frontend/src/components/ReviewNotesPage.jsx`
+
+**Modified**
+- `backend/server.py` — `+` `GET /api/portfolio/review_notes`.
+- `frontend/src/App.js` — `+` lazy import + `<Route path="/review">`.
+- `frontend/src/components/Sidebar.jsx` — `+` `Library` icon, `+` Review Notes nav entry.
+- `frontend/src/components/PortfolioPage.jsx` — `+` `Library` icon, `+` `reviewCount` state + fetch, `+` `portfolio-review-tile` inline card.
+
+#### Live smoke
+
+`/review` for test user @ 2026-05-21:
+- Stats: 12 answers · 3 unique topics · 6h ago.
+- 12 cards rendered (mix of `notes` / `quiz` / `dashboard` phases, M0/M1 modules).
+- Phase filter "Quiz" → narrows to 2 cards (correct).
+- Search "WACC" → narrows to the 2 WACC-related cards.
+- Empty state mode tested by filtering to a phase the user has none of (e.g. `interview`) → renders the Pari `listening` empty card with CTA.
+
+#### Compile
+
+`webpack compiled with 1 warning` — same 4 pre-existing `react-hooks/exhaustive-deps` warnings. Zero new errors. Zero new warnings.
+

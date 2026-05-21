@@ -64,6 +64,7 @@ const JourneyPage = lazyWithRetry(() => import("@/components/JourneyPage"));
 const SettingsPage = lazyWithRetry(() => import("@/components/SettingsPage"));
 const PortfolioPage = lazyWithRetry(() => import("@/components/PortfolioPage"));
 const PublicPortfolioPage = lazyWithRetry(() => import("@/components/PublicPortfolioPage"));
+const ReviewNotesPage = lazyWithRetry(() => import("@/components/ReviewNotesPage"));
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (
@@ -137,6 +138,7 @@ function App() {
                   {/* Account (auth only) */}
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
+                  <Route path="/review" element={<ProtectedRoute><ReviewNotesPage /></ProtectedRoute>} />
                   <Route path="/journey" element={<ProtectedRoute><JourneyPage /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 

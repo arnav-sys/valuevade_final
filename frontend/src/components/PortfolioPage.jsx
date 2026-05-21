@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Trophy, Sparkles, Flame, Award, Target, Clock, Activity, Copy,
-  Check, ExternalLink, Lock, ChevronRight, BookOpen, Star,
+  Check, ExternalLink, Lock, ChevronRight, BookOpen, Star, Library,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -113,6 +113,7 @@ export default function PortfolioPage() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [reviewCount, setReviewCount] = useState(0);
 
   const fetchPortfolio = useCallback(async () => {
     setLoading(true); setError(null);
@@ -129,6 +130,21 @@ export default function PortfolioPage() {
   }, []);
 
   useEffect(() => { if (user?.id) fetchPortfolio(); }, [user?.id, fetchPortfolio]);
+
+  // P57: lightweight count fetch for the "Pari's review notes" tile.
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    (async () => {
+      try {
+        const res = await authedFetch('/api/portfolio/review_notes?limit=1');
+        if (!res.ok) return;
+        const json = await res.json();
+        if (alive) setReviewCount(json?.total_count || 0);
+      } catch { /* tile just shows the empty CTA */ }
+    })();
+    return () => { alive = false; };
+  }, [user?.id]);
 
   const firstName = useMemo(() => (data?.full_name || '').split(' ')[0] || 'Analyst', [data]);
 
@@ -357,6 +373,32 @@ export default function PortfolioPage() {
         <section data-testid="portfolio-heatmap">
           <h2 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] mb-3">90-day activity</h2>
           <ActivityHeatmap />
+        </section>
+
+        {/* 8b. Pari Review Notes inline tile — links to /review */}
+        <section data-testid="portfolio-review-tile">
+          <Link
+            to="/review"
+            className="block rounded-2xl border border-[var(--glass-border)] bg-[var(--glass-bg)] backdrop-blur p-4 sm:p-5 hover:border-[var(--color-primary)]/45 transition-colors group"
+          >
+            <div className="flex items-center gap-4">
+              <div className="rounded-xl bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/35 p-2.5 shrink-0">
+                <Library size={20} className="text-[var(--color-primary)]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)] mb-0.5">
+                  Pari's review notes
+                </div>
+                <div className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] leading-tight">
+                  {reviewCount > 0 ? `${reviewCount} answer${reviewCount === 1 ? '' : 's'} saved` : 'Start asking Pari'}
+                </div>
+                <div className="text-xs text-[var(--color-text-muted)] font-bricolage">
+                  {reviewCount > 0 ? 'Tap to revisit every concept Pari has explained.' : 'Every answer from Pari gets saved here for you to revisit.'}
+                </div>
+              </div>
+              <ChevronRight size={16} className="text-[var(--color-text-muted)] group-hover:text-[var(--color-primary)] transition-colors" />
+            </div>
+          </Link>
         </section>
 
         {/* 9. Headline stats — share-copy bits */}

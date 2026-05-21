@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import {
   Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
-  Sun, Moon, ChevronLeft, Trophy,
+  Sun, Moon, ChevronLeft, Trophy, Library,
 } from 'lucide-react';
 
 /**
@@ -74,6 +74,7 @@ export default function Sidebar() {
       },
       { label: 'Profile', icon: User, path: '/profile', testid: 'nav-profile' },
       { label: 'Portfolio', icon: Trophy, path: '/portfolio', testid: 'nav-portfolio' },
+      { label: 'Review Notes', icon: Library, path: '/review', testid: 'nav-review-notes' },
       { label: 'Settings', icon: Settings, path: '/settings', testid: 'nav-settings' },
     ],
     [enrollment]
