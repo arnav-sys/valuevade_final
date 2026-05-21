@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
@@ -20,6 +20,10 @@ export default function ConfirmPage() {
 
   const [enrolling, setEnrolling] = useState(false);
   const [error, setError] = useState(null);
+  // Single-flight guard: button click handlers can race ahead of React's
+  // re-render (setEnrolling(true) is async), so the disabled prop alone
+  // isn't enough to prevent double-submit. The ref lock is synchronous.
+  const enrollingRef = useRef(false);
 
   // Redirect if no plan - wrapped in useEffect to avoid React warning
   useEffect(() => {
@@ -51,11 +55,19 @@ export default function ConfirmPage() {
   }, 0);
 
   const handleEnroll = async () => {
+    if (enrollingRef.current) return; // single-flight: double-click guard
+    enrollingRef.current = true;
     setEnrolling(true);
     setError(null);
 
     try {
-      // 1. Delete any existing enrollment + its child rows for this user/path
+      // 1. If the user already has an enrollment for this path, REUSE its id.
+      //    The schema has user_stats.enrollment_id FK → user_enrollments(id)
+      //    with ON DELETE CASCADE, so deleting and re-inserting the
+      //    enrollment row would wipe the user's XP / level / streak /
+      //    badges / Daily Champion glow. Update-in-place avoids that.
+      //    Clearing user_modules cascades down to user_sessions and
+      //    user_module_projects but leaves user_stats untouched.
       const { data: existing } = await supabase
         .from('user_enrollments')
         .select('id')
@@ -63,38 +75,44 @@ export default function ConfirmPage() {
         .eq('master_path_id', courseId)
         .maybeSingle();
 
+      let enrollmentId;
       if (existing) {
-        // Delete child sessions first, then modules, then enrollment
-        const { data: oldMods } = await supabase
+        enrollmentId = existing.id;
+        // CASCADE delete child user_modules → user_sessions, user_module_projects.
+        const { error: delErr } = await supabase
           .from('user_modules')
+          .delete()
+          .eq('enrollment_id', enrollmentId);
+        if (delErr) throw delErr;
+        // Refresh the enrollment's metadata + customization for this redo.
+        const { error: updErr } = await supabase
+          .from('user_enrollments')
+          .update({
+            title: courseTitle,
+            status: 'active',
+            customization_answers: answers,
+            customization_prompt: freeText || null,
+            ai_customization_plan: plan,
+          })
+          .eq('id', enrollmentId);
+        if (updErr) throw updErr;
+      } else {
+        const { data: enrollment, error: enrollErr } = await supabase
+          .from('user_enrollments')
+          .insert({
+            user_id: user.id,
+            master_path_id: courseId,
+            title: courseTitle,
+            status: 'active',
+            customization_answers: answers,
+            customization_prompt: freeText || null,
+            ai_customization_plan: plan,
+          })
           .select('id')
-          .eq('enrollment_id', existing.id);
-
-        if (oldMods?.length) {
-          const modIds = oldMods.map((m) => m.id);
-          await supabase.from('user_sessions').delete().in('user_module_id', modIds);
-          await supabase.from('user_modules').delete().eq('enrollment_id', existing.id);
-        }
-        await supabase.from('user_enrollments').delete().eq('id', existing.id);
+          .single();
+        if (enrollErr) throw enrollErr;
+        enrollmentId = enrollment.id;
       }
-
-      // 2. Create enrollment
-      const { data: enrollment, error: enrollErr } = await supabase
-        .from('user_enrollments')
-        .insert({
-          user_id: user.id,
-          master_path_id: courseId,
-          title: courseTitle,
-          status: 'active',
-          customization_answers: answers,
-          customization_prompt: freeText || null,
-          ai_customization_plan: plan,
-        })
-        .select('id')
-        .single();
-
-      if (enrollErr) throw enrollErr;
-      const enrollmentId = enrollment.id;
 
       // 2. Clone modules into user_modules
       for (let i = 0; i < courseStructure.length; i++) {
@@ -227,8 +245,20 @@ export default function ConfirmPage() {
       });
     } catch (err) {
       console.error('Enrollment failed:', err);
+      // Swallow the raw Postgres duplicate-key message — it's a UX foot-gun.
+      // After the update-in-place refactor this should be unreachable, but
+      // if anything else races we still want a friendly message.
+      const msg = String(err?.message || err || '');
+      const looksLikeDup = /duplicate key value violates unique constraint/i.test(msg)
+                       || err?.code === '23505';
+      if (looksLikeDup) {
+        // We already have an active enrollment — just send the user there.
+        navigate('/dashboard', { replace: true });
+        return;
+      }
       setError(err.message || 'Failed to enroll. Please try again.');
       setEnrolling(false);
+      enrollingRef.current = false;
     }
   };
 

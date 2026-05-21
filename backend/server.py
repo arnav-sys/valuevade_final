@@ -19,9 +19,21 @@ import random
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-mongo_url = os.environ['MONGO_URL']
+# Fail loudly with a clear message if MONGO_URL or DB_NAME are missing in the
+# pod env. A bare KeyError here would crash the worker on import with a
+# cryptic trace and the K8s liveness probe would just churn.
+_mongo_url = os.environ.get('MONGO_URL')
+_db_name = os.environ.get('DB_NAME')
+if not _mongo_url:
+    raise RuntimeError(
+        "MONGO_URL is required but missing. Set it in the pod env "
+        "(mongodb+srv://... for Atlas, mongodb://localhost:27017 for dev)."
+    )
+if not _db_name:
+    raise RuntimeError("DB_NAME is required but missing.")
+mongo_url = _mongo_url
 client = AsyncIOMotorClient(mongo_url)
-db = client[os.environ['DB_NAME']]
+db = client[_db_name]
 
 ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL')
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
@@ -84,6 +96,15 @@ class AdminLogin(BaseModel):
 @api_router.get("/")
 async def root():
     return {"message": "Valuevade API"}
+
+
+@api_router.get("/health")
+async def health_liveness():
+    """Lightweight liveness probe. Intentionally does NOT touch Mongo or
+    Supabase — a slow upstream must not fail the pod's liveness check.
+    Use the read-model endpoints (/api/health/xp, /api/health/badges, etc.)
+    when you actually need to validate downstream state."""
+    return {"status": "ok"}
 
 
 # ---------------------------------------------------------------------------
@@ -1484,10 +1505,20 @@ async def transcribe_audio(
 
 app.include_router(api_router)
 
+# CORS — the FastAPI/Starlette middleware (per CORS spec) rejects the combo
+# of allow_credentials=True with origins=["*"]: the browser ignores the
+# response. In production set CORS_ORIGINS to a comma-separated list of
+# trusted origins (e.g. "https://app.valuevade.com,https://valuevade.com").
+# For local dev the default "*" is fine; we degrade to credentials=False
+# when wildcards are present so the response is still spec-compliant.
+_cors_origins_env = (os.environ.get('CORS_ORIGINS') or '*').strip()
+_cors_origins = [o.strip() for o in _cors_origins_env.split(',') if o.strip()] or ['*']
+_cors_allow_credentials = '*' not in _cors_origins
+
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_credentials=_cors_allow_credentials,
+    allow_origins=_cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
