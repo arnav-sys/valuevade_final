@@ -672,6 +672,7 @@ export default function DashboardPage() {
             size="sm"
             position="bottom-right"
             message={t?.message}
+            autoDismissMs={6000}
           />
         );
       })()}

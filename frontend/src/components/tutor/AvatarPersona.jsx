@@ -62,6 +62,7 @@ export default function AvatarPersona({
   onClick = null,
   className = '',
   bubbleDismissable = true,
+  autoDismissMs = null,
 }) {
   const { enabled } = useTutor();
   const reducedMotion = useMemo(prefersReducedMotion, []);
@@ -119,6 +120,17 @@ export default function AvatarPersona({
       if (typingTimerRef.current) clearInterval(typingTimerRef.current);
     };
   }, [message, reducedMotion, onMessageEnd]);
+
+  // Auto-dismiss: when autoDismissMs is provided, dismiss the speech bubble
+  // automatically after the typewriter completes (or immediately at mount if
+  // reduced-motion). Caller-controlled — currently used by the dashboard
+  // greeting so it doesn't loiter. Other surfaces keep the bubble open.
+  useEffect(() => {
+    if (!message || !autoDismissMs || autoDismissMs <= 0) return undefined;
+    if (bubbleDismissed) return undefined;
+    const t = setTimeout(() => setBubbleDismissed(true), autoDismissMs);
+    return () => clearTimeout(t);
+  }, [message, autoDismissMs, bubbleDismissed]);
 
   if (!enabled) return null;
 

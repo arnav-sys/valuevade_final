@@ -408,8 +408,18 @@ export default function CapstoneTasksPage() {
         </div>
       </main>
       {(() => {
-        const t = resolveTutorPhase('project_intro');
-        return <AvatarPersona pose={t?.pose || 'simulation_brief'} size="sm" position="bottom-right" message={t?.message} />;
+        const hasCapstone = !!masterCapstone && !loading && !error;
+        const phase = hasCapstone ? 'project_intro' : 'apology';
+        const t = resolveTutorPhase(phase);
+        const emptyMsg = "No capstone here yet — check back once you've completed all modules in this path.";
+        return (
+          <AvatarPersona
+            pose={t?.pose || (hasCapstone ? 'simulation_brief' : 'apology')}
+            size="sm"
+            position="bottom-right"
+            message={hasCapstone ? t?.message : emptyMsg}
+          />
+        );
       })()}
     </div>
   );

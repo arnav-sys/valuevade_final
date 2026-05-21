@@ -292,8 +292,21 @@ export default function ModuleProjectTasksPage() {
         </div>
       </main>
       {(() => {
-        const t = resolveTutorPhase('project_intro');
-        return <AvatarPersona pose={t?.pose || 'simulation_brief'} size="sm" position="bottom-right" message={t?.message} />;
+        // When the module has no project to render (empty / loading / error
+        // state), switch Tara to an apology pose with a clarifying message
+        // so she never looks confused on an empty page.
+        const hasProject = !!masterProject && !loading && !error;
+        const phase = hasProject ? 'project_intro' : 'apology';
+        const t = resolveTutorPhase(phase);
+        const emptyMsg = "No project here yet — check back once you've completed all sessions in this module.";
+        return (
+          <AvatarPersona
+            pose={t?.pose || (hasProject ? 'simulation_brief' : 'apology')}
+            size="sm"
+            position="bottom-right"
+            message={hasProject ? t?.message : emptyMsg}
+          />
+        );
       })()}
     </div>
   );

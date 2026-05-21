@@ -8,6 +8,8 @@ import {
   AlertCircle, RefreshCw, PlayCircle,
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
+import AvatarPersona from './tutor/AvatarPersona';
+import { resolveTutorPhase } from '../contexts/TutorContext';
 
 export default function QuizStartPage() {
   const { sessionId } = useParams();
@@ -205,6 +207,10 @@ export default function QuizStartPage() {
           )}
         </div>
       </main>
+      {(() => {
+        const t = resolveTutorPhase('quiz_intro');
+        return <AvatarPersona pose={t?.pose || 'asking'} size="sm" position="bottom-right" message={t?.message} />;
+      })()}
     </div>
   );
 }
