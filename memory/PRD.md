@@ -1096,3 +1096,25 @@ Service-role-backed via `_supabase_get`.
 - Supabase Auth redirect URL whitelist update — if the Supabase dashboard still has `/signuproute1` listed as an allowed redirect, the user needs to add `/signup` there. Flagged for the user.
 - Public profile / OG image rendering, multi-tab live XP sync, module-scoped daily challenges, waitlist → Supabase migration (all carried over from earlier phases).
 
+
+
+---
+
+### Phase 49 — user_stats.enrollment_id FK: CASCADE → SET NULL (May 2026)
+
+**Rationale**: gamification state (XP, level, streak, badges, Daily Champion glow, p3_catchup_done) belongs to the user, not to a specific enrollment. Dropping or replacing a course must not wipe 6 phases of grind. The Phase 48 ConfirmPage refactor already avoids the destructive path at the application layer, but this migration adds a structural safety net for any future code path that deletes a `user_enrollments` row for any reason.
+
+**Migration `0010_user_stats_fk_set_null.sql`** (HTTP 201):
+- Dropped `user_stats_enrollment_id_fkey` (was ON DELETE CASCADE).
+- Recreated as ON DELETE SET NULL.
+- `user_stats.enrollment_id` was already nullable; no column change needed.
+- Idempotent (drop-if-exists + recreate); safe to re-run.
+
+**Verifier `0010_verify.sql`** returns ALL CHECKS PASSED. `pg_constraint.confdeltype = 'n'` confirmed: `FOREIGN KEY (enrollment_id) REFERENCES user_enrollments(id) ON DELETE SET NULL`.
+
+**Files added**
+- `/app/scripts/migrations/0010_user_stats_fk_set_null.sql`
+- `/app/scripts/migrations/0010_verify.sql`
+
+**No client code changed.** This is a pure schema safety net.
+
