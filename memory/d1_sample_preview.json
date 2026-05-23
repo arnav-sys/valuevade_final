@@ -1,0 +1,102 @@
+{
+  "_NOTE": "Trimmed preview response. Full response has 250 day rows (178 active + 72 rest, Sat+Sun off, hpd=1.0). Captured during D1 smoke for user testagent2026@gmail.com.",
+  "enrollment_id": "37ced88c-2331-40e4-8805-be1f65c99dde",
+  "target_mode": "hours_per_day",
+  "target_deadline": null,
+  "target_hours_per_day": 1.0,
+  "target_hours_per_week": null,
+  "non_study_weekdays": [
+    0,
+    6
+  ],
+  "total_load_minutes": 33700,
+  "plan_start_date": "2026-05-23",
+  "plan_end_date": "2027-01-27",
+  "total_active_days": 178,
+  "total_sessions": 162,
+  "total_projects": 16,
+  "days_first_10": [
+    {
+      "day_date": "2026-05-23",
+      "required_minutes": 0,
+      "required_session_codes": [],
+      "required_project_codes": [],
+      "status": "rest"
+    },
+    {
+      "day_date": "2026-05-24",
+      "required_minutes": 0,
+      "required_session_codes": [],
+      "required_project_codes": [],
+      "status": "rest"
+    },
+    {
+      "day_date": "2026-05-25",
+      "required_minutes": 60,
+      "required_session_codes": [
+        "<user_session_id_1>"
+      ],
+      "required_project_codes": [],
+      "status": "upcoming"
+    },
+    {
+      "day_date": "2026-05-26",
+      "required_minutes": 60,
+      "required_session_codes": [
+        "<user_session_id_2>"
+      ],
+      "required_project_codes": [],
+      "status": "upcoming"
+    },
+    {
+      "day_date": "2026-05-27",
+      "required_minutes": 50,
+      "required_session_codes": [
+        "<user_session_id_3>"
+      ],
+      "required_project_codes": [],
+      "status": "upcoming"
+    },
+    {
+      "day_date": "2026-05-28",
+      "required_minutes": 50,
+      "required_session_codes": [
+        "<user_session_id_4>"
+      ],
+      "required_project_codes": [],
+      "status": "upcoming"
+    },
+    {
+      "day_date": "2026-05-29",
+      "required_minutes": 50,
+      "required_session_codes": [
+        "<user_session_id_5>"
+      ],
+      "required_project_codes": [],
+      "status": "upcoming"
+    },
+    {
+      "day_date": "2026-05-30",
+      "required_minutes": 0,
+      "required_session_codes": [],
+      "required_project_codes": [],
+      "status": "rest"
+    },
+    {
+      "day_date": "2026-05-31",
+      "required_minutes": 0,
+      "required_session_codes": [],
+      "required_project_codes": [],
+      "status": "rest"
+    },
+    {
+      "day_date": "2026-06-01",
+      "required_minutes": 50,
+      "required_session_codes": [
+        "<user_session_id_6>"
+      ],
+      "required_project_codes": [],
+      "status": "upcoming"
+    }
+  ]
+}

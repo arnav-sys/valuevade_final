@@ -2450,3 +2450,145 @@ curl -X POST $API_URL/api/milestones/check \
   to avoid invasive rebuilds during Phase C).
 
 
+
+### Phase D1 — Study Planner Schema + Wizard (Feb 2026)
+
+At enrollment (or via a dashboard CTA), users pick a study pace — **deadline** /
+**hours_per_day** / **hours_per_week** — optionally mark rest weekdays, and get a
+generated calendar with sessions + module projects scheduled atomically across
+days. Plan persists; tracking, gamification hooks, and the dashboard chart come
+in Phase D2.
+
+#### Database (migration 0019, applied)
+
+- `user_study_plans`
+  - `enrollment_id uuid → user_enrollments(id)` (canonical FK shape — matches
+    `user_stats.enrollment_id`)
+  - `target_mode ∈ {deadline, hours_per_day, hours_per_week}`, XOR constraint
+    enforces exactly one target_* field is non-null matching the mode
+  - `non_study_weekdays int[]` (0=Sun .. 6=Sat)
+  - `total_load_minutes`, `plan_start_date`, `plan_end_date`, `status ∈
+    {active, completed, paused, abandoned}`
+  - Partial unique index on `(user_id, enrollment_id) where status='active'`
+    → one active plan per user-course; commit auto-abandons any prior.
+  - RLS: owner SELECT/UPDATE.
+
+- `user_study_plan_days`
+  - `plan_id uuid → user_study_plans(id) on delete cascade`
+  - `day_date date` + UNIQUE `(plan_id, day_date)`
+  - `required_minutes`, `required_session_codes text[]`,
+    `required_project_codes text[]` (renamed from the spec's
+    `required_capstone_codes` because the codebase has NO master_capstones
+    table — the real-world equivalent is `master_module_projects`, one per
+    module, with `estimated_hours`)
+  - `actual_minutes`, `actual_sessions_completed` (Phase D2 writes)
+  - `status ∈ {upcoming, today, on_track, behind, complete, skipped, rest}`
+    — generator only writes `upcoming` and `rest`; the rest flip later in D2.
+  - RLS: owner SELECT/UPDATE.
+
+- `user_plan_adherence` (seeded empty on plan commit, populated in D2)
+
+NOTE: `master_sessions.estimated_minutes` (default 50) ALREADY EXISTED — we
+did NOT add a duplicate. Plan generator joins `user_sessions ⨝
+master_sessions` for the per-session minutes, and pulls
+`master_module_projects.estimated_hours * 60` for projects. Source of truth
+for the user's session list is `user_sessions` (their customized + non-removed
+list from the enrollment wizard), NOT `master_sessions`.
+
+#### Backend (server.py, ~330 LoC added)
+
+`generate_study_plan(user_id, enrollment_id, mode, deadline?, hpd?, hpw?,
+non_study_weekdays, start_date=today)` — pure-ish builder:
+
+1. `_fetch_plan_inventory` — **4 batched Supabase queries** (one for
+   user_modules, one for all their user_sessions, one for master_sessions
+   metadata, one for module projects). Earlier sequential-per-module
+   implementation timed out on the 16-module course; the batch version
+   completes in ~1.2 s.
+2. `total_load_minutes = ceil(raw_load * 1.05)` (5% buffer).
+3. Day-packer walks `start_date` forward, marks `non_study_weekdays` (Sun=0..
+   Sat=6) as `rest`, and packs sessions atomically up to `per_day_target`.
+   A session larger than `per_day_target` goes solo on its day (the next
+   active day continues with the next item).
+   - deadline mode: `per_day_target = ceil(load / active_days)`; sanity check
+     enforces `available_days >= ceil(load / 240min)`.
+   - hours_per_day: `per_day_target = round(hpd * 60)`. Walk until items
+     exhausted. Cap at 3 × 365 days to prevent runaway.
+   - hours_per_week: `per_day_target = ceil(weekly_min / (7 -
+     len(non_study_weekdays)))`. Same packing.
+
+Validation rejects with 400:
+- deadline in the past / `<= today`
+- deadline too tight (< `ceil(load/240)` available days)
+- hpd outside [0.25, 10]
+- hpw outside [1, 70]
+- non_study_weekdays containing all 7 days
+
+Endpoints (all auth-gated):
+| Method | Path | Notes |
+|---|---|---|
+| POST | `/api/study-plan/preview` | runs generator, returns full plan dict (no DB write) |
+| POST | `/api/study-plan/commit`  | abandons prior active, inserts plan + day rows (chunked 100/batch), seeds adherence row |
+| GET  | `/api/study-plan/active`  | `{plan, upcoming_days, today}` — upcoming window: today..+14 days |
+| GET  | `/api/study-plan/days-range?start=&end=` | day rows in range (Phase D2 chart) |
+| DELETE | `/api/study-plan/active` | sets status='abandoned' |
+
+#### Frontend
+
+**New:**
+- `utils/studyPlanner.js` — typed API client (5 calls).
+- `components/study-planner/StudyPlanWizard.jsx` — 3-step modal (mode →
+  rest days → preview). Auto-fetches preview on entering step 3. Step 2's
+  weekday picker is Sun-first to match the backend int[] semantics. "Weekend
+  off (Sat + Sun)" and "No days off" presets. Step 3 surfaces a 4-card
+  summary (start, finish, total load, active days) + a one-liner ("162
+  sessions and 16 module projects scheduled across 178 active days. Average
+  189 min/day.") + a 14-day bar visualization (study bars in primary blue,
+  rest in border-grey). Commit → toast → `onCommit` callback → modal closes.
+
+**Modified:**
+- `components/DashboardPage.jsx` — adds `activePlan` state (loading /
+  null / present), a dashed-border CTA card "Set up your study plan" that
+  renders ONLY when `activePlan === null`, mounts `<StudyPlanWizard>` at
+  the dashboard root, and a one-shot effect that auto-opens the wizard when
+  the URL has `?setup_plan=1` (strips the param so refreshes don't re-fire).
+- `components/EnrolledPage.jsx` — "Start Learning" now navigates to
+  `/dashboard?setup_plan=1` so post-enrollment users get the wizard
+  automatically. Skip-able via the wizard's own `Skip for now` link.
+
+#### Verification (this pass — all endpoints curl-tested against live)
+
+- T1 preview hpd=1.0 weekend-off → 200, load=33700m, end=2027-01-27, 178 active days, 162 sessions + 16 projects.
+- T2 preview deadline=today+60 Sun-off → 400 "deadline too tight: need at least 141 study days (only 52 available)" — sanity check ✅.
+- T3 deadline 2020-01-01 → 400 "target_deadline must be in the future" ✅.
+- T4 deadline today+2 → 400 "deadline too tight" ✅.
+- T5 hpd=0.1 → 400 "must be between 0.25 and 10" ✅.
+- T6 hpd=11 → 400 same range ✅.
+- T7 hpw=0.5 → 400 "must be between 1 and 70" ✅.
+- T8 commit hpd=1.0 → 200 `{plan_id, plan_end_date:"2027-01-27", total_load_minutes:33700, total_active_days:178}` ✅; 250 day rows persisted (178 active + 72 rest).
+- T9 GET /active → returns plan + 14-row upcoming_days window ✅.
+- T10 second commit (mode swapped to hours_per_week=7.0) → 200, new plan_id; GET /active confirms swap; partial unique index proved correct (zero violation).
+- T11 GET /days-range?start=2026-05-23&end=2027-01-27 → 200 with full 250 rows.
+- T12 DELETE /active → 200 `{ok:true, abandoned_count:1}`. T13 GET /active → null.
+- E2E in browser: Dashboard CTA → wizard (3 steps screenshotted) → Commit plan → toast → CTA disappears → plan visible in DB. Post-enrollment hook: navigate to `/dashboard?setup_plan=1` after deleting plan → wizard auto-opens.
+
+Sample preview JSON (trimmed) at `/app/memory/d1_sample_preview.json`.
+
+#### Constraints honored
+- No chart/visualization on dashboard yet (D2).
+- No gamification wiring yet — XP/streaks/badges/challenges untouched.
+- No `actual_minutes` tracking yet.
+- No new chart library installed.
+- `master_sessions.estimated_minutes` USED (not re-added).
+- No regressions on the existing enrollment / customize / dashboard flows.
+
+#### Known follow-ups (Phase D2)
+- Today-card + cumulative trend chart on dashboard.
+- Auto `actual_minutes`/`actual_sessions_completed` write on session
+  completion + `status` flip (`on_track` / `behind` / `complete`).
+- Adherence streak counter, on-track daily badge, +25 XP bonus, daily
+  challenge auto-generation.
+- "Reset plan?" modal at >20% cumulative behind.
+- 7-day and 30-day milestone cards (hook into the Phase C overlay).
+
+

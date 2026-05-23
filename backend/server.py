@@ -2331,6 +2331,535 @@ async def milestones_check(req: MilestoneCheckReq, supa_user: dict = Depends(get
 # --- end Phase C ---------------------------------------------------------
 
 
+# --- Phase D1: study planner --------------------------------------------
+#
+# Three input modes, three endpoints to preview / commit / read a plan.
+# Source-of-truth for the user's session list is `user_sessions` (their
+# customized list from the enrollment wizard) joined with `master_sessions`
+# for `estimated_minutes`. Module-projects come from `master_module_projects`
+# and contribute `estimated_hours * 60` to the load.
+#
+# Validation rejects nonsense inputs (deadline-in-past, sub-15min hours,
+# all-7-days-off, etc.) with clear messages so the wizard can surface them
+# directly.
+
+import math as _math
+from datetime import date as _date
+
+MIN_HOURS_PER_DAY = 0.25
+MAX_HOURS_PER_DAY = 10.0
+MIN_HOURS_PER_WEEK = 1.0
+MAX_HOURS_PER_WEEK = 70.0
+LOAD_BUFFER_PCT = 0.05  # 5% slack on top of the raw load
+
+
+class StudyPlanInput(BaseModel):
+    enrollment_id: str
+    target_mode: str
+    target_deadline: Optional[str] = None      # YYYY-MM-DD
+    target_hours_per_day: Optional[float] = None
+    target_hours_per_week: Optional[float] = None
+    non_study_weekdays: List[int] = []         # 0=Sun .. 6=Sat
+
+
+def _fetch_plan_inventory(user_id: str, enrollment_id: str) -> dict:
+    """Pulls the user's customized session list + module projects for an
+    enrollment, ordered canonically (module.order_index, then
+    session.order_index within each module). Returns minutes per item plus
+    a flat ordered list of `{kind, id, code, minutes, title}` ready for
+    the day-packer.
+
+    Batched: 4 round-trips total instead of N per module (sequential
+    REST calls add up to 30+ seconds on a 16-module enrollment, hitting
+    the urllib timeout). We pull user_modules → user_sessions → master_sessions
+    → master_module_projects with single IN-clause queries each.
+    """
+    # Confirm the enrollment belongs to the caller.
+    enrolls = _supabase_get(
+        f"user_enrollments?id=eq.{_urlparse.quote(enrollment_id)}"
+        f"&user_id=eq.{_urlparse.quote(user_id)}&select=id&limit=1"
+    ) or []
+    if not enrolls:
+        raise HTTPException(status_code=404, detail="enrollment not found")
+
+    # (1) User modules (in order), non-removed only.
+    user_modules = _supabase_get(
+        f"user_modules?enrollment_id=eq.{_urlparse.quote(enrollment_id)}"
+        f"&is_removed=eq.false&select=id,master_module_id,order_index,title"
+        f"&order=order_index.asc"
+    ) or []
+    if not user_modules:
+        return {"items": []}
+
+    um_ids = [um["id"] for um in user_modules]
+    master_mod_ids = [um["master_module_id"] for um in user_modules if um.get("master_module_id")]
+    um_id_to_order = {um["id"]: um.get("order_index", 0) for um in user_modules}
+
+    # (2) All user_sessions for those modules, non-removed.
+    user_sessions: list = []
+    if um_ids:
+        user_sessions = _supabase_get(
+            f"user_sessions?user_module_id=in.({','.join(um_ids)})"
+            f"&is_removed=eq.false"
+            f"&select=id,master_session_id,user_module_id,order_index,title"
+            f"&order=order_index.asc"
+        ) or []
+
+    # (3) master_sessions for estimated_minutes.
+    master_session_map: dict = {}
+    master_session_ids = [s["master_session_id"] for s in user_sessions if s.get("master_session_id")]
+    if master_session_ids:
+        master_session_rows = _supabase_get(
+            f"master_sessions?id=in.({','.join(master_session_ids)})"
+            f"&select=id,estimated_minutes"
+        ) or []
+        master_session_map = {r["id"]: int(r.get("estimated_minutes") or 50) for r in master_session_rows}
+
+    # (4) master_module_projects for the modules involved.
+    projects_by_module: dict = {}
+    if master_mod_ids:
+        proj_rows = _supabase_get(
+            f"master_module_projects?module_id=in.({','.join(master_mod_ids)})"
+            f"&select=id,module_id,estimated_hours,title"
+        ) or []
+        for p in proj_rows:
+            projects_by_module[p["module_id"]] = p
+
+    # Build the flat ordered item list: for each user_module (in
+    # order_index order), emit its sessions in their order_index order,
+    # then the module's project (if any).
+    sessions_by_um: dict = {}
+    for s in user_sessions:
+        sessions_by_um.setdefault(s["user_module_id"], []).append(s)
+
+    items: list = []
+    for um in user_modules:
+        for s in sessions_by_um.get(um["id"], []):
+            items.append({
+                "kind": "session",
+                "id": s["id"],
+                "minutes": int(master_session_map.get(s.get("master_session_id"), 50)),
+                "title": s.get("title"),
+            })
+        master_mod_id = um.get("master_module_id")
+        proj = projects_by_module.get(master_mod_id)
+        if proj:
+            items.append({
+                "kind": "project",
+                "id": proj["id"],
+                "minutes": int(round((proj.get("estimated_hours") or 1.5) * 60)),
+                "title": proj.get("title"),
+            })
+
+    # Suppress unused-variable lint without changing behaviour.
+    _ = um_id_to_order
+    return {"items": items}
+
+
+def _is_study_day(d: _date, non_study_weekdays: list) -> bool:
+    # Python's weekday(): Mon=0..Sun=6. Convert to Sun=0..Sat=6 so the FE
+    # picker (S M T W T F S) maps 1:1 with what the user clicked.
+    wd_sun_first = (d.weekday() + 1) % 7
+    return wd_sun_first not in non_study_weekdays
+
+
+def _wd_sun_first(d: _date) -> int:
+    return (d.weekday() + 1) % 7
+
+
+def generate_study_plan(
+    user_id: str,
+    enrollment_id: str,
+    target_mode: str,
+    target_deadline: Optional[str],
+    target_hours_per_day: Optional[float],
+    target_hours_per_week: Optional[float],
+    non_study_weekdays: list,
+    start_date: Optional[_date] = None,
+) -> dict:
+    """Pure-ish plan generator: returns a structured plan dict; does NOT
+    persist. Caller (`/preview` or `/commit`) decides what to do with it."""
+
+    if start_date is None:
+        start_date = datetime.now(timezone.utc).date()
+
+    # --- Validate non_study_weekdays ---
+    if not isinstance(non_study_weekdays, list):
+        non_study_weekdays = []
+    non_study_weekdays = sorted({int(d) for d in non_study_weekdays if 0 <= int(d) <= 6})
+    if len(non_study_weekdays) >= 7:
+        raise HTTPException(status_code=400, detail="cannot mark all 7 weekdays as rest days")
+
+    # --- Pull inventory ---
+    inv = _fetch_plan_inventory(user_id, enrollment_id)
+    items = inv["items"]
+    raw_load = sum(it["minutes"] for it in items)
+    total_load_minutes = int(_math.ceil(raw_load * (1.0 + LOAD_BUFFER_PCT)))
+    if total_load_minutes <= 0:
+        raise HTTPException(status_code=400, detail="no sessions to schedule — empty enrollment")
+
+    # --- Mode-specific scheduling ---
+    days: list = []  # [{day_date: date, required_minutes, required_session_codes, required_project_codes, status}]
+
+    def push_rest_day(d: _date):
+        days.append({
+            "day_date": d.isoformat(),
+            "required_minutes": 0,
+            "required_session_codes": [],
+            "required_project_codes": [],
+            "status": "rest",
+        })
+
+    def push_active_day(d: _date, mins: int, ses: list, projs: list):
+        days.append({
+            "day_date": d.isoformat(),
+            "required_minutes": mins,
+            "required_session_codes": ses,
+            "required_project_codes": projs,
+            "status": "upcoming",
+        })
+
+    if target_mode == "deadline":
+        if not target_deadline:
+            raise HTTPException(status_code=400, detail="target_deadline is required for deadline mode")
+        try:
+            deadline_d = _date.fromisoformat(target_deadline)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="target_deadline must be YYYY-MM-DD")
+        if deadline_d <= start_date:
+            raise HTTPException(status_code=400, detail="target_deadline must be in the future")
+
+        # Walk start_date..deadline_d inclusive; count study days available.
+        active_days = []
+        d = start_date
+        while d <= deadline_d:
+            if _is_study_day(d, non_study_weekdays):
+                active_days.append(d)
+            d = d + timedelta(days=1)
+        if not active_days:
+            raise HTTPException(status_code=400, detail="no study days between today and deadline (all rest days?)")
+
+        # Sanity: can't do 50h in 1 day. Floor at 4h/day effective.
+        min_required_days = _math.ceil(total_load_minutes / 240.0)
+        if len(active_days) < min_required_days:
+            raise HTTPException(
+                status_code=400,
+                detail=(
+                    f"deadline too tight: need at least {min_required_days} study days "
+                    f"(only {len(active_days)} available). Try a later deadline or fewer rest days."
+                ),
+            )
+
+        per_day_target = _math.ceil(total_load_minutes / len(active_days))
+
+        # Build the calendar (active + rest) and pack greedily.
+        it_idx = 0
+        d = start_date
+        while d <= deadline_d:
+            if _is_study_day(d, non_study_weekdays):
+                day_mins, day_ses, day_proj = 0, [], []
+                # Pack atomically until we exceed per_day_target or item is huge.
+                while it_idx < len(items):
+                    it = items[it_idx]
+                    if day_mins == 0 or day_mins + it["minutes"] <= per_day_target:
+                        if it["kind"] == "session":
+                            day_ses.append(it["id"])
+                        else:
+                            day_proj.append(it["id"])
+                        day_mins += it["minutes"]
+                        it_idx += 1
+                    else:
+                        break
+                if day_mins > 0:
+                    push_active_day(d, day_mins, day_ses, day_proj)
+                else:
+                    push_rest_day(d)
+            else:
+                push_rest_day(d)
+            d = d + timedelta(days=1)
+        plan_end_date = deadline_d
+
+    elif target_mode == "hours_per_day":
+        if target_hours_per_day is None:
+            raise HTTPException(status_code=400, detail="target_hours_per_day is required for that mode")
+        if target_hours_per_day < MIN_HOURS_PER_DAY or target_hours_per_day > MAX_HOURS_PER_DAY:
+            raise HTTPException(
+                status_code=400,
+                detail=f"target_hours_per_day must be between {MIN_HOURS_PER_DAY} and {MAX_HOURS_PER_DAY}",
+            )
+        per_day_target = int(round(target_hours_per_day * 60))
+
+        it_idx = 0
+        d = start_date
+        # Safety cap so a bogus input can't infinite-loop.
+        max_days = 3 * 365
+        days_walked = 0
+        while it_idx < len(items) and days_walked < max_days:
+            if _is_study_day(d, non_study_weekdays):
+                day_mins, day_ses, day_proj = 0, [], []
+                while it_idx < len(items):
+                    it = items[it_idx]
+                    if day_mins == 0 or day_mins + it["minutes"] <= per_day_target:
+                        if it["kind"] == "session":
+                            day_ses.append(it["id"])
+                        else:
+                            day_proj.append(it["id"])
+                        day_mins += it["minutes"]
+                        it_idx += 1
+                    else:
+                        break
+                if day_mins > 0:
+                    push_active_day(d, day_mins, day_ses, day_proj)
+                else:
+                    push_rest_day(d)
+            else:
+                push_rest_day(d)
+            d = d + timedelta(days=1)
+            days_walked += 1
+        plan_end_date = days[-1]["day_date"] if days else start_date.isoformat()
+        if isinstance(plan_end_date, str):
+            plan_end_date = _date.fromisoformat(plan_end_date)
+
+    elif target_mode == "hours_per_week":
+        if target_hours_per_week is None:
+            raise HTTPException(status_code=400, detail="target_hours_per_week is required for that mode")
+        if target_hours_per_week < MIN_HOURS_PER_WEEK or target_hours_per_week > MAX_HOURS_PER_WEEK:
+            raise HTTPException(
+                status_code=400,
+                detail=f"target_hours_per_week must be between {MIN_HOURS_PER_WEEK} and {MAX_HOURS_PER_WEEK}",
+            )
+        weekly_minutes = int(round(target_hours_per_week * 60))
+        active_days_per_week = 7 - len(non_study_weekdays)
+        if active_days_per_week <= 0:
+            raise HTTPException(status_code=400, detail="non_study_weekdays leaves no active days")
+        per_day_target = int(_math.ceil(weekly_minutes / active_days_per_week))
+
+        it_idx = 0
+        d = start_date
+        max_days = 3 * 365
+        days_walked = 0
+        while it_idx < len(items) and days_walked < max_days:
+            if _is_study_day(d, non_study_weekdays):
+                day_mins, day_ses, day_proj = 0, [], []
+                while it_idx < len(items):
+                    it = items[it_idx]
+                    if day_mins == 0 or day_mins + it["minutes"] <= per_day_target:
+                        if it["kind"] == "session":
+                            day_ses.append(it["id"])
+                        else:
+                            day_proj.append(it["id"])
+                        day_mins += it["minutes"]
+                        it_idx += 1
+                    else:
+                        break
+                if day_mins > 0:
+                    push_active_day(d, day_mins, day_ses, day_proj)
+                else:
+                    push_rest_day(d)
+            else:
+                push_rest_day(d)
+            d = d + timedelta(days=1)
+            days_walked += 1
+        plan_end_date = days[-1]["day_date"] if days else start_date.isoformat()
+        if isinstance(plan_end_date, str):
+            plan_end_date = _date.fromisoformat(plan_end_date)
+
+    else:
+        raise HTTPException(status_code=400, detail=f"unknown target_mode '{target_mode}'")
+
+    active_day_count = sum(1 for x in days if x["status"] == "upcoming")
+    total_sessions = sum(len(x["required_session_codes"]) for x in days)
+    total_projects = sum(len(x["required_project_codes"]) for x in days)
+
+    return {
+        "enrollment_id": enrollment_id,
+        "target_mode": target_mode,
+        "target_deadline": target_deadline,
+        "target_hours_per_day": target_hours_per_day,
+        "target_hours_per_week": target_hours_per_week,
+        "non_study_weekdays": non_study_weekdays,
+        "total_load_minutes": total_load_minutes,
+        "plan_start_date": start_date.isoformat(),
+        "plan_end_date": plan_end_date.isoformat(),
+        "total_active_days": active_day_count,
+        "total_sessions": total_sessions,
+        "total_projects": total_projects,
+        "days": days,
+    }
+
+
+@api_router.post("/study-plan/preview")
+async def study_plan_preview(req: StudyPlanInput, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    return generate_study_plan(
+        user_id,
+        req.enrollment_id,
+        req.target_mode,
+        req.target_deadline,
+        req.target_hours_per_day,
+        req.target_hours_per_week,
+        req.non_study_weekdays,
+    )
+
+
+@api_router.post("/study-plan/commit")
+async def study_plan_commit(req: StudyPlanInput, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    plan = generate_study_plan(
+        user_id,
+        req.enrollment_id,
+        req.target_mode,
+        req.target_deadline,
+        req.target_hours_per_day,
+        req.target_hours_per_week,
+        req.non_study_weekdays,
+    )
+
+    # Abandon any existing active plan for (user, enrollment).
+    existing = _supabase_get(
+        f"user_study_plans?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&enrollment_id=eq.{_urlparse.quote(req.enrollment_id)}"
+        f"&status=eq.active&select=id&limit=1"
+    ) or []
+    if existing:
+        _supabase_patch(
+            f"user_study_plans?id=eq.{_urlparse.quote(existing[0]['id'])}",
+            {"status": "abandoned", "updated_at": datetime.now(timezone.utc).isoformat()},
+        )
+
+    # Insert the new plan row.
+    plan_row = {
+        "user_id": user_id,
+        "enrollment_id": req.enrollment_id,
+        "target_mode": plan["target_mode"],
+        "target_deadline": plan["target_deadline"],
+        "target_hours_per_day": plan["target_hours_per_day"],
+        "target_hours_per_week": plan["target_hours_per_week"],
+        "non_study_weekdays": plan["non_study_weekdays"],
+        "total_load_minutes": plan["total_load_minutes"],
+        "plan_start_date": plan["plan_start_date"],
+        "plan_end_date": plan["plan_end_date"],
+        "status": "active",
+    }
+    inserted = _supabase_post("user_study_plans", plan_row, prefer="return=representation")
+    if not inserted:
+        raise HTTPException(status_code=500, detail="plan insert failed")
+    plan_id = inserted[0]["id"]
+
+    # Insert day rows in chunks.
+    day_rows = [
+        {
+            "plan_id": plan_id,
+            "user_id": user_id,
+            "day_date": d["day_date"],
+            "required_minutes": d["required_minutes"],
+            "required_session_codes": d["required_session_codes"],
+            "required_project_codes": d["required_project_codes"],
+            "status": d["status"],
+        }
+        for d in plan["days"]
+    ]
+    if day_rows:
+        # Chunk to keep payload reasonable.
+        chunk = 100
+        for i in range(0, len(day_rows), chunk):
+            _supabase_post("user_study_plan_days", day_rows[i:i + chunk])
+
+    # Seed adherence row if missing (upsert).
+    _supabase_post(
+        "user_plan_adherence",
+        {"user_id": user_id},
+        prefer="resolution=ignore-duplicates,return=minimal",
+    )
+
+    return {
+        "plan_id": plan_id,
+        "plan_end_date": plan["plan_end_date"],
+        "total_load_minutes": plan["total_load_minutes"],
+        "total_active_days": plan["total_active_days"],
+    }
+
+
+@api_router.get("/study-plan/active")
+async def study_plan_active(supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    rows = _supabase_get(
+        f"user_study_plans?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&status=eq.active&order=created_at.desc&limit=1"
+        f"&select=id,enrollment_id,target_mode,target_deadline,target_hours_per_day,"
+        f"target_hours_per_week,non_study_weekdays,total_load_minutes,"
+        f"plan_start_date,plan_end_date,status,created_at"
+    ) or []
+    if not rows:
+        return None
+    plan = rows[0]
+    today = datetime.now(timezone.utc).date().isoformat()
+    # Window: today .. +14 days.
+    fourteen = (datetime.now(timezone.utc).date() + timedelta(days=14)).isoformat()
+    days = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan['id'])}"
+        f"&day_date=gte.{today}&day_date=lte.{fourteen}"
+        f"&order=day_date.asc"
+        f"&select=day_date,required_minutes,required_session_codes,"
+        f"required_project_codes,actual_minutes,actual_sessions_completed,status"
+    ) or []
+    return {"plan": plan, "upcoming_days": days, "today": today}
+
+
+@api_router.get("/study-plan/days")
+async def study_plan_days(
+    from_: Optional[str] = None,
+    to: Optional[str] = None,
+    supa_user: dict = Depends(get_supabase_user),
+):
+    """Day rows in [from, to] for the user's active plan (chart use in D2)."""
+    user_id = supa_user.get("id")
+    active = _supabase_get(
+        f"user_study_plans?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&status=eq.active&select=id&limit=1"
+    ) or []
+    if not active:
+        return []
+    plan_id = active[0]["id"]
+    query = (
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&order=day_date.asc"
+        f"&select=day_date,required_minutes,required_session_codes,"
+        f"required_project_codes,actual_minutes,actual_sessions_completed,status"
+    )
+    if from_:
+        query += f"&day_date=gte.{_urlparse.quote(from_)}"
+    if to:
+        query += f"&day_date=lte.{_urlparse.quote(to)}"
+    return _supabase_get(query) or []
+
+
+@api_router.delete("/study-plan/active")
+async def study_plan_abandon(supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    rows = _supabase_patch(
+        f"user_study_plans?user_id=eq.{_urlparse.quote(user_id)}&status=eq.active",
+        {"status": "abandoned", "updated_at": datetime.now(timezone.utc).isoformat()},
+    )
+    return {"ok": True, "abandoned_count": len(rows) if rows else 0}
+
+
+# Workaround for FastAPI not allowing `from` as a query param name.
+from fastapi import Query as _Query  # noqa: E402
+
+@api_router.get("/study-plan/days-range")
+async def study_plan_days_range(
+    start: str = _Query(..., description="from date YYYY-MM-DD"),
+    end: str   = _Query(..., description="to date YYYY-MM-DD"),
+    supa_user: dict = Depends(get_supabase_user),
+):
+    """Alternate /days endpoint using `start`/`end` to dodge the `from` reserved word."""
+    return await study_plan_days(from_=start, to=end, supa_user=supa_user)
+
+
+# --- end Phase D1 -------------------------------------------------------
+
+
 
 
 

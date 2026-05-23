@@ -18,10 +18,12 @@ import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
-  HelpCircle, MessageSquare, Wrench, Rocket, Loader2,
+  HelpCircle, MessageSquare, Wrench, Rocket, Loader2, CalendarDays,
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
 import AskPariButton from './tutor/AskPariButton'; // P54: kept for legacy refs, no longer rendered on dashboard
+import StudyPlanWizard from './study-planner/StudyPlanWizard';
+import { getActiveStudyPlan } from '../utils/studyPlanner';
 
 const PHASE_META = {
   notes: { label: 'Notes', icon: FileText, path: 'notes' },
@@ -256,6 +258,39 @@ export default function DashboardPage() {
   const [capstone, setCapstone] = useState(null);
   // P54 P7b: Daily News modal — auto-open once per IST day.
   const [newsOpen, setNewsOpen] = useState(false);
+
+  // Phase D1 — Study plan presence detection + wizard control.
+  const [activePlan, setActivePlan] = useState(undefined);   // undefined = loading, null = none, {} = present
+  const [planWizardOpen, setPlanWizardOpen] = useState(false);
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    (async () => {
+      try {
+        const { ok, data } = await getActiveStudyPlan();
+        if (alive) setActivePlan(ok ? data : null);
+      } catch {
+        if (alive) setActivePlan(null);
+      }
+    })();
+    return () => { alive = false; };
+  }, [user?.id]);
+
+  // Auto-open the wizard when arriving from /enrolled?setup_plan=1 (post-
+  // enrollment hook). One-shot — strip the param after opening so a refresh
+  // doesn't re-trigger.
+  useEffect(() => {
+    if (!user?.id || !enrollment?.id) return;
+    if (activePlan !== null) return;   // user already has a plan; skip
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('setup_plan') === '1') {
+        setPlanWizardOpen(true);
+        url.searchParams.delete('setup_plan');
+        window.history.replaceState({}, '', url.toString());
+      }
+    } catch { /* SSR / sandboxed iframe — skip */ }
+  }, [user?.id, enrollment?.id, activePlan]);
   useEffect(() => {
     if (!user?.id) return;
     try {
@@ -518,6 +553,30 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
+                {/* Phase D1 — Set-up plan CTA (only when no active plan) */}
+                {activePlan === null && (
+                  <button
+                    onClick={() => setPlanWizardOpen(true)}
+                    className="w-full mb-6 rounded-2xl border-2 border-dashed border-[var(--color-primary)]/40 bg-gradient-to-br from-[var(--color-primary)]/10 via-[var(--color-accent-purple)]/8 to-transparent px-5 sm:px-6 py-4 sm:py-5 text-left hover:border-[var(--color-primary)] hover:from-[var(--color-primary)]/15 transition-all group"
+                    data-testid="dashboard-setup-plan-cta"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40 text-[var(--color-primary)] flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                        <CalendarDays size={20} />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-clash text-base sm:text-lg font-semibold text-[var(--color-text)] mb-0.5">
+                          Set up your study plan
+                        </div>
+                        <p className="text-xs sm:text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                          Pick a deadline or pace — we'll spread your sessions and projects across the calendar so you never wonder "am I on track?" again.
+                        </p>
+                      </div>
+                      <ArrowRight size={18} className="text-[var(--color-primary)] shrink-0 mt-2" />
+                    </div>
+                  </button>
+                )}
+
                 <ContinueLearningCard
                   computed={computed}
                   enrollment={enrollment}
@@ -704,6 +763,23 @@ export default function DashboardPage() {
         onClose={() => setNewsOpen(false)}
         onMarkRead={() => { refreshXP?.(); }}
       />
+      {/* Phase D1 — Study plan wizard. Mounted at dashboard root so the
+          CTA card can open it. enrollment may briefly be null while the
+          first fetch is in-flight; we render the wizard component but
+          gate `open` on enrollment.id so it never opens without a target. */}
+      {enrollment?.id && (
+        <StudyPlanWizard
+          open={planWizardOpen}
+          onClose={() => setPlanWizardOpen(false)}
+          enrollmentId={enrollment.id}
+          onCommit={() => {
+            // Refresh the active plan + drop the CTA card.
+            getActiveStudyPlan().then(({ ok, data }) => {
+              setActivePlan(ok ? data : null);
+            });
+          }}
+        />
+      )}
     </div>
   );
 }

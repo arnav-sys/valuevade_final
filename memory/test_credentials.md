@@ -743,3 +743,107 @@ done
   the `ON CONFLICT DO UPDATE` will repoint `trigger_module_id`.
 
 
+
+
+## Phase D1 — Study Planner (Feb 2026)
+
+3 input modes (deadline / hours_per_day / hours_per_week), 5 endpoints, modal
+3-step wizard. Plan rows persist; tracking lands in D2.
+
+### Auth-free probe
+
+```bash
+# Verify tables exist
+curl -s "$SUPABASE_URL/rest/v1/user_study_plans?limit=1" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+# → []  (empty 200)
+```
+
+### Bearer-required happy path (test user)
+
+```bash
+TOKEN="<paste from localStorage[sb-yuadeybycbfqlkdpxbkv-auth-token].access_token>"
+ENR="37ced88c-2331-40e4-8805-be1f65c99dde"   # testagent2026's enrollment
+
+# 1. PREVIEW hours_per_day=1.0, weekend off
+curl -s -X POST "$API_URL/api/study-plan/preview" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"enrollment_id\":\"$ENR\",\"target_mode\":\"hours_per_day\",\"target_hours_per_day\":1.0,\"non_study_weekdays\":[0,6]}"
+# → 200 with full structured plan: total_load_minutes ~ 33700, plan_end_date,
+#   total_active_days, total_sessions, total_projects, days[] (~250 rows: 178 active + 72 rest).
+
+# 2. COMMIT (same body)
+curl -s -X POST "$API_URL/api/study-plan/commit" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"enrollment_id\":\"$ENR\",\"target_mode\":\"hours_per_day\",\"target_hours_per_day\":1.0,\"non_study_weekdays\":[0,6]}"
+# → 200 {plan_id, plan_end_date, total_load_minutes, total_active_days}
+
+# 3. ACTIVE plan + next 14 days
+curl -s "$API_URL/api/study-plan/active" -H "Authorization: Bearer $TOKEN"
+# → {plan: {...}, upcoming_days: [...today..today+14d], today: "YYYY-MM-DD"}
+
+# 4. DAYS in a range (Phase D2 chart use)
+curl -s "$API_URL/api/study-plan/days-range?start=2026-05-23&end=2027-01-27" \
+  -H "Authorization: Bearer $TOKEN"
+# → [day_row, day_row, ...]
+
+# 5. ABANDON
+curl -s -X DELETE "$API_URL/api/study-plan/active" -H "Authorization: Bearer $TOKEN"
+# → {ok: true, abandoned_count: 1}
+```
+
+### Validation contract — every input rejected with clean detail
+
+```bash
+# Past deadline → 400 "target_deadline must be in the future"
+# Tight deadline → 400 "deadline too tight: need at least N study days (only K available)"
+# hpd < 0.25 or > 10 → 400 "target_hours_per_day must be between 0.25 and 10"
+# hpw < 1 or > 70 → 400 "target_hours_per_week must be between 1 and 70"
+# All-7-rest → 400 "cannot mark all 7 weekdays as rest days"
+# Empty enrollment (no user_sessions) → 400 "no sessions to schedule — empty enrollment"
+# Stranger's enrollment_id → 404 "enrollment not found"
+```
+
+### Frontend manual smoke
+
+1. Log in as `testagent2026@gmail.com`. If they have NO active plan → dashboard
+   shows the **"Set up your study plan"** dashed-border CTA card just above
+   "Continue Learning" (testid `dashboard-setup-plan-cta`). If they DO have
+   one → CTA is hidden.
+2. Click the CTA → modal wizard opens (testid `study-plan-wizard`).
+3. **Step 1** (testid `study-plan-step-1`): 3 mode cards (deadline / hpd /
+   hpw). Selecting expands the inline input. Numeric inputs are bounded;
+   Continue button disables until input is valid.
+4. **Step 2** (testid `study-plan-step-2`): 7 weekday pills (S M T W T F S,
+   Sun-first). Defaults to [0, 6] (Weekend off). Presets: "No days off",
+   "Weekend off (Sat + Sun)". Caption shows "5 STUDY DAYS · 2 REST".
+5. **Step 3** (testid `study-plan-step-3`): auto-fetches preview, shows a
+   4-card summary (Start / Finish / Total load / Active days), a one-liner
+   ("N sessions and M module projects scheduled across X active days. Avg
+   Y min/day."), and a 14-day bar visualization. Commit button gradient blue
+   → purple.
+6. Click **Commit plan** → toast "Plan set ✓ Check your dashboard" →
+   modal closes → CTA card disappears from dashboard.
+7. **Post-enrollment hook**: from EnrolledPage, "Start Learning" routes to
+   `/dashboard?setup_plan=1`. The dashboard reads the param once and
+   auto-opens the wizard (one-shot; the param is stripped after firing so
+   refreshes don't re-open).
+
+### Reset for re-testing
+
+```sql
+-- Clear all study plans for the test user
+delete from public.user_study_plan_days where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+delete from public.user_study_plans     where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+```
+
+### Known constraints honored
+
+- No chart on dashboard (D2). The wizard's step-3 14-day bars are inline only.
+- No XP / streak / badge / challenge / actual-minutes wiring (D2).
+- Quick Pari endpoints and Phase B/C surfaces are untouched.
+- Day rows store `required_project_codes` (master_module_projects.id) instead
+  of `required_capstone_codes` — there's no master_capstones table in this
+  codebase; module projects are the per-module deliverables.
+
+

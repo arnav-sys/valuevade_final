@@ -89,7 +89,7 @@ export default function EnrolledPage() {
 
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
-            onClick={() => navigate('/dashboard')}
+            onClick={() => navigate('/dashboard?setup_plan=1')}
             className="px-8 py-3.5 rounded-xl text-sm font-semibold font-bricolage bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all flex items-center justify-center gap-2"
             data-testid="enrolled-start-learning"
           >
