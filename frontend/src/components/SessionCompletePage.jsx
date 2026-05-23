@@ -12,6 +12,7 @@ import { markSessionDoubt, resolveSessionDoubt } from '../utils/sessionDoubts';
 import { getRedoForSession, clearRedoState } from '../utils/redoState';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 import { useMilestones } from '../contexts/MilestonesContext';
+import { reportSessionCompleted } from '../utils/studyPlanner';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase, AlertTriangle, Brain,
@@ -187,6 +188,44 @@ export default function SessionCompletePage() {
     })();
     return () => { mounted = false; };
   }, [redoInfo, session, refreshOpenCount]);
+
+  // Phase D2 — Plan-tracking side-channel.
+  // Fires once when the session is fully complete. Fire-and-forget: the
+  // backend is idempotent on (plan_id, day_date, session_id) so a refresh
+  // or remount can't double-credit. Minutes_spent uses the master_session
+  // estimated_minutes (planned, not wall-clock) so faster students aren't
+  // penalised — per the Phase D2 spec.
+  const planSyncRef = useRef(false);
+  useEffect(() => {
+    if (!session || planSyncRef.current) return;
+    const allPhasesDone =
+      session.notes_completed &&
+      session.quiz_completed &&
+      session.interview_completed &&
+      session.simulation_completed;
+    if (!allPhasesDone) return;
+    planSyncRef.current = true;
+    let alive = true;
+    (async () => {
+      try {
+        // Look up planned minutes from master_sessions.
+        let minutes = 50;
+        if (session.master_session_id) {
+          const { data: ms } = await supabase
+            .from('master_sessions')
+            .select('estimated_minutes')
+            .eq('id', session.master_session_id)
+            .maybeSingle();
+          if (ms?.estimated_minutes) minutes = ms.estimated_minutes;
+        }
+        if (!alive) return;
+        await reportSessionCompleted({ session_id: sessionId, minutes_spent: minutes });
+      } catch {
+        // Fire-and-forget: never block the session-complete UI on plan tracking.
+      }
+    })();
+    return () => { alive = false; };
+  }, [session, sessionId]);
 
   // Phase C — Milestone check.
   // Fires once after the session loads and we've confirmed all four phases

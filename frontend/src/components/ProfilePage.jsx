@@ -14,6 +14,7 @@ import {
   BookOpen, Layers, Trophy, Rocket, Sparkles, Calendar, AlertCircle, RefreshCw,
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
+import { getStudyPlanDashboardSummary } from '../utils/studyPlanner';
 
 function initialsFrom(name, email) {
   if (name) {
@@ -62,6 +63,19 @@ export default function ProfilePage() {
   const [sessions, setSessions] = useState([]);
   const [stats, setStats] = useState(null);
   const [capstone, setCapstone] = useState(null);
+  // Phase D2 — plan adherence stats (3 numbers — no chart in this block).
+  const [planSummary, setPlanSummary] = useState(null);
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    (async () => {
+      try {
+        const { ok, data } = await getStudyPlanDashboardSummary();
+        if (alive) setPlanSummary(ok ? data : null);
+      } catch { /* ignore */ }
+    })();
+    return () => { alive = false; };
+  }, [user?.id]);
 
   useEffect(() => {
     if (profile?.full_name) setNameInput(profile.full_name);
@@ -443,6 +457,43 @@ export default function ProfilePage() {
                     testid="profile-stat-time"
                   />
                 </div>
+
+                {/* Phase D2 — Plan Adherence (3 stats, no chart) */}
+                {planSummary?.active_plan && (
+                  <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-5" data-testid="profile-plan-adherence">
+                    <StatCard
+                      icon={Flame}
+                      label="On-schedule streak"
+                      value={planSummary.adherence?.on_schedule_streak_days || 0}
+                      suffix={(planSummary.adherence?.on_schedule_streak_days || 0) === 1 ? 'day' : 'days'}
+                      accent="pink"
+                      testid="profile-stat-plan-streak"
+                    />
+                    <StatCard
+                      icon={Trophy}
+                      label="Longest streak"
+                      value={planSummary.adherence?.longest_on_schedule_streak || 0}
+                      suffix={(planSummary.adherence?.longest_on_schedule_streak || 0) === 1 ? 'day' : 'days'}
+                      accent="purple"
+                      testid="profile-stat-plan-longest"
+                    />
+                    <StatCard
+                      icon={Calendar}
+                      label="On schedule"
+                      value={(() => {
+                        const days = planSummary?.cumulative?.days_so_far || [];
+                        if (!days.length) return '—';
+                        const need = days.reduce((s, d) => s + (d.required_minutes_cum > 0 ? 1 : 0), 0);
+                        // approximate "on schedule" = days where cumulative actual >= cumulative required
+                        const ok = days.filter((d) => d.actual_minutes_cum >= d.required_minutes_cum).length;
+                        return need > 0 ? `${Math.round(ok / days.length * 100)}%` : '—';
+                      })()}
+                      suffix="of plan"
+                      accent="primary"
+                      testid="profile-stat-plan-percent"
+                    />
+                  </div>
+                )}
 
                 {/* Overall progress bar */}
                 <div className="glass-card rounded-2xl p-5" data-testid="profile-overall-progress-wrap">

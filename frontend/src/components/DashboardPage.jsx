@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -23,7 +23,10 @@ import {
 import { Skeleton } from './ui/skeleton';
 import AskPariButton from './tutor/AskPariButton'; // P54: kept for legacy refs, no longer rendered on dashboard
 import StudyPlanWizard from './study-planner/StudyPlanWizard';
-import { getActiveStudyPlan } from '../utils/studyPlanner';
+import PlanTodayCard from './study-planner/PlanTodayCard';
+import PlanTrendChart from './study-planner/PlanTrendChart';
+import PlanResetModal from './study-planner/PlanResetModal';
+import { getActiveStudyPlan, getStudyPlanDashboardSummary } from '../utils/studyPlanner';
 
 const PHASE_META = {
   notes: { label: 'Notes', icon: FileText, path: 'notes' },
@@ -260,8 +263,24 @@ export default function DashboardPage() {
   const [newsOpen, setNewsOpen] = useState(false);
 
   // Phase D1 — Study plan presence detection + wizard control.
+  // Phase D2 — Dashboard summary (today + cumulative trend + adherence).
   const [activePlan, setActivePlan] = useState(undefined);   // undefined = loading, null = none, {} = present
   const [planWizardOpen, setPlanWizardOpen] = useState(false);
+  const [planSummary, setPlanSummary] = useState(null);
+  const [planSummaryLoading, setPlanSummaryLoading] = useState(false);
+  const [planResetOpen, setPlanResetOpen] = useState(false);
+
+  const loadPlanSummary = useCallback(async () => {
+    setPlanSummaryLoading(true);
+    try {
+      const { ok, data } = await getStudyPlanDashboardSummary();
+      setPlanSummary(ok ? data : null);
+    } catch {
+      setPlanSummary(null);
+    } finally {
+      setPlanSummaryLoading(false);
+    }
+  }, []);
   useEffect(() => {
     if (!user?.id) return;
     let alive = true;
@@ -275,6 +294,14 @@ export default function DashboardPage() {
     })();
     return () => { alive = false; };
   }, [user?.id]);
+
+  // Phase D2 — pull the rich summary whenever an active plan exists.
+  useEffect(() => {
+    if (!user?.id) return;
+    if (activePlan === undefined) return;   // still loading the lighter /active
+    if (activePlan === null) { setPlanSummary(null); return; }
+    loadPlanSummary();
+  }, [user?.id, activePlan, loadPlanSummary]);
 
   // Auto-open the wizard when arriving from /enrolled?setup_plan=1 (post-
   // enrollment hook). One-shot — strip the param after opening so a refresh
@@ -577,6 +604,19 @@ export default function DashboardPage() {
                   </button>
                 )}
 
+                {/* Phase D2 — Today card + Trend chart (only when active plan) */}
+                {activePlan && (
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6" data-testid="dashboard-plan-cards">
+                    <PlanTodayCard
+                      data={planSummary}
+                      loading={planSummaryLoading}
+                      onOpenRebalance={() => setPlanResetOpen(true)}
+                      onOpenWizard={() => setPlanWizardOpen(true)}
+                    />
+                    <PlanTrendChart data={planSummary} />
+                  </div>
+                )}
+
                 <ContinueLearningCard
                   computed={computed}
                   enrollment={enrollment}
@@ -777,7 +817,19 @@ export default function DashboardPage() {
             getActiveStudyPlan().then(({ ok, data }) => {
               setActivePlan(ok ? data : null);
             });
+            // Phase D2 — refresh summary so the today card + chart re-render.
+            loadPlanSummary();
           }}
+        />
+      )}
+      {planSummary?.active_plan && (
+        <PlanResetModal
+          open={planResetOpen}
+          onClose={() => setPlanResetOpen(false)}
+          behindPercent={planSummary?.cumulative?.is_behind_percent || 0}
+          currentMode={planSummary?.active_plan?.target_mode}
+          onRebalanced={() => { loadPlanSummary(); }}
+          onOpenWizard={() => { setPlanWizardOpen(true); }}
         />
       )}
     </div>

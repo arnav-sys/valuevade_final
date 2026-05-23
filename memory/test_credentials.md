@@ -847,3 +847,133 @@ delete from public.user_study_plans     where user_id = '13a690c4-96d7-4827-8117
   codebase; module projects are the per-module deliverables.
 
 
+
+
+## Phase D2 — Plan Tracking + Gamification (Feb 2026)
+
+### Auth-free probe (service-role)
+
+```bash
+# Confirm new badges, milestones, daily challenge template
+curl -s "$SUPABASE_URL/rest/v1/master_badges?code=in.(on_track_today,on_schedule_7,on_schedule_30)&select=code,rarity" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+# → 3 rows
+
+curl -s "$SUPABASE_URL/rest/v1/master_milestones?kind=eq.plan_streak" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+# → 2 rows (plan_streak_7, plan_streak_30)
+
+curl -s "$SUPABASE_URL/rest/v1/master_daily_challenges?code=eq.daily_plan_complete" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+# → 1 row (xp_reward=25, challenge_type=plan_daily_target_met)
+
+# RPC sanity-check (with no active plan)
+curl -s -X POST "$SUPABASE_URL/rest/v1/rpc/update_plan_day_progress" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"p_user_id":"13a690c4-96d7-4827-8117-fde4f696e999","p_session_minutes":50,"p_session_code":"test"}'
+# → {"reason":"no_active_plan", ...}
+```
+
+### Bearer-required happy path
+
+```bash
+TOKEN="<sb-yuadeybycbfqlkdpxbkv-auth-token.access_token>"
+
+# 1. session-completed hook (fires from FE after a session's XP write)
+curl -s -X POST "$API_URL/api/study-plan/session-completed" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"ses-A-uuid","minutes_spent":30}'
+# → {"just_completed_today":false,"day_status":"today","on_schedule_streak_days":0,
+#    "xp_awarded":0,"badges_granted":[],"milestones_granted":[],"reason":null}
+
+# 2. Hit the target (2nd session completes today's plan)
+curl -s -X POST "$API_URL/api/study-plan/session-completed" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"ses-B-uuid","minutes_spent":30}'
+# → {"just_completed_today":true,"day_status":"complete","on_schedule_streak_days":1,
+#    "xp_awarded":25,"badges_granted":["on_track_today"],"milestones_granted":[]}
+
+# 3. Replay session A — IDEMPOTENT no-op
+curl -s -X POST "$API_URL/api/study-plan/session-completed" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"ses-A-uuid","minutes_spent":30}'
+# → {"just_completed_today":false,"day_status":"complete","xp_awarded":0,
+#    "badges_granted":[],"reason":"already_credited"}
+
+# 4. Dashboard summary (one round-trip)
+curl -s "$API_URL/api/study-plan/dashboard-summary" -H "Authorization: Bearer $TOKEN"
+# → {active_plan, today, cumulative:{days_so_far,is_behind_percent,needs_reset_warning},
+#    adherence:{on_schedule_streak_days,longest_on_schedule_streak,last_on_track_date}}
+
+# 5. Rebalance (no body → keep same targets)
+curl -s -X POST "$API_URL/api/study-plan/rebalance" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{}'
+# → {"ok":true,"plan_id":...,"new_plan_end_date":...,"remaining_items":N,"days_rebuilt":M}
+```
+
+### Idempotency invariants (CRITICAL)
+
+1. **Per-session dedup** — `update_plan_day_progress` checks
+   `p_session_code = any(completed_session_codes)`; if yes, returns
+   `reason: 'already_credited'` with no counter update.
+2. **+25 XP dedup** — partial unique index
+   `ux_user_xp_events_plan_daily_target` on `(user_id, meta->>
+   'plan_day_date') WHERE reason='plan_daily_target'`. The Python
+   `_maybe_award_plan_daily_target_xp` swallows the 23505 unique
+   violation and returns False.
+3. **Badge dedup** — `on_track_today` checks `earned_at::date ==
+   today_ist`; `on_schedule_7` / `on_schedule_30` only grant once
+   forever via the existing `(user_id, badge_id)` unique key.
+4. **Milestone dedup** — `user_milestones(user_id, milestone_code)`
+   unique key blocks any second insert; the Python handler swallows the
+   409.
+
+### Frontend manual smoke
+
+1. Log in as `testagent2026@gmail.com` (with an active plan + at least
+   some past behind days for the warning to surface).
+2. Dashboard renders side-by-side `PlanTodayCard` + `PlanTrendChart`
+   above Continue Learning (testid `dashboard-plan-cards`).
+3. `PlanTodayCard`:
+   - Status pill: green "ON TRACK" once today's complete, blue "IN
+     PROGRESS" while partial, amber "BEHIND" past noon IST <50%, grey
+     "REST DAY" for non-study weekdays.
+   - Two meter bars (Minutes + Sessions) with testids
+     `plan-today-minutes`, `plan-today-sessions`.
+   - Streak chip (`plan-streak-chip`) appears only when streak ≥ 3.
+   - Amber warning chip (`plan-reset-warning`) appears when behind >20%.
+4. `PlanTrendChart`: recharts LineChart with planned (blue) and actual
+   (green if ahead, amber if behind), vertical dashed line on today,
+   caption (`plan-trend-caption`) "Planned: X hr by today · Actual: Y
+   hr · Gap: Z hr".
+5. Click Rebalance CTA → `PlanResetModal` opens (testid
+   `plan-reset-modal`) with 3 options.
+6. Click "Rebalance with same targets" → POST `/rebalance` → modal
+   closes → today card refreshes with new day rows.
+7. Profile page → "Plan Adherence" 3-stat row (testid
+   `profile-plan-adherence`) with streak, longest, % on-schedule.
+8. Session completion in `SessionCompletePage` auto-fires the
+   `/session-completed` hook 1.4 s after all 4 phases flip to true.
+   Idempotent — refresh/remount doesn't double-fire (`planSyncRef`).
+
+### Reset for re-testing
+
+```sql
+-- Wipe plan state + adherence + plan XP/badges for the test user
+delete from public.user_study_plan_days where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+delete from public.user_study_plans     where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+delete from public.user_plan_adherence  where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+delete from public.user_xp_events       where user_id = '13a690c4-96d7-4827-8117-fde4f696e999' and reason = 'plan_daily_target';
+-- + drop on_track_today, on_schedule_7, on_schedule_30 from user_badges if testing badge re-grant
+```
+
+### Known constraints
+
+- The +25 XP plan_daily_target reward bypasses the `award_xp` RPC and
+  inserts directly into `user_xp_events` (the trigger handles the
+  rollup). This is intentional — see PRD note on 0020e for the reason.
+- The on-schedule streak (`user_plan_adherence`) is SEPARATE from the
+  login streak (`user_streaks`). Don't confuse them in tests.
+
+

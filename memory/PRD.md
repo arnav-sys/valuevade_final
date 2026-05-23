@@ -2592,3 +2592,169 @@ Sample preview JSON (trimmed) at `/app/memory/d1_sample_preview.json`.
 - 7-day and 30-day milestone cards (hook into the Phase C overlay).
 
 
+
+### Phase D2 — Plan Tracking + Gamification Hooks (Feb 2026)
+
+Auto-tracks session completions against the study plan, surfaces dashboard
+visuals (today card + cumulative trend chart), reset-plan modal when >20%
+behind, and wires all 5 gamification hooks (badges, milestones, +25 XP,
+streak, daily challenge).
+
+#### Database (migration 0020 + 0020b/c/d/e patches, all applied)
+
+- `user_study_plan_days.completed_session_codes text[]` — new column for
+  per-session idempotency on the day row.
+- `ux_user_xp_events_plan_daily_target` — partial unique index on
+  `(user_id, meta->>'plan_day_date') WHERE reason = 'plan_daily_target'`.
+  Enforces +25 XP bonus is paid at most once per user per plan day.
+- `master_daily_challenges.challenge_type` CHECK extended to allow
+  `'plan_daily_target_met'`; seeded `daily_plan_complete` template (+25 XP).
+- `pick_daily_challenges(uuid)` RPC rewritten: for users with an active
+  plan, slot 1 is forced to `daily_plan_complete` and the other 2 are
+  random non-plan templates; for users without an active plan, the plan
+  challenge is excluded from the random pool.
+- 3 new `master_badges`: `on_track_today` (common), `on_schedule_7` (rare),
+  `on_schedule_30` (legendary).
+- `master_milestones.kind` extended to include `'plan_streak'`; 2 new
+  milestones seeded: `plan_streak_7` (rare, "On the rails — 7 days") and
+  `plan_streak_30` (legendary, "Unbreakable — 30 days on plan").
+- `update_plan_day_progress(user_id, minutes, session_code)` RPC — finds
+  today's row in the active plan, applies idempotent counter increments
+  on a per-session-code basis, recomputes status (complete iff actual ≥
+  required AND completed_session_codes ≥ required_session_codes), and
+  updates `user_plan_adherence` (streak inc by 1 if yesterday was on track,
+  else reset to 1; track longest). Returns JSON with `day_status`,
+  `on_schedule_streak_days`, `just_completed_today`, `plan_id`, `day_date`.
+- `award_xp` RPC restored from migration 0002's body + extended whitelist
+  to include `plan_daily_target` (patch `0020e`). The earlier `0020c`
+  override referenced a non-existent `user_stats.time_spent_minutes`
+  column — that override is gone; `0020e` restores the correct body.
+- `user_xp_events.reason` CHECK constraint extended via 0020d to allow the
+  new reason.
+
+#### Backend (server.py, ~330 LoC added)
+
+`POST /api/study-plan/session-completed`
+- Calls `update_plan_day_progress` RPC.
+- If `just_completed_today=true` AND a plan_id is present:
+  - Direct-inserts a +25 XP row into `user_xp_events` with
+    `reason='plan_daily_target'` and `meta={plan_id, plan_day_date}`.
+    The partial unique index swallows duplicates (returns False from the
+    helper); the trigger on `user_xp_events` rolls into `user_stats` /
+    `user_daily_activity` automatically.
+  - Grants `on_track_today` badge (date-scoped; resets `earned_at` if
+    re-earned the next day).
+  - On streak == 7: grants `on_schedule_7` badge + `plan_streak_7`
+    milestone (the existing Phase C overlay polls /pending and surfaces).
+  - On streak == 30: grants `on_schedule_30` + `plan_streak_30`.
+  - Calls `rpc/update_daily_challenge_progress` with type=
+    `plan_daily_target_met` so the picked-today challenge progresses.
+- Returns `{just_completed_today, day_status, on_schedule_streak_days,
+  xp_awarded, badges_granted, milestones_granted, reason}` — `reason` is
+  set to `already_credited` on replay so the FE can render a friendly
+  no-op message if needed.
+
+`GET /api/study-plan/dashboard-summary` — one round-trip payload:
+```
+{
+  active_plan: {plan_id, plan_start_date, plan_end_date, total_load_minutes,
+                target_mode, target_*, non_study_weekdays},
+  today: {day_date, required_minutes, actual_minutes, required_session_codes,
+          completed_session_codes, actual_sessions_completed, status,
+          percent_complete},
+  cumulative: {days_so_far: [{day_date, required_minutes_cum, actual_minutes_cum}],
+               is_behind_percent, needs_reset_warning: bool},
+  adherence: {on_schedule_streak_days, longest_on_schedule_streak,
+              last_on_track_date}
+}
+```
+
+`POST /api/study-plan/rebalance` — abandons future day rows (≥ today),
+inlines the day-packer with `items_remaining` = original inventory minus
+already-completed session codes, and rewrites the plan row's target
+fields if any `new_target_*` is sent. Past day rows are preserved as-is.
+
+#### Frontend
+
+**Charting choice:** `recharts` (v3.6.0 — already in `package.json`). Chart
+uses `LineChart` with two Lines (planned blue, actual green/amber) +
+`ReferenceLine` for today's vertical dashed marker. Total component LoC:
+~125 (well under the 200-LoC budget).
+
+**New:**
+- `components/study-planner/PlanTodayCard.jsx` — compact card: header
+  with date, status pill (green "On Track" / blue "In Progress" / amber
+  "Behind" past noon IST <50% / grey "Rest Day"), streak chip with flame
+  icon when streak ≥ 3, two meter bars (Minutes + Sessions), amber
+  warning chip with Rebalance CTA when >20% behind.
+- `components/study-planner/PlanTrendChart.jsx` — recharts `LineChart`.
+  Actual line colour-shifts green→amber when behind. Caption line shows
+  Planned/Actual/Gap with the gap value coloured.
+- `components/study-planner/PlanResetModal.jsx` — 3-option modal: keep
+  current / rebalance with same targets (calls /rebalance with empty
+  body) / change plan style (closes modal + opens the D1 wizard).
+
+**Modified:**
+- `utils/studyPlanner.js` — adds `reportSessionCompleted`,
+  `getStudyPlanDashboardSummary`, `rebalanceStudyPlan`.
+- `components/SessionCompletePage.jsx` — new effect fires
+  `reportSessionCompleted({session_id, minutes_spent})` exactly once when
+  all four phases complete. Minutes_spent reads from
+  `master_sessions.estimated_minutes` (planned, not wall-clock) so faster
+  students aren't penalised. Fire-and-forget — never blocks session-UI.
+- `components/DashboardPage.jsx` — adds plan-summary fetch, mounts
+  `PlanTodayCard` + `PlanTrendChart` side-by-side (`lg:grid-cols-2`)
+  above Continue Learning when an active plan exists; mounts
+  `PlanResetModal` at the root.
+- `components/ProfilePage.jsx` — appends a 3-stat "Plan Adherence" row
+  below the existing stats: on-schedule streak, longest streak, %
+  on-schedule (cumulative actual ≥ cumulative required ÷ total days).
+
+#### Verification — full E2E simulation (this pass)
+
+Test plan: 4 past unmet days (60min each) + today (60min, 2 sessions) +
+2 future days. Setup gives `is_behind_percent ≈ 80%` so the reset
+warning surfaces. Hits the `/session-completed` hook 3 times:
+
+```
+FIRE #1 (ses-A, 30min)   → just_completed=False, day_status=today,    xp=0,  badges=[]
+FIRE #2 (ses-B, 30min)   → just_completed=True,  day_status=complete, xp=25, badges=['on_track_today'], streak=1
+FIRE #3 (ses-A REPLAY)  → just_completed=False, day_status=complete, xp=0,  badges=[], reason='already_credited'
+```
+- Final day row: actual=60m, sessions=2, codes=['ses-A','ses-B'] ✅
+- Adherence: streak=1, longest=1 ✅
+- XP events with `reason='plan_daily_target'`: count=1 (only FIRE #2) ✅
+- `user_badges.on_track_today`: 1 row, unlocked=true ✅
+- needs_reset_warning=true (80% behind) → reset CTA visible → modal opens ✅
+
+Screenshots captured at `/tmp/d2_FINAL_*`:
+- `d2_FINAL_dashboard.png` — today card "ON TRACK" + minutes 60/60 + sessions 2/2 + amber 80%-behind warning, side-by-side with the recharts plan-vs-actual chart (5hr planned vs 1hr actual, +4hr gap).
+- `d2_FINAL_reset_modal.png` — modal with "You're 80% behind. Rebalance?" headline + 3 options.
+- `d2_FINAL_profile_adherence.png` — 3-stat block on profile: 1-day streak / 1-day longest / 0% on-schedule.
+
+#### Constraints honored
+- Phase A/B/C/D1 contracts untouched.
+- Login streak (`user_streaks`) NOT modified — on-schedule streak is a
+  separate column on `user_plan_adherence`.
+- recharts already installed — no new dep added.
+- Idempotency: replay-same-session returns `already_credited`; +25 XP
+  partial unique index blocks double-pay; badge grant checks earned_at
+  date for `on_track_today`.
+- `user_plan_adherence` row created on-demand via the RPC's
+  `insert … on conflict (user_id) do nothing` so first-time users
+  don't crash the hook.
+- Direct XP insert into `user_xp_events` (instead of going through
+  `award_xp` RPC) decouples the +25 reward from `award_xp`'s internal
+  body — safer against future RPC re-writes.
+
+#### Known follow-ups (out of scope this phase)
+- Daily challenge wiring: when a user with an active plan opens the
+  challenges sheet, the plan challenge is now picked into slot 1 (via
+  `pick_daily_challenges`). The challenge's own +25 XP is paid by the
+  existing daily-challenge complete flow; the plan-target +25 XP is a
+  SEPARATE reason (`plan_daily_target`) with a different idempotency
+  key. They're NOT double-counted because the plan-target XP fires only
+  on the FIRST day-complete event, while the challenge-complete XP
+  fires when the daily-challenge progress hits target.
+
+

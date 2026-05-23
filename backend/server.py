@@ -184,6 +184,26 @@ def _supabase_patch(path: str, body: dict):
         raise HTTPException(status_code=e.code, detail=e.read().decode("utf-8"))
 
 
+def _supabase_delete(path: str):
+    """DELETE helper for removing PostgREST rows by query filter. Used by
+    Phase D2's `/study-plan/rebalance` to clear future day rows before
+    re-inserting the recomputed schedule."""
+    if not _SUPABASE_SR:
+        raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+    url = f"{_SUPABASE_REST}/rest/v1/{path}"
+    req = _urlreq.Request(url, method="DELETE", headers={
+        "apikey": _SUPABASE_SR,
+        "Authorization": f"Bearer {_SUPABASE_SR}",
+        "Prefer": "return=representation",
+    })
+    try:
+        with _urlreq.urlopen(req, timeout=15) as r:
+            txt = r.read().decode("utf-8")
+            return _json.loads(txt) if txt else []
+    except _urlerr.HTTPError as e:
+        raise HTTPException(status_code=e.code, detail=e.read().decode("utf-8"))
+
+
 def _supabase_auth_user(access_token: str) -> Optional[dict]:
     """Resolve a Supabase access token to a user dict via Supabase Auth's
     /auth/v1/user endpoint. We use the user's token (NOT the service role) so
@@ -2858,6 +2878,547 @@ async def study_plan_days_range(
 
 
 # --- end Phase D1 -------------------------------------------------------
+
+
+# --- Phase D2: plan tracking + gamification hooks -----------------------
+#
+# Three endpoints. session-completed fires from the FE right after a
+# session's XP write succeeds, drives the RPC + +25 XP + badges + milestones.
+# dashboard-summary returns everything the PlanTodayCard + PlanTrendChart
+# need in one round-trip. rebalance recomputes future days from today.
+
+class PlanSessionCompletedReq(BaseModel):
+    session_id: str
+    minutes_spent: int
+
+
+def _today_ist() -> str:
+    """Return today's date in IST (Asia/Kolkata), formatted YYYY-MM-DD."""
+    now_utc = datetime.now(timezone.utc)
+    # IST is UTC+5:30, no DST.
+    ist = now_utc + timedelta(hours=5, minutes=30)
+    return ist.date().isoformat()
+
+
+def _maybe_award_plan_daily_target_xp(user_id: str, plan_id: str, day_date: str) -> bool:
+    """Idempotent +25 XP award. Returns True if XP was actually inserted,
+    False if the unique partial index `ux_user_xp_events_plan_daily_target`
+    blocked a duplicate.
+
+    We INSERT directly into `user_xp_events` rather than calling the
+    `award_xp` RPC because:
+      1. The RPC has a hard-coded whitelist of reasons. We extended it via
+         migration 0020c, but the RPC body also references columns that
+         may shift between migrations (e.g. time_spent_minutes). A direct
+         insert avoids that coupling.
+      2. user_stats.total_xp is rolled up by a trigger on user_xp_events
+         (see migration 0002). The trigger handles XP accumulation and
+         level recomputation without us needing to touch user_stats here.
+      3. The partial unique index `ux_user_xp_events_plan_daily_target`
+         (user_id, meta->>'plan_day_date') WHERE reason = 'plan_daily_target'
+         enforces "once per user per plan day" idempotency at the DB layer.
+    """
+    try:
+        _supabase_post(
+            "user_xp_events",
+            {
+                "user_id": user_id,
+                "amount": 25,
+                "reason": "plan_daily_target",
+                "source_id": plan_id,
+                "meta": {"plan_id": plan_id, "plan_day_date": day_date},
+            },
+            prefer="return=minimal",
+        )
+        return True
+    except HTTPException as e:
+        detail = str(e.detail or '')
+        if e.status_code == 409 or '23505' in detail:
+            return False
+        logger.warning(f"[plan] plan_daily_target XP insert failed: {detail[:200]}")
+        return False
+
+
+def _award_badge_if_new_today(user_id: str, code: str) -> bool:
+    """Idempotent badge grant. For date-scoped badges like `on_track_today`,
+    we check whether the user has the badge already AND whether its
+    earned_at is today (IST). If both are true we no-op. Otherwise we
+    UPSERT user_badges with is_unlocked=true and earned_at=now()."""
+    today_ist = _today_ist()
+    rows = _supabase_get(
+        f"master_badges?code=eq.{_urlparse.quote(code)}&select=id&limit=1"
+    ) or []
+    if not rows:
+        return False
+    badge_id = rows[0]["id"]
+
+    existing = _supabase_get(
+        f"user_badges?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&badge_id=eq.{_urlparse.quote(badge_id)}&select=id,earned_at,is_unlocked&limit=1"
+    ) or []
+
+    if existing and existing[0].get("is_unlocked"):
+        if code == 'on_track_today':
+            # Date-scoped: only re-grant if earned_at isn't today (IST).
+            ea = existing[0].get('earned_at') or ''
+            if ea[:10] == today_ist:
+                return False
+            # Reset earned_at to today.
+            _supabase_patch(
+                f"user_badges?id=eq.{_urlparse.quote(existing[0]['id'])}",
+                {"earned_at": datetime.now(timezone.utc).isoformat()},
+            )
+            return True
+        # Cumulative badges (on_schedule_7, on_schedule_30): only grant once.
+        return False
+
+    if existing:
+        _supabase_patch(
+            f"user_badges?id=eq.{_urlparse.quote(existing[0]['id'])}",
+            {
+                "is_unlocked": True,
+                "earned_at": datetime.now(timezone.utc).isoformat(),
+                "progress_current": 1,
+            },
+        )
+    else:
+        _supabase_post("user_badges", {
+            "user_id": user_id, "badge_id": badge_id, "is_unlocked": True,
+            "progress_current": 1, "progress_target": 1,
+        })
+    return True
+
+
+def _grant_plan_streak_milestone_if_threshold(user_id: str, streak: int) -> Optional[str]:
+    """Insert plan_streak_7 / plan_streak_30 milestone if the streak crosses
+    the threshold. Idempotent via the unique (user_id, milestone_code) key."""
+    code = None
+    if streak == 7:
+        code = 'plan_streak_7'
+    elif streak == 30:
+        code = 'plan_streak_30'
+    if not code:
+        return None
+    try:
+        _supabase_post(
+            "user_milestones",
+            {"user_id": user_id, "milestone_code": code},
+            prefer="return=representation",
+        )
+        return code
+    except HTTPException as e:
+        if e.status_code != 409:
+            logger.warning(f"[plan] milestone {code} insert failed: {e.detail}")
+        return None
+
+
+@api_router.post("/study-plan/session-completed")
+async def study_plan_session_completed(
+    req: PlanSessionCompletedReq,
+    supa_user: dict = Depends(get_supabase_user),
+):
+    """Called by the FE right after `award_xp` writes for a session. Updates
+    today's plan_day row, awards +25 XP if today just hit target, grants
+    badges/milestones on streak transitions. All counters and rewards are
+    idempotent — replaying with the same session_id yields no extra
+    increments or XP."""
+    user_id = supa_user.get("id")
+
+    # Fire the core RPC. Note: PostgREST passes JSON; rpc returns the JSON
+    # body directly (not wrapped in a list).
+    rpc_resp = _supabase_post(
+        "rpc/update_plan_day_progress",
+        {
+            "p_user_id": user_id,
+            "p_session_minutes": int(req.minutes_spent or 0),
+            "p_session_code": req.session_id,
+        },
+    )
+    # _supabase_post may return [] or {} depending on rpc shape; normalize.
+    if isinstance(rpc_resp, list):
+        rpc_resp = rpc_resp[0] if rpc_resp else {}
+    rpc_resp = rpc_resp or {}
+
+    day_status = rpc_resp.get("day_status")
+    just_completed = bool(rpc_resp.get("just_completed_today"))
+    streak = int(rpc_resp.get("on_schedule_streak_days") or 0)
+    plan_id = rpc_resp.get("plan_id")
+    day_date = rpc_resp.get("day_date") or _today_ist()
+
+    awards = {
+        "just_completed_today": just_completed,
+        "day_status": day_status,
+        "on_schedule_streak_days": streak,
+        "xp_awarded": 0,
+        "badges_granted": [],
+        "milestones_granted": [],
+        "reason": rpc_resp.get("reason"),
+    }
+
+    if just_completed and plan_id:
+        # +25 XP (idempotent via partial unique index)
+        if _maybe_award_plan_daily_target_xp(user_id, plan_id, day_date):
+            awards["xp_awarded"] = 25
+
+        # on_track_today badge (idempotent per IST day)
+        if _award_badge_if_new_today(user_id, 'on_track_today'):
+            awards["badges_granted"].append('on_track_today')
+
+        # Streak-threshold badges (one-time)
+        if streak == 7 and _award_badge_if_new_today(user_id, 'on_schedule_7'):
+            awards["badges_granted"].append('on_schedule_7')
+        if streak == 30 and _award_badge_if_new_today(user_id, 'on_schedule_30'):
+            awards["badges_granted"].append('on_schedule_30')
+
+        # Streak-threshold milestone (overlay surfaces via existing Phase C
+        # MilestoneCelebrationOverlay polling /api/milestones/pending).
+        ms_code = _grant_plan_streak_milestone_if_threshold(user_id, streak)
+        if ms_code:
+            awards["milestones_granted"].append(ms_code)
+
+        # Credit the daily challenge if the user has it picked for today.
+        # The same RPC chain pays the challenge's +25 XP via the existing
+        # mechanism, but the partial unique index on user_xp_events for
+        # reason='plan_daily_target' makes our prior +25 the canonical
+        # event — the challenge XP is still booked under
+        # reason='daily_challenge_complete' which is a SEPARATE reason
+        # and survives the dedup. To avoid double-counting, we ONLY
+        # progress the challenge counter; the challenge RPC will then
+        # award its own xp_reward via the existing daily_challenge logic.
+        try:
+            _supabase_post(
+                "rpc/update_daily_challenge_progress",
+                {
+                    "p_user_id": user_id,
+                    "p_challenge_type": "plan_daily_target_met",
+                    "p_increment": 1,
+                    "p_meta": {"plan_id": plan_id, "plan_day_date": day_date},
+                },
+            )
+        except Exception as e:
+            logger.info(f"[plan] daily-challenge progress no-op: {e}")
+
+    return awards
+
+
+@api_router.get("/study-plan/dashboard-summary")
+async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_user)):
+    """Returns the full payload the dashboard needs in one call: the
+    active plan (or null), today's row with percent, the cumulative
+    planned-vs-actual series for chart, and the adherence row.
+
+    `cumulative.days_so_far` runs from plan_start_date up to and
+    including today (IST). `is_behind_percent` = 0 if ahead/on-track."""
+    user_id = supa_user.get("id")
+    today = _today_ist()
+
+    plans = _supabase_get(
+        f"user_study_plans?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&status=eq.active&order=created_at.desc&limit=1"
+        f"&select=id,plan_start_date,plan_end_date,total_load_minutes,"
+        f"total_active_days_dummy:target_mode,target_mode,target_deadline,"
+        f"target_hours_per_day,target_hours_per_week,non_study_weekdays"
+    ) or []
+    if not plans:
+        return {
+            "active_plan": None,
+            "today": None,
+            "cumulative": None,
+            "adherence": None,
+        }
+    plan = plans[0]
+    plan_id = plan["id"]
+
+    # Today's row.
+    today_rows = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=eq.{today}&select=day_date,required_minutes,actual_minutes,"
+        f"required_session_codes,completed_session_codes,actual_sessions_completed,status"
+    ) or []
+    today_row = today_rows[0] if today_rows else None
+    today_payload = None
+    if today_row:
+        req_min = int(today_row.get("required_minutes") or 0)
+        act_min = int(today_row.get("actual_minutes") or 0)
+        pct = 100 if req_min == 0 else min(100, int(round(act_min / req_min * 100)))
+        today_payload = {
+            "day_date": today_row["day_date"],
+            "required_minutes": req_min,
+            "actual_minutes": act_min,
+            "required_session_codes": today_row.get("required_session_codes") or [],
+            "completed_session_codes": today_row.get("completed_session_codes") or [],
+            "actual_sessions_completed": int(today_row.get("actual_sessions_completed") or 0),
+            "status": today_row.get("status") or 'upcoming',
+            "percent_complete": pct,
+        }
+
+    # Cumulative series — every day from plan_start_date through today.
+    all_rows = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=lte.{today}"
+        f"&order=day_date.asc"
+        f"&select=day_date,required_minutes,actual_minutes,status"
+    ) or []
+    cum_required = 0
+    cum_actual = 0
+    days_so_far = []
+    for r in all_rows:
+        cum_required += int(r.get("required_minutes") or 0)
+        cum_actual   += int(r.get("actual_minutes") or 0)
+        days_so_far.append({
+            "day_date": r["day_date"],
+            "required_minutes_cum": cum_required,
+            "actual_minutes_cum":   cum_actual,
+        })
+    is_behind_percent = 0.0
+    if cum_required > 0 and cum_actual < cum_required:
+        is_behind_percent = round((cum_required - cum_actual) / cum_required * 100, 1)
+
+    # Adherence row.
+    adh_rows = _supabase_get(
+        f"user_plan_adherence?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&select=on_schedule_streak_days,longest_on_schedule_streak,last_on_track_date"
+    ) or []
+    adherence = adh_rows[0] if adh_rows else {
+        "on_schedule_streak_days": 0,
+        "longest_on_schedule_streak": 0,
+        "last_on_track_date": None,
+    }
+
+    return {
+        "active_plan": {
+            "plan_id": plan["id"],
+            "plan_start_date": plan["plan_start_date"],
+            "plan_end_date":   plan["plan_end_date"],
+            "total_load_minutes": plan["total_load_minutes"],
+            "target_mode": plan["target_mode"],
+            "target_deadline": plan.get("target_deadline"),
+            "target_hours_per_day": plan.get("target_hours_per_day"),
+            "target_hours_per_week": plan.get("target_hours_per_week"),
+            "non_study_weekdays": plan.get("non_study_weekdays") or [],
+        },
+        "today": today_payload,
+        "cumulative": {
+            "days_so_far": days_so_far,
+            "is_behind_percent": is_behind_percent,
+            "needs_reset_warning": is_behind_percent > 20.0,
+        },
+        "adherence": adherence,
+    }
+
+
+class PlanRebalanceReq(BaseModel):
+    new_target_deadline:  Optional[str] = None
+    new_target_hours_per_day:  Optional[float] = None
+    new_target_hours_per_week: Optional[float] = None
+
+
+@api_router.post("/study-plan/rebalance")
+async def study_plan_rebalance(
+    req: PlanRebalanceReq,
+    supa_user: dict = Depends(get_supabase_user),
+):
+    """Recompute day rows from today onward. Past day rows are preserved.
+    If any new_target_* field is sent, switch the plan's mode going
+    forward; otherwise keep the original target."""
+    user_id = supa_user.get("id")
+    today = _today_ist()
+    today_d = _date.fromisoformat(today)
+
+    plans = _supabase_get(
+        f"user_study_plans?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&status=eq.active&order=created_at.desc&limit=1"
+        f"&select=id,enrollment_id,target_mode,target_deadline,target_hours_per_day,"
+        f"target_hours_per_week,non_study_weekdays"
+    ) or []
+    if not plans:
+        raise HTTPException(status_code=404, detail="no active plan")
+    plan = plans[0]
+    plan_id = plan["id"]
+
+    # Determine the going-forward target.
+    fwd_mode = plan["target_mode"]
+    fwd_deadline = plan.get("target_deadline")
+    fwd_hpd      = plan.get("target_hours_per_day")
+    fwd_hpw      = plan.get("target_hours_per_week")
+    if req.new_target_deadline:
+        fwd_mode = 'deadline'
+        fwd_deadline = req.new_target_deadline
+        fwd_hpd = None
+        fwd_hpw = None
+    elif req.new_target_hours_per_day is not None:
+        fwd_mode = 'hours_per_day'
+        fwd_hpd = req.new_target_hours_per_day
+        fwd_deadline = None
+        fwd_hpw = None
+    elif req.new_target_hours_per_week is not None:
+        fwd_mode = 'hours_per_week'
+        fwd_hpw = req.new_target_hours_per_week
+        fwd_deadline = None
+        fwd_hpd = None
+
+    # Inventory still owed = items in the plan with `status != complete`
+    # and day_date >= today. We rebuild day rows from today by re-running
+    # the planner on the WHOLE inventory minus already-completed session
+    # codes.
+    inv = _fetch_plan_inventory(user_id, plan["enrollment_id"])
+
+    # Collect all already-credited session_codes across past day rows so
+    # the rebalance only schedules outstanding work.
+    past_completed = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=lt.{today}&status=eq.complete"
+        f"&select=completed_session_codes"
+    ) or []
+    done_codes = set()
+    for r in past_completed:
+        for c in (r.get("completed_session_codes") or []):
+            done_codes.add(c)
+    # Also include today's completed if today is being recomputed.
+    today_done = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=eq.{today}&select=completed_session_codes"
+    ) or []
+    for r in today_done:
+        for c in (r.get("completed_session_codes") or []):
+            done_codes.add(c)
+
+    items_remaining = [it for it in inv["items"] if it["id"] not in done_codes]
+    if not items_remaining:
+        # Nothing left to schedule — mark the plan completed.
+        _supabase_patch(
+            f"user_study_plans?id=eq.{_urlparse.quote(plan_id)}",
+            {"status": "completed", "updated_at": datetime.now(timezone.utc).isoformat()},
+        )
+        return {"ok": True, "remaining_items": 0, "plan_status": "completed"}
+
+    # Run the planner on the remaining items only, starting today.
+    # We pass a *synthetic* enrollment_id to skip the auth check (we
+    # already verified ownership via the plans query). Simpler: re-use
+    # `generate_study_plan` but with the same enrollment_id (it'll re-
+    # fetch the same inventory; we then SLICE it to the remaining items).
+    # To honor the `items_remaining` slice without altering the helper, we
+    # inline the day-packer here (mirror of the helper).
+    non_study = sorted({int(d) for d in (plan.get("non_study_weekdays") or [])
+                        if 0 <= int(d) <= 6})
+
+    new_days: list = []
+    it_idx = 0
+    d = today_d
+    max_days = 3 * 365
+
+    if fwd_mode == 'deadline':
+        try:
+            deadline_d = _date.fromisoformat(fwd_deadline)
+        except (ValueError, TypeError):
+            raise HTTPException(status_code=400, detail="invalid new_target_deadline")
+        if deadline_d <= today_d:
+            raise HTTPException(status_code=400, detail="new_target_deadline must be in the future")
+        active = [today_d + timedelta(days=i) for i in range((deadline_d - today_d).days + 1)
+                  if ((today_d + timedelta(days=i)).weekday() + 1) % 7 not in non_study]
+        if not active:
+            raise HTTPException(status_code=400, detail="no active days in new window")
+        load_remaining = sum(it["minutes"] for it in items_remaining)
+        per_day = _math.ceil(load_remaining / len(active)) or 1
+        steps = (deadline_d - today_d).days + 1
+        for step in range(steps):
+            cd = today_d + timedelta(days=step)
+            wd_sun = (cd.weekday() + 1) % 7
+            if wd_sun in non_study:
+                new_days.append({"day_date": cd.isoformat(), "required_minutes": 0,
+                                 "required_session_codes": [], "required_project_codes": [], "status": "rest"})
+                continue
+            day_min, ses, proj = 0, [], []
+            while it_idx < len(items_remaining):
+                it = items_remaining[it_idx]
+                if day_min == 0 or day_min + it["minutes"] <= per_day:
+                    (ses if it["kind"] == "session" else proj).append(it["id"])
+                    day_min += it["minutes"]; it_idx += 1
+                else:
+                    break
+            new_days.append({"day_date": cd.isoformat(),
+                             "required_minutes": day_min,
+                             "required_session_codes": ses,
+                             "required_project_codes": proj,
+                             "status": "upcoming" if day_min > 0 else "rest"})
+    else:
+        # hours_per_day / hours_per_week — walk forward, pack atomically.
+        if fwd_mode == 'hours_per_day':
+            per_day = int(round((fwd_hpd or 1.0) * 60))
+        else:
+            wkly = int(round((fwd_hpw or 7.0) * 60))
+            active_per_week = 7 - len(non_study)
+            if active_per_week <= 0:
+                raise HTTPException(status_code=400, detail="no active days/week")
+            per_day = int(_math.ceil(wkly / active_per_week))
+
+        d = today_d
+        steps = 0
+        while it_idx < len(items_remaining) and steps < max_days:
+            wd_sun = (d.weekday() + 1) % 7
+            if wd_sun in non_study:
+                new_days.append({"day_date": d.isoformat(), "required_minutes": 0,
+                                 "required_session_codes": [], "required_project_codes": [],
+                                 "status": "rest"})
+            else:
+                day_min, ses, proj = 0, [], []
+                while it_idx < len(items_remaining):
+                    it = items_remaining[it_idx]
+                    if day_min == 0 or day_min + it["minutes"] <= per_day:
+                        (ses if it["kind"] == "session" else proj).append(it["id"])
+                        day_min += it["minutes"]; it_idx += 1
+                    else:
+                        break
+                new_days.append({"day_date": d.isoformat(),
+                                 "required_minutes": day_min,
+                                 "required_session_codes": ses,
+                                 "required_project_codes": proj,
+                                 "status": "upcoming" if day_min > 0 else "rest"})
+            d = d + timedelta(days=1)
+            steps += 1
+
+    # Delete future day rows (>= today) and insert the new ones.
+    _supabase_delete(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=gte.{today}"
+    )
+    if new_days:
+        chunk = 100
+        rows = [
+            {"plan_id": plan_id, "user_id": user_id, "day_date": x["day_date"],
+             "required_minutes": x["required_minutes"],
+             "required_session_codes": x["required_session_codes"],
+             "required_project_codes": x["required_project_codes"],
+             "status": x["status"]}
+            for x in new_days
+        ]
+        for i in range(0, len(rows), chunk):
+            _supabase_post("user_study_plan_days", rows[i:i + chunk])
+
+    # Patch the plan row with new target + new end_date.
+    new_end = new_days[-1]["day_date"] if new_days else today
+    _supabase_patch(
+        f"user_study_plans?id=eq.{_urlparse.quote(plan_id)}",
+        {
+            "target_mode": fwd_mode,
+            "target_deadline": fwd_deadline,
+            "target_hours_per_day": fwd_hpd,
+            "target_hours_per_week": fwd_hpw,
+            "plan_end_date": new_end,
+            "updated_at": datetime.now(timezone.utc).isoformat(),
+        },
+    )
+
+    return {
+        "ok": True,
+        "plan_id": plan_id,
+        "new_plan_end_date": new_end,
+        "remaining_items": len(items_remaining),
+        "days_rebuilt": len(new_days),
+    }
+
+
+# --- end Phase D2 -------------------------------------------------------
 
 
 

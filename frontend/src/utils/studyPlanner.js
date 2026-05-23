@@ -46,3 +46,16 @@ export function getStudyPlanDaysRange(start, end) {
 export function abandonActiveStudyPlan() {
   return call('DELETE', '/api/study-plan/active');
 }
+
+// Phase D2 — tracking + summary + rebalance
+export function reportSessionCompleted({ session_id, minutes_spent }) {
+  return call('POST', '/api/study-plan/session-completed', { session_id, minutes_spent });
+}
+
+export function getStudyPlanDashboardSummary() {
+  return call('GET', '/api/study-plan/dashboard-summary');
+}
+
+export function rebalanceStudyPlan(payload = {}) {
+  return call('POST', '/api/study-plan/rebalance', payload);
+}
