@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SessionCompleteSummaryCard from './gamification/SessionCompleteSummaryCard';
@@ -7,9 +8,12 @@ import QuickRevisionSheetCard from './gamification/QuickRevisionSheetCard';
 import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
 import AskPariButton from './tutor/AskPariButton';
+import { markSessionDoubt, resolveSessionDoubt } from '../utils/sessionDoubts';
+import { getRedoForSession, clearRedoState } from '../utils/redoState';
+import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
-  Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase,
+  Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase, AlertTriangle, Brain,
 } from 'lucide-react';
 
 const PHASE_DEFS = [
@@ -77,6 +81,12 @@ export default function SessionCompletePage() {
   const [moduleComplete, setModuleComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
 
+  // Phase B — doubt flag state
+  const [doubtRow, setDoubtRow] = useState(null);  // { id, reason, status } or null
+  const [flagPending, setFlagPending] = useState(null);  // 'doubt' | 'difficult' | null
+  const [redoInfo, setRedoInfo] = useState(() => getRedoForSession(sessionId));
+  const { refresh: refreshOpenCount } = useOpenDoubts();
+
   useEffect(() => {
     let mounted = true;
     async function load() {
@@ -126,6 +136,71 @@ export default function SessionCompletePage() {
     const t = setTimeout(() => setShowConfetti(false), 4000);
     return () => clearTimeout(t);
   }, []);
+
+  // Phase B — fetch the existing doubt (if any) for this session.
+  useEffect(() => {
+    let mounted = true;
+    async function fetchDoubt() {
+      if (!user?.id || !sessionId) return;
+      try {
+        const { data } = await supabase
+          .from('user_session_doubts')
+          .select('id, reason, status')
+          .eq('user_id', user.id)
+          .eq('session_id', sessionId)
+          .maybeSingle();
+        if (mounted && data) setDoubtRow(data);
+      } catch {
+        // ignore — graceful if table missing
+      }
+    }
+    fetchDoubt();
+    return () => { mounted = false; };
+  }, [user?.id, sessionId]);
+
+  // Phase B — auto-resolve the doubt when the user finishes the session in
+  // redo mode. Fires once when allPhasesComplete && redoInfo matches.
+  useEffect(() => {
+    if (!redoInfo || !session) return;
+    const allPhasesDone =
+      session.notes_completed &&
+      session.quiz_completed &&
+      session.interview_completed &&
+      session.simulation_completed;
+    if (!allPhasesDone) return;
+    let mounted = true;
+    (async () => {
+      try {
+        await resolveSessionDoubt(redoInfo.redo_doubt_id);
+        if (!mounted) return;
+        toast.success('Doubt resolved — nice redo!');
+        clearRedoState();
+        setRedoInfo(null);
+        setDoubtRow((d) => (d ? { ...d, status: 'resolved' } : d));
+        refreshOpenCount();
+      } catch {
+        // best-effort; user can resolve manually from /doubts if it fails
+      }
+    })();
+    return () => { mounted = false; };
+  }, [redoInfo, session, refreshOpenCount]);
+
+  // Flag handler — only available on a fresh completion (not in redo mode).
+  const handleFlag = async (reason) => {
+    if (flagPending) return;
+    setFlagPending(reason);
+    try {
+      const { ok, data } = await markSessionDoubt({ session_id: sessionId, reason });
+      if (!ok) throw new Error(typeof data?.detail === 'string' ? data.detail : 'Could not flag');
+      setDoubtRow({ id: data.id, reason: data.reason, status: data.status || 'open' });
+      toast.success(reason === 'doubt' ? 'Flagged as a doubt' : 'Flagged as difficult');
+      refreshOpenCount();
+    } catch (e) {
+      toast.error(e?.message || 'Could not flag this session');
+    } finally {
+      setFlagPending(null);
+    }
+  };
 
   const phaseScores = useMemo(() => {
     if (!session) return [];
@@ -255,6 +330,72 @@ export default function SessionCompletePage() {
             })}
           </div>
         </div>
+
+        {/* Phase B — "Was this confusing?" doubt flag row + redo banner */}
+        {redoInfo && (
+          <div className="rounded-2xl p-4 mb-4 bg-gradient-to-br from-[var(--color-primary)]/12 via-[var(--color-accent-purple)]/8 to-transparent border border-[var(--color-primary)]/30 flex items-start gap-3" data-testid="session-complete-redo-banner">
+            <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40 text-[var(--color-primary)] flex items-center justify-center shrink-0">
+              <RefreshCw size={16} />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="font-clash text-sm font-semibold text-[var(--color-text)] mb-0.5">Half-XP redo in progress (redo #{redoInfo.redo_count})</div>
+              <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                Finish all 4 phases and we'll auto-resolve the doubt. XP earned this round is halved.
+              </p>
+            </div>
+          </div>
+        )}
+
+        {!redoInfo && (
+          <div className="rounded-2xl p-4 sm:p-5 mb-4 border border-[var(--color-border)] bg-[var(--color-surface)]/50" data-testid="session-complete-doubt-row">
+            <div className="flex items-start gap-3 mb-3">
+              <div className="w-9 h-9 rounded-xl bg-[var(--color-accent-purple)]/15 border border-[var(--color-accent-purple)]/30 text-[var(--color-accent-purple)] flex items-center justify-center shrink-0">
+                <Brain size={16} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="font-clash text-sm font-semibold text-[var(--color-text)] mb-0.5">
+                  Was this confusing?
+                </div>
+                <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                  Flag it now — you can redo the full session for half XP later or chat with Pari (15 turns) about what felt off.
+                </p>
+              </div>
+            </div>
+            {doubtRow && doubtRow.status === 'open' ? (
+              <div className="flex items-center justify-between gap-3 px-3 py-2 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]" data-testid="session-complete-doubt-flagged">
+                <div className="flex items-center gap-2 text-xs font-bricolage text-[var(--color-text-muted)]">
+                  <CheckCircle2 size={14} className="text-[var(--color-success)]" />
+                  Flagged as <span className="text-[var(--color-text)] font-semibold">{doubtRow.reason === 'doubt' ? 'a doubt' : 'difficult'}</span>. See it under <Link to="/doubts" className="underline text-[var(--color-primary)]">My Doubts</Link>.
+                </div>
+              </div>
+            ) : doubtRow && doubtRow.status === 'resolved' ? (
+              <div className="px-3 py-2 rounded-xl bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-xs font-bricolage text-[var(--color-success)] flex items-center gap-2" data-testid="session-complete-doubt-resolved">
+                <CheckCircle2 size={14} /> Resolved.
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={() => handleFlag('doubt')}
+                  disabled={!!flagPending}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--color-accent-purple)]/10 hover:bg-[var(--color-accent-purple)]/20 border border-[var(--color-accent-purple)]/30 text-[var(--color-accent-purple)] text-xs font-semibold font-bricolage transition-all disabled:opacity-50"
+                  data-testid="session-complete-flag-doubt"
+                >
+                  {flagPending === 'doubt' ? <Loader2 size={14} className="animate-spin" /> : <HelpCircle size={14} />}
+                  I have a doubt
+                </button>
+                <button
+                  onClick={() => handleFlag('difficult')}
+                  disabled={!!flagPending}
+                  className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[var(--color-accent-pink)]/10 hover:bg-[var(--color-accent-pink)]/20 border border-[var(--color-accent-pink)]/30 text-[var(--color-accent-pink)] text-xs font-semibold font-bricolage transition-all disabled:opacity-50"
+                  data-testid="session-complete-flag-difficult"
+                >
+                  {flagPending === 'difficult' ? <Loader2 size={14} className="animate-spin" /> : <AlertTriangle size={14} />}
+                  Found it difficult
+                </button>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Gamification summary (Phase 47) */}
         <SessionCompleteSummaryCard sessionStartTs={sessionStartTsRef.current} />

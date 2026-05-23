@@ -2238,3 +2238,56 @@ Filter test-ids: `review-filter-all`, `review-filter-quiz`, etc.
 
 `webpack compiled with 1 warning` — same 4 pre-existing `react-hooks/exhaustive-deps` warnings. Zero new errors. Zero new warnings.
 
+
+
+### Phase B — Session Doubts + Extended Pari Chat + Half-XP Redo (Feb 2026)
+
+User can now flag any completed session as a "doubt" or "difficult", review flagged sessions on a dedicated `/doubts` page, re-do the full session for **half XP** with double-payment protection, and chat with Pari for up to **15 turns / 3 sessions per day** to untangle whatever felt off.
+
+#### Backend (already wired by prior agent — verified intact this pass)
+- Migration `0017_session_doubts.sql` — `user_session_doubts` table (status: open/resolved/abandoned, reason: doubt/difficult, redo_count), `kind` + `linked_session_doubt_id` columns on `user_doubt_sessions`, RPCs `start_extended_doubt_session` + `record_extended_doubt_turn`, and partial unique index `ux_user_xp_events_redo_dedup` on `(user_id, meta->>'redo_doubt_id', meta->>'redo_count', reason) where meta ? 'redo_doubt_id'` (the double-payment guard).
+- Migrations `0017b_extend_phase_check.sql` (extends `user_doubt_sessions_phase_check` to include `'extended_doubt'`) and `0017c_fix_record_extended_doubt_turn.sql` (drops the nonexistent `updated_at` reference from the RPC body) — **both re-applied via `apply_migration_via_api.py` this pass** because the prior agent's session ended before the live DB sync went through, surfacing as a `column "updated_at" of relation "user_doubt_sessions" does not exist` error on first turn-record.
+- Endpoints in `server.py`:
+  - `POST /api/doubts/sessions/mark` — flag a session (idempotent; updates reason on re-flag)
+  - `GET  /api/doubts/sessions?status=open|resolved|all` — list user's session-doubts
+  - `POST /api/doubts/sessions/:id/resolve` — mark resolved
+  - `POST /api/doubts/sessions/:id/redo` — bump `redo_count`, return `{session_id, redo_count, xp_multiplier: 0.5}`
+  - `POST /api/doubts/extended/start|ask|end` — 15-turn extended chat with 3/day quota
+  - Quick-chat endpoints (`/api/doubts/start|ask|end`) are **untouched** — they retain their 3-turn / 1500-token / 5-per-day limits.
+
+#### Frontend (this pass)
+
+**New files**
+- `frontend/src/utils/redoState.js` — sessionStorage shim for `{redo_doubt_id, redo_count, session_id}`. Used to ferry the redo marker from `/doubts` → completion pages.
+- `frontend/src/utils/sessionDoubts.js` — typed API client for the 7 session-doubt endpoints (does **not** expose quick-chat endpoints — those stay in `DoubtsLauncherContext`).
+- `frontend/src/contexts/OpenDoubtsContext.jsx` — lightweight provider exposing `count` (open-doubt count) + `refresh()` for the sidebar pill. Hooks `listSessionDoubts('open')` on mount + on auth changes.
+- `frontend/src/components/tutor/ExtendedPariChat.jsx` — full-screen 15-turn chat modal. Header chip shows `Turns: N/15  Today: N/3`. Surfaces backend errors verbatim (HTTP 429 → amber "Today's extended chats exhausted — try again tomorrow IST" with `retry_after_iso`; HTTP 4xx → red strip with raw message). Disables composer on `session_ended` and shows `end_reason` (e.g. `turn_cap_reached`). Pari pose animates: `listening` → `thinking` → `explaining` → `goodbye`. Calls `/end` on close (fire-and-forget).
+- `frontend/src/components/DoubtsPage.jsx` — `/doubts` route. Two tabs (Open / Resolved), each row card shows reason chip, redo-count badge, time-ago, session title, module title, and 3 actions: **Ask Pari (15-turn chat)** → opens `ExtendedPariChat`, **Redo session (half XP)** → `POST /redo` + `setRedoState` + `navigate('/session/:id/start')`, **Mark resolved** → `POST /resolve`. Pari hero with avatar in `explaining` pose. Empty states for both tabs.
+
+**Modified**
+- `frontend/src/utils/progress.js` — `markPhaseComplete` now reads `getRedoForSession(userSessionId)`. When redo state is present, **emits XP intents even if the phase was previously completed** (previously gated on `!phaseWasAlreadyComplete`), halves every emitted amount via `Math.round(amount * 0.5)`, and injects `meta.redo_doubt_id` + `meta.redo_count` + `meta.multiplier: 0.5`. Session-complete XP also fires on redo replays regardless of `sessionWasAlreadyComplete`. The partial unique index `ux_user_xp_events_redo_dedup` blocks double-payment within the same `(redo_doubt_id, redo_count, reason)`.
+- `frontend/src/components/SessionCompletePage.jsx` — adds the "Was this confusing?" row (testid `session-complete-doubt-row`) between the phase grid and the gamification summary. Three states: (a) un-flagged → two buttons "I have a doubt" (purple) + "Found it difficult" (pink); (b) flagged-open → "Flagged as X. See it under My Doubts." with link; (c) resolved → green strip. In **redo mode**, the doubt row is replaced by a "Half-XP redo in progress (redo #N)" banner. A new `useEffect` watches `session.*_completed` flags; when all four phases flip to true *and* the user is in redo mode, it auto-calls `resolveSessionDoubt(redoInfo.redo_doubt_id)`, toasts "Doubt resolved — nice redo!", clears sessionStorage, and refreshes the sidebar pill.
+- `frontend/src/components/Sidebar.jsx` — adds **"My Doubts"** nav item (icon `MessageCircleQuestion`) directly below "Review Notes" (per user's 1a choice). When `openDoubtsCount > 0`, renders a small numeric pill (testid `nav-my-doubts-pill`) on the right in expanded state, or a 2×2 dot in collapsed state. Count source: `useOpenDoubts()` provider.
+- `frontend/src/App.js` — wires `<OpenDoubtsProvider>` (nested inside `<DoubtsLauncherProvider>`) and adds `<Route path="/doubts" element={<ProtectedRoute><DoubtsPage /></ProtectedRoute>} />`.
+
+#### Verification (this pass)
+
+1. **Half-XP RPC test** (programmatic, via service-role):
+   - `rpc/award_xp` with `meta={redo_doubt_id, redo_count: 99, multiplier: 0.5}` for `reason='quiz_correct'` → **HTTP 200**, row persisted with full meta.
+   - Second identical call → **HTTP 409, `23505 duplicate key value violates unique constraint "ux_user_xp_events_redo_dedup"`** ✅ dedup index works.
+   - Same `redo_doubt_id` + `redo_count` with `reason='session_complete'` → **HTTP 200** ✅ different reason allowed.
+   - Test rows cleaned up.
+2. **Extended chat E2E**: opened modal on `/doubts` → bootstrap returned `turns_remaining: 15, daily_remaining: 0` → sent "Explain time value of money in one sentence." → Pari responded in `~3s` with a real Socratic follow-up → header chip flipped to `14/15`. Initial `updated_at` Postgres error caught and fixed by applying migration `0017c` mid-pass.
+3. **Flag mutation E2E**: navigated to a completed session's `/complete` page → both flag buttons present → clicked "I have a doubt" → toast "Flagged as a doubt" → row transitioned to "Flagged as a doubt. See it under My Doubts." within ~700ms.
+4. **Sidebar pill**: visible at `1` on `/doubts` after re-flagging the test session (screenshot captured).
+
+#### Constraints honored
+- Quick-chat endpoints (`/api/doubts/start|ask|end`) and their 3-turn / 1500-token / 5-per-day caps untouched.
+- Backend `server.py` not modified (endpoints already shipped).
+- No new heavy deps; the custom markdown parser in `QuickRevisionSheetCard.jsx` and the dependency-free chat UI pattern are reused.
+- `NotesPage.jsx` and `DashboardPage.jsx` were NOT refactored.
+
+#### Known follow-ups
+- Phase C (Leaderboard system + `leaderboard_crasher` badge + social-proof enrollment counts) — still pending.
+- P2 polish (rarity-scaled badge glow, per-module daily challenge text) — still pending.
+

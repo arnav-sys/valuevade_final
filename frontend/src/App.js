@@ -11,6 +11,7 @@ import { BadgeProvider } from "@/contexts/BadgeContext";
 import { DailyChallengesProvider } from "@/contexts/DailyChallengesContext";
 import { TutorProvider } from "@/contexts/TutorContext";
 import { DoubtsLauncherProvider } from "@/contexts/DoubtsLauncherContext";
+import { OpenDoubtsProvider } from "@/contexts/OpenDoubtsContext";
 import XPRoot from "@/components/gamification/XPRoot";
 import StreakRoot from "@/components/gamification/StreakRoot";
 import BadgeRoot from "@/components/gamification/BadgeRoot";
@@ -65,6 +66,7 @@ const SettingsPage = lazyWithRetry(() => import("@/components/SettingsPage"));
 const PortfolioPage = lazyWithRetry(() => import("@/components/PortfolioPage"));
 const PublicPortfolioPage = lazyWithRetry(() => import("@/components/PublicPortfolioPage"));
 const ReviewNotesPage = lazyWithRetry(() => import("@/components/ReviewNotesPage"));
+const DoubtsPage = lazyWithRetry(() => import("@/components/DoubtsPage"));
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (
@@ -93,6 +95,7 @@ function App() {
                 <DailyChallengesProvider>
                 <TutorProvider>
                 <DoubtsLauncherProvider>
+                <OpenDoubtsProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -139,6 +142,7 @@ function App() {
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
                   <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
                   <Route path="/review" element={<ProtectedRoute><ReviewNotesPage /></ProtectedRoute>} />
+                  <Route path="/doubts" element={<ProtectedRoute><DoubtsPage /></ProtectedRoute>} />
                   <Route path="/journey" element={<ProtectedRoute><JourneyPage /></ProtectedRoute>} />
                   <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} />
 
@@ -176,6 +180,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </OpenDoubtsProvider>
                 </DoubtsLauncherProvider>
                 </TutorProvider>
                 </DailyChallengesProvider>

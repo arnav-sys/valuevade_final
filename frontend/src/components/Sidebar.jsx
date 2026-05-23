@@ -5,8 +5,9 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import {
   Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
-  Sun, Moon, ChevronLeft, Trophy, Library,
+  Sun, Moon, ChevronLeft, Trophy, Library, MessageCircleQuestion,
 } from 'lucide-react';
+import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 
 /**
  * Persistent left sidebar for all authenticated pages.
@@ -18,6 +19,7 @@ export default function Sidebar() {
   const navigate = useNavigate();
   const { user, profile, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const { count: openDoubtsCount } = useOpenDoubts();
 
   const [collapsed, setCollapsed] = useState(() => {
     return localStorage.getItem('vv-sidebar-collapsed') === 'true';
@@ -75,9 +77,10 @@ export default function Sidebar() {
       { label: 'Profile', icon: User, path: '/profile', testid: 'nav-profile' },
       { label: 'Portfolio', icon: Trophy, path: '/portfolio', testid: 'nav-portfolio' },
       { label: 'Review Notes', icon: Library, path: '/review', testid: 'nav-review-notes' },
+      { label: 'My Doubts', icon: MessageCircleQuestion, path: '/doubts', testid: 'nav-my-doubts', badgeCount: openDoubtsCount },
       { label: 'Settings', icon: Settings, path: '/settings', testid: 'nav-settings' },
     ],
-    [enrollment]
+    [enrollment, openDoubtsCount]
   );
 
   const isActive = (p) => {
@@ -164,7 +167,7 @@ export default function Sidebar() {
               <Link
                 key={item.label}
                 to={item.path}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bricolage transition-all ${
+                className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bricolage transition-all ${
                   active
                     ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'
@@ -174,6 +177,20 @@ export default function Sidebar() {
               >
                 <Icon size={18} className="shrink-0" />
                 {showLabels && <span className="flex-1 truncate">{item.label}</span>}
+                {showLabels && item.badgeCount > 0 && (
+                  <span
+                    className="ml-auto inline-flex items-center justify-center min-w-[20px] h-[20px] px-1.5 rounded-full bg-[var(--color-primary)] text-white text-[10px] font-mono font-bold shrink-0"
+                    data-testid={`${item.testid}-pill`}
+                  >
+                    {item.badgeCount > 99 ? '99+' : item.badgeCount}
+                  </span>
+                )}
+                {!showLabels && item.badgeCount > 0 && (
+                  <span
+                    className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-[var(--color-primary)]"
+                    data-testid={`${item.testid}-dot`}
+                  />
+                )}
               </Link>
             );
           })}

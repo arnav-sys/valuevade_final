@@ -1,5 +1,6 @@
 import { supabase } from '../lib/supabase';
 import { computeQuizXP, XP_REASONS } from './xp';
+import { getRedoForSession } from './redoState';
 
 /**
  * Daily-challenge progress helper.
@@ -138,46 +139,70 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
         await checkModuleCompletion(completed.user_module_id);
       }
     }
-
-    // 3) XP intents — ONLY emitted on actual state transitions, never on retakes.
+    // 3) XP intents — emitted on actual state transitions OR redo replays.
     //
-    // The gate is `!phaseWasAlreadyComplete` (captured from the SELECT above
-    // before the UPDATE flips the boolean). If a user re-takes a quiz on a
-    // session whose `quiz_completed` is already true, xp_intents is [] and
-    // the QuizCompletePage's awardXP loop is a no-op. This is by design —
-    // retakes don't pay XP (P1 fix-pass). Look here first if a tester reports
-    // "completed a quiz, got 0 XP": confirm the user_session.quiz_completed
-    // was false BEFORE markPhaseComplete ran.
+    // Default gate: `!phaseWasAlreadyComplete` (captured from the SELECT
+    // above before the UPDATE flips the boolean). If a user re-takes a quiz
+    // on a session whose `quiz_completed` is already true, xp_intents is
+    // [] and the QuizCompletePage's awardXP loop is a no-op. This is by
+    // design — retakes don't pay XP.
+    //
+    // Phase B exception: when the user is in a redo flow (started via
+    // /api/doubts/sessions/:id/redo), we DO emit xp_intents even though
+    // the phase was previously completed, but at half the amount and with
+    // `meta.redo_doubt_id` + `meta.redo_count` + `meta.multiplier: 0.5`.
+    // The partial unique index `ux_user_xp_events_redo_dedup` in migration
+    // 0017 blocks double-payment per (user, doubt, redo_count, reason).
+    const redo = getRedoForSession(userSessionId);
+    const allowEmit = !phaseWasAlreadyComplete || !!redo;
+    const halve = (n) => Math.max(0, Math.round(n * 0.5));
+    const redoMeta = redo
+      ? { redo_doubt_id: redo.redo_doubt_id, redo_count: redo.redo_count, multiplier: 0.5 }
+      : {};
+
     const xp_intents = [];
-    if (!phaseWasAlreadyComplete) {
+    if (allowEmit) {
       if (phase === 'quiz') {
         const correct = Number(scoreData?.quiz_correct) || 0;
         const attempted = Number(scoreData?.quiz_attempted) || 0;
         const amount = computeQuizXP({ correct, attempted });
-        if (amount > 0) {
+        const finalAmount = redo ? halve(amount) : amount;
+        if (finalAmount > 0) {
           xp_intents.push({
-            amount,
+            amount: finalAmount,
             reason: XP_REASONS.quiz_correct,
             source_id: userSessionId,
-            meta: { correct, attempted, quiz_score: scoreData?.quiz_score ?? null, minutes: 5 },
+            meta: {
+              correct,
+              attempted,
+              quiz_score: scoreData?.quiz_score ?? null,
+              minutes: 5,
+              ...redoMeta,
+            },
           });
         }
       } else if (phase === 'simulation') {
         xp_intents.push({
-          amount: 100,
+          amount: redo ? halve(100) : 100,
           reason: XP_REASONS.simulation_complete,
           source_id: userSessionId,
-          meta: { simulation_score: scoreData?.simulation_score ?? null, minutes: 10 },
+          meta: {
+            simulation_score: scoreData?.simulation_score ?? null,
+            minutes: 10,
+            ...redoMeta,
+          },
         });
       }
     }
-    if (sessionJustCompleted) {
+    // Session-complete XP: fires when allDone, on a fresh completion OR
+    // a redo replay (regardless of `sessionWasAlreadyComplete`).
+    if (allDone && (!sessionWasAlreadyComplete || redo)) {
       xp_intents.push({
-        amount: 50,
+        amount: redo ? halve(50) : 50,
         reason: XP_REASONS.session_complete,
         source_id: userSessionId,
         // session_complete doesn't add minutes — quiz/simulation already did.
-        meta: { minutes: 0 },
+        meta: { minutes: 0, ...redoMeta },
       });
     }
 
@@ -186,7 +211,8 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
       data: updated,
       xp_intents,
       // Surfaced so callers can show "no XP this time" UX if they want.
-      was_retake: phaseWasAlreadyComplete,
+      was_retake: phaseWasAlreadyComplete && !redo,
+      is_redo: !!redo,
     };
   } catch (err) {
     return { success: false, error: err.message || String(err) };

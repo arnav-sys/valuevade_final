@@ -519,3 +519,115 @@ end$$;
 
 After running, hit `/api/portfolio/review_notes` — you should see at least 2 new rows.
 
+
+
+
+## Phase B — Session Doubts + Extended Pari Chat + Half-XP Redo (Feb 2026)
+
+Page `/doubts` (auth). Endpoints all require Bearer.
+
+### Quick auth-free probe (service-role)
+
+```bash
+# Confirm tables + columns landed
+curl -s "$SUPABASE_URL/rest/v1/user_session_doubts?limit=1" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+# → 200 with one or more rows for testagent
+
+curl -s "$SUPABASE_URL/rest/v1/user_doubt_sessions?limit=1&select=id,kind,linked_session_doubt_id" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY"
+# → 200, rows have `kind` and `linked_session_doubt_id` columns
+```
+
+### Bearer-required happy path
+
+```bash
+API_URL=$(grep REACT_APP_BACKEND_URL /app/frontend/.env | cut -d '=' -f2)
+TOKEN="<paste from localStorage[sb-yuadeybycbfqlkdpxbkv-auth-token].access_token>"
+
+# 1. Flag a completed session
+curl -s -X POST "$API_URL/api/doubts/sessions/mark" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"5e0c2a88-d864-4827-9a95-5aedd8d27ffd","reason":"difficult"}'
+# → {id, reason, status:"open", ...}
+
+# 2. List open doubts
+curl -s "$API_URL/api/doubts/sessions?status=open" -H "Authorization: Bearer $TOKEN"
+# → [{id, session_title, module_title, reason, redo_count, ...}]
+
+# 3. Start a half-XP redo
+DOUBT_ID="<id from step 1>"
+curl -s -X POST "$API_URL/api/doubts/sessions/$DOUBT_ID/redo" -H "Authorization: Bearer $TOKEN"
+# → {session_id, redo_count: 1, xp_multiplier: 0.5}
+
+# 4. Start an extended chat (15 turns, 3/day)
+curl -s -X POST "$API_URL/api/doubts/extended/start" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"doubt_id\":\"$DOUBT_ID\"}"
+# → {doubt_session_id, turns_remaining: 15, daily_remaining: N}
+
+# 5. Send a turn
+SID="<doubt_session_id from step 4>"
+curl -s -X POST "$API_URL/api/doubts/extended/ask" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d "{\"doubt_session_id\":\"$SID\",\"message\":\"Why does TVM matter for NPV?\"}"
+# → {answer, turns_remaining: 14, session_ended: false, daily_remaining: N}
+
+# 6. Resolve the doubt
+curl -s -X POST "$API_URL/api/doubts/sessions/$DOUBT_ID/resolve" -H "Authorization: Bearer $TOKEN"
+# → {ok: true, status: "resolved"}
+```
+
+### Half-XP dedup invariant (CRITICAL)
+
+The partial unique index `ux_user_xp_events_redo_dedup` on `user_xp_events`
+prevents double-payment per `(user_id, redo_doubt_id, redo_count, reason)`.
+
+```bash
+# Programmatic confirmation:
+curl -s -X POST "$SUPABASE_URL/rest/v1/rpc/award_xp" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "p_user_id":"13a690c4-96d7-4827-8117-fde4f696e999",
+    "p_amount":30,"p_reason":"quiz_correct",
+    "p_source_id":"5e0c2a88-d864-4827-9a95-5aedd8d27ffd",
+    "p_meta":{"redo_doubt_id":"<uuid>","redo_count":1,"multiplier":0.5}
+  }'
+# First call → 200
+# Second identical call → 409 "duplicate key value violates unique constraint ux_user_xp_events_redo_dedup"
+```
+
+### Frontend manual smoke
+
+1. Log in as `testagent2026@gmail.com`.
+2. Sidebar shows **My Doubts** with a numeric pill if there are any open doubts.
+3. Click "My Doubts" → `/doubts` page → tabs Open / Resolved.
+4. Click "I have a doubt" on the SessionCompletePage (or "Found it difficult") → row should be visible there with reason chip.
+5. On `/doubts`, click **Redo session (half XP)** → routed to `/session/:id/start`; subsequent quiz/sim completions emit XP with `meta.multiplier:0.5` and `meta.redo_doubt_id`; after all 4 phases complete, doubt is auto-resolved and the pill drops.
+6. Click **Ask Pari (15-turn chat)** → extended modal opens with `Turns: 15/15 Today: N/3`. Send any 1-character-or-more message → Pari replies → turns counter decrements. After 15 turns OR clicking "End session", composer is disabled.
+7. If a user has already used 3 extended sessions today, opening a new one returns HTTP 429 — UI shows amber "Today's extended chats exhausted — try again tomorrow IST" with the reset timestamp.
+
+### Reset for re-testing
+
+```sql
+-- Clear all doubt flags for the test user
+delete from public.user_session_doubts where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+
+-- Clear extended chats from today (so the 3/day quota resets without waiting)
+delete from public.user_doubt_sessions
+  where user_id = '13a690c4-96d7-4827-8117-fde4f696e999'
+    and kind = 'extended'
+    and ist_date = (now() at time zone 'Asia/Kolkata')::date;
+
+-- (Optional) clear any leftover redo XP rows
+delete from public.user_xp_events
+  where user_id = '13a690c4-96d7-4827-8117-fde4f696e999'
+    and meta ? 'redo_doubt_id';
+```
+
+### Known constraints
+
+- Quick-chat endpoints `/api/doubts/start|ask|end` (3 turns / 1500 tokens / 5 sessions per day) are intentionally NOT modified by Phase B. Don't smoke them as part of Phase B — they're a separate surface.
+- The extended chat will surface backend errors verbatim. Don't expect generic "something went wrong" text — the message should match the actual `detail` field from the API.
+
