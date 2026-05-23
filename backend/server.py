@@ -1550,6 +1550,198 @@ async def portfolio_review_notes(
 
 
 
+# =============================================================================
+# Phase A — Quick Revision Sheet (session-end AI revision card)
+# =============================================================================
+
+REVISION_SHEET_SYSTEM_PROMPT = """You are Pari, a precise finance tutor. Generate a Quick Revision Sheet for a learner who just finished a session.
+
+Your output MUST be valid markdown with these four H2 sections IN THIS EXACT ORDER:
+
+## Key Concepts
+3-5 short bullets capturing the core ideas, in plain language. Each bullet ≤ 22 words.
+
+## Formulas
+2-4 formulas using inline code spans (e.g. `PV = FV / (1 + r)^n`). For each, add a 1-line plain-English note. If the session has no formulas, write a single italic line: *"No new formulas in this session."*
+
+## Common Pitfalls
+2-3 bullets — mistakes students typically make on this topic.
+
+## Ask Yourself
+3 short recall questions a student should be able to answer to prove they got it.
+
+Constraints:
+- Target length: 350-500 words total. Hard ceiling 600 words.
+- Match the student's country focus when picking examples: {country_context}
+- Do NOT add a heading above "Key Concepts"; do NOT add an intro paragraph; do NOT close with a sign-off.
+- Plain markdown only — no tables, no HTML, no emoji.
+"""
+
+
+class RevisionGenerateReq(BaseModel):
+    session_id: str
+    module_id: Optional[str] = None
+
+
+def _resolve_session_context_for_revision(session_id: str):
+    """Pull the master_session payload (title + description + learning_objectives)
+    that's the source of truth for what the revision sheet covers. Falls back
+    to the user_sessions.title if the master row can't be resolved."""
+    sess_rows = _supabase_get(
+        f"user_sessions?id=eq.{_urlparse.quote(session_id)}"
+        f"&select=title,master_session_id,user_module_id&limit=1"
+    ) or []
+    if not sess_rows:
+        return None
+    sess = sess_rows[0]
+    master_session_id = sess.get("master_session_id")
+    if not master_session_id:
+        return {
+            "title": sess.get("title") or "this session",
+            "description": "",
+            "learning_objectives": [],
+        }
+    master_rows = _supabase_get(
+        f"master_sessions?id=eq.{_urlparse.quote(master_session_id)}"
+        f"&select=title,description,learning_objectives&limit=1"
+    ) or []
+    if not master_rows:
+        return {
+            "title": sess.get("title") or "this session",
+            "description": "",
+            "learning_objectives": [],
+        }
+    m = master_rows[0]
+    return {
+        "title": m.get("title") or sess.get("title") or "this session",
+        "description": m.get("description") or "",
+        "learning_objectives": m.get("learning_objectives") or [],
+    }
+
+
+@api_router.post("/revision/generate")
+async def revision_generate(req: RevisionGenerateReq, supa_user: dict = Depends(get_supabase_user)):
+    """Idempotent: returns the cached sheet if one exists for (user, session),
+    otherwise calls Haiku once, persists it, and returns it."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    if not req.session_id:
+        raise HTTPException(status_code=400, detail="session_id required")
+
+    # 1) Cache hit?
+    cached = _supabase_get(
+        f"user_revision_sheets?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&session_id=eq.{_urlparse.quote(req.session_id)}"
+        f"&select=content_md,generated_at,tokens_used&limit=1"
+    ) or []
+    if cached:
+        return {
+            "content_md": cached[0]["content_md"],
+            "cached": True,
+            "generated_at": cached[0].get("generated_at"),
+            "tokens_used": cached[0].get("tokens_used", 0),
+        }
+
+    # 2) Build prompt context.
+    ctx = _resolve_session_context_for_revision(req.session_id)
+    if not ctx:
+        raise HTTPException(status_code=404, detail="session not found")
+
+    user_country = "IN"
+    try:
+        prof_rows = _supabase_get(
+            f"profiles?id=eq.{_urlparse.quote(user_id)}&select=country_code&limit=1"
+        ) or []
+        if prof_rows and prof_rows[0].get("country_code"):
+            user_country = prof_rows[0]["country_code"]
+    except Exception:
+        pass
+    country_context = _country_context_for(user_country)
+
+    objectives_md = ""
+    if ctx["learning_objectives"]:
+        objectives_md = "\n".join(f"- {o}" for o in ctx["learning_objectives"][:8])
+    else:
+        objectives_md = "- (none listed)"
+
+    user_prompt = (
+        f"Session title: {ctx['title']}\n"
+        f"Session description: {ctx['description'] or '(none)'}\n"
+        f"Learning objectives:\n{objectives_md}\n\n"
+        "Generate the Quick Revision Sheet now. Return ONLY the markdown described in the system prompt."
+    )
+
+    # 3) Call Haiku.
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=502, detail="LLM not configured")
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"revision-{req.session_id}",
+            system_message=REVISION_SHEET_SYSTEM_PROMPT.format(country_context=country_context),
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
+        resp = await chat.send_message(UserMessage(text=user_prompt))
+        content_md = (resp or "").strip()
+        if content_md.startswith("```"):
+            content_md = _re.sub(r"^```(?:markdown|md)?\s*", "", content_md)
+            content_md = _re.sub(r"\s*```\s*$", "", content_md)
+        if not content_md:
+            raise HTTPException(status_code=502, detail="LLM returned an empty sheet")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[revision] LLM call failed: {e}")
+        raise HTTPException(status_code=502, detail="Revision sheet generation failed")
+
+    approx_tokens = max(1, (len(user_prompt) + len(content_md)) // 4)
+
+    # 4) Persist with ignore-duplicates so concurrent generates collapse cleanly.
+    try:
+        _supabase_post(
+            "user_revision_sheets",
+            {
+                "user_id": user_id,
+                "session_id": req.session_id,
+                "module_id": req.module_id or "",
+                "content_md": content_md,
+                "tokens_used": approx_tokens,
+            },
+            prefer="resolution=ignore-duplicates",
+        )
+    except Exception as e:
+        logger.warning(f"[revision] cache write failed: {e}")
+
+    return {
+        "content_md": content_md,
+        "cached": False,
+        "tokens_used": approx_tokens,
+    }
+
+
+@api_router.get("/revision/{session_id}")
+async def revision_get(session_id: str, supa_user: dict = Depends(get_supabase_user)):
+    """Return the cached revision sheet for (current user, session_id) or 404."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    rows = _supabase_get(
+        f"user_revision_sheets?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&session_id=eq.{_urlparse.quote(session_id)}"
+        f"&select=content_md,generated_at,tokens_used&limit=1"
+    ) or []
+    if not rows:
+        raise HTTPException(status_code=404, detail="revision sheet not found")
+    return {
+        "content_md": rows[0]["content_md"],
+        "cached": True,
+        "generated_at": rows[0].get("generated_at"),
+        "tokens_used": rows[0].get("tokens_used", 0),
+    }
+
+
+
+
 
 
 

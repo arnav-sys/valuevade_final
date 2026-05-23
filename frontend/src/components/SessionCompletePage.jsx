@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import SessionCompleteSummaryCard from './gamification/SessionCompleteSummaryCard';
+import QuickRevisionSheetCard from './gamification/QuickRevisionSheetCard';
 import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
 import AskPariButton from './tutor/AskPariButton';
@@ -257,6 +258,15 @@ export default function SessionCompletePage() {
 
         {/* Gamification summary (Phase 47) */}
         <SessionCompleteSummaryCard sessionStartTs={sessionStartTsRef.current} />
+
+        {/* Phase A — Quick Revision Sheet */}
+        <div className="mt-4">
+          <QuickRevisionSheetCard
+            sessionId={sessionId}
+            moduleId={session?.user_module_id || ''}
+          />
+        </div>
+
         <div className="mt-2 mb-6">
           <AskPariButton phase="notes" courseSessionId={sessionId} variant="card" />
         </div>
