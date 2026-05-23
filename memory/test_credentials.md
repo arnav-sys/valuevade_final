@@ -631,3 +631,115 @@ delete from public.user_xp_events
 - Quick-chat endpoints `/api/doubts/start|ask|end` (3 turns / 1500 tokens / 5 sessions per day) are intentionally NOT modified by Phase B. Don't smoke them as part of Phase B — they're a separate surface.
 - The extended chat will surface backend errors verbatim. Don't expect generic "something went wrong" text — the message should match the actual `detail` field from the API.
 
+
+
+## Phase C — Milestone Achievement Cards (Feb 2026)
+
+Hybrid system: module milestones fire on the last session of a module
+(hand-curated capability-claim copy); count milestones at exact session counts
+[3,7,12,18,25,35,50,75,100] as fallback. Granted once per user per milestone.
+
+### Auth-free probe (service-role)
+
+```bash
+# 24 milestones seeded (15 module + 9 count)
+curl -s "$SUPABASE_URL/rest/v1/master_milestones?select=count" \
+  -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+  -H "Prefer: count=exact" -I
+# → Content-Range: 0-23/24
+```
+
+### Bearer-required happy path
+
+```bash
+TOKEN="<paste from localStorage[sb-yuadeybycbfqlkdpxbkv-auth-token].access_token>"
+
+# 1. Pending list
+curl -s "$API_URL/api/milestones/pending" -H "Authorization: Bearer $TOKEN"
+# → []  if nothing earned-but-not-dismissed
+
+# 2. Trigger a check after a session-complete (FE calls this from SessionCompletePage)
+curl -s -X POST "$API_URL/api/milestones/check" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"5e0c2a88-d864-4827-9a95-5aedd8d27ffd"}'
+# → {"newly_granted":["m1_foundations"]}  (or [] if no milestone is due)
+
+# 3. Pending now contains the granted code
+curl -s "$API_URL/api/milestones/pending" -H "Authorization: Bearer $TOKEN"
+# → [{"code":"m1_foundations","title":"You speak the language of finance","body":"...","icon":"📐","rarity":"epic","kind":"module","earned_at":"..."}]
+
+# 4. Dismiss it
+curl -s -X POST "$API_URL/api/milestones/m1_foundations/dismiss" -H "Authorization: Bearer $TOKEN"
+# → {"code":"m1_foundations","dismissed_at":"2026-..."}
+
+# 5. Re-checking the same session should NOT re-grant
+curl -s -X POST "$API_URL/api/milestones/check" \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"5e0c2a88-d864-4827-9a95-5aedd8d27ffd"}'
+# → {"newly_granted":[]}  (unique constraint user_milestones(user_id, milestone_code) blocks the 2nd insert)
+```
+
+### Critical invariants
+
+1. **Retroactive prevention** — count milestones use **EXACT EQUALITY** on
+   `trigger_count`. A user who already has 10 completed sessions when this
+   feature ships gets NO retroactive `count_3`/`count_7`. Their next session
+   takes count → 11 (no milestone), then 12 → `count_12` fires.
+2. **Module > Count priority** — in a single `/check` call, if the user just
+   finished the last session of a module AND their total count matches a
+   count milestone, only the module milestone is granted (helper `return`s
+   early after step 1 succeeds).
+3. **Idempotent on redo** — `user_milestones(user_id, milestone_code)` UNIQUE
+   index means a Phase B half-XP redo session that re-completes a module
+   does NOT re-trigger the milestone.
+4. **Queue order** — `/pending` returns `earned_at ASC` so the overlay shows
+   the oldest pending milestone first. After dismiss, the next pending one
+   pops automatically after a 600ms stagger.
+
+### Frontend manual smoke
+
+1. Log in as `testagent2026@gmail.com`.
+2. Navigate to `/dashboard` — if the test user has pending milestones, the
+   `MilestoneCelebrationOverlay` (testid `milestone-overlay`) renders at
+   z-index 105 (above all other modals including the daily news modal).
+3. Verify: rarity tag (testid `milestone-rarity-tag`), icon
+   (`milestone-icon`), title (`milestone-title`), body (`milestone-body`),
+   continue button (`milestone-continue`), queue counter
+   (`milestone-queue-count` if >1 pending).
+4. Click Continue → calls `POST /api/milestones/{code}/dismiss` → overlay
+   closes → if next pending exists, it surfaces after 600ms with a fresh
+   animation + confetti + sound.
+5. Navigate away and back to `/dashboard` → previously-dismissed milestones
+   do NOT re-appear.
+
+### Reset for re-testing
+
+```sql
+-- Clear all milestones for the test user (so /check can re-grant them)
+delete from public.user_milestones where user_id = '13a690c4-96d7-4827-8117-fde4f696e999';
+```
+
+### Seed test milestones for screenshot/visual testing
+
+```bash
+USER='13a690c4-96d7-4827-8117-fde4f696e999'
+for code in count_3 m4_modelling count_25 m12_valuation; do
+  curl -s -X POST "$SUPABASE_URL/rest/v1/user_milestones" \
+    -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" \
+    -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+    -H "Content-Type: application/json" \
+    -d "{\"user_id\":\"$USER\",\"milestone_code\":\"$code\"}"
+done
+# → 4 milestones earned; overlay queue: common → legendary → epic → legendary
+```
+
+### Known constraints
+
+- Profile-page milestone grid was SKIPPED per spec (optional; only the
+  celebration overlay was required).
+- Sound: reuses `level_up.wav` — there's no new milestone-specific sound.
+- Module-trigger lookup uses `master_modules.order_index` (1-15). If a
+  master module is ever re-ordered, re-run `0018b_seed_milestones.sql` and
+  the `ON CONFLICT DO UPDATE` will repoint `trigger_module_id`.
+
+

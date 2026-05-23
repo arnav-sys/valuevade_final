@@ -11,6 +11,7 @@ import AskPariButton from './tutor/AskPariButton';
 import { markSessionDoubt, resolveSessionDoubt } from '../utils/sessionDoubts';
 import { getRedoForSession, clearRedoState } from '../utils/redoState';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
+import { useMilestones } from '../contexts/MilestonesContext';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase, AlertTriangle, Brain,
@@ -86,6 +87,8 @@ export default function SessionCompletePage() {
   const [flagPending, setFlagPending] = useState(null);  // 'doubt' | 'difficult' | null
   const [redoInfo, setRedoInfo] = useState(() => getRedoForSession(sessionId));
   const { refresh: refreshOpenCount } = useOpenDoubts();
+  const { notifySessionCompleted } = useMilestones();
+  const milestoneCheckedRef = useRef(false);
 
   useEffect(() => {
     let mounted = true;
@@ -184,6 +187,28 @@ export default function SessionCompletePage() {
     })();
     return () => { mounted = false; };
   }, [redoInfo, session, refreshOpenCount]);
+
+  // Phase C — Milestone check.
+  // Fires once after the session loads and we've confirmed all four phases
+  // are complete. POSTs /api/milestones/check; the backend grants at most
+  // one milestone (module > count priority) and the MilestonesProvider then
+  // re-polls /pending so the overlay surfaces. Idempotent: the unique key
+  // user_milestones(user_id, milestone_code) blocks any second grant, so
+  // a redo session that re-finishes a module does NOT re-trigger.
+  useEffect(() => {
+    if (!session || milestoneCheckedRef.current) return;
+    const allPhasesDone =
+      session.notes_completed &&
+      session.quiz_completed &&
+      session.interview_completed &&
+      session.simulation_completed;
+    if (!allPhasesDone) return;
+    milestoneCheckedRef.current = true;
+    // Small delay so the celebration overlay doesn't fight the
+    // SessionCompleteSummaryCard's XP-toast cascade for attention.
+    const t = setTimeout(() => { notifySessionCompleted(sessionId); }, 1400);
+    return () => clearTimeout(t);
+  }, [session, sessionId, notifySessionCompleted]);
 
   // Flag handler — only available on a fresh completion (not in redo mode).
   const handleFlag = async (reason) => {

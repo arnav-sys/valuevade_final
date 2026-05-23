@@ -12,10 +12,12 @@ import { DailyChallengesProvider } from "@/contexts/DailyChallengesContext";
 import { TutorProvider } from "@/contexts/TutorContext";
 import { DoubtsLauncherProvider } from "@/contexts/DoubtsLauncherContext";
 import { OpenDoubtsProvider } from "@/contexts/OpenDoubtsContext";
+import { MilestonesProvider } from "@/contexts/MilestonesContext";
 import XPRoot from "@/components/gamification/XPRoot";
 import StreakRoot from "@/components/gamification/StreakRoot";
 import BadgeRoot from "@/components/gamification/BadgeRoot";
 import DailyChampionRoot from "@/components/gamification/DailyChampionRoot";
+import MilestoneCelebrationOverlay from "@/components/gamification/MilestoneCelebrationOverlay";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
@@ -96,6 +98,7 @@ function App() {
                 <TutorProvider>
                 <DoubtsLauncherProvider>
                 <OpenDoubtsProvider>
+                <MilestonesProvider>
                 <Toaster
                   richColors
                   position="bottom-right"
@@ -115,6 +118,7 @@ function App() {
                 <StreakRoot />
                 <BadgeRoot />
                 <DailyChampionRoot />
+                <MilestoneCelebrationOverlay />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
                 <Routes>
@@ -180,6 +184,7 @@ function App() {
                 </Routes>
               </PageTransition>
             </Suspense>
+                </MilestonesProvider>
                 </OpenDoubtsProvider>
                 </DoubtsLauncherProvider>
                 </TutorProvider>

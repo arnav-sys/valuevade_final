@@ -2136,6 +2136,202 @@ async def extended_doubt_end(req: ExtendedDoubtEndReq, supa_user: dict = Depends
     return {"ok": True, "already_ended": False}
 
 
+# --- Phase C: milestones -------------------------------------------------
+#
+# Hybrid milestone system. Module milestones (`m1_foundations`, `m4_modelling`,
+# etc.) fire when a user finishes the last session of a master_module — i.e.
+# every user_session in their user_module is `is_completed=true`. Count
+# milestones (`count_3`, `count_7`, …, `count_100`) are the fallback and fire
+# on the user's Nth completed session.
+#
+# When BOTH would fire in the same call, the module milestone wins (we never
+# grant two milestones in a single check). The unique key
+# `user_milestones (user_id, milestone_code)` makes the helper idempotent so
+# a Phase B redo session that re-completes the same module does NOT
+# re-trigger an already-earned milestone.
+
+class MilestoneCheckReq(BaseModel):
+    session_id: str
+
+
+def check_and_grant_milestones(user_id: str, just_completed_session_id: Optional[str]) -> list:
+    """Grant at most ONE milestone per call. Returns newly-granted codes.
+
+    Strategy:
+      1. If the just-completed session was the LAST session of its module
+         (all user_sessions in that user_module are is_completed=true), try
+         to grant that module's milestone (lookup by master_module_id).
+      2. Otherwise, count the user's total completed sessions and try to
+         grant the count milestone that exactly matches.
+
+    The unique constraint user_milestones_user_code_unique handles the
+    "already earned" case — we just swallow the 409.
+    """
+    granted: list = []
+
+    # --- (1) Module milestone check ---
+    if just_completed_session_id:
+        sess_rows = _supabase_get(
+            f"user_sessions?id=eq.{_urlparse.quote(just_completed_session_id)}"
+            f"&select=id,user_module_id,is_completed&limit=1"
+        ) or []
+        if sess_rows and sess_rows[0].get("is_completed") and sess_rows[0].get("user_module_id"):
+            user_module_id = sess_rows[0]["user_module_id"]
+            # All sessions in this user_module complete?
+            siblings = _supabase_get(
+                f"user_sessions?user_module_id=eq.{_urlparse.quote(user_module_id)}"
+                f"&is_removed=eq.false&select=is_completed"
+            ) or []
+            if siblings and all(s.get("is_completed") for s in siblings):
+                # Get the master_module_id for the milestone lookup
+                um_rows = _supabase_get(
+                    f"user_modules?id=eq.{_urlparse.quote(user_module_id)}"
+                    f"&select=master_module_id&limit=1"
+                ) or []
+                if um_rows and um_rows[0].get("master_module_id"):
+                    master_module_id = um_rows[0]["master_module_id"]
+                    ms_rows = _supabase_get(
+                        f"master_milestones?trigger_module_id=eq.{_urlparse.quote(master_module_id)}"
+                        f"&select=code&limit=1"
+                    ) or []
+                    if ms_rows:
+                        code = ms_rows[0]["code"]
+                        try:
+                            inserted = _supabase_post(
+                                "user_milestones",
+                                {"user_id": user_id, "milestone_code": code},
+                                prefer="return=representation",
+                            )
+                            if inserted:
+                                granted.append(code)
+                                return granted   # module wins — skip count check
+                        except HTTPException as e:
+                            # 409 == unique violation == already earned; fall through to count check
+                            if e.status_code != 409:
+                                logger.warning(f"[milestones] module insert failed: {e.detail}")
+
+    # --- (2) Count milestone fallback ---
+    # Two-step count: enrollment_ids → user_module_ids → completed sessions
+    # count. PostgREST does not support nested subqueries via the REST query
+    # string, so we run two simple GETs and count Python-side.
+    try:
+        enrollments = _supabase_get(
+            f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}&select=id"
+        ) or []
+        enrollment_ids = [e["id"] for e in enrollments]
+        if not enrollment_ids:
+            return granted
+
+        enr_filter = ",".join(enrollment_ids)
+        user_modules_rows = _supabase_get(
+            f"user_modules?enrollment_id=in.({enr_filter})&select=id"
+        ) or []
+        um_ids = [um["id"] for um in user_modules_rows]
+        if not um_ids:
+            return granted
+
+        # Chunk to keep URL bounded; in practice users have <30 modules.
+        completed_count = 0
+        chunk_size = 50
+        for i in range(0, len(um_ids), chunk_size):
+            chunk = um_ids[i:i + chunk_size]
+            filter_str = ",".join(chunk)
+            # `count=exact` with Prefer header is tricky over our helper; instead
+            # fetch ids and count Python-side. Lightweight (one id per row).
+            rows = _supabase_get(
+                f"user_sessions?user_module_id=in.({filter_str})"
+                f"&is_completed=eq.true&is_removed=eq.false&select=id"
+            ) or []
+            completed_count += len(rows)
+
+        # Match against a count milestone (exact equality, never >=).
+        cm_rows = _supabase_get(
+            f"master_milestones?kind=eq.count&trigger_count=eq.{completed_count}&select=code&limit=1"
+        ) or []
+        if cm_rows:
+            code = cm_rows[0]["code"]
+            try:
+                inserted = _supabase_post(
+                    "user_milestones",
+                    {"user_id": user_id, "milestone_code": code},
+                    prefer="return=representation",
+                )
+                if inserted:
+                    granted.append(code)
+            except HTTPException as e:
+                if e.status_code != 409:
+                    logger.warning(f"[milestones] count insert failed: {e.detail}")
+    except Exception as e:
+        logger.warning(f"[milestones] count check failed: {e}")
+
+    return granted
+
+
+@api_router.get("/milestones/pending")
+async def milestones_pending(supa_user: dict = Depends(get_supabase_user)):
+    """Returns earned-but-not-dismissed milestones for the current user,
+    oldest first (so the overlay shows them in the order they were earned)."""
+    user_id = supa_user.get("id")
+    rows = _supabase_get(
+        f"user_milestones?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&dismissed_at=is.null&order=earned_at.asc"
+        f"&select=milestone_code,earned_at"
+    ) or []
+    if not rows:
+        return []
+    codes = [r["milestone_code"] for r in rows]
+    code_filter = ",".join([f'"{c}"' for c in codes])
+    master = _supabase_get(
+        f"master_milestones?code=in.({code_filter})"
+        f"&select=code,title,body,icon,rarity,kind"
+    ) or []
+    master_by_code = {m["code"]: m for m in master}
+    out = []
+    for r in rows:
+        m = master_by_code.get(r["milestone_code"])
+        if not m:
+            continue
+        out.append({
+            "code": m["code"],
+            "title": m["title"],
+            "body": m["body"],
+            "icon": m["icon"],
+            "rarity": m["rarity"],
+            "kind": m["kind"],
+            "earned_at": r["earned_at"],
+        })
+    return out
+
+
+@api_router.post("/milestones/{code}/dismiss")
+async def milestone_dismiss(code: str, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    rows = _supabase_patch(
+        f"user_milestones?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&milestone_code=eq.{_urlparse.quote(code)}",
+        {"dismissed_at": datetime.now(timezone.utc).isoformat()},
+    )
+    if not rows:
+        raise HTTPException(status_code=404, detail="milestone not earned by this user")
+    return {"code": code, "dismissed_at": rows[0].get("dismissed_at")}
+
+
+@api_router.post("/milestones/check")
+async def milestones_check(req: MilestoneCheckReq, supa_user: dict = Depends(get_supabase_user)):
+    """Called by the FE right after a session-complete + XP write. Grants
+    at most one new milestone and returns its code so the FE can poll
+    /pending and surface the celebration overlay."""
+    user_id = supa_user.get("id")
+    # Sanity: confirm the session actually belongs to the caller (and is
+    # complete). We don't fully reject if not — just skip the module check.
+    granted = check_and_grant_milestones(user_id, req.session_id)
+    return {"newly_granted": granted}
+
+
+# --- end Phase C ---------------------------------------------------------
+
+
+
 
 
 

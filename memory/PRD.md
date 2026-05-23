@@ -2291,3 +2291,162 @@ User can now flag any completed session as a "doubt" or "difficult", review flag
 - Phase C (Leaderboard system + `leaderboard_crasher` badge + social-proof enrollment counts) — still pending.
 - P2 polish (rarity-scaled badge glow, per-module daily challenge text) — still pending.
 
+
+### Phase C — Milestone Achievement Cards (Feb 2026)
+
+Hybrid milestone system: every 3-4 sessions, users get a full-screen celebration card
+congratulating them on a real, named achievement. Module milestones fire on the last
+session of a master_module with hand-curated copy that names the concrete capability
+they gained ("You can build a 3-statement model from scratch"). Count milestones are
+the fallback at [3, 7, 12, 18, 25, 35, 50, 75, 100] cumulative completed sessions.
+
+#### Database (migrations 0018 + 0018b, both applied)
+
+`master_milestones` (PK: text code)
+- `kind` ∈ {module, count}, XOR constraint enforcing exactly one of
+  `trigger_module_id` (FK→master_modules) or `trigger_count` (int)
+- `title` (<8 words), `body` (<25 words), `icon` (emoji), `rarity`
+  ∈ {common, rare, epic, legendary}, `display_order`
+- RLS: world-readable (no PII)
+
+`user_milestones`
+- `(user_id, milestone_code)` UNIQUE — idempotent grants
+- `earned_at` (default now), `dismissed_at` (nullable)
+- RLS: owner SELECT/UPDATE; INSERT via service role only (the backend
+  helper)
+
+**Seeded: 15 module + 9 count = 24 milestones.** Module copy is finance-specific
+and Indian-context-friendly (Satyam, RBI/SEBI, FCFE/FCFF, Mumbai sell-side desk,
+etc.). Count milestones use Indian cricket vocabulary ("Quarter Century", "Half
+Century", "Hundred Sessions Strong") as anchors.
+
+#### Backend (server.py, ~150 LoC added)
+
+`check_and_grant_milestones(user_id, just_completed_session_id) -> [code]`
+- Step 1: if the just-completed session's user_module has all is_completed=true,
+  look up that master_module's milestone. INSERT to user_milestones; on success,
+  return immediately (module > count priority).
+- Step 2 (fallback only): compute the user's total completed sessions via a
+  two-step enrollment_ids → user_module_ids → count fetch. Look up
+  master_milestones with kind=count and **EXACT** trigger_count=N (not >=). If
+  found and not already earned, INSERT.
+- Unique constraint blocks all double-grants. 409s are caught and logged as
+  warnings, not raised.
+
+Endpoints (all auth-gated):
+| Method | Path                                  | Returns |
+|---|---|---|
+| GET    | `/api/milestones/pending`             | `[{code,title,body,icon,rarity,kind,earned_at}]` oldest-first |
+| POST   | `/api/milestones/{code}/dismiss`      | `{code, dismissed_at}` |
+| POST   | `/api/milestones/check`               | `{newly_granted: [code]}`  — invoked from `SessionCompletePage` after XP write |
+
+Curl example:
+```bash
+curl -X POST $API_URL/api/milestones/check \
+  -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" \
+  -d '{"session_id":"5e0c2a88-d864-4827-9a95-5aedd8d27ffd"}'
+# → {"newly_granted":["m1_foundations"]}  (or []  if no milestone is due)
+```
+
+#### Frontend
+
+**New:**
+- `utils/milestones.js` — API client (3 endpoints)
+- `contexts/MilestonesContext.jsx` — queue provider; exposes `pending`,
+  `refresh()`, `dismiss(code)`, `notifySessionCompleted(sessionId)`. Polls
+  `/pending` on auth-change and after every `notifySessionCompleted` call.
+- `components/gamification/MilestoneCelebrationOverlay.jsx` — full-screen card
+  reusing the LevelUpOverlay aesthetic: glass card, rarity-themed border + glow,
+  canvas-confetti, `level_up` sound, big emoji icon, large Clash Display title,
+  Bricolage body, gradient Continue button. Queue-driven: dismiss → next pending
+  surfaces after `NEXT_MILESTONE_DELAY_MS = 600ms`. Shows "+N more milestones
+  after this" when the queue has more entries. z-index `[105]` so it sits above
+  the daily news modal.
+
+**Modified:**
+- `App.js` — wraps `<MilestonesProvider>` inside `OpenDoubtsProvider`; mounts
+  `<MilestoneCelebrationOverlay />` next to the other gamification roots.
+- `components/SessionCompletePage.jsx` — new useEffect that fires once when all
+  4 phases are complete and calls `notifySessionCompleted(sessionId)` after a
+  1.4s delay (so it doesn't fight the SessionCompleteSummaryCard's XP-toast
+  cascade). The provider re-polls `/pending` and the overlay surfaces.
+
+#### Verification (this pass)
+
+1. **24 milestones seeded** — confirmed by `GET master_milestones`: 15 with
+   kind=module (one per module, ordered by `display_order = order_index × 10`),
+   9 with kind=count.
+2. **Overlay E2E** — seeded `count_3` + `m4_modelling` for the test user via
+   service-role; navigated to `/profile`; overlay rendered with `count_3` first
+   (common rarity, 🌱 First Steps, "+1 MORE MILESTONE AFTER THIS" tag); clicked
+   Continue → `m4_modelling` popped after 600ms with legendary rarity, amber
+   glow, 🧮 abacus icon, "MODULE MASTERED" label, gradient button → clicked
+   Continue → overlay closed; second navigation showed no overlay (queue empty).
+   Screenshots captured.
+3. **/check endpoint** — verified module milestone fires correctly for
+   `5e0c2a88-...` (the test user's session that completed their personalized
+   M1 module): `{newly_granted: ["m1_foundations"]}`. Subsequent call returns
+   `{newly_granted: []}` (idempotent via unique constraint).
+4. **/pending** — returned `[]` after dismissal; returned the granted milestone
+   after `/check` fired.
+5. **Retroactive-grant prevention** — confirmed at the DB layer: `kind=count &
+   trigger_count=eq.1 → []`; `trigger_count=eq.10 → []` (a fresh user with 10
+   pre-existing sessions gets NO retroactive count_3/count_7); `trigger_count=
+   eq.12 → [count_12]` (the next exact match). The fallback NEVER uses `>=`.
+6. **Redo idempotency (Phase B interaction)** — a re-done session that
+   re-completes its module hits the same `user_milestones(user_id, code)` unique
+   key, so the module milestone does NOT re-trigger on redo. Verified via the
+   second `/check` call returning `[]`.
+
+#### Constraints honored
+- No leaderboard work. No badge-rarity glow polish (P2 still deferred).
+- Phase A (QuickRevisionSheetCard) and Phase B (doubts/redo) code paths
+  untouched.
+- No new animation libraries — re-used `canvas-confetti` and the existing
+  `level_up.wav` sound from `/public/sounds/`.
+- Re-applied migrations `0017b` + `0017c` from Phase B during this pass (they
+  hadn't synced from the prior agent's session) — verified via the
+  extended-chat E2E from the previous pass and not re-touched here.
+
+#### Seeded milestones (full table)
+
+**Module (15):**
+| code | order | title | icon | rarity |
+|---|---|---|---|---|
+| m1_foundations | 1 | You speak the language of finance | 📐 | epic |
+| m2_markets | 2 | You understand how Indian markets actually work | 🏛️ | epic |
+| m3_excel | 3 | Your Excel is desk-ready | 📊 | epic |
+| m4_modelling | 4 | You can build a 3-statement model from scratch | 🧮 | legendary |
+| m5_governance | 5 | You can spot the next Satyam early | 🛡️ | epic |
+| m6_annual_reports | 6 | You can dissect a 300-page annual report in 2 minutes | 📑 | epic |
+| m7_fsa | 7 | You can interrogate any company's numbers | 🔍 | epic |
+| m8_forensic | 8 | You can sniff out a blowup before it hits | 🚩 | legendary |
+| m9_ratios | 9 | You can read any company's soul through ratios | 📈 | epic |
+| m10_macro | 10 | You can translate macro into target prices | 🌐 | epic |
+| m11_sectors | 11 | You can write a CLSA-grade sector note | 🏭 | epic |
+| m12_valuation | 12 | You can value any business end-to-end | 💎 | legendary |
+| m13_reports | 13 | You can publish analyst-grade research | 📝 | epic |
+| m14_jobs | 14 | You are interview-ready for finance roles | 💼 | epic |
+| m15_ai | 15 | You are an AI-augmented equity analyst | 🤖 | legendary |
+
+**Count (9):**
+| code | trigger_count | title | icon | rarity |
+|---|---|---|---|---|
+| count_3 | 3 | First Steps | 🌱 | common |
+| count_7 | 7 | Finding Your Rhythm | 🎯 | common |
+| count_12 | 12 | Building Momentum | 🔥 | rare |
+| count_18 | 18 | Hooked | ⚡ | rare |
+| count_25 | 25 | Quarter Century | 🥉 | epic |
+| count_35 | 35 | Serious Operator | 🥈 | epic |
+| count_50 | 50 | Half Century | 🏅 | epic |
+| count_75 | 75 | Three-Quarter Mark | 🥇 | legendary |
+| count_100 | 100 | Hundred Sessions Strong | 🏆 | legendary |
+
+#### Known follow-ups
+- Leaderboards (parked by user as a future phase, not blocking Phase C).
+- P2 polish: rarity-scaled badge glow, per-module daily challenge text, prereq
+  graph.
+- Profile page badge-style milestone grid (spec called this optional; skipped
+  to avoid invasive rebuilds during Phase C).
+
+
