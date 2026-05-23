@@ -1740,6 +1740,404 @@ async def revision_get(session_id: str, supa_user: dict = Depends(get_supabase_u
     }
 
 
+# =============================================================================
+# Phase B — Session Doubts + Extended Pari Re-do Chat
+# =============================================================================
+
+EXTENDED_DOUBT_SYSTEM_PROMPT = """You are Pari, a patient finance tutor in an EXTENDED doubt-resolution chat.
+
+The student previously flagged this session as confusing or difficult. Your job over the next several turns is to help them genuinely understand it — not to rush.
+
+The student's flagged session:
+- Module: {module_code}
+- Session: {session_title}
+- Session description: {session_description}
+- Country focus: {country_context}
+
+Approach:
+- Start by asking ONE clarifying question to find what specifically is confusing — don't dump a full explanation upfront.
+- Build on the student's answers. Use analogies and concrete numbers.
+- Use the student's country focus for examples.
+- Each reply ≤ 180 words. Plain prose, no markdown headings.
+- This is a 15-turn budget — pace yourself.
+- If the student says "got it" before turn 15, congratulate briefly and offer to take a final recall question.
+"""
+
+
+# --- helpers -------------------------------------------------------------
+
+def _validate_session_owned_by_user(session_id: str, user_id: str):
+    """Return the user_sessions row dict only if it belongs to user_id (via the
+    user_modules → user_enrollments → user_id chain), else None."""
+    rows = _supabase_get(
+        f"user_sessions?id=eq.{_urlparse.quote(session_id)}"
+        f"&select=id,title,user_module_id&limit=1"
+    ) or []
+    if not rows:
+        return None
+    sess = rows[0]
+    user_module_id = sess.get("user_module_id")
+    if not user_module_id:
+        return None
+    ums = _supabase_get(
+        f"user_modules?id=eq.{_urlparse.quote(user_module_id)}"
+        f"&select=enrollment_id,master_module_id&limit=1"
+    ) or []
+    if not ums:
+        return None
+    enrollment_id = ums[0].get("enrollment_id")
+    if not enrollment_id:
+        return None
+    enrs = _supabase_get(
+        f"user_enrollments?id=eq.{_urlparse.quote(enrollment_id)}"
+        f"&select=user_id&limit=1"
+    ) or []
+    if not enrs or enrs[0].get("user_id") != user_id:
+        return None
+    return {
+        "id": sess.get("id"),
+        "title": sess.get("title"),
+        "user_module_id": user_module_id,
+        "master_module_id": ums[0].get("master_module_id"),
+    }
+
+
+def _enrich_session_doubt_rows(rows: list) -> list:
+    """Attach session_title + module_title to each session_doubt row in one
+    pass. Empty input → empty output."""
+    if not rows:
+        return []
+    session_ids = sorted({r["session_id"] for r in rows if r.get("session_id")})
+    session_map = {}
+    if session_ids:
+        ids_in = ",".join(f"\"{sid}\"" for sid in session_ids)
+        sess_rows = _supabase_get(
+            f"user_sessions?id=in.({ids_in})&select=id,title,user_module_id"
+        ) or []
+        # Resolve module title via user_modules → master_modules
+        user_module_ids = sorted({s["user_module_id"] for s in sess_rows if s.get("user_module_id")})
+        um_to_master = {}
+        if user_module_ids:
+            ids_in2 = ",".join(f"\"{x}\"" for x in user_module_ids)
+            ums = _supabase_get(
+                f"user_modules?id=in.({ids_in2})&select=id,master_module_id"
+            ) or []
+            um_to_master = {u["id"]: u.get("master_module_id") for u in ums}
+        master_ids = sorted({mid for mid in um_to_master.values() if mid})
+        master_titles = {}
+        if master_ids:
+            ids_in3 = ",".join(f"\"{x}\"" for x in master_ids)
+            mms = _supabase_get(
+                f"master_modules?id=in.({ids_in3})&select=id,title,order_index"
+            ) or []
+            master_titles = {m["id"]: (m.get("title") or (f"M{m['order_index']}" if m.get("order_index") else "")) for m in mms}
+        for s in sess_rows:
+            mid = um_to_master.get(s.get("user_module_id"))
+            session_map[s["id"]] = {
+                "title": s.get("title") or "",
+                "module_title": master_titles.get(mid, ""),
+            }
+    enriched = []
+    for r in rows:
+        s = session_map.get(r.get("session_id"), {})
+        enriched.append({
+            "id": r.get("id"),
+            "session_id": r.get("session_id"),
+            "module_id": r.get("module_id"),
+            "reason": r.get("reason"),
+            "status": r.get("status"),
+            "redo_count": r.get("redo_count", 0),
+            "created_at": r.get("created_at"),
+            "resolved_at": r.get("resolved_at"),
+            "session_title": s.get("title", ""),
+            "module_title": s.get("module_title", ""),
+        })
+    return enriched
+
+
+# --- request models ------------------------------------------------------
+
+class SessionDoubtMarkReq(BaseModel):
+    session_id: str
+    reason: str  # 'doubt' | 'difficult'
+
+
+class ExtendedDoubtStartReq(BaseModel):
+    doubt_id: str
+
+
+class ExtendedDoubtAskReq(BaseModel):
+    doubt_session_id: str
+    message: str
+
+
+class ExtendedDoubtEndReq(BaseModel):
+    doubt_session_id: str
+
+
+# --- session-doubt CRUD --------------------------------------------------
+
+@api_router.post("/doubts/sessions/mark")
+async def session_doubts_mark(req: SessionDoubtMarkReq, supa_user: dict = Depends(get_supabase_user)):
+    """Upsert a session-doubt for the calling user. Re-marking with the other
+    reason updates `reason` in place."""
+    user_id = supa_user.get("id")
+    if req.reason not in ("doubt", "difficult"):
+        raise HTTPException(status_code=400, detail="reason must be 'doubt' or 'difficult'")
+    sess = _validate_session_owned_by_user(req.session_id, user_id)
+    if not sess:
+        raise HTTPException(status_code=404, detail="session not found")
+    module_id = sess.get("master_module_id") or ""
+
+    existing = _supabase_get(
+        f"user_session_doubts?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&session_id=eq.{_urlparse.quote(req.session_id)}&select=*&limit=1"
+    ) or []
+    if existing:
+        # Update reason + reopen if previously resolved.
+        _supabase_patch(
+            f"user_session_doubts?id=eq.{_urlparse.quote(existing[0]['id'])}",
+            {"reason": req.reason, "status": "open", "resolved_at": None},
+        )
+        rows = _supabase_get(
+            f"user_session_doubts?id=eq.{_urlparse.quote(existing[0]['id'])}&select=*&limit=1"
+        ) or []
+        row = (rows or [existing[0]])[0]
+    else:
+        ins = _supabase_post(
+            "user_session_doubts",
+            {"user_id": user_id, "session_id": req.session_id,
+             "module_id": module_id, "reason": req.reason, "status": "open"},
+            prefer="return=representation",
+        ) or {}
+        row = ins if isinstance(ins, dict) else (ins[0] if ins else {})
+
+    return {
+        "id": row.get("id"),
+        "session_id": row.get("session_id"),
+        "reason": row.get("reason"),
+        "status": row.get("status"),
+        "created_at": row.get("created_at"),
+    }
+
+
+@api_router.get("/doubts/sessions")
+async def session_doubts_list(status: str = "open", supa_user: dict = Depends(get_supabase_user)):
+    """List the calling user's session-doubts, filtered by status."""
+    user_id = supa_user.get("id")
+    if status not in ("open", "resolved", "all"):
+        raise HTTPException(status_code=400, detail="status must be open|resolved|all")
+    query = (
+        f"user_session_doubts?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&select=id,session_id,module_id,reason,status,redo_count,created_at,resolved_at"
+        f"&order=created_at.desc&limit=200"
+    )
+    if status != "all":
+        query += f"&status=eq.{status}"
+    rows = _supabase_get(query) or []
+    return _enrich_session_doubt_rows(rows)
+
+
+@api_router.post("/doubts/sessions/{doubt_id}/resolve")
+async def session_doubts_resolve(doubt_id: str, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    rows = _supabase_get(
+        f"user_session_doubts?id=eq.{_urlparse.quote(doubt_id)}"
+        f"&user_id=eq.{_urlparse.quote(user_id)}&select=id&limit=1"
+    ) or []
+    if not rows:
+        raise HTTPException(status_code=404, detail="doubt not found")
+    now_iso = datetime.now(timezone.utc).isoformat()
+    _supabase_patch(
+        f"user_session_doubts?id=eq.{_urlparse.quote(doubt_id)}",
+        {"status": "resolved", "resolved_at": now_iso},
+    )
+    return {"id": doubt_id, "status": "resolved", "resolved_at": now_iso}
+
+
+@api_router.post("/doubts/sessions/{doubt_id}/redo")
+async def session_doubts_redo(doubt_id: str, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    rows = _supabase_get(
+        f"user_session_doubts?id=eq.{_urlparse.quote(doubt_id)}"
+        f"&user_id=eq.{_urlparse.quote(user_id)}&select=id,session_id,redo_count&limit=1"
+    ) or []
+    if not rows:
+        raise HTTPException(status_code=404, detail="doubt not found")
+    new_count = (rows[0].get("redo_count") or 0) + 1
+    _supabase_patch(
+        f"user_session_doubts?id=eq.{_urlparse.quote(doubt_id)}",
+        {"redo_count": new_count},
+    )
+    return {
+        "session_id": rows[0]["session_id"],
+        "redo_count": new_count,
+        "xp_multiplier": 0.5,
+    }
+
+
+# --- extended Pari chat --------------------------------------------------
+
+@api_router.post("/doubts/extended/start")
+async def extended_doubt_start(req: ExtendedDoubtStartReq, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    payload = _supabase_post(
+        "rpc/start_extended_doubt_session",
+        {"p_user_id": user_id, "p_session_doubt_id": req.doubt_id},
+    ) or {}
+    if not payload.get("ok"):
+        if payload.get("reason") == "quota_exhausted":
+            # IST midnight as retry_after
+            now_ist = datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)
+            next_midnight_ist = (now_ist + timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0)
+            retry_after_iso = (next_midnight_ist - timedelta(hours=5, minutes=30)).isoformat() + "Z"
+            raise HTTPException(
+                status_code=429,
+                detail={
+                    "reason": "quota_exhausted",
+                    "message": "You've used all 3 extended doubt sessions for today.",
+                    "retry_after_iso": retry_after_iso,
+                    "limit": 3,
+                },
+            )
+        raise HTTPException(status_code=500, detail=payload or {"error": "start_extended_doubt_session failed"})
+    return payload
+
+
+@api_router.post("/doubts/extended/ask")
+async def extended_doubt_ask(req: ExtendedDoubtAskReq, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    msg = (req.message or "").strip()
+    if len(msg) < 2:
+        raise HTTPException(status_code=400, detail="message too short")
+    if len(msg) > 1000:
+        raise HTTPException(status_code=400, detail="message too long (max 1000 chars)")
+
+    sessions = _supabase_get(
+        f"user_doubt_sessions?id=eq.{_urlparse.quote(req.doubt_session_id)}"
+        f"&user_id=eq.{_urlparse.quote(user_id)}&kind=eq.extended"
+        f"&select=*&limit=1"
+    ) or []
+    if not sessions:
+        raise HTTPException(status_code=404, detail="extended doubt session not found")
+    session = sessions[0]
+    if session.get("ended_at"):
+        raise HTTPException(status_code=409, detail="extended doubt session already ended")
+    if (session.get("turn_count") or 0) >= 15:
+        raise HTTPException(status_code=409, detail="extended doubt session turn cap reached")
+
+    # Build country context.
+    user_country = "IN"
+    try:
+        prof_rows = _supabase_get(
+            f"profiles?id=eq.{_urlparse.quote(user_id)}&select=country_code&limit=1"
+        ) or []
+        if prof_rows and prof_rows[0].get("country_code"):
+            user_country = prof_rows[0]["country_code"]
+    except Exception:
+        pass
+    country_context = _country_context_for(user_country)
+
+    # Resolve session_title + description from the linked underlying session.
+    session_title = "your flagged session"
+    session_description = ""
+    course_session_id = session.get("course_session_id")
+    if course_session_id:
+        ctx = _resolve_session_context_for_revision(course_session_id)
+        if ctx:
+            session_title = ctx.get("title") or session_title
+            session_description = ctx.get("description") or ""
+
+    # Pull last few assistant + user messages so the LLM has conversation memory.
+    history_rows = _supabase_get(
+        f"doubt_messages?doubt_session_id=eq.{_urlparse.quote(req.doubt_session_id)}"
+        f"&select=role,content,created_at&order=created_at.asc&limit=20"
+    ) or []
+
+    # Build the LLM call.
+    if not EMERGENT_LLM_KEY:
+        raise HTTPException(status_code=502, detail="LLM not configured")
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"extended-{req.doubt_session_id}-{session.get('turn_count', 0)}",
+            system_message=EXTENDED_DOUBT_SYSTEM_PROMPT.format(
+                module_code=session.get("module_code") or "—",
+                session_title=session_title,
+                session_description=session_description or "(no description)",
+                country_context=country_context,
+            ),
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
+        # Replay the existing turns so the model has memory of the thread.
+        for m in history_rows:
+            if m.get("role") == "user":
+                await chat.send_message(UserMessage(text=m.get("content") or ""))
+            # Assistant turns are added implicitly by the SDK when we call send_message in alternating order.
+            # If the SDK doesn't track assistant turns from outside, we still get reasonable behaviour from
+            # the system prompt + this turn's message.
+        resp = await chat.send_message(UserMessage(text=msg))
+        answer = (resp or "").strip()
+        if not answer:
+            raise HTTPException(status_code=502, detail="LLM returned an empty reply")
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[extended-doubts] LLM call failed: {e}")
+        raise HTTPException(status_code=502, detail="Pari hit a snag — please try again")
+
+    user_tokens = _approx_tokens(msg)
+    assistant_tokens = _approx_tokens(answer)
+
+    rpc = _supabase_post(
+        "rpc/record_extended_doubt_turn",
+        {
+            "p_doubt_session_id": req.doubt_session_id,
+            "p_user_msg": msg,
+            "p_assistant_msg": answer,
+            "p_user_tokens": user_tokens,
+            "p_assistant_tokens": assistant_tokens,
+        },
+    ) or {}
+
+    # Today's extended-session count for the FE quota meter.
+    today_ist = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
+    today_rows = _supabase_get(
+        f"user_doubt_sessions?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&ist_date=eq.{today_ist}&kind=eq.extended&select=id"
+    ) or []
+    daily_remaining = max(0, 3 - len(today_rows))
+
+    return {
+        "answer": answer,
+        "turn_count": rpc.get("turn_count", (session.get("turn_count") or 0) + 1),
+        "turns_remaining": rpc.get("turns_remaining", 0),
+        "session_ended": rpc.get("session_ended", False),
+        "end_reason": rpc.get("end_reason"),
+        "daily_remaining": daily_remaining,
+        "tokens_used_this_turn": user_tokens + assistant_tokens,
+    }
+
+
+@api_router.post("/doubts/extended/end")
+async def extended_doubt_end(req: ExtendedDoubtEndReq, supa_user: dict = Depends(get_supabase_user)):
+    user_id = supa_user.get("id")
+    sessions = _supabase_get(
+        f"user_doubt_sessions?id=eq.{_urlparse.quote(req.doubt_session_id)}"
+        f"&user_id=eq.{_urlparse.quote(user_id)}&kind=eq.extended&select=ended_at&limit=1"
+    ) or []
+    if not sessions:
+        raise HTTPException(status_code=404, detail="extended doubt session not found")
+    if sessions[0].get("ended_at"):
+        return {"ok": True, "already_ended": True}
+    _supabase_patch(
+        f"user_doubt_sessions?id=eq.{_urlparse.quote(req.doubt_session_id)}",
+        {"ended_at": datetime.now(timezone.utc).isoformat(), "end_reason": "manual_end"},
+    )
+    return {"ok": True, "already_ended": False}
+
+
+
+
 
 
 
