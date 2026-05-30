@@ -1,0 +1,1436 @@
+{
+  "sim_id": "96e9c8fb-c013-4244-a4f5-796bd1c0130b",
+  "title": "The Complete Four-Model Quantitative Forensic Screening — Building the Nifty 500 Scorecard",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "COGS",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Trade_Receivables",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Total_Assets",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Total_Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Long_Term_Debt",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "CFO",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "Net_Income",
+            "readOnly": true,
+            "bold": true
+          },
+          "L1": {
+            "value": "Retained_Earnings",
+            "readOnly": true,
+            "bold": true
+          },
+          "M1": {
+            "value": "EBIT",
+            "readOnly": true,
+            "bold": true
+          },
+          "N1": {
+            "value": "Book_Equity",
+            "readOnly": true,
+            "bold": true
+          },
+          "O1": {
+            "value": "SGA_Expenses",
+            "readOnly": true,
+            "bold": true
+          },
+          "P1": {
+            "value": "Depreciation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Manpasand_FY16",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "FY16",
+            "readOnly": true
+          },
+          "D2": {
+            "value": 580,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 340,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 72,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 920,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 385,
+            "readOnly": true
+          },
+          "I2": {
+            "value": 65,
+            "readOnly": true
+          },
+          "J2": {
+            "value": 95,
+            "readOnly": true
+          },
+          "K2": {
+            "value": 78,
+            "readOnly": true
+          },
+          "L2": {
+            "value": 285,
+            "readOnly": true
+          },
+          "M2": {
+            "value": 98,
+            "readOnly": true
+          },
+          "N2": {
+            "value": 535,
+            "readOnly": true
+          },
+          "O2": {
+            "value": 105,
+            "readOnly": true
+          },
+          "P2": {
+            "value": 24,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Manpasand_FY17",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "FY17",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 720,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 420,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 102,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 510,
+            "readOnly": true
+          },
+          "I3": {
+            "value": 85,
+            "readOnly": true
+          },
+          "J3": {
+            "value": 62,
+            "readOnly": true
+          },
+          "K3": {
+            "value": 98,
+            "readOnly": true
+          },
+          "L3": {
+            "value": 340,
+            "readOnly": true
+          },
+          "M3": {
+            "value": 128,
+            "readOnly": true
+          },
+          "N3": {
+            "value": 615,
+            "readOnly": true
+          },
+          "O3": {
+            "value": 132,
+            "readOnly": true
+          },
+          "P3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "DHFL_FY17",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "NBFC",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "FY17",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 9450,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 88500,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 84200,
+            "readOnly": true
+          },
+          "I4": {
+            "value": 62000,
+            "readOnly": true
+          },
+          "J4": {
+            "value": 425,
+            "readOnly": true
+          },
+          "K4": {
+            "value": 1320,
+            "readOnly": true
+          },
+          "L4": {
+            "value": 1280,
+            "readOnly": true
+          },
+          "M4": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "N4": {
+            "value": 4300,
+            "readOnly": true
+          },
+          "O4": {
+            "value": 850,
+            "readOnly": true
+          },
+          "P4": {
+            "value": 165,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "DHFL_FY18",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "NBFC",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "FY18",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 10850,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 92000,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 87800,
+            "readOnly": true
+          },
+          "I5": {
+            "value": 65000,
+            "readOnly": true
+          },
+          "J5": {
+            "value": 185,
+            "readOnly": true
+          },
+          "K5": {
+            "value": 1150,
+            "readOnly": true
+          },
+          "L5": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "M5": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "N5": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "O5": {
+            "value": 920,
+            "readOnly": true
+          },
+          "P5": {
+            "value": 180,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Jet_Airways_FY17",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Airlines",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "FY17",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 22850,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 11950,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 520,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 18950,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 20800,
+            "readOnly": true
+          },
+          "I6": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "J6": {
+            "value": 285,
+            "readOnly": true
+          },
+          "K6": {
+            "value": -450,
+            "readOnly": true
+          },
+          "L6": {
+            "value": -1850,
+            "readOnly": true
+          },
+          "M6": {
+            "value": -320,
+            "readOnly": true
+          },
+          "N6": {
+            "value": -1850,
+            "readOnly": true
+          },
+          "O6": {
+            "value": 1420,
+            "readOnly": true
+          },
+          "P6": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Jet_Airways_FY18",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Airlines",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "FY18",
+            "readOnly": true
+          },
+          "D7": {
+            "value": 24750,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 12800,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 580,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 19600,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 21800,
+            "readOnly": true
+          },
+          "I7": {
+            "value": 9800,
+            "readOnly": true
+          },
+          "J7": {
+            "value": -420,
+            "readOnly": true
+          },
+          "K7": {
+            "value": -835,
+            "readOnly": true
+          },
+          "L7": {
+            "value": -2800,
+            "readOnly": true
+          },
+          "M7": {
+            "value": -1280,
+            "readOnly": true
+          },
+          "N7": {
+            "value": -2200,
+            "readOnly": true
+          },
+          "O7": {
+            "value": 1520,
+            "readOnly": true
+          },
+          "P7": {
+            "value": 1520,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Company_X_Bank_FY19",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "FY19",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 11850,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 280000,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 318000,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 306000,
+            "readOnly": true
+          },
+          "I8": {
+            "value": 214000,
+            "readOnly": true
+          },
+          "J8": {
+            "value": -185,
+            "readOnly": true
+          },
+          "K8": {
+            "value": -580,
+            "readOnly": true
+          },
+          "L8": {
+            "value": -1250,
+            "readOnly": true
+          },
+          "M8": {
+            "value": -620,
+            "readOnly": true
+          },
+          "N8": {
+            "value": 12000,
+            "readOnly": true
+          },
+          "O8": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "P8": {
+            "value": 550,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Company_X_Bank_FY20",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "FY20",
+            "readOnly": true
+          },
+          "D9": {
+            "value": 12500,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 285000,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 320000,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 305000,
+            "readOnly": true
+          },
+          "I9": {
+            "value": 215000,
+            "readOnly": true
+          },
+          "J9": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "K9": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "L9": {
+            "value": 2800,
+            "readOnly": true
+          },
+          "M9": {
+            "value": 2650,
+            "readOnly": true
+          },
+          "N9": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "O9": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "P9": {
+            "value": 580,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Company_A_Consumer_FY23",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "D10": {
+            "value": 2850,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 1480,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 585,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 2150,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 1180,
+            "readOnly": true
+          },
+          "I10": {
+            "value": 380,
+            "readOnly": true
+          },
+          "J10": {
+            "value": 450,
+            "readOnly": true
+          },
+          "K10": {
+            "value": 385,
+            "readOnly": true
+          },
+          "L10": {
+            "value": 520,
+            "readOnly": true
+          },
+          "M10": {
+            "value": 385,
+            "readOnly": true
+          },
+          "N10": {
+            "value": 970,
+            "readOnly": true
+          },
+          "O10": {
+            "value": 285,
+            "readOnly": true
+          },
+          "P10": {
+            "value": 95,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Company_B_Industrial_FY23",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Industrial",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "D11": {
+            "value": 1950,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 1180,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 295,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "H11": {
+            "value": 920,
+            "readOnly": true
+          },
+          "I11": {
+            "value": 280,
+            "readOnly": true
+          },
+          "J11": {
+            "value": 225,
+            "readOnly": true
+          },
+          "K11": {
+            "value": 185,
+            "readOnly": true
+          },
+          "L11": {
+            "value": 385,
+            "readOnly": true
+          },
+          "M11": {
+            "value": 185,
+            "readOnly": true
+          },
+          "N11": {
+            "value": 930,
+            "readOnly": true
+          },
+          "O11": {
+            "value": 245,
+            "readOnly": true
+          },
+          "P11": {
+            "value": 85,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Company_C_IT_FY23",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C12": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "D12": {
+            "value": 4850,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 2680,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 650,
+            "readOnly": true
+          },
+          "G12": {
+            "value": 3250,
+            "readOnly": true
+          },
+          "H12": {
+            "value": 780,
+            "readOnly": true
+          },
+          "I12": {
+            "value": 0,
+            "readOnly": true
+          },
+          "J12": {
+            "value": 850,
+            "readOnly": true
+          },
+          "K12": {
+            "value": 685,
+            "readOnly": true
+          },
+          "L12": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "M12": {
+            "value": 980,
+            "readOnly": true
+          },
+          "N12": {
+            "value": 2470,
+            "readOnly": true
+          },
+          "O12": {
+            "value": 385,
+            "readOnly": true
+          },
+          "P12": {
+            "value": 125,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Company_D_Pharma_FY23",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "Pharma",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "D13": {
+            "value": 3250,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 1680,
+            "readOnly": true
+          },
+          "F13": {
+            "value": 485,
+            "readOnly": true
+          },
+          "G13": {
+            "value": 2950,
+            "readOnly": true
+          },
+          "H13": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "I13": {
+            "value": 425,
+            "readOnly": true
+          },
+          "J13": {
+            "value": 625,
+            "readOnly": true
+          },
+          "K13": {
+            "value": 520,
+            "readOnly": true
+          },
+          "L13": {
+            "value": 850,
+            "readOnly": true
+          },
+          "M13": {
+            "value": 580,
+            "readOnly": true
+          },
+          "N13": {
+            "value": 1900,
+            "readOnly": true
+          },
+          "O13": {
+            "value": 320,
+            "readOnly": true
+          },
+          "P13": {
+            "value": 110,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Company_E_Auto_FY23",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "Automotive",
+            "readOnly": true
+          },
+          "C14": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "D14": {
+            "value": 5250,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 3180,
+            "readOnly": true
+          },
+          "F14": {
+            "value": 520,
+            "readOnly": true
+          },
+          "G14": {
+            "value": 3850,
+            "readOnly": true
+          },
+          "H14": {
+            "value": 1480,
+            "readOnly": true
+          },
+          "I14": {
+            "value": 580,
+            "readOnly": true
+          },
+          "J14": {
+            "value": 920,
+            "readOnly": true
+          },
+          "K14": {
+            "value": 750,
+            "readOnly": true
+          },
+          "L14": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "M14": {
+            "value": 850,
+            "readOnly": true
+          },
+          "N14": {
+            "value": 2370,
+            "readOnly": true
+          },
+          "O14": {
+            "value": 425,
+            "readOnly": true
+          },
+          "P14": {
+            "value": 145,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Company_F_Metal_FY23",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "Metals",
+            "readOnly": true
+          },
+          "C15": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "D15": {
+            "value": 6850,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 680,
+            "readOnly": true
+          },
+          "G15": {
+            "value": 4550,
+            "readOnly": true
+          },
+          "H15": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "I15": {
+            "value": 720,
+            "readOnly": true
+          },
+          "J15": {
+            "value": 1150,
+            "readOnly": true
+          },
+          "K15": {
+            "value": 850,
+            "readOnly": true
+          },
+          "L15": {
+            "value": 1680,
+            "readOnly": true
+          },
+          "M15": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "N15": {
+            "value": 2700,
+            "readOnly": true
+          },
+          "O15": {
+            "value": 520,
+            "readOnly": true
+          },
+          "P15": {
+            "value": 175,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Scorecard",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Beneish_M_Score",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Montier_C_Score",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Altman_Z_Score",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Piotroski_F_Score",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Classification",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Manpasand",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "FY17",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "DHFL",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "FY18",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Jet_Airways",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY18",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Company_X_Bank",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "FY20",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Company_A",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Company_B",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Company_C",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Questions",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "What is Manpasand FY17 Beneish M-Score (to 2 decimals)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "What is DHFL FY18 Altman Z'' Score (to 2 decimals)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "What is Jet Airways FY18 Piotroski F-Score (integer 0-9)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Company X Bank FY20: did F-Score improve from FY19? (Yes/No)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Classify Manpasand FY17 pattern (Manipulation Focus / Distress Focus / Highest Severity)?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Scorecard!C2": {
+      "formula_pattern": "=((Data!F3/Data!D3)/(Data!F2/Data!D2))*0.465 + ((Data!D2-Data!E2)/(Data!D2)-(Data!D3-Data!E3)/Data!D3))*0.285 + ((Data!G3/Data!H3)/(Data!G2/Data!H2))*0.180 - 1.96",
+      "expected_value": -1.18,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 18
+    },
+    "Scorecard!D2": {
+      "formula_pattern": "=IF(Data!K3<0,1,0)+IF((Data!K3-Data!K2)<0,1,0)+IF(Data!J3<Data!J2,1,0)+IF(Data!F3>Data!F2,1,0)+IF((Data!H3/Data!G3)>(Data!H2/Data!G2),1,0)+IF(Data!O3>Data!O2,1,0)",
+      "expected_value": 4,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Scorecard!E2": {
+      "formula_pattern": "=3.25+6.56*(Data!N3/Data!G3)+3.26*(Data!L3/Data!G3)+6.72*((Data!D3-Data!E3)/Data!G3)+1.05*((Data!G3-Data!H3)/Data!G3)",
+      "expected_value": 2.65,
+      "type": "number",
+      "tolerance": 0.25,
+      "points": 16
+    },
+    "Scorecard!F2": {
+      "formula_pattern": "=IF(Data!K3>0,1,0)+IF(Data!J3>0,1,0)+IF(Data!J3>Data!K3,1,0)+IF(((Data!K3/Data!G3)/(-1))>((Data!K2/Data!G2)/(-1)),1,0)+IF((Data!H3/Data!G3)<(Data!H2/Data!G2),1,0)+IF((Data!I3/Data!H3)<(Data!I2/Data!H2),1,0)+IF((Data!N3>0)*(Data!N3<Data!N2),1,0)+IF(((Data!D3-Data!E3)/Data!G3)>((Data!D2-Data!E2)/Data!G2),1,0)+IF((Data!D3/((Data!G3+Data!G2)/2))>(Data!D2/((Data!G2+Data!G2)/2)),1,0)",
+      "expected_value": 2,
+      "type": "number",
+      "tolerance": 1,
+      "points": 14
+    },
+    "Scorecard!G2": {
+      "formula_pattern": "=IF(C2>-1.6,IF(D2<=2,\"Manipulation Focus\",\"Watchlist\"),IF(E2<1.81,IF(F2>=7,\"Fundamental Opportunity\",\"Distress Focus\"),\"Highest Severity\"))",
+      "expected_value": "Manipulation Focus",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Scorecard!C3": {
+      "formula_pattern": "=((Data!F5/Data!D5)/(Data!F4/Data!D4))*0.465 + ((Data!D4-Data!E4)/Data!D4-(Data!D5-Data!E5)/Data!D5)*0.285 + ((Data!G5/Data!H5)/(Data!G4/Data!H4))*0.180 - 1.96",
+      "expected_value": -1.92,
+      "type": "number",
+      "tolerance": 0.25,
+      "points": 16
+    },
+    "Scorecard!E3": {
+      "formula_pattern": "=3.25+6.56*(Data!N5/Data!G5)+3.26*(Data!L5/Data!G5)+6.72*((Data!D5-Data!E5)/Data!G5)+1.05*((Data!G5-Data!H5)/Data!G5)",
+      "expected_value": 0.87,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 16
+    },
+    "Scorecard!F3": {
+      "formula_pattern": "=IF(Data!K5>0,1,0)+IF(Data!J5>0,1,0)+IF(Data!J5>Data!K5,1,0)+IF(((Data!K5/Data!G5)/(-1))>((Data!K4/Data!G4)/(-1)),1,0)+IF((Data!H5/Data!G5)<(Data!H4/Data!G4),1,0)+IF((Data!I5/Data!H5)<(Data!I4/Data!H4),1,0)+IF((Data!N5>0)*(Data!N5<Data!N4),1,0)+IF(((Data!D5-Data!E5)/Data!G5)>((Data!D4-Data!E4)/Data!G4),1,0)+IF((Data!D5/((Data!G5+Data!G4)/2))>(Data!D4/((Data!G4+Data!G4)/2)),1,0)",
+      "expected_value": 2,
+      "type": "number",
+      "tolerance": 1,
+      "points": 14
+    },
+    "Scorecard!G3": {
+      "formula_pattern": "=IF(C3>-1.6,IF(D3<=2,\"Manipulation Focus\",IF(E3<1.81,\"Distress Focus\",\"Watchlist\")),\"Highest Severity\")",
+      "expected_value": "Distress Focus",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Scorecard!C4": {
+      "formula_pattern": "=((Data!F7/Data!D7)/(Data!F6/Data!D6))*0.465 + ((Data!D6-Data!E6)/Data!D6-(Data!D7-Data!E7)/Data!D7)*0.285 + ((Data!G7/Data!H7)/(Data!G6/Data!H6))*0.180 - 1.96",
+      "expected_value": -1.38,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 16
+    },
+    "Scorecard!E4": {
+      "formula_pattern": "=3.25+6.56*(Data!N7/Data!G7)+3.26*(Data!L7/Data!G7)+6.72*((Data!D7-Data!E7)/Data!G7)+1.05*((Data!G7-Data!H7)/Data!G7)",
+      "expected_value": -0.92,
+      "type": "number",
+      "tolerance": 0.25,
+      "points": 16
+    },
+    "Scorecard!F4": {
+      "formula_pattern": "=IF(Data!K7>0,1,0)+IF(Data!J7>0,1,0)+IF(Data!J7>Data!K7,1,0)+IF(((Data!K7/Data!G7)/(-1))>((Data!K6/Data!G6)/(-1)),1,0)+IF((Data!H7/Data!G7)<(Data!H6/Data!G6),1,0)+IF((Data!I7/Data!H7)<(Data!I6/Data!H6),1,0)+IF((Data!N7>0)*(Data!N7<Data!N6),1,0)+IF(((Data!D7-Data!E7)/Data!G7)>((Data!D6-Data!E6)/Data!G6),1,0)+IF((Data!D7/((Data!G7+Data!G6)/2))>(Data!D6/((Data!G6+Data!G6)/2)),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 1,
+      "points": 14
+    },
+    "Scorecard!G4": {
+      "formula_pattern": "=IF(E4<-0.5,\"Highest Severity\",\"Distress Focus\")",
+      "expected_value": "Highest Severity",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Scorecard!C5": {
+      "formula_pattern": "=((Data!F9/Data!D9)/(Data!F8/Data!D8))*0.465 + ((Data!D8-Data!E8)/Data!D8-(Data!D9-Data!E9)/Data!D9)*0.285 + ((Data!G9/Data!H9)/(Data!G8/Data!H8))*0.180 - 1.96",
+      "expected_value": -2.65,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 16
+    },
+    "Scorecard!E5": {
+      "formula_pattern": "=3.25+6.56*(Data!N9/Data!G9)+3.26*(Data!L9/Data!G9)+6.72*((Data!D9-Data!E9)/Data!G9)+1.05*((Data!G9-Data!H9)/Data!G9)",
+      "expected_value": 2.08,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 16
+    },
+    "Scorecard!F5": {
+      "formula_pattern": "=IF(Data!K9>0,1,0)+IF(Data!J9>0,1,0)+IF(Data!J9>Data!K9,1,0)+IF(((Data!K9/Data!G9))>((Data!K8/Data!G8)),1,0)+IF((Data!H9/Data!G9)<(Data!H8/Data!G8),1,0)+IF((Data!I9/Data!H9)<(Data!I8/Data!H8),1,0)+IF((Data!N9>Data!N8),1,0)+IF(((Data!D9-Data!E9)/Data!G9)>((Data!D8-Data!E8)/Data!G8),1,0)+IF((Data!D9/((Data!G9+Data!G8)/2))>(Data!D8/((Data!G8+Data!G8)/2)),1,0)",
+      "expected_value": 8,
+      "type": "number",
+      "tolerance": 1,
+      "points": 14
+    },
+    "Scorecard!G5": {
+      "formula_pattern": "=IF(C5<-2.22,IF(F5>=7,\"Fundamental Opportunity\",\"Watchlist\"),\"Normal Coverage\")",
+      "expected_value": "Fundamental Opportunity",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Questions!B2": {
+      "formula_pattern": "=Scorecard!C2",
+      "expected_value": -1.18,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 12
+    },
+    "Questions!B3": {
+      "formula_pattern": "=Scorecard!E3",
+      "expected_value": 0.87,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 12
+    },
+    "Questions!B4": {
+      "formula_pattern": "=Scorecard!F4",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Questions!B5": {
+      "formula_pattern": "=IF(Scorecard!F5>Scorecard!F3,\"Yes\",\"No\")",
+      "expected_value": "Yes",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Questions!B6": {
+      "formula_pattern": "=Scorecard!G2",
+      "expected_value": "Manipulation Focus",
+      "type": "text",
+      "tolerance": 0,
+      "points": 12
+    }
+  }
+}

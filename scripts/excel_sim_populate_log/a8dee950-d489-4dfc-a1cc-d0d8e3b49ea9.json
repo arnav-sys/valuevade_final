@@ -1,0 +1,1377 @@
+{
+  "sim_id": "a8dee950-d489-4dfc-a1cc-d0d8e3b49ea9",
+  "title": "Build Titan's Full Debt Schedule with Revolver Logic",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Schedules",
+        "cells": {
+          "A65": {
+            "value": "DEBT SCHEDULE",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 14,
+            "fill": "004B87"
+          },
+          "A66": {
+            "value": "All figures in ₹ crores",
+            "readOnly": true,
+            "fontSize": 10
+          },
+          "A68": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B68": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C68": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D68": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E68": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F68": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G68": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H68": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I68": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A70": {
+            "value": "TERM LOANS TRANCHE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A71": {
+            "value": "  Opening Balance",
+            "readOnly": true
+          },
+          "B71": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "C71": {
+            "value": 1075,
+            "readOnly": true
+          },
+          "D71": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "E71": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "F71": {
+            "value": 975,
+            "readOnly": false
+          },
+          "G71": {
+            "value": 775,
+            "readOnly": false
+          },
+          "H71": {
+            "value": 525,
+            "readOnly": false
+          },
+          "I71": {
+            "value": 325,
+            "readOnly": false
+          },
+          "A72": {
+            "value": "  Scheduled Repayments",
+            "readOnly": true
+          },
+          "B72": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C72": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D72": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E72": {
+            "value": 150,
+            "readOnly": false
+          },
+          "F72": {
+            "value": 200,
+            "readOnly": false
+          },
+          "G72": {
+            "value": 250,
+            "readOnly": false
+          },
+          "H72": {
+            "value": 200,
+            "readOnly": false
+          },
+          "I72": {
+            "value": 150,
+            "readOnly": false
+          },
+          "A73": {
+            "value": "  New Issuances",
+            "readOnly": true
+          },
+          "B73": {
+            "value": 55,
+            "readOnly": true
+          },
+          "C73": {
+            "value": 50,
+            "readOnly": true
+          },
+          "D73": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E73": {
+            "value": 0,
+            "readOnly": false
+          },
+          "F73": {
+            "value": 0,
+            "readOnly": false
+          },
+          "G73": {
+            "value": 0,
+            "readOnly": false
+          },
+          "H73": {
+            "value": 0,
+            "readOnly": false
+          },
+          "I73": {
+            "value": 0,
+            "readOnly": false
+          },
+          "A74": {
+            "value": "  Closing Balance",
+            "readOnly": true
+          },
+          "B74": {
+            "value": 1075,
+            "readOnly": true
+          },
+          "C74": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "D74": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "E74": {
+            "value": 975,
+            "readOnly": false
+          },
+          "F74": {
+            "value": 775,
+            "readOnly": false
+          },
+          "G74": {
+            "value": 525,
+            "readOnly": false
+          },
+          "H74": {
+            "value": 325,
+            "readOnly": false
+          },
+          "I74": {
+            "value": 175,
+            "readOnly": false
+          },
+          "A75": {
+            "value": "  Interest Rate %",
+            "readOnly": true
+          },
+          "B75": {
+            "value": 8.5,
+            "readOnly": true
+          },
+          "C75": {
+            "value": 8.5,
+            "readOnly": true
+          },
+          "D75": {
+            "value": 8.5,
+            "readOnly": true
+          },
+          "E75": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "F75": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "G75": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "H75": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "I75": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "A76": {
+            "value": "  Interest on Term Loans",
+            "readOnly": true
+          },
+          "B76": {
+            "value": 89,
+            "readOnly": true
+          },
+          "C76": {
+            "value": 94,
+            "readOnly": true
+          },
+          "D76": {
+            "value": 95,
+            "readOnly": true
+          },
+          "E76": {
+            "value": 89,
+            "readOnly": false
+          },
+          "F76": {
+            "value": 74,
+            "readOnly": false
+          },
+          "G76": {
+            "value": 55,
+            "readOnly": false
+          },
+          "H76": {
+            "value": 36,
+            "readOnly": false
+          },
+          "I76": {
+            "value": 21,
+            "readOnly": false
+          },
+          "A78": {
+            "value": "WORKING CAPITAL / REVOLVER",
+            "readOnly": true,
+            "bold": true
+          },
+          "A79": {
+            "value": "  Opening Balance",
+            "readOnly": true
+          },
+          "B79": {
+            "value": 950,
+            "readOnly": true
+          },
+          "C79": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "D79": {
+            "value": 1120,
+            "readOnly": true
+          },
+          "E79": {
+            "value": 1120,
+            "readOnly": true
+          },
+          "F79": {
+            "value": 894,
+            "readOnly": false
+          },
+          "G79": {
+            "value": 713,
+            "readOnly": false
+          },
+          "H79": {
+            "value": 486,
+            "readOnly": false
+          },
+          "I79": {
+            "value": 254,
+            "readOnly": false
+          },
+          "A80": {
+            "value": "  Revolver Movement",
+            "readOnly": true
+          },
+          "B80": {
+            "value": 70,
+            "readOnly": true
+          },
+          "C80": {
+            "value": 100,
+            "readOnly": true
+          },
+          "D80": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E80": {
+            "value": -226,
+            "readOnly": false
+          },
+          "F80": {
+            "value": -181,
+            "readOnly": false
+          },
+          "G80": {
+            "value": -227,
+            "readOnly": false
+          },
+          "H80": {
+            "value": -232,
+            "readOnly": false
+          },
+          "I80": {
+            "value": -254,
+            "readOnly": false
+          },
+          "A81": {
+            "value": "  Closing Balance",
+            "readOnly": true
+          },
+          "B81": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "C81": {
+            "value": 1120,
+            "readOnly": true
+          },
+          "D81": {
+            "value": 1120,
+            "readOnly": true
+          },
+          "E81": {
+            "value": 894,
+            "readOnly": false
+          },
+          "F81": {
+            "value": 713,
+            "readOnly": false
+          },
+          "G81": {
+            "value": 486,
+            "readOnly": false
+          },
+          "H81": {
+            "value": 254,
+            "readOnly": false
+          },
+          "I81": {
+            "value": 0,
+            "readOnly": false
+          },
+          "A82": {
+            "value": "  Interest Rate %",
+            "readOnly": true
+          },
+          "B82": {
+            "value": 9.5,
+            "readOnly": true
+          },
+          "C82": {
+            "value": 9.5,
+            "readOnly": true
+          },
+          "D82": {
+            "value": 9.5,
+            "readOnly": true
+          },
+          "E82": {
+            "value": 9.5,
+            "readOnly": false
+          },
+          "F82": {
+            "value": 9.5,
+            "readOnly": false
+          },
+          "G82": {
+            "value": 9.5,
+            "readOnly": false
+          },
+          "H82": {
+            "value": 9.5,
+            "readOnly": false
+          },
+          "I82": {
+            "value": 9.5,
+            "readOnly": false
+          },
+          "A83": {
+            "value": "  Interest on Revolver",
+            "readOnly": true
+          },
+          "B83": {
+            "value": 94,
+            "readOnly": true
+          },
+          "C83": {
+            "value": 102,
+            "readOnly": true
+          },
+          "D83": {
+            "value": 106,
+            "readOnly": true
+          },
+          "E83": {
+            "value": 96,
+            "readOnly": false
+          },
+          "F83": {
+            "value": 77,
+            "readOnly": false
+          },
+          "G83": {
+            "value": 57,
+            "readOnly": false
+          },
+          "H83": {
+            "value": 36,
+            "readOnly": false
+          },
+          "I83": {
+            "value": 12,
+            "readOnly": false
+          },
+          "A85": {
+            "value": "LEASE LIABILITIES",
+            "readOnly": true,
+            "bold": true
+          },
+          "A86": {
+            "value": "  Opening Balance",
+            "readOnly": true
+          },
+          "B86": {
+            "value": 456,
+            "readOnly": true
+          },
+          "C86": {
+            "value": 525,
+            "readOnly": true
+          },
+          "D86": {
+            "value": 620,
+            "readOnly": true
+          },
+          "E86": {
+            "value": 620,
+            "readOnly": true
+          },
+          "F86": {
+            "value": 680,
+            "readOnly": false
+          },
+          "G86": {
+            "value": 745,
+            "readOnly": false
+          },
+          "H86": {
+            "value": 810,
+            "readOnly": false
+          },
+          "I86": {
+            "value": 875,
+            "readOnly": false
+          },
+          "A87": {
+            "value": "  New Leases",
+            "readOnly": true
+          },
+          "B87": {
+            "value": 110,
+            "readOnly": true
+          },
+          "C87": {
+            "value": 143,
+            "readOnly": true
+          },
+          "D87": {
+            "value": 100,
+            "readOnly": true
+          },
+          "E87": {
+            "value": 220,
+            "readOnly": false
+          },
+          "F87": {
+            "value": 215,
+            "readOnly": false
+          },
+          "G87": {
+            "value": 215,
+            "readOnly": false
+          },
+          "H87": {
+            "value": 215,
+            "readOnly": false
+          },
+          "I87": {
+            "value": 220,
+            "readOnly": false
+          },
+          "A88": {
+            "value": "  Principal Payments",
+            "readOnly": true
+          },
+          "B88": {
+            "value": 41,
+            "readOnly": true
+          },
+          "C88": {
+            "value": 48,
+            "readOnly": true
+          },
+          "D88": {
+            "value": 100,
+            "readOnly": true
+          },
+          "E88": {
+            "value": 160,
+            "readOnly": false
+          },
+          "F88": {
+            "value": 150,
+            "readOnly": false
+          },
+          "G88": {
+            "value": 150,
+            "readOnly": false
+          },
+          "H88": {
+            "value": 150,
+            "readOnly": false
+          },
+          "I88": {
+            "value": 155,
+            "readOnly": false
+          },
+          "A89": {
+            "value": "  Closing Balance",
+            "readOnly": true
+          },
+          "B89": {
+            "value": 525,
+            "readOnly": true
+          },
+          "C89": {
+            "value": 620,
+            "readOnly": true
+          },
+          "D89": {
+            "value": 620,
+            "readOnly": true
+          },
+          "E89": {
+            "value": 680,
+            "readOnly": false
+          },
+          "F89": {
+            "value": 745,
+            "readOnly": false
+          },
+          "G89": {
+            "value": 810,
+            "readOnly": false
+          },
+          "H89": {
+            "value": 875,
+            "readOnly": false
+          },
+          "I89": {
+            "value": 940,
+            "readOnly": false
+          },
+          "A90": {
+            "value": "  Discount Rate %",
+            "readOnly": true
+          },
+          "B90": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "C90": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "D90": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "E90": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "F90": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "G90": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "H90": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "I90": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "A91": {
+            "value": "  Lease Interest Expense",
+            "readOnly": true
+          },
+          "B91": {
+            "value": 38,
+            "readOnly": true
+          },
+          "C91": {
+            "value": 43,
+            "readOnly": true
+          },
+          "D91": {
+            "value": 50,
+            "readOnly": true
+          },
+          "E91": {
+            "value": 52,
+            "readOnly": false
+          },
+          "F91": {
+            "value": 57,
+            "readOnly": false
+          },
+          "G91": {
+            "value": 63,
+            "readOnly": false
+          },
+          "H91": {
+            "value": 69,
+            "readOnly": false
+          },
+          "I91": {
+            "value": 73,
+            "readOnly": false
+          },
+          "A93": {
+            "value": "INTEREST INCOME ON CASH",
+            "readOnly": true,
+            "bold": true
+          },
+          "A94": {
+            "value": "  Average Cash Balance",
+            "readOnly": true
+          },
+          "B94": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C94": {
+            "value": 1350,
+            "readOnly": true
+          },
+          "D94": {
+            "value": 1520,
+            "readOnly": true
+          },
+          "E94": {
+            "value": 1620,
+            "readOnly": false
+          },
+          "F94": {
+            "value": 1750,
+            "readOnly": false
+          },
+          "G94": {
+            "value": 1920,
+            "readOnly": false
+          },
+          "H94": {
+            "value": 2110,
+            "readOnly": false
+          },
+          "I94": {
+            "value": 2320,
+            "readOnly": false
+          },
+          "A95": {
+            "value": "  Yield %",
+            "readOnly": true
+          },
+          "B95": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "C95": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "D95": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "E95": {
+            "value": 6.5,
+            "readOnly": false
+          },
+          "F95": {
+            "value": 6.5,
+            "readOnly": false
+          },
+          "G95": {
+            "value": 6.5,
+            "readOnly": false
+          },
+          "H95": {
+            "value": 6.5,
+            "readOnly": false
+          },
+          "I95": {
+            "value": 6.5,
+            "readOnly": false
+          },
+          "A96": {
+            "value": "  Interest Income on Cash",
+            "readOnly": true
+          },
+          "B96": {
+            "value": 78,
+            "readOnly": true
+          },
+          "C96": {
+            "value": 88,
+            "readOnly": true
+          },
+          "D96": {
+            "value": 99,
+            "readOnly": true
+          },
+          "E96": {
+            "value": 105,
+            "readOnly": false
+          },
+          "F96": {
+            "value": 114,
+            "readOnly": false
+          },
+          "G96": {
+            "value": 125,
+            "readOnly": false
+          },
+          "H96": {
+            "value": 137,
+            "readOnly": false
+          },
+          "I96": {
+            "value": 151,
+            "readOnly": false
+          },
+          "A98": {
+            "value": "NET FINANCE COST SUMMARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A99": {
+            "value": "  Gross Finance Cost",
+            "readOnly": true
+          },
+          "B99": {
+            "value": 221,
+            "readOnly": true
+          },
+          "C99": {
+            "value": 239,
+            "readOnly": true
+          },
+          "D99": {
+            "value": 251,
+            "readOnly": true
+          },
+          "E99": {
+            "value": 237,
+            "readOnly": false
+          },
+          "F99": {
+            "value": 208,
+            "readOnly": false
+          },
+          "G99": {
+            "value": 175,
+            "readOnly": false
+          },
+          "H99": {
+            "value": 141,
+            "readOnly": false
+          },
+          "I99": {
+            "value": 106,
+            "readOnly": false
+          },
+          "A100": {
+            "value": "  Interest Income",
+            "readOnly": true
+          },
+          "B100": {
+            "value": 78,
+            "readOnly": true
+          },
+          "C100": {
+            "value": 88,
+            "readOnly": true
+          },
+          "D100": {
+            "value": 99,
+            "readOnly": true
+          },
+          "E100": {
+            "value": 105,
+            "readOnly": false
+          },
+          "F100": {
+            "value": 114,
+            "readOnly": false
+          },
+          "G100": {
+            "value": 125,
+            "readOnly": false
+          },
+          "H100": {
+            "value": 137,
+            "readOnly": false
+          },
+          "I100": {
+            "value": 151,
+            "readOnly": false
+          },
+          "A101": {
+            "value": "  NET FINANCE COST",
+            "readOnly": true,
+            "bold": true
+          },
+          "B101": {
+            "value": 143,
+            "readOnly": true
+          },
+          "C101": {
+            "value": 151,
+            "readOnly": true
+          },
+          "D101": {
+            "value": 152,
+            "readOnly": true
+          },
+          "E101": {
+            "value": 132,
+            "readOnly": false
+          },
+          "F101": {
+            "value": 94,
+            "readOnly": false
+          },
+          "G101": {
+            "value": 50,
+            "readOnly": false
+          },
+          "H101": {
+            "value": 4,
+            "readOnly": false
+          },
+          "I101": {
+            "value": -45,
+            "readOnly": false
+          },
+          "A103": {
+            "value": "CASH FLOW WATERFALL / REVOLVER LOGIC",
+            "readOnly": true,
+            "bold": true
+          },
+          "A104": {
+            "value": "  Operating CF (Pre-Revolver)",
+            "readOnly": true
+          },
+          "B104": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "C104": {
+            "value": 3580,
+            "readOnly": true
+          },
+          "D104": {
+            "value": 3950,
+            "readOnly": true
+          },
+          "E104": {
+            "value": 4078,
+            "readOnly": false
+          },
+          "F104": {
+            "value": 4280,
+            "readOnly": false
+          },
+          "G104": {
+            "value": 4520,
+            "readOnly": false
+          },
+          "H104": {
+            "value": 4790,
+            "readOnly": false
+          },
+          "I104": {
+            "value": 5090,
+            "readOnly": false
+          },
+          "A105": {
+            "value": "  Less: Capex",
+            "readOnly": true
+          },
+          "B105": {
+            "value": 220,
+            "readOnly": true
+          },
+          "C105": {
+            "value": 340,
+            "readOnly": true
+          },
+          "D105": {
+            "value": 680,
+            "readOnly": true
+          },
+          "E105": {
+            "value": 1902,
+            "readOnly": false
+          },
+          "F105": {
+            "value": 2175,
+            "readOnly": false
+          },
+          "G105": {
+            "value": 2455,
+            "readOnly": false
+          },
+          "H105": {
+            "value": 2745,
+            "readOnly": false
+          },
+          "I105": {
+            "value": 3030,
+            "readOnly": false
+          },
+          "A106": {
+            "value": "  Less: Scheduled Debt Repay",
+            "readOnly": true
+          },
+          "B106": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C106": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D106": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E106": {
+            "value": 150,
+            "readOnly": false
+          },
+          "F106": {
+            "value": 200,
+            "readOnly": false
+          },
+          "G106": {
+            "value": 250,
+            "readOnly": false
+          },
+          "H106": {
+            "value": 200,
+            "readOnly": false
+          },
+          "I106": {
+            "value": 150,
+            "readOnly": false
+          },
+          "A107": {
+            "value": "  Less: Dividends Paid",
+            "readOnly": true
+          },
+          "B107": {
+            "value": 1280,
+            "readOnly": true
+          },
+          "C107": {
+            "value": 1370,
+            "readOnly": true
+          },
+          "D107": {
+            "value": 1510,
+            "readOnly": true
+          },
+          "E107": {
+            "value": 1640,
+            "readOnly": false
+          },
+          "F107": {
+            "value": 1720,
+            "readOnly": false
+          },
+          "G107": {
+            "value": 1800,
+            "readOnly": false
+          },
+          "H107": {
+            "value": 1920,
+            "readOnly": false
+          },
+          "I107": {
+            "value": 2040,
+            "readOnly": false
+          },
+          "A108": {
+            "value": "  Less: Lease Principal Paid",
+            "readOnly": true
+          },
+          "B108": {
+            "value": 41,
+            "readOnly": true
+          },
+          "C108": {
+            "value": 48,
+            "readOnly": true
+          },
+          "D108": {
+            "value": 100,
+            "readOnly": true
+          },
+          "E108": {
+            "value": 160,
+            "readOnly": false
+          },
+          "F108": {
+            "value": 150,
+            "readOnly": false
+          },
+          "G108": {
+            "value": 150,
+            "readOnly": false
+          },
+          "H108": {
+            "value": 150,
+            "readOnly": false
+          },
+          "I108": {
+            "value": 155,
+            "readOnly": false
+          },
+          "A109": {
+            "value": "  PRE-REVOLVER CASH FLOW",
+            "readOnly": true,
+            "bold": true
+          },
+          "B109": {
+            "value": 659,
+            "readOnly": true
+          },
+          "C109": {
+            "value": 822,
+            "readOnly": true
+          },
+          "D109": {
+            "value": 1560,
+            "readOnly": true
+          },
+          "E109": {
+            "value": 226,
+            "readOnly": false
+          },
+          "F109": {
+            "value": 35,
+            "readOnly": false
+          },
+          "G109": {
+            "value": -135,
+            "readOnly": false
+          },
+          "H109": {
+            "value": -225,
+            "readOnly": false
+          },
+          "I109": {
+            "value": -85,
+            "readOnly": false
+          },
+          "A110": {
+            "value": "REVOLVER MOVEMENT (Computed)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B110": {
+            "value": "=IF(B109>0,IF(B79>0,-MIN(B109,B79),0),-B109)",
+            "readOnly": false
+          },
+          "C110": {
+            "value": "=IF(C109>0,IF(C79>0,-MIN(C109,C79),0),-C109)",
+            "readOnly": false
+          },
+          "D110": {
+            "value": "=IF(D109>0,IF(D79>0,-MIN(D109,D79),0),-D109)",
+            "readOnly": false
+          },
+          "E110": {
+            "value": "=IF(E109>0,IF(E79>0,-MIN(E109,E79),0),-E109)",
+            "readOnly": false
+          },
+          "F110": {
+            "value": "=IF(F109>0,IF(F79>0,-MIN(F109,F79),0),-F109)",
+            "readOnly": false
+          },
+          "G110": {
+            "value": "=IF(G109>0,IF(G79>0,-MIN(G109,G79),0),-G109)",
+            "readOnly": false
+          },
+          "H110": {
+            "value": "=IF(H109>0,IF(H79>0,-MIN(H109,H79),0),-H109)",
+            "readOnly": false
+          },
+          "I110": {
+            "value": "=IF(I109>0,IF(I79>0,-MIN(I109,I79),0),-I109)",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "What is FY25E Interest on Term Loans (₹ Cr)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "What is FY25E Opening Revolver Balance (₹ Cr)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "What is FY25E Net Finance Cost (₹ Cr)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "By FY29E, Revolver Closing Balance reaches (₹ Cr)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Calculate FY25E Revolver Movement (₹ Cr) — negative for repay.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Instructions",
+        "cells": {
+          "A1": {
+            "value": "Build Titan's Full Debt Schedule with Revolver Logic",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 12
+          },
+          "A2": {
+            "value": "CRITICAL: Enable iterative calculation FIRST",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "File → Options → Formulas → Enable iterative calculation (Max 100 iterations, Max Change 0.001)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "STEP 1: Verify headers and sub-headers on Schedules tab (rows 65-68)",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "STEP 2: Complete Term Loans Tranche (rows 71-76) — opening, repay, new issuance, closing, interest",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "STEP 3: Complete Working Capital/Revolver (rows 79-83) — opening, movement, closing, interest",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "STEP 4: Complete Lease Liabilities (rows 86-91) — opening, new, principal paid, closing, interest",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "STEP 5: Complete Interest Income on Cash (rows 94-96) — average balance, yield, income",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "STEP 6: Complete Net Finance Cost Summary (rows 99-101) — gross cost, income, net",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "STEP 7: Complete Cash Flow Waterfall (rows 104-109) — OCF, Capex, Debt Repay, Dividends, Leases, Pre-Revolver CF",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "STEP 8: Revolver Movement Logic at row 110 — IF surplus then repay MIN(surplus, opening), ELSE draw",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "STEP 9: Link Schedules Net Finance Cost to IS Finance Cost (IS!E16 = Schedules!E101)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "STEP 10: Test scenarios — change COGS ratio or debt rate, observe circular flow through all statements",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "KEY CHECKS:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "✓ Term Loans FY24A ₹1,125 cr → FY29E ₹175 cr (declining with scheduled repay)",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "✓ Revolver FY25E starts ₹1,120 cr, repays to ₹0 by FY29E (self-balancing)",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "✓ Net Finance Cost FY25E ₹132 cr → FY29E becomes negative (net cash position)",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "✓ BS Integrity Check remains GREEN across all forecast years",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "Expected Results:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A23": {
+            "value": "FY25E Term Loan Interest: ₹89 Cr",
+            "readOnly": true
+          },
+          "A24": {
+            "value": "FY25E Revolver Movement: -₹226 Cr (repayment)",
+            "readOnly": true
+          },
+          "A25": {
+            "value": "FY25E Net Finance Cost: ₹132 Cr",
+            "readOnly": true
+          },
+          "A26": {
+            "value": "FY29E Revolver Closing: ₹0 Cr (fully repaid)",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Schedules!E76",
+      "expected_value": 89,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Schedules!E79",
+      "expected_value": 1120,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Schedules!E101",
+      "expected_value": 132,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Schedules!I81",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Schedules!E80",
+      "expected_value": -226,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

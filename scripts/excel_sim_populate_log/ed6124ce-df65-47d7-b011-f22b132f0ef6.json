@@ -1,0 +1,794 @@
+{
+  "sim_id": "ed6124ce-df65-47d7-b011-f22b132f0ef6",
+  "title": "The FCF Workbook — Build FCFF and FCFE for Reliance Both Ways and Reconcile",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "FCFF_TopDown",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY26 (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 180000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Consolidated FY26 estimate",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Depreciation & Amortisation",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 50000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "From cash flow statement",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "EBITDA minus D&A",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Standard Indian corporate",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Cash Taxes on EBIT",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "EBIT × Tax Rate",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Capex",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Mix of maintenance and growth across segments",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Change in Working Capital",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Cash consumed by WC growth",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FCFF (Top-Down)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "EBITDA - Cash Taxes - Capex - Change in WC",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "FCFF_BottomUp",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY26 (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Net Income",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 80816,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Consolidated PAT estimate",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Depreciation & Amortisation",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 50000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "From cash flow statement",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 22000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "From income statement",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Standard Indian corporate",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "After-tax Interest",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "Interest × (1 - Tax Rate)",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Capex",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Same as top-down",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Change in Working Capital",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Same as top-down",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FCFF (Bottom-Up)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "Net Income + D&A + After-tax Interest - Capex - Change in WC",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Reconciliation Gap (should be 0)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "FCFF Bottom-Up minus FCFF Top-Down",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "FCFE_Bridge",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY26 (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FCFF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "From FCFF_TopDown tab",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Less: After-tax Interest Expense",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "Interest Expense × (1 - Tax Rate)",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Plus: Net Debt Issued (Borrowing)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": -5000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Negative = net deleveraging",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FCFE (Equity Free Cash Flow)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "FCFF - After-tax Interest + Net Borrowing",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Gap Analysis",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Total Gap (FCFF - FCFE)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "Should equal After-tax Interest minus Net Borrowing",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Commentary",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "Explain the gap: why, which discount rate, debt dynamics, audit discipline",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Sensitivity",
+        "cells": {
+          "A1": {
+            "value": "Capex Sensitivity Analysis",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "",
+            "readOnly": true
+          },
+          "C1": {
+            "value": "",
+            "readOnly": true
+          },
+          "A2": {
+            "value": "Capex (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "FCFF (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "FCFE (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D2": {
+            "value": "FCFF/EBITDA",
+            "readOnly": true,
+            "bold": true
+          },
+          "E2": {
+            "value": "FCFE/NI",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": 70000,
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": 80000,
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": 90000,
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": 100000,
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": 110000,
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": 120000,
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "FCFF_TopDown!B4": {
+      "formula_pattern": "=B2-B3",
+      "expected_value": 130000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "FCFF_TopDown!B6": {
+      "formula_pattern": "=B4*B5",
+      "expected_value": 32721,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "FCFF_TopDown!B10": {
+      "formula_pattern": "=B2-B6-B7-B8",
+      "expected_value": 37279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "FCFF_BottomUp!B6": {
+      "formula_pattern": "=B4*(1-B5)",
+      "expected_value": 16463,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "FCFF_BottomUp!B10": {
+      "formula_pattern": "=B2+B3+B6-B7-B8",
+      "expected_value": 37279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "FCFF_BottomUp!B12": {
+      "formula_pattern": "=B10-FCFF_TopDown!B10",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "FCFE_Bridge!B2": {
+      "formula_pattern": "=FCFF_TopDown!B10",
+      "expected_value": 37279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "FCFE_Bridge!B3": {
+      "formula_pattern": "=FCFF_BottomUp!B6",
+      "expected_value": 16463,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "FCFE_Bridge!B6": {
+      "formula_pattern": "=B2-B3+B4",
+      "expected_value": 15816,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "FCFE_Bridge!B9": {
+      "formula_pattern": "=B2-B6",
+      "expected_value": 21463,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "FCFE_Bridge!B11": {
+      "formula_pattern": "Text commentary explaining: (1) gap of ₹21,463 cr driven by ₹16,463 cr after-tax interest plus ₹5,000 cr net deleveraging; (2) FCFF discounted at WACC (all investors), FCFE at Ke (equityholders only); (3) if net issuing debt, gap would narrow as more cash flows to equity; (4) dual-build reconciliation serves as mechanical self-audit ensuring no formula errors and consistent assumptions across both methods.",
+      "expected_value": "The ₹21,463 cr gap between FCFF and FCFE reflects two components: the ₹16,463 cr after-tax interest burden on equity holders, and the ₹5,000 cr of net debt reduction (deleveraging) which reduces cash available to equity. FCFF is discounted at the firm's WACC to value the entire business, while FCFE is discounted at the cost of equity (Ke) because only equity holders receive the residual cash. If Reliance were net issuing debt rather than deleveraging, the gap would narrow materially—the negative ₹5,000 cr adjustment would become positive, adding back the debt proceeds to equity holders. The dual-method reconciliation (top-down vs. bottom-up) acts as a mechanical self-audit: if FCFF figures don't match to the rupee, it exposes formula errors, sign mistakes on WC, or inconsistent tax rates before valuation even begins.",
+      "type": "text",
+      "tolerance": 0,
+      "points": 25
+    },
+    "Sensitivity!B3": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A3-FCFF_TopDown!B8",
+      "expected_value": 62279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "Sensitivity!B4": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A4-FCFF_TopDown!B8",
+      "expected_value": 52279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "Sensitivity!B5": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A5-FCFF_TopDown!B8",
+      "expected_value": 42279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "Sensitivity!B6": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A6-FCFF_TopDown!B8",
+      "expected_value": 37279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!B7": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A7-FCFF_TopDown!B8",
+      "expected_value": 32279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!B8": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A8-FCFF_TopDown!B8",
+      "expected_value": 22279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!B9": {
+      "formula_pattern": "=FCFF_TopDown!B2-FCFF_TopDown!B6-$A9-FCFF_TopDown!B8",
+      "expected_value": 12279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C3": {
+      "formula_pattern": "=B3-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": 45816,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C4": {
+      "formula_pattern": "=B4-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": 35816,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C5": {
+      "formula_pattern": "=B5-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": 25816,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C6": {
+      "formula_pattern": "=B6-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": 15816,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C7": {
+      "formula_pattern": "=B7-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": 10816,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C8": {
+      "formula_pattern": "=B8-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": 279,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!C9": {
+      "formula_pattern": "=B9-FCFF_TopDown!B5-FCFF_BottomUp!B4*(1-FCFF_BottomUp!B5)+FCFE_Bridge!B4",
+      "expected_value": -9721,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Sensitivity!D3": {
+      "formula_pattern": "=B3/FCFF_TopDown!B2",
+      "expected_value": 0.346,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Sensitivity!D6": {
+      "formula_pattern": "=B6/FCFF_TopDown!B2",
+      "expected_value": 0.2071,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 1
+    },
+    "Sensitivity!E3": {
+      "formula_pattern": "=C3/FCFF_BottomUp!B2",
+      "expected_value": 0.5663,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Sensitivity!E6": {
+      "formula_pattern": "=C6/FCFF_BottomUp!B2",
+      "expected_value": 0.1955,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 1
+    }
+  }
+}

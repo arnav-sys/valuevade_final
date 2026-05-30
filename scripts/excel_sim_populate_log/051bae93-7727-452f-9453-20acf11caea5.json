@@ -1,0 +1,1059 @@
+{
+  "sim_id": "051bae93-7727-452f-9453-20acf11caea5",
+  "title": "The ITC SOTP Workbook — Five Segments, Five Methodologies",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Inputs",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Base Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY27 Cigarettes Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 32000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Latest annual report & consensus",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY27 Cigarettes EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 22000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "68.75% margin",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY27 FMCG (Other) Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 23000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Growing segment",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY27 FMCG EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "19.6% margin, scaling",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY27 Hotels Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3500,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Cyclical recovery",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY27 Hotels EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "34% margin",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "FY27 Agribusiness Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 16000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Commodity-linked",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "FY27 Agribusiness EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "9.4% margin",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FY27 Paperboards Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 9500,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Industrial expansion",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "FY27 Paperboards EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "18.9% margin",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Corporate Costs (annual, ₹ cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 500,
+            "readOnly": true
+          },
+          "C13": {
+            "value": "Unallocated overhead",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Capitalisation Multiple (x)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C14": {
+            "value": "Standard for stable corporate",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Net Debt (₹ cr)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "C16": {
+            "value": "FY27 estimate",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Minority Interest (₹ cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 400,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "From subsidiary disclosures",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Investments in Associates (₹ cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 2500,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "Strategic stakes",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Fully Diluted Shares (cr)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "C19": {
+            "value": "Includes ESOP dilution",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Current Market Price (₹/share)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 465,
+            "readOnly": true
+          },
+          "C20": {
+            "value": "NSE close, simulation date",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Segments",
+        "cells": {
+          "A1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY27 EBITDA (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Growth Profile",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Peer Set",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Cigarettes",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 22000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Low single digit (regulated)",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "BAT, Philip Morris, Altria global; ITC standalone",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "Mature high-margin, regulated",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FMCG (Other)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "12-15% revenue growth",
+            "readOnly": true
+          },
+          "D3": {
+            "value": "HUL, Nestle India, Britannia, Marico",
+            "readOnly": true
+          },
+          "E3": {
+            "value": "Premium Indian consumer, scaling margins",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Hotels",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "High single digit",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Indian Hotels, Lemon Tree, OYO",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "Cyclical luxury hospitality",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Agribusiness",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "5-8% with margin volatility",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Commodity peers, domestic & global",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "Commodity-linked, cyclical",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Paperboards",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "6-8% with expansion",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Smurfit Kappa, ITC Bhubaneswar",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "Industrial, B2B, capex-heavy",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Multiples",
+        "cells": {
+          "A1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Multiple (EV/EBITDA)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Reasoning",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Cigarettes",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 16,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Global tobacco peers 11-13x; Indian premium 30% on regulation, export market, FCF conversion = 16x",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FMCG (Other)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 40,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "HUL 50-55x, Nestle 60x, Britannia 55x; ITC FMCG at 40x reflects execution track record discount",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Hotels",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 18,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Indian Hotels ~22x, Lemon Tree ~15x, ITC luxury segment at 18x mid-point",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Agribusiness",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Commodity volatility, low margin (9.4%), execution risks = 10x for stable commodities",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Paperboards",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 8,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Industrial cyclicality, capex intensity, smaller scale = 8x historical range",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "SOTP_Build",
+        "cells": {
+          "A1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "EBITDA (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Multiple (x)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "EV (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Cigarettes",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 22000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 16,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "FMCG (Other)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 40,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Hotels",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 18,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Agribusiness",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 10,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Paperboards",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 8,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Sum Segment EV",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Less: Corp Costs Capitalized",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Adjusted SOTP EV",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Less: Net Debt",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Plus: Minority Interest",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Plus: Associates",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "Equity Value (pre-discount)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Conglomerate Discount %",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 7,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Equity Value (post-discount)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Fully Diluted Shares (cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "TARGET PRICE (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Sensitivity",
+        "cells": {
+          "A1": {
+            "value": "Segment Multiple Sensitivity",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Cigarettes Multiple",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Base 16x",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "EV Impact (₹ cr)",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "-20%",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 12.8,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Base",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 16,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "0",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "+20%",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 19.2,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "FMCG Multiple Sensitivity",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Base 40x",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "EV Impact (₹ cr)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "-15%",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 34,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Base",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 40,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "0",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "+15%",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 46,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Hotels Multiple Sensitivity",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "Base 18x",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "EV Impact (₹ cr)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "-15%",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 15.3,
+            "readOnly": true
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Base",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 18,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "0",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "+15%",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 20.7,
+            "readOnly": true
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "IC_Summary",
+        "cells": {
+          "A1": {
+            "value": "ITC SOTP VALUATION — INVESTMENT COMMENTARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "RECOMMENDATION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "HOLD",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TARGET PRICE (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": 429,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "CMP (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": 465,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Upside / (Downside) %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": -7.7,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "SEGMENT COMPOSITION",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Cigarettes",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "₹3,52,000 cr",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "60% of EV",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FMCG (Other)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "₹1,80,000 cr",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "31% of EV",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Hotels + Agri + Paperboards",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "₹50,600 cr",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "9% of EV",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "KEY SENSITIVITIES",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "Cigarettes 16x ±20%",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "±₹88,000 cr",
+            "readOnly": true
+          },
+          "C14": {
+            "value": "Dominant lever",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "FMCG 40x ±15%",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "±₹45,000 cr",
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Swing factor",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Conglomerate discount 7%",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "±₹19,000 cr",
+            "readOnly": true
+          },
+          "C16": {
+            "value": "Structural assumption",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "ANALYST COMMENTARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A19": {
+            "value": "ITC's SOTP derives 60% value from cigarettes (₹3,52,000 cr), where the 16x multiple reflects global tobacco peer median 11-13x plus a 30% Indian regulatory & export premium — defensible given FY27 FCF conversion and pricing power. The 31% FMCG contribution (₹1,80,000 cr at 40x EBITDA) is the key swing factor; it assumes HUL-grade peer multiples (50-55x) discounted 20% for execution track record, reasonable for India's #2 consumer player after HUL but requiring margin acceleration to 22%+ to justify. Corporate overhead capitalised at 10x (₹5,000 cr) and a 7% conglomerate discount (reflecting active operational management vs. pure holdco) yield a target of ₹429/share, 7.7% below CMP of ₹465, implying HOLD: upside capped until cigarettes multiple re-rates above 16x (unlikely without global M&A/demerger discourse) or FMCG margins crystallise above 21% (watch FY28 delivery). Key inflection: if FMCG organic revenue sustains 15%+ growth and margins expand to 22%+, multiple could reset to 45-50x, driving +₹50,000 cr EV swing; conversely, cigarette tax pressures or FMCG competitive intensity could justify lower numbers.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "SOTP_Build!D2": {
+      "formula_pattern": "=B2*C2",
+      "expected_value": 352000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!D3": {
+      "formula_pattern": "=B3*C3",
+      "expected_value": 180000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!D4": {
+      "formula_pattern": "=B4*C4",
+      "expected_value": 21600,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!D5": {
+      "formula_pattern": "=B5*C5",
+      "expected_value": 15000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!D6": {
+      "formula_pattern": "=B6*C6",
+      "expected_value": 14400,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!B8": {
+      "formula_pattern": "=SUM(D2:D6)",
+      "expected_value": 583000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "SOTP_Build!B9": {
+      "formula_pattern": "=Inputs!B13*Inputs!B14",
+      "expected_value": 5000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "SOTP_Build!B10": {
+      "formula_pattern": "=B8-B9",
+      "expected_value": 578000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "SOTP_Build!B11": {
+      "formula_pattern": "=Inputs!B16",
+      "expected_value": 3000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!B12": {
+      "formula_pattern": "=Inputs!B17",
+      "expected_value": 400,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!B13": {
+      "formula_pattern": "=Inputs!B18",
+      "expected_value": 2500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "SOTP_Build!B14": {
+      "formula_pattern": "=B10-B11+B12+B13",
+      "expected_value": 577900,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "SOTP_Build!B16": {
+      "formula_pattern": "=B14*(1-B15/100)",
+      "expected_value": 537047,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "SOTP_Build!B18": {
+      "formula_pattern": "=B16/Inputs!B19",
+      "expected_value": 429.64,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Sensitivity!C4": {
+      "formula_pattern": "=(B4-Multiples!B2)*Inputs!B3",
+      "expected_value": -70400,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "Sensitivity!C6": {
+      "formula_pattern": "=(B6-Multiples!B2)*Inputs!B3",
+      "expected_value": 70400,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "Sensitivity!C9": {
+      "formula_pattern": "=(B9-Multiples!B3)*Inputs!B5",
+      "expected_value": -27000,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "Sensitivity!C11": {
+      "formula_pattern": "=(B11-Multiples!B3)*Inputs!B5",
+      "expected_value": 27000,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    }
+  }
+}

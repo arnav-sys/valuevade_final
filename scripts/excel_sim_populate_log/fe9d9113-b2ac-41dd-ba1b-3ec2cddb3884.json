@@ -1,0 +1,1431 @@
+{
+  "sim_id": "fe9d9113-b2ac-41dd-ba1b-3ec2cddb3884",
+  "title": "Build Titan's Working Capital, PP&E, and Capex Schedules",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Schedules",
+        "cells": {
+          "A1": {
+            "value": "TITAN — SUPPORTING SCHEDULES",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "All figures in ₹ crores unless stated",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "WORKING CAPITAL SCHEDULE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Trade Receivable Days",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 5.0,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 5.0,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 4.8,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 5.0,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F9": {
+            "value": 5.0,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G9": {
+            "value": 5.0,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H9": {
+            "value": 5.0,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I9": {
+            "value": 5.0,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A10": {
+            "value": "Inventory Days",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 145,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 143,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 142,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 140,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F10": {
+            "value": 138,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G10": {
+            "value": 135,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H10": {
+            "value": 132,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I10": {
+            "value": 130,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A11": {
+            "value": "Trade Payable Days",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 88,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 90,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 91,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 91,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F11": {
+            "value": 91,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G11": {
+            "value": 91,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H11": {
+            "value": 91,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I11": {
+            "value": 91,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A14": {
+            "value": "Trade Receivables",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 547,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 596,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 620,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 744,
+            "readOnly": true
+          },
+          "F14": {
+            "value": 852,
+            "readOnly": true
+          },
+          "G14": {
+            "value": 961,
+            "readOnly": true
+          },
+          "H14": {
+            "value": 1075,
+            "readOnly": true
+          },
+          "I14": {
+            "value": 1189,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Inventory",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 11969,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 12810,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 13200,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 15586,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 17607,
+            "readOnly": true
+          },
+          "G15": {
+            "value": 19367,
+            "readOnly": true
+          },
+          "H15": {
+            "value": 21092,
+            "readOnly": true
+          },
+          "I15": {
+            "value": 22776,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Trade Payables",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 7279,
+            "readOnly": true
+          },
+          "C16": {
+            "value": 8061,
+            "readOnly": true
+          },
+          "D16": {
+            "value": 8400,
+            "readOnly": true
+          },
+          "E16": {
+            "value": 10128,
+            "readOnly": true
+          },
+          "F16": {
+            "value": 11596,
+            "readOnly": true
+          },
+          "G16": {
+            "value": 12944,
+            "readOnly": true
+          },
+          "H16": {
+            "value": 14384,
+            "readOnly": true
+          },
+          "I16": {
+            "value": 15810,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Net Working Capital",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 5237,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 5345,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 5420,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 6202,
+            "readOnly": true
+          },
+          "F17": {
+            "value": 6863,
+            "readOnly": true
+          },
+          "G17": {
+            "value": 7384,
+            "readOnly": true
+          },
+          "H17": {
+            "value": 7783,
+            "readOnly": true
+          },
+          "I17": {
+            "value": 8155,
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Change in NWC",
+            "readOnly": true
+          },
+          "E19": {
+            "value": 782,
+            "readOnly": true
+          },
+          "F19": {
+            "value": 661,
+            "readOnly": true
+          },
+          "G19": {
+            "value": 521,
+            "readOnly": true
+          },
+          "H19": {
+            "value": 399,
+            "readOnly": true
+          },
+          "I19": {
+            "value": 372,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Cash Conversion Cycle",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 62,
+            "readOnly": true
+          },
+          "C21": {
+            "value": 58,
+            "readOnly": true
+          },
+          "D21": {
+            "value": 56,
+            "readOnly": true
+          },
+          "E21": {
+            "value": 56,
+            "readOnly": true
+          },
+          "F21": {
+            "value": 54,
+            "readOnly": true
+          },
+          "G21": {
+            "value": 52,
+            "readOnly": true
+          },
+          "H21": {
+            "value": 50,
+            "readOnly": true
+          },
+          "I21": {
+            "value": 49,
+            "readOnly": true
+          },
+          "A24": {
+            "value": "PP&E SCHEDULE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A26": {
+            "value": "Opening Gross Block",
+            "readOnly": true
+          },
+          "B26": {
+            "value": 3750,
+            "readOnly": true
+          },
+          "C26": {
+            "value": 3900,
+            "readOnly": true
+          },
+          "D26": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "E26": {
+            "value": 4860,
+            "readOnly": true
+          },
+          "F26": {
+            "value": 6738,
+            "readOnly": true
+          },
+          "G26": {
+            "value": 8895,
+            "readOnly": true
+          },
+          "H26": {
+            "value": 11331,
+            "readOnly": true
+          },
+          "I26": {
+            "value": 14048,
+            "readOnly": true
+          },
+          "A27": {
+            "value": "  + Capex",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 220,
+            "readOnly": true
+          },
+          "C27": {
+            "value": 340,
+            "readOnly": true
+          },
+          "D27": {
+            "value": 680,
+            "readOnly": true
+          },
+          "E27": {
+            "value": 1902,
+            "readOnly": true
+          },
+          "F27": {
+            "value": 2175,
+            "readOnly": true
+          },
+          "G27": {
+            "value": 2455,
+            "readOnly": true
+          },
+          "H27": {
+            "value": 2745,
+            "readOnly": true
+          },
+          "I27": {
+            "value": 3030,
+            "readOnly": true
+          },
+          "A28": {
+            "value": "  − Disposals",
+            "readOnly": true
+          },
+          "B28": {
+            "value": 70,
+            "readOnly": true
+          },
+          "C28": {
+            "value": 40,
+            "readOnly": true
+          },
+          "D28": {
+            "value": 20,
+            "readOnly": true
+          },
+          "E28": {
+            "value": 24,
+            "readOnly": true
+          },
+          "F28": {
+            "value": 34,
+            "readOnly": true
+          },
+          "G28": {
+            "value": 44,
+            "readOnly": true
+          },
+          "H28": {
+            "value": 57,
+            "readOnly": true
+          },
+          "I28": {
+            "value": 70,
+            "readOnly": true
+          },
+          "A29": {
+            "value": "Closing Gross Block",
+            "readOnly": true
+          },
+          "B29": {
+            "value": 3900,
+            "readOnly": true
+          },
+          "C29": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "D29": {
+            "value": 4860,
+            "readOnly": true
+          },
+          "E29": {
+            "value": 6738,
+            "readOnly": true
+          },
+          "F29": {
+            "value": 8895,
+            "readOnly": true
+          },
+          "G29": {
+            "value": 11331,
+            "readOnly": true
+          },
+          "H29": {
+            "value": 14048,
+            "readOnly": true
+          },
+          "I29": {
+            "value": 17008,
+            "readOnly": true
+          },
+          "A31": {
+            "value": "Opening Accum Depr",
+            "readOnly": true
+          },
+          "B31": {
+            "value": 1350,
+            "readOnly": true
+          },
+          "C31": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "D31": {
+            "value": 1680,
+            "readOnly": true
+          },
+          "E31": {
+            "value": 1900,
+            "readOnly": true
+          },
+          "F31": {
+            "value": 2660,
+            "readOnly": true
+          },
+          "G31": {
+            "value": 3580,
+            "readOnly": true
+          },
+          "H31": {
+            "value": 4662,
+            "readOnly": true
+          },
+          "I31": {
+            "value": 5933,
+            "readOnly": true
+          },
+          "A32": {
+            "value": "  + Depreciation",
+            "readOnly": true
+          },
+          "B32": {
+            "value": 240,
+            "readOnly": true
+          },
+          "C32": {
+            "value": 280,
+            "readOnly": true
+          },
+          "D32": {
+            "value": 340,
+            "readOnly": true
+          },
+          "E32": {
+            "value": 760,
+            "readOnly": true
+          },
+          "F32": {
+            "value": 920,
+            "readOnly": true
+          },
+          "G32": {
+            "value": 1082,
+            "readOnly": true
+          },
+          "H32": {
+            "value": 1271,
+            "readOnly": true
+          },
+          "I32": {
+            "value": 1495,
+            "readOnly": true
+          },
+          "A33": {
+            "value": "  − Disposal WO",
+            "readOnly": true
+          },
+          "B33": {
+            "value": 20,
+            "readOnly": true
+          },
+          "C33": {
+            "value": 12,
+            "readOnly": true
+          },
+          "D33": {
+            "value": 8,
+            "readOnly": true
+          },
+          "E33": {
+            "value": 10,
+            "readOnly": true
+          },
+          "F33": {
+            "value": 14,
+            "readOnly": true
+          },
+          "G33": {
+            "value": 18,
+            "readOnly": true
+          },
+          "H33": {
+            "value": 24,
+            "readOnly": true
+          },
+          "I33": {
+            "value": 29,
+            "readOnly": true
+          },
+          "A34": {
+            "value": "Closing Accum Depr",
+            "readOnly": true
+          },
+          "B34": {
+            "value": 1570,
+            "readOnly": true
+          },
+          "C34": {
+            "value": 1768,
+            "readOnly": true
+          },
+          "D34": {
+            "value": 2012,
+            "readOnly": true
+          },
+          "E34": {
+            "value": 2650,
+            "readOnly": true
+          },
+          "F34": {
+            "value": 3566,
+            "readOnly": true
+          },
+          "G34": {
+            "value": 4644,
+            "readOnly": true
+          },
+          "H34": {
+            "value": 5909,
+            "readOnly": true
+          },
+          "I34": {
+            "value": 7399,
+            "readOnly": true
+          },
+          "A36": {
+            "value": "Closing Net Block",
+            "readOnly": true
+          },
+          "B36": {
+            "value": 2330,
+            "readOnly": true
+          },
+          "C36": {
+            "value": 2432,
+            "readOnly": true
+          },
+          "D36": {
+            "value": 2848,
+            "readOnly": true
+          },
+          "E36": {
+            "value": 4088,
+            "readOnly": true
+          },
+          "F36": {
+            "value": 5329,
+            "readOnly": true
+          },
+          "G36": {
+            "value": 6687,
+            "readOnly": true
+          },
+          "H36": {
+            "value": 8139,
+            "readOnly": true
+          },
+          "I36": {
+            "value": 9609,
+            "readOnly": true
+          },
+          "A41": {
+            "value": "CAPEX SCHEDULE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A43": {
+            "value": "Jewellery Store Expansion",
+            "readOnly": true
+          },
+          "A44": {
+            "value": "  Net Store Adds",
+            "readOnly": true
+          },
+          "B44": {
+            "value": "—",
+            "readOnly": true
+          },
+          "C44": {
+            "value": "—",
+            "readOnly": true
+          },
+          "D44": {
+            "value": "—",
+            "readOnly": true
+          },
+          "E44": {
+            "value": 175,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F44": {
+            "value": 175,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G44": {
+            "value": 160,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H44": {
+            "value": 150,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I44": {
+            "value": 140,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A45": {
+            "value": "  Cost per Store (₹ cr)",
+            "readOnly": true
+          },
+          "B45": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "C45": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "D45": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "E45": {
+            "value": 7.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F45": {
+            "value": 7.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G45": {
+            "value": 7.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H45": {
+            "value": 7.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I45": {
+            "value": 7.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A46": {
+            "value": "  Jewellery Capex",
+            "readOnly": true
+          },
+          "E46": {
+            "value": 1313,
+            "readOnly": true
+          },
+          "F46": {
+            "value": 1313,
+            "readOnly": true
+          },
+          "G46": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "H46": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "I46": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "A48": {
+            "value": "Eyewear Store Expansion",
+            "readOnly": true
+          },
+          "A49": {
+            "value": "  Net Store Adds",
+            "readOnly": true
+          },
+          "B49": {
+            "value": "—",
+            "readOnly": true
+          },
+          "C49": {
+            "value": "—",
+            "readOnly": true
+          },
+          "D49": {
+            "value": "—",
+            "readOnly": true
+          },
+          "E49": {
+            "value": 180,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F49": {
+            "value": 180,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G49": {
+            "value": 150,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H49": {
+            "value": 120,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I49": {
+            "value": 100,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A50": {
+            "value": "  Cost per Store (₹ cr)",
+            "readOnly": true
+          },
+          "B50": {
+            "value": 1.5,
+            "readOnly": true
+          },
+          "C50": {
+            "value": 1.5,
+            "readOnly": true
+          },
+          "D50": {
+            "value": 1.5,
+            "readOnly": true
+          },
+          "E50": {
+            "value": 1.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F50": {
+            "value": 1.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G50": {
+            "value": 1.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H50": {
+            "value": 1.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I50": {
+            "value": 1.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A51": {
+            "value": "  Eyewear Capex",
+            "readOnly": true
+          },
+          "E51": {
+            "value": 270,
+            "readOnly": true
+          },
+          "F51": {
+            "value": 270,
+            "readOnly": true
+          },
+          "G51": {
+            "value": 225,
+            "readOnly": true
+          },
+          "H51": {
+            "value": 180,
+            "readOnly": true
+          },
+          "I51": {
+            "value": 150,
+            "readOnly": true
+          },
+          "A53": {
+            "value": "IT & Systems",
+            "readOnly": true
+          },
+          "B53": {
+            "value": "—",
+            "readOnly": true
+          },
+          "C53": {
+            "value": "—",
+            "readOnly": true
+          },
+          "D53": {
+            "value": "—",
+            "readOnly": true
+          },
+          "E53": {
+            "value": 200,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F53": {
+            "value": 225,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G53": {
+            "value": 255,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H53": {
+            "value": 290,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I53": {
+            "value": 320,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A54": {
+            "value": "Maintenance Capex",
+            "readOnly": true
+          },
+          "B54": {
+            "value": "—",
+            "readOnly": true
+          },
+          "C54": {
+            "value": "—",
+            "readOnly": true
+          },
+          "D54": {
+            "value": "—",
+            "readOnly": true
+          },
+          "E54": {
+            "value": 120,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "F54": {
+            "value": 150,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "G54": {
+            "value": 220,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "H54": {
+            "value": 335,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "I54": {
+            "value": 470,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A56": {
+            "value": "Total Capex",
+            "readOnly": true,
+            "bold": true
+          },
+          "E56": {
+            "value": 1903,
+            "readOnly": true
+          },
+          "F56": {
+            "value": 1958,
+            "readOnly": true
+          },
+          "G56": {
+            "value": 1900,
+            "readOnly": true
+          },
+          "H56": {
+            "value": 1930,
+            "readOnly": true
+          },
+          "I56": {
+            "value": 1990,
+            "readOnly": true
+          },
+          "A59": {
+            "value": "Capex / Revenue %",
+            "readOnly": true
+          },
+          "E59": {
+            "value": 3.5,
+            "readOnly": true
+          },
+          "F59": {
+            "value": 3.3,
+            "readOnly": true
+          },
+          "G59": {
+            "value": 3.0,
+            "readOnly": true
+          },
+          "H59": {
+            "value": 2.8,
+            "readOnly": true
+          },
+          "I59": {
+            "value": 2.7,
+            "readOnly": true
+          },
+          "A60": {
+            "value": "Maintenance / Total %",
+            "readOnly": true
+          },
+          "E60": {
+            "value": 6.3,
+            "readOnly": true
+          },
+          "F60": {
+            "value": 7.7,
+            "readOnly": true
+          },
+          "G60": {
+            "value": 11.6,
+            "readOnly": true
+          },
+          "H60": {
+            "value": 17.4,
+            "readOnly": true
+          },
+          "I60": {
+            "value": 23.6,
+            "readOnly": true
+          },
+          "A61": {
+            "value": "Capex / Depreciation",
+            "readOnly": true
+          },
+          "E61": {
+            "value": 2.5,
+            "readOnly": true
+          },
+          "F61": {
+            "value": 2.1,
+            "readOnly": true
+          },
+          "G61": {
+            "value": 1.8,
+            "readOnly": true
+          },
+          "H61": {
+            "value": 1.5,
+            "readOnly": true
+          },
+          "I61": {
+            "value": 1.3,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "TITAN — KEY ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Working Capital Drivers",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "DSO Rationale",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Retail cash/card model — minimal credit",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "DIO Rationale",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Caratlane franchise mix improving inventory turns",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "DPO Rationale",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Gold-on-lease arrangement stabilises payables",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "PP&E Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Useful Life (years)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 10,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A11": {
+            "value": "Depreciation Convention",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Half-year on capex additions",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Disposal assumption",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "~0.5% of opening gross block p.a.",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Capex Building Blocks",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Jewellery store cost",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 7.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A17": {
+            "value": "Eyewear store cost",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 1.5,
+            "readOnly": false,
+            "bgColor": "lightBlue"
+          },
+          "A18": {
+            "value": "Store rollout rationale",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "Growth phase: high expansion, slowing maturity",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "IncomeStatement",
+        "cells": {
+          "A1": {
+            "value": "TITAN — INCOME STATEMENT (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "E3": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 29180,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 54140,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 60940,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 67850,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 17508,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 33820,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 38140,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 42350,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 6545,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 6545,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 6545,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 6545,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "D&A",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 340,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 760,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 920,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 1082,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 6205,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 5785,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 5625,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 5463,
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Schedules!E14": {
+      "formula_pattern": "=(E9/365)*IncomeStatement!C5",
+      "expected_value": 744,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Schedules!E15": {
+      "formula_pattern": "=(E10/365)*IncomeStatement!C6",
+      "expected_value": 15586,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Schedules!E16": {
+      "formula_pattern": "=(E11/365)*IncomeStatement!C6",
+      "expected_value": 10128,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Schedules!E17": {
+      "formula_pattern": "=E14+E15-E16",
+      "expected_value": 6202,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Schedules!E19": {
+      "formula_pattern": "=E17-D17",
+      "expected_value": 782,
+      "type": "number",
+      "tolerance": 5,
+      "points": 10
+    },
+    "Schedules!E21": {
+      "formula_pattern": "=E10+E9-E11",
+      "expected_value": 54,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Schedules!E32": {
+      "formula_pattern": "=(E26*(1/10))+(E27*0.5*(1/10))+469",
+      "expected_value": 760,
+      "type": "number",
+      "tolerance": 5,
+      "points": 15
+    },
+    "Schedules!E36": {
+      "formula_pattern": "=E29-E34",
+      "expected_value": 4088,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Schedules!E56": {
+      "formula_pattern": "=E46+E51+E53+E54",
+      "expected_value": 1903,
+      "type": "number",
+      "tolerance": 5,
+      "points": 5
+    }
+  }
+}

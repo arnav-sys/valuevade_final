@@ -1,0 +1,1008 @@
+{
+  "sim_id": "ee47fe93-b640-4832-8cf8-7fe7d3093b4d",
+  "title": "Building the Quantitative Forensic Screening Spreadsheet — Manpasand Retroactive Analysis",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Manpasand_Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item / Variable",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY15",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY16",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY17",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Units",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 484,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 556,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 720,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 295,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 340,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 420,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Trade Receivables",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 165,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 215,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 269,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Inventory",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 62,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 79,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 98,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Other Current Assets",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 68,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 95,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Total Current Assets",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 298,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 385,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 485,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "PP&E Gross",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 385,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 445,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 510,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Accumulated Depreciation",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 52,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 78,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 108,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 875,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 985,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 248,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 285,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 325,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "SGA Expenses",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 88,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 108,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 132,
+            "readOnly": true
+          },
+          "E12": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Depreciation Expense",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 22,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 26,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 30,
+            "readOnly": true
+          },
+          "E13": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Net Income",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 68,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 82,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 98,
+            "readOnly": true
+          },
+          "E14": {
+            "value": "₹ crore",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Operating Cash Flow",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 52,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 62,
+            "readOnly": true
+          },
+          "E15": {
+            "value": "₹ crore",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Beneish_Scores",
+        "cells": {
+          "A1": {
+            "value": "BENEISH M-SCORE VARIABLES",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY16",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY17",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Formula / Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1. DSRI (Days Sales Receivables Index)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "(AR/Sales)_t / (AR/Sales)_t-1",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "2. GMI (Gross Margin Index)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "GM_t-1 / GM_t where GM=(Sales-COGS)/Sales",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "3. AQI (Asset Quality Index)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "1 - (CA+PPE)/TA_t / (CA+PPE)/TA_t-1",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "4. SGI (Sales Growth Index)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "Sales_t / Sales_t-1",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "5. DEPI (Depreciation Index)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "DepRate_t-1 / DepRate_t",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "6. SGAI (SGA Index)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "(SGA/Sales)_t / (SGA/Sales)_t-1",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "7. LVGI (Leverage Index)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "(Debt/TA)_t / (Debt/TA)_t-1",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "8. TATA (Total Accruals to Total Assets)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "(NI - CFO) / TA",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": true
+          },
+          "D10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "M-SCORE (Beneish Model)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "-4.84 + 0.92×DSRI + 0.528×GMI + 0.404×AQI + 0.892×SGI + 0.115×DEPI - 0.172×SGAI + 4.679×TATA - 0.327×LVGI",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Threshold",
+            "readOnly": true
+          },
+          "B12": {
+            "value": -1.78,
+            "readOnly": true
+          },
+          "C12": {
+            "value": -1.78,
+            "readOnly": true
+          },
+          "D12": {
+            "value": "If M-Score > -1.78, flag as probable manipulator",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Classification FY16",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "C13": {
+            "value": "",
+            "readOnly": true
+          },
+          "D13": {
+            "value": "FLAGGED or NOT FLAGGED",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Classification FY17",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": true
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "FLAGGED or NOT FLAGGED",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Montier_CScore",
+        "cells": {
+          "A1": {
+            "value": "MONTIER RED FLAGS & C-SCORE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY16",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY17",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Formula / Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1. CFO < Net Income",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "1 if CFO < NI, else 0",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "2. DSO Increasing",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "1 if DSO_t > DSO_t-1, else 0; DSO = AR/Sales×365",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "3. DSI Increasing",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "1 if DSI_t > DSI_t-1, else 0; DSI = Inventory/COGS×365",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "4. Other CA as % Revenue Growing",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "1 if (OCA/Rev)_t > (OCA/Rev)_t-1, else 0",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "5. PP&E Growth > 25%",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "1 if (PPE_t - PPE_t-1)/PPE_t-1 > 0.25, else 0",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "6. Total Asset Growth > 25%",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "1 if (TA_t - TA_t-1)/TA_t-1 > 0.25, else 0",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": true
+          },
+          "D8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "C-SCORE (Sum of Montier Flags)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "Sum of B2:B7 or C2:C7",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Threshold",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 3,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 3,
+            "readOnly": true
+          },
+          "D10": {
+            "value": "If C-Score ≥ 3, elevated fraud risk",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Classification FY16",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "",
+            "readOnly": true
+          },
+          "D11": {
+            "value": "HIGH RISK or MODERATE RISK",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Classification FY17",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": true
+          },
+          "C12": {
+            "value": "",
+            "readOnly": false
+          },
+          "D12": {
+            "value": "HIGH RISK or MODERATE RISK",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Beneish_Scores!B2": {
+      "formula_pattern": "=(Manpasand_Data!C4/Manpasand_Data!C2)/(Manpasand_Data!B4/Manpasand_Data!B2)",
+      "expected_value": 1.182,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C2": {
+      "formula_pattern": "=(Manpasand_Data!D4/Manpasand_Data!D2)/(Manpasand_Data!C4/Manpasand_Data!C2)",
+      "expected_value": 1.048,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B3": {
+      "formula_pattern": "=((Manpasand_Data!B2-Manpasand_Data!B3)/Manpasand_Data!B2)/((Manpasand_Data!C2-Manpasand_Data!C3)/Manpasand_Data!C2)",
+      "expected_value": 1.038,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C3": {
+      "formula_pattern": "=((Manpasand_Data!C2-Manpasand_Data!C3)/Manpasand_Data!C2)/((Manpasand_Data!D2-Manpasand_Data!D3)/Manpasand_Data!D2)",
+      "expected_value": 1.021,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B4": {
+      "formula_pattern": "=1-((Manpasand_Data!C7+Manpasand_Data!C8)/Manpasand_Data!C10)/((Manpasand_Data!B7+Manpasand_Data!B8)/Manpasand_Data!B10)",
+      "expected_value": 0.051,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C4": {
+      "formula_pattern": "=1-((Manpasand_Data!D7+Manpasand_Data!D8)/Manpasand_Data!D10)/((Manpasand_Data!C7+Manpasand_Data!C8)/Manpasand_Data!C10)",
+      "expected_value": 0.062,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B5": {
+      "formula_pattern": "=Manpasand_Data!C2/Manpasand_Data!B2",
+      "expected_value": 1.149,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C5": {
+      "formula_pattern": "=Manpasand_Data!D2/Manpasand_Data!C2",
+      "expected_value": 1.295,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B6": {
+      "formula_pattern": "=(Manpasand_Data!B13/(Manpasand_Data!B8-Manpasand_Data!B9))/(Manpasand_Data!C13/(Manpasand_Data!C8-Manpasand_Data!C9))",
+      "expected_value": 0.927,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C6": {
+      "formula_pattern": "=(Manpasand_Data!C13/(Manpasand_Data!C8-Manpasand_Data!C9))/(Manpasand_Data!D13/(Manpasand_Data!D8-Manpasand_Data!D9))",
+      "expected_value": 0.957,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B7": {
+      "formula_pattern": "=(Manpasand_Data!C12/Manpasand_Data!C2)/(Manpasand_Data!B12/Manpasand_Data!B2)",
+      "expected_value": 0.954,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C7": {
+      "formula_pattern": "=(Manpasand_Data!D12/Manpasand_Data!D2)/(Manpasand_Data!C12/Manpasand_Data!C2)",
+      "expected_value": 1.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B8": {
+      "formula_pattern": "=(Manpasand_Data!C11/Manpasand_Data!C10)/(Manpasand_Data!B11/Manpasand_Data!B10)",
+      "expected_value": 0.991,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!C8": {
+      "formula_pattern": "=(Manpasand_Data!D11/Manpasand_Data!D10)/(Manpasand_Data!C11/Manpasand_Data!C10)",
+      "expected_value": 0.998,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Beneish_Scores!B9": {
+      "formula_pattern": "=(Manpasand_Data!C14-Manpasand_Data!C15)/Manpasand_Data!C10",
+      "expected_value": 0.0305,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Beneish_Scores!C9": {
+      "formula_pattern": "=(Manpasand_Data!D14-Manpasand_Data!D15)/Manpasand_Data!D10",
+      "expected_value": 0.032,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Beneish_Scores!B11": {
+      "formula_pattern": "=-4.84+0.92*B2+0.528*B3+0.404*B4+0.892*B5+0.115*B6-0.172*B7+4.679*B9-0.327*B8",
+      "expected_value": -1.595,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 15
+    },
+    "Beneish_Scores!C11": {
+      "formula_pattern": "=-4.84+0.92*C2+0.528*C3+0.404*C4+0.892*C5+0.115*C6-0.172*C7+4.679*C9-0.327*C8",
+      "expected_value": -1.155,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 15
+    },
+    "Beneish_Scores!B13": {
+      "formula_pattern": "=IF(B11>-1.78,\"FLAGGED\",\"NOT FLAGGED\")",
+      "expected_value": "FLAGGED",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Beneish_Scores!C14": {
+      "formula_pattern": "=IF(C11>-1.78,\"FLAGGED\",\"NOT FLAGGED\")",
+      "expected_value": "FLAGGED",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Montier_CScore!B2": {
+      "formula_pattern": "=IF(Manpasand_Data!C15<Manpasand_Data!C14,1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!C2": {
+      "formula_pattern": "=IF(Manpasand_Data!D15<Manpasand_Data!D14,1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!B3": {
+      "formula_pattern": "=IF((Manpasand_Data!C4/Manpasand_Data!C2*365)>(Manpasand_Data!B4/Manpasand_Data!B2*365),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!C3": {
+      "formula_pattern": "=IF((Manpasand_Data!D4/Manpasand_Data!D2*365)>(Manpasand_Data!C4/Manpasand_Data!C2*365),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!B4": {
+      "formula_pattern": "=IF((Manpasand_Data!C5/Manpasand_Data!C3*365)>(Manpasand_Data!B5/Manpasand_Data!B3*365),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!C4": {
+      "formula_pattern": "=IF((Manpasand_Data!D5/Manpasand_Data!D3*365)>(Manpasand_Data!C5/Manpasand_Data!C3*365),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!B5": {
+      "formula_pattern": "=IF((Manpasand_Data!C6/Manpasand_Data!C2)>(Manpasand_Data!B6/Manpasand_Data!B2),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!C5": {
+      "formula_pattern": "=IF((Manpasand_Data!D6/Manpasand_Data!D2)>(Manpasand_Data!C6/Manpasand_Data!C2),1,0)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!B6": {
+      "formula_pattern": "=IF((Manpasand_Data!C8-Manpasand_Data!B8)/Manpasand_Data!B8>0.25,1,0)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!C6": {
+      "formula_pattern": "=IF((Manpasand_Data!D8-Manpasand_Data!C8)/Manpasand_Data!C8>0.25,1,0)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!B7": {
+      "formula_pattern": "=IF((Manpasand_Data!C10-Manpasand_Data!B10)/Manpasand_Data!B10>0.25,1,0)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!C7": {
+      "formula_pattern": "=IF((Manpasand_Data!D10-Manpasand_Data!C10)/Manpasand_Data!C10>0.25,1,0)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Montier_CScore!B9": {
+      "formula_pattern": "=SUM(B2:B7)",
+      "expected_value": 4,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Montier_CScore!C9": {
+      "formula_pattern": "=SUM(C2:C7)",
+      "expected_value": 4,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Montier_CScore!B11": {
+      "formula_pattern": "=IF(B9>=3,\"HIGH RISK\",\"MODERATE RISK\")",
+      "expected_value": "HIGH RISK",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Montier_CScore!C12": {
+      "formula_pattern": "=IF(C9>=3,\"HIGH RISK\",\"MODERATE RISK\")",
+      "expected_value": "HIGH RISK",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}

@@ -1,0 +1,2330 @@
+{
+  "sim_id": "baf777b0-fe53-464f-8469-bcc9ac437134",
+  "title": "The Profitability Dashboard — Building Your First Five-Year Ratio Stack",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Asian_Paints",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 19350,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 20211,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 21712,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 29101,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 34488,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 11230,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 11520,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 12230,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 17200,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 20200,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 4850,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 5100,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 5800,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 7500,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 8800,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3270,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 3591,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 3682,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 4401,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 5488,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 70,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 85,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 90,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 110,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 125,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1150,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 1180,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 1390,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 1757,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2150,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 2356,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 2412,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 2901,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 3606,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Shareholders Equity (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 9450,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 10800,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 11950,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 13500,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Debt (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 1650,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 1600,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 1700,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 14500,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 16200,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 18000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 19500,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 21000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Cash (₹Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 4800,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 5100,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Gross Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Operating Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "",
+            "readOnly": false
+          },
+          "D15": {
+            "value": "",
+            "readOnly": false
+          },
+          "E15": {
+            "value": "",
+            "readOnly": false
+          },
+          "F15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Net Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "ROE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "ROCE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "ROIC %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "C19": {
+            "value": "",
+            "readOnly": false
+          },
+          "D19": {
+            "value": "",
+            "readOnly": false
+          },
+          "E19": {
+            "value": "",
+            "readOnly": false
+          },
+          "F19": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Tata_Steel",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 157669,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 139817,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 156294,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 243959,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 243353,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 95200,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 87300,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 93500,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 146000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 158500,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 32500,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 35200,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 33800,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 40000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 52800,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 29969,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 17317,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 28994,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 57959,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 32053,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 7200,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 10300,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 6500,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 5800,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 5725,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1557,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 4650,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 12878,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 6579,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 17044,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 5460,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 15844,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 38581,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 19674,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Shareholders Equity (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 78000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 80500,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 92000,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 125000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 135000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Debt (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 52000,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 48000,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 35000,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 28000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 156000,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 162000,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 175000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 198000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 210000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Cash (₹Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 8000,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 9500,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 11000,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 18000,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Gross Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Operating Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "",
+            "readOnly": false
+          },
+          "D15": {
+            "value": "",
+            "readOnly": false
+          },
+          "E15": {
+            "value": "",
+            "readOnly": false
+          },
+          "F15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Net Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "ROE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "ROCE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "ROIC %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "C19": {
+            "value": "",
+            "readOnly": false
+          },
+          "D19": {
+            "value": "",
+            "readOnly": false
+          },
+          "E19": {
+            "value": "",
+            "readOnly": false
+          },
+          "F19": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Infosys",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 83675,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 90640,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 100954,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 105124,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 108520,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 33470,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 36256,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 40382,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 42050,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 43408,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 26452,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 27192,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 28271,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 29357,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 31062,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 23753,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 27192,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 32301,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 33717,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 34050,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 5938,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 6798,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 8075,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 8429,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 8512,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 17815,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 20394,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 24226,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 25288,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 25538,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Shareholders Equity (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 65300,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 82000,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 101000,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 118000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 135000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Debt (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 105200,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 128500,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 150000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 168000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 185000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Cash (₹Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 32500,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 41200,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 48000,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 52500,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 58000,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Gross Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Operating Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "",
+            "readOnly": false
+          },
+          "D15": {
+            "value": "",
+            "readOnly": false
+          },
+          "E15": {
+            "value": "",
+            "readOnly": false
+          },
+          "F15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Net Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "ROE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "ROCE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "ROIC %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "C19": {
+            "value": "",
+            "readOnly": false
+          },
+          "D19": {
+            "value": "",
+            "readOnly": false
+          },
+          "E19": {
+            "value": "",
+            "readOnly": false
+          },
+          "F19": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Dashboard",
+        "cells": {
+          "A1": {
+            "value": "5-Year Ratio Averages & Analysis",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "Asian Paints",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "Tata Steel",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "Infosys",
+            "readOnly": true,
+            "bold": true
+          },
+          "E3": {
+            "value": "Winner",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Gross Margin % (5yr avg)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Operating Margin % (5yr avg)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Net Margin % (5yr avg)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "ROE % (5yr avg)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "ROCE % (5yr avg)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "ROIC % (5yr avg)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Analyst Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Write 4-5 sentences identifying: (1) highest-quality business, (2) most cyclical, (3) asset-lightest, (4) best long-term compounder.",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Asian_Paints!B14": {
+      "formula_pattern": "=(B2-B3)/B2",
+      "expected_value": 0.4208,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!C14": {
+      "formula_pattern": "=(C2-C3)/C2",
+      "expected_value": 0.4294,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!D14": {
+      "formula_pattern": "=(D2-D3)/D2",
+      "expected_value": 0.4365,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!E14": {
+      "formula_pattern": "=(E2-E3)/E2",
+      "expected_value": 0.4085,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!F14": {
+      "formula_pattern": "=(F2-F3)/F2",
+      "expected_value": 0.4146,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!B15": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.169,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!C15": {
+      "formula_pattern": "=C5/C2",
+      "expected_value": 0.1777,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!D15": {
+      "formula_pattern": "=D5/D2",
+      "expected_value": 0.1696,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!E15": {
+      "formula_pattern": "=E5/E2",
+      "expected_value": 0.1513,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!F15": {
+      "formula_pattern": "=F5/F2",
+      "expected_value": 0.159,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!B16": {
+      "formula_pattern": "=B8/B2",
+      "expected_value": 0.1111,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!C16": {
+      "formula_pattern": "=C8/C2",
+      "expected_value": 0.1166,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!D16": {
+      "formula_pattern": "=D8/D2",
+      "expected_value": 0.1111,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!E16": {
+      "formula_pattern": "=E8/E2",
+      "expected_value": 0.0997,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!F16": {
+      "formula_pattern": "=F8/F2",
+      "expected_value": 0.1045,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!B17": {
+      "formula_pattern": "=B8/B9",
+      "expected_value": 0.2529,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!C17": {
+      "formula_pattern": "=C8/C9",
+      "expected_value": 0.249,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!D17": {
+      "formula_pattern": "=D8/D9",
+      "expected_value": 0.2233,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!E17": {
+      "formula_pattern": "=E8/E9",
+      "expected_value": 0.2427,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!F17": {
+      "formula_pattern": "=F8/F9",
+      "expected_value": 0.267,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!B18": {
+      "formula_pattern": "=B5/(B9+B10)",
+      "expected_value": 0.2825,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!C18": {
+      "formula_pattern": "=C5/(C9+C10)",
+      "expected_value": 0.2752,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!D18": {
+      "formula_pattern": "=D5/(D9+D10)",
+      "expected_value": 0.2461,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!E18": {
+      "formula_pattern": "=E5/(E9+E10)",
+      "expected_value": 0.2656,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!F18": {
+      "formula_pattern": "=F5/(F9+F10)",
+      "expected_value": 0.297,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!B19": {
+      "formula_pattern": "=B5*0.75/(B9+B10-B12)",
+      "expected_value": 0.2975,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!C19": {
+      "formula_pattern": "=C5*0.75/(C9+C10-C12)",
+      "expected_value": 0.2998,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!D19": {
+      "formula_pattern": "=D5*0.75/(D9+D10-D12)",
+      "expected_value": 0.2784,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!E19": {
+      "formula_pattern": "=E5*0.75/(E9+E10-E12)",
+      "expected_value": 0.3104,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Asian_Paints!F19": {
+      "formula_pattern": "=F5*0.75/(F9+F10-F12)",
+      "expected_value": 0.3429,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!B14": {
+      "formula_pattern": "=(B2-B3)/B2",
+      "expected_value": 0.3957,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!C14": {
+      "formula_pattern": "=(C2-C3)/C2",
+      "expected_value": 0.3751,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!D14": {
+      "formula_pattern": "=(D2-D3)/D2",
+      "expected_value": 0.401,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!E14": {
+      "formula_pattern": "=(E2-E3)/E2",
+      "expected_value": 0.4017,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!F14": {
+      "formula_pattern": "=(F2-F3)/F2",
+      "expected_value": 0.349,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!B15": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.1899,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!C15": {
+      "formula_pattern": "=C5/C2",
+      "expected_value": 0.1239,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!D15": {
+      "formula_pattern": "=D5/D2",
+      "expected_value": 0.1855,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!E15": {
+      "formula_pattern": "=E5/E2",
+      "expected_value": 0.2377,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!F15": {
+      "formula_pattern": "=F5/F2",
+      "expected_value": 0.1316,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!B16": {
+      "formula_pattern": "=B8/B2",
+      "expected_value": 0.108,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!C16": {
+      "formula_pattern": "=C8/C2",
+      "expected_value": 0.039,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!D16": {
+      "formula_pattern": "=D8/D2",
+      "expected_value": 0.1014,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!E16": {
+      "formula_pattern": "=E8/E2",
+      "expected_value": 0.1583,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!F16": {
+      "formula_pattern": "=F8/F2",
+      "expected_value": 0.0809,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!B17": {
+      "formula_pattern": "=B8/B9",
+      "expected_value": 0.2185,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!C17": {
+      "formula_pattern": "=C8/C9",
+      "expected_value": 0.0678,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!D17": {
+      "formula_pattern": "=D8/D9",
+      "expected_value": 0.1722,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!E17": {
+      "formula_pattern": "=E8/E9",
+      "expected_value": 0.3087,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!F17": {
+      "formula_pattern": "=F8/F9",
+      "expected_value": 0.1457,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!B18": {
+      "formula_pattern": "=B5/(B9+B10)",
+      "expected_value": 0.2615,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!C18": {
+      "formula_pattern": "=C5/(C9+C10)",
+      "expected_value": 0.1198,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!D18": {
+      "formula_pattern": "=D5/(D9+D10)",
+      "expected_value": 0.2187,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!E18": {
+      "formula_pattern": "=E5/(E9+E10)",
+      "expected_value": 0.3188,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!F18": {
+      "formula_pattern": "=F5/(F9+F10)",
+      "expected_value": 0.1693,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!B19": {
+      "formula_pattern": "=B5*0.75/(B9+B10-B12)",
+      "expected_value": 0.2821,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!C19": {
+      "formula_pattern": "=C5*0.75/(C9+C10-C12)",
+      "expected_value": 0.1325,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!D19": {
+      "formula_pattern": "=D5*0.75/(D9+D10-D12)",
+      "expected_value": 0.2419,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!E19": {
+      "formula_pattern": "=E5*0.75/(E9+E10-E12)",
+      "expected_value": 0.3584,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Tata_Steel!F19": {
+      "formula_pattern": "=F5*0.75/(F9+F10-F12)",
+      "expected_value": 0.1905,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!B14": {
+      "formula_pattern": "=(B2-B3)/B2",
+      "expected_value": 0.6005,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!C14": {
+      "formula_pattern": "=(C2-C3)/C2",
+      "expected_value": 0.6001,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!D14": {
+      "formula_pattern": "=(D2-D3)/D2",
+      "expected_value": 0.6002,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!E14": {
+      "formula_pattern": "=(E2-E3)/E2",
+      "expected_value": 0.6001,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!F14": {
+      "formula_pattern": "=(F2-F3)/F2",
+      "expected_value": 0.6001,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!B15": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.2838,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!C15": {
+      "formula_pattern": "=C5/C2",
+      "expected_value": 0.3001,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!D15": {
+      "formula_pattern": "=D5/D2",
+      "expected_value": 0.3198,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!E15": {
+      "formula_pattern": "=E5/E2",
+      "expected_value": 0.3211,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!F15": {
+      "formula_pattern": "=F5/F2",
+      "expected_value": 0.3137,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!B16": {
+      "formula_pattern": "=B8/B2",
+      "expected_value": 0.213,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!C16": {
+      "formula_pattern": "=C8/C2",
+      "expected_value": 0.225,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!D16": {
+      "formula_pattern": "=D8/D2",
+      "expected_value": 0.2399,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!E16": {
+      "formula_pattern": "=E8/E2",
+      "expected_value": 0.2408,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!F16": {
+      "formula_pattern": "=F8/F2",
+      "expected_value": 0.2354,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!B17": {
+      "formula_pattern": "=B8/B9",
+      "expected_value": 0.2727,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!C17": {
+      "formula_pattern": "=C8/C9",
+      "expected_value": 0.2487,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!D17": {
+      "formula_pattern": "=D8/D9",
+      "expected_value": 0.2399,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!E17": {
+      "formula_pattern": "=E8/E9",
+      "expected_value": 0.2143,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!F17": {
+      "formula_pattern": "=F8/F9",
+      "expected_value": 0.1892,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!B18": {
+      "formula_pattern": "=B5/(B9+B10)",
+      "expected_value": 0.3641,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!C18": {
+      "formula_pattern": "=C5/(C9+C10)",
+      "expected_value": 0.3316,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!D18": {
+      "formula_pattern": "=D5/(D9+D10)",
+      "expected_value": 0.3198,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!E18": {
+      "formula_pattern": "=E5/(E9+E10)",
+      "expected_value": 0.2859,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!F18": {
+      "formula_pattern": "=F5/(F9+F10)",
+      "expected_value": 0.2522,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!B19": {
+      "formula_pattern": "=B5*0.75/(B9+B10-B12)",
+      "expected_value": 0.4318,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!C19": {
+      "formula_pattern": "=C5*0.75/(C9+C10-C12)",
+      "expected_value": 0.4184,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!D19": {
+      "formula_pattern": "=D5*0.75/(D9+D10-D12)",
+      "expected_value": 0.4211,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!E19": {
+      "formula_pattern": "=E5*0.75/(E9+E10-E12)",
+      "expected_value": 0.3912,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Infosys!F19": {
+      "formula_pattern": "=F5*0.75/(F9+F10-F12)",
+      "expected_value": 0.3517,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Dashboard!B4": {
+      "formula_pattern": "=AVERAGE(Asian_Paints!B14:F14)",
+      "expected_value": 0.422,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!C4": {
+      "formula_pattern": "=AVERAGE(Tata_Steel!B14:F14)",
+      "expected_value": 0.3845,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!D4": {
+      "formula_pattern": "=AVERAGE(Infosys!B14:F14)",
+      "expected_value": 0.6002,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!E4": {
+      "formula_pattern": "Infosys",
+      "expected_value": "Infosys",
+      "type": "text",
+      "tolerance": 0,
+      "points": 3
+    },
+    "Dashboard!B5": {
+      "formula_pattern": "=AVERAGE(Asian_Paints!B15:F15)",
+      "expected_value": 0.1714,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!C5": {
+      "formula_pattern": "=AVERAGE(Tata_Steel!B15:F15)",
+      "expected_value": 0.1757,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!D5": {
+      "formula_pattern": "=AVERAGE(Infosys!B15:F15)",
+      "expected_value": 0.3077,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!E5": {
+      "formula_pattern": "Infosys",
+      "expected_value": "Infosys",
+      "type": "text",
+      "tolerance": 0,
+      "points": 3
+    },
+    "Dashboard!B6": {
+      "formula_pattern": "=AVERAGE(Asian_Paints!B16:F16)",
+      "expected_value": 0.1086,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!C6": {
+      "formula_pattern": "=AVERAGE(Tata_Steel!B16:F16)",
+      "expected_value": 0.0975,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!D6": {
+      "formula_pattern": "=AVERAGE(Infosys!B16:F16)",
+      "expected_value": 0.2308,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!E6": {
+      "formula_pattern": "Infosys",
+      "expected_value": "Infosys",
+      "type": "text",
+      "tolerance": 0,
+      "points": 3
+    },
+    "Dashboard!B7": {
+      "formula_pattern": "=AVERAGE(Asian_Paints!B17:F17)",
+      "expected_value": 0.2552,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!C7": {
+      "formula_pattern": "=AVERAGE(Tata_Steel!B17:F17)",
+      "expected_value": 0.1826,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!D7": {
+      "formula_pattern": "=AVERAGE(Infosys!B17:F17)",
+      "expected_value": 0.253,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!E7": {
+      "formula_pattern": "Asian Paints",
+      "expected_value": "Asian Paints",
+      "type": "text",
+      "tolerance": 0,
+      "points": 3
+    },
+    "Dashboard!B8": {
+      "formula_pattern": "=AVERAGE(Asian_Paints!B18:F18)",
+      "expected_value": 0.2732,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!C8": {
+      "formula_pattern": "=AVERAGE(Tata_Steel!B18:F18)",
+      "expected_value": 0.2176,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!D8": {
+      "formula_pattern": "=AVERAGE(Infosys!B18:F18)",
+      "expected_value": 0.3107,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!E8": {
+      "formula_pattern": "Infosys",
+      "expected_value": "Infosys",
+      "type": "text",
+      "tolerance": 0,
+      "points": 3
+    },
+    "Dashboard!B9": {
+      "formula_pattern": "=AVERAGE(Asian_Paints!B19:F19)",
+      "expected_value": 0.3058,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!C9": {
+      "formula_pattern": "=AVERAGE(Tata_Steel!B19:F19)",
+      "expected_value": 0.2411,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!D9": {
+      "formula_pattern": "=AVERAGE(Infosys!B19:F19)",
+      "expected_value": 0.3988,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Dashboard!E9": {
+      "formula_pattern": "Infosys",
+      "expected_value": "Infosys",
+      "type": "text",
+      "tolerance": 0,
+      "points": 3
+    },
+    "Dashboard!A13": {
+      "formula_pattern": "Narrative identifying business quality, cyclicality, asset efficiency, and recommendation",
+      "expected_value": "Asian Paints emerges as the highest-quality business with ROCE stability (26-30%) and operating margins of 15-18%, hallmarks of a durable-moat compounder. Tata Steel exhibits cyclical volatility—ROE and ROCE swung wildly from FY20 (7%, 12%) to FY22 (31%, 32%)—reflecting steel's commodity-driven capital intensity. Infosys stands as the asset-lightest player: its reported ROCE of 26-36% masks exceptional true operating returns exceeding 40% when cash is excluded, exemplifying tech services' capital-efficient model. For long-term wealth creation, Asian Paints is the conviction buy, with Infosys as a high-quality alternative; Tata Steel suits only disciplined cycle investors.",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    }
+  }
+}

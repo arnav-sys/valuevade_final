@@ -1,0 +1,817 @@
+{
+  "sim_id": "d5aa0a3e-287c-4a11-b9b7-6188f467e0bc",
+  "title": "The EV-to-Equity Bridge Workbook — Asian Paints DCF Concludes with Target Price",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Inputs",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Enterprise Value — Gordon Growth (g=5%)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 97000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Session 7 Terminal Value Workbook (₹ cr)",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Enterprise Value — Exit Multiple (20x)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 168000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Session 7 Terminal Value Workbook (₹ cr)",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Enterprise Value — Base Case (midpoint)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 132500,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Average of Gordon Growth and Exit Multiple (₹ cr)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Total Debt (incl. Ind AS 116 leases)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "FY26 consolidated balance sheet (₹ cr)",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Total Cash and Equivalents",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "FY26 consolidated balance sheet (₹ cr)",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Revenue (FY26)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 35000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Session 6 Forecast Workbook (₹ cr)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Operating Cash % of Revenue",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0.015,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "FMCG / paints standard heuristic",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Minority Interest — Book Value",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 450,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "FY26 consolidated balance sheet (₹ cr)",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Minority Interest — Fair Value Multiplier",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 1.7,
+            "readOnly": true
+          },
+          "C12": {
+            "value": "Premium to book for Egypt & Sri Lanka franchise quality",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Investments in Associates — Book Value",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 350,
+            "readOnly": true
+          },
+          "C14": {
+            "value": "FY26 consolidated balance sheet (₹ cr)",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Investments in Associates — Fair Value Multiplier",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 1.2,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Modest premium to book for strategic stakes",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "ESOPs Outstanding (in-the-money)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 0.0015,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "cr shares (1.5 lakh options)",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "ESOP Weighted Strike Price",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "₹ per share",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "C19": {
+            "value": "₹ per share — at simulation date",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Basic Shares Outstanding",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 95.92,
+            "readOnly": true
+          },
+          "C20": {
+            "value": "cr shares",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Net_Debt",
+        "cells": {
+          "A1": {
+            "value": "Step",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=Inputs!B6",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "From Inputs",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Total Cash",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=Inputs!B7",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "From Inputs",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Cash Need",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=Inputs!B8*Inputs!B9",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "1.5% × Revenue = ₹525 cr",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Excess Cash",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=B3-B4",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Total Cash - Operating Cash = ₹3,675 cr",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Net Debt",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=B2-B5",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Total Debt - Excess Cash = ₹125 cr (small positive net debt)",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Interpretation",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "Asian Paints is cash-rich. Net Debt of +125 is small vs EV. Largely operational leverage.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Bridge",
+        "cells": {
+          "A1": {
+            "value": "EV-to-Equity Bridge",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Bear (₹97,000 cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Base (₹132,500 cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Bull (₹168,000 cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Enterprise Value",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=Inputs!B2",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "=Inputs!B4",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "=Inputs!B3",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Add: Minority Interest (Fair Value)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=Inputs!B11*Inputs!B12",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "=Inputs!B11*Inputs!B12",
+            "readOnly": true
+          },
+          "D3": {
+            "value": "=Inputs!B11*Inputs!B12",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Add: Investments in Associates (Fair Value)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=Inputs!B14*Inputs!B15",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "=Inputs!B14*Inputs!B15",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "=Inputs!B14*Inputs!B15",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Less: Net Debt",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Net_Debt!B7",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "=Net_Debt!B7",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "=Net_Debt!B7",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Equity Value (Parent)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=B2+B3+B4-B5",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "=C2+C3+C4-C5",
+            "readOnly": true
+          },
+          "D7": {
+            "value": "=D2+D3+D4-D5",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Bridge Magnitude (as % of EV)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=(B3+B4-B5)/B2",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "=(C3+C4-C5)/C2",
+            "readOnly": true
+          },
+          "D9": {
+            "value": "=(D3+D4-D5)/D2",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Dilution",
+        "cells": {
+          "A1": {
+            "value": "Treasury Stock Method (TSM) — ESOP Dilution",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Basic Shares Outstanding",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=Inputs!B20",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "cr shares",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "ESOP Options Outstanding",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Inputs!B17",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "cr shares, in-the-money",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "ESOP Strike Price",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=Inputs!B18",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "₹ per share",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=Inputs!B19",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "₹ per share",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Proceeds from Exercise",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=B5*B6",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "Option count × Strike (₹ cr)",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Shares Repurchased @ Market Price",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "=B9/B7",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Proceeds / Current Price (cr shares)",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Net Dilution from ESOP",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=B5-B10",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Options - Repurchased shares (cr)",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Fully Diluted Shares Outstanding",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "=B4+B11",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "Basic + Net Dilution from ESOP (cr)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Dilution Impact",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "=(B13-B4)/B4",
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Negligible for Asian Paints (0.001%)",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Target_Price",
+        "cells": {
+          "A1": {
+            "value": "Target Price Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Scenario",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "Equity Value (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "Fully Diluted Shares (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "Target Price (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E3": {
+            "value": "vs Current (₹2,920)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F3": {
+            "value": "Upside/(Downside) %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Bear",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=Bridge!B7",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "=Dilution!B13",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "=B4/C4",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "=D4-Inputs!B19",
+            "readOnly": true
+          },
+          "F4": {
+            "value": "=(D4/Inputs!B19-1)*100",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Base",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Bridge!C7",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "=Dilution!B13",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "=B5/C5",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "=D5-Inputs!B19",
+            "readOnly": true
+          },
+          "F5": {
+            "value": "=(D5/Inputs!B19-1)*100",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Bull",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=Bridge!D7",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "=Dilution!B13",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "=B6/C6",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "=D6-Inputs!B19",
+            "readOnly": true
+          },
+          "F6": {
+            "value": "=(D6/Inputs!B19-1)*100",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Rule: BUY if Base > 115% of current; SELL if < 85%; HOLD else",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Base-case target of ₹1,382 is 47% of current price (₹2,920).",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Clear SELL signal.",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Commentary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "Asian Paints exhibits a minimal EV-to-Equity bridge of ~0.4%, reflecting a lean balance sheet with modest net debt (₹125 cr is <0.1% of EV). Minority interests and associates add <₹1,000 cr combined, typical for a consolidated player with strong operating cash generation. This tight bridge signals financial discipline and low leverage — a structural strength. Across scenarios, target prices range from ₹1,017 (Bear) to ₹1,757 (Bull), with Base case at ₹1,382. All three scenarios imply 35–65% downside versus the current market price of ₹2,920, pointing to a substantial gap between DCF value and market consensus. This divergence likely stems from two sources: (1) conservative DCF assumptions — perpetual growth of 5% may be too low given paints category tailwinds and Asian Paints' 18% ROE; WACC of 11.65% may be elevated if true equity risk premium is closer to 5–5.5% rather than 6%; (2) market is implicitly pricing long-run margin expansion and volume growth at the upper bound of defensibility, possibly 6–7% perpetual growth with stable 15%+ RoIC. The SELL recommendation is mechanically justified but warrants sensitivity testing on g and WACC before publication; a 50–75 bps reduction in perpetual g or 100 bps drop in WACC would materially lift targets and shift recommendation to HOLD or BUY, closing much of the gap to market. Given valuation risk and model uncertainty at this magnitude, an analyst review of terminal assumptions and peer-relative metrics is essential.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Net_Debt!B7": {
+      "formula_pattern": "=B2-B5",
+      "expected_value": 125,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Bridge!B7": {
+      "formula_pattern": "=B2+B3+B4-B5",
+      "expected_value": 97545,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "Bridge!C7": {
+      "formula_pattern": "=C2+C3+C4-C5",
+      "expected_value": 132545,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "Bridge!D7": {
+      "formula_pattern": "=D2+D3+D4-D5",
+      "expected_value": 168545,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "Dilution!B13": {
+      "formula_pattern": "=B4+B11",
+      "expected_value": 95.9215,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Target_Price!D4": {
+      "formula_pattern": "=B4/C4",
+      "expected_value": 1017,
+      "type": "number",
+      "tolerance": 5,
+      "points": 10
+    },
+    "Target_Price!D5": {
+      "formula_pattern": "=B5/C5",
+      "expected_value": 1382,
+      "type": "number",
+      "tolerance": 5,
+      "points": 10
+    },
+    "Target_Price!D6": {
+      "formula_pattern": "=B6/C6",
+      "expected_value": 1757,
+      "type": "number",
+      "tolerance": 5,
+      "points": 10
+    },
+    "Target_Price!F5": {
+      "formula_pattern": "=(D5/Inputs!B19-1)*100",
+      "expected_value": -52.74,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    }
+  }
+}

@@ -1,0 +1,801 @@
+{
+  "sim_id": "894f348c-9eda-4e61-a2a1-8e8b73ff734e",
+  "title": "The Five-Ratio Working Capital Scan — Catching Manipulation Before Management Does",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "TitanCap_WC_Diagnostic",
+        "cells": {
+          "A1": {
+            "value": "Line Item (₹ crore)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "5Y Change",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Peer FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Flag",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2120,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1945,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 2180,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 2598,
+            "readOnly": true
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "H2": {
+            "value": "",
+            "readOnly": true
+          },
+          "I2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1690,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 1485,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 1365,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 1526,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 1741,
+            "readOnly": true
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "H3": {
+            "value": "",
+            "readOnly": true
+          },
+          "I3": {
+            "value": "",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Trade Receivables",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 618,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 681,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 734,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 856,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 1062,
+            "readOnly": true
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "H4": {
+            "value": "",
+            "readOnly": true
+          },
+          "I4": {
+            "value": "",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Inventory Total",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 408,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 392,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 385,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 461,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 591,
+            "readOnly": true
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "H5": {
+            "value": "",
+            "readOnly": true
+          },
+          "I5": {
+            "value": "",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "  of which Raw Materials",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 145,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 152,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 148,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 165,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 189,
+            "readOnly": true
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "H6": {
+            "value": "",
+            "readOnly": true
+          },
+          "I6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "  of which Work-in-Progress",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 167,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 152,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 158,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 210,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 312,
+            "readOnly": true
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "H7": {
+            "value": "",
+            "readOnly": true
+          },
+          "I7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "  of which Finished Goods",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 96,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 88,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 79,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 86,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 90,
+            "readOnly": true
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "H8": {
+            "value": "",
+            "readOnly": true
+          },
+          "I8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Trade Payables",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 286,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 312,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 341,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 378,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 389,
+            "readOnly": true
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "H9": {
+            "value": "",
+            "readOnly": true
+          },
+          "I9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Other Current Assets (total)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 178,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 215,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 268,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 341,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 439,
+            "readOnly": true
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "H10": {
+            "value": "",
+            "readOnly": true
+          },
+          "I10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "  of which Loans/Advances",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 56,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 82,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 118,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 152,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 205,
+            "readOnly": true
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "H11": {
+            "value": "",
+            "readOnly": true
+          },
+          "I11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 4280,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 4150,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 4024,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 4312,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 4689,
+            "readOnly": true
+          },
+          "G12": {
+            "value": "",
+            "readOnly": true
+          },
+          "H12": {
+            "value": "",
+            "readOnly": true
+          },
+          "I12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "DSO (Days)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "H14": {
+            "value": 98,
+            "readOnly": true
+          },
+          "I14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "DIO (Days)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "",
+            "readOnly": false
+          },
+          "D15": {
+            "value": "",
+            "readOnly": false
+          },
+          "E15": {
+            "value": "",
+            "readOnly": false
+          },
+          "F15": {
+            "value": "",
+            "readOnly": false
+          },
+          "H15": {
+            "value": 82,
+            "readOnly": true
+          },
+          "I15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "DPO (Days)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "H16": {
+            "value": 70,
+            "readOnly": true
+          },
+          "I16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "CCC (Days)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "H17": {
+            "value": 110,
+            "readOnly": true
+          },
+          "I17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "WIP as % of Inventory",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "H18": {
+            "value": 0.3,
+            "readOnly": true
+          },
+          "I18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Receivables CAGR",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "H19": {
+            "value": "",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Revenue CAGR",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "H20": {
+            "value": "",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Receivables/Revenue Growth Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          },
+          "H21": {
+            "value": 1.5,
+            "readOnly": true
+          },
+          "I21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A22": {
+            "value": "OCA % of Total Assets",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "",
+            "readOnly": false
+          },
+          "H22": {
+            "value": "",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Total red flags (DSO, DIO, WIP, CCC, Rec/Rev ratio above threshold)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "DSO FY23 (days)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "CCC deterioration FY19-FY23 (days)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Receivables/Revenue Growth Ratio (rounded to 1 decimal)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Recommendation: BUY / HOLD / REDUCE / SELL",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Catalysts",
+        "cells": {
+          "A1": {
+            "value": "Three Catalysts to Watch (Next 12 Months)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1. Audit partner rotation or change in auditor tenure",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "2. Large customer default or borrower distress among top customers",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "3. Credit rating downgrade or debt covenant pressure triggering mark-to-market",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Working Capital Phantom Profit Absorbed (₹ crore)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "Count of red flags across DSO (>30% above peer), DIO (>30% above peer), WIP (>40%), CCC deterioration (>60 days), Rec/Rev ratio (>1.5)",
+      "expected_value": 5,
+      "type": "number",
+      "tolerance": 0,
+      "points": 20
+    },
+    "Answers!B3": {
+      "formula_pattern": "=F4/F2*365",
+      "expected_value": 149,
+      "type": "number",
+      "tolerance": 2,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(B4/B2*365)-(F4/F2*365) [or equivalent: CCC_FY23 - CCC_FY19]",
+      "expected_value": 81,
+      "type": "number",
+      "tolerance": 3,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "[POWER(1062/618,1/4)-1]/[POWER(2598/2450,1/4)-1]",
+      "expected_value": 9.7,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 20
+    },
+    "Answers!B6": {
+      "formula_pattern": "=IF(B5>1.5,\"SELL\",IF(B5>1.2,\"REDUCE\",\"HOLD\"))",
+      "expected_value": "SELL",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    },
+    "Catalysts!B6": {
+      "formula_pattern": "(81 days CCC deterioration) * (2598/365) * (2450 + 2598)/2 / 2598 ≈ 81 * 6.6 ≈ 535",
+      "expected_value": 535,
+      "type": "number",
+      "tolerance": 30,
+      "points": 10
+    }
+  }
+}

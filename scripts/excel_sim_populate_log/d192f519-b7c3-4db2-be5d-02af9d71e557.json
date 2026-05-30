@@ -1,0 +1,983 @@
+{
+  "sim_id": "d192f519-b7c3-4db2-be5d-02af9d71e557",
+  "title": "The Comps Workbook — Asian Paints Trading Comparables and Triangulation with DCF",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Peer_Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Country",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Market Cap (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY27 Revenue (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY27 EBITDA (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "EBITDA Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Net Debt (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "ROCE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 280000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 36500,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "G2": {
+            "value": -100,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 28,
+            "readOnly": true
+          },
+          "I2": {
+            "value": 12,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Berger Paints",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 52000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 13500,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 17.8,
+            "readOnly": true
+          },
+          "G3": {
+            "value": -200,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 24,
+            "readOnly": true
+          },
+          "I3": {
+            "value": 13,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Kansai Nerolac",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 21000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1400,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 16.5,
+            "readOnly": true
+          },
+          "G4": {
+            "value": -300,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 21,
+            "readOnly": true
+          },
+          "I4": {
+            "value": 11,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Akzo Nobel India",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 12000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 850,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 20.2,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 100,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 32,
+            "readOnly": true
+          },
+          "I5": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Sherwin-Williams",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "US",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 6000000,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 1350000,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 240000,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 17.8,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 800000,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 35,
+            "readOnly": true
+          },
+          "I7": {
+            "value": 8,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "AkzoNobel NV",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Netherlands",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 240000,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 9500,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 11.2,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 26000,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 15,
+            "readOnly": true
+          },
+          "I8": {
+            "value": 6,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Multiples",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Country",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY27 EV/EBITDA",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY27 P/E",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "ROCE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": 28,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 12,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Berger Paints",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": 24,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 13,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Kansai Nerolac",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": 21,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 11,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Akzo Nobel India",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "India",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": 32,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Indian Peer Median",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "-",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": 24,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 12,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Sherwin-Williams",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "US",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": 35,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 8,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "AkzoNobel NV",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Netherlands",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": 15,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 6,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Global Mature Median",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "-",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": 25,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 7,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Implied_Target",
+        "cells": {
+          "A1": {
+            "value": "Valuation Bridge — Asian Paints",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Parameter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Value (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "FY27 EBITDA",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Indian Peer EV/EBITDA Median",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Implied EV (Indian)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Less: Net Debt",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Less: Minority Interest",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 750,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Add: Investments (Fair Value)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 420,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Implied Equity Value (₹ cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Shares Outstanding (cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 1.12,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Per Share Target (Indian)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Global Mature EV/EBITDA Median",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "Implied EV (Global)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Less: Net Debt",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Less: Minority Interest",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 750,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Add: Investments (Fair Value)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 420,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Implied Equity Value (₹ cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Per Share Target (Global)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Triangulation",
+        "cells": {
+          "A1": {
+            "value": "Valuation Triangulation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Target (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "vs Market (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "DCF Base Case",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Indian Peer Comps",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Global Mature Comps",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "0%",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Fair Value Range (Low-High)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Implied Upside / Downside",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Reconciliation",
+        "cells": {
+          "A1": {
+            "value": "Analytical Commentary & Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Convergence Analysis",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "DCF base case (₹1,382/share) and global mature peer comps (20x EV/EBITDA, ~₹1,400/share) converge tightly, anchoring fair value via two independent methodologies across a terminal-state lens. Indian peer comps (28x EV/EBITDA, ~₹2,400/share) reflect current-phase sector pricing during a high-growth, premium-valuation window. Current market price (₹2,920/share) trades above all three core methodology anchors, implying a structural premium.",
+            "readOnly": true,
+            "wrap": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Defensible Long-Run Anchor",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Global mature peer comps at 20x EV/EBITDA represents the more defensible long-run anchor because: (i) it reflects stable-state decorative paints economics (mid-single-digit growth, normalized margins), (ii) both Sherwin-Williams and AkzoNobel NV have weathered sector cycles and prove sustainable 15–20x valuations even at premium returns (ROCE 15–35%), and (iii) Indian peer multiples (28x) remain vulnerable to cyclical compression as growth moderates post-FY27.",
+            "readOnly": true,
+            "wrap": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Why Both Peer Sets Matter",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Indian peers answer 'what is Asian Paints worth in today's high-growth, premium environment?' Global peers answer 'what is it worth at steady-state?' The gap between them (₹2,400 vs ₹1,400) is not analytical error—it is the valuation of growth and margin resilience. Reconciling this gap requires an explicit conviction on whether 12% growth at 22.5% EBITDA margin is repeatable or mean-reverting.",
+            "readOnly": true,
+            "wrap": true
+          },
+          "A10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Recommendation & Range",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Fair value range: ₹1,400–₹2,400/share (global mature to Indian peer comps). Implied target (blended midpoint ~₹1,900) suggests 35% downside to market price of ₹2,920. Recommendation: SELL / REDUCE. Structural support comes from three independent anchors (DCF, global comps, even Indian comps as upside case) all indicating asymmetric downside. The gap to market reflects either (i) market mispricing of long-term growth sustainability, or (ii) our methodology's inability to capture intangible brand/moat value. Given the magnitude of the gap and consistency of the signal, the risk/reward tilts downward.",
+            "readOnly": true,
+            "wrap": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Multiples!C2": {
+      "formula_pattern": "=(Peer_Data!C2+Peer_Data!G2)/Peer_Data!E2",
+      "expected_value": 34.15,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Multiples!C3": {
+      "formula_pattern": "=(Peer_Data!C3+Peer_Data!G3)/Peer_Data!E3",
+      "expected_value": 21.75,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Multiples!C4": {
+      "formula_pattern": "=(Peer_Data!C4+Peer_Data!G4)/Peer_Data!E4",
+      "expected_value": 15.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Multiples!C5": {
+      "formula_pattern": "=(Peer_Data!C5+Peer_Data!G5)/Peer_Data!E5",
+      "expected_value": 14.24,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Multiples!C6": {
+      "formula_pattern": "=MEDIAN(C3:C5)",
+      "expected_value": 15.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Multiples!C8": {
+      "formula_pattern": "=(Peer_Data!C7+Peer_Data!G7)/Peer_Data!E7",
+      "expected_value": 25.83,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Multiples!C9": {
+      "formula_pattern": "=(Peer_Data!C8+Peer_Data!G8)/Peer_Data!E8",
+      "expected_value": 27.84,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Multiples!C10": {
+      "formula_pattern": "=MEDIAN(C8:C9)",
+      "expected_value": 26.84,
+      "type": "number",
+      "tolerance": 1.0,
+      "points": 10
+    },
+    "Implied_Target!B4": {
+      "formula_pattern": "=Multiples!C6",
+      "expected_value": 15.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Implied_Target!B5": {
+      "formula_pattern": "=B3*B4",
+      "expected_value": 123000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Implied_Target!B9": {
+      "formula_pattern": "=B5-B6-B7+B8",
+      "expected_value": 122570,
+      "type": "number",
+      "tolerance": 10,
+      "points": 8
+    },
+    "Implied_Target!B11": {
+      "formula_pattern": "=B9/B10",
+      "expected_value": 109441.96,
+      "type": "number",
+      "tolerance": 100,
+      "points": 10
+    },
+    "Implied_Target!B13": {
+      "formula_pattern": "=Multiples!C10",
+      "expected_value": 26.84,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Implied_Target!B14": {
+      "formula_pattern": "=B3*B13",
+      "expected_value": 219888,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Implied_Target!B18": {
+      "formula_pattern": "=B14-B15-B16+B17",
+      "expected_value": 219458,
+      "type": "number",
+      "tolerance": 10,
+      "points": 8
+    },
+    "Implied_Target!B19": {
+      "formula_pattern": "=B18/B10",
+      "expected_value": 195949.11,
+      "type": "number",
+      "tolerance": 100,
+      "points": 10
+    },
+    "Triangulation!C3": {
+      "formula_pattern": "=(B3-B6)/B6*100",
+      "expected_value": -52.81,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Triangulation!B4": {
+      "formula_pattern": "=Implied_Target!B11",
+      "expected_value": 109441.96,
+      "type": "number",
+      "tolerance": 100,
+      "points": 5
+    },
+    "Triangulation!C4": {
+      "formula_pattern": "=(B4-B6)/B6*100",
+      "expected_value": -62.56,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Triangulation!B5": {
+      "formula_pattern": "=Implied_Target!B19",
+      "expected_value": 195949.11,
+      "type": "number",
+      "tolerance": 100,
+      "points": 5
+    },
+    "Triangulation!C5": {
+      "formula_pattern": "=(B5-B6)/B6*100",
+      "expected_value": -32.95,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Triangulation!B8": {
+      "formula_pattern": "=\"₹\"&INT(B5)&\"-₹\"&INT(B4)",
+      "expected_value": "₹195949-₹109441",
+      "type": "text",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Triangulation!B9": {
+      "formula_pattern": "=\"Downside \"&ROUND((AVERAGE(B4:B5)-B6)/B6*100,1)&\"%\"",
+      "expected_value": "Downside -47.8%",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}

@@ -1,0 +1,1892 @@
+{
+  "sim_id": "ee1aa5ed-5d23-48df-8ee7-29c247d38e3d",
+  "title": "Build the HDFC Bank Valuation Chart Pack",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Trading_Band",
+        "cells": {
+          "A1": {
+            "value": "Month_End_Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "HDFC_Bank_PB",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Mean_PB",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Upper_Band_+1SD",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Lower_Band_-1SD",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "",
+            "readOnly": false
+          },
+          "G1": {
+            "value": "",
+            "readOnly": false
+          },
+          "H1": {
+            "value": "",
+            "readOnly": false
+          },
+          "A2": {
+            "value": "Apr-2021",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 3.85,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "May-2021",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 3.92,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Jun-2021",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 3.78,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Jul-2021",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3.65,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Aug-2021",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3.55,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Sep-2021",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 3.48,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Oct-2021",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 3.52,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Nov-2021",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 3.61,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Dec-2021",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 3.72,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Jan-2022",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 3.68,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Feb-2022",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 3.55,
+            "readOnly": true
+          },
+          "C12": {
+            "value": "",
+            "readOnly": false
+          },
+          "D12": {
+            "value": "",
+            "readOnly": false
+          },
+          "E12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Mar-2022",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 3.42,
+            "readOnly": true
+          },
+          "C13": {
+            "value": "",
+            "readOnly": false
+          },
+          "D13": {
+            "value": "",
+            "readOnly": false
+          },
+          "E13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "Apr-2022",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 3.38,
+            "readOnly": true
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "May-2022",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 3.25,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "",
+            "readOnly": false
+          },
+          "D15": {
+            "value": "",
+            "readOnly": false
+          },
+          "E15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Jun-2022",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 3.18,
+            "readOnly": true
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Jul-2022",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 3.28,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Aug-2022",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 3.35,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Sep-2022",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 3.22,
+            "readOnly": true
+          },
+          "C19": {
+            "value": "",
+            "readOnly": false
+          },
+          "D19": {
+            "value": "",
+            "readOnly": false
+          },
+          "E19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "Oct-2022",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 3.15,
+            "readOnly": true
+          },
+          "C20": {
+            "value": "",
+            "readOnly": false
+          },
+          "D20": {
+            "value": "",
+            "readOnly": false
+          },
+          "E20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "Nov-2022",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 3.32,
+            "readOnly": true
+          },
+          "C21": {
+            "value": "",
+            "readOnly": false
+          },
+          "D21": {
+            "value": "",
+            "readOnly": false
+          },
+          "E21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A22": {
+            "value": "Dec-2022",
+            "readOnly": true
+          },
+          "B22": {
+            "value": 3.45,
+            "readOnly": true
+          },
+          "C22": {
+            "value": "",
+            "readOnly": false
+          },
+          "D22": {
+            "value": "",
+            "readOnly": false
+          },
+          "E22": {
+            "value": "",
+            "readOnly": false
+          },
+          "A23": {
+            "value": "Jan-2023",
+            "readOnly": true
+          },
+          "B23": {
+            "value": 3.52,
+            "readOnly": true
+          },
+          "C23": {
+            "value": "",
+            "readOnly": false
+          },
+          "D23": {
+            "value": "",
+            "readOnly": false
+          },
+          "E23": {
+            "value": "",
+            "readOnly": false
+          },
+          "A24": {
+            "value": "Feb-2023",
+            "readOnly": true
+          },
+          "B24": {
+            "value": 3.48,
+            "readOnly": true
+          },
+          "C24": {
+            "value": "",
+            "readOnly": false
+          },
+          "D24": {
+            "value": "",
+            "readOnly": false
+          },
+          "E24": {
+            "value": "",
+            "readOnly": false
+          },
+          "A25": {
+            "value": "Mar-2023",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 3.58,
+            "readOnly": true
+          },
+          "C25": {
+            "value": "",
+            "readOnly": false
+          },
+          "D25": {
+            "value": "",
+            "readOnly": false
+          },
+          "E25": {
+            "value": "",
+            "readOnly": false
+          },
+          "A26": {
+            "value": "Apr-2023",
+            "readOnly": true
+          },
+          "B26": {
+            "value": 3.65,
+            "readOnly": true
+          },
+          "C26": {
+            "value": "",
+            "readOnly": false
+          },
+          "D26": {
+            "value": "",
+            "readOnly": false
+          },
+          "E26": {
+            "value": "",
+            "readOnly": false
+          },
+          "A27": {
+            "value": "May-2023",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 3.58,
+            "readOnly": true
+          },
+          "C27": {
+            "value": "",
+            "readOnly": false
+          },
+          "D27": {
+            "value": "",
+            "readOnly": false
+          },
+          "E27": {
+            "value": "",
+            "readOnly": false
+          },
+          "A28": {
+            "value": "Jun-2023",
+            "readOnly": true
+          },
+          "B28": {
+            "value": 3.48,
+            "readOnly": true
+          },
+          "C28": {
+            "value": "",
+            "readOnly": false
+          },
+          "D28": {
+            "value": "",
+            "readOnly": false
+          },
+          "E28": {
+            "value": "",
+            "readOnly": false
+          },
+          "A29": {
+            "value": "Jul-2023",
+            "readOnly": true
+          },
+          "B29": {
+            "value": 3.35,
+            "readOnly": true
+          },
+          "C29": {
+            "value": "",
+            "readOnly": false
+          },
+          "D29": {
+            "value": "",
+            "readOnly": false
+          },
+          "E29": {
+            "value": "",
+            "readOnly": false
+          },
+          "A30": {
+            "value": "Aug-2023",
+            "readOnly": true
+          },
+          "B30": {
+            "value": 3.28,
+            "readOnly": true
+          },
+          "C30": {
+            "value": "",
+            "readOnly": false
+          },
+          "D30": {
+            "value": "",
+            "readOnly": false
+          },
+          "E30": {
+            "value": "",
+            "readOnly": false
+          },
+          "A31": {
+            "value": "Sep-2023",
+            "readOnly": true
+          },
+          "B31": {
+            "value": 3.18,
+            "readOnly": true
+          },
+          "C31": {
+            "value": "",
+            "readOnly": false
+          },
+          "D31": {
+            "value": "",
+            "readOnly": false
+          },
+          "E31": {
+            "value": "",
+            "readOnly": false
+          },
+          "A32": {
+            "value": "Oct-2023",
+            "readOnly": true
+          },
+          "B32": {
+            "value": 3.22,
+            "readOnly": true
+          },
+          "C32": {
+            "value": "",
+            "readOnly": false
+          },
+          "D32": {
+            "value": "",
+            "readOnly": false
+          },
+          "E32": {
+            "value": "",
+            "readOnly": false
+          },
+          "A33": {
+            "value": "Nov-2023",
+            "readOnly": true
+          },
+          "B33": {
+            "value": 3.32,
+            "readOnly": true
+          },
+          "C33": {
+            "value": "",
+            "readOnly": false
+          },
+          "D33": {
+            "value": "",
+            "readOnly": false
+          },
+          "E33": {
+            "value": "",
+            "readOnly": false
+          },
+          "A34": {
+            "value": "Dec-2023",
+            "readOnly": true
+          },
+          "B34": {
+            "value": 3.42,
+            "readOnly": true
+          },
+          "C34": {
+            "value": "",
+            "readOnly": false
+          },
+          "D34": {
+            "value": "",
+            "readOnly": false
+          },
+          "E34": {
+            "value": "",
+            "readOnly": false
+          },
+          "A35": {
+            "value": "Jan-2024",
+            "readOnly": true
+          },
+          "B35": {
+            "value": 3.38,
+            "readOnly": true
+          },
+          "C35": {
+            "value": "",
+            "readOnly": false
+          },
+          "D35": {
+            "value": "",
+            "readOnly": false
+          },
+          "E35": {
+            "value": "",
+            "readOnly": false
+          },
+          "A36": {
+            "value": "Feb-2024",
+            "readOnly": true
+          },
+          "B36": {
+            "value": 3.28,
+            "readOnly": true
+          },
+          "C36": {
+            "value": "",
+            "readOnly": false
+          },
+          "D36": {
+            "value": "",
+            "readOnly": false
+          },
+          "E36": {
+            "value": "",
+            "readOnly": false
+          },
+          "A37": {
+            "value": "Mar-2024",
+            "readOnly": true
+          },
+          "B37": {
+            "value": 3.15,
+            "readOnly": true
+          },
+          "C37": {
+            "value": "",
+            "readOnly": false
+          },
+          "D37": {
+            "value": "",
+            "readOnly": false
+          },
+          "E37": {
+            "value": "",
+            "readOnly": false
+          },
+          "A38": {
+            "value": "Apr-2024",
+            "readOnly": true
+          },
+          "B38": {
+            "value": 3.08,
+            "readOnly": true
+          },
+          "C38": {
+            "value": "",
+            "readOnly": false
+          },
+          "D38": {
+            "value": "",
+            "readOnly": false
+          },
+          "E38": {
+            "value": "",
+            "readOnly": false
+          },
+          "A39": {
+            "value": "May-2024",
+            "readOnly": true
+          },
+          "B39": {
+            "value": 3.02,
+            "readOnly": true
+          },
+          "C39": {
+            "value": "",
+            "readOnly": false
+          },
+          "D39": {
+            "value": "",
+            "readOnly": false
+          },
+          "E39": {
+            "value": "",
+            "readOnly": false
+          },
+          "A40": {
+            "value": "Jun-2024",
+            "readOnly": true
+          },
+          "B40": {
+            "value": 2.95,
+            "readOnly": true
+          },
+          "C40": {
+            "value": "",
+            "readOnly": false
+          },
+          "D40": {
+            "value": "",
+            "readOnly": false
+          },
+          "E40": {
+            "value": "",
+            "readOnly": false
+          },
+          "A41": {
+            "value": "Jul-2024",
+            "readOnly": true
+          },
+          "B41": {
+            "value": 2.88,
+            "readOnly": true
+          },
+          "C41": {
+            "value": "",
+            "readOnly": false
+          },
+          "D41": {
+            "value": "",
+            "readOnly": false
+          },
+          "E41": {
+            "value": "",
+            "readOnly": false
+          },
+          "A42": {
+            "value": "Aug-2024",
+            "readOnly": true
+          },
+          "B42": {
+            "value": 2.82,
+            "readOnly": true
+          },
+          "C42": {
+            "value": "",
+            "readOnly": false
+          },
+          "D42": {
+            "value": "",
+            "readOnly": false
+          },
+          "E42": {
+            "value": "",
+            "readOnly": false
+          },
+          "A43": {
+            "value": "Sep-2024",
+            "readOnly": true
+          },
+          "B43": {
+            "value": 2.78,
+            "readOnly": true
+          },
+          "C43": {
+            "value": "",
+            "readOnly": false
+          },
+          "D43": {
+            "value": "",
+            "readOnly": false
+          },
+          "E43": {
+            "value": "",
+            "readOnly": false
+          },
+          "A44": {
+            "value": "Oct-2024",
+            "readOnly": true
+          },
+          "B44": {
+            "value": 2.85,
+            "readOnly": true
+          },
+          "C44": {
+            "value": "",
+            "readOnly": false
+          },
+          "D44": {
+            "value": "",
+            "readOnly": false
+          },
+          "E44": {
+            "value": "",
+            "readOnly": false
+          },
+          "A45": {
+            "value": "Nov-2024",
+            "readOnly": true
+          },
+          "B45": {
+            "value": 2.92,
+            "readOnly": true
+          },
+          "C45": {
+            "value": "",
+            "readOnly": false
+          },
+          "D45": {
+            "value": "",
+            "readOnly": false
+          },
+          "E45": {
+            "value": "",
+            "readOnly": false
+          },
+          "A46": {
+            "value": "Dec-2024",
+            "readOnly": true
+          },
+          "B46": {
+            "value": 3.05,
+            "readOnly": true
+          },
+          "C46": {
+            "value": "",
+            "readOnly": false
+          },
+          "D46": {
+            "value": "",
+            "readOnly": false
+          },
+          "E46": {
+            "value": "",
+            "readOnly": false
+          },
+          "A47": {
+            "value": "Jan-2025",
+            "readOnly": true
+          },
+          "B47": {
+            "value": 3.12,
+            "readOnly": true
+          },
+          "C47": {
+            "value": "",
+            "readOnly": false
+          },
+          "D47": {
+            "value": "",
+            "readOnly": false
+          },
+          "E47": {
+            "value": "",
+            "readOnly": false
+          },
+          "A48": {
+            "value": "Feb-2025",
+            "readOnly": true
+          },
+          "B48": {
+            "value": 3.02,
+            "readOnly": true
+          },
+          "C48": {
+            "value": "",
+            "readOnly": false
+          },
+          "D48": {
+            "value": "",
+            "readOnly": false
+          },
+          "E48": {
+            "value": "",
+            "readOnly": false
+          },
+          "A49": {
+            "value": "Mar-2025",
+            "readOnly": true
+          },
+          "B49": {
+            "value": 2.88,
+            "readOnly": true
+          },
+          "C49": {
+            "value": "",
+            "readOnly": false
+          },
+          "D49": {
+            "value": "",
+            "readOnly": false
+          },
+          "E49": {
+            "value": "",
+            "readOnly": false
+          },
+          "A50": {
+            "value": "Apr-2025",
+            "readOnly": true
+          },
+          "B50": {
+            "value": 2.8,
+            "readOnly": true
+          },
+          "C50": {
+            "value": "",
+            "readOnly": false
+          },
+          "D50": {
+            "value": "",
+            "readOnly": false
+          },
+          "E50": {
+            "value": "",
+            "readOnly": false
+          },
+          "A51": {
+            "value": "May-2025",
+            "readOnly": true
+          },
+          "B51": {
+            "value": 2.75,
+            "readOnly": true
+          },
+          "C51": {
+            "value": "",
+            "readOnly": false
+          },
+          "D51": {
+            "value": "",
+            "readOnly": false
+          },
+          "E51": {
+            "value": "",
+            "readOnly": false
+          },
+          "A52": {
+            "value": "Jun-2025",
+            "readOnly": true
+          },
+          "B52": {
+            "value": 2.72,
+            "readOnly": true
+          },
+          "C52": {
+            "value": "",
+            "readOnly": false
+          },
+          "D52": {
+            "value": "",
+            "readOnly": false
+          },
+          "E52": {
+            "value": "",
+            "readOnly": false
+          },
+          "A53": {
+            "value": "Jul-2025",
+            "readOnly": true
+          },
+          "B53": {
+            "value": 2.7,
+            "readOnly": true
+          },
+          "C53": {
+            "value": "",
+            "readOnly": false
+          },
+          "D53": {
+            "value": "",
+            "readOnly": false
+          },
+          "E53": {
+            "value": "",
+            "readOnly": false
+          },
+          "A54": {
+            "value": "Aug-2025",
+            "readOnly": true
+          },
+          "B54": {
+            "value": 2.68,
+            "readOnly": true
+          },
+          "C54": {
+            "value": "",
+            "readOnly": false
+          },
+          "D54": {
+            "value": "",
+            "readOnly": false
+          },
+          "E54": {
+            "value": "",
+            "readOnly": false
+          },
+          "A55": {
+            "value": "Sep-2025",
+            "readOnly": true
+          },
+          "B55": {
+            "value": 2.65,
+            "readOnly": true
+          },
+          "C55": {
+            "value": "",
+            "readOnly": false
+          },
+          "D55": {
+            "value": "",
+            "readOnly": false
+          },
+          "E55": {
+            "value": "",
+            "readOnly": false
+          },
+          "A56": {
+            "value": "Oct-2025",
+            "readOnly": true
+          },
+          "B56": {
+            "value": 2.7,
+            "readOnly": true
+          },
+          "C56": {
+            "value": "",
+            "readOnly": false
+          },
+          "D56": {
+            "value": "",
+            "readOnly": false
+          },
+          "E56": {
+            "value": "",
+            "readOnly": false
+          },
+          "A57": {
+            "value": "Nov-2025",
+            "readOnly": true
+          },
+          "B57": {
+            "value": 2.75,
+            "readOnly": true
+          },
+          "C57": {
+            "value": "",
+            "readOnly": false
+          },
+          "D57": {
+            "value": "",
+            "readOnly": false
+          },
+          "E57": {
+            "value": "",
+            "readOnly": false
+          },
+          "A58": {
+            "value": "Dec-2025",
+            "readOnly": true
+          },
+          "B58": {
+            "value": 2.82,
+            "readOnly": true
+          },
+          "C58": {
+            "value": "",
+            "readOnly": false
+          },
+          "D58": {
+            "value": "",
+            "readOnly": false
+          },
+          "E58": {
+            "value": "",
+            "readOnly": false
+          },
+          "A59": {
+            "value": "Jan-2026",
+            "readOnly": true
+          },
+          "B59": {
+            "value": 2.8,
+            "readOnly": true
+          },
+          "C59": {
+            "value": "",
+            "readOnly": false
+          },
+          "D59": {
+            "value": "",
+            "readOnly": false
+          },
+          "E59": {
+            "value": "",
+            "readOnly": false
+          },
+          "A60": {
+            "value": "Feb-2026",
+            "readOnly": true
+          },
+          "B60": {
+            "value": 2.75,
+            "readOnly": true
+          },
+          "C60": {
+            "value": "",
+            "readOnly": false
+          },
+          "D60": {
+            "value": "",
+            "readOnly": false
+          },
+          "E60": {
+            "value": "",
+            "readOnly": false
+          },
+          "A61": {
+            "value": "Mar-2026",
+            "readOnly": true
+          },
+          "B61": {
+            "value": 2.7,
+            "readOnly": true
+          },
+          "C61": {
+            "value": "",
+            "readOnly": false
+          },
+          "D61": {
+            "value": "",
+            "readOnly": false
+          },
+          "E61": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Football_Field",
+        "cells": {
+          "A1": {
+            "value": "Valuation Method",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Low_Price_INR",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "High_Price_INR",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Spread",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Supports_Target",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DCF (10% WACC, 5% TGR)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1820,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2080,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "P/B Multiple Range (2.7x-3.2x FY27E)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 2070,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "SOTP Valuation",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1890,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 2150,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Trading Comps (P/B, P/E avg)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1680,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 1920,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "P/B Mean Implied Price",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1920,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 2180,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "CMP (Current Market Price)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 1720,
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Target Price (12M FV)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": 2030,
+            "readOnly": true,
+            "bold": true
+          }
+        }
+      },
+      {
+        "name": "Relative_Perf",
+        "cells": {
+          "A1": {
+            "value": "Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "HDFC_Bank_Price_INR",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Nifty_Bank_Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Nifty_50_Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "HDFC_Indexed",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "NiftyBank_Indexed",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Nifty50_Indexed",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1-Jan-2024",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1920,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 47850,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 21650,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "1-Apr-2024",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1885,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 48920,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 22180,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "1-Jul-2024",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 50200,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 23150,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "1-Oct-2024",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1820,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 51850,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 24200,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "1-Jan-2025",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1875,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 53200,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 25100,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "1-Apr-2025",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1925,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 54800,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 25800,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "1-Jul-2025",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1960,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 55920,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 26450,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "1-Oct-2025",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1945,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 56850,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 27100,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "1-Jan-2026",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 1968,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 57950,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 27680,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "1-Apr-2026",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 1966,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 54080,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 24700,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "HDFC Bank underperformance vs Nifty 50 (bps)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E13": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Trading_Band!C2": {
+      "formula_pattern": "=AVERAGE($B$2:$B$61)",
+      "expected_value": 3.4,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Trading_Band!D2": {
+      "formula_pattern": "=$C$2+(1*STDEV($B$2:$B$61))",
+      "expected_value": 3.82,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Trading_Band!E2": {
+      "formula_pattern": "=$C$2-(1*STDEV($B$2:$B$61))",
+      "expected_value": 2.98,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Trading_Band!F1": {
+      "formula_pattern": "=STDEV($B$2:$B$61)",
+      "expected_value": 0.42,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Trading_Band!G1": {
+      "formula_pattern": "=B61",
+      "expected_value": 2.7,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Trading_Band!H1": {
+      "formula_pattern": "=IF(G1<E2,\"Below -1 SD: Cheap vs history\",IF(G1>D2,\"Above +1 SD: Expensive vs history\",\"Within +/- 1 SD band\"))",
+      "expected_value": "Below -1 SD: Cheap vs history",
+      "type": "text",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Football_Field!D2": {
+      "formula_pattern": "=C2-B2",
+      "expected_value": 260,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Football_Field!E2": {
+      "formula_pattern": "=IF(OR(B2<=2030,C2>=2030),\"Supports Target\",\"Below Target\")",
+      "expected_value": "Supports Target",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Football_Field!D3": {
+      "formula_pattern": "=C3-B3",
+      "expected_value": 320,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Football_Field!E3": {
+      "formula_pattern": "=IF(OR(B3<=2030,C3>=2030),\"Supports Target\",\"Below Target\")",
+      "expected_value": "Supports Target",
+      "type": "text",
+      "tolerance": 0,
+      "points": 0
+    },
+    "Football_Field!D4": {
+      "formula_pattern": "=C4-B4",
+      "expected_value": 260,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Football_Field!E4": {
+      "formula_pattern": "=IF(OR(B4<=2030,C4>=2030),\"Supports Target\",\"Below Target\")",
+      "expected_value": "Supports Target",
+      "type": "text",
+      "tolerance": 0,
+      "points": 0
+    },
+    "Football_Field!D5": {
+      "formula_pattern": "=C5-B5",
+      "expected_value": 240,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Football_Field!E5": {
+      "formula_pattern": "=IF(OR(B5<=2030,C5>=2030),\"Supports Target\",\"Below Target\")",
+      "expected_value": "Below Target",
+      "type": "text",
+      "tolerance": 0,
+      "points": 0
+    },
+    "Football_Field!D6": {
+      "formula_pattern": "=C6-B6",
+      "expected_value": 260,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Football_Field!E6": {
+      "formula_pattern": "=IF(OR(B6<=2030,C6>=2030),\"Supports Target\",\"Below Target\")",
+      "expected_value": "Supports Target",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Relative_Perf!E2": {
+      "formula_pattern": "=100",
+      "expected_value": 100,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Relative_Perf!E11": {
+      "formula_pattern": "=($B$2/$B11)*100",
+      "expected_value": 97.66,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Relative_Perf!F2": {
+      "formula_pattern": "=100",
+      "expected_value": 100,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 0
+    },
+    "Relative_Perf!F11": {
+      "formula_pattern": "=($C$2/$C11)*100",
+      "expected_value": 88.41,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 0
+    },
+    "Relative_Perf!G2": {
+      "formula_pattern": "=100",
+      "expected_value": 100,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 0
+    },
+    "Relative_Perf!G11": {
+      "formula_pattern": "=($D$2/$D11)*100",
+      "expected_value": 87.67,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 0
+    },
+    "Relative_Perf!E13": {
+      "formula_pattern": "=(E11-G11)*100",
+      "expected_value": 10.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 9
+    }
+  }
+}

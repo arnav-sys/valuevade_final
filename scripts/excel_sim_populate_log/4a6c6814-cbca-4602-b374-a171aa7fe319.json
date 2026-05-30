@@ -1,0 +1,1274 @@
+{
+  "sim_id": "4a6c6814-cbca-4602-b374-a171aa7fe319",
+  "title": "The Sensitivity & Scenario Workbook — Asian Paints Range, Defensibility, and IC-Ready Output",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Inputs",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Base Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.1165,
+            "readOnly": false
+          },
+          "C2": {
+            "value": "From Session 4 WACC Workbook",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Terminal Growth (g)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.05,
+            "readOnly": false
+          },
+          "C3": {
+            "value": "Mid-range; well below India nominal GDP ceiling",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY33 EBITDA Margin %",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.225,
+            "readOnly": false
+          },
+          "C4": {
+            "value": "Terminal-state, Session 6",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY27 Revenue Growth %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.12,
+            "readOnly": false
+          },
+          "C5": {
+            "value": "Year 1 of forecast, Session 6",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY33 Capex / Revenue %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.025,
+            "readOnly": false
+          },
+          "C6": {
+            "value": "Maintenance capex matching D&A, Session 6",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Working Capital / Revenue %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.2,
+            "readOnly": false
+          },
+          "C7": {
+            "value": "Standard for paints industry",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bridge Adjustments (₹ cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": -455,
+            "readOnly": false
+          },
+          "C8": {
+            "value": "Net of net debt, minorities, associates",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "FY27 Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 66000,
+            "readOnly": false
+          },
+          "C9": {
+            "value": "Base year revenue estimate",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Shares Outstanding (cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 7.32,
+            "readOnly": false
+          },
+          "C10": {
+            "value": "Latest FY25 data",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Base Case Target Price (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": 1382,
+            "readOnly": true,
+            "bold": true
+          },
+          "C12": {
+            "value": "From Session 8 Bridge Workbook",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Current Market Price (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B13": {
+            "value": 2920,
+            "readOnly": true,
+            "bold": true
+          },
+          "C13": {
+            "value": "NSE closing price at simulation date",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Implied Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "SELL",
+            "readOnly": true,
+            "bold": true
+          },
+          "C14": {
+            "value": "Base case target 53% below market price",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Two_Way_Table",
+        "cells": {
+          "A1": {
+            "value": "g \\ WACC",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "10.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "11.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "11.65%",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "12.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "12.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "13.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "3.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": 2310,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1945,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1620,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 1485,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 1315,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "4.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 2465,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 2055,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 1705,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 1555,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 1375,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 1170,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "4.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": 2645,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 2185,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1810,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1645,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 1445,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 1225,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "5.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": 2880,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 2350,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 1930,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 1530,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 1290,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "5.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": 3160,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 2565,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 2080,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 1880,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 1635,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 1375,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "6.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": 3520,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 2845,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 2270,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 2050,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 1765,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 1475,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Scenarios",
+        "cells": {
+          "A1": {
+            "value": "Scenario Framework",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Bear Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Base Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Bull Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Narrative Hook",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Birla Opus disrupts mid-market segment",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Status quo: margin resilience",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Premiumisation accelerates",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY27 Revenue Growth",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 0.16,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Terminal EBITDA Margin",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.2,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 0.225,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 0.245,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Terminal Growth (g)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.035,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 0.05,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 0.065,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.122,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 0.1165,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 0.111,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Capex / Revenue",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.035,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 0.025,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 0.02,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Working Capital / Revenue",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0.2,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0.18,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": true
+          },
+          "D9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Target Price (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": 950,
+            "readOnly": true,
+            "bold": true
+          },
+          "C10": {
+            "value": 1382,
+            "readOnly": true,
+            "bold": true
+          },
+          "D10": {
+            "value": 1750,
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "vs Market Price (₹2920)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "-67%",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "-53%",
+            "readOnly": true
+          },
+          "D11": {
+            "value": "-40%",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "SELL",
+            "readOnly": true,
+            "bold": true
+          },
+          "C12": {
+            "value": "SELL",
+            "readOnly": true,
+            "bold": true
+          },
+          "D12": {
+            "value": "REDUCE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "",
+            "readOnly": true
+          },
+          "D13": {
+            "value": "",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Narrative Detail",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "Rising competitive intensity; Opus gains share in value segment. Pricing pressure cascades. Terminal margin contracts to 20%. Defensive capex spiked. Terminal growth capped at 3.5% as market share erodes. Cost of equity rises (execution risk).",
+            "readOnly": true
+          },
+          "C14": {
+            "value": "Asian Paints maintains premiumness in decorative. Margin resilience holds at 22.5%. Capex normalizes at 2.5% of revenue. Terminal growth at 5% balances GDP link with market saturation. WACC stable at 11.65%.",
+            "readOnly": true
+          },
+          "D14": {
+            "value": "Decorative & industrial mix drives faster revenue growth (16% Y1). Premiumisation in batches & laminates supports margin expansion to 24.5%. Working capital efficiency improves. Terminal growth accelerates to 6.5% on category upside. Lower WACC (111bps) reflects de-risking.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Tornado",
+        "cells": {
+          "A1": {
+            "value": "Assumption",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Base Target",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Low Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "High Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Range (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "% Sensitivity",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Terminal Growth (g)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1015,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1745,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 730,
+            "readOnly": true
+          },
+          "F2": {
+            "value": "53%",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 1010,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 740,
+            "readOnly": true
+          },
+          "F3": {
+            "value": "54%",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY33 EBITDA Margin",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1195,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1572,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 377,
+            "readOnly": true
+          },
+          "F4": {
+            "value": "27%",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY27 Revenue Growth",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 1155,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 1615,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 460,
+            "readOnly": true
+          },
+          "F5": {
+            "value": "33%",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Capex / Revenue",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 1455,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 1310,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 145,
+            "readOnly": true
+          },
+          "F6": {
+            "value": "11%",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Working Capital / Revenue",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1285,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 1480,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 195,
+            "readOnly": true
+          },
+          "F7": {
+            "value": "14%",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bridge Adjustments (₹ cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 1655,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 1110,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 545,
+            "readOnly": true
+          },
+          "F8": {
+            "value": "39%",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": true
+          },
+          "D9": {
+            "value": "",
+            "readOnly": true
+          },
+          "E9": {
+            "value": "",
+            "readOnly": true
+          },
+          "F9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Rank by Impact",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": true
+          },
+          "D10": {
+            "value": "",
+            "readOnly": true
+          },
+          "E10": {
+            "value": "",
+            "readOnly": true
+          },
+          "F10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "1. WACC",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "±54%",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": true
+          },
+          "D11": {
+            "value": "",
+            "readOnly": true
+          },
+          "E11": {
+            "value": "",
+            "readOnly": true
+          },
+          "F11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "2. Terminal Growth (g)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "±53%",
+            "readOnly": true
+          },
+          "C12": {
+            "value": "",
+            "readOnly": true
+          },
+          "D12": {
+            "value": "",
+            "readOnly": true
+          },
+          "E12": {
+            "value": "",
+            "readOnly": true
+          },
+          "F12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "3. Bridge Adjustments",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "±39%",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "",
+            "readOnly": true
+          },
+          "D13": {
+            "value": "",
+            "readOnly": true
+          },
+          "E13": {
+            "value": "",
+            "readOnly": true
+          },
+          "F13": {
+            "value": "",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "4. FY27 Revenue Growth",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "±33%",
+            "readOnly": true
+          },
+          "C14": {
+            "value": "",
+            "readOnly": true
+          },
+          "D14": {
+            "value": "",
+            "readOnly": true
+          },
+          "E14": {
+            "value": "",
+            "readOnly": true
+          },
+          "F14": {
+            "value": "",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "IC_Summary",
+        "cells": {
+          "A1": {
+            "value": "EQUITY RESEARCH - ASIAN PAINTS LTD.",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Valuation & Recommendation Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TARGET PRICE RANGE (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Bear Case (Opus disrupts mid-market)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 950,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Base Case (Status quo resilience)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Bull Case (Premiumisation accelerates)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Downside to Base Target",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "-53%",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "RECOMMENDATION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "SELL",
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "TOP 3 SENSITIVITIES (by impact rank)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "1. WACC (cost of equity)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "±740 per ±150bps; dominates DCF",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "2. Terminal Growth (g)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "±730 per ±150bps; critical at horizon",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "3. Bridge Adjustments (net debt, minorities)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "±545 per ±₹2,000 cr swing",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "WHAT WOULD CHANGE THE CALL?",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": true,
+            "bold": true
+          },
+          "A18": {
+            "value": "→ WACC falls to 10.5% + market reprices",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "Target Price rises to ~1950 (still -33%)",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "→ Terminal growth inflects to 6%+",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "Signals structural margin/share gains",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "→ Bridge adjustments swing +₹1,500 cr",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "Unlikely without M&A or dividend reset",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "",
+            "readOnly": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "ANALYTICAL QUESTION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B22": {
+            "value": "",
+            "readOnly": true,
+            "bold": true
+          },
+          "A23": {
+            "value": "Market prices Asian Paints at 2.1x WACC (₹2,920 vs. Base ₹1,382). This premium persists despite:",
+            "readOnly": true
+          },
+          "B23": {
+            "value": "",
+            "readOnly": true
+          },
+          "A24": {
+            "value": "• Visible margin pressure from competition (Birla Opus, Crompton, regional players)",
+            "readOnly": true
+          },
+          "B24": {
+            "value": "",
+            "readOnly": true
+          },
+          "A25": {
+            "value": "• Working capital intensity unchanged at 20% of revenue",
+            "readOnly": true
+          },
+          "B25": {
+            "value": "",
+            "readOnly": true
+          },
+          "A26": {
+            "value": "• Capex demands normalising, not declining (steady-state ≥2.5%)",
+            "readOnly": true
+          },
+          "B26": {
+            "value": "",
+            "readOnly": true
+          },
+          "A27": {
+            "value": "• Terminal growth of 5% assumes mature Indian market without new adjacencies",
+            "readOnly": true
+          },
+          "B27": {
+            "value": "",
+            "readOnly": true
+          },
+          "A28": {
+            "value": "Is the 2,920 price justified by an implicit 6%+ growth assumption AND margin resilience at 24%+?",
+            "readOnly": true
+          },
+          "B28": {
+            "value": "",
+            "readOnly": true
+          },
+          "A29": {
+            "value": "Or does it reflect optionality on M&A (consolidation), adjacent categories (laminates, adhesives), or emerging market share gains not yet modelled?",
+            "readOnly": true
+          },
+          "B29": {
+            "value": "",
+            "readOnly": true
+          },
+          "A30": {
+            "value": "",
+            "readOnly": true
+          },
+          "B30": {
+            "value": "",
+            "readOnly": true
+          },
+          "A31": {
+            "value": "ANALYST CONCLUSION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B31": {
+            "value": "",
+            "readOnly": true,
+            "bold": true
+          },
+          "A32": {
+            "value": "Asian Paints DCF model, built from rigorous assumption layers (WACC, margins, growth), yields a Base case fair value of ₹1,382/share — a 53% downside from current market price. This conclusion is robust: even in Bull scenario (premiumisation, 6.5% growth), fair value reaches only ₹1,750 (40% downside). Sensitivity analysis confirms WACC and terminal growth dominate outcomes; margin and capex assumptions produce materially lower swings. The recommendation is SELL with conviction. Market price appears to embed growth and/or margin assumptions inconsistent with the competitive environment and capex cycle we observe. Unless Asian Paints demonstrates earnings growth well above the 12-16% range we have modelled, or announces transformative M&A/adjacency expansion, downside risk outweighs upside at current valuations. The analytical gap between our 1,382 and the market's 2,920 is not bridged by standard scenarios — it raises a genuine question about what strategic option or growth pathway justifies that premium.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "IC_Summary!B3": {
+      "formula_pattern": "=B5",
+      "expected_value": 1382,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    }
+  }
+}

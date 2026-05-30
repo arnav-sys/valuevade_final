@@ -1,0 +1,1224 @@
+{
+  "sim_id": "020fdf5e-c8c5-4236-a546-f0a1da36caca",
+  "title": "Complete Titan's Integrated Model — Build the CFS and Verify All Integrity Checks",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "CFS",
+        "cells": {
+          "A1": {
+            "value": "TITAN — CASH FLOW STATEMENT",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "All figures in ₹ crores unless stated",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "CASH FLOW FROM OPERATIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "Net Income",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 3106,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 3332,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 4496,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 5440,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 6800,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 8170,
+            "readOnly": true
+          },
+          "I8": {
+            "value": 9420,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "+ Depreciation & Amortisation",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 520,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 605,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 680,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 760,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 878,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 1005,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 1145,
+            "readOnly": true
+          },
+          "I9": {
+            "value": 1285,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "+ Stock-Based Compensation",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 15,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 18,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 20,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 22,
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "H10": {
+            "value": "",
+            "readOnly": false
+          },
+          "I10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "+ Other Non-Cash Items",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 8,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 12,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 15,
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "H11": {
+            "value": "",
+            "readOnly": false
+          },
+          "I11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "+ Deferred Tax",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 25,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 30,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 28,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 30,
+            "readOnly": false
+          },
+          "F12": {
+            "value": "",
+            "readOnly": false
+          },
+          "G12": {
+            "value": "",
+            "readOnly": false
+          },
+          "H12": {
+            "value": "",
+            "readOnly": false
+          },
+          "I12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "− Increase in Trade Receivables",
+            "readOnly": true
+          },
+          "B13": {
+            "value": -50,
+            "readOnly": true
+          },
+          "C13": {
+            "value": -49,
+            "readOnly": true
+          },
+          "D13": {
+            "value": -24,
+            "readOnly": true
+          },
+          "E13": {
+            "value": -124,
+            "readOnly": true
+          },
+          "F13": {
+            "value": -108,
+            "readOnly": true
+          },
+          "G13": {
+            "value": -109,
+            "readOnly": true
+          },
+          "H13": {
+            "value": -114,
+            "readOnly": true
+          },
+          "I13": {
+            "value": -114,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "− Increase in Inventory",
+            "readOnly": true
+          },
+          "B14": {
+            "value": -840,
+            "readOnly": true
+          },
+          "C14": {
+            "value": -841,
+            "readOnly": true
+          },
+          "D14": {
+            "value": -390,
+            "readOnly": true
+          },
+          "E14": {
+            "value": -2386,
+            "readOnly": true
+          },
+          "F14": {
+            "value": -2021,
+            "readOnly": true
+          },
+          "G14": {
+            "value": -1760,
+            "readOnly": true
+          },
+          "H14": {
+            "value": -1725,
+            "readOnly": true
+          },
+          "I14": {
+            "value": -1684,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "+ Increase in Trade Payables",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 780,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 782,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 339,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 1728,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 1468,
+            "readOnly": true
+          },
+          "G15": {
+            "value": 1348,
+            "readOnly": true
+          },
+          "H15": {
+            "value": 1440,
+            "readOnly": true
+          },
+          "I15": {
+            "value": 1426,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Net Cash from Operations (CFO)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": 3566,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 3885,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 5161,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 4145,
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "G17": {
+            "value": "",
+            "readOnly": false
+          },
+          "H17": {
+            "value": "",
+            "readOnly": false
+          },
+          "I17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "CASH FLOW FROM INVESTING",
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "− Capex",
+            "readOnly": true
+          },
+          "B20": {
+            "value": -220,
+            "readOnly": true
+          },
+          "C20": {
+            "value": -340,
+            "readOnly": true
+          },
+          "D20": {
+            "value": -680,
+            "readOnly": true
+          },
+          "E20": {
+            "value": -1902,
+            "readOnly": true
+          },
+          "F20": {
+            "value": -2175,
+            "readOnly": true
+          },
+          "G20": {
+            "value": -2455,
+            "readOnly": true
+          },
+          "H20": {
+            "value": -2745,
+            "readOnly": true
+          },
+          "I20": {
+            "value": -3030,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "− Acquisitions",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C21": {
+            "value": -4600,
+            "readOnly": true
+          },
+          "D21": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E21": {
+            "value": 0,
+            "readOnly": false
+          },
+          "F21": {
+            "value": "",
+            "readOnly": false
+          },
+          "G21": {
+            "value": "",
+            "readOnly": false
+          },
+          "H21": {
+            "value": "",
+            "readOnly": false
+          },
+          "I21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A22": {
+            "value": "− Change in Financial Investments",
+            "readOnly": true
+          },
+          "B22": {
+            "value": -50,
+            "readOnly": true
+          },
+          "C22": {
+            "value": -80,
+            "readOnly": true
+          },
+          "D22": {
+            "value": -100,
+            "readOnly": true
+          },
+          "E22": {
+            "value": -50,
+            "readOnly": true
+          },
+          "F22": {
+            "value": -75,
+            "readOnly": true
+          },
+          "G22": {
+            "value": -100,
+            "readOnly": true
+          },
+          "H22": {
+            "value": -150,
+            "readOnly": true
+          },
+          "I22": {
+            "value": -200,
+            "readOnly": true
+          },
+          "A24": {
+            "value": "Net Cash from Investing (CFI)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B24": {
+            "value": -270,
+            "readOnly": true
+          },
+          "C24": {
+            "value": -5020,
+            "readOnly": true
+          },
+          "D24": {
+            "value": -780,
+            "readOnly": true
+          },
+          "E24": {
+            "value": -1952,
+            "readOnly": false
+          },
+          "F24": {
+            "value": "",
+            "readOnly": false
+          },
+          "G24": {
+            "value": "",
+            "readOnly": false
+          },
+          "H24": {
+            "value": "",
+            "readOnly": false
+          },
+          "I24": {
+            "value": "",
+            "readOnly": false
+          },
+          "A26": {
+            "value": "CASH FLOW FROM FINANCING",
+            "readOnly": true,
+            "bold": true
+          },
+          "A27": {
+            "value": "+ Debt Issuances",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 55,
+            "readOnly": true
+          },
+          "C27": {
+            "value": 50,
+            "readOnly": true
+          },
+          "D27": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E27": {
+            "value": 0,
+            "readOnly": false
+          },
+          "F27": {
+            "value": "",
+            "readOnly": false
+          },
+          "G27": {
+            "value": "",
+            "readOnly": false
+          },
+          "H27": {
+            "value": "",
+            "readOnly": false
+          },
+          "I27": {
+            "value": "",
+            "readOnly": false
+          },
+          "A28": {
+            "value": "− Debt Repayments",
+            "readOnly": true
+          },
+          "B28": {
+            "value": -35,
+            "readOnly": true
+          },
+          "C28": {
+            "value": -45,
+            "readOnly": true
+          },
+          "D28": {
+            "value": -80,
+            "readOnly": true
+          },
+          "E28": {
+            "value": -950,
+            "readOnly": true
+          },
+          "F28": {
+            "value": -1050,
+            "readOnly": true
+          },
+          "G28": {
+            "value": -1150,
+            "readOnly": true
+          },
+          "H28": {
+            "value": -1250,
+            "readOnly": true
+          },
+          "I28": {
+            "value": -1350,
+            "readOnly": true
+          },
+          "A29": {
+            "value": "− Dividends Paid",
+            "readOnly": true
+          },
+          "B29": {
+            "value": -1200,
+            "readOnly": true
+          },
+          "C29": {
+            "value": -1280,
+            "readOnly": true
+          },
+          "D29": {
+            "value": -1650,
+            "readOnly": true
+          },
+          "E29": {
+            "value": -1640,
+            "readOnly": true
+          },
+          "F29": {
+            "value": -2176,
+            "readOnly": true
+          },
+          "G29": {
+            "value": -2720,
+            "readOnly": true
+          },
+          "H29": {
+            "value": -3268,
+            "readOnly": true
+          },
+          "I29": {
+            "value": -3768,
+            "readOnly": true
+          },
+          "A30": {
+            "value": "− Lease Principal Payments",
+            "readOnly": true
+          },
+          "B30": {
+            "value": -120,
+            "readOnly": true
+          },
+          "C30": {
+            "value": -130,
+            "readOnly": true
+          },
+          "D30": {
+            "value": -145,
+            "readOnly": true
+          },
+          "E30": {
+            "value": -158,
+            "readOnly": false
+          },
+          "F30": {
+            "value": "",
+            "readOnly": false
+          },
+          "G30": {
+            "value": "",
+            "readOnly": false
+          },
+          "H30": {
+            "value": "",
+            "readOnly": false
+          },
+          "I30": {
+            "value": "",
+            "readOnly": false
+          },
+          "A32": {
+            "value": "Net Cash from Financing (CFF)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B32": {
+            "value": -1300,
+            "readOnly": true
+          },
+          "C32": {
+            "value": -1405,
+            "readOnly": true
+          },
+          "D32": {
+            "value": -1875,
+            "readOnly": true
+          },
+          "E32": {
+            "value": -2748,
+            "readOnly": false
+          },
+          "F32": {
+            "value": "",
+            "readOnly": false
+          },
+          "G32": {
+            "value": "",
+            "readOnly": false
+          },
+          "H32": {
+            "value": "",
+            "readOnly": false
+          },
+          "I32": {
+            "value": "",
+            "readOnly": false
+          },
+          "A34": {
+            "value": "Net Change in Cash",
+            "readOnly": true,
+            "bold": true
+          },
+          "B34": {
+            "value": -4,
+            "readOnly": true
+          },
+          "C34": {
+            "value": -2540,
+            "readOnly": true
+          },
+          "D34": {
+            "value": 2506,
+            "readOnly": true
+          },
+          "E34": {
+            "value": -555,
+            "readOnly": false
+          },
+          "F34": {
+            "value": "",
+            "readOnly": false
+          },
+          "G34": {
+            "value": "",
+            "readOnly": false
+          },
+          "H34": {
+            "value": "",
+            "readOnly": false
+          },
+          "I34": {
+            "value": "",
+            "readOnly": false
+          },
+          "A35": {
+            "value": "Opening Cash Balance",
+            "readOnly": true
+          },
+          "B35": {
+            "value": 1862,
+            "readOnly": true
+          },
+          "C35": {
+            "value": 1858,
+            "readOnly": true
+          },
+          "D35": {
+            "value": -682,
+            "readOnly": true
+          },
+          "E35": {
+            "value": 1824,
+            "readOnly": true
+          },
+          "F35": {
+            "value": "",
+            "readOnly": false
+          },
+          "G35": {
+            "value": "",
+            "readOnly": false
+          },
+          "H35": {
+            "value": "",
+            "readOnly": false
+          },
+          "I35": {
+            "value": "",
+            "readOnly": false
+          },
+          "A37": {
+            "value": "Closing Cash Balance",
+            "readOnly": true,
+            "bold": true
+          },
+          "B37": {
+            "value": 1858,
+            "readOnly": true
+          },
+          "C37": {
+            "value": -682,
+            "readOnly": true
+          },
+          "D37": {
+            "value": 1824,
+            "readOnly": true
+          },
+          "E37": {
+            "value": 1269,
+            "readOnly": false
+          },
+          "F37": {
+            "value": "",
+            "readOnly": false
+          },
+          "G37": {
+            "value": "",
+            "readOnly": false
+          },
+          "H37": {
+            "value": "",
+            "readOnly": false
+          },
+          "I37": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "TITAN — FINANCIAL ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "SEGMENT ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Jewellery Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "SSSG FY25E",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.08,
+            "readOnly": false
+          },
+          "A7": {
+            "value": "SSSG FY26E",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.075,
+            "readOnly": false
+          },
+          "A8": {
+            "value": "SSSG FY27E",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.07,
+            "readOnly": false
+          },
+          "A9": {
+            "value": "COGS Ratio FY25E",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0.765,
+            "readOnly": false
+          },
+          "A10": {
+            "value": "COGS Ratio FY26E",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0.765,
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Watches & Wearables Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "SSSG FY25E",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 0.12,
+            "readOnly": false
+          },
+          "A14": {
+            "value": "SSSG FY26E",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 0.11,
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Eyewear Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "SSSG FY25E",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 0.15,
+            "readOnly": false
+          },
+          "A18": {
+            "value": "SSSG FY26E",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 0.14,
+            "readOnly": false
+          },
+          "A20": {
+            "value": "OPERATIONAL ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A21": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "A22": {
+            "value": "Dividend Payout Ratio",
+            "readOnly": true
+          },
+          "B22": {
+            "value": 0.4,
+            "readOnly": false
+          },
+          "A23": {
+            "value": "Capex Intensity (% of Sales)",
+            "readOnly": true
+          },
+          "B23": {
+            "value": 0.058,
+            "readOnly": false
+          },
+          "A24": {
+            "value": "Lease Principal Annual",
+            "readOnly": true
+          },
+          "B24": {
+            "value": 158,
+            "readOnly": true
+          },
+          "A26": {
+            "value": "BALANCE SHEET ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A27": {
+            "value": "Receivables Days",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 32,
+            "readOnly": false
+          },
+          "A28": {
+            "value": "Inventory Days",
+            "readOnly": true
+          },
+          "B28": {
+            "value": 152,
+            "readOnly": false
+          },
+          "A29": {
+            "value": "Payables Days",
+            "readOnly": true
+          },
+          "B29": {
+            "value": 68,
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Integrity",
+        "cells": {
+          "A1": {
+            "value": "MODEL INTEGRITY CHECKS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Check Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "FY25E Status",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "FY26E Status",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "Expected Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "BS Integrity (Assets − (Liabilities + Equity))",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0,
+            "readOnly": false
+          },
+          "C4": {
+            "value": 0,
+            "readOnly": false
+          },
+          "D4": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "RE Roll (Closing RE − (Opening RE + NI − Dividends))",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0,
+            "readOnly": false
+          },
+          "C5": {
+            "value": 0,
+            "readOnly": false
+          },
+          "D5": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Cash Reconciliation (CFS Closing Cash − BS Cash)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0,
+            "readOnly": false
+          },
+          "C6": {
+            "value": 0,
+            "readOnly": false
+          },
+          "D6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "SENSITIVITY TESTS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Test 1: Jewellery COGS Ratio to 78%",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "CFO FY25E (baseline ₹4,145 cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 4082,
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Test 2: Jewellery SSSG recession",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "Revenue FY25E (baseline ₹32,850 cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 31400,
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "CFS!E10": {
+      "formula_pattern": "=25",
+      "expected_value": 25,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "CFS!E11": {
+      "formula_pattern": "=18",
+      "expected_value": 18,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "CFS!E12": {
+      "formula_pattern": "=35",
+      "expected_value": 35,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "CFS!E17": {
+      "formula_pattern": "=SUM(E8:E15)",
+      "expected_value": 4145,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "CFS!E21": {
+      "formula_pattern": "=0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "CFS!E24": {
+      "formula_pattern": "=SUM(E20:E22)",
+      "expected_value": -1952,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "CFS!E27": {
+      "formula_pattern": "=0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "CFS!E30": {
+      "formula_pattern": "=158",
+      "expected_value": 158,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "CFS!E32": {
+      "formula_pattern": "=SUM(E27:E30)",
+      "expected_value": -2748,
+      "type": "number",
+      "tolerance": 15,
+      "points": 12
+    },
+    "CFS!E34": {
+      "formula_pattern": "=E17+E24+E32",
+      "expected_value": -555,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "CFS!E35": {
+      "formula_pattern": "=D37",
+      "expected_value": 1824,
+      "type": "number",
+      "tolerance": 10,
+      "points": 5
+    },
+    "CFS!E37": {
+      "formula_pattern": "=E34+E35",
+      "expected_value": 1269,
+      "type": "number",
+      "tolerance": 10,
+      "points": 12
+    },
+    "Integrity!B4": {
+      "formula_pattern": "=0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Integrity!B5": {
+      "formula_pattern": "=0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Integrity!B6": {
+      "formula_pattern": "=0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    }
+  }
+}

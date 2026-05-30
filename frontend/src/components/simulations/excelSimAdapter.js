@@ -152,7 +152,7 @@ export function adaptSimToWorkbook(sim) {
   //                      type:"number", tolerance: 0.01, points: 10 }
   //   }
   const mw = config.multi_tab_excel_workbook;
-  if (mw && Array.isArray(mw.sheets) && mw.sheets.length > 0) {
+    if (mw && Array.isArray(mw.sheets) && mw.sheets.length > 0) {
     const sheets = mw.sheets.map((s) => {
       const cells = {};
       let maxC = 0; let maxR = 0;
@@ -194,7 +194,14 @@ export function adaptSimToWorkbook(sim) {
     return {
       header,
       sheets,
-      scoring: { max_points: totalPoints, mode: 'auto' },
+      // When the LLM-populate pass couldn't produce per-cell expected_answers
+      // (structural template sims like "Build the shell from scratch"),
+      // fall back to manual scoring — the workbook still renders and the
+      // student still gets all the editable cells, but Submit just stores
+      // the work instead of trying to auto-grade.
+      scoring: Object.keys(ea).length === 0
+        ? { max_points: 100, mode: 'manual' }
+        : { max_points: totalPoints, mode: 'auto' },
     };
   }
 

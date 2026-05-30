@@ -1,0 +1,657 @@
+{
+  "sim_id": "b809fa79-30bc-4e12-9897-d537a964297a",
+  "title": "Building the Reported-to-Core PAT Bridge — Shakti Auto Components",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Raw Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY22 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY23 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY24 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Footnote",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue from Operations",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2060,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 2420,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Other Income",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 42,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 68,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 124,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "Note 23",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Cost of Materials",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1130,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1310,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1540,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Employee Benefits",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 180,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 215,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 260,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Other Expenses",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 265,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 315,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 370,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Depreciation & Amortisation",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 75,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 92,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 108,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Finance Costs",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 38,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 42,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 38,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Exceptional Items (Net)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 15,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 95,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "Note 31",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Profit Before Tax",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 104,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 169,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 325,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Tax Expense",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 28,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 42,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 65,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "Note 34",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Reported PAT",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 76,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 127,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 260,
+            "readOnly": true
+          },
+          "E12": {
+            "value": "",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Bridge",
+        "cells": {
+          "A1": {
+            "value": "PAT Bridge FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "₹ crore",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reported PAT FY24",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 260,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Less: Land Sale Gain (post-tax)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Less: Forex Gain (post-tax)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Less: Treasury Income (post-tax)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Add: Restructuring Charge (post-tax)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Less: DTA Reversal",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Less: Tax Normalisation Residual",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "CORE PAT FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "PAT Bridge FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": "₹ crore",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Reported PAT FY23",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 127,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Less: Insurance Claim (post-tax)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "Less: Forex Gain (post-tax)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Less: Treasury Income (post-tax)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "CORE PAT FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Growth Comparison",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A19": {
+            "value": "Reported PAT Growth FY24 vs FY23",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "Core PAT Growth FY24 vs FY23",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A22": {
+            "value": "Verdict (one sentence):",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Notes",
+        "cells": {
+          "A1": {
+            "value": "Key Adjustments & Tax Rates",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY24 Exceptional Items Breakdown:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Land Sale Gain (gross)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 110,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Restructuring Charge",
+            "readOnly": true
+          },
+          "B4": {
+            "value": -15,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Net Exceptional (as reported)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 95,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY24 Other Income Breakdown:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "Forex Gain",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 35,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Treasury/Interest Income",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 89,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Other",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Other Income FY24",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 124,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "FY23 Exceptional & Other Income:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "Insurance Claim",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 15,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Forex Gain",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 8,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Treasury/Interest Income",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 60,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Tax Rates:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A19": {
+            "value": "Standard Corporate Tax Rate",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Post-tax multiplier (1 - tax rate)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 0.7483,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "DTA recognised in FY24",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 18,
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Bridge!B3": {
+      "formula_pattern": "=-110*0.7483",
+      "expected_value": -82.31,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Bridge!B4": {
+      "formula_pattern": "=-35*0.7483",
+      "expected_value": -26.19,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Bridge!B5": {
+      "formula_pattern": "=-89*0.7483",
+      "expected_value": -66.6,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Bridge!B6": {
+      "formula_pattern": "=15*0.7483",
+      "expected_value": 11.22,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Bridge!B7": {
+      "formula_pattern": "=-18",
+      "expected_value": -18,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Bridge!B8": {
+      "formula_pattern": "=-20",
+      "expected_value": -20,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Bridge!B9": {
+      "formula_pattern": "=SUM(B2:B8)",
+      "expected_value": 57.12,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Bridge!B13": {
+      "formula_pattern": "=-15*0.7483",
+      "expected_value": -11.22,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Bridge!B14": {
+      "formula_pattern": "=-8*0.7483",
+      "expected_value": -5.99,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Bridge!B15": {
+      "formula_pattern": "=-60*0.7483",
+      "expected_value": -44.9,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Bridge!B16": {
+      "formula_pattern": "=B12+B13+B14+B15",
+      "expected_value": 64.89,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Bridge!B19": {
+      "formula_pattern": "=(260/127-1)*100",
+      "expected_value": 104.72,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Bridge!B20": {
+      "formula_pattern": "=(B9/B16-1)*100",
+      "expected_value": -12.06,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Bridge!B22": {
+      "formula_pattern": "Reported PAT growth of 105% is misleading; core PAT declined 12%, driven entirely by ₹110cr land sale, treasury income, and DTA recognition—underlying auto operations deteriorated.",
+      "expected_value": "Reported PAT growth of 105% is misleading; core PAT declined 12%, driven entirely by ₹110cr land sale, treasury income, and DTA recognition—underlying auto operations deteriorated.",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

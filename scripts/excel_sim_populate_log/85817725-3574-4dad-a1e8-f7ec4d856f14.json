@@ -1,0 +1,1017 @@
+{
+  "sim_id": "85817725-3574-4dad-a1e8-f7ec4d856f14",
+  "title": "The Four-Technique CFO Forensic Scan — Normalising Cash Flow Reality",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "BIDL_CFO_Forensic",
+        "cells": {
+          "A1": {
+            "value": "Line Item (₹ crore)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "5Y Sum",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reported CFO",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1820,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1945,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 2180,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 2350,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Reported PAT",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 312,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 345,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 389,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 432,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 478,
+            "readOnly": true
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2840,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 3120,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 3450,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 3890,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 4250,
+            "readOnly": true
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Interest Paid (Financing)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 145,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 165,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 190,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 215,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 245,
+            "readOnly": true
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Interest Capitalised (Ind AS 23)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1280,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1420,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 1580,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 1910,
+            "readOnly": true
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Total Interest Cost",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1425,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 1585,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 1770,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 1965,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 2155,
+            "readOnly": true
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Reported Capex",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1640,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 1720,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 1890,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 2050,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Non-Cash Adj: D&A",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 358,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 372,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 395,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 418,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 443,
+            "readOnly": true
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Non-Cash Adj: Provisions",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 89,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 112,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 128,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 138,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 142,
+            "readOnly": true
+          },
+          "G12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Non-Cash Adj: Fair Value",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 35,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 52,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 71,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 82,
+            "readOnly": true
+          },
+          "F13": {
+            "value": 89,
+            "readOnly": true
+          },
+          "G13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "Non-Cash Adj: Other",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 58,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 82,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 118,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 152,
+            "readOnly": true
+          },
+          "F14": {
+            "value": 176,
+            "readOnly": true
+          },
+          "G14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Non-Cash Adj: Total",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 540,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 618,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 712,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 790,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 850,
+            "readOnly": true
+          },
+          "G15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "TECHNIQUE 1: Normalised CFO (T1)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "G17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "TECHNIQUE 4: Adjusted CFO (T1+T4)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "C19": {
+            "value": "",
+            "readOnly": false
+          },
+          "D19": {
+            "value": "",
+            "readOnly": false
+          },
+          "E19": {
+            "value": "",
+            "readOnly": false
+          },
+          "F19": {
+            "value": "",
+            "readOnly": false
+          },
+          "G19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "Adjusted FCF",
+            "readOnly": true,
+            "bold": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          },
+          "C21": {
+            "value": "",
+            "readOnly": false
+          },
+          "D21": {
+            "value": "",
+            "readOnly": false
+          },
+          "E21": {
+            "value": "",
+            "readOnly": false
+          },
+          "F21": {
+            "value": "",
+            "readOnly": false
+          },
+          "G21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A23": {
+            "value": "QoE Ratio (Reported) %",
+            "readOnly": true
+          },
+          "B23": {
+            "value": "",
+            "readOnly": false
+          },
+          "C23": {
+            "value": "",
+            "readOnly": false
+          },
+          "D23": {
+            "value": "",
+            "readOnly": false
+          },
+          "E23": {
+            "value": "",
+            "readOnly": false
+          },
+          "F23": {
+            "value": "",
+            "readOnly": false
+          },
+          "A24": {
+            "value": "QoE Ratio (Normalised) %",
+            "readOnly": true
+          },
+          "B24": {
+            "value": "",
+            "readOnly": false
+          },
+          "C24": {
+            "value": "",
+            "readOnly": false
+          },
+          "D24": {
+            "value": "",
+            "readOnly": false
+          },
+          "E24": {
+            "value": "",
+            "readOnly": false
+          },
+          "F24": {
+            "value": "",
+            "readOnly": false
+          },
+          "A26": {
+            "value": "Non-Cash 'Other' % of Total",
+            "readOnly": true
+          },
+          "B26": {
+            "value": "",
+            "readOnly": false
+          },
+          "C26": {
+            "value": "",
+            "readOnly": false
+          },
+          "D26": {
+            "value": "",
+            "readOnly": false
+          },
+          "E26": {
+            "value": "",
+            "readOnly": false
+          },
+          "F26": {
+            "value": "",
+            "readOnly": false
+          },
+          "A27": {
+            "value": "Flag if > 15% threshold",
+            "readOnly": true
+          },
+          "B27": {
+            "value": "",
+            "readOnly": false
+          },
+          "C27": {
+            "value": "",
+            "readOnly": false
+          },
+          "D27": {
+            "value": "",
+            "readOnly": false
+          },
+          "E27": {
+            "value": "",
+            "readOnly": false
+          },
+          "F27": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Analysis",
+        "cells": {
+          "A1": {
+            "value": "Analysis Questions",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Response",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: FY23 Reported CFO vs Adjusted CFO — absolute distortion (₹ Cr)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: 5-year cumulative Adjusted FCF (₹ Cr)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: FY23 QoE Ratio (Normalised) — is peer benchmark 85-105% met? (Yes/No)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: Integrated Rating Recommendation (Reduce/Hold/Buy)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: List one catalyst triggering market recognition within 24 months.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Reference",
+        "cells": {
+          "A1": {
+            "value": "Peer Benchmark (QoE %)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "85-105%",
+            "readOnly": true
+          },
+          "A2": {
+            "value": "Non-Cash 'Other' Threshold (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "15%",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Session 5 Finding: EBITDA Margin (Reported)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "24%",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Session 5 Finding: EBITDA Margin (Normalised)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "13%",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Status",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "Construction-phase value trap",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "BIDL_CFO_Forensic!G2": {
+      "formula_pattern": "=SUM(B2:F2)",
+      "expected_value": 10695,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "BIDL_CFO_Forensic!G3": {
+      "formula_pattern": "=SUM(B3:F3)",
+      "expected_value": 1956,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "BIDL_CFO_Forensic!G4": {
+      "formula_pattern": "=SUM(B4:F4)",
+      "expected_value": 17550,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "BIDL_CFO_Forensic!G6": {
+      "formula_pattern": "=SUM(B6:F6)",
+      "expected_value": 960,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "BIDL_CFO_Forensic!G7": {
+      "formula_pattern": "=SUM(B7:F7)",
+      "expected_value": 7940,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "BIDL_CFO_Forensic!G9": {
+      "formula_pattern": "=SUM(B9:F9)",
+      "expected_value": 8500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "BIDL_CFO_Forensic!B17": {
+      "formula_pattern": "=B2-B6",
+      "expected_value": 1675,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!C17": {
+      "formula_pattern": "=C2-C6",
+      "expected_value": 1780,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!D17": {
+      "formula_pattern": "=D2-D6",
+      "expected_value": 1990,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!E17": {
+      "formula_pattern": "=E2-E6",
+      "expected_value": 2135,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!F17": {
+      "formula_pattern": "=F2-F6",
+      "expected_value": 2155,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!G17": {
+      "formula_pattern": "=SUM(B17:F17)",
+      "expected_value": 9735,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!B19": {
+      "formula_pattern": "=B17-B7",
+      "expected_value": 395,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!C19": {
+      "formula_pattern": "=C17-C7",
+      "expected_value": 360,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!D19": {
+      "formula_pattern": "=D17-D7",
+      "expected_value": 410,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!E19": {
+      "formula_pattern": "=E17-E7",
+      "expected_value": 385,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!F19": {
+      "formula_pattern": "=F17-F7",
+      "expected_value": 245,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!G19": {
+      "formula_pattern": "=SUM(B19:F19)",
+      "expected_value": 1795,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!B21": {
+      "formula_pattern": "=B19-B9",
+      "expected_value": -1245,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!C21": {
+      "formula_pattern": "=C19-C9",
+      "expected_value": -1360,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!D21": {
+      "formula_pattern": "=D19-D9",
+      "expected_value": -1480,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!E21": {
+      "formula_pattern": "=E19-E9",
+      "expected_value": -1665,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!F21": {
+      "formula_pattern": "=F19-F9",
+      "expected_value": -955,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!G21": {
+      "formula_pattern": "=SUM(B21:F21)",
+      "expected_value": -6705,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "BIDL_CFO_Forensic!B23": {
+      "formula_pattern": "=(B2/B3)*100",
+      "expected_value": 583.33,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!C23": {
+      "formula_pattern": "=(C2/C3)*100",
+      "expected_value": 563.77,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!D23": {
+      "formula_pattern": "=(D2/D3)*100",
+      "expected_value": 560.41,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!E23": {
+      "formula_pattern": "=(E2/E3)*100",
+      "expected_value": 544.44,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!F23": {
+      "formula_pattern": "=(F2/F3)*100",
+      "expected_value": 502.09,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!B24": {
+      "formula_pattern": "=(B19/B3)*100",
+      "expected_value": 126.6,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!C24": {
+      "formula_pattern": "=(C19/C3)*100",
+      "expected_value": 104.35,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!D24": {
+      "formula_pattern": "=(D19/D3)*100",
+      "expected_value": 105.4,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!E24": {
+      "formula_pattern": "=(E19/E3)*100",
+      "expected_value": 89.12,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!F24": {
+      "formula_pattern": "=(F19/F3)*100",
+      "expected_value": 51.26,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!B26": {
+      "formula_pattern": "=(B14/B15)*100",
+      "expected_value": 10.74,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!C26": {
+      "formula_pattern": "=(C14/C15)*100",
+      "expected_value": 13.27,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!D26": {
+      "formula_pattern": "=(D14/D15)*100",
+      "expected_value": 16.57,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!E26": {
+      "formula_pattern": "=(E14/E15)*100",
+      "expected_value": 19.24,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!F26": {
+      "formula_pattern": "=(F14/F15)*100",
+      "expected_value": 20.71,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "BIDL_CFO_Forensic!B27": {
+      "formula_pattern": "=IF(B26>15,\"YELLOW\",\"OK\")",
+      "expected_value": "OK",
+      "type": "text",
+      "tolerance": 0,
+      "points": 6
+    },
+    "BIDL_CFO_Forensic!C27": {
+      "formula_pattern": "=IF(C26>15,\"YELLOW\",\"OK\")",
+      "expected_value": "OK",
+      "type": "text",
+      "tolerance": 0,
+      "points": 6
+    },
+    "BIDL_CFO_Forensic!D27": {
+      "formula_pattern": "=IF(D26>15,\"YELLOW\",\"OK\")",
+      "expected_value": "YELLOW",
+      "type": "text",
+      "tolerance": 0,
+      "points": 6
+    },
+    "BIDL_CFO_Forensic!E27": {
+      "formula_pattern": "=IF(E26>15,\"YELLOW\",\"OK\")",
+      "expected_value": "YELLOW",
+      "type": "text",
+      "tolerance": 0,
+      "points": 6
+    },
+    "BIDL_CFO_Forensic!F27": {
+      "formula_pattern": "=IF(F26>15,\"YELLOW\",\"OK\")",
+      "expected_value": "YELLOW",
+      "type": "text",
+      "tolerance": 0,
+      "points": 6
+    },
+    "Analysis!B2": {
+      "formula_pattern": "=BIDL_CFO_Forensic!F2-BIDL_CFO_Forensic!F19",
+      "expected_value": 2155,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Analysis!B3": {
+      "formula_pattern": "=BIDL_CFO_Forensic!G21",
+      "expected_value": -6705,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Analysis!B4": {
+      "formula_pattern": "=IF(BIDL_CFO_Forensic!F24<85,\"No\",\"Yes\")",
+      "expected_value": "No",
+      "type": "text",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Analysis!B5": {
+      "formula_pattern": "text",
+      "expected_value": "Reduce",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Analysis!B6": {
+      "formula_pattern": "text",
+      "expected_value": "Project commissioning events FY24-FY26 forcing recognition of true economic performance as capitalised interest reverses through depreciation",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

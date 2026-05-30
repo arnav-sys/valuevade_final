@@ -1,0 +1,1121 @@
+{
+  "sim_id": "93f04954-3351-4ea3-bac4-ebe5425f1d92",
+  "title": "The Working Capital Forensic Lab — Spotting Channel Stuffing Before the Crash",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "AutoAncillaryCo_Raw_Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 5100,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 6200,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 7650,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 3150,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 4600,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 5660,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Profit EBIT (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 420,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 510,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 620,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 765,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 280,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 340,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 410,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 500,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Operating Cash Flow (₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 310,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 330,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 280,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 250,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Opening Inventory (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 520,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 620,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 820,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 1240,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Closing Inventory (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 620,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 820,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 1240,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 1920,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Opening Trade Receivables (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 650,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 780,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 1080,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 1580,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Closing Trade Receivables (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 780,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 1080,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 1580,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 2350,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Opening Trade Payables (₹Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 380,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 440,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 520,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 580,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Closing Trade Payables (₹Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 440,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 520,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 580,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 650,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Opening Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 2800,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 4700,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Closing Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 4700,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 5900,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Avg Inventory (₹Cr)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Avg Trade Receivables (₹Cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "C17": {
+            "value": "",
+            "readOnly": false
+          },
+          "D17": {
+            "value": "",
+            "readOnly": false
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Avg Trade Payables (₹Cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Avg Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "C19": {
+            "value": "",
+            "readOnly": false
+          },
+          "D19": {
+            "value": "",
+            "readOnly": false
+          },
+          "E19": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Efficiency_Ratios",
+        "cells": {
+          "A1": {
+            "value": "Efficiency Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "4-Yr Change",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue Growth YoY %",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Asset Turnover (x)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "DIO (days)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "DSO (days)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "DPO (days)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "CCC (days)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "OCF / Net Profit (x)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Forensic_Analysis",
+        "cells": {
+          "A1": {
+            "value": "FORENSIC FINDINGS & SUMMARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Red Flag #1: Inventory Expansion",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "DIO Expansion (days):",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Closing Inv Growth %:",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Revenue Growth %:",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Red Flag #2: Receivables Stretch (Channel Stuffing)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A7": {
+            "value": "DSO Expansion (days):",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "AR Growth %:",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Red Flag #3: Cash Profit Divergence",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "OCF/NP Ratio FY20:",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "OCF/NP Ratio FY23:",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "OCF Absolute Change (₹Cr):",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "CCC Expansion (days):",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "EXECUTIVE FORENSIC SUMMARY (5-6 sentences):",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Write your forensic summary here:",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "AutoAncillaryCo_Raw_Data!B16": {
+      "formula_pattern": "=(B7+B8)/2",
+      "expected_value": 570,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!C16": {
+      "formula_pattern": "=(C7+C8)/2",
+      "expected_value": 720,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!D16": {
+      "formula_pattern": "=(D7+D8)/2",
+      "expected_value": 1030,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!E16": {
+      "formula_pattern": "=(E7+E8)/2",
+      "expected_value": 1580,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!B17": {
+      "formula_pattern": "=(B9+B10)/2",
+      "expected_value": 715,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!C17": {
+      "formula_pattern": "=(C9+C10)/2",
+      "expected_value": 930,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!D17": {
+      "formula_pattern": "=(D9+D10)/2",
+      "expected_value": 1330,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!E17": {
+      "formula_pattern": "=(E9+E10)/2",
+      "expected_value": 1965,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!B18": {
+      "formula_pattern": "=(B11+B12)/2",
+      "expected_value": 410,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!C18": {
+      "formula_pattern": "=(C11+C12)/2",
+      "expected_value": 480,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!D18": {
+      "formula_pattern": "=(D11+D12)/2",
+      "expected_value": 550,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!E18": {
+      "formula_pattern": "=(E11+E12)/2",
+      "expected_value": 615,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!B19": {
+      "formula_pattern": "=(B13+B14)/2",
+      "expected_value": 3000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!C19": {
+      "formula_pattern": "=(C13+C14)/2",
+      "expected_value": 3500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!D19": {
+      "formula_pattern": "=(D13+D14)/2",
+      "expected_value": 4250,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "AutoAncillaryCo_Raw_Data!E19": {
+      "formula_pattern": "=(E13+E14)/2",
+      "expected_value": 5300,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Efficiency_Ratios!B2": {
+      "formula_pattern": "0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Efficiency_Ratios!C2": {
+      "formula_pattern": "=(C2-B2)/B2*100",
+      "expected_value": 21.43,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 3
+    },
+    "Efficiency_Ratios!D2": {
+      "formula_pattern": "=(D2-C2)/C2*100",
+      "expected_value": 21.57,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 3
+    },
+    "Efficiency_Ratios!E2": {
+      "formula_pattern": "=(E2-D2)/D2*100",
+      "expected_value": 23.39,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 3
+    },
+    "Efficiency_Ratios!F2": {
+      "formula_pattern": "=(E2-B2)/B2*100",
+      "expected_value": 82.14,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 3
+    },
+    "Efficiency_Ratios!B3": {
+      "formula_pattern": "=B2/B19",
+      "expected_value": 1.4,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Efficiency_Ratios!C3": {
+      "formula_pattern": "=C2/C19",
+      "expected_value": 1.46,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Efficiency_Ratios!D3": {
+      "formula_pattern": "=D2/D19",
+      "expected_value": 1.46,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Efficiency_Ratios!E3": {
+      "formula_pattern": "=E2/E19",
+      "expected_value": 1.44,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Efficiency_Ratios!F3": {
+      "formula_pattern": "=E3-B3",
+      "expected_value": 0.04,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 3
+    },
+    "Efficiency_Ratios!B4": {
+      "formula_pattern": "=365*B16/B3",
+      "expected_value": 66,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!C4": {
+      "formula_pattern": "=365*C16/C3",
+      "expected_value": 77,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!D4": {
+      "formula_pattern": "=365*D16/D3",
+      "expected_value": 90,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!E4": {
+      "formula_pattern": "=365*E16/E3",
+      "expected_value": 102,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!F4": {
+      "formula_pattern": "=E4-B4",
+      "expected_value": 36,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!B5": {
+      "formula_pattern": "=365*B17/B2",
+      "expected_value": 62,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!C5": {
+      "formula_pattern": "=365*C17/C2",
+      "expected_value": 67,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!D5": {
+      "formula_pattern": "=365*D17/D2",
+      "expected_value": 78,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!E5": {
+      "formula_pattern": "=365*E17/E2",
+      "expected_value": 94,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!F5": {
+      "formula_pattern": "=E5-B5",
+      "expected_value": 32,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!B6": {
+      "formula_pattern": "=365*B18/B3",
+      "expected_value": 47,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!C6": {
+      "formula_pattern": "=365*C18/C3",
+      "expected_value": 46,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!D6": {
+      "formula_pattern": "=365*D18/D3",
+      "expected_value": 44,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!E6": {
+      "formula_pattern": "=365*E18/E3",
+      "expected_value": 43,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!F6": {
+      "formula_pattern": "=E6-B6",
+      "expected_value": -4,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Efficiency_Ratios!B7": {
+      "formula_pattern": "=B4+B5-B6",
+      "expected_value": 81,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Efficiency_Ratios!C7": {
+      "formula_pattern": "=C4+C5-C6",
+      "expected_value": 98,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Efficiency_Ratios!D7": {
+      "formula_pattern": "=D4+D5-D6",
+      "expected_value": 124,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Efficiency_Ratios!E7": {
+      "formula_pattern": "=E4+E5-E6",
+      "expected_value": 153,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Efficiency_Ratios!F7": {
+      "formula_pattern": "=E7-B7",
+      "expected_value": 72,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Efficiency_Ratios!B8": {
+      "formula_pattern": "=B6/B5",
+      "expected_value": 1.11,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Efficiency_Ratios!C8": {
+      "formula_pattern": "=C6/C5",
+      "expected_value": 0.97,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Efficiency_Ratios!D8": {
+      "formula_pattern": "=D6/D5",
+      "expected_value": 0.68,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Efficiency_Ratios!E8": {
+      "formula_pattern": "=E6/E5",
+      "expected_value": 0.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Forensic_Analysis!B3": {
+      "formula_pattern": "102-66",
+      "expected_value": 36,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Forensic_Analysis!B4": {
+      "formula_pattern": "=(1920-620)/620*100",
+      "expected_value": 210,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Forensic_Analysis!B5": {
+      "formula_pattern": "=(7650-4200)/4200*100",
+      "expected_value": 82.14,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Forensic_Analysis!B7": {
+      "formula_pattern": "94-62",
+      "expected_value": 32,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Forensic_Analysis!B8": {
+      "formula_pattern": "=(2350-650)/650*100",
+      "expected_value": 261.54,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Forensic_Analysis!B10": {
+      "formula_pattern": "310/280",
+      "expected_value": 1.11,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Forensic_Analysis!B11": {
+      "formula_pattern": "250/500",
+      "expected_value": 0.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Forensic_Analysis!B12": {
+      "formula_pattern": "250-310",
+      "expected_value": -60,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Forensic_Analysis!B13": {
+      "formula_pattern": "153-81",
+      "expected_value": 72,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Forensic_Analysis!A17": {
+      "formula_pattern": "text_summary",
+      "expected_value": "AutoAncillaryCo exhibits classic channel stuffing forensic red flags. DIO expanded 36 days (66 to 102) while revenue grew only 82%, indicating inventory accumulation ahead of demand—closing inventory surged 210% versus 82% revenue growth. DSO expanded 32 days (62 to 94), showing dealer/OEM receivables stretching, classic channel stuffing indicator with AR up 261% while revenue grew 82%. Most concerning: OCF/Net Profit ratio collapsed from 1.11x (FY20) to 0.50x (FY23), revealing reported profits are not converting to cash; only 50 cents of operating cash flow per rupee of net profit in FY23 versus 111 cents in FY20. Operating cash flow declined 19% in absolute terms (₹310Cr to ₹250Cr) despite net profit surging 79% (₹280Cr to ₹500Cr), a glaring divergence. CCC expanded 72 days (81 to 153), trapping incremental working capital equivalent to 20+ crore per 100 crore of revenue growth. Conclusion: 82% reported revenue growth is manufactured through aggressive working capital absorption and will reverse via receivables write-offs or forced deceleration. RECOMMEND POSITION EXIT.",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

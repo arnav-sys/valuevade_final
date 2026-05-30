@@ -1,0 +1,1323 @@
+{
+  "sim_id": "56d7bed6-4852-455c-89f9-a6f61583294b",
+  "title": "The DuPont Laboratory — Decomposing Four Indian Companies",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "HUL",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY23 Value (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 58154,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 27742,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 16470,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 13942,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 165,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Pre-Tax Profit",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 13777,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Tax",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 3815,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Net Profit",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 9962,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 24200,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Shareholders Equity",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 9300,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Net Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Asset Turnover",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Equity Multiplier",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "3-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Tax Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Interest Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "Operating Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "5-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "DMart",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY23 Value (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 42840,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 36420,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3220,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 40,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Pre-Tax Profit",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 3180,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Tax",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 802,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Net Profit",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2378,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 11300,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Shareholders Equity",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 8650,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 200,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Net Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Asset Turnover",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Equity Multiplier",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "3-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Tax Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Interest Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "Operating Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "5-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "HDFC Bank",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY23 Value (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (Total Income)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 89620,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Operating Expenses",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 42105,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Provisions & Contingencies",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 12450,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT (Operating Profit)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 35065,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense (embedded)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 450,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Pre-Tax Profit",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 34615,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Tax",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 9284,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Net Profit",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 25331,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 1890000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Shareholders Equity",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 160000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 1600000,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Net Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Asset Turnover",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Equity Multiplier",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "3-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Tax Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Interest Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "Operating Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "5-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "LeverageCo",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY23 Value (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 15800,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 8900,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 4700,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2480,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Pre-Tax Profit",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 2220,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Tax",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 466,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Net Profit",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1754,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 9650,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Shareholders Equity",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 1600,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 8050,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Net Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Asset Turnover",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Equity Multiplier",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "3-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Tax Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Interest Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "Operating Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "5-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Dashboard",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "3-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "5-Step ROE",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Net Margin",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Equity Multiplier",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Interest Burden",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Archetype",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Risk Flag",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "HUL",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "DMart",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "LeverageCo",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "H5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Analyst Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "Note:",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "HUL!B14": {
+      "formula_pattern": "=B9/B2",
+      "expected_value": 0.1712,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HUL!B15": {
+      "formula_pattern": "=B2/B10",
+      "expected_value": 2.4021,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HUL!B16": {
+      "formula_pattern": "=B10/B11",
+      "expected_value": 2.6022,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HUL!B17": {
+      "formula_pattern": "=B14*B15*B16",
+      "expected_value": 1.0709,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HUL!B18": {
+      "formula_pattern": "=B9/B7",
+      "expected_value": 0.7234,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "HUL!B19": {
+      "formula_pattern": "=B7/B5",
+      "expected_value": 0.9882,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HUL!B20": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.2396,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HUL!B21": {
+      "formula_pattern": "=B18*B19*B20*B15*B16",
+      "expected_value": 1.0709,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B14": {
+      "formula_pattern": "=B9/B2",
+      "expected_value": 0.0555,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B15": {
+      "formula_pattern": "=B2/B10",
+      "expected_value": 3.7903,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B16": {
+      "formula_pattern": "=B10/B11",
+      "expected_value": 1.3066,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B17": {
+      "formula_pattern": "=B14*B15*B16",
+      "expected_value": 0.2746,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B18": {
+      "formula_pattern": "=B9/B7",
+      "expected_value": 0.7481,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "DMart!B19": {
+      "formula_pattern": "=B7/B5",
+      "expected_value": 0.9876,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B20": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.0751,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "DMart!B21": {
+      "formula_pattern": "=B18*B19*B20*B15*B16",
+      "expected_value": 0.2746,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B14": {
+      "formula_pattern": "=B9/B2",
+      "expected_value": 0.2827,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B15": {
+      "formula_pattern": "=B2/B10",
+      "expected_value": 0.0474,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B16": {
+      "formula_pattern": "=B10/B11",
+      "expected_value": 11.8125,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B17": {
+      "formula_pattern": "=B14*B15*B16",
+      "expected_value": 0.1584,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B18": {
+      "formula_pattern": "=B9/B7",
+      "expected_value": 0.7327,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "HDFC Bank!B19": {
+      "formula_pattern": "=B7/B5",
+      "expected_value": 0.9872,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B20": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.3912,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "HDFC Bank!B21": {
+      "formula_pattern": "=B18*B19*B20*B15*B16",
+      "expected_value": 0.1584,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B14": {
+      "formula_pattern": "=B9/B2",
+      "expected_value": 0.1111,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B15": {
+      "formula_pattern": "=B2/B10",
+      "expected_value": 1.6373,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B16": {
+      "formula_pattern": "=B10/B11",
+      "expected_value": 6.0313,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B17": {
+      "formula_pattern": "=B14*B15*B16",
+      "expected_value": 1.0969,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B18": {
+      "formula_pattern": "=B9/B7",
+      "expected_value": 0.7897,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "LeverageCo!B19": {
+      "formula_pattern": "=B7/B5",
+      "expected_value": 0.5277,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B20": {
+      "formula_pattern": "=B5/B2",
+      "expected_value": 0.2975,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "LeverageCo!B21": {
+      "formula_pattern": "=B18*B19*B20*B15*B20",
+      "expected_value": 1.0969,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Dashboard!B2": {
+      "formula_pattern": "=HUL!B17",
+      "expected_value": 1.0709,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!C2": {
+      "formula_pattern": "=HUL!B21",
+      "expected_value": 1.0709,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!D2": {
+      "formula_pattern": "=HUL!B14",
+      "expected_value": 0.1712,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!E2": {
+      "formula_pattern": "=HUL!B16",
+      "expected_value": 2.6022,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!F2": {
+      "formula_pattern": "=HUL!B19",
+      "expected_value": 0.9882,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!G2": {
+      "formula_pattern": "=IF(AND(D2>0.15,E2<3),\"Margin Champion\",IF(AND(B2>0.15,E2<2.5),\"Turnover King\",IF(E2>9,\"Bank/Financial\",IF(AND(F2<0.7,E2>4),\"Leverage Trap\",\"Mixed Profile\"))))",
+      "expected_value": "Margin Champion",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Dashboard!H2": {
+      "formula_pattern": "=IF(F2<0.7,\"High Interest Burden\",IF(E2>4,\"Elevated Leverage\",\"Healthy\"))",
+      "expected_value": "Healthy",
+      "type": "text",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Dashboard!B3": {
+      "formula_pattern": "=DMart!B17",
+      "expected_value": 0.2746,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!C3": {
+      "formula_pattern": "=DMart!B21",
+      "expected_value": 0.2746,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!D3": {
+      "formula_pattern": "=DMart!B14",
+      "expected_value": 0.0555,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!E3": {
+      "formula_pattern": "=DMart!B16",
+      "expected_value": 1.3066,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!F3": {
+      "formula_pattern": "=DMart!B19",
+      "expected_value": 0.9876,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!G3": {
+      "formula_pattern": "=IF(AND(D3>0.15,E3<3),\"Margin Champion\",IF(AND(B3>0.15,E3<2.5),\"Turnover King\",IF(E3>9,\"Bank/Financial\",IF(AND(F3<0.7,E3>4),\"Leverage Trap\",\"Mixed Profile\"))))",
+      "expected_value": "Turnover King",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Dashboard!H3": {
+      "formula_pattern": "=IF(F3<0.7,\"High Interest Burden\",IF(E3>4,\"Elevated Leverage\",\"Healthy\"))",
+      "expected_value": "Healthy",
+      "type": "text",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Dashboard!B4": {
+      "formula_pattern": "='HDFC Bank'!B17",
+      "expected_value": 0.1584,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!C4": {
+      "formula_pattern": "='HDFC Bank'!B21",
+      "expected_value": 0.1584,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!D4": {
+      "formula_pattern": "='HDFC Bank'!B14",
+      "expected_value": 0.2827,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!E4": {
+      "formula_pattern": "='HDFC Bank'!B16",
+      "expected_value": 11.8125,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!F4": {
+      "formula_pattern": "='HDFC Bank'!B19",
+      "expected_value": 0.9872,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!G4": {
+      "formula_pattern": "=IF(AND(D4>0.15,E4<3),\"Margin Champion\",IF(AND(B4>0.15,E4<2.5),\"Turnover King\",IF(E4>9,\"Bank/Financial\",IF(AND(F4<0.7,E4>4),\"Leverage Trap\",\"Mixed Profile\"))))",
+      "expected_value": "Bank/Financial",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Dashboard!H4": {
+      "formula_pattern": "=IF(F4<0.7,\"High Interest Burden\",IF(E4>4,\"Elevated Leverage - Structural\",\"Healthy\"))",
+      "expected_value": "Elevated Leverage - Structural",
+      "type": "text",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Dashboard!B5": {
+      "formula_pattern": "=LeverageCo!B17",
+      "expected_value": 1.0969,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!C5": {
+      "formula_pattern": "=LeverageCo!B21",
+      "expected_value": 1.0969,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Dashboard!D5": {
+      "formula_pattern": "=LeverageCo!B14",
+      "expected_value": 0.1111,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!E5": {
+      "formula_pattern": "=LeverageCo!B16",
+      "expected_value": 6.0313,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!F5": {
+      "formula_pattern": "=LeverageCo!B19",
+      "expected_value": 0.5277,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Dashboard!G5": {
+      "formula_pattern": "=IF(AND(D5>0.15,E5<3),\"Margin Champion\",IF(AND(B5>0.15,E5<2.5),\"Turnover King\",IF(E5>9,\"Bank/Financial\",IF(AND(F5<0.7,E5>4),\"Leverage Trap\",\"Mixed Profile\"))))",
+      "expected_value": "Leverage Trap",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Dashboard!H5": {
+      "formula_pattern": "=IF(F5<0.7,\"CRITICAL: High Interest Burden\",IF(E5>4,\"Elevated Leverage - RISKY\",\"Healthy\"))",
+      "expected_value": "CRITICAL: High Interest Burden",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Dashboard!B8": {
+      "formula_pattern": "text",
+      "expected_value": "HUL achieves highest-quality ROE of 107% driven by strong 17.1% net margin and lean 2.6x leverage, with negligible debt cost (98.8% Interest Burden). LeverageCo masks weak fundamentals (11% margin) with extreme 6x leverage and dangerous 52.8% Interest Burden, signalling covenant stress and financial distress. HDFC Bank's 11.8x multiplier is regulated/structural, not concerning. For LeverageCo, PM must demand credit rating, covenant clauses, and interest-coverage trend before entry—this is a leverage trap waiting to snap.",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    }
+  }
+}

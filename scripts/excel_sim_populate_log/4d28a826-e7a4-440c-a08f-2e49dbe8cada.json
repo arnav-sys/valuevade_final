@@ -1,0 +1,746 @@
+{
+  "sim_id": "4d28a826-e7a4-440c-a08f-2e49dbe8cada",
+  "title": "Cash Flow Forensics — Rajgiri Pharmaceuticals Three-Year Deep Dive",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Raw Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY22 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY23 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY24 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue from Operations",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 3620,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 4010,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 4480,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "12% growth in FY24",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 740,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 830,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 945,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "14% growth in FY24",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Depreciation & Amortisation",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 180,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 210,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 245,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "Rising with capex cycle",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "PAT",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 340,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 378,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 415,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "10% growth in FY24",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "CFO",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 544,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 518,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 485,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "Declining despite PAT growth",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Capex (PP&E + Intangibles)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 280,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 340,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 420,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "Capex cycle intensifying",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Acquisitions",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 180,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 95,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "FY23 Wellness Labs acquisition",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Sale of Fixed Assets",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 12,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 8,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 85,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "FY24 sale of Nashik facility",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Interest Paid (CFS)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 120,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 138,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 172,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "Cash interest",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Dividends Paid",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 85,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 95,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 105,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "Shareholder distributions",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Proceeds from Borrowings",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 350,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 480,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 620,
+            "readOnly": true
+          },
+          "E12": {
+            "value": "External debt raised",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Trade Receivables (Increase)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 88,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 145,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 225,
+            "readOnly": true
+          },
+          "E13": {
+            "value": "DSO rising",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Inventories (Increase)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 65,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 110,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 195,
+            "readOnly": true
+          },
+          "E14": {
+            "value": "Inventory accumulating",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Interest Expense (P&L)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 125,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 142,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 178,
+            "readOnly": true
+          },
+          "E15": {
+            "value": "Net debt rising",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Analysis",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "CFO/EBITDA %",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "CFO/PAT %",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Free Cash Flow (₹cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "FCF/Revenue %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Capex/Depreciation",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Sustainability Gap (₹cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "WC Deterioration (₹cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Interest Gap (₹cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: CFO/EBITDA in FY24 (%)? Round to 1 decimal",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: Free Cash Flow in FY24 (₹cr)? (CFO - Capex)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: Cumulative WC deterioration FY22-FY24 (₹cr)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: FY24 Sustainability Gap (₹cr)? Neg if unsustainable",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: 3-yr cumulative CFO covered what % of capex+acq+debt repay+interest+div?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: In FY24, is CFO > (Maintenance Capex 70% + Interest + Dividends)? Y/N",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Analysis!B2": {
+      "formula_pattern": "=ROUND((Raw Data!B6/Raw Data!B3)*100,1)",
+      "expected_value": 73.5,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Analysis!C2": {
+      "formula_pattern": "=ROUND((Raw Data!C6/Raw Data!C3)*100,1)",
+      "expected_value": 62.4,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Analysis!D2": {
+      "formula_pattern": "=ROUND((Raw Data!D6/Raw Data!D3)*100,1)",
+      "expected_value": 51.3,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Analysis!B3": {
+      "formula_pattern": "=ROUND((Raw Data!B6/Raw Data!B5)*100,1)",
+      "expected_value": 160.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 6
+    },
+    "Analysis!C3": {
+      "formula_pattern": "=ROUND((Raw Data!C6/Raw Data!C5)*100,1)",
+      "expected_value": 137.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 6
+    },
+    "Analysis!D3": {
+      "formula_pattern": "=ROUND((Raw Data!D6/Raw Data!D5)*100,1)",
+      "expected_value": 116.9,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 6
+    },
+    "Analysis!B4": {
+      "formula_pattern": "=Raw Data!B6-Raw Data!B7",
+      "expected_value": 264,
+      "type": "number",
+      "tolerance": 1,
+      "points": 6
+    },
+    "Analysis!C4": {
+      "formula_pattern": "=Raw Data!C6-Raw Data!C7",
+      "expected_value": 178,
+      "type": "number",
+      "tolerance": 1,
+      "points": 6
+    },
+    "Analysis!D4": {
+      "formula_pattern": "=Raw Data!D6-Raw Data!D7",
+      "expected_value": 65,
+      "type": "number",
+      "tolerance": 1,
+      "points": 6
+    },
+    "Analysis!B5": {
+      "formula_pattern": "=ROUND((Analysis!B4/Raw Data!B2)*100,1)",
+      "expected_value": 7.3,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Analysis!C5": {
+      "formula_pattern": "=ROUND((Analysis!C4/Raw Data!C2)*100,1)",
+      "expected_value": 4.4,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Analysis!D5": {
+      "formula_pattern": "=ROUND((Analysis!D4/Raw Data!D2)*100,1)",
+      "expected_value": 1.5,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Analysis!B6": {
+      "formula_pattern": "=ROUND(Raw Data!B7/Raw Data!B4,2)",
+      "expected_value": 1.56,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 7
+    },
+    "Analysis!C6": {
+      "formula_pattern": "=ROUND(Raw Data!C7/Raw Data!C4,2)",
+      "expected_value": 1.62,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 7
+    },
+    "Analysis!D6": {
+      "formula_pattern": "=ROUND(Raw Data!D7/Raw Data!D4,2)",
+      "expected_value": 1.71,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 7
+    },
+    "Analysis!B7": {
+      "formula_pattern": "=Raw Data!B6-(Raw Data!B7*0.7)-Raw Data!B10-Raw Data!B11",
+      "expected_value": 143,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "Analysis!C7": {
+      "formula_pattern": "=Raw Data!C6-(Raw Data!C7*0.7)-Raw Data!C10-Raw Data!C11",
+      "expected_value": 47,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "Analysis!D7": {
+      "formula_pattern": "=Raw Data!D6-(Raw Data!D7*0.7)-Raw Data!D10-Raw Data!D11",
+      "expected_value": -86,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "Analysis!B8": {
+      "formula_pattern": "=-(Raw Data!B13+Raw Data!B14)",
+      "expected_value": -153,
+      "type": "number",
+      "tolerance": 1,
+      "points": 6
+    },
+    "Analysis!C8": {
+      "formula_pattern": "=-(Raw Data!C13+Raw Data!C14)",
+      "expected_value": -255,
+      "type": "number",
+      "tolerance": 1,
+      "points": 6
+    },
+    "Analysis!D8": {
+      "formula_pattern": "=-(Raw Data!D13+Raw Data!D14)",
+      "expected_value": -420,
+      "type": "number",
+      "tolerance": 1,
+      "points": 6
+    },
+    "Analysis!B9": {
+      "formula_pattern": "=Raw Data!B15-Raw Data!B10",
+      "expected_value": 5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Analysis!C9": {
+      "formula_pattern": "=Raw Data!C15-Raw Data!C10",
+      "expected_value": 4,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Analysis!D9": {
+      "formula_pattern": "=Raw Data!D15-Raw Data!D10",
+      "expected_value": 6,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Answers!B2": {
+      "formula_pattern": "=ROUND((Raw Data!D6/Raw Data!D3)*100,1)",
+      "expected_value": 51.3,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Raw Data!D6-Raw Data!D7",
+      "expected_value": 65,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUM(-(Raw Data!B13+Raw Data!B14),-(Raw Data!C13+Raw Data!C14),-(Raw Data!D13+Raw Data!D14))",
+      "expected_value": -828,
+      "type": "number",
+      "tolerance": 2,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Raw Data!D6-(Raw Data!D7*0.7)-Raw Data!D10-Raw Data!D11",
+      "expected_value": -86,
+      "type": "number",
+      "tolerance": 1,
+      "points": 14
+    },
+    "Answers!B6": {
+      "formula_pattern": "=ROUND(((Raw Data!B6+Raw Data!C6+Raw Data!D6)/(Raw Data!B7+Raw Data!C7+Raw Data!D7+Raw Data!B8+Raw Data!C8+Raw Data!D8+(Raw Data!B12-Raw Data!B12+Raw Data!C12-Raw Data!C12+Raw Data!D12-Raw Data!D12)/2+Raw Data!B10+Raw Data!C10+Raw Data!D10+Raw Data!B11+Raw Data!C11+Raw Data!D11))*100,1)",
+      "expected_value": 53.0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "N",
+      "expected_value": "N",
+      "type": "text",
+      "tolerance": 0,
+      "points": 17
+    }
+  }
+}

@@ -1,0 +1,887 @@
+{
+  "sim_id": "0d8da52a-3b6b-40f3-a5d1-1252e2e90e76",
+  "title": "The Asian Paints Football Field — Final IC Synthesis",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Methodology_Inputs",
+        "cells": {
+          "A1": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY27 Forward Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Multiple / Approach",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Bear (₹/sh)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Base (₹/sh)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Bull (₹/sh)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DCF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Sessions 4-9",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "FCFF disc @ WACC 11.65%",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "WACC ±150bps, TG ±150bps",
+            "readOnly": true
+          },
+          "E2": {
+            "value": 950,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Trading Comps - India",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Session 10",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "FY27 EBITDA ₹8,200 cr",
+            "readOnly": true
+          },
+          "D3": {
+            "value": "Peer median 28x (25x-32x)",
+            "readOnly": true
+          },
+          "E3": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 2600,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Trading Comps - Global",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Session 10",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "FY27 EBITDA ₹8,200 cr",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Peer median 20x (18x-22x)",
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1300,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 1400,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Prec Trans - Trading Equiv",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Session 11",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "FY27 EBITDA ₹8,200 cr",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Premium cons 23x (22x-25x)",
+            "readOnly": true
+          },
+          "E5": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 1965,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 2150,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Prec Trans - Deal Multiple",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Session 11",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "FY27 EBITDA ₹8,200 cr",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Deal multiple 30x (28x-32x)",
+            "readOnly": true
+          },
+          "E6": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 2560,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 2750,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Current Market Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "NSE Close",
+            "readOnly": true,
+            "bold": true
+          },
+          "C8": {
+            "value": "Reference",
+            "readOnly": true,
+            "bold": true
+          },
+          "F8": {
+            "value": 2920,
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Note:",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "All methodologies bridged to per-share via EV-to-Equity bridge",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Range_Computation",
+        "cells": {
+          "A1": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Width (₹/sh)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "% Spread",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Sensitivity Driver",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Comment",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DCF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=G2-E2",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "=B2/F2",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "WACC, terminal growth",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "Wide range reflects discount rate sensitivity",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Trading Comps - India",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=G3-E3",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "=B3/F3",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "Peer multiple ±10%",
+            "readOnly": true
+          },
+          "E3": {
+            "value": "Tight; reflects Indian growth-phase peer median",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Trading Comps - Global",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=G4-E4",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "=B4/F4",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "Peer multiple ±10%",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "Tight; mature peer pricing framework",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Prec Trans - Trading Equiv",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=G5-E5",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "=B5/F5",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "Deal multiple range 22x-25x",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "Moderate; comparable transaction precedent",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Prec Trans - Deal Multiple",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=G6-E6",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "=B6/F6",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "Deal multiple range 28x-32x",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "Wide; reflects controlling-stake premium",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Convergence Range Width",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "=MAX(G2,G4,G5)-MIN(E2,E4,E5)",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "Convergence cluster span",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Football_Field_Chart",
+        "cells": {
+          "A1": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Bear (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Base (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Bull (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Cluster",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DCF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 950,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1750,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "Convergent",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Trading Comps - India",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 2600,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "Outlier High",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Trading Comps - Global",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1300,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1400,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "Convergent",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Prec Trans - Trading Equiv",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 1965,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 2150,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "Convergent",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Prec Trans - Deal Multiple",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 2560,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 2750,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "Outlier High",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Convergence Cluster",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "Min Bear",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Max Bull",
+            "readOnly": true
+          },
+          "D8": {
+            "value": "Midpoint Target",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "3-Methodology Consensus",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=MIN(B2,B4,B5)",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "=MAX(D2,D4,D5)",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "=(B9+C9)/2",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Current Market Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Upside/(Downside) vs Target",
+            "readOnly": true
+          },
+          "D11": {
+            "value": "=(B11-D9)/D9",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Convergence_Analysis",
+        "cells": {
+          "A1": {
+            "value": "Convergence & Outlier Analysis",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "CONVERGENT CLUSTER (₹1,300-₹1,950)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "Range",
+            "readOnly": true,
+            "bold": true
+          },
+          "C5": {
+            "value": "Rationale",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "1. DCF (FCFF)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "₹950-₹1,750",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Intrinsic value from cash flow generation at normalized WACC 11.65%; overlaps convergence at base ₹1,382",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "2. Global Mature Comps",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "₹1,300-₹1,500",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Asian Paints as maturing Indian champion versus global peers; 20x median reflects transition from high-growth to stable-growth valuation",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "3. Prec Trans Trading-Equiv",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "₹1,800-₹2,150",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Comparable M&A pricing for premium consumer brands at 23x; reflects control-transaction economics without strategic premium",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "OUTLIER CLUSTER (₹2,200-₹2,750)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "Range",
+            "readOnly": true,
+            "bold": true
+          },
+          "C12": {
+            "value": "Rationale for Outlier Status",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "4. Indian Peer Comps",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "₹2,200-₹2,600",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "Indian peer median 28x reflects sector growth-phase valuations; outlier above convergence because peers valued for high single-digit growth, not normalized maturity",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "5. Prec Trans Deal Multiple",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "₹2,400-₹2,750",
+            "readOnly": true
+          },
+          "C14": {
+            "value": "30x multiple assumes controlling-stake acquisition premium; outlier reflects buyer willingness to pay for synergies/growth optionality, not standalone fair value",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "CONCLUSION",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "Three independent methodologies (DCF, Global Mature Comps, Prec Trans Trading-Equiv) converge in ₹1,300-₹1,950 range. Two outliers represent sector pricing and acquisition premium—not standalone fair value. Convergence is structural conviction.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "IC_Summary",
+        "cells": {
+          "A1": {
+            "value": "Asian Paints Investment Committee Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "RECOMMENDATION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "SELL",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Target Price (12-month)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "₹1,500/share",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Current Price",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Implied Downside",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=(B6-B5)/B6",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Fair Value Range (Sensitivity)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "₹1,300-₹1,900",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Implied EV/EBITDA at Target",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "14.6x FY27E",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "VALUATION SYNTHESIS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "Football Field Methodology Consensus:",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "DCF, Global Mature Comps, and Precedent Transactions (trading-equivalent) converge in ₹1,300-₹1,950 range. Convergence across three independent frameworks is structural conviction for fair value. Current price ₹2,920 implies ₹1,420/share premium above convergence midpoint.",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Why Outliers?",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "Indian Peer Comps (28x) and Deal Multiple (30x) reflect sector growth-phase pricing and M&A premium, not standalone economics. Target ₹1,500 (14.6x) reflects appropriate transition multiple between high-growth Indian pricing and stable-growth global peers.",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "TIME HORIZON",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "12 months",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "KEY CATALYSTS (Downside)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "1. Slowdown in India urban consumption growth (macro)",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "2. Margin compression from competitive intensity in decorative segment",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "3. Market re-rating from high-growth to mature multiple (23x → 15x)",
+            "readOnly": true
+          },
+          "A23": {
+            "value": "4. Guidance misses on FY27 EBITDA growth expectations",
+            "readOnly": true
+          },
+          "A25": {
+            "value": "KEY RISKS (Upside)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A26": {
+            "value": "1. Structural acceleration in decorative/speciality volumes post-economic recovery",
+            "readOnly": true
+          },
+          "A27": {
+            "value": "2. International expansion outperforms (Tigan, Apcolite synergies)",
+            "readOnly": true
+          },
+          "A28": {
+            "value": "3. Margin expansion from scale and premiumization (high-end products)",
+            "readOnly": true
+          },
+          "A29": {
+            "value": "4. Strategic M&A at higher multiples (sector consolidation premium)",
+            "readOnly": true
+          },
+          "A31": {
+            "value": "INVESTMENT THESIS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A32": {
+            "value": "Asian Paints trades at 19.4x FY27E (vs. target 14.6x), pricing in perpetual high-single-digit growth. Convergence of DCF (₹1,382), Global Mature Comps (₹1,400), and Prec Trans (₹1,965) at ₹1,500 fair value reflects realistic economic transition as company matures. Current price ₹2,920 implies 48.6% downside. Recommend SELL with 12-month target.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Range_Computation!B2": {
+      "formula_pattern": "=Methodology_Inputs!G2-Methodology_Inputs!E2",
+      "expected_value": 800,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Range_Computation!C2": {
+      "formula_pattern": "=B2/Methodology_Inputs!F2",
+      "expected_value": 0.579,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Range_Computation!B3": {
+      "formula_pattern": "=Methodology_Inputs!G3-Methodology_Inputs!E3",
+      "expected_value": 400,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Range_Computation!B4": {
+      "formula_pattern": "=Methodology_Inputs!G4-Methodology_Inputs!E4",
+      "expected_value": 200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Range_Computation!B5": {
+      "formula_pattern": "=Methodology_Inputs!G5-Methodology_Inputs!E5",
+      "expected_value": 350,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Range_Computation!B6": {
+      "formula_pattern": "=Methodology_Inputs!G6-Methodology_Inputs!E6",
+      "expected_value": 350,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Range_Computation!B8": {
+      "formula_pattern": "=MAX(Methodology_Inputs!G2,Methodology_Inputs!G4,Methodology_Inputs!G5)-MIN(Methodology_Inputs!E2,Methodology_Inputs!E4,Methodology_Inputs!E5)",
+      "expected_value": 1200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Football_Field_Chart!B9": {
+      "formula_pattern": "=MIN(B2,B4,B5)",
+      "expected_value": 950,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Football_Field_Chart!C9": {
+      "formula_pattern": "=MAX(D2,D4,D5)",
+      "expected_value": 2150,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Football_Field_Chart!D9": {
+      "formula_pattern": "=(B9+C9)/2",
+      "expected_value": 1550,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Football_Field_Chart!D11": {
+      "formula_pattern": "=(B11-D9)/D9",
+      "expected_value": 0.884,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "IC_Summary!B7": {
+      "formula_pattern": "=(B6-B5)/B6",
+      "expected_value": 0.486,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    }
+  }
+}

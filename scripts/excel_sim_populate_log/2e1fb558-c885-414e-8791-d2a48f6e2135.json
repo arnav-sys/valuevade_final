@@ -1,0 +1,1087 @@
+{
+  "sim_id": "2e1fb558-c885-414e-8791-d2a48f6e2135",
+  "title": "The WACC Workbook — Build Defensible WACC for Three Different Capital Structures",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Asian_Paints",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Market Cap (₹ cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 280000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "NSE share price × shares outstanding",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Traditional Debt (₹ cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Standalone balance sheet, FY26",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Lease Liability (₹ cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 800,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Ind AS 116 disclosure, store-related leases",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total Debt + Leases (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "Sum of above two",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Risk-free Rate",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.0685,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "10-yr G-Sec, 1-month avg",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Equity Risk Premium",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.075,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Damodaran NYU",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Beta",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.65,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Bloomberg adjusted, 2-year monthly",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Cost of Equity (Ke)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "CAPM formula",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Pre-tax Cost of Debt",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0.075,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Blended interest expense / avg debt",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Standard Indian corporate",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "After-tax Cost of Debt (Kd)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "Pre-tax Kd × (1 - T)",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "E/V",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "C13": {
+            "value": "Market cap / (Market cap + Total debt+leases)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "D/V",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "(Total debt+leases) / (Market cap + Total debt+leases)",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "E/V × Ke + D/V × Kd",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Reliance",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Market Cap (₹ cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1900000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "NSE share price × shares outstanding",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Traditional Debt (₹ cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 290000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Standalone + JV consolidated borrowings",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Lease Liability (₹ cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 90000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Ind AS 116, retail and telecom infra",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total Debt + Leases (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "Sum of above two",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Risk-free Rate",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.0685,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "10-yr G-Sec, 1-month avg",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Equity Risk Premium",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.075,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Damodaran NYU",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Beta",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.95,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Bloomberg adjusted, 2-year monthly",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Cost of Equity (Ke)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "CAPM formula",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Pre-tax Cost of Debt",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0.062,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Blended interest expense / avg debt",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Standard Indian corporate",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "After-tax Cost of Debt (Kd)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "Pre-tax Kd × (1 - T)",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "E/V",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "C13": {
+            "value": "Market cap / (Market cap + Total debt+leases)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "D/V",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "(Total debt+leases) / (Market cap + Total debt+leases)",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "E/V × Ke + D/V × Kd",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "IndiGo",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Market Cap (₹ cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 280000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "NSE share price × shares outstanding",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Traditional Debt (₹ cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Standalone balance sheet, FY26",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Lease Liability (₹ cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 110000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Ind AS 116 disclosure, aircraft leases",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total Debt + Leases (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "Sum of above two",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Risk-free Rate",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.0685,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "10-yr G-Sec, 1-month avg",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Equity Risk Premium",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.075,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Damodaran NYU",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Beta",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1.25,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Bloomberg adjusted, 2-year monthly",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Cost of Equity (Ke)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "CAPM formula",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Pre-tax Cost of Debt",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0.058,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Blended interest & implicit lease cost",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Standard Indian corporate",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "After-tax Cost of Debt (Kd)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "Pre-tax Kd × (1 - T)",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "E/V",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "C13": {
+            "value": "Market cap / (Market cap + Total debt+leases)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "D/V",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "(Total debt+leases) / (Market cap + Total debt+leases)",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "E/V × Ke + D/V × Kd",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Summary",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Ke (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Kd After-tax (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "E/V (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "D/V (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "WACC (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Reliance",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "IndiGo",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Commentary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A7": {
+            "value": "Asian Paints' WACC (11.65%) is nearly identical to its Ke (11.73%) because the company has minimal leverage; debt represents only 1.34% of total capital, so the weighted cost of debt contribution is negligible. Reliance's WACC (13.27%) is substantially below its Ke (13.23%) despite having a higher Ke than Asian Paints, because Reliance's 16.67% debt-to-capital weight combined with a lower after-tax cost of debt (4.63%) creates a powerful drag that reduces the blended cost. IndiGo's WACC (13.74%) would be significantly higher (~15.8%) if lease obligations were ignored; by capitalizing the ₹110 cr operating lease liability, we properly reflect IndiGo's true fixed obligations and reduce apparent equity risk. This teaches that capital structure fundamentally shapes WACC: a company with high leverage and cheap debt (like Reliance) can have a much lower cost of capital than an unlevered peer despite a higher equity risk premium, while companies with hidden leverage (like IndiGo's leases) must capitalize those obligations to avoid systematically overstating the weighted average cost of capital and undervaluing the firm.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Sensitivity",
+        "cells": {
+          "A1": {
+            "value": "WACC Sensitivity: Asian Paints",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Tax Rate →",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Beta ↓",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 0.28,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 0.3,
+            "readOnly": true
+          },
+          "A4": {
+            "value": 0.65,
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": 0.95,
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": 1.25,
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": 1.55,
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": 1.65,
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Note: Table shows WACC % for different tax rates and betas. Use formula: =E/V*(Rf+Beta*MRP) + D/V*Kd*(1-T)",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Asian_Paints!B5": {
+      "formula_pattern": "=B3+B4",
+      "expected_value": 3800,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Asian_Paints!B9": {
+      "formula_pattern": "=B6+B8*B7",
+      "expected_value": 0.1173,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Asian_Paints!B12": {
+      "formula_pattern": "=B10*(1-B11)",
+      "expected_value": 0.0561,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Asian_Paints!B13": {
+      "formula_pattern": "=B2/(B2+B5)",
+      "expected_value": 0.9866,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Asian_Paints!B14": {
+      "formula_pattern": "=B5/(B2+B5)",
+      "expected_value": 0.0134,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Asian_Paints!B15": {
+      "formula_pattern": "=B13*B9+B14*B12",
+      "expected_value": 0.1165,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 10
+    },
+    "Reliance!B5": {
+      "formula_pattern": "=B3+B4",
+      "expected_value": 380000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Reliance!B9": {
+      "formula_pattern": "=B6+B8*B7",
+      "expected_value": 0.1323,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Reliance!B12": {
+      "formula_pattern": "=B10*(1-B11)",
+      "expected_value": 0.0463,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Reliance!B13": {
+      "formula_pattern": "=B2/(B2+B5)",
+      "expected_value": 0.8333,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Reliance!B14": {
+      "formula_pattern": "=B5/(B2+B5)",
+      "expected_value": 0.1667,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Reliance!B15": {
+      "formula_pattern": "=B13*B9+B14*B12",
+      "expected_value": 0.1327,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 10
+    },
+    "IndiGo!B5": {
+      "formula_pattern": "=B3+B4",
+      "expected_value": 155000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "IndiGo!B9": {
+      "formula_pattern": "=B6+B8*B7",
+      "expected_value": 0.1625,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "IndiGo!B12": {
+      "formula_pattern": "=B10*(1-B11)",
+      "expected_value": 0.0434,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "IndiGo!B13": {
+      "formula_pattern": "=B2/(B2+B5)",
+      "expected_value": 0.6441,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "IndiGo!B14": {
+      "formula_pattern": "=B5/(B2+B5)",
+      "expected_value": 0.3559,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "IndiGo!B15": {
+      "formula_pattern": "=B13*B9+B14*B12",
+      "expected_value": 0.1374,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 10
+    },
+    "Summary!B2": {
+      "formula_pattern": "='Asian_Paints'!B9",
+      "expected_value": 0.1173,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!C2": {
+      "formula_pattern": "='Asian_Paints'!B12",
+      "expected_value": 0.0561,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!D2": {
+      "formula_pattern": "='Asian_Paints'!B13",
+      "expected_value": 0.9866,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!E2": {
+      "formula_pattern": "='Asian_Paints'!B14",
+      "expected_value": 0.0134,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!F2": {
+      "formula_pattern": "='Asian_Paints'!B15",
+      "expected_value": 0.1165,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!B3": {
+      "formula_pattern": "='Reliance'!B9",
+      "expected_value": 0.1323,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!C3": {
+      "formula_pattern": "='Reliance'!B12",
+      "expected_value": 0.0463,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!D3": {
+      "formula_pattern": "='Reliance'!B13",
+      "expected_value": 0.8333,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!E3": {
+      "formula_pattern": "='Reliance'!B14",
+      "expected_value": 0.1667,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!F3": {
+      "formula_pattern": "='Reliance'!B15",
+      "expected_value": 0.1327,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!B4": {
+      "formula_pattern": "='IndiGo'!B9",
+      "expected_value": 0.1625,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!C4": {
+      "formula_pattern": "='IndiGo'!B12",
+      "expected_value": 0.0434,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!D4": {
+      "formula_pattern": "='IndiGo'!B13",
+      "expected_value": 0.6441,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!E4": {
+      "formula_pattern": "='IndiGo'!B14",
+      "expected_value": 0.3559,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Summary!F4": {
+      "formula_pattern": "='IndiGo'!B15",
+      "expected_value": 0.1374,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 5
+    },
+    "Sensitivity!B4": {
+      "formula_pattern": "=0.9866*(0.0685+0.65*0.075)+0.0134*0.075*(1-0.22)",
+      "expected_value": 0.1158,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Sensitivity!C4": {
+      "formula_pattern": "=0.9866*(0.0685+0.65*0.075)+0.0134*0.075*(1-0.25)",
+      "expected_value": 0.1154,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Sensitivity!D4": {
+      "formula_pattern": "=0.9866*(0.0685+0.65*0.075)+0.0134*0.075*(1-0.28)",
+      "expected_value": 0.1149,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Sensitivity!E4": {
+      "formula_pattern": "=0.9866*(0.0685+0.65*0.075)+0.0134*0.075*(1-0.30)",
+      "expected_value": 0.1146,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    }
+  }
+}

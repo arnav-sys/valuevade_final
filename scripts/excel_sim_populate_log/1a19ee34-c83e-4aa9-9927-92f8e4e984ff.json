@@ -1,0 +1,763 @@
+{
+  "sim_id": "1a19ee34-c83e-4aa9-9927-92f8e4e984ff",
+  "title": "The 10-Year Pattern Recognition Test — Vamshi Paints Ltd",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Raw Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY15",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY16",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY17",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY18",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue from Ops",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1420,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1510,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1630,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 1780,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 1950,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 2070,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 2240,
+            "readOnly": true
+          },
+          "I2": {
+            "value": 2550,
+            "readOnly": true
+          },
+          "J2": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "K2": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Cost of Materials",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 754,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 800,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 870,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 953,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 1062,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 1232,
+            "readOnly": true
+          },
+          "I3": {
+            "value": 1479,
+            "readOnly": true
+          },
+          "J3": {
+            "value": 1752,
+            "readOnly": true
+          },
+          "K3": {
+            "value": 1856,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Employee Benefits",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 99,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 105,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 115,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 125,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 137,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 148,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 160,
+            "readOnly": true
+          },
+          "I4": {
+            "value": 184,
+            "readOnly": true
+          },
+          "J4": {
+            "value": 217,
+            "readOnly": true
+          },
+          "K4": {
+            "value": 237,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "A&P Spend",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 128,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 139,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 155,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 174,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 194,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 207,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 224,
+            "readOnly": true
+          },
+          "I5": {
+            "value": 229,
+            "readOnly": true
+          },
+          "J5": {
+            "value": 234,
+            "readOnly": true
+          },
+          "K5": {
+            "value": 256,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Other OpEx",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 269,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 283,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 302,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 328,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 354,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 362,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 388,
+            "readOnly": true
+          },
+          "I6": {
+            "value": 433,
+            "readOnly": true
+          },
+          "J6": {
+            "value": 478,
+            "readOnly": true
+          },
+          "K6": {
+            "value": 522,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 170,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 183,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 188,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 200,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 203,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 228,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 236,
+            "readOnly": true
+          },
+          "I7": {
+            "value": 225,
+            "readOnly": true
+          },
+          "J7": {
+            "value": 239,
+            "readOnly": true
+          },
+          "K7": {
+            "value": 329,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Depreciation",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 36,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 40,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 44,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 49,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 55,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 62,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 68,
+            "readOnly": true
+          },
+          "I8": {
+            "value": 75,
+            "readOnly": true
+          },
+          "J8": {
+            "value": 82,
+            "readOnly": true
+          },
+          "K8": {
+            "value": 91,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 18,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 17,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 16,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 15,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 17,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 19,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 22,
+            "readOnly": true
+          },
+          "I9": {
+            "value": 28,
+            "readOnly": true
+          },
+          "J9": {
+            "value": 35,
+            "readOnly": true
+          },
+          "K9": {
+            "value": 42,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "PAT",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 89,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 98,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 102,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 108,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 108,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 122,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 127,
+            "readOnly": true
+          },
+          "I10": {
+            "value": 118,
+            "readOnly": true
+          },
+          "J10": {
+            "value": 124,
+            "readOnly": true
+          },
+          "K10": {
+            "value": 178,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Common-Size",
+        "cells": {
+          "A1": {
+            "value": "Line Item %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY15",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY16",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY17",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY18",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 100,
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false
+          },
+          "J2": {
+            "value": "",
+            "readOnly": false
+          },
+          "K2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "CoM %",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false
+          },
+          "J3": {
+            "value": "",
+            "readOnly": false
+          },
+          "K3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false
+          },
+          "J4": {
+            "value": "",
+            "readOnly": false
+          },
+          "K4": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue CAGR FY15-24 (%) ?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "EBITDA CAGR FY15-24 (%) ?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "EBITDA CAGR minus Revenue CAGR (bps) ?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "EBITDA Margin FY15 (%) ?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "EBITDA Margin FY24 (%) ?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Business archetype (text): Slow Compounder / Structural Decline / Cyclical ?",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(('Raw Data'!K2/'Raw Data'!B2)^(1/9)-1)*100",
+      "expected_value": 9.4,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(('Raw Data'!K7/'Raw Data'!B7)^(1/9)-1)*100",
+      "expected_value": 7.6,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "(7.6-9.4)*100",
+      "expected_value": -180,
+      "type": "number",
+      "tolerance": 5,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=('Raw Data'!B7/'Raw Data'!B2)*100",
+      "expected_value": 11.97,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Answers!B6": {
+      "formula_pattern": "=('Raw Data'!K7/'Raw Data'!K2)*100",
+      "expected_value": 10.28,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Answers!B7": {
+      "formula_pattern": "Structural Decline",
+      "expected_value": "Structural Decline",
+      "type": "text",
+      "tolerance": 0,
+      "points": 9
+    }
+  }
+}

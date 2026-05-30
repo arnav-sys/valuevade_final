@@ -1,0 +1,1229 @@
+{
+  "sim_id": "3a72604c-cb84-4ff0-acfb-b335134631fd",
+  "title": "The Forecast Workbook — Build Asian Paints' 7-Year Explicit Forecast from Drivers",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Drivers",
+        "cells": {
+          "A1": {
+            "value": "Driver",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY30",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY31",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY32",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY33",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Industry Volume Growth %",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "C2": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "D2": {
+            "value": 5.5,
+            "readOnly": false
+          },
+          "E2": {
+            "value": 5.0,
+            "readOnly": false
+          },
+          "F2": {
+            "value": 4.5,
+            "readOnly": false
+          },
+          "G2": {
+            "value": 4.0,
+            "readOnly": false
+          },
+          "H2": {
+            "value": 4.0,
+            "readOnly": false
+          },
+          "I2": {
+            "value": "Indian decorative paints; sector guidance",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Asian Paints Market Share %",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "C3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "D3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "E3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "F3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "G3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "H3": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "I3": {
+            "value": "Holds share; Birla Opus pressure contained",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Price / Mix Growth %",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "C4": {
+            "value": 5.5,
+            "readOnly": false
+          },
+          "D4": {
+            "value": 5.0,
+            "readOnly": false
+          },
+          "E4": {
+            "value": 4.5,
+            "readOnly": false
+          },
+          "F4": {
+            "value": 4.5,
+            "readOnly": false
+          },
+          "G4": {
+            "value": 4.0,
+            "readOnly": false
+          },
+          "H4": {
+            "value": 4.0,
+            "readOnly": false
+          },
+          "I4": {
+            "value": "Input cost pass-through + premiumisation",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 21.0,
+            "readOnly": false
+          },
+          "C5": {
+            "value": 21.5,
+            "readOnly": false
+          },
+          "D5": {
+            "value": 22.0,
+            "readOnly": false
+          },
+          "E5": {
+            "value": 22.5,
+            "readOnly": false
+          },
+          "F5": {
+            "value": 22.5,
+            "readOnly": false
+          },
+          "G5": {
+            "value": 22.5,
+            "readOnly": false
+          },
+          "H5": {
+            "value": 22.5,
+            "readOnly": false
+          },
+          "I5": {
+            "value": "150 bps expansion through FY30; then stable",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Capex / Revenue %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3.5,
+            "readOnly": false
+          },
+          "C6": {
+            "value": 3.5,
+            "readOnly": false
+          },
+          "D6": {
+            "value": 3.0,
+            "readOnly": false
+          },
+          "E6": {
+            "value": 2.7,
+            "readOnly": false
+          },
+          "F6": {
+            "value": 2.5,
+            "readOnly": false
+          },
+          "G6": {
+            "value": 2.5,
+            "readOnly": false
+          },
+          "H6": {
+            "value": 2.5,
+            "readOnly": false
+          },
+          "I6": {
+            "value": "Andhra Pradesh expansion peaks FY27-28",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "D&A / Revenue %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1.7,
+            "readOnly": false
+          },
+          "C7": {
+            "value": 1.8,
+            "readOnly": false
+          },
+          "D7": {
+            "value": 1.9,
+            "readOnly": false
+          },
+          "E7": {
+            "value": 2.0,
+            "readOnly": false
+          },
+          "F7": {
+            "value": 2.1,
+            "readOnly": false
+          },
+          "G7": {
+            "value": 2.3,
+            "readOnly": false
+          },
+          "H7": {
+            "value": 2.5,
+            "readOnly": false
+          },
+          "I7": {
+            "value": "Converges to Capex/Revenue by Year 7",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Working Capital / Revenue %",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "C8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "D8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "E8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "F8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "G8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "H8": {
+            "value": 20.0,
+            "readOnly": false
+          },
+          "I8": {
+            "value": "Standard for paints; stable across cycle",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Tax Rate %",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "C9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "D9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "E9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "F9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "G9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "H9": {
+            "value": 25.17,
+            "readOnly": false
+          },
+          "I9": {
+            "value": "Standard Indian corporate tax rate",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Forecast",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY26 Base",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY30",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY31",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY32",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "FY33",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 35000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=B2*(1+(Drivers!B2+Drivers!B4)/100)"
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C2*(1+(Drivers!C2+Drivers!C4)/100)"
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D2*(1+(Drivers!D2+Drivers!D4)/100)"
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E2*(1+(Drivers!E2+Drivers!E4)/100)"
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F2*(1+(Drivers!F2+Drivers!F4)/100)"
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G2*(1+(Drivers!G2+Drivers!G4)/100)"
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H2*(1+(Drivers!H2+Drivers!H4)/100)"
+          },
+          "A3": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 7350,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C2*Drivers!B5/100"
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D2*Drivers!C5/100"
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E2*Drivers!D5/100"
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F2*Drivers!E5/100"
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G2*Drivers!F5/100"
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H2*Drivers!G5/100"
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I2*Drivers!H5/100"
+          },
+          "A4": {
+            "value": "D&A (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 595,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C2*Drivers!B7/100"
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D2*Drivers!C7/100"
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E2*Drivers!D7/100"
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F2*Drivers!E7/100"
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G2*Drivers!F7/100"
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H2*Drivers!G7/100"
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I2*Drivers!H7/100"
+          },
+          "A5": {
+            "value": "EBIT (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 6755,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C3-C4"
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D3-D4"
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E3-E4"
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F3-F4"
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G3-G4"
+          },
+          "H5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H3-H4"
+          },
+          "I5": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I3-I4"
+          },
+          "A6": {
+            "value": "Tax on EBIT (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1699,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C5*Drivers!B9/100"
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D5*Drivers!C9/100"
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E5*Drivers!D9/100"
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F5*Drivers!E9/100"
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G5*Drivers!F9/100"
+          },
+          "H6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H5*Drivers!G9/100"
+          },
+          "I6": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I5*Drivers!H9/100"
+          },
+          "A7": {
+            "value": "NOPAT (₹ Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 5056,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C5-C6"
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D5-D6"
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E5-E6"
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F5-F6"
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G5-G6"
+          },
+          "H7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H5-H6"
+          },
+          "I7": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I5-I6"
+          },
+          "A8": {
+            "value": "Capex (₹ Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1225,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C2*Drivers!B6/100"
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D2*Drivers!C6/100"
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E2*Drivers!D6/100"
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F2*Drivers!E6/100"
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G2*Drivers!F6/100"
+          },
+          "H8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H2*Drivers!G6/100"
+          },
+          "I8": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I2*Drivers!H6/100"
+          },
+          "A9": {
+            "value": "Working Capital (₹ Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 7000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C2*Drivers!B8/100"
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D2*Drivers!C8/100"
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E2*Drivers!D8/100"
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F2*Drivers!E8/100"
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G2*Drivers!F8/100"
+          },
+          "H9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H2*Drivers!G8/100"
+          },
+          "I9": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I2*Drivers!H8/100"
+          },
+          "A10": {
+            "value": "Change in WC (₹ Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=C9-B9"
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=D9-C9"
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=E9-D9"
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=F9-E9"
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=G9-F9"
+          },
+          "H10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=H9-G9"
+          },
+          "I10": {
+            "value": "",
+            "readOnly": false,
+            "formula": "=I9-H9"
+          }
+        }
+      },
+      {
+        "name": "FCFF_Build",
+        "cells": {
+          "A1": {
+            "value": "FCFF Component",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY30",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY31",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY32",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY33",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "NOPAT (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!C7"
+          },
+          "C2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!D7"
+          },
+          "D2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!E7"
+          },
+          "E2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!F7"
+          },
+          "F2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!G7"
+          },
+          "G2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!H7"
+          },
+          "H2": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!I7"
+          },
+          "A3": {
+            "value": "Add: D&A (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!C4"
+          },
+          "C3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!D4"
+          },
+          "D3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!E4"
+          },
+          "E3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!F4"
+          },
+          "F3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!G4"
+          },
+          "G3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!H4"
+          },
+          "H3": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!I4"
+          },
+          "A4": {
+            "value": "Less: Capex (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!C8"
+          },
+          "C4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!D8"
+          },
+          "D4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!E8"
+          },
+          "E4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!F8"
+          },
+          "F4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!G8"
+          },
+          "G4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!H8"
+          },
+          "H4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!I8"
+          },
+          "A5": {
+            "value": "Less: Chg WC (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!C10"
+          },
+          "C5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!D10"
+          },
+          "D5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!E10"
+          },
+          "E5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!F10"
+          },
+          "F5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!G10"
+          },
+          "G5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!H10"
+          },
+          "H5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!I10"
+          },
+          "A6": {
+            "value": "FCFF (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=B2+B3-B4-B5"
+          },
+          "C6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=C2+C3-C4-C5"
+          },
+          "D6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=D2+D3-D4-D5"
+          },
+          "E6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=E2+E3-E4-E5"
+          },
+          "F6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=F2+F3-F4-F5"
+          },
+          "G6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=G2+G3-G4-G5"
+          },
+          "H6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=H2+H3-H4-H5"
+          }
+        }
+      },
+      {
+        "name": "Summary",
+        "cells": {
+          "A1": {
+            "value": "Summary: Terminal State & Glide Path",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "FY30",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "FY33 (Terminal)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!C2"
+          },
+          "C4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!F2"
+          },
+          "D4": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=Forecast!I2"
+          },
+          "A5": {
+            "value": "Revenue Growth %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!C2/Forecast!B2-1)*100"
+          },
+          "C5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!F2/Forecast!E2-1)*100"
+          },
+          "D5": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!I2/Forecast!H2-1)*100"
+          },
+          "A6": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!C3/Forecast!C2)*100"
+          },
+          "C6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!F3/Forecast!F2)*100"
+          },
+          "D6": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!I3/Forecast!I2)*100"
+          },
+          "A7": {
+            "value": "Capex / Revenue %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!C8/Forecast!C2)*100"
+          },
+          "C7": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!F8/Forecast!F2)*100"
+          },
+          "D7": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!I8/Forecast!I2)*100"
+          },
+          "A8": {
+            "value": "D&A / Revenue %",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!C4/Forecast!C2)*100"
+          },
+          "C8": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!F4/Forecast!F2)*100"
+          },
+          "D8": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=(Forecast!I4/Forecast!I2)*100"
+          },
+          "A9": {
+            "value": "FCFF (₹ Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=FCFF_Build!B6"
+          },
+          "C9": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=FCFF_Build!E6"
+          },
+          "D9": {
+            "value": "",
+            "readOnly": true,
+            "formula": "=FCFF_Build!H6"
+          },
+          "A10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Commentary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Revenue growth tapers from 12% in FY27 (6% volume + 6% price mix) to ~10% in FY30 and stabilises at 8% by FY33, reflecting deceleration in industry volumes (6% → 4%) as penetration matures and price growth moderates with input cost inflation stabilisation. EBITDA margin expands 150 bps through FY30 (21% → 22.5%) driven by scale leverage on manufacturing, distribution and brand investment amortising over growing revenue, alongside favourable product mix shift to premium decorative categories; margin then stabilises at 22.5% as pricing power reaches equilibrium. Capex intensity declines from 3.5% in FY27 to 2.5% by FY33 as the high-growth Andhra Pradesh expansion project completes in FY28, allowing normalisation to maintenance capex levels matching depreciable asset turnover. The FCFF profile — ₹4,600 cr in FY27 growing to ₹9,000 cr+ by FY33 — demonstrates value accretion of ~7-8% CAGR over the explicit period, underpinned by both margin expansion (150 bps) and capex normalisation (100 bps of incremental cash), creating a compounding machine with stable terminal economics aligned to long-term GDP growth.",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Forecast!C2": {
+      "formula_pattern": "=B2*(1+(Drivers!B2+Drivers!B4)/100)",
+      "expected_value": 39200,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "Forecast!I2": {
+      "formula_pattern": "=H2*(1+(Drivers!H2+Drivers!H4)/100)",
+      "expected_value": 68250,
+      "type": "number",
+      "tolerance": 500,
+      "points": 8
+    },
+    "Forecast!C7": {
+      "formula_pattern": "=C5-C6",
+      "expected_value": 6275,
+      "type": "number",
+      "tolerance": 200,
+      "points": 7
+    },
+    "FCFF_Build!B6": {
+      "formula_pattern": "=B2+B3-B4-B5",
+      "expected_value": 4625,
+      "type": "number",
+      "tolerance": 200,
+      "points": 10
+    },
+    "FCFF_Build!H6": {
+      "formula_pattern": "=H2+H3-H4-H5",
+      "expected_value": 9005,
+      "type": "number",
+      "tolerance": 300,
+      "points": 10
+    },
+    "Summary!D5": {
+      "formula_pattern": "=(Forecast!I2/Forecast!H2-1)*100",
+      "expected_value": 8.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 7
+    }
+  }
+}

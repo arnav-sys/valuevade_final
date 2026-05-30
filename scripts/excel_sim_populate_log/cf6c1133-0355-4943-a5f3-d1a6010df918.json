@@ -1,0 +1,907 @@
+{
+  "sim_id": "cf6c1133-0355-4943-a5f3-d1a6010df918",
+  "title": "Build the Titan Shell From Scratch",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Cover",
+        "tab_color": "navy",
+        "cells": {
+          "A1": {
+            "value": "TITAN COMPANY LIMITED — 3-STATEMENT FINANCIAL MODEL",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 14,
+            "style": "Heading",
+            "merge": "A1:H3"
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TABLE OF CONTENTS",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 11
+          },
+          "A5": {
+            "value": "Sheet 1: Cover",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "(this page)",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Sheet 2: Assumptions",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Drivers, scenarios, timeline",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Sheet 3: IS",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Income Statement FY22A–FY29E",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Sheet 4: BS",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Balance Sheet + integrity check",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Sheet 5: CFS",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Cash Flow Statement + cash reconciliation",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Sheet 6: Schedules",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Debt, PP&E, Working Capital",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "KEY OUTPUTS",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 11
+          },
+          "A13": {
+            "value": "Target Price",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false,
+            "style": "Link"
+          },
+          "A14": {
+            "value": "Current Price",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 3620,
+            "readOnly": false,
+            "style": "Input"
+          },
+          "A15": {
+            "value": "Upside %",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false,
+            "style": "Formula"
+          },
+          "A16": {
+            "value": "FY27E EPS",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false,
+            "style": "Formula"
+          },
+          "A17": {
+            "value": "Recommendation",
+            "readOnly": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "A20": {
+            "value": "[BLUE]",
+            "readOnly": true,
+            "fillColor": "RGB(47,84,150)"
+          },
+          "B20": {
+            "value": "Hardcoded input",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "[BLACK]",
+            "readOnly": true,
+            "fillColor": "RGB(0,0,0)"
+          },
+          "B21": {
+            "value": "Formula within same sheet",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "[GREEN]",
+            "readOnly": true,
+            "fillColor": "RGB(84,130,53)"
+          },
+          "B22": {
+            "value": "Link to another sheet",
+            "readOnly": true
+          },
+          "A23": {
+            "value": "[RED]",
+            "readOnly": true,
+            "fillColor": "RGB(255,0,0)"
+          },
+          "B23": {
+            "value": "Error or warning",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Assumptions",
+        "tab_color": "darkBlue",
+        "cells": {
+          "A1": {
+            "value": "TITAN COMPANY LIMITED — ASSUMPTIONS & DRIVERS",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 12
+          },
+          "A4": {
+            "value": "Year Label",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": false,
+            "style": "Input"
+          },
+          "A8": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "H8": {
+            "value": 0.23,
+            "readOnly": false,
+            "style": "Input"
+          },
+          "A25": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 0.085,
+            "readOnly": false,
+            "style": "Input"
+          },
+          "A30": {
+            "value": "Currency Unit",
+            "readOnly": true
+          },
+          "B30": {
+            "value": "₹ cr",
+            "readOnly": true,
+            "style": "Input"
+          }
+        }
+      },
+      {
+        "name": "IS",
+        "tab_color": "mediumBlue",
+        "cells": {
+          "A1": {
+            "value": "TITAN COMPANY LIMITED — INCOME STATEMENT",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 12
+          },
+          "A4": {
+            "value": "Period",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=Assumptions!B4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "C4": {
+            "value": "=Assumptions!C4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "D4": {
+            "value": "=Assumptions!D4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "E4": {
+            "value": "=Assumptions!E4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "F4": {
+            "value": "=Assumptions!F4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "G4": {
+            "value": "=Assumptions!G4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "H4": {
+            "value": "=Assumptions!H4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "I4": {
+            "value": "=Assumptions!I4",
+            "readOnly": true,
+            "style": "Link"
+          }
+        }
+      },
+      {
+        "name": "BS",
+        "tab_color": "mediumBlue",
+        "cells": {
+          "A1": {
+            "value": "TITAN COMPANY LIMITED — BALANCE SHEET",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 12
+          },
+          "A2": {
+            "value": "BS Check (must be 0)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "C2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "D2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "E2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "F2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "G2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "H2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "I2": {
+            "value": "=ROUND(0-0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "A3": {
+            "value": "RE Roll (must be 0)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "C3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "D3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "E3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "F3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "G3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "H3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "I3": {
+            "value": "=ROUND(0-(0+0-0),2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "A4": {
+            "value": "Period",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=Assumptions!B4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "C4": {
+            "value": "=Assumptions!C4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "D4": {
+            "value": "=Assumptions!D4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "E4": {
+            "value": "=Assumptions!E4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "F4": {
+            "value": "=Assumptions!F4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "G4": {
+            "value": "=Assumptions!G4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "H4": {
+            "value": "=Assumptions!H4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "I4": {
+            "value": "=Assumptions!I4",
+            "readOnly": true,
+            "style": "Link"
+          }
+        }
+      },
+      {
+        "name": "CFS",
+        "tab_color": "mediumBlue",
+        "cells": {
+          "A1": {
+            "value": "TITAN COMPANY LIMITED — CASH FLOW STATEMENT",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 12
+          },
+          "A3": {
+            "value": "Cash Reconciliation (must be 0)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "C3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "D3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "E3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "F3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "G3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "H3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "I3": {
+            "value": "=ROUND(0-0,2)",
+            "readOnly": true,
+            "style": "Formula",
+            "conditionalFormat": [
+              {
+                "type": "equal",
+                "value": 0,
+                "fillColor": "RGB(0,176,80)"
+              },
+              {
+                "type": "notEqual",
+                "value": 0,
+                "fillColor": "RGB(255,0,0)"
+              }
+            ]
+          },
+          "A4": {
+            "value": "Period",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=Assumptions!B4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "C4": {
+            "value": "=Assumptions!C4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "D4": {
+            "value": "=Assumptions!D4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "E4": {
+            "value": "=Assumptions!E4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "F4": {
+            "value": "=Assumptions!F4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "G4": {
+            "value": "=Assumptions!G4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "H4": {
+            "value": "=Assumptions!H4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "I4": {
+            "value": "=Assumptions!I4",
+            "readOnly": true,
+            "style": "Link"
+          }
+        }
+      },
+      {
+        "name": "Schedules",
+        "tab_color": "grey",
+        "cells": {
+          "A1": {
+            "value": "TITAN COMPANY LIMITED — SCHEDULES",
+            "readOnly": true,
+            "bold": true,
+            "fontSize": 12
+          },
+          "A4": {
+            "value": "Period",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=Assumptions!B4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "C4": {
+            "value": "=Assumptions!C4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "D4": {
+            "value": "=Assumptions!D4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "E4": {
+            "value": "=Assumptions!E4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "F4": {
+            "value": "=Assumptions!F4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "G4": {
+            "value": "=Assumptions!G4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "H4": {
+            "value": "=Assumptions!H4",
+            "readOnly": true,
+            "style": "Link"
+          },
+          "I4": {
+            "value": "=Assumptions!I4",
+            "readOnly": true,
+            "style": "Link"
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {}
+}

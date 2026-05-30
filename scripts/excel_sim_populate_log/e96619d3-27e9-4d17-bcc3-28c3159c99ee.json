@@ -1,0 +1,723 @@
+{
+  "sim_id": "e96619d3-27e9-4d17-bcc3-28c3159c99ee",
+  "title": "The Normalisation Exercise — Comparing Two Infrastructure Peers",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Peer_Normalisation",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "BuildCorp Reported",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "BuildCorp Normalised",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "SteadyInfra Reported",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "SteadyInfra Normalised",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue FY23 (₹ cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 4250,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 4250,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 3890,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 3890,
+            "readOnly": true
+          },
+          "F2": {
+            "value": "Revenue treated consistently",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Reported EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": 506,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "Adjust for 50% capitalised interest expense",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 24.0,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "Normalised EBITDA / Revenue",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Reported PAT (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 478,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": 234,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "After-tax effect at 25% tax rate",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "",
+            "readOnly": true
+          },
+          "F6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Interest Expense (P&L) (₹ cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 245,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": 380,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "Add 50% of capitalised interest",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Interest Capitalised (₹ cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1910,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 1910,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 45,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 45,
+            "readOnly": true
+          },
+          "F8": {
+            "value": "From Note 3: Borrowing Costs",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Total Interest Cost (₹ cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2155,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 2155,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 425,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 425,
+            "readOnly": true
+          },
+          "F9": {
+            "value": "Interest Expense + Capitalised",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Capitalisation %",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0.89,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 0.89,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 0.11,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 0.11,
+            "readOnly": true
+          },
+          "F10": {
+            "value": "Capitalised / Total Interest",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": true
+          },
+          "D11": {
+            "value": "",
+            "readOnly": true
+          },
+          "E11": {
+            "value": "",
+            "readOnly": true
+          },
+          "F11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Gross Fixed Assets (₹ cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 8450,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 8450,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 12400,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 12400,
+            "readOnly": true
+          },
+          "F12": {
+            "value": "From fixed asset schedule",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "CWIP (₹ cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 20800,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 20800,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "F13": {
+            "value": "Capital work-in-progress",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Annual Depreciation (₹ cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 298,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 298,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 725,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 725,
+            "readOnly": true
+          },
+          "F14": {
+            "value": "From P&L",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Implied Useful Life (years)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 28.4,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 28.4,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 17.1,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 17.1,
+            "readOnly": true
+          },
+          "F15": {
+            "value": "Gross Block / Depreciation (misleading for BuildCorp)",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": true
+          },
+          "C16": {
+            "value": "",
+            "readOnly": true
+          },
+          "D16": {
+            "value": "",
+            "readOnly": true
+          },
+          "E16": {
+            "value": "",
+            "readOnly": true
+          },
+          "F16": {
+            "value": "",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Share Price (₹)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 152,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 152,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 98,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 98,
+            "readOnly": true
+          },
+          "F17": {
+            "value": "Market data",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 25.13,
+            "readOnly": true
+          },
+          "C18": {
+            "value": 25.13,
+            "readOnly": true
+          },
+          "D18": {
+            "value": 33.42,
+            "readOnly": true
+          },
+          "E18": {
+            "value": 33.42,
+            "readOnly": true
+          },
+          "F18": {
+            "value": "Market Cap / Price",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Market Cap (₹ cr)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 3820,
+            "readOnly": true
+          },
+          "C19": {
+            "value": 3820,
+            "readOnly": true
+          },
+          "D19": {
+            "value": 3275,
+            "readOnly": true
+          },
+          "E19": {
+            "value": 3275,
+            "readOnly": true
+          },
+          "F19": {
+            "value": "Market valuation",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Reported P/E (x)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "C20": {
+            "value": "",
+            "readOnly": false
+          },
+          "D20": {
+            "value": 14.0,
+            "readOnly": true
+          },
+          "E20": {
+            "value": "",
+            "readOnly": false
+          },
+          "F20": {
+            "value": "Market Cap / Normalised PAT",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Conclusion",
+        "cells": {
+          "A1": {
+            "value": "Normalisation Analysis — Forensic Conclusion",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "(1) Structural Difference — Reported vs. Normalised Metrics",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "BuildCorp Structural Impact:",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "SteadyInfra Structural Impact:",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "(2) Which Company is More Attractive on Normalised Basis?",
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "(3) Rating Recommendation & Rationale",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "BuildCorp:",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "SteadyInfra:",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Key Commissioning Catalyst:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A21": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "Key Normalisation Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Interest Capitalisation Adjustment",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "50% of capitalised interest expensed; 50% legitimately capitalised",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "After-tax adjustment factor",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.75,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "BuildCorp 50% Int Cap adjustment (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 955,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "SteadyInfra 50% Int Cap adjustment (₹ cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "CWIP misleads useful life analysis — once commissioned, depreciation will normalise to 20-22 years peer range",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Peer_Normalisation!C3": {
+      "formula_pattern": "=B3-(B8*0.5)",
+      "expected_value": 542.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Peer_Normalisation!C4": {
+      "formula_pattern": "=C3/B2*100",
+      "expected_value": 12.76,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Peer_Normalisation!C5": {
+      "formula_pattern": "=B5-(B8*0.5*0.75)",
+      "expected_value": 156.25,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Peer_Normalisation!C7": {
+      "formula_pattern": "=B7+(B8*0.5)",
+      "expected_value": 1200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Peer_Normalisation!E3": {
+      "formula_pattern": "=D3-(D8*0.5)",
+      "expected_value": 483.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Peer_Normalisation!E4": {
+      "formula_pattern": "=E3/D2*100",
+      "expected_value": 12.43,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Peer_Normalisation!E5": {
+      "formula_pattern": "=D5-(D8*0.5*0.75)",
+      "expected_value": 225.56,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Peer_Normalisation!E7": {
+      "formula_pattern": "=D7+(D8*0.5)",
+      "expected_value": 402.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Peer_Normalisation!C20": {
+      "formula_pattern": "=C19/C5",
+      "expected_value": 24.45,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 15
+    },
+    "Peer_Normalisation!E20": {
+      "formula_pattern": "=E19/E5",
+      "expected_value": 14.51,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 12
+    }
+  }
+}

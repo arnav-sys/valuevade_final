@@ -1,0 +1,1267 @@
+{
+  "sim_id": "d9d8a031-ed2b-432f-ba0f-d20ca9c59069",
+  "title": "The Return Analysis Deep-Dive — Dhananjay Specialty Chemicals Ltd",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Raw Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY18 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY19 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY20 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY21 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY22 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY23 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY24 (₹cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue from Operations",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1820,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2150,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 2480,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 2870,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 3520,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 4050,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 4550,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 240,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 300,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 365,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 475,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 785,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 850,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 825,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Tax Expense",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 46,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 58,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 71,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 95,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 165,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 175,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 162,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Net Income (PAT)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 139,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 174,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 212,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 285,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 500,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 525,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 488,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Shareholders Equity (closing)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 880,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 1195,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 1900,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 2380,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 2750,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Total Debt (closing)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 620,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 750,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 880,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 1380,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 1680,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 2050,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Total Assets (closing)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1680,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 1960,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 2280,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 2680,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 3420,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 4280,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 5100,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Cash and Equivalents",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 85,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 110,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 135,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 170,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 220,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 280,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 310,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Depreciation",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 55,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 65,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 78,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 92,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 115,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 145,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 180,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Return Metrics",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY18",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Avg Equity (₹cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Avg Debt (₹cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Avg Cap Employed (₹cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "ROCE (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "H5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "ROE (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "H6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "NOPAT (₹cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "H7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Invested Capital (₹cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "H8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "ROIC (%)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "H9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Annual EVA (₹cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "H10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Cumulative EVA (₹cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "H11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Analysis",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Through-cycle avg ROCE FY18-FY24 (%)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Asset Turnover FY24 (Revenue/Avg Assets)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Fair Value Multiple (P/E) for Dhananjay?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Downside Risk from 42x P/E (%)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Investment Recommendation (SELL/HOLD/BUY)?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Return Metrics!B2": {
+      "formula_pattern": "=(880+1020)/2",
+      "expected_value": 950,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!C2": {
+      "formula_pattern": "=(1020+1195)/2",
+      "expected_value": 1107.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!D2": {
+      "formula_pattern": "=(1195+1450)/2",
+      "expected_value": 1322.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!E2": {
+      "formula_pattern": "=(1450+1900)/2",
+      "expected_value": 1675,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!F2": {
+      "formula_pattern": "=(1900+2380)/2",
+      "expected_value": 2140,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!G2": {
+      "formula_pattern": "=(2380+2750)/2",
+      "expected_value": 2565,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!B3": {
+      "formula_pattern": "=(620+750)/2",
+      "expected_value": 685,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!C3": {
+      "formula_pattern": "=(750+880)/2",
+      "expected_value": 815,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!D3": {
+      "formula_pattern": "=(880+1050)/2",
+      "expected_value": 965,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!E3": {
+      "formula_pattern": "=(1050+1380)/2",
+      "expected_value": 1215,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!F3": {
+      "formula_pattern": "=(1380+1680)/2",
+      "expected_value": 1530,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!G3": {
+      "formula_pattern": "=(1680+2050)/2",
+      "expected_value": 1865,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!B4": {
+      "formula_pattern": "=B2+B3",
+      "expected_value": 1635,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!C4": {
+      "formula_pattern": "=C2+C3",
+      "expected_value": 1922.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!D4": {
+      "formula_pattern": "=D2+D3",
+      "expected_value": 2287.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!E4": {
+      "formula_pattern": "=E2+E3",
+      "expected_value": 2890,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!F4": {
+      "formula_pattern": "=F2+F3",
+      "expected_value": 3670,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!G4": {
+      "formula_pattern": "=G2+G3",
+      "expected_value": 4430,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!B5": {
+      "formula_pattern": "=ROUND('Raw Data'!B3/B4*100,1)",
+      "expected_value": 18.7,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!C5": {
+      "formula_pattern": "=ROUND('Raw Data'!C3/C4*100,1)",
+      "expected_value": 18.3,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!D5": {
+      "formula_pattern": "=ROUND('Raw Data'!D3/D4*100,1)",
+      "expected_value": 19.0,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!E5": {
+      "formula_pattern": "=ROUND('Raw Data'!E3/E4*100,1)",
+      "expected_value": 20.8,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!F5": {
+      "formula_pattern": "=ROUND('Raw Data'!F3/F4*100,1)",
+      "expected_value": 27.2,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!G5": {
+      "formula_pattern": "=ROUND('Raw Data'!G3/G4*100,1)",
+      "expected_value": 23.2,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!H5": {
+      "formula_pattern": "=ROUND('Raw Data'!H3/H4*100,1)",
+      "expected_value": 18.6,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!B6": {
+      "formula_pattern": "=ROUND('Raw Data'!B5/B2*100,1)",
+      "expected_value": 18.5,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!C6": {
+      "formula_pattern": "=ROUND('Raw Data'!C5/C2*100,1)",
+      "expected_value": 18.3,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!D6": {
+      "formula_pattern": "=ROUND('Raw Data'!D5/D2*100,1)",
+      "expected_value": 19.2,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!E6": {
+      "formula_pattern": "=ROUND('Raw Data'!E5/E2*100,1)",
+      "expected_value": 21.6,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!F6": {
+      "formula_pattern": "=ROUND('Raw Data'!F5/F2*100,1)",
+      "expected_value": 29.9,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!G6": {
+      "formula_pattern": "=ROUND('Raw Data'!G5/G2*100,1)",
+      "expected_value": 24.5,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!H6": {
+      "formula_pattern": "=ROUND('Raw Data'!H5/H2*100,1)",
+      "expected_value": 19.0,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 3
+    },
+    "Return Metrics!B7": {
+      "formula_pattern": "=ROUND('Raw Data'!B3*0.75,0)",
+      "expected_value": 180,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!C7": {
+      "formula_pattern": "=ROUND('Raw Data'!C3*0.75,0)",
+      "expected_value": 225,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!D7": {
+      "formula_pattern": "=ROUND('Raw Data'!D3*0.75,0)",
+      "expected_value": 274,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!E7": {
+      "formula_pattern": "=ROUND('Raw Data'!E3*0.75,0)",
+      "expected_value": 356,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!F7": {
+      "formula_pattern": "=ROUND('Raw Data'!F3*0.75,0)",
+      "expected_value": 589,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!G7": {
+      "formula_pattern": "=ROUND('Raw Data'!G3*0.75,0)",
+      "expected_value": 638,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!H7": {
+      "formula_pattern": "=ROUND('Raw Data'!H3*0.75,0)",
+      "expected_value": 619,
+      "type": "number",
+      "tolerance": 2,
+      "points": 0
+    },
+    "Return Metrics!B8": {
+      "formula_pattern": "=B4-85",
+      "expected_value": 1550,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!C8": {
+      "formula_pattern": "=C4-110",
+      "expected_value": 1812.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!D8": {
+      "formula_pattern": "=D4-135",
+      "expected_value": 2152.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!E8": {
+      "formula_pattern": "=E4-170",
+      "expected_value": 2720,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!F8": {
+      "formula_pattern": "=F4-220",
+      "expected_value": 3450,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!G8": {
+      "formula_pattern": "=G4-280",
+      "expected_value": 4150,
+      "type": "number",
+      "tolerance": 1,
+      "points": 0
+    },
+    "Return Metrics!H8": {
+      "formula_pattern": "=H4-310",
+      "expected_value": 4850,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "Return Metrics!B9": {
+      "formula_pattern": "=ROUND(B7/B8*100,1)",
+      "expected_value": 11.6,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 0
+    },
+    "Return Metrics!C9": {
+      "formula_pattern": "=ROUND(C7/C8*100,1)",
+      "expected_value": 12.4,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 0
+    },
+    "Return Metrics!D9": {
+      "formula_pattern": "=ROUND(D7/D8*100,1)",
+      "expected_value": 12.7,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 0
+    },
+    "Return Metrics!E9": {
+      "formula_pattern": "=ROUND(E7/E8*100,1)",
+      "expected_value": 13.1,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 0
+    },
+    "Return Metrics!F9": {
+      "formula_pattern": "=ROUND(F7/F8*100,1)",
+      "expected_value": 17.1,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 3
+    },
+    "Return Metrics!G9": {
+      "formula_pattern": "=ROUND(G7/G8*100,1)",
+      "expected_value": 15.4,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 3
+    },
+    "Return Metrics!H9": {
+      "formula_pattern": "=ROUND(H7/H8*100,1)",
+      "expected_value": 12.8,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 3
+    },
+    "Return Metrics!B10": {
+      "formula_pattern": "=ROUND((B9-12)*B8/100,0)",
+      "expected_value": -23,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!C10": {
+      "formula_pattern": "=ROUND((C9-12)*C8/100,0)",
+      "expected_value": 22,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!D10": {
+      "formula_pattern": "=ROUND((D9-12)*D8/100,0)",
+      "expected_value": 34,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!E10": {
+      "formula_pattern": "=ROUND((E9-12)*E8/100,0)",
+      "expected_value": 69,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!F10": {
+      "formula_pattern": "=ROUND((F9-12)*F8/100,0)",
+      "expected_value": 235,
+      "type": "number",
+      "tolerance": 5,
+      "points": 3
+    },
+    "Return Metrics!G10": {
+      "formula_pattern": "=ROUND((G9-12)*G8/100,0)",
+      "expected_value": 224,
+      "type": "number",
+      "tolerance": 5,
+      "points": 3
+    },
+    "Return Metrics!H10": {
+      "formula_pattern": "=ROUND((H9-12)*H8/100,0)",
+      "expected_value": 62,
+      "type": "number",
+      "tolerance": 5,
+      "points": 3
+    },
+    "Return Metrics!B11": {
+      "formula_pattern": "=B10",
+      "expected_value": -23,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!C11": {
+      "formula_pattern": "=B11+C10",
+      "expected_value": -1,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!D11": {
+      "formula_pattern": "=C11+D10",
+      "expected_value": 33,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!E11": {
+      "formula_pattern": "=D11+E10",
+      "expected_value": 102,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!F11": {
+      "formula_pattern": "=E11+F10",
+      "expected_value": 337,
+      "type": "number",
+      "tolerance": 5,
+      "points": 0
+    },
+    "Return Metrics!G11": {
+      "formula_pattern": "=F11+G10",
+      "expected_value": 561,
+      "type": "number",
+      "tolerance": 5,
+      "points": 3
+    },
+    "Return Metrics!H11": {
+      "formula_pattern": "=G11+H10",
+      "expected_value": 623,
+      "type": "number",
+      "tolerance": 5,
+      "points": 5
+    },
+    "Analysis!B2": {
+      "formula_pattern": "=ROUND(AVERAGE(B5:H5),1)",
+      "expected_value": 20.8,
+      "type": "number",
+      "tolerance": 0.3,
+      "points": 10
+    },
+    "Analysis!B3": {
+      "formula_pattern": "=ROUND('Raw Data'!H2/((4280+5100)/2),2)",
+      "expected_value": 0.97,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 10
+    },
+    "Analysis!B4": {
+      "formula_pattern": "25-30",
+      "expected_value": "25-30",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Analysis!B5": {
+      "formula_pattern": "40-50",
+      "expected_value": "40-50",
+      "type": "text",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Analysis!B6": {
+      "formula_pattern": "SELL",
+      "expected_value": "SELL",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

@@ -1,0 +1,774 @@
+{
+  "sim_id": "e9db34da-35df-46db-b720-bba22ff9a843",
+  "title": "The Complete Comparative Analysis — Building the Peer Benchmark Dashboard",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Peer_Selection",
+        "cells": {
+          "A1": {
+            "value": "Criterion",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Target Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "HUL",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Nestle",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Britannia",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Dabur",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Marico",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Business Model",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Mass FMCG, branded, retail",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Mass FMCG, branded",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Mass FMCG, branded",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "Mass FMCG, branded",
+            "readOnly": true
+          },
+          "F2": {
+            "value": "Mass FMCG, branded",
+            "readOnly": true
+          },
+          "G2": {
+            "value": "Mass FMCG, branded",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 42000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 58000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 14500,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 10500,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 9800,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Geographic Mix",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "India-heavy (88%)",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "India-heavy (92%)",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "India-heavy (85%)",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "India-heavy (90%)",
+            "readOnly": true
+          },
+          "F4": {
+            "value": "India-heavy (88%)",
+            "readOnly": true
+          },
+          "G4": {
+            "value": "India-heavy (86%)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Growth Stage",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Mature",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Mature",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Mature",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "Mature",
+            "readOnly": true
+          },
+          "F5": {
+            "value": "Mature",
+            "readOnly": true
+          },
+          "G5": {
+            "value": "Mature",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Peer Quality",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "SELECTED PEERS",
+            "readOnly": true,
+            "bold": true
+          },
+          "C6": {
+            "value": "✓ Best-in-class",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "✓ Premium play",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "✓ Value play",
+            "readOnly": true
+          },
+          "F6": {
+            "value": "✓ Diversified",
+            "readOnly": true
+          },
+          "G6": {
+            "value": "✓ Hair care focus",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Trend_Analysis",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY19",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "3-Yr CAGR %",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "5-Yr CAGR %",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Trajectory",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 40000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 42000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 50000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 54000,
+            "readOnly": true
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Operating Margin (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 22.0,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 23.0,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 22.8,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Net Margin (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 18.0,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 18.5,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 19.0,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 18.8,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 18.3,
+            "readOnly": true
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "ROCE (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 28.0,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 29.0,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 30.5,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 31.0,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 30.0,
+            "readOnly": true
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "H5": {
+            "value": "",
+            "readOnly": false
+          },
+          "I5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Distribution Reach (mn outlets)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 7.0,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 8.2,
+            "readOnly": true
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "H6": {
+            "value": "",
+            "readOnly": false
+          },
+          "I6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Peer_Benchmark",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Target",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "HUL",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Nestle",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Britannia",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Dabur",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Marico",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Peer Avg",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Quartile",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY23 Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 54000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 62500,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 16800,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 15200,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 11500,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 10800,
+            "readOnly": true
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Operating Margin (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 23.8,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 18.2,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 17.5,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 19.0,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 20.2,
+            "readOnly": true
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Net Margin (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 18.3,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 19.5,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 14.8,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 13.2,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 15.5,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 16.5,
+            "readOnly": true
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "ROCE (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 30.0,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 31.5,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 26.5,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 25.0,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 27.2,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 28.5,
+            "readOnly": true
+          },
+          "H5": {
+            "value": "",
+            "readOnly": false
+          },
+          "I5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "P/E Multiple (x)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 58,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 62,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 45,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 38,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 42,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 48,
+            "readOnly": true
+          },
+          "H6": {
+            "value": "",
+            "readOnly": false
+          },
+          "I6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Synthesis",
+        "cells": {
+          "A1": {
+            "value": "Investment Thesis Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Analytical Finding",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Evidence",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Operational Excellence",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Competitive Position",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Valuation Justification",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Primary Risk to Monitor",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Investment Recommendation",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Trend_Analysis!G2": {
+      "formula_pattern": "=((F2/D2)^(1/3))-1",
+      "expected_value": 0.103,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 12
+    },
+    "Trend_Analysis!H2": {
+      "formula_pattern": "=((F2/B2)^(1/4))-1",
+      "expected_value": 0.0779,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 12
+    },
+    "Trend_Analysis!I2": {
+      "formula_pattern": "=IF(F2>D2,\"Accelerating\",IF(F2<D2,\"Decelerating\",\"Stable\"))",
+      "expected_value": "Accelerating",
+      "type": "text",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Trend_Analysis!G3": {
+      "formula_pattern": "=((F3/D3)^(1/3))-1",
+      "expected_value": -0.0065,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 8
+    },
+    "Trend_Analysis!I3": {
+      "formula_pattern": "=IF(F3>D3,\"Accelerating\",IF(F3<D3,\"Decelerating\",\"Stable\"))",
+      "expected_value": "Stable",
+      "type": "text",
+      "tolerance": 0,
+      "points": 5
+    },
+    "Peer_Benchmark!H2": {
+      "formula_pattern": "=AVERAGE(C2:G2)",
+      "expected_value": 21360,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Peer_Benchmark!H3": {
+      "formula_pattern": "=AVERAGE(C3:G3)",
+      "expected_value": 19.74,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Peer_Benchmark!I3": {
+      "formula_pattern": "=IF(B3>=PERCENTILE($C$3:$G$3,0.75),\"Top Quartile\",IF(B3>=PERCENTILE($C$3:$G$3,0.5),\"Median\",\"Bottom Quartile\"))",
+      "expected_value": "Top Quartile",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Synthesis!B3": {
+      "formula_pattern": "TEXT_NARRATIVE",
+      "expected_value": "Operating margin 22.5% vs peer avg 19.7%; ROCE 30% (top quartile); 5-yr revenue CAGR 7.8%; premiumization-led growth trajectory",
+      "type": "text",
+      "tolerance": 0,
+      "points": 0
+    }
+  }
+}

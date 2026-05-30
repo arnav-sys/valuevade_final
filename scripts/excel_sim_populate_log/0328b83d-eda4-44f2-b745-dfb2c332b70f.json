@@ -1,0 +1,703 @@
+{
+  "sim_id": "0328b83d-eda4-44f2-b745-dfb2c332b70f",
+  "title": "Build a CEO Compensation Scorecard for Four Companies",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Compensation Scorecard",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "CEO Total Comp FY24 (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "PAT FY24 (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "CEO Comp % of PAT",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Fixed Pay (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Variable Pay (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "ESOP Value (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Perks (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Fixed %",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "KPI Quality (1-5)",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "ESOP Strike vs FMV",
+            "readOnly": true,
+            "bold": true
+          },
+          "L1": {
+            "value": "ESOP Perf Conditions",
+            "readOnly": true,
+            "bold": true
+          },
+          "M1": {
+            "value": "ESOP Structure Score (1-5)",
+            "readOnly": true,
+            "bold": true
+          },
+          "N1": {
+            "value": "Annual ESOP Dilution %",
+            "readOnly": true,
+            "bold": true
+          },
+          "O1": {
+            "value": "Median Emp Comp (lakh)",
+            "readOnly": true,
+            "bold": true
+          },
+          "P1": {
+            "value": "CEO Pay Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "Q1": {
+            "value": "CEO Comp FY20 (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "R1": {
+            "value": "PAT FY20 (cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "S1": {
+            "value": "5yr Comp CAGR %",
+            "readOnly": true,
+            "bold": true
+          },
+          "T1": {
+            "value": "5yr PAT CAGR %",
+            "readOnly": true,
+            "bold": true
+          },
+          "U1": {
+            "value": "Alignment Gap (pp)",
+            "readOnly": true,
+            "bold": true
+          },
+          "V1": {
+            "value": "Composite Score",
+            "readOnly": true,
+            "bold": true
+          },
+          "W1": {
+            "value": "Governance Flag",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "IndusChem Specialty",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 14.8,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 330,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": 9.6,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 2.2,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 2.4,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 0.6,
+            "readOnly": true
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false
+          },
+          "J2": {
+            "value": 2,
+            "readOnly": false
+          },
+          "K2": {
+            "value": "Below FMV",
+            "readOnly": true
+          },
+          "L2": {
+            "value": "N",
+            "readOnly": true
+          },
+          "M2": {
+            "value": 1,
+            "readOnly": false
+          },
+          "N2": {
+            "value": 1.1,
+            "readOnly": true
+          },
+          "O2": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "P2": {
+            "value": "",
+            "readOnly": false
+          },
+          "Q2": {
+            "value": 8.2,
+            "readOnly": true
+          },
+          "R2": {
+            "value": 220,
+            "readOnly": true
+          },
+          "S2": {
+            "value": "",
+            "readOnly": false
+          },
+          "T2": {
+            "value": "",
+            "readOnly": false
+          },
+          "U2": {
+            "value": "",
+            "readOnly": false
+          },
+          "V2": {
+            "value": "",
+            "readOnly": false
+          },
+          "W2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "NorthPeak Consumer",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 12.4,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 320,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": 4.8,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 2.4,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 4.8,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 0.4,
+            "readOnly": true
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false
+          },
+          "J3": {
+            "value": 4,
+            "readOnly": false
+          },
+          "K3": {
+            "value": "At FMV",
+            "readOnly": true
+          },
+          "L3": {
+            "value": "Y",
+            "readOnly": true
+          },
+          "M3": {
+            "value": 5,
+            "readOnly": false
+          },
+          "N3": {
+            "value": 0.8,
+            "readOnly": true
+          },
+          "O3": {
+            "value": 7,
+            "readOnly": true
+          },
+          "P3": {
+            "value": "",
+            "readOnly": false
+          },
+          "Q3": {
+            "value": 9.1,
+            "readOnly": true
+          },
+          "R3": {
+            "value": 190,
+            "readOnly": true
+          },
+          "S3": {
+            "value": "",
+            "readOnly": false
+          },
+          "T3": {
+            "value": "",
+            "readOnly": false
+          },
+          "U3": {
+            "value": "",
+            "readOnly": false
+          },
+          "V3": {
+            "value": "",
+            "readOnly": false
+          },
+          "W3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "ShreeInfra Power",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 18.6,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 145,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": 12.4,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 1.2,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 4.6,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 0.4,
+            "readOnly": true
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false
+          },
+          "J4": {
+            "value": 2,
+            "readOnly": false
+          },
+          "K4": {
+            "value": "Below FMV",
+            "readOnly": true
+          },
+          "L4": {
+            "value": "N",
+            "readOnly": true
+          },
+          "M4": {
+            "value": 2,
+            "readOnly": false
+          },
+          "N4": {
+            "value": 2.2,
+            "readOnly": true
+          },
+          "O4": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "P4": {
+            "value": "",
+            "readOnly": false
+          },
+          "Q4": {
+            "value": 9.8,
+            "readOnly": true
+          },
+          "R4": {
+            "value": 128,
+            "readOnly": true
+          },
+          "S4": {
+            "value": "",
+            "readOnly": false
+          },
+          "T4": {
+            "value": "",
+            "readOnly": false
+          },
+          "U4": {
+            "value": "",
+            "readOnly": false
+          },
+          "V4": {
+            "value": "",
+            "readOnly": false
+          },
+          "W4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "TruTech Systems",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 10.8,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 412,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": 4.2,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 3.6,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 2.8,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 0.2,
+            "readOnly": true
+          },
+          "I5": {
+            "value": "",
+            "readOnly": false
+          },
+          "J5": {
+            "value": 4,
+            "readOnly": false
+          },
+          "K5": {
+            "value": "At FMV",
+            "readOnly": true
+          },
+          "L5": {
+            "value": "Y",
+            "readOnly": true
+          },
+          "M5": {
+            "value": 4,
+            "readOnly": false
+          },
+          "N5": {
+            "value": 1.3,
+            "readOnly": true
+          },
+          "O5": {
+            "value": 8.2,
+            "readOnly": true
+          },
+          "P5": {
+            "value": "",
+            "readOnly": false
+          },
+          "Q5": {
+            "value": 7.6,
+            "readOnly": true
+          },
+          "R5": {
+            "value": 285,
+            "readOnly": true
+          },
+          "S5": {
+            "value": "",
+            "readOnly": false
+          },
+          "T5": {
+            "value": "",
+            "readOnly": false
+          },
+          "U5": {
+            "value": "",
+            "readOnly": false
+          },
+          "V5": {
+            "value": "",
+            "readOnly": false
+          },
+          "W5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Instructions",
+        "cells": {
+          "A1": {
+            "value": "CEO Compensation Scorecard - Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Task 1: Apply Formulas",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "1. CEO Comp % of PAT (Column D): =(B/C)*100",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "2. Fixed % (Column I): =(E/B)*100",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "3. CEO Pay Ratio (Column P): =(B*100)/O",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "4. 5yr Comp CAGR % (Column S): =((B/Q)^(1/4)-1)*100",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "5. 5yr PAT CAGR % (Column T): =((C/R)^(1/4)-1)*100",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Task 2: Manual Scores",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "J (KPI Quality 1-5): 5=all quantitative multi-yr, 4=mostly quantitative, 3=mixed, 2=mostly subjective, 1=fully subjective",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "M (ESOP Structure 1-5): 5=FMV+perf conditions, 4=FMV+partial perf, 3=below FMV mixed, 2=below FMV time-only, 1=face-value",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Task 3: Computed Fields",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "U (Alignment Gap): =S-T (Comp CAGR minus PAT CAGR)",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "V (Composite Score): =(D/10)*(I/20)*(J/5)*(M/5) scaled appropriately",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "W (Governance Flag): RED if V<2 or D>10, AMBER if V 2-3, GREEN if V>3 and D<=10",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Compensation Scorecard!D2": {
+      "formula_pattern": "=(B2/C2)*100",
+      "expected_value": 4.48,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Compensation Scorecard!I2": {
+      "formula_pattern": "=(E2/B2)*100",
+      "expected_value": 64.86,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Compensation Scorecard!P2": {
+      "formula_pattern": "=(B2*100)/O2",
+      "expected_value": 197.33,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Compensation Scorecard!S2": {
+      "formula_pattern": "=((B2/Q2)^(1/4)-1)*100",
+      "expected_value": 15.92,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Compensation Scorecard!T2": {
+      "formula_pattern": "=((C2/R2)^(1/4)-1)*100",
+      "expected_value": 10.72,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Compensation Scorecard!D3": {
+      "formula_pattern": "=(B3/C3)*100",
+      "expected_value": 3.88,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Compensation Scorecard!I3": {
+      "formula_pattern": "=(E3/B3)*100",
+      "expected_value": 38.71,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Compensation Scorecard!P3": {
+      "formula_pattern": "=(B3*100)/O3",
+      "expected_value": 177.14,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Compensation Scorecard!S3": {
+      "formula_pattern": "=((B3/Q3)^(1/4)-1)*100",
+      "expected_value": 7.98,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Compensation Scorecard!T3": {
+      "formula_pattern": "=((C3/R3)^(1/4)-1)*100",
+      "expected_value": 14.23,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Compensation Scorecard!D4": {
+      "formula_pattern": "=(B4/C4)*100",
+      "expected_value": 12.83,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Compensation Scorecard!I4": {
+      "formula_pattern": "=(E4/B4)*100",
+      "expected_value": 66.67,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "Compensation Scorecard!P4": {
+      "formula_pattern": "=(B4*100)/O4",
+      "expected_value": 286.15,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Compensation Scorecard!S4": {
+      "formula_pattern": "=((B4/Q4)^(1/4)-1)*100",
+      "expected_value": 17.37,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Compensation Scorecard!T4": {
+      "formula_pattern": "=((C4/R4)^(1/4)-1)*100",
+      "expected_value": 3.2,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Compensation Scorecard!D5": {
+      "formula_pattern": "=(B5/C5)*100",
+      "expected_value": 2.62,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Compensation Scorecard!I5": {
+      "formula_pattern": "=(E5/B5)*100",
+      "expected_value": 38.89,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Compensation Scorecard!P5": {
+      "formula_pattern": "=(B5*100)/O5",
+      "expected_value": 131.71,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Compensation Scorecard!S5": {
+      "formula_pattern": "=((B5/Q5)^(1/4)-1)*100",
+      "expected_value": 9.24,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Compensation Scorecard!T5": {
+      "formula_pattern": "=((C5/R5)^(1/4)-1)*100",
+      "expected_value": 9.71,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    }
+  }
+}

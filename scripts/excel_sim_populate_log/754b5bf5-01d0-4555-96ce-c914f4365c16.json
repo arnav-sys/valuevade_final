@@ -1,0 +1,1476 @@
+{
+  "sim_id": "754b5bf5-01d0-4555-96ce-c914f4365c16",
+  "title": "Building the Indian Banking Scorecard — Live Peer Comparison Excel",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Raw_Data",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "HDFC Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "ICICI Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "SBI",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Bandhan",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "IndusInd",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "NII (FY24, ₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 108532,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 74306,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 159876,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 10384,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 20616,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Avg Total Assets (FY24, ₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 3200000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 1750000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 6000000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 150000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 475000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Avg Interest-Earning Assets (FY24, ₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2600000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1620000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 5180000,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 148000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 470000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Loans (FY24-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 2548862,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 1184406,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 3754320,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 126935,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 343298,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Loans (FY23-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2160000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 1019638,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 3218106,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 112553,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 301244,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "CASA Deposits (FY24-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 903000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 594161,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 1977632,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 47321,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 140523,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Total Deposits (FY24-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2376888,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 1414668,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 4944081,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 135202,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 390343,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Gross NPA (FY24-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 33135,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 26057,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 82640,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 2540,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 6522,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Net NPA (FY24-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 7644,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 4738,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 22529,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 762,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 2059,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Provisions (FY24-end, ₹ Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 25491,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 21319,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 60111,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 1778,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 4463,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Q4FY24 Slippages (₹ Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 6650,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 4525,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 12930,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 1130,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 2080,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Opening Standard Advances Q4 (₹ Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 2540000,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 1170000,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 3720000,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 124000,
+            "readOnly": true
+          },
+          "F13": {
+            "value": 338000,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Net Profit (FY24, ₹ Cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 60812,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 40888,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 61077,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 2229,
+            "readOnly": true
+          },
+          "F14": {
+            "value": 8977,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Avg Equity (FY24, ₹ Cr)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 350000,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 220000,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 350000,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 63000,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Current P/BV (x)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 2.7,
+            "readOnly": true
+          },
+          "C16": {
+            "value": 3.0,
+            "readOnly": true
+          },
+          "D16": {
+            "value": 1.5,
+            "readOnly": true
+          },
+          "E16": {
+            "value": 1.2,
+            "readOnly": true
+          },
+          "F16": {
+            "value": 1.3,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Cost of Equity (%)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 14.0,
+            "readOnly": true
+          },
+          "F17": {
+            "value": 13.5,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Sustainable Growth (%)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 9,
+            "readOnly": true
+          },
+          "C18": {
+            "value": 10,
+            "readOnly": true
+          },
+          "D18": {
+            "value": 8,
+            "readOnly": true
+          },
+          "E18": {
+            "value": 10,
+            "readOnly": true
+          },
+          "F18": {
+            "value": 8,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Calculations",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "HDFC Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "ICICI Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "SBI",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Bandhan",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "IndusInd",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "NIM (%)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "RoA (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "RoE (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Loan Growth (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "GNPA Ratio (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "NNPA Ratio (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Slippage Ratio (%) Annl",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "PCR (%)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "CASA Ratio (%)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Justified P/BV (x)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Actual P/BV (x)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "",
+            "readOnly": false
+          },
+          "D12": {
+            "value": "",
+            "readOnly": false
+          },
+          "E12": {
+            "value": "",
+            "readOnly": false
+          },
+          "F12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Upside/Downside (%)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "C13": {
+            "value": "",
+            "readOnly": false
+          },
+          "D13": {
+            "value": "",
+            "readOnly": false
+          },
+          "E13": {
+            "value": "",
+            "readOnly": false
+          },
+          "F13": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Scorecard",
+        "cells": {
+          "A1": {
+            "value": "Indian Banking Peer Scorecard FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "HDFC Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "ICICI Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "D2": {
+            "value": "SBI",
+            "readOnly": true,
+            "bold": true
+          },
+          "E2": {
+            "value": "Bandhan",
+            "readOnly": true,
+            "bold": true
+          },
+          "F2": {
+            "value": "IndusInd",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "NIM (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=Calculations!B2",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "=Calculations!C2",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "=Calculations!D2",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "=Calculations!E2",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "=Calculations!F2",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "RoA (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=Calculations!B3",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "=Calculations!C3",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "=Calculations!D3",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "=Calculations!E3",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "=Calculations!F3",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "RoE (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Calculations!B4",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "=Calculations!C4",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "=Calculations!D4",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "=Calculations!E4",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "=Calculations!F4",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Loan Growth (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=Calculations!B5",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "=Calculations!C5",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "=Calculations!D5",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "=Calculations!E5",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "=Calculations!F5",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "GNPA Ratio (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=Calculations!B6",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "=Calculations!C6",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "=Calculations!D6",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "=Calculations!E6",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "=Calculations!F6",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "PCR (%)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "=Calculations!B9",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "=Calculations!C9",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "=Calculations!D9",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "=Calculations!E9",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "=Calculations!F9",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "CASA Ratio (%)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=Calculations!B10",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "=Calculations!C10",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "=Calculations!D10",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "=Calculations!E10",
+            "readOnly": false
+          },
+          "F9": {
+            "value": "=Calculations!F10",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Justified P/BV (x)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "=Calculations!B11",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "=Calculations!C11",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "=Calculations!D11",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "=Calculations!E11",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "=Calculations!F11",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Actual P/BV (x)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=Calculations!B12",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "=Calculations!C12",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "=Calculations!D12",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "=Calculations!E12",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "=Calculations!F12",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Valuation (UPside %)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "=Calculations!B13",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "=Calculations!C13",
+            "readOnly": false
+          },
+          "D12": {
+            "value": "=Calculations!D13",
+            "readOnly": false
+          },
+          "E12": {
+            "value": "=Calculations!E13",
+            "readOnly": false
+          },
+          "F12": {
+            "value": "=Calculations!F13",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Calculations!B2": {
+      "formula_pattern": "=Raw_Data!B2/Raw_Data!B4*100",
+      "expected_value": 4.17,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!C2": {
+      "formula_pattern": "=Raw_Data!C2/Raw_Data!C4*100",
+      "expected_value": 4.59,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!D2": {
+      "formula_pattern": "=Raw_Data!D2/Raw_Data!D4*100",
+      "expected_value": 3.08,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!E2": {
+      "formula_pattern": "=Raw_Data!E2/Raw_Data!E4*100",
+      "expected_value": 7.01,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!F2": {
+      "formula_pattern": "=Raw_Data!F2/Raw_Data!F4*100",
+      "expected_value": 4.38,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!B3": {
+      "formula_pattern": "=Raw_Data!B14/Raw_Data!B3*100",
+      "expected_value": 1.9,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 5
+    },
+    "Calculations!C3": {
+      "formula_pattern": "=Raw_Data!C14/Raw_Data!C3*100",
+      "expected_value": 2.34,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 5
+    },
+    "Calculations!D3": {
+      "formula_pattern": "=Raw_Data!D14/Raw_Data!D3*100",
+      "expected_value": 1.02,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 5
+    },
+    "Calculations!E3": {
+      "formula_pattern": "=Raw_Data!E14/Raw_Data!E3*100",
+      "expected_value": 1.49,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 5
+    },
+    "Calculations!F3": {
+      "formula_pattern": "=Raw_Data!F14/Raw_Data!F3*100",
+      "expected_value": 1.89,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 5
+    },
+    "Calculations!B4": {
+      "formula_pattern": "=Raw_Data!B14/Raw_Data!B15*100",
+      "expected_value": 17.38,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Calculations!C4": {
+      "formula_pattern": "=Raw_Data!C14/Raw_Data!C15*100",
+      "expected_value": 18.58,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Calculations!D4": {
+      "formula_pattern": "=Raw_Data!D14/Raw_Data!D15*100",
+      "expected_value": 17.45,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Calculations!E4": {
+      "formula_pattern": "=Raw_Data!E14/Raw_Data!E15*100",
+      "expected_value": 12.05,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Calculations!F4": {
+      "formula_pattern": "=Raw_Data!F14/Raw_Data!F15*100",
+      "expected_value": 14.25,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Calculations!B5": {
+      "formula_pattern": "=(Raw_Data!B5-Raw_Data!B6)/Raw_Data!B6*100",
+      "expected_value": 18.0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!C5": {
+      "formula_pattern": "=(Raw_Data!C5-Raw_Data!C6)/Raw_Data!C6*100",
+      "expected_value": 16.14,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!D5": {
+      "formula_pattern": "=(Raw_Data!D5-Raw_Data!D6)/Raw_Data!D6*100",
+      "expected_value": 16.67,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!E5": {
+      "formula_pattern": "=(Raw_Data!E5-Raw_Data!E6)/Raw_Data!E6*100",
+      "expected_value": 12.73,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!F5": {
+      "formula_pattern": "=(Raw_Data!F5-Raw_Data!F6)/Raw_Data!F6*100",
+      "expected_value": 13.98,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!B6": {
+      "formula_pattern": "=Raw_Data!B9/Raw_Data!B5*100",
+      "expected_value": 1.3,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!C6": {
+      "formula_pattern": "=Raw_Data!C9/Raw_Data!C5*100",
+      "expected_value": 2.2,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!D6": {
+      "formula_pattern": "=Raw_Data!D9/Raw_Data!D5*100",
+      "expected_value": 2.2,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!E6": {
+      "formula_pattern": "=Raw_Data!E9/Raw_Data!E5*100",
+      "expected_value": 2.0,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!F6": {
+      "formula_pattern": "=Raw_Data!F9/Raw_Data!F5*100",
+      "expected_value": 1.9,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!B7": {
+      "formula_pattern": "=Raw_Data!B10/Raw_Data!B5*100",
+      "expected_value": 0.3,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!C7": {
+      "formula_pattern": "=Raw_Data!C10/Raw_Data!C5*100",
+      "expected_value": 0.4,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!D7": {
+      "formula_pattern": "=Raw_Data!D10/Raw_Data!D5*100",
+      "expected_value": 0.6,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!E7": {
+      "formula_pattern": "=Raw_Data!E10/Raw_Data!E5*100",
+      "expected_value": 0.6,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!F7": {
+      "formula_pattern": "=Raw_Data!F10/Raw_Data!F5*100",
+      "expected_value": 0.6,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 6
+    },
+    "Calculations!B8": {
+      "formula_pattern": "=Raw_Data!B12*4/Raw_Data!B13*100",
+      "expected_value": 1.05,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Calculations!C8": {
+      "formula_pattern": "=Raw_Data!C12*4/Raw_Data!C13*100",
+      "expected_value": 1.55,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Calculations!D8": {
+      "formula_pattern": "=Raw_Data!D12*4/Raw_Data!D13*100",
+      "expected_value": 1.39,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Calculations!E8": {
+      "formula_pattern": "=Raw_Data!E12*4/Raw_Data!E13*100",
+      "expected_value": 3.65,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Calculations!F8": {
+      "formula_pattern": "=Raw_Data!F12*4/Raw_Data!F13*100",
+      "expected_value": 2.46,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Calculations!B9": {
+      "formula_pattern": "=Raw_Data!B11/Raw_Data!B9*100",
+      "expected_value": 76.99,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!C9": {
+      "formula_pattern": "=Raw_Data!C11/Raw_Data!C9*100",
+      "expected_value": 81.83,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!D9": {
+      "formula_pattern": "=Raw_Data!D11/Raw_Data!D9*100",
+      "expected_value": 72.74,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!E9": {
+      "formula_pattern": "=Raw_Data!E11/Raw_Data!E9*100",
+      "expected_value": 69.92,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!F9": {
+      "formula_pattern": "=Raw_Data!F11/Raw_Data!F9*100",
+      "expected_value": 68.45,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!B10": {
+      "formula_pattern": "=Raw_Data!B7/Raw_Data!B8*100",
+      "expected_value": 38.01,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!C10": {
+      "formula_pattern": "=Raw_Data!C7/Raw_Data!C8*100",
+      "expected_value": 42.03,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!D10": {
+      "formula_pattern": "=Raw_Data!D7/Raw_Data!D8*100",
+      "expected_value": 40.01,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!E10": {
+      "formula_pattern": "=Raw_Data!E7/Raw_Data!E8*100",
+      "expected_value": 35.0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!F10": {
+      "formula_pattern": "=Raw_Data!F7/Raw_Data!F8*100",
+      "expected_value": 36.0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "Calculations!B11": {
+      "formula_pattern": "=(Calculations!B4-Raw_Data!B18)/(Raw_Data!B17-Raw_Data!B18)",
+      "expected_value": 2.73,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Calculations!C11": {
+      "formula_pattern": "=(Calculations!C4-Raw_Data!C18)/(Raw_Data!C17-Raw_Data!C18)",
+      "expected_value": 2.93,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Calculations!D11": {
+      "formula_pattern": "=(Calculations!D4-Raw_Data!D18)/(Raw_Data!D17-Raw_Data!D18)",
+      "expected_value": 1.81,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Calculations!E11": {
+      "formula_pattern": "=(Calculations!E4-Raw_Data!E18)/(Raw_Data!E17-Raw_Data!E18)",
+      "expected_value": 1.04,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Calculations!F11": {
+      "formula_pattern": "=(Calculations!F4-Raw_Data!F18)/(Raw_Data!F17-Raw_Data!F18)",
+      "expected_value": 1.29,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Calculations!B12": {
+      "formula_pattern": "=Raw_Data!B16",
+      "expected_value": 2.7,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Calculations!C12": {
+      "formula_pattern": "=Raw_Data!C16",
+      "expected_value": 3.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Calculations!D12": {
+      "formula_pattern": "=Raw_Data!D16",
+      "expected_value": 1.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Calculations!E12": {
+      "formula_pattern": "=Raw_Data!E16",
+      "expected_value": 1.2,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Calculations!F12": {
+      "formula_pattern": "=Raw_Data!F16",
+      "expected_value": 1.3,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Calculations!B13": {
+      "formula_pattern": "=(Calculations!B12-Calculations!B11)/Calculations!B11*100",
+      "expected_value": -1.1,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Calculations!C13": {
+      "formula_pattern": "=(Calculations!C12-Calculations!C11)/Calculations!C11*100",
+      "expected_value": 2.39,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Calculations!D13": {
+      "formula_pattern": "=(Calculations!D12-Calculations!D11)/Calculations!D11*100",
+      "expected_value": -17.13,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Calculations!E13": {
+      "formula_pattern": "=(Calculations!E12-Calculations!E11)/Calculations!E11*100",
+      "expected_value": 15.38,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Calculations!F13": {
+      "formula_pattern": "=(Calculations!F12-Calculations!F11)/Calculations!F11*100",
+      "expected_value": 0.78,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    }
+  }
+}

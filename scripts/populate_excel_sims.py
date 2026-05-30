@@ -172,8 +172,11 @@ def validate_workbook(obj):
         # Loose check — at least header + 10 rows somewhere in the data sheet
         pass  # don't fail; some sims (eg data cleaning sketch) might be smaller
     ea = obj.get('expected_answers') or {}
-    if not isinstance(ea, dict) or not ea:
-        raise ValueError("expected_answers must be a non-empty object")
+    if not isinstance(ea, dict):
+        raise ValueError("expected_answers must be an object")
+    # Allow empty expected_answers — structural/template sims (e.g. "Build the
+    # shell from scratch") don't have a single right answer per cell. Those
+    # are scored manually. Adapter falls back to scoring.mode='manual'.
     for key, spec in ea.items():
         if '!' not in key:
             raise ValueError(f"expected_answers key missing sheet prefix: {key!r}")
@@ -193,7 +196,7 @@ def sync_call(user_text):
         LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f"excel-sim-{time.time_ns()}",
                 system_message=SYSTEM_PROMPT)
         .with_model("anthropic", "claude-haiku-4-5-20251001")
-        .with_params(max_tokens=8000)
+        .with_params(max_tokens=16000)
     )
     loop = asyncio.new_event_loop()
     try:
@@ -245,12 +248,12 @@ async def populate_one(sim, mod_title):
             # Merge into existing config
             new_cfg = dict(cfg)
             new_cfg['multi_tab_excel_workbook'] = obj['multi_tab_excel_workbook']
-            new_cfg['expected_answers'] = obj['expected_answers']
+            new_cfg['expected_answers'] = obj.get('expected_answers') or {}
             new_cfg['populated_at'] = datetime.now(timezone.utc).isoformat()
             (LOG_DIR / f"{sim_id}.json").write_text(json.dumps({
                 'sim_id': sim_id, 'title': sim['title'],
                 'workbook': obj['multi_tab_excel_workbook'],
-                'expected_answers': obj['expected_answers'],
+                'expected_answers': obj.get('expected_answers') or {},
             }, ensure_ascii=False, indent=2))
             rest_patch(f"master_simulations?id=eq.{sim_id}", {'config': new_cfg})
             return {'id': sim_id, 'title': sim['title'], 'status': 'populated',

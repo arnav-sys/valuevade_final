@@ -1,0 +1,962 @@
+{
+  "sim_id": "ca3f4f96-29a6-4dfa-95c0-7ea5120df18b",
+  "title": "The Cost of Equity Workbook — Build Ke for Three Indian Companies in 30 Minutes",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "TCS",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Risk-free rate (10-year G-Sec, 1-month avg)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.0685,
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C2": {
+            "value": "RBI weekly bulletin, 3-week average",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Equity risk premium (India)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.075,
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C3": {
+            "value": "Damodaran NYU, semi-annual implied ERP",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Beta — Bloomberg adjusted (2-year monthly)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.85,
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C4": {
+            "value": "Bloomberg, BETA function, vs. Nifty 50",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Beta — manual regression (2-year monthly)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.87,
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C5": {
+            "value": "SLOPE function vs. Nifty 50",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Beta — selected for valuation",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.86,
+            "readOnly": false,
+            "format": "0.00"
+          },
+          "C6": {
+            "value": "Average of two estimates",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax rate",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.2517,
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "C7": {
+            "value": "Standard Indian corporate, post-2019 base rate",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "CAPM Cost of Equity (Ke)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C9": {
+            "value": "Formula: Rf + Beta × ERP",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "HDFC_Bank",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Risk-free rate (10-year G-Sec, 1-month avg)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.0685,
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C2": {
+            "value": "RBI weekly bulletin, 3-week average",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Equity risk premium (India)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.075,
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C3": {
+            "value": "Damodaran NYU, semi-annual implied ERP",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Beta — Bloomberg adjusted (2-year monthly)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.95,
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C4": {
+            "value": "Bloomberg, BETA function, vs. Nifty 50",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Beta — manual regression (2-year monthly)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1.02,
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C5": {
+            "value": "SLOPE function vs. Nifty 50",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Beta — selected for valuation",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1.0,
+            "readOnly": false,
+            "format": "0.00"
+          },
+          "C6": {
+            "value": "Average of two estimates, rounded",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax rate",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.2517,
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "C7": {
+            "value": "Standard Indian corporate, post-2019 base rate",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "CAPM Cost of Equity (Ke)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C9": {
+            "value": "Formula: Rf + Beta × ERP",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Vedanta",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Risk-free rate (10-year G-Sec, 1-month avg)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.0685,
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C2": {
+            "value": "RBI weekly bulletin, 3-week average",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Equity risk premium (India)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.075,
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C3": {
+            "value": "Damodaran NYU, semi-annual implied ERP",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Beta — Bloomberg adjusted (2-year monthly)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1.58,
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C4": {
+            "value": "Bloomberg, BETA function, vs. Nifty 50",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Beta — manual regression (2-year monthly)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1.62,
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C5": {
+            "value": "SLOPE function vs. Nifty 50",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Beta — selected for valuation",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1.6,
+            "readOnly": false,
+            "format": "0.00"
+          },
+          "C6": {
+            "value": "Average of two estimates; cyclical + leverage",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax rate",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.2517,
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "C7": {
+            "value": "Standard Indian corporate, post-2019 base rate",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "CAPM Cost of Equity (Ke)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C9": {
+            "value": "Formula: Rf + Beta × ERP",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Summary",
+        "cells": {
+          "A1": {
+            "value": "Cost of Equity Summary — Three Companies",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "Ke (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "Spread vs. HDFC Bank (pp)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A5": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A6": {
+            "value": "Vedanta",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A8": {
+            "value": "Sensitivity Analysis: Ke = Rf + Beta × ERP",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "ERP ↓ / Beta →",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "0.50",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "C9": {
+            "value": "0.60",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "D9": {
+            "value": "0.70",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "E9": {
+            "value": "0.80",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "F9": {
+            "value": "0.90",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "G9": {
+            "value": "1.00",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "H9": {
+            "value": "1.10",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "I9": {
+            "value": "1.20",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "J9": {
+            "value": "1.30",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "K9": {
+            "value": "1.40",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "L9": {
+            "value": "1.50",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "M9": {
+            "value": "1.60",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "N9": {
+            "value": "1.70",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "O9": {
+            "value": "1.80",
+            "readOnly": true,
+            "format": "0.00"
+          },
+          "A10": {
+            "value": "6.50%",
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "H10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "I10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "J10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "K10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "L10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "M10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "N10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "O10": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A11": {
+            "value": "7.00%",
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "H11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "I11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "J11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "K11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "L11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "M11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "N11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "O11": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A12": {
+            "value": "7.50%",
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "D12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "E12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "F12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "G12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "H12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "I12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "J12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "K12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "L12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "M12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "N12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "O12": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A13": {
+            "value": "8.00%",
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "D13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "E13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "F13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "G13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "H13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "I13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "J13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "K13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "L13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "M13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "N13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "O13": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A14": {
+            "value": "8.50%",
+            "readOnly": true,
+            "format": "0.00%"
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "G14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "H14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "I14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "J14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "K14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "L14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "M14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "N14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "O14": {
+            "value": "",
+            "readOnly": false,
+            "format": "0.00%"
+          },
+          "A16": {
+            "value": "Narrative: Cost of Equity Spread Drivers",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "TCS exhibits the lowest Ke at ~13.30% due to its asset-light, recurring-revenue, low-leverage business model with beta below 1.0. HDFC Bank sits at market average (~14.35%) reflecting a beta of 1.0 commensurate with large-cap financial services. Vedanta commands the highest Ke at ~18.85% because of extreme commodity cyclicality and high financial leverage, producing a beta of 1.6, reflecting elevated systematic risk relative to the index.",
+            "readOnly": true,
+            "wrap": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "TCS!B9": {
+      "formula_pattern": "=TCS!B2+TCS!B6*TCS!B3",
+      "expected_value": 0.133,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 15
+    },
+    "HDFC_Bank!B9": {
+      "formula_pattern": "=HDFC_Bank!B2+HDFC_Bank!B6*HDFC_Bank!B3",
+      "expected_value": 0.1435,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 15
+    },
+    "Vedanta!B9": {
+      "formula_pattern": "=Vedanta!B2+Vedanta!B6*Vedanta!B3",
+      "expected_value": 0.1885,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 15
+    },
+    "Summary!B4": {
+      "formula_pattern": "=TCS!B9",
+      "expected_value": 0.133,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 5
+    },
+    "Summary!B5": {
+      "formula_pattern": "=HDFC_Bank!B9",
+      "expected_value": 0.1435,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 5
+    },
+    "Summary!B6": {
+      "formula_pattern": "=Vedanta!B9",
+      "expected_value": 0.1885,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 5
+    },
+    "Summary!C4": {
+      "formula_pattern": "=Summary!B4-Summary!B5",
+      "expected_value": -0.0105,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 5
+    },
+    "Summary!C5": {
+      "formula_pattern": "=Summary!B5-Summary!B5",
+      "expected_value": 0.0,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 5
+    },
+    "Summary!C6": {
+      "formula_pattern": "=Summary!B6-Summary!B5",
+      "expected_value": 0.045,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 5
+    },
+    "Summary!B10": {
+      "formula_pattern": "=$TCS!$B$2+B$9*$A10",
+      "expected_value": 0.09575,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 3
+    },
+    "Summary!G12": {
+      "formula_pattern": "=$TCS!$B$2+G$9*$A12",
+      "expected_value": 0.1435,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 3
+    },
+    "Summary!O14": {
+      "formula_pattern": "=$TCS!$B$2+O$9*$A14",
+      "expected_value": 0.2215,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 2
+    }
+  }
+}

@@ -1,0 +1,1354 @@
+{
+  "sim_id": "0bb35d25-4e53-46a1-8204-3c17d9cb7f39",
+  "title": "Build Titan's Full Segmental Revenue Forecast FY25E-FY29E",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "TITAN — ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "All figures in ₹ crores unless stated",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "SEGMENTAL REVENUE BUILD",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "Jewellery",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "  Opening Store Count",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2100,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 2250,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 2625,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 2800,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 2960,
+            "readOnly": true
+          },
+          "I9": {
+            "value": 3110,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "  Net Store Adds",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 200,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 200,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 175,
+            "readOnly": false
+          },
+          "F10": {
+            "value": 175,
+            "readOnly": false
+          },
+          "G10": {
+            "value": 160,
+            "readOnly": false
+          },
+          "H10": {
+            "value": 150,
+            "readOnly": false
+          },
+          "I10": {
+            "value": 140,
+            "readOnly": false
+          },
+          "A11": {
+            "value": "  Closing Store Count",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 2250,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "H11": {
+            "value": "",
+            "readOnly": false
+          },
+          "I11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "  Revenue per Store (₹ cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 16.9,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 15.69,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 16.85,
+            "readOnly": true
+          },
+          "E12": {
+            "value": "",
+            "readOnly": false
+          },
+          "F12": {
+            "value": "",
+            "readOnly": false
+          },
+          "G12": {
+            "value": "",
+            "readOnly": false
+          },
+          "H12": {
+            "value": "",
+            "readOnly": false
+          },
+          "I12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "  SSSG %",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": true
+          },
+          "C13": {
+            "value": "",
+            "readOnly": true
+          },
+          "D13": {
+            "value": "",
+            "readOnly": true
+          },
+          "E13": {
+            "value": 0.08,
+            "readOnly": false
+          },
+          "F13": {
+            "value": 0.075,
+            "readOnly": false
+          },
+          "G13": {
+            "value": 0.07,
+            "readOnly": false
+          },
+          "H13": {
+            "value": 0.065,
+            "readOnly": false
+          },
+          "I13": {
+            "value": 0.06,
+            "readOnly": false
+          },
+          "A14": {
+            "value": "  Jewellery Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 35500,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 38450,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 41280,
+            "readOnly": true
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "G14": {
+            "value": "",
+            "readOnly": false
+          },
+          "H14": {
+            "value": "",
+            "readOnly": false
+          },
+          "I14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Watches & Wearables",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "  Units Sold (millions)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 13.2,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 13.8,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 14.5,
+            "readOnly": true
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "G17": {
+            "value": "",
+            "readOnly": false
+          },
+          "H17": {
+            "value": "",
+            "readOnly": false
+          },
+          "I17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "  ASP (₹ per unit)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 1920,
+            "readOnly": true
+          },
+          "C18": {
+            "value": 2050,
+            "readOnly": true
+          },
+          "D18": {
+            "value": 2175,
+            "readOnly": true
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "G18": {
+            "value": "",
+            "readOnly": false
+          },
+          "H18": {
+            "value": "",
+            "readOnly": false
+          },
+          "I18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "  Volume Growth %",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": true
+          },
+          "C19": {
+            "value": 0.045,
+            "readOnly": true
+          },
+          "D19": {
+            "value": 0.051,
+            "readOnly": true
+          },
+          "E19": {
+            "value": 0.04,
+            "readOnly": false
+          },
+          "F19": {
+            "value": 0.04,
+            "readOnly": false
+          },
+          "G19": {
+            "value": 0.038,
+            "readOnly": false
+          },
+          "H19": {
+            "value": 0.037,
+            "readOnly": false
+          },
+          "I19": {
+            "value": 0.03,
+            "readOnly": false
+          },
+          "A20": {
+            "value": "  ASP Growth %",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": true
+          },
+          "C20": {
+            "value": 0.068,
+            "readOnly": true
+          },
+          "D20": {
+            "value": 0.061,
+            "readOnly": true
+          },
+          "E20": {
+            "value": 0.03,
+            "readOnly": false
+          },
+          "F20": {
+            "value": 0.03,
+            "readOnly": false
+          },
+          "G20": {
+            "value": 0.03,
+            "readOnly": false
+          },
+          "H20": {
+            "value": 0.03,
+            "readOnly": false
+          },
+          "I20": {
+            "value": 0.03,
+            "readOnly": false
+          },
+          "A21": {
+            "value": "  Watches Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 2534,
+            "readOnly": true
+          },
+          "C21": {
+            "value": 2830,
+            "readOnly": true
+          },
+          "D21": {
+            "value": 3150,
+            "readOnly": true
+          },
+          "E21": {
+            "value": "",
+            "readOnly": false
+          },
+          "F21": {
+            "value": "",
+            "readOnly": false
+          },
+          "G21": {
+            "value": "",
+            "readOnly": false
+          },
+          "H21": {
+            "value": "",
+            "readOnly": false
+          },
+          "I21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A23": {
+            "value": "Eyewear",
+            "readOnly": true,
+            "bold": true
+          },
+          "A24": {
+            "value": "  Opening Store Count",
+            "readOnly": true
+          },
+          "B24": {
+            "value": 600,
+            "readOnly": true
+          },
+          "C24": {
+            "value": 700,
+            "readOnly": true
+          },
+          "D24": {
+            "value": 850,
+            "readOnly": true
+          },
+          "E24": {
+            "value": 850,
+            "readOnly": true
+          },
+          "F24": {
+            "value": 1030,
+            "readOnly": true
+          },
+          "G24": {
+            "value": 1210,
+            "readOnly": true
+          },
+          "H24": {
+            "value": 1360,
+            "readOnly": true
+          },
+          "I24": {
+            "value": 1480,
+            "readOnly": true
+          },
+          "A25": {
+            "value": "  Net Store Adds",
+            "readOnly": true
+          },
+          "B25": {
+            "value": "",
+            "readOnly": true
+          },
+          "C25": {
+            "value": 150,
+            "readOnly": true
+          },
+          "D25": {
+            "value": 150,
+            "readOnly": true
+          },
+          "E25": {
+            "value": 180,
+            "readOnly": false
+          },
+          "F25": {
+            "value": 180,
+            "readOnly": false
+          },
+          "G25": {
+            "value": 150,
+            "readOnly": false
+          },
+          "H25": {
+            "value": 120,
+            "readOnly": false
+          },
+          "I25": {
+            "value": 100,
+            "readOnly": false
+          },
+          "A26": {
+            "value": "  Closing Store Count",
+            "readOnly": true
+          },
+          "B26": {
+            "value": 700,
+            "readOnly": true
+          },
+          "C26": {
+            "value": 850,
+            "readOnly": true
+          },
+          "D26": {
+            "value": 850,
+            "readOnly": true
+          },
+          "E26": {
+            "value": "",
+            "readOnly": false
+          },
+          "F26": {
+            "value": "",
+            "readOnly": false
+          },
+          "G26": {
+            "value": "",
+            "readOnly": false
+          },
+          "H26": {
+            "value": "",
+            "readOnly": false
+          },
+          "I26": {
+            "value": "",
+            "readOnly": false
+          },
+          "A27": {
+            "value": "  Revenue per Store (₹ cr)",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 0.92,
+            "readOnly": true
+          },
+          "C27": {
+            "value": 1.01,
+            "readOnly": true
+          },
+          "D27": {
+            "value": 1.18,
+            "readOnly": true
+          },
+          "E27": {
+            "value": "",
+            "readOnly": false
+          },
+          "F27": {
+            "value": "",
+            "readOnly": false
+          },
+          "G27": {
+            "value": "",
+            "readOnly": false
+          },
+          "H27": {
+            "value": "",
+            "readOnly": false
+          },
+          "I27": {
+            "value": "",
+            "readOnly": false
+          },
+          "A28": {
+            "value": "  SSSG %",
+            "readOnly": true
+          },
+          "B28": {
+            "value": "",
+            "readOnly": true
+          },
+          "C28": {
+            "value": "",
+            "readOnly": true
+          },
+          "D28": {
+            "value": "",
+            "readOnly": true
+          },
+          "E28": {
+            "value": 0.1,
+            "readOnly": false
+          },
+          "F28": {
+            "value": 0.1,
+            "readOnly": false
+          },
+          "G28": {
+            "value": 0.09,
+            "readOnly": false
+          },
+          "H28": {
+            "value": 0.08,
+            "readOnly": false
+          },
+          "I28": {
+            "value": 0.07,
+            "readOnly": false
+          },
+          "A29": {
+            "value": "  Eyewear Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B29": {
+            "value": 552,
+            "readOnly": true
+          },
+          "C29": {
+            "value": 714,
+            "readOnly": true
+          },
+          "D29": {
+            "value": 887,
+            "readOnly": true
+          },
+          "E29": {
+            "value": "",
+            "readOnly": false
+          },
+          "F29": {
+            "value": "",
+            "readOnly": false
+          },
+          "G29": {
+            "value": "",
+            "readOnly": false
+          },
+          "H29": {
+            "value": "",
+            "readOnly": false
+          },
+          "I29": {
+            "value": "",
+            "readOnly": false
+          },
+          "A31": {
+            "value": "Other",
+            "readOnly": true,
+            "bold": true
+          },
+          "A32": {
+            "value": "  Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B32": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "C32": {
+            "value": 1639,
+            "readOnly": true
+          },
+          "D32": {
+            "value": 1891,
+            "readOnly": true
+          },
+          "E32": {
+            "value": "",
+            "readOnly": false
+          },
+          "F32": {
+            "value": "",
+            "readOnly": false
+          },
+          "G32": {
+            "value": "",
+            "readOnly": false
+          },
+          "H32": {
+            "value": "",
+            "readOnly": false
+          },
+          "I32": {
+            "value": "",
+            "readOnly": false
+          },
+          "A33": {
+            "value": "  Growth %",
+            "readOnly": true
+          },
+          "B33": {
+            "value": "",
+            "readOnly": true
+          },
+          "C33": {
+            "value": 0.13,
+            "readOnly": true
+          },
+          "D33": {
+            "value": 0.153,
+            "readOnly": true
+          },
+          "E33": {
+            "value": 0.13,
+            "readOnly": false
+          },
+          "F33": {
+            "value": 0.13,
+            "readOnly": false
+          },
+          "G33": {
+            "value": 0.12,
+            "readOnly": false
+          },
+          "H33": {
+            "value": 0.11,
+            "readOnly": false
+          },
+          "I33": {
+            "value": 0.1,
+            "readOnly": false
+          },
+          "A35": {
+            "value": "CONSOLIDATED REVENUE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A36": {
+            "value": "  Total Revenue (₹ cr)",
+            "readOnly": true
+          },
+          "B36": {
+            "value": 40036,
+            "readOnly": true
+          },
+          "C36": {
+            "value": 43933,
+            "readOnly": true
+          },
+          "D36": {
+            "value": 47048,
+            "readOnly": true
+          },
+          "E36": {
+            "value": "",
+            "readOnly": false
+          },
+          "F36": {
+            "value": "",
+            "readOnly": false
+          },
+          "G36": {
+            "value": "",
+            "readOnly": false
+          },
+          "H36": {
+            "value": "",
+            "readOnly": false
+          },
+          "I36": {
+            "value": "",
+            "readOnly": false
+          },
+          "A37": {
+            "value": "  YoY Growth %",
+            "readOnly": true
+          },
+          "B37": {
+            "value": "",
+            "readOnly": true
+          },
+          "C37": {
+            "value": 0.0973,
+            "readOnly": true
+          },
+          "D37": {
+            "value": 0.0704,
+            "readOnly": true
+          },
+          "E37": {
+            "value": "",
+            "readOnly": false
+          },
+          "F37": {
+            "value": "",
+            "readOnly": false
+          },
+          "G37": {
+            "value": "",
+            "readOnly": false
+          },
+          "H37": {
+            "value": "",
+            "readOnly": false
+          },
+          "I37": {
+            "value": "",
+            "readOnly": false
+          },
+          "A39": {
+            "value": "SANITY CHECKS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A40": {
+            "value": "  Implied India Jewellery Market (₹ cr)",
+            "readOnly": true
+          },
+          "B40": {
+            "value": 220000,
+            "readOnly": true
+          },
+          "C40": {
+            "value": 238700,
+            "readOnly": true
+          },
+          "D40": {
+            "value": 255000,
+            "readOnly": true
+          },
+          "E40": {
+            "value": "",
+            "readOnly": false
+          },
+          "F40": {
+            "value": "",
+            "readOnly": false
+          },
+          "G40": {
+            "value": "",
+            "readOnly": false
+          },
+          "H40": {
+            "value": "",
+            "readOnly": false
+          },
+          "I40": {
+            "value": "",
+            "readOnly": false
+          },
+          "A41": {
+            "value": "  Titan Jewellery Market Share %",
+            "readOnly": true
+          },
+          "B41": {
+            "value": "",
+            "readOnly": true
+          },
+          "C41": {
+            "value": "",
+            "readOnly": true
+          },
+          "D41": {
+            "value": 0.162,
+            "readOnly": true
+          },
+          "E41": {
+            "value": "",
+            "readOnly": false
+          },
+          "F41": {
+            "value": "",
+            "readOnly": false
+          },
+          "G41": {
+            "value": "",
+            "readOnly": false
+          },
+          "H41": {
+            "value": "",
+            "readOnly": false
+          },
+          "I41": {
+            "value": "",
+            "readOnly": false
+          },
+          "A42": {
+            "value": "  Share Gain (bps)",
+            "readOnly": true
+          },
+          "B42": {
+            "value": "",
+            "readOnly": true
+          },
+          "C42": {
+            "value": "",
+            "readOnly": true
+          },
+          "D42": {
+            "value": "",
+            "readOnly": true
+          },
+          "E42": {
+            "value": "",
+            "readOnly": true
+          },
+          "F42": {
+            "value": "",
+            "readOnly": true
+          },
+          "G42": {
+            "value": "",
+            "readOnly": true
+          },
+          "H42": {
+            "value": "",
+            "readOnly": true
+          },
+          "I42": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "IS",
+        "cells": {
+          "A1": {
+            "value": "TITAN — INCOME STATEMENT",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "All figures in ₹ crores",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": 40036,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 43933,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 47048,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "H6": {
+            "value": "",
+            "readOnly": false
+          },
+          "I6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.185,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0.19,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0.192,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0.195,
+            "readOnly": false
+          },
+          "F8": {
+            "value": 0.197,
+            "readOnly": false
+          },
+          "G8": {
+            "value": 0.198,
+            "readOnly": false
+          },
+          "H8": {
+            "value": 0.199,
+            "readOnly": false
+          },
+          "I8": {
+            "value": 0.2,
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "SummaryChecks",
+        "cells": {
+          "A1": {
+            "value": "EXERCISE SUMMARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Check your key metrics below",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "FY25E Expected",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "Match?",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Jewellery Revenue FY25E (₹ cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 47772,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Watches Revenue FY25E (₹ cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3382,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Eyewear Revenue FY25E (₹ cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1040,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Other Revenue FY25E (₹ cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2136,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Consolidated Revenue FY25E (₹ cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 54330,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Consolidated Revenue FY26E (₹ cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 62175,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "FY25E YoY Growth %",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 0.154,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Titan Jewellery Share FY29E %",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 0.201,
+            "readOnly": true
+          },
+          "C12": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Assumptions!E11": {
+      "formula_pattern": "=E9+E10",
+      "expected_value": 2625,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Assumptions!E12": {
+      "formula_pattern": "=D12*(1+E13)",
+      "expected_value": 18.2,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 8
+    },
+    "Assumptions!E14": {
+      "formula_pattern": "=E11*E12",
+      "expected_value": 47772,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Assumptions!E17": {
+      "formula_pattern": "=D17*(1+E19)",
+      "expected_value": 15.08,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Assumptions!E18": {
+      "formula_pattern": "=D18*(1+E20)",
+      "expected_value": 2240,
+      "type": "number",
+      "tolerance": 5,
+      "points": 5
+    },
+    "Assumptions!E21": {
+      "formula_pattern": "=E17*E18/10000",
+      "expected_value": 3382,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "Assumptions!E26": {
+      "formula_pattern": "=E24+E25",
+      "expected_value": 1030,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Assumptions!E27": {
+      "formula_pattern": "=D27*(1+E28)",
+      "expected_value": 1.298,
+      "type": "number",
+      "tolerance": 0.02,
+      "points": 8
+    },
+    "Assumptions!E29": {
+      "formula_pattern": "=E26*E27",
+      "expected_value": 1040,
+      "type": "number",
+      "tolerance": 5,
+      "points": 10
+    },
+    "Assumptions!E32": {
+      "formula_pattern": "=D32*(1+E33)",
+      "expected_value": 2136,
+      "type": "number",
+      "tolerance": 5,
+      "points": 8
+    },
+    "Assumptions!E36": {
+      "formula_pattern": "=E14+E21+E29+E32",
+      "expected_value": 54330,
+      "type": "number",
+      "tolerance": 20,
+      "points": 12
+    },
+    "Assumptions!E37": {
+      "formula_pattern": "=E36/D36-1",
+      "expected_value": 0.154,
+      "type": "number",
+      "tolerance": 0.005,
+      "points": 10
+    },
+    "Assumptions!E40": {
+      "formula_pattern": "=D40*(1.085^1)",
+      "expected_value": 276675,
+      "type": "number",
+      "tolerance": 500,
+      "points": 8
+    },
+    "Assumptions!E41": {
+      "formula_pattern": "=E14/E40",
+      "expected_value": 0.1728,
+      "type": "number",
+      "tolerance": 0.002,
+      "points": 8
+    },
+    "Assumptions!I40": {
+      "formula_pattern": "=D40*(1.085^5)",
+      "expected_value": 382700,
+      "type": "number",
+      "tolerance": 1000,
+      "points": 8
+    },
+    "Assumptions!I41": {
+      "formula_pattern": "=I14/I40",
+      "expected_value": 0.201,
+      "type": "number",
+      "tolerance": 0.003,
+      "points": 8
+    },
+    "Assumptions!I42": {
+      "formula_pattern": "=(I41-D41)*10000",
+      "expected_value": 390,
+      "type": "number",
+      "tolerance": 5,
+      "points": 10
+    },
+    "IS!E6": {
+      "formula_pattern": "=Assumptions!E36",
+      "expected_value": 54330,
+      "type": "number",
+      "tolerance": 20,
+      "points": 15
+    }
+  }
+}

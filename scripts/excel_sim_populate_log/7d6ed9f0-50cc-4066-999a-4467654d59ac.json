@@ -1,0 +1,917 @@
+{
+  "sim_id": "7d6ed9f0-50cc-4066-999a-4467654d59ac",
+  "title": "Build Your First Promoter Pledging Tracker",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Pledging Tracker",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Total Promoter Holding (cr shares)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Pledged Shares (cr shares)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Total Shares Outstanding (cr shares)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Pledging Ratio (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Net Unpledged Ratio (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "QoQ Velocity (pp)",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Governance Flag",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Aditya Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Q1 FY24",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 3.8,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 0.19,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "G2": {
+            "value": "",
+            "readOnly": false
+          },
+          "H2": {
+            "value": "",
+            "readOnly": false
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Aditya Industries",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Q2 FY24",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 3.82,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 0.27,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "G3": {
+            "value": "",
+            "readOnly": false
+          },
+          "H3": {
+            "value": "",
+            "readOnly": false
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Aditya Industries",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Q3 FY24",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 3.85,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 0.48,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "H4": {
+            "value": "",
+            "readOnly": false
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Aditya Industries",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Q4 FY24",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 3.9,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 0.86,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "H5": {
+            "value": "",
+            "readOnly": false
+          },
+          "I5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "MegaMart Retail",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Q1 FY24",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 5.5,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 0.05,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "H6": {
+            "value": "",
+            "readOnly": false
+          },
+          "I6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "MegaMart Retail",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Q2 FY24",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 5.5,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 0.06,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "H7": {
+            "value": "",
+            "readOnly": false
+          },
+          "I7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "MegaMart Retail",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Q3 FY24",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 5.52,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0.07,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "H8": {
+            "value": "",
+            "readOnly": false
+          },
+          "I8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "MegaMart Retail",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Q4 FY24",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 5.55,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "H9": {
+            "value": "",
+            "readOnly": false
+          },
+          "I9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "ShreeInfra Power",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Q1 FY24",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 4.2,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 0.92,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "H10": {
+            "value": "",
+            "readOnly": false
+          },
+          "I10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "ShreeInfra Power",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Q2 FY24",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 4.2,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 1.18,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "H11": {
+            "value": "",
+            "readOnly": false
+          },
+          "I11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "ShreeInfra Power",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "Q3 FY24",
+            "readOnly": true
+          },
+          "C12": {
+            "value": 4.18,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 1.34,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "F12": {
+            "value": "",
+            "readOnly": false
+          },
+          "G12": {
+            "value": "",
+            "readOnly": false
+          },
+          "H12": {
+            "value": "",
+            "readOnly": false
+          },
+          "I12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "ShreeInfra Power",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "Q4 FY24",
+            "readOnly": true
+          },
+          "C13": {
+            "value": 4.15,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 1.56,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "F13": {
+            "value": "",
+            "readOnly": false
+          },
+          "G13": {
+            "value": "",
+            "readOnly": false
+          },
+          "H13": {
+            "value": "",
+            "readOnly": false
+          },
+          "I13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "NewGen Pharma",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "Q1 FY24",
+            "readOnly": true
+          },
+          "C14": {
+            "value": 2.4,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 0.0,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 6.0,
+            "readOnly": true
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "G14": {
+            "value": "",
+            "readOnly": false
+          },
+          "H14": {
+            "value": "",
+            "readOnly": false
+          },
+          "I14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "NewGen Pharma",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "Q2 FY24",
+            "readOnly": true
+          },
+          "C15": {
+            "value": 2.4,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 0.0,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 6.0,
+            "readOnly": true
+          },
+          "F15": {
+            "value": "",
+            "readOnly": false
+          },
+          "G15": {
+            "value": "",
+            "readOnly": false
+          },
+          "H15": {
+            "value": "",
+            "readOnly": false
+          },
+          "I15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "NewGen Pharma",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "Q3 FY24",
+            "readOnly": true
+          },
+          "C16": {
+            "value": 2.42,
+            "readOnly": true
+          },
+          "D16": {
+            "value": 0.0,
+            "readOnly": true
+          },
+          "E16": {
+            "value": 6.0,
+            "readOnly": true
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "G16": {
+            "value": "",
+            "readOnly": false
+          },
+          "H16": {
+            "value": "",
+            "readOnly": false
+          },
+          "I16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "NewGen Pharma",
+            "readOnly": true
+          },
+          "B17": {
+            "value": "Q4 FY24",
+            "readOnly": true
+          },
+          "C17": {
+            "value": 2.45,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 0.0,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 6.0,
+            "readOnly": true
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "G17": {
+            "value": "",
+            "readOnly": false
+          },
+          "H17": {
+            "value": "",
+            "readOnly": false
+          },
+          "I17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "TruTech Systems",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "Q1 FY24",
+            "readOnly": true
+          },
+          "C18": {
+            "value": 3.1,
+            "readOnly": true
+          },
+          "D18": {
+            "value": 0.43,
+            "readOnly": true
+          },
+          "E18": {
+            "value": 7.0,
+            "readOnly": true
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "G18": {
+            "value": "",
+            "readOnly": false
+          },
+          "H18": {
+            "value": "",
+            "readOnly": false
+          },
+          "I18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "TruTech Systems",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "Q2 FY24",
+            "readOnly": true
+          },
+          "C19": {
+            "value": 3.1,
+            "readOnly": true
+          },
+          "D19": {
+            "value": 0.47,
+            "readOnly": true
+          },
+          "E19": {
+            "value": 7.0,
+            "readOnly": true
+          },
+          "F19": {
+            "value": "",
+            "readOnly": false
+          },
+          "G19": {
+            "value": "",
+            "readOnly": false
+          },
+          "H19": {
+            "value": "",
+            "readOnly": false
+          },
+          "I19": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "TruTech Systems",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "Q3 FY24",
+            "readOnly": true
+          },
+          "C20": {
+            "value": 3.1,
+            "readOnly": true
+          },
+          "D20": {
+            "value": 0.5,
+            "readOnly": true
+          },
+          "E20": {
+            "value": 7.0,
+            "readOnly": true
+          },
+          "F20": {
+            "value": "",
+            "readOnly": false
+          },
+          "G20": {
+            "value": "",
+            "readOnly": false
+          },
+          "H20": {
+            "value": "",
+            "readOnly": false
+          },
+          "I20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "TruTech Systems",
+            "readOnly": true
+          },
+          "B21": {
+            "value": "Q4 FY24",
+            "readOnly": true
+          },
+          "C21": {
+            "value": 3.1,
+            "readOnly": true
+          },
+          "D21": {
+            "value": 0.51,
+            "readOnly": true
+          },
+          "E21": {
+            "value": 7.0,
+            "readOnly": true
+          },
+          "F21": {
+            "value": "",
+            "readOnly": false
+          },
+          "G21": {
+            "value": "",
+            "readOnly": false
+          },
+          "H21": {
+            "value": "",
+            "readOnly": false
+          },
+          "I21": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Analysis",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q4 FY24: Which company has highest Pledging Ratio?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q4 FY24: What is Aditya Industries Pledging Ratio (%)? (to 2 d.p.)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q4 FY24: How many companies fall in RED governance zone (Pledging >= 30%)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q1-Q4: What is TruTech Systems QoQ Velocity in Q4 (pp)? (to 2 d.p.)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Which company shows cleanest governance (lowest Q4 Pledging Ratio)?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Reference",
+        "cells": {
+          "A1": {
+            "value": "Governance Flag Boundaries",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "GREEN: Pledging Ratio < 5%",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "AMBER: Pledging Ratio >= 5% and < 15%",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "ORANGE: Pledging Ratio >= 15% and < 30%",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "RED: Pledging Ratio >= 30%",
+            "readOnly": true
+          },
+          "C1": {
+            "value": "Formula Guide",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "Pledging Ratio = (Pledged Shares / Total Promoter Holding) * 100",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Net Unpledged Ratio = ((Total Promoter Holding - Pledged Shares) / Total Shares Outstanding) * 100",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "QoQ Velocity = IF(same company, Pledging Ratio this quarter - Pledging Ratio last quarter, blank)",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Governance Flag = IF(Pledging<5,GREEN, IF(Pledging<15,AMBER, IF(Pledging<30,ORANGE,RED)))",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Analysis!B2": {
+      "formula_pattern": "ShreeInfra Power",
+      "expected_value": "ShreeInfra Power",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Analysis!B3": {
+      "formula_pattern": "22.05",
+      "expected_value": 22.05,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Analysis!B4": {
+      "formula_pattern": "1",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Analysis!B5": {
+      "formula_pattern": "1.43",
+      "expected_value": 1.43,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Analysis!B6": {
+      "formula_pattern": "NewGen Pharma",
+      "expected_value": "NewGen Pharma",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

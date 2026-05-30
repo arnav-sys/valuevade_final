@@ -1,0 +1,1216 @@
+{
+  "sim_id": "8cfc7e83-9571-46fc-a092-26f5385cbc9e",
+  "title": "The Sector-Specific Frameworks Workbook — HDFC Bank, SBI Life, DLF, Zomato",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "HDFC_Bank",
+        "cells": {
+          "A1": {
+            "value": "BANK FRAMEWORK — P/B DRIVEN",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY27 ROE",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.17,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Forecast based on consensus and merger trajectory",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Sustainable g (book value growth)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "ROE × (1 - 25% payout)",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Ke (CAPM with beta 1.0)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.14,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "6.85% Rf + 1.0 × 7.5% ERP = 14.35%, rounded to 14%",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Formula-Implied P/B",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "P/B = (ROE - g) / (Ke - g)",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Peer P/B Benchmarks:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 2.7,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Axis Bank",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 2.5,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Kotak Mahindra Bank",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 4.0,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Tier 1 Median",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "C12": {
+            "value": "=MEDIAN(C9:C11)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Historical 5-Year HDFC Bank P/B",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 3.5,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Current HDFC Bank P/B",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 3.3,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Slightly below historical",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Book Value Per Share (FY27)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 500,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "After merger normalisation",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Implied Per-Share Targets:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "At Formula-Implied P/B",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "",
+            "readOnly": false
+          },
+          "C20": {
+            "value": "Book × Formula P/B",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "At Peer Median",
+            "readOnly": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          },
+          "C21": {
+            "value": "Book × 2.7x",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "At Historical Average",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "",
+            "readOnly": false
+          },
+          "C22": {
+            "value": "Book × 3.5x",
+            "readOnly": true
+          },
+          "A24": {
+            "value": "Base Case Target (3.0x P/B)",
+            "readOnly": true
+          },
+          "B24": {
+            "value": "",
+            "readOnly": false
+          },
+          "C24": {
+            "value": "Slight premium to peer median",
+            "readOnly": true
+          },
+          "A25": {
+            "value": "Sensitivity Range",
+            "readOnly": true
+          },
+          "B25": {
+            "value": "₹1,250-1,750",
+            "readOnly": true
+          },
+          "C25": {
+            "value": "Across formula, peer, historical",
+            "readOnly": true
+          },
+          "A27": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 1650,
+            "readOnly": true
+          },
+          "C27": {
+            "value": "NSE close",
+            "readOnly": true
+          },
+          "A28": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B28": {
+            "value": "HOLD with mild Sell bias",
+            "readOnly": true
+          },
+          "C28": {
+            "value": "Target ₹1,500, range ₹1,250-1,750",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "SBI_Life",
+        "cells": {
+          "A1": {
+            "value": "LIFE INSURANCE FRAMEWORK — EV+VNB",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Embedded Value (EV) FY27",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "₹ Crore, post-IPO capital build",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY27 Annual New Business Premium (NBP)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 22500,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "₹ Crore, retail focus",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Value of New Business (VNB) / NBP",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.2,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "20% VNB margin (industry-leading)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY27 VNB",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "NBP × VNB margin",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "VNB Multiple (x)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 20,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Market multiple for quality LIC peers",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "VNB Capitalisation",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "VNB × Multiple",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Equity Value = EV + VNB Capitalisation",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "Total enterprise value",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Equity Shares Outstanding (mn)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Post-IPO float",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Implied Value Per Share",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "Equity Value / Shares",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Sensitivity — VNB Multiple (18x to 22x)",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "At 18x VNB",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "More conservative",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "At 20x VNB",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "Base case",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "At 22x VNB",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "Growth premium",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 1600,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "NSE close",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "BUY",
+            "readOnly": true
+          },
+          "C19": {
+            "value": "Target ₹1,850, upside ~15% from current",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "DLF",
+        "cells": {
+          "A1": {
+            "value": "REAL ESTATE FRAMEWORK — NAV-BASED",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "OPERATIONAL ASSETS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "NOI from Rentals (Offices, Malls, Hotels)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "FY27 stabilised rental income",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Capitalisation Rate (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.07,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "7% cap rate for Grade A assets",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Operational Asset Value",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "NOI / Cap Rate",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "DEVELOPMENT ASSETS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "NPV of Development Pipeline",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 35000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "FY27-FY32 residential and commercial",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "LAND BANK",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Estimated Land Bank Value",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 12000,
+            "readOnly": true
+          },
+          "C12": {
+            "value": "Future development upside",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Gross NAV = Operational + Development + Land",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "Total asset value",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Less: Net Debt",
+            "readOnly": true
+          },
+          "B15": {
+            "value": -3000,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Net cash position (negative = debt)",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Net NAV",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "C16": {
+            "value": "Gross NAV - Net Debt",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Equity Shares Outstanding (mn)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 250,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "Post-preferential rights",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "NAV Per Share",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "",
+            "readOnly": false
+          },
+          "C19": {
+            "value": "Net NAV / Shares",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Sensitivity — Cap Rate (6.5% to 7.5%)",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "At 6.5% Cap Rate",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "",
+            "readOnly": false
+          },
+          "C22": {
+            "value": "More optimistic",
+            "readOnly": true
+          },
+          "A23": {
+            "value": "At 7.5% Cap Rate",
+            "readOnly": true
+          },
+          "B23": {
+            "value": "",
+            "readOnly": false
+          },
+          "C23": {
+            "value": "More conservative",
+            "readOnly": true
+          },
+          "A25": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 450,
+            "readOnly": true
+          },
+          "C25": {
+            "value": "NSE close",
+            "readOnly": true
+          },
+          "A26": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B26": {
+            "value": "HOLD",
+            "readOnly": true
+          },
+          "C26": {
+            "value": "Trading ~4% discount to NAV; upside modest",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Zomato",
+        "cells": {
+          "A1": {
+            "value": "GROWTH TECH FRAMEWORK — TRIANGULATED EV",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "FY27 METRICS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 22000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Food delivery + dining, subscription growth",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Adjusted EBITDA",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Path to profitability clarity",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "GMV (Gross Merchandise Value)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Order volume proxy",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "METHOD 1: EV/SALES APPROACH",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Revenue Multiple (x)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 8,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "SaaS/platform comparables, Stage 2 tech",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Implied EV via Revenue",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "Revenue × Multiple",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "METHOD 2: EV/EBITDA APPROACH",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "EBITDA Multiple (x)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 30,
+            "readOnly": true
+          },
+          "C13": {
+            "value": "Profitability premium for growth trajectory",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Implied EV via EBITDA",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "EBITDA × Multiple",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "METHOD 3: EV/GMV APPROACH",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "GMV Multiple (x)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 0.5,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "Unit economics and take-rate proxy",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Implied EV via GMV",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "C18": {
+            "value": "GMV × Multiple",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "TRIANGULATED VALUATION",
+            "readOnly": true,
+            "bold": true
+          },
+          "A21": {
+            "value": "Average of Three Methods",
+            "readOnly": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          },
+          "C21": {
+            "value": "(EV/Sales + EV/EBITDA + EV/GMV) / 3",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "EV Range (Low-High)",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "₹42,500 - ₹1,76,000",
+            "readOnly": true
+          },
+          "C22": {
+            "value": "Reflects stage transition uncertainty",
+            "readOnly": true
+          },
+          "A24": {
+            "value": "Equity Shares Outstanding (mn)",
+            "readOnly": true
+          },
+          "B24": {
+            "value": 930,
+            "readOnly": true
+          },
+          "C24": {
+            "value": "Post-IPO float",
+            "readOnly": true
+          },
+          "A25": {
+            "value": "Implied Value Per Share (Base Case Avg)",
+            "readOnly": true
+          },
+          "B25": {
+            "value": "",
+            "readOnly": false
+          },
+          "C25": {
+            "value": "Average EV / Shares",
+            "readOnly": true
+          },
+          "A27": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 250,
+            "readOnly": true
+          },
+          "C27": {
+            "value": "NSE close",
+            "readOnly": true
+          },
+          "A28": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B28": {
+            "value": "HOLD-SELL",
+            "readOnly": true
+          },
+          "C28": {
+            "value": "Valuation gap suggests margin compression risk",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Summary",
+        "cells": {
+          "A1": {
+            "value": "SECTOR-SPECIFIC VALUATION SUMMARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "Framework",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "Fair Value (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E3": {
+            "value": "Current Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F3": {
+            "value": "Upside/(Downside) %",
+            "readOnly": true,
+            "bold": true
+          },
+          "G3": {
+            "value": "Recommendation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "P/B (2.5x formula, 2.7x peer, 3.5x hist) → 3.0x base",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1650,
+            "readOnly": true
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "HOLD / Mild Sell",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "SBI Life",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Life Insurance",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "EV ₹95,000 Cr + VNB ₹4,500 Cr @ 20x",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 1600,
+            "readOnly": true
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "BUY",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "DLF",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Real Estate",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "NAV: Op ₹64,300 + Dev ₹35,000 + Land ₹12,000 - Debt ₹3,000",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 433,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 450,
+            "readOnly": true
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "HOLD",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Zomato",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Growth Tech",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Triangulated: EV/Sales ₹1,76,000 + EV/EBITDA ₹45,000 + EV/GMV ₹42,500",
+            "readOnly": true
+          },
+          "D7": {
+            "value": 95,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 250,
+            "readOnly": true
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "G7": {
+            "value": "HOLD-SELL",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ANALYTICAL INSIGHTS & COMMENTARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Each sector demands its own framework. HDFC Bank's P/B valuation hinges on ROE sustainability and spread (Ke-g); the formula-implied 2.5x with peer median 2.7x bounds the rational range, though premium valuations depend on margin accretion. SBI Life's EV+VNB model captures embedded profitability (₹95,000 Cr EV) and new business growth; the 20x VNB multiple reflects an industry-leading franchise with 20% VNB margin, driving ₹1,850 target and BUY thesis. DLF's NAV framework isolates three asset classes: operational properties at 7% cap rate (₹64,300 Cr), development NPV (₹35,000 Cr), and land bank optionality (₹12,000 Cr); cap rate sensitivity is the dominant lever—100bps changes swing NAV per share by ₹35-40. Zomato's stage-transition methodology triangulates three incompatible approaches: EV/Sales (₹1,76,000 Cr for growth), EV/EBITDA (₹45,000 Cr for profitability), and EV/GMV (₹42,500 Cr for scale), producing a ₹42,500-₹1,76,000 Cr range that exposes the strategic bet—margin expansion or take-rate pressure will swing valuation by ₹100+ per share. Recommendations span from BUY (SBI Life upside clarity) to HOLD-SELL (Zomato uncertainty); HDFC Bank and DLF show near-fair-value trading with modest risk-reward. The lesson: forcing a single methodology across sectors obscures business-model realities; disciplined framework selection unlocks both the key value drivers and the vulnerabilities unique to each sector.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "HDFC_Bank!B6": {
+      "formula_pattern": "=(B2-B3)/(B4-B3)",
+      "expected_value": 2.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "HDFC_Bank!B12": {
+      "formula_pattern": "=MEDIAN(C9:C11)",
+      "expected_value": 2.7,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 8
+    },
+    "HDFC_Bank!B20": {
+      "formula_pattern": "=B6*B17",
+      "expected_value": 1250,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "HDFC_Bank!B21": {
+      "formula_pattern": "=B12*B17",
+      "expected_value": 1350,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "HDFC_Bank!B22": {
+      "formula_pattern": "=B14*B17",
+      "expected_value": 1750,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "HDFC_Bank!B24": {
+      "formula_pattern": "=3*B17",
+      "expected_value": 1500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "SBI_Life!B5": {
+      "formula_pattern": "=B3*B4",
+      "expected_value": 4500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "SBI_Life!B7": {
+      "formula_pattern": "=B5*B6",
+      "expected_value": 90000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "SBI_Life!B8": {
+      "formula_pattern": "=B2+B7",
+      "expected_value": 185000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "SBI_Life!B11": {
+      "formula_pattern": "=B8/B10",
+      "expected_value": 1850,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "SBI_Life!B14": {
+      "formula_pattern": "=(B2+B5*18)/B10",
+      "expected_value": 1760,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "SBI_Life!B16": {
+      "formula_pattern": "=(B2+B5*22)/B10",
+      "expected_value": 2075,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "DLF!B6": {
+      "formula_pattern": "=B4/B5",
+      "expected_value": 64285.7,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "DLF!B14": {
+      "formula_pattern": "=B6+B9+B12",
+      "expected_value": 111285.7,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "DLF!B16": {
+      "formula_pattern": "=B14+B15",
+      "expected_value": 108285.7,
+      "type": "number",
+      "tolerance": 10,
+      "points": 10
+    },
+    "DLF!B19": {
+      "formula_pattern": "=B16/B18",
+      "expected_value": 433.1,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "DLF!B22": {
+      "formula_pattern": "=(B4/0.065+B9+B12+B15)/B18",
+      "expected_value": 477.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "DLF!B23": {
+      "formula_pattern": "=(B4/0.075+B9+B12+B15)/B18",
+      "expected_value": 394.3,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Zomato!B10": {
+      "formula_pattern": "=B4*B9",
+      "expected_value": 176000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "Zomato!B14": {
+      "formula_pattern": "=B5*B13",
+      "expected_value": 45000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "Zomato!B18": {
+      "formula_pattern": "=B6*B17",
+      "expected_value": 42500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 9
+    },
+    "Zomato!B21": {
+      "formula_pattern": "=(B10+B14+B18)/3/B24",
+      "expected_value": 94.6,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Summary!F4": {
+      "formula_pattern": "=(D4-E4)/E4*100",
+      "expected_value": -9.09,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Summary!F5": {
+      "formula_pattern": "=(D5-E5)/E5*100",
+      "expected_value": 15.625,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Summary!F6": {
+      "formula_pattern": "=(D6-E6)/E6*100",
+      "expected_value": -3.78,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Summary!F7": {
+      "formula_pattern": "=(D7-E7)/E7*100",
+      "expected_value": -62,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    }
+  }
+}

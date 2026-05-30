@@ -1,0 +1,1117 @@
+{
+  "sim_id": "0871758a-30b8-47de-a67b-3fafa459c032",
+  "title": "Building The Indian Auto Monthly Volume Dashboard — Live Cyclical Tracker",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Raw_Data_Wholesales",
+        "cells": {
+          "A1": {
+            "value": "Month",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Maruti PV",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Tata PV",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Tata EV",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "M&M PV",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "M&M Tractor",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Bajaj 2W",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Hero 2W",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Apr-23",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 165256,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 44502,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 5800,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 30024,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 32500,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 183500,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 490600,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "May-23",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 151512,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 43000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 6200,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 28280,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 29800,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 176200,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 458200,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Jun-23",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 151969,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 47235,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 6900,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 29420,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 27600,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 184600,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 481400,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Jul-23",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 152126,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 44263,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 7100,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 31094,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 26200,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 185800,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 454800,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Aug-23",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 156114,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 45797,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 7300,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 32502,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 23800,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 188300,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 481000,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Sep-23",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 150812,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 47878,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 7600,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 39989,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 31500,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 201400,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 511700,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Oct-23",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 184193,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 53023,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 7800,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 43708,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 37800,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 224200,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 534700,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Nov-23",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 164439,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 48589,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 5800,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 39981,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 35200,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 228600,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 512500,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Dec-23",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 139400,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 43476,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 6100,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 32226,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 28900,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 218200,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 397100,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Jan-24",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 169599,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 47624,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 8100,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 38520,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 31200,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 220800,
+            "readOnly": true
+          },
+          "H11": {
+            "value": 468700,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Feb-24",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 160271,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 47030,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 39400,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 30800,
+            "readOnly": true
+          },
+          "G12": {
+            "value": 224700,
+            "readOnly": true
+          },
+          "H12": {
+            "value": 472200,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Mar-24",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 168089,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 53643,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 9800,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 40631,
+            "readOnly": true
+          },
+          "F13": {
+            "value": 29400,
+            "readOnly": true
+          },
+          "G13": {
+            "value": 229000,
+            "readOnly": true
+          },
+          "H13": {
+            "value": 493700,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Apr-24",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 168089,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 53000,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 9500,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 41800,
+            "readOnly": true
+          },
+          "F14": {
+            "value": 33200,
+            "readOnly": true
+          },
+          "G14": {
+            "value": 232800,
+            "readOnly": true
+          },
+          "H14": {
+            "value": 501200,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "May-24",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 164439,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 49000,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 8800,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 42500,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 31400,
+            "readOnly": true
+          },
+          "G15": {
+            "value": 226200,
+            "readOnly": true
+          },
+          "H15": {
+            "value": 488200,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Jun-24",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 159000,
+            "readOnly": true
+          },
+          "C16": {
+            "value": 48500,
+            "readOnly": true
+          },
+          "D16": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "E16": {
+            "value": 43100,
+            "readOnly": true
+          },
+          "F16": {
+            "value": 29800,
+            "readOnly": true
+          },
+          "G16": {
+            "value": 223000,
+            "readOnly": true
+          },
+          "H16": {
+            "value": 471400,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Raw_Data_Retails",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Maruti Retail",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Tata Retail",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "M&M PV Retail",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "M&M Tractor Retail",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Bajaj 2W Retail",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Hero 2W Retail",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1 FY24",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 440000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 128000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 82000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 508000,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1395000,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Q2 FY24",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 445000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 133000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 98000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 78000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 545000,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 1428000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Q3 FY24",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 470000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 138000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 108000,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 92000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 592000,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 1512000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Q4 FY24",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 475000,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 142000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 112000,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 88000,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 610000,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 1528000,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Q1 FY25",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 478000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 145000,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 118000,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 84000,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 625000,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 1545000,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Calculations",
+        "cells": {
+          "A1": {
+            "value": "OEM",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Q2 FY24 WhlsVol (3M Cum)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Q2 FY24 RetlVol",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "WR Gap %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Inv Days Est",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "YoY Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Maruti PV",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": 445000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Tata Motors PV",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": 133000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "M&M PV",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": 98000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "M&M Tractor",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": 78000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Bajaj 2W",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": 545000,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Hero MotoCorp 2W",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": 1428000,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Dashboard",
+        "cells": {
+          "A1": {
+            "value": "Indian Auto OEM Cyclical Dashboard",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "As of Q2 FY24",
+            "readOnly": true,
+            "italic": true
+          },
+          "A4": {
+            "value": "OEM",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "Wholesale-Retail Gap %",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "Inventory Days (Est)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "YoY Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "Cyclical Signal",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Maruti PV",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Tata Motors PV",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "M&M PV",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "M&M Tractor",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Bajaj 2W",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Hero MotoCorp 2W",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Calculations!B2": {
+      "formula_pattern": "=SUM(Raw_Data_Wholesales!B2:B4)",
+      "expected_value": 468737,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Calculations!D2": {
+      "formula_pattern": "=(B2-C2)/B2*100",
+      "expected_value": 5.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 12
+    },
+    "Calculations!E2": {
+      "formula_pattern": "=IF(D2<0,25,IF(D2<5,30,IF(D2<10,38,45)))",
+      "expected_value": 30,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Calculations!F2": {
+      "formula_pattern": "=((SUM(Raw_Data_Wholesales!B14:B16)-SUM(Raw_Data_Wholesales!B2:B4))/SUM(Raw_Data_Wholesales!B2:B4))*100",
+      "expected_value": 4.83,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Calculations!B3": {
+      "formula_pattern": "=SUM(Raw_Data_Wholesales!C2:C4)",
+      "expected_value": 134237,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Calculations!D3": {
+      "formula_pattern": "=(B3-C3)/B3*100",
+      "expected_value": -0.57,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 12
+    },
+    "Dashboard!B5": {
+      "formula_pattern": "=Calculations!D2",
+      "expected_value": 5.0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 8
+    },
+    "Dashboard!C5": {
+      "formula_pattern": "=Calculations!E2",
+      "expected_value": 30,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Dashboard!E5": {
+      "formula_pattern": "=IF(AND(C5<=35,B5>0),\"YELLOW\",IF(AND(C5>35,B5>5),\"RED\",\"GREEN\"))",
+      "expected_value": "YELLOW",
+      "type": "text",
+      "tolerance": 0,
+      "points": 16
+    }
+  }
+}

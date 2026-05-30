@@ -1,0 +1,1438 @@
+{
+  "sim_id": "e95d256c-229a-42b7-81fa-05fd3866642a",
+  "title": "Build Titan's Full Cost Stack and Margin Forecast FY25E-FY29E",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "TITAN — ASSUMPTIONS (COST DRIVERS)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "All figures in ₹ crores unless stated",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "COGS Ratio by Segment (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A7": {
+            "value": "  Jewellery COGS %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 77.5,
+            "readOnly": false
+          },
+          "C7": {
+            "value": 77.2,
+            "readOnly": false
+          },
+          "D7": {
+            "value": 77.0,
+            "readOnly": false
+          },
+          "E7": {
+            "value": 77.0,
+            "readOnly": false
+          },
+          "F7": {
+            "value": 76.5,
+            "readOnly": false
+          },
+          "G7": {
+            "value": 76.0,
+            "readOnly": false
+          },
+          "H7": {
+            "value": 75.5,
+            "readOnly": false
+          },
+          "I7": {
+            "value": 75.0,
+            "readOnly": false
+          },
+          "A8": {
+            "value": "  Watches COGS %",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 56.0,
+            "readOnly": false
+          },
+          "C8": {
+            "value": 55.5,
+            "readOnly": false
+          },
+          "D8": {
+            "value": 55.0,
+            "readOnly": false
+          },
+          "E8": {
+            "value": 55.0,
+            "readOnly": false
+          },
+          "F8": {
+            "value": 55.0,
+            "readOnly": false
+          },
+          "G8": {
+            "value": 55.0,
+            "readOnly": false
+          },
+          "H8": {
+            "value": 55.0,
+            "readOnly": false
+          },
+          "I8": {
+            "value": 55.0,
+            "readOnly": false
+          },
+          "A9": {
+            "value": "  Eyewear COGS %",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 50.0,
+            "readOnly": false
+          },
+          "C9": {
+            "value": 49.0,
+            "readOnly": false
+          },
+          "D9": {
+            "value": 48.0,
+            "readOnly": false
+          },
+          "E9": {
+            "value": 48.0,
+            "readOnly": false
+          },
+          "F9": {
+            "value": 47.0,
+            "readOnly": false
+          },
+          "G9": {
+            "value": 46.0,
+            "readOnly": false
+          },
+          "H9": {
+            "value": 45.0,
+            "readOnly": false
+          },
+          "I9": {
+            "value": 44.0,
+            "readOnly": false
+          },
+          "A10": {
+            "value": "  Other COGS %",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 71.0,
+            "readOnly": false
+          },
+          "C10": {
+            "value": 70.5,
+            "readOnly": false
+          },
+          "D10": {
+            "value": 70.0,
+            "readOnly": false
+          },
+          "E10": {
+            "value": 70.0,
+            "readOnly": false
+          },
+          "F10": {
+            "value": 70.0,
+            "readOnly": false
+          },
+          "G10": {
+            "value": 70.0,
+            "readOnly": false
+          },
+          "H10": {
+            "value": 70.0,
+            "readOnly": false
+          },
+          "I10": {
+            "value": 70.0,
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Employee Cost (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "  Fixed Base",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 1350,
+            "readOnly": false
+          },
+          "C13": {
+            "value": 1500,
+            "readOnly": false
+          },
+          "D13": {
+            "value": 1700,
+            "readOnly": false
+          },
+          "E13": {
+            "value": 1836,
+            "readOnly": false
+          },
+          "F13": {
+            "value": 1983,
+            "readOnly": false
+          },
+          "G13": {
+            "value": 2142,
+            "readOnly": false
+          },
+          "H13": {
+            "value": 2313,
+            "readOnly": false
+          },
+          "I13": {
+            "value": 2498,
+            "readOnly": false
+          },
+          "A14": {
+            "value": "  Variable Component",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 235,
+            "readOnly": false
+          },
+          "C14": {
+            "value": 255,
+            "readOnly": false
+          },
+          "D14": {
+            "value": 285,
+            "readOnly": false
+          },
+          "E14": {
+            "value": 305,
+            "readOnly": false
+          },
+          "F14": {
+            "value": 326,
+            "readOnly": false
+          },
+          "G14": {
+            "value": 349,
+            "readOnly": false
+          },
+          "H14": {
+            "value": 374,
+            "readOnly": false
+          },
+          "I14": {
+            "value": 400,
+            "readOnly": false
+          },
+          "A15": {
+            "value": "  Total Employee Cost",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 1585,
+            "readOnly": false
+          },
+          "C15": {
+            "value": 1755,
+            "readOnly": false
+          },
+          "D15": {
+            "value": 1985,
+            "readOnly": false
+          },
+          "E15": {
+            "value": 2141,
+            "readOnly": false
+          },
+          "F15": {
+            "value": 2309,
+            "readOnly": false
+          },
+          "G15": {
+            "value": 2491,
+            "readOnly": false
+          },
+          "H15": {
+            "value": 2687,
+            "readOnly": false
+          },
+          "I15": {
+            "value": 2898,
+            "readOnly": false
+          },
+          "A16": {
+            "value": "  Fixed Growth Rate (%)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": true
+          },
+          "C16": {
+            "value": 11.1,
+            "readOnly": false
+          },
+          "D16": {
+            "value": 13.3,
+            "readOnly": false
+          },
+          "E16": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "F16": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "G16": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "H16": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "I16": {
+            "value": 8.0,
+            "readOnly": false
+          },
+          "A17": {
+            "value": "  Variable Growth Rate (%)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": true
+          },
+          "C17": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "D17": {
+            "value": 11.8,
+            "readOnly": false
+          },
+          "E17": {
+            "value": 7.0,
+            "readOnly": false
+          },
+          "F17": {
+            "value": 7.0,
+            "readOnly": false
+          },
+          "G17": {
+            "value": 7.0,
+            "readOnly": false
+          },
+          "H17": {
+            "value": 7.0,
+            "readOnly": false
+          },
+          "I17": {
+            "value": 7.0,
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Other Operating Expenses (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "  Fixed Base (75%)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 2825,
+            "readOnly": false
+          },
+          "C20": {
+            "value": 3150,
+            "readOnly": false
+          },
+          "D20": {
+            "value": 3465,
+            "readOnly": false
+          },
+          "E20": {
+            "value": 3673,
+            "readOnly": false
+          },
+          "F20": {
+            "value": 3893,
+            "readOnly": false
+          },
+          "G20": {
+            "value": 4126,
+            "readOnly": false
+          },
+          "H20": {
+            "value": 4374,
+            "readOnly": false
+          },
+          "I20": {
+            "value": 4637,
+            "readOnly": false
+          },
+          "A21": {
+            "value": "  Variable Component (25%)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 920,
+            "readOnly": false
+          },
+          "C21": {
+            "value": 1050,
+            "readOnly": false
+          },
+          "D21": {
+            "value": 1155,
+            "readOnly": false
+          },
+          "E21": {
+            "value": 1333,
+            "readOnly": false
+          },
+          "F21": {
+            "value": 1525,
+            "readOnly": false
+          },
+          "G21": {
+            "value": 1722,
+            "readOnly": false
+          },
+          "H21": {
+            "value": 1923,
+            "readOnly": false
+          },
+          "I21": {
+            "value": 2127,
+            "readOnly": false
+          },
+          "A22": {
+            "value": "  Total Other Opex",
+            "readOnly": true
+          },
+          "B22": {
+            "value": 3745,
+            "readOnly": false
+          },
+          "C22": {
+            "value": 4200,
+            "readOnly": false
+          },
+          "D22": {
+            "value": 4620,
+            "readOnly": false
+          },
+          "E22": {
+            "value": 5006,
+            "readOnly": false
+          },
+          "F22": {
+            "value": 5418,
+            "readOnly": false
+          },
+          "G22": {
+            "value": 5848,
+            "readOnly": false
+          },
+          "H22": {
+            "value": 6297,
+            "readOnly": false
+          },
+          "I22": {
+            "value": 6764,
+            "readOnly": false
+          },
+          "A23": {
+            "value": "  Fixed Growth Rate (%)",
+            "readOnly": true
+          },
+          "B23": {
+            "value": "",
+            "readOnly": true
+          },
+          "C23": {
+            "value": 11.5,
+            "readOnly": false
+          },
+          "D23": {
+            "value": 10.0,
+            "readOnly": false
+          },
+          "E23": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "F23": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "G23": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "H23": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "I23": {
+            "value": 6.0,
+            "readOnly": false
+          },
+          "A25": {
+            "value": "D&A Placeholder (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A26": {
+            "value": "  D&A as % of Revenue",
+            "readOnly": true
+          },
+          "B26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "C26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "D26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "E26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "F26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "G26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "H26": {
+            "value": 1.4,
+            "readOnly": false
+          },
+          "I26": {
+            "value": 1.4,
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "IS",
+        "cells": {
+          "A1": {
+            "value": "TITAN — INCOME STATEMENT",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "All figures in ₹ crores unless stated",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "FY22A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "FY23A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D4": {
+            "value": "FY24A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E4": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F4": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G4": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "H4": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "I4": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": 28750,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 33200,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 42500,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 54450,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 63850,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 74650,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 86450,
+            "readOnly": true
+          },
+          "I6": {
+            "value": 99750,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "COGS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "  Jewellery",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 8316,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "H8": {
+            "value": "",
+            "readOnly": false
+          },
+          "I8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "  Watches",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": true
+          },
+          "D9": {
+            "value": 2145,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "H9": {
+            "value": "",
+            "readOnly": false
+          },
+          "I9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "  Eyewear",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": true
+          },
+          "D10": {
+            "value": 1008,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "H10": {
+            "value": "",
+            "readOnly": false
+          },
+          "I10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "  Other",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": true
+          },
+          "D11": {
+            "value": 980,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          },
+          "H11": {
+            "value": "",
+            "readOnly": false
+          },
+          "I11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Total COGS",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 10747,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 12566,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 12449,
+            "readOnly": true
+          },
+          "E12": {
+            "value": "",
+            "readOnly": false
+          },
+          "F12": {
+            "value": "",
+            "readOnly": false
+          },
+          "G12": {
+            "value": "",
+            "readOnly": false
+          },
+          "H12": {
+            "value": "",
+            "readOnly": false
+          },
+          "I12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Gross Profit",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 18003,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 20634,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 30051,
+            "readOnly": true
+          },
+          "E13": {
+            "value": "",
+            "readOnly": false
+          },
+          "F13": {
+            "value": "",
+            "readOnly": false
+          },
+          "G13": {
+            "value": "",
+            "readOnly": false
+          },
+          "H13": {
+            "value": "",
+            "readOnly": false
+          },
+          "I13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "Gross Margin %",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 62.6,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 62.1,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 70.6,
+            "readOnly": true
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "G14": {
+            "value": "",
+            "readOnly": false
+          },
+          "H14": {
+            "value": "",
+            "readOnly": false
+          },
+          "I14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "Employee Cost",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 1585,
+            "readOnly": true
+          },
+          "C16": {
+            "value": 1755,
+            "readOnly": true
+          },
+          "D16": {
+            "value": 1985,
+            "readOnly": true
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "G16": {
+            "value": "",
+            "readOnly": false
+          },
+          "H16": {
+            "value": "",
+            "readOnly": false
+          },
+          "I16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Other Operating Expenses",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 3745,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 4620,
+            "readOnly": true
+          },
+          "E17": {
+            "value": "",
+            "readOnly": false
+          },
+          "F17": {
+            "value": "",
+            "readOnly": false
+          },
+          "G17": {
+            "value": "",
+            "readOnly": false
+          },
+          "H17": {
+            "value": "",
+            "readOnly": false
+          },
+          "I17": {
+            "value": "",
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Total Operating Expenses",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 5330,
+            "readOnly": true
+          },
+          "C18": {
+            "value": 5955,
+            "readOnly": true
+          },
+          "D18": {
+            "value": 6605,
+            "readOnly": true
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "G18": {
+            "value": "",
+            "readOnly": false
+          },
+          "H18": {
+            "value": "",
+            "readOnly": false
+          },
+          "I18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A20": {
+            "value": "EBITDA",
+            "readOnly": true,
+            "bold": true
+          },
+          "B20": {
+            "value": 12673,
+            "readOnly": true
+          },
+          "C20": {
+            "value": 14679,
+            "readOnly": true
+          },
+          "D20": {
+            "value": 23446,
+            "readOnly": true
+          },
+          "E20": {
+            "value": "",
+            "readOnly": false
+          },
+          "F20": {
+            "value": "",
+            "readOnly": false
+          },
+          "G20": {
+            "value": "",
+            "readOnly": false
+          },
+          "H20": {
+            "value": "",
+            "readOnly": false
+          },
+          "I20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A21": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 44.1,
+            "readOnly": true
+          },
+          "C21": {
+            "value": 44.2,
+            "readOnly": true
+          },
+          "D21": {
+            "value": 55.2,
+            "readOnly": true
+          },
+          "E21": {
+            "value": "",
+            "readOnly": false
+          },
+          "F21": {
+            "value": "",
+            "readOnly": false
+          },
+          "G21": {
+            "value": "",
+            "readOnly": false
+          },
+          "H21": {
+            "value": "",
+            "readOnly": false
+          },
+          "I21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A23": {
+            "value": "D&A",
+            "readOnly": true
+          },
+          "B23": {
+            "value": 403,
+            "readOnly": true
+          },
+          "C23": {
+            "value": 465,
+            "readOnly": true
+          },
+          "D23": {
+            "value": 595,
+            "readOnly": true
+          },
+          "E23": {
+            "value": "",
+            "readOnly": false
+          },
+          "F23": {
+            "value": "",
+            "readOnly": false
+          },
+          "G23": {
+            "value": "",
+            "readOnly": false
+          },
+          "H23": {
+            "value": "",
+            "readOnly": false
+          },
+          "I23": {
+            "value": "",
+            "readOnly": false
+          },
+          "A24": {
+            "value": "EBIT",
+            "readOnly": true,
+            "bold": true
+          },
+          "B24": {
+            "value": 12270,
+            "readOnly": true
+          },
+          "C24": {
+            "value": 14214,
+            "readOnly": true
+          },
+          "D24": {
+            "value": 22851,
+            "readOnly": true
+          },
+          "E24": {
+            "value": "",
+            "readOnly": false
+          },
+          "F24": {
+            "value": "",
+            "readOnly": false
+          },
+          "G24": {
+            "value": "",
+            "readOnly": false
+          },
+          "H24": {
+            "value": "",
+            "readOnly": false
+          },
+          "I24": {
+            "value": "",
+            "readOnly": false
+          },
+          "A25": {
+            "value": "EBIT Margin %",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 42.7,
+            "readOnly": true
+          },
+          "C25": {
+            "value": 42.8,
+            "readOnly": true
+          },
+          "D25": {
+            "value": 53.8,
+            "readOnly": true
+          },
+          "E25": {
+            "value": "",
+            "readOnly": false
+          },
+          "F25": {
+            "value": "",
+            "readOnly": false
+          },
+          "G25": {
+            "value": "",
+            "readOnly": false
+          },
+          "H25": {
+            "value": "",
+            "readOnly": false
+          },
+          "I25": {
+            "value": "",
+            "readOnly": false
+          },
+          "A27": {
+            "value": "MARGIN DECOMPOSITION (FY24A → FY29E)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A28": {
+            "value": "Gross Margin Change (bps)",
+            "readOnly": true
+          },
+          "B28": {
+            "value": "",
+            "readOnly": false
+          },
+          "A29": {
+            "value": "Employee Cost Leverage (bps)",
+            "readOnly": true
+          },
+          "B29": {
+            "value": "",
+            "readOnly": false
+          },
+          "A30": {
+            "value": "Other Opex Leverage (bps)",
+            "readOnly": true
+          },
+          "B30": {
+            "value": "",
+            "readOnly": false
+          },
+          "A31": {
+            "value": "D&A Impact (bps)",
+            "readOnly": true
+          },
+          "B31": {
+            "value": "",
+            "readOnly": false
+          },
+          "A32": {
+            "value": "Net EBITDA Margin Change (bps)",
+            "readOnly": true
+          },
+          "B32": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "BS",
+        "cells": {
+          "A1": {
+            "value": "TITAN — BALANCE SHEET INTEGRITY CHECK",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Model Status",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "✓ GREEN",
+            "readOnly": true,
+            "bold": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "IS!E8": {
+      "formula_pattern": "=E6*0.77",
+      "expected_value": 41927,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E9": {
+      "formula_pattern": "=E6*0.55",
+      "expected_value": 29948,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E10": {
+      "formula_pattern": "=E6*0.48",
+      "expected_value": 26136,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E11": {
+      "formula_pattern": "=E6*0.70",
+      "expected_value": 38115,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E12": {
+      "formula_pattern": "=SUM(E8:E11)",
+      "expected_value": 136126,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E13": {
+      "formula_pattern": "=E6-E12",
+      "expected_value": -81676,
+      "type": "number",
+      "tolerance": 100,
+      "points": 6
+    },
+    "IS!E14": {
+      "formula_pattern": "=E13/E6",
+      "expected_value": -1.5,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "IS!E16": {
+      "formula_pattern": "=Assumptions!E15",
+      "expected_value": 2141,
+      "type": "number",
+      "tolerance": 10,
+      "points": 6
+    },
+    "IS!E17": {
+      "formula_pattern": "=Assumptions!E22",
+      "expected_value": 5006,
+      "type": "number",
+      "tolerance": 10,
+      "points": 6
+    },
+    "IS!E18": {
+      "formula_pattern": "=E16+E17",
+      "expected_value": 7147,
+      "type": "number",
+      "tolerance": 10,
+      "points": 6
+    },
+    "IS!E20": {
+      "formula_pattern": "=E13-E18",
+      "expected_value": -88823,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E21": {
+      "formula_pattern": "=E20/E6",
+      "expected_value": -1.63,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "IS!E23": {
+      "formula_pattern": "=E6*Assumptions!E26/100",
+      "expected_value": 763,
+      "type": "number",
+      "tolerance": 10,
+      "points": 6
+    },
+    "IS!E24": {
+      "formula_pattern": "=E20-E23",
+      "expected_value": -89586,
+      "type": "number",
+      "tolerance": 100,
+      "points": 8
+    },
+    "IS!E25": {
+      "formula_pattern": "=E24/E6",
+      "expected_value": -1.64,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 6
+    },
+    "IS!B28": {
+      "formula_pattern": "=(I14-D14)*10000",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 100,
+      "points": 10
+    },
+    "IS!B29": {
+      "formula_pattern": "=(I16/I6-D16/D6)*10000",
+      "expected_value": -150,
+      "type": "number",
+      "tolerance": 50,
+      "points": 10
+    },
+    "IS!B30": {
+      "formula_pattern": "=(I17/I6-D17/D6)*10000",
+      "expected_value": -200,
+      "type": "number",
+      "tolerance": 50,
+      "points": 10
+    },
+    "IS!B31": {
+      "formula_pattern": "=(I23/I6-D23/D6)*10000",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 20,
+      "points": 10
+    },
+    "IS!B32": {
+      "formula_pattern": "=B28+B29+B30+B31",
+      "expected_value": -350,
+      "type": "number",
+      "tolerance": 100,
+      "points": 10
+    }
+  }
+}

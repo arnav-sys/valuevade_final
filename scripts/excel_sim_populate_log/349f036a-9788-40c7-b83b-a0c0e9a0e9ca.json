@@ -1,0 +1,877 @@
+{
+  "sim_id": "349f036a-9788-40c7-b83b-a0c0e9a0e9ca",
+  "title": "The Precedent Transactions Workbook — Asian Paints Triangulation Completes",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Deal_Database",
+        "cells": {
+          "A1": {
+            "value": "Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Acquirer",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Target",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Deal Value (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Stake",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Implied 100% EV (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Target LTM EBITDA (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Deal EV/EBITDA",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Implied Control Premium %",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "Buyer Type",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Apr-2018",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "HUL",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "GSK Consumer Healthcare",
+            "readOnly": true
+          },
+          "D2": {
+            "value": 31700,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "100%",
+            "readOnly": true
+          },
+          "F2": {
+            "value": 31700,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 31.7,
+            "readOnly": true
+          },
+          "I2": {
+            "value": 0.3,
+            "readOnly": true
+          },
+          "J2": {
+            "value": "Strategic",
+            "readOnly": true
+          },
+          "K2": {
+            "value": "Anchor deal — premium Indian consumer",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Jun-2019",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Nestlé India",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Aimmune Therapeutics India ops",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 2600,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "100%",
+            "readOnly": true
+          },
+          "F3": {
+            "value": 2600,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 95,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 27.4,
+            "readOnly": true
+          },
+          "I3": {
+            "value": 0.31,
+            "readOnly": true
+          },
+          "J3": {
+            "value": "Strategic",
+            "readOnly": true
+          },
+          "K3": {
+            "value": "Premium consumer health India",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Feb-2020",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "ITC",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Sunfeast (select brands)",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 8900,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "100%",
+            "readOnly": true
+          },
+          "F4": {
+            "value": 8900,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 310,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 28.7,
+            "readOnly": true
+          },
+          "I4": {
+            "value": 0.29,
+            "readOnly": true
+          },
+          "J4": {
+            "value": "Strategic",
+            "readOnly": true
+          },
+          "K4": {
+            "value": "Domestic premium FMCG consolidation",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Nov-2021",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Britannia Industries",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Biscuit & snacking brands",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 5200,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "100%",
+            "readOnly": true
+          },
+          "F5": {
+            "value": 5200,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 185,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 28.1,
+            "readOnly": true
+          },
+          "I5": {
+            "value": 0.32,
+            "readOnly": true
+          },
+          "J5": {
+            "value": "Strategic",
+            "readOnly": true
+          },
+          "K5": {
+            "value": "Premium consumer brand consolidation",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Jul-2023",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Colgate-Palmolive",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Oral Care portfolio (select)",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "100%",
+            "readOnly": true
+          },
+          "F6": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 155,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 26.5,
+            "readOnly": true
+          },
+          "I6": {
+            "value": 0.28,
+            "readOnly": true
+          },
+          "J6": {
+            "value": "Strategic",
+            "readOnly": true
+          },
+          "K6": {
+            "value": "Premium consumer personal care",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Statistics:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Median Deal EV/EBITDA",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": true
+          },
+          "H9": {
+            "value": "=MEDIAN(H2:H6)",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Average Control Premium %",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": true
+          },
+          "I10": {
+            "value": "=AVERAGE(I2:I6)",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Multiple_Adjustments",
+        "cells": {
+          "A1": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Median Deal Multiple (x)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Avg Control Premium %",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Control Premium (Decimal)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Trading-Equivalent Multiple (x)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Use Case",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "EV/EBITDA — Premium Consumer Deals",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=Deal_Database!H9",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "=Deal_Database!I10",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "=C2",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "=B2/(1+D2)",
+            "readOnly": true
+          },
+          "F2": {
+            "value": "Minority-stake valuation",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Interpretation Note:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Deal multiples reflect control premium over trading levels.",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Trading-equivalent = Deal Multiple ÷ (1 + Control Premium).",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "This represents fair value for minority shareholders.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Implied_Valuation",
+        "cells": {
+          "A1": {
+            "value": "Asian Paints FY27E Valuation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY27E EBITDA (₹ cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Shares Outstanding (cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 125.6,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Scenario",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "Applied Multiple (x)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C5": {
+            "value": "Implied Enterprise Value (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D5": {
+            "value": "Implied Per-Share Value (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Minority-Stake (Trading-Equiv)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=Multiple_Adjustments!E2",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "=B2*B6",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "=C6/B3",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Controlling-Stake (Deal Multiple)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=Multiple_Adjustments!B2",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "=B2*B7",
+            "readOnly": true
+          },
+          "D7": {
+            "value": "=C7/B3",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Triangulation",
+        "cells": {
+          "A1": {
+            "value": "Valuation Summary — Asian Paints",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Per-Share Fair Value (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "Implied EV (₹ cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D2": {
+            "value": "vs Market Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "E2": {
+            "value": "Confidence",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "DCF Base Case",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1382,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "=B3*Implied_Valuation!B3",
+            "readOnly": true
+          },
+          "D3": {
+            "value": "=(B3-2920)/2920",
+            "readOnly": true
+          },
+          "E3": {
+            "value": "High",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Trading Comps — Indian Peers",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "=B4*Implied_Valuation!B3",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "=(B4-2920)/2920",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "Medium",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Trading Comps — Global Mature Peers",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1400,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "=B5*Implied_Valuation!B3",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "=(B5-2920)/2920",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "High",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Precedent Txn — Trading-Equivalent",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=Implied_Valuation!D6",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "=Implied_Valuation!C6",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "=(B6-2920)/2920",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "High",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Precedent Txn — Deal Multiple Direct",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=Implied_Valuation!D7",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "=Implied_Valuation!C7",
+            "readOnly": true
+          },
+          "D7": {
+            "value": "=(B7-2920)/2920",
+            "readOnly": true
+          },
+          "E7": {
+            "value": "Medium",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "=B8*Implied_Valuation!B3",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "—",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Key Observation:",
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "Three independent methodologies (DCF, Global Mature Comps, Precedent Txn Trading-Equiv)",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "converge in ₹1,400–₹1,965 range. Even full deal multiple (₹2,560) falls short of market.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Football_Field_Input",
+        "cells": {
+          "A1": {
+            "value": "Valuation Range for Football Field Chart",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Methodology",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Low (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "Base (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D2": {
+            "value": "High (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E2": {
+            "value": "Weight (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "DCF Analysis",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "=Triangulation!B3",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 1600,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 35,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Global Mature Peer Comps",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1300,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "=Triangulation!B5",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1550,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Precedent Transactions",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Implied_Valuation!D6",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "=(Implied_Valuation!D6+Implied_Valuation!D7)/2",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "=Implied_Valuation!D7",
+            "readOnly": true
+          },
+          "E5": {
+            "value": 25,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Indian Peer Trading Comps",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "=Triangulation!B4",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 2650,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Market Price:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 2920,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Recommendation:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "SELL",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Commentary",
+        "cells": {
+          "A1": {
+            "value": "Final Commentary — Asian Paints Triangulation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Analysis Text (for publication):",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Three independent methodologies now converge around fair value for Asian Paints: DCF base case yields ₹1,382 per share, global mature peer trading comps suggest ₹1,400, and precedent transaction trading-equivalent multiple (adjusted for control premium) implies ₹1,965 — all clustering in the ₹1,400–₹2,000 range. Even under a controlling-stake interpretation (where an acquirer applies the full 28–30x deal multiple observed in recent Indian premium consumer M&A), the implied per-share value reaches only ₹2,560, still approximately 12% below the current market price of ₹2,920. The structural finding is unambiguous: no standard valuation methodology — whether discounted cash flow, peer trading multiples, or precedent transactions — justifies current market valuation, which implies either that the market is pricing in significant scarcity premium and growth optionality beyond what these methodologies capture, or that Asian Paints is overvalued. The convergence across DCF, global mature comps, and precedent transaction trading-equivalent creates high confidence in the Sell call; the gap between controlling-stake precedent transaction value (₹2,560) and market price (₹2,920) raises the critical analytical question of what catalyst or fundamental re-rating might close that gap and informs our catalyst identification process. Publication framing should emphasize the triangulation finding: independent methodologies at high conviction all indicate downside, while acknowledging that the scarcity premium suggests potential momentum upside near-term if analyst consensus remains bullish. Going forward, catalyst identification should focus on: (1) margin compression as volumes moderate post-housing cycle, (2) competitive intensity in organized paint segment, and (3) potential multiple rerating if global mature peer comparability assumptions are questioned (e.g., if Asian Paints proves to have more durable competitive moats than global peers suggest). The investment thesis structure now allows publication: three legs of valuation triangulation all support a Sell-rated fair value of ₹1,500–₹2,000, with downside risk to ₹1,200–₹1,400 in a bear case.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Deal_Database!H9": {
+      "formula_pattern": "=MEDIAN(H2:H6)",
+      "expected_value": 28.1,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Deal_Database!I10": {
+      "formula_pattern": "=AVERAGE(I2:I6)",
+      "expected_value": 0.3,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Multiple_Adjustments!B2": {
+      "formula_pattern": "=Deal_Database!H9",
+      "expected_value": 28.1,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Multiple_Adjustments!C2": {
+      "formula_pattern": "=Deal_Database!I10",
+      "expected_value": 0.3,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Multiple_Adjustments!D2": {
+      "formula_pattern": "=C2",
+      "expected_value": 0.3,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 5
+    },
+    "Multiple_Adjustments!E2": {
+      "formula_pattern": "=B2/(1+D2)",
+      "expected_value": 21.62,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 15
+    },
+    "Implied_Valuation!B6": {
+      "formula_pattern": "=Multiple_Adjustments!E2",
+      "expected_value": 21.62,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Implied_Valuation!C6": {
+      "formula_pattern": "=B2*B6",
+      "expected_value": 177284,
+      "type": "number",
+      "tolerance": 500,
+      "points": 10
+    },
+    "Implied_Valuation!D6": {
+      "formula_pattern": "=C6/B3",
+      "expected_value": 1410,
+      "type": "number",
+      "tolerance": 50,
+      "points": 15
+    },
+    "Implied_Valuation!B7": {
+      "formula_pattern": "=Multiple_Adjustments!B2",
+      "expected_value": 28.1,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 5
+    },
+    "Implied_Valuation!C7": {
+      "formula_pattern": "=B2*B7",
+      "expected_value": 230420,
+      "type": "number",
+      "tolerance": 500,
+      "points": 10
+    },
+    "Implied_Valuation!D7": {
+      "formula_pattern": "=C7/B3",
+      "expected_value": 1834,
+      "type": "number",
+      "tolerance": 50,
+      "points": 15
+    }
+  }
+}

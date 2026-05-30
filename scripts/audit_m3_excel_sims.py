@@ -42,6 +42,11 @@ def rest(path, params=None):
 def classify(config):
     if not isinstance(config, dict) or not config:
         return ('unknown', 'no config')
+    # 0. LLM-populated multi_tab_excel_workbook (added 2026-05-30) — top priority
+    mw = config.get('multi_tab_excel_workbook')
+    if isinstance(mw, dict) and isinstance(mw.get('sheets'), list) and mw['sheets']:
+        ea_count = len(config.get('expected_answers') or {})
+        return ('populated', f"{len(mw['sheets'])} sheets, {ea_count} scored cells")
     # B. legacy starter_grid + tasks
     sg = config.get('starter_grid') or {}
     if isinstance(sg, dict) and isinstance(sg.get('columns'), list) and sg['columns']:

@@ -1,0 +1,739 @@
+{
+  "sim_id": "8ceaee34-39aa-4b81-9167-fa4e2bfabe0f",
+  "title": "Build a Multi-Stock INR Sensitivity Model",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Sensitivity_Model",
+        "cells": {
+          "A1": {
+            "value": "Company Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Forex Revenue %",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Forex Cost %",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Net Forex Exp %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Net Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Op Leverage",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Current Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Current EPS",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "INR -10% EPS Chg",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "INR -5% EPS Chg",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "INR 0% (Base)",
+            "readOnly": true,
+            "bold": true
+          },
+          "L1": {
+            "value": "INR +5% EPS Chg",
+            "readOnly": true,
+            "bold": true
+          },
+          "M1": {
+            "value": "INR +10% EPS Chg",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 96,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 4,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": 19,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 5,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 76,
+            "readOnly": true
+          },
+          "I2": {
+            "value": "",
+            "readOnly": false
+          },
+          "J2": {
+            "value": "",
+            "readOnly": false
+          },
+          "K2": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L2": {
+            "value": "",
+            "readOnly": false
+          },
+          "M2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 88,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 5,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": 19.5,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 5,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 3450,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 180,
+            "readOnly": true
+          },
+          "I3": {
+            "value": "",
+            "readOnly": false
+          },
+          "J3": {
+            "value": "",
+            "readOnly": false
+          },
+          "K3": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L3": {
+            "value": "",
+            "readOnly": false
+          },
+          "M3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 85,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 8,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": 16,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 5,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 490,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 30,
+            "readOnly": true
+          },
+          "I4": {
+            "value": "",
+            "readOnly": false
+          },
+          "J4": {
+            "value": "",
+            "readOnly": false
+          },
+          "K4": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L4": {
+            "value": "",
+            "readOnly": false
+          },
+          "M4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Sun Pharma",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 55,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 20,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": 23,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 4,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 1620,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 62,
+            "readOnly": true
+          },
+          "I5": {
+            "value": "",
+            "readOnly": false
+          },
+          "J5": {
+            "value": "",
+            "readOnly": false
+          },
+          "K5": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L5": {
+            "value": "",
+            "readOnly": false
+          },
+          "M5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Reliance",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 30,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 70,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": 8,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 3.5,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 2900,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 120,
+            "readOnly": true
+          },
+          "I6": {
+            "value": "",
+            "readOnly": false
+          },
+          "J6": {
+            "value": "",
+            "readOnly": false
+          },
+          "K6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L6": {
+            "value": "",
+            "readOnly": false
+          },
+          "M6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Maruti Suzuki",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 5,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 22,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": 5,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 5,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 11500,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 550,
+            "readOnly": true
+          },
+          "I7": {
+            "value": "",
+            "readOnly": false
+          },
+          "J7": {
+            "value": "",
+            "readOnly": false
+          },
+          "K7": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L7": {
+            "value": "",
+            "readOnly": false
+          },
+          "M7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 5,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 35,
+            "readOnly": true
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": 11,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 4.5,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 2900,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 60,
+            "readOnly": true
+          },
+          "I8": {
+            "value": "",
+            "readOnly": false
+          },
+          "J8": {
+            "value": "",
+            "readOnly": false
+          },
+          "K8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L8": {
+            "value": "",
+            "readOnly": false
+          },
+          "M8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "IndiGo",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 45,
+            "readOnly": true
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": 5,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 6,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 150,
+            "readOnly": true
+          },
+          "I9": {
+            "value": "",
+            "readOnly": false
+          },
+          "J9": {
+            "value": "",
+            "readOnly": false
+          },
+          "K9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "L9": {
+            "value": "",
+            "readOnly": false
+          },
+          "M9": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Pair_Trade_Analysis",
+        "cells": {
+          "A1": {
+            "value": "Long Stock",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Short Stock",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Long Exp %",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Short Exp %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Spread @ -5% INR",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Conviction",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "IndiGo",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 92,
+            "readOnly": true
+          },
+          "D2": {
+            "value": -45,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "F2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 83,
+            "readOnly": true
+          },
+          "D3": {
+            "value": -30,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Maruti Suzuki",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 77,
+            "readOnly": true
+          },
+          "D4": {
+            "value": -17,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Tactical_Note",
+        "cells": {
+          "A1": {
+            "value": "INR Sensitivity Tactical Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Your analysis and recommendation (200 words):",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Key metrics to include:",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "- Highest conviction pair trade",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "- Expected return @ -5% INR depreciation",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "- Risk/reward ratio and entry/exit levels",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "- Rationale for Long vs Short positioning",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Sensitivity_Model!D2": {
+      "formula_pattern": "=B2-C2",
+      "expected_value": 92,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D3": {
+      "formula_pattern": "=B3-C3",
+      "expected_value": 83,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D4": {
+      "formula_pattern": "=B4-C4",
+      "expected_value": 77,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D5": {
+      "formula_pattern": "=B5-C5",
+      "expected_value": 35,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D6": {
+      "formula_pattern": "=B6-C6",
+      "expected_value": -40,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D7": {
+      "formula_pattern": "=B7-C7",
+      "expected_value": -17,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D8": {
+      "formula_pattern": "=B8-C8",
+      "expected_value": -30,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!D9": {
+      "formula_pattern": "=B9-C9",
+      "expected_value": -45,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Sensitivity_Model!I2": {
+      "formula_pattern": "=0.10*D2*F2/100",
+      "expected_value": 4.6,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Sensitivity_Model!J2": {
+      "formula_pattern": "=0.05*D2*F2/100",
+      "expected_value": 2.3,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Sensitivity_Model!L2": {
+      "formula_pattern": "=-0.05*D2*F2/100",
+      "expected_value": -2.3,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Sensitivity_Model!M2": {
+      "formula_pattern": "=-0.10*D2*F2/100",
+      "expected_value": -4.6,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Pair_Trade_Analysis!E2": {
+      "formula_pattern": "=(C2*5/100*F2)-(D2*5/100*F2)",
+      "expected_value": 22.6,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Tactical_Note!A3": {
+      "formula_pattern": "text_entry",
+      "expected_value": "Infosys-IndiGo pair offers 22.6% expected return at -5% INR depreciation. Infosys: 92% net forex exposure benefits from rupee weakness via operating leverage (5x). IndiGo: -45% exposure (fuel costs, FX hedging losses) suffers. A long 1 Infosys / short 1 IndiGo position targets 2250bps spread on 5% INR move. Entry: current levels (Infosys 1450, IndiGo 4200). Stop: +3% INR move. Target: -7% INR move (18-month horizon). TCS-Asian Paints (16.1% spread) offers diversification into manufacturing. Risk: RBI tightening reduces depreciation odds; use 30% position size initially.",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    }
+  }
+}

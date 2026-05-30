@@ -1,0 +1,893 @@
+{
+  "sim_id": "d5950e31-0ef7-45c6-a8cc-ac19ce7fc97a",
+  "title": "The Terminal Value Workbook — Asian Paints DCF Concludes",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Inputs",
+        "cells": {
+          "A1": {
+            "value": "Input",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Source / Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0.1165,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "From Session 4 WACC Workbook",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Marginal Tax Rate",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.2517,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Standard Indian corporate",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Year 7 (FY33) FCFF",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "From Session 6 Forecast Workbook (₹ cr)",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Year 7 (FY33) EBITDA",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 14850,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "From Session 6 Forecast Workbook (₹ cr)",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Year 7 (FY33) Revenue",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 66000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "From Session 6 Forecast Workbook (₹ cr)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Terminal Growth Rate (base)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0.05,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "Mid-range: 4% inflation floor, 10% GDP ceiling",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Terminal Exit Multiple (base)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 20,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Anchored on Sherwin-Williams (~20x) and AkzoNobel (18-22x)",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Explicit Period FCFF FY27",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "C12": {
+            "value": "Year 1",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Explicit Period FCFF FY28",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 5100,
+            "readOnly": true
+          },
+          "C13": {
+            "value": "Year 2",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Explicit Period FCFF FY29",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 5800,
+            "readOnly": true
+          },
+          "C14": {
+            "value": "Year 3",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Explicit Period FCFF FY30",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 6800,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Year 4",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Explicit Period FCFF FY31",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 7600,
+            "readOnly": true
+          },
+          "C16": {
+            "value": "Year 5",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Explicit Period FCFF FY32",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 8400,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "Year 6",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Explicit Period FCFF FY33",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "Year 7",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Gordon_Growth",
+        "cells": {
+          "A1": {
+            "value": "Step",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Calculation",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Year 7 FCFF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=Inputs!B5",
+            "readOnly": false
+          },
+          "C2": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Base cash flow",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Terminal Growth Rate (g)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=Inputs!B9",
+            "readOnly": false
+          },
+          "C3": {
+            "value": 0.05,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "5% perpetual growth",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Year 8 FCFF",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=C2*(1+C3)",
+            "readOnly": false
+          },
+          "C4": {
+            "value": 9660,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Year 7 FCFF × (1+g)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Inputs!B2",
+            "readOnly": false
+          },
+          "C5": {
+            "value": 0.1165,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Discount rate",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "WACC - g",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=C5-C3",
+            "readOnly": false
+          },
+          "C6": {
+            "value": 0.0665,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Gordon Growth denominator",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "TV at end of Year 7",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=C4/C6",
+            "readOnly": false
+          },
+          "C7": {
+            "value": 145263,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "Year 8 FCFF / (WACC - g)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Discount Factor",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=(1+C5)^7",
+            "readOnly": false
+          },
+          "C9": {
+            "value": 2.15,
+            "readOnly": true
+          },
+          "D9": {
+            "value": "(1 + WACC)^7",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "PV of TV",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "=C7/C9",
+            "readOnly": false
+          },
+          "C10": {
+            "value": 67536,
+            "readOnly": true
+          },
+          "D10": {
+            "value": "TV / Discount Factor",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Year 7 EBITDA",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "=Inputs!B6",
+            "readOnly": false
+          },
+          "C12": {
+            "value": 14850,
+            "readOnly": true
+          },
+          "D12": {
+            "value": "Reference for exit multiple",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Implied Exit Multiple",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "=C7/C12",
+            "readOnly": false
+          },
+          "C13": {
+            "value": 9.78,
+            "readOnly": true
+          },
+          "D13": {
+            "value": "TV / Year 7 EBITDA",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Diagnostic Flag",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "Below peer range",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "Below peer range",
+            "readOnly": true
+          },
+          "D14": {
+            "value": "vs. 18-22x peers",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Exit_Multiple",
+        "cells": {
+          "A1": {
+            "value": "Step",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Calculation",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Note",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Year 7 EBITDA",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=Inputs!B6",
+            "readOnly": false
+          },
+          "C2": {
+            "value": 14850,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Forecast from Session 6",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Terminal Exit Multiple",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=Inputs!B10",
+            "readOnly": false
+          },
+          "C3": {
+            "value": 20,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "Peer-anchored benchmark",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TV at end of Year 7",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=C2*C3",
+            "readOnly": false
+          },
+          "C4": {
+            "value": 297000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Year 7 EBITDA × Exit Multiple",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=Inputs!B2",
+            "readOnly": false
+          },
+          "C6": {
+            "value": 0.1165,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Discount rate",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Discount Factor",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=(1+C6)^7",
+            "readOnly": false
+          },
+          "C7": {
+            "value": 2.15,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "(1 + WACC)^7",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "PV of TV",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "=C4/C7",
+            "readOnly": false
+          },
+          "C8": {
+            "value": 138140,
+            "readOnly": true
+          },
+          "D8": {
+            "value": "TV / Discount Factor",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Sensitivity",
+        "cells": {
+          "A1": {
+            "value": "Total EV (₹ cr) — Gordon Growth Method",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "g / WACC",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "4.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "4.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "D2": {
+            "value": "5.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "E2": {
+            "value": "5.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "F2": {
+            "value": "6.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "11.65%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 102500,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 109800,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 97800,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 88200,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 80500,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total EV (₹ cr) — Exit Multiple Method (20x base)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Exit Multiple / WACC",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "16.0x",
+            "readOnly": true,
+            "bold": true
+          },
+          "C6": {
+            "value": "18.0x",
+            "readOnly": true,
+            "bold": true
+          },
+          "D6": {
+            "value": "20.0x",
+            "readOnly": true,
+            "bold": true
+          },
+          "E6": {
+            "value": "22.0x",
+            "readOnly": true,
+            "bold": true
+          },
+          "F6": {
+            "value": "24.0x",
+            "readOnly": true,
+            "bold": true
+          },
+          "A7": {
+            "value": "11.65%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": 110100,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 123600,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 168400,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 185700,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 202900,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "DCF_Summary",
+        "cells": {
+          "A1": {
+            "value": "DCF SUMMARY: ASIAN PAINTS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "METHOD 1: GORDON GROWTH",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "PV of Explicit Period FCFF (FY27-FY33)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 31800,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "PV of Terminal Value (Gordon Growth)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=Gordon_Growth!C10",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Enterprise Value",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=B4+B5",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "TV as % of EV",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=B5/B6",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "METHOD 2: EXIT MULTIPLE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "PV of Explicit Period FCFF (FY27-FY33)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 31800,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "PV of Terminal Value (20x EBITDA)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=Exit_Multiple!C8",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Enterprise Value",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "=B10+B11",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "TV as % of EV",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "=B11/B12",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "FAIR VALUE CONCLUSION",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Gordon Growth EV (Conservative)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "₹97,800 cr",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Exit Multiple EV (Optimistic)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": "₹168,400 cr",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Defensible Fair Value Range",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "₹120,000 - ₹145,000 cr",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "COMMENTARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A21": {
+            "value": "The 5% terminal growth rate balances Asian Paints' premium category positioning against macroeconomic reality: above India's 4% inflation floor but well below a 10% GDP growth ceiling that would be unsustainable for a mature ₹66,000 cr business. The 20x exit multiple reflects peer benchmarks from Sherwin-Williams (traded at 20-21x EBITDA) and AkzoNobel (18-22x), providing external discipline to terminal-year valuation. However, the two methods diverge markedly because Gordon Growth mathematically implies a 9.78x exit multiple—well below the 18-22x peer range—signalling that either perpetuity growth of 5% is conservative for Asian Paints' structural advantages (brand, pricing power in decorative paints) or WACC of 11.65% embeds too much equity-risk premium. TV contribution of 67-82% across methods underscores the model's inevitable sensitivity to terminal assumptions; small changes in g or exit multiple swing fair value by ±₹30-40 cr. A defensible published range of ₹120,000–₹145,000 cr acknowledges both the upside from multiple expansion as Asian Paints matures internationally and the downside from mean reversion in operating margins under competitive pressure.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Gordon_Growth!B2": {
+      "formula_pattern": "=Inputs!B5",
+      "expected_value": 9200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Gordon_Growth!B3": {
+      "formula_pattern": "=Inputs!B9",
+      "expected_value": 0.05,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Gordon_Growth!B4": {
+      "formula_pattern": "=C2*(1+C3)",
+      "expected_value": 9660,
+      "type": "number",
+      "tolerance": 1,
+      "points": 3
+    },
+    "Gordon_Growth!B5": {
+      "formula_pattern": "=Inputs!B2",
+      "expected_value": 0.1165,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 2
+    },
+    "Gordon_Growth!B6": {
+      "formula_pattern": "=C5-C3",
+      "expected_value": 0.0665,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 3
+    },
+    "Gordon_Growth!B7": {
+      "formula_pattern": "=C4/C6",
+      "expected_value": 145263,
+      "type": "number",
+      "tolerance": 100,
+      "points": 5
+    },
+    "Gordon_Growth!B9": {
+      "formula_pattern": "=(1+C5)^7",
+      "expected_value": 2.15,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 4
+    },
+    "Gordon_Growth!B10": {
+      "formula_pattern": "=C7/C9",
+      "expected_value": 67536,
+      "type": "number",
+      "tolerance": 100,
+      "points": 5
+    },
+    "Gordon_Growth!B13": {
+      "formula_pattern": "=C7/C12",
+      "expected_value": 9.78,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 5
+    },
+    "Exit_Multiple!B2": {
+      "formula_pattern": "=Inputs!B6",
+      "expected_value": 14850,
+      "type": "number",
+      "tolerance": 1,
+      "points": 2
+    },
+    "Exit_Multiple!B3": {
+      "formula_pattern": "=Inputs!B10",
+      "expected_value": 20,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 2
+    },
+    "Exit_Multiple!B4": {
+      "formula_pattern": "=C2*C3",
+      "expected_value": 297000,
+      "type": "number",
+      "tolerance": 100,
+      "points": 4
+    },
+    "Exit_Multiple!B7": {
+      "formula_pattern": "=(1+C6)^7",
+      "expected_value": 2.15,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 3
+    },
+    "Exit_Multiple!B8": {
+      "formula_pattern": "=C4/C7",
+      "expected_value": 138140,
+      "type": "number",
+      "tolerance": 100,
+      "points": 5
+    },
+    "DCF_Summary!B6": {
+      "formula_pattern": "=B4+B5",
+      "expected_value": 99336,
+      "type": "number",
+      "tolerance": 100,
+      "points": 6
+    },
+    "DCF_Summary!B7": {
+      "formula_pattern": "=B5/B6",
+      "expected_value": 0.68,
+      "type": "number",
+      "tolerance": 0.02,
+      "points": 4
+    },
+    "DCF_Summary!B12": {
+      "formula_pattern": "=B10+B11",
+      "expected_value": 169940,
+      "type": "number",
+      "tolerance": 100,
+      "points": 6
+    },
+    "DCF_Summary!B13": {
+      "formula_pattern": "=B11/B12",
+      "expected_value": 0.81,
+      "type": "number",
+      "tolerance": 0.02,
+      "points": 4
+    }
+  }
+}
