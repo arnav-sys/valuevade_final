@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import useTimeTracking from '../utils/useTimeTracking';
+import useSessionTimer, { getMeasuredMinutes } from '../utils/useSessionTimer';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, Lightbulb, AlertTriangle, Sparkles,
   Zap, TrendingUp, Target, FileText, Loader2, AlertCircle, RefreshCw, X,
@@ -1515,6 +1516,9 @@ export default function NotesPage() {
 
   // Track active reading time on this page → user_stats.total_time_minutes
   useTimeTracking(user?.id);
+  // Batch 2 (Item 1): hidden wall-clock timer for the 'notes' phase. Pauses
+  // on tab-hidden / window-blur / 2-min-idle. Read at completion time.
+  useSessionTimer(sessionId, 'notes');
 
   useEffect(() => {
     let mounted = true;
@@ -1580,8 +1584,14 @@ export default function NotesPage() {
     }
     setCompleting(true);
     const timeSpent = Math.round((Date.now() - startedAt) / 1000);
+    // Batch 2 (Item 1): measured active minutes from the hidden wall-clock
+    // timer. Prefer the timer's reading (pauses on idle / tab-hidden);
+    // fall back to wall-clock if the timer was somehow disabled.
+    const measuredMin = getMeasuredMinutes(session.id, 'notes', {
+      fallbackMinutes: Math.max(1, Math.round(timeSpent / 60)),
+    });
     try {
-      await markPhaseComplete(session.id, 'notes');
+      await markPhaseComplete(session.id, 'notes', null, { actualMinutes: measuredMin });
       try {
         await triggerBadgeEvaluation({
           source_event: 'notes_complete',
@@ -1589,7 +1599,7 @@ export default function NotesPage() {
         });
       } catch { /* fire-and-forget */ }
       try {
-        await updateDailyChallengesForPhase(user.id, 'notes', { minutes: Math.max(1, Math.round(timeSpent / 60)) });
+        await updateDailyChallengesForPhase(user.id, 'notes', { minutes: Math.max(1, measuredMin) });
       } catch { /* fire-and-forget */ }
     } catch (e) {
       // still navigate
@@ -1597,7 +1607,7 @@ export default function NotesPage() {
     navigate(`/session/${sessionId}/notes/complete`, {
       state: { cardsReviewed: total, timeSpentSeconds: timeSpent },
     });
-  }, [completing, session, startedAt, navigate, sessionId, total]);
+  }, [completing, session, startedAt, navigate, sessionId, total, user]);
 
   // Keyboard navigation
   useEffect(() => {

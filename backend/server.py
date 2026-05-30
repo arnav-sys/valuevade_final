@@ -1132,6 +1132,57 @@ Headlines:
 """
 
 
+# Batch 2 (Item 3) — Markdown digest prompt. Produces a single ~250-300 word
+# markdown summary across global + country-specific finance news, in fun
+# easy-to-understand language with the 4 H2 sections specified by the user.
+NEWS_DIGEST_PROMPT = """You are a finance news summarizer for a finance-student app in {country_name}. Today's news from multiple sources is below as a JSON array of {{title, summary, source, url, region}} items.
+
+Produce a markdown digest with EXACTLY these H2 sections, in this order:
+## Global Markets
+2-3 short bullets. What moved and why, plain language.
+## {country_name} Highlights
+2-3 country-specific stories, plain language. If no country-specific news exists, write one bullet saying so.
+## Quick Takes
+4-6 one-liners covering everything else important.
+## Why This Matters
+1-2 sentences linking today's news to what a finance student should learn or watch next.
+
+Style rules:
+- Punchy, slightly playful, no jargon without a 3-word explainer in parentheses.
+- Use the local currency symbol where appropriate ({currency_hint}).
+- Cap the whole digest at 300 words.
+- NO code fences, NO preamble, just the markdown starting with the first ## heading.
+
+Headlines (JSON):
+{headlines_json}
+"""
+
+
+# ISO-2 → (Country name, currency hint)
+COUNTRY_META = {
+    "IN": ("India", "₹ for INR"),
+    "US": ("United States", "$ for USD"),
+    "GB": ("United Kingdom", "£ for GBP"),
+    "AE": ("United Arab Emirates", "AED"),
+    "SG": ("Singapore", "S$ for SGD"),
+    "AU": ("Australia", "A$ for AUD"),
+    "CA": ("Canada", "C$ for CAD"),
+    "DE": ("Germany", "€ for EUR"),
+    "FR": ("France", "€ for EUR"),
+    "JP": ("Japan", "¥ for JPY"),
+    "HK": ("Hong Kong", "HK$ for HKD"),
+    "CN": ("China", "¥ for CNY"),
+    "BR": ("Brazil", "R$ for BRL"),
+    "ZA": ("South Africa", "R for ZAR"),
+    "SA": ("Saudi Arabia", "SAR"),
+    "NL": ("Netherlands", "€ for EUR"),
+    "CH": ("Switzerland", "CHF"),
+    "SE": ("Sweden", "SEK"),
+    "ES": ("Spain", "€ for EUR"),
+    "IT": ("Italy", "€ for EUR"),
+}
+
+
 def _fetch_news_raw(country_code: str):
     """Best-effort fetch from a chain of free news APIs. Returns (items, source_label).
     All upstream calls send a real User-Agent — Marketaux's Cloudflare WAF
@@ -1245,44 +1296,140 @@ async def _summarize_news(items, country_code):
     ]
 
 
+async def _generate_news_digest_md(items, country_code):
+    """Batch 2 (Item 3) — Produce a single markdown digest with 4 H2 sections.
+    Combines global + country-specific items into ONE summary, capped ~500 tokens.
+    Returns (summary_md, tokens_used). Returns ("", 0) on failure so the caller
+    can decide whether to cache or retry."""
+    if not items:
+        return ("", 0)
+    country_name, currency_hint = COUNTRY_META.get(
+        (country_code or "IN").upper(), ("your country", "the local currency")
+    )
+    if not EMERGENT_LLM_KEY:
+        # Stub digest so the FE still has something to render.
+        bullets = "\n".join([f"- **{it.get('title','')}** — {(it.get('snippet') or '')[:120]}" for it in items[:6]])
+        return (f"## Global Markets\n{bullets}\n## {country_name} Highlights\n- (Set EMERGENT_LLM_KEY to enable AI summaries.)\n## Quick Takes\n- Highlights above.\n## Why This Matters\nKeeping up with daily finance news sharpens your market intuition.", 0)
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"news-digest-{country_code}-{datetime.now(timezone.utc).date().isoformat()}",
+            system_message=NEWS_DIGEST_PROMPT.format(
+                country_name=country_name,
+                currency_hint=currency_hint,
+                headlines_json=_json.dumps(items, ensure_ascii=False)[:8000],
+            ),
+        ).with_model("anthropic", "claude-haiku-4-5-20251001")
+        resp = await chat.send_message(UserMessage(
+            text="Generate the markdown digest now. Start directly with the first ## heading."
+        ))
+        text = (resp or "").strip()
+        # Strip any accidental fence the model wraps around the markdown.
+        if text.startswith("```"):
+            text = _re.sub(r"^```(?:markdown|md)?\s*", "", text)
+            text = _re.sub(r"\s*```\s*$", "", text)
+        if text and "##" in text:
+            # Rough token estimate (~4 chars/token); the actual usage is logged on the LLM side.
+            return (text.strip(), max(1, len(text) // 4))
+    except Exception as e:
+        logger.warning(f"[news] digest LLM failed: {e}")
+    return ("", 0)
+
+
 @api_router.get("/news/today")
 async def news_today(supa_user: dict = Depends(get_supabase_user)):
-    """Return today's curated finance headlines for the user's country."""
+    """Batch 2 (Item 3) — Per-user cached daily markdown digest combining
+    country + global finance news. Cache key: (user_id, today_ist)."""
     user_id = supa_user.get("id")
     prof = _supabase_get(
         f"profiles?id=eq.{_urlparse.quote(user_id)}&select=country_code&limit=1"
     ) or []
     country = ((prof or [{}])[0].get("country_code") or "IN").upper()
     today_ist = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
+
+    # 1) Cache hit?
     cache_rows = _supabase_get(
-        f"daily_news_cache?country_code=eq.{country}&date_ist=eq.{today_ist}"
-        f"&select=items,source,fetched_at&limit=1"
+        f"user_daily_news_summary?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&news_date_ist=eq.{today_ist}"
+        f"&select=summary_md,country_code,raw_item_count,generated_at&limit=1"
     ) or []
-    if cache_rows and cache_rows[0].get("items"):
+    if cache_rows and cache_rows[0].get("summary_md"):
         reads = _supabase_get(
             f"user_news_reads?user_id=eq.{_urlparse.quote(user_id)}"
             f"&news_date_ist=eq.{today_ist}&select=read_at,xp_awarded&limit=1"
         ) or []
         return {
-            "country_code": country, "date_ist": today_ist,
-            "items": cache_rows[0]["items"], "source": cache_rows[0].get("source"),
-            "from_cache": True, "already_read_today": bool(reads),
+            "country_code": cache_rows[0].get("country_code") or country,
+            "date_ist": today_ist,
+            "summary_md": cache_rows[0]["summary_md"],
+            "raw_item_count": cache_rows[0].get("raw_item_count") or 0,
+            "from_cache": True,
+            "already_read_today": bool(reads),
         }
-    raw_items, source_label = _fetch_news_raw(country)
-    summarised = await _summarize_news(raw_items, country)
+
+    # 2) Cache miss — fetch country news + global news.
+    country_items, source_label_country = _fetch_news_raw(country)
+    global_items, source_label_global = _fetch_news_raw("us")  # US = de-facto global finance proxy
+    # Tag region for the LLM.
+    for it in country_items:
+        it["region"] = country
+    for it in global_items:
+        it["region"] = "global"
+    # Combine and dedupe by URL.
+    by_url: dict[str, dict] = {}
+    for it in (country_items + global_items):
+        url = (it.get("url") or "").strip()
+        if url and url not in by_url:
+            by_url[url] = it
+    combined = list(by_url.values())[:14]  # 14 items keeps the prompt compact.
+
+    # 3) Soft failure when nothing came back.
+    if not combined:
+        return {
+            "country_code": country,
+            "date_ist": today_ist,
+            "summary_md": "No fresh news right now. Check back later.",
+            "raw_item_count": 0,
+            "from_cache": False,
+            "already_read_today": False,
+        }
+
+    # 4) LLM digest.
+    summary_md, tokens_used = await _generate_news_digest_md(combined, country)
+    if not summary_md:
+        # Don't cache failures — retry next call.
+        return {
+            "country_code": country,
+            "date_ist": today_ist,
+            "summary_md": "No fresh news right now. Check back later.",
+            "raw_item_count": len(combined),
+            "from_cache": False,
+            "already_read_today": False,
+        }
+
+    # 5) Persist.
     try:
         _supabase_post(
-            "daily_news_cache",
-            {"country_code": country, "date_ist": today_ist,
-             "items": summarised, "source": source_label},
+            "user_daily_news_summary",
+            {
+                "user_id": user_id,
+                "news_date_ist": today_ist,
+                "country_code": country,
+                "summary_md": summary_md,
+                "raw_item_count": len(combined),
+                "tokens_used": tokens_used,
+            },
             prefer="resolution=ignore-duplicates",
         )
     except Exception as e:
-        logger.warning(f"[news] cache write failed: {e}")
+        logger.warning(f"[news] digest cache write failed: {e}")
     return {
-        "country_code": country, "date_ist": today_ist,
-        "items": summarised, "source": source_label,
-        "from_cache": False, "already_read_today": False,
+        "country_code": country,
+        "date_ist": today_ist,
+        "summary_md": summary_md,
+        "raw_item_count": len(combined),
+        "from_cache": False,
+        "already_read_today": False,
     }
 
 
@@ -1295,11 +1442,20 @@ async def news_mark_read(supa_user: dict = Depends(get_supabase_user)):
     total_reads = rpc.get("total_reads", 0)
     if xp_awarded_now:
         try:
+            # Batch 2 (Item 4): correct award_xp signature.
+            # DB function:  award_xp(p_user_id, p_amount, p_reason, p_source_id, p_meta)
             _supabase_post(
                 "rpc/award_xp",
-                {"p_user_id": user_id, "p_event_type": "news_read", "p_amount": 30,
-                 "p_event_source_id": None, "p_event_source_label": rpc.get("today_ist"),
-                 "p_metadata": {"reads_total": total_reads}},
+                {
+                    "p_user_id": user_id,
+                    "p_amount": 30,
+                    "p_reason": "news_read",
+                    "p_source_id": None,
+                    "p_meta": {
+                        "reads_total": total_reads,
+                        "today_ist": rpc.get("today_ist"),
+                    },
+                },
             )
         except Exception as e:
             logger.warning(f"[news] award_xp failed: {e}")

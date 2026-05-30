@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useParams, useLocation } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import useSessionTimer from '../utils/useSessionTimer';
 
 /**
  * Guards individual phase routes inside a session.
@@ -32,6 +33,11 @@ export default function SessionPhaseGuard({ phase, children }) {
   const { sessionId } = useParams();
   const location = useLocation();
   const [state, setState] = useState({ checking: true, redirectTo: null });
+
+  // Batch 2 (Item 1): mount the hidden wall-clock timer for this phase.
+  // It accumulates real active time into sessionStorage so the
+  // SessionCompletePage can read the true minutes spent.
+  useSessionTimer(sessionId, phase);
 
   useEffect(() => {
     let mounted = true;

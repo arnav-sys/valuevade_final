@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete, getNextPhaseRoute, updateDailyChallengesForPhase } from '../utils/progress';
+import { getMeasuredMinutes } from '../utils/useSessionTimer';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import { aggregateScores } from '../utils/interviewEval';
 import AvatarPersona from './tutor/AvatarPersona';
@@ -100,10 +101,12 @@ export default function InterviewCompletePage() {
     async function save() {
       if (saved || !user?.id || !sessionId || !results.length) return;
       try {
+        // Batch 2 (Item 1): real interview minutes from the timer hook.
+        const measuredIntMin = getMeasuredMinutes(sessionId, 'interview', { fallbackMinutes: 5 });
         // user_sessions has interview_score column only — persist overall as integer (1-5)
         const res = await markPhaseComplete(sessionId, 'interview', {
           interview_score: Math.round(scores.overall),
-        });
+        }, { actualMinutes: measuredIntMin });
         if (!res?.success) {
           console.error('[interview] markPhaseComplete failed:', res?.error);
         } else if (mounted && res.data) {
@@ -116,7 +119,7 @@ export default function InterviewCompletePage() {
             });
           } catch { /* fire-and-forget */ }
           try {
-            await updateDailyChallengesForPhase(user.id, 'interview', { minutes: 5 });
+            await updateDailyChallengesForPhase(user.id, 'interview', { minutes: Math.max(1, measuredIntMin) });
           } catch { /* fire-and-forget */ }
         }
       } catch (err) {

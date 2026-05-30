@@ -1,11 +1,69 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Newspaper, X, ExternalLink, Sparkles } from 'lucide-react';
+import { Newspaper, X } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import AvatarPersona from './AvatarPersona';
 import { TUTOR_NAME } from '../../contexts/TutorContext';
 
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 const LS_KEY_PREFIX = 'vv_news_seen_';
+
+/**
+ * Batch 2 (Item 3) — Render the LLM markdown digest. Lightweight inline
+ * markdown parser (H2 + bullets + bold + paragraphs) — no new npm deps.
+ */
+function NewsMarkdown({ md }) {
+  if (!md) return null;
+  const lines = md.split('\n');
+  const blocks = [];
+  let bullets = [];
+  const flushBullets = (k) => {
+    if (bullets.length === 0) return;
+    blocks.push(
+      <ul key={`ul${k}`} className="list-disc pl-5 space-y-1.5 text-base text-[var(--color-text)] font-bricolage">
+        {bullets.map((b, i) => (
+          <li key={i} className="leading-relaxed" dangerouslySetInnerHTML={{ __html: inlineBold(b) }} />
+        ))}
+      </ul>
+    );
+    bullets = [];
+  };
+  lines.forEach((rawLine, idx) => {
+    const line = rawLine.trimEnd();
+    if (/^##\s+/.test(line)) {
+      flushBullets(idx);
+      blocks.push(
+        <h2
+          key={`h${idx}`}
+          className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] mt-5 mb-2 flex items-center gap-2"
+        >
+          <span className="inline-block w-1 h-5 rounded-full bg-[var(--color-primary)]" />
+          {line.replace(/^##\s+/, '')}
+        </h2>
+      );
+    } else if (/^-\s+/.test(line) || /^\*\s+/.test(line)) {
+      bullets.push(line.replace(/^[-*]\s+/, ''));
+    } else if (line.trim() === '') {
+      flushBullets(idx);
+    } else {
+      flushBullets(idx);
+      blocks.push(
+        <p
+          key={`p${idx}`}
+          className="text-base text-[var(--color-text)] font-bricolage leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: inlineBold(line) }}
+        />
+      );
+    }
+  });
+  flushBullets('end');
+  return <div className="space-y-1">{blocks}</div>;
+}
+
+function inlineBold(s) {
+  // Escape <, then convert **bold** to <strong>.
+  const esc = String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return esc.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
 
 /**
  * Phase 54 — P7b
@@ -19,10 +77,10 @@ const LS_KEY_PREFIX = 'vv_news_seen_';
  *                  RPC payload incl. xp_amount). Caller can refresh XP bar.
  */
 export default function DailyNewsModal({ open = false, onClose = () => {}, onMarkRead = () => {} }) {
-  const [items, setItems] = useState([]);
+  const [summaryMd, setSummaryMd] = useState('');
   const [date, setDate] = useState(null);
   const [country, setCountry] = useState(null);
-  const [source, setSource] = useState(null);
+  const [rawItemCount, setRawItemCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [alreadyRead, setAlreadyRead] = useState(false);
   const [marking, setMarking] = useState(false);
@@ -42,10 +100,10 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
       if (!res.ok) {
         setError(json?.detail || 'Could not load news.');
       } else {
-        setItems(json.items || []);
+        setSummaryMd(json.summary_md || '');
         setDate(json.date_ist);
         setCountry(json.country_code);
-        setSource(json.source);
+        setRawItemCount(json.raw_item_count || 0);
         setAlreadyRead(!!json.already_read_today);
       }
     } catch (e) {
@@ -169,40 +227,10 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
           </div>
         ) : (
           <div className="space-y-3" data-testid="daily-news-items">
-            {items.map((it, idx) => (
-              <article
-                key={`${it.url || idx}-${idx}`}
-                className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card-hover)]/30 backdrop-blur p-4"
-                data-testid={`daily-news-item-${idx}`}
-              >
-                <div className="flex items-start gap-2 mb-1.5">
-                  <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mt-1">
-                    {it.source || 'Source'}
-                  </span>
-                </div>
-                <h2 className="font-clash text-base sm:text-lg font-bold text-[var(--color-text)] leading-snug mb-1">
-                  {it.url ? (
-                    <a href={it.url} target="_blank" rel="noopener noreferrer" className="hover:text-[var(--color-primary)] inline-flex items-center gap-1">
-                      {it.title} <ExternalLink size={11} className="opacity-60" />
-                    </a>
-                  ) : it.title}
-                </h2>
-                {it.summary && (
-                  <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-2 whitespace-pre-line">
-                    {it.summary}
-                  </p>
-                )}
-                {it.why_matters && (
-                  <div className="inline-flex items-start gap-1.5 text-sm sm:text-base text-[var(--color-primary)] font-bricolage italic font-medium">
-                    <Sparkles size={13} className="mt-1 shrink-0" />
-                    <span>{it.why_matters}</span>
-                  </div>
-                )}
-              </article>
-            ))}
-            {source === 'fallback' && (
+            <NewsMarkdown md={summaryMd} />
+            {rawItemCount > 0 && (
               <div className="text-[11px] text-[var(--color-text-muted)] font-mono uppercase tracking-wider opacity-70 mt-2">
-                source: fallback (configure a news API key for real headlines)
+                summary built from {rawItemCount} headlines · {country || 'global'}
               </div>
             )}
           </div>

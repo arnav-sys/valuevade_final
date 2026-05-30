@@ -9,6 +9,7 @@ import AvatarPersona from './tutor/AvatarPersona';
 import { useDoubtsLauncher } from '../contexts/DoubtsLauncherContext';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { getNextPhaseRoute } from '../utils/progress';
+import { getMeasuredMinutes } from '../utils/useSessionTimer';
 import {
   CheckCircle2, XCircle, ArrowRight, RotateCcw, BookOpen, Sparkles,
   ChevronDown, ChevronUp, Trophy, MessageCircleQuestion,
@@ -132,11 +133,14 @@ export default function QuizCompletePage() {
     async function save() {
       if (saved || !user?.id || !sessionId || total === 0) return;
       try {
+        // Batch 2 (Item 1): read measured quiz minutes from the timer
+        // (mounted by SessionPhaseGuard when the quiz player was active).
+        const measuredQuizMin = getMeasuredMinutes(sessionId, 'quiz', { fallbackMinutes: 5 });
         const res = await markPhaseComplete(sessionId, 'quiz', {
           quiz_score: pctScore,
           quiz_correct: score,
           quiz_attempted: total,
-        });
+        }, { actualMinutes: measuredQuizMin });
         if (!res?.success) {
           console.error('[quiz] markPhaseComplete failed:', res?.error);
         } else if (mounted && res.data) {
@@ -163,7 +167,7 @@ export default function QuizCompletePage() {
               quiz_correct: score,
               quiz_attempted: total,
               quiz_score: pctScore,
-              minutes: 5,
+              minutes: Math.max(1, measuredQuizMin),
             });
             if ((res.xp_intents || []).some((x) => x.reason === 'session_complete')) {
               await updateDailyChallengesForPhase(user.id, 'session_complete', {});

@@ -82,10 +82,18 @@ const PHASE_FIELDS = {
  * @param {string} userSessionId - user_sessions.id
  * @param {'notes'|'quiz'|'interview'|'simulation'} phase
  * @param {object|null} scoreData - Optional additional fields to set (e.g. { quiz_score: 85 })
+ * @param {object} [options]
+ * @param {number} [options.actualMinutes] - Real measured wall-clock minutes
+ *   spent in this phase (from useSessionTimer). Replaces the previous
+ *   hardcoded 5/10 in xp_intents.meta.minutes so daily-challenge
+ *   "minutes_spent" reflects actual time, not planned time.
  */
-export async function markPhaseComplete(userSessionId, phase, scoreData = null) {
+export async function markPhaseComplete(userSessionId, phase, scoreData = null, options = {}) {
   const field = PHASE_FIELDS[phase];
   if (!field) return { success: false, error: `Unknown phase: ${phase}` };
+  const actualMinutes = Number.isFinite(options.actualMinutes)
+    ? Math.max(0, Math.round(options.actualMinutes))
+    : null;
 
   try {
     // 1) Read current state so we can tell a real transition from a retake.
@@ -176,7 +184,9 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
               correct,
               attempted,
               quiz_score: scoreData?.quiz_score ?? null,
-              minutes: 5,
+              // Batch 2 (Item 1): measured time replaces hardcoded 5.
+              // Floor at 1 so a zero-elapsed write still counts.
+              minutes: Math.max(1, actualMinutes ?? 5),
               ...redoMeta,
             },
           });
@@ -188,10 +198,17 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null) 
           source_id: userSessionId,
           meta: {
             simulation_score: scoreData?.simulation_score ?? null,
-            minutes: 10,
+            // Batch 2 (Item 1): measured time replaces hardcoded 10.
+            minutes: Math.max(1, actualMinutes ?? 10),
             ...redoMeta,
           },
         });
+      } else if (phase === 'notes' || phase === 'interview') {
+        // These phases don't emit a direct XP intent today (notes pays via
+        // session-complete; interview pays via overall feedback). We still
+        // need their measured time to feed daily challenges via the
+        // caller's `updateDailyChallengesForPhase` call. No xp_intent is
+        // added here.
       }
     }
     // Session-complete XP: fires when allDone, on a fresh completion OR

@@ -5,8 +5,36 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import { Skeleton } from '../components/ui/skeleton';
 import {
-  LogOut, ArrowLeft, ArrowRight, Sun, Moon, CheckCircle2, AlertCircle, RefreshCw, Sparkles, MessageSquare,
+  LogOut, ArrowLeft, ArrowRight, Sun, Moon, CheckCircle2, AlertCircle, RefreshCw, Sparkles, MessageSquare, Globe,
 } from 'lucide-react';
+
+const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
+
+// Batch 2 (Item 2) — Built-in finance market list (no external lib).
+// Keep ~20 of the most common finance markets + Other.
+const COUNTRY_OPTIONS = [
+  { code: 'IN', name: 'India' },
+  { code: 'US', name: 'United States' },
+  { code: 'GB', name: 'United Kingdom' },
+  { code: 'AE', name: 'United Arab Emirates' },
+  { code: 'SG', name: 'Singapore' },
+  { code: 'AU', name: 'Australia' },
+  { code: 'CA', name: 'Canada' },
+  { code: 'DE', name: 'Germany' },
+  { code: 'FR', name: 'France' },
+  { code: 'JP', name: 'Japan' },
+  { code: 'HK', name: 'Hong Kong' },
+  { code: 'CN', name: 'China' },
+  { code: 'BR', name: 'Brazil' },
+  { code: 'ZA', name: 'South Africa' },
+  { code: 'SA', name: 'Saudi Arabia' },
+  { code: 'NL', name: 'Netherlands' },
+  { code: 'CH', name: 'Switzerland' },
+  { code: 'SE', name: 'Sweden' },
+  { code: 'ES', name: 'Spain' },
+  { code: 'IT', name: 'Italy' },
+  { code: 'XX', name: 'Other / Prefer not to say' },
+];
 
 /* ────────────────────── Question Renderers ────────────────────── */
 
@@ -190,6 +218,39 @@ export default function CustomizePage() {
   const [freeText, setFreeText] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
 
+  // Batch 2 (Item 2) — country picker step at the start.
+  // Skipped entirely if profile.country_code is already set on first mount.
+  const [showCountryStep, setShowCountryStep] = useState(false);
+  const [countryCode, setCountryCode] = useState('');
+  const [savingCountry, setSavingCountry] = useState(false);
+  useEffect(() => {
+    if (profile && !profile.country_code) {
+      setShowCountryStep(true);
+    } else if (profile?.country_code) {
+      setCountryCode(profile.country_code);
+      setShowCountryStep(false);
+    }
+  }, [profile]);
+
+  const persistCountry = async (code) => {
+    if (!code) return false;
+    setSavingCountry(true);
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      const res = await fetch(`${BACKEND}/api/me/country`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ country_code: code }),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    } finally {
+      setSavingCountry(false);
+    }
+  };
+
   // Fetch data
   const fetchData = async () => {
     setLoading(true);
@@ -232,9 +293,11 @@ export default function CustomizePage() {
     return steps;
   }, [questions]);
 
-  // Total steps = question steps + free text step
-  const totalSteps = questionSteps.length + 1;
-  const isFreeTextStep = currentStep === questionSteps.length;
+  // Total steps = (1 country step if shown) + question steps + free text step
+  const totalSteps = (showCountryStep ? 1 : 0) + questionSteps.length + 1;
+  const isCountryStep = showCountryStep && currentStep === 0;
+  const questionStepIndex = showCountryStep ? currentStep - 1 : currentStep;
+  const isFreeTextStep = !isCountryStep && questionStepIndex === questionSteps.length;
   const isLastStep = currentStep === totalSteps - 1;
 
   // Answer management
@@ -252,7 +315,15 @@ export default function CustomizePage() {
     }));
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    if (isCountryStep) {
+      // Persist country, then advance.
+      if (!countryCode) return;
+      const ok = await persistCountry(countryCode);
+      if (!ok) return;
+      setCurrentStep((s) => Math.min(s + 1, totalSteps - 1));
+      return;
+    }
     if (isLastStep) {
       // Navigate to preview/AI step (Phase B)
       const answersArray = buildAnswersArray();
@@ -279,8 +350,9 @@ export default function CustomizePage() {
 
   // Check if current step has required answers
   const currentStepValid = useMemo(() => {
+    if (isCountryStep) return !!countryCode;
     if (isFreeTextStep) return true; // free text is optional
-    const stepQuestions = questionSteps[currentStep] || [];
+    const stepQuestions = questionSteps[questionStepIndex] || [];
     return stepQuestions.every((q) => {
       const a = answers[q.id];
       if (q.question_type === 'rating_grid') {
@@ -290,7 +362,7 @@ export default function CustomizePage() {
       if (q.question_type === 'multi_select') return Array.isArray(a) && a.length > 0;
       return a !== undefined && a !== null && a !== '';
     });
-  }, [currentStep, isFreeTextStep, questionSteps, answers]);
+  }, [isCountryStep, countryCode, questionStepIndex, isFreeTextStep, questionSteps, answers]);
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
@@ -380,10 +452,43 @@ export default function CustomizePage() {
               </div>
             </div>
 
+            {/* Country Step (Batch 2 Item 2) — Only shown on first customize. */}
+            {isCountryStep && (
+              <div className="glass-card rounded-2xl p-6 sm:p-8" data-testid="customize-country-step">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/15 to-[var(--color-accent-purple)]/15 border border-[var(--color-primary)]/20 flex items-center justify-center">
+                    <Globe size={20} className="text-[var(--color-primary)]" />
+                  </div>
+                  <h3 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)]">
+                    Where are you located?
+                  </h3>
+                </div>
+                <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5">
+                  This personalizes your news, market examples, and currency formatting. You can change it later in your profile.
+                </p>
+                <select
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] font-bricolage text-base outline-none transition-all focus:border-[var(--color-primary)] focus:shadow-[0_0_0_3px_rgba(36,107,253,0.1)]"
+                  data-testid="customize-country-select"
+                >
+                  <option value="">— Pick your country —</option>
+                  {COUNTRY_OPTIONS.map((c) => (
+                    <option key={c.code} value={c.code} data-testid={`country-opt-${c.code}`}>
+                      {c.name}
+                    </option>
+                  ))}
+                </select>
+                {savingCountry && (
+                  <p className="mt-3 text-xs text-[var(--color-text-muted)] font-mono">Saving…</p>
+                )}
+              </div>
+            )}
+
             {/* Question Steps */}
-            {!isFreeTextStep && questionSteps[currentStep] && (
-              <div className="space-y-8" data-testid={`customize-step-${currentStep}`}>
-                {questionSteps[currentStep].map((q) => (
+            {!isCountryStep && !isFreeTextStep && questionSteps[questionStepIndex] && (
+              <div className="space-y-8" data-testid={`customize-step-${questionStepIndex}`}>
+                {questionSteps[questionStepIndex].map((q) => (
                   <div key={q.id} className="glass-card rounded-2xl p-6 sm:p-8" data-testid={`question-card-${q.id}`}>
                     <h3 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] mb-1" data-testid={`question-text-${q.id}`}>
                       {q.question_text}

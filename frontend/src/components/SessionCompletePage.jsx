@@ -13,6 +13,7 @@ import { getRedoForSession, clearRedoState } from '../utils/redoState';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 import { useMilestones } from '../contexts/MilestonesContext';
 import { reportSessionCompleted } from '../utils/studyPlanner';
+import { getMeasuredMinutesTotal } from '../utils/useSessionTimer';
 import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, FileText, HelpCircle, MessageSquare,
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase, AlertTriangle, Brain,
@@ -209,17 +210,22 @@ export default function SessionCompletePage() {
     (async () => {
       try {
         // Look up planned minutes from master_sessions.
-        let minutes = 50;
+        let estimated = 50;
         if (session.master_session_id) {
           const { data: ms } = await supabase
             .from('master_sessions')
             .select('estimated_minutes')
             .eq('id', session.master_session_id)
             .maybeSingle();
-          if (ms?.estimated_minutes) minutes = ms.estimated_minutes;
+          if (ms?.estimated_minutes) estimated = ms.estimated_minutes;
         }
         if (!alive) return;
-        await reportSessionCompleted({ session_id: sessionId, minutes_spent: minutes });
+        // Batch 2 (Item 1): sum measured minutes across all 4 phase timers
+        // instead of trusting estimated_minutes. The util applies:
+        //   - Math.max(1, …) floor (no zero writes)
+        //   - silent 3× estimated cap (guards against tab-left-open scenarios)
+        const measured = getMeasuredMinutesTotal(sessionId, { estimatedMinutes: estimated });
+        await reportSessionCompleted({ session_id: sessionId, minutes_spent: measured });
       } catch {
         // Fire-and-forget: never block the session-complete UI on plan tracking.
       }

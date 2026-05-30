@@ -19,6 +19,7 @@ import DecisionMakingSim from './simulations/DecisionMakingSim';
 import InteractiveSim from './simulations/InteractiveSim';
 import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
+import { getMeasuredMinutes } from '../utils/useSessionTimer';
 import useTimeTracking from '../utils/useTimeTracking';
 // AskPariButton no longer mounted here (P55) — replaced by inline launcher button.
 // import AskPariButton from './tutor/AskPariButton';
@@ -99,10 +100,12 @@ export default function SimulationPage() {
     }
     setSaving(true);
     try {
+      // Batch 2 (Item 1): real simulation minutes from the timer.
+      const measuredSimMin = getMeasuredMinutes(sessionId, 'simulation', { fallbackMinutes: 10 });
       const scoreData = {
         simulation_score: Math.round((accuracy || 0) * 100),
       };
-      const res = await markPhaseComplete(sessionId, 'simulation', scoreData);
+      const res = await markPhaseComplete(sessionId, 'simulation', scoreData, { actualMinutes: measuredSimMin });
       if (!res?.success) {
         console.error('[simulation] markPhaseComplete failed:', res?.error);
       } else {
@@ -119,7 +122,7 @@ export default function SimulationPage() {
           });
         } catch { /* fire-and-forget */ }
         try {
-          await updateDailyChallengesForPhase(user.id, 'simulation', { minutes: 10 });
+          await updateDailyChallengesForPhase(user.id, 'simulation', { minutes: Math.max(1, measuredSimMin) });
           if ((res.xp_intents || []).some((x) => x.reason === 'session_complete')) {
             await updateDailyChallengesForPhase(user.id, 'session_complete', {});
           }
