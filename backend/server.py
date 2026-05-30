@@ -3377,9 +3377,40 @@ async def study_plan_rebalance(
     non_study = sorted({int(d) for d in (plan.get("non_study_weekdays") or [])
                         if 0 <= int(d) <= 6})
 
+    # Batch 1 Fix 1: Capture today's existing row BEFORE the packing logic
+    # so we know whether to freeze today (status='complete') and start
+    # packing from tomorrow instead. Also captures actual_minutes and
+    # completed_session_codes so the rebalance preserves user work.
+    preserved_today = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=eq.{today}"
+        f"&select=actual_minutes,actual_sessions_completed,completed_session_codes,"
+        f"required_minutes,required_session_codes,required_project_codes,status&limit=1"
+    ) or []
+    preserved = preserved_today[0] if preserved_today else None
+    freeze_today = bool(preserved and preserved.get("status") == "complete")
+
+    # When today is frozen, the day-packer must start from tomorrow.
+    # Today's required_minutes / required_session_codes / status are kept
+    # exactly as they were so `is_behind_percent` doesn't regress when the
+    # user rebalances after finishing the day's work.
+    pack_start_d = today_d + timedelta(days=1) if freeze_today else today_d
+
     new_days: list = []
+    if freeze_today and preserved is not None:
+        # Insert today's frozen row FIRST so the resulting series is still
+        # contiguous from today onward.
+        new_days.append({
+            "day_date": today,
+            "required_minutes":      int(preserved.get("required_minutes") or 0),
+            "required_session_codes": list(preserved.get("required_session_codes") or []),
+            "required_project_codes": list(preserved.get("required_project_codes") or []),
+            "status": "complete",
+            "_frozen": True,
+        })
+
     it_idx = 0
-    d = today_d
+    d = pack_start_d
     max_days = 3 * 365
 
     if fwd_mode == 'deadline':
@@ -3389,15 +3420,15 @@ async def study_plan_rebalance(
             raise HTTPException(status_code=400, detail="invalid new_target_deadline")
         if deadline_d <= today_d:
             raise HTTPException(status_code=400, detail="new_target_deadline must be in the future")
-        active = [today_d + timedelta(days=i) for i in range((deadline_d - today_d).days + 1)
-                  if ((today_d + timedelta(days=i)).weekday() + 1) % 7 not in non_study]
+        active = [pack_start_d + timedelta(days=i) for i in range((deadline_d - pack_start_d).days + 1)
+                  if ((pack_start_d + timedelta(days=i)).weekday() + 1) % 7 not in non_study]
         if not active:
             raise HTTPException(status_code=400, detail="no active days in new window")
         load_remaining = sum(it["minutes"] for it in items_remaining)
         per_day = _math.ceil(load_remaining / len(active)) or 1
-        steps = (deadline_d - today_d).days + 1
+        steps = (deadline_d - pack_start_d).days + 1
         for step in range(steps):
-            cd = today_d + timedelta(days=step)
+            cd = pack_start_d + timedelta(days=step)
             wd_sun = (cd.weekday() + 1) % 7
             if wd_sun in non_study:
                 new_days.append({"day_date": cd.isoformat(), "required_minutes": 0,
@@ -3427,7 +3458,7 @@ async def study_plan_rebalance(
                 raise HTTPException(status_code=400, detail="no active days/week")
             per_day = int(_math.ceil(wkly / active_per_week))
 
-        d = today_d
+        d = pack_start_d
         steps = 0
         while it_idx < len(items_remaining) and steps < max_days:
             wd_sun = (d.weekday() + 1) % 7
@@ -3452,18 +3483,6 @@ async def study_plan_rebalance(
             d = d + timedelta(days=1)
             steps += 1
 
-    # Capture today's actual work BEFORE the delete, so we can preserve it.
-    # The rebalance must never wipe minutes/sessions the user already
-    # logged — Bug 1 from the D2 tester report. We re-attach
-    # actual_minutes + completed_session_codes onto the freshly-built
-    # today row and recompute the status against the NEW required_*.
-    preserved_today = _supabase_get(
-        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
-        f"&day_date=eq.{today}"
-        f"&select=actual_minutes,actual_sessions_completed,completed_session_codes&limit=1"
-    ) or []
-    preserved = preserved_today[0] if preserved_today else None
-
     # Delete future day rows (>= today) and insert the new ones.
     _supabase_delete(
         f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
@@ -3481,15 +3500,21 @@ async def study_plan_rebalance(
                    "actual_sessions_completed": 0,
                    "completed_session_codes": [],
                    "status": x["status"]}
-            # Bug 1 fix: re-attach today's preserved work and recompute status.
-            if preserved is not None and x["day_date"] == today:
+            # Batch 1 Fix 1: today's frozen row carries the full preserved
+            # state. required_* stays as it was, status stays 'complete',
+            # actual_* + completed_* are re-attached so no work is lost.
+            if x.get("_frozen") and preserved is not None and x["day_date"] == today:
                 row["actual_minutes"]            = int(preserved.get("actual_minutes") or 0)
                 row["actual_sessions_completed"] = int(preserved.get("actual_sessions_completed") or 0)
                 row["completed_session_codes"]   = list(preserved.get("completed_session_codes") or [])
-                # Recompute status against NEW required_* and PRESERVED actual_*.
-                # `complete` iff actual minutes meet new requirement AND completed
-                # session count meets the new required-session count. Otherwise
-                # `today` if there are required sessions, `rest` for a rest day.
+                row["status"] = "complete"
+            elif preserved is not None and x["day_date"] == today:
+                # Today was NOT frozen (status was 'today' or 'rest' pre-rebalance).
+                # Preserve any work the user already logged and recompute status
+                # against the NEW required_*. Mirrors the original Bug 1 fix.
+                row["actual_minutes"]            = int(preserved.get("actual_minutes") or 0)
+                row["actual_sessions_completed"] = int(preserved.get("actual_sessions_completed") or 0)
+                row["completed_session_codes"]   = list(preserved.get("completed_session_codes") or [])
                 req_min  = int(x["required_minutes"])
                 req_sess = len(x["required_session_codes"] or [])
                 done_sess = len(row["completed_session_codes"])

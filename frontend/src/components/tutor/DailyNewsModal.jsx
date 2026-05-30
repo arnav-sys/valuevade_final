@@ -59,21 +59,35 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
     if (open) fetchNews();
   }, [open, fetchNews]);
 
-  const markRead = async () => {
-    if (marking || alreadyRead) { onClose(); return; }
-    setMarking(true);
+  const callMarkRead = useCallback(async () => {
+    // Fix 2 (Batch 1): every dismiss path must hit the backend so
+    // `user_news_reads` records (user, today). The RPC is idempotent —
+    // a second call within the same IST day returns `already_read_today:
+    // true` and awards no XP. Returns the parsed JSON payload on success.
     try {
       const { data: { session } } = await supabase.auth.getSession();
       const token = session?.access_token;
-      if (!token) return;
+      if (!token) return null;
       const res = await fetch(`${BACKEND}/api/news/mark_read`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: '{}',
       });
       const json = await res.json().catch(() => ({}));
-      if (res.ok) {
+      return res.ok ? json : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const markRead = async () => {
+    if (marking || alreadyRead) { onClose(); return; }
+    setMarking(true);
+    try {
+      const json = await callMarkRead();
+      if (json) {
         try { localStorage.setItem(`${LS_KEY_PREFIX}${date || 'today'}`, '1'); } catch {}
+        setAlreadyRead(true);
         onMarkRead(json);
       }
     } finally {
@@ -82,8 +96,18 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
     }
   };
 
-  const skip = () => {
+  const skip = async () => {
+    // Fix 2: Skip is now also a dismissal — hit the backend so this day
+    // doesn't re-pop on reload. We don't await XP UX (no toast), but we
+    // do call onMarkRead so the parent can refresh state if it wants to.
     try { if (date) localStorage.setItem(`${LS_KEY_PREFIX}${date}`, '1'); } catch {}
+    if (!alreadyRead) {
+      const json = await callMarkRead();
+      if (json) {
+        setAlreadyRead(true);
+        try { onMarkRead(json); } catch {}
+      }
+    }
     onClose();
   };
 
