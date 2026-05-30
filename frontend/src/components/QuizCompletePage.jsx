@@ -344,6 +344,21 @@ export default function QuizCompletePage() {
                                 correct_index: qq.correct_answer_index,
                                 explanation_existing: qq.explanation || null,
                               },
+                              // Batch 3 (Item 2) — context binding so Pari can
+                              // resolve "this" / "that" without re-explanation.
+                              currentFocus: {
+                                surface: 'quiz',
+                                session_id: sessionId,
+                                anchor: {
+                                  type: 'question',
+                                  label: qq.question,
+                                  snippet:
+                                    `${qq.question}\n\nOptions:\n` +
+                                    (Array.isArray(qq.options) ? qq.options : [])
+                                      .map((opt, k) => `${String.fromCharCode(65 + k)}. ${typeof opt === 'string' ? opt : (opt?.text ?? JSON.stringify(opt))}`)
+                                      .join('\n'),
+                                },
+                              },
                             })}
                             className="inline-flex items-center gap-1.5 mt-2 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-3 py-1.5 text-xs font-semibold font-bricolage transition-colors"
                             data-testid={`quiz-ask-pari-${i}`}

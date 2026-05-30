@@ -20,11 +20,16 @@ export function DoubtsLauncherProvider({ children }) {
   const [error, setError] = useState(null);
   const [session, setSession] = useState(null); // { doubt_session_id, phase, ... }
   const [attemptContext, setAttemptContext] = useState(null);
+  // Batch 3 (Item 2) — context binding: what the student was looking at the
+  // moment they opened Pari (notes section / quiz question / sim cell). The
+  // FE forwards this to /api/doubts/start so the LLM can resolve "this".
+  const [currentFocus, setCurrentFocus] = useState(null);
 
   const close = useCallback(() => {
     setOpen(false);
     setSession(null);
     setAttemptContext(null);
+    setCurrentFocus(null);
     setError(null);
   }, []);
 
@@ -33,6 +38,7 @@ export function DoubtsLauncherProvider({ children }) {
     moduleCode = null,
     courseSessionId = null,
     attemptContext: ctx = null,
+    currentFocus: focus = null,
   } = {}) => {
     if (busy) return;
     setBusy(true);
@@ -55,6 +61,7 @@ export function DoubtsLauncherProvider({ children }) {
           module_code: moduleCode,
           course_session_id: courseSessionId,
           attempt_context: ctx,
+          current_focus: focus,
         }),
       });
       const json = await res.json().catch(() => ({}));
@@ -76,6 +83,7 @@ export function DoubtsLauncherProvider({ children }) {
         sessions_left_today: json.sessions_left_today,
       });
       setAttemptContext(ctx);
+      setCurrentFocus(focus);
       setOpen(true);
     } catch (e) {
       setError(e.message || 'Could not start doubt session.');
@@ -97,6 +105,7 @@ export function DoubtsLauncherProvider({ children }) {
           courseSessionId={session.course_session_id}
           doubtSession={session}
           attemptContext={attemptContext}
+          currentFocus={currentFocus}
           onClose={close}
         />
       )}

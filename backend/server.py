@@ -703,16 +703,73 @@ class DoubtsStartReq(BaseModel):
     phase: str
     module_code: Optional[str] = None
     attempt_context: Optional[dict] = None
+    # Batch 3 (Item 2) — what the student is looking at RIGHT NOW.
+    current_focus: Optional[dict] = None
 
 
 class DoubtsAskReq(BaseModel):
     doubt_session_id: str
     message: str
     attempt_context: Optional[dict] = None
+    current_focus: Optional[dict] = None
 
 
 class DoubtsEndReq(BaseModel):
     doubt_session_id: str
+
+
+# Batch 3 (Item 2) — helpers for current_focus.
+def _truncate_focus(focus: Optional[dict]) -> dict:
+    """Clamp anchor.snippet to 1500 chars and anchor.label to 240 chars so we
+    don't bloat the user_doubt_sessions row or burn tokens on huge selections."""
+    if not isinstance(focus, dict):
+        return {}
+    safe = {k: focus.get(k) for k in ("surface", "module_id", "session_id") if focus.get(k) is not None}
+    anchor = focus.get("anchor") or {}
+    if isinstance(anchor, dict):
+        safe_anchor = {}
+        if anchor.get("type"):    safe_anchor["type"]    = str(anchor["type"])[:32]
+        if anchor.get("label"):   safe_anchor["label"]   = str(anchor["label"])[:240]
+        if anchor.get("snippet"): safe_anchor["snippet"] = str(anchor["snippet"])[:1500]
+        if safe_anchor: safe["anchor"] = safe_anchor
+    return safe
+
+
+def _format_focus_for_prompt(focus: Optional[dict]) -> str:
+    """Render a focus dict into a markdown block we append to the Pari
+    system prompt. Returns an empty string if focus is missing or empty
+    (so the prompt stays unchanged for non-context surfaces)."""
+    if not focus or not isinstance(focus, dict):
+        return ""
+    surface = (focus.get("surface") or "").strip().lower()
+    if surface not in ("notes", "quiz", "interview", "simulation"):
+        return ""
+    anchor = focus.get("anchor") or {}
+    label   = (anchor.get("label") or "").strip()
+    snippet = (anchor.get("snippet") or "").strip()
+    if not label and not snippet:
+        return ""
+    surface_label = {
+        "notes": "Notes",
+        "quiz": "Quiz",
+        "interview": "Mock Interview",
+        "simulation": "Simulation",
+    }[surface]
+    lines = [
+        "",
+        f"## What the student is currently looking at",
+        f"The student opened this chat while on the **{surface_label}** surface.",
+    ]
+    if label:
+        lines.append(f"They are currently focused on: **{label}**")
+    if snippet:
+        lines.append("The visible content / question they're looking at is:")
+        lines.append(f'"""\n{snippet}\n"""')
+    lines.append(
+        "If they use \"this\", \"that\", or \"it\" without further clarification, "
+        "assume they mean the above. Cite specifically from it when you explain."
+    )
+    return "\n".join(lines)
 
 
 @api_router.post("/doubts/start")
@@ -737,15 +794,23 @@ async def doubts_start(req: DoubtsStartReq, supa_user: dict = Depends(get_supaba
         if payload and payload.get("reason") == "quota_exhausted":
             raise HTTPException(status_code=429, detail=payload)
         raise HTTPException(status_code=500, detail=payload or {"error": "start_doubt_session returned no payload"})
-    # Persist attempt_context if provided (P4 — personalized doubts).
-    if req.attempt_context and payload.get("doubt_session_id"):
+    # Persist attempt_context + current_focus if provided.
+    # Batch 3 (Item 2) — current_focus captures what the student is looking
+    # at right now (notes section, quiz question, sim cell, etc.) so every
+    # turn in this session can reference the same anchor.
+    if (req.attempt_context or req.current_focus) and payload.get("doubt_session_id"):
+        patch_row: dict = {}
+        if req.attempt_context:
+            patch_row["attempt_context"] = req.attempt_context
+        if req.current_focus:
+            patch_row["current_focus"] = _truncate_focus(req.current_focus)
         try:
             _supabase_patch(
                 f"user_doubt_sessions?id=eq.{_urlparse.quote(payload['doubt_session_id'])}",
-                {"attempt_context": req.attempt_context},
+                patch_row,
             )
         except Exception as e:
-            logger.warning(f"[doubts] attempt_context persist failed: {e}")
+            logger.warning(f"[doubts] attempt_context/current_focus persist failed: {e}")
     return payload
 
 
@@ -840,6 +905,21 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
         except Exception as e:
             logger.warning(f"[doubts] late attempt_context persist failed: {e}")
 
+    # Batch 3 (Item 2) — read persisted current_focus and fold in any newly
+    # supplied focus. Focused sessions are inherently personalized so we
+    # also disable cache lookup/write below.
+    current_focus = session.get("current_focus") or req.current_focus or None
+    if req.current_focus and req.current_focus != session.get("current_focus"):
+        try:
+            _supabase_patch(
+                f"user_doubt_sessions?id=eq.{_urlparse.quote(req.doubt_session_id)}",
+                {"current_focus": _truncate_focus(req.current_focus)},
+            )
+            current_focus = req.current_focus
+        except Exception as e:
+            logger.warning(f"[doubts] late current_focus persist failed: {e}")
+    focus_block = _format_focus_for_prompt(current_focus)
+
     # ------- 1) Off-topic classifier (now context-aware: P3) -------
     is_off_topic = False
     classifier_tokens = 0
@@ -891,14 +971,15 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
             )
         answer_tokens = _approx_tokens(answer)
     else:
-        # ------- 2) Cache lookup -------
+        # ------- 2) Cache lookup (skipped when current_focus is present;
+        #             focused doubts are inherently personalized) -------
         qhash = _hash_question(msg)
         cache_path = (
             f"doubt_qa_cache?question_hash=eq.{_urlparse.quote(qhash)}"
             f"&module_code={'is.null' if not module_code else 'eq.' + _urlparse.quote(module_code)}"
             f"&select=id,answer,tokens_at_creation,reused_count&limit=1"
         )
-        cache_rows = _supabase_get(cache_path) or []
+        cache_rows = [] if focus_block else (_supabase_get(cache_path) or [])
         if cache_rows:
             cached = cache_rows[0]
             answer = cached["answer"]
@@ -914,18 +995,24 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
             except Exception as e:
                 logger.warning(f"[doubts] cache reuse-counter bump failed: {e}")
         else:
-            # ------- 3) Main answer (P4: attempt_context appended if present) -------
+            # ------- 3) Main answer (P4: attempt_context appended if present)
+            #              + Batch 3 (Item 2): current_focus injected into the
+            #              system prompt as a "What the student is currently
+            #              looking at" section so the LLM can resolve "this".
             try:
+                system_msg = DOUBTS_SYSTEM_PROMPT_TEMPLATE.format(
+                    module_code=module_code or "—",
+                    module_title=module_title,
+                    phase=phase,
+                    session_title=session_title,
+                    country_context=country_context,
+                )
+                if focus_block:
+                    system_msg = f"{system_msg}\n{focus_block}"
                 main_chat = LlmChat(
                     api_key=EMERGENT_LLM_KEY,
                     session_id=f"doubt-main-{req.doubt_session_id}-{session.get('turn_count', 0)}",
-                    system_message=DOUBTS_SYSTEM_PROMPT_TEMPLATE.format(
-                        module_code=module_code or "—",
-                        module_title=module_title,
-                        phase=phase,
-                        session_title=session_title,
-                        country_context=country_context,
-                    ),
+                    system_message=system_msg,
                 ).with_model("anthropic", "claude-haiku-4-5-20251001")
                 user_msg = msg
                 if attempt_context:
@@ -943,23 +1030,26 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
             except Exception as e:
                 logger.error(f"[doubts] main LLM call failed: {e}")
                 raise HTTPException(status_code=502, detail="Pari hit a snag — please try again")
-            # ------- 4) Cache write -------
-            try:
-                _supabase_post(
-                    "doubt_qa_cache",
-                    {
-                        "question_hash": qhash,
-                        "normalized_question": _normalise_question(msg),
-                        "answer": answer,
-                        "module_code": module_code,
-                        "tokens_at_creation": classifier_tokens + answer_tokens,
-                    },
-                    prefer="resolution=ignore-duplicates",
-                )
-            except HTTPException as e:
-                # 409 conflict (race) is fine; everything else logs.
-                if e.status_code != 409:
-                    logger.warning(f"[doubts] cache write failed: {e.detail}")
+            # ------- 4) Cache write (skipped when focus is present — the
+            #             answer is anchor-specific and would pollute the
+            #             shared cache for non-focused askers) -------
+            if not focus_block:
+                try:
+                    _supabase_post(
+                        "doubt_qa_cache",
+                        {
+                            "question_hash": qhash,
+                            "normalized_question": _normalise_question(msg),
+                            "answer": answer,
+                            "module_code": module_code,
+                            "tokens_at_creation": classifier_tokens + answer_tokens,
+                        },
+                        prefer="resolution=ignore-duplicates",
+                    )
+                except HTTPException as e:
+                    # 409 conflict (race) is fine; everything else logs.
+                    if e.status_code != 409:
+                        logger.warning(f"[doubts] cache write failed: {e.detail}")
 
     # ------- 5) Record the turn -------
     user_tokens = _approx_tokens(msg) + classifier_tokens
@@ -2055,11 +2145,15 @@ class SessionDoubtMarkReq(BaseModel):
 
 class ExtendedDoubtStartReq(BaseModel):
     doubt_id: str
+    # Batch 3 (Item 2) — current_focus also flows through the extended chat
+    # entry-points (re-do an old doubt, /doubts/library page).
+    current_focus: Optional[dict] = None
 
 
 class ExtendedDoubtAskReq(BaseModel):
     doubt_session_id: str
     message: str
+    current_focus: Optional[dict] = None
 
 
 class ExtendedDoubtEndReq(BaseModel):
@@ -2192,6 +2286,15 @@ async def extended_doubt_start(req: ExtendedDoubtStartReq, supa_user: dict = Dep
                 },
             )
         raise HTTPException(status_code=500, detail=payload or {"error": "start_extended_doubt_session failed"})
+    # Batch 3 (Item 2) — persist current_focus onto the new extended session.
+    if req.current_focus and payload.get("doubt_session_id"):
+        try:
+            _supabase_patch(
+                f"user_doubt_sessions?id=eq.{_urlparse.quote(payload['doubt_session_id'])}",
+                {"current_focus": _truncate_focus(req.current_focus)},
+            )
+        except Exception as e:
+            logger.warning(f"[extended-doubts] current_focus persist failed: {e}")
     return payload
 
 
@@ -2229,6 +2332,20 @@ async def extended_doubt_ask(req: ExtendedDoubtAskReq, supa_user: dict = Depends
         pass
     country_context = _country_context_for(user_country)
 
+    # Batch 3 (Item 2) — resolve current_focus, persist any update, build the
+    # extra system-prompt block.
+    current_focus = session.get("current_focus") or req.current_focus or None
+    if req.current_focus and req.current_focus != session.get("current_focus"):
+        try:
+            _supabase_patch(
+                f"user_doubt_sessions?id=eq.{_urlparse.quote(req.doubt_session_id)}",
+                {"current_focus": _truncate_focus(req.current_focus)},
+            )
+            current_focus = req.current_focus
+        except Exception as e:
+            logger.warning(f"[extended-doubts] current_focus persist failed: {e}")
+    focus_block = _format_focus_for_prompt(current_focus)
+
     # Resolve session_title + description from the linked underlying session.
     session_title = "your flagged session"
     session_description = ""
@@ -2249,15 +2366,18 @@ async def extended_doubt_ask(req: ExtendedDoubtAskReq, supa_user: dict = Depends
     if not EMERGENT_LLM_KEY:
         raise HTTPException(status_code=502, detail="LLM not configured")
     try:
+        system_msg = EXTENDED_DOUBT_SYSTEM_PROMPT.format(
+            module_code=session.get("module_code") or "—",
+            session_title=session_title,
+            session_description=session_description or "(no description)",
+            country_context=country_context,
+        )
+        if focus_block:
+            system_msg = f"{system_msg}\n{focus_block}"
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
             session_id=f"extended-{req.doubt_session_id}-{session.get('turn_count', 0)}",
-            system_message=EXTENDED_DOUBT_SYSTEM_PROMPT.format(
-                module_code=session.get("module_code") or "—",
-                session_title=session_title,
-                session_description=session_description or "(no description)",
-                country_context=country_context,
-            ),
+            system_message=system_msg,
         ).with_model("anthropic", "claude-haiku-4-5-20251001")
         # Replay the existing turns so the model has memory of the thread.
         for m in history_rows:

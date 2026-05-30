@@ -25,9 +25,13 @@ export default function AskPariButton({
   autoPrompt = false,
   autoPromptCopy = null,
   className = '',
+  // Batch 3 (Item 2) — pass a callback that returns the focus object at
+  // click-time (so we always capture the latest visible card/heading).
+  getCurrentFocus = null,
 }) {
   const { enabled } = useTutor();
   const [open, setOpen] = useState(false);
+  const [focus, setFocus] = useState(null);
   const [promptShown, setPromptShown] = useState(autoPrompt);
   const [promptDismissed, setPromptDismissed] = useState(false);
 
@@ -38,10 +42,17 @@ export default function AskPariButton({
   }, [autoPrompt, promptDismissed]);
 
   const handleClick = useCallback(() => {
+    // Snapshot the focus at click-time so subsequent scrolls don't change it
+    // mid-conversation. If no getter is provided we just stay un-focused.
+    try {
+      setFocus(typeof getCurrentFocus === 'function' ? (getCurrentFocus() || null) : null);
+    } catch {
+      setFocus(null);
+    }
     setOpen(true);
     setPromptShown(false);
     setPromptDismissed(true);
-  }, []);
+  }, [getCurrentFocus]);
 
   if (!enabled) return null;
 
@@ -106,6 +117,7 @@ export default function AskPariButton({
         phase={phase}
         moduleCode={moduleCode}
         courseSessionId={courseSessionId}
+        currentFocus={focus}
       />
     </>
   );

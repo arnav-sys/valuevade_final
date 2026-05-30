@@ -225,6 +225,17 @@ export default function InterviewCompletePage() {
                         evaluation: r.scores,
                         feedback_existing: r.feedback || null,
                       },
+                      currentFocus: {
+                        surface: 'interview',
+                        session_id: sessionId,
+                        anchor: {
+                          type: 'question',
+                          label: r.questionText,
+                          snippet:
+                            `Question: ${r.questionText}\n\n` +
+                            `Their answer: ${(r.userAnswer || r.answer || '(no answer recorded)').slice(0, 800)}`,
+                        },
+                      },
                     })}
                     className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-2 py-1 text-[10px] font-semibold font-bricolage transition-colors"
                     title="Ask Pari to elaborate"

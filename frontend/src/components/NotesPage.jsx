@@ -1697,7 +1697,55 @@ export default function NotesPage() {
               the right on wide viewports. */}
           {!loading && !error && session?.master_session_id && total > 0 && (
             <div className="mb-6" data-testid="notes-ask-pari-top">
-              <AskPariButton phase="notes" courseSessionId={sessionId} variant="card" />
+              <AskPariButton
+                phase="notes"
+                courseSessionId={sessionId}
+                variant="card"
+                getCurrentFocus={() => {
+                  // Batch 3 (Item 2) — capture what the user is reading right now.
+                  // Prefer an active text selection (most specific), otherwise
+                  // fall back to the current card's title + body snippet.
+                  try {
+                    const sel = (typeof window !== 'undefined' && window.getSelection)
+                      ? String(window.getSelection() || '').trim()
+                      : '';
+                    if (sel && sel.length >= 8) {
+                      return {
+                        surface: 'notes',
+                        session_id: sessionId,
+                        anchor: {
+                          type: 'selection',
+                          label: sel.slice(0, 200),
+                          snippet: sel.slice(0, 1500),
+                        },
+                      };
+                    }
+                  } catch { /* ignore */ }
+                  if (!currentCard) return null;
+                  const title = currentCard.title || currentCard.heading || currentCard.label || 'this section';
+                  // Best-effort body extraction across card shapes.
+                  const bodyPieces = [
+                    currentCard.body,
+                    currentCard.summary,
+                    currentCard.definition,
+                    currentCard.lede,
+                    currentCard.story,
+                    currentCard.plain_english,
+                    Array.isArray(currentCard.bullets) ? currentCard.bullets.join('\n• ') : null,
+                    Array.isArray(currentCard.points) ? currentCard.points.join('\n• ') : null,
+                  ].filter(Boolean);
+                  const body = bodyPieces.join('\n\n').slice(0, 1500);
+                  return {
+                    surface: 'notes',
+                    session_id: sessionId,
+                    anchor: {
+                      type: currentCard.kind === 'deep_dive' ? 'heading' : 'card',
+                      label: title,
+                      snippet: `${title}\n\n${body}`.slice(0, 1500),
+                    },
+                  };
+                }}
+              />
             </div>
           )}
           {loading && (

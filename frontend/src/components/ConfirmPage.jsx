@@ -114,65 +114,78 @@ export default function ConfirmPage() {
         enrollmentId = enrollment.id;
       }
 
-      // 2. Clone modules into user_modules
-      for (let i = 0; i < courseStructure.length; i++) {
-        const mod = courseStructure[i];
+      // 2. Bulk-clone modules into user_modules — ONE round-trip instead of N.
+      //    Batch 3 (Item 1): the previous implementation did one INSERT per
+      //    module + one INSERT per session in a sequential for-loop. With
+      //    14 modules × ~7 sessions each that's ~100 round-trips at
+      //    ~200ms each → ~20s perceived wait. We collapse that into:
+      //      - 1 bulk insert into user_modules (returning ids)
+      //      - 1 bulk insert into user_sessions (built from the returned ids)
+      //    → 2 round-trips total. Cuts the "Enroll" → "Dashboard" land
+      //    time from ~15-30s to ~1-3s on the same network.
+      const customPlanArr = (plan.customisation_plan || []);
+      const reorderByModNum = {};
+      const removeByModNum  = {};
+      customPlanArr.forEach((c) => {
+        if (c.action === 'reorder_module') reorderByModNum[c.module_number] = c;
+        if (c.action === 'remove_module')  removeByModNum[c.module_number]  = c;
+      });
+
+      const modulePayload = courseStructure.map((mod, i) => {
         const modNum = i + 1;
         const isRemoved = removedModuleNums.has(modNum);
-        const removeChange = (plan.customisation_plan || []).find(
-          (c) => c.action === 'remove_module' && c.module_number === modNum
-        );
-        const reorderChange = (plan.customisation_plan || []).find(
-          (c) => c.action === 'reorder_module' && c.module_number === modNum
-        );
+        const reorderChange = reorderByModNum[modNum];
+        const removeChange  = removeByModNum[modNum];
+        return {
+          enrollment_id: enrollmentId,
+          master_module_id: mod.id,
+          title: mod.title,
+          order_index: reorderChange ? reorderChange.new_position : mod.order_index,
+          is_removed: isRemoved,
+          ai_reasoning: isRemoved ? (removeChange?.reason || null) : null,
+        };
+      });
 
-        const { data: userMod, error: modErr } = await supabase
-          .from('user_modules')
-          .insert({
-            enrollment_id: enrollmentId,
-            master_module_id: mod.id,
-            title: mod.title,
-            order_index: reorderChange ? reorderChange.new_position : mod.order_index,
-            is_removed: isRemoved,
-            ai_reasoning: isRemoved ? removeChange?.reason : null,
-          })
-          .select('id')
-          .single();
+      const { data: insertedMods, error: modsErr } = await supabase
+        .from('user_modules')
+        .insert(modulePayload)
+        .select('id, master_module_id');
+      if (modsErr) throw modsErr;
+      // Map master_module_id → user_module.id so we can wire sessions in bulk.
+      const userModIdByMaster = {};
+      (insertedMods || []).forEach((r) => {
+        if (r.master_module_id) userModIdByMaster[r.master_module_id] = r.id;
+      });
 
-        if (modErr) throw modErr;
-
-        // 3. Clone sessions into user_sessions
-        const sessions = mod.master_sessions || [];
-        for (const sess of sessions) {
+      // 3 + 4. Build all user_sessions rows (existing master sessions + AI
+      //         added ones), then bulk insert in one call.
+      const sessionPayload = [];
+      courseStructure.forEach((mod, i) => {
+        const modNum = i + 1;
+        const isModRemoved = removedModuleNums.has(modNum);
+        const umId = userModIdByMaster[mod.id];
+        if (!umId) return; // safety — shouldn't happen
+        (mod.master_sessions || []).forEach((sess) => {
           const isSessRemoved = removedSessionIds.has(sess.id);
-          const sessChange = (plan.customisation_plan || []).find(
+          const sessChange = customPlanArr.find(
             (c) => c.action === 'remove_session' && c.session_id === sess.id
           );
-
-          const { error: sessErr } = await supabase
-            .from('user_sessions')
-            .insert({
-              user_module_id: userMod.id,
-              master_session_id: sess.id,
-              title: sess.title,
-              order_index: sess.order_index,
-              is_removed: isRemoved || isSessRemoved,
-              ai_reasoning: isSessRemoved ? sessChange?.reason : null,
-              is_added_by_ai: false,
-            });
-
-          if (sessErr) throw sessErr;
-        }
-
-        // 4. Add AI-generated sessions
-        const addedSessions = (plan.customisation_plan || []).filter(
-          (c) => c.action === 'add_session' && c.module_number === modNum
-        );
-        for (const added of addedSessions) {
-          const { error: addErr } = await supabase
-            .from('user_sessions')
-            .insert({
-              user_module_id: userMod.id,
+          sessionPayload.push({
+            user_module_id: umId,
+            master_session_id: sess.id,
+            title: sess.title,
+            order_index: sess.order_index,
+            is_removed: isModRemoved || isSessRemoved,
+            ai_reasoning: isSessRemoved ? (sessChange?.reason || null) : null,
+            is_added_by_ai: false,
+          });
+        });
+        // AI-added sessions for this module.
+        customPlanArr
+          .filter((c) => c.action === 'add_session' && c.module_number === modNum)
+          .forEach((added) => {
+            sessionPayload.push({
+              user_module_id: umId,
               master_session_id: null,
               title: added.session_title,
               order_index: added.insert_after_session_number || 999,
@@ -180,9 +193,14 @@ export default function ConfirmPage() {
               ai_reasoning: added.reason,
               is_added_by_ai: true,
             });
+          });
+      });
 
-          if (addErr) throw addErr;
-        }
+      if (sessionPayload.length > 0) {
+        const { error: sessErr } = await supabase
+          .from('user_sessions')
+          .insert(sessionPayload);
+        if (sessErr) throw sessErr;
       }
 
       // 5. Seed user_module_projects — one row per user_module that has a

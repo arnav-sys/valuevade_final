@@ -82,6 +82,7 @@ export default function DoubtsSession({
   moduleCode = null,
   doubtSession = null,         // P54: pre-started session (from DoubtsLauncher)
   attemptContext = null,       // P54: personalized doubts context
+  currentFocus = null,         // Batch 3 (Item 2): what user is looking at
 }) {
   const { enabled } = useTutor();
   const [bootstrapping, setBootstrapping] = useState(!doubtSession);
@@ -126,6 +127,7 @@ export default function DoubtsSession({
           course_session_id: courseSessionId,
           module_code: moduleCode,
           attempt_context: attemptContext,
+          current_focus: currentFocus,
         });
         if (!alive) return;
         if (status === 429 || (data?.detail && data.detail.reason === 'quota_exhausted')) {
@@ -146,7 +148,7 @@ export default function DoubtsSession({
       }
     })();
     return () => { alive = false; };
-  }, [open, enabled, phase, courseSessionId, moduleCode, sessionId, doubtSession, attemptContext]);
+  }, [open, enabled, phase, courseSessionId, moduleCode, sessionId, doubtSession, attemptContext, currentFocus]);
 
   // Auto-scroll on new messages.
   useEffect(() => {
@@ -214,6 +216,7 @@ export default function DoubtsSession({
     } finally {
       setPending(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, pending, sessionEnded, sessionId]);
 
   const handleEnd = useCallback(async () => {

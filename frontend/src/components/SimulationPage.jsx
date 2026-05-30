@@ -298,6 +298,18 @@ export default function SimulationPage() {
                       ? Math.round((progress.correct / Math.max(progress.total, 1)) * 100)
                       : null),
               },
+              currentFocus: {
+                surface: 'simulation',
+                session_id: sessionId,
+                anchor: {
+                  type: sim.sim_type === 'excel' ? 'cell' : 'question',
+                  label: sim.title || 'Simulation',
+                  snippet:
+                    `Simulation: ${sim.title || ''} (${sim.sim_type || 'generic'})\n` +
+                    (config?.instructions ? `Instructions: ${String(config.instructions).slice(0, 800)}\n` : '') +
+                    (config?.prompt ? `Prompt: ${String(config.prompt).slice(0, 800)}` : ''),
+                },
+              },
             })}
             className="inline-flex items-center gap-2 rounded-full bg-[var(--color-primary)]/15 hover:bg-[var(--color-primary)]/25 border border-[var(--color-primary)]/35 text-[var(--color-primary)] px-5 py-2.5 text-sm font-semibold font-bricolage transition-colors"
             data-testid="simulation-ask-pari-btn"
