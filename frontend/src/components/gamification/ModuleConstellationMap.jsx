@@ -4,46 +4,57 @@ import { Sparkles, Lock, X, Clock, Zap } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 
-// Hand-tuned 15-node organic constellation in a 1000×500 viewBox.
-// Pattern: a gentle S-curve from bottom-left to top-right, with intentional
-// jitter on the Y axis so the layout reads as constellation, not a chain.
-// Index = order_index (0-based). Modules beyond 14 fall back to a circular
-// extension off the right edge.
-const NODE_POSITIONS = [
-  { x:  80, y: 420 },  // M0 / M1
-  { x: 170, y: 330 },
-  { x: 260, y: 400 },
-  { x: 360, y: 250 },
-  { x: 450, y: 360 },
-  { x: 530, y: 180 },
-  { x: 620, y: 290 },
-  { x: 700, y: 130 },
-  { x: 770, y: 250 },
-  { x: 830, y: 90  },
-  { x: 880, y: 220 },
-  { x: 905, y: 350 },
-  { x: 855, y: 440 },
-  { x: 720, y: 450 },
-  { x: 580, y: 460 },
-];
+// =============================================================================
+// Module Constellation Map (rev 2 — serpentine layout).
+//
+// Previous "S-curve with jitter" produced unreadable criss-cross paths when
+// users had removed modules (Batch 4 manual edits). This rev replaces the
+// layout with a **horizontal serpentine** (Mario-world-map style):
+//
+//   row 0: M1 → M2 → M3 → M4 → M5  (left to right)
+//                                  ↓
+//   row 1: M10 ← M9 ← M8 ← M7 ← M6 (right to left)
+//                                  ↓
+//   row 2: M11 → M12 → M13 → … (left to right)
+//
+// Consecutive modules are always grid-neighbors → no diagonal lines, zero
+// crossings. Modules that are removed via Batch 4 customization are NOT
+// rendered (the view-source `v_module_progress_summary` filters them out).
+// What we DO is re-pack the remaining modules into the serpentine using a
+// "visual index" (their position in the enrolled-and-not-removed list),
+// not their original `order_index`. So a user who removed M2 and M12 sees
+// a tight 13-node path instead of two visual gaps.
+// =============================================================================
 
-function nodePos(idx) {
-  if (idx >= 0 && idx < NODE_POSITIONS.length) return NODE_POSITIONS[idx];
-  // Fallback: spiral around if a user has > 15 modules.
-  const k = idx - NODE_POSITIONS.length;
-  const angle = (k * 137.5 * Math.PI) / 180;
-  const r = 60 + 8 * k;
-  return { x: 500 + r * Math.cos(angle), y: 250 + r * Math.sin(angle) };
+const VIEWBOX_W = 1000;
+const VIEWBOX_H = 500;
+const ROW_SIZE  = 5;   // 5 nodes per row gives 3 rows for 15 modules
+const X_PADDING = 90;
+const Y_PADDING = 110;
+const X_STEP    = (VIEWBOX_W - 2 * X_PADDING) / (ROW_SIZE - 1); // ~205
+const Y_STEP    = 130;
+
+function gridPosition(visualIdx) {
+  const row = Math.floor(visualIdx / ROW_SIZE);
+  const colInRow = visualIdx % ROW_SIZE;
+  // Reverse every other row so consecutive nodes are grid-adjacent.
+  const col = row % 2 === 0 ? colInRow : (ROW_SIZE - 1 - colInRow);
+  return {
+    x: X_PADDING + col * X_STEP,
+    y: Y_PADDING + row * Y_STEP,
+    row,
+    col,
+  };
 }
 
-function StatusStyle(mod) {
+function StatusStyle(mod, isNextUp) {
   if (!mod.is_unlocked) {
     return {
       kind: 'locked',
       fill: '#3a4150',
       glow: 'rgba(120,120,140,.15)',
       stroke: '#454c5b',
-      labelOpacity: 0.5,
+      labelOpacity: 0.55,
       pulse: false,
     };
   }
@@ -57,7 +68,7 @@ function StatusStyle(mod) {
       pulse: 'slow',
     };
   }
-  if ((mod.sessions_completed_n || 0) > 0) {
+  if ((mod.sessions_completed_n || 0) > 0 || isNextUp) {
     return {
       kind: 'in_progress',
       fill: '#246BFD',
@@ -79,7 +90,7 @@ function StatusStyle(mod) {
 
 function ModulePopover({ mod, onClose, onContinue }) {
   if (!mod) return null;
-  const style = StatusStyle(mod);
+  const style = StatusStyle(mod, false);
   const showCta = mod.is_unlocked;
   return (
     <div
@@ -129,7 +140,7 @@ function ModulePopover({ mod, onClose, onContinue }) {
         {!mod.is_unlocked ? (
           <div className="text-sm text-[var(--color-text-muted)] mb-4 flex items-center gap-2">
             <Lock size={14} />
-            <span>Complete M{Math.max(0, mod.order_index - 1)} to unlock this module.</span>
+            <span>Complete the previous module to unlock this one.</span>
           </div>
         ) : (
           <>
@@ -177,6 +188,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
   const [modules, setModules] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedIdx, setSelectedIdx] = useState(null);
+  const [hoverIdx, setHoverIdx] = useState(null);
   const reducedMotionRef = useRef(
     typeof window !== 'undefined' && window.matchMedia
       ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -185,15 +197,60 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
 
   const refresh = useCallback(async () => {
     if (!user?.id) { setModules([]); setLoading(false); return; }
-    const { data, error } = await supabase
-      .from('v_module_progress_summary')
-      .select('*')
+    // Step 1 — pick the user's ACTIVE enrollment so we don't accidentally
+    // render rows from past/duplicate enrollments (otherwise the user sees
+    // 30+ duplicated module nodes).
+    const { data: enr, error: enrErr } = await supabase
+      .from('user_enrollments')
+      .select('id')
       .eq('user_id', user.id)
-      .order('order_index');
-    if (error) {
-      console.warn('[constellation] load failed:', error.message);
+      .eq('status', 'active')
+      .order('enrolled_at', { ascending: false })
+      .limit(1);
+    if (enrErr) {
+      console.warn('[constellation] enrollment lookup failed:', enrErr.message);
     }
-    setModules(data || []);
+    const activeEnrollmentId = enr?.[0]?.id;
+    if (!activeEnrollmentId) { setModules([]); setLoading(false); return; }
+
+    // Step 2 — pull module progress for THIS enrollment + the
+    // removed-flag from user_modules so Batch 4 manual edits collapse
+    // cleanly.
+    const [{ data: viewRows, error: viewErr }, { data: umRows, error: umErr }] = await Promise.all([
+      supabase
+        .from('v_module_progress_summary')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('enrollment_id', activeEnrollmentId)
+        .order('order_index'),
+      supabase
+        .from('user_modules')
+        .select('id, is_removed')
+        .eq('enrollment_id', activeEnrollmentId),
+    ]);
+    if (viewErr) console.warn('[constellation] view load failed:', viewErr.message);
+    if (umErr)   console.warn('[constellation] user_modules load failed:', umErr.message);
+
+    const removedSet = new Set((umRows || []).filter((r) => r.is_removed).map((r) => r.id));
+    // Defensive dedupe: in some accounts a re-enrollment created duplicate
+    // user_modules rows for the same master_module_id under the same
+    // enrollment. Keep the row with the most progress (highest
+    // sessions_completed_n, then completion_percent).
+    const byMaster = new Map();
+    (viewRows || [])
+      .filter((m) => !removedSet.has(m.user_module_id))
+      .forEach((m) => {
+        const k = m.master_module_id || m.module_code || m.user_module_id;
+        const prev = byMaster.get(k);
+        if (!prev) { byMaster.set(k, m); return; }
+        const newScore = (m.sessions_completed_n || 0) * 100 + (m.completion_percent || 0);
+        const oldScore = (prev.sessions_completed_n || 0) * 100 + (prev.completion_percent || 0);
+        if (newScore > oldScore) byMaster.set(k, m);
+      });
+    const filtered = Array.from(byMaster.values()).sort(
+      (a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)
+    );
+    setModules(filtered);
     setLoading(false);
   }, [user?.id]);
 
@@ -210,26 +267,27 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
     return () => { try { supabase.removeChannel(channel); } catch { /* noop */ } };
   }, [user?.id, refresh]);
 
+  // Find the first unlocked-and-not-completed module → that's "next up"
+  // for the pulsing-blue highlight. If the user has any in_progress
+  // module (sessions_completed_n > 0), THAT one is already shown blue.
+  const nextUpVisualIdx = useMemo(() => {
+    for (let i = 0; i < modules.length; i++) {
+      const m = modules[i];
+      if (m.is_unlocked && !m.is_completed && (m.sessions_completed_n || 0) === 0) return i;
+    }
+    return -1;
+  }, [modules]);
+
   const links = useMemo(() => {
     const arr = [];
-    // F2 (Batch 1): strictly link adjacent modules by order_index continuity.
-    // If the user is missing a module in the sequence (e.g. customized
-    // enrollment removed M3), we still draw the link from M2 → M4 because
-    // the constellation positions are 0-indexed by order_index. This keeps
-    // the visual chain unbroken across customized paths.
-    const sorted = [...modules].sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
-    for (let i = 1; i < sorted.length; i++) {
-      const prev = sorted[i - 1];
-      const cur = sorted[i];
-      const pPos = nodePos(prev.order_index);
-      const cPos = nodePos(cur.order_index);
+    for (let i = 1; i < modules.length; i++) {
+      const prev = modules[i - 1];
+      const cur  = modules[i];
+      const pPos = gridPosition(i - 1);
+      const cPos = gridPosition(i);
       const completedBoth = prev.is_completed && cur.is_completed;
       const anyInProgress = (!prev.is_completed && prev.sessions_completed_n > 0)
                           || (!cur.is_completed && cur.sessions_completed_n > 0);
-      // F2: when prev is fully complete and cur is unlocked but not yet
-      // started, the link should clearly signal "you're up next" — light
-      // it up with the same gold hue as completed but slightly less
-      // opaque so it reads as "ready".
       const readyForNext = prev.is_completed && cur.is_unlocked
                           && !cur.is_completed && (cur.sessions_completed_n || 0) === 0;
       const lockedEither = !prev.is_unlocked || !cur.is_unlocked;
@@ -268,6 +326,8 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
     );
   }
 
+  const hoverMod = hoverIdx != null ? modules[hoverIdx] : null;
+
   return (
     <section
       className={`relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden ${containerHeight}`}
@@ -280,8 +340,17 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
           <Sparkles size={16} className="text-[var(--color-accent)]" />
           Module Constellation
         </h3>
+        <div className="mt-1 text-[10px] font-mono text-[var(--color-text-muted)]" data-testid="constellation-counter">
+          {modules.filter((m) => m.is_completed).length}/{modules.length} complete
+        </div>
       </div>
-      <svg viewBox="0 0 1000 500" className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
+      {/* Legend in the previously-empty upper-right area */}
+      <div className="absolute top-4 right-4 sm:top-5 sm:right-6 z-10 flex items-center gap-3 text-[10px] font-mono text-[var(--color-text-muted)]" data-testid="constellation-legend">
+        <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#fbbf24', boxShadow: '0 0 8px rgba(251,191,36,.6)' }} />done</span>
+        <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#246BFD', boxShadow: '0 0 8px rgba(36,107,253,.6)' }} />next</span>
+        <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#3a4150' }} />locked</span>
+      </div>
+      <svg viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`} className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
         <defs>
           <radialGradient id="starGoldGlow"><stop offset="0%" stopColor="#fde68a" stopOpacity="0.95" /><stop offset="50%" stopColor="#fbbf24" stopOpacity="0.45" /><stop offset="100%" stopColor="#fbbf24" stopOpacity="0" /></radialGradient>
           <radialGradient id="starBlueGlow"><stop offset="0%" stopColor="#bfd4ff" stopOpacity="0.9" /><stop offset="50%" stopColor="#246BFD" stopOpacity="0.4" /><stop offset="100%" stopColor="#246BFD" stopOpacity="0" /></radialGradient>
@@ -289,20 +358,24 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
         </defs>
         {/* Subtle starfield backdrop */}
         {Array.from({ length: 35 }).map((_, i) => {
-          const sx = (i * 137) % 1000;
-          const sy = (i * 89) % 500;
+          const sx = (i * 137) % VIEWBOX_W;
+          const sy = (i * 89) % VIEWBOX_H;
           const sr = (i % 3) * 0.4 + 0.6;
           return <circle key={`bg-${i}`} cx={sx} cy={sy} r={sr} fill="rgba(229,233,243,.18)" />;
         })}
-        {/* Links */}
+        {/* Links — straight orthogonal segments, never diagonal. Serpentine
+            ensures consecutive nodes are either same-row or same-column
+            neighbors, so this is always either a horizontal or short
+            vertical "U-turn" line. */}
         {links.map((l, i) => (
           <line key={`l-${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
-                stroke={l.stroke} strokeWidth="1.2" strokeDasharray="3 4" opacity={l.opacity} />
+                stroke={l.stroke} strokeWidth="1.5" strokeDasharray="4 5"
+                strokeLinecap="round" opacity={l.opacity} />
         ))}
         {/* Nodes */}
         {modules.map((m, i) => {
-          const pos = nodePos(m.order_index);
-          const style = StatusStyle(m);
+          const pos = gridPosition(i);
+          const style = StatusStyle(m, i === nextUpVisualIdx);
           const glowId = style.kind === 'completed' ? 'url(#starGoldGlow)'
                        : style.kind === 'in_progress' ? 'url(#starBlueGlow)'
                        : 'url(#starWhiteGlow)';
@@ -314,23 +387,34 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
               key={m.user_module_id}
               style={{ cursor: 'pointer' }}
               onClick={() => handleNodeClick(i)}
+              onMouseOver={() => setHoverIdx(i)}
+              onMouseOut={() => setHoverIdx((cur) => (cur === i ? null : cur))}
               data-testid={`constellation-node-${m.module_code}`}
             >
+              {/* Native SVG tooltip — surfaces immediately on hover with no JS overhead. */}
+              <title>{m.module_code} — {m.module_title}{m.is_completed ? ' · Completed' : m.is_unlocked ? ' · Unlocked' : ' · Locked'}</title>
               {/* Glow halo */}
               {style.kind !== 'locked' && (
                 <circle cx={pos.x} cy={pos.y} r={28} fill={glowId} className={pulseClass} />
               )}
+              {/* Next-up dashed ring — extra-prominent signal for "you're here". */}
+              {i === nextUpVisualIdx && (
+                <circle cx={pos.x} cy={pos.y} r={14} fill="none"
+                        stroke="#7fa6ff" strokeWidth="1.5"
+                        strokeDasharray="3 4" className="constellation-pulse-fast" />
+              )}
               {/* Star core */}
-              <circle cx={pos.x} cy={pos.y} r={style.kind === 'completed' ? 8 : style.kind === 'in_progress' ? 7 : 5.5}
+              <circle cx={pos.x} cy={pos.y} r={style.kind === 'completed' ? 9 : style.kind === 'in_progress' ? 8 : 6}
                       fill={style.fill} stroke={style.stroke} strokeWidth="1.2" />
               {/* Lock icon overlay for locked nodes */}
               {style.kind === 'locked' && (
                 <text x={pos.x} y={pos.y + 3} textAnchor="middle" fontSize="8" fill="#9aa3b8">∅</text>
               )}
-              {/* Label */}
-              <text x={pos.x} y={pos.y + 22} textAnchor="middle"
+              {/* Label: module code + truncated title underneath for readability */}
+              <text x={pos.x} y={pos.y + 24} textAnchor="middle"
                     fontFamily="JetBrains Mono, ui-monospace, monospace"
-                    fontSize="9" fill="var(--color-text-muted)"
+                    fontSize="10" fill="var(--color-text)"
+                    fontWeight="600"
                     opacity={style.labelOpacity}>
                 {m.module_code}
               </text>
@@ -338,6 +422,33 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
           );
         })}
       </svg>
+      {/* Hover tooltip — overlay HTML for richer styling than <title>. */}
+      {hoverMod && (
+        <div
+          className="absolute z-20 pointer-events-none px-3 py-2 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] shadow-lg text-xs font-bricolage text-[var(--color-text)] max-w-[220px]"
+          style={{
+            left: `${(gridPosition(hoverIdx).x / VIEWBOX_W) * 100}%`,
+            top:  `${(gridPosition(hoverIdx).y / VIEWBOX_H) * 100}%`,
+            transform: 'translate(-50%, -130%)',
+          }}
+          data-testid="constellation-tooltip"
+        >
+          <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+            {hoverMod.module_code}
+            {hoverMod.is_completed   ? ' · done'
+              : hoverMod.is_unlocked ? ' · unlocked'
+                                     : ' · locked'}
+          </div>
+          <div className="font-clash font-semibold text-sm text-[var(--color-text)] leading-tight mt-0.5 truncate">
+            {hoverMod.module_title}
+          </div>
+          {hoverMod.is_unlocked && (
+            <div className="text-[10px] text-[var(--color-text-muted)] mt-1">
+              {hoverMod.sessions_completed_n}/{hoverMod.sessions_total} sessions · {hoverMod.completion_percent}%
+            </div>
+          )}
+        </div>
+      )}
       <ModulePopover
         mod={selectedIdx != null ? modules[selectedIdx] : null}
         onClose={() => setSelectedIdx(null)}
