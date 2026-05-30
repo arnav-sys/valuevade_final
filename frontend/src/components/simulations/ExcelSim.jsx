@@ -1,303 +1,171 @@
-import { useMemo, useState } from 'react';
-import { CheckCircle2, XCircle, Lightbulb, RefreshCw, CheckSquare } from 'lucide-react';
-import ExcelWorkspace from './ExcelWorkspace';
+import { useCallback, useEffect, useState } from 'react';
+import { Loader2 } from 'lucide-react';
+import { useParams } from 'react-router-dom';
+import { adaptSimToWorkbook } from './excelSimAdapter';
+import SpreadsheetSim from './SpreadsheetSim';
+import AskPariButton from '../tutor/AskPariButton';
+import { supabase } from '../../lib/supabase';
 
-function formatValue(val, format) {
-  if (val === '' || val == null) return '';
-  const num = typeof val === 'number' ? val : parseFloat(val);
-  if (Number.isNaN(num)) return String(val);
-  if (format === 'decimal_2') return num.toFixed(2);
-  if (format === 'percentage_1') return `${num.toFixed(1)}%`;
-  if (format === 'number') return String(Math.round(num));
-  return num.toLocaleString();
-}
+const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
-function formatDisplay(val, format) {
-  if (val == null || val === '') return '—';
-  if (typeof val === 'string' && Number.isNaN(parseFloat(val))) return val;
-  return formatValue(val, format);
-}
+// Batch 5 — Thin entry point that adapts the master_simulations.config into
+// the canonical workbook shape and mounts the new mini-spreadsheet.
+//
+// Props (unchanged contract with SimulationPage):
+//   config      — master_simulations.config (any of the 3 known shapes)
+//   title       — sim.title
+//   sim         — the full master_simulations row (we need id for persistence)
+//   onProgress  — incremental progress callback (kept for compatibility)
+//   onComplete  — called on submit; receives { tasks_completed, tasks_total, accuracy }
 
-function checkRow(input, expected, tolerance) {
-  const num = parseFloat(input);
-  if (Number.isNaN(num)) return false;
-  const tol = tolerance ?? 0.01;
-  return Math.abs(num - expected) <= tol;
-}
+export default function ExcelSim({ config, title, sim, onProgress, onComplete }) {
+  const { sessionId } = useParams();
+  const [workbook, setWorkbook] = useState(null);
+  const [restored, setRestored] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [pariFocus, setPariFocus] = useState(null);
 
-export default function ExcelSim({ config, title, onProgress, onComplete }) {
-  // Route to the structured ExcelSim (expected_value grading) only when the
-  // legacy grid schema with `columns` + `rows[].type` markers is present.
-  // Any other shape (tabs, workbook, dataset, spreadsheet_setup, ...) routes
-  // to the new ExcelWorkspace which renders a full working spreadsheet.
-  const grid = config?.grid || {};
-  const columns = grid.columns || [];
-  const rows = grid.rows || [];
-  const hasLegacyGridShape =
-    Array.isArray(columns) && columns.length > 0 &&
-    Array.isArray(rows) && rows.some((r) => r && (r.type === 'answer_row' || r.type === 'section_header' || r.type === 'data'));
+  const simId = sim?.id || null;
 
-  const showHints = grid.show_hints_after_wrong_attempt ?? config?.show_hints_after_wrong_attempt ?? true;
+  // Adapt the master config → canonical workbook shape on mount.
+  useEffect(() => {
+    try {
+      const wb = adaptSimToWorkbook({ ...sim, config, title });
+      // Override the header.category if the parent already passes a richer title.
+      if (title && !wb.header.category) wb.header.category = title;
+      setWorkbook(wb);
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error('[ExcelSim] adapter failed:', e);
+      setError('Could not load this simulation. The data shape is malformed.');
+    }
+  }, [config, title, sim]);
 
-  const answerRows = useMemo(
-    () => rows.map((r, i) => ({ row: r, idx: i })).filter(({ row }) => row.type === 'answer_row'),
-    [rows]
-  );
+  // Restore any persisted workbook for this user + sim.
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      if (!simId) { setLoading(false); return; }
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+        if (!token) { setLoading(false); return; }
+        const url = `${BACKEND}/api/simulations/workbook?master_simulation_id=${encodeURIComponent(simId)}`
+          + (sessionId ? `&user_session_id=${encodeURIComponent(sessionId)}` : '');
+        const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+        if (res.ok) {
+          const j = await res.json();
+          if (alive && j.found && j.workbook_state) setRestored(j.workbook_state);
+        }
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, [simId, sessionId]);
 
-  const [inputs, setInputs] = useState({});
-  const [results, setResults] = useState({}); // { rowIdx: { correct, attempts } }
-  const [checked, setChecked] = useState(false);
+  const handleAutoSave = useCallback(async (workbookState) => {
+    if (!simId) return;
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
+      if (!token) return;
+      await fetch(`${BACKEND}/api/simulations/workbook/save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          master_simulation_id: simId,
+          user_session_id: sessionId || null,
+          workbook_state: workbookState,
+          status: 'in_progress',
+        }),
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.warn('[ExcelSim] autosave failed:', e);
+    }
+  }, [simId, sessionId]);
 
-  if (!hasLegacyGridShape) {
-    return <ExcelWorkspace config={config} title={title} onComplete={onComplete} />;
+  const handleSubmit = useCallback(async (workbookState, score) => {
+    // Persist as submitted.
+    if (simId) {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+        if (token) {
+          await fetch(`${BACKEND}/api/simulations/workbook/save`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+            body: JSON.stringify({
+              master_simulation_id: simId,
+              user_session_id: sessionId || null,
+              workbook_state: workbookState,
+              status: 'submitted',
+              last_score: score,
+            }),
+          });
+        }
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('[ExcelSim] submit save failed:', e);
+      }
+    }
+    // Bridge to the existing handleComplete contract.
+    let tasksCompleted = 0;
+    let tasksTotal = 0;
+    let accuracy = 1.0; // free-form: full credit on submit
+    if (score) {
+      const cells = Object.values(score.per_cell || {});
+      tasksCompleted = cells.filter((v) => v === 'pass').length;
+      tasksTotal = cells.length;
+      accuracy = tasksTotal > 0 ? (tasksCompleted / tasksTotal) : 1.0;
+    }
+    if (onProgress) onProgress({ tasks_completed: tasksCompleted, tasks_total: tasksTotal, accuracy });
+    if (onComplete) await onComplete({ tasks_completed: tasksCompleted, tasks_total: tasksTotal, accuracy });
+  }, [simId, sessionId, onProgress, onComplete]);
+
+  if (loading) {
+    return (
+      <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] px-5 py-6 flex items-center gap-3 text-sm text-[var(--color-text-muted)]" data-testid="excel-sim-loading">
+        <Loader2 size={14} className="animate-spin" /> Loading simulation…
+      </div>
+    );
   }
-
-  const correctCount = Object.values(results).filter((r) => r.correct).length;
-  const totalAnswers = answerRows.length;
-
-  const handleCheck = () => {
-    const next = { ...results };
-    answerRows.forEach(({ row, idx }) => {
-      const input = inputs[idx];
-      if (input == null || String(input).trim() === '') return;
-      const isCorrect = checkRow(input, row.expected_value, row.tolerance);
-      const prev = next[idx] || { attempts: 0 };
-      next[idx] = {
-        correct: isCorrect,
-        attempts: (prev.attempts || 0) + (prev.correct ? 0 : 1),
-      };
-    });
-    setResults(next);
-    setChecked(true);
-    const correct = Object.values(next).filter((r) => r.correct).length;
-    onProgress?.({ correct, total: totalAnswers });
-  };
-
-  const handleReset = (idx) => {
-    const nextInputs = { ...inputs };
-    delete nextInputs[idx];
-    setInputs(nextInputs);
-    const nextResults = { ...results };
-    delete nextResults[idx];
-    setResults(nextResults);
-  };
-
-  const allAnswered = answerRows.every(({ idx }) => results[idx]?.correct);
-  const accuracy = totalAnswers > 0 ? correctCount / totalAnswers : 0;
+  if (error) {
+    return (
+      <div className="rounded-xl border border-[var(--color-error)]/30 bg-[var(--color-error)]/5 px-5 py-4 text-sm text-[var(--color-error)] font-bricolage" data-testid="excel-sim-error">
+        {error}
+      </div>
+    );
+  }
+  if (!workbook) return null;
 
   return (
-    <div className="space-y-5" data-testid="excel-sim">
-      {/* Spreadsheet */}
-      <div className="rounded-2xl overflow-hidden border border-[#1F2937] bg-[#0B1220] shadow-[0_0_40px_rgba(0,0,0,0.3)]" data-testid="excel-sim-grid">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm font-mono" style={{ fontFamily: "'JetBrains Mono', ui-monospace, monospace" }}>
-            <thead>
-              <tr className="bg-[#111827] border-b border-[#1F2937]">
-                {columns.map((col, i) => (
-                  <th
-                    key={col.key || i}
-                    className="text-left px-4 py-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#9CA3AF]"
-                    style={{ width: col.width ? `${col.width}px` : undefined, minWidth: i === 0 ? 180 : 100 }}
-                  >
-                    {col.header}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row, rIdx) => {
-                if (row.type === 'section_header') {
-                  return (
-                    <tr key={rIdx} className="bg-[#0D1624] border-b border-[#1F2937]">
-                      <td
-                        colSpan={columns.length}
-                        className="px-4 py-2.5 font-bold text-xs uppercase tracking-[0.15em] text-[#60A5FA]"
-                        data-testid={`excel-section-${rIdx}`}
-                      >
-                        {row.label}
-                      </td>
-                    </tr>
-                  );
-                }
-                if (row.type === 'data') {
-                  const zebra = rIdx % 2 === 0 ? 'bg-[#0B1220]' : 'bg-[#0E1726]';
-                  return (
-                    <tr key={rIdx} className={`${zebra} border-b border-[#1F2937]`} data-testid={`excel-data-${rIdx}`}>
-                      {columns.map((col, cIdx) => {
-                        const cellVal = row.cells?.[col.key];
-                        const isLabel = cIdx === 0;
-                        return (
-                          <td
-                            key={col.key}
-                            className={`px-4 py-2.5 ${isLabel ? 'text-[#E5E7EB]' : 'text-right text-[#D1D5DB]'}`}
-                            data-testid={`excel-cell-${rIdx}-${col.key}`}
-                          >
-                            {isLabel ? (row.label ?? cellVal ?? '') : formatDisplay(cellVal, row.format)}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                }
-                if (row.type === 'answer_row') {
-                  const zebra = rIdx % 2 === 0 ? 'bg-[#0B1220]' : 'bg-[#0E1726]';
-                  const result = results[rIdx];
-                  const borderColor = result
-                    ? result.correct
-                      ? 'border-[#10B981]'
-                      : 'border-[#EF4444]'
-                    : 'border-[#334155]';
-                  const answerCol = row.answer_key || columns[columns.length - 1]?.key;
-
-                  return (
-                    <tr key={rIdx} className={`${zebra} border-b border-[#1F2937]`} data-testid={`excel-answer-${rIdx}`}>
-                      {columns.map((col, cIdx) => {
-                        const isAnswerCol = col.key === answerCol;
-                        const isLabel = cIdx === 0;
-
-                        if (isAnswerCol && !isLabel) {
-                          return (
-                            <td key={col.key} className="px-3 py-2">
-                              <div className="flex items-center justify-end gap-2">
-                                <div className="relative">
-                                  <input
-                                    type="number"
-                                    step="any"
-                                    value={inputs[rIdx] ?? ''}
-                                    onChange={(e) => setInputs({ ...inputs, [rIdx]: e.target.value })}
-                                    disabled={result?.correct}
-                                    placeholder={row.format === 'percentage_1' ? '0.0%' : row.format === 'decimal_2' ? '0.00' : '0'}
-                                    className={`w-32 px-3 py-1.5 rounded-lg bg-[#0B1220] text-right text-[#E5E7EB] border-2 ${borderColor} focus:outline-none focus:border-[#60A5FA] focus:shadow-[0_0_0_3px_rgba(96,165,250,0.15)] transition-all disabled:opacity-75`}
-                                    style={{ fontFamily: "'JetBrains Mono', monospace" }}
-                                    data-testid={`excel-input-${rIdx}`}
-                                  />
-                                  {result?.correct && (
-                                    <CheckCircle2
-                                      size={16}
-                                      className="absolute -right-5 top-1/2 -translate-y-1/2 text-[#10B981]"
-                                    />
-                                  )}
-                                  {result && !result.correct && (
-                                    <XCircle
-                                      size={16}
-                                      className="absolute -right-5 top-1/2 -translate-y-1/2 text-[#EF4444]"
-                                    />
-                                  )}
-                                </div>
-                                {row.format === 'percentage_1' && (
-                                  <span className="text-[#64748B] text-xs">%</span>
-                                )}
-                              </div>
-                            </td>
-                          );
-                        }
-                        return (
-                          <td
-                            key={col.key}
-                            className={`px-4 py-2.5 ${isLabel ? 'text-[#E5E7EB]' : 'text-right text-[#64748B]'}`}
-                          >
-                            {isLabel ? row.label : (row.cells?.[col.key] != null ? formatDisplay(row.cells[col.key], row.format) : '—')}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                }
-                return null;
-              })}
-            </tbody>
-          </table>
-        </div>
+    <div className="space-y-3" data-testid="excel-sim-root">
+      <SpreadsheetSim
+        workbook={workbook}
+        restoredState={restored}
+        onAutoSave={handleAutoSave}
+        onSubmit={handleSubmit}
+        onFocusChange={setPariFocus}
+      />
+      {/* Pari with cell-level current_focus (Batch 3 Item 2 + Batch 5). */}
+      <div className="pt-2" data-testid="excel-sim-pari">
+        <AskPariButton
+          phase="simulation"
+          courseSessionId={sessionId}
+          variant="card"
+          getCurrentFocus={() => {
+            if (!pariFocus) return null;
+            return {
+              surface: 'simulation',
+              session_id: sessionId,
+              anchor: pariFocus,
+            };
+          }}
+        />
       </div>
-
-      {/* Hints / explanations */}
-      {checked && (
-        <div className="space-y-2" data-testid="excel-hints">
-          {answerRows.map(({ row, idx }) => {
-            const result = results[idx];
-            if (!result || result.correct) return null;
-
-            const showHint = showHints && result.attempts >= 1 && row.hint;
-            const showExplanation = result.attempts >= 2 && row.explanation;
-
-            return (
-              <div
-                key={idx}
-                className="rounded-xl p-4 bg-[#EF4444]/8 border border-[#EF4444]/25 flex items-start gap-3"
-                data-testid={`excel-hint-${idx}`}
-              >
-                <Lightbulb size={16} className="text-[#FBBF24] shrink-0 mt-0.5" />
-                <div className="flex-1 min-w-0">
-                  <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[#EF4444] mb-1">
-                    {row.label}
-                  </div>
-                  {showHint && (
-                    <div className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed mb-2">
-                      <span className="font-semibold">Hint:</span> {row.hint}
-                    </div>
-                  )}
-                  {showExplanation && (
-                    <div className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                      <span className="font-semibold text-[var(--color-text)]">Explanation:</span>{' '}
-                      {row.explanation}
-                    </div>
-                  )}
-                  {row.allow_retry !== false && (
-                    <button
-                      onClick={() => handleReset(idx)}
-                      className="mt-2 inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-primary)] hover:text-[var(--color-accent-purple)] transition-colors"
-                      data-testid={`excel-reset-${idx}`}
-                    >
-                      <RefreshCw size={11} /> Reset & retry
-                    </button>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* Controls */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div className="text-xs font-mono text-[var(--color-text-muted)]">
-          {checked ? (
-            <span data-testid="excel-score">
-              <span className="text-[var(--color-text)] font-semibold">{correctCount}</span> / {totalAnswers} correct
-              <span className="mx-2 text-[var(--color-text-faint)]">·</span>
-              {Math.round(accuracy * 100)}%
-            </span>
-          ) : (
-            <span>{totalAnswers} answers to fill</span>
-          )}
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleCheck}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm font-semibold font-bricolage hover:border-[var(--color-primary)]/40 hover:shadow-[0_0_16px_rgba(36,107,253,0.15)] transition-all"
-            data-testid="excel-check-answers"
-          >
-            <CheckSquare size={15} /> Check Answers
-          </button>
-          <button
-            onClick={() => onComplete({
-              tasks_completed: correctCount,
-              tasks_total: totalAnswers,
-              accuracy,
-            })}
-            disabled={!checked}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:shadow-none"
-            data-testid="excel-complete"
-          >
-            Complete Simulation
-          </button>
-        </div>
-      </div>
-      {!allAnswered && checked && (
-        <p className="text-xs font-mono text-[var(--color-text-muted)] text-right">
-          Tip: Finish more rows for a higher score, or complete with your current accuracy.
-        </p>
-      )}
     </div>
   );
 }

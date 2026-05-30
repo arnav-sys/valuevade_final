@@ -1885,6 +1885,80 @@ def _resolve_session_context_for_revision(session_id: str):
     }
 
 
+class WorkbookSaveReq(BaseModel):
+    master_simulation_id: str
+    user_session_id: Optional[str] = None
+    workbook_state: dict
+    status: Optional[str] = None  # 'in_progress' (default) | 'submitted'
+    last_score: Optional[dict] = None
+
+
+@api_router.post("/simulations/workbook/save")
+async def simulation_workbook_save(req: WorkbookSaveReq, supa_user: dict = Depends(get_supabase_user)):
+    """Batch 5 — Persist (or auto-save) a per-user spreadsheet workbook
+    so users can leave and come back. UPSERT on (user_id, master_simulation_id,
+    user_session_id). 200 OK with the row id."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    row = {
+        "user_id": user_id,
+        "master_simulation_id": req.master_simulation_id,
+        "user_session_id": req.user_session_id,
+        "workbook_state": req.workbook_state,
+        "status": (req.status or "in_progress"),
+        "last_score": req.last_score,
+    }
+    try:
+        existing = _supabase_get(
+            f"user_simulation_workbooks?user_id=eq.{_urlparse.quote(user_id)}"
+            f"&master_simulation_id=eq.{_urlparse.quote(req.master_simulation_id)}"
+            + (f"&user_session_id=eq.{_urlparse.quote(req.user_session_id)}" if req.user_session_id
+               else "&user_session_id=is.null")
+            + "&select=id&limit=1"
+        ) or []
+        if existing:
+            row.pop("user_id", None)  # don't change PK fields on update
+            _supabase_patch(
+                f"user_simulation_workbooks?id=eq.{_urlparse.quote(existing[0]['id'])}",
+                row,
+            )
+            return {"ok": True, "id": existing[0]["id"], "updated": True}
+        result = _supabase_post(
+            "user_simulation_workbooks", row, prefer="return=representation"
+        )
+        # _supabase_post returns the inserted row (or list) — handle both shapes.
+        new_id = (result[0]["id"] if isinstance(result, list) and result else (result or {}).get("id"))
+        return {"ok": True, "id": new_id, "updated": False}
+    except Exception as e:
+        logger.error(f"[sim-workbook] save failed: {e}")
+        raise HTTPException(status_code=500, detail=f"workbook save failed: {e}")
+
+
+@api_router.get("/simulations/workbook")
+async def simulation_workbook_load(
+    master_simulation_id: str,
+    user_session_id: Optional[str] = None,
+    supa_user: dict = Depends(get_supabase_user),
+):
+    """Batch 5 — Fetch the persisted workbook (if any) for this user + sim
+    so the FE can restore where they left off."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="user id missing on token")
+    q = (
+        f"user_simulation_workbooks?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&master_simulation_id=eq.{_urlparse.quote(master_simulation_id)}"
+        + (f"&user_session_id=eq.{_urlparse.quote(user_session_id)}" if user_session_id
+           else "&user_session_id=is.null")
+        + "&select=id,workbook_state,last_score,status,updated_at&limit=1"
+    )
+    rows = _supabase_get(q) or []
+    if not rows:
+        return {"found": False}
+    return {"found": True, **rows[0]}
+
+
 @api_router.post("/revision/generate")
 async def revision_generate(req: RevisionGenerateReq, supa_user: dict = Depends(get_supabase_user)):
     """Idempotent: returns the cached sheet if one exists for (user, session),

@@ -70,13 +70,20 @@ export default function SimulationPage() {
           return;
         }
 
-        const { data: s, error: simErr } = await supabase
+        // Batch 5 — many master_sessions have multiple sim rows (e.g. an
+        // excel sim + a decision_making sim). Fetch all and pick the most
+        // useful one (prefer excel > interactive > decision_making) so the
+        // student always lands on a real spreadsheet when one is available.
+        const { data: sList, error: simErr } = await supabase
           .from('master_simulations')
           .select('*')
-          .eq('session_id', sess.master_session_id)
-          .maybeSingle();
+          .eq('session_id', sess.master_session_id);
         if (simErr && simErr.code !== 'PGRST116') throw simErr;
-        if (mounted) setSim(s || null);
+        const pickPriority = ['excel', 'interactive', 'decision_making'];
+        const sorted = (sList || []).slice().sort(
+          (a, b) => pickPriority.indexOf(a.sim_type) - pickPriority.indexOf(b.sim_type)
+        );
+        if (mounted) setSim(sorted[0] || null);
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load simulation');
       } finally {
@@ -268,7 +275,7 @@ export default function SimulationPage() {
         </div>
 
         {sim.sim_type === 'excel' && (
-          <ExcelSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
+          <ExcelSim config={config} title={sim.title} sim={sim} onProgress={setProgress} onComplete={handleComplete} />
         )}
         {sim.sim_type === 'document' && (
           <DocumentSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
