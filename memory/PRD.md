@@ -1,3 +1,48 @@
+# ============================================================================
+# CHANGELOG — 2026-05-30 (regression fixes + deployment readiness audit)
+# ============================================================================
+
+## P0 regressions resolved
+
+### News Modal dark-mode contrast (`DailyNewsModal.jsx`)
+- Root cause: CSS variable `--color-bg-card` was referenced by 20+ components
+  (modal cards, constellation, revision sheet, etc.) but **never defined** in
+  `index.css`. Browsers resolved it to `transparent`, so any modal opened over
+  the `bg-black/80` backdrop showed the dark backdrop through the card —
+  making text invisible whenever `--color-text` and backdrop were both dark.
+- Fix: defined the variable in both light and dark themes inside `index.css`:
+  - Light: `--color-bg-card: #FFFFFF; --color-bg-card-hover: #FAF7FC;`
+  - Dark : `--color-bg-card: #0a1156; --color-bg-card-hover: #111a6e;`
+- Verified: news modal renders with high-contrast text in BOTH light and dark
+  themes (`/tmp/news_light.png`, `/tmp/news_dark.png`).
+- Side-effect benefit: all other components using `--color-bg-card`
+  (constellation container, Pari briefings, daily challenges, activity heatmap,
+  session-complete card, etc.) now have proper solid backgrounds too.
+
+### Module Constellation layout (`ModuleConstellationMap.jsx`)
+- Confirmed previous-session serpentine packing logic is in place and
+  rendering correctly (horizontal zigzag, no diagonals, dashed connectors).
+- Fixed the "missing modules" sub-issue: VIEWBOX_H and container height were
+  hard-coded to 500 px / 460 px → modules beyond row 3 (16+) fell outside
+  the SVG and were never drawn. Now both grow dynamically based on enrolled
+  module count (`viewboxHeight(count)` + `dynamicHeightPx`).
+- Verified: `/tmp/constellation_29mods.png` shows clean 3-row serpentine for
+  the test user; `/tmp/constellation_dark.png` shows dark-mode rendering.
+
+### Test escape hatch (`DashboardPage.jsx`)
+- Added `?news=1` query-param hook to force-open the daily news modal even
+  when already read for the day. Used by QA automation; harmless in prod.
+
+## P1 deliverable
+
+### `/app/memory/DEPLOYMENT_READINESS.md` — 🟢 GO
+- 8-check audit (env vars, migrations, API health, CORS, hardcoded URLs,
+  credentials, bundle, code hygiene).
+- Verdict: **🟢 Production-deploy ready**. Two non-blockers flagged
+  (CORS=`*` to be tightened post-launch; 34 `console.log`/`print` to be
+  stripped in prod build).
+
+
 # Valuevade - PRD
 
 ## Problem Statement

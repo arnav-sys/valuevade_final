@@ -349,6 +349,14 @@ export default function DashboardPage() {
         if (pariReady && !alreadyRead) {
           timer = setTimeout(() => { if (!cancelled) setNewsOpen(true); }, 1800);
         }
+        // Debug/test escape hatch: ?news=1 forces the modal open even when
+        // already read for the day. Used by QA/screenshot automation.
+        try {
+          const url = new URL(window.location.href);
+          if (url.searchParams.get('news') === '1' && !cancelled) {
+            setNewsOpen(true);
+          }
+        } catch { /* ignore */ }
       } catch { /* network glitch — silently skip auto-open */ }
     })();
     return () => { cancelled = true; if (timer) clearTimeout(timer); };

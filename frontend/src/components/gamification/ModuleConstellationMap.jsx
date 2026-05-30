@@ -27,12 +27,16 @@ import { supabase } from '../../lib/supabase';
 // =============================================================================
 
 const VIEWBOX_W = 1000;
-const VIEWBOX_H = 500;
-const ROW_SIZE  = 5;   // 5 nodes per row gives 3 rows for 15 modules
+const ROW_SIZE  = 5;   // 5 nodes per row → grows vertically as enrollment grows.
 const X_PADDING = 90;
-const Y_PADDING = 110;
+const Y_PADDING = 90;
 const X_STEP    = (VIEWBOX_W - 2 * X_PADDING) / (ROW_SIZE - 1); // ~205
-const Y_STEP    = 130;
+const Y_STEP    = 120;
+
+function viewboxHeight(count) {
+  const rows = Math.max(1, Math.ceil(count / ROW_SIZE));
+  return Y_PADDING * 2 + (rows - 1) * Y_STEP;
+}
 
 function gridPosition(visualIdx) {
   const row = Math.floor(visualIdx / ROW_SIZE);
@@ -309,18 +313,26 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
     if (mod?.user_module_id) navigate(`/module/${mod.user_module_id}`);
   }, [navigate]);
 
-  const containerHeight = fullscreen ? 'h-[70vh]' : 'h-[400px] sm:h-[460px]';
+  // Dynamically size the SVG so all rows fit regardless of enrollment size.
+  // Container height grows with the number of rows; the fullscreen variant
+  // caps at 70vh and scrolls if needed.
+  const VIEWBOX_H = viewboxHeight(modules.length);
+  const rowCount = Math.max(1, Math.ceil(modules.length / ROW_SIZE));
+  const dynamicHeightPx = Math.min(820, 220 + rowCount * 110);
+  const containerStyle = fullscreen
+    ? { height: '70vh', minHeight: `${dynamicHeightPx}px`, overflowY: 'auto' }
+    : { height: `${dynamicHeightPx}px` };
 
   if (loading) {
     return (
-      <div className={`rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] ${containerHeight} flex items-center justify-center`} data-testid="constellation-loading">
+      <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] h-[400px] sm:h-[460px] flex items-center justify-center" data-testid="constellation-loading">
         <div className="text-sm text-[var(--color-text-muted)]">Plotting constellation…</div>
       </div>
     );
   }
   if (modules.length === 0) {
     return (
-      <div className={`rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] ${containerHeight} flex items-center justify-center`} data-testid="constellation-empty">
+      <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] h-[400px] sm:h-[460px] flex items-center justify-center" data-testid="constellation-empty">
         <div className="text-sm text-[var(--color-text-muted)]">No modules yet — your learning constellation will appear here once you enroll.</div>
       </div>
     );
@@ -330,7 +342,8 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
 
   return (
     <section
-      className={`relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden ${containerHeight}`}
+      className="relative rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] overflow-hidden"
+      style={containerStyle}
       data-testid="constellation-map"
     >
       <div className="absolute inset-0 pointer-events-none constellation-bg" aria-hidden="true" />
