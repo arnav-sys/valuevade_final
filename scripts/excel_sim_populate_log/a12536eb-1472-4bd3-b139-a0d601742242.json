@@ -1,0 +1,490 @@
+{
+  "sim_id": "a12536eb-1472-4bd3-b139-a0d601742242",
+  "title": "Build a Receivables Aging Schedule and G-Sec Bond Maturity Dashboard",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Receivables Data",
+        "cells": {
+          "A1": {
+            "value": "Customer",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Invoice Amount (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Invoice Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Days Outstanding",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 450,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "2024-11-15",
+            "readOnly": true
+          },
+          "D2": {
+            "value": 45,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS Limited",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 320,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "2024-10-20",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 71,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 280,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "2024-12-01",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 29,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys Technologies",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 510,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "2024-09-10",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 111,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 175,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "2024-11-28",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 32,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 220,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "2024-10-05",
+            "readOnly": true
+          },
+          "D7": {
+            "value": 86,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 390,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "2024-08-22",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 130,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 265,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "2024-12-10",
+            "readOnly": true
+          },
+          "D9": {
+            "value": 20,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "ITC Limited",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 410,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "2024-09-25",
+            "readOnly": true
+          },
+          "D10": {
+            "value": 96,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 335,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "2024-11-05",
+            "readOnly": true
+          },
+          "D11": {
+            "value": 55,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "G-Sec Bonds",
+        "cells": {
+          "A1": {
+            "value": "Bond Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Face Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Coupon Rate (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Maturity Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Months to Maturity",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "GOI 6.55% 2026",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 6.55,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "2026-04-15",
+            "readOnly": true
+          },
+          "E2": {
+            "value": 16,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "GOI 7.26% 2027",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 7.26,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "2027-06-21",
+            "readOnly": true
+          },
+          "E3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "GOI 6.84% 2028",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 800,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 6.84,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "2028-09-10",
+            "readOnly": true
+          },
+          "E4": {
+            "value": 45,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "GOI 7.10% 2030",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 7.1,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "2030-12-06",
+            "readOnly": true
+          },
+          "E5": {
+            "value": 60,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "GOI 6.95% 2032",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 6.95,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "2032-03-15",
+            "readOnly": true
+          },
+          "E6": {
+            "value": 75,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Dashboard",
+        "cells": {
+          "A1": {
+            "value": "RECEIVABLES AGING ANALYSIS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Current (0-30 days)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "30-60 days",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "60-90 days",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "90+ days",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Total Receivables (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "G-SEC BOND MATURITY DASHBOARD",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Short-term (0-24 months)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Medium-term (24-48 months)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Long-term (48+ months)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Total Bond Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Weighted Avg Coupon (%)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Dashboard!B2": {
+      "formula_pattern": "=SUMIF('Receivables Data'!D2:D11,\"<=30\",'Receivables Data'!B2:B11)",
+      "expected_value": 695,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Dashboard!B3": {
+      "formula_pattern": "=SUMIFS('Receivables Data'!B2:B11,'Receivables Data'!D2:D11,\">30\",'Receivables Data'!D2:D11,\"<=60\")",
+      "expected_value": 555,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Dashboard!B4": {
+      "formula_pattern": "=SUMIFS('Receivables Data'!B2:B11,'Receivables Data'!D2:D11,\">60\",'Receivables Data'!D2:D11,\"<=90\")",
+      "expected_value": 406,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Dashboard!B5": {
+      "formula_pattern": "=SUMIF('Receivables Data'!D2:D11,\">90\",'Receivables Data'!B2:B11)",
+      "expected_value": 1256,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Dashboard!B6": {
+      "formula_pattern": "=SUM('Receivables Data'!B2:B11)",
+      "expected_value": 3355,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Dashboard!B9": {
+      "formula_pattern": "=SUMIF('G-Sec Bonds'!E2:E6,\"<=24\",'G-Sec Bonds'!B2:B6)",
+      "expected_value": 1000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Dashboard!B10": {
+      "formula_pattern": "=SUMIFS('G-Sec Bonds'!B2:B6,'G-Sec Bonds'!E2:E6,\">24\",'G-Sec Bonds'!E2:E6,\"<=48\")",
+      "expected_value": 2300,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Dashboard!B11": {
+      "formula_pattern": "=SUMIF('G-Sec Bonds'!E2:E6,\">48\",'G-Sec Bonds'!B2:B6)",
+      "expected_value": 3200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Dashboard!B12": {
+      "formula_pattern": "=SUM('G-Sec Bonds'!B2:B6)",
+      "expected_value": 6500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Dashboard!B13": {
+      "formula_pattern": "=SUMPRODUCT('G-Sec Bonds'!B2:B6,'G-Sec Bonds'!C2:C6)/SUM('G-Sec Bonds'!B2:B6)",
+      "expected_value": 6.94,
+      "type": "number",
+      "tolerance": 0.05,
+      "points": 15
+    }
+  }
+}

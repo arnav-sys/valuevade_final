@@ -1,0 +1,392 @@
+{
+  "sim_id": "bfce721f-e802-4807-9703-c20abb807df9",
+  "title": "The 5-Chart Visual Story: Building an IB-Standard Equity Research Deck for Titan Company",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Net Profit (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "EPS (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Store Count",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Same-Store Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY20",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 2234,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 412,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 268,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 18.5,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 234,
+            "readOnly": true
+          },
+          "G2": {
+            "value": "Jewellery",
+            "readOnly": true
+          },
+          "H2": {
+            "value": 8.2,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY21",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 2456,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 439,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 287,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 19.8,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 248,
+            "readOnly": true
+          },
+          "G3": {
+            "value": "Jewellery",
+            "readOnly": true
+          },
+          "H3": {
+            "value": 9.1,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY22",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 3187,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 612,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 406,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 27.9,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 289,
+            "readOnly": true
+          },
+          "G4": {
+            "value": "Jewellery",
+            "readOnly": true
+          },
+          "H4": {
+            "value": 14.3,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3994,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 748,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 502,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 34.5,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 312,
+            "readOnly": true
+          },
+          "G5": {
+            "value": "Watches",
+            "readOnly": true
+          },
+          "H5": {
+            "value": 16.8,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY24",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 4961,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 956,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 643,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 44.2,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 356,
+            "readOnly": true
+          },
+          "G6": {
+            "value": "Watches",
+            "readOnly": true
+          },
+          "H6": {
+            "value": 18.5,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY25E",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 5847,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1126,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 762,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 52.3,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 398,
+            "readOnly": true
+          },
+          "G7": {
+            "value": "Watches",
+            "readOnly": true
+          },
+          "H7": {
+            "value": 19.2,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Calculations",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY20-FY25E CAGR %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue CAGR",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "EBITDA Margin FY25E %",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Net Profit Margin FY25E %",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Average Store Addition Per Year",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "EPS CAGR FY20-FY25E %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "What is the Revenue CAGR from FY20 to FY25E (5 years)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "What is the EBITDA margin in FY25E?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "What is the total store increase from FY20 to FY25E?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "What is the average annual revenue growth from FY20 to FY25E in ₹ Cr?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "In which fiscal year did Titan add the maximum number of stores?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!B7/Data!B2)^(1/5)-1",
+      "expected_value": 21.04,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C7/Data!B7*100",
+      "expected_value": 19.27,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!F7-Data!F2",
+      "expected_value": 164,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!B7-Data!B2)/5",
+      "expected_value": 722.6,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "FY24",
+      "expected_value": "FY24",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    }
+  }
+}

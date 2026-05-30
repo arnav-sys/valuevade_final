@@ -1,0 +1,589 @@
+{
+  "sim_id": "35ac9e65-f786-4594-920d-4a5e1f4c464c",
+  "title": "Build a 3-Scenario DCF Assumption Toggle for Infosys",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "DCF Scenario Toggle - Infosys",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Select Scenario:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "Base",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Base Case Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Revenue Growth (Year 1-5, %)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 12,
+            "readOnly": false
+          },
+          "A7": {
+            "value": "EBITDA Margin (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 21.5,
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Tax Rate (%)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 27,
+            "readOnly": false
+          },
+          "A9": {
+            "value": "CapEx as % of Revenue",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 3.2,
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Working Capital Change (₹ Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 50,
+            "readOnly": false
+          },
+          "A11": {
+            "value": "WACC (%)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Terminal Growth Rate (%)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 3.5,
+            "readOnly": false
+          },
+          "A13": {
+            "value": "",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Bull Case Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A15": {
+            "value": "Revenue Growth (Year 1-5, %)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 16,
+            "readOnly": false
+          },
+          "A16": {
+            "value": "EBITDA Margin (%)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 23.5,
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Tax Rate (%)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 27,
+            "readOnly": false
+          },
+          "A18": {
+            "value": "CapEx as % of Revenue",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 2.8,
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Working Capital Change (₹ Cr)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 30,
+            "readOnly": false
+          },
+          "A20": {
+            "value": "WACC (%)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 8,
+            "readOnly": false
+          },
+          "A21": {
+            "value": "Terminal Growth Rate (%)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 4,
+            "readOnly": false
+          },
+          "A22": {
+            "value": "",
+            "readOnly": true
+          },
+          "A23": {
+            "value": "Bear Case Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A24": {
+            "value": "Revenue Growth (Year 1-5, %)",
+            "readOnly": true
+          },
+          "B24": {
+            "value": 8,
+            "readOnly": false
+          },
+          "A25": {
+            "value": "EBITDA Margin (%)",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 19,
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Financials",
+        "cells": {
+          "A1": {
+            "value": "Base Year Financials - Infosys (FY24)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "FY24 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 297043,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 63863,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "PAT (Net Income)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 42572,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Projected Revenue (5 Years)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "C9": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "D9": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "E9": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F9": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Free Cash Flow Projection",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B13": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "C13": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "D13": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "E13": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F13": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Unlevered FCF",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "C15": {
+            "value": "",
+            "readOnly": false
+          },
+          "D15": {
+            "value": "",
+            "readOnly": false
+          },
+          "E15": {
+            "value": "",
+            "readOnly": false
+          },
+          "F15": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Valuation",
+        "cells": {
+          "A1": {
+            "value": "DCF Valuation Results",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Active Scenario:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Key Inputs",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Revenue Growth (Y1-5)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "EBITDA Margin",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "WACC",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Terminal Growth Rate",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Valuation Output",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "PV of 5-Year FCF (₹ Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Terminal Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A14": {
+            "value": "PV of Terminal Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Enterprise Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": "",
+            "readOnly": false
+          },
+          "A16": {
+            "value": "",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Less: Net Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": -22500,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Equity Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 350,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Fair Value Per Share (₹)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": "",
+            "readOnly": false
+          },
+          "A22": {
+            "value": "Current Market Price (₹)",
+            "readOnly": true
+          },
+          "B22": {
+            "value": 2850,
+            "readOnly": true
+          },
+          "A23": {
+            "value": "Upside / (Downside) %",
+            "readOnly": true
+          },
+          "B23": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Financials!B10": {
+      "formula_pattern": "=B4*(1+IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B6,IF(Assumptions!B3=\"Bull\",Assumptions!B15,Assumptions!B24)),0.12)/100)",
+      "expected_value": 332768,
+      "type": "number",
+      "tolerance": 100,
+      "points": 12
+    },
+    "Financials!C10": {
+      "formula_pattern": "=B10*(1+IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B6,IF(Assumptions!B3=\"Bull\",Assumptions!B15,Assumptions!B24)),0.12)/100)",
+      "expected_value": 372821,
+      "type": "number",
+      "tolerance": 100,
+      "points": 12
+    },
+    "Financials!B15": {
+      "formula_pattern": "=(B10*IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B7,IF(Assumptions!B3=\"Bull\",Assumptions!B16,Assumptions!B25)),0.215)/100)*(1-IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B8,IF(Assumptions!B3=\"Bull\",Assumptions!B17,0.27)),0.27)/100)-(B10*IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B9,IF(Assumptions!B3=\"Bull\",Assumptions!B18,0.032)),0.032)/100)-IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B10,IF(Assumptions!B3=\"Bull\",Assumptions!B19,75)),50)",
+      "expected_value": 48834,
+      "type": "number",
+      "tolerance": 500,
+      "points": 18
+    },
+    "Valuation!B15": {
+      "formula_pattern": "=SUM(PV(IFERROR(IF(Assumptions!B3=\"Base\",Assumptions!B11,IF(Assumptions!B3=\"Bull\",Assumptions!B20,0.09)),0.085)/100,5,-Financials!B15,-Financials!F15),B12)",
+      "expected_value": 655000,
+      "type": "number",
+      "tolerance": 15000,
+      "points": 20
+    },
+    "Valuation!B21": {
+      "formula_pattern": "=(B18/B20)*100",
+      "expected_value": 1872,
+      "type": "number",
+      "tolerance": 50,
+      "points": 15
+    },
+    "Valuation!B23": {
+      "formula_pattern": "=((B21-B22)/B22)*100",
+      "expected_value": -34.32,
+      "type": "number",
+      "tolerance": 5,
+      "points": 13
+    }
+  }
+}

@@ -1,0 +1,503 @@
+{
+  "sim_id": "03141051-391c-4521-98f2-8e03bd4a41ae",
+  "title": "Sensitivity Table Wiring: Build a DCF Valuation Grid for Infosys",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Inputs",
+        "cells": {
+          "A1": {
+            "value": "DCF Model Inputs - Infosys Ltd",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Revenue FY25 (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 262460,
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Revenue Growth Rate (Years 1-5) %",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 12.5,
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Terminal Revenue Growth %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3.5,
+            "readOnly": false
+          },
+          "A6": {
+            "value": "EBITDA Margin %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 21.5,
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Tax Rate %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 28,
+            "readOnly": false
+          },
+          "A8": {
+            "value": "CapEx as % of Revenue",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2.8,
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Change in Working Capital as % of Revenue Growth",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1.5,
+            "readOnly": false
+          },
+          "A10": {
+            "value": "WACC (Discount Rate) %",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 8.5,
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Equity Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 318.5,
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Calculated Base Case Equity Value Per Share (₹)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Projection",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "NOPAT (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "CapEx (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Δ WC (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FCF (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY25",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "=Inputs!B3",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "=B2*Inputs!B6/100",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "=C2*(1-Inputs!B7/100)",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "=B2*Inputs!B8/100",
+            "readOnly": true
+          },
+          "F2": {
+            "value": "=0",
+            "readOnly": true
+          },
+          "G2": {
+            "value": "=D2-E2-F2",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY26",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=B2*(1+Inputs!B4/100)",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "=B3*Inputs!B6/100",
+            "readOnly": true
+          },
+          "D3": {
+            "value": "=C3*(1-Inputs!B7/100)",
+            "readOnly": true
+          },
+          "E3": {
+            "value": "=B3*Inputs!B8/100",
+            "readOnly": true
+          },
+          "F3": {
+            "value": "=(B3-B2)*Inputs!B9/100",
+            "readOnly": true
+          },
+          "G3": {
+            "value": "=D3-E3-F3",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY27",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=B3*(1+Inputs!B4/100)",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "=B4*Inputs!B6/100",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "=C4*(1-Inputs!B7/100)",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "=B4*Inputs!B8/100",
+            "readOnly": true
+          },
+          "F4": {
+            "value": "=(B4-B3)*Inputs!B9/100",
+            "readOnly": true
+          },
+          "G4": {
+            "value": "=D4-E4-F4",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY28",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=B4*(1+Inputs!B4/100)",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "=B5*Inputs!B6/100",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "=C5*(1-Inputs!B7/100)",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "=B5*Inputs!B8/100",
+            "readOnly": true
+          },
+          "F5": {
+            "value": "=(B5-B4)*Inputs!B9/100",
+            "readOnly": true
+          },
+          "G5": {
+            "value": "=D5-E5-F5",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY29",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=B5*(1+Inputs!B4/100)",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "=B6*Inputs!B6/100",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "=C6*(1-Inputs!B7/100)",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "=B6*Inputs!B8/100",
+            "readOnly": true
+          },
+          "F6": {
+            "value": "=(B6-B5)*Inputs!B9/100",
+            "readOnly": true
+          },
+          "G6": {
+            "value": "=D6-E6-F6",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Terminal Year FCF",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "=G6*(1+Inputs!B5/100)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Terminal Value",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=B8/(Inputs!B10/100-Inputs!B5/100)",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "PV of FCF (FY26-FY29)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=G3/(1+Inputs!B10/100)+G4/(1+Inputs!B10/100)^2+G5/(1+Inputs!B10/100)^3+G6/(1+Inputs!B10/100)^4",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "PV of Terminal Value",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "=B9/(1+Inputs!B10/100)^4",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Enterprise Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "=B11+B12",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "SensitivityTable",
+        "cells": {
+          "A1": {
+            "value": "Sensitivity Analysis: Equity Value Per Share (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "WACC / Revenue Growth",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": 10.5,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 11.5,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 12.5,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 13.5,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 14.5,
+            "readOnly": true
+          },
+          "A3": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "F3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": 8.5,
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": 9.5,
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": 10.5,
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Inputs!B13": {
+      "formula_pattern": "=(Projection!B13/Inputs!B11)",
+      "expected_value": 2198.47,
+      "type": "number",
+      "tolerance": 5,
+      "points": 25
+    },
+    "SensitivityTable!B3": {
+      "formula_pattern": "=IFERROR((((Inputs!B3*(1+$B$2/100))*Inputs!B6/100)*(1-Inputs!B7/100)*(1-Inputs!B8/100-$A3/100)/(Inputs!B10/100-Inputs!B5/100))/(Inputs!B11),\"\")",
+      "expected_value": 3142.58,
+      "type": "number",
+      "tolerance": 50,
+      "points": 20
+    },
+    "SensitivityTable!D5": {
+      "formula_pattern": "=IFERROR((((Inputs!B3*(1+$D$2/100))*Inputs!B6/100)*(1-Inputs!B7/100)*(1-Inputs!B8/100-$A5/100)/(Inputs!B10/100-Inputs!B5/100))/(Inputs!B11),\"\")",
+      "expected_value": 2198.47,
+      "type": "number",
+      "tolerance": 50,
+      "points": 20
+    },
+    "SensitivityTable!F7": {
+      "formula_pattern": "=IFERROR((((Inputs!B3*(1+$F$2/100))*Inputs!B6/100)*(1-Inputs!B7/100)*(1-Inputs!B8/100-$A7/100)/(Inputs!B10/100-Inputs!B5/100))/(Inputs!B11),\"\")",
+      "expected_value": 1508.92,
+      "type": "number",
+      "tolerance": 50,
+      "points": 15
+    }
+  }
+}

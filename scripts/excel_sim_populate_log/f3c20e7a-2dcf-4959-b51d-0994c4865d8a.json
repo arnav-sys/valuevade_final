@@ -1,0 +1,380 @@
+{
+  "sim_id": "f3c20e7a-2dcf-4959-b51d-0994c4865d8a",
+  "title": "Analyst Workspace Setup: Configure Excel Like a Pro",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Profit FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Energy",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 869000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 62500,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 2450000,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 268000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 48500,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 1580000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 187500,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 61200,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1920000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 244000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 42300,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 950000,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 31500,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 4850,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 285000,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 32800,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 320000,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Finance",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 45600,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 580000,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 156800,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 45300,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 980000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "ITC Limited",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 68200,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 12100,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 52300,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 8900,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 420000,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Analysis",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Total Revenue across all 10 companies (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Average Profit Margin % (Profit/Revenue)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Count of Banking sector companies",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Total Revenue for IT sector only (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Highest Market Cap value (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Reference",
+        "cells": {
+          "A1": {
+            "value": "Setup Best Practices for Analyst Workspace",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1. Use descriptive headers with units (₹ Cr, %, INR)",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "2. Keep data and calculations on separate sheets",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "3. Use Data sheet for raw information (read-only when shared)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "4. Use Analysis/Answers sheet for formulas and outputs",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "5. Freeze top row to keep headers visible while scrolling",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "6. Use named ranges for frequently referenced data blocks",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "7. Apply number formatting (₹ symbol, decimal places) consistently",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "8. Add totals and subtotals row below data for quick validation",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "9. Use color-coding for sector or risk categories",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "10. Document assumptions and data sources in a Notes sheet",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Analysis!B2": {
+      "formula_pattern": "=SUM(Data!C2:C11)",
+      "expected_value": 1955700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Analysis!B3": {
+      "formula_pattern": "=AVERAGE((Data!D2:D11)/(Data!C2:C11))*100",
+      "expected_value": 18.92,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Analysis!B4": {
+      "formula_pattern": "=COUNTIF(Data!B2:B11,\"Banking\")",
+      "expected_value": 2,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Analysis!B5": {
+      "formula_pattern": "=SUMIF(Data!B2:B11,\"IT\",Data!C2:C11)",
+      "expected_value": 512000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Analysis!B6": {
+      "formula_pattern": "=MAX(Data!E2:E11)",
+      "expected_value": 2450000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

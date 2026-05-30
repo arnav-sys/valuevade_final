@@ -1,0 +1,585 @@
+{
+  "sim_id": "005e7832-4e27-4343-b01b-81da3315c1a4",
+  "title": "Model Audit: Fix the Broken Infosys Revenue Model",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Operating Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Employee Count",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 2023,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 8147,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "  21.5",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "'314521",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 2023,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 8432,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "22.1",
+            "readOnly": true
+          },
+          "E3": {
+            "value": "'315847",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Q3",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2023,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 8691,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "  22.8 ",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "'318234",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Q4",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 2023,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 9156,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "23.4",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "'321045",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 9847,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "  24.2",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "'328956",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 10234,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "24.8",
+            "readOnly": true
+          },
+          "E7": {
+            "value": "'334678",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Q3",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 10562,
+            "readOnly": true
+          },
+          "D8": {
+            "value": "  25.1",
+            "readOnly": true
+          },
+          "E8": {
+            "value": "'341234",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Q4",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 11023,
+            "readOnly": true
+          },
+          "D9": {
+            "value": "25.6",
+            "readOnly": true
+          },
+          "E9": {
+            "value": "'347892",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 2025,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 11567,
+            "readOnly": true
+          },
+          "D10": {
+            "value": "  26.2  ",
+            "readOnly": true
+          },
+          "E10": {
+            "value": "'354521",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 2025,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 12045,
+            "readOnly": true
+          },
+          "D11": {
+            "value": "26.8",
+            "readOnly": true
+          },
+          "E11": {
+            "value": "'361789",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Audit",
+        "cells": {
+          "A1": {
+            "value": "Audit Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Formula Used",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Total FY2024 Revenue (₹ Cr)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Average Operating Margin % for FY2025 (clean the trailing spaces first)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Total Employee Count across all quarters (clean the leading apostrophes first)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "What is the YoY Revenue Growth % from Q1 FY2024 to Q1 FY2025?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "How many quarters had Operating Margin ≥ 25%?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "CleanData",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Operating Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Employee Count",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": false
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "",
+            "readOnly": false
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "",
+            "readOnly": false
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "",
+            "readOnly": false
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "",
+            "readOnly": false
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "",
+            "readOnly": false
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "",
+            "readOnly": false
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "",
+            "readOnly": false
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "",
+            "readOnly": false
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "",
+            "readOnly": false
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Audit!B2": {
+      "formula_pattern": "=SUMIF(Data!B2:B11,2024,Data!C2:C11)",
+      "expected_value": 41666,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Audit!B3": {
+      "formula_pattern": "=AVERAGE(VALUE(TRIM(Data!D10:D11)))",
+      "expected_value": 26.5,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Audit!B4": {
+      "formula_pattern": "=SUM(VALUE(SUBSTITUTE(Data!E2:E11,\"'\",\"\")))",
+      "expected_value": 3277916,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Audit!B5": {
+      "formula_pattern": "=((Data!C10-Data!C6)/Data!C6)*100",
+      "expected_value": 17.32,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 18
+    },
+    "Audit!B6": {
+      "formula_pattern": "=COUNTIF(Data!D2:D11,\">=25\")",
+      "expected_value": 5,
+      "type": "number",
+      "tolerance": 0,
+      "points": 12
+    }
+  }
+}

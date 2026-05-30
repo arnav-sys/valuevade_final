@@ -1,0 +1,513 @@
+{
+  "sim_id": "07b6baf2-1c6a-4d8b-a16d-323e041c1f11",
+  "title": "Index Construction & Decomposition Lab: Build Your Own Nifty-Style Index",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Universe",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "6M Avg Daily Volume (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Trading Days (Last 6M)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Impact Cost %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Energy",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1580000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 850,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 0.28,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 1420000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 920,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 0.19,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1350000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 780,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 0.31,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 850000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 650,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 780000,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 620,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 0.35,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 485000,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 380,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 0.41,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 420000,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 340,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 0.38,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Larsen & Toubro",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Industrial",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 420,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 0.43,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "State Bank of India",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 680000,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 510,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 0.37,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 340000,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 220,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 126,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 0.52,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "IndexCalcs",
+        "cells": {
+          "A1": {
+            "value": "Selection Criteria & Weighting",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Liquidity Filter: Impact Cost < 0.50%?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Trading Compliance: >= 126 days?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Count of Eligible Stocks",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Total Market Cap of Eligible (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Free-Float Weight: Reliance (after 10% cap)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Free-Float Weight: TCS (after 10% cap)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Sector Check: Financial Services total weight",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "Index Base Value (1000 on Nov 3, 1995)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Current Index Level (Assume sum of cap-weighted stocks = base)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "How many stocks meet BOTH liquidity (impact cost < 0.50%) AND trading compliance (>= 126 days) filters?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Total eligible market cap (₹ Cr) for index construction?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "What is the capped weight of Reliance (%) after 10% SEBI cap applied? (2 decimal places)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Combined weight of HDFC Bank + ICICI Bank + SBI after individual 10% caps (%)? (2 decimal places)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Remaining weight to distribute among IT stocks (TCS, Infosys, Wipro) if Financial Services cannot exceed 30%?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "IndexCalcs!B2": {
+      "formula_pattern": "=COUNTIF(Universe!F2:F11,\"<0.50\")",
+      "expected_value": 9,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "IndexCalcs!B3": {
+      "formula_pattern": "=COUNTIF(Universe!E2:E11,\">=126\")",
+      "expected_value": 10,
+      "type": "number",
+      "tolerance": 0,
+      "points": 5
+    },
+    "IndexCalcs!B4": {
+      "formula_pattern": "=COUNTIFS(Universe!F2:F11,\"<0.50\",Universe!E2:E11,\">=126\")",
+      "expected_value": 9,
+      "type": "number",
+      "tolerance": 0,
+      "points": 8
+    },
+    "IndexCalcs!B5": {
+      "formula_pattern": "=SUMIFS(Universe!C2:C11,Universe!F2:F11,\"<0.50\",Universe!E2:E11,\">=126\")",
+      "expected_value": 8515000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "IndexCalcs!B6": {
+      "formula_pattern": "=MIN(Universe!C2/IndexCalcs!B5,0.10)*100",
+      "expected_value": 10.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "IndexCalcs!B7": {
+      "formula_pattern": "=MIN(Universe!C3/IndexCalcs!B5,0.10)*100",
+      "expected_value": 10.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "IndexCalcs!B8": {
+      "formula_pattern": "=(MIN(Universe!C4/IndexCalcs!B5,0.10)+MIN(Universe!C6/IndexCalcs!B5,0.10)+MIN(Universe!C10/IndexCalcs!B5,0.10))*100",
+      "expected_value": 25.15,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "IndexCalcs!B10": {
+      "formula_pattern": "=IndexCalcs!B9*(IndexCalcs!B5/6430000)",
+      "expected_value": 1324.29,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 18
+    },
+    "Answers!B2": {
+      "formula_pattern": "=IndexCalcs!B4",
+      "expected_value": 9,
+      "type": "number",
+      "tolerance": 0,
+      "points": 8
+    },
+    "Answers!B3": {
+      "formula_pattern": "=IndexCalcs!B5",
+      "expected_value": 8515000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=ROUND(MIN(Universe!C2/IndexCalcs!B5,0.10)*100,2)",
+      "expected_value": 10.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=ROUND((MIN(Universe!C4/IndexCalcs!B5,0.10)+MIN(Universe!C6/IndexCalcs!B5,0.10)+MIN(Universe!C10/IndexCalcs!B5,0.10))*100,2)",
+      "expected_value": 25.15,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=MAX(0,30-(ROUND((MIN(Universe!C4/IndexCalcs!B5,0.10)+MIN(Universe!C6/IndexCalcs!B5,0.10)+MIN(Universe!C10/IndexCalcs!B5,0.10))*100,2)))",
+      "expected_value": 4.85,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 18
+    }
+  }
+}

@@ -1,0 +1,560 @@
+{
+  "sim_id": "f014304a-ccf4-47d4-ac88-d169ec931536",
+  "title": "Build a Nifty 50 Equity Screener with Multi-Layer Conditional Logic",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Stock Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "P/E Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Dividend Yield (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "ROE (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Debt-to-Equity",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Energy",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2850,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 0.75,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 2480000,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 18.2,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 0.48,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 4120,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 28.3,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 2.15,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 1650000,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 21.8,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1880,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 19.2,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1.45,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 1820000,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 16.5,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 0.32,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 26.8,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 2.42,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 1120000,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 19.5,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 3520,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 35.2,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 1.1,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 680000,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 24.2,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1125,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 18.5,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 1.92,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 1410000,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 15.8,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 0.55,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Finance",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 8950,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 31.5,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0.85,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 1200000,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 22.1,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 0.65,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 2680,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 33.8,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 0.65,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 580000,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 20.3,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 0.18,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Consumer",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 2580,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 42.5,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 2.08,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 18.7,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Larsen & Toubro",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Industrials",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 4280,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 24.2,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 1.35,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 1150000,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 17.9,
+            "readOnly": true
+          },
+          "H11": {
+            "value": 0.42,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Screening Criteria",
+        "cells": {
+          "A1": {
+            "value": "Screening Parameters",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Max P/E Ratio Threshold",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 30,
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Min ROE Threshold (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 18,
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Max Debt-to-Equity Threshold",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.5,
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Min Dividend Yield (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1.0,
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Sectors to Include (IT, Banking, Finance, Energy, Consumer, Industrials)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Results Summary",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Total Stocks Passing All Criteria",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Count of Banking Sector Stocks Passing",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Average P/E of Passing Stocks",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Highest ROE Among Passing Stocks",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "List of Passing Companies (comma-separated)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "How many stocks meet all 4 screening criteria (P/E ≤ 30, ROE ≥ 18%, D/E ≤ 0.5, Dividend Yield ≥ 1%)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "What is the average P/E ratio of stocks passing all criteria (rounded to 2 decimals)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "How many IT sector stocks pass all criteria?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "What is the highest ROE value among stocks passing all criteria?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Name the company with the lowest P/E ratio among passing stocks (text answer)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=COUNTIFS(Data!D2:D11,\"<=\"&30,Data!G2:G11,\">=\"&18,Data!H2:H11,\"<=\"&0.5,Data!E2:E11,\">=\"&1)",
+      "expected_value": 6,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Answers!B3": {
+      "formula_pattern": "=ROUND(AVERAGEIFS(Data!D2:D11,Data!D2:D11,\"<=\"&30,Data!G2:G11,\">=\"&18,Data!H2:H11,\"<=\"&0.5,Data!E2:E11,\">=\"&1),2)",
+      "expected_value": 24.68,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Answers!B4": {
+      "formula_pattern": "=COUNTIFS(Data!B2:B11,\"IT\",Data!D2:D11,\"<=\"&30,Data!G2:G11,\">=\"&18,Data!H2:H11,\"<=\"&0.5,Data!E2:E11,\">=\"&1)",
+      "expected_value": 2,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=MAXIFS(Data!G2:G11,Data!D2:D11,\"<=\"&30,Data!G2:G11,\">=\"&18,Data!H2:H11,\"<=\"&0.5,Data!E2:E11,\">=\"&1)",
+      "expected_value": 24.2,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "INDEX(Data!A2:A11,MATCH(MINIFS(Data!D2:D11,Data!D2:D11,\"<=\"&30,Data!G2:G11,\">=\"&18,Data!H2:H11,\"<=\"&0.5,Data!E2:E11,\">=\"&1),Data!D2:D11,0))",
+      "expected_value": "ICICI Bank",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

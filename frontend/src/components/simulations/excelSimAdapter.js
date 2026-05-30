@@ -134,6 +134,70 @@ export function adaptSimToWorkbook(sim) {
     time_limit_minutes: config.time_limit_minutes || null,
   };
 
+  // ----- Shape 0 (NEW — HIGHEST priority): LLM-populated `multi_tab_excel_workbook` ----
+  // This is the canonical shape produced by `/app/scripts/populate_excel_sims.py`.
+  // When present, it always wins over any other detected shape because the
+  // populate pass is the only source of realistic finance data + cell-level
+  // expected_answers for auto-scoring.
+  //
+  // Shape:
+  //   config.multi_tab_excel_workbook = {
+  //     sheets: [
+  //       { name: "Data", cells: { A1: { value:"Company", readOnly:true, bold:true }, ... } },
+  //       { name: "Answers", cells: { B2: { value:"", readOnly:false, label:"Total Revenue" }, ... } },
+  //     ],
+  //   }
+  //   config.expected_answers = {
+  //     "Answers!B2": { formula_pattern: "=SUM(Data!B2:B11)", expected_value: 4500000,
+  //                      type:"number", tolerance: 0.01, points: 10 }
+  //   }
+  const mw = config.multi_tab_excel_workbook;
+  if (mw && Array.isArray(mw.sheets) && mw.sheets.length > 0) {
+    const sheets = mw.sheets.map((s) => {
+      const cells = {};
+      let maxC = 0; let maxR = 0;
+      Object.entries(s.cells || {}).forEach(([addr, c]) => {
+        cells[addr] = { ...c, value: c?.value ?? '' };
+        const m = /^([A-Z]+)(\d+)$/.exec(addr);
+        if (m) {
+          // Convert letter back to col index
+          let col = 0; for (let i = 0; i < m[1].length; i++) col = col * 26 + (m[1].charCodeAt(i) - 64);
+          if (col > maxC) maxC = col;
+          if (parseInt(m[2], 10) > maxR) maxR = parseInt(m[2], 10);
+        }
+      });
+      return {
+        name: s.name || 'Sheet1',
+        cells,
+        rowCount: Math.max(maxR + 5, 20),
+        colCount: Math.max(maxC + 2, 8),
+      };
+    });
+    // Stamp expected_answers onto Answers-sheet cells so scoreWorkbook picks them up.
+    const ea = config.expected_answers || {};
+    Object.entries(ea).forEach(([key, spec]) => {
+      // key shape: "SheetName!A1"
+      const [sname, addr] = String(key).split('!');
+      const sheet = sheets.find((s) => s.name === sname);
+      if (!sheet) return;
+      sheet.cells[addr] = {
+        ...(sheet.cells[addr] || { value: '', readOnly: false }),
+        readOnly: false,
+        expected: spec.expected_value,
+        type: spec.type || (typeof spec.expected_value === 'number' ? 'number' : 'text'),
+        tolerance: spec.tolerance ?? 0.01,
+        points: spec.points ?? 10,
+        formula_pattern: spec.formula_pattern || null,
+      };
+    });
+    const totalPoints = Object.values(ea).reduce((s, v) => s + (v.points || 10), 0) || 100;
+    return {
+      header,
+      sheets,
+      scoring: { max_points: totalPoints, mode: 'auto' },
+    };
+  }
+
   // ----- Shape 2: legacy { starter_grid + tasks } -----
   if (config.starter_grid && Array.isArray(config.starter_grid.columns)) {
     const cols = config.starter_grid.columns;
@@ -223,6 +287,13 @@ export function adaptSimToWorkbook(sim) {
       'tab_names','instructions','brief','prompt','base_date','base_value',
       'index_name','bond_yield_pct','historical_avg_pe','excel_formulas_tested',
       'expected_solutions','raw_data','data',
+      // ----- rubric / meta keys (added 2026-05-30) — never render as a sheet -----
+      'evaluation_criteria','deliverables','expected_outputs','expected_output',
+      'expected_answers','stress_tests','acid_test','tools_required','three_layers',
+      'font_colour_convention','firm_context','hints','task_description',
+      'spreadsheet_setup','populated_at','multi_tab_excel_workbook',
+      'starting_state','expected_final_state','shortcuts_tested','total_points',
+      'dataset','starter_grid','tasks','rows','cols',
     ]);
     const candidateKeys = Object.keys(config).filter((k) => {
       if (SKIP_KEYS.has(k)) return false;

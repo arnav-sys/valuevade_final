@@ -1,0 +1,475 @@
+{
+  "sim_id": "af9d572a-6523-4e6a-b4d8-8bc81e2e57d8",
+  "title": "Build a Dynamic Indian Earnings Calendar for 10 Nifty 50 Companies",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Q3 FY25 EPS (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Q2 FY25 EPS (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Earnings Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Announcement Time",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Energy & Petrochemicals",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 58.4,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 52.8,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "2025-01-28",
+            "readOnly": true
+          },
+          "F2": {
+            "value": "16:00",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Information Technology",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 42.15,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 39.6,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "2025-02-04",
+            "readOnly": true
+          },
+          "F3": {
+            "value": "10:30",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 76.25,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 71.9,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "2025-01-31",
+            "readOnly": true
+          },
+          "F4": {
+            "value": "14:30",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Information Technology",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 34.82,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 33.15,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "2025-02-06",
+            "readOnly": true
+          },
+          "F5": {
+            "value": "09:00",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Fast-Moving Consumer Goods",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 18.65,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 17.4,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "2025-02-02",
+            "readOnly": true
+          },
+          "F6": {
+            "value": "15:30",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Kotak Mahindra Bank",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 82.5,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 78.2,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "2025-01-29",
+            "readOnly": true
+          },
+          "F7": {
+            "value": "17:00",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Chemicals & Materials",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 22.34,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 20.15,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "2025-02-05",
+            "readOnly": true
+          },
+          "F8": {
+            "value": "11:00",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Larsen & Toubro",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Engineering & Construction",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 56.78,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 53.2,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "2025-02-01",
+            "readOnly": true
+          },
+          "F9": {
+            "value": "13:00",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Maruti Suzuki",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Automobiles",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 31.45,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 28.9,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "2025-01-30",
+            "readOnly": true
+          },
+          "F10": {
+            "value": "10:00",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Information Technology",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 38.92,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 36.5,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "2025-02-03",
+            "readOnly": true
+          },
+          "F11": {
+            "value": "16:30",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q3 EPS Growth Rate (%): Calculate average EPS growth from Q2 to Q3 across all 10 companies",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "How many IT sector companies have earnings announcements scheduled?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Sum of Q3 FY25 EPS for Financial Services sector companies (₹)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Highest Q3 FY25 EPS value among all 10 companies (₹)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Average Q2 FY25 EPS across all companies (₹)?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Calculations",
+        "cells": {
+          "A1": {
+            "value": "Intermediate Calculations (helper columns)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "=IF(Data!D2=0,0,(Data!C2-Data!D2)/Data!D2*100)",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "=IF(Data!D3=0,0,(Data!C3-Data!D3)/Data!D3*100)",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=IF(Data!D4=0,0,(Data!C4-Data!D4)/Data!D4*100)",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "=IF(Data!D5=0,0,(Data!C5-Data!D5)/Data!D5*100)",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "HUL",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=IF(Data!D6=0,0,(Data!C6-Data!D6)/Data!D6*100)",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Kotak Mahindra Bank",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "=IF(Data!D7=0,0,(Data!C7-Data!D7)/Data!D7*100)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=IF(Data!D8=0,0,(Data!C8-Data!D8)/Data!D8*100)",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Larsen & Toubro",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "=IF(Data!D9=0,0,(Data!C9-Data!D9)/Data!D9*100)",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Maruti Suzuki",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=IF(Data!D10=0,0,(Data!C10-Data!D10)/Data!D10*100)",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "=IF(Data!D11=0,0,(Data!C11-Data!D11)/Data!D11*100)",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=AVERAGE((Data!C2:C11-Data!D2:D11)/Data!D2:D11*100)",
+      "expected_value": 7.46,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Answers!B3": {
+      "formula_pattern": "=COUNTIF(Data!B2:B11,\"Information Technology\")",
+      "expected_value": 3,
+      "type": "number",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUMIF(Data!B2:B11,\"Financial Services\",Data!C2:C11)",
+      "expected_value": 158.75,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 20
+    },
+    "Answers!B5": {
+      "formula_pattern": "=MAX(Data!C2:C11)",
+      "expected_value": 82.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=AVERAGE(Data!D2:D11)",
+      "expected_value": 46.16,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    }
+  }
+}

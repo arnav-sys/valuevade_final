@@ -1,0 +1,545 @@
+{
+  "sim_id": "17ad4b58-71ee-4ef2-b558-162c68c7289b",
+  "title": "Clean the Chaos: Transform a Messy Nifty 50 Download Into Analysis-Ready Data",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "RawData",
+        "cells": {
+          "A1": {
+            "value": "Company Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector ",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Market Cap (₹ Cr) ",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "PE Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Dividend Yield % ",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": " Reliance Industries ",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "energy ",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "'1850000",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "21.5 ",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "0.87%",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "IT ",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "1420500",
+            "readOnly": true
+          },
+          "D3": {
+            "value": " 23.8",
+            "readOnly": true
+          },
+          "E3": {
+            "value": "1.23 %",
+            "readOnly": true
+          },
+          "A4": {
+            "value": " HDFC BANK ",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "banking",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "'1380000",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "19.2",
+            "readOnly": true
+          },
+          "E4": {
+            "value": "0.65%",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": " IT",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "895000",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "22.1 ",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "1.65 %",
+            "readOnly": true
+          },
+          "A6": {
+            "value": " Asian Paints ",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "PAINTS ",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "'745000",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "45.3",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "0.42%",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "retail ",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "520000",
+            "readOnly": true
+          },
+          "D7": {
+            "value": " 38.7 ",
+            "readOnly": true
+          },
+          "E7": {
+            "value": "0.28 %",
+            "readOnly": true
+          },
+          "A8": {
+            "value": " Bajaj Finance ",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "NBFC",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "'650000",
+            "readOnly": true
+          },
+          "D8": {
+            "value": "28.5",
+            "readOnly": true
+          },
+          "E8": {
+            "value": "1.12%",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "banking ",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "780000",
+            "readOnly": true
+          },
+          "D9": {
+            "value": " 20.3",
+            "readOnly": true
+          },
+          "E9": {
+            "value": "0.58 %",
+            "readOnly": true
+          },
+          "A10": {
+            "value": " ITC ",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "FMCG ",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "'620000",
+            "readOnly": true
+          },
+          "D10": {
+            "value": "18.9 ",
+            "readOnly": true
+          },
+          "E10": {
+            "value": "3.45%",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "fmcg",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "580000",
+            "readOnly": true
+          },
+          "D11": {
+            "value": " 42.1",
+            "readOnly": true
+          },
+          "E11": {
+            "value": "2.18 %",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "CleanedData",
+        "cells": {
+          "A1": {
+            "value": "Company Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "PE Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Dividend Yield %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": false
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "D2": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "",
+            "readOnly": false
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "E3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "",
+            "readOnly": false
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "",
+            "readOnly": false
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "",
+            "readOnly": false
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "",
+            "readOnly": false
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "D7": {
+            "value": "",
+            "readOnly": false
+          },
+          "E7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "",
+            "readOnly": false
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "",
+            "readOnly": false
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "",
+            "readOnly": false
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "",
+            "readOnly": false
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "QA",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Total Market Cap after cleaning (₹ Cr)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "How many companies are in Banking sector (clean data)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Average PE Ratio for IT sector companies (clean data)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Highest Dividend Yield % (clean data)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "QA!B2": {
+      "formula_pattern": "=SUM(CleanedData!C2:C11)",
+      "expected_value": 8470500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "QA!B3": {
+      "formula_pattern": "=COUNTIF(CleanedData!B2:B11,\"Banking\")",
+      "expected_value": 2,
+      "type": "number",
+      "tolerance": 0,
+      "points": 15
+    },
+    "QA!B4": {
+      "formula_pattern": "=AVERAGEIF(CleanedData!B2:B11,\"IT\",CleanedData!D2:D11)",
+      "expected_value": 22.95,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 20
+    },
+    "QA!B5": {
+      "formula_pattern": "=MAX(CleanedData!E2:E11)",
+      "expected_value": 3.45,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    }
+  }
+}

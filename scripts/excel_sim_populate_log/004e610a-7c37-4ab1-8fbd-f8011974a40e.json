@@ -1,0 +1,518 @@
+{
+  "sim_id": "004e610a-7c37-4ab1-8fbd-f8011974a40e",
+  "title": "Building a Bulletproof Financial Health Dashboard: Validation, Formatting & One-Page Command Centre for 8 Nifty 50 Companies",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Net Profit FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Current Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "P/E Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Debt/Equity",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "ROE (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1850000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 869000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 72500,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 3245,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 25.5,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 0.42,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 18.2,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1420000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 305000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 48500,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 4280,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 29.3,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 22.8,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1250000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 185000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 51200,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1985,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 24.4,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 19.5,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 820000,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 238000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 42100,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 2890,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 19.5,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 21.3,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 385000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 32500,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 5850,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 3125,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 65.8,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 0.05,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 24.1,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 325000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 28400,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 4280,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 2850,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 75.9,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 26.5,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 315000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 4120,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 7920,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 76.5,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 0.35,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 18.9,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 285000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 22100,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 3950,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 2650,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 72.1,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 0.02,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 25.3,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Dashboard",
+        "cells": {
+          "A1": {
+            "value": "MARCELLUS INVESTMENT MANAGERS - CCP PORTFOLIO DASHBOARD",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Financial Health Assessment: Nifty 50 Sample",
+            "readOnly": true,
+            "italic": true
+          },
+          "A4": {
+            "value": "Portfolio Metrics",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Total Market Cap (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Average P/E Ratio",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Highest ROE Company",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Average Debt/Equity",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Quality Filters",
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "Count of Companies with ROE > 20%",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          },
+          "A12": {
+            "value": "Count of Companies with P/E < 30",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": false
+          },
+          "A13": {
+            "value": "Sum of Revenue (P/E < 30)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Risk Assessment",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Maximum Debt/Equity Ratio",
+            "readOnly": true
+          },
+          "B16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Minimum Net Profit Margin (%)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Total Market Capitalization of all 8 companies (₹ Cr)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: Average P/E Ratio across the portfolio?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: Company with highest ROE (text)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: How many companies have ROE > 20%?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: Sum of Revenue for companies with P/E < 30 (₹ Cr)?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: Minimum Net Profit Margin (%) in portfolio?",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=SUM(Data!B2:B9)",
+      "expected_value": 6630000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=AVERAGE(Data!F2:F9)",
+      "expected_value": 44.1125,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=INDEX(Data!A2:A9,MATCH(MAX(Data!H2:H9),Data!H2:H9,0))",
+      "expected_value": "Titan Company",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=COUNTIF(Data!H2:H9,\">20\")",
+      "expected_value": 6,
+      "type": "number",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Answers!B6": {
+      "formula_pattern": "=SUMIF(Data!F2:F9,\"<30\",Data!C2:C9)",
+      "expected_value": 743000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=MIN(Data!D2:D9/Data!C2:C9)*100",
+      "expected_value": 15.08,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 14
+    }
+  }
+}

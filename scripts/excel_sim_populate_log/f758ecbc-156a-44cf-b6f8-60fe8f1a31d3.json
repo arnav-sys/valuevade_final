@@ -1,0 +1,466 @@
+{
+  "sim_id": "f758ecbc-156a-44cf-b6f8-60fe8f1a31d3",
+  "title": "Pivot Table Mastery: Analyzing Nifty 50 Quarterly Sales Data",
+  "workbook": {
+    "sheets": [
+      {
+        "name": "SalesData",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Q1 FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Q2 FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Q3 FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Q4 FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Energy",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 52100,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 53400,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 54800,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 56200,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Tata Consultancy Services",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 28500,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 29100,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 29800,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 30400,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 18200,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 18900,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 19600,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 20300,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 21400,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 21900,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 22500,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 23100,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Larsen & Toubro",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Infrastructure",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 16800,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 17400,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 18100,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 18800,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Manufacturing",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 8450,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 8720,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 9020,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 9350,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 14300,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 14800,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 15400,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 16000,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Finance",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 7200,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 7600,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 8000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 8450,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 18600,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 19100,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 19700,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 20300,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Hindustan Unilever",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "FMCG",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 11250,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 11650,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 12100,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 12600,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "ITC Limited",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "FMCG",
+            "readOnly": true
+          },
+          "C12": {
+            "value": 9800,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 10200,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 10650,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 11100,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Analysis",
+        "cells": {
+          "A1": {
+            "value": "Analysis Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Which sector had the highest total sales across all 4 quarters (Q1-Q4 FY25)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "What is the total FY25 sales for the IT sector (₹ Cr)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Which quarter had the highest aggregate sales across all companies (₹ Cr)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "What is the average Q4 FY25 sales per company (₹ Cr)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "How many companies are in the Banking sector?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "PivotGuide",
+        "cells": {
+          "A1": {
+            "value": "Pivot Table Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1. Select the data range A1:F12 from the SalesData sheet",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "2. Insert → Pivot Table → New Worksheet",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "3. Drag Sector to Rows, Quarters (C:F) to Values",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "4. Use the pivot table to answer questions in the Analysis sheet",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "5. You can also use SUMIF, COUNTIF, and formulas directly",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Sector Breakdown (for reference):",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Energy: Reliance Industries",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "IT: TCS, Infosys, Wipro",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Banking: HDFC Bank, ICICI Bank",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Infrastructure: Larsen & Toubro",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Manufacturing: Asian Paints",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Finance: Bajaj Finance",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "FMCG: Hindustan Unilever, ITC Limited",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Analysis!B2": {
+      "formula_pattern": "Energy",
+      "expected_value": "Energy",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    },
+    "Analysis!B3": {
+      "formula_pattern": "=SUMIF(SalesData!B:B,\"IT\",SalesData!C:C)+SUMIF(SalesData!B:B,\"IT\",SalesData!D:D)+SUMIF(SalesData!B:B,\"IT\",SalesData!E:E)+SUMIF(SalesData!B:B,\"IT\",SalesData!F:F)",
+      "expected_value": 274200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Analysis!B4": {
+      "formula_pattern": "Q4 FY25 (₹ Cr)",
+      "expected_value": "Q4 FY25 (₹ Cr)",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Analysis!B5": {
+      "formula_pattern": "=(SUM(SalesData!F2:F12))/11",
+      "expected_value": 18663.636363636,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Analysis!B6": {
+      "formula_pattern": "=COUNTIF(SalesData!B:B,\"Banking\")",
+      "expected_value": 2,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}
