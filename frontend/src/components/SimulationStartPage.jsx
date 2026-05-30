@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { markPhaseComplete } from '../utils/progress';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, Wrench, PlayCircle, Target, AlertCircle, RefreshCw,
@@ -65,13 +66,40 @@ export default function SimulationStartPage() {
         setModule(sess.user_modules || null);
 
         if (sess.master_session_id) {
-          const { data: s, error: simErr } = await supabase
+          // Many master_sessions have multiple sim rows (e.g. 1 interactive +
+          // 2 excel). Use .maybeSingle() here would error out with PGRST116
+          // for multi-row results AND return the wrong sim when one happens
+          // to be the only one. Mirror SimulationPage.jsx's fetch-all +
+          // priority-sort logic so the student lands on the most useful sim.
+          const { data: sList, error: simErr } = await supabase
             .from('master_simulations')
             .select('*')
-            .eq('session_id', sess.master_session_id)
-            .maybeSingle();
+            .eq('session_id', sess.master_session_id);
           if (simErr && simErr.code !== 'PGRST116') throw simErr;
-          if (mounted) setSim(s || null);
+          const pickPriority = ['excel', 'interactive', 'decision_making', 'document'];
+          const sorted = (sList || []).slice().sort(
+            (a, b) => {
+              const ai = pickPriority.indexOf(a.sim_type);
+              const bi = pickPriority.indexOf(b.sim_type);
+              return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+            }
+          );
+          const picked = sorted[0] || null;
+          if (mounted) setSim(picked);
+
+          // Defense-in-depth: if this session has NO simulation at all
+          // (typical for M14 career / M15 AI modules), auto-mark the
+          // simulation phase complete and forward to the session-complete
+          // screen. The wrench fallback below is now unreachable.
+          if (!picked) {
+            try {
+              await markPhaseComplete(sessionId, 'simulation', {}, { actualMinutes: 0 });
+            } catch { /* fire-and-forget */ }
+            if (mounted) {
+              navigate(`/session/${sessionId}/complete`, { replace: true });
+              return;
+            }
+          }
         }
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load simulation');

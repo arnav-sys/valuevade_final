@@ -1,4 +1,39 @@
 # ============================================================================
+# CHANGELOG — 2026-05-30 (Excel sim "No simulation configured yet" — 3rd report root-caused)
+# ============================================================================
+
+## P0 — Root cause of "No simulation configured yet" wrench screen on M3 S2
+
+**Audit finding:** every M3 session has 1-3 sim rows of MIXED types (e.g. M3 S2 has
+1 × `interactive` + 2 × `excel`). The bug had nothing to do with missing DB rows
+or the 68-sim populate sweep — both were healthy.
+
+**Two cooperating bugs in the FE fetch path:**
+
+1. **`SimulationStartPage.jsx`** used `.maybeSingle()` against `master_simulations`. PostgREST throws when >1 row is returned → catch block left `sim = null` → wrench fallback rendered. Replaced with fetch-all + priority sort, mirroring `SimulationPage.jsx`.
+
+2. **`SimulationPage.jsx`** had the right idea but a subtle off-by-one in its priority comparator: `pickPriority.indexOf(unknownType)` returns `-1`, which made any unknown `sim_type` sort BEFORE `excel` (`-1 < 0`). Now treats unknowns as priority 99 (last). Same fix applied to the new `SimulationStartPage` path. Also added `'document'` to the priority array since `DocumentSim` is a real renderer.
+
+## P0 — Defense-in-depth: wrench screen is now unreachable
+
+For the 25 legitimately-sim-free sessions (all of M14 career + M15 AI prompts, plus M8 S10 & M9 S11), both `SimulationStartPage` and `SimulationPage` now auto-call `markPhaseComplete(sessionId, 'simulation', {}, {actualMinutes:0})` and redirect to `/session/:id/complete` on mount. The student never sees the wrench fallback; they go straight to the session-complete celebration.
+
+## Verification
+
+- **M3 S2 (user's screenshot)** opens `SimulationStartPage` showing real content: "Sensitivity Table Wiring: Build a DCF Valuation Grid for Infosys" — full scenario, 6 objectives, scoring rubric. The priority sort correctly picks the populated `excel` sim over the unpopulated `interactive` one.
+- Course-wide audit (`/tmp/sess.json` × `/tmp/mods.json` join, 158 sessions × 171 sim rows): **0 sessions where the top-pick is an unpopulated excel sim**. The 68 populated sims always win.
+- 25 sessions with zero sim rows are now auto-skipped (M14 ×13, M15 ×10, M8 S10, M9 S11).
+
+## Files touched
+
+- `frontend/src/components/SimulationStartPage.jsx` — replaced `.maybeSingle()` with priority-sorted fetch-all + auto-skip on empty
+- `frontend/src/components/SimulationPage.jsx` — fixed `indexOf(-1)` ranking bug; added `'document'` to priority; auto-skip on empty
+- `memory/excel_sim_audit_2026_05_30.json` — already current from yesterday's sweep
+
+No data-layer changes (no new sim rows created — the user explicitly said not to invent content for legitimately-theory-only sessions).
+
+
+# ============================================================================
 # CHANGELOG — 2026-05-30 (Excel sim content sweep + 2 UI regressions)
 # ============================================================================
 

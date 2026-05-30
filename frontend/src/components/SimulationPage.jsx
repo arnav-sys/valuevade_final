@@ -79,11 +79,29 @@ export default function SimulationPage() {
           .select('*')
           .eq('session_id', sess.master_session_id);
         if (simErr && simErr.code !== 'PGRST116') throw simErr;
-        const pickPriority = ['excel', 'interactive', 'decision_making'];
+        const pickPriority = ['excel', 'interactive', 'decision_making', 'document'];
         const sorted = (sList || []).slice().sort(
-          (a, b) => pickPriority.indexOf(a.sim_type) - pickPriority.indexOf(b.sim_type)
+          (a, b) => {
+            const ai = pickPriority.indexOf(a.sim_type);
+            const bi = pickPriority.indexOf(b.sim_type);
+            // Unknown sim_types (indexOf = -1) sort LAST, not first.
+            return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+          }
         );
         if (mounted) setSim(sorted[0] || null);
+
+        // Defense-in-depth: empty sim list (M14/M15 career/AI sessions) →
+        // auto-complete the phase and forward to the session-complete screen.
+        // This makes the wrench fallback below unreachable from any entry point.
+        if (!sorted.length) {
+          try {
+            await markPhaseComplete(sessionId, 'simulation', {}, { actualMinutes: 0 });
+          } catch { /* fire-and-forget */ }
+          if (mounted) {
+            navigate(`/session/${sessionId}/complete`, { replace: true });
+            return;
+          }
+        }
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load simulation');
       } finally {
