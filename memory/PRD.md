@@ -1,4 +1,26 @@
 # ============================================================================
+# CHANGELOG — 2026-05-30 (Excel sim content sweep + 2 UI regressions)
+# ============================================================================
+
+## P0 — Excel simulation content sweep (68/68 ✓)
+- Investigation caught the real bug: 16/17 M3 sims had been classified "real_data" by the adapter only because it picked up `evaluation_criteria` (rubric) as a renderable sheet — students saw a "points | criterion" table instead of finance data. 49 other sims were prose-only / empty grids.
+- Built `/app/scripts/populate_excel_sims.py` (idempotent on `config.populated_at`): Claude Haiku 4.5 via Emergent LLM key generates a `multi_tab_excel_workbook` (Data + Answers sheets, real Indian companies, ₹ Cr scale) + cell-level `expected_answers` (formula pattern + expected_value + tolerance + points) for each sim.
+- Pilot M3 (17 sims, 0 failures) → full sweep M2/M4-M13 (47 sims, then 10 retries @ max_tokens=16000, then 1 Titan-Shell retry with manual-scoring fallback). End state: **68/68 populated, 0 failed**.
+- Adapter hardening (`excelSimAdapter.js`): added Shape 0 `multi_tab_excel_workbook` as top-priority renderer; expanded SKIP_KEYS to block `evaluation_criteria`, `hints`, `expected_output`, `task_description`, `spreadsheet_setup`, `populated_at`, `expected_answers`, `deliverables`, `stress_tests`, etc. from ever being rendered as data sheets.
+- Auto-scoring wired: `handleSubmit` → `scoreWorkbook` compares each editable cell to `cell.expected` with numeric tolerance / text exact-match; pass cells turn green, fail red. Falls back to `scoring.mode='manual'` when `expected_answers` is empty (structural template sims like "Build the shell from scratch").
+- LLM spend this sweep: ~700k tokens ≈ **$2.50–$3.50** (one-time, idempotent so re-runs cost zero).
+- Artifacts: 68 per-sim JSON dumps in `/app/scripts/excel_sim_populate_log/`, audit JSON at `/app/memory/excel_sim_audit_2026_05_30.json` (`{populated: 68}`).
+
+## P0 — Two UI regressions fixed mid-audit
+- **News modal dark-mode contrast** (`index.css`): CSS variable `--color-bg-card` was referenced by 20+ components but never defined → resolved to transparent → dark modal backdrop bled through dark text. Defined for light (`#FFFFFF`) and dark (`#0a1156`) themes. Verified in both modes. Side-effect: also fixes constellation container, daily challenges, Pari briefings, activity heatmap, etc.
+- **Module Constellation missing modules** (`ModuleConstellationMap.jsx`): hard-coded `VIEWBOX_H = 500` clipped rows 4+. Now `viewboxHeight(count)` + `dynamicHeightPx` scale with enrollment. Serpentine layout preserved. Verified.
+
+## P1 — Deployment Readiness
+- Today's changes are pure content (DB rows in `master_simulations`) + small CSS tokens + isolated JS shape detection. Zero infra/env/auth/route impact.
+- Deployment Readiness verdict from `/app/memory/DEPLOYMENT_READINESS.md` remains **🟢 GO**. Non-blockers unchanged (CORS=`*`, console.log strip, server.py split).
+
+
+# ============================================================================
 # CHANGELOG — 2026-05-30 (regression fixes + deployment readiness audit)
 # ============================================================================
 
