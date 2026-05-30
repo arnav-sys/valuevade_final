@@ -2559,16 +2559,11 @@ def generate_study_plan(
         if not active_days:
             raise HTTPException(status_code=400, detail="no study days between today and deadline (all rest days?)")
 
-        # Sanity: can't do 50h in 1 day. Floor at 4h/day effective.
-        min_required_days = _math.ceil(total_load_minutes / 240.0)
-        if len(active_days) < min_required_days:
-            raise HTTPException(
-                status_code=400,
-                detail=(
-                    f"deadline too tight: need at least {min_required_days} study days "
-                    f"(only {len(active_days)} available). Try a later deadline or fewer rest days."
-                ),
-            )
+        # E2 (Batch 1): removed the "deadline too tight" ceiling. The user
+        # wants liberty to cram arbitrarily many minutes per day if their
+        # target demands it. Basic sanity checks (deadline must be in the
+        # future, can't mark all 7 weekdays rest) remain. The day-packer
+        # accepts arbitrarily high `per_day_target` values.
 
         per_day_target = _math.ceil(total_load_minutes / len(active_days))
 
@@ -2982,8 +2977,13 @@ def _award_badge_if_new_today(user_id: str, code: str) -> bool:
             },
         )
     else:
+        # Invariant: is_unlocked=true MUST be accompanied by a non-null
+        # earned_at. The earlier insert below was missing earned_at,
+        # which produced `unlocked-but-no-timestamp` rows that broke
+        # the date-scoped re-grant check on `on_track_today`.
         _supabase_post("user_badges", {
             "user_id": user_id, "badge_id": badge_id, "is_unlocked": True,
+            "earned_at": datetime.now(timezone.utc).isoformat(),
             "progress_current": 1, "progress_target": 1,
         })
     return True
@@ -3377,6 +3377,18 @@ async def study_plan_rebalance(
             d = d + timedelta(days=1)
             steps += 1
 
+    # Capture today's actual work BEFORE the delete, so we can preserve it.
+    # The rebalance must never wipe minutes/sessions the user already
+    # logged — Bug 1 from the D2 tester report. We re-attach
+    # actual_minutes + completed_session_codes onto the freshly-built
+    # today row and recompute the status against the NEW required_*.
+    preserved_today = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=eq.{today}"
+        f"&select=actual_minutes,actual_sessions_completed,completed_session_codes&limit=1"
+    ) or []
+    preserved = preserved_today[0] if preserved_today else None
+
     # Delete future day rows (>= today) and insert the new ones.
     _supabase_delete(
         f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
@@ -3384,14 +3396,35 @@ async def study_plan_rebalance(
     )
     if new_days:
         chunk = 100
-        rows = [
-            {"plan_id": plan_id, "user_id": user_id, "day_date": x["day_date"],
-             "required_minutes": x["required_minutes"],
-             "required_session_codes": x["required_session_codes"],
-             "required_project_codes": x["required_project_codes"],
-             "status": x["status"]}
-            for x in new_days
-        ]
+        rows = []
+        for x in new_days:
+            row = {"plan_id": plan_id, "user_id": user_id, "day_date": x["day_date"],
+                   "required_minutes": x["required_minutes"],
+                   "required_session_codes": x["required_session_codes"],
+                   "required_project_codes": x["required_project_codes"],
+                   "actual_minutes": 0,
+                   "actual_sessions_completed": 0,
+                   "completed_session_codes": [],
+                   "status": x["status"]}
+            # Bug 1 fix: re-attach today's preserved work and recompute status.
+            if preserved is not None and x["day_date"] == today:
+                row["actual_minutes"]            = int(preserved.get("actual_minutes") or 0)
+                row["actual_sessions_completed"] = int(preserved.get("actual_sessions_completed") or 0)
+                row["completed_session_codes"]   = list(preserved.get("completed_session_codes") or [])
+                # Recompute status against NEW required_* and PRESERVED actual_*.
+                # `complete` iff actual minutes meet new requirement AND completed
+                # session count meets the new required-session count. Otherwise
+                # `today` if there are required sessions, `rest` for a rest day.
+                req_min  = int(x["required_minutes"])
+                req_sess = len(x["required_session_codes"] or [])
+                done_sess = len(row["completed_session_codes"])
+                if x["status"] == "rest":
+                    row["status"] = "rest"
+                elif row["actual_minutes"] >= req_min and done_sess >= req_sess:
+                    row["status"] = "complete"
+                else:
+                    row["status"] = "today"
+            rows.append(row)
         for i in range(0, len(rows), chunk):
             _supabase_post("user_study_plan_days", rows[i:i + chunk])
 

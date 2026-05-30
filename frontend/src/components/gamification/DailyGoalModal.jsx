@@ -25,9 +25,17 @@ export default function DailyGoalModal() {
   const [shown, setShown] = useState(false);
   const [selected, setSelected] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  // D1 safeguard (Batch 1): once the user has either set a goal OR
+  // dismissed the modal in this browser session, never re-show it for the
+  // rest of the session — even if the XPContext's stats refresh races.
+  // Combined with the persisted (`daily_goal_minutes` IS NOT NULL OR
+  // `daily_goal_modal_dismissed = true`) DB flag, this kills the
+  // "appears every login" / "re-pops after dismissal" complaints.
+  const dismissedThisSessionRef = useRef(false);
 
   useEffect(() => {
     if (shown) return;
+    if (dismissedThisSessionRef.current) return;
     if (!user?.id || !stats) return;
     const needsModal = (stats.daily_goal_minutes ?? null) === null && !stats.daily_goal_modal_dismissed;
     if (needsModal) setShown(true);

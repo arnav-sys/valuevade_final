@@ -1681,6 +1681,15 @@ export default function NotesPage() {
         onTouchEnd={onTouchEnd}
       >
         <div className="w-full max-w-3xl mx-auto">
+          {/* C1 (Batch 1) — AskPariButton moved to the TOP of notes content,
+              above the cards, so it's the first thing visible. Was
+              previously a sibling of the card area which placed it to
+              the right on wide viewports. */}
+          {!loading && !error && session?.master_session_id && total > 0 && (
+            <div className="mb-6" data-testid="notes-ask-pari-top">
+              <AskPariButton phase="notes" courseSessionId={sessionId} variant="card" />
+            </div>
+          )}
           {loading && (
             <div className="flex items-center justify-center py-20" data-testid="notes-loading">
               <Loader2 size={32} className="animate-spin text-[var(--color-primary)]" />
@@ -1743,9 +1752,6 @@ export default function NotesPage() {
               </button>
             </div>
           )}
-        </div>
-        <div className="mt-8 max-w-3xl mx-auto px-4">
-          <AskPariButton phase="notes" courseSessionId={sessionId} variant="card" />
         </div>
       </main>
       {(() => {

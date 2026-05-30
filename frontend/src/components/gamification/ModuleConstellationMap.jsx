@@ -220,13 +220,22 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
       const completedBoth = prev.is_completed && cur.is_completed;
       const anyInProgress = (!prev.is_completed && prev.sessions_completed_n > 0)
                           || (!cur.is_completed && cur.sessions_completed_n > 0);
+      // F2 (Batch 1): when prev is fully complete and cur is unlocked but
+      // not yet started, the link should clearly signal "you're up next".
+      // Previously this case fell through to the dim default opacity 0.18,
+      // making the prereq line invisible. Light it up with the same gold
+      // hue as completed but slightly less opaque so it reads as "ready".
+      const readyForNext = prev.is_completed && cur.is_unlocked
+                          && !cur.is_completed && (cur.sessions_completed_n || 0) === 0;
       const lockedEither = !prev.is_unlocked || !cur.is_unlocked;
       let opacity = 0.18;
       let stroke = '#3a4150';
-      if (completedBoth) { opacity = 0.65; stroke = '#fbbf24'; }
-      else if (anyInProgress) { opacity = 0.42; stroke = '#246BFD'; }
-      else if (lockedEither) { opacity = 0.12; stroke = '#3a4150'; }
-      arr.push({ x1: pPos.x, y1: pPos.y, x2: cPos.x, y2: cPos.y, opacity, stroke });
+      let pulse = false;
+      if (completedBoth)      { opacity = 0.65; stroke = '#fbbf24'; }
+      else if (readyForNext)  { opacity = 0.55; stroke = '#fbbf24'; pulse = true; }
+      else if (anyInProgress) { opacity = 0.42; stroke = '#246BFD'; pulse = true; }
+      else if (lockedEither)  { opacity = 0.12; stroke = '#3a4150'; }
+      arr.push({ x1: pPos.x, y1: pPos.y, x2: cPos.x, y2: cPos.y, opacity, stroke, pulse });
     }
     return arr;
   }, [modules]);

@@ -318,18 +318,40 @@ export default function DashboardPage() {
       }
     } catch { /* SSR / sandboxed iframe — skip */ }
   }, [user?.id, enrollment?.id, activePlan]);
+  // Phase Batch1 — D2: news dismissal is persisted on the server (via
+  // /api/news/mark_read writing to user_news_reads). The dashboard auto-
+  // open MUST check that server state, not localStorage, so dismissal
+  // survives across devices / cleared browser storage.
+  //
+  // C2: news must NEVER appear before the Pari intro modal is dismissed.
+  // We gate on `profiles.pari_welcomed_at IS NOT NULL` (read from
+  // /api/me/pari_welcome → should_show_welcome). When Pari isn't yet
+  // welcomed, we just hold the news; the next mount after Pari is acked
+  // will open it.
   useEffect(() => {
     if (!user?.id) return;
-    try {
-      const todayIst = new Date(Date.now() + (5.5 * 60 - new Date().getTimezoneOffset()) * 60000)
-        .toISOString().slice(0, 10);
-      const seen = localStorage.getItem(`vv_news_seen_${todayIst}`);
-      if (!seen) {
-        const t = setTimeout(() => setNewsOpen(true), 1800);
-        return () => clearTimeout(t);
-      }
-    } catch { /* localStorage may be unavailable — skip auto-open */ }
-    return undefined;
+    let cancelled = false;
+    let timer = null;
+    (async () => {
+      try {
+        const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+        if (!token) return;
+        const headers = { Authorization: `Bearer ${token}` };
+        const [welcomeRes, newsRes] = await Promise.all([
+          fetch(`${BACKEND}/api/me/pari_welcome`, { headers }).then((r) => r.json()).catch(() => null),
+          fetch(`${BACKEND}/api/news/today`, { headers }).then((r) => r.json()).catch(() => null),
+        ]);
+        if (cancelled) return;
+        const pariReady = welcomeRes && welcomeRes.should_show_welcome === false;
+        const alreadyRead = !!(newsRes && newsRes.already_read_today);
+        if (pariReady && !alreadyRead) {
+          timer = setTimeout(() => { if (!cancelled) setNewsOpen(true); }, 1800);
+        }
+      } catch { /* network glitch — silently skip auto-open */ }
+    })();
+    return () => { cancelled = true; if (timer) clearTimeout(timer); };
   }, [user?.id]);
   const refreshXP = () => { /* XPRoot auto-refreshes via Realtime; no-op placeholder */ };
 

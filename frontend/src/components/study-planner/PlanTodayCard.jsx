@@ -132,18 +132,18 @@ export default function PlanTodayCard({ data, loading, onOpenRebalance, onOpenWi
 
       {needsReset && (
         <div
-          className="mt-4 rounded-xl border border-amber-400/40 bg-amber-400/10 px-3 py-2.5 flex items-start gap-2"
+          className="mt-4 rounded-xl border border-amber-500/50 bg-amber-500/15 px-3 py-2.5 flex items-start gap-2"
           data-testid="plan-reset-warning"
         >
-          <AlertTriangle size={14} className="text-amber-300 mt-0.5 shrink-0" />
+          <AlertTriangle size={14} className="text-amber-600 dark:text-amber-300 mt-0.5 shrink-0" />
           <div className="flex-1 min-w-0">
-            <div className="text-xs font-bricolage text-amber-200 leading-relaxed">
+            <div className="text-xs font-bricolage text-amber-900 dark:text-amber-100 leading-relaxed">
               You're <span className="font-bold">{behindPct}%</span> behind your plan.
             </div>
             <button
               type="button"
               onClick={onOpenRebalance}
-              className="mt-1 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.18em] text-amber-300 hover:text-amber-200 underline"
+              className="mt-1 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.18em] text-amber-700 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-100 underline font-bold"
               data-testid="plan-rebalance-cta"
             >
               <RefreshCcw size={10} /> Rebalance
