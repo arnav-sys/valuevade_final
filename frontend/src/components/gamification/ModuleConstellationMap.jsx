@@ -212,19 +212,24 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
 
   const links = useMemo(() => {
     const arr = [];
-    for (let i = 1; i < modules.length; i++) {
-      const prev = modules[i - 1];
-      const cur = modules[i];
+    // F2 (Batch 1): strictly link adjacent modules by order_index continuity.
+    // If the user is missing a module in the sequence (e.g. customized
+    // enrollment removed M3), we still draw the link from M2 → M4 because
+    // the constellation positions are 0-indexed by order_index. This keeps
+    // the visual chain unbroken across customized paths.
+    const sorted = [...modules].sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0));
+    for (let i = 1; i < sorted.length; i++) {
+      const prev = sorted[i - 1];
+      const cur = sorted[i];
       const pPos = nodePos(prev.order_index);
       const cPos = nodePos(cur.order_index);
       const completedBoth = prev.is_completed && cur.is_completed;
       const anyInProgress = (!prev.is_completed && prev.sessions_completed_n > 0)
                           || (!cur.is_completed && cur.sessions_completed_n > 0);
-      // F2 (Batch 1): when prev is fully complete and cur is unlocked but
-      // not yet started, the link should clearly signal "you're up next".
-      // Previously this case fell through to the dim default opacity 0.18,
-      // making the prereq line invisible. Light it up with the same gold
-      // hue as completed but slightly less opaque so it reads as "ready".
+      // F2: when prev is fully complete and cur is unlocked but not yet
+      // started, the link should clearly signal "you're up next" — light
+      // it up with the same gold hue as completed but slightly less
+      // opaque so it reads as "ready".
       const readyForNext = prev.is_completed && cur.is_unlocked
                           && !cur.is_completed && (cur.sessions_completed_n || 0) === 0;
       const lockedEither = !prev.is_unlocked || !cur.is_unlocked;

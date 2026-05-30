@@ -127,7 +127,7 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
             >
               {date ? new Date(date).toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' }) : "Today's Finance News"}
             </h1>
-            <p className="text-xs text-[var(--color-text-muted)] font-bricolage mt-1">
+            <p className="text-sm text-[var(--color-text)] font-bricolage mt-1">
               {TUTOR_NAME}'s short read for the day — earn +30 XP for keeping current.
             </p>
           </div>
@@ -164,13 +164,13 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
                   ) : it.title}
                 </h2>
                 {it.summary && (
-                  <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-1.5 whitespace-pre-line">
+                  <p className="text-base text-[var(--color-text)] font-bricolage leading-relaxed mb-2 whitespace-pre-line">
                     {it.summary}
                   </p>
                 )}
                 {it.why_matters && (
-                  <div className="inline-flex items-start gap-1.5 text-[11px] sm:text-xs text-[var(--color-primary)] font-bricolage italic">
-                    <Sparkles size={11} className="mt-0.5 shrink-0" />
+                  <div className="inline-flex items-start gap-1.5 text-sm sm:text-base text-[var(--color-primary)] font-bricolage italic font-medium">
+                    <Sparkles size={13} className="mt-1 shrink-0" />
                     <span>{it.why_matters}</span>
                   </div>
                 )}

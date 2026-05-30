@@ -57,7 +57,7 @@ function renderMarkdown(md) {
   const flushBullets = (k) => {
     if (bullets.length === 0) return;
     blocks.push(
-      <ul key={`ul${k}`} className="list-disc pl-5 space-y-1.5 text-sm text-[var(--color-text)] font-bricolage">
+      <ul key={`ul${k}`} className="list-disc pl-5 space-y-2 text-base sm:text-[17px] text-[var(--color-text)] font-bricolage">
         {bullets.map((b, i) => <li key={i} className="leading-relaxed">{renderInline(b)}</li>)}
       </ul>
     );
@@ -71,9 +71,9 @@ function renderMarkdown(md) {
       blocks.push(
         <h3
           key={`h${idx}`}
-          className="font-clash text-base sm:text-lg font-bold text-[var(--color-text)] mt-5 mb-2 flex items-center gap-2"
+          className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] mt-6 mb-2.5 flex items-center gap-2"
         >
-          <span className="inline-block w-1 h-4 rounded-full bg-[var(--color-primary)]" />
+          <span className="inline-block w-1 h-5 rounded-full bg-[var(--color-primary)]" />
           {heading}
         </h3>
       );
@@ -84,7 +84,7 @@ function renderMarkdown(md) {
     } else {
       flushBullets(idx);
       blocks.push(
-        <p key={`p${idx}`} className="text-sm text-[var(--color-text)] font-bricolage leading-relaxed">
+        <p key={`p${idx}`} className="text-base sm:text-[17px] text-[var(--color-text)] font-bricolage leading-relaxed">
           {renderInline(line)}
         </p>
       );
@@ -194,20 +194,21 @@ export default function QuickRevisionSheetCard({ sessionId, moduleId }) {
 
       {!loading && error && (
         <div
-          className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-100 flex items-start gap-2 font-bricolage"
+          className="rounded-xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-base text-amber-100 flex items-start gap-2 font-bricolage"
           data-testid="revision-error"
           role="alert"
         >
-          <AlertCircle size={14} className="shrink-0 mt-0.5" />
+          <AlertCircle size={16} className="shrink-0 mt-0.5" />
           <div className="flex-1">
-            <div className="font-semibold">{error}</div>
+            <div className="font-semibold text-base">Couldn't generate your revision sheet yet.</div>
+            <div className="text-sm opacity-80 mt-0.5">{error}</div>
             <button
               type="button"
               onClick={fetchSheet}
-              className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold underline hover:no-underline"
+              className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-400/15 hover:bg-amber-400/25 border border-amber-400/40 text-amber-50 text-xs font-semibold font-bricolage transition-colors"
               data-testid="revision-retry-btn"
             >
-              <RefreshCw size={11} /> Retry
+              <RefreshCw size={12} /> Try again
             </button>
           </div>
         </div>

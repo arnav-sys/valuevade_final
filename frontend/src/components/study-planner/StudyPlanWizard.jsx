@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import {
   X, ArrowLeft, ArrowRight, Loader2, AlertCircle, Calendar, Clock,
-  CalendarDays, Sparkles, CheckCircle2,
+  CalendarDays, CheckCircle2,
 } from 'lucide-react';
 import { previewStudyPlan, commitStudyPlan } from '../../utils/studyPlanner';
 
@@ -234,10 +234,9 @@ export default function StudyPlanWizard({ open, onClose, enrollmentId, onCommit 
         <div className="px-5 sm:px-7 py-6 max-h-[68vh] overflow-y-auto">
           {step === 1 && (
             <div className="space-y-3" data-testid="study-plan-step-1">
-              <p className="text-sm font-bricolage text-[var(--color-text-muted)] mb-3">
+              <p className="text-base font-bricolage text-[var(--color-text)] mb-3">
                 How do you want to pace yourself? Pick one, then enter your target.
               </p>
-
               <ModeCard mode={MODES[0]} selected={mode === 'deadline'} onSelect={setMode}>
                 <div className="mt-3" onClick={(e) => e.stopPropagation()}>
                   <label className="block text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1">Finish by</label>
@@ -288,7 +287,7 @@ export default function StudyPlanWizard({ open, onClose, enrollmentId, onCommit 
 
           {step === 2 && (
             <div data-testid="study-plan-step-2">
-              <p className="text-sm font-bricolage text-[var(--color-text-muted)] mb-4">
+              <p className="text-base font-bricolage text-[var(--color-text)] mb-4">
                 Mark the days you want off. Selected days get zero load and don't break your streak.
               </p>
 
@@ -381,7 +380,7 @@ export default function StudyPlanWizard({ open, onClose, enrollmentId, onCommit 
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 px-4 py-3 text-xs sm:text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                  <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/30 px-4 py-3 text-sm sm:text-base font-bricolage text-[var(--color-text)] leading-relaxed">
                     {previewData.total_sessions} sessions and {previewData.total_projects} module projects scheduled across {previewData.total_active_days} active days. Average <span className="text-[var(--color-text)] font-semibold">{avgMins} min/day</span>.
                   </div>
 

@@ -302,19 +302,19 @@ export default function QuizCompletePage() {
                     </button>
                     {isOpen && (
                       <div className="pl-10 pr-1 pt-3 space-y-2 animate-vv-slide-in" data-testid={`quiz-breakdown-detail-${i}`}>
-                        <div className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">
+                        <div className="text-base sm:text-[17px] font-bricolage text-[var(--color-text)] leading-relaxed">
                           {qq.question}
                         </div>
                         <div className="rounded-lg px-3 py-2 bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
                           <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1">Your answer</div>
-                          <div className={`text-sm font-bricolage ${isCorrect ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
+                          <div className={`text-base font-bricolage ${isCorrect ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
                             {userOpt ? (typeof userOpt === 'string' ? userOpt : JSON.stringify(userOpt)) : '— (no answer)'}
                           </div>
                         </div>
                         {!isCorrect && (
                           <div className="rounded-lg px-3 py-2 bg-[var(--color-success)]/8 border border-[var(--color-success)]/25">
                             <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-success)] mb-1">Correct answer</div>
-                            <div className="text-sm font-bricolage text-[var(--color-text)]">
+                            <div className="text-base font-bricolage text-[var(--color-text)]">
                               {correctOpt ? (typeof correctOpt === 'string' ? correctOpt : JSON.stringify(correctOpt)) : '—'}
                             </div>
                           </div>
@@ -322,7 +322,7 @@ export default function QuizCompletePage() {
                         {qq.explanation && (
                           <div className="rounded-lg px-3 py-2 bg-[var(--color-accent-purple)]/8 border border-[var(--color-accent-purple)]/25">
                             <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-accent-purple)] mb-1">Explanation</div>
-                            <div className="text-sm font-bricolage text-[var(--color-text)] whitespace-pre-wrap leading-relaxed">
+                            <div className="text-base sm:text-[17px] font-bricolage text-[var(--color-text)] whitespace-pre-wrap leading-relaxed">
                               {qq.explanation}
                             </div>
                           </div>

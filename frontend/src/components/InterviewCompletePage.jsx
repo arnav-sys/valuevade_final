@@ -196,7 +196,7 @@ export default function InterviewCompletePage() {
                 <div key={i} className="flex items-center gap-3 py-3" data-testid={`interview-recap-${i}`}>
                   <span className="text-[10px] font-mono text-[var(--color-text-faint)] shrink-0 w-6">Q{i + 1}</span>
                   <div className="flex-1 min-w-0">
-                    <div className="text-sm font-bricolage text-[var(--color-text)] truncate">{r.questionText}</div>
+                    <div className="text-base sm:text-[17px] font-bricolage text-[var(--color-text)] truncate font-medium">{r.questionText}</div>
                   </div>
                   <span
                     className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full shrink-0"
@@ -259,8 +259,8 @@ export default function InterviewCompletePage() {
               {feedback.tone === 'amber' ? <AlertTriangle size={16} /> : <CheckCircle2 size={16} />}
             </div>
             <div className="flex-1 min-w-0">
-              <div className="font-clash text-sm font-semibold text-[var(--color-text)] mb-1">Key takeaway</div>
-              <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">
+              <div className="font-clash text-base font-semibold text-[var(--color-text)] mb-1.5">Key takeaway</div>
+              <p className="text-base sm:text-[17px] text-[var(--color-text)] font-bricolage leading-relaxed">
                 {feedback.body}
               </p>
             </div>

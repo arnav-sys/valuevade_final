@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Clock, Sparkles, Target, X } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { useXP } from '../../contexts/XPContext';
@@ -51,6 +51,10 @@ export default function DailyGoalModal() {
       if (dismissed) payload.daily_goal_modal_dismissed = true;
       await supabase.from('user_stats').update(payload).eq('user_id', user.id);
       await refresh();
+      // Hard-guard: never re-show in this browser session even if a
+      // subsequent stats refresh races and re-sees `daily_goal_minutes`
+      // as null. The DB flag is the source of truth long-term.
+      dismissedThisSessionRef.current = true;
       setShown(false);
       if (!dismissed) {
         toast.success(`Goal set: ${minutes} min/day`, {

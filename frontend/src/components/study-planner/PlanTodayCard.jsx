@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
-import { CalendarCheck, Flame, Loader2, AlertTriangle, RefreshCcw, CheckCircle2 } from 'lucide-react';
+import {
+  CalendarCheck, Flame, Loader2, AlertTriangle, RefreshCcw, CheckCircle2,
+  BookOpen, Target as TargetIcon,
+} from 'lucide-react';
 
 // Phase D2 — Today vs Plan card.
 //
@@ -37,11 +40,19 @@ function MeterBar({ pct, color }) {
   );
 }
 
+function formatUpcomingDate(iso) {
+  if (!iso) return '';
+  try {
+    return new Date(iso).toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+  } catch { return iso; }
+}
+
 export default function PlanTodayCard({ data, loading, onOpenRebalance, onOpenWizard }) {
   const status = useMemo(() => statusLabel(data?.today), [data]);
   const today = data?.today;
   const cum = data?.cumulative;
   const streak = data?.adherence?.on_schedule_streak_days || 0;
+  const upcoming = Array.isArray(data?.upcoming) ? data.upcoming.slice(0, 5) : [];
 
   if (loading) {
     return (
@@ -132,23 +143,63 @@ export default function PlanTodayCard({ data, loading, onOpenRebalance, onOpenWi
 
       {needsReset && (
         <div
-          className="mt-4 rounded-xl border border-amber-500/50 bg-amber-500/15 px-3 py-2.5 flex items-start gap-2"
+          className="mt-4 rounded-xl border-2 border-amber-500/70 bg-amber-500/20 dark:bg-amber-500/15 px-3 py-2.5 flex items-start gap-2"
           data-testid="plan-reset-warning"
         >
-          <AlertTriangle size={14} className="text-amber-600 dark:text-amber-300 mt-0.5 shrink-0" />
+          <AlertTriangle size={15} className="text-amber-700 dark:text-amber-300 mt-0.5 shrink-0" />
           <div className="flex-1 min-w-0">
-            <div className="text-xs font-bricolage text-amber-900 dark:text-amber-100 leading-relaxed">
+            <div className="text-sm font-bricolage text-amber-950 dark:text-amber-50 leading-relaxed font-semibold">
               You're <span className="font-bold">{behindPct}%</span> behind your plan.
             </div>
             <button
               type="button"
               onClick={onOpenRebalance}
-              className="mt-1 inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-[0.18em] text-amber-700 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-100 underline font-bold"
+              className="mt-1 inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-[0.18em] text-amber-900 dark:text-amber-100 hover:text-amber-950 dark:hover:text-white underline font-bold"
               data-testid="plan-rebalance-cta"
             >
-              <RefreshCcw size={10} /> Rebalance
+              <RefreshCcw size={11} /> Rebalance
             </button>
           </div>
+        </div>
+      )}
+
+      {/* B5 — Upcoming this week mini-list (≤5 rows, lightweight) */}
+      {upcoming.length > 0 && (
+        <div className="mt-5 pt-4 border-t border-[var(--color-border)]" data-testid="plan-upcoming">
+          <div className="flex items-center justify-between mb-2.5">
+            <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+              Upcoming this week
+            </div>
+            <div className="text-[10px] font-mono text-[var(--color-text-faint)]">
+              {upcoming.length} day{upcoming.length === 1 ? '' : 's'}
+            </div>
+          </div>
+          <ul className="space-y-1.5">
+            {upcoming.map((d, i) => {
+              const Icon = d.summary_kind === 'project' ? TargetIcon : BookOpen;
+              return (
+                <li
+                  key={`${d.day_date}-${i}`}
+                  className="flex items-center gap-2.5 px-2.5 py-1.5 rounded-lg hover:bg-[var(--color-surface)]/50 transition-colors"
+                  data-testid={`plan-upcoming-row-${i}`}
+                >
+                  <Icon size={12} className="text-[var(--color-text-muted)] shrink-0" />
+                  <div className="text-[11px] font-mono text-[var(--color-text-muted)] uppercase tracking-[0.08em] shrink-0 min-w-[68px]">
+                    {formatUpcomingDate(d.day_date)}
+                  </div>
+                  <div className="flex-1 min-w-0 text-sm font-bricolage text-[var(--color-text)] truncate">
+                    {d.summary_title}
+                    {d.extra_count > 0 && (
+                      <span className="text-[var(--color-text-muted)] font-normal"> +{d.extra_count}</span>
+                    )}
+                  </div>
+                  <div className="text-[11px] font-mono text-[var(--color-text-muted)] shrink-0">
+                    {d.required_minutes}m
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       )}
     </div>

@@ -1707,12 +1707,27 @@ async def revision_generate(req: RevisionGenerateReq, supa_user: dict = Depends(
             content_md = _re.sub(r"^```(?:markdown|md)?\s*", "", content_md)
             content_md = _re.sub(r"\s*```\s*$", "", content_md)
         if not content_md:
-            raise HTTPException(status_code=502, detail="LLM returned an empty sheet")
+            raise HTTPException(status_code=502, detail="LLM returned an empty sheet. Try again in a moment.")
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"[revision] LLM call failed: {e}")
-        raise HTTPException(status_code=502, detail="Revision sheet generation failed")
+        # F1 (Batch 1) — Surface a more useful detail string. The user can hit
+        # Retry; the FE will show a soft "Try again" CTA. We log the full
+        # exception server-side so we can diagnose recurring failures.
+        err_msg = str(e) or e.__class__.__name__
+        err_lower = err_msg.lower()
+        if "rate" in err_lower or "429" in err_lower or "quota" in err_lower or "limit" in err_lower:
+            detail = "Pari is busy right now (rate limit). Try again in a few seconds."
+        elif "timeout" in err_lower or "timed out" in err_lower:
+            detail = "The summary took too long to generate. Try again."
+        elif "auth" in err_lower or "invalid" in err_lower and "key" in err_lower:
+            detail = "LLM credentials issue — admin has been notified."
+        elif "budget" in err_lower or "balance" in err_lower or "insufficient" in err_lower:
+            detail = "LLM key budget exhausted. Admin needs to top up."
+        else:
+            detail = f"Couldn't generate the sheet. {err_msg[:120]}".strip()
+        logger.error(f"[revision] LLM call failed for session={req.session_id}: {err_msg}")
+        raise HTTPException(status_code=502, detail=detail)
 
     approx_tokens = max(1, (len(user_prompt) + len(content_md)) // 4)
 
@@ -3124,6 +3139,7 @@ async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_us
             "active_plan": None,
             "today": None,
             "cumulative": None,
+            "upcoming": [],
             "adherence": None,
         }
     plan = plans[0]
@@ -3174,6 +3190,64 @@ async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_us
     if cum_required > 0 and cum_actual < cum_required:
         is_behind_percent = round((cum_required - cum_actual) / cum_required * 100, 1)
 
+    # B5 (Batch 1) — Upcoming this week: next up to 5 active days AFTER today,
+    # with a 1-line summary from the first session/project title on that day.
+    upcoming = []
+    upcoming_rows = _supabase_get(
+        f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
+        f"&day_date=gt.{today}"
+        f"&status=neq.rest"
+        f"&order=day_date.asc&limit=5"
+        f"&select=day_date,required_minutes,required_session_codes,required_project_codes,status"
+    ) or []
+    if upcoming_rows:
+        # Collect all session + project codes across upcoming days so we batch-resolve titles.
+        all_sess_codes: list[str] = []
+        all_proj_codes: list[str] = []
+        for r in upcoming_rows:
+            all_sess_codes.extend(r.get("required_session_codes") or [])
+            all_proj_codes.extend(r.get("required_project_codes") or [])
+        sess_title_by_id: dict[str, str] = {}
+        proj_title_by_id: dict[str, str] = {}
+        # Only attempt to resolve if codes look like UUIDs — older legacy plans
+        # may have synthetic placeholder codes that would cause a PG cast error.
+        _uuid_re = _re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+        try:
+            sess_uuid_ids = [s for s in {x for x in all_sess_codes if x} if _uuid_re.match(s)]
+            if sess_uuid_ids:
+                ids_csv = ",".join(sess_uuid_ids)
+                srows = _supabase_get(
+                    f"master_sessions?id=in.({ids_csv})&select=id,title&limit={len(sess_uuid_ids) + 5}"
+                ) or []
+                sess_title_by_id = {row["id"]: row.get("title") or "" for row in srows}
+            proj_uuid_ids = [s for s in {x for x in all_proj_codes if x} if _uuid_re.match(s)]
+            if proj_uuid_ids:
+                ids_csv = ",".join(proj_uuid_ids)
+                prows = _supabase_get(
+                    f"master_module_projects?id=in.({ids_csv})&select=id,title&limit={len(proj_uuid_ids) + 5}"
+                ) or []
+                proj_title_by_id = {row["id"]: row.get("title") or "" for row in prows}
+        except Exception as _e:
+            logger.warning(f"[plan-summary] upcoming title resolve failed: {_e}")
+        for r in upcoming_rows:
+            sess_ids = r.get("required_session_codes") or []
+            proj_ids = r.get("required_project_codes") or []
+            first_title = ""
+            first_kind = "session"
+            if sess_ids:
+                first_title = sess_title_by_id.get(sess_ids[0], "") or "Session"
+            elif proj_ids:
+                first_title = proj_title_by_id.get(proj_ids[0], "") or "Module project"
+                first_kind = "project"
+            extra_count = len(sess_ids) + len(proj_ids) - 1
+            upcoming.append({
+                "day_date": r["day_date"],
+                "required_minutes": int(r.get("required_minutes") or 0),
+                "summary_title": first_title or "Study block",
+                "summary_kind": first_kind,
+                "extra_count": max(0, extra_count),
+            })
+
     # Adherence row.
     adh_rows = _supabase_get(
         f"user_plan_adherence?user_id=eq.{_urlparse.quote(user_id)}"
@@ -3203,6 +3277,7 @@ async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_us
             "is_behind_percent": is_behind_percent,
             "needs_reset_warning": is_behind_percent > 20.0,
         },
+        "upcoming": upcoming,
         "adherence": adherence,
     }
 

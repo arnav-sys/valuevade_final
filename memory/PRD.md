@@ -2758,3 +2758,65 @@ Screenshots captured at `/tmp/d2_FINAL_*`:
   fires when the daily-challenge progress hits target.
 
 
+
+
+---
+
+## BATCH 1 — Bundled Fixes (2026-05-30) ✅ COMPLETE
+
+Bundled 9-item polish + functional pass executed end-to-end in one batch.
+
+### Completed earlier in the batch (this session)
+- **A1** Rebalance preserves user-set minutes when not specified (`server.py`)
+- **A2** `master_badges.earned_at` invariant enforced via migration `0021_batch1_fixes.sql`
+- **D2** News dismiss persistence (per-day, server-side)
+- **D3** Badge dedupe trigger
+- **E1** Reduced session estimated times across master_sessions
+- **E2** Removed deadline tightness validation in plan preview/commit
+- **C1** Moved `AskPariButton` to top-align in NotesPage
+- **C2** Pari intro precedes news on first dashboard visit
+
+### Completed in this push
+- **B1** `StudyPlanWizard.jsx` — bumped text contrast (`text-sm muted` → `text-base text`) on
+  step descriptions; removed unused `Sparkles` import.
+- **B2** `DailyNewsModal.jsx` — bumped subtitle + article summary contrast and font sizes
+  (`text-xs muted` → `text-sm text`, summary `text-sm muted` → `text-base text`).
+- **B3** `PlanTodayCard.jsx` — replaced flimsy amber/30 chip with `border-2 amber-500/70`
+  + dark-mode-aware text + bold "Rebalance" CTA.
+- **B4** Body/prose font bump to ≥16px / ≥18px:
+  - `QuizCompletePage.jsx` — explanation, answer, question blocks now `text-base sm:text-[17px]`
+  - `InterviewCompletePage.jsx` — question text + "Key takeaway" body to `text-base sm:text-[17px]`
+  - `QuickRevisionSheetCard.jsx` — markdown prose (paragraphs + bullets) bumped to `text-base sm:text-[17px]`
+- **B5** "Upcoming this week" mini-list in `PlanTodayCard.jsx` (≤5 rows, date + 1-line summary
+  + minutes). Backend endpoint `/api/study-plan/dashboard-summary` extended with `upcoming[]` field,
+  resolving session/project titles from `master_sessions` / `master_module_projects` with UUID guard.
+- **D1** `DailyGoalModal.jsx` — fixed missing `useRef` import (would crash on mount) and added
+  `dismissedThisSessionRef.current = true` hard-guard so the modal cannot re-show after dismissal
+  even if a stale stats refresh races.
+- **F1** `revision/generate` — backend now surfaces actionable error detail (rate-limit, timeout,
+  auth, budget-exhausted) instead of generic "Revision sheet generation failed". FE
+  `QuickRevisionSheetCard` shows softer "Couldn't generate. Try again." with the detail subtitle
+  + "Try again" CTA button.
+- **F2** `ModuleConstellationMap.jsx` — links now strictly sort by `master_modules.order_index`
+  (handles missing-module gaps in customized enrollments). Existing `readyForNext` accent
+  retained — gold pulse signals "next up" when prev is complete + cur is unlocked & not started.
+- **G1** Investigation report at `/app/memory/G1_excel_sims_investigation.md`. 68/68 excel sims
+  in M2–M13 use a `firm/role/raw_data/multi_tab_excel_workbook` schema that neither `ExcelSim.jsx`
+  nor `ExcelWorkspace.jsx` understands. Three recommended fix paths documented. NO fix applied.
+
+### Backend changes (server.py)
+- `dashboard-summary` returns new `upcoming` array (next ≤5 active days with date, minutes,
+  summary title, kind, extra-count). Empty list when plan ends or no future days.
+- `revision/generate` LLM exception path classifies the error and returns a friendly detail
+  string. Full exception still logged server-side.
+
+### Test verification done in this push
+- Curl: `dashboard-summary` returns `upcoming` (5 rows confirmed for test user).
+- Screenshot: Dashboard renders B5 mini-list with 5 dated rows + minutes.
+- Screenshot: DailyNewsModal shows bumped subtitle contrast.
+- Curl: `revision/generate` with bad session returns clear 404 detail.
+- Lint: All edited files compile cleanly; only pre-existing warnings remain (NotesPage hook deps).
+
+### NOT in this batch (per user)
+- Refactoring `NotesPage.jsx` / `DashboardPage.jsx` — explicitly out of scope.
+- Fixing G1 excel sims — investigation only.
