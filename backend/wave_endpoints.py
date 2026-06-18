@@ -375,7 +375,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             "profiles?select=id,full_name,email,country_code,created_at&order=created_at.desc&limit=2000"
         ) or []
         enrollments = _supabase_get(
-            "user_enrollments?select=user_id,status,course_id,created_at&order=created_at.desc&limit=5000"
+            "user_enrollments?select=user_id,status,title,master_path_id,enrolled_at&order=enrolled_at.desc&limit=5000"
         ) or []
         plans = _supabase_get(
             "user_study_plans?status=eq.active&select=user_id&limit=5000"
@@ -404,8 +404,9 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "country_code": p.get("country_code") or "",
                 "signup_at": p.get("created_at"),
                 "enrolled": bool(e),
-                "enrollment_at": e.get("created_at") if e else None,
+                "enrollment_at": e.get("enrolled_at") if e else None,
                 "enrollment_status": e.get("status") if e else None,
+                "course_title": e.get("title") if e else None,
                 "last_active": last_active_by.get(uid),
                 "active_plan": uid in active_plan_ids,
             })
@@ -418,15 +419,23 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             f"user_stats?user_id=eq.{_urlparse.quote(user_id)}&select=total_xp,current_level,current_streak_days,longest_streak_days&limit=1"
         ) or [{}])[0]
         plan = _supabase_get(
-            f"user_plan_adherence?user_id=eq.{_urlparse.quote(user_id)}&select=on_schedule_streak,adherence_pct&limit=1"
+            f"user_plan_adherence?user_id=eq.{_urlparse.quote(user_id)}&select=on_schedule_streak_days,longest_on_schedule_streak,last_on_track_date&limit=1"
         ) or [{}]
         plan = plan[0] if plan else {}
+        # user_sessions has no direct user_id; must join via user_modules → enrollment_id
         modules = _supabase_get(
-            f"user_modules?user_id=eq.{_urlparse.quote(user_id)}&select=id,order_index,title,is_completed,master_module_id&order=order_index.asc"
+            f"user_modules?select=id,order_index,title,is_completed,master_module_id,enrollment_id"
+            f"&enrollment_id=in.({','.join([_urlparse.quote(e['id']) for e in (_supabase_get(f'user_enrollments?user_id=eq.{_urlparse.quote(user_id)}&select=id&limit=20') or [])]) or 'none'})"
+            f"&order=order_index.asc&limit=50"
         ) or []
-        sessions = _supabase_get(
-            f"user_sessions?user_id=eq.{_urlparse.quote(user_id)}&select=user_module_id,is_completed&limit=2000"
-        ) or []
+        # Now fetch sessions for those modules
+        module_ids = [m["id"] for m in modules]
+        sessions = []
+        if module_ids:
+            id_list = ",".join(module_ids)
+            sessions = _supabase_get(
+                f"user_sessions?user_module_id=in.({id_list})&select=user_module_id,is_completed&limit=2000"
+            ) or []
         sess_by_mod: dict[str, dict] = {}
         for s in sessions:
             m = sess_by_mod.setdefault(s["user_module_id"], {"total": 0, "done": 0})
@@ -451,8 +460,9 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "current_level": stats.get("current_level") or 1,
                 "current_streak_days": stats.get("current_streak_days") or 0,
                 "longest_streak_days": stats.get("longest_streak_days") or 0,
-                "on_schedule_streak": plan.get("on_schedule_streak") or 0,
-                "adherence_pct": plan.get("adherence_pct"),
+                "on_schedule_streak": plan.get("on_schedule_streak_days") or 0,
+                "longest_on_schedule_streak": plan.get("longest_on_schedule_streak") or 0,
+                "last_on_track_date": plan.get("last_on_track_date"),
             },
             "modules": modules_out,
             "sessions_done": total_done,
@@ -544,12 +554,21 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     # ---------------- MOCK INTERVIEW ----------------
     def _eligibility_state(user_id: str) -> dict:
-        # 1. M14 project gate — pass if any module with order_index=14 has is_completed=true
-        m14 = _supabase_get(
-            f"user_modules?user_id=eq.{_urlparse.quote(user_id)}"
-            f"&order_index=eq.14&select=id,is_completed&limit=1"
+        # 1. M14 project gate — user_modules has no direct user_id, join via
+        # user_enrollments. A user's M14 is "done" if any of their enrolled
+        # M14 modules has is_completed=true.
+        enrolls = _supabase_get(
+            f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}&select=id&limit=20"
         ) or []
-        m14_done = bool(m14 and m14[0].get("is_completed"))
+        enrollment_ids = [e["id"] for e in enrolls]
+        m14_done = False
+        if enrollment_ids:
+            id_list = ",".join(enrollment_ids)
+            m14 = _supabase_get(
+                f"user_modules?enrollment_id=in.({id_list})&order_index=eq.14"
+                f"&select=is_completed&limit=5"
+            ) or []
+            m14_done = any(m.get("is_completed") for m in m14)
         # 2. Weekly limit
         since = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
         recent = _supabase_get(

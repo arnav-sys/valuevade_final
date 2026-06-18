@@ -1,4 +1,53 @@
 # ============================================================================
+# CHANGELOG — 2026-06-18 (Wave 1 + Wave 2 — VERIFIED end-to-end)
+# ============================================================================
+
+Supabase outage cleared. All 3 migrations applied successfully (201/201/201).
+
+## Migrations applied
+- `0025_video_lecture_url.sql` — `master_sessions.lecture_url` column ✓
+- `0026_referrals.sql` — `profiles.referral_code/referred_by_user_id/payment_commission_enabled` + `referral_events` table + `gen_referral_code()` function + 3 social badges (networker / influencer / talent_scout). Referral codes auto-backfilled for every existing profile. ✓
+- `0027_mock_interview.sql` — `user_mock_interviews` + `mock_interview_turns` + `user_mock_interview_scores` tables with RLS ✓
+
+## Admin user created
+- `info@valuevade.com / aa1aa2sam3` — created via Supabase Admin API. `email_confirmed=true`. Lives in `auth.users` as `ea4121ce-6c0c-4113-af9a-5d94df5a5d54`.
+
+## Smoke battery (all 200 OK)
+- `GET /api/admin/users` w/ admin JWT → 200 · total=30 users (incl. info@valuevade.com)
+- `GET /api/admin/users` w/ non-admin JWT → 403 "Admin access required."
+- `GET /api/admin/users/{id}/progress` w/ admin JWT → 200 · XP=1353 L=2 streak=1 modules:2/31 sessions:2/349
+- `GET /api/referrals/me` → 200 · code=KVSSR4 · share_url=https://valuevade.com/signup?ref=KVSSR4
+- `GET /api/mock-interview/eligible` BEFORE M14 flip → `{eligible:false, reason:m14_project_pending}` (correct gate)
+- `GET /api/mock-interview/eligible` AFTER M14 flip → `{eligible:true, reason:ok}`
+- `POST /api/mock-interview/start` → 200 with LLM-generated first question "Walk me through how you'd build a DCF for Reliance Industries — three most critical line items in the projection period, and why those over others?"
+- M14 reverted to `is_completed=false` after test (no permanent state leakage)
+
+## Bug fixes applied during smoke run
+- `_eligibility_state` originally queried `user_modules?user_id=eq.{...}` but `user_modules` has no `user_id` column — joined via `user_enrollments` instead.
+- `admin/users` originally selected `course_id` and ordered by `created_at` — `user_enrollments` actually uses `master_path_id` + `enrolled_at`. Fixed.
+- `admin/users/{id}/progress` similarly joined `user_sessions` directly by `user_id` — actual schema has `user_sessions.user_module_id`. Fixed with proper 2-step join via enrollment → modules → sessions. Also fixed `user_plan_adherence` column names (`on_schedule_streak_days` not `on_schedule_streak`).
+
+## Screenshots captured (all in `/tmp/sh*.png`)
+- `sh1_dashboard_news.png` — Dashboard with "📰 Today's Finance News ✓ / Read — +30 XP awarded" task button (auto-popup REMOVED)
+- `sh3_admin_waitlist.png` / `sh4_admin_users.png` / `sh5_admin_progress.png` — all 3 admin tabs functional
+- `sh6_profile_referrals.png` — Profile referrals block w/ code KVSSR4, copy + share buttons, 3 new social badges visible in BadgeCabinet above
+- `sh7_mock_interview_with_q.png` — Live mock interview page with LLM-generated DCF question + voice/type input panel
+- `sh8_mock_interview_results.png` — Results page ✅ PASS · 78.5/100 · 3-round breakdown · markdown feedback · collapsible transcript
+- `sh9_video_tab.png` — Video Lecture / Notes tab toggle with "Coming soon" placeholder + "Switch to Notes →" CTA
+
+## Regression check (all existing endpoints still 200 OK)
+- /api/news/today ✓
+- /api/study-plan/active ✓
+- /api/doubts/sessions ✓
+- /api/milestones/pending ✓
+- /api/me/pari_welcome ✓
+- Webpack: `Compiled successfully!` zero new warnings
+
+## Deployment readiness
+🟢 GO. All Wave 1 + Wave 2 endpoints registered, auth-gated, smoke-tested. Code on preview = production-ready. User can redeploy any time to push to production.
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-18 (Wave 1 + Wave 2 — code complete, migrations blocked)
 # ============================================================================
 

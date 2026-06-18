@@ -80,19 +80,19 @@ create policy "own_referrer_select"
   using (auth.uid() = referrer_user_id);
 
 -- 3) Badge seeds ------------------------------------------------------------
--- Three milestone badges in the social/consistency family. Idempotent on slug.
-insert into public.master_badges (slug, name, description, category, rarity, icon, threshold_value, threshold_metric)
+-- Three milestone badges in the social/consistency family. Idempotent on code.
+insert into public.master_badges (code, name, description, category, rarity, icon_slug, progress_target, criteria_json, display_order, bonus_xp)
 values
-  ('networker',     'Networker',      'Referred 5 friends to Valuevade — your network is growing.',           'social', 'rare',      'users',      5,  'referral_signups'),
-  ('influencer',    'Influencer',     'Referred 15 friends — you''re shaping the community.',                 'social', 'epic',      'megaphone',  15, 'referral_signups'),
-  ('talent_scout',  'Talent Scout',   'Referred 50 friends — legendary advocate for finance literacy.',       'social', 'legendary', 'sparkles',   50, 'referral_signups')
-on conflict (slug) do update
+  ('networker',    'Networker',    'Referred 5 friends to Valuevade — your network is growing.',     'social', 'rare',      'users',    5,  '{"metric":"referral_signups","threshold":5}'::jsonb,  300, 250),
+  ('influencer',   'Influencer',   'Referred 15 friends — you''re shaping the community.',           'social', 'epic',      'megaphone', 15, '{"metric":"referral_signups","threshold":15}'::jsonb, 301, 750),
+  ('talent_scout', 'Talent Scout', 'Referred 50 friends — legendary advocate for finance literacy.', 'social', 'legendary', 'sparkles', 50, '{"metric":"referral_signups","threshold":50}'::jsonb, 302, 2500)
+on conflict (code) do update
 set name = excluded.name,
     description = excluded.description,
     category = excluded.category,
     rarity = excluded.rarity,
-    icon = excluded.icon,
-    threshold_value = excluded.threshold_value,
-    threshold_metric = excluded.threshold_metric;
+    icon_slug = excluded.icon_slug,
+    progress_target = excluded.progress_target,
+    criteria_json = excluded.criteria_json;
 
 commit;

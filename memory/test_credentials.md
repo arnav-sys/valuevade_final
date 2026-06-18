@@ -17,7 +17,19 @@ Notes for testing agent:
 
 
 ## Test user UUID & badge engine notes (Phase 45)
-- Supabase user_id: `13a690c4-96d7-4827-8117-fde4f696e999`
+## Admin / Mock Interview / Referrals — VERIFIED 2026-06-18
+
+- Admin account
+  - Email: `info@valuevade.com`
+  - Password: `aa1aa2sam3`
+  - Supabase user_id: `ea4121ce-6c0c-4113-af9a-5d94df5a5d54`
+  - Use for `/admin-panel` access (login flow standard)
+
+- Test user (existing)
+  - Email: `testagent2026@gmail.com`
+  - Password: `TestPass123!`
+  - Supabase user_id: `13a690c4-96d7-4827-8117-fde4f696e999`
+  - Referral code (auto): `KVSSR4`
 - After Phase 45 wiring, first authenticated load fires the one-time
   `p3_catchup` evaluator (persisted via `user_stats.p3_catchup_done`). For the
   seeded test user this is a no-op (already at 7/23; remaining 16 need
