@@ -261,6 +261,7 @@ export default function DashboardPage() {
   const [capstone, setCapstone] = useState(null);
   // P54 P7b: Daily News modal — auto-open once per IST day.
   const [newsOpen, setNewsOpen] = useState(false);
+  const [newsAlreadyRead, setNewsAlreadyRead] = useState(true);
 
   // Phase D1 — Study plan presence detection + wizard control.
   // Phase D2 — Dashboard summary (today + cumulative trend + adherence).
@@ -344,11 +345,10 @@ export default function DashboardPage() {
           fetch(`${BACKEND}/api/news/today`, { headers }).then((r) => r.json()).catch(() => null),
         ]);
         if (cancelled) return;
-        const pariReady = welcomeRes && welcomeRes.should_show_welcome === false;
         const alreadyRead = !!(newsRes && newsRes.already_read_today);
-        if (pariReady && !alreadyRead) {
-          timer = setTimeout(() => { if (!cancelled) setNewsOpen(true); }, 1800);
-        }
+        // News is now a TASK on the dashboard (button + unread-pip). No auto-popup.
+        // Track read state so the button can flip to "✓ Done".
+        setNewsAlreadyRead(alreadyRead);
         // Debug/test escape hatch: ?news=1 forces the modal open even when
         // already read for the day. Used by QA/screenshot automation.
         try {
@@ -357,7 +357,7 @@ export default function DashboardPage() {
             setNewsOpen(true);
           }
         } catch { /* ignore */ }
-      } catch { /* network glitch — silently skip auto-open */ }
+      } catch { /* network glitch — silently skip */ }
     })();
     return () => { cancelled = true; if (timer) clearTimeout(timer); };
   }, [user?.id]);
@@ -610,6 +610,34 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
+                {/* Today's Finance News — task button (Wave 1 / 1A). Replaces the
+                    auto-popup. Clicking opens DailyNewsModal. Unread-pip when
+                    `newsAlreadyRead === false`; green check otherwise. */}
+                <button
+                  onClick={() => setNewsOpen(true)}
+                  data-testid="news-task-button"
+                  className={`w-full mb-4 rounded-2xl border px-5 py-3 flex items-center justify-between transition-all ${
+                    newsAlreadyRead
+                      ? 'border-[var(--color-border)] bg-[var(--color-bg-card)] hover:bg-[var(--color-bg-card-hover)]'
+                      : 'border-amber-400/60 bg-amber-400/10 hover:bg-amber-400/15'
+                  }`}>
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">📰</span>
+                    <div className="text-left">
+                      <div className="font-semibold text-[var(--color-text)]">
+                        Today's Finance News
+                        {newsAlreadyRead ? <span className="text-emerald-400 ml-2" data-testid="news-read-check">✓</span> : null}
+                      </div>
+                      <div className="text-xs text-[var(--color-text-muted)]">
+                        {newsAlreadyRead ? 'Read — +30 XP awarded' : '~3 min · +30 XP when you mark as read'}
+                      </div>
+                    </div>
+                  </div>
+                  {!newsAlreadyRead && (
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" data-testid="news-unread-pip" />
+                  )}
+                </button>
+
                 {/* Phase D1 — Set-up plan CTA (only when no active plan) */}
                 {activePlan === null && (
                   <button
@@ -830,7 +858,7 @@ export default function DashboardPage() {
       <PariWelcomeModal />
       <DailyNewsModal
         open={newsOpen}
-        onClose={() => setNewsOpen(false)}
+        onClose={() => { setNewsOpen(false); setNewsAlreadyRead(true); }}
         onMarkRead={() => { refreshXP?.(); }}
       />
       {/* Phase D1 — Study plan wizard. Mounted at dashboard root so the

@@ -239,20 +239,12 @@ export default function DailyNewsModal({ open = false, onClose = () => {}, onMar
         <div className="flex flex-wrap items-center justify-end gap-2 mt-6">
           <button
             type="button"
-            onClick={skip}
-            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] px-3 py-2 font-bricolage"
-            data-testid="daily-news-skip"
-          >
-            Skip for today
-          </button>
-          <button
-            type="button"
-            onClick={markRead}
+            onClick={alreadyRead ? skip : markRead}
             disabled={marking || loading || !!error}
             data-testid="daily-news-mark-read"
             className="rounded-full bg-[var(--color-primary)] hover:brightness-110 disabled:opacity-60 text-white px-5 py-2.5 text-sm font-semibold font-bricolage"
           >
-            {marking ? 'Saving…' : (alreadyRead ? 'Done for today' : 'Mark as read (+30 XP)')}
+            {marking ? 'Saving…' : (alreadyRead ? 'Close' : 'Done — Mark as Read (+30 XP)')}
           </button>
         </div>
       </div>

@@ -4918,6 +4918,21 @@ async def transcribe_audio(
         raise HTTPException(status_code=500, detail=f"Transcription failed: {str(e)}")
 
 
+# ----------------------- Wave 1 + Wave 2 endpoints --------------------------
+# Admin panel, referrals, mock interview. Kept in a separate module so
+# server.py stays bounded. MUST run BEFORE include_router so routes are picked up.
+try:
+    from wave_endpoints import register_wave_endpoints
+    register_wave_endpoints(api_router, {
+        "supabase_get": _supabase_get,
+        "supabase_post": _supabase_post,
+        "supabase_patch": _supabase_patch,
+        "get_supabase_user": get_supabase_user,
+        "emergent_llm_key": EMERGENT_LLM_KEY,
+    })
+except Exception as _e:
+    logger.warning(f"[wave_endpoints] failed to register: {_e}")
+
 app.include_router(api_router)
 
 # CORS — the FastAPI/Starlette middleware (per CORS spec) rejects the combo

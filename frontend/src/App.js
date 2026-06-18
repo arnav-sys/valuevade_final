@@ -69,6 +69,9 @@ const PortfolioPage = lazyWithRetry(() => import("@/components/PortfolioPage"));
 const PublicPortfolioPage = lazyWithRetry(() => import("@/components/PublicPortfolioPage"));
 const ReviewNotesPage = lazyWithRetry(() => import("@/components/ReviewNotesPage"));
 const DoubtsPage = lazyWithRetry(() => import("@/components/DoubtsPage"));
+const AdminPanel = lazyWithRetry(() => import("@/components/AdminPanel"));
+const MockInterviewPage = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewPage"));
+const MockInterviewResults = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewResults"));
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (
@@ -178,6 +181,12 @@ function App() {
                   <Route path="/capstone/start" element={<Learning><CapstoneStartPage /></Learning>} />
                   <Route path="/capstone/tasks" element={<Learning><CapstoneTasksPage /></Learning>} />
                   <Route path="/capstone/complete" element={<Learning><CapstoneCompletePage /></Learning>} />
+
+                  {/* Wave 1 / 2 — Admin + Mock Interview */}
+                  <Route path="/admin-panel" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
+                  <Route path="/mock-interview" element={<Learning><MockInterviewPage /></Learning>} />
+                  <Route path="/mock-interview/:id" element={<Learning><MockInterviewPage /></Learning>} />
+                  <Route path="/mock-interview/:id/results" element={<Learning><MockInterviewResults /></Learning>} />
 
                   {/* 404 catch-all */}
                   <Route path="*" element={<NotFoundPage />} />

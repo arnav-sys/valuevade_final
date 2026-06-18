@@ -1501,6 +1501,67 @@ function CardRenderer({ card }) {
 // MAIN PAGE
 // -----------------------------------------------------------
 
+// Wave 1 / Item 1B — Video / Notes tab placeholder. Default = Video.
+// When master_sessions.lecture_url is non-null in the future, the Video tab
+// will render an iframe/<video>; for now it's a "Coming soon" card.
+function NotesPhaseTabs({ session, sessionId: _sid }) {
+  const [tab, setTab] = useState('video');
+  const lectureUrl = session?.lecture_url || null;
+  const isYouTube = lectureUrl && /youtube\.com|youtu\.be/i.test(lectureUrl);
+  return (
+    <div className="mb-6" data-testid="notes-phase-tabs">
+      <div className="flex gap-2 mb-3 border-b border-[var(--color-border)]" role="tablist">
+        <button
+          onClick={() => setTab('video')}
+          role="tab"
+          aria-selected={tab === 'video'}
+          data-testid="phase-tab-video"
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'video'
+            ? 'border-[var(--color-accent)] text-[var(--color-text)]'
+            : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+          🎥 Video Lecture
+        </button>
+        <button
+          onClick={() => setTab('notes')}
+          role="tab"
+          aria-selected={tab === 'notes'}
+          data-testid="phase-tab-notes"
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'notes'
+            ? 'border-[var(--color-accent)] text-[var(--color-text)]'
+            : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
+          📄 Notes
+        </button>
+      </div>
+      {tab === 'video' && (
+        <div className="rounded-2xl p-8 text-center bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-bg-card)] border border-[var(--color-border)]" data-testid="video-tab-content">
+          {lectureUrl ? (
+            isYouTube ? (
+              <iframe className="w-full aspect-video rounded-xl" src={lectureUrl.replace('watch?v=', 'embed/')} allow="encrypted-media" title="Lecture" />
+            ) : (
+              <video controls className="w-full rounded-xl" src={lectureUrl} />
+            )
+          ) : (
+            <>
+              <div className="text-5xl mb-3">🎥</div>
+              <h3 className="text-xl font-semibold text-[var(--color-text)] mb-2 font-bricolage">Video lecture for this session</h3>
+              <p className="text-[var(--color-text-muted)] mb-5 max-w-md mx-auto">
+                Coming soon — for now, switch to Notes to dive in. Pari will narrate this lesson via video lecture in a future update.
+              </p>
+              <button
+                onClick={() => setTab('notes')}
+                data-testid="switch-to-notes-cta"
+                className="px-5 py-2 bg-[var(--color-accent)] text-white rounded-lg font-medium hover:opacity-90">
+                Switch to Notes →
+              </button>
+            </>
+          )}
+        </div>
+      )}
+      {/* Notes tab — when active, the existing card flow below shows naturally. */}
+    </div>
+  );
+}
+
 export default function NotesPage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -1691,6 +1752,12 @@ export default function NotesPage() {
         onTouchEnd={onTouchEnd}
       >
         <div className="w-full max-w-3xl mx-auto">
+          {/* Wave 1 / 1B — Video / Notes tab toggle. Default = Video (placeholder),
+              switch to Notes for the existing flow. Phase-complete is unaffected
+              — the existing notes-completion logic still fires when the user
+              reaches the last card. */}
+          <NotesPhaseTabs sessionId={sessionId} session={session} />
+
           {/* C1 (Batch 1) — AskPariButton moved to the TOP of notes content,
               above the cards, so it's the first thing visible. Was
               previously a sibling of the card area which placed it to
