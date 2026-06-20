@@ -499,8 +499,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 if e.get("payout_status") == "paid"),
             2,
         )
-        # Default commission_pct = 10% (matches migration default). Use first event's value if present.
-        commission_pct = 10.00
+        # Default commission_pct = 20% (post migration 0029). Use first event's value if present.
+        commission_pct = 20.00
         for e in events:
             if e.get("commission_pct") is not None:
                 commission_pct = float(e["commission_pct"])
@@ -517,7 +517,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             "earnings_paid": earnings_paid,
             "lifetime_referred_revenue": lifetime_referred_revenue,
             "commission_pct": commission_pct,
-            "payment_processing_live": False,
+            "payment_processing_live": True,
+            "min_redemption_inr": 500,
         }
 
     # ---------------- ADMIN REFERRALS ----------------

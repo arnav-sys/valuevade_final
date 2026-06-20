@@ -72,11 +72,16 @@ const DoubtsPage = lazyWithRetry(() => import("@/components/DoubtsPage"));
 const AdminPanel = lazyWithRetry(() => import("@/components/AdminPanel"));
 const MockInterviewPage = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewPage"));
 const MockInterviewResults = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewResults"));
+const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
+const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
+import SessionPaymentGate from "@/components/payments/SessionPaymentGate";
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (
   <ProtectedRoute>
-    <EnrollmentGuard>{children}</EnrollmentGuard>
+    <EnrollmentGuard>
+      <SessionPaymentGate>{children}</SessionPaymentGate>
+    </EnrollmentGuard>
   </ProtectedRoute>
 );
 
@@ -187,6 +192,10 @@ function App() {
                   <Route path="/mock-interview" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id/results" element={<Learning><MockInterviewResults /></Learning>} />
+
+                  {/* Wave 4 — Payments + Orders */}
+                  <Route path="/upgrade" element={<ProtectedRoute><UpgradePage /></ProtectedRoute>} />
+                  <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
 
                   {/* 404 catch-all */}
                   <Route path="*" element={<NotFoundPage />} />

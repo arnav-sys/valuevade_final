@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Copy, Share2, Users, Lock, Wallet, TrendingUp } from 'lucide-react';
+import { Copy, Share2, Users, Lock, Wallet, TrendingUp, ArrowDownToLine } from 'lucide-react';
+import RedeemCommissionModal from '../payments/RedeemCommissionModal';
+import MyPayoutHistoryBlock from '../payments/MyPayoutHistoryBlock';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -14,16 +16,18 @@ const fmtINR = (n) => {
 export default function ReferralsBlock() {
   const [data, setData] = useState(null);
   const [copied, setCopied] = useState('');
+  const [showRedeem, setShowRedeem] = useState(false);
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  useEffect(() => {
-    (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      const r = await fetch(`${API}/api/referrals/me`, {
-        headers: { Authorization: `Bearer ${session?.access_token || ''}` },
-      });
-      if (r.ok) setData(await r.json());
-    })();
-  }, []);
+  const loadMe = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    const r = await fetch(`${API}/api/referrals/me`, {
+      headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+    });
+    if (r.ok) setData(await r.json());
+  };
+
+  useEffect(() => { loadMe(); }, [refreshKey]);
 
   const copy = async (text, kind) => {
     try {
@@ -48,8 +52,11 @@ export default function ReferralsBlock() {
   }
 
   const paymentsLive = !!data.payment_processing_live;
+  const minRedemption = data.min_redemption_inr || 500;
+  const canRedeem = (data.earnings_pending || 0) >= minRedemption;
 
   return (
+    <>
     <div className="rounded-2xl p-5 bg-[var(--color-bg-card)] border border-[var(--color-border)]" data-testid="referrals-block">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-[var(--color-text)] font-bricolage flex items-center gap-2">
@@ -67,13 +74,13 @@ export default function ReferralsBlock() {
         <Stat label="XP Earned" value={data.total_signups * 500 + data.total_enrollments * 500} suffix=" XP" />
       </div>
 
-      {/* Earnings Cards — placeholder until payments are wired */}
+      {/* Earnings Cards — live commission with Redeem CTA */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4" data-testid="referral-earnings-section">
         <EarningsCard
           icon={<Wallet className="w-4 h-4" />}
           label="Pending Commission"
           value={fmtINR(data.earnings_pending)}
-          sublabel={`${data.commission_pct}% per referral`}
+          sublabel={`${data.commission_pct}% per paid referral`}
           locked={!paymentsLive}
           testid="earnings-pending-card"
         />
@@ -87,13 +94,35 @@ export default function ReferralsBlock() {
         />
       </div>
 
+      {/* Redeem CTA */}
+      {paymentsLive && (
+        <div className="mb-4">
+          <button
+            onClick={() => canRedeem && setShowRedeem(true)}
+            disabled={!canRedeem}
+            data-testid="redeem-commission-btn"
+            title={canRedeem ? '' : `Minimum ${fmtINR(minRedemption)} to redeem`}
+            className={`w-full px-4 py-2.5 rounded-xl font-semibold text-sm transition-all inline-flex items-center justify-center gap-2 ${
+              canRedeem
+                ? 'bg-[var(--color-primary)] text-white hover:opacity-90'
+                : 'bg-[var(--color-bg-card-hover)] text-[var(--color-text-muted)] cursor-not-allowed border border-dashed border-[var(--color-border)]'
+            }`}
+          >
+            <ArrowDownToLine className="w-4 h-4" />
+            {canRedeem
+              ? `Redeem ${fmtINR(data.earnings_pending)} to UPI or Bank`
+              : `Minimum ${fmtINR(minRedemption)} to redeem`}
+          </button>
+        </div>
+      )}
+
       <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--color-bg-card-hover)] border border-[var(--color-border)] mb-3">
         <code className="flex-1 text-sm text-[var(--color-text)] font-mono break-all" data-testid="referral-share-url">
           {data.share_url}
         </code>
         <button onClick={() => copy(data.share_url, 'url')}
           data-testid="copy-share-url"
-          className="px-3 py-2 rounded-lg bg-[var(--color-accent)] text-white text-xs font-medium hover:opacity-90 inline-flex items-center gap-1">
+          className="px-3 py-2 rounded-lg bg-[var(--color-primary)] text-white text-xs font-medium hover:opacity-90 inline-flex items-center gap-1">
           <Copy className="w-3 h-3" />{copied === 'url' ? 'Copied!' : 'Copy'}
         </button>
         <button onClick={doShare}
@@ -105,8 +134,10 @@ export default function ReferralsBlock() {
 
       <p className="text-xs text-[var(--color-text-muted)]">
         Share your link. When a friend signs up and enrolls, you get <strong>+500 XP</strong> twice
-        (once on signup, once on enrollment). Hit milestones (5, 15, 50 signups) to unlock the
-        Networker, Influencer, and Talent Scout badges.
+        (once on signup, once on enrollment). When they upgrade to lifetime access, you earn
+        <strong> {data.commission_pct}% commission</strong> on their payment — redeemable to UPI or
+        bank account. Hit milestones (5, 15, 50 signups) to unlock the Networker, Influencer, and
+        Talent Scout badges.
         {!paymentsLive && (
           <span className="block mt-1 text-[var(--color-text-muted)] italic">
             Cash payouts at {data.commission_pct}% commission are <strong>coming soon</strong>&mdash;you&apos;ll
@@ -115,6 +146,19 @@ export default function ReferralsBlock() {
         )}
       </p>
     </div>
+    <MyPayoutHistoryBlock refreshKey={refreshKey} />
+    {showRedeem && (
+      <RedeemCommissionModal
+        pendingAmount={data.earnings_pending || 0}
+        minRedemption={minRedemption}
+        onClose={() => setShowRedeem(false)}
+        onSubmitted={() => {
+          setShowRedeem(false);
+          setRefreshKey(k => k + 1);
+        }}
+      />
+    )}
+    </>
   );
 }
 

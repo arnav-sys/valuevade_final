@@ -4933,6 +4933,19 @@ try:
 except Exception as _e:
     logger.warning(f"[wave_endpoints] failed to register: {_e}")
 
+# ----------------------- Wave 4 endpoints (payments + payouts) --------------
+try:
+    from payment_endpoints import register_payment_endpoints
+    register_payment_endpoints(api_router, {
+        "supabase_get": _supabase_get,
+        "supabase_post": _supabase_post,
+        "supabase_patch": _supabase_patch,
+        "supabase_delete": _supabase_delete,
+        "get_supabase_user": get_supabase_user,
+    })
+except Exception as _e:
+    logger.warning(f"[payment_endpoints] failed to register: {_e}")
+
 app.include_router(api_router)
 
 # CORS — the FastAPI/Starlette middleware (per CORS spec) rejects the combo
