@@ -3053,3 +3053,48 @@ Bundled 9-item polish + functional pass executed end-to-end in one batch.
 ### NOT in this batch (per user)
 - Refactoring `NotesPage.jsx` / `DashboardPage.jsx` — explicitly out of scope.
 - Fixing G1 excel sims — investigation only.
+
+## Wave 3 — Referral Commissions/Earnings UI (placeholder mode) (2026-06-20) ✅ COMPLETE
+
+### Migration (already applied prior to this push)
+- `0028_referral_commissions.sql`:
+  - `referral_events.commission_pct numeric(5,2) DEFAULT 10.00`
+  - `referral_events.referred_user_revenue numeric(10,2) DEFAULT 0`
+  - `referral_events.commission_amount` — generated stored col (`revenue * pct / 100`)
+  - `referral_events.payout_status` — `pending` / `approved` / `paid` (default `pending`)
+  - `referral_events.paid_at`, `referral_events.notes`
+  - RPC `public.update_referral_revenue(uuid, numeric)` — idempotent, service_role only.
+
+### Backend (`backend/wave_endpoints.py`)
+1. **Extended** `GET /api/referrals/me` — added:
+   - `earnings_pending` (sum of commission_amount where payout_status in pending/approved)
+   - `earnings_paid` (sum where payout_status=paid)
+   - `lifetime_referred_revenue`
+   - `commission_pct` (default 10.00, read from first event)
+   - `payment_processing_live: false` — hardcoded until Stripe is wired
+2. **New** `GET /api/admin/referrals/overview` (admin-gated to `info@valuevade.com`):
+   - `stats`: total_referrers, total_referrals, total_enrollments, lifetime_revenue, pending_commission, paid_commission
+   - `leaderboard`: top 25 referrers (joined with profiles for name/email/code) sorted by signups then enrollments
+   - `payment_processing_live: false`
+3. **New** `GET /api/admin/referrals/recent?limit=20` (admin-gated):
+   - Returns the most recent referral events with referrer + referred profile names/emails and payout_status.
+
+### Frontend
+- `components/profile/ReferralsBlock.jsx` — added two earnings cards ("Pending Commission" + "Lifetime Earnings") with 🔒 "Coming soon" pill while `payment_processing_live=false`. Plus a one-line explainer about how cash payouts will work once Stripe is wired.
+- `components/AdminPanel.jsx` — added a 4th "Referrals" tab containing:
+  - "Payment processing not live" dashed banner
+  - 6 stat chips (Total Referrers, Total Referrals, Enrollments, Referred Revenue, Pending Commission, Paid Commission)
+  - Top Referrers leaderboard table
+  - Recent Referrals feed (with payout status pills)
+
+### Verification done in this push
+- `curl /api/referrals/me` → `200 OK` with all new earnings fields (₹0 each as no events yet).
+- `curl /api/admin/referrals/overview` → `200 OK` with empty stats + leaderboard.
+- `curl /api/admin/referrals/recent?limit=5` → `200 OK` (empty).
+- `curl /api/admin/referrals/overview` with non-admin token → `403 Forbidden`.
+- Screenshots captured: Profile page (locked earnings cards visible), Admin → Referrals tab.
+- Webpack compiles clean.
+
+### NOT in this push (intentional — backlog for when payments go live)
+- No Stripe integration. The `update_referral_revenue` RPC + the `payment_processing_live` flag are the wiring points for a future revenue webhook.
+

@@ -480,12 +480,31 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         share_url = f"{site_origin.rstrip('/')}/signup?ref={code or ''}"
         events = _supabase_get(
             f"referral_events?referrer_user_id=eq.{_urlparse.quote(user_id)}"
-            f"&select=referred_user_id,signup_xp_awarded,enrollment_xp_awarded,created_at"
+            f"&select=referred_user_id,signup_xp_awarded,enrollment_xp_awarded,created_at,"
+            f"commission_pct,referred_user_revenue,commission_amount,payout_status,paid_at"
             f"&order=created_at.desc&limit=200"
         ) or []
         total_signups = len(events)
         total_enrollments = sum(1 for e in events if e.get("enrollment_xp_awarded"))
         next_threshold = next((t for t in (5, 15, 50) if total_signups < t), None)
+        # Commission/earnings aggregates (placeholder mode until payments wired)
+        lifetime_referred_revenue = round(sum(float(e.get("referred_user_revenue") or 0) for e in events), 2)
+        earnings_pending = round(
+            sum(float(e.get("commission_amount") or 0) for e in events
+                if (e.get("payout_status") or "pending") in ("pending", "approved")),
+            2,
+        )
+        earnings_paid = round(
+            sum(float(e.get("commission_amount") or 0) for e in events
+                if e.get("payout_status") == "paid"),
+            2,
+        )
+        # Default commission_pct = 10% (matches migration default). Use first event's value if present.
+        commission_pct = 10.00
+        for e in events:
+            if e.get("commission_pct") is not None:
+                commission_pct = float(e["commission_pct"])
+                break
         return {
             "code": code,
             "share_url": share_url,
@@ -493,7 +512,123 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             "total_enrollments": total_enrollments,
             "next_milestone_at": next_threshold,
             "events": events,
+            # ---- earnings (placeholder until Stripe wired) ----
+            "earnings_pending": earnings_pending,
+            "earnings_paid": earnings_paid,
+            "lifetime_referred_revenue": lifetime_referred_revenue,
+            "commission_pct": commission_pct,
+            "payment_processing_live": False,
         }
+
+    # ---------------- ADMIN REFERRALS ----------------
+    @api_router.get("/admin/referrals/overview")
+    async def admin_referrals_overview(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        events = _supabase_get(
+            "referral_events?select=referrer_user_id,referred_user_id,signup_xp_awarded,"
+            "enrollment_xp_awarded,commission_pct,referred_user_revenue,commission_amount,"
+            "payout_status,created_at&order=created_at.desc&limit=5000"
+        ) or []
+        total_referrals = len(events)
+        total_enrollments = sum(1 for e in events if e.get("enrollment_xp_awarded"))
+        unique_referrers = {e["referrer_user_id"] for e in events if e.get("referrer_user_id")}
+        lifetime_revenue = round(sum(float(e.get("referred_user_revenue") or 0) for e in events), 2)
+        pending_commission = round(
+            sum(float(e.get("commission_amount") or 0) for e in events
+                if (e.get("payout_status") or "pending") in ("pending", "approved")),
+            2,
+        )
+        paid_commission = round(
+            sum(float(e.get("commission_amount") or 0) for e in events
+                if e.get("payout_status") == "paid"),
+            2,
+        )
+        # Leaderboard: aggregate by referrer
+        by_ref: dict[str, dict] = {}
+        for e in events:
+            rid = e.get("referrer_user_id")
+            if not rid:
+                continue
+            row = by_ref.setdefault(rid, {
+                "referrer_user_id": rid,
+                "signups": 0, "enrollments": 0,
+                "lifetime_revenue": 0.0, "pending_commission": 0.0, "paid_commission": 0.0,
+            })
+            row["signups"] += 1
+            if e.get("enrollment_xp_awarded"):
+                row["enrollments"] += 1
+            row["lifetime_revenue"] += float(e.get("referred_user_revenue") or 0)
+            amt = float(e.get("commission_amount") or 0)
+            if e.get("payout_status") == "paid":
+                row["paid_commission"] += amt
+            else:
+                row["pending_commission"] += amt
+        # Enrich with profile names
+        if by_ref:
+            ids = ",".join(by_ref.keys())
+            profs = _supabase_get(
+                f"profiles?id=in.({ids})&select=id,full_name,email,referral_code"
+            ) or []
+            prof_by_id = {p["id"]: p for p in profs}
+            for rid, row in by_ref.items():
+                p = prof_by_id.get(rid, {})
+                row["full_name"] = p.get("full_name") or ""
+                row["email"] = p.get("email") or ""
+                row["referral_code"] = p.get("referral_code") or ""
+                row["lifetime_revenue"] = round(row["lifetime_revenue"], 2)
+                row["pending_commission"] = round(row["pending_commission"], 2)
+                row["paid_commission"] = round(row["paid_commission"], 2)
+        leaderboard = sorted(by_ref.values(),
+                             key=lambda r: (r["signups"], r["enrollments"]),
+                             reverse=True)[:25]
+        return {
+            "stats": {
+                "total_referrals": total_referrals,
+                "total_enrollments": total_enrollments,
+                "unique_referrers": len(unique_referrers),
+                "lifetime_revenue": lifetime_revenue,
+                "pending_commission": pending_commission,
+                "paid_commission": paid_commission,
+            },
+            "leaderboard": leaderboard,
+            "payment_processing_live": False,
+        }
+
+    @api_router.get("/admin/referrals/recent")
+    async def admin_referrals_recent(limit: int = 20, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        limit = max(1, min(100, int(limit or 20)))
+        events = _supabase_get(
+            "referral_events?select=referrer_user_id,referred_user_id,signup_xp_awarded,"
+            "enrollment_xp_awarded,commission_amount,payout_status,created_at"
+            f"&order=created_at.desc&limit={limit}"
+        ) or []
+        ids = {e.get("referrer_user_id") for e in events} | {e.get("referred_user_id") for e in events}
+        ids.discard(None)
+        prof_by_id: dict[str, dict] = {}
+        if ids:
+            id_list = ",".join(ids)
+            profs = _supabase_get(
+                f"profiles?id=in.({id_list})&select=id,full_name,email,referral_code"
+            ) or []
+            prof_by_id = {p["id"]: p for p in profs}
+        out = []
+        for e in events:
+            r = prof_by_id.get(e.get("referrer_user_id") or "", {})
+            d = prof_by_id.get(e.get("referred_user_id") or "", {})
+            out.append({
+                "created_at": e.get("created_at"),
+                "referrer_name": r.get("full_name") or "",
+                "referrer_email": r.get("email") or "",
+                "referrer_code": r.get("referral_code") or "",
+                "referred_name": d.get("full_name") or "",
+                "referred_email": d.get("email") or "",
+                "signup_xp_awarded": bool(e.get("signup_xp_awarded")),
+                "enrollment_xp_awarded": bool(e.get("enrollment_xp_awarded")),
+                "commission_amount": float(e.get("commission_amount") or 0),
+                "payout_status": e.get("payout_status") or "pending",
+            })
+        return {"total": len(out), "events": out}
 
     @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):

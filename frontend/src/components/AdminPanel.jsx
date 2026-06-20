@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import { Search, Users, ListChecks, BookOpen, RefreshCw } from 'lucide-react';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Share2, Lock } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -19,9 +19,10 @@ async function authFetch(path) {
 
 function AdminTabs({ tab, setTab }) {
   const tabs = [
-    { k: 'waitlist', label: 'Waitlist Signups', icon: ListChecks },
-    { k: 'users',    label: 'Enrolled Users',   icon: Users },
-    { k: 'progress', label: 'Per-User Progress', icon: BookOpen },
+    { k: 'waitlist',  label: 'Waitlist Signups',   icon: ListChecks },
+    { k: 'users',     label: 'Enrolled Users',     icon: Users },
+    { k: 'progress',  label: 'Per-User Progress',  icon: BookOpen },
+    { k: 'referrals', label: 'Referrals',          icon: Share2 },
   ];
   return (
     <div className="flex gap-2 mb-6 border-b border-[var(--color-border)]" data-testid="admin-tabs">
@@ -191,6 +192,155 @@ function Stat({ label, value }) {
   );
 }
 
+const fmtINR = (n) => new Intl.NumberFormat('en-IN', {
+  style: 'currency', currency: 'INR', maximumFractionDigits: 0,
+}).format(Number(n || 0));
+
+function ReferralsTab() {
+  const [overview, setOverview] = useState(null);
+  const [recent, setRecent] = useState(null);
+  const [err, setErr] = useState(null);
+
+  useEffect(() => {
+    Promise.all([
+      authFetch('/api/admin/referrals/overview'),
+      authFetch('/api/admin/referrals/recent?limit=20'),
+    ]).then(([o, r]) => { setOverview(o); setRecent(r); })
+      .catch(e => setErr(e.message));
+  }, []);
+
+  if (err) return <div className="text-red-500 p-4">{err}</div>;
+  if (!overview || !recent) return <div className="p-4 text-[var(--color-text-muted)]">Loading…</div>;
+
+  const s = overview.stats;
+  const paymentsLive = !!overview.payment_processing_live;
+
+  return (
+    <div data-testid="admin-referrals-tab">
+      {!paymentsLive && (
+        <div
+          data-testid="referrals-payments-banner"
+          className="mb-4 px-4 py-2 rounded-lg bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] text-xs text-[var(--color-text-muted)] inline-flex items-center gap-2"
+        >
+          <Lock className="w-3.5 h-3.5" />
+          Payment processing not live — commissions are tracked as credits only.
+        </div>
+      )}
+
+      {/* Stat chips */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-6" data-testid="referrals-stats">
+        <Stat label="Total Referrers" value={s.unique_referrers} />
+        <Stat label="Total Referrals" value={s.total_referrals} />
+        <Stat label="Enrollments" value={s.total_enrollments} />
+        <Stat label="Referred Revenue" value={fmtINR(s.lifetime_revenue)} />
+        <Stat label="Pending Commission" value={fmtINR(s.pending_commission)} />
+        <Stat label="Paid Commission" value={fmtINR(s.paid_commission)} />
+      </div>
+
+      {/* Leaderboard */}
+      <div className="mb-8">
+        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 uppercase tracking-wider">
+          Top Referrers Leaderboard
+        </h3>
+        <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="referrals-leaderboard">
+          <table className="w-full text-sm">
+            <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
+              <tr>
+                <th className="p-3 w-10">#</th>
+                <th className="p-3">Referrer</th>
+                <th className="p-3">Code</th>
+                <th className="p-3 text-right">Signups</th>
+                <th className="p-3 text-right">Enrolled</th>
+                <th className="p-3 text-right">Referred Rev.</th>
+                <th className="p-3 text-right">Pending</th>
+                <th className="p-3 text-right">Paid</th>
+              </tr>
+            </thead>
+            <tbody>
+              {overview.leaderboard.map((row, i) => (
+                <tr key={row.referrer_user_id} className="border-t border-[var(--color-border)]">
+                  <td className="p-3 text-[var(--color-text-muted)]">{i + 1}</td>
+                  <td className="p-3">
+                    <div className="font-medium text-[var(--color-text)]">{row.full_name || '—'}</div>
+                    <div className="text-xs text-[var(--color-text-muted)]">{row.email || '—'}</div>
+                  </td>
+                  <td className="p-3 font-mono text-xs">{row.referral_code || '—'}</td>
+                  <td className="p-3 text-right font-semibold">{row.signups}</td>
+                  <td className="p-3 text-right">{row.enrollments}</td>
+                  <td className="p-3 text-right">{fmtINR(row.lifetime_revenue)}</td>
+                  <td className="p-3 text-right text-[var(--color-text-muted)]">{fmtINR(row.pending_commission)}</td>
+                  <td className="p-3 text-right">{fmtINR(row.paid_commission)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {overview.leaderboard.length === 0 && (
+            <div className="p-8 text-center text-[var(--color-text-muted)]">No referrals yet.</div>
+          )}
+        </div>
+      </div>
+
+      {/* Recent feed */}
+      <div>
+        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 uppercase tracking-wider">
+          Recent Referrals
+        </h3>
+        <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="referrals-recent">
+          <table className="w-full text-sm">
+            <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
+              <tr>
+                <th className="p-3">When</th>
+                <th className="p-3">Referrer</th>
+                <th className="p-3">Referred</th>
+                <th className="p-3">Stage</th>
+                <th className="p-3 text-right">Commission</th>
+                <th className="p-3">Payout</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recent.events.map((e, i) => (
+                <tr key={i} className="border-t border-[var(--color-border)]">
+                  <td className="p-3">{fmt(e.created_at)}</td>
+                  <td className="p-3">
+                    <div className="font-medium">{e.referrer_name || '—'}</div>
+                    <div className="text-xs text-[var(--color-text-muted)]">{e.referrer_email}</div>
+                  </td>
+                  <td className="p-3">
+                    <div className="font-medium">{e.referred_name || '—'}</div>
+                    <div className="text-xs text-[var(--color-text-muted)]">{e.referred_email}</div>
+                  </td>
+                  <td className="p-3">
+                    {e.enrollment_xp_awarded ? (
+                      <span className="text-green-500 text-xs font-medium">Enrolled</span>
+                    ) : e.signup_xp_awarded ? (
+                      <span className="text-[var(--color-accent)] text-xs font-medium">Signed up</span>
+                    ) : (
+                      <span className="text-[var(--color-text-muted)] text-xs">—</span>
+                    )}
+                  </td>
+                  <td className="p-3 text-right">{fmtINR(e.commission_amount)}</td>
+                  <td className="p-3">
+                    <span className={`text-xs px-2 py-0.5 rounded-full border ${
+                      e.payout_status === 'paid' ? 'bg-green-500/10 text-green-500 border-green-500/30' :
+                      e.payout_status === 'approved' ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' :
+                      'bg-[var(--color-bg-card-hover)] text-[var(--color-text-muted)] border-[var(--color-border)]'
+                    }`}>
+                      {e.payout_status}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {recent.events.length === 0 && (
+            <div className="p-8 text-center text-[var(--color-text-muted)]">No referral events yet.</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminPanel() {
   const { user, profile } = useAuth();
   const [params, setParams] = useSearchParams();
@@ -228,9 +378,10 @@ export default function AdminPanel() {
           </div>
           <p className="text-sm text-[var(--color-text-muted)] mb-6">Logged in as <strong>{email}</strong>.</p>
           <AdminTabs tab={tab} setTab={setTab} />
-          {tab === 'waitlist' && <WaitlistTab />}
-          {tab === 'users'    && <UsersTab onSelect={(u) => { setSelected(u); setTab('users'); }} />}
-          {tab === 'progress' && <UsersTab onSelect={setSelected} />}
+          {tab === 'waitlist'  && <WaitlistTab />}
+          {tab === 'users'     && <UsersTab onSelect={(u) => { setSelected(u); setTab('users'); }} />}
+          {tab === 'progress'  && <UsersTab onSelect={setSelected} />}
+          {tab === 'referrals' && <ReferralsTab />}
         </div>
         <ProgressModal user={selected} onClose={() => setSelected(null)} />
       </main>

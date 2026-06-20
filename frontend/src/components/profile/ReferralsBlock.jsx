@@ -1,8 +1,15 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Copy, Share2, Users } from 'lucide-react';
+import { Copy, Share2, Users, Lock, Wallet, TrendingUp } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
+
+const fmtINR = (n) => {
+  const v = Number(n || 0);
+  return new Intl.NumberFormat('en-IN', {
+    style: 'currency', currency: 'INR', maximumFractionDigits: 0,
+  }).format(v);
+};
 
 export default function ReferralsBlock() {
   const [data, setData] = useState(null);
@@ -40,6 +47,8 @@ export default function ReferralsBlock() {
     return <div className="rounded-2xl p-5 bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text-muted)]">Loading referrals…</div>;
   }
 
+  const paymentsLive = !!data.payment_processing_live;
+
   return (
     <div className="rounded-2xl p-5 bg-[var(--color-bg-card)] border border-[var(--color-border)]" data-testid="referrals-block">
       <div className="flex items-center justify-between mb-4">
@@ -56,6 +65,26 @@ export default function ReferralsBlock() {
         <Stat label="Signups" value={data.total_signups} />
         <Stat label="Enrolled" value={data.total_enrollments} />
         <Stat label="XP Earned" value={data.total_signups * 500 + data.total_enrollments * 500} suffix=" XP" />
+      </div>
+
+      {/* Earnings Cards — placeholder until payments are wired */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4" data-testid="referral-earnings-section">
+        <EarningsCard
+          icon={<Wallet className="w-4 h-4" />}
+          label="Pending Commission"
+          value={fmtINR(data.earnings_pending)}
+          sublabel={`${data.commission_pct}% per referral`}
+          locked={!paymentsLive}
+          testid="earnings-pending-card"
+        />
+        <EarningsCard
+          icon={<TrendingUp className="w-4 h-4" />}
+          label="Lifetime Earnings"
+          value={fmtINR(data.earnings_paid)}
+          sublabel={`On ${fmtINR(data.lifetime_referred_revenue)} referred revenue`}
+          locked={!paymentsLive}
+          testid="earnings-paid-card"
+        />
       </div>
 
       <div className="flex items-center gap-2 p-3 rounded-xl bg-[var(--color-bg-card-hover)] border border-[var(--color-border)] mb-3">
@@ -78,7 +107,43 @@ export default function ReferralsBlock() {
         Share your link. When a friend signs up and enrolls, you get <strong>+500 XP</strong> twice
         (once on signup, once on enrollment). Hit milestones (5, 15, 50 signups) to unlock the
         Networker, Influencer, and Talent Scout badges.
+        {!paymentsLive && (
+          <span className="block mt-1 text-[var(--color-text-muted)] italic">
+            Cash payouts at {data.commission_pct}% commission are <strong>coming soon</strong>&mdash;you&apos;ll
+            keep earning XP and stockpiling commission credits until then.
+          </span>
+        )}
       </p>
+    </div>
+  );
+}
+
+function EarningsCard({ icon, label, value, sublabel, locked, testid }) {
+  return (
+    <div
+      data-testid={testid}
+      className={`relative p-4 rounded-xl border ${locked
+        ? 'bg-[var(--color-bg-card-hover)] border-dashed border-[var(--color-border)]'
+        : 'bg-[var(--color-bg-card-hover)] border-[var(--color-border)]'}`}
+    >
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
+          {icon}{label}
+        </div>
+        {locked && (
+          <span
+            data-testid={`${testid}-lock`}
+            className="inline-flex items-center gap-1 text-[10px] font-medium text-[var(--color-text-muted)] px-2 py-0.5 rounded-full bg-[var(--color-bg-card)] border border-[var(--color-border)]"
+            title="Payment processing not live yet"
+          >
+            <Lock className="w-3 h-3" /> Coming soon
+          </span>
+        )}
+      </div>
+      <div className={`text-2xl font-bold font-bricolage ${locked ? 'text-[var(--color-text-muted)]' : 'text-[var(--color-text)]'}`}>
+        {value}
+      </div>
+      <div className="text-xs text-[var(--color-text-muted)] mt-1">{sublabel}</div>
     </div>
   );
 }
