@@ -101,8 +101,8 @@ export default function HeroSection({ onJoinWaitlist }) {
 
           {/* H1 — word-by-word stagger + mixed weights + serif accent */}
           <h1
-            className="font-clash text-[44px] sm:text-6xl lg:text-[88px] xl:text-[96px] text-[var(--color-text)] mb-8"
-            style={{ lineHeight: 0.97, letterSpacing: '-0.035em' }}
+            className="font-clash text-[52px] sm:text-6xl lg:text-[88px] xl:text-[96px] text-[var(--color-text)] mb-8"
+            style={{ lineHeight: 0.94, letterSpacing: '-0.035em' }}
             data-testid="hero-h1"
           >
             {H1_LINES.map((line, lineIdx) => (
@@ -173,11 +173,11 @@ export default function HeroSection({ onJoinWaitlist }) {
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row gap-3.5 mb-7 justify-center lg:justify-start"
+            className="flex flex-col sm:flex-row gap-3 mb-7 justify-center lg:justify-start"
           >
             <button
               onClick={onJoinWaitlist}
-              className="hero-cta-primary group relative overflow-hidden inline-flex items-center justify-center gap-2 px-7 py-4 text-base font-semibold text-white rounded-full"
+              className="hero-cta-primary group relative overflow-hidden inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-4 text-base font-semibold text-white rounded-full"
               style={{
                 background: 'var(--color-primary)',
                 boxShadow: '0 8px 24px -8px rgba(36,107,253,0.55), 0 0 0 1px rgba(36,107,253,0.18) inset',
@@ -208,7 +208,7 @@ export default function HeroSection({ onJoinWaitlist }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 0.6 }}
-            className="text-[11px] font-jetbrains font-bold uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
+            className="text-[11px] font-jetbrains font-black uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
             data-testid="hero-trust-strip"
           >
             CFA Institute aligned <span className="opacity-50 mx-1">·</span> NISM Series-VIII compatible
