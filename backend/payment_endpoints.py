@@ -295,6 +295,47 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
     _supabase_delete = deps.get("supabase_delete")
     _get_supabase_user = deps["get_supabase_user"]
 
+    # ---------------- ENROLLMENT-STATUS GATE ----------------
+    @api_router.get("/me/enrollment-status")
+    async def me_enrollment_status(user=Depends(_get_supabase_user)):
+        """Drives the front-end EnrollmentGate. Read-only, idempotent."""
+        uid = user["id"]
+        # 1) user_payment_status row?
+        ps_rows = _supabase_get(
+            f"user_payment_status?user_id=eq.{_urlparse.quote(uid)}"
+            "&select=user_id,paid,free_session_used&limit=1"
+        ) or []
+        has_payment_status = bool(ps_rows)
+        paid = bool(ps_rows[0].get("paid")) if ps_rows else False
+        # 2) active or completed enrollment?
+        enr_rows = _supabase_get(
+            f"user_enrollments?user_id=eq.{_urlparse.quote(uid)}"
+            "&status=in.(active,completed)&select=id&limit=1"
+        ) or []
+        has_enrollment = bool(enr_rows)
+        # Routing intent
+        needs_start_choice = not has_payment_status
+        needs_customize = has_payment_status and not has_enrollment
+        needs_dashboard = has_enrollment
+        return {
+            "has_payment_status": has_payment_status,
+            "has_enrollment": has_enrollment,
+            "paid": paid,
+            "free_session_used": bool(ps_rows[0].get("free_session_used")) if ps_rows else False,
+            "needs_start_choice": needs_start_choice,
+            "needs_customize": needs_customize,
+            "needs_dashboard": needs_dashboard,
+        }
+
+    # ---------------- START FREE TRIAL ----------------
+    @api_router.post("/payments/start-free-trial")
+    async def payments_start_free_trial(user=Depends(_get_supabase_user)):
+        """Idempotent: ensures user_payment_status row exists with paid=false.
+        Lets a new user signal they've chosen the trial path so EnrollmentGate
+        stops blocking them on /start."""
+        _ensure_payment_status_row(user["id"])
+        return {"ok": True, "paid": False, "free_session_used": False}
+
     # ---------------- ELIGIBILITY ----------------
     @api_router.get("/payments/eligibility")
     async def payments_eligibility(session_id: Optional[str] = None,

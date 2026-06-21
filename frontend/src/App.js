@@ -74,7 +74,9 @@ const MockInterviewPage = lazyWithRetry(() => import("@/components/mock-intervie
 const MockInterviewResults = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewResults"));
 const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
+const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
 import SessionPaymentGate from "@/components/payments/SessionPaymentGate";
+import EnrollmentGate from "@/components/payments/EnrollmentGate";
 
 /** Wraps a learning route in auth + enrollment guards. */
 const Learning = ({ children }) => (
@@ -129,6 +131,7 @@ function App() {
                 <MilestoneCelebrationOverlay />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
+                <EnrollmentGate>
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
@@ -194,12 +197,14 @@ function App() {
                   <Route path="/mock-interview/:id/results" element={<Learning><MockInterviewResults /></Learning>} />
 
                   {/* Wave 4 — Payments + Orders */}
+                  <Route path="/start" element={<ProtectedRoute><EnrollmentChoicePage /></ProtectedRoute>} />
                   <Route path="/upgrade" element={<ProtectedRoute><UpgradePage /></ProtectedRoute>} />
                   <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
 
                   {/* 404 catch-all */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
+                </EnrollmentGate>
               </PageTransition>
             </Suspense>
                 </MilestonesProvider>
