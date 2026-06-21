@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
             <line x1="150" y1="2" x2="1050" y2="2" stroke="url(#lineGrad)" strokeWidth="2" className={`line-draw ${isVisible ? 'visible' : ''}`} />
           </svg>
 
-          <svg className="absolute top-0 left-8 w-2 h-full md:hidden" viewBox="0 0 4 800" preserveAspectRatio="none">
+          <svg className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-full md:hidden" viewBox="0 0 4 800" preserveAspectRatio="none">
             <defs>
               <linearGradient id="lineGradV" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#246BFD" />
@@ -61,22 +61,22 @@ export default function HowItWorksSection() {
               return (
                 <div
                   key={step.num}
-                  className={`relative flex flex-row md:flex-col items-start md:items-center gap-5 md:gap-0 text-left md:text-center ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+                  className={`relative w-full flex flex-col items-center text-center gap-0 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
                   style={{ animationDelay: `${0.2 + i * 0.15}s` }}
                   data-testid={`step-${step.num}`}
                 >
                   <div
-                    className="relative z-10 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center flex-shrink-0 md:mb-6"
+                    className="relative z-10 w-20 h-20 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center flex-shrink-0 mb-5 md:mb-6 mx-auto"
                     style={{ background: `${step.color}10`, border: `2px solid ${step.color}40`, boxShadow: `0 0 30px ${step.color}15` }}
                   >
-                    <span className="font-clash text-xl md:text-2xl lg:text-3xl font-bold" style={{ color: step.color }}>{step.num}</span>
+                    <span className="font-clash text-2xl md:text-2xl lg:text-3xl font-bold" style={{ color: step.color }}>{step.num}</span>
                   </div>
-                  <div className="md:max-w-[260px] md:mx-auto">
-                    <div className="flex items-center gap-2 mb-2 md:justify-center">
+                  <div className="w-full max-w-[280px] mx-auto">
+                    <div className="flex items-center justify-center gap-2 mb-2">
                       <Icon size={18} style={{ color: step.color }} />
                       <h3 className="font-clash text-lg text-[var(--color-text)]">{step.title}</h3>
                     </div>
-                    <p className="text-[var(--color-text-muted)] text-sm font-bricolage leading-relaxed max-w-[240px] md:mx-auto md:max-w-none">{step.body}</p>
+                    <p className="text-[var(--color-text-muted)] text-sm font-bricolage leading-relaxed mx-auto">{step.body}</p>
                   </div>
                 </div>
               );

@@ -51,7 +51,7 @@ export default function Navbar({ onJoinWaitlist }) {
         </button>
 
         {/* Center links - desktop */}
-        <div className="hidden md:flex items-center gap-4 lg:gap-8">
+        <div className="hidden md:flex items-center gap-4 lg:gap-8 md:ml-8 lg:ml-12">
           <Link
             to="/courses"
             className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
