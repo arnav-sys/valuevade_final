@@ -44,7 +44,7 @@ export default function HowItWorksSection() {
             <line x1="150" y1="2" x2="1050" y2="2" stroke="url(#lineGrad)" strokeWidth="2" className={`line-draw ${isVisible ? 'visible' : ''}`} />
           </svg>
 
-          <svg className="absolute top-0 left-8 w-2 h-full lg:hidden" viewBox="0 0 4 800" preserveAspectRatio="none">
+          <svg className="absolute top-0 left-8 w-2 h-full md:hidden" viewBox="0 0 4 800" preserveAspectRatio="none">
             <defs>
               <linearGradient id="lineGradV" x1="0%" y1="0%" x2="0%" y2="100%">
                 <stop offset="0%" stopColor="#246BFD" />
@@ -55,28 +55,28 @@ export default function HowItWorksSection() {
             <line x1="2" y1="40" x2="2" y2="760" stroke="url(#lineGradV)" strokeWidth="2" className={`line-draw ${isVisible ? 'visible' : ''}`} style={{ strokeDasharray: 800, strokeDashoffset: isVisible ? 0 : 800 }} />
           </svg>
 
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-6">
             {steps.map((step, i) => {
               const Icon = step.icon;
               return (
                 <div
                   key={step.num}
-                  className={`relative flex flex-row lg:flex-col items-start lg:items-center gap-5 lg:gap-0 text-left lg:text-center ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+                  className={`relative flex flex-row md:flex-col items-start md:items-center gap-5 md:gap-0 text-left md:text-center ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
                   style={{ animationDelay: `${0.2 + i * 0.15}s` }}
                   data-testid={`step-${step.num}`}
                 >
                   <div
-                    className="relative z-10 w-16 h-16 lg:w-24 lg:h-24 rounded-full flex items-center justify-center flex-shrink-0 lg:mb-6"
+                    className="relative z-10 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center flex-shrink-0 md:mb-6"
                     style={{ background: `${step.color}10`, border: `2px solid ${step.color}40`, boxShadow: `0 0 30px ${step.color}15` }}
                   >
-                    <span className="font-clash text-xl lg:text-3xl font-bold" style={{ color: step.color }}>{step.num}</span>
+                    <span className="font-clash text-xl md:text-2xl lg:text-3xl font-bold" style={{ color: step.color }}>{step.num}</span>
                   </div>
-                  <div>
-                    <div className="flex items-center gap-2 mb-2 lg:justify-center">
+                  <div className="md:max-w-[260px] md:mx-auto">
+                    <div className="flex items-center gap-2 mb-2 md:justify-center">
                       <Icon size={18} style={{ color: step.color }} />
                       <h3 className="font-clash text-lg text-[var(--color-text)]">{step.title}</h3>
                     </div>
-                    <p className="text-[var(--color-text-muted)] text-sm font-bricolage leading-relaxed max-w-[240px] lg:mx-auto">{step.body}</p>
+                    <p className="text-[var(--color-text-muted)] text-sm font-bricolage leading-relaxed max-w-[240px] md:mx-auto md:max-w-none">{step.body}</p>
                   </div>
                 </div>
               );

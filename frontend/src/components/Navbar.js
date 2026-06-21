@@ -51,10 +51,10 @@ export default function Navbar({ onJoinWaitlist }) {
         </button>
 
         {/* Center links - desktop */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-4 lg:gap-8">
           <Link
             to="/courses"
-            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage"
+            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
             data-testid="nav-link-courses"
           >
             Courses
@@ -63,7 +63,7 @@ export default function Navbar({ onJoinWaitlist }) {
             <button
               key={link.label}
               onClick={() => scrollTo(link.id)}
-              className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage"
+              className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
               data-testid={`nav-link-${link.id}`}
             >
               {link.label}
@@ -111,14 +111,14 @@ export default function Navbar({ onJoinWaitlist }) {
             <>
               <Link
                 to="/login"
-                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
+                className="px-3 lg:px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
                 data-testid="nav-login-link"
               >
                 Log In
               </Link>
               <Link
                 to="/signup"
-                className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
+                className="px-4 lg:px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage whitespace-nowrap"
                 data-testid="nav-signup-link"
               >
                 Sign Up
