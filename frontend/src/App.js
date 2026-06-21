@@ -29,7 +29,7 @@ import PageTransition from "@/components/PageTransition";
 import lazyWithRetry from "@/utils/lazyWithRetry";
 
 // Public (eager-load: small, fast, frequent entry points)
-import LandingPage from "@/components/landing/LandingPageV2";
+import LandingPage from "@/components/LandingPage";
 import SignupPage from "@/components/SignupPage";
 import LoginPage from "@/components/LoginPage";
 import AdminDashboard from "@/components/AdminDashboard";
