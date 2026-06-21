@@ -2,6 +2,7 @@ import "@/App.css";
 import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
+import { HelmetProvider } from "react-helmet-async";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { XPProvider } from "@/contexts/XPContext";
@@ -28,7 +29,7 @@ import PageTransition from "@/components/PageTransition";
 import lazyWithRetry from "@/utils/lazyWithRetry";
 
 // Public (eager-load: small, fast, frequent entry points)
-import LandingPage from "@/components/LandingPage";
+import LandingPage from "@/components/landing/LandingPageV2";
 import SignupPage from "@/components/SignupPage";
 import LoginPage from "@/components/LoginPage";
 import AdminDashboard from "@/components/AdminDashboard";
@@ -97,6 +98,7 @@ const SessionPhase = ({ phase, children }) => (
 function App() {
   return (
     <ErrorBoundary>
+      <HelmetProvider>
       <BrowserRouter>
         <ThemeProvider>
           <AuthProvider>
@@ -219,6 +221,7 @@ function App() {
           </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
+      </HelmetProvider>
     </ErrorBoundary>
   );
 }

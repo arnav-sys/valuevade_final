@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+Sitemap: https://valuevade.com/sitemap.xml
