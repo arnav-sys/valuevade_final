@@ -213,7 +213,6 @@ export default function HeroSection({ onJoinWaitlist }) {
           >
             CFA Institute aligned <span className="opacity-50 mx-1">·</span> NISM Series-VIII compatible
             <span className="opacity-50 mx-1">·</span> CFI partnered
-            <span className="opacity-50 mx-1">·</span> Built in India
           </motion.p>
 
           {/* Secondary signup CTA */}
