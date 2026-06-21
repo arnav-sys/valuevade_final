@@ -208,7 +208,7 @@ export default function HeroSection({ onJoinWaitlist }) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.4, duration: 0.6 }}
-            className="text-[11px] font-jetbrains uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
+            className="text-[11px] font-jetbrains font-bold uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
             data-testid="hero-trust-strip"
           >
             CFA Institute aligned <span className="opacity-50 mx-1">·</span> NISM Series-VIII compatible
