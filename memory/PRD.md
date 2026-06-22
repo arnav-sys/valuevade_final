@@ -1,4 +1,50 @@
 # ============================================================================
+# CHANGELOG — 2026-02-22 (Cinematic Dark 3D Landing — RENDER FIXED)
+# ============================================================================
+
+## What shipped
+- Landing page hero now renders a vanilla three.js cinematic background:
+  dense floating particle field (1300 desktop / 600 mobile, additive blending,
+  violet `#c4b5fd`), violet wireframe grid floor with perspective, scene fog,
+  slow drift + mouse parallax, full cleanup on unmount.
+- Dark cinematic theme applied globally to the landing surface via
+  `landing-dark.css` scope: deep `#08080f` background with violet radial
+  glows, glassmorphic cards (`rgba(255,255,255,0.025)` + `blur(22px)`),
+  violet hover glows, hairline section dividers, transparent navbar that
+  darkens on scroll.
+- All sections rendered cleanly with zero white bleed: Hero, Problem,
+  Features, Comparison, How It Works, AI-Proof, Testimonials, FinalCTA,
+  Footer. Same sequence, zero copy edits, zero additions/removals.
+
+## Root cause fix (P0 unblocker)
+- `@react-three/fiber@8.18.0` (stale install, not in package.json) was
+  incompatible with React 19 — accessed removed `ReactCurrentOwner` internal.
+- Upgraded to `@react-three/fiber@9.6.1` — got past that error but hit a
+  separate R3F v9 prop-applier bug ("Cannot set 'x-line-number'") that
+  reproduced even on the minimal `<points>` element.
+- Per user fallback rule, dropped R3F entirely and rebuilt with vanilla
+  three.js in a `useEffect`-mounted canvas. Removed `@react-three/fiber`
+  from dependencies. `three@^0.160.0` remains.
+
+## Files touched
+- `/app/frontend/src/components/landing/LandingHero3D.jsx` (vanilla three.js rewrite)
+- `/app/frontend/package.json` (removed `@react-three/fiber`)
+- `/app/frontend/src/components/landing/landing-dark.css` (existing — unchanged)
+- `/app/frontend/src/components/LandingPage.js` (existing — unchanged)
+
+## Verification
+- 1920×800 desktop screenshot: hero + every section renders correctly, dark.
+- 0 runtime errors, 0 page errors.
+- Hero copy verbatim intact: "Stop Guessing. Start Building Your Finance Career."
+- Comparison wedge column for Valuevade preserved with violet tint.
+- Mobile viewport canvas mounts cleanly.
+
+## Known remaining
+- Mock Interview one-page PDF report card (P1) — not started this session.
+- Leaderboard system (P1) — not started this session.
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-18 (Wave 1 + Wave 2 — VERIFIED end-to-end)
 # ============================================================================
 
