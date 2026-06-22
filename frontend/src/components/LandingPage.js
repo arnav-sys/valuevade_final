@@ -47,23 +47,24 @@ export default function LandingPage() {
     if (ref) setRefCode(ref);
   }, []);
 
-  // Mark <html> + <body> as the dark landing surface ONLY when dark mode is
-  // active, so any overscroll bounce (iOS / macOS) shows #080810. Light mode
-  // returns to the original light theme; auth-gated routes are unaffected on
-  // unmount because we always strip the class.
+  // Body class is applied in both modes so iOS overscroll always shows the
+  // landing palette (dark or light) — never the default app surface. The
+  // CSS branches between dark/light using the `landing-light` companion class.
   useEffect(() => {
     const root = document.documentElement;
     const body = document.body;
-    if (landingTheme === 'dark') {
-      root.classList.add('landing-active');
-      body.classList.add('landing-active');
+    root.classList.add('landing-active');
+    body.classList.add('landing-active');
+    if (landingTheme === 'light') {
+      root.classList.add('landing-light');
+      body.classList.add('landing-light');
     } else {
-      root.classList.remove('landing-active');
-      body.classList.remove('landing-active');
+      root.classList.remove('landing-light');
+      body.classList.remove('landing-light');
     }
     return () => {
-      root.classList.remove('landing-active');
-      body.classList.remove('landing-active');
+      root.classList.remove('landing-active', 'landing-light');
+      body.classList.remove('landing-active', 'landing-light');
     };
   }, [landingTheme]);
 
@@ -121,15 +122,16 @@ export default function LandingPage() {
         onToggleLandingTheme={toggleLandingTheme}
       />
 
-      {/* Cinematic Three.js background — only mounted in dark mode. Light mode
-          falls back to the original light hero with no 3D layer. */}
-      {landingTheme === 'dark' && (
-        <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
-          <Suspense fallback={null}>
-            <LandingHero3D mobile={typeof window !== 'undefined' && window.innerWidth < 768} />
-          </Suspense>
-        </div>
-      )}
+      {/* Cinematic Three.js background — mounted in BOTH modes; palette
+          (particles / grid / fog / blending) flips with the theme. */}
+      <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
+        <Suspense fallback={null}>
+          <LandingHero3D
+            theme={landingTheme}
+            mobile={typeof window !== 'undefined' && window.innerWidth < 768}
+          />
+        </Suspense>
+      </div>
 
       <main className="relative z-10">
         <HeroSection onJoinWaitlist={scrollToWaitlist} />

@@ -16,8 +16,53 @@ function detectWebGL() {
   }
 }
 
-/* ---------- Static dark fallback (no WebGL) ---------- */
-function StaticFallback() {
+/* ---------- Theme palettes ---------- */
+const PALETTES = {
+  dark: {
+    bg:           '#08080f',
+    particle:     '#c4b5fd',  // soft violet
+    particleOp:   0.78,
+    particleSize: 0.045,
+    blending:     THREE.AdditiveBlending,
+    gridA:        '#8b5cf6',
+    gridB:        '#6d28d9',
+    gridOp:       0.22,
+    fog:          '#08080f',
+    fallbackCss:
+      'radial-gradient(60% 50% at 50% -10%, rgba(139,92,246,0.20), transparent 60%),' +
+      'radial-gradient(40% 30% at 80% 110%, rgba(167,139,250,0.14), transparent 60%),' +
+      'radial-gradient(35% 25% at 15% 80%, rgba(196,181,253,0.10), transparent 60%),' +
+      '#08080f',
+    fallbackVignette:
+      'linear-gradient(180deg, rgba(8,8,15,0.4) 0%, transparent 25%, transparent 70%, rgba(8,8,15,0.95) 100%)',
+    canvasVignette:
+      'linear-gradient(180deg, rgba(8,8,15,0.4) 0%, transparent 25%, transparent 70%, rgba(8,8,15,0.95) 100%)',
+  },
+  light: {
+    bg:           '#F2E6EE',
+    particle:     '#246BFD',  // original primary blue
+    particleOp:   0.55,
+    particleSize: 0.06,
+    blending:     THREE.NormalBlending,
+    gridA:        '#246BFD',
+    gridB:        '#6A5CFF',
+    gridOp:       0.22,
+    fog:          '#F2E6EE',
+    fallbackCss:
+      'radial-gradient(60% 50% at 50% -10%, rgba(36,107,253,0.10), transparent 60%),' +
+      'radial-gradient(40% 30% at 80% 110%, rgba(106,92,255,0.10), transparent 60%),' +
+      'radial-gradient(35% 25% at 15% 80%, rgba(255,106,193,0.08), transparent 60%),' +
+      '#F2E6EE',
+    fallbackVignette:
+      'linear-gradient(180deg, rgba(242,230,238,0.4) 0%, transparent 25%, transparent 70%, rgba(242,230,238,0.95) 100%)',
+    canvasVignette:
+      'linear-gradient(180deg, rgba(242,230,238,0.4) 0%, transparent 25%, transparent 70%, rgba(242,230,238,0.85) 100%)',
+  },
+};
+
+/* ---------- Static fallback (no WebGL) ---------- */
+function StaticFallback({ theme }) {
+  const p = PALETTES[theme] || PALETTES.dark;
   return (
     <div
       className="landing-three-bg"
@@ -27,26 +72,21 @@ function StaticFallback() {
         position: 'absolute',
         inset: 0,
         pointerEvents: 'none',
-        background:
-          'radial-gradient(60% 50% at 50% -10%, rgba(139,92,246,0.20), transparent 60%),' +
-          'radial-gradient(40% 30% at 80% 110%, rgba(167,139,250,0.14), transparent 60%),' +
-          'radial-gradient(35% 25% at 15% 80%, rgba(196,181,253,0.10), transparent 60%),' +
-          '#08080f',
+        background: p.fallbackCss,
       }}
     >
       <div
         style={{
           position: 'absolute', inset: 0, pointerEvents: 'none',
-          background:
-            'linear-gradient(180deg, rgba(8,8,15,0.4) 0%, transparent 25%, transparent 70%, rgba(8,8,15,0.95) 100%)',
+          background: p.fallbackVignette,
         }}
       />
     </div>
   );
 }
 
-/* ---------- Cinematic dark hero (vanilla three.js) ---------- */
-export default function LandingHero3D({ mobile = false }) {
+/* ---------- Cinematic hero (vanilla three.js) ---------- */
+export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
   const mountRef = useRef(null);
   const [useStaticFallback, setUseStaticFallback] = useState(() => !detectWebGL());
 
@@ -54,6 +94,7 @@ export default function LandingHero3D({ mobile = false }) {
     if (useStaticFallback) return;
     const mount = mountRef.current;
     if (!mount) return;
+    const palette = PALETTES[theme] || PALETTES.dark;
 
     let renderer, scene, camera, root, points, grid;
     let particleGeom, particleMat, gridMats = [];
@@ -75,17 +116,16 @@ export default function LandingHero3D({ mobile = false }) {
       renderer.setClearColor(0x000000, 0);
       mount.appendChild(renderer.domElement);
 
-      // If the WebGL context is lost (e.g. GPU reset), gracefully fall back.
       onContextLost = (e) => {
         e.preventDefault();
         // eslint-disable-next-line no-console
-        console.warn('[LandingHero3D] WebGL context lost — falling back to static dark.');
+        console.warn('[LandingHero3D] WebGL context lost — falling back to static.');
         setUseStaticFallback(true);
       };
       renderer.domElement.addEventListener('webglcontextlost', onContextLost, false);
 
       scene = new THREE.Scene();
-      scene.fog = new THREE.Fog(new THREE.Color('#08080f'), 12, 38);
+      scene.fog = new THREE.Fog(new THREE.Color(palette.fog), 12, 38);
 
       camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100);
       camera.position.set(0, 0, 8);
@@ -97,29 +137,29 @@ export default function LandingHero3D({ mobile = false }) {
       const positions = new Float32Array(count * 3);
       for (let i = 0; i < count; i++) {
         const r = 8 + Math.random() * 18;
-        const theta = Math.random() * Math.PI * 2;
+        const ang = Math.random() * Math.PI * 2;
         const phi = Math.acos(2 * Math.random() - 1);
-        positions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+        positions[i * 3]     = r * Math.sin(phi) * Math.cos(ang);
         positions[i * 3 + 1] = (Math.random() - 0.5) * 12;
-        positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(theta) - 8;
+        positions[i * 3 + 2] = r * Math.sin(phi) * Math.sin(ang) - 8;
       }
       particleGeom = new THREE.BufferGeometry();
       particleGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       particleMat = new THREE.PointsMaterial({
-        size: 0.045,
+        size: palette.particleSize,
         sizeAttenuation: true,
-        color: new THREE.Color('#c4b5fd'),
+        color: new THREE.Color(palette.particle),
         transparent: true,
-        opacity: 0.78,
+        opacity: palette.particleOp,
         depthWrite: false,
-        blending: THREE.AdditiveBlending,
+        blending: palette.blending,
       });
       points = new THREE.Points(particleGeom, particleMat);
 
       /* wireframe grid floor */
-      grid = new THREE.GridHelper(60, 30, new THREE.Color('#8b5cf6'), new THREE.Color('#6d28d9'));
+      grid = new THREE.GridHelper(60, 30, new THREE.Color(palette.gridA), new THREE.Color(palette.gridB));
       gridMats = Array.isArray(grid.material) ? grid.material : [grid.material];
-      gridMats.forEach((m) => { m.transparent = true; m.opacity = 0.22; });
+      gridMats.forEach((m) => { m.transparent = true; m.opacity = palette.gridOp; });
       grid.position.set(0, -4, -2);
       grid.rotation.x = -Math.PI / 2.1;
 
@@ -128,7 +168,6 @@ export default function LandingHero3D({ mobile = false }) {
       root.add(grid);
       scene.add(root);
 
-      /* mouse parallax */
       const mouse = { x: 0, y: 0 };
       onMouseMove = (e) => {
         mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -136,7 +175,6 @@ export default function LandingHero3D({ mobile = false }) {
       };
       window.addEventListener('mousemove', onMouseMove, { passive: true });
 
-      /* resize */
       onResize = () => {
         const nw = mount.clientWidth;
         const nh = mount.clientHeight;
@@ -172,9 +210,8 @@ export default function LandingHero3D({ mobile = false }) {
       };
       loop();
     } catch (err) {
-      // Any init failure: log + flip to the static dark fallback. Never bubble.
       // eslint-disable-next-line no-console
-      console.warn('[LandingHero3D] init failed — falling back to static dark.', err);
+      console.warn('[LandingHero3D] init failed — falling back to static.', err);
       setUseStaticFallback(true);
       return;
     }
@@ -199,10 +236,11 @@ export default function LandingHero3D({ mobile = false }) {
         /* swallow cleanup errors — already unmounting */
       }
     };
-  }, [mobile, useStaticFallback]);
+  }, [mobile, useStaticFallback, theme]);
 
-  if (useStaticFallback) return <StaticFallback />;
+  if (useStaticFallback) return <StaticFallback theme={theme} />;
 
+  const palette = PALETTES[theme] || PALETTES.dark;
   return (
     <div
       ref={mountRef}
@@ -213,7 +251,7 @@ export default function LandingHero3D({ mobile = false }) {
     >
       <div style={{
         position: 'absolute', inset: 0, pointerEvents: 'none',
-        background: 'linear-gradient(180deg, rgba(8,8,15,0.4) 0%, transparent 25%, transparent 70%, rgba(8,8,15,0.95) 100%)',
+        background: palette.canvasVignette,
         zIndex: 1,
       }} />
     </div>

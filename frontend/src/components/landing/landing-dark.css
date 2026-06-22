@@ -7,11 +7,19 @@
 
 /* Root html/body dark when the landing page is the active route.
  * The .landing-active class is toggled by LandingPage on mount/unmount,
- * so dashboard / admin / auth routes are never affected. */
+ * so dashboard / admin / auth routes are never affected.
+ * .landing-light flips html/body back to the original light palette so
+ * the cinematic light-mode hero blends with overscroll bounce on iOS. */
 html.landing-active,
 body.landing-active {
   background-color: #080810 !important;
   color: rgba(255, 255, 255, 0.85);
+  transition: background-color 250ms ease, color 250ms ease;
+}
+html.landing-active.landing-light,
+body.landing-active.landing-light {
+  background-color: #F2E6EE !important;
+  color: #1A1A2E;
 }
 
 .landing-dark {
