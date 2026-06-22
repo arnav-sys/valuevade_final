@@ -124,8 +124,12 @@ body.landing-active {
   height: 100% !important;
 }
 
-/* Pull existing hero content above the canvas */
-.landing-dark #hero > div { position: relative; z-index: 2; }
+/* Pull the hero content above the 3D canvas. Only target the content
+ * column itself — the older rule (`#hero > div`) accidentally promoted
+ * every `.star-particle` / `.orbital` / `.animate-blob` from `absolute`
+ * (their App.css default) to `relative`, turning them into flex items
+ * and squeezing the hero content to ~930px shifted right.            */
+.landing-dark #hero > div.max-w-7xl { position: relative; z-index: 2; }
 .landing-dark #hero > svg,
 .landing-dark #hero .orbital,
 .landing-dark #hero .star-particle,

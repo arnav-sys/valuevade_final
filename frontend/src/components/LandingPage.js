@@ -27,23 +27,45 @@ export default function LandingPage() {
   const [showMobileBar, setShowMobileBar] = useState(true);
   const [refCode, setRefCode] = useState(null);
 
+  // Landing-only theme. 'dark' = cinematic three.js, 'light' = original palette.
+  // Persisted in localStorage so visitor preference sticks across sessions.
+  const [landingTheme, setLandingTheme] = useState(() => {
+    if (typeof window === 'undefined') return 'dark';
+    return window.localStorage.getItem('valuevade_landing_theme') === 'light' ? 'light' : 'dark';
+  });
+  const toggleLandingTheme = () => {
+    setLandingTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      try { window.localStorage.setItem('valuevade_landing_theme', next); } catch { /* ignore */ }
+      return next;
+    });
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const ref = params.get('ref');
     if (ref) setRefCode(ref);
   }, []);
 
-  // Mark <html> + <body> as the dark landing surface so any overscroll
-  // bounce (iOS / macOS) shows #080810 instead of the default light theme.
-  // Cleanup on unmount restores the original background for other routes.
+  // Mark <html> + <body> as the dark landing surface ONLY when dark mode is
+  // active, so any overscroll bounce (iOS / macOS) shows #080810. Light mode
+  // returns to the original light theme; auth-gated routes are unaffected on
+  // unmount because we always strip the class.
   useEffect(() => {
-    document.documentElement.classList.add('landing-active');
-    document.body.classList.add('landing-active');
+    const root = document.documentElement;
+    const body = document.body;
+    if (landingTheme === 'dark') {
+      root.classList.add('landing-active');
+      body.classList.add('landing-active');
+    } else {
+      root.classList.remove('landing-active');
+      body.classList.remove('landing-active');
+    }
     return () => {
-      document.documentElement.classList.remove('landing-active');
-      document.body.classList.remove('landing-active');
+      root.classList.remove('landing-active');
+      body.classList.remove('landing-active');
     };
-  }, []);
+  }, [landingTheme]);
 
   const scrollToWaitlist = () => {
     document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
@@ -68,7 +90,12 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="landing-dark bg-[var(--bg-primary)] min-h-screen relative" data-testid="landing-page">
+    <div
+      className={`${landingTheme === 'dark' ? 'landing-dark' : 'landing-light'} bg-[var(--bg-primary)] min-h-screen relative`}
+      data-testid="landing-page"
+      data-landing-theme={landingTheme}
+      style={{ transition: 'background-color 250ms ease, color 250ms ease' }}
+    >
       <Helmet>
         <title>Valuevade — Land your equity research job with AI · ₹1,500 lifetime course</title>
         <meta name="description" content="India's first AI-personalised finance career program. CFA/FRM prep, real Indian-market simulations, 24/7 AI tutor, mock interviews, NISM + CFI certifications. ₹1,500 lifetime." />
@@ -88,14 +115,21 @@ export default function LandingPage() {
         <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       </Helmet>
       <CustomCursor />
-      <Navbar onJoinWaitlist={scrollToWaitlist} />
+      <Navbar
+        onJoinWaitlist={scrollToWaitlist}
+        landingTheme={landingTheme}
+        onToggleLandingTheme={toggleLandingTheme}
+      />
 
-      {/* Cinematic Three.js background — lazy-loaded, covers the hero viewport */}
-      <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
-        <Suspense fallback={null}>
-          <LandingHero3D mobile={typeof window !== 'undefined' && window.innerWidth < 768} />
-        </Suspense>
-      </div>
+      {/* Cinematic Three.js background — only mounted in dark mode. Light mode
+          falls back to the original light hero with no 3D layer. */}
+      {landingTheme === 'dark' && (
+        <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
+          <Suspense fallback={null}>
+            <LandingHero3D mobile={typeof window !== 'undefined' && window.innerWidth < 768} />
+          </Suspense>
+        </div>
+      )}
 
       <main className="relative z-10">
         <HeroSection onJoinWaitlist={scrollToWaitlist} />

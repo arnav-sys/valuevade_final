@@ -11,11 +11,17 @@ const navLinks = [
   { label: 'Roadmap', id: 'features' },
 ];
 
-export default function Navbar({ onJoinWaitlist }) {
+export default function Navbar({ onJoinWaitlist, landingTheme, onToggleLandingTheme }) {
   const { user, profile, loading, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  // When the LandingPage passes its own theme state in, the navbar's toggle
+  // controls the landing palette only (not the global app theme).
+  const isLandingScoped = typeof onToggleLandingTheme === 'function';
+  const activeTheme = isLandingScoped ? landingTheme : theme;
+  const onToggleTheme = isLandingScoped ? onToggleLandingTheme : toggleTheme;
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -75,12 +81,12 @@ export default function Navbar({ onJoinWaitlist }) {
         <div className="hidden md:flex items-center gap-3">
           {/* Theme toggle */}
           <button
-            onClick={toggleTheme}
+            onClick={onToggleTheme}
             className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
             data-testid="theme-toggle"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {activeTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
 
           {loading ? (
@@ -170,12 +176,12 @@ export default function Navbar({ onJoinWaitlist }) {
 
           {/* Mobile theme toggle */}
           <button
-            onClick={toggleTheme}
+            onClick={onToggleTheme}
             className="flex items-center gap-2 text-lg text-[var(--color-text-muted)] font-bricolage"
             data-testid="mobile-theme-toggle"
           >
-            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            {activeTheme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+            {activeTheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </button>
 
           {loading ? null : isLoggedIn ? (
