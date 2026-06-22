@@ -39,37 +39,65 @@ export default class ErrorBoundary extends Component {
   render() {
     if (!this.state.hasError) return this.props.children;
 
+    /* Dark-themed boundary — hardcoded so it works outside the .landing-dark scope. */
     return (
       <div
         className="min-h-screen relative overflow-hidden px-4 py-10 flex items-center justify-center"
         style={{
           background:
-            'radial-gradient(ellipse at top, rgba(255,106,193,0.08) 0%, transparent 50%), radial-gradient(ellipse at bottom, rgba(106,92,255,0.08) 0%, transparent 50%), var(--bg-primary)',
+            'radial-gradient(ellipse at top, rgba(167,139,250,0.10) 0%, transparent 55%),' +
+            'radial-gradient(ellipse at bottom, rgba(139,92,246,0.10) 0%, transparent 55%),' +
+            '#080810',
+          color: '#ffffff',
         }}
         data-testid="error-boundary"
       >
-        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-pink)] opacity-[0.06] blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.06] blur-[140px] pointer-events-none" />
+        <div className="absolute top-[-10%] left-[20%] w-[500px] h-[500px] rounded-full pointer-events-none"
+             style={{ background: '#a78bfa', opacity: 0.07, filter: 'blur(140px)' }} />
+        <div className="absolute bottom-[-10%] right-[10%] w-[500px] h-[500px] rounded-full pointer-events-none"
+             style={{ background: '#8b5cf6', opacity: 0.07, filter: 'blur(140px)' }} />
 
         <div className="relative z-10 max-w-md text-center" data-testid="error-boundary-content">
-          <div className="inline-flex w-20 h-20 rounded-2xl bg-[var(--color-error)]/10 border border-[var(--color-error)]/25 items-center justify-center mb-6">
-            <AlertTriangle size={36} className="text-[var(--color-error)]" />
+          <div
+            className="inline-flex w-20 h-20 rounded-2xl items-center justify-center mb-6"
+            style={{ background: 'rgba(248,113,113,0.10)', border: '1px solid rgba(248,113,113,0.30)' }}
+          >
+            <AlertTriangle size={36} style={{ color: '#fca5a5' }} />
           </div>
 
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-error)]/10 border border-[var(--color-error)]/25 text-[var(--color-error)] text-xs font-mono uppercase tracking-[0.2em] mb-5">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-mono uppercase tracking-[0.2em] mb-5"
+            style={{
+              background: 'rgba(248,113,113,0.10)',
+              border: '1px solid rgba(248,113,113,0.30)',
+              color: '#fca5a5',
+            }}
+          >
             Something went wrong
           </div>
 
-          <h1 className="font-clash text-3xl sm:text-5xl font-bold text-[var(--color-text)] mb-3" data-testid="error-boundary-title">
+          <h1
+            className="font-clash text-3xl sm:text-5xl font-bold mb-3"
+            style={{ color: '#ffffff' }}
+            data-testid="error-boundary-title"
+          >
             A glitch in the cosmos.
           </h1>
-          <p className="text-[var(--color-text-muted)] font-bricolage mb-6 leading-relaxed">
+          <p
+            className="font-bricolage mb-6 leading-relaxed"
+            style={{ color: 'rgba(255,255,255,0.70)' }}
+          >
             The app hit an unexpected error. Try again — if it keeps happening, reload or head back home.
           </p>
 
           {this.state.error?.message && (
             <pre
-              className="text-[10px] font-mono text-[var(--color-text-faint)] bg-[var(--color-surface)]/60 border border-[var(--color-border)] rounded-lg p-3 mb-6 overflow-auto text-left max-h-32"
+              className="text-[10px] font-mono rounded-lg p-3 mb-6 overflow-auto text-left max-h-32"
+              style={{
+                color: 'rgba(255,255,255,0.50)',
+                background: 'rgba(255,255,255,0.03)',
+                border: '1px solid rgba(167,139,250,0.18)',
+              }}
               data-testid="error-boundary-message"
             >
               {String(this.state.error.message)}
@@ -79,7 +107,12 @@ export default class ErrorBoundary extends Component {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={this.handleReload}
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold font-bricolage hover:brightness-110 transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
+                color: '#ffffff',
+                boxShadow: '0 8px 24px -8px rgba(139,92,246,0.55)',
+              }}
               data-testid="error-boundary-reload"
             >
               <RefreshCw size={15} />
@@ -87,7 +120,12 @@ export default class ErrorBoundary extends Component {
             </button>
             <a
               href="/"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold font-bricolage text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] border border-[var(--color-border)] transition-all"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold font-bricolage transition-all"
+              style={{
+                color: 'rgba(255,255,255,0.78)',
+                background: 'transparent',
+                border: '1px solid rgba(167,139,250,0.25)',
+              }}
               data-testid="error-boundary-home"
             >
               <Home size={15} />
