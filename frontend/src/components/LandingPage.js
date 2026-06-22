@@ -33,6 +33,18 @@ export default function LandingPage() {
     if (ref) setRefCode(ref);
   }, []);
 
+  // Mark <html> + <body> as the dark landing surface so any overscroll
+  // bounce (iOS / macOS) shows #080810 instead of the default light theme.
+  // Cleanup on unmount restores the original background for other routes.
+  useEffect(() => {
+    document.documentElement.classList.add('landing-active');
+    document.body.classList.add('landing-active');
+    return () => {
+      document.documentElement.classList.remove('landing-active');
+      document.body.classList.remove('landing-active');
+    };
+  }, []);
+
   const scrollToWaitlist = () => {
     document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
   };

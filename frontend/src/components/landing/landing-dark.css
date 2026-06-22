@@ -5,6 +5,15 @@
  * already consume (--bg-primary, --color-text, etc.) inside this scope.
  * ======================================================================= */
 
+/* Root html/body dark when the landing page is the active route.
+ * The .landing-active class is toggled by LandingPage on mount/unmount,
+ * so dashboard / admin / auth routes are never affected. */
+html.landing-active,
+body.landing-active {
+  background-color: #080810 !important;
+  color: rgba(255, 255, 255, 0.85);
+}
+
 .landing-dark {
   /* Palette — deep cinematic violet on near-black */
   --bg-primary:           #08080f;
