@@ -1,0 +1,131 @@
+/* === Landing — Cinematic Dark theme overlay =============================
+ * Scoped under `.landing-dark` so it ONLY repaints the public landing
+ * surface. Auth-gated routes, dashboard, admin etc. remain untouched.
+ * Strategy: override the CSS variables the existing section components
+ * already consume (--bg-primary, --color-text, etc.) inside this scope.
+ * ======================================================================= */
+
+.landing-dark {
+  /* Palette — deep cinematic violet on near-black */
+  --bg-primary:           #08080f;
+  --bg-secondary:         #0b0b14;
+  --color-surface:        rgba(255,255,255,0.04);
+  --color-border:         rgba(167, 139, 250, 0.14);
+  --color-text:           #ffffff;
+  --color-text-secondary: rgba(255,255,255,0.86);
+  --color-text-muted:     rgba(255,255,255,0.62);
+  --color-text-faint:     rgba(255,255,255,0.40);
+  --color-primary:        #a78bfa;   /* violet */
+  --color-accent-purple:  #8b5cf6;
+  --color-accent-pink:    #c4b5fd;
+
+  background:
+    radial-gradient(60% 50% at 50% -10%, rgba(139,92,246,0.18), transparent 60%),
+    radial-gradient(40% 30% at 80% 110%, rgba(167,139,250,0.12), transparent 60%),
+    var(--bg-primary);
+  color: var(--color-text);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  position: relative;
+  min-height: 100vh;
+}
+
+.landing-dark h1, .landing-dark h2, .landing-dark h3,
+.landing-dark .font-clash {
+  font-family: 'Space Grotesk', 'Inter', sans-serif !important;
+  letter-spacing: -0.02em;
+}
+.landing-dark .font-bricolage { font-family: 'Inter', sans-serif; }
+
+/* Glass cards in the dark palette */
+.landing-dark .glass-card {
+  background: rgba(255,255,255,0.025) !important;
+  border: 1px solid rgba(167,139,250,0.14) !important;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  transition: transform 320ms cubic-bezier(.22,1,.36,1),
+              border-color 320ms ease, box-shadow 320ms ease;
+}
+.landing-dark .glass-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(167,139,250,0.45) !important;
+  box-shadow: 0 24px 60px -20px rgba(139,92,246,0.35),
+              0 0 0 1px rgba(167,139,250,0.18) inset;
+}
+
+/* Sections — ensure no white bleed through anywhere */
+.landing-dark section,
+.landing-dark footer,
+.landing-dark header {
+  background: transparent !important;
+}
+
+/* Subtle horizontal divider between every section */
+.landing-dark section + section { position: relative; }
+.landing-dark section + section::before {
+  content: '';
+  position: absolute; top: 0; left: 10%; right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(167,139,250,0.18), transparent);
+}
+
+/* Navbar — when scrolled */
+.landing-dark header[data-testid="navbar"] {
+  background: transparent !important;
+}
+.landing-dark header[data-testid="navbar"].bg-\[var\(--bg-primary\)\]\/80,
+.landing-dark header[data-testid="navbar"][class*="backdrop-blur"] {
+  background: rgba(8,8,15,0.65) !important;
+  border-bottom-color: rgba(167,139,250,0.14) !important;
+}
+
+/* CTA breathing pulse */
+@keyframes lv-pulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(167,139,250,0.45), 0 8px 24px -8px rgba(139,92,246,0.55); }
+  50%     { box-shadow: 0 0 0 14px rgba(167,139,250,0.0),  0 16px 36px -12px rgba(139,92,246,0.75); }
+}
+.landing-dark .hero-cta-primary {
+  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%) !important;
+  animation: lv-pulse 3.4s ease-in-out infinite;
+}
+.landing-dark .hero-cta-primary:hover { animation-play-state: paused; }
+
+/* Section labels */
+.landing-dark .section-label {
+  color: var(--color-accent-purple) !important;
+}
+
+/* Comparison table — preserve gold-tint Valuevade column behaviour but in violet */
+.landing-dark table { color: var(--color-text); }
+.landing-dark tr:nth-child(even) td:not(.lv-comp-col-vv) {
+  background: rgba(255,255,255,0.015);
+}
+
+/* Logo gradient stays — keep its existing rainbow */
+
+/* Three.js canvas container */
+.landing-three-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.landing-three-bg canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Pull existing hero content above the canvas */
+.landing-dark #hero > div { position: relative; z-index: 2; }
+.landing-dark #hero > svg,
+.landing-dark #hero .orbital,
+.landing-dark #hero .star-particle,
+.landing-dark #hero [class*="animate-blob"] { opacity: 0.0; }
+
+/* Hero base */
+.landing-dark #hero { background: transparent !important; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .landing-dark .hero-cta-primary { animation: none; }
+}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { X, ArrowRight } from 'lucide-react';
@@ -15,6 +15,9 @@ import FinalCTASection from '@/components/FinalCTASection';
 import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import { courseJsonLd, orgJsonLd } from '@/components/landing/jsonLd';
+import '@/components/landing/landing-dark.css';
+
+const LandingHero3D = lazy(() => import('@/components/landing/LandingHero3D'));
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -53,7 +56,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="bg-[var(--bg-primary)] min-h-screen" data-testid="landing-page">
+    <div className="landing-dark bg-[var(--bg-primary)] min-h-screen relative" data-testid="landing-page">
       <Helmet>
         <title>Valuevade — Land your equity research job with AI · ₹1,500 lifetime course</title>
         <meta name="description" content="India's first AI-personalised finance career program. CFA/FRM prep, real Indian-market simulations, 24/7 AI tutor, mock interviews, NISM + CFI certifications. ₹1,500 lifetime." />
@@ -75,7 +78,14 @@ export default function LandingPage() {
       <CustomCursor />
       <Navbar onJoinWaitlist={scrollToWaitlist} />
 
-      <main>
+      {/* Cinematic Three.js background — lazy-loaded, covers the hero viewport */}
+      <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
+        <Suspense fallback={null}>
+          <LandingHero3D mobile={typeof window !== 'undefined' && window.innerWidth < 768} />
+        </Suspense>
+      </div>
+
+      <main className="relative z-10">
         <HeroSection onJoinWaitlist={scrollToWaitlist} />
         <ProblemSection />
         <FeaturesSection />
