@@ -5,7 +5,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import {
   Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
-  Sun, Moon, ChevronLeft, Trophy, Library, MessageCircleQuestion,
+  Sun, Moon, ChevronLeft, Trophy, Library, MessageCircleQuestion, Sparkles,
 } from 'lucide-react';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 
@@ -76,6 +76,7 @@ export default function Sidebar() {
       },
       { label: 'Profile', icon: User, path: '/profile', testid: 'nav-profile' },
       { label: 'Portfolio', icon: Trophy, path: '/portfolio', testid: 'nav-portfolio' },
+      { label: 'Capstones', icon: Sparkles, path: '/capstones', testid: 'nav-capstones' },
       { label: 'Review Notes', icon: Library, path: '/review', testid: 'nav-review-notes' },
       { label: 'My Doubts', icon: MessageCircleQuestion, path: '/doubts', testid: 'nav-my-doubts', badgeCount: openDoubtsCount },
       { label: 'Settings', icon: Settings, path: '/settings', testid: 'nav-settings' },

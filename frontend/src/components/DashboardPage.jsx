@@ -799,38 +799,29 @@ export default function DashboardPage() {
                     );
                   })}
 
-                  {/* Capstone indicator */}
-                  <div
-                    className={`glass-card rounded-2xl p-5 sm:p-6 flex items-center gap-4 ${
-                      capstone?.is_unlocked ? '' : 'opacity-60'
-                    }`}
-                    data-testid="dashboard-capstone"
+                  {/* Capstones preview — links to the dedicated /capstones page. */}
+                  <button
+                    type="button"
+                    onClick={() => navigate('/capstones')}
+                    className="glass-card rounded-2xl p-5 sm:p-6 flex items-center gap-4 text-left transition-all hover:border-[var(--color-accent-purple)]/50 hover:shadow-[0_0_24px_rgba(106,92,255,0.20)] w-full"
+                    data-testid="dashboard-capstones-preview"
                   >
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${
-                      capstone?.is_completed
-                        ? 'bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]'
-                        : capstone?.is_unlocked
-                        ? 'bg-gradient-to-br from-[var(--color-accent-pink)]/15 to-[var(--color-accent-purple)]/15 border border-[var(--color-accent-pink)]/30 text-[var(--color-accent-pink)]'
-                        : 'bg-[var(--color-text-faint)]/10 border border-[var(--color-border)] text-[var(--color-text-faint)]'
-                    }`}>
-                      {capstone?.is_completed ? <Trophy size={20} /> : capstone?.is_unlocked ? <Rocket size={20} /> : <Lock size={18} />}
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 bg-gradient-to-br from-[var(--color-accent-pink)]/15 to-[var(--color-accent-purple)]/15 border border-[var(--color-accent-purple)]/30 text-[var(--color-accent-purple)]">
+                      <Sparkles size={20} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-0.5">
-                        Final
+                        Equity Research
                       </div>
                       <h3 className="font-clash text-lg font-semibold text-[var(--color-text)]">
-                        Capstone Project
+                        Capstones (3)
                       </h3>
                       <p className="text-xs font-bricolage text-[var(--color-text-muted)] mt-0.5">
-                        {capstone?.is_completed
-                          ? 'Completed — congrats!'
-                          : capstone?.is_unlocked
-                          ? 'Unlocked. Ready when you are.'
-                          : 'Complete all modules and projects to unlock.'}
+                        Initiating Coverage · Sector Coverage · AI Equity Research Copilot
                       </p>
                     </div>
-                  </div>
+                    <ArrowRight size={16} className="text-[var(--color-text-muted)] shrink-0" />
+                  </button>
                 </div>
               </section>
             </div>

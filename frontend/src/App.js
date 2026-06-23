@@ -61,6 +61,7 @@ const ModuleProjectStartPage = lazyWithRetry(() => import("@/components/ModulePr
 const ModuleProjectTasksPage = lazyWithRetry(() => import("@/components/ModuleProjectTasksPage"));
 const ModuleProjectCompletePage = lazyWithRetry(() => import("@/components/ModuleProjectCompletePage"));
 const CapstoneStartPage = lazyWithRetry(() => import("@/components/CapstoneStartPage"));
+const CapstonesListPage = lazyWithRetry(() => import("@/components/CapstonesListPage"));
 const CapstoneTasksPage = lazyWithRetry(() => import("@/components/CapstoneTasksPage"));
 const CapstoneCompletePage = lazyWithRetry(() => import("@/components/CapstoneCompletePage"));
 const ProfilePage = lazyWithRetry(() => import("@/components/ProfilePage"));
@@ -188,6 +189,7 @@ function App() {
                   <Route path="/module/:moduleId/project/tasks" element={<Learning><ModuleProjectTasksPage /></Learning>} />
                   <Route path="/module/:moduleId/project/complete" element={<Learning><ModuleProjectCompletePage /></Learning>} />
 
+                  <Route path="/capstones" element={<Learning><CapstonesListPage /></Learning>} />
                   <Route path="/capstone/start" element={<Learning><CapstoneStartPage /></Learning>} />
                   <Route path="/capstone/tasks" element={<Learning><CapstoneTasksPage /></Learning>} />
                   <Route path="/capstone/complete" element={<Learning><CapstoneCompletePage /></Learning>} />
