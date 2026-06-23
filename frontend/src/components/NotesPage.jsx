@@ -1519,7 +1519,17 @@ const CARD_THEME = {
   formula:     { label: 'Formula',      accent: '#6A5CFF', icon: '🔢' },
   mistake:     { label: 'Mistake',      accent: '#FF6AC1', icon: '⚠️' },
   summary:     { label: 'Summary',      accent: '#6A5CFF', icon: '📋' },
+  'study-card':{ label: 'Practice',     accent: '#22C55E', icon: '✅' },
+  study_card:  { label: 'Practice',     accent: '#22C55E', icon: '✅' },
 };
+
+// Card-type buckets used by the Notes filter chips.
+// `study-card` (and its variants) are the Practice bucket; everything else is Lessons.
+const PRACTICE_TYPES = new Set(['study-card', 'study_card']);
+function bucketOf(cardType) {
+  const k = String(cardType || '').toLowerCase().trim();
+  return PRACTICE_TYPES.has(k) ? 'practice' : 'lessons';
+}
 
 /** Curriculum-v2 renderer — renders a card whose `content` is `{ body_md: "..." }`.
  *  Lightweight markdown rendering (paragraphs, lists, bold, italic, quote, code).
@@ -1742,6 +1752,8 @@ export default function NotesPage() {
   const [idx, setIdx] = useState(0);
   const [completing, setCompleting] = useState(false);
   const [startedAt] = useState(() => Date.now());
+  // Filter chips: 'all' | 'lessons' | 'practice'
+  const [filter, setFilter] = useState('all');
 
   // Track active reading time on this page → user_stats.total_time_minutes
   useTimeTracking(user?.id);
@@ -1805,14 +1817,36 @@ export default function NotesPage() {
   }, [sessionId, user?.id]);
 
   const total = cards.length;
-  const isLast = idx === total - 1;
+  // Filtered view based on selected chip
+  const filteredCards = useMemo(() => {
+    if (filter === 'all') return cards;
+    return cards.filter((c) => bucketOf(c.card_type) === filter);
+  }, [cards, filter]);
+  const filteredTotal = filteredCards.length;
+  const isLast = idx === filteredTotal - 1;
+
+  // Counts for chips (computed once per `cards`)
+  const counts = useMemo(() => {
+    let practice = 0;
+    let lessons = 0;
+    for (const c of cards) {
+      if (bucketOf(c.card_type) === 'practice') practice += 1;
+      else lessons += 1;
+    }
+    return { all: cards.length, lessons, practice };
+  }, [cards]);
+
+  const setFilterSafe = useCallback((next) => {
+    setFilter(next);
+    setIdx(0);
+  }, []);
 
   const goPrev = useCallback(() => {
     setIdx((i) => Math.max(0, i - 1));
   }, []);
   const goNext = useCallback(() => {
-    setIdx((i) => Math.min(total - 1, i + 1));
-  }, [total]);
+    setIdx((i) => Math.min(filteredTotal - 1, i + 1));
+  }, [filteredTotal]);
 
   const complete = useCallback(async () => {
     if (completing || !session) return;
@@ -1873,7 +1907,7 @@ export default function NotesPage() {
     setTouchStart(null);
   };
 
-  const currentCard = useMemo(() => cards[idx], [cards, idx]);
+  const currentCard = useMemo(() => filteredCards[idx], [filteredCards, idx]);
   const isReview = !!session?.notes_completed;
 
   // ------------- render -------------
@@ -1910,7 +1944,7 @@ export default function NotesPage() {
 
           {total > 0 && (
             <div className="text-xs font-mono text-[var(--color-text-muted)] shrink-0" data-testid="notes-counter">
-              {idx + 1} / {total}
+              {filteredTotal > 0 ? `${idx + 1} / ${filteredTotal}` : `0 / ${total}`}
             </div>
           )}
         </div>
@@ -1918,7 +1952,7 @@ export default function NotesPage() {
         <div className="h-0.5 bg-[var(--color-surface)]">
           <div
             className="h-full bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent-purple)] to-[var(--color-accent-pink)] transition-all duration-500"
-            style={{ width: total ? `${((idx + 1) / total) * 100}%` : '0%' }}
+            style={{ width: filteredTotal ? `${((idx + 1) / filteredTotal) * 100}%` : '0%' }}
           />
         </div>
       </header>
@@ -1993,6 +2027,60 @@ export default function NotesPage() {
               />
             </div>
           )}
+
+          {/* Filter chips — only when session has both lesson + practice cards */}
+          {!loading && !error && session?.master_session_id && counts.practice > 0 && counts.lessons > 0 && (
+            <div
+              className="mb-6 flex items-center gap-2 overflow-x-auto pb-1"
+              data-testid="notes-filter-chips"
+              role="tablist"
+              aria-label="Filter notes by type"
+            >
+              {[
+                { key: 'all',      label: 'All',      count: counts.all,      accent: '#246BFD' },
+                { key: 'lessons',  label: 'Lessons',  count: counts.lessons,  accent: '#6A5CFF' },
+                { key: 'practice', label: 'Practice', count: counts.practice, accent: '#22C55E' },
+              ].map((chip) => {
+                const active = filter === chip.key;
+                return (
+                  <button
+                    key={chip.key}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setFilterSafe(chip.key)}
+                    data-testid={`notes-filter-${chip.key}`}
+                    className="shrink-0 inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bricolage font-semibold transition-all border"
+                    style={
+                      active
+                        ? {
+                            background: `${chip.accent}1f`,
+                            borderColor: `${chip.accent}80`,
+                            color: chip.accent,
+                            boxShadow: `0 0 0 2px ${chip.accent}1a`,
+                          }
+                        : {
+                            background: 'var(--color-surface)',
+                            borderColor: 'var(--color-border)',
+                            color: 'var(--color-text-muted)',
+                          }
+                    }
+                  >
+                    {chip.label}
+                    <span
+                      className="text-[10px] font-mono px-1.5 py-0.5 rounded"
+                      style={{
+                        background: active ? `${chip.accent}26` : 'var(--color-bg-primary)',
+                        color: active ? chip.accent : 'var(--color-text-muted)',
+                      }}
+                    >
+                      {chip.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
           {loading && (
             <div className="flex items-center justify-center py-20" data-testid="notes-loading">
               <Loader2 size={32} className="animate-spin text-[var(--color-primary)]" />
@@ -2036,9 +2124,25 @@ export default function NotesPage() {
             </div>
           )}
 
-          {!loading && !error && total > 0 && currentCard && (
+          {!loading && !error && filteredTotal > 0 && currentCard && (
             <div key={currentCard.id || idx} className="animate-[fadeIn_0.35s_ease-out]" data-testid="notes-card">
               <CardRenderer card={currentCard} />
+            </div>
+          )}
+
+          {/* Filter present + 0 cards after filtering */}
+          {!loading && !error && total > 0 && filteredTotal === 0 && (
+            <div className="flex flex-col items-center text-center py-16" data-testid="notes-filter-empty">
+              <p className="text-[var(--color-text-muted)] font-bricolage mb-5">
+                No {filter === 'practice' ? 'practice questions' : 'lesson cards'} in this session.
+              </p>
+              <button
+                onClick={() => setFilterSafe('all')}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage"
+                data-testid="notes-filter-show-all"
+              >
+                Show All Cards
+              </button>
             </div>
           )}
 
@@ -2063,7 +2167,7 @@ export default function NotesPage() {
       })()}
 
       {/* Bottom nav bar */}
-      {!loading && !error && total > 0 && (
+      {!loading && !error && filteredTotal > 0 && (
         <div className="sticky bottom-0 z-40 bg-[var(--bg-primary)]/85 backdrop-blur-xl border-t border-[var(--color-border)]" data-testid="notes-nav-bar">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
             <button
@@ -2077,7 +2181,7 @@ export default function NotesPage() {
 
             {/* Progress dots */}
             <div className="flex items-center gap-1.5 overflow-x-auto max-w-[50%]" data-testid="notes-dots">
-              {cards.map((_, i) => (
+              {filteredCards.map((_, i) => (
                 <button
                   key={i}
                   onClick={() => setIdx(i)}

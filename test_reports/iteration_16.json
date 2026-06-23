@@ -1,0 +1,43 @@
+{
+  "summary": "Iteration 16: Backend/DB migration tests (study-card constraint + 304 retag + leftover-summary check + insert validation) all PASS (6/6). Frontend chip-strip UI verification BLOCKED — testagent2026 has only Session 1 with a 'Trial complete · Upgrade to continue' paywall over notes, and Sessions 2+ are gated behind S1 quiz/interview/simulation completion, so the chip strip could not be hydrated end-to-end. Static code review of NotesPage.jsx confirms the implementation is wired correctly (CARD_THEME study-card → green-accent 'Practice' label, bucketOf maps study-card to 'practice', chip strip only renders when counts.practice>0 AND counts.lessons>0, filteredCards/dots/counter all read from filteredCards). Test seed row was inserted and cleanly removed; DB totals restored to 1264 / 304 study-cards.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "Supabase /v1/projects/.../database/query", "issue": "Returns 201 (not 200) on success — minor doc/test-expectation mismatch only; corrected in test file"}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "End-to-end chip-strip UI on testagent2026", "issue": "BLOCKED — Session 1 trips trial paywall on Notes route; Session 2+ Notes route hangs on loading spinner (prerequisite gating). Cannot mount NotesPage with a mixed lesson+practice set for this user without seeding deeper progress or making user paid. Earlier iteration (15) flagged the same paywall/prereq blocker.", "affected_selectors": ["[data-testid='notes-filter-chips']", "[data-testid='notes-filter-all']", "[data-testid='notes-filter-lessons']", "[data-testid='notes-filter-practice']", "[data-testid='card-study-card']"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_studycard_migration.py",
+    "/app/test_reports/pytest/studycard_results.xml"
+  ],
+  "action_items": [
+    "Note: request stated total master_notes_cards=1064 but actual is 1264 — verify whether 200 extra rows (e.g., other category) are expected or whether request math was off. Sum given in request: 135+135+97+145+135+112+201+304=1264, so the '1064' literal in the prompt was a typo. No action needed if 1264 is the correct expected total.",
+    "To unblock end-to-end UI test of the chip strip, either (a) mark testagent2026 as paid so the paywall lifts, or (b) seed a fresh test user with no trial-complete state plus a session containing both lesson and study-cards, OR (c) hand-set notes_completed/quiz_completed/interview_completed/simulation_completed for S1 + access a later session.",
+    "Main agent should self-verify the chip-strip + filter behaviour in a local browser session (or with a paid test account) since the logic is statically correct."
+  ],
+  "critical_code_review_comments": [
+    "NotesPage.jsx is 2235 lines — exceeds the 700-line soft-limit; consider extracting CARD_THEME/bucketOf, MarkdownCard, and the filter chip block into separate modules for maintainability.",
+    "CARD_THEME has both 'study-card' and 'study_card' entries (snake-case fallback) — good defensive coding; PRACTICE_TYPES Set also covers both.",
+    "Chip render condition (line 2032) uses `counts.practice > 0 && counts.lessons > 0` — correct, hides chips on lesson-only or practice-only sessions.",
+    "filteredCards memo + currentCard/idx reset look correct in setFilterSafe.",
+    "DB constraint widened correctly: CHECK (card_type IN ('hook','concept','deep-dive','example','formula','mistake','summary','visual','study-card')) — verified via pg_get_constraintdef.",
+    "Invalid card_type insert correctly rejected with '23514: new row violates check constraint master_notes_cards_card_type_check'."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_studycard_migration.py (new file — pytest for DB migration verification)"
+  ],
+  "success_rate": {"backend": "100% (6/6)", "frontend": "0% (blocked, not failed) — static review confirms implementation is correct"},
+  "seed_data_creation": "Inserted master_notes_cards row id=c198f096-c019-467d-9165-3c12b8b20e95 with card_type='study-card' on session_id=bd1c604c-... (M1 S1), then moved to 1671aff6-... (M1 S2), then DELETED. DB totals confirmed restored to total=1264, study-card=304.",
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (UUID 13a690c4-96d7-4827-8117-fde4f696e999) — paywall-locked after Session 1.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backend/DB migration is fully verified — 6/6 pytest pass at /app/backend/tests/test_studycard_migration.py. Frontend chip-strip UI was NOT empirically hydrated because of progress-state gating: (1) testagent2026 Session 1 Notes route shows 'Trial complete' paywall over the page, (2) Session 2+ Notes hangs on a global loading spinner (likely prereq gating in NotesPage). To verify the chip strip in a future run, either seed a fully-paid/unlocked test user with a session containing both lesson cards and at least one study-card, OR programmatically dismiss the paywall (no close-without-redirect path was found — 'Maybe later' redirects away). Static code review confirms the chip strip + filtering logic in NotesPage.jsx (lines 1512-2235) is correctly wired: CARD_THEME study-card → green accent + 'Practice' label, bucketOf categorises correctly, chip renders only on mixed sessions, dots/counter use filteredCards.",
+  "rca of the issue": "No bug to RCA. The migration + UI code is correct based on static review and DB verification. The UI test blocker is environmental (test user progress state + paywall), not a code defect."
+}

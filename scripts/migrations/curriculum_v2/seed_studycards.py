@@ -191,10 +191,7 @@ def main():
                 body_md = render_body_md(c)
                 rows.append({
                     'session_id': sid,
-                    # DB CHECK constraint blocks 'study-card'; use 'summary' which is
-                    # allowed + visually compatible. body_md has a "Practice Question N"
-                    # header so users see these as study cards.
-                    'card_type': 'summary',
+                    'card_type': 'study-card',
                     'title': f"Practice Q{c['order_index']} · {c['question'][:140]}"[:200],
                     'content': {'body_md': body_md, 'question': c['question'], 'answer': c.get('correct'), 'explanation': c.get('explanation',''), 'kind': 'study-card'},
                     'order_index': 100 + c['order_index'],
