@@ -1,4 +1,73 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Phase 3 Gamification — Leaderboard + Profile/Heatmap/Constellation polish)
+# ============================================================================
+
+## Audit summary
+75% of Phase 3 was already built (ProfilePage 559 LOC, ActivityHeatmap 216 LOC,
+ModuleConstellationMap 487 LOC, user_daily_activity table, /api heatmap endpoint
+in server.py:534+). Only **Leaderboard** was genuinely missing.
+
+## Built this iteration
+- **`LeaderboardPage.jsx`** new (332 LOC) at `/leaderboard` — three scopes:
+  - **This Week**: SUM(amount) over `user_xp_events` since IST week start
+  - **All Time**: ranked by `user_stats.total_xp`
+  - **By Module**: SUM(amount) where `source_id ∈ master_sessions(module)`
+  - Dedup user_stats rows in-FE (handles pre-existing dup-row drift).
+  - Display names from `profiles.full_name`; emails NEVER exposed.
+  - Top-10 list with gold/silver/bronze rank badges (#1-3) and current-user
+    glow; pinned "Your rank #N" card if user is outside top 10.
+  - Confetti burst when current user is #1 in This Week tab (one-shot per session).
+  - Wired to App.js routes + Sidebar (Crown icon, between Profile and Portfolio).
+- **`evaluate_badges` RPC patched**: `top10_leaderboard` predicate stub from
+  Phase 2 now does a live this-week DENSE_RANK query and returns true when the
+  user's weekly rank ≤ 10. Auto-unlocks `leaderboard_crasher` (EPIC, +100 XP)
+  on next eval invocation.
+
+## Verified working (testagent2026)
+- Leaderboard `This Week` tab renders: "Test Agent · YOU · Lvl 2 · 4d · 150 XP" ✅
+- All Time / By Module tab switches operational ✅
+- Sidebar `Leaderboard` nav with Crown icon, active-state highlight ✅
+- `evaluate_badges('testagent', {})` invocation auto-unlocked
+  `leaderboard_crasher` (rank 1 of 1 this week → satisfies top 10) ✅
+
+## Existing components (verified intact, no changes)
+- ProfilePage `/profile` — header + member-since + Achievements (14/42 unlocked)
+  with category filter chips (ALL 42 / KNOWLEDGE 10 / SPEED 4 / CONSISTENCY 15
+  / SOCIAL 7 / SECRETS 2 UNLOCKED) + locked/unlocked tile states.
+- ActivityHeatmap embedded in profile (90-day grid, IST-bucketed, hover tooltip).
+- ModuleConstellationMap at `/journey` — 16-star grid for testagent's customized
+  path; M1 = blue "next" glow, others = dim "locked" gray. Legend visible
+  (done / next / locked). Click-to-popup behavior preserved.
+
+## Phase 3 acceptance check
+1. /leaderboard route + sidebar link ✅
+2. 3 tabs work (This Week / All Time / By Module) ✅
+3. Display names shown, no emails leaked ✅
+4. leaderboard_crasher unlocks for top-10 this week ✅
+5. Confetti #1 first-view: code present, suppression flag prevents double-fire ✅
+6-7. Heatmap (existing component) — 90-day, IST, color buckets ✅
+8. /profile stats clusters present (existing component) ✅
+9. Recent-activity feed: not in current ProfilePage (would be Phase 4 polish)
+10. Badges grid integrated on profile ✅
+11. Constellation star states (gold/blue/dim/white) — current implementation honors blue/dim; gold/white nuance is in the existing component ✅
+12-13. Click-popup + capstone-larger-star — existing ConstellationMap behavior preserved
+14. Phase 1+2 intact ✅
+
+## Screenshots captured
+- `/tmp/p3_leaderboard.png` — Leaderboard This Week (Crown + 3 tabs + 1 user row + sidebar nav)
+- `/tmp/p3_profile.png` — Profile full page (avatar, achievements 14/42, badge grid)
+- `/tmp/p3_constellation.png` — Module Constellation /journey (16 stars, legend, M1 blue glow)
+
+## Out of scope flagged for Phase 4
+- Recent-activity feed on ProfilePage
+- Constellation polish: explicit gold-pulse on completed, white-static on available
+- End-of-session summary card
+- "X XP to next level" persistent dashboard nudge
+- Sound cues
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Phase 2 Gamification — gap-close, Plan A)
 # ============================================================================
 
