@@ -106,7 +106,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
           ) : (
             <div className="w-10 h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center">
               <span className="text-[11px] font-mono text-[var(--color-text-muted)]">
-                {String(module.order_index + 1).padStart(2, '0')}
+                {String(module.order_index).padStart(2, '0')}
               </span>
             </div>
           )}
@@ -117,7 +117,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="min-w-0">
               <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-0.5">
-                Module {module.order_index + 1}
+                Module {module.order_index}
               </div>
               <h3 className="font-clash text-lg font-semibold text-[var(--color-text)]" data-testid={`module-title-${module.order_index}`}>
                 {module.title}

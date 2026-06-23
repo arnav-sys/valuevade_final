@@ -182,7 +182,7 @@ export default function ModuleProjectCompletePage() {
                 {module.title}
               </div>
               <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                Module {module.order_index + 1} · Project deliverable submitted and saved.
+                Module {module.order_index} · Project deliverable submitted and saved.
               </p>
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function ModuleProjectCompletePage() {
               data-testid="module-project-continue-next"
             >
               <Sparkles size={16} />
-              Continue to Module {nextModule.order_index + 1}
+              Continue to Module {nextModule.order_index}
               <ArrowRight size={16} />
             </button>
           ) : (

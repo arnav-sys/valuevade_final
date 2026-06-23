@@ -115,7 +115,7 @@ export default function InterviewStartPage() {
               <div className="flex items-center flex-wrap gap-1.5 text-[11px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-5" data-testid="interview-breadcrumb">
                 {module && (
                   <>
-                    <span>{/^\s*module\b/i.test(module.title || '') ? module.title : `Module ${module.order_index + 1}: ${module.title}`}</span>
+                    <span>{/^\s*module\b/i.test(module.title || '') ? module.title : `Module ${module.order_index}: ${module.title}`}</span>
                     <span className="text-[var(--color-text-faint)]">›</span>
                   </>
                 )}

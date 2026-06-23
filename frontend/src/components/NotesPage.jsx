@@ -1752,7 +1752,17 @@ export default function NotesPage() {
   useEffect(() => {
     let mounted = true;
     async function load() {
-      if (!user?.id || !sessionId) return;
+      if (!user?.id || !sessionId) {
+        // Don't leave the page hung on a spinner if auth/route params haven't
+        // resolved yet — surface a useful state instead. The effect will
+        // re-run once `user.id` arrives (dependency array).
+        if (mounted) {
+          setLoading(false);
+          if (!user?.id) setError('Sign in to view session notes.');
+          else setError('Missing session id.');
+        }
+        return;
+      }
       setLoading(true);
       setError(null);
       try {

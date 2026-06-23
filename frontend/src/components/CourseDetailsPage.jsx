@@ -342,7 +342,7 @@ export default function CourseDetailsPage() {
                           <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-[var(--color-surface-hover)] transition-colors">
                             <div className="flex items-center gap-4 text-left flex-1 min-w-0">
                               <span className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center text-xs font-mono text-[var(--color-primary)] shrink-0">
-                                {String(idx + 1).padStart(2, '0')}
+                                {String(mod.order_index ?? (idx + 1)).padStart(2, '0')}
                               </span>
                               <div className="min-w-0 flex-1">
                                 <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage truncate" data-testid={`module-title-${idx}`}>

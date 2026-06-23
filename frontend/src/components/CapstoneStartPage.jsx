@@ -20,6 +20,7 @@ export default function CapstoneStartPage() {
   const [masterCapstone, setMasterCapstone] = useState(null);
   const [modules, setModules] = useState([]);
   const [moduleProjects, setModuleProjects] = useState([]);
+  const [allCapstones, setAllCapstones] = useState([]);
 
   useEffect(() => {
     let mounted = true;
@@ -51,6 +52,15 @@ export default function CapstoneStartPage() {
         if (!mounted) return;
         setCapstone(cap || null);
         setMasterCapstone(cap?.master_capstone_projects || null);
+
+        // Curriculum v2: load ALL master capstones for this path so the page
+        // surfaces CAP-01 / CAP-02 / CAP-03 (was only one before).
+        const { data: allCaps } = await supabase
+          .from('master_capstone_projects')
+          .select('id, title, description, estimated_hours, phases')
+          .eq('path_id', enr.master_path_id);
+        if (!mounted) return;
+        setAllCapstones(allCaps || []);
 
         const { data: mods, error: mErr } = await supabase
           .from('user_modules')
@@ -202,6 +212,58 @@ export default function CapstoneStartPage() {
                   )}
                 </div>
               </div>
+
+              {/* Curriculum v2 — all available capstones for this path.
+                  CAP-02 is gated on CAP-01 completion via `phases.prerequisite_capstone_codes`. */}
+              {allCapstones && allCapstones.length > 0 && (
+                <div className="mb-6" data-testid="all-capstones-list">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Sparkles size={16} className="text-[var(--color-accent-purple)]" />
+                    <h2 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)]">
+                      All capstones in this track ({allCapstones.length})
+                    </h2>
+                  </div>
+                  <div className="grid sm:grid-cols-3 gap-3">
+                    {[...allCapstones]
+                      .map((c) => {
+                        const phases = (typeof c.phases === 'string') ? (() => { try { return JSON.parse(c.phases); } catch { return {}; } })() : (c.phases || {});
+                        return { ...c, _code: phases.code || '', _prereqs: phases.prerequisite_capstone_codes || [] };
+                      })
+                      .sort((a, b) => (a._code || '').localeCompare(b._code || ''))
+                      .map((c) => {
+                        // Lock if any prereq capstone hasn't been completed yet.
+                        // (No completion data available pre-enrollment-flow; treat any prereq as 'locked'.)
+                        const locked = (c._prereqs || []).length > 0;
+                        return (
+                          <div
+                            key={c.id}
+                            className={`glass-card rounded-2xl p-4 border ${locked ? 'border-[var(--color-border)] opacity-70' : 'border-[var(--color-accent-purple)]/30'}`}
+                            data-testid={`capstone-card-${c._code || c.id}`}
+                          >
+                            <div className="flex items-center gap-2 mb-2">
+                              {locked ? (
+                                <Lock size={12} className="text-[var(--color-text-faint)]" />
+                              ) : (
+                                <Sparkles size={12} className="text-[var(--color-accent-purple)]" />
+                              )}
+                              <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+                                {c._code || 'Capstone'}
+                              </span>
+                            </div>
+                            <div className="font-clash text-sm font-semibold text-[var(--color-text)] mb-1 leading-tight">
+                              {c.title}
+                            </div>
+                            {(c._prereqs || []).length > 0 && (
+                              <div className="text-[10px] font-mono text-[var(--color-text-faint)] mt-2">
+                                Requires: {(c._prereqs || []).join(', ')}
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                  </div>
+                </div>
+              )}
 
               {/* Deliverable */}
               {masterCapstone.deliverable_description && (

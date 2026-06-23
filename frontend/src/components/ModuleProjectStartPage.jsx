@@ -158,7 +158,7 @@ export default function ModuleProjectStartPage() {
                     <span>
                       {/^\s*module\b/i.test(module.title || '')
                         ? module.title
-                        : `Module ${module.order_index + 1}: ${module.title}`}
+                        : `Module ${module.order_index}: ${module.title}`}
                     </span>
                     <span className="text-[var(--color-text-faint)]">›</span>
                   </>
