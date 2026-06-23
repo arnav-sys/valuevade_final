@@ -21,6 +21,21 @@ const LandingHero3D = lazy(() => import('@/components/landing/LandingHero3D'));
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
+/* One-time migration: wipe any pre-v2 `valuevade_landing_theme` value so
+ * anyone who toggled to light during testing gets dark on their next visit.
+ * After v2 is stamped, normal persistence resumes. Runs at module import
+ * time — strictly before any LandingPage useState initializer fires. */
+const LANDING_THEME_PREF_VERSION = 'v2';
+if (typeof window !== 'undefined') {
+  try {
+    const stored = window.localStorage.getItem('valuevade_landing_theme_version');
+    if (stored !== LANDING_THEME_PREF_VERSION) {
+      window.localStorage.removeItem('valuevade_landing_theme');
+      window.localStorage.setItem('valuevade_landing_theme_version', LANDING_THEME_PREF_VERSION);
+    }
+  } catch { /* localStorage unavailable — fall through to dark default */ }
+}
+
 export default function LandingPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [waitlistData, setWaitlistData] = useState(null);
