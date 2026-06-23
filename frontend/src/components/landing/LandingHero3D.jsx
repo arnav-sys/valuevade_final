@@ -40,25 +40,42 @@ const PALETTES = {
   },
   light: {
     bg:           '#F2E6EE',
-    particle:     '#246BFD',  // original primary blue
-    particleOp:   0.55,
-    particleSize: 0.06,
+    /* Deep indigo ink dots on cream. We render on an OPAQUE cream canvas
+     * with NormalBlending — simple, reliable, every dot reads as solid
+     * indigo (≈ rgb(15, 29, 82) on rgb(242, 230, 238) cream). */
+    particle:     '#0f1d52',
+    particleOp:   0.92,
+    /* With sizeAttenuation:false this is in pixels — 2.6px per dot reads
+     * unmistakably on cream regardless of camera distance. */
+    particleSize: 2.6,
     blending:     THREE.NormalBlending,
-    gridA:        '#246BFD',
-    gridB:        '#6A5CFF',
-    gridOp:       0.22,
+    /* Darker indigo grid, much higher opacity — reads as a faint blueprint
+     * floor that recedes into the fog. */
+    gridA:        '#1e2d6b',
+    gridB:        '#2a3a8a',
+    gridOp:       0.55,
     fog:          '#F2E6EE',
+    /* Closer near plane so distant particles dissolve into the cream bg,
+     * giving more atmospheric depth than dark mode (which can carry a
+     * starfield further). */
+    fogNear:      4,
+    fogFar:       30,
     fallbackCss:
-      'radial-gradient(60% 50% at 50% -10%, rgba(36,107,253,0.10), transparent 60%),' +
-      'radial-gradient(40% 30% at 80% 110%, rgba(106,92,255,0.10), transparent 60%),' +
-      'radial-gradient(35% 25% at 15% 80%, rgba(255,106,193,0.08), transparent 60%),' +
+      'radial-gradient(ellipse at center, #F2E6EE 0%, #F2E6EE 50%, #d9c2cf 100%),' +
+      'radial-gradient(60% 50% at 50% -10%, rgba(15,29,82,0.06), transparent 60%),' +
       '#F2E6EE',
     fallbackVignette:
-      'linear-gradient(180deg, rgba(242,230,238,0.4) 0%, transparent 25%, transparent 70%, rgba(242,230,238,0.95) 100%)',
+      'radial-gradient(ellipse at center, transparent 40%, rgba(200,168,183,0.45) 100%),' +
+      'linear-gradient(180deg, transparent 0%, transparent 70%, rgba(217,194,207,0.55) 100%)',
     canvasVignette:
-      'linear-gradient(180deg, rgba(242,230,238,0.4) 0%, transparent 25%, transparent 70%, rgba(242,230,238,0.85) 100%)',
+      'radial-gradient(ellipse at center, transparent 35%, rgba(200,168,183,0.55) 100%),' +
+      'linear-gradient(180deg, transparent 0%, transparent 65%, rgba(217,194,207,0.6) 100%)',
   },
 };
+
+/* Backfill dark palette with default fog distances */
+PALETTES.dark.fogNear = 12;
+PALETTES.dark.fogFar = 38;
 
 /* ---------- Static fallback (no WebGL) ---------- */
 function StaticFallback({ theme }) {
@@ -108,12 +125,20 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
 
       renderer = new THREE.WebGLRenderer({
         antialias: true,
-        alpha: true,
+        // Light mode multiplies against the cream bg → needs an opaque
+        // canvas with that bg colour as the cleared destination, otherwise
+        // multiply runs against transparent black and the particles vanish.
+        // Dark mode stays transparent so the body radial-glows shine through.
+        alpha: theme !== 'light',
         powerPreference: 'high-performance',
       });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, mobile ? 1.4 : 2));
       renderer.setSize(w, h, false);
-      renderer.setClearColor(0x000000, 0);
+      if (theme === 'light') {
+        renderer.setClearColor(new THREE.Color(palette.bg), 1.0);
+      } else {
+        renderer.setClearColor(0x000000, 0);
+      }
       mount.appendChild(renderer.domElement);
 
       onContextLost = (e) => {
@@ -125,7 +150,11 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       renderer.domElement.addEventListener('webglcontextlost', onContextLost, false);
 
       scene = new THREE.Scene();
-      scene.fog = new THREE.Fog(new THREE.Color(palette.fog), 12, 38);
+      scene.fog = new THREE.Fog(
+        new THREE.Color(palette.fog),
+        palette.fogNear,
+        palette.fogFar
+      );
 
       camera = new THREE.PerspectiveCamera(60, w / h, 0.1, 100);
       camera.position.set(0, 0, 8);
@@ -147,7 +176,10 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       particleGeom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       particleMat = new THREE.PointsMaterial({
         size: palette.particleSize,
-        sizeAttenuation: true,
+        // Light mode disables size-attenuation so each particle is a fixed
+        // pixel size and reads cleanly on the cream bg; dark mode keeps
+        // distance attenuation so the field has depth via additive bloom.
+        sizeAttenuation: theme !== 'light',
         color: new THREE.Color(palette.particle),
         transparent: true,
         opacity: palette.particleOp,
