@@ -1495,6 +1495,16 @@ function CardRenderer({ card }) {
     return <MarkdownCard card={card} content={content} />;
   }
 
+  // Practice / study-card content carries body_md plus question/answer/explanation
+  // metadata. Route to MarkdownCard (which uses CARD_THEME['study-card']) so the
+  // green "Practice" badge + themed background apply.
+  const ctNorm = (card?.card_type || '').toString().toLowerCase().trim();
+  if (ctNorm === 'study-card' || ctNorm === 'study_card' || ctNorm === 'studycard') {
+    if (content && typeof content === 'object' && typeof content.body_md === 'string' && content.body_md.trim()) {
+      return <MarkdownCard card={card} content={content} />;
+    }
+  }
+
   // Normalize card_type: lowercase, replace spaces/underscores with hyphens
   const key = (card?.card_type || '').toString().toLowerCase().trim();
   const Cmp =

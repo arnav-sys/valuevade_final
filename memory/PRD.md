@@ -1,4 +1,44 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Practice Cards — DB Constraint Widen + Notes Filter Chips)
+# ============================================================================
+
+## What shipped
+- DB: Widened `public.master_notes_cards.card_type` CHECK constraint to include
+  `'study-card'`. New constraint set:
+  `('hook','concept','deep-dive','example','formula','mistake','summary','visual','study-card')`.
+- DB migration: Re-tagged the 304 temporary `card_type='summary'` rows whose
+  `content->>'kind'='study-card'` back to `card_type='study-card'`. Final state:
+  study-card=304, summary=201, total=1264, leftover-mismatched=0.
+- FE: Added "All | Lessons | Practice" filter chips to NotesPage. Chips appear
+  ONLY when a session contains both lesson cards AND study-cards (mixed
+  sessions); hidden on lesson-only or practice-only sessions to avoid noise.
+  - `data-testid='notes-filter-chips'` (container)
+  - `data-testid='notes-filter-{all|lessons|practice}'`
+  - Each chip shows a count badge; selected chip is themed by accent
+    (lessons=violet, practice=green).
+- FE: `study-card` rendered via `MarkdownCard` with green-accent "Practice"
+  badge. CardRenderer now routes `study-card` content (which carries
+  body_md+question+answer+explanation+kind) directly to MarkdownCard.
+- FE: `filteredCards` memo + `setFilterSafe` reset-idx-on-filter-change. Empty
+  state placeholder when filter yields zero cards (`notes-filter-empty`).
+- Seed script `seed_studycards.py` updated to insert with `card_type='study-card'`
+  for future seeds (no longer needs the 'summary' workaround).
+
+## Verified
+- 6/6 backend pytest at `/app/backend/tests/test_studycard_migration.py` PASS:
+  constraint definition, accepts study-card insert, rejects invalid card_type,
+  304 study-card rows, 0 leftover summary-with-kind=study-card, total=1264.
+- FE smoke verified live in browser as testagent2026: chip strip renders 8/7/1,
+  Practice click filters to 1/1, study-card renders with green PRACTICE badge,
+  Lessons click switches back to 1/7. Lesson-only sessions: chips hidden.
+
+## Test setup notes (one-time, do NOT revert)
+- testagent2026's `user_payment_status.paid` set to TRUE / pricing_tier='upfront'
+  to bypass paywall blocker that prevented earlier UI testing.
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-02-22 (Equity Research Curriculum v2 — Hard Replacement)
 # ============================================================================
 

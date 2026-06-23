@@ -1,3 +1,15 @@
+# 2026-06-23 update
+- testagent2026@gmail.com / TestPass123! is now `paid=true` in
+  `user_payment_status` (pricing_tier='upfront'). Use this account for any
+  notes/quiz/interview/sim flow tests that require a non-trial-blocked user.
+- For mixed lesson+practice card UI testing, the test user does NOT have M16/M17
+  enrolled. Insert a temporary `card_type='study-card'` row into one of their
+  enrolled master_session_ids (e.g., M1 S1 master_session_id=
+  `bd1c604c-016f-44d9-9f34-ca9334b053bf`) and DELETE after test.
+- Constraint check: `master_notes_cards.card_type` accepts:
+  hook,concept,deep-dive,example,formula,mistake,summary,visual,study-card.
+
+
 # Test Credentials
 
 ## Admin Dashboard (/referral)
