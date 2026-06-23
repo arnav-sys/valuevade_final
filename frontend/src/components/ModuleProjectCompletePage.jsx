@@ -74,7 +74,7 @@ export default function ModuleProjectCompletePage() {
       try {
         const { data: upRows, error: upErr } = await supabase
           .from('user_module_projects')
-          .select('*, user_modules(id, title, order_index, enrollment_id, is_completed)')
+          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed)')
           .eq('user_module_id', moduleId);
         if (upErr) throw upErr;
         if (!mounted) return;
@@ -182,7 +182,7 @@ export default function ModuleProjectCompletePage() {
                 {module.title}
               </div>
               <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                Module {module.order_index} · Project deliverable submitted and saved.
+                Module {module.module_number ?? module.order_index} · Project deliverable submitted and saved.
               </p>
             </div>
           </div>
@@ -231,7 +231,7 @@ export default function ModuleProjectCompletePage() {
               data-testid="module-project-continue-next"
             >
               <Sparkles size={16} />
-              Continue to Module {nextModule.order_index}
+              Continue to Module {nextModule.module_number ?? nextModule.order_index}
               <ArrowRight size={16} />
             </button>
           ) : (

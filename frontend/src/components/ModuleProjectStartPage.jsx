@@ -33,7 +33,7 @@ export default function ModuleProjectStartPage() {
         // We pick the most recently updated row defensively.
         const { data: upRows, error: upErr } = await supabase
           .from('user_module_projects')
-          .select('*, user_modules(id, title, order_index, enrollment_id, is_completed)')
+          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed)')
           .eq('user_module_id', moduleId);
         if (upErr) throw upErr;
         if (!mounted) return;
@@ -158,7 +158,7 @@ export default function ModuleProjectStartPage() {
                     <span>
                       {/^\s*module\b/i.test(module.title || '')
                         ? module.title
-                        : `Module ${module.order_index}: ${module.title}`}
+                        : `Module ${module.module_number ?? module.order_index}: ${module.title}`}
                     </span>
                     <span className="text-[var(--color-text-faint)]">›</span>
                   </>

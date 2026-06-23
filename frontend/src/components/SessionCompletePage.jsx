@@ -101,7 +101,7 @@ export default function SessionCompletePage() {
       try {
         const { data: sess, error: sErr } = await supabase
           .from('user_sessions')
-          .select('*, user_modules(id, title, order_index, enrollment_id, is_completed)')
+          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed)')
           .eq('id', sessionId)
           .single();
         if (sErr) throw sErr;

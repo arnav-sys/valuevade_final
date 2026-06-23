@@ -31,7 +31,7 @@ export default function QuizStartPage() {
       try {
         const { data: sess, error: sErr } = await supabase
           .from('user_sessions')
-          .select('*, user_modules(id, title, order_index)')
+          .select('*, user_modules(id, title, order_index, module_number)')
           .eq('id', sessionId)
           .single();
         if (sErr) throw sErr;
@@ -108,7 +108,7 @@ export default function QuizStartPage() {
               <div className="flex items-center flex-wrap gap-1.5 text-[11px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-5" data-testid="quiz-breadcrumb">
                 {module && (
                   <>
-                    <span>{/^\s*module\b/i.test(module.title || '') ? module.title : `Module ${module.order_index}: ${module.title}`}</span>
+                    <span>{/^\s*module\b/i.test(module.title || '') ? module.title : `Module ${module.module_number ?? module.order_index}: ${module.title}`}</span>
                     <span className="text-[var(--color-text-faint)]">›</span>
                   </>
                 )}

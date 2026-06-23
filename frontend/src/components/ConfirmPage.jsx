@@ -312,6 +312,9 @@ export default function ConfirmPage() {
           master_module_id: mod.id,
           title: mod.title,
           order_index: reorderChange ? reorderChange.new_position : mod.order_index,
+          // Canonical label number — never affected by sort reorders. Falls
+          // back to mod.module_number from master, then to mod.order_index.
+          module_number: mod.module_number ?? mod.order_index,
           is_removed: isRemoved,
           ai_reasoning: isRemoved ? (removeChange?.reason || null) : null,
         };

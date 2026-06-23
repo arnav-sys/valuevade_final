@@ -117,7 +117,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
           <div className="flex items-start justify-between gap-3 mb-2">
             <div className="min-w-0">
               <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-0.5">
-                Module {module.order_index}
+                Module {module.module_number ?? module.order_index}
               </div>
               <h3 className="font-clash text-lg font-semibold text-[var(--color-text)]" data-testid={`module-title-${module.order_index}`}>
                 {module.title}
@@ -928,7 +928,9 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
             <Target size={14} /> MODULE PROJECT
           </div>
           <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-1">
-            Complete your {currentModule.title} project
+            Complete your {/^\s*module\b/i.test(currentModule.title || '')
+              ? currentModule.title
+              : `Module ${currentModule.module_number ?? currentModule.order_index}: ${currentModule.title}`} project
           </h2>
           <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5">
             You've finished every session in this module. Put it to work.
@@ -961,7 +963,9 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
               <PlayCircle size={14} /> CONTINUE LEARNING
             </div>
             <div className="text-[11px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1.5">
-              {currentModule.title}
+              {/^\s*module\b/i.test(currentModule.title || '')
+                ? currentModule.title
+                : `Module ${currentModule.module_number ?? currentModule.order_index}: ${currentModule.title}`}
             </div>
             <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-3" data-testid="continue-session-title">
               {currentSession.title}

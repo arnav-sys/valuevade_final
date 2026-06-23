@@ -1,4 +1,50 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (TOC reorder + "Module N:" label prefix)
+# ============================================================================
+
+## Approach taken: (a) — order-by-`order_index`, separate canonical label.
+
+Reason: FE already sorts modules by `order_index`. Bumping the capstone's
+`order_index` to a high value (100) cleanly moves it to the bottom WITHOUT
+renumbering siblings. A new `module_number` INTEGER column on both
+`master_modules` and `user_modules` carries the canonical 1-22 label,
+backfilled = original `order_index`. FE displays `Module ${module_number}:`
+so the capstone reads "Module 19: THE CAPSTONE" while sorting last.
+
+## SQL changes
+```sql
+ALTER TABLE public.master_modules ADD COLUMN IF NOT EXISTS module_number INTEGER;
+ALTER TABLE public.user_modules   ADD COLUMN IF NOT EXISTS module_number INTEGER;
+UPDATE master_modules SET module_number = order_index WHERE module_number IS NULL;
+UPDATE user_modules um SET module_number = mm.order_index
+  FROM master_modules mm WHERE um.master_module_id = mm.id AND um.module_number IS NULL;
+-- Move capstone to the bottom of the displayed TOC
+UPDATE master_modules SET order_index = 100
+  WHERE order_index = 19 AND lower(title) LIKE '%capstone%';
+UPDATE user_modules SET order_index = 100
+  WHERE master_module_id IN (SELECT id FROM master_modules WHERE module_number = 19);
+```
+
+## FE changes (display only — DB titles untouched)
+- `CourseDetailsPage.jsx` (TOC accordion): badge uses `module_number`, title gets `Module N: ` prefix with start-with-"module" guard.
+- `DashboardPage.jsx`: continue-learning + project completion cards prefix the module title with `Module ${module_number}:`.
+- `SessionStartPage.jsx`, `QuizStartPage.jsx`, `InterviewStartPage.jsx`, `SimulationStartPage.jsx`, `ModuleProjectStartPage.jsx`, `ModuleProjectTasksPage.jsx`, `ModuleProjectCompletePage.jsx`: same prefix in breadcrumbs/headers; nested `select(...user_modules)` includes `module_number`.
+- `SessionCompletePage.jsx`: `user_modules` select now includes `module_number`.
+- `ConfirmPage.jsx`: bulk insert of `user_modules` now writes `module_number` so future enrollments are populated correctly.
+
+## Verified
+- TOC DOM probe (22 rows): order is `[1..18, 20, 21, 22, 19]` ✅
+- Every TOC label reads `Module N: <Title>` ✅
+- Double-prefix check on TOC + Session header: 0 hits ✅
+- Session header (M1 S1) renders `MODULE 1: FOUNDATIONS… › SESSION 1: …` ✅
+- DB row counts unchanged (only column add + 1 row's order_index update + backfills) ✅
+
+## Test setup
+testagent2026 is paid (set in earlier round); no further DB seeding needed.
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Module 22 — Soft Skills Mastery, slot-in)
 # ============================================================================
 
