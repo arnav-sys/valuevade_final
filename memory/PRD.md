@@ -1,4 +1,36 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Module 22 — Soft Skills Mastery, slot-in)
+# ============================================================================
+
+## What shipped
+- Slotted Module 22 ("Soft Skills Mastery: From Shy to CEO-Level Presence")
+  into the equity-research path at `order_index=22`. TOC is now contiguous
+  `[1..22]` — final piece, no gaps.
+- 14 sessions, 154 notes cards (14 `summary` body cards + 140 `study-card`
+  flashcards from each Knowledge Check item), 0 quiz items, 0 IQs, 0 simulations.
+- Knowledge Check items in source list ONE option only (the correct one,
+  marked ✓). Per Rule 4 (no fabrication), missing distractors were NOT
+  invented; per Rule 6, items seeded as `study-card` flashcards.
+- "Module 18" labelling inside the source MD overridden per user instruction.
+
+## Files added
+- `/app/scripts/migrations/curriculum_v2/seed_module22.py` (idempotent, --confirm-gated)
+- `/app/memory/curriculum_v2/module-22.md` (source MD)
+
+## Verification
+- AC1: eq-research module count = 22 ✅
+- AC2: order indices `[1..22]` contiguous ✅
+- AC3: title pulled from MD ✅
+- AC4: 14 sessions, 154 notes_cards, 0 quiz, 0 IQs ✅
+- AC5: master_simulations still 0 ✅
+- AC6: every M22 session has ≤3 IQs (trivial — 0 IQs) ✅
+- AC7: M1..M21 titles unchanged; deltas isolated to M22 (+14 sessions,
+  +154 notes_cards; quiz 883→883, IQs 408→408) ✅
+- AC8: only one path exists, trivially byte-identical ✅
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Practice Cards — DB Constraint Widen + Notes Filter Chips)
 # ============================================================================
 

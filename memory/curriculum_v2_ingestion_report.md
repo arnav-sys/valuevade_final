@@ -264,3 +264,69 @@ Total cards inserted: **160**
 - `card_type='simulation'` rows: **0** ✅
 - `master_simulations` count: unchanged at 0 ✅
 - No new quiz/IQ rows (this round inserts only into `master_notes_cards`) ✅
+
+
+---
+
+## Round 6 — Module 22 (Soft Skills Mastery, slot-in)
+
+**Source**: `/app/memory/curriculum_v2/module-22.md`  
+**Module title**: Soft Skills Mastery: From Shy to CEO-Level Presence  
+**Inserted at**: order_index=22  
+**DB id (master_modules)**: 7fe9274e-7e30-4e07-ad99-3f5052b97ec8  
+
+### Per-session tally
+
+| Session # | Title | Summary cards | Study-cards | Quiz items | IQs |
+|---|---|---|---|---|---|
+| S01 | The Confidence Operating System | 1 | 10 | 0 | 0 |
+| S02 | Executive Presence & Body Language | 1 | 10 | 0 | 0 |
+| S03 | Vocal Authority: Voice, Tone & Killing Filler Words | 1 | 10 | 0 | 0 |
+| S04 | Conversation & Networking Mastery | 1 | 10 | 0 | 0 |
+| S05 | Active Listening & Empathy | 1 | 10 | 0 | 0 |
+| S06 | Structured & Persuasive Speaking | 1 | 10 | 0 | 0 |
+| S07 | Public Speaking & Presentations | 1 | 10 | 0 | 0 |
+| S08 | Emotional Intelligence & Self-Regulation | 1 | 10 | 0 | 0 |
+| S09 | Assertiveness, Boundaries & Saying No | 1 | 10 | 0 | 0 |
+| S10 | Conflict Resolution & Difficult Conversations | 1 | 10 | 0 | 0 |
+| S11 | Written & Digital Communication | 1 | 10 | 0 | 0 |
+| S12 | Teamwork, Collaboration & Influence Without Authority | 1 | 10 | 0 | 0 |
+| S13 | Leadership Presence & Executive Communication | 1 | 10 | 0 | 0 |
+| S14 | Showcasing Soft Skills: Interviews, Group Discussions & On the Job | 1 | 10 | 0 | 0 |
+
+**Totals**: 14 sessions, 154 notes cards (14 summary + 140 study-card), 0 quiz, 0 IQs, 0 simulations created.
+
+### Notes on extraction faithfulness
+
+- Knowledge Check items in the source list ONE option only (the correct one, marked ✓). Per Rule 4 (no fabrication), we did not invent the missing 3 distractors. Each item was seeded as a `study-card` (per Rule 6: flashcard-style → study-card) showing the question, the single correct option, and an answer line.
+- `### Visual:` sections were stripped at parse time (consistent with the global VISUAL rule).
+- 0 `## SIMULATION` blocks and 0 inline `[SIMULATION]` markers found.
+- 0 IQ / Interview Question blocks present in source — Rule A trivially satisfied (≤3 IQs/session).
+- "Module 18" labelling inside the source MD was OVERRIDDEN per user instruction; module is inserted as order_index=22.
+
+### Final TOC (22 modules, contiguous)
+
+| order_index | Title |
+|---|---|
+| 1 | Foundations of Finance, Accounting & Economics |
+| 2 | How Markets Actually Work |
+| 3 | EXCEL FUNDAMENTALS FOR ANALYSTS |
+| 4 | FINANCIAL MODELLING — FROM SCRATCH TO 3-STATEMENT |
+| 5 | Corporate Governance & Quality of Management Analysis |
+| 6 | Reading Annual Reports & Concalls Like a Senior Analyst |
+| 7 | FINANCIAL STATEMENT ANALYSIS |
+| 8 | RED FLAG ANALYSIS & FORENSIC ACCOUNTING |
+| 9 | ADVANCED RATIO ANALYSIS |
+| 10 | ECONOMY & MACRO ANALYSIS FOR EQUITY RESEARCH |
+| 11 | SECTOR ANALYSIS — EVERY MAJOR INDIAN SECTOR |
+| 12 | Valuation in Equity Research |
+| 13 | THE VALUATION MACHINE |
+| 14 | Writing & Presenting Institutional Equity Research |
+| 15 | Behavioural Finance & Investor Psychology |
+| 16 | NISM Series XV — Research Analyst Certification |
+| 17 | FMVA Certification Exam Mastery (CFI) |
+| 18 | AI for Finance & Equity Research — From Fundamentals to Full Automation |
+| 19 | THE CAPSTONE |
+| 20 | EQUITY RESEARCH INTERVIEW MASTERY |
+| 21 | Resume, LinkedIn & Networking — The Equity Research Career Playbook |
+| 22 | Soft Skills Mastery: From Shy to CEO-Level Presence |
