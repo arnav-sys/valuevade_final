@@ -1,4 +1,36 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (P2 Step 2 — user_stats dedupe + UNIQUE constraint)
+# ============================================================================
+
+## Pre-state
+- 16 user_stats rows for 15 distinct users (testagent had 2: canonical 1428 XP / Level 2 + a 100-XP bootstrap dup that auto-created during Phase 2 retesting).
+- Symptom: dashboard occasionally rendered "Level 1 / 0 XP / Junior Analyst" when SELECT picked the dup row.
+
+## Merge & cleanup
+- For testagent's two rows, picked canonical (max total_xp; tiebreak max updated_at), aggregated MAX over current_streak_days, longest_streak_days, freeze_tokens, daily_goal_minutes, last_streak_break_at, shame_card_seen_at, daily_champion_glow_until, last_streak_break_lost_days, last_streak_freeze_earned_at + BOOL_OR over daily_goal_modal_dismissed.
+- Updated canonical row, deleted non-canonical (1 row).
+- Result: 15 rows / 15 users (1:1).
+
+## Constraint
+```sql
+ALTER TABLE public.user_stats ADD CONSTRAINT user_stats_user_id_unique UNIQUE (user_id);
+```
+
+## Bootstrap path patched
+- `/app/frontend/src/utils/progress.js::recordSessionTime` (line ~341): bare `.insert()` → `.upsert({onConflict:'user_id', ignoreDuplicates:true})`.
+- Code grep confirms ZERO other bare `.from('user_stats').insert(` paths remain.
+
+## Verified end-to-end (testing_agent_v3_fork iteration_17.json — 100% pass)
+- 0 dup rows post-fix ✅
+- UNIQUE(user_id) constraint named `user_stats_user_id_unique` present ✅
+- Manual duplicate INSERT raises 23505 unique violation ✅
+- testagent canonical: 1428 XP / Level 2 / streak 4 / longest 4 / daily_goal 10 / modal_dismissed=true ✅
+- Dashboard renders "Level 2 · Research Associate · 1,428 XP · 93%" stable across 3 consecutive reloads — zero flicker to the bug state ✅
+- Sidebar clean (P2 Step 1 confirmed); /profile renders Achievements 14/42 + Activity Heatmap + Recent Activity feed without regression ✅
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Phase 4 — Dopamine UI Polish + Behavioral Nudges)
 # ============================================================================
 
