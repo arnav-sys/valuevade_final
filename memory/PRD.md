@@ -1,4 +1,37 @@
 # ============================================================================
+# CHANGELOG — 2026-02-22 (Equity Research Curriculum v2 — Hard Replacement)
+# ============================================================================
+
+## What shipped
+- Hard-wiped + reseeded the entire equity-research curriculum from 23 user-provided files.
+- Scope per locked decision (1d + 2c): wiped master modules, sessions, notes_cards, quiz, IQs, module_projects, capstones, master_simulations, AND user enrollments/modules/sessions/projects/workbooks/doubts/revision_sheets/study_plans for the equity-research path.
+- Seeded **16 modules** with original numbers preserved (1-15, 21 — gaps 16-20/22 intentional, those PDFs excluded per user decision).
+- Tally: **166 sessions, 894 notes_cards, 615 quiz Qs, 369 IQs, 14 module projects, 3 capstones** (CAP-01 / CAP-02 prereq=CAP-01 / CAP-03).
+- VISUAL blocks stripped at parse-time. Zero `card_type='visual'` rows in DB. ✅
+- Untouched (byte-identical pre/post): master_badges (30), master_levels (6), master_daily_challenges (16), master_customization_questions (13), profiles (34), user_mock_interviews (4), user_mock_interview_scores, mock_interview_turns (10). ✅
+- master_simulations wiped to 0 (decision 1d). Will re-seed in a follow-up phase.
+- user_enrollments wiped to 0 (decision 2c). All 21 users will re-enroll on next visit.
+
+## Files added (re-runnable, idempotent)
+- `/app/scripts/migrations/curriculum_v2/parse.py` — parses 16 MD files + capstones.md → manifest.json
+- `/app/scripts/migrations/curriculum_v2/seed.py` — wipes equity-research + reseeds (requires `--confirm`)
+- `/app/memory/curriculum_v2/manifest.json` (3.4 MB) — canonical parsed manifest
+- `/app/memory/curriculum_v2/pre_counts.json` + `/post_counts.json` — row-count snapshots
+- `/app/memory/curriculum_v2_ingestion_report.md` — full audit (per-module tally, pre/post DB counts, control byte-identity verification, capstone chain, preview URL)
+
+## FE changes
+- `/app/frontend/src/components/NotesPage.jsx` — added `MarkdownCard` renderer + minimal-deps markdown engine (headings/lists/blockquote/bold/italic/inline code, no HTML injection). Cards arriving with `{ body_md: "..." }` (the v2 content shape) now route directly to this themed renderer per card_type, preserving accent colors/labels. Structured-shape cards (existing schema) continue to use their bespoke renderers — no regression.
+
+## Known parsing gaps (documented in ingestion report)
+- M12 (Valuation in Equity Research), M13 (THE VALUATION MACHINE), M21 (Resume/LinkedIn/Networking) use non-standard quiz/IQ formats in source — seeded as sessions+notes only; 0 quiz/IQ for those 3 modules. Re-author in standard format + rerun pipeline to fill.
+
+## Next phase (out of scope for this run)
+- Re-seed `master_simulations` from a fresh sim manifest tied to new session IDs.
+- Re-author M12/M13/M21 quiz+IQ blocks in standard `### Q1.` / `### 🎙️ IQ1:` format.
+- (Maybe) UI empty state for `/sessions/:id` simulations tab when no sim exists.
+
+
+# ============================================================================
 # CHANGELOG — 2026-02-22 (Cinematic Dark 3D Landing — RENDER FIXED)
 # ============================================================================
 
