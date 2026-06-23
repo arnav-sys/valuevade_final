@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../contexts/ThemeContext';
 import { Skeleton } from '../components/ui/skeleton';
+import CapstoneProjectsGrid from './CapstoneProjectsGrid';
 import {
   Accordion,
   AccordionContent,
@@ -357,6 +358,25 @@ export default function CourseDetailsPage() {
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="px-5 pb-4">
+                            {/* Module 23 (capstone module): surface the 3 capstone project cards
+                                ABOVE the regular session list. Conditioned on canonical
+                                module_number === 23 so other modules render normally. */}
+                            {mod.module_number === 23 && (
+                              <div
+                                className="mt-4 mb-5 pt-4 border-t border-[var(--color-border)]"
+                                data-testid="m23-capstone-section"
+                              >
+                                <div className="flex items-center gap-2 mb-4">
+                                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-accent-purple)]">
+                                    Your Capstone Projects
+                                  </span>
+                                  <span className="text-[10px] font-mono text-[var(--color-text-faint)]">
+                                    · 3 portfolio-grade deliverables
+                                  </span>
+                                </div>
+                                <CapstoneProjectsGrid pathId={courseId} />
+                              </div>
+                            )}
                             <div className="space-y-2 pt-2 border-t border-[var(--color-border)]">
                               {sessions.map((sess, sIdx) => (
                                 <div

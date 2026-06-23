@@ -1,4 +1,39 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Module 23 — retitle + capstone project cards)
+# ============================================================================
+
+## DB
+```sql
+UPDATE master_modules
+   SET module_number = 23,
+       title = 'Think Like Elite Analyst in the Age of AI'
+ WHERE order_index = 100 AND module_number = 19;
+UPDATE user_modules SET module_number = 23 WHERE master_module_id = (SELECT id …);
+```
+- Capstone module renumbered 19→23 + retitled. `order_index` left at 100 so it
+  stays at the bottom of the TOC.
+
+## FE
+- New component `/app/frontend/src/components/CapstoneProjectsGrid.jsx`:
+  self-fetching 3-card grid mirroring `CapstonesListPage.jsx` visual language
+  with elevated style (purple gradient + shadow glow). Resolves
+  locked / in-progress / completed states + prereq chips from
+  `phases.prerequisite_capstone_codes`. Routes to `/capstone/start` on click.
+- `CourseDetailsPage.jsx`: when `mod.module_number === 23`, the accordion
+  expansion now renders a "Your Capstone Projects" section ABOVE the regular
+  session list, hosting the 3-card grid via `<CapstoneProjectsGrid />`. All
+  other modules render unchanged.
+
+## Verified live (testagent2026)
+- Module 23 row title: `Module 23: Think Like Elite Analyst in the Age of AI` (TOC last) ✅
+- 3 cards visible: CAP-01 (start), CAP-02 (LOCKED + "Requires: CAP-01"), CAP-03 (start) ✅
+- 12 sessions still listed below ("The Analyst's Edge", "First-Principles Thinking", …) ✅
+- M1 accordion rendered without the capstone section (conditional fires only on M23) ✅
+- `/capstones` standalone page untouched — no regression ✅
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (TOC reorder + "Module N:" label prefix)
 # ============================================================================
 
