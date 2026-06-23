@@ -1,0 +1,26 @@
+{
+  "summary": "Verified P2 Step 2 user_stats dedupe fix end-to-end. All 4 backend DB invariants pass (0 duplicate user_stats rows; UNIQUE(user_id) constraint user_stats_user_id_unique present; testagent canonical row exactly matches 1428 XP / Level 2 / streak 4 / longest 4 / daily_goal 10 / modal_dismissed=true; manual duplicate INSERT correctly raises 23505 unique violation). Frontend dashboard renders canonical 'Level 2 · Research Associate · 1,428 XP · 93%' across 3 consecutive reloads with ZERO flicker to the Level-1/0-XP bug state. Sidebar is clean (Leaderboard removed). Profile page renders Achievements (14/42 unlocked), Activity Heatmap, and Recent Activity feed without regression.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_17.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "progress.js::updateStats (lines 326-371) uses upsert with onConflict:'user_id', ignoreDuplicates:true — implementation matches the PRD. Note: there are still other call sites in progress.js (recordSessionTime / award* helpers, lines 371-489) that touch user_stats — they were not reviewed in this pass but were not listed as part of the dedupe fix scope. If any of them still do bare INSERT on a fresh user, the upsert pattern should be replicated for safety. Worth a follow-up grep for `.from('user_stats').insert(` to confirm no other unsafe inserts remain.",
+    "Profile page emits one 400 (POST) console error during load — pre-existing, unrelated to user_stats; flagging only for awareness. The page itself renders all sections correctly."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100% (4/4 invariants)", "frontend": "100% (canonical state stable across 3 reloads + sidebar + profile regression checks all pass)"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (uuid 13a690c4-96d7-4827-8117-fde4f696e999, paid=true) — verified working.",
+  "seed_data_creation": "None. Read-only verification + 1 deliberate failing INSERT to prove the UNIQUE constraint (it raises 23505, so no row was inserted).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "P2 Step 2 dedupe is locked in. UNIQUE(user_id) on user_stats is named user_stats_user_id_unique. The dashboard XPBar selector [data-testid=xp-bar] is reliable but the route shows a brief loading spinner on first nav — give it ~7s after networkidle, or .reload() once before reading, to consistently grab the rendered widget. Sidebar after P2 Step 1: Dashboard / My Course / Profile / Portfolio / Capstones / Review Notes / My Doubts / Settings — Leaderboard is intentionally removed.",
+  "rca of the issue": "Verified the fix, not the original bug. Root cause as documented in the PRD: two user_stats rows existed for testagent (canonical 1428 XP + bootstrap-created 100 XP dup). Whichever the SELECT picked decided which level/XP the dashboard rendered, causing intermittent 'Level 1 / 0 XP' flashes. Fix merged the rows (MAX/BOOL_OR rollup), deleted the non-canonical row, added UNIQUE(user_id), and switched the bootstrap INSERT in progress.js::updateStats to .upsert({onConflict:'user_id', ignoreDuplicates:true}). Post-fix, attempting a second INSERT raises 23505 at the DB level, and the canonical row renders deterministically across reloads — bug surface is closed."
+}

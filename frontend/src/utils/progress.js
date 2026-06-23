@@ -345,7 +345,12 @@ export async function updateStats(enrollmentId, timeSpentMinutes = 0) {
         last_activity_date: today,
       };
       if (userId) insertRow.user_id = userId;
-      const { error: insErr } = await supabase.from('user_stats').insert(insertRow);
+      // P2-Step2 dedupe: user_stats now has UNIQUE(user_id). Use upsert with
+      // ignoreDuplicates so concurrent bootstrap paths can't recreate a dup
+      // row when a user_stats already exists under another enrollment_id.
+      const { error: insErr } = await supabase
+        .from('user_stats')
+        .upsert(insertRow, { onConflict: 'user_id', ignoreDuplicates: true });
       if (insErr) throw insErr;
       return { success: true, data: { last_activity_date: today } };
     }
