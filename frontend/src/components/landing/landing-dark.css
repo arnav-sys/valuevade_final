@@ -146,6 +146,14 @@ body.landing-active.landing-light {
 /* Hero base */
 .landing-dark #hero { background: transparent !important; }
 
+/* SAME fix for light mode: without this, the hero section paints its
+ * `bg-[var(--bg-primary)]` cream FILL on top of the three.js canvas
+ * (the canvas sits at z=0 behind `<main z=10>`), hiding every particle.
+ * The body bg (`html.landing-active.landing-light`) still supplies the
+ * cream colour below the canvas, so transparency here is safe. */
+html.landing-active.landing-light #hero,
+body.landing-active.landing-light #hero { background: transparent !important; }
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .landing-dark .hero-cta-primary { animation: none; }
