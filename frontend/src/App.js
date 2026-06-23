@@ -65,7 +65,6 @@ const CapstonesListPage = lazyWithRetry(() => import("@/components/CapstonesList
 const CapstoneTasksPage = lazyWithRetry(() => import("@/components/CapstoneTasksPage"));
 const CapstoneCompletePage = lazyWithRetry(() => import("@/components/CapstoneCompletePage"));
 const ProfilePage = lazyWithRetry(() => import("@/components/ProfilePage"));
-const LeaderboardPage = lazyWithRetry(() => import("@/components/LeaderboardPage"));
 const JourneyPage = lazyWithRetry(() => import("@/components/JourneyPage"));
 const SettingsPage = lazyWithRetry(() => import("@/components/SettingsPage"));
 const PortfolioPage = lazyWithRetry(() => import("@/components/PortfolioPage"));
@@ -159,7 +158,6 @@ function App() {
 
                   {/* Account (auth only) */}
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-                  <Route path="/leaderboard" element={<ProtectedRoute><LeaderboardPage /></ProtectedRoute>} />
                   <Route path="/portfolio" element={<ProtectedRoute><PortfolioPage /></ProtectedRoute>} />
                   <Route path="/review" element={<ProtectedRoute><ReviewNotesPage /></ProtectedRoute>} />
                   <Route path="/doubts" element={<ProtectedRoute><DoubtsPage /></ProtectedRoute>} />
