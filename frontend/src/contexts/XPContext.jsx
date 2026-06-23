@@ -55,7 +55,10 @@ export function XPProvider({ children }) {
   const [stats, setStats] = useState(null);            // current user_stats row
   const [levelInfo, setLevelInfo] = useState(null);    // derived from stats + master_levels
   const [pendingLevelUp, setPendingLevelUp] = useState(null); // { from, to, levelName, levelColor, levelIcon }
-  const [xpParticle, setXpParticle] = useState(null);  // { amount, x, y, key }
+  // Slot-machine particle queue. Capped at 3 (newest replaces oldest) so a
+  // burst of 5 quiz corrects in 200ms doesn't leave 5 floating "+12 XP" tags
+  // racing each other. Each entry: { amount, x, y, key }.
+  const [xpParticles, setXpParticles] = useState([]);
 
   // Per-user idempotency guards within a single tab/session
   const dailyLoginFiredRef = useRef(false);
@@ -232,9 +235,17 @@ export function XPProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id, stats?.id]);
 
-  // Public helper to spawn a particle from a click target
+  // Public helper to spawn a particle from a click target. Maintains a max-3
+  // queue (newest displaces oldest) so rapid-fire bursts (5+ quiz corrects)
+  // don't crowd the screen.
   const triggerXPParticle = useCallback(({ amount, x, y }) => {
-    setXpParticle({ amount, x, y, key: Date.now() + Math.random() });
+    setXpParticles((prev) => {
+      const next = [...prev, { amount, x, y, key: Date.now() + Math.random() }];
+      return next.length > 3 ? next.slice(next.length - 3) : next;
+    });
+  }, []);
+  const dismissXpParticle = useCallback((key) => {
+    setXpParticles((prev) => prev.filter((p) => p.key !== key));
   }, []);
 
   const value = useMemo(() => ({
@@ -255,9 +266,13 @@ export function XPProvider({ children }) {
     triggerXPParticle,
     pendingLevelUp,
     clearLevelUp: () => setPendingLevelUp(null),
-    xpParticle,
-    clearParticle: () => setXpParticle(null),
-  }), [bootstrapping, stats, levelInfo, awardXP, refreshStats, triggerXPParticle, pendingLevelUp, xpParticle]);
+    xpParticles,
+    dismissXpParticle,
+    // Back-compat shim: legacy callers reading `xpParticle` / `clearParticle`
+    // see the head of the queue. New callers should use `xpParticles`.
+    xpParticle: xpParticles[0] || null,
+    clearParticle: () => setXpParticles((p) => p.slice(1)),
+  }), [bootstrapping, stats, levelInfo, awardXP, refreshStats, triggerXPParticle, pendingLevelUp, xpParticles, dismissXpParticle]);
 
   return <XPContext.Provider value={value}>{children}</XPContext.Provider>;
 }
@@ -283,6 +298,8 @@ export function useXP() {
       triggerXPParticle: () => {},
       pendingLevelUp: null,
       clearLevelUp: () => {},
+      xpParticles: [],
+      dismissXpParticle: () => {},
       xpParticle: null,
       clearParticle: () => {},
     };

@@ -1,4 +1,59 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Phase 1 Gamification — 3 gap fixes)
+# ============================================================================
+
+## Audit summary
+Phase 1 was already ~95% built (XP/Levels/Streaks engine, RPCs, contexts,
+mounted UI). Three real gaps were closed; no destructive rebuild.
+
+## Gap 1 — Per-question slot-machine variance
+- `/app/frontend/src/utils/xp.js::computeQuizXP`: variance now sampled inside
+  the per-correct loop. Each correct answer rolls 10 ± 5 (integer in [5,15])
+  independently; each wrong attempt is a flat +2.
+  - 5/5 quiz total ∈ [25, 75] (was [21, 71] with single variance roll).
+  - Idempotency unchanged (one event per quiz session, dedup index intact).
+- Pytest: `/app/backend/tests/test_quiz_xp_variance.py` 5/5 PASS — verifies
+  bounds, distinct-totals (slot-machine spread), zero-correct, only-wrongs,
+  negatives clamped.
+
+## Gap 2 — Toast stacking cap (max 3)
+- `XPContext`: replaced single `xpParticle` with FIFO queue `xpParticles`,
+  capped at 3 (newest displaces oldest). Back-compat shim kept for legacy
+  callers reading `xpParticle` / `clearParticle`.
+- `XPGainParticle.jsx` rewritten to render the queue with horizontal/vertical
+  staggering. Per-particle 2s auto-dismiss timer (was 1.2s for the single
+  particle).
+
+## Gap 3 — Persist shame-card "seen" flag (reload-resistant)
+- DB: `ALTER TABLE user_stats ADD COLUMN shame_card_seen_at TIMESTAMPTZ`.
+- `StreakContext.refresh()` reads `shame_card_seen_at`; bootstrap effect now
+  surfaces the shame modal whenever
+  `last_streak_break_at > shame_card_seen_at` (or `seen_at IS NULL`),
+  even on a fresh reload — modal stays until the user dismisses it.
+- New `markShameSeen()` writes `shame_card_seen_at = now()` to user_stats.
+  Wired into both `dismissShame` (X button / Rebuild CTA) and
+  `consumeFreeze` (using a freeze restores streak, also acknowledges).
+- Hardened `refresh` SELECT with `.order(total_xp DESC).limit(1)` to survive
+  the pre-existing "duplicate user_stats row" race (out-of-scope to fix the
+  duplicate root-cause, but read-side now picks the canonical row).
+
+## Live verification (testagent2026)
+- PHASE 1 (post-login, fresh streak break): shame card VISIBLE ✅
+- PHASE 2 (hard reload, no dismiss): shame card STILL VISIBLE ✅
+  (this is the "reload-resistant" guarantee — the spec's intent)
+- PHASE 3 (click Rebuild): modal closes, `shame_card_seen_at` written ✅
+- PHASE 4 (reload after dismiss): shame card NOT VISIBLE ✅
+- Final dashboard renders: LEVEL 2 Research Associate, 1,403 / 1,500 XP, 4-day
+  streak fire badge, XP bar at 90% to Equity Analyst.
+
+## DB diff
+- `+ user_stats.shame_card_seen_at TIMESTAMPTZ NULL`
+- No new tables, no rows touched outside the explicit shame-state writes
+  during the live trace (which were reverted to a healthy state at end).
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Module 23 — retitle + capstone project cards)
 # ============================================================================
 

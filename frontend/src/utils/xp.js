@@ -238,12 +238,25 @@ export async function getLevelInfo(current_level, total_xp) {
   };
 }
 
-/** Pure helper used by markPhaseComplete to compute quiz XP. */
+/**
+ * Pure helper used by markPhaseComplete to compute quiz XP.
+ *
+ * Slot-machine semantics: variance is sampled PER CORRECT QUESTION, not per
+ * quiz, so a 5/5 quiz can legitimately award anywhere in [25..75]. Each
+ * correct answer rolls 10 ± 5 (integer in [5,15]); each wrong attempt is a
+ * flat +2 (no variance — wrongs aren't slot-machine pulls, they're
+ * consolation pennies).
+ */
 export function computeQuizXP({ correct = 0, attempted = 0 } = {}) {
-  const base = 10 * Math.max(0, correct) + 2 * Math.max(0, attempted);
-  // ±5 random variance (Math.floor so values are integers), clamped ≥ 0
-  const variance = Math.floor(Math.random() * 11) - 5; // -5..+5
-  return Math.max(0, base + variance);
+  let total = 0;
+  const c = Math.max(0, Number(correct) || 0);
+  const w = Math.max(0, Number(attempted) || 0);
+  for (let i = 0; i < c; i += 1) {
+    // Math.floor(Math.random() * 11) → 0..10  → -5..+5 variance
+    total += 10 + Math.floor(Math.random() * 11) - 5;
+  }
+  total += 2 * w;
+  return Math.max(0, total);
 }
 
 /** IST helpers — used by XPContext for daily_login + last_login bookkeeping. */

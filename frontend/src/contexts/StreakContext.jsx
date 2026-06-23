@@ -37,10 +37,18 @@ export function StreakProvider({ children }) {
       setStats(null);
       return null;
     }
+    // user_stats can occasionally end up with >1 row per user from race
+    // conditions in the bootstrap path. Order by total_xp DESC + limit(1) so
+    // we always read the canonical row (highest XP wins) instead of erroring
+    // out of `.maybeSingle()` when duplicates exist. Targeted hardening for
+    // the Gap-3 shame-card persistence — the underlying dedup of user_stats
+    // is a pre-existing concern outside this iteration's scope.
     const { data, error } = await supabase
       .from('user_stats')
-      .select('current_streak_days, longest_streak_days, streak_freeze_tokens, last_streak_freeze_earned_at, auto_spend_freeze, last_streak_break_at, last_streak_break_lost_days')
+      .select('current_streak_days, longest_streak_days, streak_freeze_tokens, last_streak_freeze_earned_at, auto_spend_freeze, last_streak_break_at, last_streak_break_lost_days, shame_card_seen_at')
       .eq('user_id', user.id)
+      .order('total_xp', { ascending: false })
+      .limit(1)
       .maybeSingle();
     if (error) {
       console.warn('[streak] refresh failed:', error.message);
@@ -69,6 +77,28 @@ export function StreakProvider({ children }) {
           await refresh();
         } catch (err) {
           console.warn('[streak] backfill_streak_from_history failed:', err?.message || err);
+        }
+      }
+      // Persistent shame-card gate. If the most recent streak break has not
+      // yet been acknowledged (shame_card_seen_at IS NULL OR
+      // last_streak_break_at > shame_card_seen_at), surface the shame card
+      // automatically — even on a fresh page load. This guarantees the
+      // modal is reload-resistant: if the user reloads mid-modal without
+      // dismissing, it shows again. It only goes away after they actually
+      // click Rebuild / Use Freeze / X (which writes shame_card_seen_at).
+      const fresh = alive ? await refresh() : null;
+      if (alive && fresh && fresh.last_streak_break_at) {
+        const breakTs = new Date(fresh.last_streak_break_at).getTime();
+        const seenTs = fresh.shame_card_seen_at ? new Date(fresh.shame_card_seen_at).getTime() : 0;
+        if (breakTs > seenTs) {
+          setPendingShame({
+            lost_days: fresh.last_streak_break_lost_days || 0,
+            // 25 XP per day of streak (daily_login bonus) is the canonical
+            // approximation. Server tracks exact value if needed later.
+            lost_xp_value: (fresh.last_streak_break_lost_days || 0) * 25,
+            freezeTokens: fresh.streak_freeze_tokens || 0,
+            breakAt: breakTs,
+          });
         }
       }
       setBootstrapping(false);
@@ -134,6 +164,25 @@ export function StreakProvider({ children }) {
     return () => clearStreakUpdater(updateOnActivity);
   }, [updateOnActivity]);
 
+  // Mark the shame card as acknowledged. Persists to user_stats so reloading
+  // the page after dismissal does NOT re-show the modal (until the next
+  // streak break advances last_streak_break_at past shame_card_seen_at).
+  // Declared BEFORE consumeFreeze + dismissShame so their deps arrays have
+  // a defined binding (no TDZ).
+  const markShameSeen = useCallback(async () => {
+    if (!user?.id) return;
+    try {
+      const { error } = await supabase
+        .from('user_stats')
+        .update({ shame_card_seen_at: new Date().toISOString() })
+        .eq('user_id', user.id);
+      if (error) console.warn('[streak] markShameSeen failed:', error.message);
+      else await refresh();
+    } catch (err) {
+      console.warn('[streak] markShameSeen threw:', err?.message || err);
+    }
+  }, [user?.id, refresh]);
+
   const consumeFreeze = useCallback(async () => {
     if (!user?.id) return { ok: false };
     try {
@@ -149,6 +198,7 @@ export function StreakProvider({ children }) {
           duration: 2600,
         });
         setPendingShame(null);
+        await markShameSeen();
       } else {
         toast.error('Could not use freeze', { description: data?.reason || 'Try again.', duration: 2600 });
       }
@@ -157,7 +207,12 @@ export function StreakProvider({ children }) {
       console.warn('[streak] consumeFreeze threw:', err?.message || err);
       return { ok: false };
     }
-  }, [user?.id, refresh]);
+  }, [user?.id, refresh, markShameSeen]);
+
+  const dismissShame = useCallback(async () => {
+    setPendingShame(null);
+    await markShameSeen();
+  }, [markShameSeen]);
 
   const value = useMemo(() => {
     const currentStreak = stats?.current_streak_days || 0;
@@ -177,9 +232,9 @@ export function StreakProvider({ children }) {
       pendingMilestone,
       clearMilestone: () => setPendingMilestone(null),
       pendingShame,
-      clearShame: () => setPendingShame(null),
+      clearShame: dismissShame,
     };
-  }, [bootstrapping, stats, refresh, updateOnActivity, consumeFreeze, pendingMilestone, pendingShame]);
+  }, [bootstrapping, stats, refresh, updateOnActivity, consumeFreeze, pendingMilestone, pendingShame, dismissShame]);
 
   return <StreakContext.Provider value={value}>{children}</StreakContext.Provider>;
 }
