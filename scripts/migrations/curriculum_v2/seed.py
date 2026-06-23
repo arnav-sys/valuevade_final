@@ -357,11 +357,23 @@ def seed(path_id):
               f"{len(all_quiz_rows)} Qs, {len(all_iq_rows)} IQs, project={'Y' if mod.get('project') else 'N'}")
 
     # Seed capstones
+    # Manual override for the prerequisite chain. The source markdown lists
+    # "CAP-01" inline with CAP-03's skill prereqs (alongside AI/FSA/etc.), but
+    # CAP-03 is an independent project — CAP-01 there is a skill recommendation,
+    # not a hard capstone gate. Encode the intended chain explicitly so any
+    # re-run produces the same data regardless of parser heuristics.
+    CAPSTONE_PREREQ_OVERRIDE = {
+        'CAP-01': [],
+        'CAP-02': ['CAP-01'],
+        'CAP-03': [],
+    }
     cap_rows = []
     cap_codes = []
     for c in manifest['capstones']:
-        # Encode prereqs + meta inside phases JSONB since schema has no prereq column
-        prereq_codes = c.get('prerequisite_capstone_codes', [])
+        # Parser-extracted prereqs are kept as the source of truth UNLESS the
+        # override map has an entry for this code, in which case the override wins.
+        parsed_prereqs = c.get('prerequisite_capstone_codes', [])
+        prereq_codes = CAPSTONE_PREREQ_OVERRIDE.get(c['code'], parsed_prereqs)
         cap_rows.append({
             'path_id': path_id,
             'title': c['title'][:300],
