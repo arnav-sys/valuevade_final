@@ -11,6 +11,7 @@ import DailyGoalTracker from './gamification/DailyGoalTracker';
 import NearMissBanner from './gamification/NearMissBanner';
 import DailyChallengesCard from './gamification/DailyChallengesCard';
 import ModuleConstellationMap from './gamification/ModuleConstellationMap';
+import DriftRecoveryBanner from './gamification/DriftRecoveryBanner';
 import AvatarPersona from './tutor/AvatarPersona';
 import PariWelcomeModal from './tutor/PariWelcomeModal';
 import DailyNewsModal from './tutor/DailyNewsModal';
@@ -598,6 +599,12 @@ export default function DashboardPage() {
           {/* Main dashboard */}
           {!loading && !error && enrollment && (
             <div className="space-y-8" data-testid="dashboard-content">
+
+              {/* Sequential P2 / Step 5 — Drift Recovery Banner. Slim, soft
+                  one-line nudge if the user's last-7d XP dropped ≥70% vs the
+                  prior 7d AND they were meaningfully active before. Renders
+                  null when not eligible. Never blocks layout. */}
+              <DriftRecoveryBanner />
 
               {/* Welcome + Continue learning */}
               <section>

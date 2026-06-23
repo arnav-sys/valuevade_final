@@ -1,4 +1,99 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (P2 Step 5/5 — Drift Recovery Banner) — SEQUENCE COMPLETE
+# ============================================================================
+
+## Goal
+Detect users whose weekly XP dropped ≥70% from the prior week and surface a
+single soft-tone banner that points to their next-up session. Closes the
+five-step Sequential P2 backlog.
+
+## Eligibility (server-side)
+| Gate | Threshold |
+|---|---|
+| prior_xp (days 8–14) | ≥ 100 XP (avoid annoying new users) |
+| recent_xp (days 0–7) | ≤ prior_xp × 0.30 (≥70% drop) |
+| next-up session resolvable | first non-completed session of first unlocked-not-completed module in active enrollment |
+| drift_banner_dismissed_at | NULL or older than 24h |
+
+## Schema (migration 0030_drift_recovery.sql, applied 2026-06-23)
+```sql
+ALTER TABLE public.user_stats
+  ADD COLUMN IF NOT EXISTS drift_banner_dismissed_at TIMESTAMPTZ NULL;
+```
+Verification baked into the migration via a DO block that fails the
+migration if the column doesn't end up present.
+
+## Endpoints
+- `GET /api/dashboard/drift-recovery` — auth-required. Returns one of:
+  - `{"show": true, "recent_xp": 25, "prior_xp": 380, "next_session": {id, module_number, session_number, title, module_code, module_title}}`
+  - `{"show": false, "reason": "prior_below_floor"|"not_drifting"|"no_next_session"|"dismissed_recently", ...}`
+- `POST /api/dashboard/drift-recovery/dismiss` — stamps `drift_banner_dismissed_at = now()`. Falls back to insert if no `user_stats` row exists yet.
+
+## FE component
+- `/app/frontend/src/components/gamification/DriftRecoveryBanner.jsx`
+  - Slim banner, single line of copy + "Resume now" CTA + × dismiss.
+  - Auto-hides after 5 s of no interaction (per-visit only — does NOT call
+    /dismiss endpoint, so the 24h cooldown is reserved for explicit clicks).
+  - `onMouseEnter` cancels the auto-dismiss timer.
+  - Slide-down entrance animation (opacity+transform) gated by
+    `prefers-reduced-motion` (both JS and CSS).
+  - All interactive elements have data-testids: `drift-recovery-banner`,
+    `drift-banner-copy`, `drift-banner-resume`, `drift-banner-dismiss`,
+    `drift-banner-label`.
+- Mounted at the very top of `<dashboard-content>` in `DashboardPage.jsx`
+  (above the welcome heading). Returns `null` when not eligible, so
+  zero layout cost in the happy path.
+
+## Live test trace (testagent2026@gmail.com)
+1. Pre-state: recent=200, prior=0 → `show: false` ✅
+2. Applied `0030a_drift_simulation_setup.sql` — backdated 4 recent + 5 older
+   events into the 7-14d window via a side `_drift_sim_backup` table.
+3. `GET /drift-recovery` →
+   ```json
+   {"show": true, "recent_xp": 25, "prior_xp": 380,
+    "next_session": {"id": "6ab63b64-…", "module_number": 1,
+                     "session_number": "1.1", "title": "What Is Finance, Really?",
+                     "module_code": "M1", "module_title": "Foundations of …"}}
+   ```
+4. `POST /dismiss` → `{"ok": true, "drift_banner_dismissed_at": "2026-06-23T18:26:54.617726+00:00"}`
+5. `GET /drift-recovery` → `{"show": false, "reason": "dismissed_recently"}` ✅
+6. Reset dismissal (0030c), screenshot dashboard. Banner renders with
+   "QUICK CHECK-IN · Your weekly XP dropped from 380 → 25. Want to lock in
+   just 1 session today? · [Resume now] · [×]".
+7. Applied `0030b_drift_simulation_restore.sql` — testagent's data fully
+   restored to pre-test state. Post-restore endpoint returns
+   `{"show": false, "reason": "prior_below_floor", "recent_xp": 200, "prior_xp": 0}` ✅
+
+## Files touched
+- `+` `/app/backend/server.py` — `_DRIFT_PRIOR_XP_FLOOR/_DROP_RATIO/_COOLDOWN_HOURS` constants, `_drift_next_session()`, `_drift_xp_sums()`, `GET /api/dashboard/drift-recovery`, `POST /api/dashboard/drift-recovery/dismiss`.
+- `+` `/app/frontend/src/components/gamification/DriftRecoveryBanner.jsx`
+- `~` `/app/frontend/src/components/DashboardPage.jsx` — import + single mount inside `dashboard-content`.
+- `+` `/app/scripts/migrations/0030_drift_recovery.sql` (column)
+- `+` `/app/scripts/migrations/0030a_drift_simulation_setup.sql` (test helper)
+- `+` `/app/scripts/migrations/0030b_drift_simulation_restore.sql` (test helper)
+- `+` `/app/scripts/migrations/0030c_drift_reset_dismissal.sql` (test helper)
+
+## Hard rules honored
+1. ✅ Soft tone — copy is "Your weekly XP dropped from N → M. Want to lock in just 1 session today?" — no shaming language.
+2. ✅ One banner max — single mount in DashboardPage, returns null when ineligible.
+3. ✅ Respects `prefers-reduced-motion` (CSS + JS double-guard).
+4. ✅ No regression on existing dashboard widgets — banner sits above the welcome heading inside the existing `space-y-8` container.
+
+## Sequential P2 Backlog — FINAL STATUS
+| Step | Title | Status |
+|------|-------|--------|
+| 1/5 | Remove Leaderboard | ✅ DONE (2026-06-23) |
+| 2/5 | Dedupe `user_stats` + UNIQUE constraint | ✅ DONE (2026-06-23) |
+| 3/5 | Refactor `NotesPage.jsx` (partial — full extraction parked) | ✅ DONE-PHASE-1 (2026-06-23) |
+| 4/5 | Constellation Map polish | ✅ DONE (2026-06-23) |
+| 5/5 | Drift Recovery Banner | ✅ DONE (2026-06-23) |
+
+**Gamification system + Sequential P2 backlog are now BOTH COMPLETE.** 🎉
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (P2 Step 4 — Constellation Map polish)
 # ============================================================================
 

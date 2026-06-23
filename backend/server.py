@@ -3632,6 +3632,189 @@ async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_us
     }
 
 
+# ============================================================================
+# Sequential P2 — Step 5/5: Drift Recovery Banner
+# ============================================================================
+# Detect a >=70% weekly XP drop-off vs the prior 7-day window, and surface a
+# single soft-tone banner that links straight to the user's next-up session.
+# Dismissal sets `user_stats.drift_banner_dismissed_at = now()`; banner stays
+# hidden for 24h.
+#
+# Thresholds (per product spec, not knobs):
+#   PRIOR_XP_FLOOR = 100   # ignore users who were never active to begin with
+#   DROP_RATIO     = 0.30  # show only when recent_xp <= 30% of prior_xp
+#   COOLDOWN_HOURS = 24
+# ============================================================================
+
+_DRIFT_PRIOR_XP_FLOOR = 100
+_DRIFT_DROP_RATIO = 0.30
+_DRIFT_COOLDOWN_HOURS = 24
+
+
+def _drift_next_session(user_id: str) -> Optional[dict]:
+    """Return the user's next-up session in the same shape the constellation
+    map's white 'next-up' node points at: first non-completed session of the
+    first unlocked-and-not-completed module in the active enrollment.
+
+    Returns None when nothing is unlocked-and-incomplete (e.g. fresh user
+    with no enrollment, or curriculum fully completed)."""
+    uid_q = _urlparse.quote(user_id)
+    # 1. Active enrollment.
+    enrolls = _supabase_get(
+        f"user_enrollments?user_id=eq.{uid_q}&status=eq.active"
+        f"&select=id&order=enrolled_at.desc&limit=1"
+    ) or []
+    if not enrolls:
+        return None
+    enrollment_id = enrolls[0]["id"]
+    # 2. v_module_progress_summary for this enrollment, picking the first
+    #    unlocked-not-completed module by order_index.
+    mods = _supabase_get(
+        f"v_module_progress_summary?user_id=eq.{uid_q}"
+        f"&enrollment_id=eq.{_urlparse.quote(enrollment_id)}"
+        f"&is_unlocked=eq.true&is_completed=eq.false"
+        f"&select=user_module_id,order_index,module_code,module_title"
+        f"&order=order_index.asc&limit=1"
+    ) or []
+    if not mods:
+        return None
+    mod = mods[0]
+    user_module_id = mod["user_module_id"]
+    # 3. First non-completed user_session under that module by order_index.
+    sessions = _supabase_get(
+        f"user_sessions?user_module_id=eq.{_urlparse.quote(user_module_id)}"
+        f"&is_completed=eq.false&is_removed=eq.false"
+        f"&select=id,order_index,title&order=order_index.asc&limit=1"
+    ) or []
+    if not sessions:
+        return None
+    sess = sessions[0]
+    module_order = int(mod.get("order_index") or 0)
+    sess_order = int(sess.get("order_index") or 1)
+    return {
+        "id": sess["id"],
+        "module_number": module_order,
+        "session_number": f"{module_order}.{sess_order}",
+        "title": sess.get("title") or "Continue session",
+        "module_code": mod.get("module_code"),
+        "module_title": mod.get("module_title"),
+    }
+
+
+def _drift_xp_sums(user_id: str) -> tuple[int, int]:
+    """Sum of `user_xp_events.amount` for the user split into two adjacent
+    7-day windows: [now-7d, now] (recent) and [now-14d, now-7d) (prior).
+
+    We compute in UTC; the IST nuance is irrelevant for a 7-day window
+    comparison and the table doesn't store an IST timestamp directly."""
+    uid_q = _urlparse.quote(user_id)
+    now_utc = datetime.now(timezone.utc)
+    cut_7d  = (now_utc - timedelta(days=7)).isoformat()
+    cut_14d = (now_utc - timedelta(days=14)).isoformat()
+    # Pull rows for the full 14-day window in a single round-trip; split in
+    # Python. The table is keyed on created_at and amount, so this is cheap.
+    rows = _supabase_get(
+        f"user_xp_events?user_id=eq.{uid_q}"
+        f"&created_at=gte.{_urlparse.quote(cut_14d)}"
+        f"&select=amount,created_at&limit=2000"
+    ) or []
+    recent = 0
+    prior  = 0
+    for r in rows:
+        try:
+            amt = int(r.get("amount") or 0)
+        except (TypeError, ValueError):
+            amt = 0
+        # created_at is ISO; lexicographic compare works because both are UTC.
+        ts = r.get("created_at") or ""
+        if ts >= cut_7d:
+            recent += amt
+        elif ts >= cut_14d:
+            prior += amt
+    return recent, prior
+
+
+@api_router.get("/dashboard/drift-recovery")
+async def dashboard_drift_recovery(supa_user: dict = Depends(get_supabase_user)):
+    """Return whether the soft-tone drift banner should appear for the
+    authenticated user, plus the data the banner needs to render.
+
+    Eligibility (ALL must be true):
+      • prior_xp >= 100         (was meaningfully active two weeks ago)
+      • recent_xp <= prior_xp*.3 (dropped ≥70%)
+      • next-up session resolvable
+      • drift_banner_dismissed_at is NULL or older than 24h
+    """
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="unknown user")
+
+    # Cooldown gate first — cheapest check, also short-circuits the XP pull
+    # for the 24h after a dismissal.
+    stats = _supabase_get(
+        f"user_stats?user_id=eq.{_urlparse.quote(user_id)}"
+        f"&select=drift_banner_dismissed_at&limit=1"
+    ) or []
+    dismissed_at = (stats[0] if stats else {}).get("drift_banner_dismissed_at")
+    if dismissed_at:
+        try:
+            dt = datetime.fromisoformat(dismissed_at.replace("Z", "+00:00"))
+            if datetime.now(timezone.utc) - dt < timedelta(hours=_DRIFT_COOLDOWN_HOURS):
+                return {"show": False, "reason": "dismissed_recently"}
+        except (ValueError, TypeError):
+            pass  # malformed → treat as not dismissed
+
+    recent_xp, prior_xp = _drift_xp_sums(user_id)
+    if prior_xp < _DRIFT_PRIOR_XP_FLOOR:
+        return {"show": False, "reason": "prior_below_floor",
+                "recent_xp": recent_xp, "prior_xp": prior_xp}
+    if recent_xp > int(prior_xp * _DRIFT_DROP_RATIO):
+        return {"show": False, "reason": "not_drifting",
+                "recent_xp": recent_xp, "prior_xp": prior_xp}
+
+    nxt = _drift_next_session(user_id)
+    if not nxt:
+        return {"show": False, "reason": "no_next_session",
+                "recent_xp": recent_xp, "prior_xp": prior_xp}
+
+    return {
+        "show": True,
+        "recent_xp": recent_xp,
+        "prior_xp":  prior_xp,
+        "next_session": nxt,
+    }
+
+
+@api_router.post("/dashboard/drift-recovery/dismiss")
+async def dashboard_drift_recovery_dismiss(supa_user: dict = Depends(get_supabase_user)):
+    """Stamp `user_stats.drift_banner_dismissed_at = now()` so the banner is
+    suppressed for the next 24h. Idempotent — upsert pattern matches the
+    rest of the user_stats writes (Phase D2 followed the same shape)."""
+    user_id = supa_user.get("id")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="unknown user")
+    now_iso = datetime.now(timezone.utc).isoformat()
+    # PATCH first; if no row exists, fall back to a tiny insert. This avoids
+    # forcing a full upsert payload that would trample the streak/level columns.
+    existing = _supabase_get(
+        f"user_stats?user_id=eq.{_urlparse.quote(user_id)}&select=user_id&limit=1"
+    ) or []
+    if existing:
+        _supabase_patch(
+            f"user_stats?user_id=eq.{_urlparse.quote(user_id)}",
+            {"drift_banner_dismissed_at": now_iso},
+        )
+    else:
+        _supabase_post(
+            "user_stats",
+            {"user_id": user_id, "drift_banner_dismissed_at": now_iso},
+            prefer="resolution=ignore-duplicates",
+        )
+    return {"ok": True, "drift_banner_dismissed_at": now_iso}
+
+
+
+
 class PlanRebalanceReq(BaseModel):
     new_target_deadline:  Optional[str] = None
     new_target_hours_per_day:  Optional[float] = None
