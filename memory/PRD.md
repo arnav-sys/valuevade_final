@@ -1,4 +1,77 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (P2 Step 4 — Constellation Map polish)
+# ============================================================================
+
+## Goal
+Add semantic state-driven visual polish to `ModuleConstellationMap.jsx` without
+touching click handlers or popover behavior. GPU-friendly (transform/opacity
+only) and respects `prefers-reduced-motion`.
+
+## Color semantics (final, user-spec)
+| State        | Fill   | Glow gradient        | Motion          |
+|--------------|--------|----------------------|-----------------|
+| completed    | gold   | `starGoldGlow`       | static (no pulse) — gold == achievement, not motion |
+| in_progress  | blue   | `starBlueGlow`       | fast pulse (opacity 0.6↔1, 1.6s) |
+| next_up      | white  | `starWhiteGlow`      | static + white dashed ring (was blue-pulsing before) |
+| unlocked     | white  | `starUnlockedGlow`   | static, dimmer halo |
+| locked       | gray   | none                 | static + ∅ glyph |
+
+## Capstone (M23 / `module_code === 'M23'` or title starting with 'Capstone')
+- Core circle: **1.4× radius** (e.g. completed 9 → 12.6, next-up 7 → 9.8).
+- Halo: 40 r (vs default 28) + an additional **outer ring at +14 r** with slow
+  pulse for premium glow.
+- Stroke weight bumped 1.2 → 1.6.
+- Label bumped 10→11 px, weight 600→700, drop offset 24→30 px.
+- **READY pill**: gold 44×14 rounded rect rendered above the node when
+  `is_unlocked && !is_completed`. Hides itself when completed (because the
+  star is then steady-gold itself).
+- Glow gradient swapped to `starCapstoneGlow` (cream → gold), distinct from
+  the regular completed glow.
+
+## Connecting lines (mirror node semantics)
+| Transition          | Color  | Pulse |
+|---------------------|--------|-------|
+| both completed      | gold   | no    |
+| ready-for-next      | white  | no (was pulsing gold) |
+| any in-progress     | blue   | yes (fast) |
+| locked (either end) | gray   | no    |
+
+## Reduced-motion safeguard
+- JS-level: `reducedMotionRef` checks `prefers-reduced-motion: reduce` before
+  attaching pulse classes.
+- CSS-level: `@media (prefers-reduced-motion: reduce) { .pulse-* { animation:
+  none !important; opacity: 0.85; } }` — belt + suspenders.
+- All animations use `will-change: opacity` + opacity-only keyframes. No
+  `transform` thrash, no layout reflow.
+
+## Legend updated
+4 chips instead of 3: **done / doing / next / locked** (was done / next / locked).
+The middle chip color was misleading — fixed to align with new state semantics.
+
+## Files touched
+- `/app/frontend/src/components/gamification/ModuleConstellationMap.jsx`
+  - `StatusStyle()` — added explicit `next_up` branch with white fill (was
+    being lumped into `in_progress` blue, breaking achievement semantics).
+  - Added `isCapstoneModule()` helper.
+  - `links` memo — `readyForNext` stroke changed gold→white, pulse killed.
+  - SVG `<defs>` — added `starUnlockedGlow` + `starCapstoneGlow` gradients.
+  - Node render — capstone scale + READY pill + outer halo ring.
+  - Popover label — added 'Next up' kind.
+  - Style block — gentler `pulse-slow` (0.5↔0.95, 3.4s), added
+    `prefers-reduced-motion` media query.
+
+## Verification
+- Lint: clean (`mcp_lint_javascript` → No issues found).
+- Smoke screenshot: `/journey` route — testagent2026 (16 modules, M1 next-up,
+  M2-M21 locked). White dashed ring visible on M1, ∅ glyph + dim gray on
+  locked nodes, legend shows 4 chips correctly.
+- Capstone path is reachable code (verified via `module_code === 'M23'`
+  check) but not visually exercised — test user's enrollment maxes at M21.
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (P2 Step 2 — user_stats dedupe + UNIQUE constraint)
 # ============================================================================
 

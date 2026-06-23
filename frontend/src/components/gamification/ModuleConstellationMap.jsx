@@ -51,6 +51,12 @@ function gridPosition(visualIdx) {
   };
 }
 
+// Semantic color mapping (per product spec):
+//   completed   → gold (steady, no pulse)         — achievement
+//   in_progress → blue (pulse)                     — active work
+//   next_up     → white (static, dashed ring)      — anticipation
+//   unlocked    → white (static, slightly dimmer)
+//   locked      → dim gray
 function StatusStyle(mod, isNextUp) {
   if (!mod.is_unlocked) {
     return {
@@ -69,10 +75,10 @@ function StatusStyle(mod, isNextUp) {
       glow: 'rgba(251,191,36,.55)',
       stroke: '#fde68a',
       labelOpacity: 1,
-      pulse: 'slow',
+      pulse: false, // steady gentle glow — gold = achievement, not motion
     };
   }
-  if ((mod.sessions_completed_n || 0) > 0 || isNextUp) {
+  if ((mod.sessions_completed_n || 0) > 0) {
     return {
       kind: 'in_progress',
       fill: '#246BFD',
@@ -80,6 +86,16 @@ function StatusStyle(mod, isNextUp) {
       stroke: '#7fa6ff',
       labelOpacity: 1,
       pulse: 'fast',
+    };
+  }
+  if (isNextUp) {
+    return {
+      kind: 'next_up',
+      fill: '#ffffff',
+      glow: 'rgba(255,255,255,.55)',
+      stroke: '#ffffff',
+      labelOpacity: 1,
+      pulse: false, // static white — anticipation, not activity
     };
   }
   return {
@@ -90,6 +106,16 @@ function StatusStyle(mod, isNextUp) {
     labelOpacity: 0.85,
     pulse: false,
   };
+}
+
+// Capstone heuristic: explicit M23 code OR a title that begins with "Capstone".
+// Falls back to last-module-in-list to avoid silently mis-styling if curriculum
+// ever renumbers.
+function isCapstoneModule(mod) {
+  if (!mod) return false;
+  if (mod.module_code === 'M23') return true;
+  const t = (mod.module_title || '').toLowerCase();
+  return t.startsWith('capstone');
 }
 
 function ModulePopover({ mod, onClose, onContinue }) {
@@ -132,6 +158,7 @@ function ModulePopover({ mod, onClose, onContinue }) {
             <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)]">
               {style.kind === 'completed' && 'Completed'}
               {style.kind === 'in_progress' && 'In progress'}
+              {style.kind === 'next_up' && 'Next up'}
               {style.kind === 'unlocked' && 'Unlocked'}
               {style.kind === 'locked' && 'Locked'}
             </div>
@@ -295,11 +322,16 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
       const readyForNext = prev.is_completed && cur.is_unlocked
                           && !cur.is_completed && (cur.sessions_completed_n || 0) === 0;
       const lockedEither = !prev.is_unlocked || !cur.is_unlocked;
+      // Color semantics (mirror node states):
+      //   both completed → bright gold (achievement chain)
+      //   ready-for-next → static white (anticipation, NOT gold)
+      //   any in-progress → blue (active work, pulse)
+      //   locked         → dim gray
       let opacity = 0.18;
       let stroke = '#3a4150';
       let pulse = false;
       if (completedBoth)      { opacity = 0.65; stroke = '#fbbf24'; }
-      else if (readyForNext)  { opacity = 0.55; stroke = '#fbbf24'; pulse = true; }
+      else if (readyForNext)  { opacity = 0.55; stroke = '#ffffff'; }
       else if (anyInProgress) { opacity = 0.42; stroke = '#246BFD'; pulse = true; }
       else if (lockedEither)  { opacity = 0.12; stroke = '#3a4150'; }
       arr.push({ x1: pPos.x, y1: pPos.y, x2: cPos.x, y2: cPos.y, opacity, stroke, pulse });
@@ -360,14 +392,17 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
       {/* Legend in the previously-empty upper-right area */}
       <div className="absolute top-4 right-4 sm:top-5 sm:right-6 z-10 flex items-center gap-3 text-[10px] font-mono text-[var(--color-text-muted)]" data-testid="constellation-legend">
         <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#fbbf24', boxShadow: '0 0 8px rgba(251,191,36,.6)' }} />done</span>
-        <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#246BFD', boxShadow: '0 0 8px rgba(36,107,253,.6)' }} />next</span>
+        <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#246BFD', boxShadow: '0 0 8px rgba(36,107,253,.6)' }} />doing</span>
+        <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#ffffff', boxShadow: '0 0 8px rgba(255,255,255,.55)' }} />next</span>
         <span className="inline-flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full" style={{ background: '#3a4150' }} />locked</span>
       </div>
       <svg viewBox={`0 0 ${VIEWBOX_W} ${VIEWBOX_H}`} className="absolute inset-0 w-full h-full" preserveAspectRatio="xMidYMid meet">
         <defs>
           <radialGradient id="starGoldGlow"><stop offset="0%" stopColor="#fde68a" stopOpacity="0.95" /><stop offset="50%" stopColor="#fbbf24" stopOpacity="0.45" /><stop offset="100%" stopColor="#fbbf24" stopOpacity="0" /></radialGradient>
           <radialGradient id="starBlueGlow"><stop offset="0%" stopColor="#bfd4ff" stopOpacity="0.9" /><stop offset="50%" stopColor="#246BFD" stopOpacity="0.4" /><stop offset="100%" stopColor="#246BFD" stopOpacity="0" /></radialGradient>
-          <radialGradient id="starWhiteGlow"><stop offset="0%" stopColor="#e5e9f3" stopOpacity="0.6" /><stop offset="100%" stopColor="#e5e9f3" stopOpacity="0" /></radialGradient>
+          <radialGradient id="starWhiteGlow"><stop offset="0%" stopColor="#ffffff" stopOpacity="0.85" /><stop offset="50%" stopColor="#e5e9f3" stopOpacity="0.35" /><stop offset="100%" stopColor="#e5e9f3" stopOpacity="0" /></radialGradient>
+          <radialGradient id="starUnlockedGlow"><stop offset="0%" stopColor="#e5e9f3" stopOpacity="0.45" /><stop offset="100%" stopColor="#e5e9f3" stopOpacity="0" /></radialGradient>
+          <radialGradient id="starCapstoneGlow"><stop offset="0%" stopColor="#fff7d4" stopOpacity="1" /><stop offset="40%" stopColor="#fbbf24" stopOpacity="0.65" /><stop offset="100%" stopColor="#fbbf24" stopOpacity="0" /></radialGradient>
         </defs>
         {/* Subtle starfield backdrop */}
         {Array.from({ length: 35 }).map((_, i) => {
@@ -383,18 +418,33 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
         {links.map((l, i) => (
           <line key={`l-${i}`} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2}
                 stroke={l.stroke} strokeWidth="1.5" strokeDasharray="4 5"
-                strokeLinecap="round" opacity={l.opacity} />
+                strokeLinecap="round" opacity={l.opacity}
+                className={l.pulse && !reducedMotionRef.current ? 'constellation-pulse-fast' : ''} />
         ))}
         {/* Nodes */}
         {modules.map((m, i) => {
           const pos = gridPosition(i);
           const style = StatusStyle(m, i === nextUpVisualIdx);
-          const glowId = style.kind === 'completed' ? 'url(#starGoldGlow)'
+          const isCapstone = isCapstoneModule(m);
+          // Capstone gets 1.4x size + premium gold glow (regardless of state,
+          // size always reads as "this is the finale"). When unlocked but
+          // not yet completed → show a READY pill.
+          const capstoneReady = isCapstone && m.is_unlocked && !m.is_completed;
+          const glowId = isCapstone && style.kind !== 'locked'
+                       ? 'url(#starCapstoneGlow)'
+                       : style.kind === 'completed' ? 'url(#starGoldGlow)'
                        : style.kind === 'in_progress' ? 'url(#starBlueGlow)'
-                       : 'url(#starWhiteGlow)';
+                       : style.kind === 'next_up' ? 'url(#starWhiteGlow)'
+                       : 'url(#starUnlockedGlow)';
           const pulseClass = !reducedMotionRef.current && style.pulse === 'slow' ? 'constellation-pulse-slow'
                             : !reducedMotionRef.current && style.pulse === 'fast' ? 'constellation-pulse-fast'
                             : '';
+          const baseCoreR = style.kind === 'completed' ? 9
+                          : style.kind === 'in_progress' ? 8
+                          : style.kind === 'next_up' ? 7
+                          : 6;
+          const coreR = isCapstone ? Math.round(baseCoreR * 1.4 * 10) / 10 : baseCoreR;
+          const haloR = isCapstone ? 40 : 28;
           return (
             <g
               key={m.user_module_id}
@@ -406,28 +456,46 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
             >
               {/* Native SVG tooltip — surfaces immediately on hover with no JS overhead. */}
               <title>{m.module_code} — {m.module_title}{m.is_completed ? ' · Completed' : m.is_unlocked ? ' · Unlocked' : ' · Locked'}</title>
-              {/* Glow halo */}
-              {style.kind !== 'locked' && (
-                <circle cx={pos.x} cy={pos.y} r={28} fill={glowId} className={pulseClass} />
+              {/* Glow halo — capstone gets a second, wider outer ring for depth. */}
+              {style.kind !== 'locked' && isCapstone && (
+                <circle cx={pos.x} cy={pos.y} r={haloR + 14} fill={glowId}
+                        className={!reducedMotionRef.current ? 'constellation-pulse-slow' : ''}
+                        opacity={0.55} />
               )}
-              {/* Next-up dashed ring — extra-prominent signal for "you're here". */}
+              {style.kind !== 'locked' && (
+                <circle cx={pos.x} cy={pos.y} r={haloR} fill={glowId} className={pulseClass} />
+              )}
+              {/* Next-up dashed ring — white, static (NOT pulsing blue). */}
               {i === nextUpVisualIdx && (
-                <circle cx={pos.x} cy={pos.y} r={14} fill="none"
-                        stroke="#7fa6ff" strokeWidth="1.5"
-                        strokeDasharray="3 4" className="constellation-pulse-fast" />
+                <circle cx={pos.x} cy={pos.y} r={isCapstone ? 20 : 14} fill="none"
+                        stroke="#ffffff" strokeWidth="1.5"
+                        strokeDasharray="3 4" opacity={0.85} />
               )}
               {/* Star core */}
-              <circle cx={pos.x} cy={pos.y} r={style.kind === 'completed' ? 9 : style.kind === 'in_progress' ? 8 : 6}
-                      fill={style.fill} stroke={style.stroke} strokeWidth="1.2" />
+              <circle cx={pos.x} cy={pos.y} r={coreR}
+                      fill={style.fill} stroke={style.stroke}
+                      strokeWidth={isCapstone ? 1.6 : 1.2} />
               {/* Lock icon overlay for locked nodes */}
               {style.kind === 'locked' && (
                 <text x={pos.x} y={pos.y + 3} textAnchor="middle" fontSize="8" fill="#9aa3b8">∅</text>
               )}
+              {/* READY pill — capstone is unlocked, awaiting completion. */}
+              {capstoneReady && (
+                <g>
+                  <rect x={pos.x - 22} y={pos.y - (coreR + 18)} width={44} height={14} rx={7}
+                        fill="#fbbf24" stroke="#fde68a" strokeWidth="0.8" />
+                  <text x={pos.x} y={pos.y - (coreR + 8)} textAnchor="middle"
+                        fontFamily="JetBrains Mono, ui-monospace, monospace"
+                        fontSize="8.5" fontWeight="700" fill="#1a1408" letterSpacing="0.8">
+                    READY
+                  </text>
+                </g>
+              )}
               {/* Label: module code + truncated title underneath for readability */}
-              <text x={pos.x} y={pos.y + 24} textAnchor="middle"
+              <text x={pos.x} y={pos.y + (isCapstone ? 30 : 24)} textAnchor="middle"
                     fontFamily="JetBrains Mono, ui-monospace, monospace"
-                    fontSize="10" fill="var(--color-text)"
-                    fontWeight="600"
+                    fontSize={isCapstone ? 11 : 10} fill="var(--color-text)"
+                    fontWeight={isCapstone ? 700 : 600}
                     opacity={style.labelOpacity}>
                 {m.module_code}
               </text>
@@ -473,14 +541,28 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
             radial-gradient(ellipse at 20% 30%, rgba(36,107,253,.10), transparent 60%),
             radial-gradient(ellipse at 80% 70%, rgba(106,92,255,.10), transparent 60%);
         }
+        /* Pulse uses opacity ONLY (cheap, GPU-friendly, no layout thrash). */
         @keyframes constellation-pulse-slow-kf {
-          0%,100% { opacity: 0.55 } 50% { opacity: 1 }
+          0%,100% { opacity: 0.5 } 50% { opacity: 0.95 }
         }
         @keyframes constellation-pulse-fast-kf {
           0%,100% { opacity: 0.6 } 50% { opacity: 1 }
         }
-        .constellation-pulse-slow { animation: constellation-pulse-slow-kf 3s ease-in-out infinite; }
-        .constellation-pulse-fast { animation: constellation-pulse-fast-kf 1.6s ease-in-out infinite; }
+        .constellation-pulse-slow {
+          animation: constellation-pulse-slow-kf 3.4s ease-in-out infinite;
+          will-change: opacity;
+        }
+        .constellation-pulse-fast {
+          animation: constellation-pulse-fast-kf 1.6s ease-in-out infinite;
+          will-change: opacity;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .constellation-pulse-slow,
+          .constellation-pulse-fast {
+            animation: none !important;
+            opacity: 0.85;
+          }
+        }
       `}</style>
     </section>
   );
