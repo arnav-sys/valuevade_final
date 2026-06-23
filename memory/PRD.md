@@ -1,4 +1,59 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Phase 2 Gamification — gap-close, Plan A)
+# ============================================================================
+
+## DB
+- Widened `master_badges.category` CHECK to include `'progression'`.
+- Inserted **12 new badges** (master_badges count: 30 → 42):
+  `valuation_apprentice`, `ai_savvy_analyst`, `interview_ready`, `soft_skills_polished`,
+  `quick_quiz_killer`, `seven_day_fire`, `freeze_saved_me`, `quiz_centurion`,
+  `leaderboard_crasher` (Phase-3 stub), `level_up_research_associate`,
+  `level_up_equity_analyst`, `level_up_senior_analyst`.
+- 4 spec aliases reuse existing codes (less invasive): `early_bird` → `early_bird` ✅
+  exists, `marathoner` → `marathon_session`, `capstone_pioneer` → `capstone_champion`,
+  `comeback_king` → `comeback_kid`. Total spec coverage: 23/23.
+
+## RPC
+- `evaluate_badges(p_user_id, p_context)` extended with **5 new predicate types**:
+  `module_specific_complete` (joins user_modules.module_number),
+  `quiz_perfect_under` (perfect score AND time-bounded),
+  `reach_level` (user_stats.current_level >= N),
+  `minutes_in_day` (sum meta.minutes for IST today's xp events),
+  `top10_leaderboard` (returns false until Phase 3).
+- Hardened user_stats select to `ORDER BY total_xp DESC NULLS LAST LIMIT 1`
+  to survive pre-existing duplicate-row drift (same fix as Phase 1 StreakContext).
+
+## Verification (testagent2026)
+- `evaluate_badges` invoked → unlocked **2 new badges** for the existing user:
+  `freeze_saved_me` (RARE, +25 XP) and `level_up_research_associate` (COMMON).
+- Near-miss progress reported correctly for `seven_day_fire` (4/7), `quiz_centurion`,
+  and the level-up progression badges.
+- Dashboard live (screenshot `/tmp/p2_dashboard.png`):
+  - Streak counter: 4-day fire ✅
+  - 30/30 Iron Discipline near-miss banner ✅
+  - Today's Challenges card: "Resets in 1h 49m IST · 0/3 complete" with 3 rows
+    (Interview Sharpener +15 XP, Sim Pro +20 XP, 10-Minute Habit +10 XP) ✅
+- Profile/Achievements live (screenshot `/tmp/p2_badges.png`):
+  - Header: "Achievements — 13 / 42 UNLOCKED"
+  - Category filter chips: ALL 42 / KNOWLEDGE 10 / SPEED 4 / CONSISTENCY 15 /
+    SOCIAL 7 / SECRETS 2 UNLOCKED
+  - Locked badges show padlock icon in top-right; secret tiers honored.
+
+## Daily-goal & Daily-Champion paths (verified intact)
+- `user_stats.daily_goal_minutes`, `daily_champion_glow_until`,
+  `daily_goal_modal_dismissed` columns present.
+- `DailyGoalModal.jsx`, `DailyGoalTracker.jsx`, `DailyChampionOverlay.jsx`,
+  `DailyChampionRoot.jsx` all mounted via App.js.
+- XP `reason` CHECK constraint already permits `daily_challenge_complete`,
+  `daily_champion_bonus`, `badge_unlock_bonus` — bonus path live.
+
+## Out of scope flagged
+- Duplicate `user_stats` rows per user — pre-existing drift; my hardened SELECTs
+  pick the canonical (highest-XP) row but the underlying dedupe is Phase-3 work.
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Phase 1 Gamification — 3 gap fixes)
 # ============================================================================
 
