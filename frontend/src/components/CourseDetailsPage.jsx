@@ -5,6 +5,72 @@ import { supabase } from '../lib/supabase';
 import { useTheme } from '../contexts/ThemeContext';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
+import { supabase as supabaseClient } from '../lib/supabase';
+import { useEffect as useEffectSP, useState as useStateSP } from 'react';
+import { Users as UsersIcon, Target as TargetIcon } from 'lucide-react';
+
+/**
+ * Phase-4 social-proof + near-miss strip rendered inside each module's
+ * accordion expansion in CourseDetailsPage.
+ *
+ * Social proof: COUNT(DISTINCT user_id) over user_xp_events with reason in
+ * ('session_complete') and source_id ∈ master_sessions(module) in last 7d.
+ * Near-miss: when current user has done ≥60% of the module's sessions, show
+ * "🎯 N/M sessions — so close!".
+ */
+function ModuleSocialProof({ module }) {
+  const [stats, setStats] = useStateSP({ weekly: null, mine: null, total: null });
+  useEffectSP(() => {
+    let alive = true;
+    (async () => {
+      const masterSessIds = (module.master_sessions || []).map((s) => s.id).filter(Boolean);
+      if (!masterSessIds.length) return;
+      const total = masterSessIds.length;
+      const since = new Date(Date.now() - 7 * 86400 * 1000).toISOString();
+      const [{ data: weekEvents }, { data: { user } }] = await Promise.all([
+        supabaseClient
+          .from('user_xp_events')
+          .select('user_id')
+          .eq('reason', 'session_complete')
+          .gte('created_at', since)
+          .in('source_id', masterSessIds),
+        supabaseClient.auth.getUser(),
+      ]);
+      const distinct = new Set((weekEvents || []).map((e) => e.user_id));
+      let mineDone = 0;
+      if (user?.id) {
+        const { data: mine } = await supabaseClient
+          .from('user_xp_events')
+          .select('source_id')
+          .eq('reason', 'session_complete')
+          .eq('user_id', user.id)
+          .in('source_id', masterSessIds);
+        mineDone = new Set((mine || []).map((e) => e.source_id)).size;
+      }
+      if (alive) setStats({ weekly: distinct.size, mine: mineDone, total });
+    })();
+    return () => { alive = false; };
+  }, [module.id, module.master_sessions]);
+
+  if (stats.total == null) return null;
+  const pct = stats.total > 0 ? stats.mine / stats.total : 0;
+  return (
+    <div className="mb-3 flex flex-wrap items-center gap-3 text-[11px] font-bricolage" data-testid={`module-social-proof-${module.id}`}>
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
+        <UsersIcon size={11} />
+        {stats.weekly === 0
+          ? 'Be the first to complete this module'
+          : `${stats.weekly} student${stats.weekly === 1 ? '' : 's'} completed this module this week`}
+      </span>
+      {pct >= 0.6 && pct < 1 && (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-accent-pink)]/12 border border-[var(--color-accent-pink)]/40 text-[var(--color-accent-pink)] font-semibold">
+          <TargetIcon size={11} /> {stats.mine}/{stats.total} sessions — so close!
+        </span>
+      )}
+    </div>
+  );
+}
+
 import {
   Accordion,
   AccordionContent,
@@ -358,6 +424,8 @@ export default function CourseDetailsPage() {
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="px-5 pb-4">
+                            {/* Phase-4 social proof + near-miss */}
+                            <ModuleSocialProof module={mod} />
                             {/* Module 23 (capstone module): surface the 3 capstone project cards
                                 ABOVE the regular session list. Conditioned on canonical
                                 module_number === 23 so other modules render normally. */}

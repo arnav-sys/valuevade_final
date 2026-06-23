@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useRef } from 'react';
+import SessionSummaryCard from './gamification/SessionSummaryCard';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
@@ -319,6 +320,8 @@ export default function SessionCompletePage() {
       {showConfetti && <Confetti />}
 
       <div className="relative z-10 max-w-2xl mx-auto" data-testid="session-complete-content">
+        {/* Phase-4 SessionSummaryCard — XP breakdown + badge progress + streak + next-level + challenges */}
+        <SessionSummaryCard sessionId={sessionId} onContinue={() => navigate(nextSession ? `/session/${nextSession.id}/start` : '/dashboard')} />
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)] text-xs font-mono uppercase tracking-[0.2em] mb-5">
             <Trophy size={12} /> Session complete

@@ -9,6 +9,7 @@ import XPBar from './gamification/XPBar';
 import StreakCounter from './gamification/StreakCounter';
 import BadgeCabinet from './gamification/BadgeCabinet';
 import ActivityHeatmap from './gamification/ActivityHeatmap';
+import RecentActivityFeed from './gamification/RecentActivityFeed';
 import {
   User, Mail, Pencil, Check, X, Loader2, LogOut, Sun, Moon, Flame, Clock,
   BookOpen, Layers, Trophy, Rocket, Sparkles, Calendar, AlertCircle, RefreshCw,
@@ -355,6 +356,7 @@ export default function ProfilePage() {
             <BadgeCabinet className="mb-6" />
             <ReferralsBlock />
             <div className="mt-6"><ActivityHeatmap /></div>
+            <div className="mt-6"><RecentActivityFeed limit={10} /></div>
             <div className="flex items-end justify-between mb-4">
               <div>
                 <h3 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)]">

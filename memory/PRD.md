@@ -1,4 +1,60 @@
 # ============================================================================
+# CHANGELOG — 2026-06-23 (Phase 4 — Dopamine UI Polish + Behavioral Nudges)
+# ============================================================================
+
+## Audit summary
+B (XP nudge under bar in `XPBar.jsx`), E.a (`NearMissBanner.jsx`), F (full
+`SoundContext.jsx` + `playSound` API + 4 sound slugs + DailyChallenges hook)
+were already built. Net new build: A, C, E.b, plus F.b verification.
+
+## Built this iteration
+- **`SessionSummaryCard.jsx`** (gamification/) — full-screen post-session
+  aggregator with 5 sections: XP breakdown chips (last 4 events), Streak,
+  Next Level (XP-to-next + ≈ N sessions), Closest Badge near-miss,
+  Today's Challenges done count. "Continue" CTA routes to next session
+  or dashboard; no auto-dismiss.
+  - Hooked into `SessionCompletePage.jsx` above existing hero block;
+    reuses already-awarded XP via `useXP` + `useStreak`.
+- **`RecentActivityFeed.jsx`** (gamification/) — vertical timeline of last
+  10 `user_xp_events`, joined client-side with master_sessions/master_modules
+  for human-readable labels (e.g. "Completed session · M3 · +50 XP · 2h ago").
+  Icons keyed to reason; "last 10" caption.
+  - Mounted on `ProfilePage.jsx` directly below the ActivityHeatmap section.
+- **`ModuleSocialProof`** (inline in `CourseDetailsPage.jsx`) — for each
+  expanded module: social proof "**N students completed this module this
+  week**" (DISTINCT users over `user_xp_events.session_complete` for the
+  module's master_session_ids in last 7d) AND "**Be the first…**" when N=0.
+  Plus near-miss "**🎯 X/Y sessions — so close!**" pill when current user has
+  done ≥60% of the module's sessions and module not complete.
+- **F.b sound toggle**: confirmed at `SettingsPage.jsx::SoundToggle`
+  (`data-testid='settings-sound-toggle'`). Live and wired to the
+  `useSound().toggleEnabled()` API. Preview chime fires on enable.
+
+## Live verification (testagent2026)
+- Profile page renders **Recent activity** card with 10 rows: Badge unlocked
+  +100 (22m ago), Badge unlocked +25 (43m ago), Daily login +25 ×3, Simulation
+  submitted +100, Read finance news +30, Daily challenge complete +25,
+  Hit daily plan target +25, Daily login +25 (24d ago).
+- ActivityHeatmap (already-built) above feed: 90-day grid, IST-bucketed,
+  navy/green/purple buckets, "1524 XP earned" caption, day labels Mon/Wed/Fri.
+- Learning journey constellation visible below the feed.
+- Settings → Sound toggle present and operable.
+
+## Out-of-scope (skipped per user direction)
+- Constellation polish (D) — existing component renders 3 of 4 spec'd states;
+  parked as future polish.
+- Leaderboard weekly-ribbon Monday nudge — backlog.
+
+## Phases 1-4 final tally
+- Phase 1 Gamification — XP/Levels/Streaks ✅
+- Phase 2 — Badges (42), Daily Challenges (16), Daily Goal modal ✅
+- Phase 3 — Leaderboard, Profile, Heatmap, Constellation ✅
+- Phase 4 — SessionSummaryCard, Recent Activity feed, Social-proof, Sound ✅
+- **Gamification system feature-complete per the original brief.**
+
+# ============================================================================
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (Phase 3 Gamification — Leaderboard + Profile/Heatmap/Constellation polish)
 # ============================================================================
 
