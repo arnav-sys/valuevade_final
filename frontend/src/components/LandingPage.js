@@ -16,6 +16,7 @@ import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import { courseJsonLd, orgJsonLd } from '@/components/landing/jsonLd';
 import LandingIntroSequence from '@/components/landing/LandingIntroSequence';
+import { ScrollProgressBar } from '@/components/cinematic/primitives';
 import { useTheme } from '@/contexts/ThemeContext';
 import '@/components/landing/landing-dark.css';
 
@@ -111,6 +112,7 @@ export default function LandingPage() {
         <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       </Helmet>
       <CustomCursor />
+      <ScrollProgressBar />
       <LandingIntroSequence />
       <Navbar
         onJoinWaitlist={scrollToWaitlist}

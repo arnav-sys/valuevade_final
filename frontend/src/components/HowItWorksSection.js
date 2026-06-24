@@ -1,5 +1,7 @@
+import { useEffect, useRef, useState } from 'react';
 import { Target, Brain, Zap, Trophy } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { TimelinePath } from '@/components/landing/CinematicSections';
 
 const steps = [
   { num: '01', icon: Target, title: 'Tell Us Your Goal', body: 'Input your dream role and current skills in under 2 minutes.', color: '#246BFD' },
@@ -10,6 +12,32 @@ const steps = [
 
 export default function HowItWorksSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
+  // Scroll progress within this section drives the violet path's stroke-
+  // dashoffset. Manual rAF loop is cheaper than Framer Motion's useScroll
+  // here because the section is short and we only need one number.
+  const containerRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return undefined;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { setProgress(1); return undefined; }
+    const onScroll = () => {
+      const rect = node.getBoundingClientRect();
+      // Map [bottom enters viewport ... top leaves viewport] → [0 ... 1]
+      const start = window.innerHeight * 0.9;
+      const end   = -rect.height + window.innerHeight * 0.2;
+      const range = start - end;
+      if (range <= 0) { setProgress(1); return; }
+      const p = (start - rect.top) / range;
+      setProgress(Math.max(0, Math.min(1, p)));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+  }, []);
 
   return (
     <section
@@ -32,30 +60,14 @@ export default function HowItWorksSection() {
           </h2>
         </div>
 
-        <div className="relative">
-          <svg className="absolute top-12 left-0 w-full h-2 hidden lg:block" viewBox="0 0 1200 4" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#246BFD" />
-                <stop offset="50%" stopColor="#6A5CFF" />
-                <stop offset="100%" stopColor="#FF6AC1" />
-              </linearGradient>
-            </defs>
-            <line x1="150" y1="2" x2="1050" y2="2" stroke="url(#lineGrad)" strokeWidth="2" className={`line-draw ${isVisible ? 'visible' : ''}`} />
-          </svg>
+        {/* Container that owns the scroll-driven progress + holds the
+            milestone path SVG behind the step cards. */}
+        <div ref={containerRef} className="relative" data-testid="how-it-works-timeline-wrap">
+          {/* Scroll-drawn violet bezier path with milestone spheres.
+              Sits behind the cards (z-0), cards sit at z-10. */}
+          <TimelinePath progress={progress} stepCount={steps.length} />
 
-          <svg className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-full md:hidden" viewBox="0 0 4 800" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="lineGradV" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#246BFD" />
-                <stop offset="50%" stopColor="#6A5CFF" />
-                <stop offset="100%" stopColor="#FF6AC1" />
-              </linearGradient>
-            </defs>
-            <line x1="2" y1="40" x2="2" y2="760" stroke="url(#lineGradV)" strokeWidth="2" className={`line-draw ${isVisible ? 'visible' : ''}`} style={{ strokeDasharray: 800, strokeDashoffset: isVisible ? 0 : 800 }} />
-          </svg>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-6">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-6">
             {steps.map((step, i) => {
               const Icon = step.icon;
               return (
