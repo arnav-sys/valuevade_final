@@ -3,8 +3,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
-import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle, RefreshCw, Sun, Moon, Sparkles } from 'lucide-react';
+import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle, RefreshCw, Sun, Moon, Sparkles, Award, Trophy, GraduationCap } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
+import {
+  MagneticCard, LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
+} from './cinematic/primitives';
 
 // Lazy three.js bg so the cards paint first.
 const CinematicBackground = lazy(() => import('./CinematicBackground'));
@@ -57,10 +61,17 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount }) {
   };
 
   return (
-    <div
-      className="glass-card rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--color-accent-purple)]/30 hover:shadow-[0_8px_40px_var(--glass-hover-shadow)] group"
-      data-testid={`course-card-${course.id}`}
+    <MagneticCard
+      className="glass-card rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--color-accent-purple)]/30 hover:shadow-[0_8px_40px_var(--glass-hover-shadow)] group relative"
+      testid={`course-card-${course.id}`}
     >
+      {/* Diagonal sheen (very slow loop) — premium signal on any active course. */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
+        <div
+          aria-hidden="true"
+          className="course-card-sheen"
+        />
+      </div>
       {/* Gradient accent bar at top */}
       <div className="h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent-purple)] to-[var(--color-accent-pink)]" />
 
@@ -137,7 +148,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount }) {
           )}
         </button>
       </div>
-    </div>
+    </MagneticCard>
   );
 }
 
@@ -250,17 +261,51 @@ export default function CoursesPage() {
 
       {/* Main */}
       <main className="max-w-5xl mx-auto px-6 py-12 sm:py-16 relative z-10">
-        {/* Page title */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/15 text-[var(--color-accent-purple)] text-xs font-mono mb-4">
-            <Sparkles size={14} /> AI-Powered Learning
+        {/* Cinematic hero — letter-stagger headline + halo dots ring */}
+        <div className="text-center mb-14 sm:mb-16 relative" data-testid="courses-hero">
+          {/* Slow-rotating ring of constellation dots behind the title */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[460px] h-[460px] sm:w-[560px] sm:h-[560px] opacity-50"
+            style={{ animation: 'courses-halo-rotate 38s linear infinite' }}
+          >
+            <svg viewBox="0 0 200 200" className="w-full h-full">
+              {Array.from({ length: 22 }).map((_, i) => {
+                const a = (i / 22) * Math.PI * 2;
+                const r = 88;
+                const cx = 100 + Math.cos(a) * r;
+                const cy = 100 + Math.sin(a) * r;
+                const sz = 0.9 + (i % 3) * 0.4;
+                return <circle key={i} cx={cx} cy={cy} r={sz} fill="#a78bfa" opacity={0.55} />;
+              })}
+              {/* Thin ring */}
+              <circle cx="100" cy="100" r="88" fill="none" stroke="#8b5cf6" strokeOpacity="0.18" strokeWidth="0.4" strokeDasharray="1 4" />
+            </svg>
           </div>
-          <h1 className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-3" data-testid="courses-heading">
-            Choose Your Career Path
-          </h1>
-          <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-lg mx-auto" data-testid="courses-subtitle">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/15 text-[var(--color-accent-purple)] text-xs font-mono mb-5 relative"
+          >
+            <Sparkles size={14} /> AI-Powered Learning
+          </motion.div>
+          <div className="relative">
+            <LetterStaggerHeadline
+              text="Choose Your Career Path"
+              className="font-clash text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--color-text)] mb-4 tracking-tight"
+              testid="courses-heading"
+            />
+          </div>
+          <motion.p
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
+            className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-lg mx-auto relative"
+            data-testid="courses-subtitle"
+          >
             AI-personalized learning paths built for finance careers
-          </p>
+          </motion.p>
         </div>
 
         {/* Loading state */}
@@ -287,17 +332,96 @@ export default function CoursesPage() {
 
         {/* Course grid */}
         {!loading && !error && courses.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" data-testid="courses-grid">
-            {courses.map((course) => (
-              <CourseCard
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-7" data-testid="courses-grid" style={{ perspective: '1200px' }}>
+            {courses.map((course, i) => (
+              <motion.div
                 key={course.id}
-                course={course}
-                enrollment={getEnrollment(course.id)}
-                moduleCount={moduleCounts[course.id] || 0}
-                sessionCount={sessionCounts[course.id] || 0}
-              />
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <CourseCard
+                  course={course}
+                  enrollment={getEnrollment(course.id)}
+                  moduleCount={moduleCounts[course.id] || 0}
+                  sessionCount={sessionCounts[course.id] || 0}
+                />
+              </motion.div>
             ))}
           </div>
+        )}
+
+        {/* Stats strip — animated counters of curriculum scope */}
+        {!loading && !error && courses.length > 0 && (
+          <section className="mt-16 sm:mt-20" data-testid="courses-stats-strip">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              <AnimatedStat
+                testid="stat-modules"
+                value={Object.values(moduleCounts).reduce((a, b) => a + b, 0) || 22}
+                label="Modules"
+                icon={<Layers size={18} />}
+              />
+              <AnimatedStat
+                testid="stat-sessions"
+                value={Object.values(sessionCounts).reduce((a, b) => a + b, 0) || 166}
+                label="Sessions"
+                icon={<BookOpen size={18} />}
+              />
+              <AnimatedStat
+                testid="stat-capstones"
+                value={3}
+                label="Capstone Projects"
+                icon={<Award size={18} />}
+              />
+              <AnimatedStat
+                testid="stat-questions"
+                value={260}
+                label="Practice Questions"
+                suffix="+"
+                icon={<GraduationCap size={18} />}
+              />
+            </div>
+          </section>
+        )}
+
+        {/* Closing CTA band */}
+        {!loading && !error && courses.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-16 sm:mt-20 mb-4 relative"
+            data-testid="courses-closing-cta"
+          >
+            <div className="relative rounded-3xl border border-[var(--color-accent-purple)]/25 bg-gradient-to-br from-[var(--color-accent-purple)]/[0.08] via-transparent to-[var(--color-primary)]/[0.06] backdrop-blur-xl px-6 sm:px-10 py-10 sm:py-14 text-center overflow-hidden">
+              <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.10] blur-[100px] pointer-events-none" />
+              <div className="relative">
+                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-purple)] mb-3">
+                  <Trophy size={12} className="inline -translate-y-0.5 mr-1" /> Career Outcomes
+                </div>
+                <h2 className="font-clash text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-text)] mb-3" data-testid="courses-closing-heading">
+                  Choose Your Career Path
+                </h2>
+                <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto mb-7">
+                  AI-personalized learning paths built for finance careers
+                </p>
+                <BreathingGlow testid="courses-closing-glow">
+                  <button
+                    onClick={() => {
+                      const grid = document.querySelector('[data-testid="courses-grid"]');
+                      if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }}
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                    data-testid="courses-closing-cta-button"
+                  >
+                    <Sparkles size={16} /> View Details <ArrowRight size={16} />
+                  </button>
+                </BreathingGlow>
+              </div>
+            </div>
+          </motion.section>
         )}
 
         {/* Coming soon */}
@@ -312,6 +436,28 @@ export default function CoursesPage() {
           </div>
         )}
       </main>
+      <style>{`
+        @keyframes courses-halo-rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        .course-card-sheen {
+          position: absolute;
+          top: 0; left: -60%;
+          width: 50%; height: 100%;
+          background: linear-gradient(110deg, transparent 0%, rgba(196,181,253,0.10) 45%, rgba(255,255,255,0.18) 50%, rgba(196,181,253,0.10) 55%, transparent 100%);
+          transform: skewX(-18deg);
+          animation: course-card-sheen-anim 6.5s ease-in-out infinite;
+          pointer-events: none;
+        }
+        @keyframes course-card-sheen-anim {
+          0%   { left: -60%; opacity: 0; }
+          18%  { opacity: 0.85; }
+          55%  { left: 110%; opacity: 0.85; }
+          70%  { left: 110%; opacity: 0; }
+          100% { left: -60%; opacity: 0; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .course-card-sheen { animation: none; opacity: 0; }
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,4 +1,67 @@
 # ============================================================================
+# CHANGELOG — 2026-06-24 (Full Cinematic Premium Redesign — Courses + Course Details)
+# ============================================================================
+
+## New shared primitives (`/app/frontend/src/components/cinematic/primitives.jsx`)
+- `useCountUp(target, {duration,start,run})` — rAF ease-out counter.
+- `AnimatedStat` — counter + label + icon + glass tile; runs when in-view via IntersectionObserver; framer-motion fade+slide.
+- `MagneticCard` — wrapper that tilts toward cursor (max ±8°) on mousemove; resting state at `rotateX(-2deg) rotateY(1deg)`; on hover adds `translateY(-8px)`; respects `prefers-reduced-motion`.
+- `LetterStaggerHeadline` — splits headline into letters, fades+slides each in over 0.55s with 30ms stagger + opacity/blur entrance.
+- `BreathingGlow` — radial-gradient halo behind primary CTAs that breathes 0.45↔0.85 opacity at 3.6s.
+- `ScrollProgressBar` — fixed thin violet bar at top of viewport reflecting `scrollTop / (scrollHeight - clientHeight)`.
+
+## `/courses` (CoursesPage.jsx) — cinematic rebuild
+1. **Hero band**: framer-motion slow-rotating constellation ring (22 dots at radius 88 in a 460–560px SVG) + LetterStaggerHeadline "Choose Your Career Path" + delayed subtitle reveal.
+2. **Course cards**: each wrapped in `MagneticCard`; resting tilt + cursor-following ±8° rotateXY + `translateY(-8px)` on hover.
+   - Diagonal sheen (linear-gradient skewed at -18°) loops every 6.5s — premium signal.
+   - Entry: framer-motion `whileInView` stagger (100ms apart) with `viewport={ once:true, amount:0.25 }`.
+   - Grid container uses `perspective: 1200px` so the tilt feels 3D, not flat.
+3. **Stats strip** (4 columns): AnimatedStat counters that tick from 0 to {22 modules, 246 sessions, 3 capstones, 260+ practice questions} on scroll-into-view (1.4s ease-out cubic).
+4. **Closing CTA band**: large glass card with breathing-glow CTA, gradient orb behind, "View Details" pill that smooth-scrolls back up to the grid. Section heading + tagline re-stated (same copy, no new strings).
+
+## Course Details (`CourseDetailsPage.jsx`) — scroll-driven cinematic
+1. **ScrollProgressBar** mounted at very top — thin violet bar updates as user scrolls.
+2. **Hero**:
+   - `LetterStaggerHeadline` on the course title.
+   - Side halo (14 dots) rotating slowly behind the heading.
+   - Description fades in with delay.
+   - Primary CTA wrapped in `BreathingGlow` (works for both "Customize & Enroll" and "Go to Dashboard" variants).
+3. **Stats reveal** (new): 4-tile AnimatedStat grid showing modules, sessions, hours, capstones — counters tick on scroll-into-view.
+4. **Existing module accordion + "What you'll learn"**: unchanged structurally, still uses framer-motion entries via parent staggered animation. Logic, click handlers, expansion are untouched.
+5. **Capstones MOVED FROM TOP TO BOTTOM**: `detail-capstones-bottom` section now sits AFTER the module list & sidebar grid, centered, with "FINAL TRACK OUTPUT · Your Capstone Projects" heading. M23 accordion still has its own copy of the same `CapstoneProjectsGrid` for consistency — single component, single data source.
+6. **Closing CTA band**: large glass card with breathing-glow CTA repeating the primary action (Customize & Enroll / Go to Dashboard).
+7. Sticky mobile CTA bar at bottom preserved.
+
+## Acceptance verification (screenshots)
+1. `/tmp/c1_courses_hero.png` — letter-stagger headline + constellation ring + slow-rotate halo + violet card ✅
+2. `/tmp/c2_courses_cards.png` — stats counter grid (22/246/3/260+) ✅
+3. `/tmp/c3_courses_closing.png` — closing CTA band with breathing-glow "View Details" pill ✅
+4. `/tmp/d1_detail_hero.png` — Equity Research Analyst headline + halo + breathing-glow Go to Dashboard CTA + ScrollProgressBar ✅
+5. `/tmp/d2_detail_stats.png` — 22/246/60h/3 reveal grid centered ✅
+6. `/tmp/d3_detail_capstones_bottom.png` — "Your Capstone Projects" at the BOTTOM (between curriculum & closing CTA) with CAP-01/02/03 + closing CTA below ✅
+7. `/tmp/d4_detail_closing.png` — closing CTA band with breathing-glow Go to Dashboard pill ✅
+8. `/tmp/d5_detail_mobile.png` — 390px mobile: stacked layout, no horizontal scroll, particles + stats + capstones intact ✅
+9. `/tmp/d6_detail_reduced_motion_no_webgl.png` — reduced-motion + WebGL stubbed off: layout fully intact, no animations, no breathing-glow halo, sidebar + stats + hero all readable on the radial-gradient static fallback bg ✅
+
+## Hard rules honored
+- ✅ **Zero copy changes** — every string preserved (titles, CTAs, taglines all routed through existing data).
+- ✅ Module accordion expand/collapse logic untouched.
+- ✅ Capstone routing intact (`CapstoneProjectsGrid` is the same component used on `/capstones` and inside M23).
+- ✅ Enrollment / "Customize & Enroll" / "Go to Dashboard" handlers unchanged.
+- ✅ Mobile-responsive at 375/390px (verified).
+- ✅ WebGL-off → `cinematic-static-fallback` testid takes over.
+- ✅ `prefers-reduced-motion` strips: pulse animations, halo rotation, magnetic tilt, breathing glow, sheen, scroll-progress easing — at both CSS @media and JS-runtime levels.
+- ✅ No regressions on Dashboard / Profile / Settings / Landing (no files touched in those flows).
+
+## Files modified / added
+- `+` `/app/frontend/src/components/cinematic/primitives.jsx`
+- `~` `/app/frontend/src/components/CoursesPage.jsx`
+- `~` `/app/frontend/src/components/CourseDetailsPage.jsx`
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-24 (Unified Dark Theme + Cinematic Courses + Capstones at top)
 # ============================================================================
 

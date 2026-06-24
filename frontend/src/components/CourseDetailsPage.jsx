@@ -3,8 +3,12 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../contexts/ThemeContext';
+import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
+import {
+  LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
+} from './cinematic/primitives';
 
 // Lazy-loaded so the module list paints first (Three.js is ~120KB gzipped).
 const CinematicBackground = lazy(() => import('./CinematicBackground'));
@@ -232,6 +236,8 @@ export default function CourseDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+      {/* Scroll progress — thin violet bar at top of viewport, premium signal */}
+      <ScrollProgressBar />
       {/* Cinematic Three.js bg — denser than /courses since this is a deeper
           page. Dark mode only; light mode keeps its cream ambient orbs. */}
       {theme === 'dark' && (
@@ -302,24 +308,6 @@ export default function CourseDetailsPage() {
           Back to Courses
         </Link>
 
-        {/* Task 3 — Capstone projects surfaced at the top of Course Details
-            so users see the track's final outputs before they scan the
-            module list. Same CapstoneProjectsGrid component used inside M23
-            and on /capstones → single source of truth, no card duplication. */}
-        {!loading && !error && course && (
-          <section className="mb-12" data-testid="detail-capstones-top">
-            <div className="mb-6">
-              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-1">
-                Final Track Output
-              </div>
-              <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)]">
-                Your Capstone Projects
-              </h2>
-            </div>
-            <CapstoneProjectsGrid pathId={courseId} />
-          </section>
-        )}
-
         {/* Loading */}
         {loading && <DetailSkeleton />}
 
@@ -347,15 +335,39 @@ export default function CourseDetailsPage() {
             {/* Left content */}
             <div className="flex-1 min-w-0">
               {/* Hero section */}
-              <section className="mb-12" data-testid="detail-hero">
-                <h1 className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4" data-testid="detail-title">
-                  {course.title}
-                </h1>
-                <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-6 max-w-2xl" data-testid="detail-description">
+              <section className="mb-12 relative" data-testid="detail-hero">
+                {/* Title-side halo dots (smaller variant of /courses hero halo) */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -left-12 -top-8 w-[280px] h-[280px] opacity-40 hidden sm:block"
+                  style={{ animation: 'detail-halo-rotate 48s linear infinite' }}
+                >
+                  <svg viewBox="0 0 200 200" className="w-full h-full">
+                    {Array.from({ length: 14 }).map((_, i) => {
+                      const a = (i / 14) * Math.PI * 2;
+                      const r = 80;
+                      const cx = 100 + Math.cos(a) * r;
+                      const cy = 100 + Math.sin(a) * r;
+                      return <circle key={i} cx={cx} cy={cy} r={1 + (i % 2) * 0.4} fill="#a78bfa" opacity={0.6} />;
+                    })}
+                  </svg>
+                </div>
+                <LetterStaggerHeadline
+                  text={course.title}
+                  className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 tracking-tight relative"
+                  testid="detail-title"
+                />
+                <motion.p
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-6 max-w-2xl"
+                  data-testid="detail-description"
+                >
                   {course.long_description || course.description}
-                </p>
+                </motion.p>
 
-                {/* Stats bar */}
+                {/* Stats bar (preserved for tests/legacy a11y) */}
                 <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-8 text-sm text-[var(--color-text-muted)] font-mono" data-testid="detail-stats">
                   <span className="flex items-center gap-1.5">
                     <Layers size={16} className="text-[var(--color-primary)]" />
@@ -372,28 +384,42 @@ export default function CourseDetailsPage() {
                   <DifficultyBadge level={course.difficulty} />
                 </div>
 
-                {/* CTA */}
+                {/* CTA — wrapped in breathing-glow for premium primary actions */}
                 {isCompleted ? (
                   <span className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold font-bricolage bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20" data-testid="detail-completed-badge">
                     <CheckCircle2 size={18} /> Course Completed
                   </span>
                 ) : isEnrolled ? (
-                  <button
-                    onClick={() => navigate('/dashboard')}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(106,92,255,0.4)] transition-all"
-                    data-testid="detail-go-dashboard"
-                  >
-                    Go to Dashboard <ArrowRight size={16} />
-                  </button>
+                  <BreathingGlow testid="detail-cta-glow">
+                    <button
+                      onClick={() => navigate('/dashboard')}
+                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                      data-testid="detail-go-dashboard"
+                    >
+                      Go to Dashboard <ArrowRight size={16} />
+                    </button>
+                  </BreathingGlow>
                 ) : (
-                  <button
-                    onClick={goCustomize}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all"
-                    data-testid="detail-customize-enroll"
-                  >
-                    {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
-                  </button>
+                  <BreathingGlow testid="detail-cta-glow">
+                    <button
+                      onClick={goCustomize}
+                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                      data-testid="detail-customize-enroll"
+                    >
+                      {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
+                    </button>
+                  </BreathingGlow>
                 )}
+              </section>
+
+              {/* Animated stats reveal — counts up on scroll-into-view */}
+              <section className="mb-14" data-testid="detail-stats-reveal">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+                  <AnimatedStat testid="detail-stat-modules"   value={modules.length || 0}  label="Modules"   icon={<Layers size={18} />} />
+                  <AnimatedStat testid="detail-stat-sessions"  value={totalSessions || 0}   label="Sessions"  icon={<BookOpen size={18} />} />
+                  <AnimatedStat testid="detail-stat-hours"     value={totalHours || 0}      label="Hours"     icon={<Clock size={18} />} suffix="h" />
+                  <AnimatedStat testid="detail-stat-capstones" value={3}                    label="Capstones" icon={<CheckCircle2 size={18} />} />
+                </div>
               </section>
 
               {/* What You'll Learn */}
@@ -573,7 +599,82 @@ export default function CourseDetailsPage() {
             </aside>
           </div>
         )}
+
+        {/* Your Capstone Projects — surfaced near the bottom (after the module
+            list) per the updated brief. Same CapstoneProjectsGrid used inside
+            the M23 accordion expansion and on /capstones → single source of
+            truth. */}
+        {!loading && !error && course && (
+          <motion.section
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-20 mb-16"
+            data-testid="detail-capstones-bottom"
+          >
+            <div className="mb-8 text-center">
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-purple)] mb-2">
+                Final Track Output
+              </div>
+              <h2 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)]" data-testid="detail-capstones-heading">
+                Your Capstone Projects
+              </h2>
+            </div>
+            <CapstoneProjectsGrid pathId={courseId} />
+          </motion.section>
+        )}
+
+        {/* Closing CTA band */}
+        {!loading && !error && course && !isCompleted && (
+          <motion.section
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-10 mb-8"
+            data-testid="detail-closing-cta"
+          >
+            <div className="relative rounded-3xl border border-[var(--color-accent-purple)]/25 bg-gradient-to-br from-[var(--color-accent-purple)]/[0.08] via-transparent to-[var(--color-primary)]/[0.06] backdrop-blur-xl px-6 sm:px-10 py-12 sm:py-16 text-center overflow-hidden">
+              <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[460px] h-[460px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.12] blur-[110px] pointer-events-none" />
+              <div className="relative">
+                <h2 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)] mb-4">
+                  {course.title}
+                </h2>
+                <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-xl mx-auto mb-8">
+                  {course.description}
+                </p>
+                <BreathingGlow testid="detail-closing-glow">
+                  {isEnrolled ? (
+                    <button
+                      onClick={() => navigate('/dashboard')}
+                      className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                      data-testid="detail-closing-cta-button"
+                    >
+                      Go to Dashboard <ArrowRight size={16} />
+                    </button>
+                  ) : (
+                    <button
+                      onClick={goCustomize}
+                      className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                      data-testid="detail-closing-cta-button"
+                    >
+                      {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
+                    </button>
+                  )}
+                </BreathingGlow>
+              </div>
+            </div>
+          </motion.section>
+        )}
       </main>
+
+      <style>{`
+        @keyframes detail-halo-rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @media (prefers-reduced-motion: reduce) {
+          [style*="detail-halo-rotate"] { animation: none !important; }
+        }
+      `}</style>
 
       {/* Sticky mobile CTA */}
       {!loading && !error && course && !isCompleted && (
