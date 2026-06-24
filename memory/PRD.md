@@ -1,4 +1,84 @@
 # ============================================================================
+# CHANGELOG — 2026-06-24 (Landing v3 — Show-off Trio: Hero swap + Problem assembly + Features bespoke 3D + CTA convergence)
+# ============================================================================
+
+## Decisions applied (from previous sanity-check)
+- Focal element → **22-module constellation cluster** (swapped from icosahedron).
+- Pacing → **show-off trio first**: Problem sticky-assembly, Features bespoke-3D, Final-CTA convergence.
+- Audio → **dropped** entirely.
+- Dials unchanged.
+
+## 1. Hero focal swap — 22-module constellation cluster
+- `LandingHero3D.jsx` icosahedron + inner glow replaced with a **THREE.Group** of 22 violet "module star" nodes connected by a proximity graph (each node connects to its 2-3 nearest neighbours, dedup'd, rendered as a single `LineSegments`).
+- Each node has its own `phase` so the cluster twinkles asynchronously (per-node opacity 0.55 ↔ 1.0 sinusoid at 1.6 Hz, randomized phase).
+- Cluster rotates as a single group: slow Y axis + gentle X axis sway.
+- Lines breathe at 0.6 Hz to stay alive without competing with the node twinkle.
+- Mouse-parallax still inherits from the root, so the cluster feels anchored to the camera.
+- Curriculum-as-art read confirmed in the hero shot.
+
+## 2. Problem sticky scroll-assembly — `ProblemAssemblyScene.jsx` + `ProblemSection.js`
+- New **`ProblemAssemblyScene.jsx`** (Three.js): 24 `PlaneGeometry` quads start in chaos (random world position cube, random rotation), and ease into a smooth growth-curve polyline as `progress: 0 → 1`.
+- An `easeInOutCubic` is applied so the assembly feels weighted, not linear.
+- Connecting `Line` fades in from opacity 0 → 0.95 across progress 0.35–0.9 so the chart "draws itself" right at the climax.
+- `ProblemSection.js` rewritten:
+  - Outer container `minHeight: 170vh` so scrolling through it locks the inner panel for ~70% of viewport height of scroll.
+  - Inner panel is `sticky top-0 h-screen` — pinned during the lock.
+  - `IntersectionObserver` (rootMargin `120% 0px 120% 0px`) lazy-mounts the Three.js scene.
+  - Scroll-progress derived from the outer container's `getBoundingClientRect()`, normalized to `[0,1]` over the lock zone, passed to the scene as the `progress` prop.
+  - Top & bottom gradient overlays soften the scene's edges so it doesn't visually compete with adjacent sections.
+- Reduced-motion → progress frozen at 1 (assembled), scene mounts immediately.
+- WebGL-off → static dark gradient fallback rendered by the scene itself.
+
+## 3. Features bespoke 3D per card — `FeatureMicro3D.jsx` + `FeaturesSection.js`
+- New **`FeatureMicro3D.jsx`**: 92×92 CSS-3D-tilted container (`perspective: 600px`, `transform-style: preserve-3d`) rendering a kind-specific SVG glyph.
+- Kind dispatched by feature title keywords; 7 glyphs implemented:
+  - `brain` — 8-node neural cluster + outer rotating ring (Pari, AI Roadmap)
+  - `shield` — shield + animated checkmark (AI-Proof Your Career)
+  - `pages` — 3 stacked Z-offset notebook pages (Interactive Notes)
+  - `candles` — 4 bobbing candlestick bars on a baseline (Real-World Simulations)
+  - `mic` — mic body + 3 expanding halo rings (Mock Interviews)
+  - `document` — folded resume page with text-line marks (Resume + LinkedIn)
+  - `trophy` — gold trophy + rotating dashed orbit + star (NISM/CFI/Gamification)
+- Cursor-magnetic 3D tilt on each glyph (±14° rotateX/rotateY following the cursor over the wrapper).
+- `hovered={isHover}` prop triggers faster animation speeds (e.g. trophy rotation 16s→5s; ring rotation 12s→4s).
+- Hover state on the parent card also lifts the card 1.5px + strengthens border to violet 0.55a + adds 18px violet shadow.
+- All keyframes have a single `@media (prefers-reduced-motion: reduce)` kill-switch.
+- Small cards keep the original Lucide icon (preserves layout discipline at the bottom of the grid).
+
+## 4. Final CTA particle convergence — `FinalCTAConvergence.jsx` + `FinalCTASection.js`
+- New **`FinalCTAConvergence.jsx`** (Three.js): 280 desktop / 160 mobile particles scattered across a 12-wide ellipse; each lerps toward a centre-bottom anchor on a 6-second cycle with per-particle phase offset, producing a continuous "gravity well" pull rather than a one-shot convergence.
+- Material is additive-blend violet (#c4b5fd) PointsMaterial; overall opacity oscillates between 0.55 and 0.85 to give the well a heartbeat.
+- IntersectionObserver pauses animation when the section is off-screen — zero CPU when not visible.
+- `FinalCTASection.js` adds a CSS-only **breathing-glow halo** (480×280 radial gradient, blur 36px, 4.5s breathe) centered on the form so the gravity well visually anchors at the CTA. Reduced-motion freezes the halo at full opacity.
+
+## Files modified / added
+- `+` `/app/frontend/src/components/landing/ProblemAssemblyScene.jsx`
+- `+` `/app/frontend/src/components/landing/FinalCTAConvergence.jsx`
+- `+` `/app/frontend/src/components/landing/FeatureMicro3D.jsx`
+- `~` `/app/frontend/src/components/landing/LandingHero3D.jsx` — focal swap (icosahedron → 22-node constellation cluster).
+- `~` `/app/frontend/src/components/ProblemSection.js` — sticky scroll-lock + lazy-mounted Three.js scene.
+- `~` `/app/frontend/src/components/FeaturesSection.js` — wired FeatureMicro3D into large/medium cards + hover-tracked state.
+- `~` `/app/frontend/src/components/FinalCTASection.js` — lazy-mounted convergence scene + breathing halo.
+
+## Verification screenshots
+- `/tmp/v3_hero_constellation.png` — 22-node violet constellation cluster + connecting lines centered behind the hero headline ✅
+- `/tmp/v3_problem_mid.png` — broken violet fragments and the assembled chart-line visible behind the three problem cards (mid-assembly) ✅
+- `/tmp/v3_features_hover.png` — every large/medium card has its bespoke glyph (brain / shield+check / brain / pages / candles / bars), AI-Proof card highlighted in hover state with strengthened violet border ✅
+- `/tmp/v3_cta_convergence.png` — violet particles streaming toward the form centre + breathing-glow halo behind the inputs ✅
+- `/tmp/v3_mobile_hero.png` — 390px mobile: constellation cluster overlays the title, no horizontal scroll, sticky CTA bar visible ✅
+
+## Pacing acceptance
+- Hero swap ✅
+- Problem sticky scroll-assembly ✅
+- Features bespoke 3D ✅
+- Final CTA convergence ✅
+- Theme toggle preserved ✅
+- All hard constraints honored: zero copy changes, all sections present, mobile fluid, reduced-motion + WebGL-off fallbacks, no regression on Dashboard/Profile/Settings.
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-24 (Landing v3 — Proof of Life: Hero focal + Intro + Cursor trail)
 # ============================================================================
 

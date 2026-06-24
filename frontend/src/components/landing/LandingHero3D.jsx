@@ -115,10 +115,12 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
 
     let renderer, scene, camera, root, points, grid;
     let particleGeom, particleMat, gridMats = [];
-    // Cinematic focal element (dark mode only): low-poly wireframe icosahedron
-    // with violet glowing edges. Rotates on two axes + breathes (subtle scale
-    // pulse). Hand-built, no extra dependency.
-    let focal, focalGeom, focalMat, focalGlow, focalGlowGeom, focalGlowMat;
+    // Cinematic focal element (dark mode only): a 3D cluster of 22 violet
+    // "module star" nodes connected by faint lines, gently rotating + each
+    // node twinkling on a phase-offset opacity loop. Curriculum-as-art.
+    let focal;                                    // THREE.Group
+    let focalNodes = [];                          // Array of {mesh, geom, mat, phase}
+    let focalLines, focalLinesGeom, focalLinesMat;
     let raf = 0;
     let running = true;
     let onMouseMove, onResize, onVis, onContextLost;
@@ -203,37 +205,70 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       root.add(points);
       root.add(grid);
 
-      /* Cinematic focal element — DARK MODE ONLY. Low-poly icosahedron
-         with a thin violet wireframe + an additive inner soft glow sphere.
-         Rotates slowly on two axes, breathes via subtle scale pulse. Floats
-         centered just above the grid horizon, slightly behind the camera
-         plane so the headline overlay can sit on top of it cleanly. */
+      /* Cinematic focal element — DARK MODE ONLY. A cluster of 22 violet
+         "module star" nodes connected by faint lines. Position is a noisy
+         sphere of radius ~1.8 (slight Z bias so the cluster reads volumetric
+         instead of flat). Each node twinkles via a per-node phase offset on
+         an opacity oscillation (0.55 ↔ 1.0). Cluster slowly rotates as a
+         single group; mouse-parallax inherits from root. */
       if (theme !== 'light') {
-        focalGeom = new THREE.IcosahedronGeometry(1.6, 1);
-        const focalEdges = new THREE.EdgesGeometry(focalGeom);
-        focalMat = new THREE.LineBasicMaterial({
-          color: new THREE.Color('#c4b5fd'),
-          transparent: true,
-          opacity: 0.9,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false,
-        });
-        focal = new THREE.LineSegments(focalEdges, focalMat);
-        focal.position.set(0, 0.4, -2);
-        root.add(focal);
-        // Inner soft glow sphere — additive, low opacity, makes the
-        // icosahedron read as if lit from within. No lights needed.
-        focalGlowGeom = new THREE.SphereGeometry(0.9, 24, 24);
-        focalGlowMat = new THREE.MeshBasicMaterial({
+        focal = new THREE.Group();
+        focal.position.set(0, 0.4, -1.6);
+        const nodeCount = 22;
+        const positions = [];
+        for (let i = 0; i < nodeCount; i++) {
+          // Pseudo-uniform sphere sample biased toward visible front.
+          const u = Math.random();
+          const v = Math.random();
+          const phi = Math.acos(2 * u - 1);
+          const theta = 2 * Math.PI * v;
+          const r = 1.55 + Math.random() * 0.45;
+          const x = r * Math.sin(phi) * Math.cos(theta);
+          const y = r * Math.cos(phi) * 0.6;          // flatten on Y a touch
+          const z = r * Math.sin(phi) * Math.sin(theta) * 0.85;
+          positions.push([x, y, z]);
+          const nodeGeom = new THREE.SphereGeometry(0.06 + Math.random() * 0.025, 12, 12);
+          const nodeMat = new THREE.MeshBasicMaterial({
+            color: new THREE.Color('#c4b5fd'),
+            transparent: true,
+            opacity: 0.92,
+            blending: THREE.AdditiveBlending,
+            depthWrite: false,
+          });
+          const mesh = new THREE.Mesh(nodeGeom, nodeMat);
+          mesh.position.set(x, y, z);
+          focal.add(mesh);
+          focalNodes.push({ mesh, geom: nodeGeom, mat: nodeMat, phase: Math.random() * Math.PI * 2 });
+        }
+        // Connect each node to its 2-3 nearest neighbours — produces a
+        // proximity graph that reads like a curriculum dependency map.
+        const linePositions = [];
+        for (let i = 0; i < nodeCount; i++) {
+          const ai = positions[i];
+          const dists = positions
+            .map((p, j) => ({ j, d: (p[0]-ai[0])**2 + (p[1]-ai[1])**2 + (p[2]-ai[2])**2 }))
+            .filter((x) => x.j !== i)
+            .sort((a, b) => a.d - b.d)
+            .slice(0, 3);
+          dists.forEach(({ j }) => {
+            // Dedup by ordered pair to avoid double-rendering each segment.
+            if (j > i) {
+              linePositions.push(ai[0], ai[1], ai[2], positions[j][0], positions[j][1], positions[j][2]);
+            }
+          });
+        }
+        focalLinesGeom = new THREE.BufferGeometry();
+        focalLinesGeom.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+        focalLinesMat = new THREE.LineBasicMaterial({
           color: new THREE.Color('#8b5cf6'),
           transparent: true,
-          opacity: 0.18,
+          opacity: 0.30,
           blending: THREE.AdditiveBlending,
           depthWrite: false,
         });
-        focalGlow = new THREE.Mesh(focalGlowGeom, focalGlowMat);
-        focalGlow.position.copy(focal.position);
-        root.add(focalGlow);
+        focalLines = new THREE.LineSegments(focalLinesGeom, focalLinesMat);
+        focal.add(focalLines);
+        root.add(focal);
       }
 
       scene.add(root);
@@ -269,17 +304,17 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
           root.position.y += (mouse.y * 0.4 - root.position.y) * 0.04;
           points.rotation.z = t * 0.012;
           grid.position.z = (t * 0.4) % 4 - 2;
-          // Focal element: independent rotation (faster) + breathing scale
-          // pulse (subtle 0.98↔1.06). Mouse-parallax inherits from root so
-          // the icosahedron feels anchored to the camera, not orphaned.
+          // Focal cluster: slow rotation as a single group + per-node twinkle.
           if (focal) {
-            focal.rotation.x = t * 0.18;
-            focal.rotation.y = t * 0.13;
-            const breath = 1 + Math.sin(t * 1.05) * 0.04;
-            focal.scale.setScalar(breath);
-            if (focalGlow) {
-              focalGlow.scale.setScalar(breath * 1.04);
-              focalGlow.material.opacity = 0.15 + Math.sin(t * 1.3) * 0.06;
+            focal.rotation.x = Math.sin(t * 0.12) * 0.18;
+            focal.rotation.y = t * 0.09;
+            for (let i = 0; i < focalNodes.length; i++) {
+              const n = focalNodes[i];
+              n.mat.opacity = 0.55 + 0.45 * (0.5 + 0.5 * Math.sin(t * 1.6 + n.phase));
+            }
+            // Lines breathe gently in sympathy with the nodes.
+            if (focalLinesMat) {
+              focalLinesMat.opacity = 0.22 + 0.10 * (0.5 + 0.5 * Math.sin(t * 0.6));
             }
           }
           renderer.render(scene, camera);
@@ -313,10 +348,9 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
         }
         if (particleGeom) particleGeom.dispose();
         if (particleMat) particleMat.dispose();
-        if (focalGeom) focalGeom.dispose();
-        if (focalMat) focalMat.dispose();
-        if (focalGlowGeom) focalGlowGeom.dispose();
-        if (focalGlowMat) focalGlowMat.dispose();
+        if (focalLinesGeom) focalLinesGeom.dispose();
+        if (focalLinesMat) focalLinesMat.dispose();
+        focalNodes.forEach((n) => { try { n.geom.dispose(); n.mat.dispose(); } catch { /* ignore */ } });
         gridMats.forEach((m) => m && m.dispose());
         if (grid && grid.geometry) grid.geometry.dispose();
       } catch {

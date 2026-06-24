@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import FeatureMicro3D from '@/components/landing/FeatureMicro3D';
 
 const features = [
   {
@@ -135,6 +137,7 @@ function RoadmapVisual() {
 
 export default function FeaturesSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
+  const [hoveredIdx, setHoveredIdx] = useState(null);
 
   return (
     <section
@@ -160,25 +163,34 @@ export default function FeaturesSection() {
         <div className="grid grid-cols-12 gap-4">
           {features.map((feature, i) => {
             const Icon = feature.icon;
+            const useMicro3D = feature.size !== 'small';
+            const isHover = hoveredIdx === i;
             return (
               <div
                 key={feature.title}
+                onMouseEnter={() => setHoveredIdx(i)}
+                onMouseLeave={() => setHoveredIdx(null)}
                 className={`${feature.span} glass-card glass-card-hover rounded-2xl transition-all duration-300 ${
                   feature.size === 'large' ? 'p-8' : feature.size === 'medium' ? 'p-6' : 'p-5'
                 } ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'} ${
                   feature.gradient ? `bg-gradient-to-br ${feature.gradient}` : ''
-                }`}
+                } ${isHover ? 'shadow-[0_18px_60px_rgba(139,92,246,0.32)] -translate-y-1.5' : ''}`}
                 style={{
                   animationDelay: `${0.1 + i * 0.05}s`,
-                  borderColor: feature.borderColor,
+                  borderColor: isHover ? 'rgba(167,139,250,0.55)' : feature.borderColor,
+                  willChange: 'transform',
                 }}
                 data-testid={`feature-card-${i}`}
               >
-                {Icon && (
+                {useMicro3D ? (
+                  <div className="mb-4 -ml-2" data-testid={`feature-card-${i}-3d-wrap`}>
+                    <FeatureMicro3D title={feature.title} hovered={isHover} />
+                  </div>
+                ) : (Icon && (
                   <div className="w-10 h-10 rounded-lg bg-[var(--color-surface)] flex items-center justify-center mb-4">
                     <Icon size={feature.size === 'small' ? 18 : 22} className="text-[var(--color-accent-purple)]" />
                   </div>
-                )}
+                ))}
                 <h3
                   className={`font-clash text-[var(--color-text)] mb-2 ${
                     feature.size === 'large' ? 'text-2xl' : feature.size === 'medium' ? 'text-lg' : 'text-base'
