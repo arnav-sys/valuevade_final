@@ -16,26 +16,12 @@ import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import { courseJsonLd, orgJsonLd } from '@/components/landing/jsonLd';
 import LandingIntroSequence from '@/components/landing/LandingIntroSequence';
+import { useTheme } from '@/contexts/ThemeContext';
 import '@/components/landing/landing-dark.css';
 
 const LandingHero3D = lazy(() => import('@/components/landing/LandingHero3D'));
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
-/* One-time migration: wipe any pre-v2 `valuevade_landing_theme` value so
- * anyone who toggled to light during testing gets dark on their next visit.
- * After v2 is stamped, normal persistence resumes. Runs at module import
- * time — strictly before any LandingPage useState initializer fires. */
-const LANDING_THEME_PREF_VERSION = 'v2';
-if (typeof window !== 'undefined') {
-  try {
-    const stored = window.localStorage.getItem('valuevade_landing_theme_version');
-    if (stored !== LANDING_THEME_PREF_VERSION) {
-      window.localStorage.removeItem('valuevade_landing_theme');
-      window.localStorage.setItem('valuevade_landing_theme_version', LANDING_THEME_PREF_VERSION);
-    }
-  } catch { /* localStorage unavailable — fall through to dark default */ }
-}
 
 export default function LandingPage() {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -43,19 +29,12 @@ export default function LandingPage() {
   const [showMobileBar, setShowMobileBar] = useState(true);
   const [refCode, setRefCode] = useState(null);
 
-  // Landing-only theme. 'dark' = cinematic three.js, 'light' = original palette.
-  // Persisted in localStorage so visitor preference sticks across sessions.
-  const [landingTheme, setLandingTheme] = useState(() => {
-    if (typeof window === 'undefined') return 'dark';
-    return window.localStorage.getItem('valuevade_landing_theme') === 'light' ? 'light' : 'dark';
-  });
-  const toggleLandingTheme = () => {
-    setLandingTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      try { window.localStorage.setItem('valuevade_landing_theme', next); } catch { /* ignore */ }
-      return next;
-    });
-  };
+  // Theme is now centrally owned by ThemeContext (single source of truth
+  // for both landing AND auth-gated routes). Landing simply derives its
+  // dark/light split from `theme` and mirrors the toggle through.
+  const { theme, toggleTheme } = useTheme();
+  const landingTheme = theme;
+  const toggleLandingTheme = toggleTheme;
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
