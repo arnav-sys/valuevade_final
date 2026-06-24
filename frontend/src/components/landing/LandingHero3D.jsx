@@ -115,6 +115,10 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
 
     let renderer, scene, camera, root, points, grid;
     let particleGeom, particleMat, gridMats = [];
+    // Cinematic focal element (dark mode only): low-poly wireframe icosahedron
+    // with violet glowing edges. Rotates on two axes + breathes (subtle scale
+    // pulse). Hand-built, no extra dependency.
+    let focal, focalGeom, focalMat, focalGlow, focalGlowGeom, focalGlowMat;
     let raf = 0;
     let running = true;
     let onMouseMove, onResize, onVis, onContextLost;
@@ -198,6 +202,40 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       root = new THREE.Group();
       root.add(points);
       root.add(grid);
+
+      /* Cinematic focal element — DARK MODE ONLY. Low-poly icosahedron
+         with a thin violet wireframe + an additive inner soft glow sphere.
+         Rotates slowly on two axes, breathes via subtle scale pulse. Floats
+         centered just above the grid horizon, slightly behind the camera
+         plane so the headline overlay can sit on top of it cleanly. */
+      if (theme !== 'light') {
+        focalGeom = new THREE.IcosahedronGeometry(1.6, 1);
+        const focalEdges = new THREE.EdgesGeometry(focalGeom);
+        focalMat = new THREE.LineBasicMaterial({
+          color: new THREE.Color('#c4b5fd'),
+          transparent: true,
+          opacity: 0.9,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        focal = new THREE.LineSegments(focalEdges, focalMat);
+        focal.position.set(0, 0.4, -2);
+        root.add(focal);
+        // Inner soft glow sphere — additive, low opacity, makes the
+        // icosahedron read as if lit from within. No lights needed.
+        focalGlowGeom = new THREE.SphereGeometry(0.9, 24, 24);
+        focalGlowMat = new THREE.MeshBasicMaterial({
+          color: new THREE.Color('#8b5cf6'),
+          transparent: true,
+          opacity: 0.18,
+          blending: THREE.AdditiveBlending,
+          depthWrite: false,
+        });
+        focalGlow = new THREE.Mesh(focalGlowGeom, focalGlowMat);
+        focalGlow.position.copy(focal.position);
+        root.add(focalGlow);
+      }
+
       scene.add(root);
 
       const mouse = { x: 0, y: 0 };
@@ -231,6 +269,19 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
           root.position.y += (mouse.y * 0.4 - root.position.y) * 0.04;
           points.rotation.z = t * 0.012;
           grid.position.z = (t * 0.4) % 4 - 2;
+          // Focal element: independent rotation (faster) + breathing scale
+          // pulse (subtle 0.98↔1.06). Mouse-parallax inherits from root so
+          // the icosahedron feels anchored to the camera, not orphaned.
+          if (focal) {
+            focal.rotation.x = t * 0.18;
+            focal.rotation.y = t * 0.13;
+            const breath = 1 + Math.sin(t * 1.05) * 0.04;
+            focal.scale.setScalar(breath);
+            if (focalGlow) {
+              focalGlow.scale.setScalar(breath * 1.04);
+              focalGlow.material.opacity = 0.15 + Math.sin(t * 1.3) * 0.06;
+            }
+          }
           renderer.render(scene, camera);
         } catch (err) {
           // eslint-disable-next-line no-console
@@ -262,6 +313,10 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
         }
         if (particleGeom) particleGeom.dispose();
         if (particleMat) particleMat.dispose();
+        if (focalGeom) focalGeom.dispose();
+        if (focalMat) focalMat.dispose();
+        if (focalGlowGeom) focalGlowGeom.dispose();
+        if (focalGlowMat) focalGlowMat.dispose();
         gridMats.forEach((m) => m && m.dispose());
         if (grid && grid.geometry) grid.geometry.dispose();
       } catch {

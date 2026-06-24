@@ -15,6 +15,7 @@ import FinalCTASection from '@/components/FinalCTASection';
 import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import { courseJsonLd, orgJsonLd } from '@/components/landing/jsonLd';
+import LandingIntroSequence from '@/components/landing/LandingIntroSequence';
 import '@/components/landing/landing-dark.css';
 
 const LandingHero3D = lazy(() => import('@/components/landing/LandingHero3D'));
@@ -131,6 +132,7 @@ export default function LandingPage() {
         <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
       </Helmet>
       <CustomCursor />
+      <LandingIntroSequence />
       <Navbar
         onJoinWaitlist={scrollToWaitlist}
         landingTheme={landingTheme}

@@ -42,8 +42,49 @@ body.custom-cursor * {
   cursor: none !important;
 }
 
+/* Violet trail dots — landing only. Position-only, animated via JS. */
+.cursor-trail-dot {
+  position: fixed;
+  background: var(--color-accent-pink, #c4b5fd);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-accent-pink, #c4b5fd) 50%, transparent);
+  transition: opacity 220ms ease;
+}
+.landing-light .cursor-trail-dot {
+  background: var(--color-primary);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+/* Click ripple — micro-interaction; spawned at click coord, lives 700ms */
+.cursor-ripple {
+  position: fixed;
+  width: 8px; height: 8px;
+  margin: -4px 0 0 -4px;
+  border: 2px solid var(--color-accent-pink, #c4b5fd);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9997;
+  opacity: 0.75;
+  animation: cursor-ripple-anim 700ms cubic-bezier(.22,1,.36,1) both;
+}
+.landing-light .cursor-ripple {
+  border-color: var(--color-primary);
+}
+@keyframes cursor-ripple-anim {
+  0%   { width: 8px;   height: 8px;   opacity: 0.85; }
+  100% { width: 110px; height: 110px; opacity: 0; margin: -55px 0 0 -55px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-trail-dot { display: none !important; }
+  .cursor-ripple    { display: none !important; }
+}
+
 @media (hover: none) {
-  .cursor-dot, .cursor-ring {
+  .cursor-dot, .cursor-ring, .cursor-trail-dot {
     display: none !important;
   }
 }

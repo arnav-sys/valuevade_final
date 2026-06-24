@@ -1,4 +1,76 @@
 # ============================================================================
+# CHANGELOG — 2026-06-24 (Landing v3 — Proof of Life: Hero focal + Intro + Cursor trail)
+# ============================================================================
+
+## Goal
+"Proof of life" iteration on the landing — quick sanity-check signal of where
+the full Landing v3 redesign is heading. The user wants Linear/Vercel/Stripe/
+Apple-iPad-Pro/Lusion energy across the whole page; this iteration ships the
+THREE most identity-defining changes first so we can validate creative
+direction before going deep on every section.
+
+## Shipped (this iteration)
+
+### 1. **Intro Sequence** — `LandingIntroSequence.jsx` (new)
+- Full-viewport overlay (`#08080f`) with a radial violet spotlight.
+- "VALUEVADE" wordmark assembles letter-by-letter (65ms stagger) — each
+  letter flies in from a random offset with rotation + blur + scale, then
+  settles with cubic ease-out.
+- Holds for ~300ms, then fades out (480ms ease-out) and unmounts.
+- Gated by `localStorage['valuevade_intro_played']` — plays only on first
+  visit per browser.
+- Skipped entirely under `prefers-reduced-motion`.
+- CSS-only (no three.js) — keeps first paint cheap.
+
+### 2. **Hero focal element** — `LandingHero3D.jsx` (extended)
+- Low-poly **wireframe icosahedron** (radius 1.6, detail 1) made of violet
+  edges (`#c4b5fd`, additive blending, opacity 0.9) — center of the canvas.
+- Inner additive **glow sphere** (`#8b5cf6`, opacity 0.18, additive) creates
+  a soft "lit from within" look — no actual lights required.
+- Independent rotation (faster than the particle root) plus a **breathing
+  scale pulse** (0.96 ↔ 1.04, 1.05 Hz) that the glow sphere echoes at
+  slight phase offset.
+- Mouse parallax still inherits from the root group, so the icosahedron
+  feels anchored to the camera, not orphaned in space.
+- DARK MODE ONLY — light mode keeps the original cream particle aesthetic.
+
+### 3. **Cursor trail + click ripple** — `CustomCursor.js` (extended)
+- Existing hot dot + lerp ring preserved.
+- New: 10-element **violet trail** rendered as fixed-position divs, each
+  representing a stale cursor position from the history buffer; size + opacity
+  decrease with age (newest 7px @ 0.42 opacity, oldest 2px @ 0.04).
+- New: **click ripple** — on any `mousedown`, spawn a fixed div at the
+  click coordinates that animates from 8px → 110px with opacity fade
+  (700ms cubic-bezier). Removes itself on `animationend`.
+- Both gated by `prefers-reduced-motion` and `hover: none` (touch).
+- Light-mode variant uses `--color-primary` (deep indigo); dark stays
+  violet.
+
+## Files modified / added
+- `+` `/app/frontend/src/components/landing/LandingIntroSequence.jsx`
+- `~` `/app/frontend/src/components/landing/LandingHero3D.jsx` — focal
+  icosahedron + glow sphere + breathing loop + disposal.
+- `~` `/app/frontend/src/components/CustomCursor.js` — trail + ripple.
+- `~` `/app/frontend/src/App.css` — `.cursor-trail-dot`, `.cursor-ripple`,
+  `cursor-ripple-anim` keyframe, reduced-motion overrides.
+- `~` `/app/frontend/src/components/LandingPage.js` — mounts `<LandingIntroSequence />`.
+
+## Screenshots
+- `/tmp/intro_mid.png` — VALUEVADE wordmark overlay mid-fade against the hero behind it ✅
+- `/tmp/hero_focal.png` — wireframe icosahedron + inner glow centered in the hero, headline + roadmap card framing it ✅
+- `/tmp/hero_click_ripple.png` — expanding violet ring at click coordinates + visible trail dots ✅
+
+## Status
+- Sanity-check pending from user before going deep on:
+  Problem-section sticky-scroll-assembly scene, Features bespoke micro-3D-per-card,
+  Comparison split-3D, How-It-Works 3D timeline path, AI-Proof neural-network
+  bg + count-up stats, Testimonials 3D card carousel, Final-CTA particle
+  convergence, ambient audio toggle, footer.
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-24 (Full Cinematic Premium Redesign — Courses + Course Details)
 # ============================================================================
 
