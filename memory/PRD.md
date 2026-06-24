@@ -1,4 +1,107 @@
 # ============================================================================
+# CHANGELOG — 2026-06-24 (Hero v4 — Typography-as-the-Hero)
+# ============================================================================
+
+## What changed
+`HeroSection.js` rewritten end-to-end. Only the first viewport changes;
+everything below (Problem assembly, Features bespoke 3D, Comparison,
+How-It-Works, AI-Proof, Testimonials, Final CTA convergence, Footer) is
+untouched.
+
+## Concept
+The headline IS the centerpiece. Massive Space Grotesk (clamp 60–184px)
+dominates ~70% of the viewport. The constellation cluster, the roadmap
+card, and the previous side-by-side layout are out. The supporting cast —
+subtitle, CTAs, trust strip — drops into a small floating glassmorphic bar
+at the bottom of the viewport.
+
+## Word-by-word reveal (replaces letter stagger)
+Each word has its own physics:
+| Word        | Kind      | Notes |
+|-------------|-----------|-------|
+| Stop        | impact    | translateY -32 + scale 1.18 + skewY -3°, blur 10→0 |
+| Guessing.   | impact    | same impact curve, 280ms after Stop |
+| Start       | draw-in   | translateY +18 + scale 0.96 → settle |
+| Building    | settle    | gentle slide+blur |
+| Your        | settle, scale 0.78 (smaller supporting word, 0.86 opacity) |
+| **Finance** | glow      | violet linear-gradient text fill (`#c4b5fd → #8b5cf6 → #7c4ddb`) + drop-shadow 24px violet halo, then **continuous violet pulse** (3.6s, infinite) — the brand-marked word |
+| Career.     | final     | letter-spacing easing 0.15em → -0.02em + opacity, lands like a closing chord |
+
+After all words land (~2700ms), the whole headline picks up a slow
+breathe loop (`scale 1.0 ↔ 1.012`, 4.4s).
+
+## Cursor-driven camera
+`requestAnimationFrame` loop lerps a `(rotateX, rotateY)` toward the
+mouse-mapped target at lerp rate 0.06 per frame. Capped at ±5° per the
+spec. The headline stage uses `transformStyle: preserve-3d` so the
+rotation feels like the camera is moving, not the text.
+
+## Click-anywhere ripple
+Any click inside the `#hero` section bumps a `rippleKey` state which
+re-mounts the sweep span; the 700ms specular sweep (linear-gradient with
+white middle stripe + mask) travels left→right across the headline.
+
+## "Surprise" micro-interaction added (per "permission to surprise")
+**Continuous violet drop-shadow pulse on Finance** — the brand-marked
+word doesn't just have a static gradient; its drop-shadow oscillates
+between 16px and 36px violet glow on a 3.6s loop after the entrance
+animation completes. Makes the word look lit from within. Different
+`animation-name` chain on Finance combines its `glow-in` entrance with
+the looping `violet-pulse` — visible in all four screenshots.
+
+## Layout
+- `<section #hero>` `min-h-screen flex flex-col`.
+- Top region: `flex-1 flex items-center justify-center` with the
+  `perspective: 1400px` container that holds the stage.
+- Bottom region: floating glass bar `max-w-3xl` rounded card with
+  border + backdrop-blur, enters 2400ms in via `hero-bar-in` (700ms
+  cubic-bezier slide-up + blur-out).
+- The roadmap-card previously living in the hero is **not rendered** in
+  this version. Other sections were not touched; if you want the card
+  surfaced elsewhere I can stash it in a new slim section below.
+
+## Light mode
+`:root:not(.dark)` overrides:
+- Ambient lighting uses indigo + blue gradients instead of violet.
+- Headline text-shadow stack switches to indigo tints.
+- Vignette removed (cream stays evenly lit).
+
+## Reduced motion + WebGL-off
+- `useReducedMotion()` skips the rAF camera loop, freezes the headline
+  in its final state, kills bar entrance + violet pulse + breathing.
+- CSS `@media (prefers-reduced-motion: reduce)` is the belt-and-braces
+  layer if the hook misfires.
+- This hero is pure CSS + DOM — no Three.js dependency at all in the
+  hero, so WebGL-off doesn't affect it. The page's underlying
+  `LandingHero3D` constellation cluster still has its own static fallback.
+
+## Constraints honored
+- ✅ Zero copy changes — every word, subtitle, CTA label, trust strip
+  preserved verbatim from the existing HeroSection.
+- ✅ Only the hero viewport changed.
+- ✅ Theme toggle works in both modes.
+- ✅ Mobile (390px) — verified, no horizontal scroll, typography wraps
+  naturally, floating bar stacks the CTAs vertically.
+- ✅ Reduced-motion — verified, headline in settled state, no
+  animations.
+- ✅ All `data-testid`s preserved or extended (hero-section, hero-headline,
+  hero-floating-bar, hero-cta-row, hero-join-waitlist-btn,
+  hero-how-it-works-btn, hero-subhead, hero-trust-strip, plus new
+  per-word testids).
+
+## Files modified
+- `~` `/app/frontend/src/components/HeroSection.js` — complete rewrite (~280 LOC, replaces the 328-LOC version).
+
+## Verification screenshots
+- `/tmp/v4_hero_dark.png` — desktop dark, mid-cursor parallax ✅
+- `/tmp/v4_hero_light.png` — desktop light (ThemeContext switch) ✅
+- `/tmp/v4_hero_mobile.png` — 390px mobile dark, vertical CTA stack ✅
+- `/tmp/v4_hero_reduced.png` — reduced-motion desktop, headline in final state ✅
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-24 (Landing v3 — Show-off Trio: Hero swap + Problem assembly + Features bespoke 3D + CTA convergence)
 # ============================================================================
 
