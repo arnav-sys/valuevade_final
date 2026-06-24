@@ -1,11 +1,13 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { X, Check } from 'lucide-react';
+import { NeuralNetBg } from '@/components/landing/CinematicSections';
 
 const replacing = ['Junior Analyst', 'Report Writer', 'Data Screener'];
 const irreplaceable = ['AI-Assisted Modelling', 'Python for Finance', 'Prompt Engineering', 'Strategic Judgement'];
 
 export default function AIProofSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
+  const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
     <section
@@ -13,7 +15,10 @@ export default function AIProofSection() {
       className="relative py-24 lg:py-32 overflow-hidden bg-[var(--bg-primary)]"
       data-testid="ai-proof-section"
     >
-      <div className="absolute top-0 left-0 w-full h-32" style={{ background: 'linear-gradient(135deg, rgba(36,107,253,0.08), rgba(106,92,255,0.08))' }} />
+      {/* Bespoke neural-network bg — slowly rotating proximity graph,
+          edge opacity pulses to suggest computation. */}
+      <NeuralNetBg mobile={mobile} />
+      <div className="absolute top-0 left-0 w-full h-32 z-[1]" style={{ background: 'linear-gradient(135deg, rgba(36,107,253,0.08), rgba(106,92,255,0.08))' }} />
 
       <div ref={sectionRef} className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-6">

@@ -1,5 +1,6 @@
 import { Star } from 'lucide-react';
 import { useScrollAnimation, useCountUp } from '@/hooks/useScrollAnimation';
+import { TestimonialsCarousel3D } from '@/components/landing/CinematicSections';
 
 const testimonials = [
   { quote: "Finally a platform that doesn't just dump content at me. The roadmap showed me exactly what I was missing for my AM interviews.", name: 'Priya S.', role: 'CFA L1 Candidate, Delhi' },
@@ -43,26 +44,8 @@ export default function TestimonialsSection() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-          {testimonials.map((t, i) => (
-            <div
-              key={t.name}
-              className={`glass-card glass-card-hover rounded-2xl p-6 lg:p-8 transition-all duration-300 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-              style={{ animationDelay: `${0.2 + i * 0.1}s` }}
-              data-testid={`testimonial-card-${i}`}
-            >
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, j) => (
-                  <Star key={j} size={16} className="text-yellow-400 fill-yellow-400" />
-                ))}
-              </div>
-              <p className="text-[var(--color-text-secondary)] font-bricolage leading-relaxed text-sm mb-6 italic">"{t.quote}"</p>
-              <div>
-                <p className="text-[var(--color-text)] font-clash text-sm">{t.name}</p>
-                <p className="text-[var(--color-text-faint)] text-xs font-jetbrains">{t.role}</p>
-              </div>
-            </div>
-          ))}
+        <div className="mb-16" data-testid="testimonials-carousel-wrap">
+          <TestimonialsCarousel3D items={testimonials} />
         </div>
 
         <div

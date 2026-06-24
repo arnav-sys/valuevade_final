@@ -1,5 +1,6 @@
 import { Check, Minus } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { ComparisonSplitDecor } from '@/components/landing/CinematicSections';
 
 /* Comparison + Pricing Wedge — light, minimal, matches the existing
  * landing aesthetic (var(--bg-primary), glass-card, primary accent). */
@@ -53,6 +54,8 @@ export default function ComparisonSection() {
             We benchmarked Valuevade against the four programs most Indian finance students consider.
           </p>
         </div>
+
+        <ComparisonSplitDecor />
 
         <div
           className={`glass-card rounded-2xl overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
