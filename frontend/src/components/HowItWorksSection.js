@@ -12,11 +12,24 @@ const steps = [
 
 export default function HowItWorksSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
-  // Scroll progress within this section drives the violet path's stroke-
-  // dashoffset. Manual rAF loop is cheaper than Framer Motion's useScroll
-  // here because the section is short and we only need one number.
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
+  // Layout breakpoint matches the Tailwind `lg:` switch (1024px) — at the
+  // same width the steps grid flips from `lg:grid-cols-4` (horizontal) to
+  // `md:grid-cols-2` / single column (stacked vertically). Listen live so
+  // a resize across the breakpoint flips the path geometry mid-flight.
+  const [layout, setLayout] = useState(
+    () => (typeof window !== 'undefined' && window.matchMedia
+      ? (window.matchMedia('(min-width: 1024px)').matches ? 'horizontal' : 'vertical')
+      : 'horizontal')
+  );
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return undefined;
+    const mq = window.matchMedia('(min-width: 1024px)');
+    const onChange = (e) => setLayout(e.matches ? 'horizontal' : 'vertical');
+    mq.addEventListener?.('change', onChange);
+    return () => mq.removeEventListener?.('change', onChange);
+  }, []);
 
   useEffect(() => {
     const node = containerRef.current;
@@ -65,7 +78,7 @@ export default function HowItWorksSection() {
         <div ref={containerRef} className="relative" data-testid="how-it-works-timeline-wrap">
           {/* Scroll-drawn violet bezier path with milestone spheres.
               Sits behind the cards (z-0), cards sit at z-10. */}
-          <TimelinePath progress={progress} stepCount={steps.length} />
+          <TimelinePath progress={progress} stepCount={steps.length} layout={layout} />
 
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-8 lg:gap-6">
             {steps.map((step, i) => {

@@ -91,22 +91,47 @@ export function ComparisonSplitDecor() {
 }
 
 /* =====================================================================
- * 2. TimelinePath — scroll-drawn vertical violet path for How-It-Works.
- *    Renders an SVG bezier curve; `progress` (0..1) controls its
- *    stroke-dashoffset. Caller wires scroll-progress measurement.
+ * 2. TimelinePath — scroll-drawn violet path for How-It-Works.
+ *    `layout` switches between desktop ("horizontal" — wide bezier sweep
+ *    above the 4-up grid) and mobile ("vertical" — top-to-bottom snake
+ *    aligned with the stacked card centers). `progress` (0..1) controls
+ *    the stroke-dashoffset; caller wires scroll-progress measurement.
  * ===================================================================== */
-export function TimelinePath({ progress = 0, stepCount = 4 }) {
-  // Curved bezier path with 4 anchor points stretched vertically.
-  // Caller's grid card positions roughly map: step 1 at y=80, step 2 at y=280, etc.
-  const total = 720; // SVG height units
-  const dash = 1800; // overestimate; CSS dashoffset percentage hides the rest
+export function TimelinePath({ progress = 0, stepCount = 4, layout = 'horizontal' }) {
+  const isVertical = layout === 'vertical';
+  // Each layout owns its own viewBox + path geometry + node node positions.
+  // Stroke + node radii also scale a touch on the vertical variant since
+  // the SVG width is much narrower (60px vs 100px).
+  const cfg = isVertical
+    ? {
+        viewBox: '0 0 60 720',
+        // Vertical snake: gentle left/right curve travelling down.
+        d: 'M 30 20 C 50 120, 10 240, 30 360 C 50 480, 10 600, 30 700',
+        wrapStyle: { width: '60px', height: '100%' },
+        nodeR: { reached: 7, dim: 5 },
+        nodeHalo: 11,
+        strokeWidth: 1.7,
+        // Node positions: distribute evenly along Y; X follows the curve.
+        nodePos: (t) => ({ x: 30 + Math.sin(t * Math.PI * 2) * 17, y: 40 + t * 640 }),
+      }
+    : {
+        viewBox: '0 0 100 720',
+        d: 'M 50 20 C 80 120, 20 240, 50 360 C 80 480, 20 600, 50 700',
+        wrapStyle: { width: '120px', height: '100%' },
+        nodeR: { reached: 9, dim: 6 },
+        nodeHalo: 14,
+        strokeWidth: 2,
+        nodePos: (t) => ({ x: 50 + Math.sin(t * Math.PI * 2) * 28, y: 40 + t * 640 }),
+      };
+  const dash = 1800;
   const offset = dash * (1 - Math.max(0, Math.min(1, progress)));
   return (
     <svg
-      className="absolute left-1/2 -translate-x-1/2 top-0 h-full pointer-events-none"
-      viewBox="0 0 100 720" preserveAspectRatio="none"
-      style={{ width: '120px', zIndex: 1 }}
+      className="absolute left-1/2 -translate-x-1/2 top-0 pointer-events-none"
+      viewBox={cfg.viewBox} preserveAspectRatio="none"
+      style={{ ...cfg.wrapStyle, zIndex: 1 }}
       data-testid="timeline-path-svg"
+      data-layout={layout}
       aria-hidden="true"
     >
       <defs>
@@ -117,29 +142,27 @@ export function TimelinePath({ progress = 0, stepCount = 4 }) {
         </linearGradient>
       </defs>
       <path
-        d="M 50 20 C 80 120, 20 240, 50 360 C 80 480, 20 600, 50 700"
+        d={cfg.d}
         stroke="url(#tlGrad)"
-        strokeWidth="2"
+        strokeWidth={cfg.strokeWidth}
         fill="none"
         strokeLinecap="round"
         strokeDasharray={dash}
         strokeDashoffset={offset}
         style={{ transition: 'stroke-dashoffset 80ms linear', filter: 'drop-shadow(0 0 8px rgba(167,139,250,0.5))' }}
       />
-      {/* Step nodes — 4 spheres positioned along the curve. */}
       {Array.from({ length: stepCount }).map((_, i) => {
         const t = (i + 0.5) / stepCount;
-        const y = 40 + t * 640;
-        const x = 50 + Math.sin(t * Math.PI * 2) * 28;
+        const { x, y } = cfg.nodePos(t);
         const reached = progress >= t - 0.05;
         return (
           <g key={i}>
-            <circle cx={x} cy={y} r={reached ? 9 : 6}
+            <circle cx={x} cy={y} r={reached ? cfg.nodeR.reached : cfg.nodeR.dim}
               fill={reached ? '#c4b5fd' : '#3a3a48'}
               opacity={reached ? 0.95 : 0.5}
               style={{ filter: reached ? 'drop-shadow(0 0 10px rgba(167,139,250,0.85))' : 'none', transition: 'all 320ms ease-out' }} />
             {reached && (
-              <circle cx={x} cy={y} r="14" fill="none" stroke="#a78bfa" strokeOpacity="0.4" strokeWidth="1"
+              <circle cx={x} cy={y} r={cfg.nodeHalo} fill="none" stroke="#a78bfa" strokeOpacity="0.4" strokeWidth="1"
                 style={{ animation: 'tl-halo 2.2s ease-in-out infinite' }} />
             )}
           </g>
