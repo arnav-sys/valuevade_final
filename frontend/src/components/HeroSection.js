@@ -1,319 +1,325 @@
-/* Cinematic typography hero — v4.
- *
- * Concept: the headline IS the centerpiece. Massive Space Grotesk
- * letterforms with layered text-shadows that emulate extruded depth +
- * fresnel-style highlights. Each word reveals on a unique micro-physics
- * curve, then the whole headline settles into a slow breathing state.
- *
- * Cursor moves the camera (CSS perspective rotation on the container),
- * click anywhere in the hero triggers a left→right specular sweep across
- * the letters. "Finance" is the brand-marked word — violet gradient fill
- * + a continuously pulsing inner glow.
- *
- * Subtitle + CTAs sit in a small floating glassmorphic bar at the bottom
- * of the viewport so they don't compete with the typography. The old
- * roadmap card no longer renders in the hero.
- *
- * Light mode mirrors the choreography in deep-indigo on cream.
- */
+import { useMemo, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
-import { useEffect, useRef, useState } from 'react';
-import { useReducedMotion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+/* Premium hero — minimalist polish on the existing light aesthetic */
 
-// One word = one unit. `accent: 'violet'` marks "Finance" as the brand word.
-// `delay` is in ms from the section mount; `kind` picks the entry physics.
-const WORDS = [
-  { text: 'Stop',      delay:   80, kind: 'impact' },
-  { text: 'Guessing.', delay:  360, kind: 'impact' },
-  { text: 'Start',     delay:  960, kind: 'draw-in' },
-  { text: 'Building',  delay: 1220, kind: 'settle' },
-  { text: 'Your',      delay: 1500, kind: 'settle', small: true },
-  { text: 'Finance',   delay: 1780, kind: 'glow',   accent: 'violet' },
-  { text: 'Career.',   delay: 2080, kind: 'final' },
+const H1_LINES = [
+  { weight: 500, words: ['Stop', 'Guessing.'] },
+  { weight: 900, words: ['Start', 'Building', 'Your'] },
+  { weight: 900, words: ['Finance', 'Career.'], serif: 'Finance' },
 ];
 
-const SUB =
-  'Valuevade is the AI copilot that analyses your skills, maps your dream role, and builds your personalised learning path \u2014 with interactive notes, real simulations, and interview prep that actually works.';
-
 export default function HeroSection({ onJoinWaitlist }) {
-  const reduce = useReducedMotion();
-  // Mouse → CSS perspective rotation on the headline container. Lerp toward
-  // target each frame for buttery feel; capped at ±5° per spec.
-  const stageRef = useRef(null);
-  const rotRef = useRef({ x: 0, y: 0 });
-  const targetRef = useRef({ x: 0, y: 0 });
-  // Click ripple sweep state — bumps a key on each click to re-trigger the
-  // CSS keyframes via `animation-name` toggle.
-  const [rippleKey, setRippleKey] = useState(0);
+  const reduceMotion = useReducedMotion();
+  const stars = useMemo(
+    () =>
+      Array.from({ length: 80 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        size: `${1 + Math.random() * 2}px`,
+        delay: `${Math.random() * 5}s`,
+        duration: `${2 + Math.random() * 3}s`,
+      })),
+    []
+  );
+
+  // Gentle scroll parallax on the right card (max 10px)
+  const [scrollY, setScrollY] = useState(0);
+  useEffect(() => {
+    if (reduceMotion) return;
+    const onScroll = () => setScrollY(Math.min(window.scrollY, 200));
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [reduceMotion]);
+  const parallaxY = (scrollY / 200) * 10;
+
   const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
-  useEffect(() => {
-    if (reduce) return undefined;
-    const onMove = (e) => {
-      const w = window.innerWidth, h = window.innerHeight;
-      const nx = (e.clientX / w) * 2 - 1;     // -1..1
-      const ny = (e.clientY / h) * 2 - 1;
-      targetRef.current = { x: ny * 4, y: nx * 5 };  // rotateX / rotateY in deg
-    };
-    const onClick = () => setRippleKey((k) => k + 1);
-    window.addEventListener('mousemove', onMove, { passive: true });
-    const sec = stageRef.current?.closest('#hero');
-    sec?.addEventListener('click', onClick);
-    let raf;
-    const loop = () => {
-      const c = rotRef.current, t = targetRef.current;
-      c.x += (t.x - c.x) * 0.06;
-      c.y += (t.y - c.y) * 0.06;
-      if (stageRef.current) {
-        stageRef.current.style.transform =
-          `rotateX(${c.x.toFixed(2)}deg) rotateY(${c.y.toFixed(2)}deg)`;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    loop();
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      sec?.removeEventListener('click', onClick);
-      cancelAnimationFrame(raf);
-    };
-  }, [reduce]);
+  // Word-by-word stagger — 60ms between words, 400ms duration
+  const lineVariants = {
+    hidden: {},
+    visible: (i = 0) => ({ transition: { staggerChildren: 0.06, delayChildren: 0.15 + i * 0.05 } }),
+  };
+  const wordVariants = {
+    hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
+    visible: { opacity: 1, y: 0, filter: 'blur(0px)',
+      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  };
 
   return (
     <section
       id="hero"
+      className="relative min-h-screen flex items-center overflow-hidden bg-[var(--bg-primary)]"
       data-testid="hero-section"
-      className="relative min-h-screen overflow-hidden bg-[var(--bg-primary)] flex flex-col items-stretch"
     >
-      {/* Ambient violet light — dark mode only; light mode uses cream glow */}
-      <div aria-hidden="true" className="hero-ambient pointer-events-none absolute inset-0 z-[1]" />
-      <div aria-hidden="true" className="hero-vignette pointer-events-none absolute inset-0 z-[2]" />
+      {/* Subtle SVG grain overlay — 1.5% opacity, premium tactile feel */}
+      <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none z-[1]" style={{ opacity: 0.06, mixBlendMode: 'multiply' }}>
+        <filter id="hero-grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#hero-grain)" />
+      </svg>
 
-      {/* Stage — full-bleed typography centered vertically */}
-      <div
-        className="relative z-[3] flex-1 flex items-center justify-center px-4 sm:px-8"
-        style={{ perspective: '1400px' }}
-      >
-        <div
-          ref={stageRef}
-          className="hero-stage w-full max-w-[1400px] text-center"
-          style={{ transformStyle: 'preserve-3d', willChange: 'transform' }}
-        >
-          <h1
-            className="hero-headline font-clash font-extrabold tracking-[-0.02em] leading-[0.92]"
-            style={{
-              fontSize: 'clamp(60px, 12vw, 184px)',
-              color: 'var(--color-text)',
-            }}
-            data-testid="hero-headline"
+      {/* Star particles */}
+      {stars.map((star, i) => (
+        <div key={i} className="star-particle"
+          style={{ left: star.left, top: star.top, width: star.size, height: star.size,
+                   animation: `twinkle ${star.duration} ease-in-out ${star.delay} infinite` }} />
+      ))}
+
+      {/* Orbital ellipses — kept from original */}
+      <div className="orbital border-[var(--color-primary)]/20" style={{ width: '700px', height: '300px', animation: 'orbit 25s linear infinite' }} />
+      <div className="orbital border-[var(--color-accent-purple)]/[0.15]" style={{ width: '900px', height: '400px', animation: 'orbit-reverse 40s linear infinite' }} />
+      <div className="orbital border-[var(--color-accent-pink)]/10" style={{ width: '1100px', height: '480px', animation: 'orbit 60s linear infinite' }} />
+
+      {/* Glow blobs */}
+      <div className="absolute top-[10%] right-[10%] w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] bg-[var(--color-primary)]/20 rounded-full animate-blob" style={{ filter: 'blur(120px)' }} />
+      <div className="absolute bottom-[10%] left-[10%] w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] bg-[var(--color-accent-purple)]/20 rounded-full animate-blob" style={{ filter: 'blur(120px)', animationDelay: '-4s' }} />
+
+      {/* Content */}
+      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20 pt-32 pb-20 lg:pt-36 lg:pb-24">
+        {/* Left content */}
+        <div className="flex-1 text-center lg:text-left">
+          {/* Eyebrow with live pulse dot */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[var(--color-accent-pink)]/40 text-[var(--color-accent-pink)] text-[11px] font-jetbrains font-semibold mb-10 uppercase tracking-[0.12em]"
+            style={{ boxShadow: '0 0 22px rgba(255, 106, 193, 0.10)' }}
+            data-testid="hero-badge"
           >
-            {WORDS.map((w) => (
-              <span
-                key={w.text}
-                className={`hero-word hero-word-${w.kind} ${w.small ? 'hero-word-small' : ''} ${w.accent === 'violet' ? 'hero-word-violet' : ''}`}
-                style={{
-                  animationDelay: `${reduce ? 0 : w.delay}ms`,
-                  '--word-delay': `${reduce ? 0 : w.delay}ms`,
-                }}
-                data-testid={`hero-word-${w.text.replace(/[^a-z]/gi, '').toLowerCase()}`}
-              >
-                {w.text}{' '}
-              </span>
-            ))}
-            {/* Specular sweep — re-runs on each in-hero click */}
-            <span
-              key={`ripple-${rippleKey}`}
-              aria-hidden="true"
-              className={`hero-ripple ${rippleKey > 0 ? 'hero-ripple-active' : ''}`}
-            />
-          </h1>
-        </div>
-      </div>
+            <span className="relative flex h-2 w-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent-pink)] opacity-70 animate-ping" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-accent-pink)]" />
+            </span>
+            Now in Beta · Limited Early Access
+          </motion.div>
 
-      {/* Floating glass bar with subtitle + CTAs + trust strip */}
-      <div className="relative z-[4] pb-8 sm:pb-12 px-4 sm:px-8" data-testid="hero-floating-bar-wrap">
-        <div
-          className="hero-floating-bar mx-auto max-w-3xl rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] backdrop-blur-xl px-5 sm:px-7 py-5 sm:py-6"
-          data-testid="hero-floating-bar"
-          style={{ animation: reduce ? 'none' : 'hero-bar-in 700ms cubic-bezier(.22,1,.36,1) 2400ms both' }}
-        >
-          <p className="text-[13px] sm:text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-4 text-center" data-testid="hero-subhead">
-            {SUB}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center" data-testid="hero-cta-row">
+          {/* H1 — word-by-word stagger + mixed weights + serif accent */}
+          <h1
+            className="font-clash text-[52px] sm:text-6xl lg:text-[88px] xl:text-[96px] text-[var(--color-text)] mb-8"
+            style={{ lineHeight: 0.94, letterSpacing: '-0.035em' }}
+            data-testid="hero-h1"
+          >
+            {H1_LINES.map((line, lineIdx) => (
+              <motion.span
+                key={lineIdx}
+                className="block"
+                style={{ fontWeight: line.weight }}
+                variants={lineVariants}
+                initial={reduceMotion ? 'visible' : 'hidden'}
+                animate="visible"
+                custom={lineIdx}
+              >
+                {line.words.map((w, wi) => (
+                  <motion.span
+                    key={wi}
+                    variants={wordVariants}
+                    className="inline-block mr-[0.24em]"
+                    style={
+                      line.serif && w === line.serif
+                        ? { fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500,
+                            color: 'var(--color-primary)', letterSpacing: '-0.01em' }
+                        : {}
+                    }
+                  >
+                    {w}
+                  </motion.span>
+                ))}
+                {/* Blinking cursor only at end of last line */}
+                {lineIdx === H1_LINES.length - 1 && !reduceMotion && (
+                  <motion.span
+                    aria-hidden="true"
+                    className="inline-block align-baseline ml-1"
+                    style={{ color: 'var(--color-accent-pink)', fontWeight: 300 }}
+                    animate={{ opacity: [1, 0, 1] }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
+                  >
+                    |
+                  </motion.span>
+                )}
+              </motion.span>
+            ))}
+          </h1>
+
+          {/* Hairline gradient divider under H1 — editorial polish */}
+          <motion.div
+            initial={{ opacity: 0, scaleX: 0 }}
+            animate={{ opacity: 1, scaleX: 1 }}
+            transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="h-px w-32 origin-left mb-7 mx-auto lg:mx-0"
+            style={{ background: 'linear-gradient(90deg, rgba(36,107,253,0.55), transparent)' }}
+            aria-hidden="true"
+          />
+
+          {/* Subheading */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-base lg:text-lg text-[var(--color-text-muted)] max-w-xl mb-10 font-bricolage leading-relaxed mx-auto lg:mx-0"
+          >
+            Valuevade is the AI copilot that analyses your skills, maps your dream role, and builds your
+            personalised learning path &mdash; with interactive notes, real simulations, and interview
+            prep that actually works.
+          </motion.p>
+
+          {/* CTAs — sheen sweep on primary, hairline ghost */}
+          <motion.div
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            className="flex flex-col sm:flex-row gap-3 mb-7 justify-center lg:justify-start"
+          >
             <button
               onClick={onJoinWaitlist}
-              data-testid="hero-join-waitlist-btn"
-              className="hero-cta-primary group relative overflow-hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 text-sm font-semibold text-white rounded-full"
+              className="hero-cta-primary group relative overflow-hidden inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-4 text-base font-semibold text-white rounded-full"
               style={{
-                background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
-                boxShadow: '0 10px 32px -10px rgba(139,92,246,0.65), 0 0 0 1px rgba(167,139,250,0.35) inset',
+                background: 'var(--color-primary)',
+                boxShadow: '0 8px 24px -8px rgba(36,107,253,0.55), 0 0 0 1px rgba(36,107,253,0.18) inset',
+                transition: 'transform 220ms ease, box-shadow 220ms ease',
               }}
+              data-testid="hero-join-waitlist-btn"
             >
               <span className="relative z-10">Join the Waitlist Free</span>
-              <ArrowRight size={16} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+              <ArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
+              {/* Sheen sweep */}
               <span aria-hidden="true" className="hero-sheen" />
             </button>
             <button
               onClick={() => scrollTo('how-it-works')}
-              data-testid="hero-how-it-works-btn"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium text-[var(--color-text)] rounded-full transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-medium text-[var(--color-text)] rounded-full transition-colors"
               style={{ border: '1px solid var(--color-border)', background: 'transparent' }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-surface-hover)')}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-surface)')}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
+              data-testid="hero-how-it-works-btn"
             >
               See How It Works
-              <ArrowRight size={14} className="opacity-70" />
+              <ArrowRight size={16} className="opacity-70" />
             </button>
-          </div>
-          <p className="mt-4 text-[10px] font-jetbrains font-black uppercase tracking-[0.18em] text-[var(--color-text-faint)] text-center" data-testid="hero-trust-strip">
-            CFA Institute aligned <span className="opacity-50 mx-1">·</span> NISM Series-VIII compatible <span className="opacity-50 mx-1">·</span> CFI partnered
-          </p>
+          </motion.div>
+
+          {/* Trust strip — small editorial credibility line */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.4, duration: 0.6 }}
+            className="text-[11px] font-jetbrains font-black uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
+            data-testid="hero-trust-strip"
+          >
+            CFA Institute aligned <span className="opacity-50 mx-1">·</span> NISM Series-VIII compatible
+            <span className="opacity-50 mx-1">·</span> CFI partnered
+          </motion.p>
+
+          {/* Secondary signup CTA */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 0.5 }}
+            className="text-sm text-[var(--color-text-muted)] mb-7 font-bricolage text-center lg:text-left"
+          >
+            Already eligible?{' '}
+            <Link to="/signup" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
+              Sign up now &rarr;
+            </Link>
+          </motion.p>
+
+          {/* Social proof */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.6, duration: 0.5 }}
+            className="flex items-center gap-3 justify-center lg:justify-start"
+          >
+            <div className="flex -space-x-2.5">
+              {[
+                'linear-gradient(135deg, #246BFD, #6A5CFF)',
+                'linear-gradient(135deg, #6A5CFF, #FF6AC1)',
+                'linear-gradient(135deg, #FF6AC1, #246BFD)',
+                'linear-gradient(135deg, #246BFD, #FF6AC1)',
+                'linear-gradient(135deg, #6A5CFF, #246BFD)',
+              ].map((bg, i) => (
+                <div key={i} className="w-9 h-9 rounded-full border-2 border-[var(--bg-primary)]" style={{ background: bg }} />
+              ))}
+            </div>
+            <p className="text-[var(--color-text-muted)] text-sm font-bricolage" data-testid="social-proof-text">
+              Join 500+ finance students already on the waitlist
+            </p>
+          </motion.div>
         </div>
+
+        {/* Right: Floating roadmap card with premium frame */}
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.97 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="flex-shrink-0 animate-hero-float"
+          style={{ transform: `translateY(${parallaxY}px)`, transition: 'transform 600ms cubic-bezier(0.22,1,0.36,1)' }}
+        >
+          <div
+            className="w-[320px] sm:w-[360px] p-6 rounded-2xl glass-card relative"
+            style={{
+              borderColor: 'rgba(106, 92, 255, 0.25)',
+              boxShadow:
+                '0 0 0 1px rgba(106, 92, 255, 0.08), 0 24px 48px -16px rgba(36, 107, 253, 0.18), 0 0 40px rgba(106, 92, 255, 0.12)',
+            }}
+            data-testid="hero-roadmap-card"
+          >
+            <div className="flex items-center gap-2 mb-6">
+              <Sparkles className="text-[var(--color-accent-pink)]" size={18} />
+              <span className="text-[var(--color-text)] font-clash text-lg">Your Roadmap</span>
+            </div>
+            <div className="flex flex-col items-center gap-3">
+              <div className="px-4 py-2 bg-[var(--color-surface)] rounded-full text-[var(--color-text-muted)] text-sm font-jetbrains">
+                B.Com Final Year
+              </div>
+              <div className="w-px h-5 bg-gradient-to-b from-[var(--color-border)] to-[var(--color-primary)]/40" />
+              <div className="flex flex-wrap justify-center gap-2">
+                {['Valuation', 'DCF Modelling', 'FRM L1', 'Python for Finance'].map((skill) => (
+                  <span key={skill} className="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs rounded-full font-jetbrains border border-[var(--color-primary)]/20">
+                    {skill}
+                  </span>
+                ))}
+              </div>
+              <div className="w-px h-5 bg-gradient-to-b from-[var(--color-primary)]/40 to-[var(--color-accent-pink)]/40" />
+              <div className="px-4 py-2 bg-[var(--color-accent-pink)]/10 text-[var(--color-accent-pink)] text-sm rounded-full font-jetbrains border border-[var(--color-accent-pink)]/30"
+                   style={{ boxShadow: '0 0 16px rgba(255, 106, 193, 0.15)' }}>
+                AM Analyst @ DSP Blackrock
+              </div>
+            </div>
+            <div className="mt-6">
+              <div className="flex justify-between text-xs text-[var(--color-text-faint)] mb-2 font-jetbrains">
+                <span>Progress</span>
+                <span>68% complete</span>
+              </div>
+              <div className="h-2 bg-[var(--color-surface)] rounded-full overflow-hidden">
+                <div className="h-full w-[68%] bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] rounded-full" />
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
+      {/* Local styles for the sheen + reduced-motion guard */}
       <style>{`
-        /* --- AMBIENT LIGHTING --- */
-        .hero-ambient {
-          background:
-            radial-gradient(60% 50% at 78% 18%, rgba(139,92,246,0.32), transparent 70%),
-            radial-gradient(50% 40% at 18% 82%, rgba(196,181,253,0.20), transparent 65%),
-            radial-gradient(80% 60% at 50% 50%, rgba(8,8,15,0) 0%, rgba(8,8,15,0.55) 100%);
+        .hero-cta-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 14px 32px -10px rgba(36,107,253,0.65), 0 0 0 1px rgba(36,107,253,0.22) inset;
         }
-        .hero-vignette {
-          background: radial-gradient(80% 80% at 50% 50%, transparent 55%, rgba(8,8,15,0.65) 100%);
-        }
-        /* Light-mode swap — cream + indigo */
-        :root:not(.dark) .hero-ambient {
-          background:
-            radial-gradient(60% 50% at 78% 18%, rgba(106,92,255,0.18), transparent 70%),
-            radial-gradient(50% 40% at 18% 82%, rgba(36,107,253,0.14), transparent 65%);
-        }
-        :root:not(.dark) .hero-vignette { background: none; }
-
-        /* --- HEADLINE WORDS --- */
-        .hero-headline {
-          position: relative;
-          /* Extruded depth via stacked text-shadows. Eight layers of
-             gradually-deepening violet make each glyph read as a thick
-             slab of glass. */
-          text-shadow:
-            0 1px 0 rgba(167,139,250,0.18),
-            0 2px 0 rgba(139,92,246,0.16),
-            0 4px 0 rgba(139,92,246,0.13),
-            0 7px 18px rgba(8,8,15,0.45),
-            0 14px 40px rgba(139,92,246,0.20);
-        }
-        :root:not(.dark) .hero-headline {
-          text-shadow:
-            0 1px 0 rgba(36,107,253,0.10),
-            0 2px 0 rgba(106,92,255,0.08),
-            0 4px 0 rgba(106,92,255,0.06),
-            0 7px 18px rgba(36,107,253,0.10);
-        }
-        .hero-word {
-          display: inline-block;
-          opacity: 0;
-          will-change: transform, opacity, filter;
-          animation-fill-mode: both;
-          animation-duration: 900ms;
-          animation-timing-function: cubic-bezier(.22,1,.36,1);
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .hero-word { animation: none !important; opacity: 1 !important; transform: none !important; filter: none !important; }
-          .hero-ripple, .hero-bar-in { animation: none !important; }
-          .hero-stage { transform: none !important; }
-        }
-        /* Word-kind physics: bespoke entrance per word ---------------- */
-        .hero-word-impact   { animation-name: hero-impact;   transform-origin: center; }
-        .hero-word-draw-in  { animation-name: hero-draw-in;  }
-        .hero-word-settle   { animation-name: hero-settle;   }
-        .hero-word-glow     { animation-name: hero-glow-in;  }
-        .hero-word-final    { animation-name: hero-final;    }
-        .hero-word-small    { font-size: 0.78em; opacity: 0.86; }
-        /* Brand-marked violet word — gradient fill + persistent pulse  */
-        .hero-word-violet {
-          background: linear-gradient(180deg, #c4b5fd 0%, #8b5cf6 55%, #7c4ddb 100%);
-          -webkit-background-clip: text; background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 0 24px rgba(139,92,246,0.65));
-          animation-name: hero-glow-in, hero-violet-pulse;
-          animation-duration: 900ms, 3.6s;
-          animation-delay: var(--word-delay, 0ms), calc(var(--word-delay, 0ms) + 900ms);
-          animation-iteration-count: 1, infinite;
-          animation-timing-function: cubic-bezier(.22,1,.36,1), ease-in-out;
-        }
-        @keyframes hero-impact {
-          0%   { opacity: 0; transform: translateY(-32px) scale(1.18) skewY(-3deg); filter: blur(10px); }
-          60%  { opacity: 1; filter: blur(0); }
-          100% { opacity: 1; transform: translateY(0) scale(1) skewY(0); filter: blur(0); }
-        }
-        @keyframes hero-draw-in {
-          0%   { opacity: 0; transform: translateY(18px) scale(0.96); filter: blur(8px); }
-          100% { opacity: 1; transform: translateY(0)   scale(1);    filter: blur(0); }
-        }
-        @keyframes hero-settle {
-          0%   { opacity: 0; transform: translateY(20px); filter: blur(6px); }
-          100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
-        }
-        @keyframes hero-glow-in {
-          0%   { opacity: 0; transform: translateY(14px) scale(0.92); filter: blur(12px) drop-shadow(0 0 0 rgba(139,92,246,0)); }
-          80%  { opacity: 1; filter: blur(0) drop-shadow(0 0 36px rgba(139,92,246,0.85)); }
-          100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0) drop-shadow(0 0 24px rgba(139,92,246,0.65)); }
-        }
-        @keyframes hero-final {
-          0%   { opacity: 0; transform: translateY(8px) scale(1.05); letter-spacing: 0.15em; }
-          70%  { opacity: 1; letter-spacing: -0.02em; }
-          100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -0.02em; }
-        }
-        @keyframes hero-violet-pulse {
-          0%, 100% { filter: drop-shadow(0 0 16px rgba(139,92,246,0.45)); }
-          50%      { filter: drop-shadow(0 0 36px rgba(139,92,246,0.85)); }
-        }
-
-        /* --- BREATHING (whole headline) after all words land --- */
-        .hero-headline {
-          animation: hero-breathe 4.4s ease-in-out infinite;
-          animation-delay: 2700ms;
-        }
-        @keyframes hero-breathe {
-          0%,100% { transform: scale(1); }
-          50%     { transform: scale(1.012); }
-        }
-        @media (prefers-reduced-motion: reduce) { .hero-headline { animation: none !important; } }
-
-        /* --- CLICK RIPPLE: specular sweep --- */
-        .hero-ripple {
-          position: absolute; inset: 0; pointer-events: none;
-          background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
-          mix-blend-mode: screen;
-          mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
-          opacity: 0;
-        }
-        .hero-ripple-active { animation: hero-ripple-sweep 700ms ease-out both; }
-        @keyframes hero-ripple-sweep {
-          0%   { opacity: 0; transform: translateX(-110%); }
-          30%  { opacity: 0.85; }
-          100% { opacity: 0; transform: translateX(110%); }
-        }
-
-        /* --- FLOATING BAR ENTRANCE --- */
-        @keyframes hero-bar-in {
-          0%   { opacity: 0; transform: translateY(20px); filter: blur(6px); }
-          100% { opacity: 1; transform: translateY(0);    filter: blur(0); }
-        }
-
-        /* --- PRIMARY CTA SHEEN (carryover idiom) --- */
         .hero-sheen {
-          position: absolute; inset: 0;
-          background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,0.55) 50%, transparent 70%);
-          transform: translateX(-100%);
-          mix-blend-mode: screen;
+          position: absolute; inset: 0; pointer-events: none;
+          background: linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%, transparent 100%);
+          transform: translateX(-120%);
+          transition: transform 700ms ease;
         }
-        .hero-cta-primary:hover .hero-sheen { animation: hero-cta-sheen 900ms ease-out both; }
-        @keyframes hero-cta-sheen {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(110%); }
+        .hero-cta-primary:hover .hero-sheen { transform: translateX(120%); }
+        @media (prefers-reduced-motion: reduce) {
+          .hero-cta-primary, .hero-cta-primary:hover { transform: none !important; transition: none !important; }
+          .hero-sheen { display: none !important; }
         }
       `}</style>
     </section>
