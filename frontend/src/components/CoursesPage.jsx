@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
 import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle, RefreshCw, Sun, Moon, Sparkles } from 'lucide-react';
 import { Skeleton } from '../components/ui/skeleton';
+
+// Lazy three.js bg so the cards paint first.
+const CinematicBackground = lazy(() => import('./CinematicBackground'));
 
 function CourseCardSkeleton() {
   return (
@@ -190,6 +193,15 @@ export default function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+      {/* Cinematic Three.js bg — only renders meaningfully in dark mode; in
+          light mode the ambient orbs already carry the cream aesthetic. */}
+      {theme === 'dark' && (
+        <Suspense fallback={null}>
+          <div className="fixed inset-0 z-0 pointer-events-none" data-testid="courses-cinematic-bg-wrap">
+            <CinematicBackground density="sparse" />
+          </div>
+        </Suspense>
+      )}
       {/* Ambient orbs */}
       <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-15%] right-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.04] blur-[120px] pointer-events-none" />

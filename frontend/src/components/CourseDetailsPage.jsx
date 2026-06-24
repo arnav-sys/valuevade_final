@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../contexts/ThemeContext';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
+
+// Lazy-loaded so the module list paints first (Three.js is ~120KB gzipped).
+const CinematicBackground = lazy(() => import('./CinematicBackground'));
 import { supabase as supabaseClient } from '../lib/supabase';
 import { useEffect as useEffectSP, useState as useStateSP } from 'react';
 import { Users as UsersIcon, Target as TargetIcon } from 'lucide-react';
@@ -229,6 +232,15 @@ export default function CourseDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+      {/* Cinematic Three.js bg — denser than /courses since this is a deeper
+          page. Dark mode only; light mode keeps its cream ambient orbs. */}
+      {theme === 'dark' && (
+        <Suspense fallback={null}>
+          <div className="fixed inset-0 z-0 pointer-events-none" data-testid="detail-cinematic-bg-wrap">
+            <CinematicBackground density="medium" />
+          </div>
+        </Suspense>
+      )}
       {/* Ambient orbs */}
       <div className="absolute top-[-8%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.04] blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)] opacity-[0.05] blur-[100px] pointer-events-none" />
@@ -289,6 +301,24 @@ export default function CourseDetailsPage() {
           <ArrowLeft size={16} className="group-hover:-translate-x-0.5 transition-transform" />
           Back to Courses
         </Link>
+
+        {/* Task 3 — Capstone projects surfaced at the top of Course Details
+            so users see the track's final outputs before they scan the
+            module list. Same CapstoneProjectsGrid component used inside M23
+            and on /capstones → single source of truth, no card duplication. */}
+        {!loading && !error && course && (
+          <section className="mb-12" data-testid="detail-capstones-top">
+            <div className="mb-6">
+              <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-1">
+                Final Track Output
+              </div>
+              <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)]">
+                Your Capstone Projects
+              </h2>
+            </div>
+            <CapstoneProjectsGrid pathId={courseId} />
+          </section>
+        )}
 
         {/* Loading */}
         {loading && <DetailSkeleton />}

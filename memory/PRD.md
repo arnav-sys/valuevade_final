@@ -1,4 +1,77 @@
 # ============================================================================
+# CHANGELOG — 2026-06-24 (Unified Dark Theme + Cinematic Courses + Capstones at top)
+# ============================================================================
+
+## Task 1 — Unified dark palette (single source of truth)
+`.dark` block in `/app/frontend/src/index.css` rewritten to mirror
+`.landing-dark` (in `landing-dark.css`) token-for-token. Auth-gated pages
+(Dashboard, Courses, CourseDetails, Profile, Settings, Capstones, etc.) now
+render against the same near-black + violet brand as the public landing.
+
+Tokens shifted:
+- `--bg-primary` `#02073D` → `#08080f`
+- `--color-primary` `#246BFD` (blue) → `#a78bfa` (violet)
+- `--color-accent-purple` `#6A5CFF` → `#8b5cf6`
+- `--color-accent-pink` `#FF6AC1` (hot pink) → `#c4b5fd` (lavender)
+- `--color-text` `#E8E6F0` → `#ffffff` (with 86/62/40 % opacity tiers)
+- `--color-border` cold white → violet `rgba(167, 139, 250, 0.14)`
+- `--color-bg-card` `#0a1156` → `#0d0d18`
+- meta theme-color (dark) `#02073D` → `#08080f` (ThemeContext.jsx)
+
+Light-mode tokens untouched.
+
+## Task 2 — Cinematic Three.js bg on Courses + CourseDetails
+New shared component **`/app/frontend/src/components/CinematicBackground.jsx`**:
+- Vanilla three.js, lazy-loaded via React.lazy + Suspense.
+- WebGL pre-flight (`detectWebGL()`) + static gradient fallback.
+- `density` prop: `sparse` (400/200), `medium` (600/300), `dense` (900/450).
+- No grid floor (cleaner than the landing hero — landing keeps grid).
+- Slower orbital drift (0.035 vs landing's 0.05) — ambient, not busy.
+- Mouse parallax + `prefers-reduced-motion` guard.
+- DPR clamped (1.4 mobile / 2 desktop), AdditiveBlending violet particles.
+
+Hooked into:
+- `CoursesPage.jsx` — `density="sparse"`, dark-mode-only render.
+- `CourseDetailsPage.jsx` — `density="medium"`, dark-mode-only render.
+
+## Task 3 — Capstones surfaced at top of Course Details
+- New `<section data-testid="detail-capstones-top">` rendered immediately
+  after the "Back to Courses" link in `CourseDetailsPage.jsx`.
+- Section heading: `Final Track Output` (font-mono uppercase) +
+  `Your Capstone Projects` (font-clash / Space Grotesk).
+- Uses the EXISTING `<CapstoneProjectsGrid pathId={courseId} />` component
+  — same one used inside the M23 accordion expansion and on `/capstones`.
+  Single source of truth, identical cards across all three surfaces, no
+  duplicated card markup.
+
+## Verification screenshots
+- `/tmp/shot_landing_dark.png` — landing hero, violet on near-black, glass roadmap card ✅
+- `/tmp/shot_dashboard_dark.png` — sidebar + main panel now match landing's near-black; "Resume Notes" CTA uses new violet gradient ✅
+- `/tmp/shot_courses_dark.png` — CinematicBackground sparse field visible, equity research card glassy on near-black ✅
+- `/tmp/shot_course_details_dark.png` — Three.js bg behind glassy capstone cards; "FINAL TRACK OUTPUT · Your Capstone Projects" section with CAP-01/02/03 visible above the hero ✅
+- `/tmp/shot_course_details_mobile.png` — 390px viewport, stacked cards, no horizontal scroll, particles still visible ✅
+- `/tmp/shot_webgl_off.png` — WebGL stubbed off; `cinematic-static-fallback` renders radial-gradient bg, content fully visible ✅
+
+## Files modified
+- `+` `/app/frontend/src/components/CinematicBackground.jsx`
+- `~` `/app/frontend/src/index.css` — `.dark` block rewritten (single source of truth)
+- `~` `/app/frontend/src/contexts/ThemeContext.jsx` — meta theme-color updated
+- `~` `/app/frontend/src/components/CoursesPage.jsx` — lazy import + suspense mount
+- `~` `/app/frontend/src/components/CourseDetailsPage.jsx` — lazy import + suspense mount + new `detail-capstones-top` section
+
+## Constraints honored
+- ✅ Zero copy changes
+- ✅ Single source of truth for dark palette (`.dark` in index.css; `.landing-dark` references the same variable names)
+- ✅ Existing functionality untouched: enrollment, session nav, quiz/notes, capstone start flow
+- ✅ Auth-gated routes stay auth-gated
+- ✅ Mobile: capped DPR + reduced particle density
+- ✅ Reduced-motion: pulse + parallax disabled
+- ✅ WebGL-off: static dark-gradient fallback fully visible
+
+# ============================================================================
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-23 (P2 Step 5/5 — Drift Recovery Banner) — SEQUENCE COMPLETE
 # ============================================================================
 

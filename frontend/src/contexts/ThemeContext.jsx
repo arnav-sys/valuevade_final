@@ -22,7 +22,7 @@ export function ThemeProvider({ children }) {
     // and the mobile address-bar tint match the current theme bg.
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', theme === 'dark' ? '#02073D' : '#F2E6EE');
+      metaThemeColor.setAttribute('content', theme === 'dark' ? '#08080f' : '#F2E6EE');
     }
   }, [theme]);
 
