@@ -66,6 +66,60 @@ function coerceNum(v) {
   return Number.isFinite(n) ? n : NaN;
 }
 
+/* ───────── helpers for lookup / conditional functions ─────────
+ * Ranges carry hidden 2D metadata via a non-enumerable `__range` prop
+ * (see evalAst → 'range'). When a function receives a range arg it can
+ * recover the 2D values via that prop; for legacy fn signatures the
+ * regular array iteration semantics still work via .flat().
+ */
+function rangeMeta(v) { return v && typeof v === 'object' ? v.__range : null; }
+function as2D(v) {
+  const m = rangeMeta(v);
+  if (m && m.values2d) return m.values2d;
+  if (Array.isArray(v)) return [v];
+  return [[v]];
+}
+function asFlat(v) { return Array.isArray(v) ? v : [v]; }
+
+/* Wildcard support for SUMIF/COUNTIF criteria. Excel uses "?" = any char,
+ * "*" = any chars. Criterion may also include leading operator: ">=10",
+ * "<>NA", "<5", "=Apple". */
+function parseCriterion(crit) {
+  let c = crit;
+  if (Array.isArray(c)) c = c[0];
+  if (c == null) c = '';
+  if (typeof c !== 'string') {
+    const n = coerceNum(c);
+    return (v) => coerceNum(v) === n;
+  }
+  const trimmed = c.trim();
+  const opMatch = /^(>=|<=|<>|>|<|=)/.exec(trimmed);
+  let op = '=', rhs = trimmed;
+  if (opMatch) { op = opMatch[1]; rhs = trimmed.slice(op.length).trim(); }
+  const rhsNum = Number(rhs);
+  const numeric = rhs !== '' && Number.isFinite(rhsNum);
+  if (numeric) {
+    return (v) => {
+      const n = coerceNum(v);
+      switch (op) {
+        case '>':  return n >  rhsNum;
+        case '<':  return n <  rhsNum;
+        case '>=': return n >= rhsNum;
+        case '<=': return n <= rhsNum;
+        case '<>': return n !== rhsNum;
+        default:   return n === rhsNum;
+      }
+    };
+  }
+  // String comparison with wildcard support.
+  const pat = new RegExp('^' + rhs
+    .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+    .replace(/\?/g, '.')
+    .replace(/\*/g, '.*') + '$', 'i');
+  if (op === '<>') return (v) => !pat.test(String(v ?? ''));
+  return (v) => pat.test(String(v ?? ''));
+}
+
 const FUNCTIONS = {
   SUM: (args) => args.flat().reduce((s, v) => s + (coerceNum(v) || 0), 0),
   AVERAGE: (args) => {
@@ -109,6 +163,400 @@ const FUNCTIONS = {
     const x = Array.isArray(v) ? v[0] : v;
     if (isErr(x)) return Array.isArray(fallback) ? fallback[0] : fallback;
     return x;
+  },
+
+  /* ─────────────────  Conditional aggregates  ──────────────────
+   * SUMIF(range, criterion, [sum_range])
+   * COUNTIF(range, criterion)
+   * AVERAGEIF(range, criterion, [average_range])
+   * SUMIFS / COUNTIFS / AVERAGEIFS: positional pairs (range, criterion). */
+  SUMIF: ([range, criterion, sumRange]) => {
+    const test = parseCriterion(criterion);
+    const probe = asFlat(range);
+    const target = sumRange === undefined ? probe : asFlat(sumRange);
+    let s = 0;
+    for (let i = 0; i < probe.length; i++) if (test(probe[i])) s += coerceNum(target[i]);
+    return s;
+  },
+  COUNTIF: ([range, criterion]) => {
+    const test = parseCriterion(criterion);
+    return asFlat(range).filter(test).length;
+  },
+  AVERAGEIF: ([range, criterion, avgRange]) => {
+    const test = parseCriterion(criterion);
+    const probe = asFlat(range);
+    const target = avgRange === undefined ? probe : asFlat(avgRange);
+    let s = 0, n = 0;
+    for (let i = 0; i < probe.length; i++) if (test(probe[i])) { s += coerceNum(target[i]); n++; }
+    return n === 0 ? ERR('#DIV/0!') : s / n;
+  },
+  SUMIFS: (args) => {
+    const sumRange = asFlat(args[0]);
+    let s = 0;
+    for (let i = 0; i < sumRange.length; i++) {
+      let match = true;
+      for (let j = 1; j < args.length; j += 2) {
+        const probe = asFlat(args[j]);
+        const test = parseCriterion(args[j + 1]);
+        if (!test(probe[i])) { match = false; break; }
+      }
+      if (match) s += coerceNum(sumRange[i]);
+    }
+    return s;
+  },
+  COUNTIFS: (args) => {
+    const first = asFlat(args[0]);
+    let n = 0;
+    for (let i = 0; i < first.length; i++) {
+      let match = true;
+      for (let j = 0; j < args.length; j += 2) {
+        const probe = asFlat(args[j]);
+        const test = parseCriterion(args[j + 1]);
+        if (!test(probe[i])) { match = false; break; }
+      }
+      if (match) n++;
+    }
+    return n;
+  },
+  AVERAGEIFS: (args) => {
+    const avgRange = asFlat(args[0]);
+    let s = 0, n = 0;
+    for (let i = 0; i < avgRange.length; i++) {
+      let match = true;
+      for (let j = 1; j < args.length; j += 2) {
+        const probe = asFlat(args[j]);
+        const test = parseCriterion(args[j + 1]);
+        if (!test(probe[i])) { match = false; break; }
+      }
+      if (match) { s += coerceNum(avgRange[i]); n++; }
+    }
+    return n === 0 ? ERR('#DIV/0!') : s / n;
+  },
+
+  /* ─────────────────  Lookup family  ──────────────────────────
+   * VLOOKUP(lookup, table_range, col_index, [exact])
+   * HLOOKUP(lookup, table_range, row_index, [exact])
+   * INDEX(range, row_num, [col_num])
+   * MATCH(lookup, range, [match_type])  -- 0=exact, 1=less-or-eq, -1=greater-or-eq
+   * XLOOKUP(lookup, lookup_range, return_range, [if_not_found], [match_mode])
+   */
+  VLOOKUP: ([lookup, table, colIdx, exact]) => {
+    const grid = as2D(table);
+    const col = Math.round(coerceNum(Array.isArray(colIdx) ? colIdx[0] : colIdx)) - 1;
+    const isExact = (() => {
+      const e = Array.isArray(exact) ? exact[0] : exact;
+      if (e === undefined || e === null) return false;          // default Excel = TRUE (approx) but we lean exact-match for safety
+      if (typeof e === 'boolean') return !e;                    // FALSE → exact
+      return coerceNum(e) === 0;
+    })();
+    const key = Array.isArray(lookup) ? lookup[0] : lookup;
+    const keyN = coerceNum(key);
+    if (col < 0) return ERR('#REF!');
+    if (isExact) {
+      for (const row of grid) {
+        if (row[0] == null) continue;
+        const a = row[0], an = coerceNum(a);
+        if (a === key || (Number.isFinite(an) && an === keyN) || String(a) === String(key)) {
+          return col < row.length ? row[col] : ERR('#REF!');
+        }
+      }
+      return ERR('#N/A');
+    }
+    // Approximate: largest value ≤ lookup (assumes sorted ascending).
+    let last = null;
+    for (const row of grid) {
+      const v = coerceNum(row[0]);
+      if (Number.isFinite(v) && v <= keyN) last = row; else break;
+    }
+    if (!last) return ERR('#N/A');
+    return col < last.length ? last[col] : ERR('#REF!');
+  },
+  HLOOKUP: ([lookup, table, rowIdx, exact]) => {
+    const grid = as2D(table);
+    if (!grid.length) return ERR('#REF!');
+    const cols = Math.max(...grid.map((r) => r.length));
+    const transposed = [];
+    for (let c = 0; c < cols; c++) {
+      const row = [];
+      for (let r = 0; r < grid.length; r++) row.push(grid[r][c]);
+      transposed.push(row);
+    }
+    return FUNCTIONS.VLOOKUP([lookup, { __range: { values2d: transposed } }, rowIdx, exact]);
+  },
+  INDEX: ([range, rowNum, colNum]) => {
+    const grid = as2D(range);
+    const r = Math.round(coerceNum(Array.isArray(rowNum) ? rowNum[0] : rowNum)) - 1;
+    const c = colNum === undefined ? 0 : Math.round(coerceNum(Array.isArray(colNum) ? colNum[0] : colNum)) - 1;
+    if (r < 0 || r >= grid.length) return ERR('#REF!');
+    const row = grid[r];
+    if (c < 0 || c >= row.length) return ERR('#REF!');
+    return row[c];
+  },
+  MATCH: ([lookup, range, matchType]) => {
+    const arr = asFlat(range);
+    const key = Array.isArray(lookup) ? lookup[0] : lookup;
+    const m = matchType === undefined ? 1 : coerceNum(Array.isArray(matchType) ? matchType[0] : matchType);
+    if (m === 0) {
+      // Exact match (string or number).
+      const keyN = coerceNum(key);
+      for (let i = 0; i < arr.length; i++) {
+        const v = arr[i];
+        if (v === key || (Number.isFinite(coerceNum(v)) && coerceNum(v) === keyN) || String(v) === String(key)) return i + 1;
+      }
+      return ERR('#N/A');
+    }
+    if (m > 0) {
+      // Largest value ≤ lookup (ascending sort assumed).
+      const keyN = coerceNum(key);
+      let last = -1;
+      for (let i = 0; i < arr.length; i++) {
+        const v = coerceNum(arr[i]);
+        if (Number.isFinite(v) && v <= keyN) last = i; else break;
+      }
+      return last === -1 ? ERR('#N/A') : last + 1;
+    }
+    // m < 0 → smallest ≥ lookup (descending sort assumed).
+    const keyN = coerceNum(key);
+    for (let i = 0; i < arr.length; i++) {
+      const v = coerceNum(arr[i]);
+      if (Number.isFinite(v) && v >= keyN) {
+        // Continue while still ≥ key
+        let j = i + 1;
+        while (j < arr.length && Number.isFinite(coerceNum(arr[j])) && coerceNum(arr[j]) >= keyN) j++;
+        return j;  // last position that satisfied
+      }
+    }
+    return ERR('#N/A');
+  },
+  XLOOKUP: ([lookup, lookupRange, returnRange, ifNotFound]) => {
+    const probe = asFlat(lookupRange);
+    const target = asFlat(returnRange);
+    const key = Array.isArray(lookup) ? lookup[0] : lookup;
+    const keyN = coerceNum(key);
+    for (let i = 0; i < probe.length; i++) {
+      const v = probe[i];
+      if (v === key || (Number.isFinite(coerceNum(v)) && coerceNum(v) === keyN) || String(v) === String(key)) {
+        return target[i];
+      }
+    }
+    if (ifNotFound !== undefined) return Array.isArray(ifNotFound) ? ifNotFound[0] : ifNotFound;
+    return ERR('#N/A');
+  },
+
+  /* ─────────────────  Financial  ───────────────────────────────
+   * Excel sign convention: payments OUT are negative. We keep the same.
+   * PMT(rate, nper, pv, [fv], [type])
+   * PPMT(rate, per, nper, pv, [fv], [type])
+   * IPMT(rate, per, nper, pv, [fv], [type])
+   * FV(rate, nper, pmt, [pv], [type])
+   * PV(rate, nper, pmt, [fv], [type])
+   * NPV(rate, ...values)
+   * IRR(values, [guess])
+   * RATE(nper, pmt, pv, [fv], [type], [guess])
+   * NPER(rate, pmt, pv, [fv], [type])
+   */
+  PMT: (args) => {
+    const r = coerceNum(args[0]); const n = coerceNum(args[1]); const pv = coerceNum(args[2]);
+    const fv = args[3] !== undefined ? coerceNum(args[3]) : 0;
+    const type = args[4] !== undefined ? coerceNum(args[4]) : 0;
+    if (n === 0) return ERR('#NUM!');
+    if (r === 0) return -(pv + fv) / n;
+    const pmt = -(pv * Math.pow(1 + r, n) + fv) * r / ((Math.pow(1 + r, n) - 1) * (1 + r * type));
+    return pmt;
+  },
+  PPMT: (args) => {
+    const [rate, per, nper, pv, fv = 0, type = 0] = args.map((a) => coerceNum(a));
+    const pmt = FUNCTIONS.PMT([rate, nper, pv, fv, type]);
+    if (rate === 0) return pmt;
+    // Interest for period `per`: balance at end of previous period.
+    const balance = -pv * Math.pow(1 + rate, per - 1) - pmt * ((Math.pow(1 + rate, per - 1) - 1) / rate) * (type === 1 ? (1 + rate) : 1);
+    const interest = balance * rate;
+    return pmt - interest;
+  },
+  IPMT: (args) => {
+    const [rate, per, nper, pv, fv = 0, type = 0] = args.map((a) => coerceNum(a));
+    if (rate === 0) return 0;
+    const pmt = FUNCTIONS.PMT([rate, nper, pv, fv, type]);
+    const balance = -pv * Math.pow(1 + rate, per - 1) - pmt * ((Math.pow(1 + rate, per - 1) - 1) / rate) * (type === 1 ? (1 + rate) : 1);
+    return balance * rate;
+  },
+  FV: (args) => {
+    const r = coerceNum(args[0]); const n = coerceNum(args[1]); const pmt = coerceNum(args[2]);
+    const pv = args[3] !== undefined ? coerceNum(args[3]) : 0;
+    const type = args[4] !== undefined ? coerceNum(args[4]) : 0;
+    if (r === 0) return -(pv + pmt * n);
+    return -(pv * Math.pow(1 + r, n) + pmt * (Math.pow(1 + r, n) - 1) * (1 + r * type) / r);
+  },
+  PV: (args) => {
+    const r = coerceNum(args[0]); const n = coerceNum(args[1]); const pmt = coerceNum(args[2]);
+    const fv = args[3] !== undefined ? coerceNum(args[3]) : 0;
+    const type = args[4] !== undefined ? coerceNum(args[4]) : 0;
+    if (r === 0) return -(fv + pmt * n);
+    return -(fv + pmt * (1 + r * type) * (Math.pow(1 + r, n) - 1) / r) / Math.pow(1 + r, n);
+  },
+  NPV: (args) => {
+    const r = coerceNum(Array.isArray(args[0]) ? args[0][0] : args[0]);
+    let s = 0;
+    let t = 1;
+    for (let i = 1; i < args.length; i++) {
+      const a = args[i];
+      const vals = Array.isArray(a) ? a : [a];
+      for (const v of vals) { s += coerceNum(v) / Math.pow(1 + r, t); t++; }
+    }
+    return s;
+  },
+  IRR: (args) => {
+    const flow = asFlat(args[0]).map(coerceNum).filter((v) => Number.isFinite(v));
+    if (flow.length < 2) return ERR('#NUM!');
+    // Newton-Raphson search for the rate that zeros NPV.
+    let rate = args[1] !== undefined ? coerceNum(Array.isArray(args[1]) ? args[1][0] : args[1]) : 0.1;
+    for (let iter = 0; iter < 80; iter++) {
+      let npv = 0, dnpv = 0;
+      for (let t = 0; t < flow.length; t++) {
+        const denom = Math.pow(1 + rate, t);
+        npv += flow[t] / denom;
+        dnpv -= t * flow[t] / (denom * (1 + rate));
+      }
+      if (Math.abs(npv) < 1e-7) return rate;
+      if (dnpv === 0) break;
+      rate = rate - npv / dnpv;
+      if (!Number.isFinite(rate) || rate < -0.999) return ERR('#NUM!');
+    }
+    return ERR('#NUM!');
+  },
+  RATE: (args) => {
+    const [nper, pmt, pv, fv = 0, type = 0] = args.map((a) => coerceNum(Array.isArray(a) ? a[0] : a));
+    let r = args[5] !== undefined ? coerceNum(Array.isArray(args[5]) ? args[5][0] : args[5]) : 0.1;
+    for (let iter = 0; iter < 80; iter++) {
+      if (r === 0) return ERR('#NUM!');
+      const pow = Math.pow(1 + r, nper);
+      const f = pv * pow + pmt * (1 + r * type) * (pow - 1) / r + fv;
+      // Numerical derivative.
+      const dr = 1e-6;
+      const pow2 = Math.pow(1 + r + dr, nper);
+      const f2 = pv * pow2 + pmt * (1 + (r + dr) * type) * (pow2 - 1) / (r + dr) + fv;
+      const df = (f2 - f) / dr;
+      if (Math.abs(f) < 1e-7) return r;
+      if (df === 0) break;
+      r = r - f / df;
+      if (!Number.isFinite(r)) return ERR('#NUM!');
+    }
+    return ERR('#NUM!');
+  },
+  NPER: (args) => {
+    const [rate, pmt, pv, fv = 0, type = 0] = args.map((a) => coerceNum(Array.isArray(a) ? a[0] : a));
+    if (rate === 0) {
+      if (pmt === 0) return ERR('#NUM!');
+      return -(pv + fv) / pmt;
+    }
+    const num = (pmt * (1 + rate * type) - fv * rate);
+    const den = (pmt * (1 + rate * type) + pv * rate);
+    if (num / den <= 0) return ERR('#NUM!');
+    return Math.log(num / den) / Math.log(1 + rate);
+  },
+
+  /* ─────────────────  Statistical  ─────────────────────────────
+   * STDEV/VAR: sample (n-1). MEDIAN: middle (avg of two middles if even).
+   * PERCENTILE(range, k) — k ∈ [0,1] — linear interpolation. */
+  STDEV: (args) => {
+    const flat = args.flat().map(coerceNum).filter(Number.isFinite);
+    if (flat.length < 2) return ERR('#DIV/0!');
+    const mean = flat.reduce((s, v) => s + v, 0) / flat.length;
+    const variance = flat.reduce((s, v) => s + (v - mean) ** 2, 0) / (flat.length - 1);
+    return Math.sqrt(variance);
+  },
+  VAR: (args) => {
+    const flat = args.flat().map(coerceNum).filter(Number.isFinite);
+    if (flat.length < 2) return ERR('#DIV/0!');
+    const mean = flat.reduce((s, v) => s + v, 0) / flat.length;
+    return flat.reduce((s, v) => s + (v - mean) ** 2, 0) / (flat.length - 1);
+  },
+  MEDIAN: (args) => {
+    const flat = args.flat().map(coerceNum).filter(Number.isFinite).sort((a, b) => a - b);
+    if (!flat.length) return ERR('#NUM!');
+    const m = Math.floor(flat.length / 2);
+    return flat.length % 2 ? flat[m] : (flat[m - 1] + flat[m]) / 2;
+  },
+  PERCENTILE: ([range, k]) => {
+    const flat = asFlat(range).map(coerceNum).filter(Number.isFinite).sort((a, b) => a - b);
+    const p = coerceNum(Array.isArray(k) ? k[0] : k);
+    if (!flat.length) return ERR('#NUM!');
+    if (p < 0 || p > 1) return ERR('#NUM!');
+    if (p === 0) return flat[0];
+    if (p === 1) return flat[flat.length - 1];
+    const idx = p * (flat.length - 1);
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    if (lo === hi) return flat[lo];
+    return flat[lo] + (flat[hi] - flat[lo]) * (idx - lo);
+  },
+
+  /* ─────────────────  Text  ────────────────────────────────────── */
+  LEFT: ([t, n]) => String(Array.isArray(t) ? t[0] : (t ?? '')).slice(0, Math.max(0, Math.round(coerceNum(Array.isArray(n) ? n[0] : (n ?? 1))))),
+  RIGHT:([t, n]) => {
+    const s = String(Array.isArray(t) ? t[0] : (t ?? ''));
+    const k = Math.max(0, Math.round(coerceNum(Array.isArray(n) ? n[0] : (n ?? 1))));
+    return s.slice(-k || s.length);
+  },
+  MID:  ([t, start, len]) => {
+    const s = String(Array.isArray(t) ? t[0] : (t ?? ''));
+    const i = Math.max(1, Math.round(coerceNum(Array.isArray(start) ? start[0] : start))) - 1;
+    const l = Math.max(0, Math.round(coerceNum(Array.isArray(len) ? len[0] : len)));
+    return s.slice(i, i + l);
+  },
+  LEN:  ([t]) => String(Array.isArray(t) ? t[0] : (t ?? '')).length,
+  FIND: ([needle, hay, start]) => {
+    const n = String(Array.isArray(needle) ? needle[0] : (needle ?? ''));
+    const s = String(Array.isArray(hay)    ? hay[0]    : (hay ?? ''));
+    const from = Math.max(1, Math.round(coerceNum(Array.isArray(start) ? start[0] : (start ?? 1)))) - 1;
+    const idx = s.indexOf(n, from);
+    return idx === -1 ? ERR('#VALUE!') : idx + 1;
+  },
+  SEARCH: ([needle, hay, start]) => {
+    // Case-insensitive variant of FIND. Excel supports * and ? wildcards
+    // here too; we honour the most common cases.
+    const n = String(Array.isArray(needle) ? needle[0] : (needle ?? '')).toLowerCase();
+    const s = String(Array.isArray(hay)    ? hay[0]    : (hay ?? '')).toLowerCase();
+    const from = Math.max(1, Math.round(coerceNum(Array.isArray(start) ? start[0] : (start ?? 1)))) - 1;
+    if (!n) return from + 1;
+    const idx = s.indexOf(n, from);
+    return idx === -1 ? ERR('#VALUE!') : idx + 1;
+  },
+  TRIM: ([t]) => String(Array.isArray(t) ? t[0] : (t ?? '')).replace(/\s+/g, ' ').trim(),
+  UPPER:([t]) => String(Array.isArray(t) ? t[0] : (t ?? '')).toUpperCase(),
+  LOWER:([t]) => String(Array.isArray(t) ? t[0] : (t ?? '')).toLowerCase(),
+  PROPER:([t]) => String(Array.isArray(t) ? t[0] : (t ?? '')).toLowerCase()
+    .replace(/(^|\s)(\p{L})/gu, (m, b, ch) => b + ch.toUpperCase()),
+
+  /* ─────────────────  Date  ───────────────────────────────────────
+   * Internal model: dates as JS Date or YYYY-MM-DD strings. */
+  TODAY: () => new Date().toISOString().slice(0, 10),
+  YEAR: ([t]) => {
+    const d = new Date(Array.isArray(t) ? t[0] : t);
+    return Number.isFinite(d.getTime()) ? d.getUTCFullYear() : ERR('#VALUE!');
+  },
+  MONTH: ([t]) => {
+    const d = new Date(Array.isArray(t) ? t[0] : t);
+    return Number.isFinite(d.getTime()) ? d.getUTCMonth() + 1 : ERR('#VALUE!');
+  },
+  DAY: ([t]) => {
+    const d = new Date(Array.isArray(t) ? t[0] : t);
+    return Number.isFinite(d.getTime()) ? d.getUTCDate() : ERR('#VALUE!');
+  },
+  DATEDIF: ([start, end, unit]) => {
+    const a = new Date(Array.isArray(start) ? start[0] : start);
+    const b = new Date(Array.isArray(end)   ? end[0]   : end);
+    if (!Number.isFinite(a.getTime()) || !Number.isFinite(b.getTime())) return ERR('#VALUE!');
+    const u = String(Array.isArray(unit) ? unit[0] : (unit ?? 'D')).toUpperCase();
+    const msPerDay = 86400000;
+    const days = Math.floor((b - a) / msPerDay);
+    switch (u) {
+      case 'D':  return days;
+      case 'M':  return (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + (b.getUTCMonth() - a.getUTCMonth())
+                       - (b.getUTCDate() < a.getUTCDate() ? 1 : 0);
+      case 'Y':  return b.getUTCFullYear() - a.getUTCFullYear()
+                       - ((b.getUTCMonth() < a.getUTCMonth() || (b.getUTCMonth() === a.getUTCMonth() && b.getUTCDate() < a.getUTCDate())) ? 1 : 0);
+      default:   return ERR('#NUM!');
+    }
   },
 };
 
@@ -355,14 +803,39 @@ function evalAst(node, ctx, visited) {
     }
     case 'range': {
       const sheetName = node.sheet || ctx.activeSheet;
-      const addrs = expandRange(node.from, node.to);
-      return addrs.map((addr) => {
-        const v = ctx.getCell(sheetName, addr);
-        if (typeof v === 'string' && v.startsWith('=')) {
-          return evaluateFormula(v, ctx, visited);
+      // Build a 2D matrix so lookup fns (VLOOKUP/INDEX/MATCH/HLOOKUP) can
+      // recover row/col shape. We keep the flat array form (used by
+      // SUM/AVERAGE/SUMIF/etc.) as the primary return value, and attach
+      // the 2D form + metadata as a non-enumerable `__range` prop so
+      // existing `.flat()`-based functions keep working unchanged.
+      const A = parseAddr(node.from);
+      const B = parseAddr(node.to);
+      if (!A || !B) return ERR('#REF!');
+      const c1 = Math.min(A.col, B.col), c2 = Math.max(A.col, B.col);
+      const r1 = Math.min(A.row, B.row), r2 = Math.max(A.row, B.row);
+      const flat = [];
+      const grid = [];
+      for (let r = r1; r <= r2; r++) {
+        const row = [];
+        for (let c = c1; c <= c2; c++) {
+          const addr = addrFromIndices(c, r);
+          let v = ctx.getCell(sheetName, addr);
+          if (typeof v === 'string' && v.startsWith('=')) {
+            v = evaluateFormula(v, ctx, visited);
+          }
+          row.push(v);
+          flat.push(v);
         }
-        return v;
-      });
+        grid.push(row);
+      }
+      // Attach metadata; non-enumerable so JSON.stringify doesn't bloat.
+      try {
+        Object.defineProperty(flat, '__range', {
+          value: { sheet: sheetName, rows: r2 - r1 + 1, cols: c2 - c1 + 1, values2d: grid },
+          enumerable: false,
+        });
+      } catch { /* frozen prototypes in test env — ignore */ }
+      return flat;
     }
     case 'call': {
       const fn = FUNCTIONS[node.name];
