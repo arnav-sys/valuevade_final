@@ -1,0 +1,1145 @@
+{
+  "generated_at": "2026-06-25T12:46:20.254149+00:00",
+  "modules": {
+    "M1": {
+      "module_number": 1,
+      "module_title": "Foundations of Finance, Accounting & Economics",
+      "total_sessions": 7,
+      "tally": {
+        "decision_making": 2,
+        "document": 3,
+        "excel": 2
+      },
+      "session_id_to_type": {
+        "bd1c604c-016f-44d9-9f34-ca9334b053bf": "decision_making",
+        "1671aff6-3ad0-4c10-b590-f6c17f57d81c": "document",
+        "e563d171-9314-4327-9045-4235839eff78": "excel",
+        "68bcbfe6-63df-4352-8cc2-35387fd886d9": "excel",
+        "f673c172-10ad-43be-97cc-c603e0ea3444": "document",
+        "5249d49c-bc88-473e-a123-fd156dda6ca5": "document",
+        "2d960e19-341c-4144-93f5-37c089bc3e09": "decision_making"
+      },
+      "by_session_no": {
+        "1.1": {
+          "type": "decision_making",
+          "reasoning": "Conceptual intro to finance logic; no calculations or documents to analyze.",
+          "title": "What Is Finance, Really?",
+          "db_session_id": "bd1c604c-016f-44d9-9f34-ca9334b053bf"
+        },
+        "1.2": {
+          "type": "document",
+          "reasoning": "Teaches reading three financial statements from actual company reports.",
+          "title": "Meet the Big Three — The Financial Statements",
+          "db_session_id": "1671aff6-3ad0-4c10-b590-f6c17f57d81c"
+        },
+        "1.3": {
+          "type": "excel",
+          "reasoning": "Balance sheet structure involves numerical relationships, asset/liability equations, and ratio setup.",
+          "title": "The Balance Sheet — What a Company Owns and Owes",
+          "db_session_id": "e563d171-9314-4327-9045-4235839eff78"
+        },
+        "1.4": {
+          "type": "excel",
+          "reasoning": "P&L flows involve sequential calculations from revenue to net profit.",
+          "title": "The Income Statement — The Story of Profit",
+          "db_session_id": "68bcbfe6-63df-4352-8cc2-35387fd886d9"
+        },
+        "1.5": {
+          "type": "document",
+          "reasoning": "Teaches forensic reading of cash flow statements to detect discrepancies.",
+          "title": "The Cash Flow Statement — Why Profit Isn't Cash",
+          "db_session_id": "f673c172-10ad-43be-97cc-c603e0ea3444"
+        },
+        "1.6": {
+          "type": "document",
+          "reasoning": "Requires reading and interpreting accounting standards and policy footnotes.",
+          "title": "The Rules of the Game — Accounting Principles & Ind AS",
+          "db_session_id": "5249d49c-bc88-473e-a123-fd156dda6ca5"
+        },
+        "1.7": {
+          "type": "decision_making",
+          "reasoning": "Applies macro judgment to analyst calls; no formulas or specific filings.",
+          "title": "Economics for Analysts — The Forces Behind the Numbers",
+          "db_session_id": "2d960e19-341c-4144-93f5-37c089bc3e09"
+        }
+      }
+    },
+    "M2": {
+      "module_number": 2,
+      "module_title": "How Markets Actually Work",
+      "total_sessions": 6,
+      "tally": {
+        "document": 1,
+        "decision_making": 3,
+        "excel": 2
+      },
+      "session_id_to_type": {
+        "54f64957-578c-4d82-b385-5a996913a1bc": "document",
+        "2cb14cd8-62b5-419e-ada7-6b5ee92bebc3": "decision_making",
+        "a453305b-e8dd-4bc6-8f0a-285741d96dd2": "decision_making",
+        "a06b6153-1852-4d91-8607-ba63ea801413": "excel",
+        "eeda5aae-9fe7-4a4a-81d1-8130ddb56f40": "decision_making",
+        "cad120df-4384-42e2-946f-79eaeeb49c1e": "excel"
+      },
+      "by_session_no": {
+        "2.1": {
+          "type": "document",
+          "reasoning": "Reading IPO filings (DRHP) and understanding disclosures is core to this session.",
+          "title": "The Primary Market — How Companies Raise Money",
+          "db_session_id": "54f64957-578c-4d82-b385-5a996913a1bc"
+        },
+        "2.2": {
+          "type": "decision_making",
+          "reasoning": "Understanding when to buy/sell and liquidity judgements in secondary markets.",
+          "title": "The Secondary Market — Where Shares Change Hands",
+          "db_session_id": "2cb14cd8-62b5-419e-ada7-6b5ee92bebc3"
+        },
+        "2.3": {
+          "type": "decision_making",
+          "reasoning": "Interpreting FII/DII flows requires analyst judgement and market reading skills.",
+          "title": "Who's Who in the Market — The Players",
+          "db_session_id": "a453305b-e8dd-4bc6-8f0a-285741d96dd2"
+        },
+        "2.4": {
+          "type": "excel",
+          "reasoning": "Index construction, weightings, and free-float calculations are quantitative modeling tasks.",
+          "title": "Indices — How We Measure the Market",
+          "db_session_id": "a06b6153-1852-4d91-8607-ba63ea801413"
+        },
+        "2.5": {
+          "type": "decision_making",
+          "reasoning": "Choosing order types and understanding settlement timing involves trading judgement calls.",
+          "title": "How a Trade Actually Happens — Orders, Settlement & SEBI",
+          "db_session_id": "eeda5aae-9fe7-4a4a-81d1-8130ddb56f40"
+        },
+        "2.6": {
+          "type": "excel",
+          "reasoning": "Analyzing earnings surprises, expectations gaps, and sentiment metrics uses quantitative analysis.",
+          "title": "What Moves Stock Prices",
+          "db_session_id": "cad120df-4384-42e2-946f-79eaeeb49c1e"
+        }
+      }
+    },
+    "M5": {
+      "module_number": 5,
+      "module_title": "Corporate Governance & Quality of Management Analysis",
+      "total_sessions": 6,
+      "tally": {
+        "decision_making": 2,
+        "document": 4
+      },
+      "session_id_to_type": {
+        "de9b4348-c4eb-48ea-bc40-111a676e121d": "decision_making",
+        "d93a9497-338c-4a3c-96f3-483eeb437f0e": "document",
+        "12da5b50-76bb-496f-af11-01b638575f6f": "document",
+        "fc1c56b6-771b-4c96-b100-b77193f7714a": "document",
+        "b5197589-0725-4095-871f-3b941c8a04af": "decision_making",
+        "1b07c639-6407-4f10-8512-d73f75c9158b": "document"
+      },
+      "by_session_no": {
+        "5.1": {
+          "type": "decision_making",
+          "reasoning": "Judging management quality requires subjective analyst judgement on people and leadership.",
+          "title": "Why Management Quality Decides Returns",
+          "db_session_id": "de9b4348-c4eb-48ea-bc40-111a676e121d"
+        },
+        "5.2": {
+          "type": "document",
+          "reasoning": "Teaches reading governance disclosures, board composition, and SEBI compliance in filings.",
+          "title": "Corporate Governance — The Rules That Protect Shareholders",
+          "db_session_id": "d93a9497-338c-4a3c-96f3-483eeb437f0e"
+        },
+        "5.3": {
+          "type": "document",
+          "reasoning": "Analyzes shareholding pattern tables and pledging disclosures from quarterly reports.",
+          "title": "Promoters, Ownership & the Danger of Pledging",
+          "db_session_id": "12da5b50-76bb-496f-af11-01b638575f6f"
+        },
+        "5.4": {
+          "type": "document",
+          "reasoning": "Forensic analysis of related party transaction notes in annual reports and footnotes.",
+          "title": "Related Party Transactions — Where Money Quietly Leaks",
+          "db_session_id": "fc1c56b6-771b-4c96-b100-b77193f7714a"
+        },
+        "5.5": {
+          "type": "decision_making",
+          "reasoning": "Evaluates strategic capital allocation choices requiring analyst judgement on trade-offs.",
+          "title": "Capital Allocation — The Real Test of a CEO",
+          "db_session_id": "b5197589-0725-4095-871f-3b941c8a04af"
+        },
+        "5.6": {
+          "type": "document",
+          "reasoning": "Pattern-spotting red/green flags across financial statements, disclosures, and MD&A narratives.",
+          "title": "Reading Management — Red Flags & Green Flags",
+          "db_session_id": "1b07c639-6407-4f10-8512-d73f75c9158b"
+        }
+      }
+    },
+    "M6": {
+      "module_number": 6,
+      "module_title": "Reading Annual Reports & Concalls Like a Senior Analyst",
+      "total_sessions": 13,
+      "tally": {
+        "document": 8,
+        "decision_making": 4,
+        "excel": 1
+      },
+      "session_id_to_type": {
+        "1a4ae62b-0363-4dcd-93be-1489785d42ce": "document",
+        "2ee44ad4-209e-4e27-abf8-b0f73ee51dd5": "document",
+        "c05f8c65-75e3-43e5-a1c1-29f7f9343507": "document",
+        "f593037f-455a-4313-b9ad-6b9b83e2e3a3": "document",
+        "e86d2fb4-7232-4084-99db-1d0d2287dbde": "document",
+        "e1b088db-7cca-4704-b714-c543ea7f2cac": "decision_making",
+        "46ee9bfb-b918-42dc-956b-690c70c08625": "document",
+        "895e9439-062f-454e-b3f5-533f6340eff6": "document",
+        "b1efbf1c-3fa8-425f-ac3e-9c1d3e539fe7": "decision_making",
+        "eca19628-9485-4f0e-963f-565b7d7484f2": "excel",
+        "be44f757-5042-44ed-b2d4-d1c3e73e79c7": "document",
+        "b37f4a95-9380-4540-9ddd-dc6d98a7146b": "decision_making",
+        "2a518cfb-ffd1-451e-86b5-7de099055e72": "decision_making"
+      },
+      "by_session_no": {
+        "6.1": {
+          "type": "document",
+          "reasoning": "Teaches navigating and understanding the structure of annual reports.",
+          "title": "The Annual Report — A Map of the Whole Document",
+          "db_session_id": "1a4ae62b-0363-4dcd-93be-1489785d42ce"
+        },
+        "6.2": {
+          "type": "document",
+          "reasoning": "Teaches reading management letters, MD&A with critical analysis of narrative.",
+          "title": "The Letters — Chairman's Message & MD&A",
+          "db_session_id": "2ee44ad4-209e-4e27-abf8-b0f73ee51dd5"
+        },
+        "6.3": {
+          "type": "document",
+          "reasoning": "Teaches reading auditor reports and interpreting independent audit opinions.",
+          "title": "The Auditor's Report — Reading the Watchdog",
+          "db_session_id": "c05f8c65-75e3-43e5-a1c1-29f7f9343507"
+        },
+        "6.4": {
+          "type": "document",
+          "reasoning": "Teaches analyzing notes to accounts for hidden disclosures and details.",
+          "title": "The Notes to Accounts — Where the Truth Hides",
+          "db_session_id": "f593037f-455a-4313-b9ad-6b9b83e2e3a3"
+        },
+        "6.5": {
+          "type": "document",
+          "reasoning": "Conceptual overview of concalls; introduces the tool before application.",
+          "title": "The Concall — What It Is and Why It's the Analyst's Sharpest Tool",
+          "db_session_id": "e86d2fb4-7232-4084-99db-1d0d2287dbde"
+        },
+        "6.6": {
+          "type": "decision_making",
+          "reasoning": "Teaches analyst judgement: what to research and prioritize before calls.",
+          "title": "Preparation — How a Senior Analyst Walks Into a Call Ready",
+          "db_session_id": "e1b088db-7cca-4704-b714-c543ea7f2cac"
+        },
+        "6.7": {
+          "type": "document",
+          "reasoning": "Teaches reading prepared management commentary for tells and concealment patterns.",
+          "title": "The Management Commentary — Reading the Prepared Script",
+          "db_session_id": "46ee9bfb-b918-42dc-956b-690c70c08625"
+        },
+        "6.8": {
+          "type": "document",
+          "reasoning": "Teaches analyzing Q&A transcripts, detecting evasions and reading cross-examination dynamics.",
+          "title": "The Q&A — The Real Battleground",
+          "db_session_id": "895e9439-062f-454e-b3f5-533f6340eff6"
+        },
+        "6.9": {
+          "type": "decision_making",
+          "reasoning": "Teaches crafting sharp analyst questions; professional judgement under live conditions.",
+          "title": "Asking Like an Analyst — The Craft of the Question",
+          "db_session_id": "b1efbf1c-3fa8-425f-ac3e-9c1d3e539fe7"
+        },
+        "6.10": {
+          "type": "excel",
+          "reasoning": "Tracks guidance vs actuals across quarters; builds credibility scorecard quantitatively.",
+          "title": "Guidance, Tracking & Management Credibility Across Quarters",
+          "db_session_id": "eca19628-9485-4f0e-963f-565b7d7484f2"
+        },
+        "6.11": {
+          "type": "document",
+          "reasoning": "Teaches forensic reading of language, tone shifts, and linguistic patterns.",
+          "title": "Tone, Language & the Forensics of How Things Are Said",
+          "db_session_id": "be44f757-5042-44ed-b2d4-d1c3e73e79c7"
+        },
+        "6.12": {
+          "type": "decision_making",
+          "reasoning": "Synthesizes all call inputs into investment conviction; strategic analyst judgement.",
+          "title": "From Call to Conviction — Synthesising the Concall into an Investment View",
+          "db_session_id": "b37f4a95-9380-4540-9ddd-dc6d98a7146b"
+        },
+        "6.13": {
+          "type": "decision_making",
+          "reasoning": "Integrates report and call into workflow; strategic system-level judgement.",
+          "title": "The Complete Primary-Source Workflow — Report + Call as One System",
+          "db_session_id": "2a518cfb-ffd1-451e-86b5-7de099055e72"
+        }
+      }
+    },
+    "M7": {
+      "module_number": 7,
+      "module_title": "FINANCIAL STATEMENT ANALYSIS",
+      "total_sessions": 12,
+      "tally": {
+        "document": 6,
+        "excel": 3,
+        "decision_making": 3
+      },
+      "session_id_to_type": {
+        "a93d0c9f-f97d-4e28-af3f-2335ff755ee3": "document",
+        "18bfb490-269b-444a-935f-df2508304a71": "document",
+        "0737c204-27c9-4c94-8524-d53fd1e89202": "document",
+        "9dac7156-4fda-4fc5-b471-1ff558732893": "excel",
+        "6e317dce-e5ad-437d-b8a8-9d0ee556823d": "document",
+        "b7f1f312-5aa9-4f6d-8ea0-af143b392872": "document",
+        "d1886537-92bc-4847-b847-b387e21af062": "excel",
+        "63f1bb33-e36b-4f59-9501-5d90f61b3b5b": "decision_making",
+        "60dd4be0-bb80-48e0-bb18-aafd056899c7": "document",
+        "4cd94b38-743d-43d0-b817-6b2c26f3d36c": "excel",
+        "b5262e5d-cd3b-416d-9c1e-2ac528913125": "decision_making",
+        "d33c3107-e321-4508-b11a-5fc5fdb56445": "decision_making"
+      },
+      "by_session_no": {
+        "7.1": {
+          "type": "document",
+          "reasoning": "Teaches reading and interrogating P&L lines for quality and hidden meanings.",
+          "title": "The Income Statement, Reread as an Analyst",
+          "db_session_id": "a93d0c9f-f97d-4e28-af3f-2335ff755ee3"
+        },
+        "7.2": {
+          "type": "document",
+          "reasoning": "Teaches reading balance sheet as diagnostic X-ray for financial strength signals.",
+          "title": "The Balance Sheet as an X-Ray of Financial Strength",
+          "db_session_id": "18bfb490-269b-444a-935f-df2508304a71"
+        },
+        "7.3": {
+          "type": "document",
+          "reasoning": "Teaches reading cash flow statement patterns to detect accounting quality issues.",
+          "title": "The Cash Flow Statement — The Analyst's Lie Detector",
+          "db_session_id": "0737c204-27c9-4c94-8524-d53fd1e89202"
+        },
+        "7.4": {
+          "type": "excel",
+          "reasoning": "Teaches calculating common-size percentages and trend analysis across financial statements.",
+          "title": "Common-Size & Trend Analysis — Making Any Two Companies Comparable",
+          "db_session_id": "9dac7156-4fda-4fc5-b471-1ff558732893"
+        },
+        "7.5": {
+          "type": "document",
+          "reasoning": "Teaches finding and analyzing segment disclosures within notes to accounts.",
+          "title": "Segment & Geographic Analysis — Finding the Business Inside the Business",
+          "db_session_id": "6e317dce-e5ad-437d-b8a8-9d0ee556823d"
+        },
+        "7.6": {
+          "type": "document",
+          "reasoning": "Teaches reading notes and accounting policies to assess aggressive vs conservative choices.",
+          "title": "Reading the Notes & Accounting Policies — Where the Truth Hides",
+          "db_session_id": "b7f1f312-5aa9-4f6d-8ea0-af143b392872"
+        },
+        "7.7": {
+          "type": "excel",
+          "reasoning": "Teaches stripping non-recurring items and calculating normalized earnings for valuation.",
+          "title": "Non-Recurring Items & Earnings Normalisation — Finding the Real Number",
+          "db_session_id": "d1886537-92bc-4847-b847-b387e21af062"
+        },
+        "7.8": {
+          "type": "decision_making",
+          "reasoning": "Teaches judging earnings quality through multiple signals requiring analytical judgement calls.",
+          "title": "Quality of Earnings — Is This Profit Real or Make-Up?",
+          "db_session_id": "63f1bb33-e36b-4f59-9501-5d90f61b3b5b"
+        },
+        "7.9": {
+          "type": "document",
+          "reasoning": "Teaches finding off-balance-sheet obligations and risks buried in footnote disclosures.",
+          "title": "Off-Balance-Sheet Items, Leases, Contingencies & Related Parties",
+          "db_session_id": "60dd4be0-bb80-48e0-bb18-aafd056899c7"
+        },
+        "7.10": {
+          "type": "excel",
+          "reasoning": "Teaches reconciling standalone vs consolidated and running cross-statement integrity checks.",
+          "title": "Standalone vs Consolidated & Inter-Statement Integrity Checks",
+          "db_session_id": "4cd94b38-743d-43d0-b817-6b2c26f3d36c"
+        },
+        "7.11": {
+          "type": "decision_making",
+          "reasoning": "Integrative workflow requiring analyst judgement to produce complete financial diagnostic verdict.",
+          "title": "Putting It Together — A Full Financial Diagnostic, Start to Finish",
+          "db_session_id": "b5262e5d-cd3b-416d-9c1e-2ac528913125"
+        },
+        "7.12": {
+          "type": "decision_making",
+          "reasoning": "Teaches deploying skeptical mindset and forensic judgement to detect fraud patterns.",
+          "title": "Advanced Forensic Signals & The Analyst's Skeptical Mindset",
+          "db_session_id": "d33c3107-e321-4508-b11a-5fc5fdb56445"
+        }
+      }
+    },
+    "M8": {
+      "module_number": 8,
+      "module_title": "RED FLAG ANALYSIS & FORENSIC ACCOUNTING",
+      "total_sessions": 7,
+      "tally": {
+        "document": 4,
+        "excel": 2,
+        "decision_making": 1
+      },
+      "session_id_to_type": {
+        "9fe85802-25e0-40ae-aa19-37087fdf2ff6": "document",
+        "46aebaa6-9921-4f19-859d-99287926a189": "document",
+        "e32a7238-5227-4738-9bf6-fb0da98b070a": "document",
+        "860e4bf1-d635-49c5-b5b1-34660c2d60ae": "excel",
+        "9ed8e6ef-27b5-499a-993b-e334e4fbd766": "document",
+        "f3d06b64-3c06-4d9d-94b0-63c044979497": "decision_making",
+        "4110ab9a-296b-4b79-854e-a1e1ab80405e": "excel"
+      },
+      "by_session_no": {
+        "8.1": {
+          "type": "document",
+          "reasoning": "Teaches fraud concepts through case analysis; best learned reading real disclosures.",
+          "title": "Why Companies Cook the Books — The Anatomy of Accounting Fraud",
+          "db_session_id": "9fe85802-25e0-40ae-aa19-37087fdf2ff6"
+        },
+        "8.2": {
+          "type": "document",
+          "reasoning": "Revenue tricks identified by reading financial statements and footnotes analytically.",
+          "title": "Revenue Red Flags — When Sales Are Too Good to Be True",
+          "db_session_id": "46aebaa6-9921-4f19-859d-99287926a189"
+        },
+        "8.3": {
+          "type": "document",
+          "reasoning": "Expense and asset manipulation spotted through balance sheet forensic reading.",
+          "title": "Expense & Asset Red Flags — Hiding Costs and Inflating the Balance Sheet",
+          "db_session_id": "e32a7238-5227-4738-9bf6-fb0da98b070a"
+        },
+        "8.4": {
+          "type": "excel",
+          "reasoning": "Cash flow forensics requires calculating accruals and tracing CFO trends quantitatively.",
+          "title": "Cash Flow Forensics — The Ultimate Lie Detector",
+          "db_session_id": "860e4bf1-d635-49c5-b5b1-34660c2d60ae"
+        },
+        "8.5": {
+          "type": "document",
+          "reasoning": "Related-party transactions and off-balance-sheet items found in notes and disclosures.",
+          "title": "Balance Sheet & Related-Party Red Flags — Following the Money",
+          "db_session_id": "9ed8e6ef-27b5-499a-993b-e334e4fbd766"
+        },
+        "8.6": {
+          "type": "decision_making",
+          "reasoning": "Governance red flags require judgement calls on resignations, pledging, and behaviour.",
+          "title": "Governance, Promoter & Auditor Red Flags — The Human Warning Signs",
+          "db_session_id": "f3d06b64-3c06-4d9d-94b0-63c044979497"
+        },
+        "8.7": {
+          "type": "excel",
+          "reasoning": "M-Score and Z-Score are quantitative models requiring formula manipulation and calculation.",
+          "title": "The Forensic Toolkit — Beneish M-Score, Altman Z-Score & the Red-Flag Checklist",
+          "db_session_id": "4110ab9a-296b-4b79-854e-a1e1ab80405e"
+        }
+      }
+    },
+    "M9": {
+      "module_number": 9,
+      "module_title": "ADVANCED RATIO ANALYSIS",
+      "total_sessions": 12,
+      "tally": {
+        "document": 3,
+        "excel": 7,
+        "decision_making": 2
+      },
+      "session_id_to_type": {
+        "0a8b05dd-a10d-41cd-aa71-7be122eccdf4": "document",
+        "a670fd9f-991a-426b-ad2f-e9373341dbff": "excel",
+        "af782772-ee92-4f32-815d-c4ad2d8590bc": "excel",
+        "b4e5a36e-95de-432c-97d2-746616a39647": "excel",
+        "0c393d90-51e1-4701-856c-a3e87f2e1dab": "excel",
+        "11d0b1d0-c584-429b-b6e1-704a159cf5af": "excel",
+        "ca1d1eea-d2a8-4248-9e06-e36842c5c6c3": "decision_making",
+        "8f9f8224-ea5c-4a10-8324-8abf9046f12a": "decision_making",
+        "16371a04-2e24-4e90-bcf7-211b93710d29": "document",
+        "c4ed97a9-6d19-4a20-8975-bf17c7a2352c": "excel",
+        "a998d014-72bd-4f98-883f-7daf9ee20cd4": "document",
+        "04ae5f75-6064-49d5-aeb9-67ada4743e8f": "excel"
+      },
+      "by_session_no": {
+        "9.1": {
+          "type": "document",
+          "reasoning": "Conceptual foundation on ratio interpretation; best taught through reading and reflection.",
+          "title": "The Ratio Mindset — Why Ratios, and How to Read Them Right",
+          "db_session_id": "0a8b05dd-a10d-41cd-aa71-7be122eccdf4"
+        },
+        "9.2": {
+          "type": "excel",
+          "reasoning": "Computing and comparing margin layers (gross, EBITDA, net) across companies.",
+          "title": "Profitability & Margin Analysis — Reading the Layers of Profit",
+          "db_session_id": "a670fd9f-991a-426b-ad2f-e9373341dbff"
+        },
+        "9.3": {
+          "type": "excel",
+          "reasoning": "Calculating ROE, ROA, ROCE, ROIC formulas and comparing against cost of capital.",
+          "title": "Return Ratios — ROE, ROA, ROCE, ROIC & the Cost of Capital",
+          "db_session_id": "af782772-ee92-4f32-815d-c4ad2d8590bc"
+        },
+        "9.4": {
+          "type": "excel",
+          "reasoning": "Breaking down ROE using 3-step and 5-step DuPont formulas in spreadsheet.",
+          "title": "DuPont Analysis — Cracking ROE into Its DNA (3-Step and 5-Step)",
+          "db_session_id": "b4e5a36e-95de-432c-97d2-746616a39647"
+        },
+        "9.5": {
+          "type": "excel",
+          "reasoning": "Computing liquidity ratios (current, quick) and solvency metrics (interest coverage, D/E).",
+          "title": "Liquidity & Solvency Ratios — Can the Company Survive?",
+          "db_session_id": "0c393d90-51e1-4701-856c-a3e87f2e1dab"
+        },
+        "9.6": {
+          "type": "excel",
+          "reasoning": "Calculating working capital ratios and deriving cash conversion cycle from components.",
+          "title": "Efficiency & Working-Capital Ratios — The Cash Conversion Cycle",
+          "db_session_id": "11d0b1d0-c584-429b-b6e1-704a159cf5af"
+        },
+        "9.7": {
+          "type": "decision_making",
+          "reasoning": "Judging whether valuation multiples are deserved requires analyst judgement, not just calculation.",
+          "title": "Valuation Multiples I — P/E, P/B, EV/EBITDA & the Core Toolkit",
+          "db_session_id": "ca1d1eea-d2a8-4248-9e06-e36842c5c6c3"
+        },
+        "9.8": {
+          "type": "decision_making",
+          "reasoning": "Triangulating across multiple valuation metrics and spotting traps requires scenario-based judgement.",
+          "title": "Valuation Multiples II — The Full Toolkit, Triangulation & the Traps",
+          "db_session_id": "8f9f8224-ea5c-4a10-8324-8abf9046f12a"
+        },
+        "9.9": {
+          "type": "document",
+          "reasoning": "Synthesizing ratio categories into coherent thesis; analytical reading of interconnected system.",
+          "title": "Cross-Ratio Synthesis — Reading Ratios as a System",
+          "db_session_id": "16371a04-2e24-4e90-bcf7-211b93710d29"
+        },
+        "9.10": {
+          "type": "excel",
+          "reasoning": "Computing bank-specific ratios (NIM, CASA, GNPA, CAR) in specialized template.",
+          "title": "Banking & Financial-Sector Ratios — A Different Toolkit Entirely",
+          "db_session_id": "c4ed97a9-6d19-4a20-8975-bf17c7a2352c"
+        },
+        "9.11": {
+          "type": "document",
+          "reasoning": "Survey of sector-specific toolkits; conceptual understanding of which metrics fit which sector.",
+          "title": "Sector-Specific Ratio Toolkits — NBFCs, Insurance, Real Estate & Beyond",
+          "db_session_id": "a998d014-72bd-4f98-883f-7daf9ee20cd4"
+        },
+        "9.12": {
+          "type": "excel",
+          "reasoning": "Building complete ratio dashboard workflow with organized categories and computations.",
+          "title": "Building & Interpreting a Complete Ratio Dashboard",
+          "db_session_id": "04ae5f75-6064-49d5-aeb9-67ada4743e8f"
+        }
+      }
+    },
+    "M10": {
+      "module_number": 10,
+      "module_title": "ECONOMY & MACRO ANALYSIS FOR EQUITY RESEARCH",
+      "total_sessions": 7,
+      "tally": {
+        "decision_making": 3,
+        "document": 2,
+        "excel": 2
+      },
+      "session_id_to_type": {
+        "ecd3718b-b190-429a-b9a4-6144a685d85e": "decision_making",
+        "ca742d56-2787-43bc-a8ac-fccc9030949e": "document",
+        "180d3d2d-b370-4b2f-ac9e-491ae56608f7": "excel",
+        "46e336f9-9f75-461d-92b2-4771995aa2a2": "decision_making",
+        "085e94e2-6caf-40b4-ae08-47741babd233": "document",
+        "57ffd434-b94e-4c62-8112-8956eaa7f012": "excel",
+        "92c977c2-9b26-4730-80e5-65ae1a43236b": "decision_making"
+      },
+      "by_session_no": {
+        "10.1": {
+          "type": "decision_making",
+          "reasoning": "Introduces top-down thinking and macro judgement calls—foundational analyst perspective.",
+          "title": "Why Macro Matters — Top-Down Analysis & How the Economy Reaches a Stock",
+          "db_session_id": "ecd3718b-b190-429a-b9a4-6144a685d85e"
+        },
+        "10.2": {
+          "type": "document",
+          "reasoning": "Reading GDP reports and composition analysis—interpreting economic data documents.",
+          "title": "GDP & Economic Growth — Reading the Engine of the Economy",
+          "db_session_id": "ca742d56-2787-43bc-a8ac-fccc9030949e"
+        },
+        "10.3": {
+          "type": "excel",
+          "reasoning": "Real return formula and inflation calculations—quantitative skill with formulas.",
+          "title": "Inflation — The Silent Force That Moves Everything",
+          "db_session_id": "180d3d2d-b370-4b2f-ac9e-491ae56608f7"
+        },
+        "10.4": {
+          "type": "decision_making",
+          "reasoning": "Understanding RBI policy impacts requires judgement on rate-sector linkages.",
+          "title": "Interest Rates & Monetary Policy — The RBI's Lever on Markets",
+          "db_session_id": "46e336f9-9f75-461d-92b2-4771995aa2a2"
+        },
+        "10.5": {
+          "type": "document",
+          "reasoning": "Analyzing Union Budget allocations and fiscal policy documents—reading government filings.",
+          "title": "Fiscal Policy & the Union Budget — How Government Spending Moves Sectors",
+          "db_session_id": "085e94e2-6caf-40b4-ae08-47741babd233"
+        },
+        "10.6": {
+          "type": "excel",
+          "reasoning": "Currency impact calculations on exporter/importer margins—quantitative modelling skill.",
+          "title": "Currency & the External Sector — The Rupee, Trade & Global Linkages",
+          "db_session_id": "57ffd434-b94e-4c62-8112-8956eaa7f012"
+        },
+        "10.7": {
+          "type": "decision_making",
+          "reasoning": "Sector rotation calls based on cycle reading—core analyst judgement under uncertainty.",
+          "title": "Business Cycles, Leading Indicators & Sector Rotation — Putting Macro to Work",
+          "db_session_id": "92c977c2-9b26-4730-80e5-65ae1a43236b"
+        }
+      }
+    },
+    "M11": {
+      "module_number": 11,
+      "module_title": "SECTOR ANALYSIS — EVERY MAJOR INDIAN SECTOR",
+      "total_sessions": 8,
+      "tally": {
+        "document": 1,
+        "excel": 5,
+        "decision_making": 2
+      },
+      "session_id_to_type": {
+        "9dd9b885-e63e-43a7-8a40-9d5987a21c80": "document",
+        "7d163829-e4b3-426d-bb8d-8591c65064e5": "excel",
+        "fec4e54c-d89c-4f16-b7a3-59736b72d5f2": "excel",
+        "64368116-0adb-4f95-a32d-8bd5887cffdf": "excel",
+        "59cda332-a1f6-4a25-9b99-208aa3e43036": "decision_making",
+        "36893792-5c73-4ad3-8065-33f14004b907": "excel",
+        "2bae1dc1-faa0-4549-9c05-f24104276f1b": "excel",
+        "c4ad225c-ebbc-4f1c-9c59-dc414a1d46c1": "decision_making"
+      },
+      "by_session_no": {
+        "11.1": {
+          "type": "document",
+          "reasoning": "Teaches analytical framework for reading industry structure and documents.",
+          "title": "The Sector Analysis Framework — How to Decode Any Industry",
+          "db_session_id": "9dd9b885-e63e-43a7-8a40-9d5987a21c80"
+        },
+        "11.2": {
+          "type": "excel",
+          "reasoning": "NIM, CASA, GNPA/NNPA, CAR are signature ratios best taught via Excel.",
+          "title": "Banking & Financial Services (BFSI) — Banks, NBFCs & Insurance",
+          "db_session_id": "7d163829-e4b3-426d-bb8d-8591c65064e5"
+        },
+        "11.3": {
+          "type": "excel",
+          "reasoning": "Revenue per employee, utilisation, currency impact are quantitative Excel exercises.",
+          "title": "Information Technology — India's Export Engine",
+          "db_session_id": "fec4e54c-d89c-4f16-b7a3-59736b72d5f2"
+        },
+        "11.4": {
+          "type": "excel",
+          "reasoning": "Volume vs value growth, margin analysis are classic Excel modeling tasks.",
+          "title": "FMCG & Consumer Staples — The Consumption Compounders",
+          "db_session_id": "64368116-0adb-4f95-a32d-8bd5887cffdf"
+        },
+        "11.5": {
+          "type": "decision_making",
+          "reasoning": "FDA risk, pipeline judgement, approval calls demand analyst decision-making scenarios.",
+          "title": "Pharmaceuticals & Healthcare — Generics, Pipelines & Hospitals",
+          "db_session_id": "59cda332-a1f6-4a25-9b99-208aa3e43036"
+        },
+        "11.6": {
+          "type": "excel",
+          "reasoning": "ASP, volume growth, operating leverage are quantitative calculations suited to Excel.",
+          "title": "Automobiles & Auto Ancillaries — The Cyclical Consumption Play",
+          "db_session_id": "36893792-5c73-4ad3-8065-33f14004b907"
+        },
+        "11.7": {
+          "type": "excel",
+          "reasoning": "Commodity price modeling, cost curves, utilisation are spreadsheet-driven analyses.",
+          "title": "Commodity Cyclicals — Metals, Cement, Oil & Gas, and Energy",
+          "db_session_id": "2bae1dc1-faa0-4549-9c05-f24104276f1b"
+        },
+        "11.8": {
+          "type": "decision_making",
+          "reasoning": "Evaluating loss-making platforms, unit economics requires strategic judgement under uncertainty.",
+          "title": "Telecom, Specialty Chemicals, Retail & the New-Age Economy",
+          "db_session_id": "c4ad225c-ebbc-4f1c-9c59-dc414a1d46c1"
+        }
+      }
+    },
+    "M12": {
+      "module_number": 12,
+      "module_title": "Valuation in Equity Research",
+      "total_sessions": 14,
+      "tally": {
+        "excel": 8,
+        "decision_making": 3,
+        "document": 3
+      },
+      "session_id_to_type": {
+        "3fa8a717-1054-45de-9590-baa4df568c76": "excel",
+        "b738235e-552e-4279-a3e1-b4e366e80010": "excel",
+        "098ad8d9-5412-458a-b4be-f9b1fe5f4efd": "excel",
+        "c7b152d6-030f-4b09-baa7-ec32c2fe7d82": "excel",
+        "fb0191cd-ffdc-4919-aa96-b4446e476bd8": "excel",
+        "45e7f3f0-2c07-408d-918e-7a9b6d5c6334": "decision_making",
+        "be7729c5-f521-4a51-9f73-716e4e2ca33d": "document",
+        "1b737d7d-fb1e-4d7d-9196-1c17bbd0c469": "document",
+        "7ef393b2-6110-4c92-8807-1af64e1aad85": "document",
+        "0abe53db-4fc4-482e-aaa5-47556b61a43e": "excel",
+        "358b5729-c44e-4f54-b5ee-115b9bc90231": "excel",
+        "41782d71-6366-4413-b56c-48fd5e39942c": "decision_making",
+        "3c9d96d5-966a-4492-815b-47b2a317bae1": "excel",
+        "1772af9e-4a3a-4c6f-9a45-ef3e278ead40": "decision_making"
+      },
+      "by_session_no": {
+        "12.2": {
+          "type": "excel",
+          "reasoning": "Derives PV formula, assembles DCF equation, computes kirana chain valuation step-by-step.",
+          "title": "Intrinsic Value & DCF — The Framework from First Principles",
+          "db_session_id": "3fa8a717-1054-45de-9590-baa4df568c76"
+        },
+        "12.3": {
+          "type": "excel",
+          "reasoning": "Mechanically demanding FCF computation from financials; FCFF/FCFE formulas and normalisation.",
+          "title": "Free Cash Flow — The Only Number That Doesn't Lie",
+          "db_session_id": "b738235e-552e-4279-a3e1-b4e366e80010"
+        },
+        "12.4": {
+          "type": "excel",
+          "reasoning": "Derives WACC formula, computes cost of equity via CAPM, calculates WACC end-to-end.",
+          "title": "WACC — The Cost of Feeding a Company's Hunger",
+          "db_session_id": "098ad8d9-5412-458a-b4be-f9b1fe5f4efd"
+        },
+        "12.5": {
+          "type": "excel",
+          "reasoning": "Gordon Growth terminal value formula, WACC × g sensitivity table, ROIC-based calculations.",
+          "title": "Terminal Value — The Number That Controls Everything",
+          "db_session_id": "c7b152d6-030f-4b09-baa7-ec32c2fe7d82"
+        },
+        "12.6": {
+          "type": "excel",
+          "reasoning": "Integrative full DCF build on Pidilite: forecasting, discounting, EV-to-equity bridge, stress-testing.",
+          "title": "Building the Full DCF — Putting It All Together",
+          "db_session_id": "fb0191cd-ffdc-4919-aa96-b4446e476bd8"
+        },
+        "12.7": {
+          "type": "decision_making",
+          "reasoning": "Peer group selection is judgement-heavy; deciding justified premium/discount; when to apply comps.",
+          "title": "Relative Valuation — The Art of Comparable Company Analysis",
+          "db_session_id": "45e7f3f0-2c07-408d-918e-7a9b6d5c6334"
+        },
+        "12.8": {
+          "type": "document",
+          "reasoning": "Decoding multiples across sectors; matching tool to business; reading what multiples reveal/hide.",
+          "title": "Multiples Decoded — P/E, EV/EBITDA, P/B, EV/Sales, and the Rest",
+          "db_session_id": "be7729c5-f521-4a51-9f73-716e4e2ca33d"
+        },
+        "12.9": {
+          "type": "document",
+          "reasoning": "Sector-specific frameworks; understanding why EV/EBITDA fails for banks; reading sector logic.",
+          "title": "Sector-Specific Valuation — Banks, NBFCs, Insurance, IT, Consumer",
+          "db_session_id": "1b737d7d-fb1e-4d7d-9196-1c17bbd0c469"
+        },
+        "12.10": {
+          "type": "document",
+          "reasoning": "Analysing precedent M&A transactions; understanding control premiums; reading deal rationale and context.",
+          "title": "Precedent Transactions & Control Premiums",
+          "db_session_id": "7ef393b2-6110-4c92-8807-1af64e1aad85"
+        },
+        "12.11": {
+          "type": "excel",
+          "reasoning": "SOTP builds multiple mini-valuations; segment-level modelling; summing and applying conglomerate discount.",
+          "title": "Sum-of-Parts Valuation — When the Whole is Worth Less Than its Parts",
+          "db_session_id": "0abe53db-4fc4-482e-aaa5-47556b61a43e"
+        },
+        "12.12": {
+          "type": "excel",
+          "reasoning": "One-way/two-way sensitivity tables, scenario analysis, confidence intervals—quantitative stress-testing techniques.",
+          "title": "DCF Stress Testing — Sensitivity, Scenarios & Monte Carlo Thinking",
+          "db_session_id": "358b5729-c44e-4f54-b5ee-115b9bc90231"
+        },
+        "12.13": {
+          "type": "decision_making",
+          "reasoning": "Synthesising methods into target price; weighting scenarios; making buy/sell call; assembling investment thesis.",
+          "title": "Target Price & Synthesis — From Valuation to Recommendation",
+          "db_session_id": "41782d71-6366-4413-b56c-48fd5e39942c"
+        },
+        "12.14": {
+          "type": "excel",
+          "reasoning": "NAV calculation, revaluing assets, real-estate/reserve-based valuation formulas, liquidation value computation.",
+          "title": "Asset-Based Valuation — NAV, Liquidation & Replacement Cost",
+          "db_session_id": "3c9d96d5-966a-4492-815b-47b2a317bae1"
+        },
+        "12.15": {
+          "type": "decision_making",
+          "reasoning": "Reverse DCF judgment; when model conflicts with market; holding period choices; intellectual humility.",
+          "title": "Valuation in Practice — The Final Lesson",
+          "db_session_id": "1772af9e-4a3a-4c6f-9a45-ef3e278ead40"
+        }
+      }
+    },
+    "M14": {
+      "module_number": 14,
+      "module_title": "Writing & Presenting Institutional Equity Research",
+      "total_sessions": 19,
+      "tally": {
+        "document": 6,
+        "excel": 7,
+        "decision_making": 6
+      },
+      "session_id_to_type": {
+        "c5826546-8a42-48e2-9e13-929b46b9dceb": "document",
+        "1b509abf-a070-4a6d-b12e-8aff2ab9abde": "excel",
+        "da281e1f-acf5-441b-bf13-0c12e77dd636": "decision_making",
+        "b0c08e0d-8e9a-484f-a6e9-71cd345fdcba": "excel",
+        "08600cd5-afa2-4231-b398-db2a1ea7c925": "document",
+        "fbe7063a-2621-41ee-85c0-6fa5e1bb92a4": "document",
+        "de520d0d-eacc-453b-98ff-c2feaee810bf": "excel",
+        "a565e04b-b094-4626-8a6a-e708cbd235ae": "excel",
+        "89abb514-9c95-4beb-8daf-ac6fcfa5425f": "excel",
+        "9095e40e-8098-4f62-8471-b20aadc6a1a1": "decision_making",
+        "4d1bdfc7-d64e-44fc-8b2a-9a281156b50f": "document",
+        "3de73395-c53f-4cba-8e5d-1518e9425a28": "document",
+        "c185d838-a0f3-4346-b34e-289c10445a5c": "excel",
+        "20ecc249-978f-4b41-9c47-849967a0c0ab": "decision_making",
+        "b1b9ef59-e111-4732-8376-3120cbff2756": "excel",
+        "9ebe994c-1924-4316-85d1-941dbdf285d9": "document",
+        "f5ef935f-4511-4301-9e9e-c7479cd12822": "decision_making",
+        "44343a21-954c-4551-8e37-65a66a945ed7": "decision_making",
+        "d1f007c4-5e1b-4549-a8a9-d1f7d2a311ff": "decision_making"
+      },
+      "by_session_no": {
+        "14.1": {
+          "type": "document",
+          "reasoning": "Teaches reading and analyzing report structure; document-reading skill.",
+          "title": "The Anatomy of an Equity Research Report & Its Table of Contents",
+          "db_session_id": "c5826546-8a42-48e2-9e13-929b46b9dceb"
+        },
+        "14.2": {
+          "type": "excel",
+          "reasoning": "Building header blocks with data; formatting and calculations in Excel.",
+          "title": "The Cover Page, Header Strip & Data Block",
+          "db_session_id": "1b509abf-a070-4a6d-b12e-8aff2ab9abde"
+        },
+        "14.3": {
+          "type": "decision_making",
+          "reasoning": "Crafting thesis and summary requires analytical judgment, not computation.",
+          "title": "The Investment Summary & the One-Line Thesis",
+          "db_session_id": "da281e1f-acf5-441b-bf13-0c12e77dd636"
+        },
+        "14.4": {
+          "type": "excel",
+          "reasoning": "Calculating targets, upside %, rating consistency; quantitative validation work.",
+          "title": "The Recommendation, Rating & Target Price",
+          "db_session_id": "b0c08e0d-8e9a-484f-a6e9-71cd345fdcba"
+        },
+        "14.5": {
+          "type": "document",
+          "reasoning": "Analyzing business models from filings; reading and extracting structure.",
+          "title": "The Business Overview — Explaining How the Company Makes Money",
+          "db_session_id": "08600cd5-afa2-4231-b398-db2a1ea7c925"
+        },
+        "14.6": {
+          "type": "document",
+          "reasoning": "Analyzing industry reports, competitive positioning; document-based analysis.",
+          "title": "The Industry & Competitive Analysis Section",
+          "db_session_id": "fbe7063a-2621-41ee-85c0-6fa5e1bb92a4"
+        },
+        "14.7": {
+          "type": "excel",
+          "reasoning": "Narrating financials requires building margin walks, ratio analysis in Excel.",
+          "title": "The Financial Analysis Section — Narrating the Numbers",
+          "db_session_id": "de520d0d-eacc-453b-98ff-c2feaee810bf"
+        },
+        "14.8": {
+          "type": "excel",
+          "reasoning": "Building forecasts and assumptions tables; pure modeling work.",
+          "title": "The Forecasts & Estimates Section",
+          "db_session_id": "a565e04b-b094-4626-8a6a-e708cbd235ae"
+        },
+        "14.9": {
+          "type": "excel",
+          "reasoning": "Valuation methods, multiples, DCF, sensitivity tables; quantitative core.",
+          "title": "The Valuation Section — Showing Your Work",
+          "db_session_id": "89abb514-9c95-4beb-8daf-ac6fcfa5425f"
+        },
+        "14.10": {
+          "type": "decision_making",
+          "reasoning": "Identifying risks and catalysts requires judgment under uncertainty.",
+          "title": "The Risks, Catalysts & Scenarios Section",
+          "db_session_id": "9095e40e-8098-4f62-8471-b20aadc6a1a1"
+        },
+        "14.11": {
+          "type": "document",
+          "reasoning": "Analyzing governance from filings, RPTs, auditor notes; forensic reading.",
+          "title": "Management, Governance & ESG",
+          "db_session_id": "4d1bdfc7-d64e-44fc-8b2a-9a281156b50f"
+        },
+        "14.12": {
+          "type": "document",
+          "reasoning": "Sourcing from filings, concalls, MCA; teaches document research skills.",
+          "title": "Researching the Report — Sources, Filings & Channel Checks",
+          "db_session_id": "3de73395-c53f-4cba-8e5d-1518e9425a28"
+        },
+        "14.13": {
+          "type": "excel",
+          "reasoning": "Building charts, tables, data visualization; Excel/charting mechanics.",
+          "title": "Charts, Tables & Exhibits — Visualising Research",
+          "db_session_id": "c185d838-a0f3-4346-b34e-289c10445a5c"
+        },
+        "14.14": {
+          "type": "decision_making",
+          "reasoning": "Writing craft and voice; editorial judgment, not calculation.",
+          "title": "The Writing Craft — The Sell-Side Voice",
+          "db_session_id": "20ecc249-978f-4b41-9c47-849967a0c0ab"
+        },
+        "14.15": {
+          "type": "excel",
+          "reasoning": "Formatting templates, page layouts, design grids; formatting mechanics.",
+          "title": "Formatting & Design — Making It Look Institutional",
+          "db_session_id": "b1b9ef59-e111-4732-8376-3120cbff2756"
+        },
+        "14.16": {
+          "type": "document",
+          "reasoning": "Reading SEBI regulations, compliance frameworks; legal document analysis.",
+          "title": "Compliance, Disclosures & Disclaimers",
+          "db_session_id": "9ebe994c-1924-4316-85d1-941dbdf285d9"
+        },
+        "14.17": {
+          "type": "decision_making",
+          "reasoning": "Deck structure and narrative flow; presentation judgment, not data work.",
+          "title": "Building the Research Deck in PowerPoint",
+          "db_session_id": "f5ef935f-4511-4301-9e9e-c7479cd12822"
+        },
+        "14.18": {
+          "type": "decision_making",
+          "reasoning": "Choosing note type and length; editorial and strategic judgment.",
+          "title": "Note Types — Initiation, Update, Flash & the One-Pager",
+          "db_session_id": "44343a21-954c-4551-8e37-65a66a945ed7"
+        },
+        "14.19": {
+          "type": "decision_making",
+          "reasoning": "Live Q&A, defending thesis under fire; pure analyst judgment.",
+          "title": "Presenting & Defending Research Under Fire",
+          "db_session_id": "d1f007c4-5e1b-4549-a8a9-d1f7d2a311ff"
+        }
+      }
+    },
+    "M15": {
+      "module_number": 15,
+      "module_title": "Behavioural Finance & Investor Psychology",
+      "total_sessions": 6,
+      "tally": {
+        "document": 2,
+        "decision_making": 3,
+        "excel": 1
+      },
+      "session_id_to_type": {
+        "e35f2cef-db4c-4d4b-b0ea-60a6670ee1b3": "document",
+        "c9713bed-de43-4493-94a0-a0152c11267c": "decision_making",
+        "4d5ac4ee-ca04-4119-b0e9-e702ca796e04": "decision_making",
+        "8022c679-0793-4746-ba48-c72505a14ee7": "document",
+        "8b27425c-0838-4755-a193-40fd589dd4d9": "decision_making",
+        "bf9b93d0-c2d5-4663-9db2-8c1ed838ca92": "excel"
+      },
+      "by_session_no": {
+        "15.1": {
+          "type": "document",
+          "reasoning": "Reading historical examples and foundational theory suits document-based analysis.",
+          "title": "Why Markets Aren't Rational — The Birth of Behavioural Finance",
+          "db_session_id": "e35f2cef-db4c-4d4b-b0ea-60a6670ee1b3"
+        },
+        "15.2": {
+          "type": "decision_making",
+          "reasoning": "Identifying biases in scenarios requires analyst judgement and self-awareness.",
+          "title": "The Cognitive Biases That Cost Investors Money",
+          "db_session_id": "c9713bed-de43-4493-94a0-a0152c11267c"
+        },
+        "15.3": {
+          "type": "decision_making",
+          "reasoning": "Assessing FOMO and herd behavior demands judgement under emotional pressure.",
+          "title": "Herd Behaviour, FOMO & Market Sentiment",
+          "db_session_id": "4d5ac4ee-ca04-4119-b0e9-e702ca796e04"
+        },
+        "15.4": {
+          "type": "document",
+          "reasoning": "Analyzing historical bubble case studies fits document-based forensic analysis.",
+          "title": "Bubbles, Manias & Crashes — Crowd Psychology in Markets",
+          "db_session_id": "8022c679-0793-4746-ba48-c72505a14ee7"
+        },
+        "15.5": {
+          "type": "decision_making",
+          "reasoning": "Debiasing research process requires meta-cognitive judgement and self-correction.",
+          "title": "The Analyst's Own Biases — Debiasing Your Research Process",
+          "db_session_id": "8b27425c-0838-4755-a193-40fd589dd4d9"
+        },
+        "15.6": {
+          "type": "excel",
+          "reasoning": "Quantifying mispricings and margin of safety calculations suit Excel modeling.",
+          "title": "Behavioural Edge — Turning Others' Biases Into Alpha",
+          "db_session_id": "bf9b93d0-c2d5-4663-9db2-8c1ed838ca92"
+        }
+      }
+    },
+    "M18": {
+      "module_number": 18,
+      "module_title": "AI for Finance & Equity Research — From Fundamentals to Full Automation",
+      "total_sessions": 20,
+      "tally": {
+        "document": 7,
+        "decision_making": 8,
+        "excel": 5
+      },
+      "session_id_to_type": {
+        "cb8bf710-d46e-42e6-9cc8-3c9d74b85651": "document",
+        "b9d12c0b-4efe-41a6-a690-30b394e33c82": "decision_making",
+        "a26a2c40-e9fc-49e0-bc5c-77e67366a82e": "decision_making",
+        "01e08baa-2bd2-49d3-8864-e5546e5f2e7f": "document",
+        "f439364a-7d4d-4cd0-bb62-d1e44c6c37c2": "document",
+        "7d410878-0f77-4ec2-b2f0-c80948ae14e3": "decision_making",
+        "4edd3156-eb96-409f-92f0-ae41cb78af9b": "document",
+        "a5715341-c4b5-4478-b5d0-403644ecfd98": "document",
+        "3d19b510-a350-4ec4-a971-7c4e5e769bc0": "excel",
+        "a518c60d-9a96-4e9d-aa9b-72e86022e5ed": "excel",
+        "defeda0a-f42c-4b78-b11b-345a4ba1e9de": "decision_making",
+        "0ff94928-5086-423c-9167-28657a89d197": "excel",
+        "c5d092e0-979b-4f94-b9d5-fc619797c8ca": "decision_making",
+        "c286abeb-d942-4033-b3ad-c730ad1cb1b6": "document",
+        "33b1c1e6-2572-4479-ac9e-ef9f619aab1d": "excel",
+        "98b81f1f-50f3-44c1-89b3-0b1ca3fd9e92": "decision_making",
+        "d226ad03-69b6-4b92-9c10-292acb0475a5": "excel",
+        "0488500e-0d7a-4a11-8026-3c2ba163747b": "decision_making",
+        "6201cc29-4ba9-4fd5-986e-da3ab0ceac41": "decision_making",
+        "f3ec715a-2845-4233-9354-b663f7d0a52d": "document"
+      },
+      "by_session_no": {
+        "18.1": {
+          "type": "document",
+          "reasoning": "Conceptual foundation; reading and understanding AI principles, not hands-on manipulation.",
+          "title": "AI 101 for Non-Tech Analysts: How LLMs Actually Work (No Maths, Pure Intuition)",
+          "db_session_id": "cb8bf710-d46e-42e6-9cc8-3c9d74b85651"
+        },
+        "18.2": {
+          "type": "decision_making",
+          "reasoning": "Teaches judgement on when AI memory limits affect workflow; strategic thinking required.",
+          "title": "Inside the Machine: Tokens, Context Windows, Memory & Why AI \"Drifts\"",
+          "db_session_id": "b9d12c0b-4efe-41a6-a690-30b394e33c82"
+        },
+        "18.3": {
+          "type": "decision_making",
+          "reasoning": "Tool selection for different tasks; analyst judgement about best-fit scenarios.",
+          "title": "The AI Tool Landscape: Choosing the Right Model & Tool for Every Job",
+          "db_session_id": "a26a2c40-e9fc-49e0-bc5c-77e67366a82e"
+        },
+        "18.4": {
+          "type": "document",
+          "reasoning": "Teaches prompt structure through reading and analysis; understanding framework, not building models.",
+          "title": "Prompt Engineering Foundations: The Anatomy of an Investment-Grade Prompt",
+          "db_session_id": "01e08baa-2bd2-49d3-8864-e5546e5f2e7f"
+        },
+        "18.5": {
+          "type": "document",
+          "reasoning": "Advanced prompting techniques; analytical reading of methods, not quantitative manipulation.",
+          "title": "Advanced Prompting: Chain-of-Thought, Few-Shot, Personas & Structured Outputs",
+          "db_session_id": "f439364a-7d4d-4cd0-bb62-d1e44c6c37c2"
+        },
+        "18.6": {
+          "type": "decision_making",
+          "reasoning": "Teaches verification judgement and when to trust AI; critical thinking under uncertainty.",
+          "title": "Grounding & Guardrails: Killing Hallucinations and Forcing Verification",
+          "db_session_id": "7d410878-0f77-4ec2-b2f0-c80948ae14e3"
+        },
+        "18.7": {
+          "type": "document",
+          "reasoning": "Organizing and documenting prompts; reading/cataloging work, not quantitative analysis.",
+          "title": "Your Finance Prompt Library: Reusable Templates That Compound",
+          "db_session_id": "4edd3156-eb96-409f-92f0-ae41cb78af9b"
+        },
+        "18.8": {
+          "type": "document",
+          "reasoning": "Extracting insights from filings using AI; classic document analysis and comprehension task.",
+          "title": "AI-Powered Fundamental Research: Annual Reports, Concalls & Filings at Speed",
+          "db_session_id": "a5715341-c4b5-4478-b5d0-403644ecfd98"
+        },
+        "18.9": {
+          "type": "excel",
+          "reasoning": "Spreadsheet manipulation, code tools, and data computation; quantitative skills focus.",
+          "title": "AI for Data Analysis: Spreadsheets, Charts & the Code Interpreter",
+          "db_session_id": "3d19b510-a350-4ec4-a971-7c4e5e769bc0"
+        },
+        "18.10": {
+          "type": "excel",
+          "reasoning": "Building 3-statement models with formulas and linkages; core financial modelling work.",
+          "title": "Your AI Financial Modelling Assistant: 3-Statement Models Done Right",
+          "db_session_id": "a518c60d-9a96-4e9d-aa9b-72e86022e5ed"
+        },
+        "18.11": {
+          "type": "decision_making",
+          "reasoning": "Screening strategy and prioritization; judgement calls on which companies warrant deep analysis.",
+          "title": "Sector Screening & Idea Generation at Scale Using AI",
+          "db_session_id": "defeda0a-f42c-4b78-b11b-345a4ba1e9de"
+        },
+        "18.12": {
+          "type": "excel",
+          "reasoning": "DCF and valuation calculations with scenarios; quantitative modelling and sensitivity analysis.",
+          "title": "Valuation Automation: DCF, Comps & Scenario Analysis with AI",
+          "db_session_id": "0ff94928-5086-423c-9167-28657a89d197"
+        },
+        "18.13": {
+          "type": "decision_making",
+          "reasoning": "Designing multi-step workflows; strategic process thinking and system architecture judgement.",
+          "title": "From Tools to Pipelines: Building Multi-Step AI Research Workflows",
+          "db_session_id": "c5d092e0-979b-4f94-b9d5-fc619797c8ca"
+        },
+        "18.14": {
+          "type": "document",
+          "reasoning": "Conceptual understanding of AI agents; reading and comprehension, not hands-on building.",
+          "title": "AI Agents Explained: From Chatbots to Autonomous Analysts",
+          "db_session_id": "c286abeb-d942-4033-b3ad-c730ad1cb1b6"
+        },
+        "18.15": {
+          "type": "excel",
+          "reasoning": "Building no-code automations with triggers and data flows; structured workflow manipulation.",
+          "title": "No-Code Automation: Zapier, Make & n8n for Finance Workflows",
+          "db_session_id": "33b1c1e6-2572-4479-ac9e-ef9f619aab1d"
+        },
+        "18.16": {
+          "type": "decision_making",
+          "reasoning": "Designing custom tools and APIs; architect-level judgement on building vs. using.",
+          "title": "Building Your Own AI Tools: APIs, Custom GPTs, Projects & Mini-Apps",
+          "db_session_id": "98b81f1f-50f3-44c1-89b3-0b1ca3fd9e92"
+        },
+        "18.17": {
+          "type": "excel",
+          "reasoning": "Assembling full research engine with data verification; quantitative workflow assembly and testing.",
+          "title": "The Fully Automated Equity Research Engine (End-to-End Capstone Workflow)",
+          "db_session_id": "d226ad03-69b6-4b92-9c10-292acb0475a5"
+        },
+        "18.18": {
+          "type": "decision_making",
+          "reasoning": "Applying automation principles across finance functions; strategic deployment judgement calls.",
+          "title": "Automating the Wider Finance Function: Monitoring, Reporting & Alerts",
+          "db_session_id": "0488500e-0d7a-4a11-8026-3c2ba163747b"
+        },
+        "18.19": {
+          "type": "decision_making",
+          "reasoning": "Building personal operating system; meta-level workflow and habit design judgement.",
+          "title": "Your AI Analyst Operating System: The 10x Productivity Engine",
+          "db_session_id": "6201cc29-4ba9-4fd5-986e-da3ab0ceac41"
+        },
+        "18.20": {
+          "type": "document",
+          "reasoning": "Portfolio presentation and interview preparation; reading/understanding career positioning, not quantitative work.",
+          "title": "Standing Out: Showcasing Your AI Skills in Your Resume, CV & Interviews",
+          "db_session_id": "f3ec715a-2845-4233-9354-b663f7d0a52d"
+        }
+      }
+    }
+  }
+}

@@ -64,6 +64,27 @@ if env_path.exists():
             if k == 'SUPABASE_URL': SUPABASE_URL = v.rstrip('/')
             if k == 'SUPABASE_SERVICE_ROLE_KEY': SR = v
             if k == 'EMERGENT_LLM_KEY': EMERGENT_LLM_KEY = v
+
+# Fallback: backend .env stores the POSTGRES connection string, not the REST
+# base URL. The REST URL lives in frontend/.env or can be derived from the
+# postgres host (`db.<ref>.supabase.co` → `https://<ref>.supabase.co`).
+def _coerce_rest_url(u: str) -> str:
+    if u.startswith('http://') or u.startswith('https://'):
+        return u.rstrip('/')
+    # Try postgres URL
+    m = re.search(r'@db\.([a-z0-9]+)\.supabase\.co', u or '')
+    if m:
+        return f'https://{m.group(1)}.supabase.co'
+    return u
+SUPABASE_URL = _coerce_rest_url(SUPABASE_URL)
+if not SUPABASE_URL.startswith('http'):
+    # Last fallback: read from frontend/.env REACT_APP_SUPABASE_URL
+    fe = Path('/app/frontend/.env')
+    if fe.exists():
+        for line in fe.read_text().splitlines():
+            if line.startswith('REACT_APP_SUPABASE_URL='):
+                SUPABASE_URL = line.split('=', 1)[1].strip().strip('"').rstrip('/')
+                break
 if not (SUPABASE_URL and SR and EMERGENT_LLM_KEY):
     print('Missing SUPABASE_URL/SR/EMERGENT_LLM_KEY in /app/backend/.env', file=sys.stderr)
     sys.exit(2)
@@ -74,22 +95,53 @@ from emergentintegrations.llm.chat import LlmChat, UserMessage  # noqa: E402
 LOG_DIR = Path('/app/scripts/bulk_seed_log')
 LOG_DIR.mkdir(exist_ok=True)
 CURR_DIR = Path('/app/memory/curriculum_v2')
+TYPE_ROUTING_PATH = Path('/app/memory/sims_type_routing_v1.json')
+
+# Loaded lazily by load_type_routing()
+_TYPE_ROUTING_CACHE = {'loaded': False, 'data': None}
+
+def load_type_routing():
+    if _TYPE_ROUTING_CACHE['loaded']:
+        return _TYPE_ROUTING_CACHE['data']
+    if TYPE_ROUTING_PATH.exists():
+        _TYPE_ROUTING_CACHE['data'] = json.loads(TYPE_ROUTING_PATH.read_text())
+    else:
+        _TYPE_ROUTING_CACHE['data'] = None
+    _TYPE_ROUTING_CACHE['loaded'] = True
+    return _TYPE_ROUTING_CACHE['data']
 
 # ─── module / curriculum ──────────────────────────────────────────────────
 EXCEL_ONLY = {3, 4, 13}
 SKIP = {16, 17, 20, 21, 22, 23}
 
 def session_slices(module_num: int):
-    """Returns list of {session_no, title, notes} for the given module."""
+    """Returns list of {session_no, title, notes} for the given module.
+    Handles 4 header variants found across the curriculum_v2 files:
+      '# SESSION X.Y: Title'                            (standard, M1-M11, M13-M15)
+      '# MODULE N — SESSION X.Y: Title'                 (M12)
+      '## Session X.Y: Title'                           (M18)
+      '## Session N — Title'                            (M19, no decimal)
+    """
     md_path = CURR_DIR / f'module-{module_num}.md'
     if not md_path.exists():
         return []
     md = md_path.read_text()
-    headers = list(re.finditer(r'^# SESSION (\d+\.\d+): (.+)$', md, re.MULTILINE))
+    patterns = [
+        re.compile(r'^# SESSION (\d+\.\d+):\s*(.+)$',                       re.MULTILINE),
+        re.compile(r'^# MODULE \d+\s*[—-]\s*SESSION (\d+\.\d+):\s*(.+)$',   re.MULTILINE),
+        re.compile(r'^##\s+Session\s+(\d+\.\d+):\s*(.+)$',                  re.MULTILINE),
+        re.compile(r'^##\s+Session\s+(\d+)\s*[—-]\s*(.+)$',                 re.MULTILINE),
+    ]
+    matches = []
+    for pat in patterns:
+        ms = list(pat.finditer(md))
+        if ms:
+            matches = ms
+            break
     out = []
-    for i, m in enumerate(headers):
+    for i, m in enumerate(matches):
         start = m.start()
-        end = headers[i + 1].start() if i + 1 < len(headers) else len(md)
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(md)
         out.append({
             'session_no': m.group(1),
             'title': m.group(2).strip(),
@@ -372,7 +424,7 @@ def validate_decision(obj):
 VALIDATORS = {'excel': validate_excel, 'document': validate_document, 'decision_making': validate_decision}
 
 # ─── deterministic engine validator (Node subprocess) ────────────────────
-ENGINE_VALIDATOR_JS = '/app/scripts/validate_excel_sim_node.cjs'
+ENGINE_VALIDATOR_JS = '/app/scripts/validate_excel_sim_node.mjs'
 
 def engine_validate_excel(sim_obj):
     """Run the JS engine validator on a single excel sim. Returns
@@ -429,9 +481,19 @@ def rest_post(path, body):
     return rest_send(path, 'POST', body)
 
 # ─── per-session generator ────────────────────────────────────────────────
-def pick_type(session_title: str, notes: str, module_num: int) -> str:
+def pick_type(session_title: str, notes: str, module_num: int, db_session_id: str = '') -> str:
     if module_num in EXCEL_ONLY:
         return 'excel'
+    # Prefer the upfront Sonnet 4.5 type-routing file if present
+    routing = load_type_routing()
+    if routing:
+        mod_key = f"M{module_num}"
+        mod = (routing.get('modules') or {}).get(mod_key)
+        if mod:
+            id_map = mod.get('session_id_to_type') or {}
+            if db_session_id and db_session_id in id_map:
+                return id_map[db_session_id]
+    # Fallback to Haiku per-session decision (legacy path, kept for safety)
     raw = sync_call(TYPE_DECIDER_PROMPT,
                     f"Session: {session_title}\n\nNotes (first 6000 chars):\n{notes[:6000]}",
                     max_tokens=20)
@@ -506,6 +568,7 @@ def upsert_sim(db_session_id: str, sim_obj: dict, sim_type: str, source_title: s
     config = {k: v for k, v in sim_obj.items() if k not in ('sim_type', 'title')}
     config['generated_at'] = datetime.now(timezone.utc).isoformat()
     config['generator'] = 'bulk_seed_sims.py · claude-haiku-4-5'
+    config['source'] = 'ai_generated_v1'
     row = {
         'id': str(uuid.uuid4()),
         'session_id': db_session_id,
@@ -535,7 +598,7 @@ def process_module(module_num: int, *, dry_run=False, concurrency=2):
     t_start = time.time()
     for i, (cs, ds) in enumerate(pairs, 1):
         t0 = time.time()
-        sim_type = pick_type(cs['title'], cs['notes'], module_num)
+        sim_type = pick_type(cs['title'], cs['notes'], module_num, ds.get('id', ''))
         sim, raw, err = generate_sim(cs['title'], cs['notes'], sim_type)
         engine_report = None
         if sim and sim_type == 'excel':
