@@ -1,0 +1,392 @@
+{
+  "sim_type": "excel",
+  "title": "Nifty 50 Market Cap Weights—Relative vs Absolute References",
+  "scenario": "You're building a daily Nifty 50 index weight table for the Mumbai desk. Ten heavyweights' market caps are listed; you must compute each stock's portfolio weight as a fraction of total market cap. The formula must survive a fill-down without breaking—choosing the right reference type (relative for individual caps, absolute for the total) is the difference between a working model and a #DIV/0! crash.",
+  "instructions": "Build formulas using relative and absolute references to compute market-cap weights; use F4 to pin the total; fill down and verify; then apply growth and CAGR formulas to validate five-year revenue trends.",
+  "learning_objective": "Construct formulas with mixed references (relative for row data, absolute for shared assumptions), apply F4 to pin cell addresses, execute fill-down operations without reference drift, and compute year-on-year growth and CAGR with correct BODMAS bracketing.",
+  "hints": [
+    "In the weight formula, which cell—the individual cap or the total—should NOT change when you drag down? That one gets the dollar signs.",
+    "Use F4 while editing the total reference to cycle through: no dollars → $B$12 → stop here. Then fill down.",
+    "Growth is (new minus old) divided by old—wrap the subtraction in brackets. CAGR is (end divided by start) to the power of (one divided by periods), minus one—count the hops between years, not the years themselves."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Weight (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY22 Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY23 Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY24 Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY25E Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1850000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 615000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 725000,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 820000,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1450000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 125000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 148000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 175000,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 206000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1340000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 220000,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 245000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 285000,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 330000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 780000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 180000,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 195000,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 218000,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 248000,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 78000,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 92000,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 102000,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Kotak Mahindra Bank",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 420000,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 42000,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 50000,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 60000,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 380000,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 38000,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 46000,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 56000,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 68000,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Axis Bank",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 360000,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 48000,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 56000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 65000,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 76000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "ITC",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 320000,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 102000,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 112000,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 125000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "HUL",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 310000,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 58000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 62000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 68000,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 75000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "TOTAL",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "=SUM(B2:B11)",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. Market cap weight formula for Reliance (C2) — use relative ref for cap, absolute for total",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "Q2. Reliance's weight as % of total market cap (fill this, then copy down to C11)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q3. Sum of all weights C2:C11 (should equal 100.00%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q4. Reliance FY23 YoY growth: (FY23-FY22)/FY22 with brackets around subtraction",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q5. Reliance FY22-FY25E CAGR: (FY25E/FY22)^(1/periods)-1 (3 periods = 3 hops)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=B2/$B$12",
+      "expected_value": "=B2/$B$12",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=B3/$B$12",
+      "expected_value": 0.18758085381630013,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUM(C2:C11)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(E2-D2)/D2",
+      "expected_value": 0.1827,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(G2/D2)^(1/3)-1",
+      "expected_value": 0.16395673133719368,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 15
+    }
+  }
+}

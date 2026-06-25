@@ -1,0 +1,134 @@
+{
+  "module": 3,
+  "completed_at": "2026-06-25T13:41:47.801514+00:00",
+  "total_sessions": 10,
+  "sims_generated": 10,
+  "sims_failed": 0,
+  "by_type": {
+    "excel": 10
+  },
+  "total_engine_corrections": 17,
+  "elapsed_seconds": 220.4,
+  "rows": [
+    {
+      "session_no": "3.1",
+      "session_title": "Welcome to the Grid — Interface, Navigation & Data Entry",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 16.6,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 1
+    },
+    {
+      "session_no": "3.2",
+      "session_title": "Formatting Like an Analyst — Numbers, Colours & Layout",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 16.5,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 2
+    },
+    {
+      "session_no": "3.3",
+      "session_title": "Formulas 101 — References, Operators & How Formulas Travel",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 53.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 3,
+      "engine_errors": 1
+    },
+    {
+      "session_no": "3.4",
+      "session_title": "The Aggregation Family — SUM to SUMIFS, COUNTIFS & SUBTOTAL",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 19.6,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 1,
+      "engine_errors": 5
+    },
+    {
+      "session_no": "3.5",
+      "session_title": "Logic in Excel — IF, AND, OR, Nested IFs, IFS & IFERROR",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 20.8,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 3,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "3.6",
+      "session_title": "Lookup Functions — VLOOKUP, INDEX-MATCH & XLOOKUP",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 21.8,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 2
+    },
+    {
+      "session_no": "3.7",
+      "session_title": "Text & Date Functions — Cleaning Messy Market Data",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 17.7,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 4
+    },
+    {
+      "session_no": "3.8",
+      "session_title": "Data Tools — Sort, Filter, Tables, Validation & Duplicates",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 19.1,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 1,
+      "engine_errors": 2
+    },
+    {
+      "session_no": "3.9",
+      "session_title": "PivotTables & Charts — Summarise Like a Pro",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 17.9,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 2
+    },
+    {
+      "session_no": "3.10",
+      "session_title": "Pro Mode — Shortcuts, Auditing, Named Ranges & Goal Seek",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 17.1,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 1,
+      "engine_errors": 0
+    }
+  ]
+}

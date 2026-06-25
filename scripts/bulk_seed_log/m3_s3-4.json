@@ -1,0 +1,268 @@
+{
+  "sim_type": "excel",
+  "title": "Reliance Segment Revenue Rollup — SUMIFS & Reconciliation",
+  "scenario": "Your Mumbai desk maintains raw quarterly segment revenue for Reliance Industries across three divisions (Oil-to-Chemicals, Retail, Digital Services) spanning four fiscal years. You must rebuild the annual summary table using SUMIFS, apply SUBTOTAL to respect filtered views, and reconcile totals against corporate filings.",
+  "instructions": "Build SUMIFS formulas to extract annual revenue by segment, apply COUNTIFS to verify data completeness, use SUBTOTAL to total a filtered range, and reconcile your output against the filing total.",
+  "learning_objective": "Construct SUMIFS formulas with multiple criteria, apply COUNTIFS to count qualifying rows, use SUBTOTAL to respect filters, and validate segment totals against source data.",
+  "hints": [
+    "SUMIFS puts the sum range first, then condition pairs in order: sum_range, criteria_range1, criteria1, criteria_range2, criteria2.",
+    "To sum Retail revenue for FY25 only, write =SUMIFS(rev_column, segment_column, \"Retail\", year_column, \"FY25\") — exactly two criteria, each a pair.",
+    "For the reconciliation check, SUBTOTAL(9, filtered_range) totals only visible rows; compare it to your SUMIFS block total to confirm no hidden data was missed."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Revenue ₹ Cr",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries"
+          },
+          "B2": {
+            "value": "Oil-to-Chemicals"
+          },
+          "C2": {
+            "value": "FY22"
+          },
+          "D2": {
+            "value": 485000
+          },
+          "A3": {
+            "value": "Reliance Industries"
+          },
+          "B3": {
+            "value": "Retail"
+          },
+          "C3": {
+            "value": "FY22"
+          },
+          "D3": {
+            "value": 165000
+          },
+          "A4": {
+            "value": "Reliance Industries"
+          },
+          "B4": {
+            "value": "Digital Services"
+          },
+          "C4": {
+            "value": "FY22"
+          },
+          "D4": {
+            "value": 89000
+          },
+          "A5": {
+            "value": "Reliance Industries"
+          },
+          "B5": {
+            "value": "Oil-to-Chemicals"
+          },
+          "C5": {
+            "value": "FY23"
+          },
+          "D5": {
+            "value": 512000
+          },
+          "A6": {
+            "value": "Reliance Industries"
+          },
+          "B6": {
+            "value": "Retail"
+          },
+          "C6": {
+            "value": "FY23"
+          },
+          "D6": {
+            "value": 185000
+          },
+          "A7": {
+            "value": "Reliance Industries"
+          },
+          "B7": {
+            "value": "Digital Services"
+          },
+          "C7": {
+            "value": "FY23"
+          },
+          "D7": {
+            "value": 98000
+          },
+          "A8": {
+            "value": "Reliance Industries"
+          },
+          "B8": {
+            "value": "Oil-to-Chemicals"
+          },
+          "C8": {
+            "value": "FY24"
+          },
+          "D8": {
+            "value": 565000
+          },
+          "A9": {
+            "value": "Reliance Industries"
+          },
+          "B9": {
+            "value": "Retail"
+          },
+          "C9": {
+            "value": "FY24"
+          },
+          "D9": {
+            "value": 245000
+          },
+          "A10": {
+            "value": "Reliance Industries"
+          },
+          "B10": {
+            "value": "Digital Services"
+          },
+          "C10": {
+            "value": "FY24"
+          },
+          "D10": {
+            "value": 127000
+          },
+          "A11": {
+            "value": "Reliance Industries"
+          },
+          "B11": {
+            "value": "Oil-to-Chemicals"
+          },
+          "C11": {
+            "value": "FY25"
+          },
+          "D11": {
+            "value": 618000
+          },
+          "A12": {
+            "value": "Reliance Industries"
+          },
+          "B12": {
+            "value": "Retail"
+          },
+          "C12": {
+            "value": "FY25"
+          },
+          "D12": {
+            "value": 307000
+          },
+          "A13": {
+            "value": "Reliance Industries"
+          },
+          "B13": {
+            "value": "Digital Services"
+          },
+          "C13": {
+            "value": "FY25"
+          },
+          "D13": {
+            "value": 156000
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Oil-to-Chemicals FY25 Revenue ₹ Cr"
+          },
+          "B2": {},
+          "A3": {
+            "value": "Total Retail Revenue (All Years) ₹ Cr"
+          },
+          "B3": {},
+          "A4": {
+            "value": "Count: How many rows for Digital Services?"
+          },
+          "B4": {},
+          "A5": {
+            "value": "Average Revenue per Segment per Year ₹ Cr"
+          },
+          "B5": {},
+          "A6": {
+            "value": "FY24 Grand Total (SUBTOTAL filtered) ₹ Cr"
+          },
+          "B6": {},
+          "A7": {
+            "value": "Reconciliation: Sum of all segment totals ₹ Cr"
+          },
+          "B7": {}
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=SUMIFS(Data!D:D,Data!B:B,\"Oil-to-Chemicals\",Data!C:C,\"FY25\")",
+      "expected_value": 618000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B3": {
+      "formula_pattern": "=SUMIFS(Data!D:D,Data!B:B,\"Retail\")",
+      "expected_value": 902000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=COUNTIFS(Data!B:B,\"Digital Services\")",
+      "expected_value": 4,
+      "type": "number",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=SUMPRODUCT(Data!D2:D13)/(COUNTA(Data!D2:D13))",
+      "expected_value": 296000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=SUBTOTAL(9,Data!D2:D13)",
+      "expected_value": 4354000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=SUMIFS(Data!D:D,Data!C:C,\"FY22\")+SUMIFS(Data!D:D,Data!C:C,\"FY23\")+SUMIFS(Data!D:D,Data!C:C,\"FY24\")+SUMIFS(Data!D:D,Data!C:C,\"FY25\")",
+      "expected_value": 4354000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    }
+  }
+}

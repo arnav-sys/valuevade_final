@@ -1,0 +1,281 @@
+{
+  "sim_type": "excel",
+  "title": "Titan Company P&L — Format Like a Goldman Analyst",
+  "scenario": "You've pulled Titan's quarterly P&L numbers from the BSE filing into a raw Excel sheet — all defaults, no formatting, mixed units, and your senior just asked you to 'make it look professional before it goes to the partner desk.' You have 20 minutes to apply the analyst formatting code: colour-code the inputs (blue) and formulas (black), convert numbers to ₹ crore with Indian commas, freeze headers, and border like punctuation. This is your first test of the formatting safety system every Mumbai desk uses.",
+  "instructions": "Format the Titan P&L sheet using Ctrl+1 (Number, Alignment, Font tabs), colour-code input cells blue and formula cells black, convert ₹ lakhs to ₹ crores in a helper column, right-align all numbers with Indian comma separators, freeze the header row, and apply thin borders above subtotals and double borders below totals — then answer all five analyst-style questions in the Answers sheet.",
+  "learning_objective": "Apply the analyst formatting code — blue for inputs, black for formulas, right-aligned numbers with Indian commas, frozen headers, and punctuation borders — and convert units (₹ lakh to ₹ crore) without losing raw data, so your model reads as professionally trained on sight.",
+  "hints": [
+    "The colour code is your safety system: blue = you typed it, black = Excel calculated it. Ctrl+1 → Font → Colour for each.",
+    "₹ crore = ₹ lakh ÷ 100. Build a helper column first, never overwrite the raw lakh numbers. Custom number format for Indian commas: [>=100000]##\\,##\\,##0",
+    "Freeze headers at View → Freeze Panes (click B2 first if you want both row and column frozen). Right-align numbers (Ctrl+1 → Alignment → Horizontal → Right). Single border above Subtotal (B9), double border below Total (B11) using Ctrl+1 → Border tab."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true,
+            "bgColor": "#6A5CFF",
+            "textColor": "#FFFFFF"
+          },
+          "B1": {
+            "value": "₹ lakh (raw)",
+            "readOnly": true,
+            "bold": true,
+            "bgColor": "#6A5CFF",
+            "textColor": "#FFFFFF"
+          },
+          "C1": {
+            "value": "₹ cr (converted)",
+            "readOnly": true,
+            "bold": true,
+            "bgColor": "#6A5CFF",
+            "textColor": "#FFFFFF"
+          },
+          "A2": {
+            "value": "Revenue from Operations",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 507890,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Other Income",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 12456,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Total Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": 520346,
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": false,
+            "bold": true
+          },
+          "A5": {
+            "value": "Cost of Materials Consumed",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 215780,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Employee Benefits",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 98765,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Other Expenses",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 67543,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "EBITDA",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 138258,
+            "readOnly": true,
+            "bold": true
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false,
+            "bold": true
+          },
+          "A9": {
+            "value": "Depreciation",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 21345,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "EBIT (Operating Profit)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": 116913,
+            "readOnly": true,
+            "bold": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false,
+            "bold": true
+          },
+          "A11": {
+            "value": "Net Profit After Tax",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": 81240,
+            "readOnly": true,
+            "bold": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false,
+            "bold": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Formatting & Analysis Questions",
+            "readOnly": true,
+            "bold": true,
+            "bgColor": "#6A5CFF",
+            "textColor": "#FFFFFF"
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true,
+            "bgColor": "#6A5CFF",
+            "textColor": "#FFFFFF"
+          },
+          "A2": {
+            "value": "Q1: Convert Revenue from Operations from ₹ lakh to ₹ cr (formula in C2)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: Total Revenue in ₹ cr — is this a formula (black) or input (blue)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: EBITDA margin (%) = EBITDA ÷ Total Revenue, displayed as number to 2 decimals",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: Net Profit margin (%) = Net Profit ÷ Total Revenue, displayed as number to 2 decimals",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: Which cells in the Data sheet should be coloured BLUE (inputs you typed), and which BLACK (formulas)?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B2/100",
+      "expected_value": 5078.9,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C4",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!C8/Data!C4)*100",
+      "expected_value": 26.58,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!C11/Data!C4)*100",
+      "expected_value": 15.62,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "B2:B11 blue (raw input); C2:C11 black (÷100 formulas); B4, B8, B10, B11 bold",
+      "expected_value": [
+        507890,
+        12456,
+        520346,
+        215780,
+        98765,
+        67543,
+        138258,
+        21345,
+        116913,
+        81240
+      ],
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}

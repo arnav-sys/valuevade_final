@@ -1,0 +1,553 @@
+{
+  "sim_type": "excel",
+  "title": "NSE Bhavcopy Portfolio Lookup — Connect Prices to Holdings",
+  "scenario": "You manage a small portfolio of 10 Nifty stocks. NSE's daily bhavcopy (price feed) arrived this morning. Your Portfolio sheet lists your holdings by ticker symbol; the Bhavcopy sheet contains today's OHLCV data. You need to pull live closing prices, calculate portfolio values, and identify which stocks are missing from today's bhavcopy — all using lookup functions.",
+  "instructions": "Build VLOOKUP, INDEX-MATCH, and XLOOKUP formulas to connect the Portfolio sheet to the Bhavcopy data, then calculate daily portfolio metrics.",
+  "learning_objective": "Apply VLOOKUP with pinned ranges and exact-match logic, construct INDEX-MATCH two-way lookups, and deploy XLOOKUP with graceful error handling to join NSE price feeds to holdings — and explain why INDEX-MATCH outlives VLOOKUP in production models.",
+  "hints": [
+    "For VLOOKUP, remember: pin the table array with dollar signs ($A$2:$E$11), omit the fourth argument and it defaults to approximate, and always state 0 or FALSE for exact match on ticker names.",
+    "MATCH returns a position (1, 2, 3…); INDEX uses that position to fetch a value from any column of your choice — MATCH finds the row, INDEX reads it. Try nesting MATCH inside INDEX.",
+    "XLOOKUP syntax is =XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found]) — the return_array is independent of lookup_array, so you can look right, left, or anywhere. If you see #NAME?, your Excel version doesn't have XLOOKUP (pre-2021); use INDEX-MATCH instead."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Bhavcopy",
+        "cells": {
+          "A1": {
+            "value": "SYMBOL",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "SERIES",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "CLOSE",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "VOLUME",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "ISIN",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "RELIANCE",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2845.5,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1250000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "INE002A01018",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 3412.75,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 580000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "INE467B01029",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFCBANK",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1683.2,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 2100000,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "INE001A01036",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "INFOSYS",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 1895.6,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 750000,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "INE009A01021",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "ICICIBANK",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 1127.85,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 1850000,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "INE008A01023",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "ASIANPAINT",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 3156.4,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 280000,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "INE021A01013",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "TITAN",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 2834.95,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 420000,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "INE280A01028",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "MARUTI",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 8901.5,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 180000,
+            "readOnly": true
+          },
+          "E9": {
+            "value": "INE585B01010",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "WIPRO",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 421.3,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 3200000,
+            "readOnly": true
+          },
+          "E10": {
+            "value": "INE075A01022",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "BAJAJFINSV",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "EQ",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 1689.75,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 650000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": "INE918I01018",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Portfolio",
+        "cells": {
+          "A1": {
+            "value": "TICKER",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "QUANTITY",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "CLOSE_VLOOKUP",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "CLOSE_INDEXMATCH",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "CLOSE_XLOOKUP",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "PORTFOLIO_VALUE_₹CR",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "STATUS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "RELIANCE",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "C2": {
+            "value": null
+          },
+          "D2": {
+            "value": null
+          },
+          "E2": {
+            "value": null
+          },
+          "F2": {
+            "value": null
+          },
+          "G2": {
+            "value": null
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 75,
+            "readOnly": true
+          },
+          "C3": {
+            "value": null
+          },
+          "D3": {
+            "value": null
+          },
+          "E3": {
+            "value": null
+          },
+          "F3": {
+            "value": null
+          },
+          "G3": {
+            "value": null
+          },
+          "A4": {
+            "value": "HDFCBANK",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 200,
+            "readOnly": true
+          },
+          "C4": {
+            "value": null
+          },
+          "D4": {
+            "value": null
+          },
+          "E4": {
+            "value": null
+          },
+          "F4": {
+            "value": null
+          },
+          "G4": {
+            "value": null
+          },
+          "A5": {
+            "value": "INFOSYS",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 150,
+            "readOnly": true
+          },
+          "C5": {
+            "value": null
+          },
+          "D5": {
+            "value": null
+          },
+          "E5": {
+            "value": null
+          },
+          "F5": {
+            "value": null
+          },
+          "G5": {
+            "value": null
+          },
+          "A6": {
+            "value": "ICICIBANK",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 300,
+            "readOnly": true
+          },
+          "C6": {
+            "value": null
+          },
+          "D6": {
+            "value": null
+          },
+          "E6": {
+            "value": null
+          },
+          "F6": {
+            "value": null
+          },
+          "G6": {
+            "value": null
+          },
+          "A7": {
+            "value": "ASIANPAINT",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C7": {
+            "value": null
+          },
+          "D7": {
+            "value": null
+          },
+          "E7": {
+            "value": null
+          },
+          "F7": {
+            "value": null
+          },
+          "G7": {
+            "value": null
+          },
+          "A8": {
+            "value": "TITAN",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 120,
+            "readOnly": true
+          },
+          "C8": {
+            "value": null
+          },
+          "D8": {
+            "value": null
+          },
+          "E8": {
+            "value": null
+          },
+          "F8": {
+            "value": null
+          },
+          "G8": {
+            "value": null
+          },
+          "A9": {
+            "value": "MARUTI",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 40,
+            "readOnly": true
+          },
+          "C9": {
+            "value": null
+          },
+          "D9": {
+            "value": null
+          },
+          "E9": {
+            "value": null
+          },
+          "F9": {
+            "value": null
+          },
+          "G9": {
+            "value": null
+          },
+          "A10": {
+            "value": "WIPRO",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 500,
+            "readOnly": true
+          },
+          "C10": {
+            "value": null
+          },
+          "D10": {
+            "value": null
+          },
+          "E10": {
+            "value": null
+          },
+          "F10": {
+            "value": null
+          },
+          "G10": {
+            "value": null
+          },
+          "A11": {
+            "value": "BAJAJFINSV",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 80,
+            "readOnly": true
+          },
+          "C11": {
+            "value": null
+          },
+          "D11": {
+            "value": null
+          },
+          "E11": {
+            "value": null
+          },
+          "F11": {
+            "value": null
+          },
+          "G11": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Portfolio!C2": {
+      "formula_pattern": "=VLOOKUP(A2,Bhavcopy!$A$2:$E$11,3,0)",
+      "expected_value": 2845.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Portfolio!D2": {
+      "formula_pattern": "=INDEX(Bhavcopy!$C$2:$C$11,MATCH(A2,Bhavcopy!$A$2:$A$11,0))",
+      "expected_value": 2845.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Portfolio!E2": {
+      "formula_pattern": "=XLOOKUP(A2,Bhavcopy!$A$2:$A$11,Bhavcopy!$C$2:$C$11,\"NOT FOUND\")",
+      "expected_value": 2845.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Portfolio!F5": {
+      "formula_pattern": "=E5*B5/10000000",
+      "expected_value": 28.434,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Portfolio!G2": {
+      "formula_pattern": "=IF(ISERROR(E2),\"MISSING\",\"LIVE\")",
+      "expected_value": "LIVE",
+      "type": "text",
+      "tolerance": 0,
+      "points": 13
+    }
+  }
+}

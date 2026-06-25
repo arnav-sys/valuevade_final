@@ -1,0 +1,232 @@
+{
+  "sim_type": "excel",
+  "title": "Titan's FY26 Target: Reverse-Engineer Growth via Goal Seek",
+  "scenario": "You're a junior analyst on the Titan equity desk. Management guided FY26 EPS to ₹58, but the street consensus target demands EPS ₹62. Your model is built; now you must back-solve: what revenue CAGR (from FY25 base ₹8,400 cr) makes the numbers work? Use Goal Seek to answer — then audit the model for any buried hardcodes before shipping.",
+  "instructions": "Audit the given Titan model using Ctrl+` and Go To Special, identify and eliminate any hardcoded plug, create a named range for the growth assumption, and use Goal Seek to find the revenue CAGR required to hit ₹62 EPS.",
+  "learning_objective": "Audit an inherited model for buried numbers and inconsistencies, apply named ranges to load-bearing assumptions, and use Goal Seek to back-solve a key financial driver.",
+  "hints": [
+    "Ctrl+` will show you every formula at once — look for a typed number sitting alone in a column of formulas.",
+    "Go To Special (F5 → Special → Constants) will highlight all hardcoded numbers — anything glowing outside the blue input section is suspect.",
+    "Once you've cleaned the model, name the growth assumption cell (B4), then Goal Seek: Data → What-If → Goal Seek. Set cell = EPS (E11), To value = 62, By changing cell = the named growth input."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Titan FY26 Model",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "INPUTS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "FY25 Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 8400,
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Revenue Growth Rate (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 14,
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Operating Margin (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 16.5,
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Tax Rate (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 25,
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 155,
+            "readOnly": false
+          },
+          "A9": {
+            "value": "CALCULATIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "FY26 Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "=B3*(1+B4/100)",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Operating Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=B10*B5/100",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Tax on OP (₹Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "=B11*B6/100",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": "=B11-B12",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "EPS (₹)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "=B13*10/B7",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "CHECK",
+            "readOnly": true,
+            "bold": true
+          },
+          "A17": {
+            "value": "Street Target EPS (₹)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 62,
+            "readOnly": false
+          },
+          "A18": {
+            "value": "Model EPS (₹)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": "=B14",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Gap (₹)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": "=B18-B17",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Audit & Goal Seek Answers",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: How many hardcoded plugs exist in the model? (Type the count)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null,
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: Name the growth assumption cell (e.g. Growth_Rate). Type the name you created.",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null,
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: What revenue growth CAGR (%) closes the EPS gap to ₹62? Use Goal Seek.",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null,
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: After Goal Seek, what is the implied FY26 Revenue (₹Cr)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null,
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: Use Ctrl+` to audit: are any formulas inconsistent? (Yes/No)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null,
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "0",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "Revenue_Growth_Rate",
+      "expected_value": "Revenue_Growth_Rate",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "22.38",
+      "expected_value": 22.38,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 20
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B3*(1+Data!B4/100)",
+      "expected_value": 9576.000000000002,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Answers!B6": {
+      "formula_pattern": "No",
+      "expected_value": "No",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}

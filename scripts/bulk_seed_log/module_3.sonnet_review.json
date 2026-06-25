@@ -1,0 +1,36 @@
+{
+  "module": 3,
+  "reviewed_at": "2026-06-25T13:44:37.386485+00:00",
+  "sampled": 1,
+  "passed": 1,
+  "failed": 0,
+  "avg_total": 5.0,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 5.0
+  },
+  "passed_sessions": [
+    "3.5"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Perfect Mumbai-desk authenticity with HDFC Bank, RBI SMA classification, ₹ Cr amounts; every question laser-focused on session syllabus (nested IF, IFS, AND/OR, IFERROR, tolerance checks); hint escalation textbook-clean (bucket direction → AND/OR syntax → error-wrapping); difficulty ramps beautifully from single IFS to compound SUMPRODUCT to self-checking balance.",
+      "weaknesses": "None material; the only microscopic quibble is Q1's expected answer 'Standard' references B2 (0 days) when question text says ACC003 (45 days, row 4) but formula_pattern correctly shows generic logic so trainee will self-correct.",
+      "fix_directive": "",
+      "session_no": "3.5",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-5.json"
+    }
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "sim_type": "excel",
+  "title": "Clean BSE-NSE Ticker Data for Earnings Season Tracker",
+  "scenario": "Your coverage desk has received a raw CSV export from the BSE announcement page with 12 listed companies, their result-announcement dates, and stock prices. The data arrives with invisible spaces, mixed case, text-formatted numbers, and dates in ambiguous DD/MM format. You must clean this pipeline in helper columns to build a working earnings-season countdown tracker.",
+  "instructions": "Build a six-station cleaning pipeline in columns D–I: TRIM the tickers, extract the company codes via FIND–LEFT, convert names to proper case, turn text-prices into numbers, parse dates correctly, and calculate days until each announcement. Answer the summary questions in column B of the Answers sheet.",
+  "learning_objective": "Apply TRIM, LEFT, FIND, PROPER, VALUE, EOMONTH and date arithmetic to rescue messy market data and build a self-updating results calendar.",
+  "hints": [
+    "Station 1: Every cleaning pipeline begins with TRIM. In D2, write =TRIM(A2) to kill invisible leading and trailing spaces.",
+    "Station 2: Use FIND to locate the dot in the ticker, then LEFT to grab everything before it. The formula is =LEFT(D2, FIND(\".\", D2) - 1). The −1 means 'stop one character short of the dot.'",
+    "Station 5: Text that looks like numbers won't SUM or sort right. Convert via =VALUE(G2) in column H, or use the shortcut =--G2 inside a bigger formula. Then verify the result is right-aligned, not left."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Ticker (messy)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Company Name (messy)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Price (text)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Announcement Date (text)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "D–Trimmed Ticker",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "E–Code Only",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "F–Proper Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "G–Price Clean",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "H–Date Parsed",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "I–Days to Result",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": " RELIANCE.NS "
+          },
+          "B2": {
+            "value": "RELIANCE INDUSTRIES LIMITED"
+          },
+          "C2": {
+            "value": "3145.50"
+          },
+          "D2": {
+            "value": "14/01/2025"
+          },
+          "A3": {
+            "value": " TCS.NS "
+          },
+          "B3": {
+            "value": "TATA CONSULTANCY SERVICES LTD"
+          },
+          "C3": {
+            "value": "4012.75"
+          },
+          "D3": {
+            "value": "24/01/2025"
+          },
+          "A4": {
+            "value": " HDFC.NS "
+          },
+          "B4": {
+            "value": "HDFC BANK LIMITED"
+          },
+          "C4": {
+            "value": "1789.25"
+          },
+          "D4": {
+            "value": "19/01/2025"
+          },
+          "A5": {
+            "value": " INFY.NS "
+          },
+          "B5": {
+            "value": "INFOSYS LIMITED"
+          },
+          "C5": {
+            "value": "2145.00"
+          },
+          "D5": {
+            "value": "21/01/2025"
+          },
+          "A6": {
+            "value": " ICICIBANK.NS "
+          },
+          "B6": {
+            "value": "ICICI BANK LIMITED"
+          },
+          "C6": {
+            "value": "978.50"
+          },
+          "D6": {
+            "value": "28/01/2025"
+          },
+          "A7": {
+            "value": " BAJAJFINSV.NS "
+          },
+          "B7": {
+            "value": "BAJAJ FINSERV LIMITED"
+          },
+          "C7": {
+            "value": "1845.75"
+          },
+          "D7": {
+            "value": "29/01/2025"
+          },
+          "A8": {
+            "value": " ASIANPAINT.NS "
+          },
+          "B8": {
+            "value": "ASIAN PAINTS INDIA LIMITED"
+          },
+          "C8": {
+            "value": "2956.50"
+          },
+          "D8": {
+            "value": "22/01/2025"
+          },
+          "A9": {
+            "value": " TITAN.NS "
+          },
+          "B9": {
+            "value": "TITAN COMPANY LIMITED"
+          },
+          "C9": {
+            "value": "3145.25"
+          },
+          "D9": {
+            "value": "17/01/2025"
+          },
+          "A10": {
+            "value": " NESTLEIND.NS "
+          },
+          "B10": {
+            "value": "NESTLE INDIA LIMITED"
+          },
+          "C10": {
+            "value": "2845.00"
+          },
+          "D10": {
+            "value": "31/01/2025"
+          },
+          "A11": {
+            "value": " ITC.NS "
+          },
+          "B11": {
+            "value": "ITC LIMITED"
+          },
+          "C11": {
+            "value": "456.75"
+          },
+          "D11": {
+            "value": "16/01/2025"
+          },
+          "A12": {
+            "value": " MARUTI.NS "
+          },
+          "B12": {
+            "value": "MARUTI SUZUKI INDIA LIMITED"
+          },
+          "C12": {
+            "value": "12456.50"
+          },
+          "D12": {
+            "value": "27/01/2025"
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Write the TRIM formula in D2 to scrub spaces from ticker A2."
+          },
+          "B2": {},
+          "A3": {
+            "value": "Q2: Write the LEFT–FIND formula in F2 to extract only the company code (no .NS suffix)."
+          },
+          "B3": {},
+          "A4": {
+            "value": "Q3: Write the PROPER formula in G2 to convert the messy name in B2 to Title Case."
+          },
+          "B4": {},
+          "A5": {
+            "value": "Q4: Write the VALUE formula in H2 to convert the text-price C2 into a true number."
+          },
+          "B5": {},
+          "A6": {
+            "value": "Q5: Write the DATEVALUE formula in I2 to parse the DD/MM text date in D2 into a serial number."
+          },
+          "B6": {},
+          "A7": {
+            "value": "Q6: Write the formula in J2 to calculate days from today until the announcement in I2."
+          },
+          "B7": {}
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=TRIM(A2)",
+      "expected_value": "RELIANCE.NS",
+      "type": "formula",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=LEFT(D2,FIND(\".\",D2)-1)",
+      "expected_value": "=LEFT(Data!E2,FIND(\".\",Data!E2)-1)",
+      "type": "formula",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=PROPER(B2)",
+      "expected_value": "Reliance Industries Limited",
+      "type": "formula",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=VALUE(C2)",
+      "expected_value": "=VALUE(Data!C2)",
+      "type": "formula",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Answers!B6": {
+      "formula_pattern": "=DATEVALUE(D2)",
+      "expected_value": "=DATEVALUE(Data!D2)",
+      "type": "formula",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=I2-TODAY()",
+      "expected_value": "=Data!I2-TODAY()",
+      "type": "formula",
+      "tolerance": 0,
+      "points": 13
+    }
+  }
+}

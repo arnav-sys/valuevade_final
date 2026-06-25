@@ -1,0 +1,347 @@
+{
+  "sim_type": "excel",
+  "title": "HDFC Bank Loan Portfolio—SMA Classification & Early Warning Logic",
+  "scenario": "You are an analyst at a Mumbai research desk monitoring HDFC Bank's loan health. The RBI requires classification of accounts by days-past-due into buckets: Standard, SMA-0, SMA-1, SMA-2, and NPA. Your task is to build the classification logic, flag high-risk accounts, and compute key metrics using IF, AND, OR, IFS, and IFERROR.",
+  "instructions": "Build classification formulas using nested IF and IFS logic; flag accounts meeting compound criteria (days overdue AND loan size); compute portfolio metrics with error-handling; validate results against three test rows (boundary cases).",
+  "learning_objective": "Apply nested IF, IFS with catch-all, AND/OR compound conditions, and IFERROR to classify loan accounts into RBI-mandated SMA buckets, identify high-risk concentrations, and construct a self-checking portfolio dashboard.",
+  "hints": [
+    "RBI SMA buckets ascend strictly: 0 days → Standard, 1–30 → SMA-0, 31–60 → SMA-1, 61–90 → SMA-2, >90 → NPA. Write your nested IF so gates run in one direction only.",
+    "For 'High Risk' (days > 60 AND size > ₹10 Cr), use AND inside the IF test. For 'Watch List' (days > 30 OR size > ₹50 Cr), use OR. Remember to multiply for AND scoring: =(B2>60)*(C2>10) equals 1 only when both hold.",
+    "In the metrics row, P/E computation risks #DIV/0! when earnings are zero or missing. Wrap it in IFERROR(B2/C2, \"n/m\") to show 'n/m' for loss accounts. The tolerance check ABS(total_debit - total_credit) should be < 0.01."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Account ID",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Days Past Due",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Loan Size (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Interest Accrued (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Collateral Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "ACC001",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 5,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "ACC002",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 25,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 12,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 0.6,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "ACC003",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 8.5,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 0.42,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 7.2,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "ACC004",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 75,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 25,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 1.25,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 20,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "ACC005",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 120,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 35,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 1.75,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 22,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "ACC006",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 30,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 15,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 0.75,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 14,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "ACC007",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 60,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 20,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 1.0,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 18.5,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ACC008",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 95,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 55,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 2.75,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 45,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "ACC009",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 7.5,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 0.38,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 8.9,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "ACC010",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 105,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 18,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 0.9,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 15.5,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer / Formula",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Classify ACC003 (45 days past due) using IFS into SMA bucket",
+            "readOnly": true
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2: Flag ACC004 (75 days, ₹25 Cr) as 'HIGH RISK' if days>60 AND size>10, else ''",
+            "readOnly": true
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q3: Count how many accounts are on Watch List: days>30 OR size>₹50Cr (use SUMPRODUCT)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q4: Total loan size for SMA-2 accounts (61–90 days past due)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q5: Compute collateral-to-loan ratio for ACC002; if size=0, show 'n/m'",
+            "readOnly": true
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q6: Sum all Interest Accrued and verify with tolerance: ABS(sum - 10.05) < 0.01?",
+            "readOnly": true
+          },
+          "B7": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=IFS(Data!B2=0,\"Standard\",Data!B2<=30,\"SMA-0\",Data!B2<=60,\"SMA-1\",Data!B2<=90,\"SMA-2\",TRUE,\"NPA\")",
+      "expected_value": "Standard",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B3": {
+      "formula_pattern": "=IF(AND(Data!B5>60,Data!C5>10),\"HIGH RISK\",\"\")",
+      "expected_value": "HIGH RISK",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUMPRODUCT((Data!B2:B11>30)+(Data!C2:C11>50)>0)",
+      "expected_value": 6,
+      "type": "number",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=SUMIFS(Data!C2:C11,Data!B2:B11,\">60\",Data!B2:B11,\"<=90\")",
+      "expected_value": 25,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=IFERROR(Data!E3/Data!C3,\"n/m\")",
+      "expected_value": 0.83,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=IF(ABS(SUM(Data!D2:D11)-10.05)<0.01,\"BALANCED\",\"CHECK\")",
+      "expected_value": "BALANCED",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}

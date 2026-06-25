@@ -1,0 +1,378 @@
+{
+  "sim_type": "excel",
+  "title": "Navigating the Grid — Mumbai Equity Research Data Entry",
+  "scenario": "You're a new equity research associate at a Mumbai brokerage. Your senior has given you raw FY23–FY24 revenue and EBITDA data for five major Indian companies and asked you to organise it into a clean input sheet, label it professionally, and navigate the worksheet using keyboard shortcuts to verify data integrity before the morning call with institutional clients.",
+  "instructions": "Enter company names and financial data into the Data sheet, create labeled headers, and use keyboard navigation (Ctrl+Home, Ctrl+End, Ctrl+Shift+arrows, Name Box) to verify all entries are in place. Then use the Answers sheet to demonstrate your understanding of worksheet navigation and data structure by answering five questions about the grid layout and cell locations.",
+  "learning_objective": "Navigate an Excel workbook using keyboard shortcuts, understand cell addressing and range notation, enter data accurately into cells, and verify worksheet structure using Ctrl+arrows and the Name Box.",
+  "hints": [
+    "The Name Box (top-left, below the ribbon) shows your current cell address. Click it and type an address like C5 to teleport there instantly.",
+    "Ctrl+Shift+Down-arrow selects from your current cell all the way to the last filled cell in that column — one keystroke selects an entire data column.",
+    "Column headers go in row 1 (always bold). Data rows start in row 2. If you're at A1 and press Ctrl+Down, you'll jump to the last row with data in column A."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY23 Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY24 Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY23 EBITDA (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY24 EBITDA (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Energy & Petrochemicals",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 588931,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 645019,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 152450,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 168930,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "IT Services",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 246005,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 269000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 74300,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 82100,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 262840,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 310285,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 121456,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 148720,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "IT Services",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 177620,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 202145,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 54830,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 63450,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "FMCG & Paints",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 29432,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 33156,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 8765,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 10234,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Maruti Suzuki",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Automobiles",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 33456,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 38920,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 4230,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 5120,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 35789,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 46201,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 14523,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 19856,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "IT Services",
+            "readOnly": true
+          },
+          "C9": {
+            "value": 97601,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 115234,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 19780,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 24560,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "L&T",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Engineering & Construction",
+            "readOnly": true
+          },
+          "C10": {
+            "value": 145890,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 167234,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 21340,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 27890,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Luxury & Retail",
+            "readOnly": true
+          },
+          "C11": {
+            "value": 29156,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 35678,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 5234,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 6890,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Navigation & Data Entry Verification",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: What is the cell address of Infosys's FY24 Revenue?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: How many data rows (excluding header) are in the Data sheet?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: What is the sum of all FY24 EBITDA values (column F, rows 2–11)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: Which company is in row 7 of the Data sheet?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: What is the column letter for FY23 EBITDA in the Data sheet?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "D5",
+      "expected_value": "D5",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "10",
+      "expected_value": 10,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUM(Data!F2:F11)",
+      "expected_value": 557750,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "Maruti Suzuki",
+      "expected_value": "Maruti",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "E",
+      "expected_value": "E",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}
