@@ -240,8 +240,9 @@ def review_module(module_num: int, sample_rate: int, all_flag: bool, sim_paths_o
     if not paths:
         print(f'No sim files found for module {module_num} in {LOG_DIR}')
         return None
-    if not all_flag and sample_rate > 1:
-        # Take every Nth, but always include at least 1 and at most every sim.
+    # Sample-rate slicing applies ONLY when we auto-discovered the module's
+    # files; if the caller passed an explicit --sims list, review every one.
+    if not sim_paths_override and not all_flag and sample_rate > 1:
         paths = paths[::sample_rate] if len(paths) >= sample_rate else paths[:1]
 
     print(f'Sonnet 4.5 reviewing {len(paths)} sims for M{module_num} '

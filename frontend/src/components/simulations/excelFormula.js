@@ -145,6 +145,19 @@ const FUNCTIONS = {
     return Math.round(n * f) / f;
   },
   ABS:  ([v]) => Math.abs(coerceNum(Array.isArray(v) ? v[0] : v)),
+  INT:  ([v]) => Math.floor(coerceNum(Array.isArray(v) ? v[0] : v)),
+  MOD:  ([n, d]) => {
+    const a = coerceNum(Array.isArray(n) ? n[0] : n);
+    const b = coerceNum(Array.isArray(d) ? d[0] : d);
+    if (b === 0) return ERR('#DIV/0!');
+    return a - Math.floor(a / b) * b;
+  },
+  TRUNC: ([v, digits]) => {
+    const n = coerceNum(Array.isArray(v) ? v[0] : v);
+    const d = digits === undefined ? 0 : coerceNum(Array.isArray(digits) ? digits[0] : digits);
+    const f = Math.pow(10, d);
+    return Math.trunc(n * f) / f;
+  },
   SQRT: ([v]) => {
     const n = coerceNum(Array.isArray(v) ? v[0] : v);
     return n < 0 ? ERR('#NUM!') : Math.sqrt(n);
@@ -822,7 +835,17 @@ function tokenize(src) {
         let k = j + 2;
         let ref = '';
         while (k < src.length && /[A-Za-z0-9$:]/.test(src[k])) { ref += src[k]; k++; }
-        tokens.push({ type: 'ref', sheet: s, ref });
+        // Split into range vs single-ref (same logic as unquoted sheet refs)
+        if (ref.includes(':')) {
+          const [from, to] = ref.split(':');
+          if (/^\$?[A-Za-z]+$/.test(from) && /^\$?[A-Za-z]+$/.test(to)) {
+            tokens.push({ type: 'colrange', from: from.replace(/\$/g, ''), to: to.replace(/\$/g, ''), sheet: s });
+          } else {
+            tokens.push({ type: 'range', from, to, sheet: s });
+          }
+        } else {
+          tokens.push({ type: 'ref', sheet: s, ref });
+        }
         i = k; continue;
       }
       tokens.push({ type: 'str', value: s }); i = j + 1; continue;

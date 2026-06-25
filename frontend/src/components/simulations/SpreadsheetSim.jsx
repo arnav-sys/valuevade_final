@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Plus, Save, Send, Loader2, Trash2, FileSpreadsheet, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import { evaluateFormula, formatCellDisplay, isFormulaError } from './excelFormula';
+import PivotTableSheet from './PivotTableSheet';
 
 // Batch 5 — Mini-spreadsheet component.
 //
@@ -38,12 +39,85 @@ function deepCloneWorkbook(wb) {
     header: { ...wb.header },
     sheets: wb.sheets.map((s) => ({
       name: s.name,
-      cells: Object.fromEntries(Object.entries(s.cells).map(([k, v]) => [k, { ...v }])),
+      kind: s.kind,
+      cells: Object.fromEntries(Object.entries(s.cells || {}).map(([k, v]) => [k, { ...v }])),
       rowCount: s.rowCount,
       colCount: s.colCount,
+      spec: s.spec ? { ...s.spec } : undefined,
+      pivot_state: s.pivot_state ? JSON.parse(JSON.stringify(s.pivot_state)) : undefined,
     })),
     scoring: { ...wb.scoring },
   };
+}
+
+// Given a pivot sheet spec ({source:{sheet,range}}) and the current workbook,
+// extract the rows in that range and return { headers, rows } that the
+// PivotTableSheet expects. Range may be "A1:F500" or "A:F" (whole-column).
+function resolvePivotSourceData(workbook, spec) {
+  if (!spec || !spec.source) return { headers: [], rows: [] };
+  const sheet = workbook.sheets.find((s) => s.name === spec.source.sheet);
+  if (!sheet || !sheet.cells) return { headers: [], rows: [] };
+  const m = String(spec.source.range || '').match(
+    /^\$?([A-Z]+)(\d+)?:\$?([A-Z]+)(\d+)?$/i
+  );
+  if (!m) return { headers: [], rows: [] };
+  const colA = m[1].toUpperCase(), colB = m[3].toUpperCase();
+  const rowA = m[2] ? parseInt(m[2], 10) : 1;
+  let rowB = m[4] ? parseInt(m[4], 10) : null;
+
+  // Letter → 0-index helper (matches Excel: A=0, B=1, …, AA=26)
+  const colIdx = (s) => {
+    let n = 0; for (const c of s.toUpperCase()) n = n * 26 + (c.charCodeAt(0) - 64);
+    return n - 1;
+  };
+  const colToLetter = (i) => {
+    let s = ''; let n = i + 1;
+    while (n > 0) {
+      const r = (n - 1) % 26;
+      s = String.fromCharCode(65 + r) + s;
+      n = Math.floor((n - 1) / 26);
+    }
+    return s;
+  };
+  const c1 = Math.min(colIdx(colA), colIdx(colB));
+  const c2 = Math.max(colIdx(colA), colIdx(colB));
+
+  // Probe to find max populated row if range was open-ended.
+  if (rowB == null) {
+    let max = rowA;
+    for (let c = c1; c <= c2; c++) {
+      for (let r = rowA; r <= 1024; r++) {
+        const addr = colToLetter(c) + r;
+        const v = sheet.cells[addr]?.value;
+        if (v != null && v !== '') max = Math.max(max, r);
+      }
+    }
+    rowB = max;
+  }
+  if (rowB < rowA) return { headers: [], rows: [] };
+
+  // First row of the range = headers; subsequent rows = data.
+  const headers = [];
+  for (let c = c1; c <= c2; c++) {
+    const addr = colToLetter(c) + rowA;
+    headers.push(sheet.cells[addr]?.value ?? `Col${c}`);
+  }
+  const rows = [];
+  for (let r = rowA + 1; r <= rowB; r++) {
+    const row = [];
+    let nonEmpty = false;
+    for (let c = c1; c <= c2; c++) {
+      const addr = colToLetter(c) + r;
+      const v = sheet.cells[addr]?.value;
+      if (v != null && v !== '') nonEmpty = true;
+      // Coerce numeric strings → numbers so aggregations work
+      if (typeof v === 'string' && v.trim() !== '' && !isNaN(Number(v.replace(/[₹,\s]/g, '')))) {
+        row.push(Number(v.replace(/[₹,\s]/g, '')));
+      } else row.push(v ?? '');
+    }
+    if (nonEmpty) rows.push(row);
+  }
+  return { headers, rows };
 }
 
 export default function SpreadsheetSim({
@@ -404,7 +478,8 @@ export default function SpreadsheetSim({
         </div>
       )}
 
-      {/* Formula bar */}
+      {/* Formula bar — hidden for pivot sheets (they have their own UI) */}
+      {activeSheet.kind !== 'pivot' && (
       <div className="flex items-center gap-2 text-xs">
         <div className="px-2 py-1 rounded bg-[var(--color-surface)] border border-[var(--color-border)] font-mono text-[var(--color-text-muted)] min-w-[60px] text-center" data-testid="spreadsheet-active-addr">
           {curAddr}
@@ -429,8 +504,25 @@ export default function SpreadsheetSim({
             : 'saved'}
         </div>
       </div>
+      )}
 
-      {/* Grid */}
+      {/* Grid (or PivotTable, when the active sheet is a pivot) */}
+      {activeSheet.kind === 'pivot' ? (
+        <PivotTableSheet
+          spec={activeSheet.spec}
+          sourceData={resolvePivotSourceData(workbook, activeSheet.spec)}
+          state={activeSheet.pivot_state || activeSheet.spec?.initial_state || { rows: [], columns: [], values: [], filters: [] }}
+          readOnly={readOnly}
+          onChange={(newState) => {
+            setWorkbook((prev) => {
+              const next = deepCloneWorkbook(prev);
+              next.sheets[activeSheetIdx] = { ...next.sheets[activeSheetIdx], pivot_state: newState };
+              return next;
+            });
+            setDirty(true);
+          }}
+        />
+      ) : (
       <div
         ref={gridRef}
         tabIndex={0}
@@ -441,6 +533,7 @@ export default function SpreadsheetSim({
         {renderColHeader()}
         {Array.from({ length: activeSheet.rowCount }, (_, r) => renderRow(r))}
       </div>
+      )}
 
       {/* Tab bar (Excel-style) */}
       <div className="flex items-center gap-1 border-t border-[var(--color-border)] pt-2" data-testid="spreadsheet-tab-bar">

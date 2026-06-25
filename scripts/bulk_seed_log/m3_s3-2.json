@@ -1,13 +1,13 @@
 {
   "sim_type": "excel",
-  "title": "Titan Company P&L — Format Like a Goldman Analyst",
-  "scenario": "You've pulled Titan's quarterly P&L numbers from the BSE filing into a raw Excel sheet — all defaults, no formatting, mixed units, and your senior just asked you to 'make it look professional before it goes to the partner desk.' You have 20 minutes to apply the analyst formatting code: colour-code the inputs (blue) and formulas (black), convert numbers to ₹ crore with Indian commas, freeze headers, and border like punctuation. This is your first test of the formatting safety system every Mumbai desk uses.",
-  "instructions": "Format the Titan P&L sheet using Ctrl+1 (Number, Alignment, Font tabs), colour-code input cells blue and formula cells black, convert ₹ lakhs to ₹ crores in a helper column, right-align all numbers with Indian comma separators, freeze the header row, and apply thin borders above subtotals and double borders below totals — then answer all five analyst-style questions in the Answers sheet.",
-  "learning_objective": "Apply the analyst formatting code — blue for inputs, black for formulas, right-aligned numbers with Indian commas, frozen headers, and punctuation borders — and convert units (₹ lakh to ₹ crore) without losing raw data, so your model reads as professionally trained on sight.",
+  "title": "Format Titan's P&L Like a Mumbai Desk Analyst",
+  "scenario": "You've pulled Titan Company's FY23–FY24 P&L from the NSE filing, raw and unformatted. Your senior has asked you to rebuild it following the desk's formatting code: colour-coded inputs (blue) and formulas (black), right-aligned ₹ cr figures with Indian commas, proper borders, frozen headers, and grouped detail rows. The model must be audit-ready and printable within 90 seconds of opening.",
+  "instructions": "Apply analyst formatting to the raw P&L data: format all currency values as ₹ crore with Indian comma separators, colour inputs blue and formulas black, freeze the header row, add hierarchy indents and group detail rows, border subtotals and totals, and verify all column widths are readable. Then answer five questions about the formatted sheet's structure and the unit-conversion logic underlying it.",
+  "learning_objective": "Apply colour-coding (blue inputs, black formulas, green cross-sheet links), currency formatting (₹ crore with lakhs-style commas), alignment rules (right-align numbers, indent hierarchy), borders (punctuation not fencing), and freeze/group controls to a financial statement, and execute unit conversions (₹ to ₹ cr) without error.",
   "hints": [
-    "The colour code is your safety system: blue = you typed it, black = Excel calculated it. Ctrl+1 → Font → Colour for each.",
-    "₹ crore = ₹ lakh ÷ 100. Build a helper column first, never overwrite the raw lakh numbers. Custom number format for Indian commas: [>=100000]##\\,##\\,##0",
-    "Freeze headers at View → Freeze Panes (click B2 first if you want both row and column frozen). Right-align numbers (Ctrl+1 → Alignment → Horizontal → Right). Single border above Subtotal (B9), double border below Total (B11) using Ctrl+1 → Border tab."
+    "The colour code is a safety system: blue = typed by a human, black = calculated by a formula. Use Home → Font Color to colour cells after you format their numbers.",
+    "To apply Indian comma separators (12,34,567 style), use Ctrl+1 → Custom and paste the code `[>=10000000]##\\,##\\,##\\,##0;[>=100000]##\\,##\\,##0;##,##0`. Or use the pre-built Accounting format and manually adjust the thousands separator in the Custom category.",
+    "For the conversion questions: 1 crore = 1,00,00,000 (seven zeros); 1 crore = 100 lakhs; 1 crore = 10 millions. A cell showing ₹5,07,890 lakh is 5,07,890 ÷ 100 = ₹5,079 crore. Always check the header label to confirm the unit before you calculate."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
@@ -17,155 +17,115 @@
           "A1": {
             "value": "Line Item",
             "readOnly": true,
-            "bold": true,
-            "bgColor": "#6A5CFF",
-            "textColor": "#FFFFFF"
+            "bold": true
           },
           "B1": {
-            "value": "₹ lakh (raw)",
+            "value": "FY23 (₹ cr)",
             "readOnly": true,
-            "bold": true,
-            "bgColor": "#6A5CFF",
-            "textColor": "#FFFFFF"
+            "bold": true
           },
           "C1": {
-            "value": "₹ cr (converted)",
+            "value": "FY24 (₹ cr)",
             "readOnly": true,
-            "bold": true,
-            "bgColor": "#6A5CFF",
-            "textColor": "#FFFFFF"
+            "bold": true
+          },
+          "D1": {
+            "value": "Growth %",
+            "readOnly": true,
+            "bold": true
           },
           "A2": {
-            "value": "Revenue from Operations",
-            "readOnly": true
+            "value": "Revenue from Operations"
           },
           "B2": {
-            "value": 507890,
-            "readOnly": true
+            "value": 18540
           },
           "C2": {
-            "value": "",
-            "readOnly": false
+            "value": 21847
+          },
+          "D2": {
+            "value": 17.8
           },
           "A3": {
-            "value": "Other Income",
-            "readOnly": true
+            "value": "  Gold & Diamond Jewellery"
           },
           "B3": {
-            "value": 12456,
-            "readOnly": true
+            "value": 12850
           },
           "C3": {
-            "value": "",
-            "readOnly": false
+            "value": 15320
           },
           "A4": {
-            "value": "Total Revenue",
-            "readOnly": true,
-            "bold": true
+            "value": "  Watches & Accessories"
           },
           "B4": {
-            "value": 520346,
-            "readOnly": true,
-            "bold": true
+            "value": 3620
           },
           "C4": {
-            "value": "",
-            "readOnly": false,
-            "bold": true
+            "value": 4250
           },
           "A5": {
-            "value": "Cost of Materials Consumed",
-            "readOnly": true
+            "value": "  Eyewear"
           },
           "B5": {
-            "value": 215780,
-            "readOnly": true
+            "value": 2070
           },
           "C5": {
-            "value": "",
-            "readOnly": false
+            "value": 2277
           },
           "A6": {
-            "value": "Employee Benefits",
-            "readOnly": true
+            "value": "Cost of Materials Consumed"
           },
           "B6": {
-            "value": 98765,
-            "readOnly": true
+            "value": 9270
           },
           "C6": {
-            "value": "",
-            "readOnly": false
+            "value": 10923
           },
           "A7": {
-            "value": "Other Expenses",
-            "readOnly": true
+            "value": "Employee Benefits Expense"
           },
           "B7": {
-            "value": 67543,
-            "readOnly": true
+            "value": 2415
           },
           "C7": {
-            "value": "",
-            "readOnly": false
+            "value": 2801
           },
           "A8": {
-            "value": "EBITDA",
-            "readOnly": true,
-            "bold": true
+            "value": "Other Operating Expenses"
           },
           "B8": {
-            "value": 138258,
-            "readOnly": true,
-            "bold": true
+            "value": 3107
           },
           "C8": {
-            "value": "",
-            "readOnly": false,
-            "bold": true
+            "value": 3684
           },
           "A9": {
-            "value": "Depreciation",
-            "readOnly": true
+            "value": "EBITDA"
           },
           "B9": {
-            "value": 21345,
-            "readOnly": true
+            "value": 3748
           },
           "C9": {
-            "value": "",
-            "readOnly": false
+            "value": 4439
           },
           "A10": {
-            "value": "EBIT (Operating Profit)",
-            "readOnly": true,
-            "bold": true
+            "value": "Depreciation & Amortisation"
           },
           "B10": {
-            "value": 116913,
-            "readOnly": true,
-            "bold": true
+            "value": 312
           },
           "C10": {
-            "value": "",
-            "readOnly": false,
-            "bold": true
+            "value": 384
           },
           "A11": {
-            "value": "Net Profit After Tax",
-            "readOnly": true,
-            "bold": true
+            "value": "EBIT"
           },
           "B11": {
-            "value": 81240,
-            "readOnly": true,
-            "bold": true
+            "value": 3436
           },
           "C11": {
-            "value": "",
-            "readOnly": false,
-            "bold": true
+            "value": 4055
           }
         }
       },
@@ -173,58 +133,44 @@
         "name": "Answers",
         "cells": {
           "A1": {
-            "value": "Formatting & Analysis Questions",
+            "value": "FORMATTING & CALCULATION EXERCISE",
             "readOnly": true,
-            "bold": true,
-            "bgColor": "#6A5CFF",
-            "textColor": "#FFFFFF"
-          },
-          "B1": {
-            "value": "Your Answer",
-            "readOnly": true,
-            "bold": true,
-            "bgColor": "#6A5CFF",
-            "textColor": "#FFFFFF"
+            "bold": true
           },
           "A2": {
-            "value": "Q1: Convert Revenue from Operations from ₹ lakh to ₹ cr (formula in C2)",
+            "value": "Q1: What is the EBITDA Margin for FY24 (EBITDA ÷ Revenue, as %)? Format as number with 2 decimals.",
             "readOnly": true
           },
           "B2": {
-            "value": "",
-            "readOnly": false
+            "value": ""
           },
           "A3": {
-            "value": "Q2: Total Revenue in ₹ cr — is this a formula (black) or input (blue)?",
+            "value": "Q2: Revenue growth from FY23 to FY24 in absolute ₹ crore. (Use a formula: FY24 revenue minus FY23 revenue.)",
             "readOnly": true
           },
           "B3": {
-            "value": "",
-            "readOnly": false
+            "value": ""
           },
           "A4": {
-            "value": "Q3: EBITDA margin (%) = EBITDA ÷ Total Revenue, displayed as number to 2 decimals",
+            "value": "Q3: If Titan's FY24 revenue were expressed in ₹ lakh instead of ₹ crore, what would the figure be? (Multiply by 100.)",
             "readOnly": true
           },
           "B4": {
-            "value": "",
-            "readOnly": false
+            "value": ""
           },
           "A5": {
-            "value": "Q4: Net Profit margin (%) = Net Profit ÷ Total Revenue, displayed as number to 2 decimals",
+            "value": "Q4: EBIT margin for FY24, as a percentage of Revenue. (EBIT ÷ Revenue × 100, formatted to 1 decimal.)",
             "readOnly": true
           },
           "B5": {
-            "value": "",
-            "readOnly": false
+            "value": ""
           },
           "A6": {
-            "value": "Q5: Which cells in the Data sheet should be coloured BLUE (inputs you typed), and which BLACK (formulas)?",
+            "value": "Q5: Cost of Materials as a % of Revenue, FY24. (COGS ÷ Revenue × 100, formatted to 1 decimal.)",
             "readOnly": true
           },
           "B6": {
-            "value": "",
-            "readOnly": false
+            "value": ""
           }
         }
       }
@@ -232,49 +178,38 @@
   },
   "expected_answers": {
     "Answers!B2": {
-      "formula_pattern": "=Data!B2/100",
-      "expected_value": 5078.9,
+      "formula_pattern": "=(Data!C9/Data!C2)*100",
+      "expected_value": 20.32,
       "type": "number",
       "tolerance": 0.01,
       "points": 15
     },
     "Answers!B3": {
-      "formula_pattern": "=Data!C4",
-      "expected_value": 0,
+      "formula_pattern": "=Data!C2-Data!B2",
+      "expected_value": 3307,
       "type": "number",
-      "tolerance": 0.01,
+      "tolerance": 1,
       "points": 15
     },
     "Answers!B4": {
-      "formula_pattern": "=(Data!C8/Data!C4)*100",
-      "expected_value": 26.58,
+      "formula_pattern": "=Data!C2*100",
+      "expected_value": 2184700,
       "type": "number",
-      "tolerance": 0.01,
+      "tolerance": 1,
       "points": 15
     },
     "Answers!B5": {
-      "formula_pattern": "=(Data!C11/Data!C4)*100",
-      "expected_value": 15.62,
+      "formula_pattern": "=(Data!C11/Data!C2)*100",
+      "expected_value": 18.56,
       "type": "number",
       "tolerance": 0.01,
       "points": 15
     },
     "Answers!B6": {
-      "formula_pattern": "B2:B11 blue (raw input); C2:C11 black (÷100 formulas); B4, B8, B10, B11 bold",
-      "expected_value": [
-        507890,
-        12456,
-        520346,
-        215780,
-        98765,
-        67543,
-        138258,
-        21345,
-        116913,
-        81240
-      ],
-      "type": "text",
-      "tolerance": 0,
+      "formula_pattern": "=(Data!C6/Data!C2)*100",
+      "expected_value": 50.0,
+      "type": "number",
+      "tolerance": 0.01,
       "points": 10
     }
   }

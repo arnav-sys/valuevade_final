@@ -154,6 +154,25 @@ export function adaptSimToWorkbook(sim) {
   const mw = config.multi_tab_excel_workbook;
     if (mw && Array.isArray(mw.sheets) && mw.sheets.length > 0) {
     const sheets = mw.sheets.map((s) => {
+      // Pivot sheet — pass through kind/spec/pivot_state so SpreadsheetSim
+      // can route to PivotTableSheet. No data-grid cells needed.
+      if (s.kind === 'pivot') {
+        return {
+          name: s.name || 'Pivot',
+          kind: 'pivot',
+          cells: {},
+          rowCount: 30,
+          colCount: 10,
+          spec: s.spec || {
+            source: s.source || {},
+            initial_state: s.initial_state || { rows: [], columns: [], values: [], filters: [] },
+            expected_state: s.expected_state,
+            expected_cells: s.expected_cells,
+          },
+          pivot_state: s.pivot_state || (s.spec?.initial_state)
+                        || { rows: [], columns: [], values: [], filters: [] },
+        };
+      }
       const cells = {};
       let maxC = 0; let maxR = 0;
       Object.entries(s.cells || {}).forEach(([addr, c]) => {

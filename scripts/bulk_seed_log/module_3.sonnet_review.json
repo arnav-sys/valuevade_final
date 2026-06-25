@@ -1,36 +1,70 @@
 {
   "module": 3,
-  "reviewed_at": "2026-06-25T14:04:46.681339+00:00",
-  "sampled": 1,
-  "passed": 0,
-  "failed": 1,
-  "avg_total": 3.0,
+  "reviewed_at": "2026-06-25T14:33:16.832051+00:00",
+  "sampled": 3,
+  "passed": 3,
+  "failed": 0,
+  "avg_total": 4.92,
   "avg_per_criterion": {
     "indian_flavor": 5.0,
-    "session_relevance": 2.0,
-    "hint_progression": 3.0,
-    "difficulty_curve": 2.0
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 4.67
   },
-  "passed_sessions": [],
-  "failed_sessions": [
-    "3.9"
+  "passed_sessions": [
+    "3.4",
+    "3.5",
+    "3.8"
   ],
+  "failed_sessions": [],
   "rows": [
     {
       "scores": {
         "indian_flavor": 5,
-        "session_relevance": 2,
-        "hint_progression": 3,
-        "difficulty_curve": 2
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
       },
-      "avg": 3.0,
-      "verdict": "fail",
-      "strengths": "Authentic Indian banking names (HDFC, ICICI, SBI) with realistic ₹ Cr revenue figures; data structure is clean and tidy as session preaches.",
-      "weaknesses": "Fundamentally misses the session's pedagogy—session teaches PivotTable GUI mechanics (drag zones, grouping, slicers, drill-down), but sim forces formula-replication of pivot logic, which is Session 3.3/3.6 territory, not 3.9.",
-      "fix_directive": "Rewrite as a true pivot exercise: provide pre-built data, ask students to create actual PivotTable with specific field placements (Rows/Columns/Values/Filters), apply grouping to quarters, insert slicer, sort by revenue, compute % of grand total—test the four-zone drag model and GUI features the session explicitly teaches.",
-      "session_no": "3.9",
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Authentic Reliance Industries segment data with plausible ₹ Cr values, laser-focused on SUMIFS/COUNTIFS/SUBTOTAL syllabus, hints escalate cleanly from syntax reminder to exact formula structure to SUBTOTAL mechanics.",
+      "weaknesses": "Question 4 (average revenue) uses SUMPRODUCT/COUNTA which isn't taught in session notes—should use AVERAGE or AVERAGEIFS; Question 6 (SUBTOTAL filtered) unclear what filter is applied to make it distinct from Q7 reconciliation.",
+      "fix_directive": "",
+      "session_no": "3.4",
       "sim_type": "excel",
-      "file": "/app/scripts/bulk_seed_log/m3_s3-9.json"
+      "file": "/app/scripts/bulk_seed_log/m3_s3-4.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Perfect Mumbai-desk authenticity with HDFC Bank, RBI SMA buckets, ₹ Cr denominations; laser-focused on IF/IFS/AND/OR/IFERROR with textbook hint escalation and polished ramp from simple IFS → compound AND → SUMPRODUCT scoring → SUMIFS → IFERROR → tolerance check.",
+      "weaknesses": "None identified; the sim is production-ready.",
+      "fix_directive": "",
+      "session_no": "3.5",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-5.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Textbook execution: real Indian large-caps (Reliance, TCS, HDFC Bank, ICICI), authentic ₹Cr market caps, multi-level sort → filter stacking → duplicate detection → SUBTOTAL → validation in perfect session-syllabus order, and 3 hints escalate cheap→medium→near-formula exactly as prescribed.",
+      "weaknesses": "Question numbering skips Q5 (jumps Q4→Q6), but this is cosmetic and doesn't harm pedagogy or grading logic.",
+      "fix_directive": "",
+      "session_no": "3.8",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-8.json"
     }
   ]
 }

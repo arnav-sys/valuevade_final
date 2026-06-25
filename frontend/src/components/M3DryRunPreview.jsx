@@ -17,14 +17,17 @@ import SpreadsheetSim from '@/components/simulations/SpreadsheetSim';
 import s31 from '@/data/m3-dryrun/s3-1.json';
 import s35 from '@/data/m3-dryrun/s3-5.json';
 import s39 from '@/data/m3-dryrun/s3-9.json';
+import s39Complete from '@/data/m3-dryrun/s3-9-completed.json';
 
 const ALL = [
   { key: '3.1', label: '3.1 · early', tag: 'foundational',
     accent: '#3B82F6', icon: 'E', sample: s31 },
   { key: '3.5', label: '3.5 · mid',   tag: 'logic',
     accent: '#A855F7', icon: 'M', sample: s35 },
-  { key: '3.9', label: '3.9 · late',  tag: 'pivots',
+  { key: '3.9', label: '3.9 · late',  tag: 'pivots · empty',
     accent: '#10B981', icon: 'L', sample: s39 },
+  { key: '3.9c', label: '3.9 · scored', tag: 'pivots · filled',
+    accent: '#F59E0B', icon: 'S', sample: s39Complete },
 ];
 
 function workbookFromSample(sample) {
@@ -124,22 +127,56 @@ export default function M3DryRunPreview() {
         </div>
         <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6" data-testid="dryrun-answers">
           <div className="font-mono text-xs uppercase tracking-[0.2em] text-white/40 mb-3">
-            Expected answers
+            {current.sample.multi_tab_excel_workbook?.sheets?.some((s) => s.kind === 'pivot')
+              ? 'Pivot grading spec'
+              : 'Expected answers'}
           </div>
-          <div className="space-y-2">
-            {Object.entries(ea).map(([key, spec], i) => (
-              <div key={key} className="flex items-start gap-3 p-2 rounded border border-white/5 bg-white/[0.02]">
-                <div className="font-mono text-xs text-white/40 w-6 shrink-0">{i + 1}</div>
-                <div className="flex-1 min-w-0">
-                  <code className="text-xs text-emerald-300 font-mono break-all">{spec.formula_pattern}</code>
-                  <div className="text-xs text-white/50 mt-1">
-                    → <span className="text-white font-semibold">{JSON.stringify(spec.expected_value)}</span>
-                    <span className="text-white/30 ml-3">{spec.points}pt</span>
+          {current.sample.multi_tab_excel_workbook?.sheets?.some((s) => s.kind === 'pivot') ? (
+            (() => {
+              const pivotSheet = current.sample.multi_tab_excel_workbook.sheets.find((s) => s.kind === 'pivot');
+              const exp = pivotSheet?.spec?.expected_state || {};
+              const expCells = pivotSheet?.spec?.expected_cells || [];
+              return (
+                <div className="space-y-3">
+                  <div className="rounded border border-white/5 bg-white/[0.02] p-3">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-white/40 mb-1.5">Expected zones</div>
+                    <div className="text-xs text-white/80 font-mono space-y-0.5">
+                      <div><span className="text-white/40">rows:</span> {(exp.rows || []).join(', ') || '—'}</div>
+                      <div><span className="text-white/40">cols:</span> {(exp.columns || []).join(', ') || '—'}</div>
+                      <div><span className="text-white/40">vals:</span> {(exp.values || []).map((v) => `${v.agg}(${v.field})`).join(', ') || '—'}</div>
+                    </div>
+                  </div>
+                  <div className="rounded border border-white/5 bg-white/[0.02] p-3">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-white/40 mb-1.5">Expected pivot cells</div>
+                    <div className="text-xs text-white/80 font-mono space-y-1">
+                      {expCells.map((c, i) => (
+                        <div key={i}>
+                          <span className="text-white/50">{c.row_label} × {c.col_label}</span>
+                          <span className="text-emerald-300 ml-2">→ {Number(c.value).toLocaleString('en-IN')}</span>
+                          <span className="text-white/30 ml-2">±{c.tolerance}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              );
+            })()
+          ) : (
+            <div className="space-y-2">
+              {Object.entries(ea).map(([key, spec], i) => (
+                <div key={key} className="flex items-start gap-3 p-2 rounded border border-white/5 bg-white/[0.02]">
+                  <div className="font-mono text-xs text-white/40 w-6 shrink-0">{i + 1}</div>
+                  <div className="flex-1 min-w-0">
+                    <code className="text-xs text-emerald-300 font-mono break-all">{spec.formula_pattern}</code>
+                    <div className="text-xs text-white/50 mt-1">
+                      → <span className="text-white font-semibold">{JSON.stringify(spec.expected_value)}</span>
+                      <span className="text-white/30 ml-3">{spec.points}pt</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

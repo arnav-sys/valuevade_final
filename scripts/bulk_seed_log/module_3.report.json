@@ -1,25 +1,25 @@
 {
   "module": 3,
-  "completed_at": "2026-06-25T14:03:18.466345+00:00",
+  "completed_at": "2026-06-25T14:16:31.226209+00:00",
   "total_sessions": 1,
   "sims_generated": 1,
   "sims_failed": 0,
   "by_type": {
     "excel": 1
   },
-  "total_engine_corrections": 3,
-  "elapsed_seconds": 20.3,
+  "total_engine_corrections": 2,
+  "elapsed_seconds": 33.8,
   "rows": [
     {
-      "session_no": "3.9",
-      "session_title": "PivotTables & Charts — Summarise Like a Pro",
+      "session_no": "3.3",
+      "session_title": "Formulas 101 — References, Operators & How Formulas Travel",
       "db_session_id": "<dry>",
       "sim_type": "excel",
       "sim_id": null,
-      "seconds": 20.3,
+      "seconds": 33.8,
       "status": "ok",
       "error": null,
-      "engine_corrections": 3,
+      "engine_corrections": 2,
       "engine_errors": 0
     }
   ]

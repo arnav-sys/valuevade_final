@@ -1,41 +1,46 @@
 {
   "sim_type": "excel",
-  "title": "NSE Bhavcopy Portfolio Lookup — Connect Prices to Holdings",
-  "scenario": "You manage a small portfolio of 10 Nifty stocks. NSE's daily bhavcopy (price feed) arrived this morning. Your Portfolio sheet lists your holdings by ticker symbol; the Bhavcopy sheet contains today's OHLCV data. You need to pull live closing prices, calculate portfolio values, and identify which stocks are missing from today's bhavcopy — all using lookup functions.",
-  "instructions": "Build VLOOKUP, INDEX-MATCH, and XLOOKUP formulas to connect the Portfolio sheet to the Bhavcopy data, then calculate daily portfolio metrics.",
-  "learning_objective": "Apply VLOOKUP with pinned ranges and exact-match logic, construct INDEX-MATCH two-way lookups, and deploy XLOOKUP with graceful error handling to join NSE price feeds to holdings — and explain why INDEX-MATCH outlives VLOOKUP in production models.",
+  "title": "NSE Bhavcopy Join — Portfolio Prices with VLOOKUP, INDEX-MATCH & XLOOKUP",
+  "scenario": "You manage a Mumbai equity desk portfolio tracker. NSE's bhavcopy (market data export) arrives daily with symbol, open, high, low, close, volume. Your Portfolio sheet holds tickers and quantities. Build three lookup columns — one using VLOOKUP, one using INDEX-MATCH, one using XLOOKUP — to pull today's closing prices, then compute portfolio value. Compare results and understand why INDEX-MATCH and XLOOKUP are now desk standards.",
+  "instructions": "Build three parallel lookup columns (F, G, H) to fetch NSE closing prices into your portfolio. Use VLOOKUP in column F, INDEX-MATCH in column G, and XLOOKUP in column H. Then compute portfolio value (quantity × price) and answer analysis questions on data integrity and cross-lookup validation.",
+  "learning_objective": "Execute VLOOKUP, INDEX-MATCH, and XLOOKUP to join two tables by ticker; identify lookup flaws and fixes; validate results; compute portfolio value using multi-method lookups.",
   "hints": [
-    "For VLOOKUP, remember: pin the table array with dollar signs ($A$2:$E$11), omit the fourth argument and it defaults to approximate, and always state 0 or FALSE for exact match on ticker names.",
-    "MATCH returns a position (1, 2, 3…); INDEX uses that position to fetch a value from any column of your choice — MATCH finds the row, INDEX reads it. Try nesting MATCH inside INDEX.",
-    "XLOOKUP syntax is =XLOOKUP(lookup_value, lookup_array, return_array, [if_not_found]) — the return_array is independent of lookup_array, so you can look right, left, or anywhere. If you see #NAME?, your Excel version doesn't have XLOOKUP (pre-2021); use INDEX-MATCH instead."
+    "VLOOKUP scans the first column of its table and counts columns from left. INDEX-MATCH scans any column you name and returns from any column independently. XLOOKUP does both in one call and defaults to exact match.",
+    "For VLOOKUP, pin the bhavcopy table ($A$2:$F$11) so it doesn't drift when you copy down. For INDEX-MATCH, MATCH finds the row number in the ticker column, then INDEX fetches from the close column. For XLOOKUP, specify exact match mode (0) and a polite 'Not traded' if missing.",
+    "VLOOKUP formula: =VLOOKUP(B2, $A$2:$F$11, 5, 0). INDEX-MATCH: =INDEX($F$2:$F$11, MATCH(B2, $A$2:$A$11, 0)). XLOOKUP (if available): =XLOOKUP(B2, $A$2:$A$11, $F$2:$F$11, \"Not traded\", 0). All three should return the same closing price for each ticker."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
       {
-        "name": "Bhavcopy",
+        "name": "NSE Bhavcopy",
         "cells": {
           "A1": {
-            "value": "SYMBOL",
+            "value": "Symbol",
             "readOnly": true,
             "bold": true
           },
           "B1": {
-            "value": "SERIES",
+            "value": "Open",
             "readOnly": true,
             "bold": true
           },
           "C1": {
-            "value": "CLOSE",
+            "value": "High",
             "readOnly": true,
             "bold": true
           },
           "D1": {
-            "value": "VOLUME",
+            "value": "Low",
             "readOnly": true,
             "bold": true
           },
           "E1": {
-            "value": "ISIN",
+            "value": "Volume",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Close",
             "readOnly": true,
             "bold": true
           },
@@ -44,19 +49,23 @@
             "readOnly": true
           },
           "B2": {
-            "value": "EQ",
+            "value": 2845,
             "readOnly": true
           },
           "C2": {
-            "value": 2845.5,
+            "value": 2895,
             "readOnly": true
           },
           "D2": {
-            "value": 1250000,
+            "value": 2830,
             "readOnly": true
           },
           "E2": {
-            "value": "INE002A01018",
+            "value": 4521000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 2875,
             "readOnly": true
           },
           "A3": {
@@ -64,19 +73,23 @@
             "readOnly": true
           },
           "B3": {
-            "value": "EQ",
+            "value": 3950,
             "readOnly": true
           },
           "C3": {
-            "value": 3412.75,
+            "value": 4025,
             "readOnly": true
           },
           "D3": {
-            "value": 580000,
+            "value": 3940,
             "readOnly": true
           },
           "E3": {
-            "value": "INE467B01029",
+            "value": 2156000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 4010,
             "readOnly": true
           },
           "A4": {
@@ -84,19 +97,23 @@
             "readOnly": true
           },
           "B4": {
-            "value": "EQ",
+            "value": 1625,
             "readOnly": true
           },
           "C4": {
-            "value": 1683.2,
+            "value": 1680,
             "readOnly": true
           },
           "D4": {
-            "value": 2100000,
+            "value": 1615,
             "readOnly": true
           },
           "E4": {
-            "value": "INE001A01036",
+            "value": 5342000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 1670,
             "readOnly": true
           },
           "A5": {
@@ -104,139 +121,167 @@
             "readOnly": true
           },
           "B5": {
-            "value": "EQ",
+            "value": 1520,
             "readOnly": true
           },
           "C5": {
-            "value": 1895.6,
+            "value": 1555,
             "readOnly": true
           },
           "D5": {
-            "value": 750000,
+            "value": 1510,
             "readOnly": true
           },
           "E5": {
-            "value": "INE009A01021",
+            "value": 3125000,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 1545,
             "readOnly": true
           },
           "A6": {
-            "value": "ICICIBANK",
-            "readOnly": true
-          },
-          "B6": {
-            "value": "EQ",
-            "readOnly": true
-          },
-          "C6": {
-            "value": 1127.85,
-            "readOnly": true
-          },
-          "D6": {
-            "value": 1850000,
-            "readOnly": true
-          },
-          "E6": {
-            "value": "INE008A01023",
-            "readOnly": true
-          },
-          "A7": {
-            "value": "ASIANPAINT",
-            "readOnly": true
-          },
-          "B7": {
-            "value": "EQ",
-            "readOnly": true
-          },
-          "C7": {
-            "value": 3156.4,
-            "readOnly": true
-          },
-          "D7": {
-            "value": 280000,
-            "readOnly": true
-          },
-          "E7": {
-            "value": "INE021A01013",
-            "readOnly": true
-          },
-          "A8": {
             "value": "TITAN",
             "readOnly": true
           },
-          "B8": {
-            "value": "EQ",
+          "B6": {
+            "value": 2285,
             "readOnly": true
           },
-          "C8": {
-            "value": 2834.95,
+          "C6": {
+            "value": 2320,
             "readOnly": true
           },
-          "D8": {
-            "value": 420000,
+          "D6": {
+            "value": 2270,
             "readOnly": true
           },
-          "E8": {
-            "value": "INE280A01028",
+          "E6": {
+            "value": 2847000,
             "readOnly": true
           },
-          "A9": {
-            "value": "MARUTI",
+          "F6": {
+            "value": 2305,
             "readOnly": true
           },
-          "B9": {
-            "value": "EQ",
+          "A7": {
+            "value": "ICICIBANK",
             "readOnly": true
           },
-          "C9": {
-            "value": 8901.5,
+          "B7": {
+            "value": 980,
             "readOnly": true
           },
-          "D9": {
-            "value": 180000,
+          "C7": {
+            "value": 1015,
             "readOnly": true
           },
-          "E9": {
-            "value": "INE585B01010",
+          "D7": {
+            "value": 975,
             "readOnly": true
           },
-          "A10": {
+          "E7": {
+            "value": 4562000,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "A8": {
             "value": "WIPRO",
             "readOnly": true
           },
-          "B10": {
-            "value": "EQ",
+          "B8": {
+            "value": 375,
             "readOnly": true
           },
-          "C10": {
-            "value": 421.3,
+          "C8": {
+            "value": 395,
             "readOnly": true
           },
-          "D10": {
-            "value": 3200000,
+          "D8": {
+            "value": 370,
             "readOnly": true
           },
-          "E10": {
-            "value": "INE075A01022",
+          "E8": {
+            "value": 6128000,
             "readOnly": true
           },
-          "A11": {
+          "F8": {
+            "value": 385,
+            "readOnly": true
+          },
+          "A9": {
             "value": "BAJAJFINSV",
             "readOnly": true
           },
+          "B9": {
+            "value": 1510,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 1545,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 1923000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 1535,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "ASIANPAINT",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 2960,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 3010,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 2950,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 1456000,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 2990,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "MARUTI",
+            "readOnly": true
+          },
           "B11": {
-            "value": "EQ",
+            "value": 8450,
             "readOnly": true
           },
           "C11": {
-            "value": 1689.75,
+            "value": 8620,
             "readOnly": true
           },
           "D11": {
-            "value": 650000,
+            "value": 8420,
             "readOnly": true
           },
           "E11": {
-            "value": "INE918I01018",
+            "value": 743000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 8550,
             "readOnly": true
           }
         }
@@ -245,268 +290,65 @@
         "name": "Portfolio",
         "cells": {
           "A1": {
-            "value": "TICKER",
+            "value": "Ticker",
             "readOnly": true,
             "bold": true
           },
           "B1": {
-            "value": "QUANTITY",
+            "value": "Quantity",
             "readOnly": true,
             "bold": true
           },
           "C1": {
-            "value": "CLOSE_VLOOKUP",
+            "value": "Question / Formula",
             "readOnly": true,
             "bold": true
           },
           "D1": {
-            "value": "CLOSE_INDEXMATCH",
-            "readOnly": true,
-            "bold": true
-          },
-          "E1": {
-            "value": "CLOSE_XLOOKUP",
-            "readOnly": true,
-            "bold": true
-          },
-          "F1": {
-            "value": "PORTFOLIO_VALUE_₹CR",
-            "readOnly": true,
-            "bold": true
-          },
-          "G1": {
-            "value": "STATUS",
+            "value": "Answer",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "RELIANCE",
+            "value": "Q1: VLOOKUP — Fetch RELIANCE close price using VLOOKUP with exact match (FALSE)",
             "readOnly": true
           },
           "B2": {
-            "value": 100,
-            "readOnly": true
-          },
-          "C2": {
-            "value": null
-          },
-          "D2": {
-            "value": null
-          },
-          "E2": {
-            "value": null
-          },
-          "F2": {
-            "value": null
-          },
-          "G2": {
             "value": null
           },
           "A3": {
-            "value": "TCS",
+            "value": "Q2: INDEX-MATCH — Fetch TCS close price using INDEX-MATCH (MATCH scans bhavcopy Symbol column, INDEX fetches Close)",
             "readOnly": true
           },
           "B3": {
-            "value": 75,
-            "readOnly": true
-          },
-          "C3": {
-            "value": null
-          },
-          "D3": {
-            "value": null
-          },
-          "E3": {
-            "value": null
-          },
-          "F3": {
-            "value": null
-          },
-          "G3": {
             "value": null
           },
           "A4": {
-            "value": "HDFCBANK",
+            "value": "Q3: XLOOKUP — Fetch HDFCBANK close price using XLOOKUP with exact match mode, return 'Not traded' if missing",
             "readOnly": true
           },
           "B4": {
-            "value": 200,
-            "readOnly": true
-          },
-          "C4": {
-            "value": null
-          },
-          "D4": {
-            "value": null
-          },
-          "E4": {
-            "value": null
-          },
-          "F4": {
-            "value": null
-          },
-          "G4": {
             "value": null
           },
           "A5": {
-            "value": "INFOSYS",
+            "value": "Q4: Portfolio Value (RELIANCE) — Quantity 100 × Close price (from Q1). Sum all three lookup methods to verify agreement.",
             "readOnly": true
           },
           "B5": {
-            "value": 150,
-            "readOnly": true
-          },
-          "C5": {
-            "value": null
-          },
-          "D5": {
-            "value": null
-          },
-          "E5": {
-            "value": null
-          },
-          "F5": {
-            "value": null
-          },
-          "G5": {
             "value": null
           },
           "A6": {
-            "value": "ICICIBANK",
+            "value": "Q5: Data Integrity — Fetch price for NONEXIST (a ticker not in bhavcopy). VLOOKUP should return #N/A; XLOOKUP should return 'Not traded'.",
             "readOnly": true
           },
           "B6": {
-            "value": 300,
-            "readOnly": true
-          },
-          "C6": {
-            "value": null
-          },
-          "D6": {
-            "value": null
-          },
-          "E6": {
-            "value": null
-          },
-          "F6": {
-            "value": null
-          },
-          "G6": {
             "value": null
           },
           "A7": {
-            "value": "ASIANPAINT",
+            "value": "Q6: Total Portfolio Value — (100 × RELIANCE close) + (50 × TCS close) + (75 × HDFCBANK close). Use one of the three lookup methods for all three prices.",
             "readOnly": true
           },
           "B7": {
-            "value": 50,
-            "readOnly": true
-          },
-          "C7": {
-            "value": null
-          },
-          "D7": {
-            "value": null
-          },
-          "E7": {
-            "value": null
-          },
-          "F7": {
-            "value": null
-          },
-          "G7": {
-            "value": null
-          },
-          "A8": {
-            "value": "TITAN",
-            "readOnly": true
-          },
-          "B8": {
-            "value": 120,
-            "readOnly": true
-          },
-          "C8": {
-            "value": null
-          },
-          "D8": {
-            "value": null
-          },
-          "E8": {
-            "value": null
-          },
-          "F8": {
-            "value": null
-          },
-          "G8": {
-            "value": null
-          },
-          "A9": {
-            "value": "MARUTI",
-            "readOnly": true
-          },
-          "B9": {
-            "value": 40,
-            "readOnly": true
-          },
-          "C9": {
-            "value": null
-          },
-          "D9": {
-            "value": null
-          },
-          "E9": {
-            "value": null
-          },
-          "F9": {
-            "value": null
-          },
-          "G9": {
-            "value": null
-          },
-          "A10": {
-            "value": "WIPRO",
-            "readOnly": true
-          },
-          "B10": {
-            "value": 500,
-            "readOnly": true
-          },
-          "C10": {
-            "value": null
-          },
-          "D10": {
-            "value": null
-          },
-          "E10": {
-            "value": null
-          },
-          "F10": {
-            "value": null
-          },
-          "G10": {
-            "value": null
-          },
-          "A11": {
-            "value": "BAJAJFINSV",
-            "readOnly": true
-          },
-          "B11": {
-            "value": 80,
-            "readOnly": true
-          },
-          "C11": {
-            "value": null
-          },
-          "D11": {
-            "value": null
-          },
-          "E11": {
-            "value": null
-          },
-          "F11": {
-            "value": null
-          },
-          "G11": {
             "value": null
           }
         }
@@ -514,40 +356,47 @@
     ]
   },
   "expected_answers": {
-    "Portfolio!C2": {
-      "formula_pattern": "=VLOOKUP(A2,Bhavcopy!$A$2:$E$11,3,0)",
-      "expected_value": 2845.5,
+    "Portfolio!B2": {
+      "formula_pattern": "=VLOOKUP(\"RELIANCE\", 'NSE Bhavcopy'!$A$2:$F$11, 6, 0)",
+      "expected_value": 2875,
       "type": "number",
-      "tolerance": 0.01,
+      "tolerance": 0,
       "points": 12
     },
-    "Portfolio!D2": {
-      "formula_pattern": "=INDEX(Bhavcopy!$C$2:$C$11,MATCH(A2,Bhavcopy!$A$2:$A$11,0))",
-      "expected_value": 2845.5,
+    "Portfolio!B3": {
+      "formula_pattern": "=INDEX('NSE Bhavcopy'!$F$2:$F$11, MATCH(\"TCS\", 'NSE Bhavcopy'!$A$2:$A$11, 0))",
+      "expected_value": 4010,
       "type": "number",
-      "tolerance": 0.01,
-      "points": 15
+      "tolerance": 0,
+      "points": 12
     },
-    "Portfolio!E2": {
-      "formula_pattern": "=XLOOKUP(A2,Bhavcopy!$A$2:$A$11,Bhavcopy!$C$2:$C$11,\"NOT FOUND\")",
-      "expected_value": 2845.5,
+    "Portfolio!B4": {
+      "formula_pattern": "=XLOOKUP(\"HDFCBANK\", 'NSE Bhavcopy'!$A$2:$A$11, 'NSE Bhavcopy'!$F$2:$F$11, \"Not traded\", 0)",
+      "expected_value": 1670,
       "type": "number",
-      "tolerance": 0.01,
-      "points": 15
-    },
-    "Portfolio!F5": {
-      "formula_pattern": "=E5*B5/10000000",
-      "expected_value": 28.434,
-      "type": "number",
-      "tolerance": 0.01,
-      "points": 10
-    },
-    "Portfolio!G2": {
-      "formula_pattern": "=IF(ISERROR(E2),\"MISSING\",\"LIVE\")",
-      "expected_value": "LIVE",
-      "type": "text",
       "tolerance": 0,
       "points": 13
+    },
+    "Portfolio!B5": {
+      "formula_pattern": "=100 * VLOOKUP(\"RELIANCE\", 'NSE Bhavcopy'!$A$2:$F$11, 6, 0)",
+      "expected_value": 287500,
+      "type": "number",
+      "tolerance": 0,
+      "points": 13
+    },
+    "Portfolio!B6": {
+      "formula_pattern": "=XLOOKUP(\"NONEXIST\", 'NSE Bhavcopy'!$A$2:$A$11, 'NSE Bhavcopy'!$F$2:$F$11, \"Not traded\", 0)",
+      "expected_value": "Not traded",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Portfolio!B7": {
+      "formula_pattern": "=100 * VLOOKUP(\"RELIANCE\", 'NSE Bhavcopy'!$A$2:$F$11, 6, 0) + 50 * INDEX('NSE Bhavcopy'!$F$2:$F$11, MATCH(\"TCS\", 'NSE Bhavcopy'!$A$2:$A$11, 0)) + 75 * XLOOKUP(\"HDFCBANK\", 'NSE Bhavcopy'!$A$2:$A$11, 'NSE Bhavcopy'!$F$2:$F$11, 0, 0)",
+      "expected_value": 417575,
+      "type": "number",
+      "tolerance": 0,
+      "points": 25
     }
   }
 }

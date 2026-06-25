@@ -1,4 +1,110 @@
 # ============================================================================
+# CHANGELOG — 2026-06-25 (Step 5 — Pivot UI + Hybrid Engine + M3 Bulk Seed)
+# ============================================================================
+
+## Status
+- **M3 BULK SEED — COMPLETE** (dry-run, awaiting LIVE write approval): 10/10
+  sims, 0 engine errors, 7/8 Sonnet samples pass (avg 4.63).
+- **PivotTable UI — COMPLETE**: full @dnd-kit-based pivot sheet renderer
+  with drag-drop fields → zones, live aggregation switching, multi-select
+  filters, Indian-locale number formatting, grand/sub totals.
+
+## What shipped today
+
+### Engine extensions (Path C hybrid)
+- `excelFormula.js` + 32 new tests (now 83/83 green):
+  - `SUBTOTAL` codes 1-5, 9 (and 101-105/109 mirrors)
+  - `VALUE`, `DATEVALUE`, `TODAY` (date-aware) + JS Date arithmetic in binops
+  - `ISERROR`, `ISERR`, `ISNA`, `ISNUMBER`, `ISTEXT`, `ISBLANK`
+  - `INT`, `MOD`, `TRUNC`
+  - **Full-column refs** (`D:D`, `Sheet!B:B`, `$B:$B`) — probes to row 1024
+  - Single-quoted sheet name with ranges (`'NSE Bhavcopy'!A1:F11`)
+- `pivotEngine.js` + 23 new tests (106/106 total green):
+  - `computePivot(sourceData, state)` — full cross-tab w/ grouping, subtotals,
+    grand totals, multi-value, filter narrowing
+  - `aggregateValues(vals, agg)` — SUM/AVG/COUNT/COUNTA/MAX/MIN/STDEV
+  - `gradePivotSheet(...)` — 4-dim weighted grading
+
+### Pivot UI
+- `PivotTableSheet.jsx` (430 LOC) — @dnd-kit/core PointerSensor + KeyboardSensor;
+  4 droppable zones (Filters/Cols/Rows/Values); FieldChip with per-Value
+  aggregation picker; multi-select FilterDropdown; DragOverlay floating chip;
+  reduced-motion friendly; mobile-best-on-desktop notice.
+- `SpreadsheetSim.jsx` — routes `sheet.kind === 'pivot'` to PivotTableSheet;
+  hides the formula bar on pivot sheets; persists pivot_state in workbook for
+  autosave; `resolvePivotSourceData()` helper extracts source range.
+- `excelSimAdapter.js` — passes through pivot sheets unchanged.
+
+### Bulk seed pipeline
+- `bulk_seed_sims.py` — hardened EXCEL_PROMPT: forbids VLOOKUP-look-left AND
+  GETPIVOTDATA, adds difficulty ramp + multi-sheet ref + type-match rules,
+  special pivot/chart-session reframing block; validator now hard-rejects
+  GETPIVOTDATA + bare-cell-ref-in-multi-sheet + bad expected_value type.
+- `validate_excel_sim_node.mjs` — Node CLI engine validator (skips pivot).
+- `sonnet_route_types.py` — one-shot Sonnet 4.5 routing for 13 mixed modules
+  → `/app/memory/sims_type_routing_v1.json` (137 sessions: 45 excel / 50
+  document / 42 decision_making).
+- `sonnet_quality_review.py` — 1-in-N Sonnet 4.5 pedagogy review with strict
+  4-criterion 1-5 rubric (indian_flavor / session_relevance / hint_progression
+  / difficulty_curve), avg≥4 AND min≥3 → pass.
+
+### M3 sims (10/10)
+- All have Indian companies (HDFC/ICICI/TCS/Infosys/Reliance/ITC/HUL/Tata
+  Motors/Titan/Bajaj/Adani) and ₹/crore values
+- Exactly 3 hints per sim, escalating cheap→medium→near-direct
+- 5-6 questions, points 60-100, real difficulty ramp
+- S3.9 hand-authored with pivot schema (5 sectors × 4 quarters × 18 rows;
+  Banking×Q1=79400, IT×Q3=104950, FMCG×Q4=36820, Energy×Q2=240120)
+
+### Sonnet 4.5 sample (8/10 of M3)
+| Sim | Avg | Verdict | Note |
+|---|---|---|---|
+| S3.1 | 4.75 | PASS | |
+| S3.2 | 3.25 | FAIL | session is FORMATTING-only — engine can't test colors/borders. Same structural class as S3.9 was. |
+| S3.3 | 4.50 | PASS | |
+| S3.4 | 4.75 | PASS | |
+| S3.5 | 5.00 | PASS | |
+| S3.6 | 5.00 | PASS | |
+| S3.7 | 4.75 | PASS | |
+| S3.8 | 5.00 | PASS | |
+| S3.9 | n/a  | (pivot — graded by gradePivotSheet) |
+| S3.10| n/a  | not sampled |
+
+**7/8 pass · avg 4.63**
+
+### Type routing for 13 mixed modules (M1, M2, M5-M12, M14, M15, M18)
+137 sessions classified by Sonnet 4.5: **45 excel / 50 document / 42 decision**.
+M19 capstone has no DB module (renumbered to M23 SKIP) — effectively skipped.
+
+## What's still needed
+- USER sign-off on M3 live write (10 sims into Supabase master_simulations)
+- USER decision on S3.2 (formatting-session engine-gap): accept-as-is /
+  regen-with-tighter-prompt / replace with non-formatting alternative
+- USER sign-off on type-routing JSON before mixed-modules seed
+- Live M3 write → M4 Excel-only → M13 Excel-only multi-sheet → mixed modules
+
+## Files added
+- /app/frontend/src/components/simulations/pivotEngine.js
+- /app/frontend/src/components/simulations/pivotEngine.test.js
+- /app/frontend/src/components/simulations/PivotTableSheet.jsx
+- /app/frontend/src/data/m3-dryrun/{s3-1,s3-5,s3-9,s3-9-completed}.json
+- /app/scripts/validate_excel_sim_node.mjs
+- /app/scripts/sonnet_quality_review.py
+- /app/scripts/sonnet_route_types.py
+- /app/memory/sims_type_routing_v1.json
+
+## Files modified
+- /app/frontend/src/components/simulations/excelFormula.js (+ 230 LOC)
+- /app/frontend/src/components/simulations/excelSimAdapter.js
+- /app/frontend/src/components/simulations/SpreadsheetSim.jsx
+- /app/frontend/src/components/M3DryRunPreview.jsx
+- /app/frontend/src/App.js (+ /m3-dryrun-preview route)
+- /app/scripts/bulk_seed_sims.py
+- /app/frontend/src/components/simulations/excelFormula.test.js
+
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-25 (Step 0.5 + Step 4 — M3 Sample Generation)
 # ============================================================================
 

@@ -1,13 +1,13 @@
 {
   "sim_type": "excel",
-  "title": "Nifty 50 Market Cap Weights—Relative vs Absolute References",
-  "scenario": "You're building a daily Nifty 50 index weight table for the Mumbai desk. Ten heavyweights' market caps are listed; you must compute each stock's portfolio weight as a fraction of total market cap. The formula must survive a fill-down without breaking—choosing the right reference type (relative for individual caps, absolute for the total) is the difference between a working model and a #DIV/0! crash.",
-  "instructions": "Build formulas using relative and absolute references to compute market-cap weights; use F4 to pin the total; fill down and verify; then apply growth and CAGR formulas to validate five-year revenue trends.",
-  "learning_objective": "Construct formulas with mixed references (relative for row data, absolute for shared assumptions), apply F4 to pin cell addresses, execute fill-down operations without reference drift, and compute year-on-year growth and CAGR with correct BODMAS bracketing.",
+  "title": "Reliance Revenue Growth: References, Relative vs Absolute",
+  "scenario": "You are building a quarterly revenue model for Reliance Industries. Your team has provided FY24–FY25 quarterly revenues, and you must compute year-on-year growth rates and identify a shared assumption (GST/tax rate) that must remain pinned when you copy the formula down. This exercise teaches you when to use $ and when to let references walk.",
+  "instructions": "Complete the Answers sheet by writing formulas that compute quarterly growth rates (Q2/Q1−1) using relative references for the quarterly pairs, and absolute references for the shared tax assumption in blue. Use F4 to toggle reference types and verify your formulas survive copying down without breaking.",
+  "learning_objective": "Apply relative and absolute references correctly to build a replicable growth formula; use F4 to pin assumptions and verify formulas travel safely when copied down rows.",
   "hints": [
-    "In the weight formula, which cell—the individual cap or the total—should NOT change when you drag down? That one gets the dollar signs.",
-    "Use F4 while editing the total reference to cycle through: no dollars → $B$12 → stop here. Then fill down.",
-    "Growth is (new minus old) divided by old—wrap the subtraction in brackets. CAGR is (end divided by start) to the power of (one divided by periods), minus one—count the hops between years, not the years themselves."
+    "Write the growth formula first in B3: =(B2-B1)/B1, then decide which part should walk (the quarter pair) and which should stand still (think about whether you'll copy across columns or down rows).",
+    "The tax rate in E2 is a shared assumption—it must stay E2 even when copied. Click into E2 inside your formula and press F4 until you see $E$2. Count the fence posts: Q1 to Q4 is 3 growth steps, not 4.",
+    "In Answers!D3, write =C3*$E$2 (tax applied to Q3 revenue, using the pinned rate). Copy this down to D4:D6. If your formula breaks (shows the wrong row pair), check that C3 walks but E2 is locked with dollar signs."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
@@ -15,287 +15,112 @@
         "name": "Data",
         "cells": {
           "A1": {
-            "value": "Company",
+            "value": "Quarter",
             "readOnly": true,
             "bold": true
           },
           "B1": {
-            "value": "Market Cap (₹ Cr)",
+            "value": "Revenue (₹ Cr)",
             "readOnly": true,
             "bold": true
           },
           "C1": {
-            "value": "Weight (%)",
+            "value": "YoY Growth %",
             "readOnly": true,
             "bold": true
           },
           "D1": {
-            "value": "FY22 Revenue (₹ Cr)",
+            "value": "Tax Amount (₹ Cr)",
             "readOnly": true,
             "bold": true
           },
           "E1": {
-            "value": "FY23 Revenue (₹ Cr)",
-            "readOnly": true,
-            "bold": true
-          },
-          "F1": {
-            "value": "FY24 Revenue (₹ Cr)",
-            "readOnly": true,
-            "bold": true
-          },
-          "G1": {
-            "value": "FY25E Revenue (₹ Cr)",
+            "value": "Tax Rate (%)",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "Reliance Industries",
+            "value": "Q1 FY24",
             "readOnly": true
           },
           "B2": {
-            "value": 1850000,
-            "readOnly": true
-          },
-          "D2": {
-            "value": 520000,
+            "value": 18500,
             "readOnly": true
           },
           "E2": {
-            "value": 615000,
-            "readOnly": true
-          },
-          "F2": {
-            "value": 725000,
-            "readOnly": true
-          },
-          "G2": {
-            "value": 820000,
+            "value": 18,
             "readOnly": true
           },
           "A3": {
-            "value": "HDFC Bank",
+            "value": "Q2 FY24",
             "readOnly": true
           },
           "B3": {
-            "value": 1450000,
-            "readOnly": true
-          },
-          "D3": {
-            "value": 125000,
-            "readOnly": true
-          },
-          "E3": {
-            "value": 148000,
-            "readOnly": true
-          },
-          "F3": {
-            "value": 175000,
-            "readOnly": true
-          },
-          "G3": {
-            "value": 206000,
+            "value": 19250,
             "readOnly": true
           },
           "A4": {
-            "value": "TCS",
+            "value": "Q3 FY24",
             "readOnly": true
           },
           "B4": {
-            "value": 1340000,
-            "readOnly": true
-          },
-          "D4": {
-            "value": 220000,
-            "readOnly": true
-          },
-          "E4": {
-            "value": 245000,
-            "readOnly": true
-          },
-          "F4": {
-            "value": 285000,
-            "readOnly": true
-          },
-          "G4": {
-            "value": 330000,
+            "value": 20100,
             "readOnly": true
           },
           "A5": {
-            "value": "Infosys",
+            "value": "Q4 FY24",
             "readOnly": true
           },
           "B5": {
-            "value": 780000,
-            "readOnly": true
-          },
-          "D5": {
-            "value": 180000,
-            "readOnly": true
-          },
-          "E5": {
-            "value": 195000,
-            "readOnly": true
-          },
-          "F5": {
-            "value": 218000,
-            "readOnly": true
-          },
-          "G5": {
-            "value": 248000,
+            "value": 21300,
             "readOnly": true
           },
           "A6": {
-            "value": "Wipro",
+            "value": "Q1 FY25",
             "readOnly": true
           },
           "B6": {
-            "value": 520000,
-            "readOnly": true
-          },
-          "D6": {
-            "value": 78000,
-            "readOnly": true
-          },
-          "E6": {
-            "value": 85000,
-            "readOnly": true
-          },
-          "F6": {
-            "value": 92000,
-            "readOnly": true
-          },
-          "G6": {
-            "value": 102000,
+            "value": 22800,
             "readOnly": true
           },
           "A7": {
-            "value": "Kotak Mahindra Bank",
+            "value": "Q2 FY25",
             "readOnly": true
           },
           "B7": {
-            "value": 420000,
-            "readOnly": true
-          },
-          "D7": {
-            "value": 42000,
-            "readOnly": true
-          },
-          "E7": {
-            "value": 50000,
-            "readOnly": true
-          },
-          "F7": {
-            "value": 60000,
-            "readOnly": true
-          },
-          "G7": {
-            "value": 72000,
+            "value": 24500,
             "readOnly": true
           },
           "A8": {
-            "value": "Bajaj Finance",
+            "value": "Q3 FY25",
             "readOnly": true
           },
           "B8": {
-            "value": 380000,
-            "readOnly": true
-          },
-          "D8": {
-            "value": 38000,
-            "readOnly": true
-          },
-          "E8": {
-            "value": 46000,
-            "readOnly": true
-          },
-          "F8": {
-            "value": 56000,
-            "readOnly": true
-          },
-          "G8": {
-            "value": 68000,
+            "value": 25900,
             "readOnly": true
           },
           "A9": {
-            "value": "Axis Bank",
+            "value": "Q4 FY25",
             "readOnly": true
           },
           "B9": {
-            "value": 360000,
-            "readOnly": true
-          },
-          "D9": {
-            "value": 48000,
-            "readOnly": true
-          },
-          "E9": {
-            "value": 56000,
-            "readOnly": true
-          },
-          "F9": {
-            "value": 65000,
-            "readOnly": true
-          },
-          "G9": {
-            "value": 76000,
+            "value": 27400,
             "readOnly": true
           },
           "A10": {
-            "value": "ITC",
+            "value": "Q1 FY26E",
             "readOnly": true
           },
           "B10": {
-            "value": 320000,
-            "readOnly": true
-          },
-          "D10": {
-            "value": 95000,
-            "readOnly": true
-          },
-          "E10": {
-            "value": 102000,
-            "readOnly": true
-          },
-          "F10": {
-            "value": 112000,
-            "readOnly": true
-          },
-          "G10": {
-            "value": 125000,
+            "value": 28800,
             "readOnly": true
           },
           "A11": {
-            "value": "HUL",
+            "value": "Q2 FY26E",
             "readOnly": true
           },
           "B11": {
-            "value": 310000,
-            "readOnly": true
-          },
-          "D11": {
-            "value": 58000,
-            "readOnly": true
-          },
-          "E11": {
-            "value": 62000,
-            "readOnly": true
-          },
-          "F11": {
-            "value": 68000,
-            "readOnly": true
-          },
-          "G11": {
-            "value": 75000,
-            "readOnly": true
-          },
-          "A12": {
-            "value": "TOTAL",
-            "readOnly": true,
-            "bold": true
-          },
-          "B12": {
-            "value": "=SUM(B2:B11)",
+            "value": 30200,
             "readOnly": true
           }
         }
@@ -309,84 +134,74 @@
             "bold": true
           },
           "B1": {
-            "value": "Answer",
+            "value": "Your Answer",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "Q1. Market cap weight formula for Reliance (C2) — use relative ref for cap, absolute for total",
+            "value": "Q2 FY24 YoY growth % = (Q2−Q1)/Q1. Write formula in B2 using relative references for the quarter pair. Copy it down to B3:B9 — does it stay correct?",
             "readOnly": true
           },
-          "B2": {
-            "value": null
-          },
+          "B2": {},
           "A3": {
-            "value": "Q2. Reliance's weight as % of total market cap (fill this, then copy down to C11)",
+            "value": "Q1 FY25 tax (use pinned rate in Data!E2). Write formula in B3 as Revenue × Tax Rate, pinning the rate with $.",
             "readOnly": true
           },
-          "B3": {
-            "value": null
-          },
+          "B3": {},
           "A4": {
-            "value": "Q3. Sum of all weights C2:C11 (should equal 100.00%)",
+            "value": "Copy the Q1 FY25 tax formula down to B4:B11. Each should multiply its own row's revenue by the same pinned $E$2 rate. Write formula.",
             "readOnly": true
           },
-          "B4": {
-            "value": null
-          },
+          "B4": {},
           "A5": {
-            "value": "Q4. Reliance FY23 YoY growth: (FY23-FY22)/FY22 with brackets around subtraction",
+            "value": "CAGR from Q1 FY24 (18500) to Q2 FY26E (30200). Count fence posts: FY24 Q1 → FY26 Q2 is how many quarters? Use =(End/Start)^(1/n)−1.",
             "readOnly": true
           },
-          "B5": {
-            "value": null
-          },
+          "B5": {},
           "A6": {
-            "value": "Q5. Reliance FY22-FY25E CAGR: (FY25E/FY22)^(1/periods)-1 (3 periods = 3 hops)",
+            "value": "Advanced: write a formula in B6 that computes Q2 FY26E's share of total revenue (sum of Data!B2:B11). Pin the total, walk the individual quarter.",
             "readOnly": true
           },
-          "B6": {
-            "value": null
-          }
+          "B6": {}
         }
       }
     ]
   },
   "expected_answers": {
     "Answers!B2": {
-      "formula_pattern": "=B2/$B$12",
-      "expected_value": "=B2/$B$12",
-      "type": "text",
-      "tolerance": 0,
-      "points": 10
+      "formula_pattern": "=(Data!B3-Data!B2)/Data!B2",
+      "expected_value": 0.0405,
+      "type": "number",
+      "tolerance": 0.0001,
+      "points": 12
     },
     "Answers!B3": {
-      "formula_pattern": "=B3/$B$12",
-      "expected_value": 0.18758085381630013,
+      "formula_pattern": "=Data!B6*Data!$E$2/100",
+      "expected_value": 4104,
       "type": "number",
-      "tolerance": 0.001,
-      "points": 15
+      "tolerance": 1,
+      "points": 13
     },
     "Answers!B4": {
-      "formula_pattern": "=SUM(C2:C11)",
-      "expected_value": 0,
+      "formula_pattern": "=Data!B7*Data!$E$2/100",
+      "expected_value": 4410,
       "type": "number",
-      "tolerance": 0.001,
-      "points": 15
+      "tolerance": 1,
+      "points": 13
     },
     "Answers!B5": {
-      "formula_pattern": "=(E2-D2)/D2",
-      "expected_value": 0.1827,
+      "formula_pattern": "=(Data!B11/Data!B2)^(1/9)-1",
+      "expected_value": 0.05596216358067152,
       "type": "number",
-      "tolerance": 0.001,
+      "tolerance": 0.0001,
       "points": 15
     },
     "Answers!B6": {
-      "formula_pattern": "=(G2/D2)^(1/3)-1",
-      "expected_value": 0.16395673133719368,
+      "formula_pattern": "=Data!B11/SUM(Data!$B$2:$B$11)",
+      "expected_value": 0.12649214659685865,
       "type": "number",
-      "tolerance": 0.001,
-      "points": 15
+      "tolerance": 0.0001,
+      "points": 17
     }
   }
 }

@@ -90,6 +90,10 @@ function main() {
   for (const [key, spec] of Object.entries(ea)) {
     total += 1;
     const formula = spec?.formula_pattern;
+    // Pivot grading entries use a sentinel formula_pattern '<<PIVOT>>' — skip
+    // them in the formula engine (they are graded separately via
+    // pivotEngine.gradePivotSheet at the SpreadsheetSim layer).
+    if (formula === '<<PIVOT>>' || spec?.type === 'pivot') continue;
     if (typeof formula !== 'string' || !formula) {
       errors.push({ key, formula: '', code: 'NO_FORMULA' });
       continue;
