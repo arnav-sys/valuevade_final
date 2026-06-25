@@ -1,4 +1,41 @@
 # ============================================================================
+# CHANGELOG — 2026-06-25 (Step 0.5 + Step 4 — M3 Sample Generation)
+# ============================================================================
+
+## Status
+- **Step 0.5 — COMPLETE**: `excelFormula.js` extended (Lookup, Financial,
+  Statistical, Text, Date families) AND IFS / IFNA / SUMPRODUCT / EXACT /
+  AND / OR / NOT added. Cross-sheet RANGES (`Sheet!A2:F11`) and array-spill
+  for binops (`(C2:C11>15)*(D2:D11<1)`) now work. Lazy evaluation for
+  IF / IFERROR / IFNA / IFS (so error-trapping functions actually trap).
+  All 36 formula unit tests pass.
+- **Step 4 — AWAITING USER APPROVAL**: 3 M3 sample sims generated, engine-
+  validated, rendered in `SpreadsheetSim`, and screenshot-captured. Live
+  preview at `/m3-sample-preview` with tabs for each session.
+
+## Samples generated (1 each from early / mid / late M3)
+- **3.3 (early, foundational)** — Formulas 101 (references, growth, CAGR).
+  10 companies × 4 cols. 5 Q's, 80pt. 2 engine corrections applied.
+- **3.5 (mid, synthesis)** — IF/IFS/AND/OR/IFERROR.  10 companies × 5 cols.
+  5 Q's, 85pt. 1 engine correction applied.
+- **3.6 (late, applied)** — VLOOKUP / INDEX-MATCH / XLOOKUP. 10 companies
+  × 6 cols. 5 Q's, 80pt. 0 engine corrections — Haiku produced cleanly.
+
+## Two-pass validation infrastructure (reusable for Step 5)
+- `validate_m3_samples.test.js` — deterministic Jest validator that runs
+  every `formula_pattern` through the engine and overwrites `expected_value`
+  with the canonical computed result. ~20% of Haiku outputs need correction.
+- `generate_m3_samples.py` (Haiku 4.5) — tightened system prompt with
+  explicit no-units-trap, no-text*number, VLOOKUP-can't-look-left rules
+  plus a self-check directive.
+
+## What still needs decisions
+- USER: approve the 3 samples to unlock bulk seed (Step 5)
+- USER: decide whether Sonnet 4.5 should also rate pedagogy (currently the
+  engine only validates arithmetic; pedagogy quality is the LLM's call)
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-24 (Hero v4 — Typography-as-the-Hero)
 # ============================================================================
 

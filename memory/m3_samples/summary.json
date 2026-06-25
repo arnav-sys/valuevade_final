@@ -1,0 +1,17 @@
+[
+  {
+    "session": "3.3",
+    "slot": "early",
+    "title": "3.3: Formulas 101 — References, Operators & How Formulas Travel",
+    "file": "/app/memory/m3_samples/s3-3.json",
+    "validator_checks": [
+      "sheets ok (2 sheets: ['Answers', 'Data'])",
+      "data sheet has 11 rows ✓",
+      "5 expected answers, 80 total points ✓"
+    ],
+    "elapsed_s": 21.8,
+    "sheets": 2,
+    "expected_count": 5,
+    "total_points": 80
+  }
+]

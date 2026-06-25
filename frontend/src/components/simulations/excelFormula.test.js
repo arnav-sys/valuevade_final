@@ -117,16 +117,19 @@ describe('excelFormula — financial', () => {
     const out = evalIt('=PV(0.08, 10, 100000)', {});
     expect(out).toBeCloseTo(-671008, 0);
   });
-  // NPV of [-1000, 300, 420, 680] at 10% ≈ 100.94
+  // Excel NPV(0.1, 300, 420, 680) = 300/1.1 + 420/1.21 + 680/1.331 = 1130.73
+  // Less initial outlay 1000 → 130.73. (Matches Excel's end-of-period convention.)
   test('NPV — discounted cashflows', () => {
     const cells = { A1: 300, A2: 420, A3: 680 };
     const out = evalIt('=NPV(0.1, A1:A3) - 1000', cells);
-    expect(out).toBeCloseTo(100.94, 1);
+    expect(out).toBeCloseTo(130.73, 1);
   });
+  // IRR([-1000, 300, 420, 680]) — rate r s.t. -1000 + 300/(1+r) + 420/(1+r)^2 + 680/(1+r)^3 = 0
+  // Newton-Raphson root ≈ 0.1634 (16.34%).
   test('IRR — converges on positive root', () => {
     const cells = { A1: -1000, A2: 300, A3: 420, A4: 680 };
     const out = evalIt('=IRR(A1:A4)', cells);
-    expect(out).toBeCloseTo(0.1521, 2);   // Excel = 15.21%
+    expect(out).toBeCloseTo(0.1634, 2);   // Excel = 16.34%
   });
   test('NPER — months to retire a loan at fixed EMI', () => {
     // ₹40L loan, ₹35k EMI, 8.5%/12 monthly → ~228 months

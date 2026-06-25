@@ -1,0 +1,378 @@
+{
+  "session": "3.6",
+  "session_title": "3.6: Lookup Functions — VLOOKUP, INDEX-MATCH & XLOOKUP",
+  "slot": "late",
+  "tagline": "applied — VLOOKUP, INDEX-MATCH (incl. 2-way), XLOOKUP",
+  "generated_at": "2026-06-25T12:14:01.086171+00:00",
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Symbol",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Company Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Close Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "P/E Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "RELIANCE",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Energy",
+            "readOnly": true
+          },
+          "D2": {
+            "value": 2780,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 1720000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 28.5,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Tata Consultancy Services",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 4120,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 1280000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 32.1,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFCBANK",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1580,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 980000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 22.3,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "INFOSYS",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 720000,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 38.7,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "TITAN",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Discretionary",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 3240,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 580000,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 45.2,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "BAJAJFINSV",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "D7": {
+            "value": 6850,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 26.8,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "ICICIBANK",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Financial Services",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 1210,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 750000,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 19.4,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ITC",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "ITC Limited",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "FMCG",
+            "readOnly": true
+          },
+          "D9": {
+            "value": 445,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 380000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 17.6,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "WIPRO",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "D10": {
+            "value": 420,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 240000,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 28.3,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "ASIANPAINT",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Materials",
+            "readOnly": true
+          },
+          "D11": {
+            "value": 3150,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 380000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 52.9,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "What is the Market Cap (₹ Cr) of the company with symbol 'TITAN'? Use VLOOKUP.",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "What is the Close Price (₹) of 'Infosys'? Use INDEX-MATCH to find by company name.",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "What is the P/E Ratio of BAJAJFINSV? Use XLOOKUP (or INDEX-MATCH if unavailable).",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Which company (name) has the symbol in row 2 of Data? Use INDEX-MATCH on symbol 'RELIANCE'.",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "What is the Sector of the company with the highest P/E Ratio (52.9)? Use VLOOKUP or INDEX-MATCH.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=VLOOKUP(\"TITAN\", Data!$A$2:$F$11, 5, 0)",
+      "expected_value": 580000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B3": {
+      "formula_pattern": "=INDEX(Data!$D$2:$D$11, MATCH(\"Infosys\", Data!$B$2:$B$11, 0))",
+      "expected_value": 1850,
+      "type": "number",
+      "tolerance": 1,
+      "points": 18
+    },
+    "Answers!B4": {
+      "formula_pattern": "=XLOOKUP(\"BAJAJFINSV\", Data!$A$2:$A$11, Data!$F$2:$F$11, \"Not found\")",
+      "expected_value": 26.8,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 17
+    },
+    "Answers!B5": {
+      "formula_pattern": "=INDEX(Data!$B$2:$B$11, MATCH(\"RELIANCE\", Data!$A$2:$A$11, 0))",
+      "expected_value": "Reliance Industries",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=VLOOKUP(52.9, Data!$F$2:$F$11, 3, 0)",
+      "expected_value": "Materials",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

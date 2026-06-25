@@ -74,6 +74,7 @@ const DoubtsPage = lazyWithRetry(() => import("@/components/DoubtsPage"));
 const AdminPanel = lazyWithRetry(() => import("@/components/AdminPanel"));
 const MockInterviewPage = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewPage"));
 const MockInterviewResults = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewResults"));
+const M3SamplePreview = lazyWithRetry(() => import("@/components/M3SamplePreview"));
 const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
 const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
@@ -138,6 +139,7 @@ function App() {
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
+                  <Route path="/m3-sample-preview" element={<M3SamplePreview />} />
                   <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
                   <Route path="/signuproute1" element={<Navigate to="/signup" replace />} />
                   <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />

@@ -152,17 +152,99 @@ const FUNCTIONS = {
   POWER: ([base, exp]) => Math.pow(coerceNum(Array.isArray(base)?base[0]:base), coerceNum(Array.isArray(exp)?exp[0]:exp)),
   CONCAT: (args) => args.flat().map((v) => v == null ? '' : String(v)).join(''),
   CONCATENATE: (args) => args.flat().map((v) => v == null ? '' : String(v)).join(''),
-  IF: ([cond, a, b]) => {
+  IF: (args, lazy) => {
+    if (lazy) {
+      const cond = args[0]();
+      if (isErr(cond)) return cond;
+      const c = Array.isArray(cond) ? cond[0] : cond;
+      const truthy = c === true || (typeof c === 'number' && c !== 0) ||
+                     (typeof c === 'string' && c.length > 0 && c.toLowerCase() !== 'false');
+      const out = truthy ? (args[1] ? args[1]() : false) : (args[2] ? args[2]() : false);
+      return Array.isArray(out) ? out[0] : (out === undefined ? false : out);
+    }
+    const [cond, a, b] = args;
     const c = Array.isArray(cond) ? cond[0] : cond;
     const truthy = c === true || (typeof c === 'number' && c !== 0) ||
                    (typeof c === 'string' && c.length > 0 && c.toLowerCase() !== 'false');
     const out = truthy ? a : b;
     return Array.isArray(out) ? out[0] : (out === undefined ? false : out);
   },
-  IFERROR: ([v, fallback]) => {
+  IFERROR: (args, lazy) => {
+    if (lazy) {
+      const x = args[0]();
+      if (isErr(x)) return args[1] ? args[1]() : '';
+      return Array.isArray(x) ? x[0] : x;
+    }
+    const [v, fallback] = args;
     const x = Array.isArray(v) ? v[0] : v;
     if (isErr(x)) return Array.isArray(fallback) ? fallback[0] : fallback;
     return x;
+  },
+  IFNA: (args, lazy) => {
+    if (lazy) {
+      const x = args[0]();
+      if (isErr(x) && x.code === '#N/A') return args[1] ? args[1]() : '';
+      if (isErr(x)) return x;
+      return Array.isArray(x) ? x[0] : x;
+    }
+    const [v, fallback] = args;
+    const x = Array.isArray(v) ? v[0] : v;
+    if (isErr(x) && x.code === '#N/A') return Array.isArray(fallback) ? fallback[0] : fallback;
+    if (isErr(x)) return x;
+    return x;
+  },
+  // IFS(cond1, val1, cond2, val2, …) — first truthy condition wins; the
+  // common professional pattern uses TRUE as a final catch-all.
+  IFS: (args, lazy) => {
+    if (lazy) {
+      for (let i = 0; i + 1 < args.length; i += 2) {
+        const c = args[i]();
+        if (isErr(c)) return c;
+        const v = Array.isArray(c) ? c[0] : c;
+        const truthy = v === true || (typeof v === 'number' && v !== 0) ||
+                       (typeof v === 'string' && v.length > 0 && v.toLowerCase() !== 'false');
+        if (truthy) {
+          const out = args[i + 1]();
+          return Array.isArray(out) ? out[0] : out;
+        }
+      }
+      return ERR('#N/A');
+    }
+    for (let i = 0; i + 1 < args.length; i += 2) {
+      const c = Array.isArray(args[i]) ? args[i][0] : args[i];
+      const truthy = c === true || (typeof c === 'number' && c !== 0) ||
+                     (typeof c === 'string' && c.length > 0 && c.toLowerCase() !== 'false');
+      if (truthy) return Array.isArray(args[i + 1]) ? args[i + 1][0] : args[i + 1];
+    }
+    return ERR('#N/A');
+  },
+  AND: (args) => args.flat().every((v) => v === true || (typeof v === 'number' && v !== 0)),
+  OR:  (args) => args.flat().some((v) => v === true || (typeof v === 'number' && v !== 0)),
+  NOT: ([v]) => !(v === true || (typeof v === 'number' && v !== 0)),
+  EXACT: ([a, b]) => {
+    const x = Array.isArray(a) ? a[0] : a;
+    const y = Array.isArray(b) ? b[0] : b;
+    return String(x ?? '') === String(y ?? '');
+  },
+  // SUMPRODUCT(rangeA, rangeB, …) — element-wise multiply across all
+  // ranges, then sum. Boolean conditions used as multipliers collapse to
+  // 1 / 0, which is how analyst-style scoring formulas like
+  // `=SUMPRODUCT((C2:C11>15)*(D2:D11<1))` count quality stocks.
+  SUMPRODUCT: (args) => {
+    const arrs = args.map((a) => Array.isArray(a) ? a : [a]);
+    const n = Math.min(...arrs.map((a) => a.length));
+    let s = 0;
+    for (let i = 0; i < n; i++) {
+      let prod = 1;
+      for (const arr of arrs) {
+        const v = arr[i];
+        const num = v === true ? 1 : v === false ? 0 : coerceNum(v);
+        if (!Number.isFinite(num)) { prod = 0; break; }
+        prod *= num;
+      }
+      s += prod;
+    }
+    return s;
   },
 
   /* ─────────────────  Conditional aggregates  ──────────────────
@@ -602,11 +684,19 @@ function tokenize(src) {
       let j = i;
       while (j < src.length && /[A-Za-z0-9_$]/.test(src[j])) j++;
       const ident = src.slice(i, j);
-      // Cross-sheet ref: Identifier ! cellref
+      // Cross-sheet ref: Identifier ! cellref-or-range
       if (src[j] === '!') {
         let k = j + 1; let ref = '';
         while (k < src.length && /[A-Za-z0-9$:]/.test(src[k])) { ref += src[k]; k++; }
-        tokens.push({ type: 'ref', sheet: ident, ref });
+        // Split into range vs single-ref so the parser/evaluator can
+        // treat Sheet!A1:B5 as a real range (was returning #REF! before
+        // because parseAddr can't parse a colon-bearing ref).
+        if (ref.includes(':')) {
+          const [from, to] = ref.split(':');
+          tokens.push({ type: 'range', from, to, sheet: ident });
+        } else {
+          tokens.push({ type: 'ref', sheet: ident, ref });
+        }
         i = k; continue;
       }
       // Cell range identifier (A1:B5)
@@ -731,7 +821,7 @@ function makeParser(tokens) {
     }
     if (t.type === 'range') {
       eat('range');
-      return { kind: 'range', sheet: null, from: t.from, to: t.to };
+      return { kind: 'range', sheet: t.sheet || null, from: t.from, to: t.to };
     }
     if (t.type === 'ident') { eat('ident'); return { kind: 'str', value: t.value }; }
     throw new Error('parse-err');
@@ -739,8 +829,39 @@ function makeParser(tokens) {
   return { parseExpression };
 }
 
-function evalAst(node, ctx, visited) {
-  if (!node) return '';
+// Scalar binop — separated so the array-spill path can call it element-wise.
+function binopScalar(op, L, R) {
+  if (op === '&') return (L == null ? '' : String(L)) + (R == null ? '' : String(R));
+  if (['=', '<>', '<', '>', '<=', '>='].includes(op)) {
+    const a = typeof L === 'number' ? L : (isFinite(Number(L)) ? Number(L) : L);
+    const b = typeof R === 'number' ? R : (isFinite(Number(R)) ? Number(R) : R);
+    switch (op) {
+      case '=':  return a === b;
+      case '<>': return a !== b;
+      case '<':  return a < b;
+      case '>':  return a > b;
+      case '<=': return a <= b;
+      case '>=': return a >= b;
+      default: return false;
+    }
+  }
+  const aBool = L === true ? 1 : (L === false ? 0 : undefined);
+  const bBool = R === true ? 1 : (R === false ? 0 : undefined);
+  const a = aBool !== undefined ? aBool : coerceNum(L);
+  const b = bBool !== undefined ? bBool : coerceNum(R);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return ERR('#VALUE!');
+  switch (op) {
+    case '+': return a + b;
+    case '-': return a - b;
+    case '*': return a * b;
+    case '/': return b === 0 ? ERR('#DIV/0!') : a / b;
+    case '^': return Math.pow(a, b);
+    case '%': return a % b;
+    default: return ERR('#VALUE!');
+  }
+}
+
+function evalAst(node, ctx, visited) {  if (!node) return '';
   switch (node.kind) {
     case 'num':  return node.value;
     case 'str':  return node.value;
@@ -757,32 +878,22 @@ function evalAst(node, ctx, visited) {
       const R = evalAst(node.right, ctx, visited);
       if (isErr(L)) return L;
       if (isErr(R)) return R;
-      if (node.op === '&') return (L == null ? '' : String(L)) + (R == null ? '' : String(R));
-      if (['=', '<>', '<', '>', '<=', '>='].includes(node.op)) {
-        const a = typeof L === 'number' ? L : (isFinite(Number(L)) ? Number(L) : L);
-        const b = typeof R === 'number' ? R : (isFinite(Number(R)) ? Number(R) : R);
-        switch (node.op) {
-          case '=':  return a === b;
-          case '<>': return a !== b;
-          case '<':  return a < b;
-          case '>':  return a > b;
-          case '<=': return a <= b;
-          case '>=': return a >= b;
-          default: return false;
+      // Array-spill: if either operand is a flat array (range result), apply
+      // the binop element-wise. This is how Excel's "array context" works
+      // for SUMPRODUCT-style condition multiplies like (A2:A11>15)*(B2:B11<1).
+      const Lis = Array.isArray(L);
+      const Ris = Array.isArray(R);
+      if (Lis || Ris) {
+        const len = Math.max(Lis ? L.length : 1, Ris ? R.length : 1);
+        const arr = [];
+        for (let i = 0; i < len; i++) {
+          const li = Lis ? L[i] : L;
+          const ri = Ris ? R[i] : R;
+          arr.push(binopScalar(node.op, li, ri));
         }
+        return arr;
       }
-      const a = coerceNum(L);
-      const b = coerceNum(R);
-      if (!Number.isFinite(a) || !Number.isFinite(b)) return ERR('#VALUE!');
-      switch (node.op) {
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/': return b === 0 ? ERR('#DIV/0!') : a / b;
-        case '^': return Math.pow(a, b);
-        case '%': return a % b;
-        default: return ERR('#VALUE!');
-      }
+      return binopScalar(node.op, L, R);
     }
     case 'ref': {
       const sheetName = node.sheet || ctx.activeSheet;
@@ -840,6 +951,19 @@ function evalAst(node, ctx, visited) {
     case 'call': {
       const fn = FUNCTIONS[node.name];
       if (!fn) return ERR('#NAME?');
+      // Functions that need *lazy* argument evaluation so they can inspect
+      // errors before they propagate (IFERROR/IFNA/IFS/IF) get the raw AST
+      // nodes + a thunk-evaluator. Everything else evaluates eagerly and
+      // short-circuits on the first error.
+      const LAZY = { IFERROR: 1, IFNA: 1, IFS: 1, IF: 1 };
+      if (LAZY[node.name]) {
+        const thunks = node.args.map((a) => () => evalAst(a, ctx, visited));
+        try {
+          return fn(thunks, /* lazy */ true);
+        } catch {
+          return ERR('#ERROR!');
+        }
+      }
       const args = node.args.map((a) => evalAst(a, ctx, visited));
       for (const a of args) if (isErr(a)) return a;
       try {

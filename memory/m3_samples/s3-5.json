@@ -1,0 +1,387 @@
+{
+  "session": "3.5",
+  "session_title": "3.5: Logic in Excel — IF, AND, OR, Nested IFs, IFS & IFERROR",
+  "slot": "mid",
+  "tagline": "synthesis — IF/IFS/AND/OR funnel logic + IFERROR airbags",
+  "generated_at": "2026-06-25T12:13:48.720033+00:00",
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "P/E Ratio",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "ROE %",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Debt/Equity",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Days Past Due",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "EPS (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 28.5,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 18.2,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 0.45,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 147.2,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 12.3,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 22.5,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 1.8,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 255.8,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 18.7,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 16.8,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 89.4,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 32.1,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 21.3,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 15,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 103.5,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 45.2,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 19.7,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 52.3,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 14.9,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 17.2,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 0.14,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 35,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 76.2,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Titan Company",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 52.8,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 14.1,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0.35,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 38.6,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ITC",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 19.3,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 20.4,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 0.09,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 45,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 168.9,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 8.6,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 24.3,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 2.1,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 189.7,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 20.4,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 15.6,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 0.19,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 25,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 94.3,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: In column G, flag 'CHEAP' if P/E < 15, 'FAIR' if P/E between 15–25, else 'EXPENSIVE'. Write the formula for G2.",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: In column H, flag 'QUALITY' only if BOTH ROE > 15% AND Debt/Equity < 1.0, else blank. Formula for H2?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: Using RBI SMA rules (Days Past Due: 0=Standard, 1–30=SMA-0, 31–60=SMA-1, 61–90=SMA-2, >90=NPA), write the formula for I2 classifying each loan.",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: In column J, compute P/E safely: if EPS is zero/blank, show 'n/m', else divide stock price by EPS. Assume price in F col is EPS. Formula for J2?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: Count how many companies qualify as QUALITY (ROE > 15% AND Debt/Equity < 1.0). Write one COUNTIFS or SUMPRODUCT formula.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=IFS(B2<15,\"CHEAP\",B2<25,\"FAIR\",TRUE,\"EXPENSIVE\")",
+      "expected_value": "EXPENSIVE",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B3": {
+      "formula_pattern": "=IF(AND(C2>15,D2<1),\"QUALITY\",\"\")",
+      "expected_value": "QUALITY",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=IFS(E2=0,\"Standard\",E2<=30,\"SMA-0\",E2<=60,\"SMA-1\",E2<=90,\"SMA-2\",TRUE,\"NPA\")",
+      "expected_value": "Standard",
+      "type": "text",
+      "tolerance": 0,
+      "points": 20
+    },
+    "Answers!B5": {
+      "formula_pattern": "=IFERROR(B2/F2,\"n/m\")",
+      "expected_value": 0.19,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=SUMPRODUCT((C2:C11>15)*(D2:D11<1))",
+      "expected_value": 7,
+      "type": "number",
+      "tolerance": 0,
+      "points": 20
+    }
+  },
+  "engine_corrections": [
+    {
+      "key": "Answers!B6",
+      "formula": "=SUMPRODUCT((C2:C11>15)*(D2:D11<1))",
+      "llm_expected": 0,
+      "engine_computed": 7
+    }
+  ],
+  "engine_corrected_at": "2026-06-25T12:19:32.638Z"
+}
