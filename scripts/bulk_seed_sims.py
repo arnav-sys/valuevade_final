@@ -177,19 +177,32 @@ HARD RULES (failure on any = unusable sim):
 1. Data sheet ≥ 10 data rows (rows 2-11+), row 1 = bold headers.
 2. {INDIAN_CONTEXT}
 3. SECTOR CONSISTENCY: pick ONE sector (Banking / IT / FMCG / Auto / Pharma / Energy / Metals / Real Estate / Cement / Consumer Discretionary) and stay there — UNLESS the session is explicitly about cross-sector analysis. No mixing HDFC Bank rows with Tata Motors rows for a generic exercise.
-4. ANSWERS: 4-6 questions, escalating in difficulty, EACH exercising a function explicitly named in the session notes. Column A read-only question, column B empty editable answer cell.
+4. ANSWERS: 4-6 questions. DIFFICULTY RAMP — first 2 Qs cheap (single-cell SUM, AVERAGE, simple ratio), next 2 medium (SUMIFS / IF / ratio division / lookup), final 1-2 hard (nested logic, multi-step, INDEX-MATCH / XLOOKUP, error-handling). Sonnet 4.5 will reject flat-difficulty workbooks. Column A read-only question, column B empty editable answer cell.
 5. expected_answers covers EVERY editable cell. Each entry has formula_pattern, expected_value (numerically correct), type ("number"|"text"), tolerance (0.01 for ratios, 1 for ₹Cr, 0 for text), points (10-25). Total points 50-100.
-6. FORMULA RULES:
+6. FORMULA RULES — engine will reject any sim that breaks these:
    - Every formula_pattern MUST mathematically yield expected_value when run against your Data. Trace by hand BEFORE emitting JSON.
    - FORBIDDEN: VLOOKUP looking LEFT (negative column offset). If the answer column is LEFT of the lookup column, use INDEX-MATCH or XLOOKUP — never VLOOKUP.
-   - FORBIDDEN: arithmetic on text cells (text * number → #VALUE!).
+   - FORBIDDEN: GETPIVOTDATA. PivotTable concepts can be DESCRIBED in scenario/hints, but the formulas the student writes must use SUMIFS / INDEX-MATCH / XLOOKUP against the underlying Data sheet (NOT against a pivot range).
+   - FORBIDDEN: arithmetic on text cells (text * number → #VALUE!). If a formula references "Data!C8", verify Data!C8 holds a NUMBER, not a header label.
+   - FORBIDDEN: dividing by a header cell (e.g. `=B2/B1` where B1 is "Revenue"). The denominator must be a numeric cell.
+   - FORBIDDEN: bare cell refs as expected formula (formula_pattern must start with `=`).
    - Percent units: if you store "18" in a cell labelled "GST Rate (%)", the formula MUST divide by 100. Or store as 0.18.
+   - MULTI-SHEET refs: if the workbook has 2+ sheets, EVERY cross-sheet reference inside a formula MUST be sheet-qualified (`=Data!D2`, NOT `=D2`). Unqualified refs resolve to the answer sheet and return empty.
+   - expected_value TYPE must match the formula output type. `=VALUE("123")` returns a NUMBER, not the string "123". `=DATEVALUE("31/12/2024")` returns a DATE. `=TODAY()` returns a DATE. If your formula returns a number, expected_value MUST be a number (e.g. 123, not "123").
 7. Cell addresses Excel-notation (A1, AA1). Sheet names case-sensitive.
 8. Cap: 2 sheets, max 15 rows × 7 cols per sheet, total JSON < 7000 tokens.
 9. EXACTLY 3 hints: cheap → medium → near-direct. Not 5, not 1.
 10. learning_objective must reference the actual session topic (not "learn formulas"). Action-verb start.
-11. Plain integers/floats for numbers (NEVER strings).
-12. NO comments inside JSON. NO markdown fences. NO preamble. Return ONLY the JSON object."""
+11. Plain integers/floats for numbers (NEVER strings). Dates as YYYY-MM-DD or DD/MM/YYYY strings.
+12. NO comments inside JSON. NO markdown fences. NO preamble. Return ONLY the JSON object.
+
+PIVOT/CHART SESSIONS (special case — sessions about PivotTables, Charts, GETPIVOTDATA):
+   Our auto-grader cannot evaluate PivotTable interactions or chart objects. When the session is about pivots/charts you MUST:
+   - REFRAME the title and learning_objective as "Build a pivot-equivalent cross-tab using SUMIFS" or "Replicate the PivotTable output using formulas" — NOT "Build a PivotTable" (it would be a lie).
+   - In `scenario` and `hints`, EXPLAIN that real analysts often need the same answer faster than the Insert > PivotTable menu, and SUMIFS / INDEX-MATCH / SUMPRODUCT replicate the same numbers in one cell.
+   - In `instructions`, tell the student they will be reproducing the pivot table's RESULT using cell formulas they can audit.
+   - DO use SUMIFS, INDEX-MATCH, SUMPRODUCT to compute the pivot-equivalent numbers. DO NOT use GETPIVOTDATA.
+   - The exercise STILL exercises the pedagogical intent (cross-dimensional summarisation) but in an engine-gradable form."""
 
 DOCUMENT_PROMPT = f"""You are a senior Indian equity-research analyst designing a Document Analysis exercise. You will receive ONE session's curriculum notes. Produce a financial-document sim where the student reads a real-looking Indian company statement, hovers tooltips on key line items, and answers analytical questions.
 
@@ -358,12 +371,36 @@ def validate_excel(obj):
     if not isinstance(ea, dict) or not ea:
         raise ValueError('excel: expected_answers empty')
     total = 0
+    FORBIDDEN_FNS = ['GETPIVOTDATA']  # extend as engine gaps surface
     for k, spec in ea.items():
         if '!' not in k:
             raise ValueError(f'excel: bad ea key {k!r}')
         for req in ('formula_pattern', 'expected_value', 'type', 'tolerance', 'points'):
             if req not in spec:
                 raise ValueError(f'excel: {k} missing {req}')
+        fp = str(spec.get('formula_pattern', ''))
+        if not fp.startswith('='):
+            raise ValueError(f'excel: {k} formula_pattern must start with "=" (got {fp[:40]!r})')
+        fp_upper = fp.upper()
+        for bad in FORBIDDEN_FNS:
+            if bad in fp_upper:
+                raise ValueError(f'excel: {k} uses forbidden function {bad}')
+        # Multi-sheet refs must be sheet-qualified when workbook has >1 sheet
+        if len(sheet_names) > 1:
+            # Strip strings & function names, look for bare CellRef (e.g. "D2", "B5")
+            stripped = re.sub(r'"[^"]*"', '""', fp)            # kill string literals
+            stripped = re.sub(r'\b[A-Z]+\s*\(', '(', stripped) # kill function names
+            # Now find tokens that look like bare cellrefs NOT preceded by `!` or `$`
+            for m in re.finditer(r'(?<![A-Z0-9!:$])\$?[A-Z]+\$?\d+\b', stripped):
+                tok = m.group(0)
+                # Allow if the formula has at least one Sheet!ref qualifier that proves
+                # the LLM understood sheets, AND this cell ref is the answer cell itself
+                # (some sims use B2 referencing the answer column header) — heuristic.
+                # We just warn-by-raise to force a regen; the LLM almost always also
+                # uses a Sheet!Ref so the regen produces a fully-qualified version.
+                # Skip this check if the only sheet has no `Data` style sibling — keep
+                # behaviour conservative.
+                raise ValueError(f'excel: {k} formula has bare cell ref {tok!r} in a multi-sheet workbook — must qualify like Data!{tok}')
         total += int(spec['points'])
     if not (40 <= total <= 120):
         raise ValueError(f'excel: total points {total} outside 40-120')
@@ -580,12 +617,15 @@ def upsert_sim(db_session_id: str, sim_obj: dict, sim_type: str, source_title: s
     return row['id']
 
 # ─── Main driver ──────────────────────────────────────────────────────────
-def process_module(module_num: int, *, dry_run=False, concurrency=2):
+def process_module(module_num: int, *, dry_run=False, concurrency=2, only_sessions=None):
     print(f'\n{"="*72}\nMODULE {module_num}\n{"="*72}', flush=True)
     curriculum = session_slices(module_num)
     if not curriculum:
         print(f'  ! no curriculum file for M{module_num} — skipping')
         return None
+    if only_sessions:
+        curriculum = [c for c in curriculum if c['session_no'] in only_sessions]
+        print(f'  Filtered to sessions: {[c["session_no"] for c in curriculum]}')
     db_sessions = map_sessions_for_module(module_num) if not dry_run else []
     if not dry_run and not db_sessions:
         print(f'  ! no DB sessions for M{module_num} — skipping')
@@ -655,6 +695,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--module', type=int, help='single module')
     ap.add_argument('--modules', help='comma-separated module list')
+    ap.add_argument('--sessions', help='comma-separated session numbers to regen ONLY (e.g. "3.1,3.9"). Requires --module.')
     ap.add_argument('--dry-run', action='store_true')
     args = ap.parse_args()
 
@@ -665,9 +706,13 @@ def main():
         print('--module or --modules required'); sys.exit(2)
     target = [m for m in target if m not in SKIP]
 
+    only_sessions = None
+    if args.sessions:
+        only_sessions = set(s.strip() for s in args.sessions.split(',') if s.strip())
+
     all_reports = []
     for m in target:
-        r = process_module(m, dry_run=args.dry_run)
+        r = process_module(m, dry_run=args.dry_run, only_sessions=only_sessions)
         if r: all_reports.append(r)
     summary = {
         'completed_at': datetime.now(timezone.utc).isoformat(),

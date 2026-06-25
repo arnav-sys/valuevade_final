@@ -1,13 +1,13 @@
 {
   "sim_type": "excel",
-  "title": "Navigating the Grid — Mumbai Equity Research Data Entry",
-  "scenario": "You're a new equity research associate at a Mumbai brokerage. Your senior has given you raw FY23–FY24 revenue and EBITDA data for five major Indian companies and asked you to organise it into a clean input sheet, label it professionally, and navigate the worksheet using keyboard shortcuts to verify data integrity before the morning call with institutional clients.",
-  "instructions": "Enter company names and financial data into the Data sheet, create labeled headers, and use keyboard navigation (Ctrl+Home, Ctrl+End, Ctrl+Shift+arrows, Name Box) to verify all entries are in place. Then use the Answers sheet to demonstrate your understanding of worksheet navigation and data structure by answering five questions about the grid layout and cell locations.",
-  "learning_objective": "Navigate an Excel workbook using keyboard shortcuts, understand cell addressing and range notation, enter data accurately into cells, and verify worksheet structure using Ctrl+arrows and the Name Box.",
+  "title": "Navigate the Grid: TCS Quarterly Data Entry and Movement",
+  "scenario": "You're an analyst at a Mumbai equity desk. TCS has just released its quarterly financials (Q1–Q4 FY24), and you need to populate a tracking sheet with revenue, profit, and tax data. Your supervisor expects clean navigation, zero entry errors, and proper cell selection — she'll review the sheet in 10 minutes. Use keyboard motion (arrow keys, Ctrl+arrows, selection ranges) and data entry discipline to build and audit the input block.",
+  "instructions": "Enter the TCS quarterly financial data into the grid using keyboard navigation only (no mouse clicks except to open the file). Then use selection ranges to validate totals and verify three calculations in the Answers sheet. Save the workbook after each major entry block.",
+  "learning_objective": "Navigate a multi-row data entry task using Ctrl+arrows and Shift+selection, enter numeric and text data with precision, select ranges to audit totals via the status bar, and build a simple validation check using SUM formulas.",
   "hints": [
-    "The Name Box (top-left, below the ribbon) shows your current cell address. Click it and type an address like C5 to teleport there instantly.",
-    "Ctrl+Shift+Down-arrow selects from your current cell all the way to the last filled cell in that column — one keystroke selects an entire data column.",
-    "Column headers go in row 1 (always bold). Data rows start in row 2. If you're at A1 and press Ctrl+Down, you'll jump to the last row with data in column A."
+    "Press Ctrl+Home to return to A1 after any jump. Use Ctrl+Shift+Down to select an entire data block and check its Sum in the status bar.",
+    "In row 1, type the headers: Fiscal Year, Revenue, Net Profit, Tax Rate, Cash Generated. Use Tab to move right and Enter to confirm. Then use Ctrl+Down to jump to the last row of headers before entering data.",
+    "After entering all data, click cell B12 and type =SUM(B2:B11) to verify total revenue. The status bar will also show the sum if you select B2:B11 — compare them to catch entry errors."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
@@ -15,273 +15,228 @@
         "name": "Data",
         "cells": {
           "A1": {
-            "value": "Company Name",
+            "value": "Fiscal Year",
             "readOnly": true,
             "bold": true
           },
           "B1": {
-            "value": "Sector",
+            "value": "Revenue (₹Cr)",
             "readOnly": true,
             "bold": true
           },
           "C1": {
-            "value": "FY23 Revenue (₹Cr)",
+            "value": "Net Profit (₹Cr)",
             "readOnly": true,
             "bold": true
           },
           "D1": {
-            "value": "FY24 Revenue (₹Cr)",
+            "value": "Tax Rate (%)",
             "readOnly": true,
             "bold": true
           },
           "E1": {
-            "value": "FY23 EBITDA (₹Cr)",
-            "readOnly": true,
-            "bold": true
-          },
-          "F1": {
-            "value": "FY24 EBITDA (₹Cr)",
+            "value": "Cash Generated (₹Cr)",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "Reliance Industries",
+            "value": "FY15",
             "readOnly": true
           },
           "B2": {
-            "value": "Energy & Petrochemicals",
+            "value": 28500,
             "readOnly": true
           },
           "C2": {
-            "value": 588931,
+            "value": 5200,
             "readOnly": true
           },
           "D2": {
-            "value": 645019,
+            "value": 18,
             "readOnly": true
           },
           "E2": {
-            "value": 152450,
-            "readOnly": true
-          },
-          "F2": {
-            "value": 168930,
+            "value": 6100,
             "readOnly": true
           },
           "A3": {
-            "value": "TCS",
+            "value": "FY16",
             "readOnly": true
           },
           "B3": {
-            "value": "IT Services",
+            "value": 32800,
             "readOnly": true
           },
           "C3": {
-            "value": 246005,
+            "value": 6050,
             "readOnly": true
           },
           "D3": {
-            "value": 269000,
+            "value": 18,
             "readOnly": true
           },
           "E3": {
-            "value": 74300,
-            "readOnly": true
-          },
-          "F3": {
-            "value": 82100,
+            "value": 7200,
             "readOnly": true
           },
           "A4": {
-            "value": "HDFC Bank",
+            "value": "FY17",
             "readOnly": true
           },
           "B4": {
-            "value": "Banking",
+            "value": 37900,
             "readOnly": true
           },
           "C4": {
-            "value": 262840,
+            "value": 7100,
             "readOnly": true
           },
           "D4": {
-            "value": 310285,
+            "value": 18,
             "readOnly": true
           },
           "E4": {
-            "value": 121456,
-            "readOnly": true
-          },
-          "F4": {
-            "value": 148720,
+            "value": 8350,
             "readOnly": true
           },
           "A5": {
-            "value": "Infosys",
+            "value": "FY18",
             "readOnly": true
           },
           "B5": {
-            "value": "IT Services",
+            "value": 43460,
             "readOnly": true
           },
           "C5": {
-            "value": 177620,
+            "value": 8050,
             "readOnly": true
           },
           "D5": {
-            "value": 202145,
+            "value": 20,
             "readOnly": true
           },
           "E5": {
-            "value": 54830,
-            "readOnly": true
-          },
-          "F5": {
-            "value": 63450,
+            "value": 9600,
             "readOnly": true
           },
           "A6": {
-            "value": "Asian Paints",
+            "value": "FY19",
             "readOnly": true
           },
           "B6": {
-            "value": "FMCG & Paints",
+            "value": 49530,
             "readOnly": true
           },
           "C6": {
-            "value": 29432,
+            "value": 9200,
             "readOnly": true
           },
           "D6": {
-            "value": 33156,
+            "value": 20,
             "readOnly": true
           },
           "E6": {
-            "value": 8765,
-            "readOnly": true
-          },
-          "F6": {
-            "value": 10234,
+            "value": 11200,
             "readOnly": true
           },
           "A7": {
-            "value": "Maruti Suzuki",
+            "value": "FY20",
             "readOnly": true
           },
           "B7": {
-            "value": "Automobiles",
+            "value": 55860,
             "readOnly": true
           },
           "C7": {
-            "value": 33456,
+            "value": 10800,
             "readOnly": true
           },
           "D7": {
-            "value": 38920,
+            "value": 20,
             "readOnly": true
           },
           "E7": {
-            "value": 4230,
-            "readOnly": true
-          },
-          "F7": {
-            "value": 5120,
+            "value": 13100,
             "readOnly": true
           },
           "A8": {
-            "value": "Bajaj Finance",
+            "value": "FY21",
             "readOnly": true
           },
           "B8": {
-            "value": "Financial Services",
+            "value": 57400,
             "readOnly": true
           },
           "C8": {
-            "value": 35789,
+            "value": 11400,
             "readOnly": true
           },
           "D8": {
-            "value": 46201,
+            "value": 20,
             "readOnly": true
           },
           "E8": {
-            "value": 14523,
-            "readOnly": true
-          },
-          "F8": {
-            "value": 19856,
+            "value": 14500,
             "readOnly": true
           },
           "A9": {
-            "value": "Wipro",
+            "value": "FY22",
             "readOnly": true
           },
           "B9": {
-            "value": "IT Services",
+            "value": 64050,
             "readOnly": true
           },
           "C9": {
-            "value": 97601,
+            "value": 13100,
             "readOnly": true
           },
           "D9": {
-            "value": 115234,
+            "value": 20,
             "readOnly": true
           },
           "E9": {
-            "value": 19780,
-            "readOnly": true
-          },
-          "F9": {
-            "value": 24560,
+            "value": 16800,
             "readOnly": true
           },
           "A10": {
-            "value": "L&T",
+            "value": "FY23",
             "readOnly": true
           },
           "B10": {
-            "value": "Engineering & Construction",
+            "value": 72860,
             "readOnly": true
           },
           "C10": {
-            "value": 145890,
+            "value": 15200,
             "readOnly": true
           },
           "D10": {
-            "value": 167234,
+            "value": 20,
             "readOnly": true
           },
           "E10": {
-            "value": 21340,
-            "readOnly": true
-          },
-          "F10": {
-            "value": 27890,
+            "value": 19300,
             "readOnly": true
           },
           "A11": {
-            "value": "Titan Company",
+            "value": "FY24",
             "readOnly": true
           },
           "B11": {
-            "value": "Luxury & Retail",
+            "value": 79500,
             "readOnly": true
           },
           "C11": {
-            "value": 29156,
+            "value": 17600,
             "readOnly": true
           },
           "D11": {
-            "value": 35678,
+            "value": 20,
             "readOnly": true
           },
           "E11": {
-            "value": 5234,
-            "readOnly": true
-          },
-          "F11": {
-            "value": 6890,
+            "value": 22100,
             "readOnly": true
           }
         }
@@ -290,88 +245,83 @@
         "name": "Answers",
         "cells": {
           "A1": {
-            "value": "Navigation & Data Entry Verification",
+            "value": "Question 1: Total Revenue FY15–FY24 (₹Cr)",
             "readOnly": true,
             "bold": true
           },
+          "B1": {
+            "value": null
+          },
           "A2": {
-            "value": "Q1: What is the cell address of Infosys's FY24 Revenue?",
-            "readOnly": true
+            "value": "Question 2: Average Net Profit FY15–FY24 (₹Cr)",
+            "readOnly": true,
+            "bold": true
           },
           "B2": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A3": {
-            "value": "Q2: How many data rows (excluding header) are in the Data sheet?",
-            "readOnly": true
+            "value": "Question 3: Revenue in FY18 as % of Total (2 decimals)",
+            "readOnly": true,
+            "bold": true
           },
           "B3": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A4": {
-            "value": "Q3: What is the sum of all FY24 EBITDA values (column F, rows 2–11)?",
-            "readOnly": true
+            "value": "Question 4: Maximum Cash Generated (₹Cr)",
+            "readOnly": true,
+            "bold": true
           },
           "B4": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A5": {
-            "value": "Q4: Which company is in row 7 of the Data sheet?",
-            "readOnly": true
+            "value": "Question 5: Net Profit Growth FY24 vs FY15 (₹Cr)",
+            "readOnly": true,
+            "bold": true
           },
           "B5": {
-            "value": "",
-            "readOnly": false
-          },
-          "A6": {
-            "value": "Q5: What is the column letter for FY23 EBITDA in the Data sheet?",
-            "readOnly": true
-          },
-          "B6": {
-            "value": "",
-            "readOnly": false
+            "value": null
           }
         }
       }
     ]
   },
   "expected_answers": {
+    "Answers!B1": {
+      "formula_pattern": "=SUM(Data!B2:B11)",
+      "expected_value": 521860,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
     "Answers!B2": {
-      "formula_pattern": "D5",
-      "expected_value": "D5",
-      "type": "text",
-      "tolerance": 0,
+      "formula_pattern": "=AVERAGE(Data!C2:C11)",
+      "expected_value": 10370,
+      "type": "number",
+      "tolerance": 1,
       "points": 10
     },
     "Answers!B3": {
-      "formula_pattern": "10",
-      "expected_value": 10,
+      "formula_pattern": "=ROUND((Data!B5/SUM(Data!B2:B11))*100,2)",
+      "expected_value": 8.33,
       "type": "number",
-      "tolerance": 0,
-      "points": 10
-    },
-    "Answers!B4": {
-      "formula_pattern": "=SUM(Data!F2:F11)",
-      "expected_value": 557750,
-      "type": "number",
-      "tolerance": 1,
+      "tolerance": 0.01,
       "points": 15
     },
-    "Answers!B5": {
-      "formula_pattern": "Maruti Suzuki",
-      "expected_value": "Maruti",
-      "type": "text",
-      "tolerance": 0,
+    "Answers!B4": {
+      "formula_pattern": "=MAX(Data!E2:E11)",
+      "expected_value": 22100,
+      "type": "number",
+      "tolerance": 1,
       "points": 10
     },
-    "Answers!B6": {
-      "formula_pattern": "E",
-      "expected_value": "E",
-      "type": "text",
-      "tolerance": 0,
+    "Answers!B5": {
+      "formula_pattern": "=Data!C11-Data!C2",
+      "expected_value": 12400,
+      "type": "number",
+      "tolerance": 1,
       "points": 15
     }
   }

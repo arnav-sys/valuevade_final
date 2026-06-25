@@ -610,24 +610,45 @@ const FUNCTIONS = {
     .replace(/(^|\s)(\p{L})/gu, (m, b, ch) => b + ch.toUpperCase()),
 
   /* ─────────────────  Date  ───────────────────────────────────────
-   * Internal model: dates as JS Date or YYYY-MM-DD strings. */
-  TODAY: () => new Date().toISOString().slice(0, 10),
+   * Internal date model: dates as JS Date objects. We auto-coerce
+   * ISO date strings (YYYY-MM-DD), DD/MM/YYYY and Excel serials in
+   * arithmetic via dateArith() below. */
+  TODAY: () => new Date(new Date().toISOString().slice(0, 10) + 'T00:00:00Z'),
+  NOW: () => new Date(),
+  DATEVALUE: ([t]) => {
+    const s = String(Array.isArray(t) ? t[0] : (t ?? '')).trim();
+    const d = parseAnyDate(s);
+    return d ? d : ERR('#VALUE!');
+  },
+  VALUE: ([t]) => {
+    const s = String(Array.isArray(t) ? t[0] : (t ?? '')).trim();
+    if (s === '') return 0;
+    // Strip common Indian currency markers & thousand separators
+    const cleaned = s.replace(/[₹$€£,\s]/g, '');
+    const n = Number(cleaned);
+    return Number.isFinite(n) ? n : ERR('#VALUE!');
+  },
   YEAR: ([t]) => {
-    const d = new Date(Array.isArray(t) ? t[0] : t);
-    return Number.isFinite(d.getTime()) ? d.getUTCFullYear() : ERR('#VALUE!');
+    const v = Array.isArray(t) ? t[0] : t;
+    const d = v instanceof Date ? v : parseAnyDate(v);
+    return d ? d.getUTCFullYear() : ERR('#VALUE!');
   },
   MONTH: ([t]) => {
-    const d = new Date(Array.isArray(t) ? t[0] : t);
-    return Number.isFinite(d.getTime()) ? d.getUTCMonth() + 1 : ERR('#VALUE!');
+    const v = Array.isArray(t) ? t[0] : t;
+    const d = v instanceof Date ? v : parseAnyDate(v);
+    return d ? d.getUTCMonth() + 1 : ERR('#VALUE!');
   },
   DAY: ([t]) => {
-    const d = new Date(Array.isArray(t) ? t[0] : t);
-    return Number.isFinite(d.getTime()) ? d.getUTCDate() : ERR('#VALUE!');
+    const v = Array.isArray(t) ? t[0] : t;
+    const d = v instanceof Date ? v : parseAnyDate(v);
+    return d ? d.getUTCDate() : ERR('#VALUE!');
   },
   DATEDIF: ([start, end, unit]) => {
-    const a = new Date(Array.isArray(start) ? start[0] : start);
-    const b = new Date(Array.isArray(end)   ? end[0]   : end);
-    if (!Number.isFinite(a.getTime()) || !Number.isFinite(b.getTime())) return ERR('#VALUE!');
+    const va = Array.isArray(start) ? start[0] : start;
+    const vb = Array.isArray(end)   ? end[0]   : end;
+    const a = va instanceof Date ? va : parseAnyDate(va);
+    const b = vb instanceof Date ? vb : parseAnyDate(vb);
+    if (!a || !b) return ERR('#VALUE!');
     const u = String(Array.isArray(unit) ? unit[0] : (unit ?? 'D')).toUpperCase();
     const msPerDay = 86400000;
     const days = Math.floor((b - a) / msPerDay);
@@ -640,7 +661,134 @@ const FUNCTIONS = {
       default:   return ERR('#NUM!');
     }
   },
+  EOMONTH: ([start, months]) => {
+    const va = Array.isArray(start) ? start[0] : start;
+    const d = va instanceof Date ? va : parseAnyDate(va);
+    if (!d) return ERR('#VALUE!');
+    const m = Math.round(coerceNum(Array.isArray(months) ? months[0] : months));
+    return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + m + 1, 0));
+  },
+
+  /* ─────────────────  IS* family  ─────────────────────────────── */
+  ISERROR: ([v], lazy) => {
+    if (lazy) {
+      const x = v();
+      return isErr(x);
+    }
+    return isErr(Array.isArray(v) ? v[0] : v);
+  },
+  ISERR: ([v], lazy) => {
+    if (lazy) {
+      const x = v();
+      return isErr(x) && x.code !== '#N/A';
+    }
+    const x = Array.isArray(v) ? v[0] : v;
+    return isErr(x) && x.code !== '#N/A';
+  },
+  ISNA: ([v], lazy) => {
+    if (lazy) {
+      const x = v();
+      return isErr(x) && x.code === '#N/A';
+    }
+    const x = Array.isArray(v) ? v[0] : v;
+    return isErr(x) && x.code === '#N/A';
+  },
+  ISNUMBER: ([v]) => {
+    const x = Array.isArray(v) ? v[0] : v;
+    return typeof x === 'number' && Number.isFinite(x);
+  },
+  ISTEXT: ([v]) => {
+    const x = Array.isArray(v) ? v[0] : v;
+    return typeof x === 'string';
+  },
+  ISBLANK: ([v]) => {
+    const x = Array.isArray(v) ? v[0] : v;
+    return x == null || x === '';
+  },
+
+  /* ─────────────────  SUBTOTAL  ──────────────────────────────────
+   * SUBTOTAL(function_num, range1, range2, …)
+   *
+   * Codes (1-11 = include-hidden; 101-111 = exclude-hidden; we treat both
+   * identically since the engine has no row-hiding metadata):
+   *   1, 101 → AVERAGE     2, 102 → COUNT (numeric)     3, 103 → COUNTA
+   *   4, 104 → MAX         5, 105 → MIN                  6, 106 → PRODUCT
+   *   7, 107 → STDEV       8, 108 → STDEVP               9, 109 → SUM
+   *  10, 110 → VAR        11, 111 → VARP
+   *
+   * We implement codes 1-5, 9 (and their 101-105, 109 mirrors) which cover
+   * the M3 curriculum. Unsupported codes return #VALUE!. */
+  SUBTOTAL: (args) => {
+    const code = Math.round(coerceNum(Array.isArray(args[0]) ? args[0][0] : args[0]));
+    const ranges = args.slice(1);
+    const k = code >= 101 ? code - 100 : code;
+    switch (k) {
+      case 1:  return FUNCTIONS.AVERAGE(ranges);
+      case 2:  return FUNCTIONS.COUNT(ranges);
+      case 3:  return FUNCTIONS.COUNTA(ranges);
+      case 4:  return FUNCTIONS.MAX(ranges);
+      case 5:  return FUNCTIONS.MIN(ranges);
+      case 9:  return FUNCTIONS.SUM(ranges);
+      default: return ERR('#VALUE!');
+    }
+  },
 };
+
+/* ─────────────────  Date helpers (used by FUNCTIONS above) ──────
+ * Recognises:
+ *   - YYYY-MM-DD    (ISO)
+ *   - DD/MM/YYYY    (Indian format Haiku tends to emit)
+ *   - MM/DD/YYYY    (US fallback)
+ *   - DD-MMM-YYYY   (Excel display, e.g. "31-Dec-2024")
+ *   - JS Date       (passthrough)
+ *   - Excel serial  (number ≥ 1)
+ */
+function parseAnyDate(v) {
+  if (v instanceof Date) return v;
+  if (typeof v === 'number' && v >= 1 && v < 100000) {
+    // Excel serial: days since 1900-01-01 (with the famous 1900 leap-year bug
+    // — we ignore the leap-year bug for serials > 60 since modern data rarely
+    // hits it). 25569 = days between 1970-01-01 and 1900-01-01.
+    return new Date((v - 25569) * 86400000);
+  }
+  if (typeof v !== 'string') return null;
+  const s = v.trim();
+  if (!s) return null;
+  // ISO
+  let m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (m) return new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+  // DD/MM/YYYY or DD-MM-YYYY
+  m = s.match(/^(\d{1,2})[/\-](\d{1,2})[/\-](\d{2,4})$/);
+  if (m) {
+    let y = +m[3]; if (y < 100) y += 2000;
+    const a = +m[1], b = +m[2];
+    // Prefer DD/MM/YYYY (Indian) when first ≥ 13
+    if (a > 12) return new Date(Date.UTC(y, b - 1, a));
+    if (b > 12) return new Date(Date.UTC(y, a - 1, b));
+    return new Date(Date.UTC(y, b - 1, a));   // assume DD/MM/YYYY by default
+  }
+  // DD-MMM-YYYY / DD MMM YYYY
+  m = s.match(/^(\d{1,2})[\s\-]([A-Za-z]{3,9})[\s\-](\d{2,4})$/);
+  if (m) {
+    const months = ['jan','feb','mar','apr','may','jun','jul','aug','sep','oct','nov','dec'];
+    const mi = months.indexOf(m[2].slice(0, 3).toLowerCase());
+    if (mi < 0) return null;
+    let y = +m[3]; if (y < 100) y += 2000;
+    return new Date(Date.UTC(y, mi, +m[1]));
+  }
+  // Last-resort: JS Date parser
+  const d = new Date(s);
+  return Number.isFinite(d.getTime()) ? d : null;
+}
+
+function dateAsSerial(d) {
+  // Days since the Unix epoch — sign and magnitude are what arithmetic uses.
+  // We deliberately don't apply Excel's 1900-01-01 baseline because the
+  // engine never reports the absolute serial — only date-date differences
+  // and date+/-integer roundtrips, both of which work in any consistent
+  // baseline.
+  return Math.floor(d.getTime() / 86400000);
+}
 
 // Tokenizer: numbers, strings, identifiers, refs, ranges, operators, parens.
 function tokenize(src) {
@@ -693,7 +841,12 @@ function tokenize(src) {
         // because parseAddr can't parse a colon-bearing ref).
         if (ref.includes(':')) {
           const [from, to] = ref.split(':');
-          tokens.push({ type: 'range', from, to, sheet: ident });
+          // Whole-column range:  Sheet!D:D, Sheet!$B:$B
+          if (/^\$?[A-Za-z]+$/.test(from) && /^\$?[A-Za-z]+$/.test(to)) {
+            tokens.push({ type: 'colrange', from: from.replace(/\$/g, ''), to: to.replace(/\$/g, ''), sheet: ident });
+          } else {
+            tokens.push({ type: 'range', from, to, sheet: ident });
+          }
         } else {
           tokens.push({ type: 'ref', sheet: ident, ref });
         }
@@ -705,6 +858,16 @@ function tokenize(src) {
         while (k < src.length && /[A-Za-z0-9$]/.test(src[k])) { rhs += src[k]; k++; }
         tokens.push({ type: 'range', from: ident, to: rhs });
         i = k; continue;
+      }
+      // Whole-column range (bare):  D:D, $B:$B  — column letters only.
+      if (src[j] === ':' && /^\$?[A-Za-z]+$/.test(ident)) {
+        let k = j + 1; let rhs = '';
+        while (k < src.length && /[A-Za-z$]/.test(src[k])) { rhs += src[k]; k++; }
+        if (/^\$?[A-Za-z]+$/.test(rhs)) {
+          tokens.push({ type: 'colrange', from: ident.replace(/\$/g, ''), to: rhs.replace(/\$/g, ''), sheet: null });
+          i = k; continue;
+        }
+        // Fall through if RHS wasn't column-only — we'll treat ident as a bare identifier.
       }
       // Standalone cell ref
       if (/^\$?[A-Za-z]+\$?[0-9]+$/.test(ident)) {
@@ -823,6 +986,10 @@ function makeParser(tokens) {
       eat('range');
       return { kind: 'range', sheet: t.sheet || null, from: t.from, to: t.to };
     }
+    if (t.type === 'colrange') {
+      eat('colrange');
+      return { kind: 'colrange', sheet: t.sheet || null, from: t.from, to: t.to };
+    }
     if (t.type === 'ident') { eat('ident'); return { kind: 'str', value: t.value }; }
     throw new Error('parse-err');
   }
@@ -843,6 +1010,21 @@ function binopScalar(op, L, R) {
       case '<=': return a <= b;
       case '>=': return a >= b;
       default: return false;
+    }
+  }
+  // Date arithmetic — Excel treats dates as numeric serials. We let users
+  // subtract two dates (→ days) and add/subtract a number to a date (→ date).
+  const Ld = L instanceof Date ? L : null;
+  const Rd = R instanceof Date ? R : null;
+  if (Ld || Rd) {
+    const La = Ld ? dateAsSerial(Ld) : coerceNum(L);
+    const Ra = Rd ? dateAsSerial(Rd) : coerceNum(R);
+    if (!Number.isFinite(La) || !Number.isFinite(Ra)) return ERR('#VALUE!');
+    switch (op) {
+      case '+': return Ld && !Rd ? new Date((La + Ra) * 86400000) :
+                       !Ld && Rd ? new Date((La + Ra) * 86400000) : La + Ra;
+      case '-': return La - Ra;
+      default:  return ERR('#VALUE!');
     }
   }
   const aBool = L === true ? 1 : (L === false ? 0 : undefined);
@@ -948,6 +1130,60 @@ function evalAst(node, ctx, visited) {  if (!node) return '';
       } catch { /* frozen prototypes in test env — ignore */ }
       return flat;
     }
+    case 'colrange': {
+      // Whole-column range:  D:D, $B:$F, Sheet!B:D
+      // We don't have row-bounds, so probe rows 1..MAX_PROBE_ROW and trim
+      // trailing empties to find the populated extent. MAX_PROBE_ROW=1024
+      // matches what real-world analyst sims need and keeps the cost
+      // bounded (linear in the column's max-populated row).
+      const sheetName = node.sheet || ctx.activeSheet;
+      const MAX_PROBE_ROW = 1024;
+      const c1 = colLetterToIndex(node.from);
+      const c2 = colLetterToIndex(node.to);
+      if (c1 < 0 || c2 < 0) return ERR('#REF!');
+      const lo = Math.min(c1, c2), hi = Math.max(c1, c2);
+      // First pass: find the max populated row across all columns in range.
+      let maxRow = 0;
+      for (let c = lo; c <= hi; c++) {
+        for (let r = 1; r <= MAX_PROBE_ROW; r++) {
+          const v = ctx.getCell(sheetName, addrFromIndices(c, r - 1));
+          if (v != null && v !== '') maxRow = Math.max(maxRow, r);
+        }
+      }
+      if (maxRow === 0) {
+        // Empty column — return empty array so SUMIFS/COUNTIFS yield 0.
+        const flat = [];
+        try {
+          Object.defineProperty(flat, '__range', {
+            value: { sheet: sheetName, rows: 0, cols: hi - lo + 1, values2d: [] },
+            enumerable: false,
+          });
+        } catch { /* ignore */ }
+        return flat;
+      }
+      const flat = [];
+      const grid = [];
+      for (let r = 0; r < maxRow; r++) {
+        const row = [];
+        for (let c = lo; c <= hi; c++) {
+          const addr = addrFromIndices(c, r);
+          let v = ctx.getCell(sheetName, addr);
+          if (typeof v === 'string' && v.startsWith('=')) {
+            v = evaluateFormula(v, ctx, visited);
+          }
+          row.push(v);
+          flat.push(v);
+        }
+        grid.push(row);
+      }
+      try {
+        Object.defineProperty(flat, '__range', {
+          value: { sheet: sheetName, rows: maxRow, cols: hi - lo + 1, values2d: grid },
+          enumerable: false,
+        });
+      } catch { /* ignore */ }
+      return flat;
+    }
     case 'call': {
       const fn = FUNCTIONS[node.name];
       if (!fn) return ERR('#NAME?');
@@ -955,7 +1191,7 @@ function evalAst(node, ctx, visited) {  if (!node) return '';
       // errors before they propagate (IFERROR/IFNA/IFS/IF) get the raw AST
       // nodes + a thunk-evaluator. Everything else evaluates eagerly and
       // short-circuits on the first error.
-      const LAZY = { IFERROR: 1, IFNA: 1, IFS: 1, IF: 1 };
+      const LAZY = { IFERROR: 1, IFNA: 1, IFS: 1, IF: 1, ISERROR: 1, ISERR: 1, ISNA: 1 };
       if (LAZY[node.name]) {
         const thunks = node.args.map((a) => () => evalAst(a, ctx, visited));
         try {

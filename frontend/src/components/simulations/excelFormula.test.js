@@ -185,3 +185,95 @@ describe('excelFormula — date', () => {
     expect(evalIt('=DATEDIF(A1,A2,"M")', cells)).toBe(8);
   });
 });
+
+describe('excelFormula — extended functions (Step 5 hybrid path)', () => {
+  // SUBTOTAL — codes 1-5, 9 (and 101-105, 109 mirrors).
+  describe('SUBTOTAL', () => {
+    const cells = { A1: 10, A2: 20, A3: 30, A4: 40, A5: 50 };
+    test('SUBTOTAL(9) = SUM',     () => expect(evalIt('=SUBTOTAL(9, A1:A5)',   cells)).toBe(150));
+    test('SUBTOTAL(1) = AVERAGE', () => expect(evalIt('=SUBTOTAL(1, A1:A5)',   cells)).toBe(30));
+    test('SUBTOTAL(2) = COUNT',   () => expect(evalIt('=SUBTOTAL(2, A1:A5)',   cells)).toBe(5));
+    test('SUBTOTAL(3) = COUNTA',  () => expect(evalIt('=SUBTOTAL(3, A1:A5)',   cells)).toBe(5));
+    test('SUBTOTAL(4) = MAX',     () => expect(evalIt('=SUBTOTAL(4, A1:A5)',   cells)).toBe(50));
+    test('SUBTOTAL(5) = MIN',     () => expect(evalIt('=SUBTOTAL(5, A1:A5)',   cells)).toBe(10));
+    test('SUBTOTAL(109) = SUM (ignore-hidden mirror)',
+      () => expect(evalIt('=SUBTOTAL(109, A1:A5)', cells)).toBe(150));
+    test('SUBTOTAL with unsupported code → #VALUE!', () => {
+      expect(isFormulaError(evalIt('=SUBTOTAL(7, A1:A5)', cells))).toBe(true);
+    });
+  });
+
+  // VALUE — text-to-number incl. ₹ / commas / whitespace.
+  describe('VALUE', () => {
+    test('VALUE("1234")',         () => expect(evalIt('=VALUE("1234")',          {})).toBe(1234));
+    test('VALUE with rupees',     () => expect(evalIt('=VALUE("₹2,50,000")',     {})).toBe(250000));
+    test('VALUE("  42.5  ")',     () => expect(evalIt('=VALUE("  42.5  ")',      {})).toBe(42.5));
+    test('VALUE("hello") → #VALUE!', () => {
+      expect(isFormulaError(evalIt('=VALUE("hello")', {}))).toBe(true);
+    });
+    test('VALUE empty → 0',       () => expect(evalIt('=VALUE("")',              {})).toBe(0));
+  });
+
+  // DATEVALUE — accepts ISO + DD/MM/YYYY + DD-MMM-YYYY.
+  describe('DATEVALUE', () => {
+    test('YEAR(DATEVALUE("31/12/2024")) = 2024 (Indian DD/MM)',
+      () => expect(evalIt('=YEAR(DATEVALUE("31/12/2024"))', {})).toBe(2024));
+    test('MONTH(DATEVALUE("31/12/2024")) = 12',
+      () => expect(evalIt('=MONTH(DATEVALUE("31/12/2024"))', {})).toBe(12));
+    test('DAY(DATEVALUE("31-Dec-2024")) = 31',
+      () => expect(evalIt('=DAY(DATEVALUE("31-Dec-2024"))', {})).toBe(31));
+    test('DATEVALUE("garbage") → #VALUE!',
+      () => expect(isFormulaError(evalIt('=DATEVALUE("garbage")', {}))).toBe(true));
+  });
+
+  // TODAY + date arithmetic (date - date → days, date + integer → date).
+  describe('TODAY & date arithmetic', () => {
+    test('TODAY() returns a Date that equals YEAR(today)',
+      () => {
+        const y = evalIt('=YEAR(TODAY())', {});
+        expect(y).toBe(new Date().getUTCFullYear());
+      });
+    test('DATEVALUE - DATEVALUE → days',
+      () => expect(evalIt('=DATEVALUE("10/01/2025")-DATEVALUE("01/01/2025")', {})).toBe(9));
+    test('DATEVALUE + 30 → date thirty days later',
+      () => {
+        const out = evalIt('=YEAR(DATEVALUE("01/01/2025")+30)', {});
+        expect(out).toBe(2025);
+      });
+  });
+
+  // IS* family.
+  describe('IS* family', () => {
+    test('ISBLANK("") = TRUE',         () => expect(evalIt('=ISBLANK("")',        {})).toBe(true));
+    test('ISNUMBER(42) = TRUE',        () => expect(evalIt('=ISNUMBER(42)',       {})).toBe(true));
+    test('ISTEXT("hello") = TRUE',     () => expect(evalIt('=ISTEXT("hello")',    {})).toBe(true));
+    test('ISERROR(1/0) = TRUE',        () => expect(evalIt('=ISERROR(1/0)',       {})).toBe(true));
+    test('ISERROR(VALUE("bad")) = TRUE', () => expect(evalIt('=ISERROR(VALUE("bad"))', {})).toBe(true));
+    test('ISERR(NA-error) = FALSE — only ISNA matches #N/A',
+      () => expect(evalIt('=ISERR(VLOOKUP("missing",A1:B2,2,FALSE))', { A1: 'a', B1: 1, A2: 'b', B2: 2 })).toBe(false));
+    test('IFERROR wraps cleanly with VALUE',
+      () => expect(evalIt('=IFERROR(VALUE("x"),"fallback")', {})).toBe('fallback'));
+  });
+
+  // Full-column refs:  D:D, $B:$B, Sheet!B:B
+  describe('Full-column refs', () => {
+    const sumifsCells = {
+      A1: 'Segment', B1: 'FY', C1: 'Revenue',
+      A2: 'Oil',     B2: 'FY24', C2: 100,
+      A3: 'Retail',  B3: 'FY24', C3: 50,
+      A4: 'Oil',     B4: 'FY25', C4: 120,
+      A5: 'Retail',  B5: 'FY25', C5: 60,
+      A6: 'Digital', B6: 'FY25', C6: 30,
+    };
+    test('SUM with full column ref',
+      () => expect(evalIt('=SUM(C:C)', sumifsCells)).toBe(360));
+    test('COUNTIF on column with criterion',
+      () => expect(evalIt('=COUNTIF(A:A,"Oil")', sumifsCells)).toBe(2));
+    test('SUMIFS with whole-column refs',
+      () => expect(evalIt('=SUMIFS(C:C,A:A,"Oil",B:B,"FY25")', sumifsCells)).toBe(120));
+    test('Empty column SUM → 0',
+      () => expect(evalIt('=SUM(Z:Z)', sumifsCells)).toBe(0));
+    test('Multi-col whole range A:B works',
+      () => expect(evalIt('=COUNTA(A:A)', sumifsCells)).toBe(6));
+  });
+});
