@@ -1,0 +1,53 @@
+{
+  "module": 5,
+  "reviewed_at": "2026-07-04T09:23:22.137010+00:00",
+  "sampled": 2,
+  "passed": 2,
+  "failed": 0,
+  "avg_total": 5.0,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 5.0
+  },
+  "passed_sessions": [
+    "5.1",
+    "5.6"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Perfectly authentic Indian context (HDFC Bank, Sashidhar Jagdishan, ₹4,200 cr acquisition, Mumbai desk), laser-focused on session's three pillars (integrity/competence/capital allocation), textbook hint escalation (general→track record→ROCE comparison), and beautifully ramped decision tree that mirrors real analyst workflow from information gathering to rating thesis.",
+      "weaknesses": "Decision point d4 narrative appears truncated mid-sentence ('You've gathered data on management's thinking...'), though the options themselves are complete and functional.",
+      "fix_directive": "",
+      "session_no": "5.1",
+      "sim_type": "decision_making",
+      "file": "/app/scripts/bulk_seed_log/m5_s5-1.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Perfect execution: uses Titan Company with real ₹ Cr financials, laser-focused on cash conversion and red/green flags from the session syllabus, 3 hints escalate beautifully (formula → interpretation → threshold), and 4 tasks ramp from calculation → trend analysis → synthesis → hypothetical forensic scenario.",
+      "weaknesses": "None identified — this is textbook simulation design.",
+      "fix_directive": "",
+      "session_no": "5.6",
+      "sim_type": "document",
+      "file": "/app/scripts/bulk_seed_log/m5_s5-6.json"
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "sim_type": "document",
+  "title": "Titan Company FY24: Spotting Related Party Leaks",
+  "scenario": "You're a junior analyst at Motilal Oswal Research reviewing Titan Company's FY24 annual report. Your desk lead asks: are the related party transactions fair, or is cash quietly leaking to promoters? Dig into the numbers and notes.",
+  "instructions": "Read the financial statement, hover tooltips on key line items, then answer analytical questions about related party transactions and value leakage.",
+  "learning_objective": "Identify and assess related party transactions in a real Indian company statement, calculate the RPT ratio, and judge whether value is leaking to insiders.",
+  "hints": [
+    "Check the notes to accounts section — that's where RPT details hide, not the headline numbers.",
+    "Calculate RPT Ratio = (Total Related Party Transactions / Revenue) × 100. A rising or high ratio is a red flag.",
+    "The key question is always: are these transactions at fair market prices, or do they benefit insiders more than the company?"
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Statement of Profit & Loss",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 51084,
+            "previous_year": 40575
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 18756,
+            "previous_year": 15340
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 6234,
+            "previous_year": 5420
+          },
+          {
+            "id": "other_exp",
+            "label": "Other expenses",
+            "current_year": 9876,
+            "previous_year": 8234
+          },
+          {
+            "id": "ebitda",
+            "label": "EBITDA",
+            "current_year": 16218,
+            "previous_year": 11581
+          },
+          {
+            "id": "dep",
+            "label": "Depreciation and amortisation",
+            "current_year": 2105,
+            "previous_year": 1850
+          },
+          {
+            "id": "finance",
+            "label": "Finance costs",
+            "current_year": 845,
+            "previous_year": 920
+          },
+          {
+            "id": "pbt",
+            "label": "Profit before tax",
+            "current_year": 13268,
+            "previous_year": 8811
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 3142,
+            "previous_year": 2082
+          },
+          {
+            "id": "pat",
+            "label": "Profit for the year",
+            "current_year": 10126,
+            "previous_year": 6729
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 10126,
+          "previous_year": 6729
+        }
+      },
+      {
+        "title": "Related Party Transactions (from Notes to Accounts)",
+        "line_items": [
+          {
+            "id": "rpt_supplies",
+            "label": "Purchase of materials from related parties",
+            "current_year": 4256,
+            "previous_year": 3480
+          },
+          {
+            "id": "rpt_logistics",
+            "label": "Logistics & distribution services from related entities",
+            "current_year": 2145,
+            "previous_year": 1920
+          },
+          {
+            "id": "rpt_loans",
+            "label": "Loans & advances to related parties",
+            "current_year": 1680,
+            "previous_year": 1240
+          },
+          {
+            "id": "rpt_rent",
+            "label": "Rent paid to promoter-controlled entities",
+            "current_year": 892,
+            "previous_year": 780
+          },
+          {
+            "id": "rpt_total",
+            "label": "Total Related Party Transactions",
+            "current_year": 8973,
+            "previous_year": 7420
+          }
+        ],
+        "section_total": {
+          "label": "Total Related Party Transactions",
+          "current_year": 8973,
+          "previous_year": 7420
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rpt_supplies",
+      "tooltip": "₹4,256 Cr of material purchases from related parties — watch whether these are at fair market prices or inflated. A common channel for value leakage."
+    },
+    {
+      "id": "rpt_loans",
+      "tooltip": "₹1,680 Cr in loans & advances to related parties. Red flag: are these being repaid? Dubious loans are a classic value drain."
+    },
+    {
+      "id": "rpt_total",
+      "tooltip": "Total RPTs = ₹8,973 Cr. Calculate the RPT ratio (as % of revenue) to assess whether activity is concentrated with insiders."
+    },
+    {
+      "id": "cogs",
+      "tooltip": "Cost of materials consumed includes ₹4,256 Cr purchased from related parties. If related party supplies are overpriced, true COGS may be artificially high."
+    },
+    {
+      "id": "pat",
+      "tooltip": "Profit grew 50.5% YoY to ₹10,126 Cr. But dig deeper: has profit quality suffered due to inflated RPT costs or questionable loans to insiders?"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the Related Party Transaction (RPT) Ratio for FY24: (Total RPT / Revenue) × 100. Is it higher than FY23?",
+      "answer_type": "number",
+      "expected_value": 17.6,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "FY24 RPT Ratio = (8973 / 51084) × 100 = 17.6%. FY23 = (7420 / 40575) × 100 = 18.3%. The ratio fell slightly, which is positive — it suggests RPTs are not accelerating as a share of revenue. Still, 17.6% means nearly one-fifth of activity flows through related parties, worthy of close scrutiny."
+    },
+    {
+      "id": "t2",
+      "question": "Which related party transaction category showed the largest absolute increase from FY23 to FY24, and what does it signal?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "supplies",
+        "materials",
+        "purchases"
+      ],
+      "explanation": "Purchase of materials from related parties grew by ₹776 Cr (4256 - 3480), the largest increase. This signals that Titan is buying more from promoter-controlled suppliers. The analyst should ask: are these at fair market prices, or is the company overpaying to funnel money to insiders?"
+    },
+    {
+      "id": "t3",
+      "question": "Loans & advances to related parties grew ₹440 Cr (1680 - 1240). Why should an analyst be concerned about this trend, and what due diligence step would you take next?",
+      "answer_type": "free_text",
+      "sample_answer": "Growing loans to related parties signal potential value leakage — the company is advancing cash to promoter entities that may never be repaid. I would read the notes to accounts carefully to see repayment terms, interest rates (if any), and whether these loans have been recovering. If they're interest-free or have vague repayment terms, it's a red flag. I'd also track whether the loans balance keeps growing year-on-year without repayment.",
+      "explanation": "This tests the student's understanding that loans to related parties are a classic value-drain mechanism. The follow-up action — reading notes, checking repayment terms, tracking trends — mirrors real analyst practice. A student who identifies the risk and knows to dig into the notes has absorbed the session's core lesson."
+    },
+    {
+      "id": "t4",
+      "question": "True or False: Titan's 50.5% YoY profit growth (from ₹6,729 Cr to ₹10,126 Cr) is a clean signal of operational excellence and requires no further scrutiny.",
+      "answer_type": "text",
+      "expected_keywords": [
+        "false",
+        "rpt",
+        "related party",
+        "overpriced",
+        "quality"
+      ],
+      "explanation": "False. While the profit growth is impressive, the analyst must dig deeper given the large and growing RPTs. If material costs are inflated due to overpriced supplies from related parties, the true operational profit may be lower. Similarly, loans to related parties that don't return reduce real cash generation. Profit growth looks good on the surface — but RPT scrutiny may reveal quality issues underneath."
+    }
+  ]
+}

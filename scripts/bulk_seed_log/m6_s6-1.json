@@ -1,0 +1,175 @@
+{
+  "sim_type": "document",
+  "title": "Navigating Infosys FY24: The 30-Minute Annual Report Read",
+  "scenario": "You've just received Infosys's FY24 annual report. Your senior wants the year's story — strategy, performance, risks, auditor verdict — in 30 minutes. You know the map; now prove it by extracting the signal from the right sections, computing growth, and spotting what management is emphasising.",
+  "instructions": "Read the financial excerpt below, hover tooltips on flagged line items, compute YoY growth on key lines, answer whether the narrative holds against the numbers, and identify what the auditor is not saying.",
+  "learning_objective": "Navigate an annual report by reading statements and auditor verdict for hard truth, MD&A for strategy and tells, and notes for fine print — and spot the relationship between revenue, profit, and cash growth.",
+  "hints": [
+    "Start with the auditor's opinion type — it tells you instantly if there's an external red flag. Then compute YoY growth on revenue and profit, and compare them.",
+    "The auditor's Key Audit Matters section flags the audit firm's own concerns. Read it. Then check the notes: does the margin compression show up in cost breakdowns?",
+    "Revenue grew 21.5%. Operating profit grew 18.3%. Why the gap? Look at the cost-of-revenue line — it grew faster than revenue. That's margin compression, and it's the story the MD&A must explain."
+  ],
+  "document_data": {
+    "company_name": "Infosys Limited",
+    "period": "FY24 Annual Report",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement (Year Ended 31 March)",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 232271,
+            "previous_year": 191189
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of revenues (employee and other direct costs)",
+            "current_year": 147621,
+            "previous_year": 115634
+          },
+          {
+            "id": "gp",
+            "label": "Gross Profit",
+            "current_year": 84650,
+            "previous_year": 75555
+          },
+          {
+            "id": "opex",
+            "label": "Selling, general and administrative expenses",
+            "current_year": 32840,
+            "previous_year": 28965
+          },
+          {
+            "id": "ebitda",
+            "label": "Operating Profit (EBIT)",
+            "current_year": 51810,
+            "previous_year": 46590
+          },
+          {
+            "id": "fc",
+            "label": "Finance costs",
+            "current_year": 1205,
+            "previous_year": 980
+          },
+          {
+            "id": "tax",
+            "label": "Income tax expense",
+            "current_year": 9842,
+            "previous_year": 8556
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 40763,
+          "previous_year": 37064
+        }
+      },
+      {
+        "title": "Consolidated Balance Sheet (31 March)",
+        "line_items": [
+          {
+            "id": "cash",
+            "label": "Cash and cash equivalents",
+            "current_year": 28654,
+            "previous_year": 25430
+          },
+          {
+            "id": "receivables",
+            "label": "Trade receivables (net)",
+            "current_year": 58920,
+            "previous_year": 48560
+          },
+          {
+            "id": "ppe",
+            "label": "Property, plant and equipment (net)",
+            "current_year": 18432,
+            "previous_year": 17895
+          },
+          {
+            "id": "equity",
+            "label": "Total shareholders' equity",
+            "current_year": 142850,
+            "previous_year": 132460
+          }
+        ],
+        "section_total": {
+          "label": "Total Assets",
+          "current_year": 278540,
+          "previous_year": 251680
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Revenue from operations excludes other income (interest, forex gains) — watch MD&A for geographic and vertical breakdowns; IT-services revenue is cyclical, and YoY growth masks quarterly volatility."
+    },
+    {
+      "id": "cogs",
+      "tooltip": "Employee and direct costs are the largest line for IT services — rising faster than revenue signals wage inflation, bench cost, or lower utilisation; compare to gross-margin trend."
+    },
+    {
+      "id": "ebitda",
+      "tooltip": "Operating profit before finance costs and tax — the measure of underlying business profitability. Compare its growth rate to revenue growth; if it lags, margins are compressing."
+    },
+    {
+      "id": "receivables",
+      "tooltip": "Trade receivables grew 21.2% YoY, in line with revenue growth — healthy sign that revenue is converting to cash. A sharp overrun would flag collection risk or channel-finance games."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was Infosys's YoY growth in Revenue from operations (FY24 vs FY23)? Express as a percentage to one decimal place.",
+      "answer_type": "number",
+      "expected_value": 21.5,
+      "tolerance": 0.2,
+      "unit": "%",
+      "explanation": "(232271 - 191189) / 191189 × 100 = 21.5%. Strong top-line growth, but the MD&A must explain whether this is deal wins, pricing, or a demand-cycle lift."
+    },
+    {
+      "id": "t2",
+      "question": "Operating profit grew at a slower rate than revenue. Which cost line grew faster than revenue, creating the margin compression?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "cost of revenues",
+        "employee",
+        "cogs"
+      ],
+      "explanation": "Cost of revenues grew from ₹115,634 Cr to ₹147,621 Cr — a 27.7% YoY increase, outpacing the 21.5% revenue growth. This is the margin squeeze; the notes must explain whether it's wage inflation, bench idle time, pricing pressure, or subcontracting cost."
+    },
+    {
+      "id": "t3",
+      "question": "A junior analyst reads the MD&A and sees management celebrating '21.5% revenue growth.' You compute that operating profit grew only 11.2%. What is the most important question to ask management on the concall?",
+      "answer_type": "free_text",
+      "sample_answer": "Why did operating profit grow at 11.2% while revenue grew at 21.5%? Specifically, did the 27.7% rise in cost of revenues reflect temporary factors (one-time severance, onboarding costs) or a structural shift in our cost base? And does your FY25 guidance assume margin recovery or further compression?",
+      "explanation": "This is the core disciplinary check: revenue and profit growth must move together over time. A 10-point gap signals either a one-time cost shock (which will reverse) or a structural margin loss (which is serious). The concall is where management reveals which it is — and whether they have a plan to fix it. Reading the MD&A 'strategy' against the numbers is how you spot the gap in the first place."
+    },
+    {
+      "id": "t4",
+      "question": "Trade receivables grew 21.2% YoY (from ₹48,560 Cr to ₹58,920 Cr). What does this in-line growth (matching revenue growth) tell you about cash conversion?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "cash conversion",
+        "collection",
+        "working capital"
+      ],
+      "explanation": "When receivables grow at the same rate as revenue, the business is converting sales to cash at a steady rate — no improvement, but no deterioration in collection days. If receivables had grown faster than revenue (e.g., 30% vs 21.5%), it would flag collection risk or stretched payment terms. The fact that they move in lockstep is a positive signal for working-capital health."
+    },
+    {
+      "id": "t5",
+      "question": "Before you read a single word of the MD&A, what must you check in the auditor's report — and why?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "opinion",
+        "audit",
+        "key audit matters",
+        "qualified"
+      ],
+      "explanation": "The auditor's opinion type (unqualified, qualified, disclaimer, adverse) and the Key Audit Matters section are the external voice — independent of management. They flag if the auditor has concerns about specific accounting areas (e.g., revenue recognition, valuation of goodwill). Reading these *before* the MD&A tells you what to scrutinise in the narrative. If the auditor flags a concern, management's breezy narrative on that topic deserves extra scepticism."
+    }
+  ]
+}

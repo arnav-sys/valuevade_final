@@ -1,0 +1,230 @@
+{
+  "sim_type": "decision_making",
+  "title": "RBI Rate Decision: Reading Macro Winds Before Earnings",
+  "scenario": "You're an equity analyst at Kotak Securities covering HDFC Bank. The RBI is expected to announce a 25 bps rate hike in 48 hours, and HDFC Bank reports earnings 72 hours after that. Your desk is asking for your recommendation on whether to stay Buy or downgrade ahead of the announcement.",
+  "instructions": "Walk through 4 decision points, each reflecting a macro-to-micro analytical choice. At each step, choose the option that best balances rigor, speed, and stakeholder alignment. Your final score determines your recommendation credibility.",
+  "learning_objective": "Integrate macroeconomic forces (interest rates, inflation, GDP growth) into a company-specific equity recommendation by tracing the real interest rate through demand, profit, and valuation.",
+  "hints": [
+    "Real interest rate is what matters to markets, not the headline number — check what inflation expectations are priced in.",
+    "A rate hike is bad for HDFC Bank's deposit costs and mortgage volumes, but good for its lending margins if the curve steepens — the net effect depends on the transmission lag.",
+    "High-growth stocks and rate-sensitive sectors (autos, real estate) fall hardest after rate hikes because future profits are discounted at a higher rate."
+  ],
+  "scenario_context": "HDFC Bank is India's most valuable private lender, trading at ₹1,845 per share (24x forward earnings) with consensus Buy ratings. The stock is up 28% YTD on strong loan growth and margin expansion. However, inflation has crept to 5.7%, and RBI Governor Sinha has signalled a hawkish stance in recent speeches. Your team's macro economist believes the RBI will hike 25 bps and hint at further tightening. Meanwhile, HDFC Bank's deposit franchise and mortgage book — both sensitive to rates — are core earnings drivers. You must decide whether to hold Buy, trim to Hold, or add a cautious note before both the rate decision and earnings drop.",
+  "initial_data": {
+    "Stock": "HDFC Bank",
+    "Current Price": "₹1,845",
+    "Forward P/E": "24x",
+    "YTD Return": "+28%",
+    "Your Rec": "Buy (Pending Review)",
+    "RBI Decision": "in 48 hours",
+    "Earnings Release": "in 72 hours"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Read the Macro Signal: What is the Real Interest Rate Telling You?",
+      "narrative": "Your research team has pulled current data: headline repo rate is 6.5%, inflation is at 5.7%, and 1-year ahead inflation expectations (from surveys) are 5.2%. You have 24 hours before the RBI decision. Your macro analyst leans hawkish; your credit strategist thinks the curve will flatten. You need to decide: Do you focus on the headline rate, the real rate after current inflation, or the market's real rate expectation after inflation?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Focus on headline repo rate (6.5%) — the raw number guides all else",
+          "description": "You use the official repo rate as your main macro anchor, assuming markets price in inflation over time.",
+          "consequence": "You miss the nuance: the real rate (6.5% − 5.7% = 0.8%) is actually tight and restrictive, signalling the RBI is fighting inflation hard. A 25 bps hike will push real rates higher, pressuring deposit growth and mortgage demand. Your analysis stays superficial — you don't dig into the transmission mechanism.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "stakeholder_alignment": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Calculate real rate using current inflation (6.5% − 5.7% = 0.8%) and warn on tightness",
+          "description": "You explicitly compute the real rate and signal to clients that real borrowing costs are already tight, constraining discretionary lending.",
+          "consequence": "Strong analysis: you show that even a modest 25 bps hike will push real rates from 0.8% to 1.05%, tightening financial conditions for borrowers. This directly threatens HDFC Bank's mortgage pipeline and deposit flows. Your narrative is sharper, but you still don't account for what the market *expects* inflation to be 12 months forward.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Use forward inflation expectations (5.2%) to compute the real rate the market is pricing",
+          "description": "You construct the real rate using 12-month-ahead inflation expectations, which is what savvy markets use to price future rate returns.",
+          "consequence": "Sophisticated approach: real rate becomes 6.5% − 5.2% = 1.3%, and a 25 bps hike takes it to 1.55%. But even more important, you frame this as the market's forward-looking constraint on credit growth. This signals you understand that the RBI is tightening into a slowing inflation backdrop — hawkish, but not panic-inducing. You're ready for a measured earnings cut, not a collapse.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Trace the Rate Hike into HDFC Bank's Micro Economics",
+      "narrative": "You've chosen your macro lens. Now you must connect the rate hike to HDFC Bank's specific earnings drivers. The bank derives ~35% of net interest income from home loans, ~25% from deposits (cost of funds), and the rest from corporate loans and other products. A rate hike typically raises deposit costs faster than lending rates in the first 2–3 quarters (deposit pass-through lag). Do you assume the hike squeezes margins first, or do you assume the bank will hike lending rates immediately to protect NII?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Assume deposit costs rise immediately; lending rates lag — margins compress short-term",
+          "description": "You conservatively assume depositors demand higher rates within weeks, but borrowers pay higher rates only after refinancing or renewal in 6–9 months.",
+          "consequence": "You model a 25–30 bps margin compression in FY2025, trimming net interest income growth from 14% to 10%. This is prudent but may overstate deposit sensitivity — HDFC Bank has strong current deposits (CD ratio ~40%) that don't reprice immediately. You may be too bearish, spooking clients who don't know the deposit composition.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "stakeholder_alignment": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Assume a 4–6 month lag in both directions; model modest margin stability short-term",
+          "description": "You assume HDFC Bank's deposit and lending rate repricing happens in parallel, with a natural 4–6 month stagger as the bank manages its customer base and funding mix.",
+          "consequence": "A balanced approach: margins stay roughly flat in FY2025 while loan growth may slow 100–150 bps due to softer mortgage demand as home loan rates rise. You model NII growth at 12%, down from 14%, and assume manageable deposit cost pressure. This is a modest earnings trim, defensible on calls.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Model dynamic repricing: assume HDFC Bank proactively raises lending rates in lockstep, protecting NII",
+          "description": "You give credit to HDFC Bank's pricing power and assume the bank will raise home loan and floating-rate lending rates swiftly to offset deposit cost inflation.",
+          "consequence": "You keep NII growth at 14% and margins flat. But this assumes HDFC Bank can raise rates on a portfolio of ₹15+ lakh crores without losing volume — a heroic assumption in a slowing growth environment. Mortgage demand is already softening (housing starts up only 8% YoY). You may be too optimistic, and the market will punish you if the bank guides lower loan growth at earnings.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Decide Your Valuation Adjustment: Does the Higher Real Rate Change the Discount Rate?",
+      "narrative": "You've traced the rate hike into HDFC Bank's earnings — margins and growth both take a small hit. Now the harder question: does a higher real interest rate also raise the market's discount rate (WACC), compressing the valuation multiple? HDFC Bank trades at 24x forward earnings; the market is pricing in strong earnings growth. If real rates rise from 0.8% to 1.05% (or 1.3% to 1.55%, depending on your earlier choice), does that warrant a multiple cut, or is 24x still fair on 14–15% earnings growth?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Valuation is unchanged — 24x is fair if earnings growth justifies it, regardless of rates",
+          "description": "You argue that P/E multiples are driven by earnings growth and ROE, not interest rates; HDFC Bank's ROE is 16%+, so 24x is reasonable.",
+          "consequence": "You keep your target price at ₹2,100 (24x × ₹87.5 FY2025E EPS). But this ignores the fundamental link between interest rates and discount rates — higher rates should compress forward-looking valuations, especially for banks whose future earnings are sensitive to rate moves. You're left defending a high multiple in a rising-rate environment, which feels tone-deaf. Clients may reduce their allocations elsewhere, and you risk a reputation hit if the multiple compresses post-earnings.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 2,
+            "stakeholder_alignment": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Apply a modest 200 bps multiple cut (24x → 22x) to reflect the higher real rate regime",
+          "description": "You reduce the P/E from 24x to 22x to reflect that higher real rates raise the cost of capital, compressing bank valuations across the sector.",
+          "consequence": "A defensible pivot: you cut your target from ₹2,100 to ₹1,925 (22x × ₹87.5E), implying 4% downside from current ₹1,845. This accounts for both the earnings impact (14% growth revised to 12%) and the valuation headwind (200 bps multiple cut). You move from Buy to Hold with a modest downside risk, signalling caution while respecting the bank's quality.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Apply a sector-wide multiple contraction: cut from 24x to 20x, aligning with the new rate cycle",
+          "description": "You argue that the RBI's tightening marks a structural shift — from a low-rate regime (2021–23) to a normalized, higher-rate regime (2024–25+). All bank multiples should reset lower.",
+          "consequence": "Aggressive but internally consistent: your target drops to ₹1,750 (20x × ₹87.5E), implying 5% downside. You downgrade from Buy to Reduce, citing a shift in the rate regime and the end of the easy-money tailwind. This signals to clients that you're thinking about the longer macro picture. But it may be too bearish — banks' ROEs are still robust, and a 20x multiple on a 16% ROE is not unreasonable. You risk looking like a permabear.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": -1,
+            "stakeholder_alignment": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Communicate Your Recommendation Ahead of the RBI Decision and Earnings",
+      "narrative": "You've now built a full macro-to-micro thesis: real rates are tightening, HDFC Bank's earnings will slow modestly, and the multiple may face headwind. The RBI decision lands in 36 hours, earnings in 60 hours. Do you release a note *before* the rate decision to front-run the market, *after* the rate decision but before earnings to show agility, or *after* earnings to wait for fresh guidance? Each timing carries reputational and trading risk.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Release note pre-RBI decision (next 24 hours) — Front-run the consensus with your macro thesis",
+          "description": "You move fast, publishing your thesis on real rate tightening and HDFC Bank's earnings risk before the RBI announcement, to get ahead of others and lock in media and client attention.",
+          "consequence": "If you're right, you look prescient — your call on Hold lands just before the rate hike spooks the market, and HDFC Bank drops 3–4%, validating your downgrade. But if the RBI surprises (no hike, or a smaller hike), or if HDFC Bank's guidance is upbeat, you look reactionary and lose client trust. Speed wins this day but risks credibility on the broader call.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 3,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Release post-RBI decision, pre-earnings (next 48 hours) — React to confirmed rates, read earnings tea leaves",
+          "description": "You wait for the RBI decision to be official, then release your note within hours, armed with both the new rate and any pre-earnings chatter from management or your channel checks.",
+          "consequence": "Balanced approach: you're nimble enough to respond to the actual rate hike (not a rumour), but early enough to beat the earnings print. If HDFC Bank pre-signals strong lending growth or better-than-feared deposit repricing, you can soften your call. If the bank sounds defensive, you stand firm. This is a measured, credible position — the classic analyst posture.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Hold and release post-earnings (after earnings call) — Let the bank's guidance settle your view",
+          "description": "You sit quiet through the RBI decision and wait for HDFC Bank's earnings and management guidance to finalize your rating and target.",
+          "consequence": "Most rigorous but slowest: you avoid front-running surprises and let the bank's own guidance anchor your call. But you also give up the narrative advantage — by the time earnings land, the entire market (and 20 other analysts) will have reacted. Your note becomes part of the chorus, not a leader's voice. On reputation, you're safe; on impact, you're muted.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "stakeholder_alignment": 0
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 8,
+        "label": "Strong analyst call — Macro to micro fully integrated",
+        "narrative": "You traced the real interest rate through deposit costs and mortgage demand into HDFC Bank's earnings, applied a measured valuation adjustment, and timed your communication to maximize credibility. Your recommendation is defensible under both up and down scenarios, and clients see you as a macro-literate equity analyst."
+      },
+      {
+        "min_total": 4,
+        "label": "Defensible call — Core thesis sound, execution uneven",
+        "narrative": "You understood the macro headwinds (rate tightening) and translated them into earnings impact, but either moved too fast without waiting for confirmed data, or too slow to add value. Your recommendation stands, but lacks the polish of a top-tier call."
+      },
+      {
+        "min_total": 0,
+        "label": "Needs review — Disconnects between macro and micro",
+        "narrative": "You may have nailed the macro direction (rates rising) but failed to trace it into HDFC Bank's specific earnings drivers, or you applied valuations without grounding in interest rate theory. Your call exists, but the reasoning is brittle."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread — Ignored macro signals or contradicted yourself",
+        "narrative": "You ignored the real interest rate signal, assumed bank valuations are immune to rate hikes, or released a note that contradicted your own macro thesis. The market will punish this incoherence, and your credibility with the desk and clients will suffer."
+      }
+    ]
+  }
+}

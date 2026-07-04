@@ -1,0 +1,138 @@
+{
+  "sim_type": "document",
+  "title": "Depreciation Policy & Ind AS: Reading Titan's FY24 Financials",
+  "scenario": "You're a junior analyst at a Mumbai equity desk. Your senior has asked you to audit Titan Company Limited's FY24 annual report for depreciation policy and accrual-based revenue recognition. Two peer analysts are arguing about whether Titan's profit jumped or stayed flat — and you suspect the disagreement stems from different accounting choices.",
+  "instructions": "Read Titan's income statement and balance sheet excerpt (with tooltips). Answer three analytical questions about depreciation, accrual accounting, and profit quality.",
+  "learning_objective": "Identify how depreciation policy and accrual principles shape reported profit, and learn to isolate accounting choices from true business performance.",
+  "hints": [
+    "Check the 'Depreciation and amortisation' line and the notes section for useful life assumptions — that's where the policy choice lives.",
+    "Compare Revenue from operations to Cash inflow from customers — if they diverge, accrual accounting is at work.",
+    "A company's profit can flatter itself just by choosing a longer useful life for assets. Always read the policy notes first."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 31847,
+            "previous_year": 27156
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 12540,
+            "previous_year": 11230
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 2156,
+            "previous_year": 1890
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 854,
+            "previous_year": 756
+          },
+          {
+            "id": "fin",
+            "label": "Finance costs",
+            "current_year": 120,
+            "previous_year": 95
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 2841,
+            "previous_year": 2450
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 13336,
+          "previous_year": 10735
+        }
+      },
+      {
+        "title": "Balance Sheet (Extract)",
+        "line_items": [
+          {
+            "id": "ppe",
+            "label": "Property, plant & equipment (net)",
+            "current_year": 8920,
+            "previous_year": 8650
+          },
+          {
+            "id": "accdepr",
+            "label": "Accumulated depreciation",
+            "current_year": 5420,
+            "previous_year": 4566
+          },
+          {
+            "id": "inv",
+            "label": "Inventory (jewellery, watches, eyewear)",
+            "current_year": 4250,
+            "previous_year": 3890
+          }
+        ],
+        "section_total": null
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Under accrual accounting, this is revenue earned in FY24, whether or not cash was received. The corresponding cash inflow may differ — check the cash flow statement for timing gaps."
+    },
+    {
+      "id": "depr",
+      "tooltip": "Straight-line depreciation of stores, equipment, and IT systems. Titan's policy: retail stores over 10 years, furniture & fixtures over 8 years. A longer useful life would lower this expense and raise profit. This is a key policy choice that differs across peers."
+    },
+    {
+      "id": "inv",
+      "tooltip": "Jewellery and watches valued using weighted average cost, not FIFO or LIFO. Under accrual & matching principles, cost of goods sold is matched to revenue in the same period. Inventory write-downs (if needed) reflect prudence principle."
+    },
+    {
+      "id": "accdepr",
+      "tooltip": "Total depreciation accumulated since the asset was acquired. The gap between gross PPE cost and net book value. Analysts watch this ratio to gauge asset age and future capex needs."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was Titan's YoY growth in Revenue from operations (%)? Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 17.4,
+      "tolerance": 0.2,
+      "unit": "%",
+      "explanation": "(31847 - 27156) / 27156 × 100 = 17.4%. This is accrual-based revenue — earned but not necessarily all in cash. Strong jewellery demand in FY24 drove this growth."
+    },
+    {
+      "id": "t2",
+      "question": "Depreciation expense rose from 756 Cr to 854 Cr. Which of these factors best explains it? (a) Longer useful lives, (b) More gross PPE added, or (c) Lower salvage values?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "more",
+        "ppe",
+        "capex",
+        "asset",
+        "additions"
+      ],
+      "explanation": "Answer: (b). The rise in depreciation from 756 to 854 Cr (₹98 Cr or +13%) suggests Titan added more retail stores and equipment in FY24. This is typical for Titan's expansion. Longer useful lives would have lowered depreciation, not raised it. Always check capex notes to confirm asset growth."
+    },
+    {
+      "id": "t3",
+      "question": "A peer analyst claims Titan's profit jumped 24.2% YoY (13336 vs 10735), so the business is on fire. Do you agree? Explain in 2–3 sentences why you'd need to dig deeper before endorsing this claim.",
+      "answer_type": "free_text",
+      "sample_answer": "No, I wouldn't endorse it yet. Revenue grew 17.4%, but profit grew 24.2% — that's operating leverage, but I'd verify it's real, not accounting. I'd check if depreciation policy changed (it didn't materially), if accrual revenue is converting to cash (check DSO), and if margins improved or just expense ratios tightened. A 24% profit jump on 17% revenue growth is possible but needs verification that it's quality earnings.",
+      "explanation": "This is the 'accounting vs. reality' reality check. Profit grew faster than revenue — a red flag for either positive operating leverage (good) or accounting choices (risky). The session teaches you to distrust raw profit numbers and dig into the accrual, depreciation, and matching choices behind them. Always reconcile profit growth to cash flow and check for one-off items or policy changes."
+    }
+  ]
+}

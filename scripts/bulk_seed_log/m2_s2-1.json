@@ -1,0 +1,179 @@
+{
+  "sim_type": "document",
+  "title": "Zomato's FY24 IPO Prospectus — Primary Market Primer",
+  "scenario": "You're a junior analyst at Motilal Oswal Securities reviewing Zomato's IPO prospectus before the company lists on NSE/BSE. Your desk lead asks you to extract key IPO metrics and understand how the ₹9,375 crore raise will fund growth. Read the filing, hover tooltips to unlock insights, and answer analytical questions on primary-market mechanics.",
+  "instructions": "Read the prospectus-style document, hover tooltips on highlighted line items, and answer 4 questions on IPO structuring, capital raise, and oversubscription.",
+  "learning_objective": "Calculate and interpret IPO subscription ratios and trace how primary-market capital flows to the company.",
+  "hints": [
+    "The company receives cash only from the primary issue — not from secondary trading later.",
+    "Subscription Ratio = Total Shares Applied For / Total Shares Offered. Look for the bidding and allotment details.",
+    "Check the 'Use of Proceeds' section to see where the ₹9,375 crore flows — that's how the primary market funds growth."
+  ],
+  "document_data": {
+    "company_name": "Zomato Limited",
+    "period": "IPO Prospectus — FY24 (July 2021 Filing)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "IPO Structure & Offer Details",
+        "line_items": [
+          {
+            "id": "offer_size",
+            "label": "Total Offer Size (Equity Shares)",
+            "current_year": 9375,
+            "previous_year": null
+          },
+          {
+            "id": "share_price_band",
+            "label": "Price Band (₹ per share)",
+            "current_year": 72,
+            "previous_year": null
+          },
+          {
+            "id": "shares_offered",
+            "label": "Shares Offered to Public (Cr units)",
+            "current_year": 13.02,
+            "previous_year": null
+          },
+          {
+            "id": "fresh_issue",
+            "label": "Fresh Issue (Cr units)",
+            "current_year": 13.02,
+            "previous_year": null
+          },
+          {
+            "id": "offer_for_sale",
+            "label": "Offer for Sale by Promoter (Cr units)",
+            "current_year": 0,
+            "previous_year": null
+          }
+        ],
+        "section_total": null
+      },
+      {
+        "title": "Subscription & Allotment Summary",
+        "line_items": [
+          {
+            "id": "shares_applied",
+            "label": "Total Shares Applied For (Cr units)",
+            "current_year": 491.64,
+            "previous_year": null
+          },
+          {
+            "id": "shares_allotted",
+            "label": "Shares Allotted to Retail (Cr units)",
+            "current_year": 3.91,
+            "previous_year": null
+          },
+          {
+            "id": "shares_allotted_hni",
+            "label": "Shares Allotted to HNI (Cr units)",
+            "current_year": 2.61,
+            "previous_year": null
+          },
+          {
+            "id": "shares_allotted_qib",
+            "label": "Shares Allotted to QIB (Cr units)",
+            "current_year": 6.5,
+            "previous_year": null
+          }
+        ],
+        "section_total": null
+      },
+      {
+        "title": "Use of Proceeds",
+        "line_items": [
+          {
+            "id": "tech_infra",
+            "label": "Technology & Cloud Infrastructure",
+            "current_year": 3200,
+            "previous_year": null
+          },
+          {
+            "id": "fleet_delivery",
+            "label": "Fleet, Delivery Partner Support & Incentives",
+            "current_year": 2650,
+            "previous_year": null
+          },
+          {
+            "id": "working_capital",
+            "label": "Working Capital & Corporate Costs",
+            "current_year": 2100,
+            "previous_year": null
+          },
+          {
+            "id": "acquisition",
+            "label": "M&A & Strategic Investments",
+            "current_year": 1425,
+            "previous_year": null
+          }
+        ],
+        "section_total": {
+          "label": "Total Use of Proceeds",
+          "current_year": 9375,
+          "previous_year": null
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "shares_applied",
+      "tooltip": "Total bids received from all investor categories (retail, HNI, QIB) during the open subscription window. This is the numerator of the oversubscription ratio."
+    },
+    {
+      "id": "shares_offered",
+      "tooltip": "Total fresh shares Zomato created and offered to the public in the IPO. This is the denominator of the subscription ratio. Money flows to Zomato only for these shares issued."
+    },
+    {
+      "id": "tech_infra",
+      "tooltip": "Primary market capital is deployed here — Zomato uses IPO proceeds to build cloud and delivery tech. This is why the company raises money: growth capex."
+    },
+    {
+      "id": "offer_for_sale",
+      "tooltip": "Zero OFS means no promoter is selling existing shares. All proceeds go to Zomato as fresh capital, not to insiders exiting."
+    },
+    {
+      "id": "shares_allotted",
+      "tooltip": "Only 3.91 Cr shares allotted to retail despite 491.64 Cr total bids — oversubscription means most applicants get zero or partial allotment via lottery."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the overall subscription ratio (oversubscription multiple) for Zomato's IPO. (Shares Applied / Shares Offered)",
+      "answer_type": "number",
+      "expected_value": 37.75,
+      "tolerance": 0.5,
+      "unit": "x",
+      "explanation": "Subscription Ratio = 491.64 Cr / 13.02 Cr = 37.75x oversubscribed. This reflects massive demand for the food-tech platform, driven by growth hype and grey-market premium."
+    },
+    {
+      "id": "t2",
+      "question": "What percentage of the ₹9,375 Cr IPO proceeds is allocated to Technology & Cloud Infrastructure?",
+      "answer_type": "number",
+      "expected_value": 34.13,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(3200 / 9375) × 100 = 34.13%. This shows Zomato's growth capex is tech-heavy — the primary market funds the company's scaling ambition."
+    },
+    {
+      "id": "t3",
+      "question": "In the IPO, Zomato received ₹9,375 Cr from the primary market. After listing, when Rajesh bought 100 Zomato shares on BSE for ₹50,000, how much of that ₹50,000 went to Zomato?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "zero",
+        "nothing",
+        "secondary market"
+      ],
+      "explanation": "Zero. Rajesh's ₹50,000 went to whomever sold him those shares — not to Zomato. Post-listing trades happen in the secondary market; Zomato is paid only once, in the primary IPO."
+    },
+    {
+      "id": "t4",
+      "question": "Zomato's IPO was 37.75x oversubscribed. What does this tell an analyst about Zomato, and what does it NOT tell?",
+      "answer_type": "free_text",
+      "sample_answer": "It tells me there was explosive short-term demand for Zomato shares, likely driven by brand hype, growth narrative, and grey-market momentum. A 37x ratio signals a probable strong listing pop. However, it does NOT tell me whether Zomato is fairly priced, profitable, or a good long-term hold. Oversubscription is demand, not value — I still need to evaluate unit economics, path to profitability, and competitive positioning independently.",
+      "explanation": "This question tests the critical distinction between hype (oversubscription) and fundamentals (valuation). A junior analyst confusing the two reveals a shallow grasp of primary-market mechanics."
+    }
+  ]
+}

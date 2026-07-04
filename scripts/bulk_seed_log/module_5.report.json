@@ -1,0 +1,87 @@
+{
+  "module": 5,
+  "completed_at": "2026-07-04T09:22:07.497518+00:00",
+  "total_sessions": 6,
+  "sims_generated": 6,
+  "sims_failed": 0,
+  "by_type": {
+    "decision_making": 2,
+    "document": 4
+  },
+  "total_engine_corrections": 0,
+  "elapsed_seconds": 187.8,
+  "rows": [
+    {
+      "session_no": "5.1",
+      "session_title": "Why Management Quality Decides Returns",
+      "db_session_id": "de9b4348-c4eb-48ea-bc40-111a676e121d",
+      "sim_type": "decision_making",
+      "sim_id": "3b870285-c67a-4fc5-afb6-5a5e33bfdb2a",
+      "seconds": 49.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "5.2",
+      "session_title": "Corporate Governance — The Rules That Protect Shareholders",
+      "db_session_id": "d93a9497-338c-4a3c-96f3-483eeb437f0e",
+      "sim_type": "document",
+      "sim_id": "50306700-882e-4c36-b6f7-83951397c188",
+      "seconds": 25.2,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "5.3",
+      "session_title": "Promoters, Ownership & the Danger of Pledging",
+      "db_session_id": "12da5b50-76bb-496f-af11-01b638575f6f",
+      "sim_type": "document",
+      "sim_id": "f94277d6-7372-426b-8a25-c752e344d8b7",
+      "seconds": 21.6,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "5.4",
+      "session_title": "Related Party Transactions — Where Money Quietly Leaks",
+      "db_session_id": "fc1c56b6-771b-4c96-b100-b77193f7714a",
+      "sim_type": "document",
+      "sim_id": "cb5ef6a5-95b4-4315-942c-cd82e00f40e3",
+      "seconds": 20.1,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "5.5",
+      "session_title": "Capital Allocation — The Real Test of a CEO",
+      "db_session_id": "b5197589-0725-4095-871f-3b941c8a04af",
+      "sim_type": "decision_making",
+      "sim_id": "4174f0c1-a7cc-4b47-840e-7de59d168e15",
+      "seconds": 48.1,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "5.6",
+      "session_title": "Reading Management — Red Flags & Green Flags",
+      "db_session_id": "1b07c639-6407-4f10-8512-d73f75c9158b",
+      "sim_type": "document",
+      "sim_id": "05d69a97-2447-44f6-8e88-70351b7b7274",
+      "seconds": 23.5,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    }
+  ]
+}

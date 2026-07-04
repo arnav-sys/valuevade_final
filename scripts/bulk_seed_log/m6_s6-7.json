@@ -1,0 +1,142 @@
+{
+  "sim_type": "document",
+  "title": "Decoding Management's Opening Remarks: Titan Q3 Narrative",
+  "scenario": "You're a junior analyst at a Mumbai brokerage reviewing Titan Company's Q3 FY24 concall. The management commentary emphasises jewellery growth and omits mention of watches, a historically strong segment. Your senior asks: what's management trying to steer you *away* from, and what real signals are in the framing?",
+  "instructions": "Read the management commentary and tooltips carefully. Answer questions about what management emphasised, what they downplayed, and what the numbers actually reveal—both the content and the curation.",
+  "learning_objective": "Decode the tells in prepared remarks by identifying which metrics management led with, how misses are framed, and what conspicuous absences reveal about management concerns.",
+  "hints": [
+    "Look at which segment got the most detailed discussion and which got only a passing mention.",
+    "Compare the growth rates—does management lead with YoY or QoQ, and why might they choose one over the other?",
+    "Notice what's *not* mentioned: watches were 22% of revenue last year, but management spent zero words on the segment this quarter."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "Q3 FY24 Management Commentary Extract",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Financial Summary",
+        "line_items": [
+          {
+            "id": "q3_revenue",
+            "label": "Revenue from operations",
+            "current_year": 8547,
+            "previous_year": 6832,
+            "q_prev": 7920
+          },
+          {
+            "id": "jewellery_revenue",
+            "label": "Jewellery segment revenue",
+            "current_year": 5840,
+            "previous_year": 4280,
+            "q_prev": 5200
+          },
+          {
+            "id": "watches_revenue",
+            "label": "Watches & Wearables revenue",
+            "current_year": 1680,
+            "previous_year": 1505,
+            "q_prev": 1750
+          },
+          {
+            "id": "other_revenue",
+            "label": "Other businesses (Eyewear, Accessories)",
+            "current_year": 1027,
+            "previous_year": 1047,
+            "q_prev": 970
+          }
+        ]
+      },
+      {
+        "title": "Profitability & Margins",
+        "line_items": [
+          {
+            "id": "ebitda",
+            "label": "EBITDA",
+            "current_year": 1285,
+            "previous_year": 920,
+            "q_prev": 1050
+          },
+          {
+            "id": "ebitda_margin",
+            "label": "EBITDA margin (%)",
+            "current_year": 15.0,
+            "previous_year": 13.5,
+            "q_prev": 13.3
+          },
+          {
+            "id": "pbt",
+            "label": "Profit Before Tax",
+            "current_year": 945,
+            "previous_year": 610,
+            "q_prev": 720
+          }
+        ]
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "jewellery_revenue",
+      "tooltip": "Jewellery grew 36.5% YoY but only 12.3% QoQ—decelerating momentum quarter-on-quarter. Management's emphasis on 'robust jewellery demand' frontloaded this segment while the sequential slowdown was not highlighted."
+    },
+    {
+      "id": "watches_revenue",
+      "tooltip": "Watches revenue declined 4.0% QoQ (1750→1680) despite flat YoY growth at 11.6%. Management did not mention this segment in the opening remarks at all—a conspicuous omission of a traditionally strong, 20% revenue contributor."
+    },
+    {
+      "id": "ebitda_margin",
+      "tooltip": "EBITDA margin expanded 150 bps YoY but only 170 bps sequentially from Q2. The framing was 'healthy margin expansion' but the sequential expansion slowed vs Q2-to-Q3 lift. This is careful language: technically true, framing chosen to obscure the slowdown."
+    },
+    {
+      "id": "other_revenue",
+      "tooltip": "Eyewear and Accessories combined declined 2% YoY and were grouped into 'Other businesses.' Management offered no granular comment on this segment, burying weak performance in consolidated figures."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was Jewellery segment's YoY revenue growth rate (%)? Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 36.4,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(5840 − 4280) / 4280 × 100 = 36.4%. Management led with this metric because it was their strongest—the prepared remarks emphasised 'robust jewellery momentum' as the headline, burying the fact that watches (next question) were weak."
+    },
+    {
+      "id": "t2",
+      "question": "What was Watches & Wearables segment's sequential (QoQ) growth rate (%)? Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": -4.0,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(1680 − 1750) / 1750 × 100 = −4.0%. Sequential decline in watches while jewellery accelerated is exactly why management omitted watches from the prepared remarks—a conspicuous absence of a segment that historically drove 22% of revenue."
+    },
+    {
+      "id": "t3",
+      "question": "Which of the following best describes the 'tell' in management's commentary structure?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "omitted",
+        "watches",
+        "downplayed",
+        "conspicuous"
+      ],
+      "explanation": "Management frontloaded jewellery's strong 36% YoY growth in the opening remarks and conspicuously omitted any mention of the watches segment despite its 4% sequential decline. The choice of what *not* to discuss is itself informative—silence on a traditionally strong segment signals management is hoping analysts won't probe it, which usually means bad news relative to expectations."
+    },
+    {
+      "id": "t4",
+      "question": "Compare Jewellery's YoY growth (36.4%) to its QoQ growth. What does the gap reveal about the curation of management's narrative?",
+      "answer_type": "free_text",
+      "sample_answer": "Jewellery's YoY growth of 36.4% is strong, but QoQ growth is only 12.3%, indicating deceleration in recent momentum. Management led the commentary with the stronger YoY number and offered detailed discussion of 'sustained jewellery demand,' while downplaying (or not mentioning) the slower sequential momentum. This is selective framing—choosing the flattest growth metric to emphasise while omitting the signal that momentum is slowing.",
+      "explanation": "This tests your ability to read the prepared remarks on Level 2 (the curation): understanding that management's *choice* of which growth metric to emphasise is itself a tell. Strong YoY + weak QoQ is a classic deceleration signal that management will try to obscure by leading with YoY; a sharp analyst notices both metrics and sees what the framing is designed to conceal."
+    },
+    {
+      "id": "t5",
+      "question": "Why might management have omitted Watches from the prepared remarks? What does this conspicuous absence suggest they are concerned about?",
+      "answer_type": "free_text",
+      "sample_answer": "Watches showed QoQ decline (−4%) despite modest YoY growth, and as a ~20% revenue segment should have been discussed. The omission suggests management does not want to draw analyst attention to the weakness or to be questioned about the segment's trajectory. Silence often indicates a sensitive area or a deteriorating trend management hopes to avoid until forced to address in Q&A.",
+      "explanation": "This deepens the reading: conspicuous absence (what's *not* mentioned despite being material) is one of the highest-confidence tells. Management controls the prepared remarks entirely, so what they choose to leave out is deliberate. Watches' omission + sequential decline is a classic setup for sharp questions in the Q&A (Session 6.8)—the tells from the prepared remarks point analysts to where the unscripted discussion gets interesting."
+    }
+  ]
+}

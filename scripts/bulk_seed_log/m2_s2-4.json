@@ -1,0 +1,212 @@
+{
+  "sim_type": "excel",
+  "title": "Nifty 50 Weights: Calculate Index Component Influence",
+  "scenario": "You're at a Mumbai equity desk reviewing the free-float market caps of 10 Nifty 50 constituents. Your PM asks: which stocks dominate the index, and what happens to the Nifty if Reliance drops 5% tomorrow? Build a weight calculator to answer it.",
+  "instructions": "Calculate each stock's free-float market cap weight in the index, identify the top 3 heavyweights, and compute the index's sensitivity to a 5% Reliance move.",
+  "learning_objective": "Calculate stock weights in a free-float market-cap weighted index and explain how heavyweight stocks disproportionately move the headline index level.",
+  "hints": [
+    "Weight formula is (Stock's Free-Float Market Cap / Total Free-Float Market Cap) × 100. Start by summing all free floats.",
+    "After calculating weights, identify which three stocks have the largest weights — these are your heavyweights.",
+    "Index sensitivity to Reliance: if Reliance is 12% of the index and falls 5%, the index falls roughly by Reliance_Weight × 5%."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Free-Float Market Cap (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance Industries",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 1840000,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1480000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "ICICI Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 920000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 780000,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1120000,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 380000,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Axis Bank",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 640000,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Bajaj Finance",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 580000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "L&T",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 520000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Maruti Suzuki",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 380000,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Total Free-Float Market Cap of All 10 Stocks (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "Q2: Reliance Industries Weight (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q3: HDFC Bank Weight (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q4: Sum of Top 3 Heavyweights' Weights (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q5: Name of Stock with Lowest Weight",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Q6: If Reliance Falls 5%, Index Falls by Approx. (%) [Reliance Weight × 5]",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=SUM(Data!B2:B11)",
+      "expected_value": 8640000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(Data!B2/SUM(Data!B2:B11))*100",
+      "expected_value": 21.296296296296298,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B3/SUM(Data!B2:B11))*100",
+      "expected_value": 17.12962962962963,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!B2/SUM(Data!B2:B11))*100+(Data!B3/SUM(Data!B2:B11))*100+(Data!B6/SUM(Data!B2:B11))*100",
+      "expected_value": 51.388888888888886,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 20
+    },
+    "Answers!B6": {
+      "formula_pattern": "=IF(Data!B7=MIN(Data!B7:B11),Data!A7,IF(Data!B11=MIN(Data!B7:B11),Data!A11,\"Check Data\"))",
+      "expected_value": "Wipro",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B7": {
+      "formula_pattern": "=(Data!B2/SUM(Data!B2:B11))*100*5/100",
+      "expected_value": 1.06,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 20
+    }
+  }
+}

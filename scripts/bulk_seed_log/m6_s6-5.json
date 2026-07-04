@@ -1,0 +1,171 @@
+{
+  "sim_type": "document",
+  "title": "Reading Between the Lines: Titan Q3 Concall Data Extract",
+  "scenario": "You're a Mumbai equity analyst prepping for Titan's Q3 earnings. You have the company's unscripted concall commentary on order book and near-term margins. Your task: extract the forward-looking signal hidden in the disclosed numbers and management's tone about execution.",
+  "instructions": "Read the Titan Q3 financial snapshot and concall commentary, hover tooltips for definition, answer questions about forward visibility and execution risk.",
+  "learning_objective": "Extract forward-looking revenue visibility and execution risk from concall disclosures, using order book ratios and management tone to assess credibility.",
+  "hints": [
+    "The order book is disclosed *on the concall*, not in the annual report. Compare it to annual revenue to see how many years ahead are locked in.",
+    "Management's confidence about *executing* the order book matters as much as the headline figure. Watch for language about capacity, supply chain, or delays.",
+    "A growing order-book-to-revenue ratio signals strengthening forward visibility — an early warning system the concall gives you before revenue itself declines."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "Q3 FY25 Earnings Call Excerpt",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Financial Summary — Q3 FY25",
+        "line_items": [
+          {
+            "id": "rev_q3",
+            "label": "Revenue from operations (Q3 FY25)",
+            "current_year": 3847,
+            "previous_year": 3124
+          },
+          {
+            "id": "rev_fy24",
+            "label": "Full-year FY24 revenue",
+            "current_year": 13892,
+            "previous_year": null
+          },
+          {
+            "id": "ebitda_q3",
+            "label": "EBITDA (Q3 FY25)",
+            "current_year": 621,
+            "previous_year": 489
+          },
+          {
+            "id": "margin_q3",
+            "label": "EBITDA margin % (Q3 FY25)",
+            "current_year": 16.1,
+            "previous_year": 15.6
+          },
+          {
+            "id": "pbt_q3",
+            "label": "Profit Before Tax (Q3 FY25)",
+            "current_year": 498,
+            "previous_year": 376
+          }
+        ],
+        "section_total": {
+          "label": "Profit After Tax (Q3 FY25)",
+          "current_year": 373,
+          "previous_year": 280
+        }
+      },
+      {
+        "title": "Order Book & Forward Visibility (Concall Disclosure)",
+        "line_items": [
+          {
+            "id": "order_book",
+            "label": "Total order book (as of Q3 FY25 concall)",
+            "current_year": 27845,
+            "previous_year": 21500
+          },
+          {
+            "id": "ob_exec_conf",
+            "label": "Order book management confirmed as executable within 18 months",
+            "current_year": 24200,
+            "previous_year": null
+          },
+          {
+            "id": "jewellery_ob",
+            "label": "Jewellery segment order book (repeat-purchase contracts)",
+            "current_year": 12300,
+            "previous_year": 9800
+          },
+          {
+            "id": "watches_ob",
+            "label": "Watches & wearables order book (large retail rollouts)",
+            "current_year": 8900,
+            "previous_year": 6200
+          }
+        ],
+        "section_total": {
+          "label": "Annualized revenue run-rate implied by order book",
+          "current_year": 16086,
+          "previous_year": null
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "order_book",
+      "tooltip": "Order book is the unscripted forward-looking metric disclosed on concalls — ₹27,845 Cr represents confirmed future work. Management emphasized 87% executable within 18 months, signaling strong revenue visibility ahead."
+    },
+    {
+      "id": "margin_q3",
+      "tooltip": "EBITDA margin expanded 50 bps YoY despite input cost inflation — management attributed this to operational leverage and product mix shift toward higher-margin jewellery, a credibility signal on execution capability."
+    },
+    {
+      "id": "jewellery_ob",
+      "tooltip": "Jewellery order book grew 25.5% YoY to ₹12,300 Cr — largely repeat-purchase contracts with large retail chains. This recurring revenue visibility is exactly what the concall exists to surface."
+    },
+    {
+      "id": "ob_exec_conf",
+      "tooltip": "Management explicitly stated 87% of order book (₹24,200 Cr) is executable within 18 months — a critical qualification, revealing supply-chain execution risk. The 13% tail carries timing or execution uncertainty."
+    },
+    {
+      "id": "rev_q3",
+      "tooltip": "Q3 revenue grew 23% YoY, but order book grew 29.5% YoY — order book outpacing revenue execution signals either accelerating wins (bullish) or slowing execution (bearish). Concall tone will clarify which."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the order-book-to-revenue ratio (current order book ÷ full-year FY24 revenue). What does this ratio tell you about forward revenue visibility in years?",
+      "answer_type": "number",
+      "expected_value": 2.0,
+      "tolerance": 0.1,
+      "unit": "×",
+      "explanation": "Order book ₹27,845 Cr ÷ FY24 revenue ₹13,892 Cr = 2.0×. Titan has roughly two years of confirmed future revenue already locked in as orders — exceptionally strong forward visibility for a discretionary consumer business. This is the kind of forward indicator the concall is designed to surface, and it's bullish."
+    },
+    {
+      "id": "t2",
+      "question": "What percentage of Titan's order book did management confirm as executable within 18 months? Why would management make this distinction explicit on the concall?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "87%",
+        "execution",
+        "supply chain",
+        "credibility",
+        "transparency"
+      ],
+      "explanation": "Management confirmed 87% (₹24,200 Cr) as executable within 18 months. The explicit qualification signals supply-chain discipline and honesty about execution constraints — a credibility signal. It's the kind of unscripted precision you get on a concall Q&A when analysts press on *real* forward visibility vs. headline order-book number. The 13% tail risk is disclosed transparently, building trust."
+    },
+    {
+      "id": "t3",
+      "question": "Order book grew 29.5% YoY, but Q3 revenue grew only 23% YoY. On the concall, would you ask management about this spread? What execution or market risk might it signal, and what would credible management answers reassure you about?",
+      "answer_type": "free_text",
+      "sample_answer": "Yes, I'd probe this spread. If order book is outpacing revenue execution, it could signal accelerating sales wins (bullish — future revenue ahead) or slowing execution and supply-chain constraints (bearish — orders backing up). Credible answers: (1) 'We won large retail rollouts this quarter that will execute over next 2-3 quarters' (forward momentum), or (2) 'We're at full capacity; we're investing in new manufacturing in Q4 to unlock orders currently queued' (showing management of constraints). Red flags: vague answers, dodging the question, or blaming external factors without a remediation plan — those would signal execution risk."
+    },
+    {
+      "id": "t4",
+      "question": "Jewellery order book is ₹12,300 Cr (44% of total). What type of revenue visibility does a 'repeat-purchase contract' order book provide vs. one-time project wins? Why would an analyst on the concall care about the *composition* of the order book, not just the headline?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "recurring",
+        "visibility",
+        "quality",
+        "predictable",
+        "contract type"
+      ],
+      "explanation": "Repeat-purchase contracts provide *recurring*, *predictable* visibility — the highest-quality revenue forward indicator. One-time project wins are lumpier and riskier. The composition matters enormously: an order book full of recurring contracts is higher-quality than one dependent on episodic projects. An analyst would ask this to distinguish between 'we have 2 years of sticky, predictable revenue' vs. 'we have a big number of one-offs that might not renew.' Management's detail on contract stickiness and retention is exactly the unscripted insight the concall is designed to surface."
+    },
+    {
+      "id": "t5",
+      "question": "EBITDA margin expanded 50 bps YoY (15.6% → 16.1%) despite inflationary cost pressures. Assuming the company experienced a 3-4% inflation headwind on costs, what does management's margin expansion *despite* inflation signal about their execution credibility for near-term guidance?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "pricing power",
+        "operational leverage",
+        "mix",
+        "cost control",
+        "credible"
+      ],
+      "explanation": "Margin expansion despite inflation signals pricing power, product mix improvement (shift to higher-margin jewellery), or operational leverage — all positive execution signals. If management can grow margins *into* inflation, it builds confidence they can deliver on forward guidance. This is the kind of tone and credibility read the concall exists to surface: what does management's actual *execution* (not words, but results) tell you about their reliability on future promises? Expanding margins into inflation = high credibility."
+    }
+  ]
+}

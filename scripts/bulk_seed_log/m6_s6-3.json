@@ -1,0 +1,216 @@
+{
+  "sim_type": "document",
+  "title": "Reading Titan's Auditor Report: Opinion, KAM, and Hidden Risk",
+  "scenario": "You're a junior analyst at a Mumbai equity desk reviewing Titan Company Limited's FY24 annual report. Your senior asks you to read the auditor's report carefully — not just scan it — and flag any concerns before the team's valuation meeting. The report is clean, but Key Audit Matters and contingent liabilities need close attention.",
+  "instructions": "Read the auditor's report excerpt and financial-statement snippets, hover tooltips on critical line items, answer questions on opinion type, KAM significance, and contingent-liability risk sizing.",
+  "learning_objective": "Identify and interpret auditor opinion types, Key Audit Matters, and contingent liabilities to assess financial-statement trustworthiness and hidden risks.",
+  "hints": [
+    "Start by identifying the opinion type in the first paragraph — is it unqualified (clean), qualified, adverse, or a disclaimer?",
+    "Read the Key Audit Matters section — where did the auditor focus scrutiny? What does that tell you about where accounting judgement is highest?",
+    "Calculate contingent liabilities to net worth using the balance-sheet and notes figures — does the ratio signal material hidden risk?"
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Auditor's Opinion (Extract)",
+        "line_items": [
+          {
+            "id": "opinion_type",
+            "label": "Opinion",
+            "value": "We have audited the financial statements of Titan Company Limited (the Company) for the year ended 31 March 2024. In our opinion, the accompanying financial statements give a true and fair view of the financial position of the Company as at 31 March 2024, and of its financial performance and cash flows for the year then ended in accordance with the Indian Accounting Standards (Ind AS) and the Companies Act, 2013."
+          },
+          {
+            "id": "kam_intro",
+            "label": "Key Audit Matters",
+            "value": "Key Audit Matters are those matters that, in our professional judgement, were of most significance in our audit of the financial statements of the current period. These matters were addressed in the context of our audit of the financial statements as a whole, and in forming our opinion thereon, and we do not provide a separate opinion on these matters."
+          }
+        ]
+      },
+      {
+        "title": "Key Audit Matters (KAM) — Summary",
+        "line_items": [
+          {
+            "id": "kam_1",
+            "label": "KAM 1: Revenue Recognition — Gold Jewellery Sales",
+            "value": "Jewellery revenue (₹32,450 cr, 64% of total) is recognised at point of sale or on customer acceptance. Given high transaction volumes, diverse product categories (gold, diamond, gemstone), and varying return policies by store and region, revenue recognition involves significant judgement on timing and measurement. We tested a sample of large transactions and traced returns post year-end."
+          },
+          {
+            "id": "kam_2",
+            "label": "KAM 2: Inventory Valuation — Jewellery and Precious Metals",
+            "value": "Inventory of ₹18,920 cr (mainly gold and finished jewellery) is valued at the lower of cost and net realisable value. Precious-metal prices fluctuate daily; determining NRV requires judgement on future demand and scrap value. We involved valuation specialists and tested the NRV assumptions against market prices."
+          },
+          {
+            "id": "kam_3",
+            "label": "KAM 3: Contingent Liability — Sales Tax Dispute (Rajasthan, 2019–22)",
+            "value": "The Company faces a ₹185 cr contingent liability from a sales-tax demand by Rajasthan authorities for jewellery sales in FY20–22. The Company disputes the assessment and has filed an appeal. Given the ongoing litigation and uncertainty of outcome, the matter required significant auditor judgement on disclosure and likelihood of outflow."
+          }
+        ]
+      },
+      {
+        "title": "Balance Sheet (Extract)",
+        "line_items": [
+          {
+            "id": "total_assets",
+            "label": "Total Assets",
+            "current_year": 52400,
+            "previous_year": 47800
+          },
+          {
+            "id": "total_liabilities",
+            "label": "Total Liabilities (excl. equity)",
+            "current_year": 23100,
+            "previous_year": 21500
+          },
+          {
+            "id": "net_worth",
+            "label": "Shareholders' Equity (Net Worth)",
+            "current_year": 29300,
+            "previous_year": 26300
+          },
+          {
+            "id": "inventory",
+            "label": "Inventory",
+            "current_year": 18920,
+            "previous_year": 17200
+          }
+        ],
+        "section_total": {
+          "label": "Balance Sheet Total",
+          "current_year": 52400,
+          "previous_year": 47800
+        }
+      },
+      {
+        "title": "Income Statement (Extract)",
+        "line_items": [
+          {
+            "id": "revenue",
+            "label": "Revenue from Operations",
+            "current_year": 50750,
+            "previous_year": 40280
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of Materials Consumed (Gold, Gemstones)",
+            "current_year": 35420,
+            "previous_year": 28150
+          },
+          {
+            "id": "employee_benefit",
+            "label": "Employee Benefits Expense",
+            "current_year": 4200,
+            "previous_year": 3850
+          },
+          {
+            "id": "depreciation",
+            "label": "Depreciation & Amortisation (Stores, Equipment)",
+            "current_year": 1850,
+            "previous_year": 1720
+          },
+          {
+            "id": "profit_before_tax",
+            "label": "Profit Before Tax",
+            "current_year": 6380,
+            "previous_year": 5060
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 6380,
+          "previous_year": 5060
+        }
+      },
+      {
+        "title": "Notes to Accounts — Contingent Liabilities (Extract)",
+        "line_items": [
+          {
+            "id": "cont_tax_rajasthan",
+            "label": "Contingent Liability: Sales Tax Demand (Rajasthan)",
+            "current_year": 185,
+            "previous_year": 0
+          },
+          {
+            "id": "cont_gst_dispute",
+            "label": "Contingent Liability: GST Dispute (Karnataka, pending appeal)",
+            "current_year": 42,
+            "previous_year": 38
+          },
+          {
+            "id": "cont_warranty",
+            "label": "Contingent Liability: Product Warranty Claims (routine, historical estimate)",
+            "current_year": 8,
+            "previous_year": 9
+          }
+        ]
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "opinion_type",
+      "tooltip": "Unqualified (clean) opinion — auditor confirms statements present a true and fair view with no reservations. This is the baseline you want. Anything else (qualified, adverse, disclaimer) would be a red flag."
+    },
+    {
+      "id": "kam_3",
+      "tooltip": "Key Audit Matter on contingent liability signals auditor considered this significant enough to highlight. The ₹185 cr Rajasthan sales-tax dispute is material and uncertain — read the notes carefully and size it against net worth."
+    },
+    {
+      "id": "net_worth",
+      "tooltip": "Shareholders' equity is the cushion against losses. Use this denominator to size contingent liabilities as a percentage — if contingencies are large relative to net worth, the hidden risk is material."
+    },
+    {
+      "id": "cont_tax_rajasthan",
+      "tooltip": "Contingent liability from tax dispute — a 'maybe' obligation not on balance sheet yet. The auditor flagged this in KAM, meaning they consider it significant. Check the notes for details on likelihood and amount."
+    },
+    {
+      "id": "kam_1",
+      "tooltip": "Revenue recognition at point of sale with high transaction volumes and varied return policies requires judgement. The auditor tested samples and traced post-year returns — this is where fraud or error risk is highest in a jeweller."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What is the auditor's opinion type on Titan's FY24 financial statements?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "unqualified",
+        "clean",
+        "true and fair"
+      ],
+      "explanation": "The auditor states: 'In our opinion, the accompanying financial statements give a true and fair view.' This is an unqualified (clean) opinion — no reservations, no qualifications, no adverse or disclaimer. The baseline reassuring signal. Any other opinion type (qualified, adverse, disclaimer) would escalate concern sharply."
+    },
+    {
+      "id": "t2",
+      "question": "Calculate Contingent Liabilities to Net Worth (%) for FY24. What does this ratio signal about hidden risk?",
+      "answer_type": "number",
+      "expected_value": 0.76,
+      "tolerance": 0.1,
+      "unit": "%",
+      "explanation": "Total Contingent Liabilities (FY24) = 185 + 42 + 8 = ₹235 cr. Net Worth = ₹29,300 cr. Ratio = (235 ÷ 29,300) × 100 = 0.80% (accept 0.76–0.84%). A ratio < 1% signals limited hidden-risk magnitude relative to net worth — contingencies are material in absolute terms but small relative to shareholders' equity. However, the auditor flagged the Rajasthan dispute in KAM, so weight it by likelihood rather than taking the full amount as certain loss."
+    },
+    {
+      "id": "t3",
+      "question": "Which Key Audit Matter poses the highest risk of misstatement in Titan's FY24 accounts, and why did the auditor focus there?",
+      "answer_type": "free_text",
+      "sample_answer": "KAM 1 (revenue recognition) poses the highest misstatement risk because it involves ₹32,450 cr (64% of total revenue) with high transaction volumes, diverse product categories, and varying return policies — all requiring significant judgement on timing and measurement. The auditor focused there because jewellery sales involve the most room for either error or manipulation. KAM 2 (inventory valuation) is also significant given ₹18,920 cr of precious metals and the daily fluctuation in gold prices, requiring specialist valuation judgement. KAM 3 (tax contingency) is material but is a one-off dispute, not a recurring operational risk.",
+      "explanation": "Revenue (KAM 1) is the auditor's highest focus because it is Titan's largest, most judgement-laden line item — high volume, diverse products, return policies vary by store and region, making it the area with the most room for intentional or unintentional misstatement. The auditor tested large transactions and traced post-year returns, indicating they focused audit effort there precisely because that's where the financial-statement risk is highest. Inventory (KAM 2) is also flagged because precious-metal valuations depend on NRV assumptions that can shift with market prices — again, significant judgement. The contingent-liability KAM signals the auditor considered the tax dispute material enough to highlight, but it's a discrete legal matter rather than an operational-accounting risk."
+    },
+    {
+      "id": "t4",
+      "question": "The auditor flagged the ₹185 cr Rajasthan sales-tax contingent liability in KAM 3. Does this mean the liability will definitely crystallise, and what should you do as an analyst?",
+      "answer_type": "free_text",
+      "sample_answer": "No — a contingent liability is a 'maybe' obligation, not certain. The auditor flagging it in KAM means they considered the matter significant and uncertain enough to highlight in the audit report, but the company has filed an appeal and disputes the demand. As an analyst, (1) read the notes carefully to understand the company's legal position and probability of success (the notes should state whether the company considers it 'probable', 'possible', or 'remote'); (2) research whether similar sales-tax disputes in Rajasthan have historically been won or settled at a discount; (3) weight the contingency by likelihood (if 50% probable, the expected loss is ₹92.5 cr, not ₹185 cr) rather than treating it as a certainty; (4) if the company wins the appeal, the liability disappears; (5) if it loses, the impact is material but manageable given ₹29,300 cr net worth. Monitor court progress and earnings guidance updates.",
+      "explanation": "Contingent liabilities are possibilities, not certainties — they appear in the notes and can be highlighted in KAM (signalling auditor concern) without being recorded as balance-sheet liabilities. The auditor's job is to ensure disclosure is complete and accurate, not to predict the legal outcome. Your job as an analyst is to (a) understand the likelihood (read the company's assessment in the notes and any auditor commentary), (b) research comparable disputes in the same jurisdiction, (c) weight the full amount by probability to get an expected loss, and (d) size that expected loss against net worth and earnings to assess materiality. A ₹185 cr loss if the company loses would reduce FY24 net worth by 0.6% — material but not company-threatening, but dependent on outcome."
+    },
+    {
+      "id": "t5",
+      "question": "Based on the auditor's report, is Titan's FY24 financial statement trustworthy for valuation purposes? State one key assumption you would scrutinise further.",
+      "answer_type": "free_text",
+      "sample_answer": "Yes, Titan's FY24 statements are broadly trustworthy — the auditor issued an unqualified opinion with no reservations, and the auditor firm is a reputable Big 4 or national firm. However, two areas warrant careful scrutiny: (1) Revenue recognition judgement (KAM 1) — the auditor tested samples, but with ₹32,450 cr revenue and high transaction volumes, verify that return policies are consistently applied and that post-year-end returns don't indicate aggressive period-end sales. (2) Inventory valuation (KAM 2) — gold prices are volatile; confirm that NRV assumptions used (especially for slow-moving gemstones) are conservative and updated regularly. (3) The Rajasthan tax contingency adds uncertainty — don't assume it's fully refundable if the company wins; monitor court proceedings. In valuation, use conservative assumptions for revenue growth (assume some upside sales may be returned) and inventory valuation (assume some scrap/NRV pressure), and run a scenario where the tax dispute is lost.",
+      "explanation": "A clean auditor opinion is reassuring but not absolute protection against error or fraud — it means the auditor found no evidence of material misstatement and the numbers comply with standards, but auditors can be deceived and estimates can turn out wrong. The KAM point you to the highest-risk areas: revenue (large, high-volume, varying return policies) and inventory (precious metals, price volatility, NRV judgement). As an analyst, your scrutiny should focus exactly there — replicate the auditor's reasoning, test return patterns, verify inventory NRV assumptions, and challenge any area where management has discretion. The tax contingency adds downside risk; price it into your valuation as a scenario. The clean opinion gives you enough confidence to analyse the company, but the KAM tell you where to focus your own due diligence."
+    }
+  ]
+}

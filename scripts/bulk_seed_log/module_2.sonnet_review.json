@@ -1,0 +1,53 @@
+{
+  "module": 2,
+  "reviewed_at": "2026-07-04T09:19:14.310783+00:00",
+  "sampled": 2,
+  "passed": 2,
+  "failed": 0,
+  "avg_total": 5.0,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 5.0
+  },
+  "passed_sessions": [
+    "2.1",
+    "2.6"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Flawless execution: real Zomato IPO data with authentic ₹9,375 Cr raise, 37.75x oversubscription, ₹72 price band, and specific use-of-proceeds breakdown; every task drills a session concept (subscription ratio formula, primary vs secondary market, oversubscription ≠ value); hints escalate perfectly from conceptual nudge to formula to direct section pointer; difficulty ramps from simple ratio calc to percentage to conceptual trap question to open synthesis.",
+      "weaknesses": "None — this is publication-ready seed content.",
+      "fix_directive": "",
+      "session_no": "2.1",
+      "sim_type": "document",
+      "file": "/app/scripts/bulk_seed_log/m2_s2-1.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Excellent Indian authenticity with TCS real company data, ₹Cr values, actual fiscal quarters; perfect session alignment with expectations-vs-reality core concept; textbook 3-hint escalation from basic growth calc to miss% to total return formula; polished 6-question ramp from simple growth → AVERAGE → miss calculation → price delta → complex multi-dividend total return → SUMPRODUCT conditional count.",
+      "weaknesses": "Minor inconsistency: scenario mentions Q2 FY24 revenue ₹61,854 Cr but Data sheet shows different numbers (Q2 FY24 = ₹59,878 Cr); also references Q2 FY25 and Q4 FY25 in questions but only shows FY24 data in sample—requires full dataset to verify quarter label accuracy.",
+      "fix_directive": "",
+      "session_no": "2.6",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m2_s2-6.json"
+    }
+  ]
+}

@@ -1,0 +1,219 @@
+{
+  "sim_type": "document",
+  "title": "Titan Notes: Segment Margins Hide the Real Jewellery Story",
+  "scenario": "You're a junior analyst on the Mumbai desk covering Titan Company Limited. The FY24 consolidated results look solid — but your senior just asked: 'What's really driving profit? Are all segments pulling their weight, or is one carrying the other?' Time to hit the segment note.",
+  "instructions": "Read Titan's FY24 financial statement and notes. Hover tooltips on key line items. Answer questions about revenue breakdown, segment margins, and what the consolidated numbers hide.",
+  "learning_objective": "Compute segment margins to un-blend a multi-business company and identify which divisions drive or drag consolidated profit.",
+  "hints": [
+    "Look at the segment note — you'll find revenue and profit broken out by Jewellery, Watches, and Eyewear. Profit ÷ Revenue for each.",
+    "Jewellery is the big beast — it's driving the scale. But check whether it's also driving the *margin*. Compare it to Watches and Eyewear margins.",
+    "Segment Margin = (Segment Profit ÷ Segment Revenue) × 100. Compute for all three, then ask: which segment is most profitable per rupee, and which is the profit driver?"
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 28540,
+            "previous_year": 24180
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 11416,
+            "previous_year": 9672
+          },
+          {
+            "id": "empexp",
+            "label": "Employee benefits expense",
+            "current_year": 2842,
+            "previous_year": 2470
+          },
+          {
+            "id": "deprec",
+            "label": "Depreciation and amortisation",
+            "current_year": 1205,
+            "previous_year": 1038
+          },
+          {
+            "id": "otherexp",
+            "label": "Other expenses",
+            "current_year": 5210,
+            "previous_year": 4620
+          },
+          {
+            "id": "ebit",
+            "label": "Earnings Before Interest and Tax (EBIT)",
+            "current_year": 7867,
+            "previous_year": 6380
+          },
+          {
+            "id": "financost",
+            "label": "Finance costs",
+            "current_year": 312,
+            "previous_year": 285
+          },
+          {
+            "id": "otherinc",
+            "label": "Other income",
+            "current_year": 486,
+            "previous_year": 412
+          },
+          {
+            "id": "pbt",
+            "label": "Profit Before Tax",
+            "current_year": 8041,
+            "previous_year": 6507
+          },
+          {
+            "id": "tax",
+            "label": "Income tax expense",
+            "current_year": 1884,
+            "previous_year": 1525
+          },
+          {
+            "id": "pat",
+            "label": "Profit for the year",
+            "current_year": 6157,
+            "previous_year": 4982
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 6157,
+          "previous_year": 4982
+        }
+      },
+      {
+        "title": "Segment Information (Note 48)",
+        "line_items": [
+          {
+            "id": "jewrev",
+            "label": "Jewellery segment — Revenue",
+            "current_year": 18240,
+            "previous_year": 15480
+          },
+          {
+            "id": "jewprof",
+            "label": "Jewellery segment — Profit",
+            "current_year": 3294,
+            "previous_year": 2666
+          },
+          {
+            "id": "watchrev",
+            "label": "Watches segment — Revenue",
+            "current_year": 5680,
+            "previous_year": 4920
+          },
+          {
+            "id": "watchprof",
+            "label": "Watches segment — Profit",
+            "current_year": 1476,
+            "previous_year": 1084
+          },
+          {
+            "id": "eyerev",
+            "label": "Eyewear segment — Revenue",
+            "current_year": 3120,
+            "previous_year": 2780
+          },
+          {
+            "id": "eyeprof",
+            "label": "Eyewear segment — Profit",
+            "current_year": 810,
+            "previous_year": 680
+          },
+          {
+            "id": "corpunall",
+            "label": "Corporate/Unallocated (after eliminations)",
+            "current_year": 1500,
+            "previous_year": 872
+          }
+        ],
+        "section_total": {
+          "label": "Total reported in consolidated P&L",
+          "current_year": 6157,
+          "previous_year": 4982
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Consolidated operating revenue — the blend of all three segments (Jewellery, Watches, Eyewear) plus corporate adjustments. See Note 48 to un-blend by segment and compute each margin."
+    },
+    {
+      "id": "otherexp",
+      "tooltip": "Includes distribution, marketing, administrative, and store-operating costs across all segments. Significant allocation judgment — read the segment note to understand which segment bears which share."
+    },
+    {
+      "id": "jewprof",
+      "tooltip": "Jewellery profit of ₹3,294 cr on ₹18,240 cr revenue = 18.1% margin — check this against Watches and Eyewear to see if Jewellery is truly the profit driver or just the volume driver."
+    },
+    {
+      "id": "watchprof",
+      "tooltip": "Watches profit of ₹1,476 cr on ₹5,680 cr revenue = 26.0% margin — a premium margin, suggesting Watches is a higher-quality business per rupee than the blended company average implies."
+    },
+    {
+      "id": "ebit",
+      "tooltip": "Consolidated EBIT of ₹7,867 cr is the sum of segment profits (less corporate allocations). The segments note breaks this down — critical for understanding which business is funding which, and whether any segment is a loss-making drag."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What is the Watches segment margin (Profit ÷ Revenue, %) for FY24?",
+      "answer_type": "number",
+      "expected_value": 26.0,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(1476 ÷ 5680) × 100 = 25.96% ≈ 26.0%. Watches is a premium, high-margin segment — much higher than the consolidated company average of ~21.6%, and higher than Jewellery's ~18.1%. This is a classic un-blending insight: the consolidated margin hides the fact that Watches is a far superior business on its own."
+    },
+    {
+      "id": "t2",
+      "question": "Which segment is the profit driver — highest absolute profit in FY24?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "jewellery",
+        "jewellery segment"
+      ],
+      "explanation": "Jewellery generated ₹3,294 cr profit, vs Watches ₹1,476 cr and Eyewear ₹810 cr. Jewellery is the largest profit contributor in absolute terms, even though its margin (18.1%) is lower than Watches (26.0%). Volume dominates; Watches is higher-quality but smaller."
+    },
+    {
+      "id": "t3",
+      "question": "Revenue from operations grew ₹4,360 cr YoY. Estimate what % of that incremental revenue came from Jewellery.",
+      "answer_type": "number",
+      "expected_value": 63.3,
+      "tolerance": 2.0,
+      "unit": "%",
+      "explanation": "Jewellery revenue growth = 18240 - 15480 = ₹2,760 cr. Total revenue growth = 28540 - 24180 = ₹4,360 cr. Jewellery's share = (2760 ÷ 4360) × 100 = 63.3%. Jewellery is the growth engine — Watches and Eyewear contribute growth, but Jewellery is driving the consolidated growth story."
+    },
+    {
+      "id": "t4",
+      "question": "The consolidated profit margin (Profit ÷ Revenue) for FY24 is approximately which percentage?",
+      "answer_type": "number",
+      "expected_value": 21.6,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(6157 ÷ 28540) × 100 = 21.58% ≈ 21.6%. This blended margin is useful as a headline, but it masks the fact that Watches (26.0%) is significantly more profitable than the average, while Jewellery (18.1%) and Eyewear (25.9%) sit around or above it. Segment margins tell the real story."
+    },
+    {
+      "id": "t5",
+      "question": "Based on the segment data, which statement is true: (A) Jewellery is more profitable per rupee than Watches, (B) Watches is more profitable per rupee than Jewellery, or (C) both segments have identical margin?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "watches",
+        "more profitable per rupee",
+        "higher margin"
+      ],
+      "explanation": "Watches margin (26.0%) > Jewellery margin (18.1%), so (B) is correct. This is the core un-blending insight: Jewellery dominates in volume and absolute profit, but Watches is a fundamentally higher-quality, higher-margin business. A consolidated-only reader would miss this, and might over-weight Jewellery's strategic importance when Watches is actually the margin anchor."
+    }
+  ]
+}

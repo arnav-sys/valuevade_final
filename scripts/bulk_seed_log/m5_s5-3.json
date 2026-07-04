@@ -1,0 +1,164 @@
+{
+  "sim_type": "document",
+  "title": "Promoter Pledging Alert: Decoding Ownership Risk at Bajaj Finance",
+  "scenario": "You're an equity analyst at a Mumbai hedge fund reviewing Bajaj Finance's latest shareholding pattern disclosure. The promoter pledge percentage has spiked 8% in one quarter, and you need to assess whether this signals distress or is routine. Your PM is calling in 30 minutes.",
+  "instructions": "Read the shareholding pattern and financial snapshot below. Hover tooltips on key line items. Answer all tasks to identify pledging risk and ownership signals.",
+  "learning_objective": "Assess promoter pledging risk and interpret shareholding pattern changes as early warnings of financial stress.",
+  "hints": [
+    "Calculate pledge % using the formula: (Pledged Promoter Shares / Total Promoter Shares) × 100. Track the trend from last quarter.",
+    "Notice that promoter holding has fallen 2.1% while pledging rose sharply — this combination is the real warning, not pledging alone.",
+    "The combination of falling promoter holding, rising pledging, and stagnant profit growth suggests promoters are short of cash and borrowing against collateral — classic pre-trouble signal."
+  ],
+  "document_data": {
+    "company_name": "Bajaj Finance Limited",
+    "period": "Q3 FY25 Shareholding Pattern & Financial Summary",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Shareholding Pattern (% of equity)",
+        "line_items": [
+          {
+            "id": "promo_q3",
+            "label": "Promoter Holding (Q3 FY25)",
+            "current_year": 51.2,
+            "previous_year": 53.3
+          },
+          {
+            "id": "promo_pledged_q3",
+            "label": "Promoter Shares Pledged (Q3 FY25)",
+            "current_year": 12.8,
+            "previous_year": 4.6
+          },
+          {
+            "id": "fii_q3",
+            "label": "FII/Foreign Institutional Holding",
+            "current_year": 18.5,
+            "previous_year": 19.2
+          },
+          {
+            "id": "dii_q3",
+            "label": "DII/Domestic Institutional Holding",
+            "current_year": 11.3,
+            "previous_year": 11.8
+          },
+          {
+            "id": "public_q3",
+            "label": "Public Holding",
+            "current_year": 7.0,
+            "previous_year": 6.1
+          }
+        ],
+        "section_total": {
+          "label": "Total Equity",
+          "current_year": 100.0,
+          "previous_year": 100.0
+        }
+      },
+      {
+        "title": "Income Statement (9M FY25)",
+        "line_items": [
+          {
+            "id": "rev_9m",
+            "label": "Revenue from operations",
+            "current_year": 28645,
+            "previous_year": 26180
+          },
+          {
+            "id": "interest_9m",
+            "label": "Interest expense",
+            "current_year": 8920,
+            "previous_year": 7650
+          },
+          {
+            "id": "profit_9m",
+            "label": "Profit Before Tax",
+            "current_year": 6234,
+            "previous_year": 5980
+          },
+          {
+            "id": "tax_9m",
+            "label": "Tax Expense",
+            "current_year": 1870,
+            "previous_year": 1794
+          },
+          {
+            "id": "pat_9m",
+            "label": "Profit After Tax",
+            "current_year": 4364,
+            "previous_year": 4186
+          }
+        ],
+        "section_total": {
+          "label": "PAT 9M FY25",
+          "current_year": 4364,
+          "previous_year": 4186
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "promo_pledged_q3",
+      "tooltip": "Promoter shares pledged as collateral jumped from 4.6% to 12.8% — a 174% surge in one quarter. This sharp rise signals promoters are borrowing heavily, often a sign of cash pressure or conviction to hold despite market weakness."
+    },
+    {
+      "id": "promo_q3",
+      "tooltip": "Promoter holding fell 2.1 percentage points YoY to 51.2%. Combined with rising pledging, this suggests insiders are reducing visible ownership while mortgaging what remains — a classic red-flag combination."
+    },
+    {
+      "id": "fii_q3",
+      "tooltip": "FII holding slipped 0.7% YoY. Falling foreign institutional interest alongside rising promoter pledging indicates smart money is exiting while insiders are under cash pressure — divergent confidence signals."
+    },
+    {
+      "id": "interest_9m",
+      "tooltip": "Interest expense rose 16.6% YoY to ₹8,920 Cr. Rising financing costs, combined with promoter pledging, suggest the company (and its founders) are carrying higher debt loads — stress indicator."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the promoter pledge percentage in Q3 FY25. (Pledged Promoter Shares as % of Total Promoter Holding, approximately)",
+      "answer_type": "number",
+      "expected_value": 25.0,
+      "tolerance": 1.5,
+      "unit": "%",
+      "explanation": "Pledged shares 12.8% ÷ Total promoter holding 51.2% × 100 = 25%. This means roughly one-quarter of all promoter equity is mortgaged — a material and rising pledge load."
+    },
+    {
+      "id": "t2",
+      "question": "What is the YoY change in promoter holding from Q3 FY24 to Q3 FY25 (in percentage points)?",
+      "answer_type": "number",
+      "expected_value": -2.1,
+      "tolerance": 0.2,
+      "unit": "pp",
+      "explanation": "53.3% − 51.2% = −2.1 percentage points. A 2%+ slide in promoter stake over one year, especially paired with surging pledging, is a significant negative signal on insider confidence."
+    },
+    {
+      "id": "t3",
+      "question": "Name two key signals from the shareholding pattern and financials that together suggest promoter cash stress.",
+      "answer_type": "text",
+      "expected_keywords": [
+        "pledging",
+        "falling",
+        "holding",
+        "interest",
+        "debt"
+      ],
+      "explanation": "Any answer naming (a) rising promoter pledging + falling promoter holding, OR (b) rising pledging + rising interest expense signals promoter stress. The combination is more alarming than any single metric — it reveals insiders are both reducing stake and borrowing heavily."
+    },
+    {
+      "id": "t4",
+      "question": "If Bajaj Finance's share price were to fall 15% in the next quarter, what forced-selling risk would arise from the current pledge level?",
+      "answer_type": "free_text",
+      "sample_answer": "At 12.8% pledging and falling confidence, a 15% stock drop could trigger margin calls from lenders. They may force-sell pledged shares to recover collateral value, creating a self-reinforcing downward spiral. The 25% pledge-to-holding ratio means roughly 1-in-4 promoter shares could flood the market, crashing the stock further and eroding retail confidence.",
+      "explanation": "This tests understanding of the pledging mechanism: pledged shares are collateral. When stock prices fall, lenders demand higher collateral or force sales. In Bajaj's case, the rising pledge (12.8%, up from 4.6%) and falling promoter holding create a 'trapdoor' scenario — price weakness → forced selling → more weakness → potential cascading collapse. Analysts must always stress-test this scenario."
+    },
+    {
+      "id": "t5",
+      "question": "As an analyst, would you recommend holding or investigating further before making a call? Justify briefly.",
+      "answer_type": "free_text",
+      "sample_answer": "I would investigate further before holding or recommending. The sharp jump in pledging (4.6% → 12.8%), falling promoter holding (−2.1pp), and rising interest expense (+16.6%) paint a picture of promoter cash pressure. While Bajaj's financials remain solid (PAT growth +4%), the ownership red flags warrant a management call to understand why pledging surged and holding fell. Until clarified, I'd place this on 'Watch' rather than hold.",
+      "explanation": "This tests analytical judgment. The session emphasized never skipping the shareholding pattern — it carries early warnings. Here, multiple signals align (pledging ↑, holding ↓, interest expense ↑), forming a compelling case to investigate before committing capital. A strong answer weighs the positive financials against the ownership red flags and chooses appropriate caution."
+    }
+  ]
+}

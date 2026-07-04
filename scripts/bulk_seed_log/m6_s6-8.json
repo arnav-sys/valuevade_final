@@ -1,0 +1,149 @@
+{
+  "sim_type": "document",
+  "title": "Titan Q3 FY24: Decoding Management's Earnings Call Answers",
+  "scenario": "You're prepping for tomorrow's concall debrief on your Mumbai desk. Your team just released Titan's Q3 FY24 results, and you've got the earnings call transcript. Your job: read the financials first, spot what management highlighted — then trace it against what they *avoided* in the Q&A. Where did they dodge?",
+  "instructions": "Read Titan's Q3 income statement. Hover tooltips to understand key line items. Then answer 4 Q&A-focused analytical questions: identify growth, recognise what management highlighted, spot what they might avoid, and assess credibility.",
+  "learning_objective": "Assess Q&A answers as direct/partial/deflected/non-answer to identify what management is avoiding and where the real concerns lie.",
+  "hints": [
+    "Watch the gap between what the prepared remarks emphasise (jewellery growth) and what analysts might press on (margin decline).",
+    "Notice which line items move most YoY — that's what management *has to* justify, and where dodges appear.",
+    "Management comfort = direct answer to hard questions; nervousness = deflection, vagueness, or retreat to talking points."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "Q3 FY24 Consolidated Results (9M FY24)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Income Statement — Q3 FY24",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 8742,
+            "previous_year": 7156
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 4521,
+            "previous_year": 3625
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 892,
+            "previous_year": 768
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 156,
+            "previous_year": 142
+          },
+          {
+            "id": "other",
+            "label": "Other expenses",
+            "current_year": 485,
+            "previous_year": 412
+          },
+          {
+            "id": "ebit",
+            "label": "EBIT (Operating Profit)",
+            "current_year": 2088,
+            "previous_year": 2209
+          },
+          {
+            "id": "fin",
+            "label": "Finance costs",
+            "current_year": 78,
+            "previous_year": 65
+          },
+          {
+            "id": "pbt",
+            "label": "Profit Before Tax",
+            "current_year": 1910,
+            "previous_year": 2089
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 442,
+            "previous_year": 491
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the period",
+          "current_year": 1468,
+          "previous_year": 1598
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Jewellery segment drove most growth (strong wedding season, festive demand); watches & wearables softer YoY due to inventory corrections at retail."
+    },
+    {
+      "id": "cogs",
+      "tooltip": "Gold prices up ~6% YoY (international commodity pressure); management's margin squeeze begins here. This line item justifies why Revenue grew 22% but EBIT fell."
+    },
+    {
+      "id": "ebit",
+      "tooltip": "Operating profit *declined* 5.5% YoY despite 22% revenue growth — the margin compression story. Expect analysts to press hard on this dodge risk in Q&A."
+    },
+    {
+      "id": "emp",
+      "tooltip": "Employee costs up 16% YoY (store expansion, salary inflation); part of the operating leverage miss. Management may deflect by highlighting long-term investment narrative."
+    },
+    {
+      "id": "pbt",
+      "tooltip": "Profit down 8.6% YoY; net margin compressed from 22.4% to 21.9% — subtle but telling. Watch whether management admits margin pressure or retreats to 'temporary' narratives."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was Titan's Revenue growth YoY in Q3 FY24 (%)? Round to 1 decimal.",
+      "answer_type": "number",
+      "expected_value": 22.1,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(8742 - 7156) / 7156 × 100 = 22.1%. Strong headline growth, but the Q&A battleground is: *at what cost to margins*?"
+    },
+    {
+      "id": "t2",
+      "question": "EBIT margin compressed despite revenue growth. Which cost line item increased most as a % of revenue, signalling operating leverage miss?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "materials",
+        "cost of goods",
+        "cogs",
+        "gold prices"
+      ],
+      "explanation": "COGS as % of revenue: Q3 FY24 = 51.7% vs Q3 FY23 = 50.7% (+100bps). Gold/commodity inflation is the culprit. In Q&A, analysts probe whether this is temporary (favourable for margins if gold falls) or structural; management's answer to 'when do margins recover' is the critical dodge-or-direct moment."
+    },
+    {
+      "id": "t3",
+      "question": "If an analyst asks 'When will EBIT margins return to prior-year levels?', classify management's response type: (A) Direct (specific quarter + action plan), (B) Partial (cites only gold prices, ignores employee cost inflation), (C) Deflected (pivots to jewellery growth story), (D) Non-answer (sounds confident but no specifics). Which type signals the most concealment?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "non-answer",
+        "deflected",
+        "avoids",
+        "concealment"
+      ],
+      "explanation": "Answer (D) Non-answer or (C) Deflected. If management gives a direct, specific commitment ('Q4 margins will be 25%+ because gold inventory destocking is 60% complete'), analysts trust them. If they pivot ('Our jewellery momentum is the real story; margins will normalize as we scale') or sound confident without specifics, that's evasion — the dodge is the signal. The prepared remarks likely emphasize growth; the Q&A is where the margin story gets contested."
+    },
+    {
+      "id": "t4",
+      "question": "Calculate Titan's Profit decline YoY (%). This is the bottom-line reality investors care about. In the Q&A, expect analysts to contrast this with management's upbeat tone in prepared remarks. What is the ₹ Cr gap?",
+      "answer_type": "number",
+      "expected_value": 8.1,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(1598 - 1468) / 1598 × 100 = 8.1% decline. Absolute gap = ₹130 Cr profit loss. The mismatch — strong revenue growth + profit decline — is *precisely* where Q&A pressure lands. Management's prepared script emphasizes jewellery momentum; the Q&A forces them to justify why that momentum didn't translate to bottom-line growth. Watch for hedging ('temporary headwinds') rather than acknowledgment of structural margin pressure."
+    }
+  ]
+}

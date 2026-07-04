@@ -1,0 +1,175 @@
+{
+  "sim_type": "document",
+  "title": "Titan's Cash Story — Profit vs Real Money, FY24",
+  "scenario": "Your Mumbai desk senior just flagged Titan Company Limited's FY24 cash flow alongside its glowing P&L. She wants you to verify whether that record jewellery profit actually landed in the bank. Pull the statement, spot the three buckets, and calculate free cash flow.",
+  "instructions": "Read Titan's Cash Flow Statement (FY24), hover tooltips on key line items, answer questions on operating cash, free cash flow, and what the cash tells you that profit alone cannot.",
+  "learning_objective": "Separate cash flow into operating, investing, and financing buckets; calculate free cash flow; identify red flags where profit and cash diverge.",
+  "hints": [
+    "Operating cash is cash from selling jewellery and collecting from customers. Investing cash is what they spent on stores and machinery. Financing is loans and dividends. Add all three to see net cash change.",
+    "Free cash flow = Operating Cash Flow minus Capital Expenditure. Check if Titan's operating cash is strong enough to fund its store expansion and still leave cash for shareholders.",
+    "Row 'Cash from Operating Activities' is ₹2,840 Cr. Row 'Purchase of Property, Plant & Equipment' is ₹680 Cr. Subtract to get FCF. Then ask: is ₹2,160 Cr enough to fund a jeweller's growth?"
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 (Year ended 31 March 2024)",
+    "currency": "₹ Crore",
+    "sections": [
+      {
+        "title": "Cash Flow from Operating Activities",
+        "line_items": [
+          {
+            "id": "pft",
+            "label": "Profit for the year",
+            "current_year": 2156,
+            "previous_year": 1658
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 420,
+            "previous_year": 368
+          },
+          {
+            "id": "fc",
+            "label": "Finance costs",
+            "current_year": 85,
+            "previous_year": 72
+          },
+          {
+            "id": "wc",
+            "label": "Changes in working capital",
+            "current_year": 179,
+            "previous_year": -198
+          },
+          {
+            "id": "tax",
+            "label": "Tax paid",
+            "current_year": -490,
+            "previous_year": -415
+          },
+          {
+            "id": "cfo",
+            "label": "Cash from Operating Activities",
+            "current_year": 2840,
+            "previous_year": 2188
+          }
+        ],
+        "section_total": {
+          "label": "Operating Cash Flow (CFO)",
+          "current_year": 2840,
+          "previous_year": 2188
+        }
+      },
+      {
+        "title": "Cash Flow from Investing Activities",
+        "line_items": [
+          {
+            "id": "capex",
+            "label": "Purchase of Property, Plant & Equipment",
+            "current_year": -680,
+            "previous_year": -520
+          },
+          {
+            "id": "intinv",
+            "label": "Investment in subsidiaries and associates",
+            "current_year": -95,
+            "previous_year": -60
+          },
+          {
+            "id": "sale",
+            "label": "Proceeds from sale of investments",
+            "current_year": 45,
+            "previous_year": 28
+          }
+        ],
+        "section_total": {
+          "label": "Cash used in Investing Activities (CFI)",
+          "current_year": -730,
+          "previous_year": -552
+        }
+      },
+      {
+        "title": "Cash Flow from Financing Activities",
+        "line_items": [
+          {
+            "id": "borrow",
+            "label": "Proceeds from borrowings",
+            "current_year": 150,
+            "previous_year": 200
+          },
+          {
+            "id": "repay",
+            "label": "Repayment of borrowings",
+            "current_year": -380,
+            "previous_year": -325
+          },
+          {
+            "id": "div",
+            "label": "Dividends paid",
+            "current_year": -480,
+            "previous_year": -360
+          }
+        ],
+        "section_total": {
+          "label": "Cash from/(used in) Financing Activities (CFF)",
+          "current_year": -710,
+          "previous_year": -485
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "cfo",
+      "tooltip": "Operating cash of ₹2,840 Cr is what actually landed from jewellery sales and customer collections. This is NOT the same as the ₹2,156 Cr profit — depreciation and working capital changes bridge the gap. A rising CFO despite flat profit is a very good sign."
+    },
+    {
+      "id": "capex",
+      "tooltip": "Titan spent ₹680 Cr on new showrooms, distribution centres, and manufacturing. This is the 'I' in investing — real cash out the door. Subtract this from CFO to see what's truly left over."
+    },
+    {
+      "id": "div",
+      "tooltip": "Dividends of ₹480 Cr were paid to shareholders. A company can only do this sustainably if operating cash flow covers both capex and dividends. Here it does, barely — a sign of a healthy, mature jewellery business."
+    },
+    {
+      "id": "wc",
+      "tooltip": "Working capital improved by ₹179 Cr (mainly faster receivable collection and better inventory turns). This is a massive red flag if negative — it would mean cash getting trapped in unsold stock or unpaid customer bills."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Titan's Free Cash Flow for FY24. (Operating Cash Flow − Capital Expenditure)",
+      "answer_type": "number",
+      "expected_value": 2160,
+      "tolerance": 5,
+      "unit": "₹ Crore",
+      "explanation": "FCF = 2,840 (CFO) − 680 (Capex) = ₹2,160 Cr. This is the cash Titan could hand to shareholders or use for acquisitions without hurting operations. A strong positive FCF signals the business funds itself."
+    },
+    {
+      "id": "t2",
+      "question": "What is Titan's Operating Cash Flow for FY24, and name ONE non-cash item that was added back to Net Profit to calculate it.",
+      "answer_type": "text",
+      "expected_keywords": [
+        "2840",
+        "depreciation",
+        "amortisation"
+      ],
+      "explanation": "Operating Cash Flow is ₹2,840 Cr. Non-cash items like depreciation (₹420 Cr) and amortisation are added back because they reduce profit but don't actually move cash. Finance costs (₹85 Cr) and tax paid (₹490 Cr) are also adjustments. The point: profit of ₹2,156 Cr becomes ₹2,840 Cr of real cash via these adjustments."
+    },
+    {
+      "id": "t3",
+      "question": "Titan's net profit grew 30% (₹1,658 Cr to ₹2,156 Cr) but operating cash flow grew only 30% as well (₹2,188 Cr to ₹2,840 Cr). Is this a red flag? Explain briefly.",
+      "answer_type": "free_text",
+      "sample_answer": "Not a red flag in Titan's case. Profit and operating cash both grew at roughly the same rate (30%), which means earnings are converting into real cash — no deterioration. In fact, working capital improved by ₹179 Cr, suggesting better collection and inventory management. A red flag would be profit growing 30% while operating cash shrinks or stagnates, which would indicate cash getting trapped in receivables or stock.",
+      "explanation": "This tests understanding that profit and cash growth moving together is healthy, not a sign of concern. The mistake students make: assuming any difference between profit and cash is bad. The reality: aligned growth shows earnings quality. The real red flag is profit growing while operating cash declines — that's when accrual accounting tricks are hiding cash problems."
+    },
+    {
+      "id": "t4",
+      "question": "Titan paid ₹480 Cr in dividends in FY24 while generating ₹2,840 Cr in operating cash and spending ₹680 Cr on capex. Can the company sustain this dividend level indefinitely? Why or why not?",
+      "answer_type": "free_text",
+      "sample_answer": "Yes, the dividend is highly sustainable. Operating cash of ₹2,840 Cr exceeds the sum of capex (₹680 Cr) and dividends (₹480 Cr) by ₹680 Cr, giving Titan a large cushion. The company is not only funding its own growth but also returning cash to shareholders with room to spare. This is exactly the profile of a mature, profitable business — not a warning sign.",
+      "explanation": "This question tests whether students can use the three buckets together to assess capital allocation. A company that can't cover capex + dividends from operating cash must either borrow or cut one or both — unsustainable. Titan has no such problem. The learning point: use the cash flow statement to stress-test a company's stated dividend policy."
+    }
+  ]
+}

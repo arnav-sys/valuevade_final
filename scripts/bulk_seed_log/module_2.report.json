@@ -1,0 +1,88 @@
+{
+  "module": 2,
+  "completed_at": "2026-07-04T09:17:15.769275+00:00",
+  "total_sessions": 6,
+  "sims_generated": 6,
+  "sims_failed": 0,
+  "by_type": {
+    "document": 1,
+    "decision_making": 3,
+    "excel": 2
+  },
+  "total_engine_corrections": 6,
+  "elapsed_seconds": 248.2,
+  "rows": [
+    {
+      "session_no": "2.1",
+      "session_title": "The Primary Market — How Companies Raise Money",
+      "db_session_id": "54f64957-578c-4d82-b385-5a996913a1bc",
+      "sim_type": "document",
+      "sim_id": "39db3ce9-22f6-4ca8-81a5-e3844bfda893",
+      "seconds": 19.0,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "2.2",
+      "session_title": "The Secondary Market — Where Shares Change Hands",
+      "db_session_id": "2cb14cd8-62b5-419e-ada7-6b5ee92bebc3",
+      "sim_type": "decision_making",
+      "sim_id": "318bbaee-1067-48cc-8e5d-a6d6d8faff9a",
+      "seconds": 50.8,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "2.3",
+      "session_title": "Who's Who in the Market — The Players",
+      "db_session_id": "a453305b-e8dd-4bc6-8f0a-285741d96dd2",
+      "sim_type": "decision_making",
+      "sim_id": "ca6140e1-a46b-44ce-bc76-7d86da228f39",
+      "seconds": 46.1,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "2.4",
+      "session_title": "Indices — How We Measure the Market",
+      "db_session_id": "a06b6153-1852-4d91-8607-ba63ea801413",
+      "sim_type": "excel",
+      "sim_id": "2560d2ee-1abe-4ab3-8336-7b5598e571d2",
+      "seconds": 12.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 4,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "2.5",
+      "session_title": "How a Trade Actually Happens — Orders, Settlement & SEBI",
+      "db_session_id": "eeda5aae-9fe7-4a4a-81d1-8130ddb56f40",
+      "sim_type": "decision_making",
+      "sim_id": "b2f68e6c-caab-4f03-80e9-8345e444e96a",
+      "seconds": 52.2,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "2.6",
+      "session_title": "What Moves Stock Prices",
+      "db_session_id": "cad120df-4384-42e2-946f-79eaeeb49c1e",
+      "sim_type": "excel",
+      "sim_id": "1dc58254-910e-49a6-9029-e8679cfd036d",
+      "seconds": 67.8,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 0
+    }
+  ]
+}

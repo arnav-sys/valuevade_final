@@ -1,0 +1,229 @@
+{
+  "sim_type": "decision_making",
+  "title": "Zomato Valuation Call: Future Cash or Speculative Bubble?",
+  "scenario": "You are a senior equity analyst at Motilal Oswal Securities in Mumbai. Zomato, the food-delivery unicorn, is set to list on NSE/BSE in 48 hours at an estimated ₹70 per share valuation of ₹92,000 crore. The company has never posted an annual profit, yet demand from institutional investors is surging. Your desk head asks you to recommend a rating for institutional clients by end of day. Do you rate it a Buy, Hold, or Avoid?",
+  "instructions": "Walk through 4 decision points. At each node, pick one option from 2-4 choices. Your selections accumulate scores across three dimensions: rigor, speed, and stakeholder_trust. Your final score determines whether your call is defended as a strong analyst judgment or flagged for review.",
+  "learning_objective": "Evaluate whether a loss-making firm's future cash flows justify a premium valuation using time-value principles and distinguish profit opinions from cash facts.",
+  "hints": [
+    "Remember: markets price the future cash a company will create, not its current profit line.",
+    "Use PV = FV / (1 + r)^n to sense-check whether Zomato's listing price makes sense if you assume its food-delivery TAM and take-rate.",
+    "Ask yourself: does Zomato's path to profitability feel credible, or is this pure speculation on a narrative?"
+  ],
+  "scenario_context": "Zomato is disrupting India's ₹5 lakh crore food market. In FY21, it lost ₹2,700 crore yet acquired ₹18,000 crore in gross order value. The company claims unit economics will turn positive within 36 months; profitability within 5 years. Your institutional clients — LIC, ICICI Prudential, Kotak MF, SBI MF — are asking if this listing is a Paytm-grade disaster-in-waiting or a justified bet on India's digital future. Your call will shape their allocation. You have 4 hours before market close to finalize your recommendation.",
+  "initial_data": {
+    "Company": "Zomato",
+    "Listing Price (est.)": "₹70 per share",
+    "Market Cap": "₹92,000 crore",
+    "FY21 Loss": "-₹2,700 crore",
+    "Gross Order Value": "₹18,000 crore",
+    "Your Rating": "Pending"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Assess Zomato's Path to Profitability",
+      "narrative": "Your first task is to evaluate the credibility of Zomato's claimed timeline to profitability. The company's IPO prospectus forecasts EBITDA breakeven by FY23 and net profitability by FY25. Your team has dissected their unit economics: restaurant take-rate of 16%, delivery take-rate of 24%, and claims of 5-7 year payback on customer acquisition. Before you can justify a valuation, you need to sense whether this path is realistic or aspirational.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Deep-dive on unit economics — build a 5-year model",
+          "description": "Build a detailed bottom-up model testing sensitivity to take-rates, customer cohort lifetime value, and churn rates using disclosed data.",
+          "consequence": "Your model shows Zomato could reach ₹5,000 crore EBITDA by FY25 under base-case assumptions (16% take-rate, 8% take-rate growth, 15% annual customer growth). At 20x EV/EBITDA (Indian SaaS multiple), that implies ₹1 lakh crore fair value — roughly aligned with listing price. However, you uncover two risks: (1) India's restaurant partner attrition runs 20-25% annually, and (2) delivery economics in Tier-2 cities are razor-thin. You flag these in your notes.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "stakeholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Compare Zomato to Swiggy and DoorDash multiples only",
+          "description": "Look at Swiggy's last private funding round and DoorDash's US public comps to anchor Zomato's valuation.",
+          "consequence": "Swiggy's last round valued it at ₹5,300 crore (2x Zomato's valuation). DoorDash trades at 8x EV/Revenue (mature, profitable). At Zomato's ₹18,000 crore GrOV, 8x revenue multiples would imply ₹1.44 lakh crore — well above listing price. This suggests Zomato is actually cheap. But you realize you've skipped the core analysis: whether profitability is achievable. Your recommendation will rest on analogue comps rather than first-principles rigor.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "stakeholder_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Survey restaurant and delivery partners — call 30 merchants",
+          "description": "Contact restaurant partners in Mumbai, Bangalore, and Delhi to validate take-rate sustainability and satisfaction.",
+          "consequence": "You speak with 15 restaurant owners and 12 delivery executives. Five restaurants say they are considering moving volume to Swiggy or their own apps to escape Zomato's take-rate. Delivery partners report earnings of ₹500-800 per day, but supply-demand imbalance means only 60% utilization. You uncover nervousness about sustainability at current take-rates and potential price wars. This primary insight is invaluable but costs 3 hours — you'll have minimal time for valuation modeling.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -3,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Discount Future Cash Using Time Value",
+      "narrative": "Now you must translate Zomato's profitability claims into a present-day value. Assume Zomato will earn ₹5,000 crore EBITDA in FY25 (4 years away) and 25% growth annually thereafter. Use the RBI's post-pandemic real rate of 2% plus an inflation assumption of 5.5% (7.5% nominal discount rate) for a high-growth, capital-intensive business like food delivery. Apply PV = FV / (1 + r)^n logic to test whether ₹92,000 crore at listing is justified.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Apply 7.5% discount rate; assume perpetual 3% growth post-FY25",
+          "description": "Use the nominal rate given the stage and risk; assume Zomato stabilizes at 3% growth after FY25 profitability.",
+          "consequence": "Using DCF, you calculate: (1) FY25 EBITDA of ₹5,000 cr, (2) Terminal Value = ₹5,000 cr × 1.03 / (0.075 - 0.03) = ₹1.03 lakh crore, (3) PV of terminal value at 7.5% over 4 years ≈ ₹74,000 crore, (4) Add near-term EBITDA discounted in years 1-4 ≈ ₹12,000 crore. Total intrinsic value ≈ ₹86,000 crore, slightly below listing price of ₹92,000 crore. Your conclusion: fairly valued with limited upside, moderate downside if churn or take-rate compression accelerates.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Apply 10% discount rate; assume 5% perpetual growth (bull case)",
+          "description": "Use a lower rate to reward Zomato's potential to dominate India's TAM; assume accelerated long-term growth.",
+          "consequence": "You test a bull-case scenario: Terminal Value = ₹5,000 cr × 1.05 / (0.10 - 0.05) = ₹1.05 lakh crore, PV ≈ ₹72,500 crore plus near-term ≈ ₹14,000 crore = ₹86,500 crore. Still below listing price. However, if EBITDA reaches ₹7,000 crore (15% faster growth), valuation rises to ₹1.15 lakh crore. This tells you the listing price assumes aggressive growth. You'll need to check whether client conviction on that growth is genuine.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "stakeholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Apply 12% discount rate; assume 2% perpetual growth (bear case)",
+          "description": "Penalize Zomato for execution risk, unit-economics uncertainty, and potential regulatory headwinds on gig labour.",
+          "consequence": "You stress-test the downside: Terminal Value = ₹5,000 cr × 1.02 / (0.12 - 0.02) = ₹51,000 crore, PV ≈ ₹32,500 crore plus near-term ≈ ₹10,000 crore = ₹42,500 crore. At ₹92,000 crore listing price, this implies 54% downside risk. You flag this as a real scenario if restaurant partner churn accelerates or regulatory costs spike. But this feels overly pessimistic given market appetite. You'll decide how prominently to weight this scenario.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "stakeholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Distinguish Profit from Cash — Key Red Flag Check",
+      "narrative": "A critical question surfaces: Zomato's prospectus projects profitability, but is it cash profitability or accounting profitability (EBITDA)? You realize the prospectus mentions aggressive capital spending on delivery infrastructure and technology. If Zomato invests ₹3,000 crore annually in warehousing, cloud, and delivery fleet, cash flows could lag EBITDA significantly. You must assess: will Zomato's cash actually be available to reinvest or pay shareholders, or will it vanish into capex?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Model capex at 15% of GrOV; demand detailed capex breakdown from company",
+          "description": "Assume capex-intensive delivery model; request granular capex forecasts from Zomato's investor relations.",
+          "consequence": "You model ₹2,700 crore annual capex (15% of ₹18,000 crore GrOV). Zomato's IR response reveals: ₹1,200 cr for micro-fulfillment centers, ₹800 cr for delivery fleet/bikes, ₹500 cr for tech and cloud. At ₹5,000 crore EBITDA, capex eats 54% of earnings. Free cash flow drops to ₹2,300 crore — about half the headline EBITDA number. This is the cash fact, not the profit opinion. Many institutional investors confuse EBITDA with cash. Your insight: this company is profitable on paper but reinvests most cash into growth — not yet a cash machine.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Assume capex tapers to 5% of revenue post-FY25; treat EBITDA as proxy for cash",
+          "description": "Believe Zomato's narrative that capex is front-loaded for scale, and tapers rapidly once infrastructure is built.",
+          "consequence": "You project that post-FY25, capex drops to ₹750 crore (5% of projected ₹15,000 crore revenue). Your DCF effectively treats EBITDA as free cash flow. At face value, this supports the listing price. However, you worry you've glossed over a key detail: the capex taper is not guaranteed. If competitive pressure forces Zomato to keep spending on delivery, cash flow remains pinched. You've chosen speed over a deeper capex audit.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Reject the listing; flag profit-cash confusion as a red flag",
+          "description": "Argue to your desk head that Zomato's lack of FCF visibility makes the listing too risky to endorse at this valuation.",
+          "consequence": "You send a note to your desk head: 'Zomato's projected ₹5,000 cr EBITDA by FY25 obscures capex reality. At 15% capex-to-GrOV, FCF is only ₹2,300 crore — 46% lower than EBITDA. We cannot confidently value a company that doesn't yet generate cash. Risk/reward is poor at ₹92k crore. Recommend Avoid.' Your desk head questions whether you're being too conservative — the market may reward growth over near-term FCF. But your rigor is unassailable.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "stakeholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Finalize Rating and Prepare Client Narrative",
+      "narrative": "It is now 4:30 PM. The NSE closes at 3:30 PM (markets are closed to new announcements). You have compiled your analysis: unit economics, DCF scenarios, cash-flow insights, and a sense of execution risk. Your desk head, Vikram Mehra, is waiting. You must now decide on a final rating — Buy, Hold, or Avoid — and craft a narrative that your institutional clients (LIC, ICICI Prudential, SBI Mutual Fund) can defend to their portfolio committees. What is your call?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Rate: HOLD. Valuation is fair, but execution unproven; recommend wait-and-watch.",
+          "description": "Position Zomato as fairly valued at listing price, but too execution-dependent to recommend now; suggest clients re-evaluate after Q1 FY22 results.",
+          "consequence": "Your note reads: 'Zomato HOLD. Valuation of ₹92k cr implies FY25 EBITDA of ₹5,000 cr at 7.5% discount rate — reasonable but aggressive given execution risk and capex intensity. Time-value math is defensible, but company must prove restaurant retention and unit economics under scale. We recommend clients apply 30-40% discount to share valuations for early-stage, unproven tech platforms. Revisit after Q1 results.' Your desk likes the rigor; your institutional clients get a measured, defensible stance. You've avoided the speculative extremes of Buy or Avoid without losing credibility.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_trust": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Rate: BUY. Market opportunity justifies capex; embrace the growth narrative.",
+          "description": "Lean into the bull case: Zomato will dominate a ₹5 lakh crore TAM; capex is a feature, not a bug; long-term shareholders will reward scale.",
+          "consequence": "Your note reads: 'Zomato BUY. India's food-delivery TAM will exceed ₹5 lakh crore in 10 years. Zomato's 70% market share at scale could generate ₹8,000+ crore EBITDA, implying ₹1.2 lakh crore enterprise value. Today's ₹92k cr price values in only moderate success. We recommend institutional allocations. Capex is necessary to lock in market share; free cash flow follows once scale is achieved. Fair value: ₹120 per share (₹1.2 lakh cr market cap).' Clients will be attracted to the boldness, but you risk being seen as over-optimistic if execution stumbles. Your own analysis flagged capex risks; backing them into a Buy rating stretches credibility.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 0,
+            "stakeholder_trust": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Rate: AVOID. Capex-to-cash conversion unproven; too much risk for institutional money.",
+          "description": "Reject Zomato on the grounds that accounting profit has not yet translated to cash returns; wait for proof of profitability, then reassess.",
+          "consequence": "Your note reads: 'Zomato AVOID. While the food-delivery thesis is sound, Zomato remains pre-cash-flow profitability. Our analysis shows FY25 EBITDA of ₹5,000 cr is achievable, but capex will consume 50%+ of earnings, leaving minimal FCF. A company that does not yet generate cash is too risky for core equity allocations. We recommend waiting for 2 consecutive quarters of positive FCF before reconsidering. If regulatory or competitive costs spike, downside is 30-40%. Risk/reward is unattractive at ₹92k cr.' Clients respect the discipline, but may worry they are missing a once-in-decade opportunity. You've prioritized rigor and cash-fact orientation — the session's core teaching.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Strong analyst call",
+        "narrative": "You balanced rigor with speed, distinguished cash from profit, and delivered a defensible rating that clients can present to portfolio committees. Your narrative anchored on time-value math and first-principles thinking — exactly the framework this session teaches. Whether you rated Hold or Avoid, your reasoning is unimpeachable."
+      },
+      {
+        "min_total": 5,
+        "label": "Defensible call",
+        "narrative": "Your analysis was solid, but you may have traded rigor for speed in one decision — perhaps skipping capex detail or relying on comp multiples instead of DCF. Clients will ask harder follow-up questions, but your call is not indefensible. Strengthen cash-flow thinking for next time."
+      },
+      {
+        "min_total": 1,
+        "label": "Needs review",
+        "narrative": "Your call lacks rigor, confuses EBITDA with cash, or leans too heavily on narrative over first-principles analysis. You may have rated Buy without understanding capex intensity, or Avoid without properly stress-testing the TAM. Your desk head will ask you to re-examine your work before broadcasting to clients."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread",
+        "narrative": "You've fundamentally misunderstood the case — perhaps treating Zomato as a mature, stable business rather than a growth-stage platform, or ignoring time-value dynamics altogether. This rating will damage credibility if broadcast. Start over with session notes in hand."
+      }
+    ]
+  }
+}

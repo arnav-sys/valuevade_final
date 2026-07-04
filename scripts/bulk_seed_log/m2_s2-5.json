@@ -1,0 +1,230 @@
+{
+  "sim_type": "decision_making",
+  "title": "TCS Order Execution: Market vs Limit in Live Earnings",
+  "scenario": "You are a senior analyst at Nuvama Securities' Mumbai desk. TCS reports earnings in 2 hours. Your model suggests fair value is ₹3,650, but the stock is trading at ₹3,680 with a ₹0.45 bid-ask spread. A large institutional client asks you to execute a ₹5 crore buy order immediately. You must decide how to route the order without triggering slippage or missing the trade.",
+  "instructions": "Walk through four decision points. At each, choose the action that best balances execution certainty, price protection, and client trust. Your choices accumulate scores across 'rigor', 'speed', and 'client_trust'. At the end, receive a grade on whether your overall approach was sound.",
+  "learning_objective": "Execute a real institutional equity order by choosing order type, settlement preference, and timing strategy while managing hidden trading costs and settlement risk.",
+  "hints": [
+    "Remember: a market order prioritises speed but exposes you to the bid-ask spread; a limit order protects price but may not fill.",
+    "T+1 settlement is standard, but consider the earning announcement timing — will the client need the shares before settlement completes?",
+    "In a liquid large-cap like TCS, the spread is narrow, but even ₹0.45 on ₹5 crore is ₹2.25 lakh in hidden cost."
+  ],
+  "scenario_context": "TCS (Tata Consultancy Services) is trading at ₹3,680 on strong IT sector momentum. Your valuation model shows fair value at ₹3,650, suggesting the stock is fairly valued to slightly rich. A tier-1 institutional client (a large MF) calls you with a ₹5 crore buy mandate. They want to accumulate ahead of earnings, but earnings drop in 2 hours. The current bid-ask spread is ₹0.45 (₹3,679.50 bid, ₹3,680 ask), which is tight for TCS but still a 0.012% cost per round trip. You must decide: (1) order type (market vs limit), (2) order size (all at once vs split), (3) settlement cycle preference (T+1 vs optional T+0), and (4) timing (now vs wait for post-earnings volatility). Each choice carries risk and reward.",
+  "initial_data": {
+    "Stock": "Tata Consultancy Services (TCS)",
+    "Current Price": "₹3,680",
+    "Your Fair Value": "₹3,650",
+    "Client Order Size": "₹5 crore",
+    "Bid-Ask Spread": "₹0.45",
+    "Time to Earnings": "2 hours",
+    "Settlement Cycle": "T+1 standard (T+0 optional)"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Order Type: Market or Limit?",
+      "narrative": "Your client wants ₹5 crore of TCS shares. The stock is liquid, but earnings are in 2 hours — volatility could spike. You can place a market order (executes instantly at ₹3,680 ask, guaranteed fill) or a limit order (executes only if price falls to ₹3,650 or lower, matching your fair-value model, but may not fill before earnings).\n\nIf you place a market order now, the client gets certainty of fill and avoids missing the trade if earnings surprise upward. But they accept the full ask price and the ₹0.45 bid-ask spread cost (≈ ₹2.25 lakh on ₹5 crore). If you place a limit order at ₹3,650, you protect the client's price discipline, but the order might sit unfilled, and the client could miss exposure if the stock jumps post-earnings.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Market order now — full ₹5 crore at best ask",
+          "description": "Execute the entire ₹5 crore immediately as a market order to guarantee certainty of fill before earnings volatility.",
+          "consequence": "The order executes instantly at ₹3,680 (the ask price). The client owns 1,35,870 shares within seconds. Settlement is T+1 (tomorrow). The bid-ask spread cost is ₹2.25 lakh, eating into returns. But the client has certainty and full exposure before earnings. If earnings are positive, the client is protected.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 3,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Limit order at ₹3,650 — full ₹5 crore at fair value",
+          "description": "Place a limit order at your fair-value price (₹3,650) to enforce price discipline and protect the client from overpaying.",
+          "consequence": "The order sits on the book waiting to fill at ₹3,650 or lower. With 2 hours to earnings, the stock may not touch that price — your order likely remains unfilled. The client misses the trade and has no exposure to earnings upside. If earnings beat, the client regrets not buying at ₹3,680. Trust erodes because the client wanted the exposure and you didn't deliver.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -3,
+            "client_trust": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Split order: ₹2.5 crore market now, ₹2.5 crore limit at ₹3,650",
+          "description": "Hybrid approach: execute half immediately at market to secure exposure, and set a limit for the other half to catch any pullback or post-earnings dip.",
+          "consequence": "You execute ₹2.5 crore as a market order at ₹3,680 immediately (6,79,350 shares, guaranteed). The remaining ₹2.5 crore sits as a limit order at ₹3,650. If the stock pulls back, you fill the limit portion at better price. If it rallies, you're at least 50% exposed. This balances speed and price discipline. The client sees thoughtful execution and is likely to feel the split reflects both their urgency and fiduciary care.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Settlement Cycle: T+1 Standard or Opt for T+0?",
+      "narrative": "Your order is now placed (or split). Now you decide on settlement. TCS is a highly liquid mega-cap, so SEBI allows an optional T+0 (same-day) settlement. Standard is T+1 (tomorrow).\n\nT+0 means the client gets shares and demat credit by end of today — they can sell or pledge collateral immediately. But T+0 carries slightly higher operational risk and the client pays a small T+0 premium (typically ₹0.05–₹0.10 per share on mega-caps). T+1 is standard, free, and safe. The question: does the client need same-day access (e.g., to pledge shares for margin), or can they wait one day?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Standard T+1 settlement",
+          "description": "Go with the default T+1 cycle — shares settle tomorrow, no extra cost, lowest operational risk.",
+          "consequence": "Settlement happens tomorrow (one working day after trade). The client gets demat credit tomorrow morning. There is no T+0 premium cost. This is the safest, most standard route and shows you are not over-engineering the trade. The client waits one business day, which is normal and expected in Indian markets. No operational complexity, lower error risk.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Opt for T+0 same-day settlement",
+          "description": "Request T+0 settlement to give the client same-day demat credit and maximum flexibility, even though it adds a ₹0.05–₹0.10 per share premium.",
+          "consequence": "You pay a T+0 premium of approximately ₹0.07 per share (mid-range estimate). On ₹5 crore, this costs roughly ₹4.75 lakh extra. But the client gets shares by 3:30 PM today and can pledge them for intraday leverage or sell them immediately if they want. This shows proactive client service and forward-thinking execution. However, it's an extra cost that must be justified by the client's actual need for same-day access.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Ask the client which settlement they prefer before deciding",
+          "description": "Rather than assume, call the client and ask explicitly whether they need T+0 or if T+1 is acceptable, given the cost-benefit.",
+          "consequence": "You call the client and ask: 'Do you need same-day demat credit, or is next-day T+1 acceptable?' If they say T+1 is fine, you save them ₹4.75 lakh. If they say they need same-day access for pledging, you honour that and opt for T+0. This transparent approach shows you are disciplined, cost-conscious, and client-centric. It builds trust because you're not imposing unnecessary costs or delays. It's the most professional route.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "client_trust": 3
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Timing: Execute Now or Wait for Post-Earnings Clarity?",
+      "narrative": "Earnings are 2 hours away. You've decided on order type and settlement. Now: do you execute the order right now (before earnings), or do you wait until after earnings release to see the direction and avoid any pre-earnings rally or crash?\n\nPro now: you avoid earnings risk; if earnings are positive, TCS will spike and you've already secured shares at a lower price. Con now: if earnings disappoint, you may have overpaid just before a drop. Pro wait: you see earnings results and can adjust your conviction. Con wait: if earnings beat, the stock gaps up and you buy higher. This is a classic execution timing dilemma with no perfect answer — but your choice signals your confidence in the stock and your risk appetite.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Execute immediately, before earnings (reduce pre-earnings risk)",
+          "description": "Place the order now, before earnings volatility, to lock in current price and avoid the unknown.",
+          "consequence": "The order executes at ₹3,680 (or your limit price, if using that strategy) today, before 2 PM. Earnings drop at 4 PM. If earnings beat, TCS rallies and you're already holding shares bought at a lower price — you look prescient and the client is happy. If earnings disappoint, TCS may fall, and the client temporarily loses money on the position. But you are in the trade and can hold through the volatility. You signal conviction in your fair-value model (₹3,650), showing the analyst team is confident.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Wait until post-earnings (capture clarity, accept gap risk)",
+          "description": "Hold off and execute only after earnings are announced, once you can see guidance and the market's reaction, then enter with full conviction.",
+          "consequence": "You wait 2 hours for earnings. If earnings beat and guidance is strong, TCS rallies to ₹3,750+. Your limit order (if you set one) won't fill, and you have to buy higher to get any exposure. The client misses the move or pays a higher price. If earnings disappoint, TCS falls to ₹3,600–₹3,620, and you execute the client's order at a better price. But the client has no exposure during the earnings move. This approach has the feel of 'waiting for certainty,' which can look indecisive — and in a liquid mega-cap like TCS, post-earnings gaps are sharp.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": -2,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Execute now, but set a conditional stop-loss for downside protection",
+          "description": "Go ahead with the order now, but pair it with a pre-set stop-loss (e.g., at ₹3,640) so if earnings tank, you limit the damage.",
+          "consequence": "You execute ₹5 crore at ₹3,680 immediately, showing conviction and speed. But you tell the client: 'If earnings disappoint and TCS falls below ₹3,640, we'll exit to protect capital.' This gives the client both exposure to upside and a safety net. If earnings beat, the client holds and profits. If earnings disappoint sharply, the stop-loss triggers around ₹3,640, limiting losses to roughly ₹2 lakh (₹0.04 per share × 1.35m shares). This shows disciplined risk management and builds client trust by proving you have a loss-control plan. It's the most professional execution for a volatile moment.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 2,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Post-Execution Communication: How Do You Brief the Client?",
+      "narrative": "Your order is now executed (or pending, depending on your choices). Earnings are about to drop. You now need to brief the client on what you did, why, and what to expect. Do you send a brief recap, a detailed trade note, or do you call directly to explain your reasoning and gather feedback? Your communication style signals your professionalism and builds (or erodes) client trust after the execution.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Send a brief WhatsApp recap: 'Executed ₹5 cr at ₹3,680. T+1 settlement tomorrow.'",
+          "description": "Quick, informal confirmation via WhatsApp to confirm execution and settlement date without over-explaining.",
+          "consequence": "The client gets instant confirmation of the trade execution, trade price, and settlement date. It's fast and informal, which fits modern client communication. However, it lacks detail on your execution reasoning (why market order vs limit, why you split the order, etc.). If earnings go badly and the stock tanks, the client might feel you didn't explain your strategy upfront, only reported the trade. It feels transactional, not advisory.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 3,
+            "client_trust": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Call the client directly before earnings to explain the execution and your thinking",
+          "description": "Ring the client right after execution to walk through: (1) your order strategy (market vs limit), (2) why you chose it, (3) settlement details, (4) your fair-value view, and (5) what to expect if earnings disappoint.",
+          "consequence": "You spend 5–10 minutes on the phone explaining your full logic: 'I chose a market order because TCS is liquid and earnings are in 90 minutes — I wanted certainty of fill. Your fair value is ₹3,650, so you're buying slightly rich, but the upside to ₹3,750 on positive guidance is worth it. I've set a stop-loss at ₹3,640 if earnings disappoint. Settlement is T+1 — you'll have the shares tomorrow. Here's my investment thesis...' This builds immense trust. The client feels advised, not just executed. They hear your conviction and your risk management. Even if earnings disappoint, the client respects the execution and your communication. This is professional, white-glove service.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "client_trust": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Send a detailed trade recap email with execution analysis, fair value, risk summary, and next steps",
+          "description": "Draft a formal 1-page trade note: execution price, quantity, settlement date, hidden costs (bid-ask spread), your fair-value thesis, earnings timing, and post-earnings action plan.",
+          "consequence": "The client receives a professional, documented record of the execution. The email details everything: 'Executed ₹5 crore at ₹3,680.10 (mid-execution price). Bid-ask spread cost: ₹2.25 lakh (0.045% of notional). Fair value: ₹3,650 (reasonable upside). Settlement T+1 tomorrow. Earnings at 4 PM today — guide will determine next move.' This creates a paper trail, shows diligence, and educates the client. However, it's formal and can feel slow if sent via email post-execution. A phone call followed by email is even better. If you only send email, the client might feel you're hiding behind documentation rather than standing behind the decision in real time.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "client_trust": 2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Excellent institutional execution",
+        "narrative": "You balanced rigor, speed, and client trust with a thoughtful order strategy (likely split or limit-protected), transparent settlement choice, and strong post-execution communication via phone. You showed both analytical discipline and real-time responsiveness. The client feels advised and protected, not just executed. This is how senior analysts at tier-1 desks (Nomura, Morgan Stanley, Goldman Sachs India) handle mega-cap institutional orders."
+      },
+      {
+        "min_total": 5,
+        "label": "Solid institutional execution",
+        "narrative": "You made defensible choices across order type, settlement, and timing. You prioritised either speed or rigor, and communicated reasonably well. The client got executed and understood the basic strategy. There may have been unnecessary costs (T+0 premium without asking) or limited communication, but the trade was handled professionally. This is competent desk execution at a tier-2 or regional brokerage."
+      },
+      {
+        "min_total": 1,
+        "label": "Adequate execution, low trust build",
+        "narrative": "You executed the trade, but your approach lacked rigour (e.g., full market order without hedging, no stop-loss) or transparency (brief WhatsApp-only communication, no phone call). The client got shares, but they may not understand your reasoning or feel protected. In volatile moments like pre-earnings, this erodes advisory credibility. You look transactional, not consultative."
+      },
+      {
+        "min_total": -99,
+        "label": "Mismanaged execution",
+        "narrative": "You made high-risk choices without safeguards (e.g., full market order right before earnings with no stop-loss, or waited until post-earnings and then chased a gap-up price). Your communication was minimal. The client may have experienced unnecessary slippage or missed the trade entirely. This is how junior traders or inexperienced desks blow execution quality and lose client trust."
+      }
+    ]
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "sim_type": "document",
+  "title": "Kotak Mahindra Bank FY24: Board Independence and Governance Review",
+  "scenario": "You are a junior equity analyst at a Mumbai research desk. Your senior has asked you to review Kotak Mahindra Bank's FY24 annual report and assess governance strength through board composition and key financial disclosures. The bank is a large-cap lender with a reputation for strong governance — but you must verify it, not assume it.",
+  "instructions": "Read the governance and financial summary below, hover tooltips for key insight, then answer five analytical questions about board independence, governance safeguards, and financial transparency.",
+  "learning_objective": "Assess corporate governance strength by calculating board independence ratio, identifying key guardians (auditors, audit committee, independent directors), and recognizing how governance protects minority shareholders from insider abuse.",
+  "hints": [
+    "Count independent directors and total directors carefully — the ratio formula is (Independent / Total) × 100.",
+    "Look at the audit committee composition and auditor name — strong governance has independent audit oversight and reputable external auditors.",
+    "Notice which financial line items require the most scrutiny and auditor verification — cash, related-party transactions, provisions."
+  ],
+  "document_data": {
+    "company_name": "Kotak Mahindra Bank Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Board Composition & Governance",
+        "line_items": [
+          {
+            "id": "board_size",
+            "label": "Total Board Members",
+            "current_year": 11,
+            "previous_year": 11
+          },
+          {
+            "id": "indep_dirs",
+            "label": "Independent Directors",
+            "current_year": 6,
+            "previous_year": 6
+          },
+          {
+            "id": "audit_committee",
+            "label": "Audit Committee Members (all independent)",
+            "current_year": 5,
+            "previous_year": 5
+          },
+          {
+            "id": "auditor",
+            "label": "External Auditor",
+            "current_year": null,
+            "previous_year": null
+          },
+          {
+            "id": "audit_firm",
+            "label": "Auditor Name (Big 4 firm)",
+            "current_year": "Deloitte Haskins & Sells LLP",
+            "previous_year": "Deloitte Haskins & Sells LLP"
+          }
+        ]
+      },
+      {
+        "title": "Consolidated Income Statement",
+        "line_items": [
+          {
+            "id": "net_interest_income",
+            "label": "Net Interest Income",
+            "current_year": 22840,
+            "previous_year": 18920
+          },
+          {
+            "id": "other_income",
+            "label": "Other Income",
+            "current_year": 3680,
+            "previous_year": 2950
+          },
+          {
+            "id": "operating_profit",
+            "label": "Operating Profit (before provisions)",
+            "current_year": 16200,
+            "previous_year": 13450
+          },
+          {
+            "id": "provisions",
+            "label": "Provisions & Contingencies (credit risk)",
+            "current_year": 4320,
+            "previous_year": 3680
+          },
+          {
+            "id": "profit_before_tax",
+            "label": "Profit Before Tax",
+            "current_year": 11880,
+            "previous_year": 9770
+          },
+          {
+            "id": "tax_expense",
+            "label": "Tax Expense",
+            "current_year": 2960,
+            "previous_year": 2380
+          },
+          {
+            "id": "net_profit",
+            "label": "Net Profit for the Year",
+            "current_year": 8920,
+            "previous_year": 7390
+          }
+        ],
+        "section_total": {
+          "label": "Net Profit for the Year",
+          "current_year": 8920,
+          "previous_year": 7390
+        }
+      },
+      {
+        "title": "Balance Sheet (Selected Items)",
+        "line_items": [
+          {
+            "id": "total_assets",
+            "label": "Total Assets",
+            "current_year": 428560,
+            "previous_year": 380240
+          },
+          {
+            "id": "cash_equivalents",
+            "label": "Cash & Cash Equivalents",
+            "current_year": 18950,
+            "previous_year": 16280
+          },
+          {
+            "id": "advances",
+            "label": "Advances to Customers",
+            "current_year": 289450,
+            "previous_year": 253680
+          },
+          {
+            "id": "deposits",
+            "label": "Customer Deposits",
+            "current_year": 362780,
+            "previous_year": 325610
+          },
+          {
+            "id": "equity",
+            "label": "Shareholders' Equity",
+            "current_year": 28740,
+            "previous_year": 25930
+          }
+        ]
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "indep_dirs",
+      "tooltip": "6 independent directors out of 11 total = 54.5% board independence. Above SEBI minimum. But verify: are they genuinely independent or long-time associates of promoters? Check their other board roles and tenure."
+    },
+    {
+      "id": "audit_committee",
+      "tooltip": "All 5 audit committee members are independent — a strong governance safeguard. This committee oversees financial reporting, internal controls, and auditor selection. A fully independent audit committee is a key guardian against fraud."
+    },
+    {
+      "id": "audit_firm",
+      "tooltip": "Deloitte Haskins & Sells LLP is a Big 4 global auditor with strong reputation. The use of a reputable external auditor (not a small local firm) signals governance strength — auditor independence and technical rigour matter."
+    },
+    {
+      "id": "provisions",
+      "tooltip": "Provisions for credit risk rose 17.4% YoY. This line item requires heavy auditor scrutiny — it's where management judgment hides. Adequate provisions protect depositors and shareholders; weak provisions can mask bad loans. Auditors must verify the sufficiency."
+    },
+    {
+      "id": "cash_equivalents",
+      "tooltip": "Cash of ₹18,950 Cr is a critical balance-sheet item. Unlike profit (which can be manipulated), cash is hard to fake — auditors physically verify it. Satyam's fraud hid billions of non-existent cash; external audit is the best guard against this."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Kotak Mahindra Bank's Board Independence Ratio for FY24. What percentage of the board are independent directors?",
+      "answer_type": "number",
+      "expected_value": 54.5,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "Board Independence Ratio = (6 independent directors / 11 total directors) × 100 = 54.5%. This exceeds the SEBI minimum of one-third to one-half, signalling strong independent oversight. However, always verify that these 6 are genuinely independent and not insiders in disguise."
+    },
+    {
+      "id": "t2",
+      "question": "What is the audit committee composition at Kotak, and why is this important for governance?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "all independent",
+        "5 members",
+        "oversight",
+        "financial reporting",
+        "controls"
+      ],
+      "explanation": "The audit committee has 5 members, all of whom are independent directors. This is a key governance safeguard because a fully independent audit committee provides neutral oversight of financial reporting, internal controls, risk management, and auditor selection — protecting minority shareholders from management manipulation and fraud."
+    },
+    {
+      "id": "t3",
+      "question": "Net Profit grew from ₹7,390 Cr (FY23) to ₹8,920 Cr (FY24). Calculate the YoY growth rate. Is this growth fully supported by operating performance, or is there a risk factor to watch?",
+      "answer_type": "number",
+      "expected_value": 20.7,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(8920 - 7390) / 7390 × 100 = 20.7% profit growth. Operating profit grew 20.6%, similar pace — this is healthy. However, provisions (credit risk) also rose 17.4%, which is appropriate for a lending bank. The auditor must verify that provisions are adequate and not understated to hide bad loans. Satyam's lesson: trust reported profit only after independent audit verifies it, especially cash and provisions."
+    },
+    {
+      "id": "t4",
+      "question": "Why is the external auditor (Deloitte Haskins & Sells LLP) being a Big 4 global firm important for governance and shareholder protection?",
+      "answer_type": "free_text",
+      "sample_answer": "A Big 4 auditor like Deloitte brings global standards, technical expertise, and reputation risk — they have incentive to do rigorous audits and will not overlook fraud. Smaller local auditors may lack capacity or be more easily pressured by powerful promoters. Strong auditors are a critical governance guardian: they independently verify cash, provisions, related-party deals, and other high-risk items. If the auditor is weak or captured, fraud (like Satyam) becomes possible.",
+      "explanation": "Choosing a reputable, independent external auditor is a core governance decision. It signals to shareholders that financial statements will be rigorously scrutinized by a firm with global standing and reputational risk. Weak auditors or auditors with conflicts of interest can miss or enable fraud. This is a key lesson from Satyam."
+    },
+    {
+      "id": "t5",
+      "question": "Cash & Cash Equivalents of ₹18,950 Cr is a critical auditor-verified line item. Why is independent verification of cash especially important, and what does it protect against?",
+      "answer_type": "free_text",
+      "sample_answer": "Cash is the hardest number to manipulate — auditors can physically verify bank confirmations and reconcile actual balances. In the Satyam fraud, the founder fabricated billions of rupees of non-existent cash on the balance sheet for years. External auditors, if independent and rigorous, can catch this by confirming bank balances directly with banks (not relying on management). Independent cash verification protects minority shareholders from the oldest trick in the fraud playbook: fake cash on the balance sheet.",
+      "explanation": "This reinforces the Satyam case: cash fabrication is a classic fraud tool, but hard to hide from a rigorous independent auditor. The lesson is that governance is only as strong as the auditor's actual independence and willingness to verify. Always check: is the auditor truly independent (no conflicts), and do they have the capacity and incentive to do deep verification work?"
+    }
+  ]
+}

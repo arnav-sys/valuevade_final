@@ -1,0 +1,281 @@
+{
+  "sim_type": "decision_making",
+  "title": "Assessing Management Quality: HDFC Bank Acquisition Decision",
+  "scenario": "You are a senior analyst at a Mumbai equity desk covering HDFC Bank. The board has just announced a major acquisition of a mid-sized fintech platform for ₹4,200 crore. With earnings call in 3 days, your team lead asks: Is this capital allocation wise, or a red flag about management discipline? You must build a view on management quality and recommend a rating adjustment.",
+  "instructions": "Walk through 5 decision points. At each, choose the action that best reflects your assessment of management integrity, competence, and capital allocation. Your choices accumulate scores across three dimensions: rigor, speed, and shareholder_trust. At the end, your total score determines your final recommendation to the desk.",
+  "learning_objective": "Assess management quality across integrity, competence, and capital allocation to build a defensible investment thesis.",
+  "hints": [
+    "ROCE trends and historical capital allocation patterns are stronger signals than a single transaction.",
+    "Transparent disclosure and management's track record of keeping shareholder promises matter more than deal excitement.",
+    "Compare this acquisition's expected returns to HDFC Bank's historical ROCE and cost of capital."
+  ],
+  "scenario_context": "HDFC Bank, led by CEO Sashidhar Jagdishan, has been India's most reliable wealth creator for retail investors over two decades. Management has a reputation for conservative capital allocation and transparency. However, this ₹4,200 crore fintech acquisition marks a sharp strategic shift — the bank is buying into a fast-growing but unproven digital lending space. The target platform has strong user growth but is not yet profitable. Your job is to assess whether this decision reflects wise capital allocation (a plus for management quality) or overconfidence and mission drift (a minus). You have three days to build a view before the call.",
+  "initial_data": {
+    "Stock": "HDFC Bank",
+    "Current Price": "₹1,645",
+    "Your Rating": "BUY",
+    "Management Track Record ROCE": "18-22% (historical 10-year avg)",
+    "Acquisition Price": "₹4,200 cr",
+    "Target Platform Profitability": "3-5 years (estimated)",
+    "Time to Earnings Call": "3 days"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Information Gathering: How Deep Do You Dig?",
+      "narrative": "Your first move after seeing the acquisition announcement is to decide how much time you invest in understanding the deal before the earnings call. You have limited time. Option A is to rely on the press release and management's public commentary — faster but thinner. Option B is to request a detailed 1-on-1 call with HDFC's CFO to understand the acquisition rationale, expected ROCE, and integration risks. Option C is to build a full financial model of the target platform and compare its expected returns to HDFC's cost of capital and historical ROCE. Option D is to wait for the earnings call and ask hard questions live. Which path best reflects rigorous analysis of management quality?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Rely on press release and public disclosures",
+          "description": "Faster decision-making, but misses the nuance of management's thinking.",
+          "consequence": "You save 4 hours but miss critical context. When the earnings call happens, you're unprepared and resort to generic questions. Management's integrity and capital-allocation rationale remain opaque to you — a poor foundation for assessing quality.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 2,
+            "shareholder_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Request a 1-on-1 call with CFO to probe rationale",
+          "description": "Balanced approach — you get context without excessive time investment.",
+          "consequence": "The CFO confirms the target platform's fintech credentials, explains the expected ROE post-integration, and walks through synergies. You probe on integration risks and capital discipline. You emerge with a clearer picture of management's thinking and conviction — evidence of either competence or overreach.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "shareholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Build a detailed financial model of target and expected ROCE",
+          "description": "Most rigorous approach — you independently validate the economics of the deal.",
+          "consequence": "You model out the target platform's cash flows, estimate a blended ROCE for the combined entity, and compare it to HDFC's cost of capital and historical 20% ROCE. This takes 6-8 hours, but you emerge with hard data on whether management's capital allocation is prudent. You can now speak with authority on management competence.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "shareholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "D",
+          "label": "Wait for earnings call and ask live questions",
+          "description": "Reactive approach — you gather info only when forced to.",
+          "consequence": "You go into the call unprepared and reactive. Your questions sound generic, and you miss the chance to probe management's thinking in advance. By the time you get answers, your preliminary analysis is already weak — and you look less thorough than peers.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 3,
+            "shareholder_trust": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Assessing Integrity: What Does the Deal Communication Reveal?",
+      "narrative": "After your initial dig, you now examine how management has communicated the acquisition to shareholders. Option A is to interpret the deal announcement as visionary — management is being bold and forward-thinking, positioning the bank for the fintech era. Option B is to note that HDFC Bank has historically been disciplined and conservative in M&A; this is a sharp departure from that track record, and you want explicit explanation for why now. Option C is to ask whether the acquisition price (₹4,200 cr for an unproven platform) reflects overconfidence — a sign of management hubris rather than prudent capital allocation. Option D is to check whether management's own bonus or incentive structures align with shareholder returns, or whether this deal smells like empire-building. Which framing best tests management's integrity?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Interpret as visionary strategy, assume competence",
+          "description": "Assumes good intent and confidence in management without critical scrutiny.",
+          "consequence": "You soften your due diligence and assume management knows best. Later, if the acquisition underperforms or integration falters, you look naive — you bypassed skepticism because you were dazzled by the 'vision.' This is the charisma trap: you're judging media narrative, not track record.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 1,
+            "shareholder_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Note the departure from historical M&A discipline; demand clarity",
+          "description": "Contextualizes the deal against management's long-term track record of conservatism.",
+          "consequence": "You ask: Why the sudden shift? What changed in strategy? Management's answer reveals either thoughtful evolution or mission drift. If they explain clearly how this fits their long-term thesis and cite disciplined due diligence, you gain confidence. If they dodge or sound defensive, it's a yellow flag on integrity. You're now testing consistency of principles.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "shareholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Question the valuation as evidence of overconfidence",
+          "description": "Probes whether the price paid reflects overreach or genuine conviction.",
+          "consequence": "You dig into comparable fintech valuations and ask management to justify the ₹4,200 cr price tag. If they can't convincingly explain why they paid a premium, or if synergies are vague, you've identified a capital-allocation red flag. HDFC's strength has always been disciplined capital deployment; overpaying damages that reputation. This is a direct test of competence and judgment.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "shareholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "D",
+          "label": "Examine CEO and board incentive structures for empire-building risk",
+          "description": "Tests whether the deal serves shareholders or executive egos.",
+          "consequence": "You review management remuneration, board tenure, and whether CEO bonuses are tied to revenue growth or profit. If you find that bonuses reward dealmaking over returns, you've uncovered a structural integrity issue — management is incentivized to grow empire, not shareholder wealth. This is a critical test of whether their motives align with yours as an investor.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "shareholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Assessing Competence: What Does the Financial Logic Show?",
+      "narrative": "Now you focus on whether the acquisition makes financial sense. You've gathered context on management's thinking and incentives. The key question: Is the deal economically rational? Option A is to calculate the expected ROCE on the target platform (estimated profit in year 3-5 divided by capital deployed) and compare it to HDFC's historical 20% ROCE and cost of capital (~8%). If the expected ROCE is below 12%, the deal destroys value. Option B is to assess the integration risk — does HDFC have the digital expertise to run a fintech platform, or is it buying a business it doesn't understand? Option C is to look at the deal from an opportunity-cost lens: what else could HDFC have done with ₹4,200 crore (dividend, buyback, organic growth, other acquisitions)? Option D is to trust management's long-term thesis and assume they see something the market doesn't. Which test best reveals competence?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Calculate expected ROCE and compare to cost of capital",
+          "description": "Directly measures whether the capital deployed will generate adequate returns.",
+          "consequence": "You model the target's profitability in year 3-5 and estimate ROCE. If expected ROCE is 14-16%, above cost of capital but below HDFC's historical 20%, you've identified a return drag — acceptable if justified by strategic fit, but a sign that management is deploying capital less efficiently than before. If expected ROCE is below 10%, it's value destruction, and you downgrade your rating on competence.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "shareholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Assess integration risk and HDFC's fintech capability",
+          "description": "Tests whether management has the skills to execute, not just the financial logic to approve.",
+          "consequence": "You interview HDFC's tech leadership and ask about their fintech expertise. If they've built a strong digital team, the risk is lower. If they're buying blind — relying on the target's team but lacking oversight capability — that's a competence red flag. Many deals fail not because the math was wrong, but because the buyer couldn't integrate. You're now testing execution risk.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "shareholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Compare to opportunity cost: what else could they have done with ₹4,200 cr?",
+          "description": "Tests whether this was the best use of capital relative to alternatives.",
+          "consequence": "You analyze whether a dividend increase, buyback, or organic investment in digital capabilities would have created more value. If HDFC has organic digital projects with higher ROCE and lower risk, then the acquisition is the wrong choice — a sign of capital-allocation weakness. This reveals whether management is thinking at the margin or just chasing growth.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "shareholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "D",
+          "label": "Trust management's long-term vision and assume hidden insights",
+          "description": "Defers to management's judgment on the strategic rationale.",
+          "consequence": "You assume management has done the due diligence and sees synergies the market has missed. This is a vote of confidence in their track record but a failure of rigorous analysis. If the deal later underperforms, you'll have no evidence-based view to defend — you were just betting on the jockey's reputation. For a company as closely watched as HDFC, this risks your credibility.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "shareholder_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Building Your Rating Thesis: How Do You Communicate the Call?",
+      "narrative": "With your analysis of integrity and competence complete, you now must craft your recommendation to the desk. You've gathered data on management's thinking, capital discipline, and financial logic. Option A is to downgrade HDFC to HOLD or REDUCE, citing the acquisition as a break from disciplined capital allocation and a sign of management overconfidence. Option B is to maintain BUY but add a cautious note: the deal is a positive if ROCE exceeds 15%, but you'll monitor closely on integration and will not hesitate to downgrade if execution falters. Option C is to upgrade to STRONG BUY on the thesis that this is a visionary bet on fintech, and management's track record earns a longer leash. Option D is to maintain BUY but explicitly downgrade management quality from 'Excellent' to 'Good' — signaling that while HDFC remains a quality business, capital allocation prudence has declined. Which framing is most rigorous and defensible?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Downgrade to HOLD; cite break in capital discipline",
+          "description": "Takes a hard line that this acquisition breaches management's established discipline.",
+          "consequence": "You issue a downgrade, explaining that ₹4,200 cr for an unproven fintech platform contradicts HDFC's historical conservatism and signals management overreach. You risk being wrong if the deal works out, but you're protected by having a clear, evidenced thesis. Your credibility with the desk depends on being proven right — if HDFC integrates well and the platform thrives, you'll look overly harsh. But if integration falters, you'll have called it early.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "shareholder_trust": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Maintain BUY but flag execution risk; set review triggers",
+          "description": "Acknowledges the deal has merit but builds in safeguards and monitoring.",
+          "consequence": "You maintain BUY because HDFC's underlying franchise is solid and the deal *could* work if ROCE exceeds 15%. But you explicitly state that you will downgrade on first signs of integration trouble, profit delays, or ROCE below expectations. You set quarterly review triggers. This balances confidence in management with rigorous skepticism — a defensible middle ground. The desk respects that you're not just following the stock price.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "shareholder_trust": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Upgrade to STRONG BUY on fintech thesis",
+          "description": "Backs management's visionary bet and assumes long-term value creation.",
+          "consequence": "You frame the acquisition as a brilliant strategic move — HDFC is positioning for fintech disruption, and management's track record earns a long leash. This is aggressive and visionary but risky. You're betting the farm on management's judgment without hard evidence of ROCE or integration capability. If the deal falters, you'll look reckless. You've crossed from analysis into cheerleading.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 1,
+            "shareholder_trust": -2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "Maintain BUY but downgrade management quality from Excellent to Good",
+          "description": "Separates the business quality (still strong) from management quality (now questioned).",
+          "consequence": "You keep the stock at BUY — the bank's core franchise remains robust, and one acquisition won't destroy it. But you formally downgrade your 'Management Quality' score from 9/10 to 7/10, citing the break in capital discipline. This sends a signal to the desk: the company is still a buy, but management is no longer 'best-in-class' on capital allocation. It's a nuanced call that reflects evidence and avoids flip-flopping on the rating. When you later review, you can upgrade or downgrade based on execution.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 1,
+            "shareholder_trust": 2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Strong analyst call",
+        "narrative": "You built a rigorous, evidence-based thesis that separates management quality from business quality. You tested integrity, competence, and capital allocation across multiple angles and communicated a defensible call with triggers. Whether you downgraded slightly or maintained BUY with safeguards, you spoke with authority and backed it with data. This is the work of a confident analyst who has earned the desk's trust."
+      },
+      {
+        "min_total": 5,
+        "label": "Defensible call",
+        "narrative": "You gathered meaningful data and built a thesis, but you either rushed certain steps or accepted management's narrative too readily. Your recommendation is sound, but you lack the comprehensive evidence base that top analysts demand. You can defend your position in a meeting, but peers may find gaps in your reasoning. With more rigor next time, you'll earn higher credibility."
+      },
+      {
+        "min_total": 1,
+        "label": "Needs review",
+        "narrative": "Your recommendation lacks rigor or is based more on intuition than evidence. You may have downgraded or upgraded without deep financial analysis, or you trusted management's words without corroborating facts. The desk will want to revisit your reasoning before relying on your call. This is a learning moment — management quality assessments require hard evidence, not impressions."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread",
+        "narrative": "Your analysis skipped critical steps (like modeling ROCE or questioning capital discipline) and relied instead on charisma, media narrative, or unexamined bias. You either rubber-stamped management or panicked without reason. This is a reminder that 'betting on the jockey' requires rigorous assessment of integrity, competence, and capital allocation — not guesswork."
+      }
+    ]
+  }
+}

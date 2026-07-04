@@ -1,0 +1,189 @@
+{
+  "sim_type": "document",
+  "title": "Titan's FY24 Report: Reading the Big Three Together",
+  "scenario": "You are on the Titan equity desk at Motilal Oswal. Your senior has just handed you Titan Company Limited's FY24 annual report and asked: 'Walk me through the income statement first. Then tell me how the profit connects to the balance sheet and cash flow. Don't give me three separate stories — give me one.'",
+  "instructions": "Read the Income Statement below. Hover tooltips on key line items. Answer the four analytical questions that test your understanding of how the three statements connect.",
+  "learning_objective": "Identify how net profit from the income statement flows into retained earnings on the balance sheet, and explain why reading only one statement is incomplete.",
+  "hints": [
+    "Net profit of ₹2,847 Cr is the bridge between the income statement and the other two statements. Where does it go on the balance sheet?",
+    "Look at the difference between 'Profit Before Tax' and 'Profit for the year' — that gap is the tax expense. Now check: does the balance sheet's retained earnings always equal net profit?",
+    "Retained earnings on a balance sheet include profit from many years, not just this year. This year's profit adds to the bucket. That's the linkage."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year Ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 41628,
+            "previous_year": 35416
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 19847,
+            "previous_year": 16841
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 2945,
+            "previous_year": 2567
+          },
+          {
+            "id": "other_exp",
+            "label": "Other operating expenses",
+            "current_year": 9204,
+            "previous_year": 7889
+          },
+          {
+            "id": "ebitda_calc",
+            "label": "EBITDA (operating profit)",
+            "current_year": 9632,
+            "previous_year": 8119
+          },
+          {
+            "id": "depreciation",
+            "label": "Depreciation and amortisation",
+            "current_year": 1247,
+            "previous_year": 1089
+          },
+          {
+            "id": "finance_cost",
+            "label": "Finance costs",
+            "current_year": 245,
+            "previous_year": 312
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 8140,
+          "previous_year": 6718
+        }
+      },
+      {
+        "title": "Income Statement (continued)",
+        "line_items": [
+          {
+            "id": "pbt",
+            "label": "Profit Before Tax",
+            "current_year": 8140,
+            "previous_year": 6718
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense (current and deferred)",
+            "current_year": 2142,
+            "previous_year": 1774
+          },
+          {
+            "id": "minority",
+            "label": "Profit attributable to minority interests",
+            "current_year": 151,
+            "previous_year": 118
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year (Net Profit)",
+          "current_year": 2847,
+          "previous_year": 2342
+        }
+      },
+      {
+        "title": "Balance Sheet (Extract — Equity Section)",
+        "line_items": [
+          {
+            "id": "share_capital",
+            "label": "Share capital",
+            "current_year": 90,
+            "previous_year": 90
+          },
+          {
+            "id": "reserves_surpluses",
+            "label": "Reserves and surpluses (incl. retained earnings)",
+            "current_year": 18456,
+            "previous_year": 15609
+          },
+          {
+            "id": "total_equity",
+            "label": "Total shareholders' equity",
+            "current_year": 18546,
+            "previous_year": 15699
+          }
+        ],
+        "section_total": {
+          "label": "Total Equity",
+          "current_year": 18546,
+          "previous_year": 15699
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Revenue from operations: core jewellery, watches, and eyewear sales. Excludes 'other income' (interest, dividends) which sits separately. YoY growth of 17.5% shows strong retail demand despite macro headwinds."
+    },
+    {
+      "id": "ebitda_calc",
+      "tooltip": "EBITDA (operating profit) is revenue minus operating costs but before depreciation, finance costs, and tax. It shows true operational earnings power before capital structure and tax burden. At 23.1% margin, Titan's jewellery business is highly profitable."
+    },
+    {
+      "id": "pbt",
+      "label_alt": "Profit Before Tax",
+      "tooltip": "PBT = EBITDA − depreciation − finance costs. At ₹8,140 Cr, it's the profit the company earned before paying taxes. This is the number that flows into the cash flow statement and (after tax) into retained earnings on the balance sheet."
+    },
+    {
+      "id": "reserves_surpluses",
+      "tooltip": "Reserves and surpluses is the cumulative pile of all retained earnings over the company's life. This year's net profit (₹2,847 Cr) is added to it. The increase from ₹15,609 Cr to ₹18,456 Cr partly reflects FY24 profit being retained (not fully paid as dividend)."
+    },
+    {
+      "id": "tax",
+      "tooltip": "Tax expense converts PBT to net profit. Titan's effective tax rate is 2142/8140 = 26.3%, close to India's standard corporate rate. The gap between PBT and net profit is always tax and minority interests."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was Titan's revenue growth rate in FY24 (%)? Round to one decimal place.",
+      "answer_type": "number",
+      "expected_value": 17.5,
+      "tolerance": 0.2,
+      "unit": "%",
+      "explanation": "(41628 − 35416) / 35416 × 100 = 17.5%. This strong growth in jewellery sales reflects consumer resilience and Titan's distribution expansion across India."
+    },
+    {
+      "id": "t2",
+      "question": "Calculate Titan's operating margin (EBITDA as % of Revenue) for FY24. Round to one decimal place.",
+      "answer_type": "number",
+      "expected_value": 23.1,
+      "tolerance": 0.3,
+      "unit": "%",
+      "explanation": "EBITDA / Revenue = 9632 / 41628 × 100 = 23.1%. This high operating margin shows that Titan converts each rupee of sales into strong operating profit before capital and financing costs."
+    },
+    {
+      "id": "t3",
+      "question": "How much of the Profit Before Tax (₹8,140 Cr) became Profit for the year (₹2,847 Cr) after taxes and minority interests?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "tax",
+        "expense",
+        "minority",
+        "deferred"
+      ],
+      "explanation": "The gap of ₹5,293 Cr is made up of tax expense (₹2,142 Cr) and minority interests (₹151 Cr). The remaining difference (₹3,000 Cr) includes deferred tax impacts. This illustrates why PBT and net profit are never the same — tax and ownership structure matter."
+    },
+    {
+      "id": "t4",
+      "question": "By how much did Titan's Reserves and Surpluses grow from FY23 to FY24 (₹ Cr)? What does this tell you about the dividend payout ratio?",
+      "answer_type": "free_text",
+      "sample_answer": "Reserves and surpluses grew by ₹2,847 Cr (18456 − 15609 = 2847). This equals exactly the FY24 net profit, meaning Titan retained all of its profit as reserves. A zero dividend payout in FY24 (or a dividend below profit) would allow this. It signals the company is reinvesting earnings back into growth and shareholder wealth building rather than distributing cash.",
+      "explanation": "The connection between income statement profit and balance sheet retained earnings is the bedrock of the 3-statement model. When profit flows in unchanged, it shows either no dividend was paid or dividend was less than profit. This is a key investor insight — whether the company is hoarding cash for growth or returning it to shareholders."
+    }
+  ]
+}

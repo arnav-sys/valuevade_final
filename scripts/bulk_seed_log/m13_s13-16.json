@@ -1,13 +1,13 @@
 {
   "sim_type": "excel",
-  "title": "Medica Specialties LBO: Build the Full Model to Clear 20% IRR",
-  "scenario": "Your PM asks: 'Medica Specialties, ₹320 Cr EBITDA, seller wants ₹3,200 Cr — does this deal hit our 20% hurdle?' You must build the complete LBO: Sources & Uses to establish debt and equity, operating model to project five years of EBITDA, debt schedule to track paydown from cash flow, and returns to compute IRR and MOIC. The model will tell you if ₹3,200 Cr is too expensive — or if it clears.",
-  "instructions": "Build a complete LBO model for Medica Specialties in the Model sheet: calculate entry equity, project EBITDA and FCF, construct a debt schedule tracking interest and debt paydown year-by-year, compute exit enterprise value and equity, and calculate MOIC and IRR. Use the provided assumptions and data rows to answer all questions in the Answers sheet.",
-  "learning_objective": "Construct a full five-year LBO model including Sources & Uses, operating projections, debt amortisation schedule, and IRR/MOIC returns, then use it to evaluate whether an entry price clears a fund's return hurdle.",
+  "title": "Build a Complete Titan LBO Model: Entry to Exit Returns",
+  "scenario": "Titan Company Limited is under consideration for acquisition by a PE consortium. The fund has estimated an entry EV of ₹60,000 Cr (10x FY26 EBITDA of ₹6,000 Cr) and must model five years of operations, debt amortisation, and exit returns to validate whether the deal clears the fund's 20% IRR hurdle. You will construct the full LBO model: Sources & Uses (entry capital structure), operating assumptions, a five-year debt schedule (showing how cash flow deleverages), and the final returns calculation (MOIC and IRR).",
+  "instructions": "Build a complete LBO model for Titan by: (1) verifying Sources equal Uses; (2) calculating the Sponsor Equity stake percentage; (3) projecting Year-5 exit enterprise value; (4) computing exit equity after debt repayment; (5) calculating the money multiple (MOIC); and (6) deriving the IRR. Use the data and assumptions provided to fill in the Answers sheet formulas.",
+  "learning_objective": "Construct a full leveraged buyout model end-to-end — from entry capital structure through debt amortisation to exit valuation — and compute IRR and MOIC to assess deal returns against a 20% hurdle rate.",
   "hints": [
-    "Start with Sources & Uses: Total Uses (EV + fees) must equal Total Sources (debt + equity). Equity is the balancing plug.",
-    "In the debt schedule, each year's interest is 10% of beginning debt, and FCF sweep (cash available for paydown) flows directly to reduce the debt balance.",
-    "Exit equity = (Exit EBITDA × Exit Multiple) − Remaining Debt; MOIC = Exit Equity ÷ Entry Equity; IRR = MOIC^(1/5) − 1."
+    "For Sources & Uses balance: total all debt and equity sources, then compare to total uses (purchase EV + fees). They must match exactly.",
+    "Sponsor Equity is the 'plug' — calculate it as Total Uses minus all other sources (debt, mezzanine, rollover equity, management options, cash on hand).",
+    "Year-5 EBITDA grows from ₹6,000 Cr at 9.6% CAGR annually. Apply the growth rate iteratively or use a compound growth formula (FV = PV × (1 + rate)^periods)."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
@@ -15,328 +15,187 @@
         "name": "Data",
         "cells": {
           "A1": {
-            "value": "Assumption Category",
-            "readOnly": true,
-            "bold": true
-          },
-          "B1": {
-            "value": "Year 0 / Entry",
-            "readOnly": true,
-            "bold": true
-          },
-          "C1": {
-            "value": "Year 1",
-            "readOnly": true,
-            "bold": true
-          },
-          "D1": {
-            "value": "Year 2",
-            "readOnly": true,
-            "bold": true
-          },
-          "E1": {
-            "value": "Year 3",
-            "readOnly": true,
-            "bold": true
-          },
-          "F1": {
-            "value": "Year 4",
-            "readOnly": true,
-            "bold": true
-          },
-          "G1": {
-            "value": "Year 5 / Exit",
+            "value": "TITAN LBO MODEL — SOURCES & USES",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "EBITDA (₹ Cr)",
+            "value": "ENTRY ASSUMPTIONS",
             "readOnly": true,
             "bold": true
-          },
-          "B2": {
-            "value": 320,
-            "readOnly": true
-          },
-          "C2": {
-            "value": 346,
-            "readOnly": true
-          },
-          "D2": {
-            "value": 374,
-            "readOnly": true
-          },
-          "E2": {
-            "value": 404,
-            "readOnly": true
-          },
-          "F2": {
-            "value": 436,
-            "readOnly": true
-          },
-          "G2": {
-            "value": 471,
-            "readOnly": true
           },
           "A3": {
-            "value": "D&A (₹ Cr)",
-            "readOnly": true,
-            "bold": true
+            "value": "Entry Multiple (x EBITDA)",
+            "readOnly": true
           },
           "B3": {
-            "value": 40,
-            "readOnly": true
-          },
-          "C3": {
-            "value": 40,
-            "readOnly": true
-          },
-          "D3": {
-            "value": 40,
-            "readOnly": true
-          },
-          "E3": {
-            "value": 40,
-            "readOnly": true
-          },
-          "F3": {
-            "value": 40,
-            "readOnly": true
-          },
-          "G3": {
-            "value": 40,
+            "value": 10,
             "readOnly": true
           },
           "A4": {
-            "value": "Tax Rate (%)",
-            "readOnly": true,
-            "bold": true
+            "value": "Entry EBITDA (₹ Cr)",
+            "readOnly": true
           },
           "B4": {
-            "value": 25,
-            "readOnly": true
-          },
-          "C4": {
-            "value": 25,
-            "readOnly": true
-          },
-          "D4": {
-            "value": 25,
-            "readOnly": true
-          },
-          "E4": {
-            "value": 25,
-            "readOnly": true
-          },
-          "F4": {
-            "value": 25,
-            "readOnly": true
-          },
-          "G4": {
-            "value": 25,
+            "value": 6000,
             "readOnly": true
           },
           "A5": {
-            "value": "Capex (₹ Cr)",
-            "readOnly": true,
-            "bold": true
+            "value": "Entry EV (₹ Cr)",
+            "readOnly": true
           },
           "B5": {
-            "value": 30,
-            "readOnly": true
-          },
-          "C5": {
-            "value": 30,
-            "readOnly": true
-          },
-          "D5": {
-            "value": 30,
-            "readOnly": true
-          },
-          "E5": {
-            "value": 30,
-            "readOnly": true
-          },
-          "F5": {
-            "value": 30,
-            "readOnly": true
-          },
-          "G5": {
-            "value": 30,
+            "value": 60000,
             "readOnly": true
           },
           "A6": {
-            "value": "NWC Change (₹ Cr)",
-            "readOnly": true,
-            "bold": true
+            "value": "Transaction Fees (₹ Cr)",
+            "readOnly": true
           },
           "B6": {
-            "value": 0,
-            "readOnly": true
-          },
-          "C6": {
-            "value": 15,
-            "readOnly": true
-          },
-          "D6": {
-            "value": 15,
-            "readOnly": true
-          },
-          "E6": {
-            "value": 15,
-            "readOnly": true
-          },
-          "F6": {
-            "value": 15,
-            "readOnly": true
-          },
-          "G6": {
-            "value": 15,
+            "value": 1000,
             "readOnly": true
           },
           "A7": {
-            "value": "Interest Rate (%)",
+            "value": "TOTAL USES",
             "readOnly": true,
             "bold": true
           },
           "B7": {
-            "value": 10,
-            "readOnly": true
-          },
-          "C7": {
-            "value": 10,
-            "readOnly": true
-          },
-          "D7": {
-            "value": 10,
-            "readOnly": true
-          },
-          "E7": {
-            "value": 10,
-            "readOnly": true
-          },
-          "F7": {
-            "value": 10,
-            "readOnly": true
-          },
-          "G7": {
-            "value": 10,
-            "readOnly": true
-          },
-          "A8": {
-            "value": "Entry Multiple (EV/EBITDA)",
-            "readOnly": true,
-            "bold": true
-          },
-          "B8": {
-            "value": 10,
-            "readOnly": true
-          },
-          "C8": {
-            "value": "",
-            "readOnly": true
-          },
-          "D8": {
-            "value": "",
-            "readOnly": true
-          },
-          "E8": {
-            "value": "",
-            "readOnly": true
-          },
-          "F8": {
-            "value": "",
-            "readOnly": true
-          },
-          "G8": {
-            "value": "",
+            "value": 61000,
             "readOnly": true
           },
           "A9": {
-            "value": "Exit Multiple (EV/EBITDA)",
+            "value": "SOURCES",
             "readOnly": true,
             "bold": true
-          },
-          "B9": {
-            "value": "",
-            "readOnly": true
-          },
-          "C9": {
-            "value": "",
-            "readOnly": true
-          },
-          "D9": {
-            "value": "",
-            "readOnly": true
-          },
-          "E9": {
-            "value": "",
-            "readOnly": true
-          },
-          "F9": {
-            "value": "",
-            "readOnly": true
-          },
-          "G9": {
-            "value": 10,
-            "readOnly": true
           },
           "A10": {
-            "value": "Transaction Fees (% of EV)",
-            "readOnly": true,
-            "bold": true
+            "value": "New Term Loan (₹ Cr)",
+            "readOnly": true
           },
           "B10": {
-            "value": 3,
-            "readOnly": true
-          },
-          "C10": {
-            "value": "",
-            "readOnly": true
-          },
-          "D10": {
-            "value": "",
-            "readOnly": true
-          },
-          "E10": {
-            "value": "",
-            "readOnly": true
-          },
-          "F10": {
-            "value": "",
-            "readOnly": true
-          },
-          "G10": {
-            "value": "",
+            "value": 24000,
             "readOnly": true
           },
           "A11": {
-            "value": "Debt/EBITDA at Entry",
+            "value": "Mezzanine Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 6000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Sponsor Equity (₹ Cr)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 22000,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Rollover Equity (₹ Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 4000,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Management Options (₹ Cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Cash on Hand (₹ Cr)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "TOTAL SOURCES",
             "readOnly": true,
             "bold": true
           },
-          "B11": {
-            "value": 6,
+          "B16": {
+            "value": 60000,
             "readOnly": true
           },
-          "C11": {
-            "value": "",
+          "A18": {
+            "value": "DEBT SCHEDULE INPUTS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A19": {
+            "value": "Year-1 Debt Balance (₹ Cr)",
             "readOnly": true
           },
-          "D11": {
-            "value": "",
+          "B19": {
+            "value": 30000,
             "readOnly": true
           },
-          "E11": {
-            "value": "",
+          "A20": {
+            "value": "Interest Rate (%)",
             "readOnly": true
           },
-          "F11": {
-            "value": "",
+          "B20": {
+            "value": 8.5,
             "readOnly": true
           },
-          "G11": {
-            "value": "",
+          "A21": {
+            "value": "Year-5 Debt Balance (₹ Cr)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 12000,
+            "readOnly": true
+          },
+          "A23": {
+            "value": "EXIT ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A24": {
+            "value": "Year-5 EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "B24": {
+            "value": 9500,
+            "readOnly": true
+          },
+          "A25": {
+            "value": "Exit Multiple (x EBITDA)",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 11,
+            "readOnly": true
+          },
+          "A27": {
+            "value": "RETURNS TARGETS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A28": {
+            "value": "Minimum IRR Hurdle (%)",
+            "readOnly": true
+          },
+          "B28": {
+            "value": 20,
+            "readOnly": true
+          },
+          "A29": {
+            "value": "Hold Period (years)",
+            "readOnly": true
+          },
+          "B29": {
+            "value": 5,
             "readOnly": true
           }
         }
@@ -345,62 +204,56 @@
         "name": "Answers",
         "cells": {
           "A1": {
-            "value": "Question",
+            "value": "QUESTION",
             "readOnly": true,
             "bold": true
           },
           "B1": {
-            "value": "Answer",
+            "value": "ANSWER",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "Q1: Total Sources & Uses (₹ Cr) — what is the total purchase price including fees?",
+            "value": "Q1. Do Total Sources equal Total Uses? (1=Yes, 0=No)",
             "readOnly": true
           },
           "B2": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A3": {
-            "value": "Q2: Entry Equity (₹ Cr) — how much equity does the sponsor invest (Sources plug)?",
+            "value": "Q2. Sponsor Equity as % of Total Sources (e.g. 0.3667 for 36.67%)",
             "readOnly": true
           },
           "B3": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A4": {
-            "value": "Q3: Year 1 FCF Available for Debt Paydown (₹ Cr) — EBITDA − Interest − Tax − Capex − ΔNWCs, with D&A add-back",
+            "value": "Q3. Exit Enterprise Value (₹ Cr)",
             "readOnly": true
           },
           "B4": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A5": {
-            "value": "Q4: Year 5 Ending Debt Balance (₹ Cr) — track debt paydown through all five years",
+            "value": "Q4. Exit Equity after Debt Paydown (₹ Cr)",
             "readOnly": true
           },
           "B5": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A6": {
-            "value": "Q5: Exit Equity at Year 5 (₹ Cr) — (Exit EV) − (Remaining Debt)",
+            "value": "Q5. Money Multiple (MOIC, e.g. 4.20 for 4.20x)",
             "readOnly": true
           },
           "B6": {
-            "value": "",
-            "readOnly": false
+            "value": null
           },
           "A7": {
-            "value": "Q6: MOIC (×) — Exit Equity ÷ Entry Equity; round to 2 decimals",
+            "value": "Q6. IRR (as decimal, e.g. 0.332 for 33.2%)",
             "readOnly": true
           },
           "B7": {
-            "value": "",
-            "readOnly": false
+            "value": null
           }
         }
       }
@@ -408,46 +261,46 @@
   },
   "expected_answers": {
     "Answers!B2": {
-      "formula_pattern": "=Data!B8*Data!B2+Data!B10*Data!B8*Data!B2",
-      "expected_value": 12800,
+      "formula_pattern": "=IF(Data!B7=Data!B16,1,0)",
+      "expected_value": 0,
       "type": "number",
-      "tolerance": 1,
-      "points": 10
+      "tolerance": 0,
+      "points": 8
     },
     "Answers!B3": {
-      "formula_pattern": "=Data!B8*Data!B2+Data!B10*Data!B8*Data!B2-(Data!B11*Data!B2)",
-      "expected_value": 10880,
+      "formula_pattern": "=Data!B12/Data!B16",
+      "expected_value": 0.3667,
       "type": "number",
-      "tolerance": 1,
+      "tolerance": 0.01,
       "points": 10
     },
     "Answers!B4": {
-      "formula_pattern": "=Data!C2-(Data!B11*Data!B2*Data!C7/100)+Data!C3-((Data!C2-Data!B11*Data!B2*Data!C7/100)*Data!C4/100)-Data!C5-Data!C6",
-      "expected_value": 110.5,
+      "formula_pattern": "=Data!B24*Data!B25",
+      "expected_value": 104500,
       "type": "number",
       "tolerance": 1,
-      "points": 20
+      "points": 12
     },
     "Answers!B5": {
-      "formula_pattern": "=Data!B11*Data!B2-SUM(Answers!B4:Answers!B4)-((Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+((Data!B11*Data!B2-Answers!B4-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)))*Data!D7/100-((Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)*Data!D7/100-((Data!E2-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)*(Data!D7/100)+Data!E3)*Data!E7/100)*Data!E7/100-((Data!E2-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)*(Data!D7/100)+Data!E3-(Data!E2-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)*(Data!D7/100)+Data!E3)*Data!E4/100)*Data!E7/100-((Data!F2-(Data!E2-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)*(Data!D7/100)+Data!E3-(Data!E2-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3-(Data!D2-(Data!B11*Data!B2-Answers!B4)*(Data!D7/100)+Data!D3)*Data!D4/100)*(Data!D7/100)+Data!E3)*Data!E4/100)*(Data!E7/100)+Data!F3)*Data!F7/100)",
-      "expected_value": 1211,
+      "formula_pattern": "=Answers!B4-Data!B21",
+      "expected_value": -12000,
       "type": "number",
       "tolerance": 1,
-      "points": 25
+      "points": 12
     },
     "Answers!B6": {
-      "formula_pattern": "=Data!G9*Data!G2-Answers!B5",
-      "expected_value": 4710,
+      "formula_pattern": "=Answers!B5/Data!B12",
+      "expected_value": 0,
       "type": "number",
-      "tolerance": 1,
+      "tolerance": 0.01,
       "points": 15
     },
     "Answers!B7": {
-      "formula_pattern": "=ROUND(Answers!B6/Answers!B3,2)",
-      "expected_value": 2.54,
+      "formula_pattern": "=Answers!B6^(1/Data!B29)-1",
+      "expected_value": -1,
       "type": "number",
       "tolerance": 0.01,
-      "points": 20
+      "points": 18
     }
   }
 }

@@ -1,0 +1,53 @@
+{
+  "module": 1,
+  "reviewed_at": "2026-07-04T09:12:58.487122+00:00",
+  "sampled": 2,
+  "passed": 2,
+  "failed": 0,
+  "avg_total": 4.75,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 4.0
+  },
+  "passed_sessions": [
+    "1.1",
+    "1.6"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
+      },
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Exemplary Indian flavor with real company (Zomato), authentic ₹ values (₹92,000 crore cap, ₹2,700 crore loss), named institutions (Motilal Oswal, LIC, ICICI Prudential), and laser-focused on session concepts (time value, profit vs cash, future cash flows).",
+      "weaknesses": "Decision point d2's narrative cuts off mid-sentence ('for a hi'), and while the 4-point structure is defensible, the difficulty ramp could be slightly sharper—d1 and d3 feel similar in complexity rather than escalating cleanly.",
+      "fix_directive": "",
+      "session_no": "1.1",
+      "sim_type": "decision_making",
+      "file": "/app/scripts/bulk_seed_log/m1_s1-1.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
+      },
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Authentic Titan Company Limited FY24 data with real ₹ Cr figures, laser-focused on session's depreciation/accrual/Ind AS concepts, exemplary 3-hint escalation from policy location to accrual divergence to useful-life manipulation.",
+      "weaknesses": "Difficulty curve is solid but could be steeper—task 1 (simple YoY growth calc) is too easy relative to task 3's sophistication; a fourth intermediate task bridging the gap would perfect the ramp.",
+      "fix_directive": "",
+      "session_no": "1.6",
+      "sim_type": "document",
+      "file": "/app/scripts/bulk_seed_log/m1_s1-6.json"
+    }
+  ]
+}

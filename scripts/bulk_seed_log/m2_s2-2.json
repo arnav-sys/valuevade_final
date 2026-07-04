@@ -1,0 +1,242 @@
+{
+  "sim_type": "decision_making",
+  "title": "Reliance Industries Pre-Earnings Call: Secondary Market Timing",
+  "scenario": "You are a senior equity analyst at ICICI Securities' Mumbai desk. Reliance Industries is trading at ₹2,780 with earnings coming in 3 days. Your team is split: some want a buy recommendation now, others want to wait. Your job is to navigate the liquidity, market cap signals, and timing dynamics to issue a defensible call.",
+  "instructions": "You will face 4 decision points. At each point, choose one action. Your choices accumulate scores across three dimensions: rigor (depth of analysis), speed (decisiveness), and stakeholder_alignment (client trust). After the final decision, you will receive a graded outcome based on your total score.",
+  "learning_objective": "Apply secondary market concepts—liquidity, market cap, and exchange dynamics—to make a time-sensitive analyst recommendation on a large-cap stock.",
+  "hints": [
+    "Market cap, not share price, determines true company size. Reliance's float and NSE liquidity are key inputs.",
+    "Earnings in 3 days create an information asymmetry. Consider what you know vs. what the market is pricing.",
+    "Stakeholder alignment means your call must be defensible to both risk-averse and aggressive clients."
+  ],
+  "scenario_context": "Reliance Industries Limited (RIL) is India's largest company by market cap, with approximately 27 crore shares outstanding trading at ₹2,780. This gives RIL a market cap of roughly ₹7.5 lakh crore—making it a mega-cap, liquid blue-chip. On the NSE, Reliance trades millions of shares daily with tight bid-ask spreads. Your equity research desk has modeled Q2 earnings and sees potential upside to ₹3,100 on a beat, but downside to ₹2,650 on a miss. The secondary market is pricing in a modest beat (+2% upside). You must decide: issue a buy now, wait for earnings clarity, hedge with a conditional call, or downgrade to neutral.",
+  "initial_data": {
+    "Stock": "Reliance Industries",
+    "Current Price": "₹2,780",
+    "Market Cap": "₹7.5 lakh crore",
+    "Shares Outstanding": "27 crore",
+    "Your Buy Rec": "Pending",
+    "Time to Earnings": "3 days",
+    "NSE Liquidity": "Avg daily volume 4.5 crore shares"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Assessing Pre-Earnings Information Risk",
+      "narrative": "Your team's quant analyst has just flagged that implied volatility in Reliance's options market has jumped 18% in two days—suggesting smart money is bracing for a material move. You also notice that Reliance's institutional ownership is 63%, and several large mutual fund schemes have been buying at the ₹2,750–₹2,800 range. However, the earnings whisper—spoken calls from management—suggests a mixed tone: strong refining margins offset by weaker chemical volumes. You must decide how much weight to give the secondary market's current pricing versus your earnings model.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Issue a Buy on intrinsic value; earnings risk is reflected in volatility premium",
+          "description": "Trust your 18-month DCF model that justifies ₹3,100; the options market is overpricing downside risk, and Reliance's mega-cap liquidity means smart exit if results disappoint.",
+          "consequence": "Your buy call is bold and attracts aggressive growth clients who appreciate conviction. However, if earnings miss, your call's upside thesis collapses and your rigor takes a hit with conservative wealth managers. Stakeholders with large Reliance positions see you as aligned with their bull case.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_alignment": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Wait for earnings; issue a conditional call based on guidance tone",
+          "description": "Delayed recommendation is safer—you avoid pre-earnings volatility and get hard numbers. Issue a 'Buy-if-beat' and 'Hold-if-inline' framework now, activating your full call post-results.",
+          "consequence": "Conservative clients appreciate the discipline. You preserve credibility and avoid a flat-footed call if management surprises. But the delay costs you 'speed'—aggressive clients see you as risk-averse and may front-run your likely buy post-earnings. NSE liquidity means they'll execute before you do.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -2,
+            "stakeholder_alignment": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Issue a Neutral with 'upgrade on beat' flag; cite secondary market efficiency as cover",
+          "description": "The secondary market is pricing in a +2% move on a beat. Use this as your hedge: the NSE is rational, and your job is to wait for that clarity, not front-run the market.",
+          "consequence": "This protects your credibility but signals weak conviction. Institutional clients who respect research independence see it as prudent; but aggressive PMs think you lack backbone. If Reliance beats and rallies hard, your Neutral call will be criticized as overcautious, and you'll have to upgrade hastily.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": -1,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Liquidity and Position Sizing: Your Institutional Call",
+      "narrative": "Having set your stance, you now turn to the practical question: what position size should you recommend to institutional clients? A large mutual fund (₹50,000 crore AUM) asks you bluntly: 'If we want to buy ₹500 crore of Reliance, can we do it without moving the market on the NSE?' You know Reliance's average daily volume is 4.5 crore shares at ₹2,780 per share—roughly ₹1,250 crore daily turnover. A ₹500 crore buy would represent 40% of one day's volume. But the fund wants to know if they can scale in over a week. You must advise on secondary market liquidity and concentration risk.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Recommend full ₹500 crore entry over 5 days; NSE liquidity is deep enough",
+          "description": "Reliance is mega-cap with institutional breadth. A ₹100 crore per day buy is only 8% of daily turnover—easy to absorb. The secondary market has enough buy-side interest to accommodate a large institutional order without moving the price materially.",
+          "consequence": "The fund executes quickly and appreciates your confidence in NSE liquidity. You're aligned with their execution timeline and show mastery of secondary market mechanics. However, if even a small earnings miss occurs during the 5-day entry, the fund suffers execution risk and blames your recommendation for aggressive timing.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Suggest a staged entry: ₹150 crore now, ₹200 crore post-earnings, ₹150 crore if stock pulls back",
+          "description": "A conditional, de-risked approach. The fund enters a small tranche immediately (showing conviction), waits for earnings clarity (de-risking), and uses any post-earnings dips as a second entry point.",
+          "consequence": "This is disciplined and matches the fund's risk appetite. You're seen as thoughtful and not blindly bullish. But you're also implying your own buy call may not hold up—which undermines confidence. The fund may interpret staged entry as 'you're hedging your own thesis,' creating friction with your recommendation's credibility.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Recommend ₹250 crore entry; split between NSE and small block trades off-exchange",
+          "description": "Use Reliance's secondary market depth tactically. Bulk of the buy goes through the NSE (anonymous, market price), a portion negotiated directly with other holders via block trading (lower impact, but less transparent).",
+          "consequence": "You demonstrate nuanced understanding of secondary market microstructure—impressive to sophisticated institutional clients. Block trades let the fund get size without moving the market visibly. However, block trades carry counterparty risk and less pricing transparency. If market drops post-execution, the fund regrets not using pure NSE execution.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Earnings Eve: The Final Call Commit",
+      "narrative": "It's now the evening before Reliance's earnings. Your models are finalized. The secondary market has been calm—Reliance's stock barely moved today, implying the market has priced in a benign outcome. But your quant team just flagged that implied volatility spiked again this afternoon, and a large block of 2 crore shares was bought in the last 30 minutes of trading at a +0.2% premium to the NSE close—suggesting an insider or very informed buyer loaded ahead of results. You must now commit: do you stick with your earlier stance, pivot to a stronger conviction, or hedge by issuing a range?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Commit fully: reissue your buy with ₹3,100 target; secondary market efficiency supported your patience",
+          "description": "The block buy and vol spike suggest informed money sees upside. Your models and conviction are intact. You issue a strong buy with explicit post-earnings target and messaging tied to secondary market liquidity management.",
+          "consequence": "If Reliance beats, your full-commitment call looks prescient and you gain alpha reputation. Clients who followed you in are rewarded. However, if the results disappoint, your conviction buy call will be seen as reckless—you ignored the vol warning and the mysterious block trade may have been sophisticated shorting ahead of bad news, not buying.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Hedge: upgrade to Buy, but issue a ₹2,650–₹3,150 range; acknowledge volatility premium",
+          "description": "You're confident enough to upgrade from Neutral/Hold, but you're not naive. Cite the elevated vol and block activity as reasons to frame a wide outcome range—showing clients you've done your homework on secondary market mechanics while preserving credibility if results swing either way.",
+          "consequence": "Sophisticated clients respect the nuance. You're decisive (upgrade) but humble (range-bound). This builds trust for future calls. However, if results come in neutrally at ₹2,900—exactly midway in your range—the call feels wishy-washy and may be forgotten. Clients don't reward middle-of-the-road recommendations.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Downgrade to Reduce; cite vol and insider block as red flags before market reprices",
+          "description": "The block trade is suspicious. Smart money doesn't buy blocks of mega-caps at premiums unless they know something. The vol spike could signal an earnings shock coming. Play defense: move to Reduce, protect client capital, and issue upgrade after results if you're wrong.",
+          "consequence": "If earnings disappoint, you'll be praised as prescient risk manager. Clients who trusted your downgrade avoided losses. However, if Reliance beats and rallies 5%, your Reduce call will be a glaring miss. You'll look paranoid and risk-averse, losing credibility with growth-oriented clients who'll think you're unable to read secondary market strength.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": -2,
+            "stakeholder_alignment": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Post-Earnings Execution: Defending Your Call",
+      "narrative": "Reliance has reported results. Your research call has proven either prescient or premature. The stock has moved ±4%, and your phone is ringing with clients asking if they should add to, trim, or flip their positions. You have 15 minutes to decide your official response before the market opens for the post-earnings session on the NSE. This is where secondary market understanding meets accountability: can you explain your call in the context of Reliance's liquidity and mega-cap structure?",
+      "options": [
+        {
+          "id": "A",
+          "label": "If you were right (beat scenario): reaffirm Buy, raise target to ₹3,250, cite liquidity tailwind",
+          "description": "Results beat; market rallied. You own this win. Raise your target aggressively, cite Reliance's strong institutional demand and NSE liquidity depth as reason to be confident in continued upside. Clients should add on any dips because mega-cap blue-chips absorb buying interest smoothly.",
+          "consequence": "You look sharp and clients who trusted you are rewarded. You build alpha reputation. However, if the market stalls post-earnings on profit-taking (common after 4%+ gaps), your aggressive retarget will look premature and you'll face criticism for not taking some gains off the table.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_alignment": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "If you were right (beat scenario): maintain Buy at ₹3,100, cite secondary market volatility risk",
+          "description": "Results beat, but you're measured in your response. You reaffirm your prior target (showing discipline) and warn clients that volatility often spikes post-earnings, especially after a gap. Position size conservatively; don't chase the pop.",
+          "consequence": "Conservative clients appreciate your caution. But in a beat scenario, cautious messaging feels like you're leaving money on the table. Growth clients will think you lack conviction and may switch to a more bullish analyst. Your hedged response, while safe, doesn't capitalize fully on your correct call.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "If you were wrong (miss scenario): downgrade immediately to Hold, blame secondary market misprice",
+          "description": "Results missed; stock fell 3%. You cut your losses: downgrade to Hold and cite the NSE's inability to correctly price the earnings risk beforehand as reason for the miss. This shifts blame to market efficiency, not your model.",
+          "consequence": "Clients who still hold are confused—you're saying the market was wrong, but your job is to predict what the market will do, not to blame it. This defense is weak and erodes trust. You'll look like you're making excuses rather than owning the miss and learning from it.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": -1,
+            "stakeholder_alignment": -2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "If you were wrong (miss scenario): downgrade to Reduce, remodel with new guidance, reset target to ₹2,550",
+          "description": "Results missed; you own it. Downgrade decisively and remodel with management's new guidance. Set a lower target and explain why your prior model assumptions were flawed—this is professional accountability and secondary market wisdom: the market reprices on new information, and you must adapt.",
+          "consequence": "Clients respect the honesty. You're seen as disciplined, not dogmatic. This protects your long-term reputation even though this specific call was wrong. Sophisticated institutional clients know all analysts miss sometimes; they respect quick, honest recalibration. Your Reduce call may also be prescient if the stock continues falling post-results.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Strong analyst call—secondary market mastery",
+        "narrative": "You navigated pre-earnings timing, liquidity mechanics, and conviction with sophistication. Your recommendations demonstrated deep understanding of how secondary market efficiency, mega-cap structure, and NSE liquidity interact. Clients see you as a trusted equity strategist who balances rigor with decisive action."
+      },
+      {
+        "min_total": 6,
+        "label": "Defensible call—competent execution",
+        "narrative": "Your recommendations were grounded and your reasoning was sound. You managed stakeholder expectations well and showed understanding of secondary market concepts. The call may not have been perfectly timed, but it was professional and well-reasoned. Clients trust your framework, even if this specific outcome was neutral."
+      },
+      {
+        "min_total": 2,
+        "label": "Needs review—missed key insights",
+        "narrative": "Your call lacked conviction or rigor. You either played too safe (ignoring Reliance's mega-cap depth) or too aggressive (ignoring pre-earnings signals). Secondary market timing requires balancing speed and discipline—your choices leaned too heavily in one direction. Rework your framework before the next earnings cycle."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread—poor secondary market mechanics",
+        "narrative": "Your recommendations either contradicted Reliance's secondary market fundamentals (liquidity, mega-cap status, NSE efficiency) or showed weak accountability for wrong calls. You blamed the market instead of recalibrating your model, or ignored clear signals like volatility spikes and block trades. This eroded stakeholder trust significantly."
+      }
+    ]
+  }
+}

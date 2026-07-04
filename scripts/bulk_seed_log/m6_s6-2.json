@@ -1,0 +1,189 @@
+{
+  "sim_type": "document",
+  "title": "Titan Company MD&A: Reading Strategy Shifts in Management's Words",
+  "scenario": "You're a junior analyst on a Mumbai equity desk covering Titan Company. Your senior has flagged the FY24 MD&A as a test case for spotting strategic language shifts. Compare the tone and claims to last year's letter, check the operating-margin trend, and extract what management is really signalling about growth, pricing, and the jewellery market outlook.",
+  "instructions": "Read the Titan FY24 MD&A excerpt and chairman's statement below. Hover tooltips on key items. Answer questions that test your ability to extract genuine strategy, spot spin, and validate claims against numbers.",
+  "learning_objective": "Extract genuine strategic content from the MD&A while reading critically—validate management claims against margins, spot language shifts, and identify what's being emphasised versus downplayed.",
+  "hints": [
+    "Check whether management's claim about 'operational efficiency' is backed up by the operating-margin trend year-over-year.",
+    "Notice which words appear in FY24 MD&A but were absent (or different) in FY23—language shifts often signal strategy changes before numbers confirm them.",
+    "Compare the tone: is management leading with 'aggressive growth' or 'disciplined profitability'? That vocabulary choice reveals their mindset."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (April 2023 – March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Chairman's Statement – Key Excerpt",
+        "line_items": [
+          {
+            "id": "chair_opening",
+            "label": "Opening Statement on Year",
+            "text": "FY24 has been a year of consolidation and disciplined execution. While we maintained strong operational focus, we also prioritised margin protection and working-capital efficiency over aggressive expansion."
+          },
+          {
+            "id": "chair_jewellery",
+            "label": "Jewellery Business Perspective",
+            "text": "Our jewellery business navigated a moderated demand environment with prudent inventory management. We focused on premiumisation and customer experience rather than chasing volume at the cost of margins."
+          },
+          {
+            "id": "chair_outlook",
+            "label": "Forward Outlook",
+            "text": "We remain optimistic about long-term structural growth in organised jewellery, but near-term caution is warranted as consumer sentiment remains uneven across geographies."
+          }
+        ]
+      },
+      {
+        "title": "MD&A – Financial Performance Summary",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 51084,
+            "previous_year": 40575
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 38451,
+            "previous_year": 31220
+          },
+          {
+            "id": "employee",
+            "label": "Employee benefits expense",
+            "current_year": 4280,
+            "previous_year": 3950
+          },
+          {
+            "id": "other_opex",
+            "label": "Other operating expenses",
+            "current_year": 3200,
+            "previous_year": 2820
+          },
+          {
+            "id": "ebit",
+            "label": "Earnings Before Interest & Tax (EBIT)",
+            "current_year": 5153,
+            "previous_year": 2585
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 1296,
+            "previous_year": 621
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 3857,
+          "previous_year": 1964
+        }
+      },
+      {
+        "title": "MD&A – Segment & Margin Analysis",
+        "line_items": [
+          {
+            "id": "jewellery_rev",
+            "label": "Jewellery segment revenue",
+            "current_year": 38250,
+            "previous_year": 31080
+          },
+          {
+            "id": "jewellery_margin",
+            "label": "Jewellery segment operating margin (%)",
+            "current_year": 12.8,
+            "previous_year": 10.2
+          },
+          {
+            "id": "watches_rev",
+            "label": "Watches & accessories revenue",
+            "current_year": 8950,
+            "previous_year": 7230
+          },
+          {
+            "id": "eyewear_rev",
+            "label": "Eyewear segment revenue",
+            "current_year": 3884,
+            "previous_year": 2265
+          }
+        ]
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "chair_opening",
+      "tooltip": "Note the vocabulary: 'consolidation' and 'margin protection' (defensive posture) replace prior years' 'aggressive expansion' language. This is management signalling a strategic shift before committing to slower growth."
+    },
+    {
+      "id": "jewellery_margin",
+      "tooltip": "Jewellery margin rose from 10.2% to 12.8% YoY despite 'moderated demand.' This validates the 'disciplined execution' and pricing narrative — but check: is this sustainable or a one-time mix benefit?"
+    },
+    {
+      "id": "ebit",
+      "tooltip": "EBIT jumped 99% YoY (₹2,585 Cr → ₹5,153 Cr) on 26% revenue growth. Operating leverage is working, but management's caution about 'uneven consumer sentiment' suggests they don't expect this pace to continue."
+    },
+    {
+      "id": "chair_outlook",
+      "tooltip": "Contradiction flag: bullish on 'long-term structural growth' but cautious on 'near-term' — this is classic management speak for 'we don't know what's coming next quarter.' Read as: expect slower near-term growth."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Titan's overall operating margin (EBIT ÷ Revenue) for FY24. Did it improve versus FY23, and by how much (in percentage points)?",
+      "answer_type": "number",
+      "expected_value": 1.77,
+      "tolerance": 0.2,
+      "unit": "percentage points",
+      "explanation": "FY24 EBIT margin = (5153 ÷ 51084) × 100 = 10.09%. FY23 margin = (2585 ÷ 40575) × 100 = 6.37%. Improvement = 10.09% − 6.37% = 3.72 percentage points. (If student calculates just the FY24 margin = 10.09%, that's also acceptable; tolerance of ±0.5 pp for the difference). This validates management's claims of operational discipline and margin protection — the numbers confirm the narrative."
+    },
+    {
+      "id": "t2",
+      "question": "Which THREE words or phrases from the Chairman's statement best describe management's FY24 strategic posture — are they offensive (growth-focused) or defensive (efficiency/protection-focused)?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "consolidation",
+        "disciplined",
+        "margin protection",
+        "cautious",
+        "focused"
+      ],
+      "explanation": "Management chose 'consolidation,' 'disciplined execution,' 'margin protection,' and 'prudent inventory management.' These are the vocabulary of *defence*, not offence. Compare to prior-year language (e.g., if FY23 used 'expansion,' 'aggressive,' 'scaling') and the strategic shift becomes clear. This shift in tone is as important as any number — it signals management's changed mindset about the market and growth."
+    },
+    {
+      "id": "t3",
+      "question": "The Chairman states the company 'prioritised margin protection over aggressive expansion' yet jewellery revenue grew 23% YoY. Is management being honest about the trade-off, or spinning growth as restraint? Explain in 2–3 sentences.",
+      "answer_type": "free_text",
+      "sample_answer": "Management is being honest, not spinning. 23% revenue growth is strong, but the deliberate shift from 'expansion' to 'margin protection' vocabulary signals they *could* have grown faster but chose not to — prioritising jewellery-segment margin improvement (10.2% → 12.8%) instead. The cautious outlook ('uneven consumer sentiment') and focus on 'premiumisation' over volume confirms they're managing growth, not accelerating it.",
+      "explanation": "This tests whether the student can reconcile apparent contradictions in management narrative. Revenue grew, but management's own language and the margin-improvement focus reveal they took a measured approach — they had capacity to push harder but didn't. Reading the MD&A critically means holding management's claimed strategy (consolidation) against the outcomes (growth) and understanding *why* both can be true. This is the hallmark of distinguishing genuine strategic insight from spin."
+    },
+    {
+      "id": "t4",
+      "question": "Management's forward outlook states 'near-term caution is warranted as consumer sentiment remains uneven.' In the context of FY24's strong EBIT growth and improved margins, what is management signalling about FY25 expectations?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "slowdown",
+        "deceleration",
+        "moderation",
+        "uncertain",
+        "growth challenge"
+      ],
+      "explanation": "Management is signalling that FY25 will see *deceleration* or *moderation* in growth — despite FY24's strong results. 'Near-term caution' is code for 'expect slower growth ahead.' This is a classic MD&A read: celebrating yesterday's strong numbers while quietly preparing investors for tomorrow's weakness. An analyst alert to this language shift can adjust forecasts before the numbers turn negative."
+    },
+    {
+      "id": "t5",
+      "question": "Titan's watches & accessories segment revenue grew from ₹7,230 Cr (FY23) to ₹8,950 Cr (FY24), a 23.8% increase. Yet the MD&A does not highlight this segment prominently. What does the *absence* of detailed discussion of watches suggest about management's priorities or concerns?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "jewellery focus",
+        "lower margin",
+        "deprioritised",
+        "margin pressure",
+        "secondary"
+      ],
+      "explanation": "The lack of detailed discussion of watches — despite solid growth — suggests jewellery is the priority and watches may face margin pressure or competitive headwinds that management doesn't want to dwell on. In MD&A reading, what's *omitted* or discussed briefly is as revealing as what's highlighted. Management is signalling 'this segment grew, but we're not betting on it the way we're betting on jewellery.' Session 6.11 deep-dives on reading the silence; this is an early example of that technique."
+    }
+  ]
+}

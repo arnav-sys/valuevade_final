@@ -1,0 +1,217 @@
+{
+  "sim_type": "decision_making",
+  "title": "Asking the Sharp Question — Infosys Margin Recovery Call",
+  "scenario": "You're a junior equity analyst at a Mumbai desk, 2 hours before Infosys' Q3 results call. Management guided 16–18% operating margin recovery by fiscal year-end; last quarter they delivered 15.2%, down 120bps, and didn't mention the guidance. You have one prepared question slot. How do you craft it to extract the truth?",
+  "instructions": "Walk through 4 decision points where you construct, refine, and deliver your question to management. Each choice builds on the prior one. Your scores accumulate across 'Sharpness' (specificity, anchoring, pin-down force) and 'Execution' (follow-up readiness, escape-closure). At the end, you'll receive a final grade on whether your question actually pins down management or lets them off the hook.",
+  "learning_objective": "Construct and defend a sharp analyst question that forces management to pin down a specific commitment or expose their evasion.",
+  "hints": [
+    "Anchor your question to Infosys' *own prior guidance* (16–18% target, last quarter's miss) — management can't deny what they said before.",
+    "Decompose the miss into specific drivers: 'Was the 120bps decline pricing pressure, wage inflation, or deal mix?' — vague lumped answers won't survive specificity.",
+    "Follow-up is your escape-closer: if management says 'we're focused on margin expansion,' your follow-up should be 'Yes or no — do you expect to hit 16% by Q4, or should we reset expectations?'"
+  ],
+  "scenario_context": "Infosys has been guiding 16–18% operating margin recovery by FY25 end (Q4, ~6 weeks away). Last quarter (Q2), they delivered 15.2%, a 120bps sequential decline, and didn't reaffirm the guidance — a conspicuous silence. The street is unsure: Is the 16–18% target dead? Is it just delayed? Or is management being strategically vague to avoid a reset before earnings? You've prepared one substantive question for the call. Your job: craft a question sharp enough that management either (a) commits to the 16–18% target with a path, or (b) admits it's been walked back. A soft question ('How are margins trending?') gets a vague non-answer and you've wasted your slot. A sharp question pins them down.",
+  "initial_data": {
+    "Company": "Infosys Limited",
+    "Current Price": "₹1,850",
+    "Your Rec": "Hold (pending margin clarity)",
+    "Guidance at Stake": "16–18% OPM by FY25-end",
+    "Last Quarter OPM": "15.2% (120bps miss)",
+    "Time to Call": "2 hours"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Do you anchor your question to Infosys' prior guidance?",
+      "narrative": "You're sitting down to draft your question. You know the core issue: Infosys guided 16–18% operating margin recovery by Q4; last quarter they delivered 15.2%, down 120bps, and didn't reaffirm guidance — a red flag. Your first choice: do you anchor your question to that prior guidance commitment, or ask a more open-ended question about margin trends? Anchoring to management's *own prior statement* is one of the sharpest techniques — it removes their room to wave away the question as 'just checking in.' But it also signals you've been paying attention and you're holding them to their word, which some analysts avoid (preferring to seem collaborative). What's your approach?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Anchor hard to the 16–18% guidance and last quarter's miss.",
+          "description": "Open with: 'Your guidance has been 16–18% OPM by fiscal year-end; last quarter you delivered 15.2%, down 120bps, and didn't reaffirm that target — is the 16–18% still operative, or should we reset expectations?'",
+          "consequence": "You've anchored to Infosys' own prior commitment, making it nearly impossible for management to deflect or ignore the question. The specificity (16–18%, 15.2%, 120bps, the silence on guidance) forces them to either defend the target with a path, or admit it's been changed. This is a sharp anchor — they can't wave it away as 'just asking how things are trending.'",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Ask a softer, more collaborative question about margin trends.",
+          "description": "Open with: 'Can you walk us through the margin drivers this quarter and how you see the trajectory ahead?'",
+          "consequence": "This is a safe, vague question that doesn't pin management down. They'll likely give a prepared narrative about 'cost management,' 'pricing actions,' and 'FX headwinds' — without committing to anything. Management loves questions like this; they can talk at length and avoid the hard issue (whether the 16–18% target is still real). You haven't anchored to the prior guidance or the miss, so they have every reason to treat this as an open-ended chat.",
+          "score_impact": {
+            "sharpness": -2,
+            "execution": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Anchor to the prior guidance *and* immediately ask for decomposition of the miss.",
+          "description": "Open with: 'Your guidance has been 16–18% OPM; last quarter you delivered 15.2%, 120bps below prior guidance, and didn't reaffirm — has the target changed? And specifically, how much of the 120bps decline was pricing power versus wage inflation versus deal mix?'",
+          "consequence": "This is a sharper opening because it combines anchoring (to the prior commitment) with immediate decomposition (forcing specificity on the drivers of the miss). Management can't answer this with vague 'cost pressures' platitudes — you've demanded they break down the miss into specific categories. This makes evasion harder on the call itself, because your question is already packed with specificity and they'll have to either answer specifically or visibly dodge.",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "How do you design your question to pin down a yes-or-no commitment?",
+      "narrative": "You've anchored your question (or decided not to). Now: the follow-up. No matter what management's first answer is — 'We're working on cost optimization,' 'We remain confident in guidance,' 'Margins are recovering' — it will likely be vague or partial. Your next move is to *pin down* that answer with a focused follow-up that removes their room to hedge. A sharp follow-up converts a comfortable non-answer into a choice: specific commitment or visible evasion. What's your pinning-down move?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Follow up with a direct yes-or-no: 'Will Infosys hit 16% OPM by Q4, or not?'",
+          "description": "After their first answer, you narrow relentlessly: 'I understand the initiatives are in motion, but specifically — yes or no — do you expect to hit at least 16% OPM in Q4, or should we reset guidance lower?'",
+          "consequence": "This is a powerful pin-down because it removes every hedge. Management can't answer 'we're working on it' to a yes-or-no question — they either commit to the number or admit it's off the table. If they hedge after this question, their evasion is undeniable (everyone on the call heard the yes-or-no question and the non-yes-or-no answer). This forces either a revealing answer or an obvious dodge.",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 3
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Ask them to specify the timing: 'In which quarter do you expect to hit 16%?'",
+          "description": "Convert their vague 'we're confident' into a timeline: 'If not Q4, then in which quarter do you expect to recover to 16% OPM? And what specifically needs to happen for that recovery?'",
+          "consequence": "This pins them to a *specific timeline*, which is slightly softer than a yes-or-no but still forces commitment. If they can't name a quarter, that itself is revealing — they don't have a clear path to recovery. If they name Q1 of next fiscal year, you've gotten them to admit the Q4 target is likely missed. Either way, the question converts 'we're working on it' into a trackable, checkable claim.",
+          "score_impact": {
+            "sharpness": 2,
+            "execution": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Probe the escape: 'Is the 16–18% target still your guidance, or have you silently reset it?'",
+          "description": "Point out the conspicuous absence directly: 'Last quarter was the first time you didn't reaffirm the 16–18% guidance — is that still your target, or should we treat it as reset?'",
+          "consequence": "This is sharp because it surfaces the strategy of silence — the idea that Infosys quietly walked back guidance without saying so (a classic management tactic; see Session 6.7). By asking directly, you force them to either defend the target or admit it's changed. The strength: you're holding them accountable for what they *didn't* say (the silence itself), not just what they did. Management hates this because it exposes the strategy of vagueness.",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "What's your fail-safe follow-up if management still hedges?",
+      "narrative": "You've asked a sharp, pinning question. Management's first answer is (as expected) a hedge: 'We remain confident in our trajectory toward margin recovery and are executing on our cost optimization initiatives.' This is a non-answer to a sharp question, which means you've now exposed their strategy of evasion — and you have one more chance to close the loop. A great analyst doesn't accept the first hedge; they follow up to close off the escape. What's your move?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Accept the hedge and move on; you've already pinned them.",
+          "description": "You've asked a sharp question, they've hedged, and everyone on the call knows it. You've done your job — you've exposed that they won't commit to the 16–18% target. Moving on signals confidence and respect for management.",
+          "consequence": "You're leaving signal on the table. Management has learned that when you ask a sharp question, a good enough hedge gets you to move on. This trains them to hedge harder next quarter. More importantly: you haven't actually *forced* them to choose between committing and admitting the reset. Your question was sharp, but your follow-up was soft, so they escaped. The street will still be unclear on whether the 16–18% target is dead because management never had to say it explicitly.",
+          "score_impact": {
+            "sharpness": 0,
+            "execution": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Follow up: 'That's clear, but just to be precise — is 16% OPM in Q4 still the target, or not?'",
+          "description": "Narrow relentlessly. Don't accept 'trajectory' or 'initiatives' — force them to say the number. 'I understand you're executing initiatives, but I need clarity for the model: is the 16% Q4 target still in play, yes or no?'",
+          "consequence": "This is the classic escape-closer. You've asked the sharp question, they've hedged, you've now forced them to choose: commit to the number or admit it's changed. Management typically can't hedge a yes-or-no after the first hedge (it looks evasive on the call), so they're forced to either say 'yes, 16% is still the target' (a trackable commitment) or 'the pace of recovery may extend beyond Q4' (an admission the Q4 target is missed). Either way, you've extracted clarity that the street needs.",
+          "score_impact": {
+            "sharpness": 2,
+            "execution": 3
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Decompose their non-answer: 'When you say trajectory toward recovery, what's the path? 15.5% in Q4, 16% in Q1 next year?'",
+          "description": "Force them to decompose the vague 'trajectory' into specific milestones: 'What's the sequential margin progression you're modeling? 15.5% to 16% to 17%? Or a different path? I want to model this correctly.'",
+          "consequence": "This is sharp because it forces specificity through the guise of 'helping them help you model correctly.' They can't say 'we're on a trajectory' without sketching the path — and once they sketch it, you have specific checkpoints (15.5% in Q4, etc.) to hold them to next quarter. If they can't sketch a path, that's itself revealing (they don't have one). This technique turns a hedge into a series of trackable claims.",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 3
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final: How do you synthesize your question into your actual written prep?",
+      "narrative": "You're now at your desk, 30 minutes before the call, drafting the *actual written question* you'll ask. You've thought through anchoring, pinning down, and follow-ups. Now you need to write it cleanly, sharply, and in a way that (a) forces a specific answer and (b) allows you to follow up if management hedges. The written question is your weapon; it needs to be precise enough that management's answer — or non-answer — is undeniable on the call. What's your final move?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Write a single, long question packed with specificity and follow-up potential.",
+          "description": "Write: 'Infosys guided 16–18% OPM by fiscal year-end; Q2 delivered 15.2%, 120bps below the prior quarter and that guidance, and you didn't reaffirm. Has the 16–18% target changed? Specifically: of the 120bps decline, how much was pricing power, wage inflation, and deal mix? And in which quarter do you expect to hit at least 16%?' This is one long, loaded question that packs anchoring, decomposition, and pinning-down all into one.",
+          "consequence": "This question is sharp but risky: it's so multi-part that management can pick the easy sub-question and ignore the rest (a classic dodge). You've given them multiple escape routes instead of closing them. A sharp question is *singular* — one focused thing with a clear follow-up — not sprawling. This approach gives management more wriggle room than intended.",
+          "score_impact": {
+            "sharpness": 2,
+            "execution": -1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Write a focused, two-part setup: the sharp question, then a pre-written follow-up.",
+          "description": "Question: 'Infosys guided 16–18% OPM by year-end; Q2 delivered 15.2% and you didn't reaffirm guidance — is the 16–18% target still operative?' [PAUSE FOR ANSWER]. Follow-up (if they hedge): 'I need clarity for modeling: will Infosys hit 16% OPM in Q4, or should we assume the target has shifted?' This is singular, sharp, with a pre-written follow-up ready to deploy if the first answer is vague.",
+          "consequence": "This is the discipline of a sharp question: one focused thing (the target status), allow management to answer, then a pre-written, narrowing follow-up that closes the escape if they hedge. You're not giving them multiple escape routes in the first question — you're asking one specific thing, and if they hedge, you have a follow-up that forces yes-or-no. This structure is much harder for management to evade and much cleaner for the call.",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Write an anchored question *plus* a decomposition sub-question you'll use as follow-up.",
+          "description": "Question: 'Your guidance has been 16–18% OPM by Q4; you delivered 15.2% last quarter and didn't reaffirm — has the target changed?' [PAUSE]. If they hedge, follow-up: 'Can you break down the 120bps sequential decline — what was the impact of pricing versus wage inflation versus deal mix, and which are you expecting to reverse?' This gives you an anchored opening *and* a decomposition follow-up that tests the granularity of their answer.",
+          "consequence": "This approach is sharp on two levels: the first question forces them to address the target directly, and the follow-up (if they hedge the first) shifts to decomposing the miss into specifics they can't lump together as 'cost pressures.' The decomposition follow-up prevents them from hiding behind vague explanations — they have to explain *which specific cost* is temporary. This is an excellent pairing of sharpness and follow-up discipline.",
+          "score_impact": {
+            "sharpness": 3,
+            "execution": 3
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Sharp analyst call — pinned them down",
+        "narrative": "Your question was specific, anchored to Infosys' own prior guidance, and designed to force either a commitment to the 16–18% target or an admission it's been reset. You followed up relentlessly, turning any hedge into a visible evasion. Management couldn't comfort you with platitudes; they had to either defend the target with a path or publicly walk it back. The street now knows whether to model 16% in Q4 or reset. Your question extracted the truth."
+      },
+      {
+        "min_total": 5,
+        "label": "Defensible question — exposed ambiguity",
+        "narrative": "Your question was reasonably sharp and anchored, but your follow-up wasn't quite tight enough to close off all escape routes. Management hedged, and while their hedge was visible (so some clarity was gained), they didn't have to commit to the 16% target explicitly. You've signaled to the street that guidance is uncertain, but you haven't forced management to say so directly. A senior analyst would have tightened the follow-up to extract an unambiguous answer."
+      },
+      {
+        "min_total": 1,
+        "label": "Soft question — management escaped",
+        "narrative": "Your question was either too vague, not anchored to Infosys' prior guidance, or lacked the precision to pin down a specific answer. Management answered with comfortable narratives about 'initiatives' and 'trajectory,' and you didn't follow up hard enough to force clarity. The call ended with the street still uncertain: Is the 16–18% target real? Is it dead? You had one question slot and didn't use it to extract the truth. A missed opportunity."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread the opportunity — softballed them",
+        "narrative": "You asked a vague, open-ended question like 'How are margins trending?' or accepted the first hedge without any follow-up. Management gave you a prepared answer and you moved on, leaving the core question unanswered. The 16–18% guidance ambiguity remains unresolved. You've trained Infosys to believe they don't have to answer sharp questions from this desk."
+      }
+    ]
+  }
+}

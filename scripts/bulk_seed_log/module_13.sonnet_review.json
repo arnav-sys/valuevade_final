@@ -1,22 +1,20 @@
 {
   "module": 13,
-  "reviewed_at": "2026-07-04T08:46:06.454793+00:00",
-  "sampled": 4,
+  "reviewed_at": "2026-07-04T09:06:41.184812+00:00",
+  "sampled": 2,
   "passed": 1,
-  "failed": 3,
-  "avg_total": 4.38,
+  "failed": 1,
+  "avg_total": 4.25,
   "avg_per_criterion": {
     "indian_flavor": 5.0,
     "session_relevance": 5.0,
-    "hint_progression": 5.0,
-    "difficulty_curve": 2.5
+    "hint_progression": 3.5,
+    "difficulty_curve": 3.5
   },
   "passed_sessions": [
-    "13.11"
+    "13.6"
   ],
   "failed_sessions": [
-    "13.1",
-    "13.6",
     "13.16"
   ],
   "rows": [
@@ -25,29 +23,13 @@
         "indian_flavor": 5,
         "session_relevance": 5,
         "hint_progression": 5,
-        "difficulty_curve": 2
+        "difficulty_curve": 5
       },
-      "avg": 4.25,
-      "verdict": "fail",
-      "strengths": "Perfect Indian authenticity (Titan Company, NSE ticker, ₹3650 price, Mumbai brokerage context) and laser-focused on session content (colour-coding, absolute references, named ranges, error-checking).",
-      "weaknesses": "Difficulty curve is flat — all 6 questions are identical IF(AND()) sanity checks with no progression; no questions test colour-coding discipline, no named range creation task, no absolute reference anchoring exercise.",
-      "fix_directive": "Add 2-3 easier warm-up questions testing basic colour-coding identification and absolute reference conversion ($B$10 format), then ramp through named range creation, before the IF(AND()) checks; aim for 8-10 total questions spanning SUM→conditional→lookup→multi-step to hit 50-100 points.",
-      "session_no": "13.1",
-      "sim_type": "excel",
-      "file": "/app/scripts/bulk_seed_log/m13_s13-1.json"
-    },
-    {
-      "scores": {
-        "indian_flavor": 5,
-        "session_relevance": 5,
-        "hint_progression": 5,
-        "difficulty_curve": 2
-      },
-      "avg": 4.25,
-      "verdict": "fail",
-      "strengths": "Authentic Indian context (Titan, ₹ Crores, Indian G-Sec 7%, India ERP 6.5%, real tax rate 25.17%), perfect session alignment (CAPM, WACC construction, tax shield, valuation sensitivity), textbook hint escalation (cheap CAPM reminder → tax shield formula → explicit weighting directive).",
-      "weaknesses": "Q5 and Q6 produce negative intrinsic values because WACC (12.31%) exceeds perpetuity growth (5%) by a tiny margin that's arithmetically defensible but pedagogically disastrous—students will think they broke something, the exercise loses credibility, and the 'sensitivity' lesson collapses when both values are nonsensical negatives.",
-      "fix_directive": "Lower the long-run growth rate to 4% or reduce Titan beta to ~0.70 so WACC drops below 12% and perpetuity valuation yields a plausible positive enterprise value in the ₹1,16,000–1,40,000 Cr range; keep all other inputs and structure intact.",
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Perfect Mumbai-desk authenticity with Titan named explicitly, realistic ₹324,000 Cr equity value, Indian tax rate 25.17%, and CAPM inputs calibrated to Indian markets (Rf 7.1%, ERP 6.5%); every question laser-focused on session's WACC build-up from CAPM through tax shield to terminal value perpetuity; hint ladder exemplary (cheap pointer to three CAPM components → medium tax-shield mechanics → expensive full WACC formula with sheet qualifiers); difficulty ramp textbook (CAPM lookup → tax arithmetic → weighted blend → scenario recompute → perpetuity with WACC-g trap → conditional bucketing), 6 questions totaling 80 points with clean 10-12-15-12-15-16 escalation.",
+      "weaknesses": "None; the expected_value for B4 shows 0 which appears to be a data-entry error (should be ~13.08%) but does not break the sim's pedagogical integrity since the formula_pattern is correct and would yield the right answer when executed.",
+      "fix_directive": "",
       "session_no": "13.6",
       "sim_type": "excel",
       "file": "/app/scripts/bulk_seed_log/m13_s13-6.json"
@@ -56,30 +38,14 @@
       "scores": {
         "indian_flavor": 5,
         "session_relevance": 5,
-        "hint_progression": 5,
-        "difficulty_curve": 4
-      },
-      "avg": 4.75,
-      "verdict": "pass",
-      "strengths": "Authentic Titan/Mumbai desk context with real ₹ Cr values (₹52,272 Cr EV, ₹3,287-4,115 per share bands), laser-focused on football field triangulation mechanics (consensus zone via MAX/MIN, weighted target, upside calc), and pedagogically sound 3-hint ladder (cheap convert-to-per-share → medium identify-overlap-logic → near-direct MAX/MIN syntax).",
-      "weaknesses": "Q3 expected_value of 0 is clearly a typo (should be 3593.5, midpoint of 3287 and 3900), and Q6 expected_value of -1 is impossible given the formula divides by a cell reference not shown in sample_cells (Data!B6 current price missing from preview), breaking verifiability.",
-      "fix_directive": "",
-      "session_no": "13.11",
-      "sim_type": "excel",
-      "file": "/app/scripts/bulk_seed_log/m13_s13-11.json"
-    },
-    {
-      "scores": {
-        "indian_flavor": 5,
-        "session_relevance": 5,
-        "hint_progression": 5,
+        "hint_progression": 2,
         "difficulty_curve": 2
       },
-      "avg": 4.25,
+      "avg": 3.5,
       "verdict": "fail",
-      "strengths": "Perfect Indian authenticity with Medica Specialties Ltd, ₹320 Cr EBITDA, ₹3,200 Cr EV; laser-focused on session's four LBO blocks (Sources & Uses, operating model, debt schedule, returns); excellent hint escalation from general guidance to specific formulas.",
-      "weaknesses": "Catastrophically broken expected_answers — formulas reference non-existent cells (Data!B8, B10, B11, C7, etc. undefined in sample_cells), making auto-grading impossible; only 6 questions for 100 points violates the 4-6 questions norm when difficulty should ramp through all four LBO components separately.",
-      "fix_directive": "Regenerate Data sheet with ALL assumption rows explicitly defined in sample_cells (entry multiple, debt %, interest rate, fees %, exit multiple, capex, NWC changes rows B8-B15 minimum), then rewrite expected_answers formulas referencing only those defined cells; add 1-2 intermediate questions (e.g. 'Year 3 interest expense' or 'cumulative debt paydown Y1-Y3') to create proper 6-question ramp hitting 80-100 points.",
+      "strengths": "Titan Company Limited is perfectly authentic (real Indian jewellery giant), all ₹ Cr values are Mumbai-desk plausible (₹60,000 Cr EV, ₹6,000 Cr EBITDA), and every question directly exercises LBO model components explicitly named in session notes (Sources & Uses, debt schedule, MOIC, IRR).",
+      "weaknesses": "Only 3 hints when session demands exactly 3 per question (hints are global, not per-Q), hint escalation is flat (all medium-level structure hints, none cheap/trivial, none near-direct formula), difficulty curve is broken (Q1 is binary IF check worth 8pts while Q6 IRR calc worth 18pts — no sensible ramp; 6 questions but uneven point distribution 8/10/12/12/15/18 doesn't follow classic easy→hard), and critically the expected answers contain impossible/broken values (Q1 expects 0 meaning Sources≠Uses which contradicts LBO fundamentals, Q5 MOIC expects 0.0x, Q6 IRR expects -100% — these are deal-killer errors, not teaching moments).",
+      "fix_directive": "Fix Data sheet so B16 (Total Sources) equals B7 (Total Uses) at ₹61,000 Cr; provide per-question hint triplets (cheap formula→conditional logic→near-complete); rebalance points to ramp 5/8/10/12/15/20; ensure exit equity is positive (add missing debt paydown cells B17-B21 showing amortisation so remaining debt < exit EV) so MOIC and IRR compute to realistic 20%+ returns that validate the deal premise.",
       "session_no": "13.16",
       "sim_type": "excel",
       "file": "/app/scripts/bulk_seed_log/m13_s13-16.json"

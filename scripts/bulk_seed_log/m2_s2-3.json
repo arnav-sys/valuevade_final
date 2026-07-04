@@ -1,0 +1,241 @@
+{
+  "sim_type": "decision_making",
+  "title": "Bajaj Finance FII Exit: Read the Players, Make the Call",
+  "scenario": "Bajaj Finance (₹7,420) is down 3.2% on heavy FII selling (₹280 crore outflow in two days). Your senior asks: Is this a buying opportunity or a real problem? You have 4 hours to recommend Hold/Buy/Sell before the earnings pre-brief.",
+  "instructions": "Navigate four decision points. At each, choose an action. Your choices accumulate scores across rigor, speed, and stakeholder trust. Your final call determines your grade: Strong Analyst, Defensible, Needs Review, or Misread.",
+  "learning_objective": "Distinguish between FII-driven noise and fundamental deterioration by identifying who is buying/selling and whether their activity reflects company-specific risk.",
+  "hints": [
+    "Check what DIIs are doing — if they're buying while FIIs sell, the market may be self-correcting.",
+    "A promoter stake increase on the same day FIIs exit would signal insider confidence despite the outflow.",
+    "Calculate the free-float impact: if Bajaj Finance has high promoter holding, FII selling affects fewer tradable shares than the price drop suggests."
+  ],
+  "scenario_context": "You're an equity analyst on the Mumbai desk at Motilal Oswal. Bajaj Finance, a ₹7.2 lakh crore market-cap NBFC, is your coverage stock. Today, two global funds (Vanguard, Blackstone) announced tactical rebalancing away from India due to US Fed rate signals — completely unrelated to Bajaj's business. The stock is down on high volume, but earnings (on Day 4) are expected to be solid. Your job: separate the FII noise from the signal. Your recommendation will be quoted on the morning call to 200+ institutional clients.",
+  "initial_data": {
+    "Stock": "Bajaj Finance",
+    "Current Price": "₹7,420",
+    "YTD Return": "+24%",
+    "FII Selling (2 days)": "₹280 crore",
+    "Your Current Stance": "Pending",
+    "Time to Earnings": "4 days"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Diagnose the Selling Pressure",
+      "narrative": "Your morning Bloomberg scan shows Bajaj Finance down 3.2% on ₹280 crore FII outflow. But you notice the fall is orderly — no gap-down open, no panic circuit breaker. Volume is 1.8x average, but not extreme. Before you advise clients, you need to answer: Is this capitulation selling or a measured rebalancing? Your first move is to check the counterparty demand. You pull up the DII and promoter activity logs for the past 24 hours.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Call the trading desk; ask if DIIs are buying the dip",
+          "description": "Direct, real-time intelligence on who is stepping in to absorb the FII selling.",
+          "consequence": "The desk reports: LIC, HDFC Mutual Fund, and Aditya Birla Sun Life are accumulating — ₹120 crore of buys in the last 6 hours. This immediately reframes the move from 'market is dumping' to 'FIIs are exiting, DIIs are catching.' You gain confidence that the dip is cyclical, not fundamental.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 2,
+            "stakeholder_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Wait for the day's close to see the full tape and DII/FII net",
+          "description": "A more methodical approach — you want the complete picture before moving, even if it delays your call.",
+          "consequence": "By 3:50 PM, you see that DIIs net bought ₹95 crore, FIIs net sold ₹280 crore, and retail was flat. The tape supports a DII support story, but you've already lost 4 hours. Your morning call gets pushed to post-lunch, which weakens your credibility with the early-shift desk traders.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -2,
+            "stakeholder_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Email the Bajaj Finance IR head to ask about any management changes or business hiccups",
+          "description": "A sound instinct — check if the FII selling is tied to any company-specific event you've missed.",
+          "consequence": "IR responds within 2 hours: no changes, no surprises, pre-earnings guidance unchanged. This rules out company-specific news. However, you've used up political capital with IR and may look reactionary if you call without having checked the broader DII/FII picture first. Your next call risks seeming uninformed.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": -1,
+            "stakeholder_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Assess Promoter Intent",
+      "narrative": "Now you know DIIs are buying into the FII selling. The narrative is holding: global noise, domestic absorption. But one more data point would seal your conviction: What are the promoters doing? Bajaj family holds 54% of Bajaj Finance (total market cap ₹7.2L crore, so promoter stake is worth ₹3.9L crore). If they're stepping up, it's a powerful signal of insider confidence.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Check BSE disclosures for any promoter buying/pledging in the last 48 hours",
+          "description": "Public record; quick and definitive. If they're buying or not pledging, it's bullish. If pledging, it's a red flag.",
+          "consequence": "You find a Bajaj Auto trustee bought 50,000 shares of Bajaj Finance at ₹7,380 on yesterday's dip — a modest but clear signal of insider appetite. This clinches your conviction: FIIs out, DIIs in, promoters nibbling. The sell-off is noise, not signal. You draft a 'BUY' recommendation with conviction.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 1,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Skip the promoter check and move straight to your earnings model",
+          "description": "You're confident enough in the DII absorption story; further checks feel like unnecessary delay. You'll base your call on fundamentals.",
+          "consequence": "You pivot to your earnings model and confirm that Q2 net interest margin and loan growth are tracking in-line. You draft a BUY call quickly, hitting your 2 PM deadline. But later in the day, SEBI discloses that Bajaj promoters pledged ₹500 crore of Bajaj Finance shares 24 hours before the FII selling began — a red flag you missed. Your call looks premature; clients lose confidence in your diligence.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 3,
+            "stakeholder_trust": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Call your sector peer at Kotak to compare notes on Bajaj Finance promoter mood",
+          "description": "Peer intelligence; triangulation without official channels. Risks sharing your thesis early.",
+          "consequence": "Your contact at Kotak says promoters sounded calm on their last earnings call and have been quiet on the pledging front. It's helpful corroboration but not a smoking gun. You've also tipped your thesis to a competitor, which is sloppy tradecraft. Your boss raises an eyebrow when she hears you shopped the idea.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 1,
+            "stakeholder_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Quantify the Free-Float Impact",
+      "narrative": "You've built a narrative: FIIs are exiting on global cues, DIIs are buying, promoters are calm. But now you ask yourself: How much of Bajaj Finance's shares are actually in free float? If promoters hold 54%, then only 46% is tradable. The FII selling of ₹280 crore hits a much smaller liquidity pool than the total market cap suggests. This could explain the outsized 3.2% price drop.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Calculate free-float market cap and show that FII outflow is only 1.9% of tradable shares",
+          "description": "Rigorous quantification. You derive: Total Cap ₹7.2L crore × 46% free float = ₹3.31L crore. ₹280 crore FII outflow ÷ ₹3.31L crore = 0.85% of free-float cap, or ~1.9% of daily average volume. The sell-off is magnified by low free float.",
+          "consequence": "This calculation is the clincher. You write: 'FII selling of ₹280 crore, while headline-grabbing, represents only 0.85% of the true free-float market cap. Absorbed by DIIs and retail, it's a blip.' Your BUY recommendation lands with authority. Clients see forensic rigor.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Mention free float in passing but don't do a formal calculation",
+          "description": "You're aware of it, but pressed for time, you skip the math and just note 'high promoter holding = lower free float' in your note.",
+          "consequence": "Your BUY call is sound, but when a client asks 'What % of free-float cap did FIIs sell?', you fumble the answer. You lose a small amount of credibility for not having done the work. Your call still holds, but your intellectual rigor is dinged.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Assume free float is not material to your thesis; focus on the earnings beat narrative instead",
+          "description": "You're anchored to fundamentals, not structure. Free float feels like a distraction.",
+          "consequence": "Your BUY is based purely on Q2 earnings visibility and margin expansion. It's defensible but misses the deeper insight about market structure. A sophisticated client points out that the FII selling hit a thin free-float liquidity pool, amplifying the move, and your response is vague. You sound like a fundamental analyst who doesn't understand market mechanics.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "stakeholder_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Set Your Recommendation and Frame the Risk",
+      "narrative": "You now have: (1) DII buying into FII selling; (2) promoter calm (or active buying); (3) free-float math showing the move is magnified by low liquidity. You're ready to issue a call. But the final move is to frame your recommendation with the right caveats. FIIs could accelerate selling if US yields spike further, or earnings could disappoint on Friday. Your job is to take a clear stance — BUY, HOLD, or SELL — and own the tail risks.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Issue a BUY with a tight 2-3% stop-loss tied to DII outflows reversing",
+          "description": "Conviction play with a disciplined exit. You're betting on the DII absorption story, but you'll pivot fast if DIIs stop buying.",
+          "consequence": "Clients respect the confidence and the risk management. You frame it: 'BUY Bajaj Finance at current levels; our thesis depends on domestic mutual funds sustaining their appetite. If DII flows reverse, we exit.' It's a clean, testable hypothesis. If DIIs keep buying and earnings beat, your BUY looks prescient. If DIIs stop and the stock tanks, you're already out — no regrets, just discipline.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_trust": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Issue a HOLD with an upside target of ₹7,600 if DIIs sustain buying",
+          "description": "A more cautious frame. You're not wrong on the story, but you want to see confirmation before upgrading.",
+          "consequence": "Clients see you as thoughtful but not committed. HOLD is safe but forgettable. If the stock bounces to ₹7,600 on your thesis, you'll have been right but missed the upside trade. Your call is defensible but lacks conviction. You sound uncertain, which weakens your standing.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "stakeholder_trust": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Issue a SELL, citing FII outflow risk and momentum weakness",
+          "description": "A bearish contrarian stance. You're reading the FII selling as a harbinger of bigger moves.",
+          "consequence": "This flies in the face of your own DII/promoter analysis. Clients immediately spot the contradiction: if DIIs are buying and promoters are calm, why are you selling? You've confused yourself. Your credibility tanks. Within days, the stock bounces back on earnings, and your SELL looks foolish. You spend the next week in damage-control mode.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 1,
+            "stakeholder_trust": -3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "Issue a BUY with no caveats; frame it as a 'once-in-a-quarter buy on flows'",
+          "description": "Maximum conviction, minimal hedging. You're betting that the FII selling is exhausted and the stock is a tactical gift.",
+          "consequence": "Clients love the clarity and the asymmetric framing. But you've left no room for error. If earnings disappoint or FIIs accelerate selling on US data, your unguarded call will be painful. You'll have to eat crow and downgrade, losing credibility. However, if earnings beat and the stock rallies hard, you look like a genius and own the trade intellectually.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "stakeholder_trust": 2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 15,
+    "outcome_mapping": [
+      {
+        "min_total": 10,
+        "label": "Strong analyst call",
+        "narrative": "You diagnosed the FII selling as global noise, corroborated DII and promoter buying, quantified free-float impact, and framed a conviction BUY with clear tail-risk management. Clients see a rigorous, nimble analyst who separates signal from player-driven noise. Your morning call sets the tone for the desk."
+      },
+      {
+        "min_total": 5,
+        "label": "Defensible call",
+        "narrative": "You reached the right conclusion — the FII selling is absorbing, and Bajaj Finance is a buy — but your workings were incomplete. You skipped some diligence (free-float math, promoter pledging checks) or hedged your recommendation too much. Your call will likely work out, but clients notice you cut corners."
+      },
+      {
+        "min_total": 1,
+        "label": "Needs review",
+        "narrative": "Your logic is fragmented. You may have conflated FII selling with fundamental deterioration, or you issued a HOLD/SELL despite building a bullish case. Clients are confused by the contradiction. Your rating gets challenged in tomorrow's morning meeting."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread",
+        "narrative": "You issued a SELL or a tone-deaf HOLD after noting DII buys and promoter strength. You've contradicted your own intelligence and lost all credibility. The stock rallies post-earnings, and your note is a case study in how NOT to separate player flows from fundamentals. You're on desk probation."
+      }
+    ]
+  }
+}

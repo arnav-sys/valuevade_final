@@ -1,0 +1,210 @@
+{
+  "sim_type": "document",
+  "title": "Titan Company Ltd: Cash Signals and Management Trust",
+  "scenario": "You're a junior analyst at a Mumbai research desk reviewing Titan Company's FY24 financials. Your PM asks: 'The growth story looks great, but walk me through the cash conversion and flag anything that worries you about management quality.' You have 15 minutes to scan the statement, spot red and green flags, and present your findings.",
+  "instructions": "Read the income statement and cash flow data. Hover tooltips on flagged line items. Answer questions on cash conversion, profit quality, and management red flags.",
+  "learning_objective": "Calculate cash conversion ratio and identify red/green flags in management behaviour and reporting quality.",
+  "hints": [
+    "Cash conversion = Operating Cash Flow ÷ Net Profit × 100. Check whether Titan's profit is becoming real cash.",
+    "Compare operating cash flow to net profit across the two years. Is the ratio improving, stable, or declining? That's your forensic signal.",
+    "A ratio above 80% is reassuring; below 60% warrants investigation into collections, inventory, or accounting quality."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Statement of Profit & Loss (FY24 vs FY23)",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 38422,
+            "previous_year": 31854
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 14689,
+            "previous_year": 12184
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 3156,
+            "previous_year": 2841
+          },
+          {
+            "id": "other",
+            "label": "Other operating expenses",
+            "current_year": 8920,
+            "previous_year": 7512
+          },
+          {
+            "id": "ebitda",
+            "label": "EBITDA",
+            "current_year": 11657,
+            "previous_year": 9317
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 1248,
+            "previous_year": 1087
+          },
+          {
+            "id": "ebit",
+            "label": "EBIT (Earnings Before Interest & Tax)",
+            "current_year": 10409,
+            "previous_year": 8230
+          },
+          {
+            "id": "fin",
+            "label": "Finance costs",
+            "current_year": 412,
+            "previous_year": 385
+          },
+          {
+            "id": "other_inc",
+            "label": "Other income",
+            "current_year": 628,
+            "previous_year": 502
+          },
+          {
+            "id": "pbt",
+            "label": "Profit Before Tax",
+            "current_year": 10625,
+            "previous_year": 8347
+          },
+          {
+            "id": "tax",
+            "label": "Income tax expense",
+            "current_year": 2612,
+            "previous_year": 2026
+          },
+          {
+            "id": "pat",
+            "label": "Profit for the year (Net Profit)",
+            "current_year": 8013,
+            "previous_year": 6321
+          }
+        ],
+        "section_total": {
+          "label": "Net Profit (Bottom Line)",
+          "current_year": 8013,
+          "previous_year": 6321
+        }
+      },
+      {
+        "title": "Consolidated Cash Flow Statement (FY24 vs FY23)",
+        "line_items": [
+          {
+            "id": "ocf",
+            "label": "Net cash from operating activities",
+            "current_year": 6844,
+            "previous_year": 5917
+          },
+          {
+            "id": "icf",
+            "label": "Net cash used in investing activities",
+            "current_year": -2156,
+            "previous_year": -1834
+          },
+          {
+            "id": "fcf",
+            "label": "Net cash from financing activities",
+            "current_year": -1624,
+            "previous_year": -1456
+          },
+          {
+            "id": "net_cash",
+            "label": "Net increase/(decrease) in cash and equivalents",
+            "current_year": 3064,
+            "previous_year": 2627
+          }
+        ],
+        "section_total": {
+          "label": "Opening cash balance",
+          "current_year": 4521,
+          "previous_year": 1894
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "pat",
+      "tooltip": "Net profit grew 26.8% YoY to ₹8,013 Cr — strong headline number. But is this profit becoming real cash? Check the cash conversion ratio next."
+    },
+    {
+      "id": "ocf",
+      "tooltip": "Operating cash flow (₹6,844 Cr) is the real, audited cash the business generated. Compare this to net profit to judge profit quality — this is the forensic test."
+    },
+    {
+      "id": "rev",
+      "tooltip": "Revenue grew 20.5% YoY to ₹38,422 Cr — solid, consistent growth story. But a great top line with weak cash conversion would be a red flag."
+    },
+    {
+      "id": "cogs",
+      "tooltip": "COGS as % of revenue is 38.3% (FY24) vs 38.2% (FY23) — stable and controlled. No sign of margin compression or inventory bloat — a green flag on operational discipline."
+    },
+    {
+      "id": "ebit",
+      "tooltip": "EBIT grew 26.5% YoY to ₹10,409 Cr — strong operating leverage. EBIT-to-revenue margin stayed at 27.1%, showing pricing power and cost control in a jewellery/watches business facing gold price volatility."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Titan's cash conversion ratio for FY24 (Operating Cash Flow ÷ Net Profit × 100). Round to one decimal place.",
+      "answer_type": "number",
+      "expected_value": 85.4,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(6844 ÷ 8013) × 100 = 85.4%. This means 85 paise of every rupee of reported profit became real operating cash in FY24. A ratio above 80% signals healthy profit quality and strong cash conversion — a green flag."
+    },
+    {
+      "id": "t2",
+      "question": "What was Titan's cash conversion ratio in FY23? Did it improve or decline in FY24?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "improved",
+        "85",
+        "93"
+      ],
+      "explanation": "FY23: (5917 ÷ 6321) × 100 = 93.6%. FY24: 85.4%. The ratio declined slightly from 93.6% to 85.4%, suggesting slightly more of the incremental profit was retained in working capital (higher receivables or inventory) rather than converted to cash. Still healthy, but worth monitoring — not a red flag yet, but worth checking FY25."
+    },
+    {
+      "id": "t3",
+      "question": "Based on the cash conversion ratio and the line items above, list ONE green flag and ONE potential concern you would flag to your PM about Titan's management quality.",
+      "answer_type": "free_text",
+      "sample_answer": "Green flag: Cash conversion of 85% shows Titan converts most of its reported profit into real cash — a hallmark of honest accounting and strong collections, especially important in jewellery where credit risk is high. Potential concern: The slight decline in cash conversion ratio from 93.6% to 85.4% warrants monitoring — it could signal rising receivables or inventory. I'd track whether this stabilises in FY25 or deteriorates further, which could indicate collection pressure or unsold inventory buildup.",
+      "explanation": "This tests whether you can synthesise the cash conversion metric with forensic judgment. A strong cash conversion is a green flag (profit is real). A declining trend, even if still healthy, is worth flagging as a potential early warning to monitor. Great analysts spot patterns across years, not just single snapshots."
+    },
+    {
+      "id": "t4",
+      "question": "If Titan's net profit had grown 26.8% but its operating cash flow had only grown 3%, what would that signal about management quality?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "red flag",
+        "profit quality",
+        "cash",
+        "disconnect"
+      ],
+      "explanation": "That would be a serious red flag — a classic 'profit without cash' warning. It would suggest profit is being reported but not converting into real cash, which could indicate weak collections, unsold inventory buildup, aggressive revenue recognition, or accounting manipulation. This is exactly the forensic check that would have caught Satyam early. In Titan's case, OCF grew 15.7%, so the story is healthy — but that hypothetical would be alarming."
+    },
+    {
+      "id": "t5",
+      "question": "Titan's EBITDA margin (EBITDA ÷ Revenue) was 30.4% in FY24 vs 29.2% in FY23. What does this expanding margin tell you about management discipline?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "operating leverage",
+        "cost control",
+        "efficiency",
+        "pricing power"
+      ],
+      "explanation": "Expanding EBITDA margins signal operating leverage and management discipline — the company is controlling costs and keeping pricing power even as it grows revenue. In a commodity-exposed business like jewellery (gold price volatility), this is a green flag: management is actively managing margins rather than letting them compress. Shows quality execution."
+    }
+  ]
+}

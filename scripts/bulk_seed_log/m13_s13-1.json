@@ -1,13 +1,13 @@
 {
   "sim_type": "excel",
-  "title": "Build Titan's Professional Financial Model Skeleton",
-  "scenario": "You're a junior analyst at a Mumbai brokerage tasked with setting up the foundational architecture for Titan Company's DCF valuation model. Your senior, Karthik, has reviewed your first draft and sent it back — the maths is correct, but the model is unauditable: colour-coding is missing, assumptions are buried in formulas, and there's no error-checking. Before you forecast a single rupee, you must rebuild the workbench with proper discipline: blue inputs, black formulas, named ranges, and integrity checks.",
-  "instructions": "Set up a professional analyst's workbench for Titan: colour-code inputs and formulas correctly, create named ranges for key assumptions, build a master error-check formula, and ensure every assumption cell is labelled and referenced using absolute references.",
-  "learning_objective": "Build a clean financial model skeleton with colour-coded inputs (blue), formulas (black), absolute references, named ranges, and error-checking logic that any stranger can audit in under 30 seconds.",
+  "title": "Titan's Model Workbench: Build Professional Financial Architecture",
+  "scenario": "You are an analyst on Karthik's team at a Mumbai equity desk. Your job is to build the control panel and check infrastructure for Titan Company's FY25–FY27 DCF model, mirroring the professional architecture every brokerage uses. You'll set up assumptions with colour discipline, link them across sheets, and build integrity checks so that the model screams if anything breaks. By day-end, the workbench must be so clean that a client (or your boss at 9pm) can audit any number in thirty seconds.",
+  "instructions": "You will build a model control panel on the Assumptions sheet and a checks infrastructure on the Checks sheet, using cross-sheet references, absolute-cell anchors, and conditional logic to enforce the discipline of professional financial modelling. Each question teaches you to use one architectural pattern: direct links, ratios with anchored refs, conditional logic, lookups for data, aggregation with criteria, and multi-step validation.",
+  "learning_objective": "Build a professional financial model's control panel and checks infrastructure using cross-sheet references, colour-coded inputs, absolute-cell anchors ($), and integrity formulas so that any auditor can verify the model's structure and inputs in under one minute.",
   "hints": [
-    "Inputs (assumptions you choose) go in blue cells with absolute references ($B$10 format); formulas (what Excel calculates) stay black and reference the blue cells using $ anchors so they don't shift when copied.",
-    "A named range like 'TaxRate' lets you write =EBT*TaxRate instead of =EBT*Assumptions!$B$12 — far more readable. Create one by selecting the cell, clicking the Name Box, typing the name, pressing Enter.",
-    "A master check formula like =IF(SUM(check1,check2,check3)=0,\"✓ ALL CLEAR\",\"✗ ERROR\") returns zero when all sub-checks pass (all assumptions are sensible) and screams a warning otherwise — it's your smoke detector."
+    "Sheet-qualified references: when you reference a cell from the Assumptions sheet while on the Checks sheet, write =Assumptions!B5, not just =B5. The sheet name comes first, then the bang (!), then the cell.",
+    "Absolute anchors (the $ sign): if an input lives in Assumptions!B10 and you want to reference it multiple times without it shifting when copied, use $B$10. Press F4 while editing to toggle anchors instantly.",
+    "Conditional text: use =IF(condition, \"text if true\", \"text if false\") to make your checks speak. If EBITDA margin is above 30%, return \"⚠ HIGH\" not a number — let the model scream warnings in plain English."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
@@ -19,6 +19,10 @@
             "readOnly": true,
             "bold": true
           },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
           "A3": {
             "value": "Company Name",
             "readOnly": true,
@@ -26,7 +30,7 @@
           },
           "B3": {
             "value": "Titan Company Ltd",
-            "readOnly": false
+            "readOnly": true
           },
           "A4": {
             "value": "NSE Ticker",
@@ -35,7 +39,7 @@
           },
           "B4": {
             "value": "TITAN",
-            "readOnly": false
+            "readOnly": true
           },
           "A5": {
             "value": "Current Market Price (₹)",
@@ -53,56 +57,88 @@
           },
           "B6": {
             "value": "13-Jun-26",
-            "readOnly": false
+            "readOnly": true
+          },
+          "A8": {
+            "value": "KEY ASSUMPTIONS (FY25E–FY27E)",
+            "readOnly": true,
+            "bold": true
           },
           "A9": {
-            "value": "KEY ASSUMPTIONS (FY25E)",
+            "value": "Assumption",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "C9": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "D9": {
+            "value": "FY27E",
             "readOnly": true,
             "bold": true
           },
           "A10": {
             "value": "Revenue Growth %",
-            "readOnly": true,
-            "bold": true
+            "readOnly": true
           },
           "B10": {
             "value": 0.12,
             "readOnly": false
           },
+          "C10": {
+            "value": 0.1,
+            "readOnly": false
+          },
+          "D10": {
+            "value": 0.09,
+            "readOnly": false
+          },
           "A11": {
             "value": "EBITDA Margin %",
-            "readOnly": true,
-            "bold": true
+            "readOnly": true
           },
           "B11": {
             "value": 0.115,
             "readOnly": false
           },
+          "C11": {
+            "value": 0.118,
+            "readOnly": false
+          },
+          "D11": {
+            "value": 0.12,
+            "readOnly": false
+          },
           "A12": {
             "value": "Tax Rate %",
-            "readOnly": true,
-            "bold": true
+            "readOnly": true
           },
           "B12": {
             "value": 0.25,
             "readOnly": false
           },
-          "A13": {
-            "value": "Debt-to-Equity Ratio",
-            "readOnly": true,
-            "bold": true
+          "C12": {
+            "value": 0.25,
+            "readOnly": false
           },
-          "B13": {
-            "value": 0.3,
+          "D12": {
+            "value": 0.25,
             "readOnly": false
           },
           "A14": {
-            "value": "CapEx as % of Revenue",
+            "value": "FY25 Base Revenue (₹ Cr)",
             "readOnly": true,
             "bold": true
           },
           "B14": {
-            "value": 0.08,
+            "value": 15000,
             "readOnly": false
           }
         }
@@ -111,77 +147,118 @@
         "name": "Checks",
         "cells": {
           "A1": {
-            "value": "MODEL ERROR-CHECK DASHBOARD",
+            "value": "MODEL INTEGRITY CHECKS",
             "readOnly": true,
             "bold": true
           },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
           "A3": {
-            "value": "Check Item",
+            "value": "Check Name",
             "readOnly": true,
             "bold": true
           },
           "B3": {
-            "value": "Status (0=OK)",
+            "value": "Status",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "Reference",
             "readOnly": true,
             "bold": true
           },
           "A4": {
-            "value": "EBITDA Margin Sanity (must be 5% to 30%)",
+            "value": "Market Price Populated",
             "readOnly": true
           },
           "B4": {
-            "value": "=IF(AND(Assumptions!$B$11>=0.05,Assumptions!$B$11<=0.30),0,1)",
+            "value": "",
             "readOnly": false
           },
+          "C4": {
+            "value": "Assumptions!B5",
+            "readOnly": true
+          },
           "A5": {
-            "value": "Tax Rate Sanity (must be 15% to 35%)",
+            "value": "EBITDA Margin FY25 ≤ 30%",
             "readOnly": true
           },
           "B5": {
-            "value": "=IF(AND(Assumptions!$B$12>=0.15,Assumptions!$B$12<=0.35),0,1)",
+            "value": "",
             "readOnly": false
           },
+          "C5": {
+            "value": "Assumptions!B11",
+            "readOnly": true
+          },
           "A6": {
-            "value": "Revenue Growth Sanity (must be -5% to 25%)",
+            "value": "Tax Rate FY25 ≤ 35%",
             "readOnly": true
           },
           "B6": {
-            "value": "=IF(AND(Assumptions!$B$10>=-0.05,Assumptions!$B$10<=0.25),0,1)",
+            "value": "",
             "readOnly": false
           },
+          "C6": {
+            "value": "Assumptions!B12",
+            "readOnly": true
+          },
           "A7": {
-            "value": "Debt-to-Equity Sanity (must be 0 to 1.0)",
+            "value": "Revenue Growth FY25 ≥ 0%",
             "readOnly": true
           },
           "B7": {
-            "value": "=IF(AND(Assumptions!$B$13>=0,Assumptions!$B$13<=1.0),0,1)",
+            "value": "",
             "readOnly": false
           },
+          "C7": {
+            "value": "Assumptions!B10",
+            "readOnly": true
+          },
           "A8": {
-            "value": "CapEx Sanity (must be 1% to 20% of revenue)",
+            "value": "FY26 Growth ≤ FY25 Growth",
             "readOnly": true
           },
           "B8": {
-            "value": "=IF(AND(Assumptions!$B$14>=0.01,Assumptions!$B$14<=0.20),0,1)",
+            "value": "",
             "readOnly": false
           },
-          "A10": {
+          "C8": {
+            "value": "Assumptions!B10 vs C10",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "All Margins Rising",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "C9": {
+            "value": "B11 ≤ C11 ≤ D11",
+            "readOnly": true
+          },
+          "A11": {
             "value": "MASTER CHECK",
             "readOnly": true,
             "bold": true
           },
-          "B10": {
-            "value": "=SUM(Checks!$B$4:$B$8)",
-            "readOnly": false
-          },
-          "A11": {
-            "value": "MODEL STATUS",
+          "A12": {
+            "value": "Overall Status",
             "readOnly": true,
             "bold": true
           },
-          "B11": {
-            "value": "=IF(Checks!$B$10=0,\"✓ ALL CLEAR — SAFE TO SEND\",\"✗ ERROR — DO NOT SEND\")",
+          "B12": {
+            "value": "",
             "readOnly": false
+          },
+          "C12": {
+            "value": "Sum of checks (0=OK)",
+            "readOnly": true
           }
         }
       }
@@ -189,46 +266,46 @@
   },
   "expected_answers": {
     "Checks!B4": {
-      "formula_pattern": "=IF(AND(Assumptions!$B$11>=0.05,Assumptions!$B$11<=0.30),0,1)",
-      "expected_value": 0,
-      "type": "number",
+      "formula_pattern": "=IF(Assumptions!$B$5>0,\"✓ OK\",\"✗ MISSING\")",
+      "expected_value": "✓ OK",
+      "type": "text",
       "tolerance": 0,
-      "points": 12
+      "points": 7
     },
     "Checks!B5": {
-      "formula_pattern": "=IF(AND(Assumptions!$B$12>=0.15,Assumptions!$B$12<=0.35),0,1)",
-      "expected_value": 0,
-      "type": "number",
+      "formula_pattern": "=IF(Assumptions!$B$11<=0.30,\"✓ OK\",\"✗ HIGH\")",
+      "expected_value": "✓ OK",
+      "type": "text",
       "tolerance": 0,
-      "points": 12
+      "points": 10
     },
     "Checks!B6": {
-      "formula_pattern": "=IF(AND(Assumptions!$B$10>=-0.05,Assumptions!$B$10<=0.25),0,1)",
-      "expected_value": 0,
-      "type": "number",
+      "formula_pattern": "=IF(Assumptions!$B$12<=0.35,\"✓ OK\",\"✗ EXCEEDS\")",
+      "expected_value": "✓ OK",
+      "type": "text",
       "tolerance": 0,
-      "points": 12
+      "points": 10
     },
     "Checks!B7": {
-      "formula_pattern": "=IF(AND(Assumptions!$B$13>=0,Assumptions!$B$13<=1.0),0,1)",
-      "expected_value": 0,
-      "type": "number",
+      "formula_pattern": "=IF(Assumptions!$B$10>=0,\"✓ OK\",\"✗ NEGATIVE\")",
+      "expected_value": "✓ OK",
+      "type": "text",
       "tolerance": 0,
       "points": 12
     },
     "Checks!B8": {
-      "formula_pattern": "=IF(AND(Assumptions!$B$14>=0.01,Assumptions!$B$14<=0.20),0,1)",
-      "expected_value": 0,
-      "type": "number",
-      "tolerance": 0,
-      "points": 12
-    },
-    "Checks!B10": {
-      "formula_pattern": "=SUM(Checks!$B$4:$B$8)",
-      "expected_value": 0,
-      "type": "number",
+      "formula_pattern": "=IF(Assumptions!$C$10<=Assumptions!$B$10,\"✓ OK\",\"✗ RISING\")",
+      "expected_value": "✓ OK",
+      "type": "text",
       "tolerance": 0,
       "points": 15
+    },
+    "Checks!B12": {
+      "formula_pattern": "=IF(AND(Assumptions!$B$11<=Assumptions!$C$11,Assumptions!$C$11<=Assumptions!$D$11),0,1)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0,
+      "points": 18
     }
   }
 }

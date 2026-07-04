@@ -1,0 +1,213 @@
+{
+  "sim_type": "decision_making",
+  "title": "TCS Q3 FY25 Call: Preparation Sprint Before the Earnings Bell",
+  "scenario": "You're a senior analyst at a Mumbai equity research desk covering IT services. TCS reports Q3 FY25 results in 2 hours, followed by the concall. Your current view is 'Hold' but you sense a shift in demand commentary across the sector. You have 90 minutes to prepare before the call goes live.",
+  "instructions": "Walk through each decision point by choosing ONE option. Track your preparation rigor, speed, and analyst credibility across five decision junctures. At the end, receive a verdict on how well-prepared you are for the call.",
+  "learning_objective": "Execute a structured pre-call preparation checklist that transforms raw results into a framework for active, hypothesis-driven listening during the concall.",
+  "hints": [
+    "The surprise (beat or miss) matters more than the absolute number — compare actuals to consensus estimates, not to last year.",
+    "Identify the two or three crux questions *before* the call starts — what demand signal are you really listening for? What would flip your view?",
+    "Load the prior call's guidance and promises so you can catch any walk-backs or dodges on the live call — memory is your edge."
+  ],
+  "scenario_context": "Tata Consultancy Services (TCS), India's largest IT services company by market cap, is about to report Q3 FY25 results (Oct-Dec 2024). The sector has faced headwinds: client spending caution, AI transition uncertainty, and macro slowdown in Western markets. Your desk's consensus is a 2.5% sequential revenue decline and flat-to-negative margin guidance. You currently rate TCS 'Hold' at ₹3,920 per share. The call will be your chance to probe whether management's tone on demand recovery is genuine or optimistic spin, and whether margin pressure is temporary or structural. But you can't do that without preparation — without knowing the expectations, the prior guidance, and the key questions. You have 90 minutes. Go.",
+  "initial_data": {
+    "Company": "Tata Consultancy Services",
+    "Current Stock Price": "₹3,920",
+    "Your Rating": "Hold",
+    "Consensus Revenue Growth": "−2.5% QoQ",
+    "Consensus Op. Margin": "21.0% (vs 21.8% prior quarter)",
+    "Time to Concall": "90 minutes",
+    "Prior Call Guidance": "FY25 guidance reaffirmed at 13-15% FY25 revenue growth in CC terms"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Step 1: How Deep Do You Go Into the Just-Released Results?",
+      "narrative": "The Q3 FY25 results just hit the wires 10 minutes ago. You see the topline: TCS reported ₹63,200 Cr revenue (constant currency), with EBITDA margin of 21.1%. You have 90 minutes before the call. Do you spend 25–30 minutes doing a thorough decomposition of these numbers (segment-wise, currency impact, one-offs), or do you scan them quickly and move straight to comparing against consensus to find the surprise?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Deep dive: Segment-wise breakdown, currency impacts, one-off items, year-over-year and sequential trends",
+          "description": "You know the raw numbers cold before you listen to management explain them — this is the foundation for intelligent listening.",
+          "consequence": "You spend 28 minutes and discover TCS saw strong IT Services growth but Infrastructure Services lagged; margins held up partly due to a ₹180 Cr pension settlement gain (a one-off). You'll now listen to management's commentary knowing exactly what's core vs one-time. Your framework is solid but your prep timeline is getting tight.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Quick scan: Note headline revenue, margin, EPS; move immediately to consensus comparison",
+          "description": "You trust you'll understand the numbers as management explains them on the call — saves time for other prep steps.",
+          "consequence": "You finish in 8 minutes and move on, but when management mentions the pension gain, you're caught off-guard — you didn't know it was there. You scramble to adjust your understanding of what margin was 'core' and what was one-time. Your rigor is lower but you've banked time for other prep.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Step 2: Quantify the Surprise Against Consensus",
+      "narrative": "You now have the Q3 results in hand. Consensus expected TCS Q3 revenue at ₹63,500 Cr (CC) and operating margin at 21.3%. Actual: ₹63,200 Cr revenue and 21.1% margin. How do you frame this for the call?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Calculate precise surprise %, interpret quality (margin miss is structural or one-time?), load this as your thesis-test",
+          "description": "You compute: revenue surprise = (63,200 − 63,500)/63,500 = −0.48% (a slight miss); margin surprise = 21.1 vs 21.3 expected = −20 bps miss. You note the margin miss is *soft* once you strip the one-off pension gain. This becomes your #1 listening point: is margin pressure structural or temporary?",
+          "consequence": "You now have a precise surprise map and a clear thesis to test on the call: 'Margins are under pressure but one-time-adjusted they're stable; I'm listening to see if management signals structural headwind or temporary normalization.' The call becomes hypothesis-driven, not reactive.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Note that results look 'fine' — essentially in line, no major beat or miss — and move on to the prior call",
+          "description": "You judge the results by feel rather than precise calculation; you see no major surprise and don't flag a specific hypothesis to test.",
+          "consequence": "You save 5 minutes but you miss the insight that the margin miss is *entirely* due to the pension gain being one-time. On the call, when management talks about 'normalizing margins in Q4,' you don't have a baseline to judge whether they're being bullish or realistic. You're less prepared to probe.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Step 3: Load What Management Promised Last Call — Especially Guidance",
+      "narrative": "You pull up notes from TCS's Q2 concall (3 months ago). Management reaffirmed FY25 revenue guidance at 13–15% growth in constant currency and said margins would 'remain resilient in the 21–22% band.' Now, Q3 landed at 21.1% margin (or 21.3% core) and the company is 3 months into FY25. How do you use this prior guidance to frame your listening?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Detailed: Map FY25 YTD performance vs guidance, calculate what Q4 needs to deliver, write down specific questions about walk-backs",
+          "description": "You compute: FY25 YTD (9 months) revenue growth was roughly 6.2% CC; to hit 13–15% FY25, Q4 must accelerate sharply — a 15%+ QoQ jump. That seems aggressive given cautious commentary. Margins are 21.1% YTD; to stay in 21–22% band, Q4 must recover. You note: 'Management promised acceleration and margin resilience. Q3 showed margin miss and flat revenue. Are they walking back FY25 guidance or is Q4 a bounce?'",
+          "consequence": "You walk into the call with two precise, testable questions: (1) Will FY25 guidance be reaffirmed or walked back? (2) What's the path to the promised margin 21–22% band in Q4? These focus your listening on crux issues and let you catch any evasion or quiet guidance cut.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Scan: Vaguely remember 'something about 13–15% growth' and 'margins holding up,' move on to current industry context",
+          "description": "You don't pull detailed numbers; you have a general sense that management was bullish last quarter and now you'll see if the tone holds.",
+          "consequence": "You save 10 minutes but you miss the sharp tension: the math of YTD performance vs FY25 guidance doesn't add up without Q4 acceleration. When management says 'we expect FY25 to land in our guided range,' you can't tell if that's confidence or spin because you never mapped the math. You're flying blind on the guidance question.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Step 4: Identify the Two or Three Key Questions for This Quarter",
+      "narrative": "You're 60 minutes into your prep. You've now reviewed the results, computed the surprise, and loaded prior guidance. Based on all this, what are the two or three crux issues you'll listen for on the call? The sector is watching: (a) Is there a demand inflection in Western markets, or are clients still cautious? (b) Are margins under structural pressure or is Q3 an anomaly? (c) Will TCS walk back FY25 guidance?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Write down three precise questions with 'what would change my view' threshold for each",
+          "description": "You write: (1) 'Will management reaffirm FY25 13–15% growth or cut?' — If cut to <13%, I turn Reduce. (2) 'Is Q4 margin guidance 21%+ or sub-21%?' — If sub-21%, structural pressure is real. (3) 'What's the tone on Western demand recovery — are clients slowly returning to project pipelines?' — A cautious tone shifts my rating to Sell.",
+          "consequence": "You now have three testable hypotheses with decision rules. On the call, every statement lands against this framework. When management discusses deal pipeline or guidance, you're actively listening against your thresholds, not passively absorbing. You'll catch a quiet guidance cut or a cautious dodge because you knew exactly what you were listening for.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        },
+        {
+          "id": "B",
+          "label": "General sense: 'I'll listen for demand recovery, margin trends, and guidance' — keep it loose, stay flexible",
+          "description": "You keep your listening agenda vague so you're open to surprises and don't force the narrative.",
+          "consequence": "You stay flexible but you lack a sharp frame. When management says 'we're seeing stabilization in Western demand,' you have no threshold to judge if that's bullish or just management optimism. You're reactive, hearing the call rather than actively testing it against your hypotheses. Your notes will be comprehensive but lack focus.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        }
+      ]
+    },
+    {
+      "id": "d5",
+      "title": "Step 5: Final 10 Minutes — Context Load and Concall Readiness Check",
+      "narrative": "You're down to 10 minutes before the call. You've done the core prep. Now you have a choice: use these final minutes to load peer commentary (Infosys and Wipro reported last week) and macro context (US PMI is at 48, Fed rate expectations shifted), or use them to review your notes and mentally rehearse your listening agenda?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Load peer context: What did Infosys and Wipro say about demand? Cross-check against TCS commentary",
+          "description": "You quickly review: Infosys guided for 1–3% sequential growth and warned of 'cautious client sentiment.' Wipro's margin guidance was 21–22%, same as TCS. You load this so that when TCS management says 'we expect stabilization,' you can compare against what peers said and catch any divergence in narrative.",
+          "consequence": "You walk in with a peer reality-check: if TCS's demand tone diverges from Infosys/Wipro, that's a signal something's off with their reading or they're being more optimistic than justified. You're primed to catch bullish spin. Your framework is complete and battle-ready.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Skip context, review your prep notes one more time, lock in your three key questions mentally",
+          "description": "You use the last 10 minutes to re-read your notes and ensure you're clear on your three key questions and decision thresholds, so you walk in calm and focused.",
+          "consequence": "You're mentally sharp and your three questions are locked in. You'll listen clearly and won't miss your crux issues. However, you lack the peer/macro cross-check that lets you tell if TCS is reading the market differently from peers or just spinning. Your prep is solid but less complete.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Skim industry headlines one final time, then dial in and trust your prep",
+          "description": "You do a 5-minute news scan (no deep reading) and then dial into the call, trusting that your 85 minutes of prep is enough.",
+          "consequence": "You dial in confident but you've missed the peer context entirely. You're prepared to listen to TCS in isolation, not against the peer and macro backdrop. If TCS's commentary is outlier-bullish, you won't detect it as quickly. Your prep is good but you're missing the cross-check that separates 'prepared' from 'really prepared.'",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Concall-ready: Professional preparation",
+        "narrative": "You walked the full checklist with rigor and speed discipline. You know the surprise, the prior guidance, your three crux questions, and the peer context. You'll listen hypothesis-driven, catch walk-backs and evasions, and walk out of the call with a sharp read on whether to stay Hold, upgrade, or downgrade TCS. This is how senior analysts show up."
+      },
+      {
+        "min_total": 5,
+        "label": "Adequately prepared: Core frame loaded",
+        "narrative": "You hit the main steps — results, surprise, prior guidance, key questions — but skipped some rigor steps (peer context, detailed margin decomp, precise calculations). You'll follow the call coherently and catch the major signals, but you'll miss some nuance and won't be as sharp on spotting management dodges or subtle guidance shifts. Defensible but not exemplary."
+      },
+      {
+        "min_total": 1,
+        "label": "Minimally prepared: Winging it",
+        "narrative": "You did fast, surface-level scans and kept most of your agenda loose. You'll hear the call but you're reactive, not hypothesis-driven. You might catch the headline (guidance cut or reaffirm) but you'll miss the subtext, the walk-backs, and the cross-checks against peers. You're flying the call without a solid cockpit map — risky."
+      },
+      {
+        "min_total": -99,
+        "label": "Underprepared: Cold call",
+        "narrative": "You skipped most of the checklist and you're dialing in with minimal context. You'll absorb a torrent of information with no framework to organize it. You won't know what matters, what's a surprise, or what changed from last quarter. The concall will be noise, not signal. You'll leave confused and your call note will be generic and late. This is how beginners show up — and this is why they stay behind."
+      }
+    ]
+  }
+}

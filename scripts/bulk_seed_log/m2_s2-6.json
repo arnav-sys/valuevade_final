@@ -1,0 +1,291 @@
+{
+  "sim_type": "excel",
+  "title": "Expectations vs Reality: TCS Stock Moves on Earnings Surprise",
+  "scenario": "You are a junior analyst at Motilal Oswal tracking TCS (Tata Consultancy Services) for a quarterly earnings report. On 13 Oct 2023, TCS reported strong revenue growth of ₹61,854 Cr, but the stock fell 2.3% that day while the broader market rose 1%. Your desk manager asks: Why did good results lead to a price drop? You gather quarterly data, revenue expectations, and price history to diagnose whether the move was an earnings miss, weak guidance, or sentiment.",
+  "instructions": "Build a small earnings-vs-expectations analysis sheet: calculate revenue growth rates, compare actual results to consensus expectations, compute the total shareholder return including dividends, and identify which quarters saw gaps between expected and actual numbers.",
+  "learning_objective": "Explain why stock prices move on earnings surprises (reality vs expectations), calculate total return including dividends, and diagnose the gap between reported results and market expectations.",
+  "hints": [
+    "Start by computing quarter-on-quarter and year-on-year revenue growth percentages for each period using simple division.",
+    "The Expectation Miss column should show (Actual − Expected) / Expected × 100 — a negative number means the company disappointed the market.",
+    "Total Return includes both the price change AND the dividend: (Sell Price − Buy Price + Dividend) / Buy Price × 100."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Expected Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Stock Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Dividend per Share (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1 FY24"
+          },
+          "B2": {
+            "value": 58675
+          },
+          "C2": {
+            "value": 59200
+          },
+          "D2": {
+            "value": 3680
+          },
+          "E2": {
+            "value": 18
+          },
+          "A3": {
+            "value": "Q2 FY24"
+          },
+          "B3": {
+            "value": 59878
+          },
+          "C3": {
+            "value": 60100
+          },
+          "D3": {
+            "value": 3720
+          },
+          "E3": {
+            "value": 0
+          },
+          "A4": {
+            "value": "Q3 FY24"
+          },
+          "B4": {
+            "value": 61284
+          },
+          "C4": {
+            "value": 60900
+          },
+          "D4": {
+            "value": 3890
+          },
+          "E4": {
+            "value": 0
+          },
+          "A5": {
+            "value": "Q4 FY24"
+          },
+          "B5": {
+            "value": 62106
+          },
+          "C5": {
+            "value": 61500
+          },
+          "D5": {
+            "value": 3950
+          },
+          "E5": {
+            "value": 20
+          },
+          "A6": {
+            "value": "Q1 FY25"
+          },
+          "B6": {
+            "value": 60241
+          },
+          "C6": {
+            "value": 61200
+          },
+          "D6": {
+            "value": 3850
+          },
+          "E6": {
+            "value": 0
+          },
+          "A7": {
+            "value": "Q2 FY25"
+          },
+          "B7": {
+            "value": 61854
+          },
+          "C7": {
+            "value": 62400
+          },
+          "D7": {
+            "value": 3765
+          },
+          "E7": {
+            "value": 0
+          },
+          "A8": {
+            "value": "Q3 FY25"
+          },
+          "B8": {
+            "value": 62515
+          },
+          "C8": {
+            "value": 62100
+          },
+          "D8": {
+            "value": 4120
+          },
+          "E8": {
+            "value": 0
+          },
+          "A9": {
+            "value": "Q4 FY25"
+          },
+          "B9": {
+            "value": 63842
+          },
+          "C9": {
+            "value": 63500
+          },
+          "D9": {
+            "value": 4285
+          },
+          "E9": {
+            "value": 22
+          },
+          "A10": {
+            "value": "Q1 FY26"
+          },
+          "B10": {
+            "value": 64720
+          },
+          "C10": {
+            "value": 64100
+          },
+          "D10": {
+            "value": 4450
+          },
+          "E10": {
+            "value": 0
+          },
+          "A11": {
+            "value": "Q2 FY26"
+          },
+          "B11": {
+            "value": 65380
+          },
+          "C11": {
+            "value": 65800
+          },
+          "D11": {
+            "value": 4380
+          },
+          "E11": {
+            "value": 0
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Analysis Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: TCS Q2 FY25 Revenue Growth % (vs Q1 FY25)"
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2: Average Expected Revenue Across All Quarters (₹Cr)"
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q3: TCS Q2 FY25 Expectation Miss % [(Actual−Expected)/Expected]"
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q4: Price Change from Q1 FY24 to Q2 FY26 (₹)"
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q5: Total Return on TCS (Buy Q1 FY24 @ 3680, Sell Q4 FY25 @ 4285, Incl. Dividends)"
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q6: Count of Quarters Where Actual Revenue Beat Expected"
+          },
+          "B7": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!B7-Data!B6)/Data!B6*100",
+      "expected_value": 2.67,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=AVERAGE(Data!C2:C11)",
+      "expected_value": 62080,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B7-Data!C7)/Data!C7*100",
+      "expected_value": -0.87,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!D11-Data!D2",
+      "expected_value": 700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=((Data!D9-Data!D2)+Data!E2+Data!E5+Data!E9)/Data!D2*100",
+      "expected_value": 18.070652173913043,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Answers!B7": {
+      "formula_pattern": "=SUMPRODUCT((Data!B2:B11>Data!C2:C11)*1)",
+      "expected_value": 5,
+      "type": "number",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

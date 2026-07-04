@@ -1,0 +1,273 @@
+{
+  "sim_type": "excel",
+  "title": "Asian Paints P&L: Trace Revenue to Net Profit",
+  "scenario": "You're an equity analyst at a Mumbai brokerage covering Asian Paints. The company just released its FY2024 quarterly results. Your desk needs you to reconstruct the income statement from raw line items, compute key profit margins at each layer, and identify whether the company's margin pressure is real or temporary. Use the P&L data to walk down from revenue to net profit.",
+  "instructions": "Complete the income statement by calculating gross profit, operating profit, profit before tax, and net profit. Then compute gross margin, operating margin, and net profit margin as percentages. Finally, assess margin trend and identify the biggest cost pressure.",
+  "learning_objective": "Trace revenue down through the income statement layers, compute gross/operating/net profit margins, and diagnose margin compression by comparing period-over-period profitability.",
+  "hints": [
+    "Gross Profit = Revenue − COGS. Operating Profit = Gross Profit − Operating Expenses. Keep the layer-by-layer subtraction clear.",
+    "Net Profit Margin = (Net Profit / Revenue) × 100. All three margins use Revenue as the denominator. Watch for the percentage multiplication.",
+    "To find the biggest cost pressure, compute each cost as a % of revenue (e.g., COGS ÷ Revenue × 100), then compare Q1 vs Q2 to see which line item grew fastest as a % of sales."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Q1 FY2024 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Q2 FY2024 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Q1 % of Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Q2 % of Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 2850,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 3120,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Cost of Goods Sold (COGS)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 1140,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 1248,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Gross Profit",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1710,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 1872,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Operating Expenses",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 684,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 780,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Operating Profit (EBIT)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 1026,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 1092,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 57,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 62,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Profit Before Tax (PBT)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 969,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 1030,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Tax (30% of PBT)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 291,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 309,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Net Profit",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 678,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 721,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Note: All figures are illustrative quarterly snapshots for Asian Paints.",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1 Gross Margin (%)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2 Gross Margin (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q1 Operating Margin (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q2 Operating Margin (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q1 Net Profit Margin (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q2 Net Profit Margin (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": ""
+          },
+          "A8": {
+            "value": "Which cost item grew fastest as % of revenue (Q1 to Q2)? Enter: COGS, OpEx, or Interest",
+            "readOnly": true
+          },
+          "B8": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!B4/Data!B2)*100",
+      "expected_value": 60,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(Data!C4/Data!C2)*100",
+      "expected_value": 60,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B6/Data!B2)*100",
+      "expected_value": 36,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!C6/Data!C2)*100",
+      "expected_value": 35,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!B10/Data!B2)*100",
+      "expected_value": 23.789473684210527,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B7": {
+      "formula_pattern": "=(Data!C10/Data!C2)*100",
+      "expected_value": 23.10897435897436,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B8": {
+      "formula_pattern": "=IF((Data!C3/Data!C2-Data!B3/Data!B2)>IF((Data!C5/Data!C2-Data!B5/Data!B2),IF((Data!C5/Data!C2-Data!B5/Data!B2),IF((Data!C7/Data!C2-Data!B7/Data!B2),(Data!C7/Data!C2-Data!B7/Data!B2)),0),0),\"COGS\",IF((Data!C5/Data!C2-Data!B5/Data!B2)>(Data!C7/Data!C2-Data!B7/Data!B2),\"OpEx\",\"Interest\"))",
+      "expected_value": "COGS",
+      "type": "text",
+      "tolerance": 0,
+      "points": 16
+    }
+  }
+}

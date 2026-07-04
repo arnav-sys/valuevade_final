@@ -1,21 +1,23 @@
 {
-  "completed_at": "2026-07-04T08:42:13.171505+00:00",
+  "completed_at": "2026-07-04T09:22:07.497687+00:00",
   "modules": [
-    13
+    5
   ],
-  "total_sims": 5,
+  "total_sims": 6,
   "total_failed": 0,
   "by_type_total": {
-    "excel": 5
+    "decision_making": 2,
+    "document": 4
   },
-  "total_engine_corrections": 22,
+  "total_engine_corrections": 0,
   "per_module": [
     {
-      "m": 13,
-      "ok": 5,
+      "m": 5,
+      "ok": 6,
       "fail": 0,
       "by_type": {
-        "excel": 5
+        "decision_making": 2,
+        "document": 4
       }
     }
   ]

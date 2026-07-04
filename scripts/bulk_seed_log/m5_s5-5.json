@@ -1,0 +1,231 @@
+{
+  "sim_type": "decision_making",
+  "title": "TCS Capital Allocation: Dividend vs Acquisition at Inflection",
+  "scenario": "You are a senior analyst at a Mumbai equity-research desk covering Tata Consultancy Services (TCS). The company just reported strong FY25 Q3 results — free cash flow of ₹8,200 cr, profit up 18%, and a clear strategic choice looming: return more cash to shareholders via a special dividend, or deploy ₹6,000 cr into an acquisition of a niche European digital-services firm. The CFO hints a decision is 48 hours away. Your report will influence your PMS clients' positions.",
+  "instructions": "Walk through four decision points. At each, choose an action. Each choice scores you on rigor, speed, and stakeholder_alignment. Your final narrative outcome depends on your total score. Aim for 10+ to give your clients a Strong call.",
+  "learning_objective": "Evaluate whether management capital allocation creates or destroys shareholder value by assessing reinvestment, dividends, and acquisition logic against returns earned.",
+  "hints": [
+    "Compare the acquisition price (implied multiple) to TCS's own ROCE and the target's projected returns — if TCS's own business earns 22% but the deal earns 12%, what does that tell you?",
+    "Recall that a high-growth, high-ROCE company like TCS should retain cash for reinvestment *only if* internal projects earn more than returning it would. If growth is slowing, a special dividend becomes attractive.",
+    "The session taught: growth only creates value if returns exceed cost. An acquisition is just reinvestment in a different form — judge it the same way. Bigger is not better; higher return is."
+  ],
+  "scenario_context": "TCS (₹4,100 per share, market cap ₹34 lakh cr) has delivered consistent 18–22% ROCE for five years. It pays a regular dividend and has a strong buyback program. But the niche European digital-services acquisition (target EBITDA ₹950 cr, asking price ₹6,000 cr) is strategically tempting — it fills a gap in European presence and high-margin services. However, the target's current ROCE is 11%, TCS's is 22%. You have 48 hours to recommend: special dividend (signal: mature business, limited reinvestment options), the acquisition (signal: strategic bet, aggressive growth), or a hybrid. Your research will determine whether clients hold, add, or trim TCS.",
+  "initial_data": {
+    "Stock": "TCS",
+    "Current Price": "₹4,100",
+    "Free Cash Flow (Q3 FY25)": "₹8,200 cr",
+    "Company ROCE": "22%",
+    "Target (Acq) ROCE": "11%",
+    "Asking Price": "₹6,000 cr",
+    "Time to Decision": "48 hours",
+    "Your Rec": "Pending"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Benchmark the Acquisition Price Against Returns",
+      "narrative": "Your first task is to stress-test the acquisition economics. The European target has EBITDA of ₹950 cr and is being offered at ₹6,000 cr. That's a 6.3x EV/EBITDA multiple. TCS trades at 28x earnings. You need to decide: do you dig into the target's true return profile (ROCE, growth), or do you accept the CFO's assurance that it's strategically sound and move on?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Deep-dive: Calculate target's post-acquisition ROCE and compare to TCS's 22%",
+          "description": "Rigorous capital-allocation thinking requires comparing the return TCS will earn on the ₹6,000 cr investment to what it earns on existing cash.",
+          "consequence": "You build a detailed 5-year DCF for the target, assume 8% growth and 20% tax, and conclude post-tax ROCE is ~11%. That's 11 percentage points below TCS's hurdle. This is a red flag — TCS is deploying cash into a lower-return business. You document this clearly in your memo.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Accept the CFO's strategic logic and focus on synergy story",
+          "description": "The CFO emphasizes strategic fit (European presence, talent, IP), hinting synergies will lift returns. You decide to trust management and focus on whether synergies justify the price.",
+          "consequence": "You model ₹300 cr in annual synergies over 3 years, which would boost post-syn ROCE to ~15%. Still below TCS's 22%, but now defensible. However, synergies are uncertain — many acquisitions miss them. You note this caveat but move ahead on a \"trust but verify\" basis.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Demand the target's audited financials and a 10-year track record before forming a view",
+          "description": "You're skeptical of the ₹950 cr EBITDA claim and the synergy story. You insist on seeing audited numbers and real historical data.",
+          "consequence": "The CFO is irritated — you're the only analyst asking tough questions, and he reads it as doubt in the team. You get the data in 24 hours and spot that the target's EBITDA has been flat for 3 years; synergy claims are overcooked. Your conviction that this is a bad allocation deepens, but you've burned political capital with the CFO.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -3,
+            "stakeholder_alignment": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Assess TCS's Own Growth Runway and Reinvestment Needs",
+      "narrative": "Having framed the acquisition return, you now assess whether TCS itself has enough high-return growth projects to justify *not* returning the ₹6,000 cr via special dividend. TCS's organic growth is solid at 10–12%, but it's a mature, global IT-services player. You need to decide: can TCS grow fast enough to justify holding the cash, or should you recommend a special dividend and let shareholders decide how to deploy it?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Research TCS's capex pipeline and organic growth plans — are internal projects earning >20% ROCE?",
+          "description": "Rigor demands you assess what TCS would do with the cash if not spent on the acquisition — reinvest in its own business, or sit as excess cash?",
+          "consequence": "You interview TCS's investor-relations team and learn that capex for FY25–26 is planned at ₹2,500 cr (organic reinvestment). That's well-covered by organic cash flow. The ₹6,000 cr is *excess* cash. TCS doesn't have ₹6,000 cr of high-return organic projects. This strengthens the case for a special dividend over the acquisition.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Assume TCS's management knows its own business best and trust that excess cash signals readiness to deploy it",
+          "description": "You assume that if TCS is considering the acquisition, it's because internal growth avenues are tapped and the acquisition is the best use of cash.",
+          "consequence": "You skip the capex-pipeline deep-dive and move straight to evaluating whether the acquisition is the *best* use of that excess cash. You haven't proven TCS lacks high-return internal projects, but you also haven't proven it has them. Your recommendation rests mostly on the acquisition-return analysis from d1.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Propose a hybrid: fund the acquisition *and* return ₹3,000 cr via special dividend",
+          "description": "You sidestep the binary by suggesting TCS do both — acquire for strategic reasons, but return half the excess cash, signalling confidence in growth without overcommitting to a low-return deal.",
+          "consequence": "The CFO sees this as a compromise that dilutes conviction. Your memo hedges rather than leads. Clients feel you're avoiding a clear judgment. However, the hybrid does show balanced thinking — it doesn't force TCS into an overpriced deal, but respects the strategic intent.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "stakeholder_alignment": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Build Your Recommendation: Prioritize Shareholder Return or Growth?",
+      "narrative": "You've now assessed the acquisition's returns (likely below TCS's hurdle) and TCS's internal reinvestment appetite (likely lower than the ₹6,000 cr excess cash). Time to synthesize: do you recommend TCS *reject* the acquisition and announce a special dividend (signalling disciplined capital allocation), or do you recommend *accepting* the deal on the grounds of strategic fit (accepting lower near-term returns for long-term positioning)?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Recommend REJECT acquisition; advocate for special dividend of ₹4,000–5,000 cr",
+          "description": "You apply Session 5.5 doctrine: growth only creates value if returns exceed cost. At 11% ROCE (pre-synergy), the acquisition doesn't meet TCS's hurdle. You recommend returning cash to shareholders, who can redeploy it into higher-return opportunities (TCS itself via buyback at 28x, or other equity/debt).",
+          "consequence": "Your memo is clear and disciplined: \"TCS's 22% ROCE is the benchmark. This acquisition earns 11%. Synergies are uncertain. A special dividend respects shareholder capital and signals management confidence without betting the house on unproven European upside. This is how great allocators operate.\" Clients appreciate the clarity. The CFO's team sees it as a rejection of their strategic vision — internal pushback is swift.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Recommend ACCEPT acquisition; frame it as strategic optionality and long-term positioning",
+          "description": "You acknowledge the return gap but argue that TCS's competitive moat in Europe is weak. The acquisition buys presence, talent, and IP that could unlock 18%+ returns over a 5-year horizon as synergies and market share grow.",
+          "consequence": "Your memo reads: \"Near-term ROCE drag is real, but TCS's IT-services franchise is mature. Geographic and service diversification justify a ₹6,000 cr bet. European IT spend is growing 7–8% annually; this deal positions TCS for that upside.\" The CFO is pleased. But clients worry: you're asking them to accept lower returns on faith in long-term optionality. Your conviction isn't backed by numbers.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Straddle: Rate the deal FAIR value (neither BUY nor SELL), but recommend the special dividend as PREFERRED capital allocation",
+          "description": "You rate the acquisition fairly priced but sub-optimal. The special dividend is the better choice for shareholder value, but you acknowledge the strategic case if management has high conviction on synergies.",
+          "consequence": "Your memo avoids a hard stance: \"The acquisition is not destructive, but it's not return-accretive either. A special dividend is the capital-allocation best practice here.\" Clients see this as thorough but indecisive. You've covered your downside but haven't led.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "stakeholder_alignment": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final Call: Publish Your Recommendation and Judge Management Quality",
+      "narrative": "Your recommendation is nearly done. Now, the final decision: will you judge TCS's management — and their capital-allocation discipline — as strong, average, or weak? This judgment feeds into your overall investment thesis and your clients' conviction in the stock. Do you see a CFO prioritizing shareholder returns (special dividend), chasing growth at any cost (the acquisition), or thoughtfully balancing both (hybrid)?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Publish HOLD with note: \"Management's pursuit of acquisition risks poor capital allocation. Recommend dividend instead. Grade: 6/10 on allocation discipline.\"",
+          "description": "You take the hard line: if TCS does the acquisition, you downgrade capital-allocation quality and signal caution to clients. You rate the stock HOLD pending clarity on whether they listen to reason.",
+          "consequence": "TCS leadership is unhappy — your note has real distribution. But 6 months later, the European deal underperforms (synergies miss, integration costs rise). Your HOLD call looks prescient. Clients trust your capital-allocation lens. TCS stock rallies when they finally announce a ₹4,000 cr special dividend in Q4. Your conviction on management discipline has been vindicated.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "stakeholder_alignment": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Publish BUY with caveat: \"Acquisition is strategic bet; monitor synergies. Management shows balanced growth and return instinct. Grade: 8/10 on allocation.\"",
+          "description": "You give TCS credit for the strategic vision and assume the synergies will come through. You rate the stock BUY, trusting management's long-term optionality play.",
+          "consequence": "The acquisition closes. Synergies materialize faster than feared — ₹200 cr in year 1, ₹400 cr in year 2. TCS stock rallies 25% over 18 months. Your BUY call was right. But you've also sent a signal to management that pursuing below-hurdle acquisitions is okay if framed as strategic — a subtle erosion of capital-allocation discipline. Later, when TCS pursues a second acquisition at 8x EV/EBITDA (even weaker economics), you'll regret softening the line.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "stakeholder_alignment": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Publish BUY with strong conditions: \"BUY TCS only if they announce a special dividend *and* cap acquisition spend at ₹3,500 cr. Otherwise, HOLD.\" Grade: 9/10 on allocation if they listen.",
+          "description": "You set a clear, testable condition: you support the stock *if* management shows capital-allocation discipline by returning some cash. This rewards them for listening to shareholder interests.",
+          "consequence": "The CFO calls you and debates your condition. Your note has teeth — it signals that the market (via research) is watching capital allocation closely. Two weeks later, TCS announces a ₹3,000 cr special dividend *and* scales back the acquisition to ₹3,500 cr. Your condition is met. Your BUY with conditions becomes a strong BUY. Clients reward your firm with trading commissions. Management respects your clarity. You've demonstrated that great capital-allocation thinking can influence outcomes.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 1,
+            "stakeholder_alignment": 3
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 10,
+        "label": "Strong analyst call",
+        "narrative": "You applied rigorous capital-allocation thinking, compared returns to TCS's hurdle rate, assessed internal reinvestment needs, and published a clear, actionable recommendation tied to shareholder value. Clients trust your judgment on whether TCS's management is a good allocator. You influenced outcomes by setting conditions tied to capital discipline."
+      },
+      {
+        "min_total": 6,
+        "label": "Defensible call",
+        "narrative": "You did solid work — you assessed the acquisition's returns and considered TCS's reinvestment appetite — but your final recommendation lacked conviction or clarity. You either hedged too much or failed to rigorously benchmark the deal against TCS's ROCE. Clients respect your work but wish you'd taken a stronger stand on capital allocation."
+      },
+      {
+        "min_total": 2,
+        "label": "Needs review",
+        "narrative": "You skipped key capital-allocation diligence. You didn't rigorously compare the acquisition's returns to TCS's hurdle, or you recommended based on strategic narrative alone. Your PMS clients feel you let management's story override financial discipline — a red flag for a capital-allocation call."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread",
+        "narrative": "You failed to apply the core lesson from Session 5.5: growth only creates value if returns exceed cost. You either treated the acquisition as inherently good because it's growth, or you ignored capital allocation entirely in your recommendation. This is the opposite of the real test of a CEO."
+      }
+    ]
+  }
+}
