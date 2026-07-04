@@ -1,0 +1,329 @@
+{
+  "sim_type": "excel",
+  "title": "Capex Depreciation Debt Schedules for Reliance Industries",
+  "scenario": "You are modelling Reliance Industries' capex and debt for FY26–FY28. Finance team needs the depreciation and interest feeds for the P&L, plus the asset and debt balances for the balance sheet. Build the Capex and Debt schedules, link them to placeholders, and resolve the circular reference that emerges when interest depends on average debt balances.",
+  "instructions": "Build a Capex schedule (opening PP&E + capex − depreciation = closing PP&E) and a Debt schedule (opening debt + new borrowing − repayment = closing debt); calculate depreciation as a rate × opening block and interest on average debt; enable iterative calculation to resolve the circularity; and populate the answer cells with the depreciation, interest, closing PP&E and closing debt figures that feed the P&L and balance sheet.",
+  "learning_objective": "Construct capex and debt schedules that roll forward balances, calculate depreciation and interest for the P&L, recognize and resolve circular references using iterative calculation, and audit the self-referential model logically.",
+  "hints": [
+    "Start with the capex schedule: opening FY26 = 45000, capex grows 8 % p.a., depreciation rate = 6% of opening PP&E. Close each year before opening the next.",
+    "For the debt schedule, opening FY26 = 80000, new borrowing = 5000 p.a., repayment = 3000 p.a. Interest = 7% × (opening + closing)/2. This creates a circular loop because closing debt feeds closing cash, which feeds income, which feeds interest.",
+    "Enable circularity: File → Options → Formulas → Enable iterative calculation. Then in cell Answers!B8, use =Data!C4 to pull the converged closing debt after iteration resolves. Trace: depreciation = rate × opening PP&E; interest = 7% × average debt; both feed the P&L and statements."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY26",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Opening PP&E (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "=D2",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "=D4",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Capex (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 5400,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 5832,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Closing PP&E (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=B2+B3-B6",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "=C2+C3-C6",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "=D2+D3-D6",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Depreciation Rate",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": 0.06,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 0.06,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 0.06,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Depreciation (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "=B2*B5",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "=C2*C5",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "=D2*D5",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Opening Debt (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": 80000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "=D8",
+            "readOnly": true
+          },
+          "D7": {
+            "value": "=D10",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "New Borrowing (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Repayment (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Closing Debt (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "=B7+B8-B9",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "=C7+C8-C9",
+            "readOnly": true
+          },
+          "D10": {
+            "value": "=D7+D8-D9",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Interest Rate",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": 0.07,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 0.07,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 0.07,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "=B11*((B7+B10)/2)",
+            "readOnly": true
+          },
+          "C12": {
+            "value": "=C11*((C7+C10)/2)",
+            "readOnly": true
+          },
+          "D12": {
+            "value": "=D11*((D7+D10)/2)",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY26 Depreciation (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "FY27 Depreciation (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "FY28 Closing PP&E (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "FY26 Interest Expense (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "FY28 Closing Debt (₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "FY27 Avg Debt Balance (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B6",
+      "expected_value": 2700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C6",
+      "expected_value": 2700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!D4",
+      "expected_value": 52299,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B12",
+      "expected_value": 5670,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!D10",
+      "expected_value": 84000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B7": {
+      "formula_pattern": "=(Data!C7+Data!C10)/2",
+      "expected_value": 6000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 11
+    }
+  }
+}

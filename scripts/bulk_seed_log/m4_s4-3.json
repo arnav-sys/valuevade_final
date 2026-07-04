@@ -1,0 +1,301 @@
+{
+  "sim_type": "excel",
+  "title": "TCS Capex & Depreciation: Walk the Three Statements",
+  "scenario": "TCS (Tata Consultancy Services) is planning a ₹50 crore investment in new data centre infrastructure with a 10-year life. Your manager asks you to model how this capex flows through all three statements over Year 1, and separately, how a ₹10 crore depreciation change ripples through P&L, cash flow, and balance sheet. You'll build the walk to ace the 'depreciation up ₹10 — explain it' interview question.",
+  "instructions": "Build formulas to trace the ₹10 depreciation walk (P&L, CFO, balance sheet impacts) and the ₹50 capex one-year effects. Compute PAT, CFO add-back, and prove the balance sheet balances after each scenario.",
+  "learning_objective": "Trace how a ₹10 depreciation change affects EBIT, PAT, CFO and PP&E across three statements, and explain why capex leaves the P&L unaffected on day one but visits later as depreciation.",
+  "hints": [
+    "Start with P&L: depreciation ₹10 reduces EBIT by ₹10. Then apply the tax rate to find the tax shield.",
+    "In the cash flow, PAT falls but depreciation is added back as non-cash. The net CFO change equals the tax saved.",
+    "On the balance sheet, PP&E shrinks by depreciation, cash rises by the tax shield, and retained earnings fall by (depreciation × (1 − tax rate))."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Base Year 1 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Scenario: Dep +₹10 Cr",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Tax Rate %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Years (Capex Asset Life)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "P&L — Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 500,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 500,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 25,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "P&L — EBITDA",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 150,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 150,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "P&L — Depreciation (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 5,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 15,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "P&L — EBIT",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 145,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "P&L — Interest",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "P&L — PBT",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 135,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "P&L — Tax (₹ Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 33.75,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "P&L — PAT",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 101.25,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "CFS — Operating Cash Flow (before adjust)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 101.25,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "CFS — Add: Depreciation (non-cash)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 5,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "CFS — CFO (Operating)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 106.25,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "CFS — Capex (₹ Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "BS — Opening Cash (₹ Cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 200,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 200,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "BS — PP&E Gross",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 400,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "BS — Accumulated Depreciation",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 80,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: EBIT falls by how much when depreciation rises ₹10 Cr?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: Tax shield (tax saved) when depreciation rises ₹10 Cr (in ₹ Cr)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: PAT falls by how much when depreciation rises ₹10 Cr?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: CFO change when depreciation rises ₹10 Cr: PAT falls ₹X, add back ₹10, net = ?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: After ₹50 Cr capex paid today (cash leaves), what is closing cash on BS?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: Retained Earnings at year-end (opening ₹1000 Cr + PAT scenario − ₹0 div)?",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=10",
+      "expected_value": 10,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=10*Data!D2/100",
+      "expected_value": 2.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=10*(1-Data!D2/100)",
+      "expected_value": 7.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=-7.5+10",
+      "expected_value": 2.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B14-Data!B13",
+      "expected_value": 150,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=1000+Data!B9",
+      "expected_value": 1101.25,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    }
+  }
+}

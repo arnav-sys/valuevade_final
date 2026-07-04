@@ -1,0 +1,36 @@
+{
+  "module": 0,
+  "reviewed_at": "2026-07-04T07:31:49.047056+00:00",
+  "sampled": 1,
+  "passed": 0,
+  "failed": 1,
+  "avg_total": 2.25,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 1.0,
+    "hint_progression": 2.0,
+    "difficulty_curve": 1.0
+  },
+  "passed_sessions": [],
+  "failed_sessions": [
+    "3.2"
+  ],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 1,
+        "hint_progression": 2,
+        "difficulty_curve": 1
+      },
+      "avg": 2.25,
+      "verdict": "fail",
+      "strengths": "Perfect Indian flavor with Titan Company, real ₹ crore conversions, Indian comma formatting, and Mumbai desk setting.",
+      "weaknesses": "Session notes are EMPTY (6000 chars blank) so session_relevance cannot be scored properly; expected_answers are identical across Q4-Q6 despite claiming different filters; hints mislead (Q5 divides revenue by units, not revenue/revenue); difficulty is flat (all questions test same SUBTOTAL mechanic with broken filter logic).",
+      "fix_directive": "Request session notes, fix expected_answers so Q4 uses Jewellery filter total, Q5 uses Watches filter total, Q6 computes ratio correctly (Jewellery_revenue/Watches_revenue not revenue/units), and redesign difficulty curve so Q1-2 are simple SUM/division, Q3-4 introduce SUBTOTAL with single-segment filters, Q5-6 escalate to multi-step conditional or lookup formulas.",
+      "session_no": "3.2",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-2.json"
+    }
+  ]
+}

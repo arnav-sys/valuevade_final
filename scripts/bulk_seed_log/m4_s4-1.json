@@ -1,0 +1,367 @@
+{
+  "sim_type": "excel",
+  "title": "Build Reliance's P&L Line by Line and Compute Five Margins",
+  "scenario": "You're a junior analyst at a Mumbai brokerage and have been handed Reliance Industries' unaudited P&L summary for FY23–FY25. Your desk lead asks you to rebuild the full P&L statement row by row, compute the five key margins (gross, EBITDA, EBIT, PBT, net), and identify which margin compressed most over the period. This is your first real model — read the staircase before you forecast it.",
+  "instructions": "In the 'Answers' sheet, reconstruct Reliance's complete P&L for FY25 using the given partial data and margins. Compute all five profit margins as percentages of revenue from operations. Identify the year in which net margin was lowest.",
+  "learning_objective": "Reconstruct a full P&L line by line, compute and compare the five profit margins over time, and explain a margin compression by identifying which expense line widened relative to revenue.",
+  "hints": [
+    "Gross profit always equals Revenue from operations minus COGS. Check your staircase order: Gross → EBITDA → EBIT → PBT → PAT.",
+    "Margin = profit ÷ Revenue from operations (never total income). All five margins will be percentages; scale them so 0.18 displays as 18% or store as 18 and divide by 100 in your formula.",
+    "Net margin is PAT ÷ Revenue from operations. Compare FY23, FY24, FY25 net margins side by side; the year with the smallest percentage is your answer. PAT = (Revenue − COGS − Opex − Depreciation − Interest) × (1 − tax rate), or use the PBT row and subtract tax."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY23 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY24 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY25 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue from operations",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 180000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 200500,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 220850,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Other income",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Total income",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 183200,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 204300,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 224950,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Cost of goods sold",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 108000,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 118295,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 129698,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Gross profit",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 82205,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 91152,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Employee costs",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 12600,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 14035,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 15660,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Other operating expenses",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 27000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 30150,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 33128,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 32400,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 38020,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 42364,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Depreciation & amortisation",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 9000,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 10050,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 11093,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 23400,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 27970,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 31271,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Finance costs (interest)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 4680,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 5210,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 5890,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "PBT",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 18720,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 22760,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 25381,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Tax (30% rate)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 5616,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 6828,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 7614,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "PAT",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 13104,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 15932,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 17767,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "P&L and Margin Analysis — Reliance Industries",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "1. FY25 Gross Profit (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "2. FY25 EBITDA Margin (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "3. FY25 Net Margin (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "4. Which year had lowest FY net margin: FY23, FY24, or FY25?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "5. FY24 EBIT (₹ Cr) — to verify your staircase",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "6. Average gross margin across FY23–FY25 (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!D2-Data!D5",
+      "expected_value": 91152,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=ROUND((Data!D9/Data!D2)*100,2)",
+      "expected_value": 19.17,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=ROUND((Data!D15/Data!D2)*100,2)",
+      "expected_value": 8.04,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=\"FY23\"",
+      "expected_value": "FY23",
+      "type": "text",
+      "tolerance": 0,
+      "points": 13
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!C11",
+      "expected_value": 27970,
+      "type": "number",
+      "tolerance": 1,
+      "points": 11
+    },
+    "Answers!B7": {
+      "formula_pattern": "=ROUND(((Data!B6/Data!B2)+(Data!C6/Data!C2)+(Data!D6/Data!D2))/3*100,2)",
+      "expected_value": 40.76,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    }
+  }
+}

@@ -600,9 +600,16 @@ def map_curriculum_to_db(module_num: int, curriculum_sessions, db_sessions):
 
 def upsert_sim(db_session_id: str, sim_obj: dict, sim_type: str, source_title: str):
     """Replaces all existing master_simulations rows for the session with the
-    fresh sim (one row per session)."""
+    fresh sim (one row per session). Promotes scenario/instructions to top-level
+    columns and derives objectives from learning_objective (schema constraint:
+    scenario NOT NULL; objectives is a top-level jsonb array)."""
     rest_delete(f"master_simulations?session_id=eq.{db_session_id}")
-    config = {k: v for k, v in sim_obj.items() if k not in ('sim_type', 'title')}
+    scenario     = sim_obj.get('scenario') or ''
+    instructions = sim_obj.get('instructions') or ''
+    lo = sim_obj.get('learning_objective') or ''
+    objectives = [lo] if lo else []
+    config = {k: v for k, v in sim_obj.items()
+              if k not in ('sim_type', 'title', 'scenario', 'instructions')}
     config['generated_at'] = datetime.now(timezone.utc).isoformat()
     config['generator'] = 'bulk_seed_sims.py · claude-haiku-4-5'
     config['source'] = 'ai_generated_v1'
@@ -611,6 +618,9 @@ def upsert_sim(db_session_id: str, sim_obj: dict, sim_type: str, source_title: s
         'session_id': db_session_id,
         'sim_type': sim_type,
         'title': sim_obj.get('title') or f"{source_title} — Practice",
+        'scenario': scenario,
+        'instructions': instructions,
+        'objectives': objectives,
         'config': config,
     }
     rest_post('master_simulations', row)

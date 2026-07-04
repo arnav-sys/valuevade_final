@@ -1,0 +1,437 @@
+{
+  "sim_type": "excel",
+  "title": "D-Mart Revenue Driver Tree and Cost Build Forecast",
+  "scenario": "You are building a financial model for D-Mart (Avenue Supermarts) for FY26–FY30. The CFO has provided actuals through FY25 and wants a bottom-up revenue forecast driven by store rollforward and per-store productivity, then a cost build that reflects the company's operating leverage. Your task is to build the engine, compute implied metrics, and defend the forecast against sanity checks.",
+  "instructions": "Build a store-driven revenue forecast using opening/new/closing store rolls and average store productivity, compute cost build lines anchored to historical percentages, calculate implied per-store revenue and market-share metrics, then identify forecast risks via sanity checks.",
+  "learning_objective": "Construct a defendable revenue driver tree decomposing store growth and per-store productivity, apply multiplicative growth mechanics to validate the build, and recognise when a forecast implies unsustainable unit expansion or margin expansion.",
+  "hints": [
+    "Average stores = (Opening + Closing) / 2; it prevents over-crediting new openings. Closing FY25 (actual) becomes Opening FY26 (forecast).",
+    "Revenue per store growth in estimates: Prior Year × (1 + productivity growth %) where productivity growth is a blue dial (say 5% annually). Multiply average stores × revenue per store to get revenue.",
+    "Gross Profit = Revenue × Gross Margin%; COGS = Revenue − Gross Profit. EBITDA = Revenue − COGS − Employee costs − Other operating expenses. Use historical percentages as anchors (COGS ~65–68% of revenue for D-Mart, employees ~8–10%, other ops ~12–15%)."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY25 (Actual)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY26 (Est)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY27 (Est)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY28 (Est)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY29 (Est)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY30 (Est)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Opening Stores",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 365,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 395,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 425,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 455,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 485,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 515,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "New Stores Added",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Closing Stores",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 395,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 425,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 455,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 485,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 515,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 545,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Average Stores",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 380,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 410,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 440,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 470,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 500,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 530,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Revenue per Store (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 142,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 149.1,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 156.6,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 164.4,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 172.6,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 181.2,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Total Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 53960,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 61033,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 68904,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 77268,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 86300,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 96036,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "COGS (₹ Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 35932,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 40582,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 45839,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 51418,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 57440,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 63864,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Gross Profit (₹ Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 18028,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 20451,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 23065,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 25850,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 28860,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 32172,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Employee Costs (₹ Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 4317,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 4755,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 5206,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 5674,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 6161,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 6665,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Other Operating Expenses (₹ Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 6474,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 7323,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 8268,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 9272,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 10356,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 11524,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer / Formula",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. FY26 Average Stores (mid-year average)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2. FY26 Gross Margin % (Gross Profit / Revenue)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q3. FY26 Employee Costs as % of Revenue",
+            "readOnly": true
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q4. FY30 Implied Revenue per Store (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q5. FY25–FY30 Multiplicative Revenue CAGR using (Closing FY30 / Closing FY25)^(1/5) - 1",
+            "readOnly": true
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q6. FY30 EBITDA (Gross Profit − Employee Costs − Other Operating Expenses) and EBITDA Margin %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!C2+Data!C4)/2",
+      "expected_value": 410,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C9/Data!C7",
+      "expected_value": 0.3353,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!C10/Data!C7",
+      "expected_value": 0.0779,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!G6",
+      "expected_value": 181.2,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!G7/Data!B7)^(1/5)-1",
+      "expected_value": 0.1213,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 20
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!G9-Data!G10-Data!G11",
+      "expected_value": 13983,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

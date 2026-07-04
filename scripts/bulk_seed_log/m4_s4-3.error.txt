@@ -1,0 +1,71 @@
+ERROR: ValueError: excel: Answers!B7 formula_pattern must start with "=" (got 'text_match')
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "Reliance Jio's ₹50 Crore Tower Depreciation Walk Through All Three Statements",
+  "scenario": "You are modelling Reliance Jio's financials for FY2024. The network depreciation has increased by ₹50 crore due to accelerated amortisation of spectrum licenses. Your portfolio manager asks: 'Walk me through how this ₹50 crore depreciation hits all three statements, and tell me if it's actually bad news for cash flow.' You build a live three-statement skeleton to prove the ripple.",
+  "instructions": "Build a connected three-statement model showing how a ₹50 crore depreciation increase flows through the P&L, cash flow statement, and balance sheet. Calculate the tax shield, PAT impact, CFO impact, and balance sheet balancing. Show that profit fell but cash actually rose.",
+  "learning_objective": "Trace a ₹50 crore depreciation shock through all three statements, calculate the tax shield and cash impact, and explain why profit fell while CFO rose — the core technical interview question in Indian equity research.",
+  "hints": [
+    "Start with the P&L: depreciation is a cost below EBITDA, so EBIT falls by the full ₹50 crore. Then calculate the tax shield (tax rate is 25%). PAT = (EBIT fall × (1 − tax rate)).",
+    "In the cash flow: PAT starts lower by the impact you just calculated. Then add back the full ₹50 crore depreciation (it's non-cash). The net CFO change = −PAT impact + depreciation add-back.",
+    "Balance sheet: Cash rises by the CFO change. PP&E (gross) falls by ₹50 crore (the asset depreciated). Retained earnings fall by the PAT impact. Check that total assets = total liabilities + equity."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {"value": "Reliance Jio FY2024 — Depreciation Impact Analysis", "readOnly": true, "bold": true},
+          "A2": {"value": "", "readOnly": true},
+          "A3": {"value": "Assumption: Depreciation Increase", "readOnly": true, "bold": true},
+          "A4": {"value": "Depreciation increase (₹ crore)", "readOnly": true},
+          "B4": {"value": 50, "readOnly": true},
+          "A5": {"value": "Tax rate (%)", "readOnly": true},
+          "B5": {"value": 25, "readOnly": true},
+          "A6": {"value": "", "readOnly": true},
+          "A7": {"value": "P&L Impact Summary", "readOnly": true, "bold": true},
+          "A8": {"value": "EBITDA change (₹ crore)", "readOnly": true},
+          "B8": {"value": 0, "readOnly": true},
+          "A9": {"value": "Depreciation change (₹ crore)", "readOnly": true},
+          "B9": {"value": -50, "readOnly": true},
+          "A10": {"value": "EBIT change (₹ crore)", "readOnly": true},
+          "B10": {"value": -50, "readOnly": true},
+          "A11": {"value": "Tax impact (₹ crore) — tax saved", "readOnly": true},
+          "B11": {"value": 12.5, "readOnly": true},
+          "A12": {"value": "PAT change (₹ crore)", "readOnly": true},
+          "B12": {"value": -37.5, "readOnly": true},
+          "A13": {"value": "", "readOnly": true},
+          "A14": {"value": "Cash Flow Impact Summary", "readOnly": true, "bold": true},
+          "A15": {"value": "Starting cash flow (PAT change)", "readOnly": true},
+          "B15": {"value": -37.5, "readOnly": true},
+          "A16": {"value": "Add back depreciation (non-cash)", "readOnly": true},
+          "B16": {"value": 50, "readOnly": true},
+          "A17": {"value": "CFO change (₹ crore)", "readOnly": true},
+          "B17": {"value": 12.5, "readOnly": true},
+          "A18": {"value": "", "readOnly": true},
+          "A19": {"value": "Balance Sheet Impact Summary", "readOnly": true, "bold": true},
+          "A20": {"value": "Cash change (₹ crore)", "readOnly": true},
+          "B20": {"value": 12.5, "readOnly": true},
+          "A21": {"value": "PP&E (gross) change (₹ crore)", "readOnly": true},
+          "B21": {"value": -50, "readOnly": true},
+          "A22": {"value": "Total assets change (₹ crore)", "readOnly": true},
+          "B22": {"value": -37.5, "readOnly": true},
+          "A23": {"value": "Retained earnings change (₹ crore)", "readOnly": true},
+          "B23": {"value": -37.5, "readOnly": true},
+          "A24": {"value": "Balance check: Assets = Liabilities + Equity", "readOnly": true},
+          "B24": {"value": "BALANCED ✓", "readOnly": true, "bold": true}
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {"value": "Question", "readOnly": true, "bold": true},
+          "B1": {"value": "Your Answer", "readOnly": true, "bold": true},
+          "A2": {"value": "Q1: What is the EBIT change (₹ crore) when depreciation increases by ₹50 crore? (Depreciation sits below EBITDA)", "readOnly": true},
+          "B2": {"value": "", "readOnly": false},
+          "A3": {"value": "Q2: Calculate the tax shield (₹ crore): tax saved on the lower EBIT at 25% tax rate.", "readOnly": true},
+          "B3": {"value": "", "readOnly": false},
+     

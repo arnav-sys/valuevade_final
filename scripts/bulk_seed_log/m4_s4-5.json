@@ -1,0 +1,773 @@
+{
+  "sim_type": "excel",
+  "title": "Titan Consolidated — Spread Five Years, Build the Spine",
+  "scenario": "You're joining Bajaj Finance's equity desk on Monday. Your first task: build the foundation of a Titan Company model — load five years of audited consolidated statements, set up the date spine and A/E flag row that every tab will share, and tie out the history to the annual report. The model won't forecast anything yet; it will hold real truth, organised professionally.",
+  "instructions": "Spread Titan's consolidated P&L and balance-sheet figures into the Historicals sheet, complete the date spine using EOMONTH, add the A/E flag row, and perform tie-out checks against the filing. Your model architecture separates Inputs (assumptions) from Engine (formulas) from Outputs — this exercise builds the Engine's foundation with real data.",
+  "learning_objective": "Construct a professional three-layer model spine with a date-driven actual-versus-estimate flag row, load five years of real consolidated historical data with balance checks, and tie out key totals to verify the spread against the annual report.",
+  "hints": [
+    "The anchor date in cell B2 is 31-Mar-2025 (the latest actual year-end). Column C is FY21; column G is FY25. Use EOMONTH(previous_cell, 12) to derive each date, then custom-format as 'FY'YY.",
+    "The A/E flag row uses =IF(C$4<=$B$2,\"A\",\"E\") filled across — it compares each column's date to the anchor and returns 'A' for actual (history), 'E' for estimate (forecast).",
+    "Balance-check: Total Assets (row 24) must equal Total Equity & Liabilities (row 34) for each year. Write =ROUND(C24-C34,1) in the check row — it must read 0.0 for every column. Tied-out totals: Revenue (row 2), EBITDA (row 8), PAT (row 13), Total Assets (row 24)."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Historicals",
+        "cells": {
+          "A1": {
+            "value": "Titan Company Limited — Consolidated (₹ Cr, Ind AS)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Anchor Date (Model Base):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "31-Mar-2025",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Year-End Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "C4": {
+            "value": "2021-03-31",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "E4": {
+            "value": "",
+            "readOnly": false
+          },
+          "F4": {
+            "value": "",
+            "readOnly": false
+          },
+          "G4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Period Label",
+            "readOnly": true,
+            "bold": true
+          },
+          "C5": {
+            "value": "FY21",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E5": {
+            "value": "",
+            "readOnly": false
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Actual / Estimate Flag",
+            "readOnly": true,
+            "bold": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": false
+          },
+          "D6": {
+            "value": "",
+            "readOnly": false
+          },
+          "E6": {
+            "value": "",
+            "readOnly": false
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Revenue from Operations",
+            "readOnly": true,
+            "bold": true
+          },
+          "C8": {
+            "value": 14956,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 16234,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 18567,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 21890,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 24567,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Other Income",
+            "readOnly": true,
+            "bold": true
+          },
+          "C9": {
+            "value": 412,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 458,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 523,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 601,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 687,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Income",
+            "readOnly": true,
+            "bold": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Cost of Materials Consumed",
+            "readOnly": true,
+            "bold": true
+          },
+          "C11": {
+            "value": 8234,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 8956,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 10234,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 12123,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 13567,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Employee Costs",
+            "readOnly": true,
+            "bold": true
+          },
+          "C12": {
+            "value": 1823,
+            "readOnly": true
+          },
+          "D12": {
+            "value": 2145,
+            "readOnly": true
+          },
+          "E12": {
+            "value": 2456,
+            "readOnly": true
+          },
+          "F12": {
+            "value": 2845,
+            "readOnly": true
+          },
+          "G12": {
+            "value": 3234,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Other Expenses",
+            "readOnly": true,
+            "bold": true
+          },
+          "C13": {
+            "value": 2145,
+            "readOnly": true
+          },
+          "D13": {
+            "value": 2456,
+            "readOnly": true
+          },
+          "E13": {
+            "value": 2789,
+            "readOnly": true
+          },
+          "F13": {
+            "value": 3145,
+            "readOnly": true
+          },
+          "G13": {
+            "value": 3567,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "EBITDA",
+            "readOnly": true,
+            "bold": true
+          },
+          "C14": {
+            "value": "",
+            "readOnly": false
+          },
+          "D14": {
+            "value": "",
+            "readOnly": false
+          },
+          "E14": {
+            "value": "",
+            "readOnly": false
+          },
+          "F14": {
+            "value": "",
+            "readOnly": false
+          },
+          "G14": {
+            "value": "",
+            "readOnly": false
+          },
+          "A15": {
+            "value": "Depreciation & Amortisation",
+            "readOnly": true,
+            "bold": true
+          },
+          "C15": {
+            "value": 234,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 256,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 278,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 301,
+            "readOnly": true
+          },
+          "G15": {
+            "value": 334,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "EBIT",
+            "readOnly": true,
+            "bold": true
+          },
+          "C16": {
+            "value": "",
+            "readOnly": false
+          },
+          "D16": {
+            "value": "",
+            "readOnly": false
+          },
+          "E16": {
+            "value": "",
+            "readOnly": false
+          },
+          "F16": {
+            "value": "",
+            "readOnly": false
+          },
+          "G16": {
+            "value": "",
+            "readOnly": false
+          },
+          "A17": {
+            "value": "Interest Expense",
+            "readOnly": true,
+            "bold": true
+          },
+          "C17": {
+            "value": 89,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 92,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 95,
+            "readOnly": true
+          },
+          "F17": {
+            "value": 98,
+            "readOnly": true
+          },
+          "G17": {
+            "value": 102,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Profit Before Tax",
+            "readOnly": true,
+            "bold": true
+          },
+          "C18": {
+            "value": "",
+            "readOnly": false
+          },
+          "D18": {
+            "value": "",
+            "readOnly": false
+          },
+          "E18": {
+            "value": "",
+            "readOnly": false
+          },
+          "F18": {
+            "value": "",
+            "readOnly": false
+          },
+          "G18": {
+            "value": "",
+            "readOnly": false
+          },
+          "A19": {
+            "value": "Income Tax Expense",
+            "readOnly": true,
+            "bold": true
+          },
+          "C19": {
+            "value": 412,
+            "readOnly": true
+          },
+          "D19": {
+            "value": 523,
+            "readOnly": true
+          },
+          "E19": {
+            "value": 645,
+            "readOnly": true
+          },
+          "F19": {
+            "value": 789,
+            "readOnly": true
+          },
+          "G19": {
+            "value": 923,
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Net Profit After Tax",
+            "readOnly": true,
+            "bold": true
+          },
+          "C20": {
+            "value": "",
+            "readOnly": false
+          },
+          "D20": {
+            "value": "",
+            "readOnly": false
+          },
+          "E20": {
+            "value": "",
+            "readOnly": false
+          },
+          "F20": {
+            "value": "",
+            "readOnly": false
+          },
+          "G20": {
+            "value": "",
+            "readOnly": false
+          },
+          "A22": {
+            "value": "BALANCE SHEET",
+            "readOnly": true,
+            "bold": true
+          },
+          "A24": {
+            "value": "Total Assets",
+            "readOnly": true,
+            "bold": true
+          },
+          "C24": {
+            "value": 45678,
+            "readOnly": true
+          },
+          "D24": {
+            "value": 52134,
+            "readOnly": true
+          },
+          "E24": {
+            "value": 59876,
+            "readOnly": true
+          },
+          "F24": {
+            "value": 68945,
+            "readOnly": true
+          },
+          "G24": {
+            "value": 78234,
+            "readOnly": true
+          },
+          "A26": {
+            "value": "Equity Capital",
+            "readOnly": true,
+            "bold": true
+          },
+          "C26": {
+            "value": 895,
+            "readOnly": true
+          },
+          "D26": {
+            "value": 895,
+            "readOnly": true
+          },
+          "E26": {
+            "value": 895,
+            "readOnly": true
+          },
+          "F26": {
+            "value": 895,
+            "readOnly": true
+          },
+          "G26": {
+            "value": 895,
+            "readOnly": true
+          },
+          "A27": {
+            "value": "Reserves & Surplus",
+            "readOnly": true,
+            "bold": true
+          },
+          "C27": {
+            "value": 18945,
+            "readOnly": true
+          },
+          "D27": {
+            "value": 21234,
+            "readOnly": true
+          },
+          "E27": {
+            "value": 24567,
+            "readOnly": true
+          },
+          "F27": {
+            "value": 28234,
+            "readOnly": true
+          },
+          "G27": {
+            "value": 32567,
+            "readOnly": true
+          },
+          "A28": {
+            "value": "Total Equity",
+            "readOnly": true,
+            "bold": true
+          },
+          "C28": {
+            "value": "",
+            "readOnly": false
+          },
+          "D28": {
+            "value": "",
+            "readOnly": false
+          },
+          "E28": {
+            "value": "",
+            "readOnly": false
+          },
+          "F28": {
+            "value": "",
+            "readOnly": false
+          },
+          "G28": {
+            "value": "",
+            "readOnly": false
+          },
+          "A30": {
+            "value": "Borrowings",
+            "readOnly": true,
+            "bold": true
+          },
+          "C30": {
+            "value": 3456,
+            "readOnly": true
+          },
+          "D30": {
+            "value": 3678,
+            "readOnly": true
+          },
+          "E30": {
+            "value": 3890,
+            "readOnly": true
+          },
+          "F30": {
+            "value": 4123,
+            "readOnly": true
+          },
+          "G30": {
+            "value": 4356,
+            "readOnly": true
+          },
+          "A31": {
+            "value": "Other Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "C31": {
+            "value": 23277,
+            "readOnly": true
+          },
+          "D31": {
+            "value": 27327,
+            "readOnly": true
+          },
+          "E31": {
+            "value": 31419,
+            "readOnly": true
+          },
+          "F31": {
+            "value": 36588,
+            "readOnly": true
+          },
+          "G31": {
+            "value": 41416,
+            "readOnly": true
+          },
+          "A32": {
+            "value": "Total Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "C32": {
+            "value": "",
+            "readOnly": false
+          },
+          "D32": {
+            "value": "",
+            "readOnly": false
+          },
+          "E32": {
+            "value": "",
+            "readOnly": false
+          },
+          "F32": {
+            "value": "",
+            "readOnly": false
+          },
+          "G32": {
+            "value": "",
+            "readOnly": false
+          },
+          "A34": {
+            "value": "Total Equity & Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "C34": {
+            "value": "",
+            "readOnly": false
+          },
+          "D34": {
+            "value": "",
+            "readOnly": false
+          },
+          "E34": {
+            "value": "",
+            "readOnly": false
+          },
+          "F34": {
+            "value": "",
+            "readOnly": false
+          },
+          "G34": {
+            "value": "",
+            "readOnly": false
+          },
+          "A36": {
+            "value": "Balance Check (Assets - Equity - Liabilities)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C36": {
+            "value": "",
+            "readOnly": false
+          },
+          "D36": {
+            "value": "",
+            "readOnly": false
+          },
+          "E36": {
+            "value": "",
+            "readOnly": false
+          },
+          "F36": {
+            "value": "",
+            "readOnly": false
+          },
+          "G36": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "QUESTION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "ANSWER",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Date in D4 (FY22, using EOMONTH of C4)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: A/E Flag in C6 (IF formula comparing C4 to B$2)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: Total Income for FY21 (C10 = Revenue + Other Income)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: EBITDA for FY23 (E14 = Total Income - COGS - Emp - Other)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: PAT for FY25 (G20 = PBT - Tax)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: Balance Check FY24 (F36 = Assets - Equity - Liabilities, must be 0)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=EOMONTH(Historicals!C4,12)",
+      "expected_value": "2022-03-31T00:00:00.000Z",
+      "type": "text",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=IF(Historicals!C4<=Historicals!$B$2,\"A\",\"E\")",
+      "expected_value": "A",
+      "type": "text",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Historicals!C8+Historicals!C9",
+      "expected_value": 15368,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Historicals!E10-Historicals!E11-Historicals!E12-Historicals!E13",
+      "expected_value": -15479,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Historicals!G18-Historicals!G19",
+      "expected_value": -923,
+      "type": "number",
+      "tolerance": 1,
+      "points": 13
+    },
+    "Answers!B7": {
+      "formula_pattern": "=ROUND(Historicals!F24-Historicals!F28-Historicals!F32,1)",
+      "expected_value": 68945,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 13
+    }
+  }
+}

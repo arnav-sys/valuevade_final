@@ -1,0 +1,16 @@
+{
+  "session": "3.2",
+  "decision_date": "2026-06-25T18:00:00Z",
+  "action": "REGEN_ATTEMPTED_WITH_SUBTOTAL_OVERRIDE_THEN_REVERTED",
+  "note": "Ran regen with a session-specific override forcing SUBTOTAL(9,...) filter-substrate pattern. Regen produced structurally valid workbook (0 engine errors) but Sonnet 4.5 review gave avg 2.25 (IF=5, SR=1, HP=2, DC=1) because: (a) engine cannot simulate filters — all three SUBTOTAL cells collapsed to the same full-range value 518.2 during engine correction; (b) three of five answer cells became duplicate values, killing pedagogy. Per user directive ('If Sonnet still < 4 → accept as-is, note it, don't loop further'), reverted /app/scripts/bulk_seed_log/m3_s3-2.json to the prior 'Format Titan's P&L Like a Mumbai Desk Analyst' version (5 unique-answer ratio / unit-conversion Qs, 70 pts total).",
+  "regen_sonnet_scores": {
+    "indian_flavor": 5,
+    "session_relevance": 1,
+    "hint_progression": 2,
+    "difficulty_curve": 1,
+    "avg": 2.25,
+    "verdict": "fail"
+  },
+  "root_cause": "The formula engine treats SUBTOTAL(9,range) as SUM(range) — it has no filter state. Any session pedagogy that relies on 'apply filter → sum only visible rows' cannot be graded by our engine as designed. Future: either extend the engine with a simulated filter layer, or accept that Formatting sessions become ratio/conversion drills.",
+  "final_state": "m3_s3-2.json = ratio / unit-conversion drill on Titan P&L; imperfect (does not exercise formatting per se) but the best engine-gradable proxy."
+}

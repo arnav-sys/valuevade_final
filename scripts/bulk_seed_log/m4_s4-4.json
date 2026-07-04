@@ -1,0 +1,707 @@
+{
+  "sim_type": "excel",
+  "title": "Build Sharma Retail's Complete Three-Statement Model & Balance",
+  "scenario": "You are a junior analyst at a Mumbai equity desk. Your manager has asked you to build a small, complete three-statement financial model for Sharma Retail Ltd (FY25 actual, FY26 forecast) using given assumptions. The P&L, balance sheet, and cash flow must link correctly — and the balance sheet must balance by construction, not by plugging cash. Your job: build the statements, compute closing cash from the cash flow, link it back, and verify the balance check reads zero.",
+  "instructions": "Build a complete three-statement model (P&L, balance sheet, cash flow) for Sharma Retail Ltd using the given FY25 actuals and FY26 assumptions; compute and link closing cash from the cash flow statement into the balance sheet; verify the balance check equals zero by answering the five calculation questions in the Answers sheet.",
+  "learning_objective": "Construct a fully integrated three-statement financial model, compute closing cash independently via the cash flow statement, link it back to balance the balance sheet, and verify the model's correctness using a balance check.",
+  "hints": [
+    "FY26 revenue = FY25 revenue × (1 + growth rate); costs are driven by margins and percentages, not typed as fixed numbers.",
+    "Balance sheet: PP&E rolls forward as opening + capex − depreciation; reserves roll forward as opening + PAT − dividends; working capital lines grow with revenue. Cash is left blank on purpose.",
+    "Cash flow: CFO = PAT + depreciation − (changes in inventory, receivables) + (change in payables); CFI = −capex; CFF = −dividends. Closing cash = opening cash + CFO + CFI + CFF. This closing cash plugs into the blank balance sheet cash cell via a link formula (=), and the balance check then reads zero."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "ASSUMPTION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY25A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue growth (%)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B2": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Gross margin (%)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B3": {
+            "value": 0.4,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 0.4,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Other expenses (% of revenue)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B4": {
+            "value": 0.24,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 0.24,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Depreciation (% of opening PP&E)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B5": {
+            "value": 0.125,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 0.125,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest rate on debt (%)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B6": {
+            "value": 0.1,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 0.1,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax rate (%)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B7": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Dividend payout (% of PAT)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B8": {
+            "value": 0.2,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0.2,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Capex (₹ Cr)",
+            "readOnly": true,
+            "bold": false
+          },
+          "B9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 120,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "P&L (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": "FY25A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C11": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 1120,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 600,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 672,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Gross profit",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 400,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 448,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Other expenses",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 240,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 268.8,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 160,
+            "readOnly": true
+          },
+          "C16": {
+            "value": 179.2,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Depreciation",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "EBIT",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 110,
+            "readOnly": true
+          },
+          "C18": {
+            "value": 129.2,
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Interest",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 30,
+            "readOnly": true
+          },
+          "C19": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A20": {
+            "value": "PBT",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 80,
+            "readOnly": true
+          },
+          "C20": {
+            "value": 99.2,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Tax",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 20,
+            "readOnly": true
+          },
+          "C21": {
+            "value": 24.8,
+            "readOnly": true
+          },
+          "A22": {
+            "value": "PAT",
+            "readOnly": true
+          },
+          "B22": {
+            "value": 60,
+            "readOnly": true
+          },
+          "C22": {
+            "value": 74.4,
+            "readOnly": true
+          },
+          "A24": {
+            "value": "BALANCE SHEET (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B24": {
+            "value": "FY25A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C24": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A25": {
+            "value": "ASSETS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A26": {
+            "value": "PP&E",
+            "readOnly": true
+          },
+          "B26": {
+            "value": 400,
+            "readOnly": true
+          },
+          "C26": {
+            "value": 470,
+            "readOnly": true
+          },
+          "A27": {
+            "value": "Inventory",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 180,
+            "readOnly": true
+          },
+          "C27": {
+            "value": 201.6,
+            "readOnly": true
+          },
+          "A28": {
+            "value": "Receivables",
+            "readOnly": true
+          },
+          "B28": {
+            "value": 120,
+            "readOnly": true
+          },
+          "C28": {
+            "value": 134.4,
+            "readOnly": true
+          },
+          "A29": {
+            "value": "Cash",
+            "readOnly": true
+          },
+          "B29": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C29": {
+            "value": 21.5,
+            "readOnly": true
+          },
+          "A30": {
+            "value": "Total Assets",
+            "readOnly": true,
+            "bold": true
+          },
+          "B30": {
+            "value": 750,
+            "readOnly": true
+          },
+          "C30": {
+            "value": 827.5,
+            "readOnly": true
+          },
+          "A32": {
+            "value": "EQUITY & LIABILITIES",
+            "readOnly": true,
+            "bold": true
+          },
+          "A33": {
+            "value": "Share capital",
+            "readOnly": true
+          },
+          "B33": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C33": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A34": {
+            "value": "Reserves",
+            "readOnly": true
+          },
+          "B34": {
+            "value": 290,
+            "readOnly": true
+          },
+          "C34": {
+            "value": 349.52,
+            "readOnly": true
+          },
+          "A35": {
+            "value": "Total Equity",
+            "readOnly": true,
+            "bold": true
+          },
+          "B35": {
+            "value": 300,
+            "readOnly": true
+          },
+          "C35": {
+            "value": 359.52,
+            "readOnly": true
+          },
+          "A36": {
+            "value": "Debt",
+            "readOnly": true
+          },
+          "B36": {
+            "value": 300,
+            "readOnly": true
+          },
+          "C36": {
+            "value": 300,
+            "readOnly": true
+          },
+          "A37": {
+            "value": "Payables",
+            "readOnly": true
+          },
+          "B37": {
+            "value": 150,
+            "readOnly": true
+          },
+          "C37": {
+            "value": 168,
+            "readOnly": true
+          },
+          "A38": {
+            "value": "Total Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "B38": {
+            "value": 450,
+            "readOnly": true
+          },
+          "C38": {
+            "value": 468,
+            "readOnly": true
+          },
+          "A39": {
+            "value": "Total Equity & Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "B39": {
+            "value": 750,
+            "readOnly": true
+          },
+          "C39": {
+            "value": 827.5,
+            "readOnly": true
+          },
+          "A41": {
+            "value": "CASH FLOW (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B41": {
+            "value": "FY25A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C41": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A42": {
+            "value": "Operating Activities",
+            "readOnly": true,
+            "bold": true
+          },
+          "A43": {
+            "value": "PAT",
+            "readOnly": true
+          },
+          "C43": {
+            "value": 74.4,
+            "readOnly": true
+          },
+          "A44": {
+            "value": "Add: Depreciation",
+            "readOnly": true
+          },
+          "C44": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A45": {
+            "value": "Less: Δ Inventory",
+            "readOnly": true
+          },
+          "C45": {
+            "value": -21.6,
+            "readOnly": true
+          },
+          "A46": {
+            "value": "Less: Δ Receivables",
+            "readOnly": true
+          },
+          "C46": {
+            "value": -14.4,
+            "readOnly": true
+          },
+          "A47": {
+            "value": "Add: Δ Payables",
+            "readOnly": true
+          },
+          "C47": {
+            "value": 18,
+            "readOnly": true
+          },
+          "A48": {
+            "value": "CFO",
+            "readOnly": true,
+            "bold": true
+          },
+          "C48": {
+            "value": 106.4,
+            "readOnly": true
+          },
+          "A49": {
+            "value": "Investing Activities",
+            "readOnly": true,
+            "bold": true
+          },
+          "A50": {
+            "value": "Capex",
+            "readOnly": true
+          },
+          "C50": {
+            "value": -120,
+            "readOnly": true
+          },
+          "A51": {
+            "value": "CFI",
+            "readOnly": true,
+            "bold": true
+          },
+          "C51": {
+            "value": -120,
+            "readOnly": true
+          },
+          "A52": {
+            "value": "Financing Activities",
+            "readOnly": true,
+            "bold": true
+          },
+          "A53": {
+            "value": "Dividends paid",
+            "readOnly": true
+          },
+          "C53": {
+            "value": -14.88,
+            "readOnly": true
+          },
+          "A54": {
+            "value": "CFF",
+            "readOnly": true,
+            "bold": true
+          },
+          "C54": {
+            "value": -14.88,
+            "readOnly": true
+          },
+          "A55": {
+            "value": "Opening cash",
+            "readOnly": true
+          },
+          "B55": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C55": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A56": {
+            "value": "Closing cash",
+            "readOnly": true,
+            "bold": true
+          },
+          "C56": {
+            "value": 21.52,
+            "readOnly": true
+          },
+          "A58": {
+            "value": "BALANCE CHECK",
+            "readOnly": true,
+            "bold": true
+          },
+          "A59": {
+            "value": "Total Assets − (Equity + Liabilities)",
+            "readOnly": true
+          },
+          "C59": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A60": {
+            "value": "Status",
+            "readOnly": true
+          },
+          "C60": {
+            "value": "BALANCED ✓",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "QUESTION",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "YOUR ANSWER",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: FY26 Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: FY26 PAT (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: FY26 Closing Cash from CFO+CFI+CFF (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: FY26 Total Assets (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: FY26 Balance Check value (Assets − Equity − Liabilities) (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!C12",
+      "expected_value": 1120,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C22",
+      "expected_value": 74.4,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!C55+Data!C48+Data!C51+Data!C54",
+      "expected_value": 21.52,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!C26+Data!C27+Data!C28+Data!C29",
+      "expected_value": 827.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!C30-Data!C39",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 25
+    }
+  }
+}

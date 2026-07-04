@@ -151,9 +151,8 @@ export default function LoginPage() {
             </button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-[var(--color-text-muted)] font-bricolage">
-          <p className="text-center text-sm text-[var(--color-text-muted)]" data-testid="login-signup-hint">
-            Already have an account? Sign in above.
+          <p className="mt-6 text-center text-sm text-[var(--color-text-muted)] font-bricolage" data-testid="login-signup-hint">
+            New here? Contact your admin for an invite.
           </p>
         </div>
       </div>

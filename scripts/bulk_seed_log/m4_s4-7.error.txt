@@ -1,0 +1,67 @@
+ERROR: ValueError: excel: total points 218 outside 40-120
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "Reliance's Working Capital Schedule — Growth Cash Trap Analysis",
+  "scenario": "As a junior analyst at a Mumbai equity desk, you're building Reliance Industries' three-year working capital forecast. The P&L projects revenue growth of 12% annually, but the CFO has warned that growth may consume more cash than expected. Your task is to compute the Days Inventory Outstanding (DIO), Days Sales Outstanding (DSO), and Days Payable Outstanding (DPO) from actuals, forecast them forward, convert back to rupee balances, and calculate the Cash Conversion Cycle to reveal whether Reliance's growth is cash-generative or cash-hungry.",
+  "instructions": "Build the working capital schedule: compute historical DIO, DSO, and DPO from the Actuals data; forecast each metric as a flat input dial in the Estimates section; reverse-convert to rupee inventory, receivables, and payables balances; calculate net working capital and its annual change; and compute the Cash Conversion Cycle (DIO + DSO − DPO) for each forecast year to assess cash consumption.",
+  "learning_objective": "Compute DIO, DSO, and DPO from balance sheet and P&L actuals; forecast working capital days as behavioral dials; convert forecasted days back to rupee balances; and calculate the Cash Conversion Cycle to quantify whether growth ties up or releases cash.",
+  "hints": [
+    "DIO = Inventory / COGS × 365; DSO = Receivables / Revenue × 365; DPO = Payables / COGS × 365. Use the Actual columns first, then forecast days as stable inputs.",
+    "In the Estimates section, assume days hold flat at the most recent historical year (FY2024), then reverse the formula: Inventory_Est = DIO_Est / 365 × COGS_Est. Same for Receivables and Payables.",
+    "Net WC = Inventory + Receivables − Payables. Change in WC = Current Year Net WC − Prior Year Net WC (this change flows to the cash flow statement). CCC = DIO + DSO − DPO; negative CCC means the business collects before it pays, releasing cash on growth."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {"value": "Reliance Industries — Working Capital Actuals", "readOnly": true, "bold": true},
+          "A2": {"value": "Fiscal Year", "readOnly": true, "bold": true},
+          "B2": {"value": "FY2022", "readOnly": true, "bold": true},
+          "C2": {"value": "FY2023", "readOnly": true, "bold": true},
+          "D2": {"value": "FY2024", "readOnly": true, "bold": true},
+          "A3": {"value": "Revenue (₹ Cr)", "readOnly": true, "bold": true},
+          "B3": {"value": 650000, "readOnly": true},
+          "C3": {"value": 728000, "readOnly": true},
+          "D3": {"value": 815360, "readOnly": true},
+          "A4": {"value": "COGS (₹ Cr)", "readOnly": true, "bold": true},
+          "B4": {"value": 468000, "readOnly": true},
+          "C4": {"value": 524160, "readOnly": true},
+          "D4": {"value": 587059, "readOnly": true},
+          "A5": {"value": "Inventory (₹ Cr)", "readOnly": true, "bold": true},
+          "B5": {"value": 82000, "readOnly": true},
+          "C5": {"value": 88500, "readOnly": true},
+          "D5": {"value": 94200, "readOnly": true},
+          "A6": {"value": "Trade Receivables (₹ Cr)", "readOnly": true, "bold": true},
+          "B6": {"value": 56000, "readOnly": true},
+          "C6": {"value": 62000, "readOnly": true},
+          "D6": {"value": 68500, "readOnly": true},
+          "A7": {"value": "Trade Payables (₹ Cr)", "readOnly": true, "bold": true},
+          "B7": {"value": 45000, "readOnly": true},
+          "C7": {"value": 48500, "readOnly": true},
+          "D7": {"value": 52200, "readOnly": true},
+          "A9": {"value": "Forecast Assumptions (FY2025–FY2026)", "readOnly": true, "bold": true},
+          "A10": {"value": "Revenue Growth Rate", "readOnly": true, "bold": true},
+          "B10": {"value": 0.12, "readOnly": true},
+          "A11": {"value": "COGS as % of Revenue", "readOnly": true, "bold": true},
+          "B11": {"value": 0.72, "readOnly": true}
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {"value": "Reliance Industries — Working Capital Schedule", "readOnly": true, "bold": true},
+          "A2": {"value": "", "readOnly": true},
+          "A3": {"value": "HISTORICAL ACTUALS — Days Metrics", "readOnly": true, "bold": true},
+          "A4": {"value": "DIO (Days Inventory Outstanding) FY2024", "readOnly": true},
+          "B4": {"value": "", "readOnly": false},
+          "A5": {"value": "DSO (Days Sales Outstanding) FY2024", "readOnly": true},
+          "B5": {"value": "", "readOnly": false},
+          "A6": {"value": "DPO (Days Payable Outstanding) FY2024", "readOnly": true},
+          "B6": {"value": "", "readOnly": false},
+          "A7": {"value": "", "readOnly": true},
+          "A8": {"value": "FORECAST FY2025 — Rupee Balances (Days Held Flat)", "readOnly": true, "bold": true},
+          "A9": {"value": "FY2025 Reve

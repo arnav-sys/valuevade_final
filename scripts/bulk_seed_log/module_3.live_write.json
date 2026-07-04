@@ -1,0 +1,101 @@
+{
+  "module": 3,
+  "ran_at": "2026-07-04T07:36:13.000982+00:00",
+  "dry_run": false,
+  "total_files": 10,
+  "ok": 10,
+  "error": 0,
+  "skipped": 0,
+  "rows": [
+    {
+      "session_no": "3.1",
+      "sim_type": "excel",
+      "title": "Navigate the Grid: TCS Quarterly Data Entry and Movement",
+      "db_session_id": "955b2fd1-8b76-45d7-8ebe-2015572a77a1",
+      "sim_id": "13dbfa5a-bce2-4f84-babf-1c327c4dba4c",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-1.json"
+    },
+    {
+      "session_no": "3.2",
+      "sim_type": "excel",
+      "title": "Format Titan's P&L Like a Mumbai Desk Analyst",
+      "db_session_id": "b885e099-81cd-4e01-8d49-a940b8227b27",
+      "sim_id": "a99120bb-62db-44a7-9766-a4d571e549d8",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-2.json"
+    },
+    {
+      "session_no": "3.3",
+      "sim_type": "excel",
+      "title": "Reliance Revenue Growth: References, Relative vs Absolute",
+      "db_session_id": "b5b21761-5aab-4b07-ac46-baeddea842dd",
+      "sim_id": "97cf13d1-0d51-4f5d-b4e8-e217270c093f",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-3.json"
+    },
+    {
+      "session_no": "3.4",
+      "sim_type": "excel",
+      "title": "Reliance Segment Revenue Rollup — SUMIFS & Reconciliation",
+      "db_session_id": "b06334a6-c0d2-4256-a078-593318db4a03",
+      "sim_id": "632da861-6239-429f-b168-4eb888eff7c9",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-4.json"
+    },
+    {
+      "session_no": "3.5",
+      "sim_type": "excel",
+      "title": "HDFC Bank Loan Portfolio—SMA Classification & Early Warning Logic",
+      "db_session_id": "31951f6f-837f-4782-abcb-9a2bc7b114d1",
+      "sim_id": "08754852-66ae-48ba-9960-37bce33a722d",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-5.json"
+    },
+    {
+      "session_no": "3.6",
+      "sim_type": "excel",
+      "title": "NSE Bhavcopy Join — Portfolio Prices with VLOOKUP, INDEX-MATCH & XLOOKUP",
+      "db_session_id": "e81b3493-f0fc-48f2-9261-bc699727ff44",
+      "sim_id": "0203c63e-b4f6-4247-8d70-731474a03304",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-6.json"
+    },
+    {
+      "session_no": "3.7",
+      "sim_type": "excel",
+      "title": "Clean BSE Market Data: Text Surgery & Date Repair Pipeline",
+      "db_session_id": "f7373cdc-9f71-48f8-911a-dfef0ebe065c",
+      "sim_id": "41fead5f-77df-4dfe-b6e1-f2cf7b063f5d",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-7.json"
+    },
+    {
+      "session_no": "3.8",
+      "sim_type": "excel",
+      "title": "Nifty Screener Export: Sort, Filter, Validate & Deduplicate",
+      "db_session_id": "95a89ba0-9d39-4561-a3d1-973ddabe6d14",
+      "sim_id": "b35dbdd6-3dcc-4ec4-b91b-3dfe5550d608",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-8.json"
+    },
+    {
+      "session_no": "3.9",
+      "sim_type": "excel",
+      "title": "NSE Sector Revenue PivotTable — Build the FY25 Cross-Tab",
+      "db_session_id": "957f6c63-a224-41e6-8b80-968054801e92",
+      "sim_id": "782dd75a-1551-43f4-913d-e09d40e91298",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-9.json"
+    },
+    {
+      "session_no": "3.10",
+      "sim_type": "excel",
+      "title": "Titan's FY26 Target: Reverse-Engineer Growth via Goal Seek",
+      "db_session_id": "04e3ca50-e80d-4b23-bf96-51bd0ab3f561",
+      "sim_id": "ddb7d1f9-731e-427f-b2da-039d48ce10ec",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m3_s3-10.json"
+    }
+  ]
+}
