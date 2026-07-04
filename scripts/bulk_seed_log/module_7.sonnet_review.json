@@ -1,0 +1,70 @@
+{
+  "module": 7,
+  "reviewed_at": "2026-07-04T09:53:03.272099+00:00",
+  "sampled": 3,
+  "passed": 3,
+  "failed": 0,
+  "avg_total": 4.83,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 4.33
+  },
+  "passed_sessions": [
+    "7.1",
+    "7.6",
+    "7.11"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
+      },
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Titan Company is perfectly chosen with real ₹ Cr numbers, authentic FY24 jewellery-sector mechanics (gold prices, studded mix), and laser-focused on the session's eight-question checklist—especially decomposing PAT growth (Q7), gross margin direction (Q3), and below-EBIT sources.",
+      "weaknesses": "Only 4 tasks for a document sim (range is 3-5, but 5 would strengthen the ramp); the difficulty curve is good but could escalate further with a fifth task asking the analyst to write a quality verdict or rank the profit sources by durability.",
+      "fix_directive": "",
+      "session_no": "7.1",
+      "sim_type": "document",
+      "file": "/app/scripts/bulk_seed_log/m7_s7-1.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Flawless execution: Titan Company with authentic ₹ Cr financials, laser-focused on notes/policies from session syllabus (depreciation changes, capitalisation, revenue recognition, other income quality), perfect 3-hint escalation (cheap policy-check → revenue/contract-asset → CWIP/cash-flow forensics), and superb task progression from simple growth calc → policy-change interpretation → complex free-text forensic analysis of capitalisation risks with cash-flow reconciliation.",
+      "weaknesses": "None material — this is production-grade pedagogy.",
+      "fix_directive": "",
+      "session_no": "7.6",
+      "sim_type": "document",
+      "file": "/app/scripts/bulk_seed_log/m7_s7-6.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
+      },
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Laser-focused integration of all ten session skills, authentic Indian NBFC (Bajaj Finance) with real ₹ price, rigor/speed/client_trust scoring mimics real desk tension, and workflow sequence exactly mirrors session notes.",
+      "weaknesses": "Decision point d5 (final synthesize verdict) is missing from payload despite being previewed in session notes' 8-step workflow, leaving the diagnostic incomplete at step 4 of 8.",
+      "fix_directive": "",
+      "session_no": "7.11",
+      "sim_type": "decision_making",
+      "file": "/app/scripts/bulk_seed_log/m7_s7-11.json"
+    }
+  ]
+}

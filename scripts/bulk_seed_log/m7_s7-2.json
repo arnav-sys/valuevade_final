@@ -1,0 +1,231 @@
+{
+  "sim_type": "document",
+  "title": "Reading HDFC Bank's Balance Sheet: Fortress or Fragile?",
+  "scenario": "You're a junior analyst at a Mumbai equity desk. Your PM asks: 'HDFC Bank just filed its FY24 results. Before you touch the profit story, run an X-ray on the balance sheet — I need to know if the bones are sound.' Pull the balance sheet, read the skeleton through the four diagnostic lenses, and diagnose whether this is a fortress or a crack waiting to happen.",
+  "instructions": "Hover over key line items to see analyst tooltips. Answer 5 diagnostic questions that test your ability to assess leverage, liquidity, asset quality, and efficiency.",
+  "learning_objective": "Diagnose financial strength and fragility by reading a balance sheet through four lenses: leverage, liquidity, asset quality, and efficiency.",
+  "hints": [
+    "Start with leverage: compute net debt (total borrowings minus cash), then debt-to-equity. Is it aggressive or conservative for a bank?",
+    "Check liquidity next: current assets vs. current liabilities. For a bank, this means liquid assets vs. customer deposits and short-term borrowings. Quick ratio (ex-inventory) matters here too.",
+    "Asset quality in a bank means NPAs (non-performing assets — loans that aren't being repaid). High NPA % → fragile. Also check goodwill weight — is the balance sheet heavy with intangible 'assets' that could vanish?"
+  ],
+  "document_data": {
+    "company_name": "HDFC Bank Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Balance Sheet — Assets Side",
+        "line_items": [
+          {
+            "id": "cash",
+            "label": "Cash and bank balances",
+            "current_year": 28450,
+            "previous_year": 24680
+          },
+          {
+            "id": "inv",
+            "label": "Investments (including liquid funds)",
+            "current_year": 124680,
+            "previous_year": 108750
+          },
+          {
+            "id": "advances",
+            "label": "Advances to customers (gross)",
+            "current_year": 878640,
+            "previous_year": 756300
+          },
+          {
+            "id": "npa",
+            "label": "Less: Provision for NPAs",
+            "current_year": -8900,
+            "previous_year": -7200
+          },
+          {
+            "id": "ppe",
+            "label": "Property, plant & equipment (net)",
+            "current_year": 12340,
+            "previous_year": 11200
+          },
+          {
+            "id": "goodwill",
+            "label": "Goodwill and intangibles",
+            "current_year": 2840,
+            "previous_year": 2840
+          },
+          {
+            "id": "other_assets",
+            "label": "Other assets",
+            "current_year": 18950,
+            "previous_year": 17320
+          }
+        ],
+        "section_total": {
+          "label": "Total Assets",
+          "current_year": 1057980,
+          "previous_year": 914090
+        }
+      },
+      {
+        "title": "Balance Sheet — Liabilities & Equity Side",
+        "line_items": [
+          {
+            "id": "deposits",
+            "label": "Deposits from customers",
+            "current_year": 758200,
+            "previous_year": 682100
+          },
+          {
+            "id": "borrowings",
+            "label": "Borrowings (short-term + long-term)",
+            "current_year": 156800,
+            "previous_year": 132500
+          },
+          {
+            "id": "curr_liab",
+            "label": "Other current liabilities",
+            "current_year": 42150,
+            "previous_year": 38900
+          },
+          {
+            "id": "prov",
+            "label": "Provisions and contingencies",
+            "current_year": 18640,
+            "previous_year": 16280
+          },
+          {
+            "id": "equity",
+            "label": "Shareholders' equity (capital + reserves)",
+            "current_year": 82190,
+            "previous_year": 44310
+          }
+        ],
+        "section_total": {
+          "label": "Total Liabilities & Equity",
+          "current_year": 1057980,
+          "previous_year": 914090
+        }
+      },
+      {
+        "title": "Income Statement Extract (FY24)",
+        "line_items": [
+          {
+            "id": "int_income",
+            "label": "Interest income",
+            "current_year": 82640,
+            "previous_year": 65200
+          },
+          {
+            "id": "int_expense",
+            "label": "Interest expense",
+            "current_year": 32100,
+            "previous_year": 24800
+          },
+          {
+            "id": "net_int_income",
+            "label": "Net interest income",
+            "current_year": 50540,
+            "previous_year": 40400
+          },
+          {
+            "id": "npa_prov",
+            "label": "Provisions and contingencies (NPA writeoffs, etc.)",
+            "current_year": 2250,
+            "previous_year": 1800
+          },
+          {
+            "id": "operating_expenses",
+            "label": "Operating expenses",
+            "current_year": 24680,
+            "previous_year": 21200
+          },
+          {
+            "id": "ebit",
+            "label": "Operating profit (EBIT)",
+            "current_year": 23610,
+            "previous_year": 17400
+          },
+          {
+            "id": "tax",
+            "label": "Income tax expense",
+            "current_year": 5950,
+            "previous_year": 4280
+          },
+          {
+            "id": "net_profit",
+            "label": "Net profit after tax",
+            "current_year": 17660,
+            "previous_year": 13120
+          }
+        ]
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "npa",
+      "tooltip": "Provision for NPAs (non-performing assets) shows the bank's estimate of loans that won't be repaid. Rising NPA provisions relative to total advances is a red flag for asset quality deterioration. Here, 8,900 / 878,640 = 1.0% NPA ratio — well-controlled."
+    },
+    {
+      "id": "borrowings",
+      "tooltip": "Wholesale borrowings (short + long-term). A bank funds itself via deposits (cheap, stable) and borrowings (costlier, market-dependent). For HDFC: borrowings are 156,800 vs. deposits 758,200 — deposits dominate, a sign of brand strength. This is the 'funding mix' that determines stability."
+    },
+    {
+      "id": "equity",
+      "tooltip": "Equity jumped from 44,310 to 82,190 — a massive 85% increase YoY. This is largely due to retained earnings (profit reinvested). Higher equity strengthens the balance sheet and lowers leverage. Watch: is equity growing faster than assets? If yes, the balance sheet is getting safer."
+    },
+    {
+      "id": "advances",
+      "tooltip": "Advances (loans issued to customers) are the core asset of any bank — they generate interest income. Growing advances from 756,300 to 878,640 (+16.2%) shows strong loan growth, but only if the underlying loans will be repaid (see NPA provision). Asset quality is the question."
+    },
+    {
+      "id": "goodwill",
+      "tooltip": "Goodwill at 2,840 is tiny relative to total assets (0.27%). This is healthy — HDFC's value is built on the core banking franchise, not overpriced acquisitions. Heavy goodwill is a warning sign of acquisition impairment risk."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate HDFC Bank's Debt-to-Equity ratio for FY24 (using Total Borrowings as debt). Is this conservative, moderate, or aggressive?",
+      "answer_type": "number",
+      "expected_value": 1.91,
+      "tolerance": 0.1,
+      "unit": "ratio",
+      "explanation": "Debt-to-Equity = Borrowings / Equity = 156,800 / 82,190 = 1.91. For a bank, this is MODERATE. Banks typically run D/E of 1.5–2.5 because they're funded by stable deposits (treated differently from equity in leverage calculations). This 1.91 is well within comfort zone — the balance sheet can carry this debt load."
+    },
+    {
+      "id": "t2",
+      "question": "What is HDFC Bank's NPA ratio (Net Non-Performing Assets as % of gross advances) for FY24? What does this tell you about asset quality?",
+      "answer_type": "number",
+      "expected_value": 1.01,
+      "tolerance": 0.1,
+      "unit": "%",
+      "explanation": "NPA % = (8,900 / 878,640) × 100 = 1.01%. This is LOW and HEALTHY. Industry average for large banks hovers around 1.2–1.5%; HDFC at 1.01% shows tight credit underwriting and strong collections. Asset quality is FORTRESS-grade. Rising NPA % (e.g., to 2%+) would signal deterioration."
+    },
+    {
+      "id": "t3",
+      "question": "Compute HDFC Bank's Current Ratio (Current Assets ÷ Current Liabilities). For a bank, note that 'current' includes all customer deposits due on demand. Is this a concern?",
+      "answer_type": "number",
+      "expected_value": 2.42,
+      "tolerance": 0.2,
+      "unit": "ratio",
+      "explanation": "Current Assets ≈ Cash (28,450) + Investments (124,680) + Receivables & other liquid assets (≈170,000) = ~323,130. Current Liabilities ≈ Deposits (758,200) + short-term borrowings & payables (≈60,000) = ~818,200. Ratio ≈ 323,130 / 818,200 = 0.39. BUT — for banks, this calculation is misleading. Banks hold 'deposits' on balance sheet as liabilities, but customer deposits roll over continuously (sticky liability). The regulatory view uses 'Liquidity Coverage Ratio' instead. The point: don't apply manufacturing-company metrics to banks raw. HDFC's actual liquidity (ability to meet withdrawal & borrowing obligations) is STRONG due to customer deposits rolling over and ample liquid investments."
+    },
+    {
+      "id": "t4",
+      "question": "Compare FY24 vs FY23 equity and calculate the YoY equity growth rate. What does this reveal about balance-sheet strength?",
+      "answer_type": "number",
+      "expected_value": 85.4,
+      "tolerance": 1,
+      "unit": "%",
+      "explanation": "(82,190 − 44,310) / 44,310 × 100 = 85.4%. Equity doubled in one year — extraordinary growth driven by strong retained earnings (net profit of 17,660 reinvested). This means the balance sheet is getting *stronger*, not weaker. Lower leverage automatically follows as equity rises. This is the opposite of a distressed company, which sees equity erosion."
+    },
+    {
+      "id": "t5",
+      "question": "Using FY24 figures, estimate HDFC Bank's Return on Assets (ROA) = Net Profit / Total Assets. Then comment: is the balance sheet 'small relative to the profit it produces' (efficient), or bloated?",
+      "answer_type": "free_text",
+      "sample_answer": "ROA = 17,660 / 1,057,980 = 1.67%. For a large bank, this is solid (banks typically run ROA of 0.8–1.5%). HDFC's 1.67% is at the upper end — the balance sheet is EFFICIENT relative to profit. The bank is generating strong profit from a modest asset base, a hallmark of quality. Bloated balance sheets (e.g., ROA < 0.5%) signal that assets sit idle or are impaired, a red flag.",
+      "explanation": "ROA of 1.67% is good for banking — it shows the business is capital-efficient. The balance sheet is not bloated; profits are healthy relative to the total asset base. This is consistent with a FORTRESS-grade diagnosis: low NPA, moderate leverage, strong equity growth, and efficient profit generation."
+    }
+  ]
+}

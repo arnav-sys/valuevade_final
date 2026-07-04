@@ -1,0 +1,36 @@
+{
+  "module": 6,
+  "reviewed_at": "2026-07-04T09:52:49.019961+00:00",
+  "sampled": 1,
+  "passed": 1,
+  "failed": 0,
+  "avg_total": 5.0,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 5.0
+  },
+  "passed_sessions": [
+    "6.6"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 5
+      },
+      "avg": 5.0,
+      "verdict": "pass",
+      "strengths": "Exceptional execution: uses real Reliance Industries with authentic ₹ figures (₹232,500 crore revenue, ₹15,800 crore profit, specific EBITDA margins), every decision point directly exercises session concepts (baseline expectations, prior call review, key questions identification, listening frame), and 3 hints escalate perfectly from general principle to specific tactical advice.",
+      "weaknesses": "None identified — this is textbook-quality simulation design that would justify premium pricing.",
+      "fix_directive": "",
+      "session_no": "6.6",
+      "sim_type": "decision_making",
+      "file": "/app/scripts/bulk_seed_log/m6_s6-6.json"
+    }
+  ]
+}

@@ -1,0 +1,165 @@
+{
+  "sim_type": "document",
+  "title": "Maruti Suzuki FY24: Spot the Hidden Cost Red Flags",
+  "scenario": "You're a junior analyst at Motilal Oswal's Mumbai equity desk. A senior colleague flags Maruti Suzuki's latest annual report for a forensic review — margins look suspiciously strong, and depreciation rate has dipped. Your job: read the statement, hover tooltips, and identify whether profit is real or hidden costs are inflating it.",
+  "instructions": "Read Maruti Suzuki's FY24 financial excerpt, hover on key line items for tooltips, then answer the analytical tasks about depreciation rate, CWIP movement, and cost red flags.",
+  "learning_objective": "Identify expense-vs-capitalise tricks and asset red flags that hide costs and inflate profit.",
+  "hints": [
+    "Compare the depreciation rate (Depreciation ÷ Gross Block) year-on-year — a sudden drop is suspicious.",
+    "Track Capital Work in Progress — does it grow every year without ever becoming a productive asset?",
+    "Check the notes section for any changes in useful lives or depreciation methods — that's where the quiet tricks hide."
+  ],
+  "document_data": {
+    "company_name": "Maruti Suzuki India Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Statement of Profit & Loss (Extract)",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 58420,
+            "previous_year": 52180
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 38950,
+            "previous_year": 34120
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 3240,
+            "previous_year": 2980
+          },
+          {
+            "id": "deprec",
+            "label": "Depreciation and amortisation",
+            "current_year": 1860,
+            "previous_year": 2140
+          },
+          {
+            "id": "other_exp",
+            "label": "Other operating expenses",
+            "current_year": 4620,
+            "previous_year": 4580
+          },
+          {
+            "id": "finance",
+            "label": "Finance costs",
+            "current_year": 420,
+            "previous_year": 380
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 8730,
+          "previous_year": 7380
+        }
+      },
+      {
+        "title": "Balance Sheet (Fixed Assets Extract)",
+        "line_items": [
+          {
+            "id": "gross_block",
+            "label": "Gross Block of Fixed Assets",
+            "current_year": 24500,
+            "previous_year": 23100
+          },
+          {
+            "id": "accum_deprec",
+            "label": "Less: Accumulated Depreciation",
+            "current_year": 14200,
+            "previous_year": 12360
+          },
+          {
+            "id": "net_block",
+            "label": "Net Block of Fixed Assets",
+            "current_year": 10300,
+            "previous_year": 10740
+          },
+          {
+            "id": "cwip",
+            "label": "Capital Work in Progress",
+            "current_year": 2850,
+            "previous_year": 2420
+          },
+          {
+            "id": "provisions",
+            "label": "Provision for doubtful debts",
+            "current_year": 180,
+            "previous_year": 240
+          }
+        ]
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "deprec",
+      "tooltip": "Depreciation fell ₹280 cr YoY despite higher gross block. Signal: useful lives may have been extended to boost profit — check notes for any policy change."
+    },
+    {
+      "id": "gross_block",
+      "tooltip": "Gross fixed assets grew ₹1,400 cr, yet depreciation actually fell. This mismatch warrants scrutiny of capitalisation and asset-life assumptions."
+    },
+    {
+      "id": "cwip",
+      "tooltip": "CWIP grew ₹430 cr YoY. Forensic question: is this spending eventually becoming productive assets, or is it a parking lot for costs kept off the P&L?"
+    },
+    {
+      "id": "provisions",
+      "tooltip": "Provision for doubtful debts dropped ₹60 cr despite higher sales. Under-provisioning understates expenses and inflates profit — red flag."
+    },
+    {
+      "id": "accum_deprec",
+      "tooltip": "Accumulated depreciation rose ₹1,840 cr, but the rate of new depreciation fell — classic sign of stretched asset lives."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Maruti's depreciation rate for FY24 (Depreciation ÷ Gross Block × 100). Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 7.6,
+      "tolerance": 0.2,
+      "unit": "%",
+      "explanation": "FY24: (1860 ÷ 24500) × 100 = 7.59% ≈ 7.6%. FY23: (2140 ÷ 23100) × 100 = 9.26%. The sharp drop from 9.3% to 7.6% with no change in asset mix strongly suggests asset useful lives were extended — a classic quiet way to inflate profit by lowering depreciation expense."
+    },
+    {
+      "id": "t2",
+      "question": "In FY24, provision for doubtful debts fell despite revenue rising 12%. This most likely indicates:",
+      "answer_type": "text",
+      "expected_keywords": [
+        "under-provisioning",
+        "understates expenses",
+        "inflates profit",
+        "hidden cost"
+      ],
+      "explanation": "Dropping provisions when sales rise is forensically suspicious — it suggests the company is under-provisioning bad debts to keep expenses low and profit artificially high. This is a cost-hiding trick because the true economic loss is being deferred, not eliminated."
+    },
+    {
+      "id": "t3",
+      "question": "CWIP grew ₹430 cr in FY24. What red flag should an analyst watch for, and why does it matter for profit quality?",
+      "answer_type": "free_text",
+      "sample_answer": "The red flag is whether this CWIP ever converts into productive operating assets. If CWIP just keeps growing year after year without becoming a factory or asset that depreciates, it may be a parking lot for operating costs kept off the P&L to inflate current profit. Honest CWIP eventually depreciates; suspicious CWIP just balloons. This matters because it could mean today's reported profit is inflated by hidden costs that haven't yet hit the income statement.",
+      "explanation": "This tests the student's understanding that bloated, non-converting CWIP is a hiding spot for manipulated costs. The session explicitly warns that CWIP should eventually become a working asset; if it doesn't, forensic suspicion is warranted. A strong answer connects the dots between balance-sheet parking and P&L inflation."
+    },
+    {
+      "id": "t4",
+      "question": "Based on the depreciation rate drop and provision fall, what should an equity analyst do NEXT to verify profit quality?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "notes to accounts",
+        "accounting policy",
+        "auditor report",
+        "useful life",
+        "check change"
+      ],
+      "explanation": "The session emphasises that cost and asset manipulation tricks are buried in the notes. The analyst must immediately consult the notes to accounts and significant-accounting-policies section to see if management disclosed any change to depreciation method, useful-life assumptions, or provisioning levels. Skipping the notes is how students miss red flags."
+    }
+  ]
+}

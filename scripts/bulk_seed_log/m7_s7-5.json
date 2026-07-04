@@ -1,0 +1,155 @@
+{
+  "sim_type": "document",
+  "title": "Reliance FY24: Disaggregating Three Businesses, One Stock",
+  "scenario": "You're a junior analyst on the Mumbai energy desk reviewing Reliance's FY24 annual report. Your senior asks: 'Why is consolidated revenue up only 8% when Retail is booming? And what's really driving profit — oil, retail, or Jio?' You pull the segment note. Time to find the hidden businesses.",
+  "instructions": "Read the segment-level P&L below, hover on tooltips to understand each line, then answer analytical questions about margins, growth, and capital allocation across Reliance's three core businesses.",
+  "learning_objective": "Decompose a conglomerate's consolidated results into segment margins, growth rates, and return-on-capital metrics to reveal true business economics and capital-allocation quality.",
+  "hints": [
+    "Check which segment has the highest revenue and which has the highest margin — they're probably not the same.",
+    "Calculate each segment's margin (result ÷ revenue) and YoY growth, then compare to the blended company margin.",
+    "Notice which segment is growing fastest but consuming the most capital — that's where the company is betting."
+  ],
+  "document_data": {
+    "company_name": "Reliance Industries Limited",
+    "period": "FY24 Annual Report (Segment Note)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Segment Revenue & Results (FY24 vs FY23)",
+        "line_items": [
+          {
+            "id": "oil_rev_fy24",
+            "label": "Oil-to-Chemicals (O2C) — Revenue",
+            "current_year": 565000,
+            "previous_year": 580000
+          },
+          {
+            "id": "oil_res_fy24",
+            "label": "Oil-to-Chemicals (O2C) — Segment Result",
+            "current_year": 28250,
+            "previous_year": 29200
+          },
+          {
+            "id": "retail_rev_fy24",
+            "label": "Retail — Revenue",
+            "current_year": 300000,
+            "previous_year": 240000
+          },
+          {
+            "id": "retail_res_fy24",
+            "label": "Retail — Segment Result",
+            "current_year": 24000,
+            "previous_year": 19200
+          },
+          {
+            "id": "jio_rev_fy24",
+            "label": "Jio (Digital Services) — Revenue",
+            "current_year": 130000,
+            "previous_year": 100000
+          },
+          {
+            "id": "jio_res_fy24",
+            "label": "Jio (Digital Services) — Segment Result",
+            "current_year": 23400,
+            "previous_year": 18000
+          }
+        ],
+        "section_total": {
+          "label": "Total Company Revenue (Consolidated)",
+          "current_year": 995000,
+          "previous_year": 920000
+        }
+      },
+      {
+        "title": "Segment Capital Employed & Assets",
+        "line_items": [
+          {
+            "id": "oil_cap_fy24",
+            "label": "O2C — Capital Employed",
+            "current_year": 450000,
+            "previous_year": 450000
+          },
+          {
+            "id": "retail_cap_fy24",
+            "label": "Retail — Capital Employed",
+            "current_year": 180000,
+            "previous_year": 150000
+          },
+          {
+            "id": "jio_cap_fy24",
+            "label": "Jio — Capital Employed",
+            "current_year": 120000,
+            "previous_year": 100000
+          }
+        ],
+        "section_total": {
+          "label": "Total Capital Employed",
+          "current_year": 750000,
+          "previous_year": 700000
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "oil_rev_fy24",
+      "tooltip": "O2C revenue fell 2.6% YoY — refining margins compressed due to global crude volatility. This is cyclical, not structural decline. Largest revenue contributor but lowest margin segment."
+    },
+    {
+      "id": "retail_res_fy24",
+      "tooltip": "Retail segment profit grew 25% YoY despite being only 30% of total revenue. This mix shift is lifting the blended company margin — but only *if* Retail keeps growing faster than O2C."
+    },
+    {
+      "id": "jio_res_fy24",
+      "tooltip": "Jio profit grew 30% YoY, fastest of all segments. But notice Jio is capital-intensive: its 19.5% ROCE trails Retail (13.3%), signalling that Jio's high growth comes at a cost to shareholders until scale improves."
+    },
+    {
+      "id": "jio_cap_fy24",
+      "tooltip": "Jio capital employed rose 20% YoY, the steepest capex trajectory. Management is betting on data, 5G, and cloud — high-growth but high-cash-burn. A strategic bet, but watch if returns justify the spend."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the FY24 segment margin (result ÷ revenue, %) for each of the three businesses. Which has the highest and lowest margin?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "jio 18",
+        "retail 8",
+        "o2c 5",
+        "highest jio",
+        "lowest oil"
+      ],
+      "explanation": "O2C: 28250÷565000 = 5.0%. Retail: 24000÷300000 = 8.0%. Jio: 23400÷130000 = 18.0%. Jio has the highest margin (capital-light digital business), O2C the lowest (cyclical commodity refining). The blended margin is (28250+24000+23400)÷995000 = 7.5% — a meaningless average that describes *none* of the three."
+    },
+    {
+      "id": "t2",
+      "question": "What is the YoY revenue growth (%) for Retail and Jio combined, versus O2C alone? What does this tell you about the mix shift?",
+      "answer_type": "number",
+      "expected_value": 20,
+      "tolerance": 1,
+      "unit": "%",
+      "explanation": "(Retail+Jio revenue FY24 minus FY24 previous) ÷ (Retail+Jio previous) = (430000−340000)÷340000 = 26.5% growth (combined). O2C grew −2.6%. The mix is shifting *rapidly* toward higher-margin Retail and Jio. If this continues, the blended margin will expand without O2C improving at all — pure mix effect."
+    },
+    {
+      "id": "t3",
+      "question": "Calculate return on capital (segment result ÷ capital employed, %) for each segment. Then explain which segment is destroying shareholder value relative to capital deployed.",
+      "answer_type": "text",
+      "expected_keywords": [
+        "jio roce",
+        "19.5",
+        "retail 13",
+        "o2c 6",
+        "jio capital intensive"
+      ],
+      "explanation": "O2C ROCE: 28250÷450000 = 6.3%. Retail ROCE: 24000÷180000 = 13.3%. Jio ROCE: 23400÷120000 = 19.5%. Jio has the highest ROCE (strong for a telecom/digital business), but notice: despite growing fastest, Jio's capital employed rose 20% YoY. Jio's ROCE looks good, but if capex keeps rising faster than profit, ROCE will compress — a yellow flag. O2C's 6.3% ROCE is the lowest and concerning, yet it still holds 60% of total capital. This signals a potential capital-allocation misfire: the company is funding a low-ROCE legacy business while betting on higher-ROCE digital."
+    },
+    {
+      "id": "t4",
+      "question": "The consolidated company revenue grew 8.2% YoY. Explain why this headline number is misleading and what segment analysis reveals that the consolidated figure hides.",
+      "answer_type": "free_text",
+      "sample_answer": "Consolidated revenue grew only 8.2%, suggesting moderate health. But segment analysis shows O2C (56% of revenue) *declined* 2.6% due to cyclical refining pressures, while Retail (+25%) and Jio (+30%) are reshaping the business. The 8.2% blended growth masks a company in transition: the legacy oil business is shrinking, but high-growth consumer and digital arms are offsetting that and driving the future. An analyst reading only the consolidated number would miss this repositioning entirely.",
+      "explanation": "This is the core insight of the session: the blended number is an average that confuses. O2C's negative growth is buried inside Retail and Jio's strong performance. Segment analysis reveals the real story — O2C is under structural pressure, but the company is successfully pivoting toward faster-growing, higher-margin businesses. This repositioning *won't* show in consolidated margins until it fully plays out, but segment data shows it *now*. That's the edge."
+    }
+  ]
+}

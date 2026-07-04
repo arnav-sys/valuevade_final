@@ -1,0 +1,185 @@
+{
+  "sim_type": "document",
+  "title": "Titan Company FY24: Interrogating the Jewellery Growth Story",
+  "scenario": "You're covering Titan Company for a Mumbai equity desk. The stock rallied 18% post-results on headline PAT growth of 32%. Your PM wants you to interrogate the income statement: is the profit growth real (operating), or is it padded with one-off gains and tax effects? Run the eight-question checklist.",
+  "instructions": "Read the Titan FY24 Income Statement, hover tooltips to understand line-item quality, then answer analytical questions decomposing the profit growth into its real sources.",
+  "learning_objective": "Decompose PAT growth into operating (EBIT) vs non-recurring sources, and grade the quality of each income statement line using the eight-question analyst checklist.",
+  "hints": [
+    "Start by comparing EBIT growth to PAT growth — if they diverge sharply, something below the operating line did the work.",
+    "Break the ₹1,248 cr PAT into its five sources: EBIT growth, interest, other income, exceptional items, and tax. Which moved most?",
+    "The eight questions matter most for gross margin (direction and why) and the 'other expenses' bucket (what's hiding there). Check the tooltips."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Income Statement — FY24 vs FY23",
+        "line_items": [
+          {
+            "id": "rev_ops",
+            "label": "Revenue from operations",
+            "current_year": 31847,
+            "previous_year": 25403
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 18912,
+            "previous_year": 15641
+          },
+          {
+            "id": "emp_benefits",
+            "label": "Employee benefits expense",
+            "current_year": 2156,
+            "previous_year": 1876
+          },
+          {
+            "id": "other_exp",
+            "label": "Other expenses",
+            "current_year": 4127,
+            "previous_year": 3544
+          },
+          {
+            "id": "ebitda",
+            "label": "EBITDA",
+            "current_year": 6652,
+            "previous_year": 4342
+          },
+          {
+            "id": "depreciation",
+            "label": "Depreciation and amortisation",
+            "current_year": 642,
+            "previous_year": 598
+          }
+        ],
+        "section_total": {
+          "label": "EBIT (Operating Profit)",
+          "current_year": 6010,
+          "previous_year": 3744
+        }
+      },
+      {
+        "title": "Below-the-Line Items — FY24 vs FY23",
+        "line_items": [
+          {
+            "id": "finance_cost",
+            "label": "Finance costs",
+            "current_year": 284,
+            "previous_year": 312
+          },
+          {
+            "id": "other_income",
+            "label": "Other income (interest, dividends, gains)",
+            "current_year": 876,
+            "previous_year": 423
+          },
+          {
+            "id": "exceptional",
+            "label": "Exceptional items (one-time gains)",
+            "current_year": 412,
+            "previous_year": 0
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax (PBT)",
+          "current_year": 7014,
+          "previous_year": 3855
+        }
+      },
+      {
+        "title": "Tax & Net Profit — FY24 vs FY23",
+        "line_items": [
+          {
+            "id": "tax_expense",
+            "label": "Income tax expense",
+            "current_year": 1288,
+            "previous_year": 839
+          },
+          {
+            "id": "tax_rate",
+            "label": "Effective tax rate (%)",
+            "current_year": 18.4,
+            "previous_year": 21.8
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year (PAT)",
+          "current_year": 5726,
+          "previous_year": 3016
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev_ops",
+      "tooltip": "Operating revenue grew 25.4% YoY — strong jewellery demand, especially from bridal and festive. But check: was this volume-led (units sold) or price-led (realisation per unit)? Concall will clarify durability."
+    },
+    {
+      "id": "cogs",
+      "tooltip": "COGS as % of revenue: FY24 = 59.4%, FY23 = 61.5%. Gross margin *expanded* 210 bps YoY — gold prices were softer, and Titan's product mix shifted toward higher-margin studded jewellery. This is *high-quality* margin expansion."
+    },
+    {
+      "id": "other_income",
+      "tooltip": "Other income jumped from ₹423 cr to ₹876 cr (+107%) — this is NOT operating revenue. It's treasury interest (Titan's growing cash), dividend income, and possibly asset-sale gains. Critical: this boost to PBT is *low quality* — it won't recur if cash is deployed."
+    },
+    {
+      "id": "exceptional",
+      "tooltip": "₹412 cr exceptional gain in FY24 (nil in FY23) — likely a one-time property sale or brand revaluation. This is a *non-recurring* profit booster. Strip it when thinking about repeat earnings."
+    },
+    {
+      "id": "tax_rate",
+      "tooltip": "Effective tax rate fell from 21.8% to 18.4% (340 bps) — this lower rate partly reflects the exceptional gain receiving favourable tax treatment. Tax benefit is *low quality* if it doesn't repeat."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was the YoY growth in Revenue from operations (%)? Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 25.4,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(31847 - 25403) / 25403 = 25.4%. Strong volume and pricing in jewellery. This is a high-quality headline — now the analyst asks: what % was volume vs price?"
+    },
+    {
+      "id": "t2",
+      "question": "EBIT grew from ₹3,744 cr to ₹6,010 cr. What was the YoY growth rate in EBIT (%)? Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 60.4,
+      "tolerance": 1,
+      "unit": "%",
+      "explanation": "(6010 - 3744) / 3744 = 60.4%. EBIT more than doubled — faster than revenue growth (25.4%). This came from margin expansion (gross margin +210 bps, EBITDA margin +390 bps). High-quality operating leverage."
+    },
+    {
+      "id": "t3",
+      "question": "PAT grew 89.8% YoY (from ₹3,016 cr to ₹5,726 cr), but EBIT grew only 60.4%. Which of the following is the BEST explanation for this gap?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "other income",
+        "exceptional",
+        "tax rate",
+        "below the line"
+      ],
+      "explanation": "The 29.4 percentage-point gap (89.8% − 60.4%) came from: (1) Other income jumped 107% (₹453 cr added to PBT), (2) Exceptional gain of ₹412 cr (new to FY24), (3) Tax rate fell 340 bps (saving ₹139 cr). Only the EBIT growth is operating (high quality); the rest are non-recurring or financial (low quality). An analyst would say: 'Underlying operating PAT growth is tracking EBIT (60%+), but the headline 90% includes ₹865 cr of below-the-line boosts.'"
+    },
+    {
+      "id": "t4",
+      "question": "Gross margin (COGS as % of revenue) improved by how many basis points from FY23 to FY24?",
+      "answer_type": "number",
+      "expected_value": 210,
+      "tolerance": 10,
+      "unit": "bps",
+      "explanation": "FY24: (31847 - 18912) / 31847 = 40.6%. FY23: (25403 - 15641) / 25403 = 38.5%. Improvement: 210 bps. This reflects softer gold prices and product-mix shift to studded jewellery. High-quality margin expansion — durable if the product mix shift continues."
+    },
+    {
+      "id": "t5",
+      "question": "If you strip the exceptional gain (₹412 cr) and the tax benefit from the lower rate, what is the *adjusted* PAT growth rate (%)? Assume the tax rate had stayed at 21.8%.",
+      "answer_type": "free_text",
+      "sample_answer": "Adjusted PAT = 5726 - 412 (exceptional) - (412 × 0.09) (tax on exceptional) = 5,241 cr. Adjusted tax at 21.8% on PBT ex-exceptional: [(7014 - 412) × 0.218] = 1,444 cr. Adjusted PAT = 6602 - 1444 = 5,158 cr. FY23 PAT was 3,016 cr. Growth = (5158 - 3016) / 3016 = 71.1%. Still strong, but lower than the 89.8% headline. This is the *quality* read.",
+      "explanation": "Stripping one-time items and normalising the tax rate reveals the true operating PAT growth is ~71%, not 90%. The headline confuses the reader; the adjusted number tells the analyst the real story. This habit — adjusting for non-recurring items — is how equity research produces credible forecasts."
+    }
+  ]
+}

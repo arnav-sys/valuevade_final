@@ -1,0 +1,429 @@
+{
+  "sim_type": "excel",
+  "title": "HDFC Bank & Kotak Mahindra: Comparing Margins & Drift",
+  "scenario": "Your Mumbai equity desk is comparing two large-cap banks — HDFC Bank and Kotak Mahindra Bank — across FY20–FY24. Their absolute profit figures mislead (HDFC is larger); their common-size P&Ls reveal the real story. Build a five-year common-size analysis and compute CAGR to spot which bank is structurally strengthening.",
+  "instructions": "Convert both banks' P&L data into common-size percentages (every line ÷ revenue), spot trends across years, and compute revenue CAGR to judge growth consistency.",
+  "learning_objective": "Compute common-size P&L percentages across five years, identify margin drift and leverage trends, and calculate revenue CAGR to detect whether a bank's profitability structure is strengthening or deteriorating.",
+  "hints": [
+    "Every common-size cell divides the line by that year's revenue — the revenue row itself will always read 100%.",
+    "For CAGR, count the years *between* FY20 and FY24 (that's 4 years, not 5 data points); formula is (End÷Start)^(1/4)−1.",
+    "Drag your first common-size formula across columns and down rows — watch the percentages shift year by year to spot which line is drifting."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Line Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "HDFC Bank FY20",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "HDFC Bank FY21",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "HDFC Bank FY22",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "HDFC Bank FY23",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "HDFC Bank FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Total Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 35640,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 41820,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 50025,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 58890,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 68250,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Operating Expenses (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 14256,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 17091,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 20010,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 23556,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 27300,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "EBITDA (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 21384,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 24729,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 30015,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 35334,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 40950,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Depreciation (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1782,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 2091,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 2501,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 2945,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 3412,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 19602,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 22638,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 27514,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 32389,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 37538,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 1429,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1673,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 2001,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 2356,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 2730,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 14168,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 16639,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 19822,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 23452,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 27338,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Total Assets (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 1284250,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 1502070,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 1755060,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 2050380,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 2380225,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Debt (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 110000,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 125000,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 142000,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 160000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Equity (₹Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 180000,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 210000,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 245000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 287000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 335000,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Common-Size & Trend Analysis — HDFC Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "EBITDA Margin FY20 (%)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "EBITDA Margin FY24 (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Operating Expense Ratio FY20 (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Operating Expense Ratio FY24 (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Net Profit Margin FY20 (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Net Profit Margin FY24 (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          },
+          "A8": {
+            "value": "Revenue CAGR FY20–FY24 (%)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": null
+          },
+          "A9": {
+            "value": "Debt-to-Assets Ratio FY20 (%)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": null
+          },
+          "A10": {
+            "value": "Debt-to-Assets Ratio FY24 (%)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!B4/Data!B2)*100",
+      "expected_value": 60.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(Data!F4/Data!F2)*100",
+      "expected_value": 60.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B3/Data!B2)*100",
+      "expected_value": 40.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!F3/Data!F2)*100",
+      "expected_value": 40.0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!B8/Data!B2)*100",
+      "expected_value": 39.75308641975309,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B7": {
+      "formula_pattern": "=(Data!F8/Data!F2)*100",
+      "expected_value": 40.05,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B8": {
+      "formula_pattern": "=((Data!F2/Data!B2)^(1/4)-1)*100",
+      "expected_value": 17.636268538134182,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B9": {
+      "formula_pattern": "=(Data!B10/Data!B9)*100",
+      "expected_value": 7.4,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B10": {
+      "formula_pattern": "=(Data!F10/Data!F9)*100",
+      "expected_value": 6.72,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    }
+  }
+}

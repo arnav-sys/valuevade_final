@@ -1,0 +1,155 @@
+{
+  "sim_type": "document",
+  "title": "Bharti Airtel FY24: Revenue Soaring, But Are Receivables Following?",
+  "scenario": "You're a junior analyst at a Mumbai brokerage. Your senior has flagged Bharti Airtel's latest quarterly results for a deeper look — revenue is up 18% YoY, but receivables have jumped 35%. She's handed you the financial statement and asked: is this growth real, or are we seeing channel stuffing and aggressive revenue recognition?",
+  "instructions": "Read the P&L and Balance Sheet excerpts, hover over tooltips to understand key line items, then answer 4 analytical questions about revenue quality and DSO.",
+  "learning_objective": "Identify revenue red flags by calculating DSO, spotting receivables divergence, and questioning the timing of revenue recognition.",
+  "hints": [
+    "Start by calculating DSO for both years using the formula (Trade Receivables ÷ Revenue) × 365.",
+    "Compare the YoY growth rates of revenue and receivables side-by-side — a large gap suggests receivables are outrunning sales.",
+    "DSO rising from ~35 days to ~48 days means more sales are sitting as unpaid invoices; this is the classic fingerprint of premature or aggressive revenue booking."
+  ],
+  "document_data": {
+    "company_name": "Bharti Airtel Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement (Extract)",
+        "line_items": [
+          {
+            "id": "rev_ops",
+            "label": "Revenue from operations",
+            "current_year": 151820,
+            "previous_year": 128440
+          },
+          {
+            "id": "other_income",
+            "label": "Other income",
+            "current_year": 2847,
+            "previous_year": 2156
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 35120,
+            "previous_year": 31240
+          },
+          {
+            "id": "emp_benefits",
+            "label": "Employee benefits expense",
+            "current_year": 18940,
+            "previous_year": 17560
+          },
+          {
+            "id": "finance_costs",
+            "label": "Finance costs",
+            "current_year": 4820,
+            "previous_year": 5280
+          },
+          {
+            "id": "depreciation",
+            "label": "Depreciation and amortisation",
+            "current_year": 22560,
+            "previous_year": 20840
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 73287,
+          "previous_year": 55676
+        }
+      },
+      {
+        "title": "Balance Sheet (Extract) — Current Assets & Receivables",
+        "line_items": [
+          {
+            "id": "trade_receivables",
+            "label": "Trade receivables (net)",
+            "current_year": 22680,
+            "previous_year": 16840
+          },
+          {
+            "id": "other_receivables",
+            "label": "Other financial assets",
+            "current_year": 5420,
+            "previous_year": 4920
+          },
+          {
+            "id": "cash",
+            "label": "Cash and cash equivalents",
+            "current_year": 8560,
+            "previous_year": 6240
+          },
+          {
+            "id": "inventory",
+            "label": "Inventories",
+            "current_year": 4120,
+            "previous_year": 3980
+          }
+        ],
+        "section_total": null
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev_ops",
+      "tooltip": "Operating revenue only — excludes 'other income' (interest, gains, etc.). This is the top line for revenue recognition analysis. Rising revenue paired with soaring receivables is the classic divergence warning."
+    },
+    {
+      "id": "trade_receivables",
+      "tooltip": "Money owed by customers but not yet received. This line is your forensic compass — if receivables grow faster than revenue, sales are being booked faster than cash is collected, a red flag for premature or aggressive recognition."
+    },
+    {
+      "id": "finance_costs",
+      "tooltip": "Interest and debt service. Can rise if credit is extended to customers (inflating receivables). Watch this alongside the receivables trend; together they hint at loose credit policies that may mask weak underlying demand."
+    },
+    {
+      "id": "depreciation",
+      "tooltip": "Non-cash expense tied to asset base. Unlike revenue, this is hard to manipulate. Revenue tricks don't typically fake depreciation — they fake sales, so focus your fraud hunt here."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the YoY growth rate in Revenue from operations (%). Is it higher or lower than the growth in Trade Receivables?",
+      "answer_type": "number",
+      "expected_value": 18.2,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(151820 - 128440) / 128440 × 100 = 18.2% revenue growth. Trade receivables grew (22680 - 16840) / 16840 × 100 = 34.8%. Receivables outpaced revenue by 16.6 percentage points — a classic divergence warning and the fingerprint of premature or aggressive revenue booking."
+    },
+    {
+      "id": "t2",
+      "question": "Calculate DSO (Days Sales Outstanding) for FY24 using the formula (Trade Receivables ÷ Revenue) × 365. How many days does it take Bharti Airtel to collect its cash on average?",
+      "answer_type": "number",
+      "expected_value": 54.5,
+      "tolerance": 1,
+      "unit": "days",
+      "explanation": "DSO = (22680 ÷ 151820) × 365 = 54.5 days. This means it takes about 54–55 days on average to collect cash from a sale. By itself, this is normal for telecom. But compare it to FY23..."
+    },
+    {
+      "id": "t3",
+      "question": "Calculate DSO for FY23. By how many days did DSO increase from FY23 to FY24?",
+      "answer_type": "number",
+      "expected_value": 47.8,
+      "tolerance": 1,
+      "unit": "days",
+      "explanation": "DSO FY23 = (16840 ÷ 128440) × 365 = 47.8 days. DSO rose from 47.8 to 54.5 days, an increase of 6.7 days (or ~14%). A rising DSO over consecutive years is a red flag — it means sales are being booked faster than cash is collected, a classic sign of aggressive revenue recognition, channel stuffing, or deteriorating credit quality. This deserves a deep dive into the Receivables aging schedule."
+    },
+    {
+      "id": "t4",
+      "question": "Based on the divergence between revenue growth (18%) and receivables growth (35%), and the rising DSO, which of the following best describes the quality of Bharti Airtel's FY24 revenue?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "aggressive",
+        "premature",
+        "receivables",
+        "cash collection",
+        "quality"
+      ],
+      "explanation": "A high-quality answer would note that receivables are growing much faster than revenue, DSO is rising, and this suggests either aggressive revenue recognition (booking sales before they are truly earned), channel stuffing (pushing product to distributors), or deteriorating credit quality. The analyst should flag this as needing further investigation — specifically, an aging analysis of receivables, a reconciliation of primary vs. secondary sales (if applicable), and a comparison of DSO against industry peers. Beginners would say 'revenue is up, that's good'; skilled analysts interrogate *how* it was earned and whether cash followed."
+    }
+  ]
+}

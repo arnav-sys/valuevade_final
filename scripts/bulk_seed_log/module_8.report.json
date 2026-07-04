@@ -1,0 +1,26 @@
+{
+  "module": 8,
+  "completed_at": "2026-07-04T09:58:55.371825+00:00",
+  "total_sessions": 1,
+  "sims_generated": 1,
+  "sims_failed": 0,
+  "by_type": {
+    "decision_making": 1
+  },
+  "total_engine_corrections": 0,
+  "elapsed_seconds": 46.3,
+  "rows": [
+    {
+      "session_no": "8.6",
+      "session_title": "Governance, Promoter & Auditor Red Flags — The Human Warning Signs",
+      "db_session_id": "f3d06b64-3c06-4d9d-94b0-63c044979497",
+      "sim_type": "decision_making",
+      "sim_id": "38b0d9ec-7e31-41ec-9567-654b72b80f5d",
+      "seconds": 46.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    }
+  ]
+}

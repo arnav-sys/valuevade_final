@@ -1,0 +1,216 @@
+{
+  "sim_type": "decision_making",
+  "title": "Forensic Deep Dive: Evaluating Bajaj Finance's Rapid Growth",
+  "scenario": "You are a senior equity analyst at a Mumbai desk covering NBFC stocks. Bajaj Finance reported a 45% YoY profit jump with 38% revenue growth, but your forensic checklist is flagging clusters of concerns. You have 2 days to publish a note — recommend Buy, Hold, or Reduce — and brief your PM on the forensic risks.",
+  "instructions": "Walk through 4 decision points. At each, choose an action: investigate further, trust management, or escalate concern. Each choice accumulates forensic-rigor and speed scores. Your final verdict depends on how you balanced skepticism against the growth story.",
+  "learning_objective": "Identify and cluster red flags across cash-earnings-governance dimensions, calibrate professional skepticism against confirmation bias, and justify a forensic verdict independent of market sentiment.",
+  "hints": [
+    "Receivables outrunning revenue is the near-universal fraud fingerprint — check Bajaj's debtors days trend against peers and industry norms.",
+    "Profit rising while operating cash flow stagnates is the foundational red flag — if the ₹2,400 crore profit bump didn't become cash, that's the loudest signal.",
+    "Related-party transactions and auditor comments are governance red flags — read the notes to accounts and audit opinion line-by-line, especially 'emphasis of matter' paragraphs."
+  ],
+  "scenario_context": "Bajaj Finance (₹7,850 stock price, market cap ₹4.2 lakh crore) is one of India's largest retail NBFCs. Last quarter, it reported PAT of ₹2,400 crore (+45% YoY) on revenue of ₹6,800 crore (+38% YoY). The market loves it — the stock is up 35% YTD, consensus target is ₹9,200, and every house has a Buy rating. But your deep dive into the financials has surfaced a cluster: receivables grew 52% while revenue grew 38%; operating cash flow rose only 12%; the company recognised ₹380 crore in 'exceptional gains' (sale of a subsidiary); and in the concall, the CFO was evasive about the cash conversion rate. You've also noted that the auditor's opinion carries an 'emphasis of matter' paragraph on a large restructured portfolio. You need to decide: is this genuine NBFC growth hitting a valuation inflection, or is it the pattern of managed earnings hiding deteriorating credit quality?",
+  "initial_data": {
+    "Stock": "Bajaj Finance",
+    "Current Price": "₹7,850",
+    "Market Consensus": "Buy; ₹9,200 target",
+    "Your Forensic Status": "Flags clustering — pending verdict",
+    "Time to Note Publication": "48 hours"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Receivables vs. Revenue: Corroborate or Trust?",
+      "narrative": "Your first red flag: Bajaj's receivables (customer loans outstanding) grew 52% YoY, while revenue grew only 38%. This is the near-universal fraud fingerprint — booking loans that won't be collected, or inflating the loan book artificially. The CFO in the concall brushed it off as 'seasonal and within normal lending cycles.' You have two paths: (1) deep-dive the debtors-days ratio and compare it to peers (Kotak Mahindra Finance, HDFC Bank's lending arm, L&T Finance); or (2) accept the seasonal explanation and move on. Given your timeline and the cluster forming, what do you do?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Pull peer receivables data and trend Bajaj's debtors days over 8 quarters",
+          "description": "Forensic discipline: corroborate the receivables claim against independent data (peers and history). This is the skeptical analyst's default move.",
+          "consequence": "You pull debtors days for Bajaj (₹ receivables ÷ daily revenue) for 8 quarters and compare to Kotak MF, HDFC Bank, L&T Finance. You find Bajaj's debtors days have risen from 34 to 41 days in two years, while peers hold steady at 28-30. This is not seasonal — it's a trend. The receivables growth is *not* explained by lending strategy; it's slower collection. Red flag #1: corroborated and serious.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Trust the CFO's seasonal explanation; note and move forward",
+          "description": "Pragmatic approach: the CFO has context; seasonal lending cycles are real in Indian NBFCs. Spending 6 hours on receivables validation when the note is due in 48 hours is a luxury.",
+          "consequence": "You note the receivables growth as a potential watch point but don't escalate it. The clock ticks. You move to the next forensic check (cash flow). But you've now missed the clustered signal — receivables divergence *plus* what's coming on cash flow will form a pattern you won't fully assess.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Call Bajaj's investor relations; ask directly about debtors days and NPA trends",
+          "description": "Direct engagement: the fastest way to corroborate or refute is to ask management directly — and observe how they answer (evasion is itself a signal).",
+          "consequence": "You reach the IR head. She confirms debtors days have risen due to 'mix shift toward retail unsecured lending, which carries longer collection cycles.' You ask for written confirmation and historical debtors breakdown. She sends a detailed note. The explanation is plausible, but it raises a *new* concern: if the mix shifted to riskier unsecured, why didn't the company pre-provision? You now have two sub-flags: receivables rising *and* possible under-provisioning.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "The Profit-to-Cash Divergence: Verify or Accept?",
+      "narrative": "Red flag #2 surfaces: Bajaj reported ₹2,400 crore PAT (+45%), but operating cash flow (OCF) grew only 12% YoY to ₹850 crore. This is the foundational forensic warning — profit that doesn't convert to cash is a claim without corroboration. In a healthy NBFC, OCF and PAT track closely (within 10-15% variance). A 45% profit jump with 12% cash flow is *not* seasonal; it's a gap. The CFO explained it as 'timing of collections and payouts.' You decide: (1) reconstruct the cash flow statement line-by-line to find where the ₹1,550 crore profit-cash gap is hiding, or (2) note it and ask management to explain in writing?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Reconstruct operating cash flow: trace profit to cash line-by-line",
+          "description": "Forensic rigour: the only way to understand a profit-cash divergence is to walk the cash flow statement, find where the accruals (non-cash items, working capital changes) are hiding the gap.",
+          "consequence": "You reconstruct OCF from PAT using changes in receivables, payables, provisions, and other working capital. You discover: receivables added ₹950 crore to the profit-cash gap (money booked as revenue but not yet collected), provisions fell by ₹200 crore (under-provisioning boosted profit), and 'other current liabilities' fell by ₹300 crore (timing of payouts deferred). Together, these accounting moves *engineered* the profit-cash divergence. This is not innocent; this is profit manipulation. Red flag #1 + #2 + now governance questions about provisions: the cluster is forming.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Email the CFO asking for a written explanation of the profit-cash gap",
+          "description": "Efficient escalation: get a specific answer in writing, which you can corroborate against the financials and use in your verdict.",
+          "consequence": "The CFO responds within hours: 'OCF timing reflects strong collections momentum in Q1 FY25; the current-quarter OCF is strong, and the YoY comparison is distorted by timing.' You ask for Q1 FY25 OCF numbers (which haven't been reported yet; the company is mid-year). He says 'Q1 FY25 data will be in the next quarter's RNS.' You've asked a direct question but haven't gotten a verifiable answer — the company is deflecting to future numbers. This is a minor governance flag: evasiveness. Combined with the receivables concern, you're accumulating signals.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Note the gap as 'timing-related' and move forward; the company is too profitable to be fraudulent",
+          "description": "Confirmation bias trap: the stock has returned 35% YTD, consensus is Buy, and the profit is real (audited). Maybe the skepticism is overblown.",
+          "consequence": "You set aside the profit-cash gap as a minor timing issue. You feel relieved — the rigor is slowing you down, and you're due in 36 hours. But you've now skipped the forensic step that catches the fraud. The gap, *combined* with the receivables divergence and the under-provisioning you just discovered, forms the exact fingerprint of earnings management. You've let market sentiment and time pressure override the skeptical mindset.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 3
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "The Exceptional Gains and Governance Cluster: Dig or Defer?",
+      "narrative": "Red flag #3: Bajaj recognised ₹380 crore in 'exceptional gains' (sale of a subsidiary) in the quarter. Underlying PAT before the exceptional was ₹2,020 crore; *with* the exceptional, it hit ₹2,400 crore. This is a classic move: boost reported profit with one-time items to hit growth expectations. Separately, the audit opinion carries an 'emphasis of matter' paragraph on 'material restructured loans of ₹4,200 crore.' This means the company has reclassified bad or stressed loans as 'restructured' (still on the books, not written off) — *and the auditor is uncomfortable enough to flag it*. Two governance flags together. You decide: (1) deep-dive the restructured loan portfolio, the provision coverage, and management's economic assumptions (are they too optimistic?), or (2) accept it as normal NBFC stress and move on?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Analyse restructured loans: provision coverage, economic assumptions, and default probability",
+          "description": "Forensic discipline: when an auditor flags restructured loans in an 'emphasis of matter,' you must verify whether provisions are adequate and whether management's recovery assumptions are realistic.",
+          "consequence": "You pull the restructured loan schedule from the notes. ₹4,200 crore in restructured loans, provision coverage only 18% (versus 35-40% industry average). You model the implied default scenarios: if 30% of restructured loans default (a conservative assumption), the company would need an additional ₹1,100 crore provision. Current provisions would fall to near-zero. The margins that looked so good would evaporate. You now see it: the profit is real, but the *sustainability* is fake — it's propped up by under-provisioning a stressed portfolio. The governance cluster is now clear: receivables divergence + profit-cash gap + exceptional gains + under-provisioned restructured portfolio. This is the full forensic pattern.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Accept the restructured loans as an industry-wide phenomenon; NBFCs restructure all the time",
+          "description": "Pragmatic: the NBFC sector has stressed portfolios post-COVID; restructuring is normal. The auditor flagged it, so it's disclosed — no hidden fraud, just sector cyclicality.",
+          "consequence": "You move on, noting restructured loans as a 'sector headwind' but not a company-specific red flag. You've now missed the connection: the *combination* of under-provision on a large restructured book *with* a profit-cash gap *with* receivables divergence *with* exceptional gains is not normal. You're treating each flag in isolation, which is exactly the mistake that lets managed earnings hide.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Ask IR about the provision adequacy and the auditor's comfort level",
+          "description": "Middle path: escalate the governance concern directly, without doing the full forensic deep-dive, and get management on record.",
+          "consequence": "IR confirms that the ₹380 crore exceptional gain is a one-time real estate sale (verifiable), so that's legitimate. On restructured loans, IR says 'provision coverage reflects RBI guidelines and sector practice; the auditor reviewed and cleared it.' You ask for the auditor's name and consider reaching out to them (as some analysts do). You get a partial answer — the exception is flagged and disclosed, but you haven't verified whether the under-provision is actually dangerous. You're now 20 hours from deadline and running out of time to reach a forensic verdict.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final Forensic Verdict: The Recommendation",
+      "narrative": "You now reach your final call. The flags have clustered across cash-earnings (profit-cash divergence, receivables divergence), governance (under-provisioned restructured loans, auditor discomfort, exceptional gains), and the margin story (45% profit growth in an industry growing 15-18%). Your forensic checklist is lit up. The market expects Buy; consensus is ₹9,200 target. But the forensic pattern tells a different story: managed earnings hiding credit deterioration, propped up by under-provisioning and one-time gains. You have 12 hours left. You must decide: (1) **Reduce** — flag the forensic risks, recommend avoiding the stock, and let the market price it later; (2) **Hold** — acknowledge the risks but note the upside case; or (3) **Buy** — trust the growth, note the flags as cyclical, and ride the consensus.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Reduce — forensic risks outweigh consensus; avoid the stock",
+          "description": "Forensic verdict: the clustering of flags (profit-cash, receivables, under-provision, exceptional gain, auditor discomfort) matches the pattern of managed earnings. The growth story is real, but the earnings quality is suspect. The risk-reward is asymmetric to the downside.",
+          "consequence": "You publish a Reduce rating. You note the forensic pattern: 'Receivables divergence, operating cash flow trailing profit by 45%, and under-provisioned restructured loans suggest earnings quality concerns. Exceptional gains mask underlying operating weakness. At current valuations (32x FY25E earnings), the stock prices in flawless execution, but the forensic pattern suggests credit headwinds are being deferred, not managed.' You brief the PM: 'We can't prove fraud, but the risk pattern is unacceptable. If the restructured portfolio deteriorates (likely), the company will face a provision shock that crushes earnings. The stock will re-rate sharply lower. I'd rather miss 20% upside in a crowd than own it when it falls 40%.' The market ignores you; the stock rallies 8% on your note. But 9 months later, the company announces a ₹2,100 crore provision hike for restructured loans, profit falls 35%, and the stock crashes to ₹4,900. Your call was early, but it was right.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Hold — acknowledge risks; growth case still intact; wait for clarity",
+          "description": "Balanced forensic verdict: the flags are real, but they're not yet definitive. The company's growth could justify higher receivables; provisions are per RBI guidelines. Wait for next-quarter results to see if cash flow recovers.",
+          "consequence": "You publish a Hold rating with a ₹8,200 price target (below consensus but acknowledging the base case). You note: 'Strong growth tempered by working-capital headwinds and provisioning uncertainties. Near-term catalysts (Q1 FY25 cash flow, restructured-loan recovery) will clarify earnings quality. Hold for now; upgrade on clarity.' The stock rallies 5% on the news (as the market treats Hold as a soft negative on consensus). You get the call half-right: the risks are real, but you haven't fully committed to the forensic verdict. The following quarter, the cash flow does recover slightly, provisions stabilize, and the company confirms restructured-loan defaults are modest. The stock rallies to ₹9,100. You look cautious but reasonable — but you've also missed the bigger forensic signal: the pattern *was* a warn ing, you just hedged it.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Buy — the forensic flags are minor; the growth and consensus matter more",
+          "description": "Market consensus path: the stock is loved, the growth is real, and one analyst's forensic skepticism shouldn't override the weight of the market and audited numbers.",
+          "consequence": "You publish a Buy rating, ₹9,500 target. You note: 'Bajaj Finance is executing a high-growth strategy with strong retail penetration. Receivables growth reflects lending mix shift; OCF timing is distorted by quarterly phasing; restructured loans are sector-normal with adequate coverage. The risk-reward supports accumulation.' The market nods — another Buy to add to the heap. The stock rallies 12% over the next month, hitting ₹8,800. You feel smart. But you've now committed capital to the exact stock whose forensic pattern matches earnings management. When (not if) the credit cycle turns or the restructured portfolio deteriorates, you'll own it on the downside. You've let confirmation bias and market sentiment override the skeptical mindset that this entire module teaches.",
+          "score_impact": {
+            "rigor": -3,
+            "speed": 3
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 8,
+        "label": "Forensic analyst — protected capital",
+        "narrative": "You clustered the red flags (receivables, profit-cash, governance, provision) across categories, recognised the earnings-management pattern, and made a contrarian Reduce call despite market consensus. Early calls like yours don't always feel good in the moment (the stock rallied while you were sidelined), but when the credit cycle or restructured-loan defaults catch up, your forensic discipline saved the portfolio from a 40%+ drawdown. This is the payoff of skepticism: not always being right, but avoiding the catastrophic wrong. Well done."
+      },
+      {
+        "min_total": 4,
+        "label": "Balanced analyst — reasonable call with hedges",
+        "narrative": "You identified forensic concerns, held some rigor in your analysis, and published a Hold or cautious Buy with noted risks. You didn't fully commit to the forensic pattern, but you also didn't ignore it. Your call was defensive without being contrarian — reasonable, but it left upside on the table when the company's growth proved genuine. The forensic mindset isn't about being right every time; it's about calibrating skepticism. You got the calibration partly right."
+      },
+      {
+        "min_total": 0,
+        "label": "Consensus analyst — vulnerable to the fraud pattern",
+        "narrative": "You treated red flags in isolation, trusted management's explanations, and let market sentiment override your forensic checklist. You published a Buy aligned with consensus, which felt safe at the time. But you've now committed to exactly the stock whose pattern matches managed earnings — the one that will hurt when the restructured-loan deterioration or credit shock arrives. You completed the module but didn't apply the skeptical mindset where it matters: in the hard call."
+      },
+      {
+        "min_total": -99,
+        "label": "Naive analyst — ignored forensic warnings",
+        "narrative": "You skipped rigor at every step, trusted the profit growth without corroborating cash flow, and actively dismissed governance flags. You've now published a bullish call on an earnings-quality time bomb, and you did so *knowing* the forensic pattern was there. This is not how seasoned analysts fail — this is how junior analysts who've forgotten the module's central lesson fail. The forensic mindset isn't optional; it's protective."
+      }
+    ]
+  }
+}

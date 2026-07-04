@@ -1,0 +1,324 @@
+{
+  "sim_type": "excel",
+  "title": "Reliance Standalone vs Consolidated: Equity Bridge Reconciliation",
+  "scenario": "You're an equity analyst reviewing Reliance Industries' latest annual report. The company publishes both standalone (parent only) and consolidated (whole group) statements. Your Mumbai desk has flagged a query: does the consolidated equity bridge reconcile correctly through profit, dividends, and OCI? And where does the group's debt actually sit — parent or subsidiaries?",
+  "instructions": "Reconcile Reliance's consolidated equity bridge using opening equity, net profit, dividends, OCI and capital changes; verify closing equity ties out. Then compare standalone and consolidated revenue and debt to identify where the economics actually reside.",
+  "learning_objective": "Verify inter-statement integrity by reconciling the equity bridge across profit, dividends and OCI; and identify structural differences between standalone and consolidated statements to locate where revenue, debt and cash reside in a conglomerate.",
+  "hints": [
+    "The equity bridge formula is: Opening Equity + Net Profit − Dividends + OCI ± Capital Changes = Closing Equity. Check if your calculated closing equity matches the balance sheet's actual closing figure.",
+    "Consolidated revenue and profit are much larger than standalone because subsidiaries' full results are included; consolidated debt may sit in subsidiaries to keep the parent's balance sheet clean — compare the two to see which entity is the true operating business.",
+    "For the equity reconciliation, ensure you pull opening equity from the prior year's balance sheet (closing ₹47,500 Cr becomes this year's opening ₹47,500 Cr), add this year's profit and OCI from the P&L, subtract dividends from the notes, and verify the sum equals the balance sheet's closing equity (₹52,890 Cr)."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Reliance Industries — Standalone & Consolidated Extract (FY2024)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "BALANCE SHEET — STANDALONE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "FY2023 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "FY2024 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Total Equity",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 47500,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 51200,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 19800,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Cash & Equivalents",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 6200,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 7450,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Revenue from Operations",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 185000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 198500,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "BALANCE SHEET — CONSOLIDATED",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "FY2023 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C9": {
+            "value": "FY2024 (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Total Equity",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 78500,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 85200,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Total Debt",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 42000,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 47500,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Cash & Equivalents",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 12800,
+            "readOnly": true
+          },
+          "C12": {
+            "value": 15200,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Revenue from Operations",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 425000,
+            "readOnly": true
+          },
+          "C13": {
+            "value": 465000,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "P&L — CONSOLIDATED FY2024",
+            "readOnly": true,
+            "bold": true
+          },
+          "A15": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B15": {
+            "value": "Amount (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Net Profit after Tax",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Other Comprehensive Income (OCI)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 350,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "CASH FLOW — CONSOLIDATED FY2024",
+            "readOnly": true,
+            "bold": true
+          },
+          "A19": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "Amount (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "Dividends Paid",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 1250,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Equity Issuance (net)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 0,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Reliance Industries — Inter-Statement Verification Exercise",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Q1. Consolidated Equity Bridge: Opening Equity (FY2023) + Net Profit − Dividends + OCI + Equity Issuance = Calculated Closing Equity (₹ Cr). Does it reconcile?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q2. Verified Closing Consolidated Equity (Balance Sheet FY2024) (₹ Cr). Should match Q1 if bridge reconciles.",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q3. Consolidated Revenue is how many times Standalone Revenue (FY2024)? (ratio, 2 decimals)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q4. Consolidated Debt − Standalone Debt (FY2024) (₹ Cr). This is the debt sitting in subsidiaries.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Q5. Does Standalone + Subsidiary operations directionally explain Consolidated? Calculate: Consolidated Revenue − Standalone Revenue (₹ Cr). What revenue sits in subsidiaries?",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          },
+          "A8": {
+            "value": "Q6. Working Capital Check: Consolidated Total Debt − Cash (FY2024). Net Debt position (₹ Cr).",
+            "readOnly": true
+          },
+          "B8": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B3": {
+      "formula_pattern": "=Data!B10+Data!B16-Data!B20+Data!B17+Data!B21",
+      "expected_value": 86100,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!C10",
+      "expected_value": 85200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=ROUND(Data!C13/Data!C7,2)",
+      "expected_value": 2.34,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!C11-Data!C5",
+      "expected_value": 27700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!C13-Data!C7",
+      "expected_value": 266500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=Data!C11-Data!C12",
+      "expected_value": 32300,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

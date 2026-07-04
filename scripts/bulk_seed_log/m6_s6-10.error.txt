@@ -1,0 +1,168 @@
+ERROR: ValueError: excel: data sheet only 9 rows
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "Track Reliance's Guidance Credibility Across Eight Quarters",
+  "scenario": "You are an equity analyst at a Mumbai research desk tracking Reliance Industries' management credibility. Over the past two years, the IR team has guided to specific revenue growth, EBITDA margins, and capex spend targets on each concall. Your job is to build a running scorecard — comparing what management *said would happen* against what *actually happened* — and assign a credibility score to evaluate how much to trust their current guidance.",
+  "instructions": "Build a guidance-tracking scorecard for Reliance Industries across eight quarters. Record prior guidance vs actual results, calculate guidance accuracy (miss, meet, beat), flag walk-backs, and compute a weighted credibility score. Use formulas to identify which guidance metrics were reliable and which were chronically over-optimistic.",
+  "learning_objective": "Compare management's forward-looking guidance against actual results across multiple quarters, identify patterns of reliability or over-optimism, flag quiet walk-backs of commitments, and compute a credibility score that determines how much to discount or trust future guidance.",
+  "hints": [
+    "Start simple: mark each quarter as 'Beat', 'Meet', or 'Miss' based on whether Actual ≥ Guided. A beat is +1 credibility point, meet is 0, miss is −1.",
+    "Use COUNTIF to count how many times guidance was missed vs beat across all quarters; divide by total quarters to get a credibility ratio (higher = more reliable).",
+    "For the final score, use a weighted formula: count the 'Beat' quarters, subtract the 'Miss' quarters, then divide by total quarters to get a −1 to +1 credibility score; a negative score means over-optimistic guidance, a positive score means conservative bias."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Guided Revenue Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Actual Revenue Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Guided EBITDA Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Actual EBITDA Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Guided Capex (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Actual Capex (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1 FY24"
+          },
+          "B2": {
+            "value": 12
+          },
+          "C2": {
+            "value": 14
+          },
+          "D2": {
+            "value": 18.5
+          },
+          "E2": {
+            "value": 19.2
+          },
+          "F2": {
+            "value": 8500
+          },
+          "G2": {
+            "value": 8200
+          },
+          "A3": {
+            "value": "Q2 FY24"
+          },
+          "B3": {
+            "value": 13
+          },
+          "C3": {
+            "value": 10
+          },
+          "D3": {
+            "value": 19
+          },
+          "E3": {
+            "value": 18.1
+          },
+          "F3": {
+            "value": 9000
+          },
+          "G3": {
+            "value": 9500
+          },
+          "A4": {
+            "value": "Q3 FY24"
+          },
+          "B4": {
+            "value": 15
+          },
+          "C4": {
+            "value": 13
+          },
+          "D4": {
+            "value": 19.5
+          },
+          "E4": {
+            "value": 17.8
+          },
+          "F4": {
+            "value": 10000
+          },
+          "G4": {
+            "value": 11200
+          },
+          "A5": {
+            "value": "Q4 FY24"
+          },
+          "B5": {
+            "value": 11
+          },
+          "C5": {
+            "value": 11.5
+          },
+          "D5": {
+            "value": 18
+          },
+          "E5": {
+            "value": 18.5
+          },
+          "F5": {
+            "value": 8800
+          },
+          "G5": {
+            "value": 8600
+          },
+          "A6": {
+            "value": "Q1 FY25"
+          },
+          "B6": {
+            "value": 14
+          },
+          "C6": {
+            "value": 12
+          },
+          "D6": {
+            "value": 19.5
+          },
+          "E6": {
+            "value": 19.8
+          },
+          "F6": {
+            "value": 9500
+          },
+          "G6": {
+            "value": 9800
+          },
+          "A7": {
+            "value": "Q2 FY25"
+          },
+          "B7": {
+            "value": 16
+          },
+          "C7": {
+         

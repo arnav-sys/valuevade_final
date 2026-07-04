@@ -1,0 +1,173 @@
+{
+  "sim_type": "document",
+  "title": "Infosys FY24: Spotting the Pressure Points",
+  "scenario": "You're a forensic analyst at Motilal Oswal reviewing Infosys' latest filing. The stock has outperformed 40% YoY, but revenue growth has stalled and margins are compressing. Your desk is asking: are the reported numbers real, or is pressure to maintain the stock price driving creative accounting?",
+  "instructions": "Read the Infosys statement below, hover tooltips on highlighted line items, and answer questions about revenue quality, margin sustainability, and fraud-triangle pressure signals.",
+  "learning_objective": "Identify pressure, opportunity, and rationalisation signals in a real balance sheet that could indicate accounting manipulation risk.",
+  "hints": [
+    "Look for line items that moved unexpectedly — revenue flat but receivables growing, or expenses capitalised instead of expensed.",
+    "Compare growth rates across the P&L — if revenue stalls but profit grows, ask how. That gap is where creative accounting hides.",
+    "The Fraud Triangle asks: is there pressure (stock expectations)? Is there opportunity (complex structures, deferred revenue)? Is there rationalisation ('we'll grow into it next year')?"
+  ],
+  "document_data": {
+    "company_name": "Infosys Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 252195,
+            "previous_year": 228625
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials and employee benefits",
+            "current_year": 154320,
+            "previous_year": 142050
+          },
+          {
+            "id": "other_exp",
+            "label": "Other operating expenses",
+            "current_year": 42150,
+            "previous_year": 38440
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 18800,
+            "previous_year": 17235
+          },
+          {
+            "id": "fin_cost",
+            "label": "Finance costs",
+            "current_year": 2840,
+            "previous_year": 2505
+          },
+          {
+            "id": "other_inc",
+            "label": "Other income",
+            "current_year": 8960,
+            "previous_year": 6840
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 45045,
+          "previous_year": 35235
+        }
+      },
+      {
+        "title": "Balance Sheet Snapshots (Select Items)",
+        "line_items": [
+          {
+            "id": "cash",
+            "label": "Cash and cash equivalents",
+            "current_year": 28500,
+            "previous_year": 24320
+          },
+          {
+            "id": "receivables",
+            "label": "Trade receivables (net)",
+            "current_year": 68420,
+            "previous_year": 61280
+          },
+          {
+            "id": "capwip",
+            "label": "Capital work in progress and property, plant",
+            "current_year": 22180,
+            "previous_year": 18640
+          },
+          {
+            "id": "debt",
+            "label": "Borrowings (long-term and short-term)",
+            "current_year": 3200,
+            "previous_year": 2850
+          },
+          {
+            "id": "deferred_rev",
+            "label": "Deferred revenue and client advances",
+            "current_year": 52840,
+            "previous_year": 48920
+          }
+        ],
+        "section_total": null
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Revenue grew 10.3% YoY — solid but below the 15% guidance given in the previous year. Watch for pressure to 'make up' the miss through one-time sales or premature recognition in Q4."
+    },
+    {
+      "id": "other_inc",
+      "tooltip": "Other income jumped 31% to ₹8,960 cr — a red flag. This line often includes forex gains, investment gains, and miscellaneous items. Large swings here can mask core-business softness."
+    },
+    {
+      "id": "receivables",
+      "tooltip": "Trade receivables grew 11.7% while revenue grew 10.3% — a small divergence, but track it. If receivables grow faster than revenue, it may signal loose credit terms, channel loading, or inflated sales near quarter-end."
+    },
+    {
+      "id": "capwip",
+      "tooltip": "Capital work in progress up 19% — faster than revenue growth. Capitalising costs onto the balance sheet instead of expensing them would inflate reported profit. Verify these are genuine project assets, not disguised expenses."
+    },
+    {
+      "id": "deferred_rev",
+      "tooltip": "Deferred revenue rose 8%, slower than revenue growth (10.3%). This is healthy — clients are consuming advances at pace. A sharp *slowdown* in deferred revenue growth would signal sales quality pressure."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was the YoY growth in Revenue from operations (%)?",
+      "answer_type": "number",
+      "expected_value": 10.3,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(252195 - 228625) / 228625 = 10.3%. This is below the 15% guidance, creating implicit pressure on margins and EPS to keep the stock price healthy — a classic setup for the Fraud Triangle's 'pressure' corner."
+    },
+    {
+      "id": "t2",
+      "question": "By how much did PBT grow YoY (₹ Cr)?",
+      "answer_type": "number",
+      "expected_value": 9810,
+      "tolerance": 10,
+      "unit": "₹ Cr",
+      "explanation": "45045 - 35235 = ₹9,810 cr. PBT grew 27.8% while revenue grew only 10.3% — a 2.7x margin expansion. This divergence is suspicious: either operating leverage is extraordinary, or costs are being capitalised / income is being inflated. Analysts should challenge the bridge."
+    },
+    {
+      "id": "t3",
+      "question": "Which line item showed the sharpest percentage increase and warrants forensic scrutiny?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "other income",
+        "capital work",
+        "capwip"
+      ],
+      "explanation": "Other income jumped 31% (₹8,960 cr from ₹6,840 cr), and Capital WIP rose 19%. Both are red flags. Other income often masks non-operating gains (forex, investments) that can hide core-business softness; CAPWIP growth outpacing revenue could signal expense capitalisation — a classic manipulation tactic."
+    },
+    {
+      "id": "t4",
+      "question": "If Infosys faced pressure to meet analyst EPS forecasts after missing revenue guidance, which of the four manipulation levers would be most tempting to pull?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "capitalise",
+        "hide expenses",
+        "defer",
+        "classify"
+      ],
+      "explanation": "Moving operating expenses onto the balance sheet (capitalising them as CAPWIP or intangibles) or boosting non-operating income (other income) would allow margin expansion without genuine operational improvement. The 27.8% PBT growth vs. 10.3% revenue growth screams this risk."
+    },
+    {
+      "id": "t5",
+      "question": "Does the receivables-to-revenue growth gap raise a fraud-triangle red flag? Explain briefly.",
+      "answer_type": "free_text",
+      "sample_answer": "Receivables grew 11.7% vs. revenue 10.3% — a modest 1.4 percentage-point gap. This is not alarming by itself, but combined with guidance miss and margin expansion, it hints at potential channel loading or lenient credit terms to boost revenue. The Fraud Triangle's 'opportunity' corner (weak controls on credit and revenue recognition) is worth auditing.",
+      "explanation": "A small receivables-revenue divergence is normal (0.5-1 pp is healthy), but in isolation and especially with pressure (missed guidance) and opportunity (who is approving the credit terms?), it becomes a signal to dig deeper. Satyam manipulated receivables for years before detection."
+    }
+  ]
+}

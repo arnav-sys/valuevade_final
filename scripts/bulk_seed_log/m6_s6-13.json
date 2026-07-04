@@ -1,0 +1,274 @@
+{
+  "sim_type": "decision_making",
+  "title": "Integrate Report and Call: TCS Earnings Call Decision",
+  "scenario": "You're a Mumbai-desk equity analyst covering Tata Consultancy Services (TCS). The company just released its Q3 annual report showing strong EBIT margins (23.1%) and healthy accruals, but the concall in 2 hours will be your chance to probe forward guidance and verify management claims. You must decide how to integrate the report's findings with the call's live signals to form a conviction-backed investment view.",
+  "instructions": "You will walk through 5 decision points, each representing a phase of the complete primary-source workflow. At each point, choose an action that reflects your report-call integration strategy. Your choices accumulate scores on 'rigor' (depth and verification), 'speed' (timely decision), and 'conviction' (client trust). Your final score will map to an analyst verdict.",
+  "learning_objective": "Integrate annual report and concall into one mutually-checking system to verify claims, detect discrepancies, and form a high-conviction forward-looking investment view.",
+  "hints": [
+    "The report gives depth and verification; the call gives forward view and unscripted truth. Neither alone is enough.",
+    "A discrepancy between what the call claims and what the report's audited numbers show is a red flag worth more than either source alone.",
+    "Before the call, use the report's notes to identify specific probing questions — probe contingent liabilities, related-party transactions, segment weakness, accrual drivers. The report tells you what to ask."
+  ],
+  "scenario_context": "TCS (Tata Consultancy Services, ₹3,850/share) is India's largest IT services exporter. You've just finished reading Q3's annual report: revenue ₹63,200 crore (YoY +4.2%), EBIT ₹14,623 crore (margin 23.1%, stable vs prior year), but cash conversion at 85% (slightly elevated accruals). The MD&A emphasized strong deal pipeline and FY25 margin guidance of 22–23%, yet the report's segment notes show weakness in BFSI (Banking, Financial Services, Insurance) — down 1.8% YoY — which is TCS's largest vertical. The auditor's report is clean, but one Note flags a contingent liability for a GST assessment pending appeal (₹180 crore). The concall is in 2 hours. You must now decide: how will you use the report's findings to shape your call preparation and verification strategy, and ultimately craft one integrated, verified view?",
+  "initial_data": {
+    "Stock": "Tata Consultancy Services (TCS)",
+    "Current Price": "₹3,850",
+    "Report Findings": "Q3 revenue ₹63,200 Cr, EBIT margin 23.1%, cash conversion 85%, BFSI segment -1.8% YoY",
+    "Your Recommendation": "Pending (awaiting call verification)",
+    "Time to Concall": "2 hours"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Report Deep-Dive: Spot the Gaps",
+      "narrative": "You have 90 minutes before the call. You've skimmed the report's management summary, but you need to identify which disclosures in the report are most critical to *verify* against management's live claims on the call. The report shows strong margins (23.1%) and confident FY25 guidance (22–23%), but you've spotted three potential pressure points: (1) BFSI segment decline of -1.8% YoY, contradicting the 'strong deal pipeline' narrative; (2) accruals at 85% conversion, suggesting some earnings quality questions; (3) the contingent GST liability (₹180 crore pending appeal) — never mentioned in the MD&A. You must decide: which of these will you prioritize in your pre-call preparation to shape your verification strategy?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Deep-dive BFSI segment weakness first; prepare surgical Q&A on vertical mix",
+          "description": "Investigate why TCS's largest vertical (BFSI, ~30% of revenue) contracted 1.8% YoY when management claims strong demand. This is a direct test of the call's narrative.",
+          "consequence": "You uncover that BFSI attrition crept to 16.8% in Q3 (vs 15.2% prior year), a detail buried in the notes. You'll enter the call with a pinned question: 'BFSI is down 1.8% YoY — is this demand-driven or execution risk?' This high-rigor approach catches a real issue early, but takes 45 minutes of deep reading.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Spot-check accruals driver; assume standard working-capital timing",
+          "description": "Review the accruals ratio (85% cash conversion) as a proxy for earnings quality, but don't deep-dive — assume it reflects normal receivables or WIP timing rather than red flags.",
+          "consequence": "You note the 85% ratio as 'acceptable' and move on. Later on the call, management volunteers that they've deferred some large deal invoicing to Q4 (₹400 crore), which you hadn't detected. You missed an earnings-quality signal that a deeper accruals breakdown could have surfaced. Medium rigor, medium speed.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "conviction": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Cross-check all three risks: BFSI, accruals, GST contingency against management narrative",
+          "description": "Systematically map the three pressure points against what management will likely say on the call. Prepare probing questions on all three fronts: segment mix, earnings quality, and contingent liabilities.",
+          "consequence": "You invest 55 minutes building a rigorous cross-check matrix (report numbers vs call claims). You'll enter the call with three specific questions pinned and ready. This is the complete workflow approach — slow but thorough, building high conviction through verification.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "conviction": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Concall Prep: Set Your Verification Framework",
+      "narrative": "You're 45 minutes from the call. You've prioritized your report review. Now you must decide: how will you *read* the prepared remarks and Q&A to verify the report's claims and catch discrepancies? The call will include 20 minutes of prepared remarks (where management curates the narrative) and 45 minutes of Q&A (where you can probe). Your strategy is crucial — will you prioritize what management *emphasizes* in the remarks (curation), or will you focus on the *live Q&A* to test claims against the report's verified numbers?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Focus on prepared remarks; listen for framing shifts vs. prior quarter and report",
+          "description": "You'll listen to the 20-minute remarks closely, tracking what management *leads with*, what metrics they emphasize, what they *drop* vs. prior calls, and any language drift from the report's MD&A. Curation (what they highlight vs. hide) often reveals priorities or concerns.",
+          "consequence": "You notice management leads with 'record deal wins in digital' (a new emphasis) but *drops* all mention of BFSI (which the report shows down 1.8%). This curation gap is a signal — they're pivoting narrative away from a weakness. You make a note: 'curation skip on BFSI is a yellow flag.' This is a medium-rigor approach that catches editorial choices.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Prepare 5 surgical Q&A questions; pin them to report discrepancies immediately",
+          "description": "You'll hold your fire during remarks and instead prepare 5 specific, pinned questions based on report vs. call discrepancies. You'll ask them live during Q&A, forcing real-time verification.",
+          "consequence": "Your prepared questions (e.g., 'BFSI segment down 1.8% — is this demand or attrition?' and 'Why was the GST contingency not mentioned in remarks?') hit hard. Management is caught unprepared on GST (they give a vague answer), but provides clarity on BFSI attrition (16.8%, confirming your suspicion). You capture critical live data — high rigor, high conviction.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 1,
+            "conviction": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Skim remarks; ask general open-ended Q&A; synthesize after the call",
+          "description": "You'll listen passively to remarks, then ask loose Q&A questions (e.g., 'How is the market outlook?' 'Anything on margins ahead?'). You'll do the detailed cross-check *after* the call, when you have time to sit with both sources.",
+          "consequence": "You miss live verification opportunities — management's vague answers go unchallenged. Later, when you re-read the report's accruals section, you realize the ₹400 crore deferral management mentioned in passing on the call explains the 85% conversion, but you didn't probe it live. You've reduced friction but at the cost of rigor and conviction.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "conviction": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Live Q&A: Verify or Catch Discrepancies",
+      "narrative": "You're in the Q&A now (you're the third analyst called). Management has given prepared remarks emphasizing record deal wins and guidance of 22–23% margins for FY25, but has been notably quiet on BFSI and accruals. An analyst ahead of you asks about 'macro headwinds' and gets a safe answer. Now it's your turn. You have one *really good* question — something that tests the report vs. the call in a way that matters. You must decide: do you ask a hard verification question that might challenge management (high rigor), or a softer question that builds rapport and gets an answer quickly (less friction)?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Ask directly about BFSI attrition and segment mix risk; test the growth narrative",
+          "description": "You ask: 'BFSI, your largest vertical, was down 1.8% YoY in Q3. The report shows attrition at 16.8%, up from 15.2% last year. Is this a demand issue or an execution/retention challenge? How does this reconcile with your confident FY25 guidance?' This is a hard question grounded in verified report data.",
+          "consequence": "Management answers honestly: BFSI has faced client consolidation (demand-driven), and they're investing in retention. Attrition is elevated but expected to normalize. This *verifies* against the report's segment data — demand weakness, not guidance risk. You've verified the narrative and moved up conviction. If they'd dodged, the discrepancy would be a red flag.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "conviction": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Ask about margin trajectory and FY25 guidance; test earnings quality",
+          "description": "You ask: 'Congratulations on 23.1% EBIT margins in Q3. Can you walk us through the drivers — is this sustainable into FY25, or are there one-offs?' This is a softer question that lets management talk, and it probes earnings quality without confrontation.",
+          "consequence": "Management explains margin drivers (operating leverage, service-mix shift toward higher-margin digital). This is helpful but doesn't deeply verify accruals or the 85% cash conversion. You've gathered information but not stress-tested the report's quality signals. Moderate rigor and conviction.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Ask about the GST contingent liability and any other legal/tax headwinds",
+          "description": "You ask: 'The annual report flags a ₹180 crore GST assessment under appeal. Can you provide an update and any sense of probability of outflow?' This tests whether management is being transparent on a material contingency that the report disclosed but the remarks ignored.",
+          "consequence": "Management admits the GST case is 'under appeal, unlikely to result in material outflow, but could take 18 months.' You've forced disclosure of a contingency management had downplayed. This is a high-rigor verification of transparency — the report disclosed it, the call ignored it, and you tested it. Moderate conviction, high rigor.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Post-Call Synthesis: Integrate Report + Call into One View",
+      "narrative": "The call has ended. You have roughly 30 minutes before the market close to form your final view. You've now heard both sources: the report's audited foundation (margins, segments, accruals, contingencies) and the call's live forward-looking pulse (guidance, tone, transparency). Now you must decide: how will you *synthesize* the two into one coherent investment view? Will you focus on confirming your pre-call thesis, or will you pivot based on new call signals?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Report-grounded: Trust the verified numbers; treat call as confirmation/nuance only",
+          "description": "You treat the report's audited financials as the primary truth-set, and the call as secondary confirmation. Any call claim gets validated against the report's verified numbers and notes. Discrepancies or weaknesses in the call don't override the report's hard data.",
+          "consequence": "You conclude: 'TCS FY25 guidance of 22–23% margins is credible (report shows 23.1% Q3, sustainable drivers on call). BFSI risk is real (report segment data + call transparency on attrition), but manageable and demand-driven. GST contingency is immaterial (call detail + report disclosure = low probability outflow). Overall: HOLD / small upgrade to BUY.' This is a verified, report-grounded view. High rigor, stable conviction.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        },
+        {
+          "id": "B",
+          "label": "Call-driven: Weight the live tone and forward guidance heavily; report is historical context",
+          "description": "You treat the call's live forward-looking signals (management confidence, guidance, market commentary) as the primary decision-driver. The report is context, but the call is the edge — that's where management's real conviction lives.",
+          "consequence": "You conclude: 'Management sounded confident on deal pipeline and FY25 guidance. Margins will hold. BFSI is a temporary headwind. Overall: BUY, upgrade from HOLD, FY25 target ₹4,200.' But this carries risk — you've leaned into forward claims without deep verification against the report's accruals and segment trends. If the call was overly optimistic, you'll be wrong.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        },
+        {
+          "id": "C",
+          "label": "Integrated: Report + Call as one mutually-checking system; hunt for discrepancies",
+          "description": "You synthesize both sources together, using each to verify or challenge the other. You look for agreement (report's margins match call's guidance = high conviction) and discrepancies (report's accruals vs. call's invoicing deferral = quality question). You weight verified signals highest, unanswered questions lowest.",
+          "consequence": "You conclude: 'Report shows 23.1% margins, 85% cash conversion, BFSI -1.8% YoY. Call confirms margins sustainable and BFSI demand-driven, but reveals ₹400 crore Q4 deferral (explains accruals). This is a real earnings-quality nuance. Verified view: FY25 margins hold, but Q4 reported numbers may be softer due to timing. GST contingency is material-but-disclosed. Overall: HOLD with upside if FY25 delivery, downside if BFSI attrition persists. Target ₹3,950 (5% upside, limited safety margin).' This is a complete, verified, forward-looking, evidence-backed view.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "conviction": 3
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        }
+      ]
+    },
+    {
+      "id": "d5",
+      "title": "Final Call: Recommendation & Client Conviction",
+      "narrative": "You're ready to write your final call. Your integrated view from report + call is clear. Now you must decide: how will you *communicate* your conviction to the client? Will you emphasize the hard verification (report grounding), the forward view (call signals), or the complete picture (both as one system)? Your choice here determines how clients understand your edge and how defensible your call is if it goes wrong.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Defend the call on report data alone; position call as confirmation, not new data",
+          "description": "You write: 'Our recommendation is HOLD / Upgrade to BUY, grounded in TCS's verified Q3 financials (23.1% EBIT margin, strong margins, clean audit). The concall confirmed management's FY25 guidance and clarified segment headwinds as temporary. Primary conviction: the report's audited numbers.' This is safe — you're not depending on unverified call claims.",
+          "consequence": "Clients trust your conservatism; you're not over-promised. But you've missed the opportunity to share the deeper integrated insight (the ₹400 crore deferral discovery, the BFSI attrition context, the earnings-quality nuance). Your call is defensible but not differentiated. Moderate conviction, lower client-trust upside.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "conviction": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Lead with call signals; frame report as supporting context; emphasize forward view",
+          "description": "You write: 'Our recommendation is BUY. The Q3 report showed solid margins, but the concall revealed management's strong confidence in FY25, deal pipeline strength, and BFSI recovery. Upgrade from HOLD based on forward guidance. Target ₹4,200 (9% upside).' This is higher-conviction, forward-looking positioning.",
+          "consequence": "Clients see you as forward-looking and conviction-driven. But if management's call optimism doesn't pan out, you've led clients into a call-dependent bet that the report's deeper signals (accruals, BFSI attrition) should have tempered. You're vulnerable to call-induced groupthink.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "conviction": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Integrate both sources; call out specific report-call verifications & discrepancies; own the system",
+          "description": "You write: 'Our recommendation is HOLD / Small upgrade to BUY based on integrated primary-source analysis. Report Q3 financials solid (23.1% margins, clean audit). Concall verified FY25 guidance sustainability and clarified BFSI as demand-driven temporary headwind. Key finding: ₹400 crore Q4 invoicing deferral (confirmed on call, visible in report accruals) suggests Q4 reported margins may soften, but FY25 full-year guidance intact. GST contingency material-but-disclosed. Primary conviction: verified, integrated view. Target ₹3,950 (5% upside, limited safety margin; risk-reward balanced). Confidence: High (dual-source verification).' This is the complete workflow output.",
+          "consequence": "Clients see you've done the deep work — reading both sources as one system, cross-checking, finding and explaining discrepancies (the ₹400 crore deferral), and building a verified, nuanced conviction. This is differentiated analysis that others who don't read both sources can't replicate. Your call is defensible, forward-looking, and grounded in verified evidence. Highest conviction and client trust.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "conviction": 3
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 15,
+    "outcome_mapping": [
+      {
+        "min_total": 12,
+        "label": "Strong analyst call",
+        "narrative": "You've read TCS's annual report and concall as one integrated system, verified management's claims against audited numbers, caught the ₹400 crore invoicing deferral that others missed, and synthesized a verified, forward-looking, evidence-backed view. Your recommendation is grounded in both sources, your conviction is high, and your clients trust the work. This is the complete primary-source workflow done at senior level."
+      },
+      {
+        "min_total": 7,
+        "label": "Defensible call",
+        "narrative": "You've integrated report and call competently, formed a reasonable recommendation, and grounded it in verified data. Your call may not be as nuanced or differentiated as the best analysts, but it's evidence-backed and defensible. You've read both sources and cross-checked them, though perhaps not with complete rigor."
+      },
+      {
+        "min_total": 2,
+        "label": "Needs review",
+        "narrative": "Your call is based on incomplete integration — either you've relied too heavily on the report (and missed forward-looking call signals), or leaned into call claims without sufficient verification against audited numbers. Your recommendation may be reasonable, but it lacks the dual-source rigor that would give you conviction and differentiation."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread",
+        "narrative": "You've treated the report and call as separate exercises rather than one integrated system, missed critical discrepancies (e.g., the accruals question, the BFSI attrition, the invoicing deferral), and formed a conviction that isn't grounded in verified primary-source analysis. Your call lacks rigor, evidence, and client trust."
+      }
+    ]
+  }
+}

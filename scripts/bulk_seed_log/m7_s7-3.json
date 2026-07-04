@@ -1,0 +1,192 @@
+{
+  "sim_type": "document",
+  "title": "TCS Cash Flow: Profit Meets Reality in Q3 FY25",
+  "scenario": "You're covering Tata Consultancy Services for a Mumbai-desk equity fund. The CFO just released Q3 FY25 results showing strong profit growth, but your senior analyst asks: 'Does the cash flow back it up, or is profit hiding somewhere on the balance sheet?' Pull the cash flow statement and run the lie-detector checks.",
+  "instructions": "Read the cash flow statement, hover tooltips to understand each section, then answer analytical questions on CFO vs PAT, free cash flow, and what the three sections reveal about TCS's financial health.",
+  "learning_objective": "Apply the seven lie-detector checks (CFO vs PAT, cash conversion, receivables-revenue gap, quality of CFO, free cash flow, debt-funded growth, dividend sustainability) to separate real profit from accounting illusions.",
+  "hints": [
+    "Start by comparing CFO (₹15,840 cr) to PAT (₹14,320 cr) — is the gap normal for a one-quarter snapshot?",
+    "Calculate free cash flow: CFO minus capex in the investing section. Does TCS have cash left over for shareholders after staying alive?",
+    "Look at the working-capital line items in the operating section — are receivables or inventory growing faster than revenue would explain? That's the first fraud fingerprint."
+  ],
+  "document_data": {
+    "company_name": "Tata Consultancy Services Limited",
+    "period": "Q3 FY25 (Nine months ended 31 December 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Cash Flow from Operating Activities",
+        "line_items": [
+          {
+            "id": "pat",
+            "label": "Profit for the period",
+            "current_year": 14320,
+            "previous_year": 12450
+          },
+          {
+            "id": "deprec",
+            "label": "Depreciation and amortisation",
+            "current_year": 3280,
+            "previous_year": 2950
+          },
+          {
+            "id": "finance_cost",
+            "label": "Finance costs",
+            "current_year": 420,
+            "previous_year": 380
+          },
+          {
+            "id": "tax_expense",
+            "label": "Income tax expense",
+            "current_year": 3150,
+            "previous_year": 2780
+          },
+          {
+            "id": "wc_receivables",
+            "label": "Increase in trade receivables",
+            "current_year": -1240,
+            "previous_year": -890
+          },
+          {
+            "id": "wc_inventory",
+            "label": "Decrease in inventory",
+            "current_year": 320,
+            "previous_year": 180
+          },
+          {
+            "id": "wc_payables",
+            "label": "Increase in trade payables",
+            "current_year": 1590,
+            "previous_year": 1220
+          }
+        ],
+        "section_total": {
+          "label": "Cash generated from operations",
+          "current_year": 15840,
+          "previous_year": 13590
+        }
+      },
+      {
+        "title": "Cash Flow from Investing Activities",
+        "line_items": [
+          {
+            "id": "capex_ppe",
+            "label": "Purchase of property, plant and equipment",
+            "current_year": -2100,
+            "previous_year": -1850
+          },
+          {
+            "id": "capex_intangible",
+            "label": "Purchase of intangible assets",
+            "current_year": -680,
+            "previous_year": -620
+          },
+          {
+            "id": "invest_other",
+            "label": "Investment in mutual funds",
+            "current_year": -800,
+            "previous_year": -1100
+          },
+          {
+            "id": "dividend_received",
+            "label": "Dividend received",
+            "current_year": 140,
+            "previous_year": 120
+          }
+        ],
+        "section_total": {
+          "label": "Cash used in investing activities",
+          "current_year": -3440,
+          "previous_year": -3350
+        }
+      },
+      {
+        "title": "Cash Flow from Financing Activities",
+        "line_items": [
+          {
+            "id": "dividend_paid",
+            "label": "Dividend paid to shareholders",
+            "current_year": -5200,
+            "previous_year": -4680
+          },
+          {
+            "id": "buyback",
+            "label": "Share buyback",
+            "current_year": -3100,
+            "previous_year": -2900
+          },
+          {
+            "id": "debt_repay",
+            "label": "Repayment of borrowings",
+            "current_year": -850,
+            "previous_year": -720
+          },
+          {
+            "id": "interest_paid",
+            "label": "Interest paid",
+            "current_year": -420,
+            "previous_year": -380
+          }
+        ],
+        "section_total": {
+          "label": "Cash used in financing activities",
+          "current_year": -9570,
+          "previous_year": -8680
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "pat_to_cfo",
+      "tooltip": "PAT (₹14,320 cr) vs CFO (₹15,840 cr) — TCS's CFO exceeds PAT, a gold-standard sign that reported profit is converting to real cash. Most software companies show this pattern because capex is minimal relative to profit."
+    },
+    {
+      "id": "wc_receivables",
+      "tooltip": "Receivables grew ₹1,240 cr in 9M FY25 vs ₹890 cr prior year — watch this gap vs revenue growth. If receivables grow 50% faster than revenue, cash is parked with clients, not in the bank. This is the #1 fraud fingerprint."
+    },
+    {
+      "id": "capex_total",
+      "tooltip": "Total capex (PPE + intangibles) is ₹2,780 cr in 9M FY25 — only ~17% of CFO. As an asset-light IT services firm, TCS needs minimal capex, freeing most operating cash for dividends and buybacks. A capital-heavy manufacturer would see capex eat 40-60% of CFO."
+    },
+    {
+      "id": "fcf_signal",
+      "tooltip": "Free cash flow = CFO (₹15,840) − capex (₹2,780) = ₹13,060 cr available for shareholders. TCS is returning ₹8,300 cr (dividends + buybacks), using only 64% of FCF — sustainable and shareholder-friendly. Danger signal: companies returning >100% of FCF via debt."
+    },
+    {
+      "id": "cff_negative",
+      "tooltip": "Financing cash flow is negative (₹9,570 cr used) — TCS is *returning* cash to funders, not raising it. This is the signature of a mature, self-funding, profitable business. Contrast a company with positive CFF: it's borrowing or raising equity to fund operations."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Free Cash Flow for 9M FY25 (CFO minus total capex). Is TCS generating genuine free cash available for shareholders?",
+      "answer_type": "number",
+      "expected_value": 13060,
+      "tolerance": 10,
+      "unit": "₹ Cr",
+      "explanation": "CFO ₹15,840 cr − capex (₹2,100 + ₹680) ₹2,780 cr = ₹13,060 cr FCF. This is the cash genuinely available after the business funds itself. TCS's low capex as a % of CFO is the hallmark of an asset-light, high-quality business model."
+    },
+    {
+      "id": "t2",
+      "question": "What does the working-capital section reveal about TCS's cash conversion? (Select the concern if any, or confirm health.)",
+      "answer_type": "text",
+      "expected_keywords": [
+        "receivables growing",
+        "cash conversion",
+        "quality",
+        "tight",
+        "healthy"
+      ],
+      "explanation": "Receivables grew ₹1,240 cr in 9M FY25 vs ₹890 cr prior year — a widening trend. While still manageable for a growing IT services firm with US/international clients (longer settlement cycles), this is the #1 line to monitor. If receivables growth accelerates past revenue growth, it signals either aggressive sales booking or client payment delays — both reduce cash quality. TCS's receivables-to-revenue ratio should be tracked quarterly; a sustained rise is a lie-detector red flag."
+    },
+    {
+      "id": "t3",
+      "question": "TCS is returning ₹8,300 cr to shareholders (dividends + buybacks) from ₹13,060 cr FCF, while also repaying debt. Is this pattern sustainable, and what does it tell you about the company's financial health?",
+      "answer_type": "free_text",
+      "sample_answer": "Yes, the pattern is highly sustainable. TCS is returning only 64% of FCF to shareholders while also repaying debt, meaning it has a significant cash cushion. This is the gold-standard signature of a mature, profitable, self-funding business with no dependence on external financing. The company is neither over-returning (which would require debt to sustain) nor under-returning (hoarding excess cash). The negative CFF (financing) confirms TCS is a cash-generator, not a cash-consumer — the opposite of a growth company or a stressed business. This pattern, sustained over multiple years with CFO tracking near or above PAT, is what separates a wealth-creator from a value trap.",
+      "explanation": "This is the master insight of the session: read the three cash flow sections as a coherent story. TCS shows CFO+ (strong operations), CFI− (modest reinvestment), CFF− (returning cash). This is the healthy mature company pattern. Combined with CFO exceeding PAT and capex being tiny relative to profit, it tells an analyst: 'This reported profit is real, converting to cash, and the company is genuinely profitable and self-funding.' Contrast a company with weak CFO, heavy CFI, and positive CFF — borrowing to fund growth or plug operations — which is the danger pattern. The three sections together are the lie detector."
+    }
+  ]
+}

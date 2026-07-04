@@ -1,0 +1,361 @@
+{
+  "sim_type": "excel",
+  "title": "Track TCS Guidance Accuracy and Build Management Credibility Score",
+  "scenario": "You're a senior tech analyst covering TCS on the Mumbai desk. Over 10 quarters (2.5 years), TCS has issued quarterly guidance on revenue growth, margin targets, and hiring commitments. Your job: build a guidance-tracking scorecard that compares what management *said would happen* against what *actually happened*, then score their credibility for use in your next forecast.",
+  "instructions": "For each quarter, calculate the guidance miss/beat as a percentage, assess the bias (conservative or optimistic), count how many times management quietly walked back a prior commitment, and produce a final credibility score (0–100) that reflects whether TCS management can be trusted on future guidance.",
+  "learning_objective": "Calculate guidance accuracy by comparing actual results to prior guidance across multiple quarters, identify the pattern of over-promise vs under-promise, and assign a credibility score that weights future guidance by the team's track record of delivery.",
+  "hints": [
+    "Start simple: calculate the percentage difference between Actual and Guided for each quarter using (Actual − Guided) ÷ Guided.",
+    "A positive difference means they beat; negative means they missed. Count how many quarters beat vs missed to spot the bias.",
+    "A team that consistently misses by 2–3% each quarter has low credibility; a team that beats or is within 1% has high credibility. Weight the credibility score accordingly."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue Guided (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue Actual (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Margin Guided (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Margin Actual (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Hiring Commitment",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Commitment Met (Y/N)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1 FY2022"
+          },
+          "B2": {
+            "value": 24500
+          },
+          "C2": {
+            "value": 24620
+          },
+          "D2": {
+            "value": 21.2
+          },
+          "E2": {
+            "value": 21.5
+          },
+          "F2": {
+            "value": "15000 fresh hires"
+          },
+          "G2": {
+            "value": "Y"
+          },
+          "A3": {
+            "value": "Q2 FY2022"
+          },
+          "B3": {
+            "value": 25100
+          },
+          "C3": {
+            "value": 24950
+          },
+          "D3": {
+            "value": 21.0
+          },
+          "E3": {
+            "value": 20.8
+          },
+          "F3": {
+            "value": "14000 fresh hires"
+          },
+          "G3": {
+            "value": "Y"
+          },
+          "A4": {
+            "value": "Q3 FY2022"
+          },
+          "B4": {
+            "value": 25800
+          },
+          "C4": {
+            "value": 25450
+          },
+          "D4": {
+            "value": 20.8
+          },
+          "E4": {
+            "value": 20.5
+          },
+          "F4": {
+            "value": "12000 fresh hires"
+          },
+          "G4": {
+            "value": "Y"
+          },
+          "A5": {
+            "value": "Q4 FY2022"
+          },
+          "B5": {
+            "value": 26500
+          },
+          "C5": {
+            "value": 26200
+          },
+          "D5": {
+            "value": 21.5
+          },
+          "E5": {
+            "value": 21.2
+          },
+          "F5": {
+            "value": "16000 fresh hires"
+          },
+          "G5": {
+            "value": "Y"
+          },
+          "A6": {
+            "value": "Q1 FY2023"
+          },
+          "B6": {
+            "value": 27200
+          },
+          "C6": {
+            "value": 26800
+          },
+          "D6": {
+            "value": 21.0
+          },
+          "E6": {
+            "value": 20.6
+          },
+          "F6": {
+            "value": "13000 fresh hires"
+          },
+          "G6": {
+            "value": "Y"
+          },
+          "A7": {
+            "value": "Q2 FY2023"
+          },
+          "B7": {
+            "value": 28100
+          },
+          "C7": {
+            "value": 27200
+          },
+          "D7": {
+            "value": 21.2
+          },
+          "E7": {
+            "value": 20.4
+          },
+          "F7": {
+            "value": "Margin recovery to 21.5%"
+          },
+          "G7": {
+            "value": "N"
+          },
+          "A8": {
+            "value": "Q3 FY2023"
+          },
+          "B8": {
+            "value": 28900
+          },
+          "C8": {
+            "value": 28100
+          },
+          "D8": {
+            "value": 21.5
+          },
+          "E8": {
+            "value": 21.0
+          },
+          "F8": {
+            "value": "New delivery centre online Q4"
+          },
+          "G8": {
+            "value": "N"
+          },
+          "A9": {
+            "value": "Q4 FY2023"
+          },
+          "B9": {
+            "value": 29700
+          },
+          "C9": {
+            "value": 29400
+          },
+          "D9": {
+            "value": 21.8
+          },
+          "E9": {
+            "value": 21.4
+          },
+          "F9": {
+            "value": "15000 fresh hires"
+          },
+          "G9": {
+            "value": "Y"
+          },
+          "A10": {
+            "value": "Q1 FY2024"
+          },
+          "B10": {
+            "value": 30500
+          },
+          "C10": {
+            "value": 30100
+          },
+          "D10": {
+            "value": 22.0
+          },
+          "E10": {
+            "value": 21.7
+          },
+          "F10": {
+            "value": "14000 fresh hires"
+          },
+          "G10": {
+            "value": "Y"
+          },
+          "A11": {
+            "value": "Q2 FY2024"
+          },
+          "B11": {
+            "value": 31200
+          },
+          "C11": {
+            "value": 30600
+          },
+          "D11": {
+            "value": 22.2
+          },
+          "E11": {
+            "value": 21.8
+          },
+          "F11": {
+            "value": "Margin stabilisation at 22%+"
+          },
+          "G11": {
+            "value": "N"
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Revenue Guidance Miss/Beat % (Q2 FY2023) — negative = miss, positive = beat"
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2: Count of quarters where TCS beat or met revenue guidance (≤1% variance)"
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q3: Count of quarters where TCS missed revenue guidance (>1% variance negative)"
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q4: Average margin miss (negative = underperformed) across all 10 quarters"
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q5: Count of commitments walked back (where Commitment Met = N)"
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q6: TCS Credibility Score (0–100). Logic: 100 if 0 walk-backs & <0.5% avg revenue miss; −5 per walk-back; −2 per 0.1% avg miss; floor 30"
+          },
+          "B7": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!C7 - Data!B7) / Data!B7",
+      "expected_value": -0.032,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=SUMPRODUCT((ABS((Data!C2:C11 - Data!B2:B11) / Data!B2:B11) <= 0.01) * 1)",
+      "expected_value": 1,
+      "type": "number",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUMPRODUCT((((Data!C2:C11 - Data!B2:B11) / Data!B2:B11) < -0.01) * 1)",
+      "expected_value": 8,
+      "type": "number",
+      "tolerance": 0,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=AVERAGE(Data!E2:E11 - Data!D2:D11)",
+      "expected_value": -0.33000000000000007,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 13
+    },
+    "Answers!B6": {
+      "formula_pattern": "=COUNTIF(Data!G2:G11, \"N\")",
+      "expected_value": 3,
+      "type": "number",
+      "tolerance": 0,
+      "points": 10
+    },
+    "Answers!B7": {
+      "formula_pattern": "=MAX(30, 100 - (Answers!B6 * 5) - (ABS(AVERAGE((Data!C2:C11 - Data!B2:B11) / Data!B2:B11)) * 200))",
+      "expected_value": 97.14345341885338,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

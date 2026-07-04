@@ -1,0 +1,241 @@
+{
+  "sim_type": "decision_making",
+  "title": "TCS Q3 Call: Integrating Signals Into a Conviction",
+  "scenario": "You've just finished reading Tata Consultancy Services' Q3 concall. The quarter beat on net profit, but the Q&A had evasion on margin guidance, and the tone shifted cautious. Your pre-call thesis was 'maintain,' but now you must synthesise the signals—prepared remarks, Q&A credibility, guidance reliability, and language drift—into a clear investment view and a specific action.",
+  "instructions": "You are a senior analyst at a Mumbai equity desk. Walk through 4 decision points, each testing your ability to weigh conflicting signals and integrate them into a coherent conviction. Each choice accumulates a score across rigor (depth of analysis), speed (decisiveness), and client_trust (clarity of conviction). Your final decision yields a graded investment view.",
+  "learning_objective": "Integrate call signals (remarks, Q&A, guidance, tone) against your thesis to synthesise a clear, specific conviction on whether the call confirms, challenges, or changes your view—and act accordingly.",
+  "hints": [
+    "The Q&A evasion on margin guidance should outweigh the confident prepared remarks—the unscripted reveals more than the scripted.",
+    "Check the guided revenue growth against the capex commentary and competitive hiring tone; conflicting signals here need explicit weighting.",
+    "Your final conviction must state specifically what changed (forecasts/thesis risk) and what action to take (maintain/raise/lower/exit)—not a list of observations."
+  ],
+  "scenario_context": "You are a senior IT analyst covering TCS. Your pre-call thesis was 'Maintain,' with FY25E revenue growth at 4% (below consensus 5%) and target price ₹3,800. The Q3 quarter landed: net profit beat by 2%, but margins contracted 15 bps QoQ to 20.8%, and management guided for 'mid-to-high single-digit' FY25 growth—notably vaguer than last quarter's 'around 4-5%.' In the Q&A, when pressed on margin trajectory, the CFO hedged heavily ('inflation headwinds, wage pressures'), avoided a margin floor, and three analysts piled on. The language in the prepared remarks shifted: less 'confidence,' more 'cautious optimism.' Cash conversion remained strong, accruals ratio stable. Now you have 90 minutes before the Mumbai desk closes. You must synthesise: does this call confirm your 'Maintain' view, challenge it (lower conviction, flag risk), or change it (revise thesis, lower estimates)?",
+  "initial_data": {
+    "Stock": "Tata Consultancy Services (TCS)",
+    "Current Price": "₹3,650",
+    "Pre-Call Thesis": "Maintain",
+    "FY25E Revenue Growth": "4% (vs consensus 5%)",
+    "Target Price": "₹3,800",
+    "Time to Next Event": "Results release in 2 weeks"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Weighting the Prepared Remarks vs Q&A Reality",
+      "narrative": "The prepared remarks were disciplined: 'strong deal wins, robust pipeline, focus on margin sustainability.' But in the Q&A, when you and two peers pressed the CFO on the margin guidance walk-back and whether 20.8% was a floor or a continued slide, he pivoted to 'inflationary pressures' and 'wage management challenges' without pinning down a number. The tone shifted from scripted confidence to unscripted evasion. You must now decide: do you trust the reassuring prepared remarks more, or the evasive Q&A answer—and why?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Trust the prepared remarks; Q&A evasion is normal defensiveness",
+          "description": "Interpret the Q&A hedging as standard CFO caution on guidance; the prepared remarks' 'margin sustainability' narrative is more substantive and backed by the deal-wins commentary.",
+          "consequence": "You conclude that management is confident but cautious in public, which is credible. Margin pressure is near-term and cyclical. Your conviction on the 'Maintain' thesis strengthens; you assume margin recovery by Q4. However, this approach risks missing a real margin challenge that the CFO was signalling but not saying outright—the classic error of believing the narrative over the unscripted truth.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 1,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Trust the Q&A evasion; it reveals more than the scripted remarks",
+          "description": "The unscripted answers carry more signal than the prepared text. The CFO's refusal to commit to a margin floor and his vague language ('inflation headwinds') suggests deeper or longer-lasting margin pressure than he's admitting publicly. The pile-on from peers also flagged this as a real concern.",
+          "consequence": "You conclude that margin headwinds are more entrenched than the prepared remarks suggest. This shifts your conviction toward 'challenge'—the thesis may hold, but earnings growth is at risk. You flag this to the desk and begin lowering your margin assumptions. This approach is harder to sell to clients (you're contradicting the official narrative), but it is more honest to the unscripted signal. Risk: you may overcorrect and miss the recovery if margins do stabilise.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Weight them equally; acknowledge the conflict and reserve judgement",
+          "description": "Recognise that the prepared remarks are reassuring but the Q&A is evasive, and both matter. Don't force a choice yet; move to the next question (the guidance credibility) before deciding which signal to trust more.",
+          "consequence": "You defer the margin call and move on to assess the credibility of the new guidance ('mid-to-high single-digit' growth). This is pragmatic—you're letting the next signal inform your weighting of this one. However, deferring the call also risks appearing non-committal to the desk. You may gather more data, but at the cost of decisiveness in the hour you have.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": -2,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Assessing the Guidance Credibility: New Vagueness vs Track Record",
+      "narrative": "Last quarter, management guided for 'around 4-5%' FY25 growth. This quarter, that's shifted to 'mid-to-high single-digit'—technically broader, but the tone is vaguer. The CFO justified this as 'prudence' given macro uncertainty. TCS's guidance track record is strong (they've hit or beaten for 8 consecutive quarters), but this team has also been conservative before. Your pre-call estimate was 4%; consensus is 5%. The new guidance could mean anywhere from 4% to 7%, which is a wide range. Do you take the guidance as a signal of weakness (they're backing away from 4-5% because they're worried), or do you trust the strong track record and assume it's just macro caution?",
+      "options": [
+        {
+          "id": "A",
+          "label": "The vague guidance signals weakness; lower your estimate to 3.5%",
+          "description": "When a credible team walks back specificity, it usually means they're no longer confident in the prior range. The shift from '4-5%' to 'mid-to-high single-digit' is a red flag, especially paired with the evasive Q&A on margins. You interpret this as management preparing the market for a miss and lower your FY25E to 3.5%.",
+          "consequence": "You now have two signals pointing in the same direction: Q&A evasion and vague guidance. Your conviction on 'challenge' strengthens. This is rigorous and consistent. However, you're now 150 bps below consensus, which is a bold call and will invite scrutiny from the desk. If guidance merely reflects macro caution and not company-specific weakness, you've overcorrected. But the pattern of evasion + vague guidance is hard to ignore.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Trust the 8-quarter track record; keep your estimate at 4%, ignore the vagueness",
+          "description": "TCS has been reliable; the team's track record of delivery outweighs the vague language. 'Mid-to-high single-digit' is broad, but the team will likely hit it, and if anything, probably closer to 5-6% given their conservatism. You maintain your 4% estimate and assume the new guidance language is just macro prudence, not company-specific weakness.",
+          "consequence": "You trust the institution over the signal. This is fast and client-friendly—it doesn't require you to make a bold call against TCS's track record. But it may cause you to miss a real company-specific warning buried in the vague guidance. The risk: if TCS misses FY25 and comes in at 3.5%, you've been caught flat-footed because you ignored the vague guidance signal. You're relying on credibility to override the signal, which is a valid but risky bet.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Split the difference: raise estimate to 4.3%, midpoint of 'mid-to-high single-digit'",
+          "description": "The new guidance is technically broader and slightly higher than your prior 4% estimate. Rather than interpreting vagueness as weakness, you interpret it as prudence + optionality. The midpoint of 'mid-to-high single-digit' is around 5.5%, but discounting slightly for macro risk and the Q&A evasion, you settle on 4.3%.",
+          "consequence": "You've synthesised the credibility signal (trust the track record) with the caution signal (vague guidance). This feels balanced but risks being incoherent to the desk—is the team credible or not? If yes, why discount their guidance? If no, why trust their track record? You're trying to have it both ways. The upside: you avoid a bold call and keep flexibility. The downside: you may seem to lack a clear conviction, which weakens client trust.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 0,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Reading the Tone and Language Drift: Confirmed by the Numbers?",
+      "narrative": "You've coded the language shift: 'confidence' appears 3 times in last quarter's prepared remarks, 0 times this quarter. 'Cautious optimism' appears 1 time. The tone is softer. But you've also checked the hard numbers: accruals ratio stable at 0.72x (healthy), cash conversion 104% (strong), capex guidance unchanged. The strong cash generation contradicts the cautious tone. The question now is: does the tone shift signal genuine concern, or is it just CFO caution in a macro-uncertain environment? Are the hard numbers (strong cash) trumping the soft language (cautious tone), or are they masking a creeping operational issue?",
+      "options": [
+        {
+          "id": "A",
+          "label": "The hard numbers (cash, accruals) are the truth; ignore the tone shift as macro noise",
+          "description": "Cash conversion at 104% and stable accruals are hard evidence that the business is fundamentally sound. The tone shift is cosmetic—CFOs are always more cautious in uncertain macros. You conclude that the business is fine and the tone is just hedging language. Your conviction on 'maintain' strengthens.",
+          "consequence": "You lean on the numbers over the narrative, which is rigorous. Cash is hard to fake, and the accruals ratio is clean. This is a defensible call and client-friendly. However, it risks missing an early warning signal—the tone shift may be the CFO signalling trouble before the numbers fully show it. By the time the accruals ratio rises, it may be too late. You've chosen to trust the lagging indicator (the numbers) over the leading indicator (the tone), which is a timing risk.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "The tone shift is a leading indicator; the numbers haven't caught up yet. Flag risk.",
+          "description": "The language drift (less 'confidence,' more caution) is the CFO's way of preparing the market for tougher ahead. The strong cash and accruals today are lagging indicators; the tone is the leading indicator. You interpret the tone shift as a warning that margins or growth may deteriorate in coming quarters, and the strong accruals/cash are just the residue of last quarter's business quality.",
+          "consequence": "You elevate the tone signal and flag to the desk that risk is rising, even if the Q3 numbers are clean. This is more rigorous—you're reading the unscripted signal—but harder to sell. You're contradicting the strong numbers, which makes you look alarmist. If the business remains strong through Q4, you'll have been wrong and lost client credibility. But if the deterioration comes, you'll have been early and earned respect. This is a higher-conviction, higher-risk call.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "client_trust": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "The tone and numbers are in tension; monitor closely, no action yet",
+          "description": "You acknowledge the conflict between the soft tone (cautious) and the hard numbers (strong cash). You don't force a resolution yet. Instead, you flag the tension to the desk and plan to watch Q4 results closely for evidence of whether the tone or the numbers is the true signal.",
+          "consequence": "You're intellectually honest about the conflict, but again, you're deferring the call. This is methodical but may frustrate the desk, which wants a clear view. You've moved from signal-to-signal without integrating into a conviction. By Q4, if the tension is resolved (either the tone was right or the numbers were), you'll act. But for now, you're not committing. This risks appearing indecisive, especially if other analysts are already taking a view.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": -2,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final Synthesis: State Your Integrated Conviction and Action",
+      "narrative": "You've now weighed the signals: prepared remarks vs Q&A evasion, guidance credibility vs vagueness, tone shift vs hard numbers. Each path you've chosen has accumulated a conviction direction. Now you must synthesise all of it into a final, integrated view: does the call CONFIRM your 'Maintain' thesis, CHALLENGE it (flag risk, lower conviction), or CHANGE it (revise thesis, lower estimates, move to 'Reduce')? And critically, what specific action do you recommend: Maintain the view and ₹3,800 target, or lower conviction/estimates/target? The desk expects a clear recommendation, not a list of observations.",
+      "options": [
+        {
+          "id": "A",
+          "label": "CONFIRM: Maintain thesis and ₹3,800 target; signal is noise",
+          "description": "All the signals—the Q&A evasion, the vague guidance, the tone shift—are overreaction to near-term macro caution. TCS's track record, strong cash, and underlying deal momentum remain sound. You're maintaining your 4% FY25E revenue growth, 22% margins, and ₹3,800 target. Your thesis is confirmed. Conviction: maintained.",
+          "consequence": "You've chosen to trust the institution (TCS's track record) and the numbers (strong cash) over the narrative signals (evasion, vagueness, tone). This is a defensible call grounded in credibility and cash, and it's client-friendly. The desk will appreciate the clarity. However, you've potentially missed a real warning—the Q&A evasion and vague guidance may be genuine signals of deterioration. If margins slide in Q4 and growth misses, you'll have been caught flat-footed. Your conviction is high, but your downside risk is unhedged. This is a 'trust the trend' call.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "client_trust": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "CHALLENGE: Lower conviction; flag rising risk; reduce target to ₹3,550",
+          "description": "The Q&A evasion on margins, the vague guidance, and the tone shift, taken together, suggest that near-term risk is rising. You're not changing your thesis (long-term TCS remains sound), but you're flagging that the path is now bumpier. You're lowering your FY25E revenue growth to 3.8%, margins to 21.5%, and reducing your target to ₹3,550 (50 bps downside from today's ₹3,650). Conviction: challenged. Recommendation: Maintain (hold), with a note that risk is rising.",
+          "consequence": "You've synthesised the conflicting signals into a cautious view: TCS remains sound fundamentally, but near-term execution risk has risen. This acknowledges both the credibility (you're not exiting) and the warning signals (you're flagging risk). It's a measured call that will be respected for its honesty. However, it's also a call against the momentum—other analysts are still bullish, so you'll face questions on whether you're being too pessimistic. If the business stabilises in Q4, you'll have been too cautious; if it deteriorates, you'll have been timely. This is a 'flag the risk' call.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "client_trust": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "CHANGE: Lower to 'Reduce'; estimate 3.5% growth; target ₹3,200",
+          "description": "The pattern of evasion, vague guidance, and tone shift is too cohesive to ignore. When a credible team starts to hedge language and avoid committing to near-term guidance, it typically means they see headwinds ahead. You're interpreting the call as a warning of real margin and growth pressure, and you're downgrading the thesis. You're lowering FY25E to 3.5% revenue growth, 21% margins, and cutting your target to ₹3,200. Recommendation: Reduce. Conviction: challenged materially. Risk is skewed to the downside.",
+          "consequence": "You've made a bold call: the call is not just cautionary noise, but a genuine warning that the thesis needs revision. This is a high-rigor, high-conviction call. It will attract scrutiny (you're against consensus, and against TCS's track record of delivery), but if the deterioration materialises, you'll have been prescient and early. The risk: TCS could stabilise, management could have been genuinely conservative, and you've been alarmist. You'll have lost credibility with clients who trusted TCS's track record more than you did. This is a 'the thesis is challenged' call, the hardest to defend but potentially the most rewarded if right.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "client_trust": -2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "RESERVE: List the signals, flag ambiguity, revisit after Q4",
+          "description": "You acknowledge that the signals are mixed and conflicting. You're not ready to synthesise yet. You'll present the call to the desk as ambiguous—some signals suggest caution, others suggest stability—and commit to a clear view after Q4 results. You're maintaining your ₹3,800 target for now but flagging that it could move in either direction.",
+          "consequence": "This is honest to the uncertainty, but it's not synthesis—it's a list of observations. The desk will be frustrated because it wants a clear conviction, and you've given it ambiguity. If forced to make decisions (e.g., a client asks 'should I buy or hold?'), you'll appear non-committal. In the real world, you can't reserve; you have to decide. This option acknowledges that synthesis is hard, but it fails to do the work. It's the analyst avoiding the call.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": -3,
+            "client_trust": -3
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 8,
+        "label": "Senior analyst conviction",
+        "narrative": "You've synthesised the call signals into a clear, integrated view with specific forecast and conviction impact. Whether you chose to CONFIRM, CHALLENGE, or CHANGE, your call was grounded in explicit weighting of conflicting signals, acknowledged the risks, and translated into a specific action (maintain/lower/reduce target). The desk trusts your reasoning because it's transparent and rigorous. You've done what the session teaches: turned the call into conviction."
+      },
+      {
+        "min_total": 4,
+        "label": "Defensible analyst call",
+        "narrative": "Your synthesis is coherent and defensible, though perhaps a touch cautious or conservative in conviction. You've identified the key signals and weighted them reasonably, but you may have hedged more than necessary or deferred some judgements. The call is clear enough for the desk to act on, but it lacks the crispness of a senior call. You've done the synthesis, but with some reserve."
+      },
+      {
+        "min_total": 0,
+        "label": "Analysis, not conviction",
+        "narrative": "You've extracted signals from the call (the Q&A evasion, the vague guidance, the tone shift), but you haven't integrated them into a clear investment view. Your recommendation is ambiguous or contradictory—acknowledging risk but maintaining the target, flagging caution but trusting the numbers. The desk doesn't have a clear answer to 'what should we do?' You've done the reading, but not the synthesis."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread the call entirely",
+        "narrative": "You've failed at the core synthesis task. You may have trusted the wrong signals (the scripted remarks over the Q&A), missed the genuine warning (the evasion and tone shift), or produced an incoherent conclusion that contradicts your own analysis. Or you've deferred the call entirely, avoiding the hard work of weighting conflicting signals. The desk sees that you haven't reached a conviction, and has lost confidence in your reading of TCS."
+      }
+    ]
+  }
+}

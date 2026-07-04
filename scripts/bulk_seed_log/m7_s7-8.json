@@ -1,0 +1,240 @@
+{
+  "sim_type": "decision_making",
+  "title": "Bajaj Finance earnings call: is this profit real or inflated?",
+  "scenario": "You are covering Bajaj Finance at a top Mumbai equity desk. The company just reported FY2024 PAT of ₹9,850 crore, up 28% YoY — a headline-grabbing beat. Your fund manager wants your quality-of-earnings verdict in 2 hours before the earnings call. You have the cash flow statement, balance sheet, and notes. Time to dig.",
+  "instructions": "You will make 4 sequential decisions, each testing your quality-of-earnings discipline. After each choice, you'll see the consequence and move to the next decision point. Your cumulative score across rigor, speed, and client_trust will determine your final verdict.",
+  "learning_objective": "Apply the quality-of-earnings scorecard to distinguish cash-backed recurring profit from one-off paper gains, informing a defensible earnings call verdict.",
+  "hints": [
+    "Start by comparing operating cash flow to net profit over the last 3 years — this is your foundational quality test.",
+    "Calculate the accruals ratio: (NP − CFO) ÷ average assets. If it's rising or above 5%, that's a quality warning.",
+    "Check trade receivables growth vs revenue growth. If receivables are outrunning sales by 2x or more, earnings quality is suspect."
+  ],
+  "scenario_context": "Bajaj Finance is India's largest pure-play NBFC, with ₹2.8 lakh crore AUM. The stock has rallied 40% this year. This quarter's 28% PAT growth is exceptional — but you notice something odd in the cash flow statement. Operating cash flow grew only 8% YoY, while profit jumped 28%. The gap is striking. Your boss is optimistic and wants a 'strong buy' call. Before you commit, you need to grade whether this profit is gold (recurring, cash-backed, sustainable) or glass (one-off, paper, risky). The earnings call starts in 120 minutes.",
+  "initial_data": {
+    "Stock": "Bajaj Finance",
+    "Current Price": "₹6,850",
+    "Your Recommendation": "Pending",
+    "Reported PAT Growth": "+28% YoY",
+    "Time to Earnings Call": "120 minutes"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "The Cash Conversion Test — Is Profit Real Money?",
+      "narrative": "You pull up the last 3 years of cash flow and profit data. FY2024: PAT ₹9,850 cr, CFO ₹8,200 cr. FY2023: PAT ₹7,680 cr, CFO ₹7,590 cr. FY2022: PAT ₹6,150 cr, CFO ₹6,080 cr. Your first instinct is to compute the cash conversion ratio (CFO ÷ PAT). FY2024 shows 83%, FY2023 shows 99%, FY2022 shows 99%. The conversion collapsed this year — profit grew 28% but cash only grew 8%. This is your foundational quality check: is the company's profit backed by real cash, or is it sitting on paper (receivables, accruals)? You need to decide how to interpret this gap and what to communicate to your boss.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Flag the cash conversion drop immediately as a major quality warning.",
+          "description": "Take the 16-point drop in conversion ratio seriously; treat it as evidence that profit quality has deteriorated.",
+          "consequence": "You email your boss: 'Cash conversion collapsed from 99% to 83%. That's ₹1.65 crore of the ₹2.17 crore profit increase parked in non-cash accruals. This is the #1 quality red flag.' Your boss pushes back: 'NBFC receivables are lumpy, one quarter means nothing.' You have data on your side, but you've also flagged a concern that might spook the call. Move to decision 2 to dig deeper into whether the gap is structural or cyclical.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Note the gap but assume it's a working-capital timing issue, not structural.",
+          "description": "Treat the 83% ratio as a normal quarterly swing in receivables and accruals, not a sign of deteriorating quality.",
+          "consequence": "You tell your boss: 'Cash conversion dipped to 83%, likely a timing issue in receivables. Not structural.' Your boss is satisfied and suggests you move to validating the earnings growth. You've kept relations smooth but haven't yet diagnosed whether the profit is truly high quality. Move to decision 2 to test this assumption by looking at receivables growth.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Compute the accruals ratio to quantify the profit-to-cash gap in one comparable number.",
+          "description": "Rather than eyeballing the conversion ratio, calculate (NP − CFO) ÷ average assets to get a precise accruals quality metric.",
+          "consequence": "You calculate: FY2024 accruals ratio = (9,850 − 8,200) ÷ avg assets = 1,650 ÷ 2,60,000 = 0.63%. FY2023: (7,680 − 7,590) ÷ avg assets = 90 ÷ 2,40,000 = 0.04%. The accruals ratio jumped 15x. You show your boss the metric: 'Earnings quality dropped; 63 basis points of every rupee of profit is now accruals, not cash.' This is precise and grounded in the framework. Move to decision 2 with a clear diagnostic.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "The Receivables Test — Is Revenue Real or Channel-Stuffed?",
+      "narrative": "Whichever path you took, you now look at the balance sheet. Trade receivables (AUM in unsecured lending products) grew from ₹1,12,000 crore (FY2023) to ₹1,28,500 crore (FY2024) — a 14.7% increase. Revenue (net interest + other income) grew from ₹38,200 crore to ₹42,800 crore — only 12% growth. So receivables are outrunning revenue, albeit modestly. For an NBFC, a growing AUM is normal — but the 14.7% growth in receivables on 12% revenue growth, combined with the cash conversion drop, is starting to form a pattern. You need to decide whether to dig deeper into the composition of that receivables growth (quality of the loan book) or move forward assuming it's normal business expansion.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Demand a breakdown of receivables growth by product and geography to assess credit quality.",
+          "description": "Request granular detail on which loan segments drove the receivables growth — whether it's core unsecured lending or riskier segments.",
+          "consequence": "You reach out to the IR team. They send you a segment breakdown showing that 62% of the receivables growth came from 'two-wheeler unsecured' and 'microfinance' — higher-risk, lower-ticket-size segments with historically higher delinquencies. Your rigor instinct is confirmed: the receivables growth is real, but lower-quality composition. You flag to your boss: 'Receivables grew on riskier products. Need to monitor delinquencies closely.' This delays your verdict but strengthens it. Move to decision 3.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Accept the receivables growth as normal NBFC expansion and move on.",
+          "description": "Treat the 14.7% receivables growth as consistent with the company's stated growth strategy; don't dig into product mix.",
+          "consequence": "You accept the IR narrative and move on. Your boss appreciates the speed. But you've missed a key quality signal — that the receivables growth is driven by riskier products. You're now 40 minutes from the earnings call and haven't stress-tested the quality assumptions. You have momentum but less ground-truth. Move to decision 3.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 2,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Check if the receivables-to-revenue ratio is widening, which would be a red flag.",
+          "description": "Calculate the ratio in both years. If it's widening, it signals customers aren't paying at the same rate — potential channel-stuffing or aggressive revenue recognition.",
+          "consequence": "You compute: FY2023 receivables-to-revenue = 1,12,000 ÷ 38,200 = 2.93x. FY2024 = 1,28,500 ÷ 42,800 = 3.00x. A slight widening, but not dramatic. The ratio is stable, which suggests the company isn't aggressively booking uncollectable sales. This is a modest quality positive. You tell your boss: 'Receivables tracking revenue, not diverging.' Move to decision 3 with a balanced view.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "The One-Off Items Test — How Much Profit Is Non-Recurring?",
+      "narrative": "You now turn to the notes to earnings and scan for one-time items. You find: (1) a ₹180 crore gain on sale of a subsidiary stake, (2) a ₹120 crore write-back of deferred tax liability (a one-time credit), and (3) a ₹95 crore recovery of bad debts written off in prior years. Together, these one-offs total ₹395 crore — roughly 4% of reported PAT of ₹9,850 crore. Not huge, but not negligible. You need to decide how to treat these in your quality assessment: are they material enough to adjust out, or minor noise?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Normalise earnings by excluding all one-time items; recompute growth on core profit only.",
+          "description": "Strip out the ₹395 crore of one-offs to see what core, recurring profit actually grew by.",
+          "consequence": "You calculate: Reported PAT FY2024 = ₹9,850 cr. Less one-offs ₹395 cr = core PAT ₹9,455 cr. FY2023 core PAT = ₹7,680 cr (no material one-offs). Core PAT growth = (9,455 − 7,680) / 7,680 = 23%, not 28%. You tell your boss: 'Headline growth is 28%, but core growth is 23% after stripping one-offs. The beat is real, but modestly lower quality.' This is rigorous but also slows your call. Move to decision 4.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Treat the one-offs as immaterial (4% of PAT) and accept the headline growth as stated.",
+          "description": "At 4%, the one-offs are noise; the growth story is essentially unaffected. Speed to your recommendation.",
+          "consequence": "You accept the ₹9,850 cr profit at face value. 'One-offs are 4%, immaterial to the thesis,' you tell your boss. You've saved 10 minutes but you've also implicitly accepted lower-quality earnings — the profit is partially inflated by non-recurring items. This is a speed-vs-rigor trade-off. Move to decision 4.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Highlight the one-offs as a positive (tax write-back, gains) but note they inflate growth — flag for earnings quality downgrade.",
+          "description": "Acknowledge the one-offs boost profit this year; note they won't recur next year; adjust your forward guidance accordingly.",
+          "consequence": "You tell your boss: 'FY2024 benefited from ₹395 cr of non-recurring gains — a tax credit, asset sale, recoveries. These boost this year's growth to 28% but won't repeat. I'm forecasting 18–20% growth next year absent these one-offs.' This is balanced: you validate the headline but set realistic forward expectations. Your boss likes the nuance. Move to decision 4.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final Verdict — What Quality Grade and Recommendation Do You Give?",
+      "narrative": "You're now 20 minutes from the earnings call. You've run the quality scorecard — cash conversion, accruals, receivables, one-offs. Time to synthesise and give your boss a clear, defensible recommendation. The core question: is Bajaj Finance's ₹9,850 crore profit gold (high-quality, sustainable, cash-backed) or glass (inflated by one-offs, weak cash conversion, riskier mix)? Your recommendation will influence what the fund manager says on the call and how aggressively they position the stock.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Issue a 'Strong Buy' with a caveat on earnings quality; validate the growth but set conservative forward guidance.",
+          "description": "Recommend outperformance but ground it in normalised earnings; flag that growth will moderate next year as one-offs don't repeat.",
+          "consequence": "You write: 'BUY with outperform; FY2024 profit growth is 28% but 23% on core basis after normalisation. One-offs inflate the headline. Cash conversion at 83% signals lower earnings quality this quarter — monitor for improvement. FY2025 core growth likely 15–18%, not 28%. Fair value ₹7,200 based on normalised earnings and a discount for elevated credit risk in the loan book mix.' Your fund manager uses this on the call: credible, nuanced, not overly bullish. You've earned trust by being rigorous without killing the narrative. Score: +3 rigor, +2 client trust.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "client_trust": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Issue an 'Outperform' with no earnings quality concerns; assume growth is sustainable at or near 28%.",
+          "description": "Back the headline growth story; treat the cash conversion and accruals gaps as normal cyclical noise; don't adjust for one-offs.",
+          "consequence": "You write: 'BUY. Bajaj Finance is in a growth sweet spot; 28% PAT growth is sustainable. Receivables growing healthily. Cash flow will normalise. Fair value ₹7,500.' Your fund manager is pleased — a clear, bullish narrative. But you've glossed over the quality signals. If cash conversion doesn't improve or receivables deteriorate further, you'll have missed a warning that was visible in the numbers. Score: +1 speed, +2 client trust, but -2 rigor.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 2,
+            "client_trust": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Issue a 'Hold' pending more granular data on receivables quality and cash flow normalisation.",
+          "description": "Flag that earnings quality is mixed; wait for next quarter to see if cash conversion and receivables trends improve; don't recommend commitment yet.",
+          "consequence": "You write: 'HOLD. FY2024 growth is headline-positive but quality-mixed: cash conversion down 16 points, accruals elevated, receivables growth on riskier products. Normalised growth is 23%, not 28%. We like the NBFC, but need to see cash metrics normalise and product mix stay healthy. Reassess in Q1 FY2025.' This is cautious and rigorous, but your boss is frustrated: 'We need a call, not a wait-and-see.' You've protected against downside risk but lost credibility for fence-sitting. Score: +3 rigor, -1 speed, -1 client trust.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -1,
+            "client_trust": -1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "Issue a 'Reduce' citing low earnings quality; warn that the profit is mostly one-offs and weak cash conversion signals reversal risk.",
+          "description": "Take a hard stance: quality deterioration is a sell signal; recommend exiting or avoiding the stock despite headline growth.",
+          "consequence": "You write: 'REDUCE. Reported growth masks quality concerns: 83% cash conversion, 63 bps accruals ratio, ₹395 cr of one-offs inflating profit, receivables growing on riskier products. Core growth is only 23%. Next year's growth will be lower as one-offs don't repeat. Delinquencies on lower-quality loans may spike. Downside risk to ₹5,900. Exit on strength.' This is rigorous but also contrarian to the positive narrative. Your boss is shocked: 'This will put us offside from consensus.' You're right to flag quality risks, but you've taken a stance that could be wrong if management executes well. Score: +3 rigor, -2 client trust.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "client_trust": -2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Gold-standard analyst call",
+        "narrative": "You applied the quality-of-earnings scorecard rigorously, flagged the cash conversion drop and accruals shift without overstating them, and landed on a defensible, nuanced recommendation that balanced growth narrative with earnings quality concerns. Your boss will trust your calls because you show the work."
+      },
+      {
+        "min_total": 5,
+        "label": "Defensible call with balanced reasoning",
+        "narrative": "You ran key quality checks and arrived at a recommendation that's grounded in the numbers. You may have prioritised speed in one or two places, but your final verdict is sound and you can explain it to pushback. Client will respect the discipline even if they disagree on the rating."
+      },
+      {
+        "min_total": 1,
+        "label": "Call needs more depth, quality analysis sparse",
+        "narrative": "You produced a recommendation but skipped key quality-of-earnings checks. You treated cash flow gaps or receivables growth as noise without digging. Your call will be challenged if the stock moves against you, and you won't have the data to defend it."
+      },
+      {
+        "min_total": -99,
+        "label": "Missed the quality discipline entirely",
+        "narrative": "You accepted headline numbers without running the scorecard — no cash conversion check, no accruals calculation, no receivables-vs-revenue test. When (not if) the quality issues surface, you'll have been blindsided by signals that were visible from day one."
+      }
+    ]
+  }
+}

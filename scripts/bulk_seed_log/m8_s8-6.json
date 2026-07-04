@@ -1,0 +1,243 @@
+{
+  "sim_type": "decision_making",
+  "title": "Bajaj Finance Governance Crisis: Read the Red Flags",
+  "scenario": "You are an equity analyst at Motilal Oswal covering Bajaj Finance. This morning, you learn that Fitch Ratings' lead auditor has abruptly resigned mid-term citing 'unresolved audit concerns'. Simultaneously, your data team flags that promoter pledge has climbed from 18% to 47% in two quarters. The stock is down 6% in pre-market. You have 90 minutes to decide your recommendation before market open.",
+  "instructions": "Walk through 4 decision points. At each, choose one option. Your choices accumulate scores on three dimensions: rigor (quality of your governance analysis), speed (timely action), and client_trust (how stakeholders view your call). Your final score determines your recommendation grade.",
+  "learning_objective": "Distinguish governance red flags from routine corporate events, quantify promoter pledging risk, and escalate governance concerns before they hit financials.",
+  "hints": [
+    "An auditor's sudden exit mid-term with unresolved concerns is almost never routine — treat it as a signal to dig deeper, not dismiss.",
+    "Promoter pledge climbing 29 percentage points in two quarters is aggressive financial stress — calculate the forced-selling risk if the stock falls 20%.",
+    "Weak governance often leads the financials by 2-4 quarters — your job is to flag it now, not after the numbers blow up."
+  ],
+  "scenario_context": "Bajaj Finance Limited (₹7,540 stock price, market cap ₹3.2 lakh crore) is India's leading pure-play NBFC, with a stellar reputation for corporate governance. You've held a 'BUY' on it for 18 months. But this morning, three signals arrive together: (1) Fitch Ratings' audit firm publicly announces the resignation of its lead partner, citing 'material audit concerns not resolved to our satisfaction' — unusual, given Bajaj's reputation; (2) promoter pledge jumps from 18% to 47% in Q2 FY25, disclosed in an NSE filing; (3) CFO Rajeev Jain has not appeared on recent investor calls, replaced by the finance director. Your research team is frantic. The market opens in 90 minutes. You must decide: escalate the concern and downgrade, or dig deeper before acting.",
+  "initial_data": {
+    "Stock": "Bajaj Finance Limited",
+    "Current Price": "₹7,540",
+    "Previous Recommendation": "BUY",
+    "Your Call Status": "Under Review",
+    "Time to Market Open": "90 minutes",
+    "Promoter Pledge Q1": "18%",
+    "Promoter Pledge Q2": "47%",
+    "Auditor Status": "Lead Partner Resigned — Mid-term"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Immediate Response: Auditor Resignation Signal",
+      "narrative": "Fitch Ratings has just released a statement: 'Due to material audit concerns that remain unresolved, our firm has withdrawn from the audit engagement effective immediately. The company has been notified.' Your morning briefing notes flag this as 'unprecedented for Bajaj Finance'. Your team is split: some say it's a procedural disagreement; others say it's a governance red flag. You have 15 minutes to decide your initial stance before publishing a note to clients.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Treat as routine; await company response",
+          "description": "Auditors and companies have disputes; this may resolve cleanly. Request clarification from IR before moving.",
+          "consequence": "You call Bajaj Finance IR, who promise a 'comprehensive response' by 10 AM. You wait. Market opens at 9:15 AM. You publish nothing pre-open, losing the chance to warn early. Clients who see the headline sell anyway, blaming you for silence. Rigor suffers; speed suffers; client_trust drops.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": -3,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Flag as high-priority governance concern immediately",
+          "description": "An auditor citing 'unresolved audit concerns' is rare and serious. Escalate to your CIO and publish a cautionary note pre-market, stating concerns are under review.",
+          "consequence": "You publish a note: 'Bajaj Finance auditor exit amid unresolved concerns — we are reviewing governance implications.' Clients respect the speed and transparency. Your CIO backs you. The stock opens down 8%, but your early flag saves reputational credibility and positions you as vigilant. Rigor increases; speed maximized; client_trust protected.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 3,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Request emergency IR call; condition any note on company clarity",
+          "description": "Push for urgent dialogue with CFO or audit committee, and publish nothing until you have direct answers on the auditor's specific concerns.",
+          "consequence": "You secure a 7 AM call with the Audit Committee chair. They claim it was a 'scope disagreement on related-party transactions, now resolved'. You publish a measured note noting the concern has been addressed. The market reacts calmly (stock down 2%). However, if the auditor statement later proves understated, your credibility takes a hit. Rigor is moderate; speed is adequate; client_trust hinges on the truth emerging.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Promoter Pledge Deep Dive: Quantify the Risk",
+      "narrative": "Having decided your stance on the auditor, you now focus on the promoter pledge spike: 18% → 47% in two quarters. Your data analyst hands you the numbers. Bajaj Finance promoters hold 25.8 crore shares. At Q2, 12.1 crore are pledged. The stock is at ₹7,540. If the stock falls to ₹6,000 (a 20% decline), lenders may trigger forced selling. You must decide: how material is this to your investment thesis?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Dismiss; high-quality promoters don't default",
+          "description": "Bajaj Finance promoters are wealthy industrialists; pledging is routine leverage, not distress.",
+          "consequence": "You note the pledging but don't weight it heavily. Within weeks, a margin call forces the sale of 2 crore pledged shares, pushing the stock down 15%. Clients holding your 'BUY' lose money. Your failure to quantify forced-selling risk undermines your credibility. Rigor collapses; client_trust erodes.",
+          "score_impact": {
+            "rigor": -3,
+            "speed": 0,
+            "client_trust": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Calculate forced-selling scenario; flag it explicitly",
+          "description": "Model a 20% stock fall. At ₹6,000, lenders control ~12 crore shares worth ₹72,000 crore — enough to flood the market. Publish a 'forced-selling risk' table in your note.",
+          "consequence": "Your analysis is forensic and specific. You show clients that a 20% fall risks cascading selling by lenders, turning a dip into a crash. This reframes pledging as a *mechanism*, not a symptom. Clients value the clarity. Your rigor and client_trust spike. Speed is preserved because you quantify in real time.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 2,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Treat pledging as data point; factor into risk rating but don't alarm",
+          "description": "Flag the 47% pledge as 'elevated' and worth monitoring, but note that Bajaj Finance's profitability and capital generation may offset it.",
+          "consequence": "You take a balanced tone. Some clients appreciate the nuance; others feel you've downplayed a real risk. When forced selling does occur (as it often does), you're caught between saying 'I mentioned it' and 'I should have screamed.' Rigor is moderate; client_trust is mixed.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 0,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "CFO Absence & Board Communication: Dig or Move On?",
+      "narrative": "Now you notice the CFO hasn't appeared on investor calls for 3 weeks. He's been replaced by the finance director. When you ask IR why, you get: 'Rajeev is focused on strategic initiatives.' Your experience tells you that sudden CFO stepping-back during governance uncertainty is itself a signal. Do you push for clarity on his status, or accept the IR response and move to your final recommendation?",
+      "options": [
+        {
+          "id": "A",
+          "label": "Accept IR response; CFO transitions are normal",
+          "description": "Finance directors often lead calls; there's no rule that the CFO must attend. You move forward without pressing.",
+          "consequence": "Two weeks later, Bajaj Finance announces the CFO is on 'medical leave' — a term that often masks deeper issues. Clients realize you missed a churn signal. Your rigor is questioned. The market adjusts negatively. Rigor and client_trust both suffer.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 0,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Email IR directly; request clarity on CFO status in writing",
+          "description": "Don't accept the vague answer. Ask point-blank: 'Is Rajeev Jain staying in role? Any health or other issues?' Get it in writing.",
+          "consequence": "IR responds in writing: 'Rajeev remains CFO. No health issues. The finance director leads calls for operational efficiency.' You have a clear, documented answer. If this proves false later, you have evidence. Rigor is protected; you're thorough. Speed is minimally impacted.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Treat CFO absence as THIRD red flag; add to escalation",
+          "description": "CFO churn + auditor exit + high pledging = three-signal pattern. This isn't coincidence. Escalate immediately to your CIO with a 'governance concerns accumulating' alert.",
+          "consequence": "You formally alert your CIO that three simultaneous governance red flags (auditor, pledge, CFO) warrant a downgrade or 'Under Review' call. Your firm issues a formal note: 'Bajaj Finance — Governance concerns prompt rating downgrade to HOLD.' Rigor is maximized; speed is fast; but client_trust is split — some respect the caution, others feel you're overcalling. Net positive.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final Call: Recommendation & Public Stance",
+      "narrative": "It's now 8:50 AM. Market opens in 25 minutes. You have enough data to make a call. Your CIO wants your final recommendation: BUY (hold), HOLD (pause), REDUCE (downgrade), or SELL (exit). Based on the auditor exit, promoter pledging spike, and CFO absence, what's your public stance? This is your last decision.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Maintain BUY; cite strong fundamentals and pending clarity",
+          "description": "Bajaj Finance's Q2 earnings were strong. Governance questions may resolve. You stand by your 18-month BUY case.",
+          "consequence": "You publish: 'Bajaj Finance — maintaining BUY. Auditor change and pledging are under review but do not alter our fundamental view.' The stock trades flat, then rallies 4% by end of day as others see your steadfastness. If governance clears, you're right and clients trust your cool head. If it blows up, you look negligent. High risk/reward. Rigor and client_trust hinge on the outcome being positive.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 1,
+            "client_trust": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Downgrade to HOLD; cite governance concerns; reassess in 2 weeks",
+          "description": "Three simultaneous red flags warrant caution. You downgrade to HOLD, stating you'll reassess once the auditor situation is clarified and pledging trend is assessed.",
+          "consequence": "You publish: 'Bajaj Finance — downgrading BUY to HOLD pending governance clarity. Auditor exit, promoter pledge spike, and CFO absence merit a pause. We'll reassess in 2 weeks.' Clients respect the balance — you're not panic-selling, but you're flagging caution. The stock dips 7% but stabilizes. Your reputation for prudence increases. Rigor is solid; speed is appropriate; client_trust strengthens.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 2,
+            "client_trust": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Reduce to SELL; cite auditor exit as governance failure; recommend exit",
+          "description": "An auditor citing unresolved concerns is a rare, serious signal. Combined with high pledging and CFO absence, this warrants exiting the position immediately.",
+          "consequence": "You publish: 'Bajaj Finance — reducing to SELL. Auditor exit citing unresolved concerns, promoter pledge spike to 47%, and CFO stepping back signal governance deterioration. We recommend existing holders exit.' The stock crashes 15% by noon. Your clients are spared the downside. But if governance clears and the stock recovers, you look alarmist. Rigor and speed are high; client_trust depends on being right about the governance breakdown.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 3,
+            "client_trust": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "Issue Under Review; suspend rating until auditor statement is public",
+          "description": "Request a formal company statement on the auditor exit before publishing a final recommendation. Issue 'Under Review' status to protect your credibility.",
+          "consequence": "You publish: 'Bajaj Finance — rating Under Review pending auditor statement on reasons for exit. We expect formal disclosure by EOD. Will reassess.' This buys time and shows discipline. Clients respect the methodical approach. But if the delay causes them to make uninformed trades, you may face criticism. Rigor is high; speed is sacrificed; client_trust is neutral.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "client_trust": 0
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Forensic analyst call",
+        "narrative": "You read the governance signals early, quantified the pledging risk with precision, flagged the CFO churn, and issued a measured but firm downgrade or Under Review stance. Clients see you as forensic and disciplined — you caught governance red flags before they hit the financials. Your reputation for governance vigilance is cemented."
+      },
+      {
+        "min_total": 5,
+        "label": "Solid risk management call",
+        "narrative": "You balanced speed and rigor. You didn't panic, but you flagged the concerns clearly. You quantified at least one red flag (auditor or pledging) and took a cautious stance. Clients may not love your conservatism, but they respect that you protected them from known governance risks. A strong, defensible call."
+      },
+      {
+        "min_total": 1,
+        "label": "Cautious but uneven call",
+        "narrative": "You raised some governance concerns but didn't connect the dots. You may have dismissed the auditor exit or downplayed pledging. Your final recommendation was inconsistent with the signals you observed. Clients are confused about your conviction. Repair your credibility by explaining the governance framework you used."
+      },
+      {
+        "min_total": -99,
+        "label": "Missed the red flags entirely",
+        "narrative": "You treated the auditor resignation as routine, dismissed the 47% promoter pledge as normal, and saw CFO absence as procedural. You issued a BUY or neutral stance despite three simultaneous governance warnings. When governance fails weeks later, clients lose money and blame your negligence. Your credibility as a governance analyst is damaged. Learn the lesson: governance signals lead the financials — read them."
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "module": 6,
+  "completed_at": "2026-07-04T09:47:32.337518+00:00",
+  "total_sessions": 1,
+  "sims_generated": 1,
+  "sims_failed": 0,
+  "by_type": {
+    "decision_making": 1
+  },
+  "total_engine_corrections": 0,
+  "elapsed_seconds": 57.3,
+  "rows": [
+    {
+      "session_no": "6.6",
+      "session_title": "Preparation — How a Senior Analyst Walks Into a Call Ready",
+      "db_session_id": "e1b088db-7cca-4704-b714-c543ea7f2cac",
+      "sim_type": "decision_making",
+      "sim_id": "554b0ca3-630c-4ed2-b034-26eaa60eb108",
+      "seconds": 57.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    }
+  ]
+}

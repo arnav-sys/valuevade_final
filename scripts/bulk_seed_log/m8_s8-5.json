@@ -1,0 +1,185 @@
+{
+  "sim_type": "document",
+  "title": "Bajaj Finance Balance Sheet: Tracing Hidden Leverage",
+  "scenario": "You're a junior analyst at Motilal Oswal covering large-cap NBFCs. Your senior has asked you to audit Bajaj Finance's latest balance sheet for off-balance-sheet risks — particularly loans to related parties, contingent liabilities, and group complexity. The standalone numbers look solid, but you know the danger hides in the notes.",
+  "instructions": "Read the balance sheet excerpt, hover over highlighted line items for tooltips, then answer analytical questions about contingent liabilities, related-party exposure, and leverage ratios.",
+  "learning_objective": "Identify and measure off-balance-sheet risks by reading contingent liabilities, related-party transactions, and calculating the contingent-liability-to-net-worth ratio.",
+  "hints": [
+    "Look at the 'Contingent Liabilities' section — that's the off-balance-sheet risk the session warned about. Compare it to Net Worth.",
+    "The contingent-liability-to-net-worth formula is (Contingent Liabilities ÷ Net Worth) × 100. A ratio above ~50% means hidden risk is material.",
+    "You'll need to identify total contingent liabilities (₹3,850 cr), net worth (shareholder equity: ₹18,500 cr), then divide to find the ratio."
+  ],
+  "document_data": {
+    "company_name": "Bajaj Finance Limited",
+    "period": "FY24 Annual Report (Standalone Balance Sheet)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Assets",
+        "line_items": [
+          {
+            "id": "cash",
+            "label": "Cash and cash equivalents",
+            "current_year": 8420,
+            "previous_year": 6850
+          },
+          {
+            "id": "loans",
+            "label": "Loans and advances (net)",
+            "current_year": 145680,
+            "previous_year": 128500
+          },
+          {
+            "id": "investments",
+            "label": "Investments",
+            "current_year": 22340,
+            "previous_year": 19870
+          },
+          {
+            "id": "rpt_loans",
+            "label": "Loans to related parties",
+            "current_year": 1280,
+            "previous_year": 890
+          }
+        ],
+        "section_total": {
+          "label": "Total Assets",
+          "current_year": 189450,
+          "previous_year": 169890
+        }
+      },
+      {
+        "title": "Liabilities & Equity",
+        "line_items": [
+          {
+            "id": "borrowings",
+            "label": "Borrowings",
+            "current_year": 142300,
+            "previous_year": 125600
+          },
+          {
+            "id": "deposits",
+            "label": "Deposits from customers",
+            "current_year": 18900,
+            "previous_year": 15200
+          },
+          {
+            "id": "other_liab",
+            "label": "Other liabilities",
+            "current_year": 9750,
+            "previous_year": 8100
+          },
+          {
+            "id": "share_capital",
+            "label": "Share capital",
+            "current_year": 650,
+            "previous_year": 650
+          },
+          {
+            "id": "reserves",
+            "label": "Reserves and surplus",
+            "current_year": 17850,
+            "previous_year": 15340
+          }
+        ],
+        "section_total": {
+          "label": "Total Liabilities & Equity",
+          "current_year": 189450,
+          "previous_year": 169890
+        }
+      },
+      {
+        "title": "Off-Balance-Sheet Disclosures",
+        "line_items": [
+          {
+            "id": "cont_liab_guarantee",
+            "label": "Contingent liability — guarantees issued",
+            "current_year": 2100,
+            "previous_year": 1750
+          },
+          {
+            "id": "cont_liab_disputes",
+            "label": "Contingent liability — disputed tax demands",
+            "current_year": 1200,
+            "previous_year": 980
+          },
+          {
+            "id": "cont_liab_litigation",
+            "label": "Contingent liability — litigation provisions",
+            "current_year": 550,
+            "previous_year": 420
+          }
+        ],
+        "section_total": {
+          "label": "Total Contingent Liabilities",
+          "current_year": 3850,
+          "previous_year": 3150
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rpt_loans",
+      "tooltip": "Loans to related parties grew 44% YoY (₹890 cr → ₹1,280 cr). Read Ind AS 24 disclosures to confirm these loans are at arm's-length terms and serve a business purpose, not siphon cash to promoter firms."
+    },
+    {
+      "id": "cont_liab_guarantee",
+      "tooltip": "Guarantees issued (₹2,100 cr) are off-balance-sheet but represent real contingent obligations. If crystallised, they become actual liabilities and hit net worth directly."
+    },
+    {
+      "id": "cont_liab_disputes",
+      "tooltip": "Disputed tax demands (₹1,200 cr) are contingent — outcome uncertain. A high ratio of these to net worth signals material litigation risk that could surprise if settled adversely."
+    },
+    {
+      "id": "reserves",
+      "tooltip": "Reserves and surplus (₹17,850 cr) plus share capital (₹650 cr) = net worth of ₹18,500 cr. This is the denominator for the contingent-liability-to-net-worth ratio."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate the Contingent Liability to Net Worth ratio (%) for FY24. Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 20.8,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "Total Contingent Liabilities = ₹3,850 cr. Net Worth = Share Capital (₹650 cr) + Reserves (₹17,850 cr) = ₹18,500 cr. Ratio = (3,850 ÷ 18,500) × 100 = 20.8%. This is below the 50% warning threshold, suggesting contained off-balance-sheet risk for Bajaj Finance."
+    },
+    {
+      "id": "t2",
+      "question": "What is the YoY growth rate in Loans to Related Parties (%)? Round to 1 decimal place.",
+      "answer_type": "number",
+      "expected_value": 43.8,
+      "tolerance": 1,
+      "unit": "%",
+      "explanation": "Loans to related parties grew from ₹890 cr (FY23) to ₹1,280 cr (FY24). Growth = (1,280 - 890) / 890 × 100 = 43.8%. A sharp year-on-year spike warrants careful review of who these related parties are and whether the loans serve legitimate business purposes (read Ind AS 24 disclosures)."
+    },
+    {
+      "id": "t3",
+      "question": "Which accounting standard requires Bajaj Finance to disclose related-party transactions in the notes?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "ind as 24",
+        "related party"
+      ],
+      "explanation": "Ind AS 24 mandates disclosure of all related-party transactions — loans, sales, purchases, guarantees, and key management remuneration. The analyst's job is to read these notes carefully and ask whether money is quietly leaking to insiders."
+    },
+    {
+      "id": "t4",
+      "question": "If the disputed tax demand contingent liability (₹1,200 cr) were to materialise fully, what would be the new contingent-liability-to-net-worth ratio (%)?",
+      "answer_type": "number",
+      "expected_value": 27.0,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "If just the disputed tax demand crystallises, total contingent liabilities would fall from ₹3,850 cr to ₹2,650 cr (removing the ₹1,200 cr dispute). But the ₹1,200 cr would hit net worth directly, reducing it to ₹17,300 cr. New ratio = (2,650 ÷ 17,300) × 100 = 15.3%. However, if the question asks what the ratio is AFTER the liability materialises and is recorded, it becomes part of actual debt/liability, not contingent. The safer interpretation: currently, disputes + guarantees + litigation = ₹3,850 cr contingent. Removing only disputes leaves ₹2,650 cr contingent against unchanged ₹18,500 cr equity = 14.3%. But if the ₹1,200 cr tax hits equity: new contingent ratio on ₹2,650 ÷ (18,500 - 1,200) = ₹2,650 ÷ ₹17,300 = 15.3%."
+    },
+    {
+      "id": "t5",
+      "question": "Name three types of contingent liabilities disclosed in Bajaj Finance's balance sheet and explain why they matter to an equity analyst.",
+      "answer_type": "free_text",
+      "sample_answer": "The three contingent liabilities are: (1) Guarantees issued (₹2,100 cr) — if counterparties default, Bajaj must pay, hitting cash and net worth; (2) Disputed tax demands (₹1,200 cr) — if the tax authority wins, Bajaj owes the amount plus penalties, reducing profit and equity; (3) Litigation provisions (₹550 cr) — if lawsuits are lost, Bajaj must pay damages, eroding net worth. Together, they represent ₹3,850 cr of hidden risk that isn't on the balance sheet but could materialise suddenly. Analysts measure these against net worth to assess how much equity is silently exposed to off-balance-sheet shocks.",
+      "explanation": "This tests the student's ability to recognise and articulate why contingent liabilities matter. The correct answer identifies all three types, explains the cash/equity impact if they crystallise, and connects the concept to the contingent-liability-to-net-worth ratio taught in the session. A strong answer emphasises that these liabilities are 'hidden' until they hit, making them dangerous surprises."
+    }
+  ]
+}

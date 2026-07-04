@@ -1,0 +1,166 @@
+{
+  "sim_type": "document",
+  "title": "Titan Company – FY24 Notes Deep Dive: Where Policies Hide",
+  "scenario": "You're a junior analyst at a Mumbai equity desk reviewing Titan Company's FY24 annual report. Your senior asks you to read beyond the headline P&L — to interrogate the notes and spot any accounting-policy red flags or aggressive choices that might be inflating reported profit. The numbers look solid, but the real story is in the disclosures.",
+  "instructions": "Read Titan's simplified financial statements, hover over the highlighted line items to reveal footnote insights, then answer analytical questions about revenue recognition, depreciation policy, capitalisation, and what the notes reveal about profit quality.",
+  "learning_objective": "Identify accounting-policy choices and red flags in the notes that reveal whether reported profit is supported by genuine business performance or inflated by aggressive accounting choices.",
+  "hints": [
+    "Check the notes on 'depreciation method and asset lives' — did the company change either this year? What was the profit impact?",
+    "Look at the revenue-recognition note: does the company recognise revenue upfront or over time? Is there a large 'unbilled revenue' or 'contract asset' growing faster than billed revenue?",
+    "Compare 'Capitalised development costs' and 'CWIP' as a share of revenue year-over-year. If rising while reported profit is healthy but operating cash flow is weak, investigate whether costs are being hidden on the balance sheet."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 28450,
+            "previous_year": 24680
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed & employee benefits",
+            "current_year": 16820,
+            "previous_year": 15240
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 1240,
+            "previous_year": 1180
+          },
+          {
+            "id": "other_exp",
+            "label": "Other expenses (breakout in notes)",
+            "current_year": 3890,
+            "previous_year": 3620
+          },
+          {
+            "id": "other_inc",
+            "label": "Other income",
+            "current_year": 420,
+            "previous_year": 280
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 6920,
+          "previous_year": 4920
+        }
+      },
+      {
+        "title": "Consolidated Balance Sheet (Selected)",
+        "line_items": [
+          {
+            "id": "ppe",
+            "label": "Property, plant & equipment (net)",
+            "current_year": 8940,
+            "previous_year": 8120
+          },
+          {
+            "id": "cwip",
+            "label": "Capital work-in-progress",
+            "current_year": 2850,
+            "previous_year": 1920
+          },
+          {
+            "id": "intangible",
+            "label": "Intangible assets (incl. capitalised dev costs)",
+            "current_year": 1340,
+            "previous_year": 920
+          },
+          {
+            "id": "inventory",
+            "label": "Inventory",
+            "current_year": 5210,
+            "previous_year": 4860
+          },
+          {
+            "id": "receivables",
+            "label": "Trade receivables (net of provisions)",
+            "current_year": 3120,
+            "previous_year": 2840
+          }
+        ],
+        "section_total": {
+          "label": "Total Assets",
+          "current_year": 32180,
+          "previous_year": 28940
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rev",
+      "tooltip": "Revenue recognition policy note (see Accounting Policies 2.1): Titan recognises jewellery & watch revenue at point of delivery to customer (point-in-time). Requires scrutiny: does this exclude large unbilled revenues sitting as 'contract assets' in the notes?"
+    },
+    {
+      "id": "depr",
+      "tooltip": "Depreciation note disclosure: Titan changed asset-life estimates for retail fixtures from 10 years to 12 years in FY24 (disclosed in policy changes). This policy change reduced depreciation expense by ~₹85 Cr. Strip this out to see underlying operational depreciation trend."
+    },
+    {
+      "id": "cwip",
+      "tooltip": "Capital work-in-progress jumped 48% YoY (₹1,920 Cr → ₹2,850 Cr). Notes show ₹680 Cr of new store buildouts and ₹270 Cr of IT systems in progress. Track whether these move to productive assets next year or remain capitalised indefinitely — a sign of overstated asset value."
+    },
+    {
+      "id": "intangible",
+      "tooltip": "Intangible assets (mainly capitalised software and store-renovation costs) rose 46% YoY. The notes detail ₹420 Cr of capitalised brand-building and marketing costs treated as intangibles, amortised over 5 years. Aggressive? Compare to peers' policies and monitor if amortisation is realistic."
+    },
+    {
+      "id": "other_inc",
+      "tooltip": "Other income jumped 50% YoY (₹280 Cr → ₹420 Cr). Notes show ₹180 Cr is treasury/dividend income and forex gains, not from core jewellery/watch business. This inflates PBT but masks weak core operating performance — quality-of-earnings red flag."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was Titan's YoY growth in Revenue from operations (%)? Does this growth pace match the rise in Capitalised development costs and CWIP?",
+      "answer_type": "number",
+      "expected_value": 15.3,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(28450 - 24680) / 24680 = 15.3% revenue growth. However, CWIP grew 48%, intangibles grew 46%, far outpacing revenue — a red flag suggesting aggressive capitalisation of costs that might not generate corresponding revenue growth. Analyst should interrogate whether these balance-sheet assets are truly productive or cost-hiding."
+    },
+    {
+      "id": "t2",
+      "question": "The accounting-policies note discloses that Titan changed depreciation asset lives (retail fixtures: 10 years → 12 years) in FY24, reducing depreciation by ₹85 Cr. What does this reveal about profit quality, and what should an analyst do?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "policy change",
+        "non-operational",
+        "underlying profit",
+        "depreciation",
+        "strip out"
+      ],
+      "explanation": "A policy change that conveniently boosts a weak year's profit (FY23 PBT was ₹4,920 Cr; FY24 jumped to ₹6,920 Cr, +41%) signals management intent to smooth earnings via accounting rather than operational improvement. The analyst must strip out the ₹85 Cr depreciation benefit to compute 'adjusted' PBT = ₹6,835 Cr (still +38% but less of a leap) and challenge whether the asset-life extension is justified by real-world evidence or pure earnings management."
+    },
+    {
+      "id": "t3",
+      "question": "Examine the capitalised development costs (₹420 Cr per notes) now sitting in Intangible assets. What risks does aggressive capitalisation of marketing/brand costs pose to the analyst's valuation, and how would you detect if this is genuine asset-building or cost-hiding?",
+      "answer_type": "free_text",
+      "sample_answer": "Capitalised marketing and brand-building costs are inherently subjective — the company is calling operating costs 'assets,' deferring their P&L impact. Risk: if these 'assets' don't generate proportional future revenue or if customer loyalty doesn't materialise, the intangibles will be impaired (written off), destroying both past and future earnings credibility. Detection: (1) compare the 5-year amortisation charge (₹84 Cr/year) against incremental revenue attributable to branded / renovated stores; (2) track store-level profitability to see if renovated stores outperform older stores; (3) if operating cash flow remains weak while reported profit is healthy, it signals costs are being capitalised rather than expensed — cash went out but didn't hit the P&L. (4) Monitor the 'Other expenses' breakdown for whether marketing and brand spend are also being expensed — if both capitalised AND expensed, that's double-counting and a fraud signal.",
+      "explanation": "This tests whether the student understands the mechanics and risks of capitalisation as an earnings-management lever. The correct answer shows: (1) identification that brand/marketing capitalisation is aggressive/subjective, (2) awareness of impairment risk, (3) forensic techniques to validate whether the capitalised costs are generating real returns (store-level profitability, cash-flow reconciliation, expenses duplication checks). A strong analyst would flag Titan's rapid intangible build as a scrutiny area and demand evidence (same-store sales uplift, customer-retention metrics, cash-flow alignment) before accepting the intangible asset at book value. Weak answers that don't mention cash-flow divergence or impairment risk are missing the core insight."
+    },
+    {
+      "id": "t4",
+      "question": "Other income jumped from ₹280 Cr (FY23) to ₹420 Cr (FY24). Per the notes, ₹180 Cr is treasury/dividend income and forex gains. What does this reveal about the quality of Titan's reported profit, and would you adjust it for valuation purposes?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "non-core",
+        "operating profit",
+        "quality of earnings",
+        "recurring",
+        "one-off",
+        "strip"
+      ],
+      "explanation": "Other income of ₹420 Cr represents 6% of PBT (₹6,920 Cr), but ₹180 Cr (43% of other income) is non-recurring treasury and forex gains, not from core jewellery/watch operations. This masks weak underlying operating performance — core PBT before one-off items is weaker than headline PBT suggests. An analyst would 'quality-adjust' by computing 'Operating PBT' (excluding non-recurring other income) = ₹6,920 - ₹180 = ₹6,740 Cr, and monitor whether treasury/forex gains are recurring or one-off (a true one-off should be excluded from valuation multiples and DCF terminal value). This is a Session 7.1 (profit-quality) and 7.6 (notes interrogation) concept combined."
+    }
+  ]
+}

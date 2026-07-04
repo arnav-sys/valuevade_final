@@ -1,0 +1,277 @@
+{
+  "sim_type": "decision_making",
+  "title": "Diagnosing Bajaj Finance: From Report to Verdict",
+  "scenario": "You're a junior analyst at a Mumbai equity desk. Your team lead has handed you Bajaj Finance's latest annual report and asked for a financial-health diagnosis in 48 hours ahead of earnings. You have three days to work through the statements, notes and comparables to produce a clear verdict: is this company financially sound and honestly reporting, or not?",
+  "instructions": "You will walk through five decision points, each representing a step in the diagnostic workflow. At each point, choose how to proceed — your choices accumulate scores across three dimensions: rigor (depth and completeness of analysis), speed (efficient use of time), and client_trust (clarity and defensibility of the verdict). Your final score maps to a research verdict that your team lead will use.",
+  "learning_objective": "Sequence a full financial diagnostic workflow — from orient through verify-integrity to synthesise — integrating ten analytical tools into one coherent verdict backed by specific numbers.",
+  "hints": [
+    "The workflow is sequential: orient → read statements → make comparable → go deeper where it matters → clean numbers → judge quality → verify integrity → synthesise. Skipping early steps forces you to backtrack.",
+    "Cash flow is the lie detector; if profit and cash diverge significantly, you've found where forensic work must happen. Strength on four dimensions doesn't matter if integrity or cash fail.",
+    "Your final verdict must address all five dimensions — performance, strength, cash, quality, integrity — with each backed by a specific number. One-dimensional enthusiasm loses analyst credibility."
+  ],
+  "scenario_context": "Bajaj Finance is a large NBFC (non-bank financial company) listed on the NSE, known for retail lending (two-wheelers, consumer durables, personal loans). The company has grown aggressively over five years. Your job is to assess whether this growth is real, durable, cash-backed and honestly reported. You'll start with a blank diagnostic checklist and move through the workflow. Your lead trusts the ten tools you've learned but expects you to deploy them in sequence and know when to escalate to deeper forensics. A clean verdict will support a buy recommendation; a compromised one will flag 'pending' pending further due diligence.",
+  "initial_data": {
+    "Company": "Bajaj Finance Limited",
+    "Sector": "NBFC (Non-Bank Financial Company)",
+    "Current Price": "₹6,850",
+    "Your Research Status": "Pending",
+    "Time to Earnings Call": "72 hours",
+    "Years of Data": "5 years (FY2019–FY2023)",
+    "Revenue CAGR (5yr)": "18.2%",
+    "PAT CAGR (5yr)": "22.1%"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Orient and Set the Frame",
+      "narrative": "You've opened the report. Before you dive into numbers, you need to orient yourself: understand what Bjaj Finance does, what should drive its numbers, and what to watch. The risk here is diving straight into the P&L without building the mental model. Your lead has given you 48 hours and expects efficiency. You decide how deeply to orient.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Build a full business model first (2 hours)",
+          "description": "Read the business description, segment notes, management discussion, and product mix carefully. Map revenue drivers (loan originations, yields, mix) and costs (cost of funds, operating leverage). Build a mental framework of what the numbers should look like.",
+          "consequence": "You spend two hours but emerge with a clear model: Bajaj Finance originates retail loans (two-wheeler, personal, consumer durable), recognises interest income and fees upfront, and scales via funding from deposits and wholesale markets. You now know that revenue growth can come from origination volume, loan book size, or yield — critical to decompose later. Cost of funds is a key variable; margins will compress if funding rates rise. This model anchors every number you'll read.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -2,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "Quick skim: read business overview and confirm consolidated (30 min)",
+          "description": "Speed-focused. Confirm it's an NBFC that lends to retail, grab the segment revenue split, note the geographic mix, and confirm you're looking at consolidated financials. Move quickly to the statements.",
+          "consequence": "You know Bajaj Finance is retail-loan focused, confirmed consolidated. But you've missed the nuance of origination mix, yield drivers, and cost-of-funds sensitivity. You'll read the P&L without a clear frame of what's normal, risking misinterpretation of margin trends. When you see gross profit margin narrow, you won't know immediately whether it's because loan volumes slowed, funding costs rose, or mix shifted.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "Focus orient on the notes: accounting policies and segment notes only (1 hour)",
+          "description": "Skip the business description and go straight to the notes. Read segment revenue, loan-origination accounting (upfront interest vs. accrual), and any changes in capitalisation policy. This gives you the financial frame without the narrative.",
+          "consequence": "You gain technical clarity on how revenue is recognised (crucial for an NBFC — upfront interest recognition can flatter growth) and which segments are growing. But you miss the economic story: why are they originating more, what's the customer acquisition cost, how does the product mix drive yields? You'll read numbers without understanding what they mean.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 1,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "Read the Three Statements and Form a First Impression",
+      "narrative": "Oriented, you now read the income statement, balance sheet and cash flow. Your goal is to answer: does growth look real? Is the balance sheet a fortress or fragile? Does profit convert to cash? You're not looking for the full story yet — just the surface, and flags that will trigger deeper work.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Full deep read: answer all 8 P&L questions, 4 balance-sheet lenses, and cash-flow lie-detector checks (3 hours)",
+          "description": "Methodical. For the P&L: decompose revenue growth (origination vs. yield), margin trends, below-the-line items. For balance sheet: compute leverage ratios, liquidity, asset quality, ROCE. For cash flow: compare CFO to PAT over five years, compute accruals ratio, assess FCF sustainability.",
+          "consequence": "You emerge with a structured first impression: revenue growth driven 70% by volume, 30% by yield; EBITDA margin compressed from 55% to 48% (funding-cost squeeze); leverage stable at 3.2x net debt/equity; but CFO growing slower than PAT (accruals rising) — a flag. The balance sheet is strong (liquidity fine, no goodwill), but the cash flag means you'll need to dig into receivables ageing and provisioning in the notes. This depth gives you a clear roadmap for Step 4 (go deeper).",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Focused read: P&L revenue/margin, balance sheet leverage/liquidity, cash flow trend (1.5 hours)",
+          "description": "Speed-focused. Read P&L for top-line growth and EBITDA margin. Balance sheet for debt, equity, current/quick ratio. Cash flow for CFO trend. Get the headline story, skip the detail.",
+          "consequence": "You see revenue +18%, EBITDA margin at 48%, leverage 3.2x, CFO positive. Surface story looks solid. But you've missed the decomposition of growth (is it sustainable?), the margin compression driver (structural or temporary?), and the cash-profit divergence signal. You'll move into Step 3 (comparability) without flags, risking a shallow verdict.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Cash flow first, then P&L: prioritise the lie detector (1.5 hours)",
+          "description": "Analyst's shortcut. Start with cash flow — does CFO track PAT, is FCF positive and growing? If cash looks clean, skim the P&L for growth rate; if cash flags, dig the P&L. This sequences the highest-risk check first.",
+          "consequence": "You immediately see that CFO is diverging from PAT (a red flag). This forces you to dig into the P&L detail: why is profit growing faster than cash? You discover a rise in receivables — loan originations are growing but collections are lagging, or provisioning is moving. This flag directs your forensic work perfectly. You've done less total work but aimed it at the real question.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "client_trust": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "Make It Comparable and Spot Trends",
+      "narrative": "You now have a surface impression. The next step is to build five-year common-size P&L and balance sheets, compute CAGRs correctly, and compare Bajaj's structure to a peer (maybe HDFC Bank or Kotak Mahindra Bank). This is where you spot whether trends are normal or concerning.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Full comparability build: 5-year common-size P&L, balance sheet, peer comparison, CAGR checks (2.5 hours)",
+          "description": "Build the full picture. Common-size P&L line-by-line (revenue at 100%, each expense as % of revenue, each margin as % of revenue). Same for balance sheet (assets as % of total, debt as % of equity). Compute CAGR for all key lines (revenue, PAT, receivables, debt). Compare Bajaj's common-size structure to Kotak or HDFC Bank. Spot drifts.",
+          "consequence": "You see in the common-size P&L that operating expenses as % of revenue have stayed flat (good operational leverage), but cost of funds (interest expense) as % of revenue has risen from 18% to 22% — the margin compression is driven by rising funding costs, not inefficiency. In the balance sheet common-size, loan assets as % of total assets have risen from 78% to 84% (concentration risk, but expected for a lender). CAGR check: receivables growing at 19% vs. revenue at 18% (slight build, but not alarming). Peer comparison shows Kotak has similar cost-of-funds pressures. This context is crucial — it tells you margin compression is sectoral, not company-specific, and borrowers are well-diversified. Forensic work can be lighter.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Quick comparability: 3-year P&L trend, peer quick-check, focus on margin (1 hour)",
+          "description": "Faster. Build a simple three-year common-size P&L (just revenue, gross margin, EBITDA margin, PAT margin). Quick peer check (is Bajaj's EBITDA margin in line with Kotak/HDFC?). Spot the margin trend direction.",
+          "consequence": "You see that EBITDA margin is compressing and note that peers face similar pressure. You confirm this is sectoral, not a red flag specific to Bajaj. But you've missed the CAGRs and the balance-sheet leverage trends, so you don't see whether the loan origination is accelerating (sustainability question) or whether receivables are building concerning. You'll move to Step 4 (go deeper) with partial data.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Defer comparability; go straight to forensics based on Step 2 flags (skip to d4 via deep notes focus)",
+          "description": "Data-driven. If Step 2 raised specific flags (e.g., CFO diverging from PAT), skip comparability and go directly to the notes to investigate. Build comparability only if forensics are clean.",
+          "consequence": "You're efficient if the flags are real (you catch issues early), but you risk missing the context that would show a flag is normal. For instance, if receivables are rising, is that because Bajaj is originating faster (expected, not concerning) or because collections are slowing (concerning)? Peer comparability would show you the answer. You'll know soon at Step 4, but you risk a false-positive panic.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Go Deeper: Segments, Notes, Off-Balance-Sheet, Quality",
+      "narrative": "Surface and trends are sketched. Now you go deep where the flags point. For Bajaj, the likely questions: are receivables ageing acceptably? What's the loan-loss provision trend? Are there related-party transactions? Are lease and guarantee liabilities material? Is earnings quality solid? This is the forensic step.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Full forensics: segment margins, receivables ageing, provisions, related parties, leases, quality scorecard (2.5 hours)",
+          "description": "Thorough. Read segment notes: are all segments growing, or is growth concentrated? Receivables ageing: are loans aging worse? Provisions: is the LLP (loan loss provision) as % of receivables stable or declining (a flag)? Related-party transactions: are there large transactions, transfer pricing concerns? Lease liabilities: add to net debt. Quality scorecard: is earnings cash-backed, conservative, recurring?",
+          "consequence": "You discover that the two-wheeler segment (40% of originations) is showing slight delinquency rise in the 60+ DPD bucket, but it's in line with portfolio age and macro conditions. LLP as % of receivables is stable at 3.2% (healthy). Related-party transactions are modest (< 2% of revenue) and at arm's length (no red flags). Lease liabilities add ₹180 Cr to net debt (material but not shocking). Earnings quality is high: CFO/PAT is 85% (acceptable for an NBFC), few one-offs, conservative provisioning. This deep read gives you the confidence that flags from Step 2 are sectoral, not company-specific, and integrity is clean.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "client_trust": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        },
+        {
+          "id": "B",
+          "label": "Focused forensics: receivables ageing and LLP provision (1.5 hours)",
+          "description": "Efficient. Read only the receivables ageing table and the loan loss provision note. If both look stable, assume segments and related parties are fine; move to verdict.",
+          "consequence": "You see that delinquency in the 60+ DPD bucket is at 1.8% (up from 1.3% three years ago) and LLP is stable. The data looks acceptable. But you've missed segment-level margin trends (are all segments equally profitable or is growth concentration hiding margin pressure in some segments?), related-party transactions (a governance concern if material), and lease liabilities (which would need to be added to net debt for a true leverage picture). Your verdict will be slightly incomplete.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "client_trust": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        },
+        {
+          "id": "C",
+          "label": "Light forensics: scan notes for keywords (related party, lease, provision) and spot-check one segment (45 min)",
+          "description": "Quick flag-check. Search notes for 'related party', 'contingent liability', 'operating lease'. If nothing jumps, assume integrity is clean. Spot-check the largest segment (two-wheeler) for margin and origination trend.",
+          "consequence": "You quickly confirm no major red flags. But you lack depth on the actual numbers — what are the related-party amounts? Are leases large? Are segment margins compressing or stable? You'll move to verdict with a surface-level comfort, risking a shallow call.",
+          "score_impact": {
+            "rigor": -1,
+            "speed": 2,
+            "client_trust": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d5"
+        }
+      ]
+    },
+    {
+      "id": "d5",
+      "title": "Synthesise and Render the Verdict",
+      "narrative": "You've run the diagnostic. Now you synthesise all the evidence into one structured verdict: is Bajaj Finance financially strong and honestly reported? Your lead expects a clear call backed by specific numbers across five dimensions (performance, strength, cash, quality, integrity). This is where you tie it together.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Structured 5-dimensional verdict with specific numbers and confidence level (1.5 hours)",
+          "description": "Comprehensive synthesis. Address all five dimensions — performance (revenue +18%, EBITDA margin 48% on funding pressures), strength (leverage 3.2x net debt/equity, stable on sectoral rates), cash (CFO 85% of PAT, slight build in receivables but normal for origination growth), quality (conservative provisioning, few one-offs, cash-backed earnings), integrity (clean related parties, no audit qualifications, statements reconcile). Conclude: financially strong on growth, cash and quality; acknowledge margin pressure is sectoral; all dimensions healthy. Risk: funding-cost cycle — if rates rise further, margins compress. Confidence: HIGH.",
+          "consequence": "Your lead reads a clear, complete verdict. Each dimension is addressed with evidence. The recommendation flows logically: growth is real and cash-backed, balance sheet is strong, no integrity concerns, margins are under sectoral pressure but not company-specific, earnings are high-quality. A junior analyst on your desk can read this and explain it to a portfolio manager. The confidence level gives them a sense of conviction. This is research-report quality.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": 0,
+            "client_trust": 3
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Narrative verdict: performance-focused, with caveats on leverage and cash (1 hour)",
+          "description": "Faster synthesis. Lead with the growth story: revenue +18%, PAT +22%, segments diverse, no integrity issues. Acknowledge leverage is stable and cash is converting. Caveat: margins under pressure, watch funding costs. Conclusion: growth momentum is clear; financially sound pending rate environment. Confidence: MODERATE.",
+          "consequence": "Your lead gets a readable verdict but misses the full dimensional structure. A reader can understand the growth call but doesn't have a complete picture of strength, quality and the interplay between them. This verdict would need follow-up questions. It's incomplete, though directionally reasonable.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 2,
+            "client_trust": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Short summary: growth and margins, no structural issues, recommend pending 48-hour note review (45 min)",
+          "description": "Minimal synthesis. Bajaj is growing at 18-22%, margins are fine, no red flags. Pending deeper note review (allocate to a senior analyst if needed), but trajectory looks positive. Confidence: PENDING.",
+          "consequence": "Your lead sees a surface-level call that defers the actual verdict to later. This isn't a diagnostic — it's a placeholder. It offers no integrated view of the five dimensions and no confidence level. For a fast-moving desk this might be an acceptable interim, but it's not a complete diagnostic.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 2,
+            "client_trust": -2
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 14,
+    "outcome_mapping": [
+      {
+        "min_total": 10,
+        "label": "Master diagnostician",
+        "narrative": "You ran the ten-tool diagnostic workflow with rigor and clarity. Bajaj Finance emerges as financially strong and honestly reported, with growth anchored in cash flow, margins under sectoral pressure (not company-specific), and zero integrity concerns. Your structured 5-dimensional verdict is the standard your desk will expect from all analysts. You've integrated the ten tools into a fluent, defensible process."
+      },
+      {
+        "min_total": 6,
+        "label": "Solid analyst call",
+        "narrative": "You ran most of the diagnostic workflow and reached a defensible verdict: Bajaj Finance is financially sound with reasonable growth. You may have skipped depth in comparability or forensics, or your final verdict lacked full dimensional structure, but the core claim (growth real, cash-backed, balance sheet solid) stands. Your team lead can use this to move forward, though a senior analyst might tighten the forensics."
+      },
+      {
+        "min_total": 2,
+        "label": "Incomplete diagnosis",
+        "narrative": "You assembled evidence but didn't sequence the diagnostic workflow properly. You may have jumped to forensics without orienting first, or rendered a verdict before comparing to peers, or missed one dimension entirely (e.g., glossed over cash-flow quality). The call is not wrong, but it's shallow and wouldn't survive a push-back question. Your lead would ask for deeper work."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread the company",
+        "narrative": "You either skipped too many workflow steps, rendering a surface-level verdict that misses material risks, or you conflated efficiency with completeness and ended up deferring the actual diagnosis. Bajaj Finance deserved a full forensic diagnostic, and you didn't deliver one. Back to the drawing board."
+      }
+    ]
+  }
+}

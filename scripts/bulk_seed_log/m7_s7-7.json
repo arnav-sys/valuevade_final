@@ -1,0 +1,384 @@
+{
+  "sim_type": "excel",
+  "title": "Normalise TCS Earnings: Strip One-Offs to Find Real Profit",
+  "scenario": "TCS reported FY2024 PAT of ₹42,150 crore, but the finance team notes exceptional items: a ₹8,500 crore one-time gain on the sale of a subsidiary stake, a ₹2,100 crore impairment charge on legacy infrastructure, and a ₹1,200 crore one-time tax settlement (gain). Your Mumbai desk must strip these to find the true recurring earnings — the number to value the company on.",
+  "instructions": "Identify each non-recurring item, compute its after-tax impact at 23% tax rate, and build normalised PAT by removing gains and adding back losses, applying the frequency test to flag recurring 'exceptionals' that should not be adjusted.",
+  "learning_objective": "Compute normalised earnings by stripping after-tax non-recurring gains and losses in both directions, apply the frequency test to reclassify mislabelled exceptionals, and compute the honest normalised P/E that reveals true valuation.",
+  "hints": [
+    "Start with reported PAT; identify which items are truly one-time (appear once) versus recurring (appear yearly). After-tax means multiply the pre-tax amount by (1 − tax rate).",
+    "Non-recurring gains reduce normalised earnings (subtract from reported), non-recurring losses increase it (add back). A ₹1,200 crore pre-tax tax benefit at 23% tax is roughly ₹924 crore after-tax; subtract it from reported PAT.",
+    "The impairment charge: if it's genuinely one-time, add back its after-tax amount. The subsidiary stake sale: if it's a genuine disposal (not part of normal operations), strip the after-tax gain. Then compute normalised P/E using normalised earnings as the denominator."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Reported PAT (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Item Description",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Pre-tax Amount (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Type (Gain/Loss)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Recurring?",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 42150,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Subsidiary stake sale gain",
+            "readOnly": true
+          },
+          "D2": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "E2": {
+            "value": "Gain",
+            "readOnly": true
+          },
+          "F2": {
+            "value": "No - one-time",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 42150,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "Legacy infrastructure impairment",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 2100,
+            "readOnly": true
+          },
+          "E3": {
+            "value": "Loss",
+            "readOnly": true
+          },
+          "F3": {
+            "value": "No - one-time",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 42150,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "One-time tax settlement",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "E4": {
+            "value": "Gain",
+            "readOnly": true
+          },
+          "F4": {
+            "value": "No - one-time",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY2023",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 38920,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Normal operations",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E5": {
+            "value": "None",
+            "readOnly": true
+          },
+          "F5": {
+            "value": "Yes",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY2022",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 35640,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Normal operations",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E6": {
+            "value": "None",
+            "readOnly": true
+          },
+          "F6": {
+            "value": "Yes",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY2021",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 32100,
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Normal operations",
+            "readOnly": true
+          },
+          "D7": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E7": {
+            "value": "None",
+            "readOnly": true
+          },
+          "F7": {
+            "value": "Yes",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "FY2020",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 29850,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Normal operations",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E8": {
+            "value": "None",
+            "readOnly": true
+          },
+          "F8": {
+            "value": "Yes",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": 842780,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": true
+          },
+          "D9": {
+            "value": "",
+            "readOnly": true
+          },
+          "E9": {
+            "value": "",
+            "readOnly": true
+          },
+          "F9": {
+            "value": "",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Tax Rate %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": 23,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "",
+            "readOnly": true
+          },
+          "D10": {
+            "value": "",
+            "readOnly": true
+          },
+          "E10": {
+            "value": "",
+            "readOnly": true
+          },
+          "F10": {
+            "value": "",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "After-tax Gain on Subsidiary Sale",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: After-tax gain on subsidiary stake sale (₹ Cr) — use formula",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: After-tax impairment loss to add back (₹ Cr) — use formula",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: After-tax tax settlement gain to strip (₹ Cr) — use formula",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: Normalised PAT FY2024 (₹ Cr) = Reported PAT − gain strips + loss add-backs",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: Reported P/E (Market Cap ÷ Reported PAT) — ratio to 2 decimals",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: Normalised P/E (Market Cap ÷ Normalised PAT) — ratio to 2 decimals",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!D2*(1-Data!B10/100)",
+      "expected_value": 6545,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!D3*(1-Data!B10/100)",
+      "expected_value": 1617,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!D4*(1-Data!B10/100)",
+      "expected_value": 924,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B2-Answers!B2-Answers!B4+Answers!B3",
+      "expected_value": 42150,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=ROUND(Data!B9/Data!B2,2)",
+      "expected_value": 19.98,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B7": {
+      "formula_pattern": "=ROUND(Data!B9/Answers!B5,2)",
+      "expected_value": 23.87,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 23
+    }
+  }
+}

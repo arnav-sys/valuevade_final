@@ -1,0 +1,248 @@
+{
+  "sim_type": "excel",
+  "title": "HDFC Bank Cash Flow Forensics: Profit Versus Reality",
+  "scenario": "You are a junior forensic analyst at Motilal Oswal Securities reviewing HDFC Bank's 10-year cash flow history. Management claims strong earnings growth, but you've noticed reported net profit climbing while operating cash flow remains sluggish. Your desk head asks: is this real earnings quality, or accrual inflation hiding deteriorating fundamentals? Build a cash forensics dashboard to compute the cash realisation ratio, accrual trends, and issue a confidence verdict.",
+  "instructions": "Using the HDFC Bank 10-year cash flow data provided, compute accruals, cumulative totals, and cash realisation ratios in the Answers sheet. Identify whether profit is backed by real operating cash or inflated by accruals. Flag years where the divergence widens.",
+  "learning_objective": "Compute accruals and cash realisation ratios to diagnose whether reported earnings are backed by real operating cash flow, and identify periods of accrual inflation signalling earnings quality risk.",
+  "hints": [
+    "Accruals for each year = Net Profit minus Operating Cash Flow. Start simple: one row at a time.",
+    "Cumulative totals are running sums — use SUM(range) to add all rows from year 1 to the current year. The cash realisation ratio is cumulative CFO divided by cumulative PAT.",
+    "Compare the cumulative ratio at the end (FY2024) to 1.0 — if it's well below 0.7, profit is not converting to cash. Use an IF statement to flag 'Warning' if the ratio is < 0.7."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Net Profit (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Operating Cash Flow (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY2015",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 14200,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 13800,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY2016",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 15600,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 14900,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY2017",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 17400,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 15200,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY2018",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 19800,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 14600,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY2019",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 22100,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 15400,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY2020",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 24500,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 16200,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "FY2021",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 26800,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 17100,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "FY2022",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 29300,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FY2023",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 31700,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 19800,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 34200,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 21500,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY2024 Accruals (PAT - CFO, ₹ Cr):",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Cumulative PAT, FY2015-FY2024 (₹ Cr):",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Cumulative CFO, FY2015-FY2024 (₹ Cr):",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Cash Realisation Ratio (Cum CFO ÷ Cum PAT):",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Earnings Quality Flag (Warning if ratio < 0.75):",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B11-Data!C11",
+      "expected_value": 12700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=SUM(Data!B2:B11)",
+      "expected_value": 235600,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=SUM(Data!C2:C11)",
+      "expected_value": 167000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=ROUND(Answers!B4/Answers!B3,3)",
+      "expected_value": 0.728,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=IF(Answers!B5<0.75,\"Warning: Low Cash Realisation\",\"Acceptable\")",
+      "expected_value": "Warning: Low Cash Realisation",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "module": 7,
+  "completed_at": "2026-07-04T09:51:58.118261+00:00",
+  "total_sessions": 12,
+  "sims_generated": 12,
+  "sims_failed": 0,
+  "by_type": {
+    "document": 6,
+    "excel": 3,
+    "decision_making": 3
+  },
+  "total_engine_corrections": 5,
+  "elapsed_seconds": 393.1,
+  "rows": [
+    {
+      "session_no": "7.1",
+      "session_title": "The Income Statement, Reread as an Analyst",
+      "db_session_id": "a93d0c9f-f97d-4e28-af3f-2335ff755ee3",
+      "sim_type": "document",
+      "sim_id": "0c1002c8-b0fa-4c61-8083-c57a947d4405",
+      "seconds": 24.4,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.2",
+      "session_title": "The Balance Sheet as an X-Ray of Financial Strength",
+      "db_session_id": "18bfb490-269b-444a-935f-df2508304a71",
+      "sim_type": "document",
+      "sim_id": "0cb6c436-244a-48c9-aefc-5aa10d385561",
+      "seconds": 27.4,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.3",
+      "session_title": "The Cash Flow Statement — The Analyst's Lie Detector",
+      "db_session_id": "0737c204-27c9-4c94-8524-d53fd1e89202",
+      "sim_type": "document",
+      "sim_id": "6dc4645c-3a07-417b-80b5-15d9df69bf26",
+      "seconds": 23.7,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.4",
+      "session_title": "Common-Size & Trend Analysis — Making Any Two Companies Comparable",
+      "db_session_id": "9dac7156-4fda-4fc5-b471-1ff558732893",
+      "sim_type": "excel",
+      "sim_id": "afc846d9-6071-4608-9976-cccd6b5bf102",
+      "seconds": 17.4,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.5",
+      "session_title": "Segment & Geographic Analysis — Finding the Business Inside the Business",
+      "db_session_id": "6e317dce-e5ad-437d-b8a8-9d0ee556823d",
+      "sim_type": "document",
+      "sim_id": "e6fe0eb3-f550-49a8-b71f-5ef5fc3cf582",
+      "seconds": 22.1,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.6",
+      "session_title": "Reading the Notes & Accounting Policies — Where the Truth Hides",
+      "db_session_id": "b7f1f312-5aa9-4f6d-8ea0-af143b392872",
+      "sim_type": "document",
+      "sim_id": "7c7cc09b-af17-4565-b5cf-ac92e4c1bd91",
+      "seconds": 28.4,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.7",
+      "session_title": "Non-Recurring Items & Earnings Normalisation — Finding the Real Number",
+      "db_session_id": "d1886537-92bc-4847-b847-b387e21af062",
+      "sim_type": "excel",
+      "sim_id": "896e1df4-5c51-4a71-8bc5-e0bbc04c894c",
+      "seconds": 32.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 1,
+      "engine_errors": 1
+    },
+    {
+      "session_no": "7.8",
+      "session_title": "Quality of Earnings — Is This Profit Real or Make-Up?",
+      "db_session_id": "63f1bb33-e36b-4f59-9501-5d90f61b3b5b",
+      "sim_type": "decision_making",
+      "sim_id": "85bb25ee-7875-4bb2-98b2-a54ab1b13452",
+      "seconds": 50.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.9",
+      "session_title": "Off-Balance-Sheet Items, Leases, Contingencies & Related Parties",
+      "db_session_id": "60dd4be0-bb80-48e0-bb18-aafd056899c7",
+      "sim_type": "document",
+      "sim_id": "7ff31e70-8a47-4579-8c9f-4dd6511a41e0",
+      "seconds": 26.7,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.10",
+      "session_title": "Standalone vs Consolidated & Inter-Statement Integrity Checks",
+      "db_session_id": "4cd94b38-743d-43d0-b817-6b2c26f3d36c",
+      "sim_type": "excel",
+      "sim_id": "400f99a3-3969-4ae0-9777-8c74c04dc27c",
+      "seconds": 17.6,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 2,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.11",
+      "session_title": "Putting It Together — A Full Financial Diagnostic, Start to Finish",
+      "db_session_id": "b5262e5d-cd3b-416d-9c1e-2ac528913125",
+      "sim_type": "decision_making",
+      "sim_id": "b7fcd45a-bdcf-47ad-bf0b-af6b816de963",
+      "seconds": 60.9,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "7.12",
+      "session_title": "Advanced Forensic Signals & The Analyst's Skeptical Mindset",
+      "db_session_id": "d33c3107-e321-4508-b11a-5fc5fdb56445",
+      "sim_type": "decision_making",
+      "sim_id": "32bc2f2e-2b96-4b73-be0d-609d63109fc7",
+      "seconds": 62.0,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    }
+  ]
+}

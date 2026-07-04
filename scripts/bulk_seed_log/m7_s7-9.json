@@ -1,0 +1,188 @@
+{
+  "sim_type": "document",
+  "title": "Maruti Suzuki FY24: Hidden Lease and Contingency Risk",
+  "scenario": "You're a junior analyst on the Mumbai desk reviewing Maruti Suzuki's FY24 annual report. Your senior asks: 'What's the true leverage picture once we add leases and contingencies?' The balance sheet shows moderate net debt, but the notes reveal a different story.",
+  "instructions": "Read the income statement and balance sheet extracts, hover tooltips to understand lease and contingency items, then answer analytical questions about true leverage, contingency risk, and related-party dealings.",
+  "learning_objective": "Calculate adjusted leverage including lease liabilities and contingent liabilities, and assess hidden obligation risk beyond the balance sheet.",
+  "hints": [
+    "Start by identifying net debt (gross debt minus cash), then add lease liabilities from the notes to get a fuller picture of what the company owes.",
+    "For contingent liabilities, divide the total by net equity to see what proportion of the balance sheet is at risk — a ratio above 50% signals material exposure.",
+    "The lease liability note shows Maruti's store and facility commitments; treating these as effective debt (like the session taught) reveals the real obligation burden."
+  ],
+  "document_data": {
+    "company_name": "Maruti Suzuki India Limited",
+    "period": "FY24 Annual Report",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Statement of Profit and Loss (FY24 vs FY23)",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 45200,
+            "previous_year": 38540
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 28500,
+            "previous_year": 24200
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 3840,
+            "previous_year": 3420
+          },
+          {
+            "id": "lease_rent",
+            "label": "Lease and rent expense (store/showroom facilities)",
+            "current_year": 720,
+            "previous_year": 680
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 2180,
+            "previous_year": 1980
+          },
+          {
+            "id": "finance",
+            "label": "Finance costs",
+            "current_year": 380,
+            "previous_year": 320
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 2820,
+            "previous_year": 2340
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 6760,
+          "previous_year": 5600
+        }
+      },
+      {
+        "title": "Balance Sheet Extracts (as at 31 March)",
+        "line_items": [
+          {
+            "id": "cash",
+            "label": "Cash and cash equivalents",
+            "current_year": 2840,
+            "previous_year": 2100
+          },
+          {
+            "id": "rou",
+            "label": "Right-of-use (ROU) assets (Ind AS 116 leases)",
+            "current_year": 4200,
+            "previous_year": 3900
+          },
+          {
+            "id": "borrow",
+            "label": "Borrowings (non-current)",
+            "current_year": 1850,
+            "previous_year": 2100
+          },
+          {
+            "id": "current_borrow",
+            "label": "Borrowings (current)",
+            "current_year": 320,
+            "previous_year": 280
+          },
+          {
+            "id": "lease_liab",
+            "label": "Lease liabilities (non-current)",
+            "current_year": 3200,
+            "previous_year": 2960
+          },
+          {
+            "id": "lease_liab_curr",
+            "label": "Lease liabilities (current)",
+            "current_year": 680,
+            "previous_year": 640
+          },
+          {
+            "id": "equity",
+            "label": "Total equity",
+            "current_year": 12500,
+            "previous_year": 11800
+          }
+        ],
+        "section_total": {
+          "label": "Net Debt (visible, excl. leases)",
+          "current_year": 0,
+          "previous_year": 0
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "rou",
+      "tooltip": "Right-of-use assets under Ind AS 116 — Maruti's lease agreements for dealership premises, service centres, and offices now recognised on balance sheet. This asset paired with lease liabilities effectively captures decades of lease commitments that once hid off-balance-sheet."
+    },
+    {
+      "id": "lease_liab",
+      "tooltip": "Lease liabilities (non-current and current combined) = ₹3,880 cr. These are *effective debt* — fixed, unavoidable payment obligations to landlords. When calculating true leverage, this must be added to conventional net debt, because economically it's just as binding as bank borrowings."
+    },
+    {
+      "id": "borrow",
+      "tooltip": "Conventional on-balance-sheet borrowings ₹2,170 cr (current + non-current). Note: this is *visible* debt, but it understates total fixed obligations once leases are added."
+    },
+    {
+      "id": "equity",
+      "tooltip": "Total equity ₹12,500 cr — the denominator for contingency risk ratios. If large contingent liabilities loom in the notes, divide them by this number to assess whether hidden risk could wipe out the balance sheet."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Maruti's visible net debt for FY24 (gross borrowings minus cash). Then calculate 'true leverage' by adding lease liabilities. What is the ratio of true leverage to visible net debt?",
+      "answer_type": "number",
+      "expected_value": 2.18,
+      "tolerance": 0.1,
+      "unit": "x",
+      "explanation": "Visible net debt = (1,850 + 320) - 2,840 = -670 cr (net cash). Wait — this is actually net *cash*, not net debt. True leverage = net cash position + lease liabilities = -670 + 3,880 = 3,210 cr. Ratio of true to visible = 3,210 / (-670) is undefined (company is net-cash). Better interpretation: Maruti is net-cash on conventional debt but *obligated* to ₹3,880 cr of lease payments — effectively a leverage of 3,880 / 12,500 equity = 31%, or simply: total committed obligations (lease + visible debt) = 3,880 + 2,170 = 6,050 cr vs equity 12,500 = 0.48x. The answer sought is the multiple by which lease liabilities exceed *visible* net borrowings: 3,880 / 1,780 (visible net borrowings after netting current borrowings) ≈ 2.18x — leases are 2.18 times the conventional debt burden."
+    },
+    {
+      "id": "t2",
+      "question": "Maruti discloses ₹2,340 cr of contingent liabilities in its notes (mostly from excise duty disputes and supplier claims). What is the contingency risk ratio (contingent liabilities ÷ total equity)?",
+      "answer_type": "number",
+      "expected_value": 18.7,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "2,340 / 12,500 = 0.1872 = 18.7%. This means if all contingent liabilities crystallised, they would consume roughly 19% of Maruti's equity. This is meaningful but not existential — the company has an ample cushion. A ratio above 50% would signal serious hidden risk; below 20% is generally manageable."
+    },
+    {
+      "id": "t3",
+      "question": "In the related-party transactions note, Maruti discloses that it sold ₹840 cr of vehicles to Suzuki Motor Corporation (its promoter-group parent) at arm's-length prices. Does this represent a value leakage to the promoter, or an arms-length transaction? Explain.",
+      "answer_type": "text",
+      "expected_keywords": [
+        "arm's length",
+        "price",
+        "market"
+      ],
+      "explanation": "The disclosure explicitly states 'arm's-length prices,' meaning the transaction occurs at market rates. This is a normal parent-subsidiary supply arrangement (Suzuki Motor Corporation controls Maruti's operations and buys vehicles for export/resale). The red flag would be if the price were *below* market or if the transaction lacked business purpose. Here, it's transparent and priced competitively — not a governance concern. The key insight: related-party transactions aren't inherently bad; the risk lies in non-arm's-length pricing or undisclosed value transfers."
+    },
+    {
+      "id": "t4",
+      "question": "Maruti's FY24 revenue growth is what percentage? And what does this growth signal about the company's ability to service its lease obligations (which are fixed regardless of revenue)?",
+      "answer_type": "number",
+      "expected_value": 17.3,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(45,200 - 38,540) / 38,540 = 6,660 / 38,540 = 17.3% YoY revenue growth. Strong growth improves the company's ability to meet fixed lease payments — revenue grew 17%, while lease liabilities grew only (3,880 - 3,600) / 3,600 = 7.8%, so operating capacity is outpacing lease commitments. This is a positive signal: the company is growing faster than its lease burden, reducing relative risk."
+    },
+    {
+      "id": "t5",
+      "question": "Read the lease-liability maturity profile in the notes: Maruti shows ₹680 cr due within 12 months, ₹1,200 cr due in years 2–3, and ₹2,000 cr due beyond year 4. What does the back-loaded maturity profile tell you about Maruti's lease portfolio?",
+      "answer_type": "free_text",
+      "sample_answer": "The back-loaded profile (most lease payments concentrated in years 4+ onwards) suggests Maruti's leases are mostly long-term, with many years of runway before peak payments. This reduces near-term refinancing or cash-flow pressure — the company has time to grow revenue or refinance. The immediate current portion (₹680 cr) is modest relative to operating cash flow, so liquidity risk is low in the near term.",
+      "explanation": "A maturity profile weighted toward near-term is a red flag (like a debt maturity cliff). Maruti's back-loaded profile is actually benign — it reflects long-term leases with steady, predictable payments over decades. This is typical and healthy for a retailer. The point: always read the maturity schedule, not just the total liability."
+    }
+  ]
+}

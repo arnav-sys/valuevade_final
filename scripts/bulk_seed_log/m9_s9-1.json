@@ -1,0 +1,194 @@
+{
+  "sim_type": "document",
+  "title": "Titan Company FY24: Reading Ratios Beyond the Numbers",
+  "scenario": "You're a junior analyst on the Mumbai desk, and your senior has handed you Titan Company's FY24 annual report. She's asked: 'Don't just tell me the profit number — tell me whether this business is *working harder* for shareholders than it was last year, and compared to peers. Use the ratios, not just the raw numbers.'",
+  "instructions": "Read Titan's income statement and balance sheet; hover over tooltips to understand key line items; compute and interpret ratios using the four lenses (trend, peers, context, combination) before answering.",
+  "learning_objective": "Interpret financial ratios in context (vs history, peers, industry) and identify when a single ratio misleads without clustering and decomposition.",
+  "hints": [
+    "ROE = Net Profit ÷ Shareholders' Equity. But a high ROE can hide high debt — so always ask: *why* is it high?",
+    "Titan's FY24 net profit is ₹2,154 Cr and equity is ₹11,225 Cr. Use these to compute ROE first.",
+    "Titan's FY23 ROE was ~17.5%. Has FY24's ROE improved or deteriorated? Trend matters more than the level alone."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Crore",
+    "sections": [
+      {
+        "title": "Statement of Profit & Loss (Consolidated)",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 31531,
+            "previous_year": 26182
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 12241,
+            "previous_year": 10458
+          },
+          {
+            "id": "opex",
+            "label": "Employee benefits & Other operating expenses",
+            "current_year": 10892,
+            "previous_year": 9124
+          },
+          {
+            "id": "ebitda",
+            "label": "EBITDA",
+            "current_year": 8398,
+            "previous_year": 6600
+          },
+          {
+            "id": "depreciation",
+            "label": "Depreciation and amortisation",
+            "current_year": 892,
+            "previous_year": 784
+          },
+          {
+            "id": "finance_cost",
+            "label": "Finance costs",
+            "current_year": 156,
+            "previous_year": 142
+          },
+          {
+            "id": "pbt",
+            "label": "Profit Before Tax",
+            "current_year": 3214,
+            "previous_year": 2534
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 1060,
+            "previous_year": 832
+          },
+          {
+            "id": "pat",
+            "label": "Profit for the year (PAT)",
+            "current_year": 2154,
+            "previous_year": 1702
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year",
+          "current_year": 2154,
+          "previous_year": 1702
+        }
+      },
+      {
+        "title": "Balance Sheet (Consolidated, as at 31 March)",
+        "line_items": [
+          {
+            "id": "equity_capital",
+            "label": "Share capital",
+            "current_year": 286,
+            "previous_year": 286
+          },
+          {
+            "id": "reserves",
+            "label": "Reserves and Surplus",
+            "current_year": 10939,
+            "previous_year": 9543
+          },
+          {
+            "id": "equity",
+            "label": "Total Shareholders' Equity",
+            "current_year": 11225,
+            "previous_year": 9829
+          },
+          {
+            "id": "debt",
+            "label": "Borrowings (non-current & current)",
+            "current_year": 384,
+            "previous_year": 408
+          },
+          {
+            "id": "total_liabilities",
+            "label": "Total Liabilities & Equity",
+            "current_year": 16284,
+            "previous_year": 14518
+          },
+          {
+            "id": "current_assets",
+            "label": "Current Assets (including cash & receivables)",
+            "current_year": 6841,
+            "previous_year": 5920
+          }
+        ],
+        "section_total": {
+          "label": "Total Assets",
+          "current_year": 16284,
+          "previous_year": 14518
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "pat",
+      "tooltip": "Net Profit (PAT) is what remains for shareholders after all costs, interest, and taxes. Titan's ₹2,154 Cr in FY24 — but is this number good? Meaningless until you divide it by equity or assets to see *returns*. Raw numbers describe size; ratios describe quality."
+    },
+    {
+      "id": "equity",
+      "tooltip": "Shareholders' Equity is the denominator in ROE — owners' capital deployed in the business. At ₹11,225 Cr, this is what Titan's management has to work with. ROE answers: how much profit does this equity generate? A high ROE with low debt is a quality signal; high ROE with high debt is a leverage trap."
+    },
+    {
+      "id": "debt",
+      "tooltip": "Borrowings of only ₹384 Cr against ₹11,225 Cr equity = Debt-to-Equity ~3.4%. Compare this to peers (e.g., Reliance or ITC) to judge leverage context. Titan's low debt means any returns are *earned*, not *borrowed* — a quality signal but only if ROE is truly high."
+    },
+    {
+      "id": "ebitda",
+      "tooltip": "EBITDA (operating profit before depreciation and finance costs) of ₹8,398 Cr is the 'engine' — shows operating efficiency without distortion from capital structure or tax. EBITDA margin of 26.6% (8398/31531) is strong for jewellery. Trend: improved from 25.2% in FY23, signalling margin expansion, not just volume growth."
+    },
+    {
+      "id": "rev",
+      "tooltip": "Revenue grew ₹5,349 Cr YoY, a +20.4% increase from ₹26,182 Cr. But is growth alone impressive? Not without profitability checks. Titan's profit grew faster (26.6%), signalling operating leverage — margins expanded as well. Growth + margin expansion = a compounding quality story."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Titan's FY24 Return on Equity (ROE). Is it higher or lower than FY23's 17.5%?",
+      "answer_type": "number",
+      "expected_value": 19.2,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "FY24 ROE = (2154 / 11225) × 100 = 19.2%. FY23 was 17.5%. ROE has *improved* — the trend is positive. This is LENS 1 (trend): Titan's equity is generating more profit per rupee, year-on-year. But before celebrating, you must ask LENS 4 (combination): is this improvement from better margins, better asset turns, or more debt? (Spoiler: margins expanded and debt fell — a quality improvement, not a leverage trap.)"
+    },
+    {
+      "id": "t2",
+      "question": "Titan's PAT margin (PAT ÷ Revenue) is 6.8% in FY24 versus 6.5% in FY23. Describe what this margin trend tells you about Titan's *operational* health.",
+      "answer_type": "text",
+      "expected_keywords": [
+        "margin expansion",
+        "operating leverage",
+        "profitability improving"
+      ],
+      "explanation": "The margin expanded from 6.5% to 6.8% even as revenue grew 20%. This signals *operating leverage* — the business is converting incremental sales into profit more efficiently, not just pushing volume at flat margins. LENS 4 check: if margins expanded despite cost inflation, the business has pricing power or cost discipline (or both). For a jewellery retailer, this is a quality signal, especially if it sustained (must check peers and prior years to confirm it's not a one-off)."
+    },
+    {
+      "id": "t3",
+      "question": "Titan's borrowings fell from ₹408 Cr (FY23) to ₹384 Cr (FY24), and debt-to-equity is only 3.4%. Does this mean Titan is a 'safe' business? Explain one reason why this ratio alone doesn't prove safety.",
+      "answer_type": "free_text",
+      "sample_answer": "Low leverage is a good sign but incomplete. Titan's 'safety' also depends on cash generation (can it service debt?), working capital (is it trapped in inventory?), and earnings stability (do profits depend on a boom cycle?). A jeweller with low debt but highly cyclical earnings might be *less* safe than a stable business with moderate debt. Ratio clustering and context are essential — debt ratios alone never tell the whole story.",
+      "explanation": "This tests LENS 3 (context) and LENS 4 (combination). A low debt ratio looks reassuring but is meaningless in isolation. A cyclical jewellery business with low absolute debt might carry *relative* risk if its earnings swing wildly. Conversely, a stable infra company with 2× debt might be genuinely safer. And low debt only 'proves' safety if cash generation is strong (demands interest coverage, FCF checks). Beginners see low debt and declare safety; analysts cluster ratios and apply context before judging."
+    },
+    {
+      "id": "t4",
+      "question": "Titan's revenue grew 20.4% YoY while PAT grew 26.6%. What does this pattern suggest about the business, and what is the risk of relying on this single insight?",
+      "answer_type": "free_text",
+      "sample_answer": "Profit growing faster than revenue signals margin expansion and/or operational leverage — a healthy sign of improving efficiency. Risk: this pattern alone doesn't distinguish between sustainable improvement and a one-off gain (e.g., a one-time inventory revaluation, a benefit that won't repeat). You must check: (1) Is margin expansion sustained over 3+ years (trend)? (2) Is it driven by pricing power or cost cuts — which is more durable? (3) Does FY25 guidance and peers' trends confirm or contradict this momentum? Chasing a single quarter's acceleration is a beginner's error; professionals verify the pattern across time and context.",
+      "explanation": "This directly tests the session's core lesson: a raw number (profit growth 26.6%) or even a relationship (faster growth than revenue) tells a story — but the story is incomplete without trend, peer check, and combination with other metrics. Many value traps hide behind one good number. Titan's actual trend is multi-year improvement, but a student applying only the 'growth > revenue growth' signal to an earnings-management case would be fooled. This teaches why the four lenses are non-negotiable."
+    },
+    {
+      "id": "t5",
+      "question": "Based on Titan's FY24 results alone (ignoring peers and history), would you recommend buying the stock? State one reason why you'd want more data before deciding.",
+      "answer_type": "free_text",
+      "sample_answer": "FY24 looks strong (19.2% ROE, margin expansion, low debt, 26%+ profit growth) — prima facie attractive. But: (1) Is 19.2% ROE high enough vs peers? (A luxury retailer's 18% might lag a competitor's 22%.) (2) Is the growth sustainable, or is it a cycle peak? (Jewellery is cyclical; FY25 might be flat.) (3) Is valuation reasonable? (A 25× P/E on good fundamentals might be a trap if normalized earnings are ₹2,400 Cr and the stock trades at 50× forward earnings.) Four lenses mean checking Titan's prior 3 years (trend), peer ROEs and growth (peer), jewellery-sector norms (context), and valuation + quality clustering (combination). One year's profit, no matter how strong, is not enough.",
+      "explanation": "This is the capstone: a complete financial statement can look flawless in isolation and still be a trap or an overvaluation or a peak cycle moment. The disciplined analyst, seeing Titan's strong FY24, doesn't declare a verdict — she suspends judgement and runs the four lenses. Peer comparison might reveal that Titan's 19% ROE lags competitors. History might show that FY24's margin was an aberration. Valuation might be priced to perfection. Context might reveal sector headwinds. The session's lesson is precisely this: impressive numbers demand the full four-lens discipline before any conclusion. This question forces the student to articulate that restraint."
+    }
+  ]
+}

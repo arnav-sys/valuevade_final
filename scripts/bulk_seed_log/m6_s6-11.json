@@ -1,0 +1,159 @@
+{
+  "sim_type": "document",
+  "title": "Titan's FY24 Results: Reading Confidence and Cash",
+  "scenario": "You're a junior analyst at a Mumbai equity desk reviewing Titan Company Ltd's FY24 annual results. Your senior has flagged that the MD spoke with unusual hedging on the recent concall — confidence seemed to drain when asked about jewellery margins. Before you flag it to the desk, you need to verify: is the language drift real, and does the accruals ratio confirm the suspicion?",
+  "instructions": "Read Titan's FY24 income statement and cash-flow snapshot. Hover tooltips on flagged line items. Answer questions about YoY growth, the nature of profit recognition, and whether the reported profit is backed by real operating cash.",
+  "learning_objective": "Identify language-forensics suspicions (draining confidence, hedging drift) and confirm them using the accruals ratio, combining early-warning language signals with hard numerical validation.",
+  "hints": [
+    "Compare profit reported (₹2,347 Cr) to cash from operations (₹1,680 Cr) — the gap is your starting point for accruals.",
+    "The accruals ratio formula is [(Net Profit − Operating Cash Flow) ÷ Total Assets] × 100. Titan's total assets are ₹14,200 Cr.",
+    "If accruals exceed 5-6% of assets, investigate what's creating the profit-to-cash gap — receivables, inventory, or provisions. That's your confirmation of the language suspicion."
+  ],
+  "document_data": {
+    "company_name": "Titan Company Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 51084,
+            "previous_year": 40575
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 28640,
+            "previous_year": 22680
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 5230,
+            "previous_year": 4650
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 1240,
+            "previous_year": 1100
+          },
+          {
+            "id": "other_inc",
+            "label": "Other income",
+            "current_year": 680,
+            "previous_year": 510
+          },
+          {
+            "id": "pbt",
+            "label": "Profit before tax",
+            "current_year": 3180,
+            "previous_year": 2540
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense (25% effective rate)",
+            "current_year": 795,
+            "previous_year": 635
+          },
+          {
+            "id": "pat",
+            "label": "Net profit for the year",
+            "current_year": 2385,
+            "previous_year": 1905
+          }
+        ],
+        "section_total": {
+          "label": "Net Profit After Tax (PAT)",
+          "current_year": 2385,
+          "previous_year": 1905
+        }
+      },
+      {
+        "title": "Cash Flow Statement Extract",
+        "line_items": [
+          {
+            "id": "ocf",
+            "label": "Operating cash flow",
+            "current_year": 1680,
+            "previous_year": 1520
+          },
+          {
+            "id": "capex",
+            "label": "Capital expenditure",
+            "current_year": 890,
+            "previous_year": 750
+          },
+          {
+            "id": "fcf",
+            "label": "Free cash flow",
+            "current_year": 790,
+            "previous_year": 770
+          }
+        ],
+        "section_total": {
+          "label": "Operating Cash Flow (OCF)",
+          "current_year": 1680,
+          "previous_year": 1520
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "pat",
+      "tooltip": "Net profit reported to market: ₹2,385 Cr YoY. This is the 'profit' management celebrates on the concall. But is it backed by cash? Check against OCF."
+    },
+    {
+      "id": "ocf",
+      "tooltip": "Operating cash flow: the actual cash the business generated from operations. At ₹1,680 Cr, it's ₹705 Cr below net profit — a gap worth investigating for accruals."
+    },
+    {
+      "id": "cogs",
+      "tooltip": "COGS rose 26.0% YoY, matching revenue growth of 25.9%. But inventory management matters: if receivables or stock are growing faster than sales, the accruals ratio will spike."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What is Titan's revenue YoY growth rate (%)?",
+      "answer_type": "number",
+      "expected_value": 25.9,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(51084 − 40575) ÷ 40575 × 100 = 25.9%. Strong jewellery and watches growth, but management's language on margins has hedged noticeably on recent calls."
+    },
+    {
+      "id": "t2",
+      "question": "Calculate the accruals ratio for FY24 (%). Use total assets of ₹14,200 Cr.",
+      "answer_type": "number",
+      "expected_value": 4.97,
+      "tolerance": 0.3,
+      "unit": "%",
+      "explanation": "Accruals Ratio = [(2385 − 1680) ÷ 14200] × 100 = (705 ÷ 14200) × 100 = 4.97%. A gap of ₹705 Cr between reported profit and operating cash, scaled to 5% of total assets. This is moderate but worth investigating — especially if language forensics suggest management is overselling the quality of earnings."
+    },
+    {
+      "id": "t3",
+      "question": "What does a widening accruals ratio (call-over-call) typically signal when combined with language forensics showing draining confidence on margins?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "profit quality",
+        "receivables",
+        "inventory",
+        "accruals",
+        "cash conversion"
+      ],
+      "explanation": "A widening accruals ratio (higher gap between profit and cash) combined with management hedging on margins signals that reported profit is increasingly an accounting story, not cash reality. Investigate whether receivables or inventory are bloating, or whether provisions/deferred income are masking margin pressure. The language warned you; the accruals ratio confirms the suspicion."
+    },
+    {
+      "id": "t4",
+      "question": "Titan's management said on the call: 'We are extremely confident in our margin trajectory and the strength of our business has never been stronger.' Given the accruals ratio of 5%, how would you assess this statement as a language forensics signal?",
+      "answer_type": "free_text",
+      "sample_answer": "The repeated emphasis on confidence ('extremely confident,' 'never been stronger') when combined with a 5% accruals ratio and known hedging on margin questions signals possible overcompensation (protesting too much). The gap between profit and cash, plus the sudden verbosity on strength, suggests underlying concern about earnings quality that management is downplaying. Confirm by tracking: (1) has the accruals ratio widened QoQ? (2) Is inventory or receivables growing faster than sales? (3) Have margin comments become more evasive on recent calls?",
+      "explanation": "This tests whether you can read language-forensics tells (overemphasis, protesting too much) and integrate them with numerical confirmation (the accruals ratio). Genuine strength doesn't need repeated insistence, especially when the gap between profit and cash is non-trivial. The student who spots both the language signal and the accrual gap, and connects them, has integrated the core skill: using language to form suspicions, then confirming with numbers."
+    }
+  ]
+}
