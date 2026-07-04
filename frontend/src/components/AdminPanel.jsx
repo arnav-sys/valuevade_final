@@ -17,6 +17,37 @@ async function authFetch(path) {
   return r.json();
 }
 
+async function authPost(path, body) {
+  const { data: { session } } = await supabase.auth.getSession();
+  const r = await fetch(`${API}${path}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${session?.access_token || ''}`,
+    },
+    body: JSON.stringify(body),
+  });
+  const text = await r.text();
+  let json = null;
+  try { json = text ? JSON.parse(text) : null; } catch { /* keep text */ }
+  if (!r.ok) {
+    const msg = (json && (json.detail || json.message)) || text || `${r.status}`;
+    throw new Error(typeof msg === 'string' ? msg : JSON.stringify(msg));
+  }
+  return json;
+}
+
+// Random 12-char password: letters (mixed case) + digits + a couple of symbols.
+function generatePassword() {
+  const alpha = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnpqrstuvwxyz23456789';
+  const symbols = '@#$%&*';
+  let out = '';
+  for (let i = 0; i < 10; i++) out += alpha[Math.floor(Math.random() * alpha.length)];
+  out += symbols[Math.floor(Math.random() * symbols.length)];
+  out += Math.floor(Math.random() * 10);
+  return out;
+}
+
 function AdminTabs({ tab, setTab }) {
   const tabs = [
     { k: 'waitlist',  label: 'Waitlist Signups',   icon: ListChecks },
@@ -96,7 +127,9 @@ function UsersTab({ onSelect }) {
   const [data, setData] = useState(null);
   const [search, setSearch] = useState('');
   const [err, setErr] = useState(null);
-  useEffect(() => { authFetch('/api/admin/users').then(setData).catch(e => setErr(e.message)); }, []);
+  const [showCreate, setShowCreate] = useState(false);
+  const reload = () => authFetch('/api/admin/users').then(setData).catch(e => setErr(e.message));
+  useEffect(() => { reload(); }, []);
   if (err) return <div className="text-red-500 p-4">{err}</div>;
   if (!data) return <div className="p-4 text-[var(--color-text-muted)]">Loading…</div>;
   const filtered = data.users.filter(u => {
@@ -105,10 +138,19 @@ function UsersTab({ onSelect }) {
   });
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-sm font-medium" data-testid="users-total">
-          {data.total} users
-        </span>
+      <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+        <div className="flex items-center gap-3">
+          <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-sm font-medium" data-testid="users-total">
+            {data.total} users
+          </span>
+          <button
+            onClick={() => setShowCreate(true)}
+            data-testid="create-user-button"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-accent-purple)] hover:brightness-110 text-white text-sm font-medium transition-all"
+          >
+            <Users size={14} /> Create User
+          </button>
+        </div>
         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search name or email"
           data-testid="users-search"
           className="w-72 px-3 py-2 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-sm" />
@@ -135,6 +177,185 @@ function UsersTab({ onSelect }) {
             ))}
           </tbody>
         </table>
+      </div>
+      {showCreate && (
+        <CreateUserModal
+          onClose={() => setShowCreate(false)}
+          onCreated={() => { setShowCreate(false); reload(); }}
+        />
+      )}
+    </div>
+  );
+}
+
+function CreateUserModal({ onClose, onCreated }) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [role, setRole] = useState('user');
+  const [autoEnroll, setAutoEnroll] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [err, setErr] = useState(null);
+  const [success, setSuccess] = useState(null);   // { email, password, ... }
+  const [copied, setCopied] = useState(false);
+
+  const valid =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) && password.length >= 8;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!valid || submitting) return;
+    setSubmitting(true);
+    setErr(null);
+    try {
+      const res = await authPost('/api/admin/users/create', {
+        email: email.trim(),
+        password,
+        display_name: displayName.trim() || null,
+        role,
+        auto_enroll: autoEnroll,
+      });
+      setSuccess(res);
+    } catch (e) {
+      setErr(e.message || 'Failed to create user.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  const copyCreds = async () => {
+    const text =
+      `Valuevade credentials\n──────────────────────\nEmail:    ${success.email}\nPassword: ${success.password}\nLogin at: https://valuevade.com/login`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      setCopied(false);
+    }
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      data-testid="create-user-modal"
+      onClick={(e) => { if (e.target === e.currentTarget && !submitting) onClose(); }}
+    >
+      <div className="w-full max-w-md rounded-2xl bg-[var(--color-bg-card)] border border-[var(--color-border)] p-6 shadow-2xl">
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-lg font-semibold text-[var(--color-text)]">
+            {success ? 'User created' : 'Create user'}
+          </h2>
+          <button
+            onClick={() => !submitting && (success ? onCreated() : onClose())}
+            className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]"
+            data-testid="create-user-close"
+          >
+            <XIcon size={18} />
+          </button>
+        </div>
+
+        {success ? (
+          <div className="space-y-4" data-testid="create-user-success">
+            <p className="text-sm text-[var(--color-text-muted)]">
+              Share these credentials with the user. Password won't be shown again.
+            </p>
+            <div className="rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] p-4 font-mono text-sm space-y-1">
+              <div><span className="text-[var(--color-text-muted)]">Email:</span> <span data-testid="new-user-email">{success.email}</span></div>
+              <div><span className="text-[var(--color-text-muted)]">Password:</span> <span data-testid="new-user-password">{success.password}</span></div>
+              {success.role && success.role !== 'user' && (
+                <div><span className="text-[var(--color-text-muted)]">Role:</span> {success.role}</div>
+              )}
+              <div><span className="text-[var(--color-text-muted)]">Enrolled:</span> {success.enrolled ? 'Yes (Equity Research)' : 'No'}</div>
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={copyCreds}
+                data-testid="copy-credentials-button"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[var(--color-primary)] text-white text-sm font-semibold hover:brightness-110 transition-all"
+              >
+                {copied ? <><Check size={16} /> Copied</> : <>Copy credentials</>}
+              </button>
+              <button
+                onClick={onCreated}
+                data-testid="create-user-done"
+                className="px-4 py-2.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-sm font-semibold text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all"
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4" data-testid="create-user-form">
+            <div>
+              <label className="block text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">Email *</label>
+              <input
+                type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
+                data-testid="cu-email"
+                className="w-full px-3 py-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                placeholder="user@example.com"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">Password * <span className="text-[var(--color-text-muted)] normal-case">(min 8)</span></label>
+              <div className="flex gap-2">
+                <input
+                  type="text" value={password} onChange={(e) => setPassword(e.target.value)} minLength={8} required
+                  data-testid="cu-password"
+                  className="flex-1 px-3 py-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)] font-mono"
+                />
+                <button
+                  type="button"
+                  onClick={() => setPassword(generatePassword())}
+                  data-testid="cu-gen-password"
+                  className="px-3 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-xs font-medium text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all whitespace-nowrap"
+                >
+                  Generate
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">Display name <span className="normal-case">(optional)</span></label>
+              <input
+                type="text" value={displayName} onChange={(e) => setDisplayName(e.target.value)}
+                data-testid="cu-name"
+                className="w-full px-3 py-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+                placeholder="Priya Menon"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-1.5">Role</label>
+              <select
+                value={role} onChange={(e) => setRole(e.target.value)}
+                data-testid="cu-role"
+                className="w-full px-3 py-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] text-sm text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]"
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <label className="flex items-start gap-2 text-sm text-[var(--color-text)] cursor-pointer" data-testid="cu-autoenroll-label">
+              <input
+                type="checkbox" checked={autoEnroll} onChange={(e) => setAutoEnroll(e.target.checked)}
+                data-testid="cu-autoenroll"
+                className="mt-0.5 accent-[var(--color-primary)]"
+              />
+              <span>Auto-enroll in <b>Equity Research Analyst</b> (all 22 modules)</span>
+            </label>
+            {err && (
+              <div className="rounded-lg bg-red-500/10 border border-red-500/30 px-3 py-2 text-xs text-red-500" data-testid="cu-error">
+                {err}
+              </div>
+            )}
+            <button
+              type="submit" disabled={!valid || submitting}
+              data-testid="cu-submit"
+              className="w-full px-4 py-2.5 rounded-lg bg-[var(--color-accent-purple)] text-white text-sm font-semibold hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+            >
+              {submitting ? 'Creating…' : 'Create user'}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

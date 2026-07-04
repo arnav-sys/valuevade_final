@@ -34,6 +34,14 @@ _EMERGENT_LLM_KEY = None
 ADMIN_ALLOWED_EMAILS = {"info@valuevade.com"}
 
 
+class _AdminCreateUserBody(BaseModel):
+    email: str
+    password: str
+    display_name: Optional[str] = None
+    role: Optional[str] = "user"          # "user" | "admin"
+    auto_enroll: Optional[bool] = True    # default-enroll in Equity Research
+
+
 # ---------------------------------------------------------------------------
 # Admin auth helper
 # ---------------------------------------------------------------------------
@@ -412,6 +420,163 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "active_plan": uid in active_plan_ids,
             })
         return {"total": len(out), "users": out}
+
+    @api_router.post("/admin/users/create")
+    async def admin_create_user(body: _AdminCreateUserBody, user=Depends(_get_supabase_user)):
+        """Admin-only manual user creation. Uses Supabase Admin API to create the
+        auth user (email_confirm=true so they can log in immediately), inserts a
+        `profiles` row, and optionally seeds the standard Equity Research
+        enrollment (all 22 modules + all sessions) via the same helper used by
+        the frontend `enrollDirect` flow."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        # Basic validation
+        email = (body.email or "").strip().lower()
+        pwd = body.password or ""
+        if not email or "@" not in email:
+            raise HTTPException(status_code=400, detail="Invalid email.")
+        if len(pwd) < 8:
+            raise HTTPException(status_code=400, detail="Password must be at least 8 characters.")
+        role = (body.role or "user").strip().lower()
+        if role not in ("user", "admin"):
+            role = "user"
+        display_name = (body.display_name or "").strip()
+
+        import urllib.request as _ur
+        # 1. Create the auth user via Supabase Admin API
+        admin_url = f"{_SUPABASE_REST_URL}/auth/v1/admin/users"
+        payload = {
+            "email": email,
+            "password": pwd,
+            "email_confirm": True,
+            "user_metadata": {"full_name": display_name or None},
+        }
+        req = _ur.Request(
+            admin_url, method="POST",
+            data=_json.dumps(payload).encode(),
+            headers={
+                "apikey": _SUPABASE_SR,
+                "Authorization": f"Bearer {_SUPABASE_SR}",
+                "Content-Type": "application/json",
+            },
+        )
+        try:
+            with _ur.urlopen(req, timeout=15) as r:
+                created_auth = _json.loads(r.read())
+        except urllib.error.HTTPError as e:
+            body_err = e.read().decode("utf-8", errors="replace")
+            # Duplicate-email surfaces as 422 or 400 from Supabase
+            if e.code in (400, 422) and ("already" in body_err.lower() or "exists" in body_err.lower()):
+                raise HTTPException(status_code=409, detail="A user with that email already exists.")
+            logger.error("admin_create_user auth failed: %s", body_err[:400])
+            raise HTTPException(status_code=500, detail=f"Supabase auth create failed: {body_err[:200]}")
+
+        new_user_id = created_auth.get("id") or (created_auth.get("user") or {}).get("id")
+        if not new_user_id:
+            raise HTTPException(status_code=500, detail="Supabase did not return a user id.")
+
+        # 2. Upsert profiles row. `role` isn't a column on profiles today, so we
+        # only write the fields the schema actually has. Role is still surfaced
+        # in the response for admin visibility.
+        try:
+            _supabase_post(
+                "profiles",
+                {"id": new_user_id, "email": email, "full_name": display_name},
+                prefer="resolution=merge-duplicates,return=minimal",
+            )
+        except Exception as e:
+            logger.warning("admin_create_user profile upsert failed: %s", e)
+
+        # 3. Optional auto-enrollment in Equity Research
+        enrollment_id = None
+        if body.auto_enroll:
+            try:
+                enrollment_id = _seed_default_enrollment(new_user_id)
+            except Exception as e:
+                logger.warning("admin_create_user seed_enrollment failed: %s", e)
+
+        return {
+            "user_id": new_user_id,
+            "email": email,
+            "password": pwd,     # returned ONCE so the admin can copy + share
+            "display_name": display_name,
+            "role": role,
+            "enrolled": bool(enrollment_id),
+            "enrollment_id": enrollment_id,
+        }
+
+    def _seed_default_enrollment(user_id: str) -> Optional[str]:
+        """Mirrors frontend enrollDirect() — insert user_enrollments +
+        user_modules + user_sessions for the Equity Research career path.
+        Returns enrollment_id or None if the path/data is missing."""
+        # Find the Equity Research master_path
+        paths = _supabase_get("master_paths?select=id,title&is_active=eq.true&limit=5") or []
+        if not paths:
+            return None
+        path = paths[0]  # only one active career path today
+        # Idempotent — reuse existing enrollment if present
+        existing = _supabase_get(
+            f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}"
+            f"&master_path_id=eq.{_urlparse.quote(path['id'])}&select=id&limit=1"
+        ) or []
+        if existing:
+            return existing[0]["id"]
+        enrollment = _supabase_post(
+            "user_enrollments",
+            {"user_id": user_id, "master_path_id": path["id"],
+             "title": path.get("title"), "status": "active"},
+            prefer="return=representation",
+        )
+        if isinstance(enrollment, list) and enrollment:
+            enrollment_id = enrollment[0]["id"]
+        elif isinstance(enrollment, dict):
+            enrollment_id = enrollment.get("id")
+        else:
+            return None
+
+        modules = _supabase_get(
+            f"master_modules?path_id=eq.{_urlparse.quote(path['id'])}"
+            "&select=id,title,order_index,module_number&order=order_index&limit=100"
+        ) or []
+        if not modules:
+            return enrollment_id
+        module_rows = [{
+            "enrollment_id": enrollment_id,
+            "master_module_id": m["id"],
+            "title": m.get("title"),
+            "order_index": m.get("order_index"),
+            "module_number": m.get("module_number") or m.get("order_index"),
+            "is_removed": False,
+        } for m in modules]
+        inserted_mods = _supabase_post(
+            "user_modules", module_rows,
+            prefer="return=representation",
+        ) or []
+        um_by_master = {r["master_module_id"]: r["id"] for r in inserted_mods if r.get("master_module_id")}
+        # Sessions
+        master_module_ids = ",".join(_urlparse.quote(m["id"]) for m in modules)
+        sessions = _supabase_get(
+            f"master_sessions?module_id=in.({master_module_ids})"
+            "&select=id,module_id,title,order_index&order=order_index&limit=500"
+        ) or []
+        sess_rows = []
+        for s in sessions:
+            umid = um_by_master.get(s["module_id"])
+            if not umid:
+                continue
+            sess_rows.append({
+                "user_module_id": umid,
+                "master_session_id": s["id"],
+                "title": s.get("title"),
+                "order_index": s.get("order_index") or 0,
+                "is_removed": False,
+                "is_added_by_ai": False,
+            })
+        if sess_rows:
+            _supabase_post("user_sessions", sess_rows)
+        return enrollment_id
+
 
     @api_router.get("/admin/users/{user_id}/progress")
     async def admin_user_progress(user_id: str, user=Depends(_get_supabase_user)):
