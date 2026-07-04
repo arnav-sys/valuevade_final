@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 // TODO (Step 3.5 P2): Continue NotesPage extraction — remaining seams to split:
 //   • NotesFilterChips.jsx (filter chip row + counts logic)
 //   • SessionDoubtPanel.jsx (doubt-flagging + Pari re-do flow)
@@ -1534,13 +1534,15 @@ const CARD_THEME_DELETED_SEE_NOTES_FOLDER = null; // moved to /notes/constants.j
 // MAIN PAGE
 // -----------------------------------------------------------
 
-// Wave 1 / Item 1B — Video / Notes tab placeholder. Default = Video.
-// When master_sessions.lecture_url is non-null in the future, the Video tab
-// will render an iframe/<video>; for now it's a "Coming soon" card.
-function NotesPhaseTabs({ session, sessionId: _sid }) {
-  const [tab, setTab] = useState('video');
+// Wave 1 / Item 1B — Video / Notes tab. This is now a CONTROLLED component:
+// NotesPage owns the `tab` state so the notes / filter / cards / nav below
+// can be gated on it (fixing the "video appears twice + notes bleed" bug).
+// The video is rendered here ONLY — the parent no longer mounts a separate
+// SessionVideoPlayer above the tabs.
+function NotesPhaseTabs({ session, tab, setTab, onVideoEnded, videoWatched, onCompleteSession, completing }) {
   const lectureUrl = session?.lecture_url || null;
   const isYouTube = lectureUrl && /youtube\.com|youtu\.be/i.test(lectureUrl);
+  const videoRef = useRef(null);
   return (
     <div className="mb-6" data-testid="notes-phase-tabs">
       <div className="flex gap-2 mb-3 border-b border-[var(--color-border)]" role="tablist">
@@ -1552,7 +1554,7 @@ function NotesPhaseTabs({ session, sessionId: _sid }) {
           className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'video'
             ? 'border-[var(--color-accent)] text-[var(--color-text)]'
             : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-          🎥 Video Lecture
+          Video Lecture{videoWatched ? ' ✓' : ''}
         </button>
         <button
           onClick={() => setTab('notes')}
@@ -1562,23 +1564,61 @@ function NotesPhaseTabs({ session, sessionId: _sid }) {
           className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === 'notes'
             ? 'border-[var(--color-accent)] text-[var(--color-text)]'
             : 'border-transparent text-[var(--color-text-muted)] hover:text-[var(--color-text)]'}`}>
-          📄 Notes
+          Notes
         </button>
       </div>
       {tab === 'video' && (
-        <div className="rounded-2xl p-8 text-center bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-bg-card)] border border-[var(--color-border)]" data-testid="video-tab-content">
+        <div className="rounded-2xl p-4 sm:p-6 bg-gradient-to-br from-[var(--color-accent)]/10 to-[var(--color-bg-card)] border border-[var(--color-border)]" data-testid="video-tab-content">
           {lectureUrl ? (
-            isYouTube ? (
-              <iframe className="w-full aspect-video rounded-xl" src={lectureUrl.replace('watch?v=', 'embed/')} allow="encrypted-media" title="Lecture" />
-            ) : (
-              <video controls className="w-full rounded-xl" src={lectureUrl} />
-            )
-          ) : (
             <>
+              {isYouTube ? (
+                <iframe className="w-full aspect-video rounded-xl" src={lectureUrl.replace('watch?v=', 'embed/')} allow="encrypted-media" title="Lecture" />
+              ) : (
+                <video
+                  ref={videoRef}
+                  controls
+                  className="w-full rounded-xl"
+                  src={lectureUrl}
+                  onEnded={onVideoEnded}
+                  data-testid="session-video"
+                />
+              )}
+              {/* Bug 2 fix — "Complete Session" button below the video. Enabled
+                  once the video ends (or manual mark-complete). Clicking runs
+                  the same completion flow as the notes-flow "Complete Notes". */}
+              <div className="mt-4 flex flex-col sm:flex-row items-center gap-3 sm:justify-between" data-testid="video-complete-row">
+                <p className="text-xs text-[var(--color-text-muted)] font-bricolage">
+                  {videoWatched
+                    ? 'Video watched — you can now complete this session.'
+                    : 'Watch the video to the end, or click Mark as complete to enable.'}
+                </p>
+                <div className="flex items-center gap-2">
+                  {!videoWatched && !isYouTube && (
+                    <button
+                      onClick={onVideoEnded}
+                      data-testid="mark-video-complete"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bricolage font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-surface)] transition-all"
+                    >
+                      Mark as complete
+                    </button>
+                  )}
+                  <button
+                    onClick={onCompleteSession}
+                    disabled={!videoWatched || completing}
+                    data-testid="complete-session-button"
+                    className="inline-flex items-center gap-1.5 px-5 py-2 rounded-xl text-sm font-bricolage font-semibold bg-gradient-to-r from-[var(--color-success)] to-emerald-500 text-white hover:shadow-[0_0_24px_rgba(16,185,129,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {completing ? 'Completing…' : videoWatched ? 'Complete Session' : 'Complete Session'}
+                  </button>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div className="text-center py-8">
               <div className="text-5xl mb-3">🎥</div>
               <h3 className="text-xl font-semibold text-[var(--color-text)] mb-2 font-bricolage">Video lecture for this session</h3>
               <p className="text-[var(--color-text-muted)] mb-5 max-w-md mx-auto">
-                Coming soon — for now, switch to Notes to dive in. Pari will narrate this lesson via video lecture in a future update.
+                Coming soon — for now, switch to Notes to dive in.
               </p>
               <button
                 onClick={() => setTab('notes')}
@@ -1586,11 +1626,10 @@ function NotesPhaseTabs({ session, sessionId: _sid }) {
                 className="px-5 py-2 bg-[var(--color-accent)] text-white rounded-lg font-medium hover:opacity-90">
                 Switch to Notes →
               </button>
-            </>
+            </div>
           )}
         </div>
       )}
-      {/* Notes tab — when active, the existing card flow below shows naturally. */}
     </div>
   );
 }
@@ -1609,6 +1648,14 @@ export default function NotesPage() {
   const [startedAt] = useState(() => Date.now());
   // Filter chips: 'all' | 'lessons' | 'practice'
   const [filter, setFilter] = useState('all');
+  // Bug 1 fix — tab state lifted to page so we can gate notes/filter/nav below.
+  // Default to 'notes' so users landing on a session immediately see the flow
+  // they know. Users can flip to 'video' explicitly.
+  const [tab, setTab] = useState('notes');
+  // Bug 2 fix — track whether the lecture video has been watched to the end.
+  // When true AND the video tab is active, the bottom nav CTA swaps to
+  // "Complete Session" and marks the session complete on click.
+  const [videoWatched, setVideoWatched] = useState(false);
 
   // Track active reading time on this page → user_stats.total_time_minutes
   useTimeTracking(user?.id);
@@ -1825,19 +1872,24 @@ export default function NotesPage() {
         onTouchEnd={onTouchEnd}
       >
         <div className="w-full max-w-3xl mx-auto">
-          {/* Session lecture video (renders only when master_sessions.lecture_url
-              is set — silently absent for other sessions). Sits above the phase
-              tabs so it's the first thing visible when opening a session. */}
-          {session?.lecture_url && (
-            <SessionVideoPlayer src={session.lecture_url} title={session.title} />
-          )}
+          {/* Bug 1 fix — the video is now rendered ONLY inside NotesPhaseTabs
+              when tab==='video'. The previous top-level SessionVideoPlayer was
+              causing the video to render twice on the Video tab. Tab state is
+              also lifted to this page so we can gate notes content below. */}
+          <NotesPhaseTabs
+            session={session}
+            tab={tab}
+            setTab={setTab}
+            onVideoEnded={() => setVideoWatched(true)}
+            videoWatched={videoWatched}
+            onCompleteSession={complete}
+            completing={completing}
+          />
 
-          {/* Wave 1 / 1B — Video / Notes tab toggle. Default = Video (placeholder),
-              switch to Notes for the existing flow. Phase-complete is unaffected
-              — the existing notes-completion logic still fires when the user
-              reaches the last card. */}
-          <NotesPhaseTabs sessionId={sessionId} session={session} />
-
+          {/* All notes content below is now gated on tab==='notes' so it
+              doesn't bleed through when the user is on the Video tab. */}
+          {tab === 'notes' && (
+          <>
           {/* C1 (Batch 1) — AskPariButton moved to the TOP of notes content,
               above the cards, so it's the first thing visible. Was
               previously a sibling of the card area which placed it to
@@ -2027,11 +2079,25 @@ export default function NotesPage() {
               </button>
             </div>
           )}
+          </>
+          )}
         </div>
       </main>
       {(() => {
         const t = resolveTutorPhase('notes_intro');
-        return <AvatarPersona pose={t?.pose || 'explaining'} size="sm" position="bottom-right" message={t?.message} />;
+        // Bug 3 fix — Pari icon now opens the doubts chat on click. Was
+        // previously a decorative image with no onClick handler.
+        return (
+          <AvatarPersona
+            pose={t?.pose || 'explaining'}
+            size="sm"
+            position="bottom-right"
+            message={t?.message}
+            clickToOpenDoubts
+            doubtsPhase="notes"
+            doubtsCourseSessionId={sessionId}
+          />
+        );
       })()}
 
       {/* Bottom nav bar */}
