@@ -36,6 +36,7 @@ import AdminDashboard from "@/components/AdminDashboard";
 import NotFoundPage from "@/components/NotFoundPage";
 
 // Authenticated — lazy loaded for faster initial bundle
+const EnrollmentPage = lazyWithRetry(() => import("@/components/EnrollmentPage"));
 const CoursesPage = lazyWithRetry(() => import("@/components/CoursesPage"));
 const CourseDetailsPage = lazyWithRetry(() => import("@/components/CourseDetailsPage"));
 const CustomizePage = lazyWithRetry(() => import("@/components/CustomizePage"));
@@ -155,6 +156,8 @@ function App() {
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
                   <Route path="/courses" element={<CoursesPage />} />
                   <Route path="/course/:courseId" element={<CourseDetailsPage />} />
+                  {/* Proper enrollment page — preview + confirm, no AI customization */}
+                  <Route path="/enroll/:courseId" element={<ProtectedRoute><EnrollmentPage /></ProtectedRoute>} />
                   {/* Customization wizard removed — every enrollee gets the
                       standard 22-module curriculum via direct one-click enroll.
                       Old wizard URLs land straight on the dashboard. */}
