@@ -4397,3 +4397,68 @@ will become unreadable. Document for future ops.
 - Per-tier promo codes / discount engine.
 - Subscription-mode pricing (this build is one-time only).
 
+
+---
+
+## 2026-07-04 — Payment/customization removal + sim bulk seed progress
+
+### Fixed (P0)
+- **`/courses` and `/dashboard` stuck-loading bug** — root cause was
+  `EnrollmentGuard` on Learning routes checking `user_enrollments` for every
+  page load; after paywall/customization removal every user is treated as
+  enrolled. Neutralized `EnrollmentGuard.jsx` to a pass-through. `/dashboard`
+  now paints in ~1.5s with zero `enrollment-guard-loading` spinner. `/courses`
+  paints in **1.92s**.
+- **Fixed `LoginPage.jsx` JSX parse error** (nested `<p>` leftover from signup
+  removal) — frontend now compiles clean.
+
+### Removed (per product decision)
+- **Customization wizard** — `/course/:id/customize`, `/preview`, `/confirm`,
+  `/loading`, `/enrolled` routes now redirect to `/dashboard`. Their code
+  files remain in the repo (git history) but are no longer routed.
+- **`SessionPaymentGate`** — pass-through. PaywallModal code preserved.
+- **`EnrollmentGuard`** — pass-through. Enrollment check preserved.
+
+### Added
+- `/app/frontend/src/lib/enrollDirect.js` — one-click enrollment helper
+  that mirrors ConfirmPage's DB writes (user_enrollments + user_modules +
+  user_sessions + user_module_projects) without any customization payload.
+  Called from `CourseDetailsPage`'s Enroll button.
+
+### Sim bulk-seed status (this session)
+Live in `master_simulations` (all tagged `source: 'ai_generated_v1'`):
+```
+M1  = 7/7    (2 excel, 3 doc, 2 dm)  Sonnet 4.75/5
+M2  = 6/6    (2 excel, 1 doc, 3 dm)  Sonnet 5.00/5
+M3  = 10/10  (all excel)             Sonnet 4.92/5 (S3.2 accepted per policy)
+M4  = 10/10  (all excel)             Sonnet 4.75/5
+M5  = 6/6    (0 excel, 4 doc, 2 dm)  Sonnet 5.00/5
+M6  = 13/13  (1 excel, 8 doc, 4 dm)  Sonnet 4.92/5 (S6.6 regen 4.25→5.0)
+M7  = 12/12  (3 excel, 6 doc, 3 dm)  Sonnet 4.83/5
+M8  = 7/7    (2 excel, 4 doc, 1 dm)  Sonnet 4.88/5 (S8.6 regen for fake scandal)
+M9  = 3/12   partial — halted at S9.4 due to LLM budget cap
+M13 = 17/17  (all excel multi-sheet) 3/4 pass, S13.16 DC still weak
+```
+Total: 91 sims live. Remaining: M9(9), M10, M11, M12, M14, M15, M18 ≈ ~70 sessions.
+
+### Sim pipeline improvements this session
+- `bulk_seed_sims.py`: added em-dash header pattern (M13 style),
+  corrective-feedback retry loop (feeds validation errors back to LLM),
+  transient-5xx retry in `sync_call`, top-level schema promotion
+  (scenario / instructions / objectives) for `master_simulations`.
+- `sonnet_quality_review.py`: same em-dash header fix so notes are
+  correctly passed to Sonnet review.
+- `/app/scripts/live_write_sims.py`: idempotent per-module live-write.
+- `/app/scripts/live_rewrite_sessions.py`: targeted rewrite for a subset
+  of sessions post-regen.
+
+### Blocker
+- Emergent LLM key budget cap ratchets up by only ~$1 per top-up despite
+  $114+ credits available. Every ~35 sim generations trips the cap.
+  Escalation ticket recommended for the user to raise with Emergent
+  Support so future top-ups reflect actual balance.
+
+### Next
+- Top-up + resume M9 → M18 sim seeding.
+- Post-completion: preview URL + 1 sample screenshot per module.
+

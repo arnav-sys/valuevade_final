@@ -6,6 +6,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
+import { enrollDirect } from '../lib/enrollDirect';
 import {
   LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
 } from './cinematic/primitives';
@@ -217,13 +218,28 @@ export default function CourseDetailsPage() {
   );
   const totalHours = course?.estimated_hours || Math.round(totalMinutes / 60) || 0;
 
-  // Route to the AI customization questionnaire (logged-in) or to login (logged-out).
-  const goCustomize = () => {
+  // Direct one-click enrollment — replaces the previous customize/preview/confirm
+  // wizard. Every enrollee gets the standard 22-module curriculum. Stateless
+  // flag `enrolling` protects against double-clicks.
+  const [enrolling, setEnrolling] = useState(false);
+  const [enrollError, setEnrollError] = useState(null);
+  const goCustomize = async () => {
     if (!user) {
       navigate('/login');
       return;
     }
-    navigate(`/course/${courseId}/customize`);
+    if (enrolling) return;
+    setEnrolling(true);
+    setEnrollError(null);
+    try {
+      await enrollDirect({ userId: user.id, courseId, courseTitle: course?.title });
+      navigate('/dashboard', { replace: true });
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('Direct enrollment failed:', err);
+      setEnrollError(err?.message || 'Enrollment failed. Please try again.');
+      setEnrolling(false);
+    }
   };
 
   const isEnrolled = enrollment?.status === 'active';
@@ -406,7 +422,7 @@ export default function CourseDetailsPage() {
                       className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                       data-testid="detail-customize-enroll"
                     >
-                      {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
+                      {user ? (enrolling ? 'Enrolling…' : 'Enroll — Start Free') : 'Login to Enroll'} <ArrowRight size={16} />
                     </button>
                   </BreathingGlow>
                 )}
@@ -659,7 +675,7 @@ export default function CourseDetailsPage() {
                       className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                       data-testid="detail-closing-cta-button"
                     >
-                      {user ? 'Customize & Enroll' : 'Login to Enroll'} <ArrowRight size={16} />
+                      {user ? (enrolling ? 'Enrolling…' : 'Enroll — Start Free') : 'Login to Enroll'} <ArrowRight size={16} />
                     </button>
                   )}
                 </BreathingGlow>
