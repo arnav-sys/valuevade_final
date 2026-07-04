@@ -89,6 +89,10 @@ def _ensure_referral_code(user_id: str) -> Optional[str]:
 # ===========================================================================
 # Pydantic
 # ===========================================================================
+class _AdminVideoUrlBody(BaseModel):
+    public_url: str
+
+
 class ReferralAttachReq(BaseModel):
     ref_code: str = Field(..., min_length=4, max_length=12)
 
@@ -954,7 +958,84 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         )
         return {"ok": True}
 
-    @api_router.post("/referrals/attach")
+    @api_router.post("/admin/sessions/{session_id}/video-signed-url")
+    async def admin_video_signed_url(session_id: str, user=Depends(_get_supabase_user)):
+        """Returns a signed upload URL that the browser can PUT the file to
+        directly, bypassing nginx (which caps FastAPI bodies at 1 MB → 413).
+        The signed URL is scoped to a single object and expires quickly, so
+        the anon client can upload without needing service-role or RLS write
+        permissions on the bucket."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing")
+        # Resolve session → module_number + order_index → object key
+        sess_rows = _supabase_get(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,order_index,module_id&limit=1"
+        ) or []
+        if not sess_rows:
+            raise HTTPException(status_code=404, detail="Session not found.")
+        sess = sess_rows[0]
+        mod_rows = _supabase_get(
+            f"master_modules?id=eq.{_urlparse.quote(sess['module_id'])}"
+            "&select=module_number&limit=1"
+        ) or []
+        if not mod_rows or mod_rows[0].get("module_number") is None:
+            raise HTTPException(status_code=404, detail="Module not found.")
+        module_number = int(mod_rows[0]["module_number"])
+        order_index = int(sess.get("order_index") or 1)
+        key = _bucket_key_for(module_number, order_index)
+
+        # Ask Supabase Storage for a signed upload URL
+        import urllib.request as _ur
+        try:
+            req = _ur.Request(
+                f"{_SUPABASE_REST_URL}/storage/v1/object/upload/sign/{_VIDEO_BUCKET}/{key}",
+                method="POST",
+                data=b"{}",
+                headers={
+                    "apikey": _SUPABASE_SR,
+                    "Authorization": f"Bearer {_SUPABASE_SR}",
+                    "Content-Type": "application/json",
+                },
+            )
+            with _ur.urlopen(req, timeout=20) as resp:
+                signed = _json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            body = e.read().decode("utf-8", errors="replace")
+            logger.error("signed_upload_url failed: %s", body[:400])
+            raise HTTPException(status_code=502, detail=f"Storage signed-url failed: {body[:200]}")
+
+        # Supabase returns {"url":"/object/upload/sign/{bucket}/{path}?token=…","token":"…"}
+        rel = signed.get("url") or ""
+        upload_url = f"{_SUPABASE_REST_URL}/storage/v1{rel}"
+        return {
+            "upload_url": upload_url,
+            "token": signed.get("token"),
+            "key": key,
+            "bucket": _VIDEO_BUCKET,
+            "public_url": _bucket_public_url(key),
+            "max_bytes": _MAX_VIDEO_BYTES,
+        }
+
+    @api_router.post("/admin/sessions/{session_id}/video-url")
+    async def admin_save_video_url(session_id: str, body: _AdminVideoUrlBody,
+                                    user=Depends(_get_supabase_user)):
+        """Small JSON payload — safely under any nginx cap. Called by the FE
+        after a successful direct-to-Supabase upload."""
+        _ensure_admin(user)
+        url = (body.public_url or "").strip()
+        if not url or not url.startswith("http"):
+            raise HTTPException(status_code=400, detail="Invalid public_url.")
+        # Sanity: the URL must belong to our project's bucket
+        if _VIDEO_BUCKET not in url:
+            raise HTTPException(status_code=400,
+                detail=f"URL does not point at the {_VIDEO_BUCKET} bucket.")
+        _supabase_patch(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
+            {"lecture_url": url},
+        )
+        return {"ok": True, "lecture_url": url}
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):
         """Called by the SignupPage right after a successful signup when a
         ?ref= code is present in localStorage. Sets profiles.referred_by_user_id

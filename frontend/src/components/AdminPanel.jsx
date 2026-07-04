@@ -945,27 +945,36 @@ function SessionVideosTab() {
     setBusy((b) => ({ ...b, [session_id]: 'upload' }));
     setProgress((p) => ({ ...p, [session_id]: 0 }));
     try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const form = new FormData();
-      form.append('file', file);
-      const url = `${API}/api/admin/sessions/${session_id}/video`;
-      const body = await new Promise((resolve, reject) => {
+      // Direct-to-Supabase upload — bypasses nginx (1 MB cap → 413) entirely.
+      // 1. Ask backend for a signed upload URL (small JSON round-trip only)
+      const signed = await authPost(
+        `/api/admin/sessions/${session_id}/video-signed-url`, {}
+      );
+      if (!signed?.upload_url) throw new Error('missing signed upload URL');
+
+      // 2. PUT the file straight to Supabase Storage
+      await new Promise((resolve, reject) => {
         const xhr = new XMLHttpRequest();
-        xhr.open('POST', url);
-        xhr.setRequestHeader('Authorization', `Bearer ${session?.access_token || ''}`);
+        xhr.open('PUT', signed.upload_url);
+        xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
+        xhr.setRequestHeader('x-upsert', 'true');
         xhr.upload.onprogress = (e) => {
           if (e.lengthComputable) {
             setProgress((p) => ({ ...p, [session_id]: Math.round((e.loaded / e.total) * 100) }));
           }
         };
         xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) resolve(JSON.parse(xhr.responseText || '{}'));
-          else reject(new Error(`${xhr.status}: ${xhr.responseText}`));
+          if (xhr.status >= 200 && xhr.status < 300) resolve();
+          else reject(new Error(`storage upload ${xhr.status}: ${xhr.responseText?.slice(0, 200)}`));
         };
-        xhr.onerror = () => reject(new Error('network error'));
-        xhr.send(form);
+        xhr.onerror = () => reject(new Error('network error during upload'));
+        xhr.send(file);
       });
-      if (!body?.ok) throw new Error('upload failed');
+
+      // 3. Tell backend to save the URL on master_sessions (small JSON payload)
+      await authPost(`/api/admin/sessions/${session_id}/video-url`, {
+        public_url: signed.public_url,
+      });
       await reload();
     } catch (e) {
       alert(`Upload failed: ${e.message}`);

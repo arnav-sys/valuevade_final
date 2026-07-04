@@ -1,0 +1,55 @@
+{
+  "summary": "Verified new direct-to-Supabase video upload architecture (POST /api/admin/sessions/{sid}/video-signed-url + /video-url). Wrote pytest suite covering auth (401/403/200), shape validation, and true end-to-end direct PUT of a 2.8 MB blob to Supabase Storage (proves nginx 1MB cap bypass). Ran AdminPanel UI smoke — Session Videos tab renders correctly. Found & FIXED 1 blocking backend bug (P0: video-url endpoint rejected all JSON bodies as 422 because the Pydantic model was defined in function-local scope). Identified 2 additional issues that need main-agent attention (see below).",
+  "backend_issues": {
+    "critical": [
+      {"endpoint": "POST /api/admin/sessions/{sid}/video-signed-url", "issue": "Returns HTTP 502 (Storage 409 'Duplicate') whenever the target object key already exists in the session-videos bucket. Because keys are deterministic (m{module}/s{module}-{order}.mp4), any RE-UPLOAD / REPLACE of an existing video fails. Root cause: Supabase's `POST /storage/v1/object/upload/sign/{bucket}/{path}` refuses when the object exists (upsert:false in the returned token). Repro: upload a video via the FE flow, then try to Replace it — the 'Replace' button in AdminPanel will 502. Fix: pass `?upsert=true` (or POST body `{upsert:true}`) to the sign endpoint AND propagate that so the FE's PUT x-upsert:true matches; alternatively DELETE the object before signing on replace.", "priority": "CRITICAL"}
+    ],
+    "minor": [
+      {"endpoint": "DELETE /api/admin/sessions/{sid}/video", "issue": "Short-circuits with {'ok':true,'already_empty':true} when master_sessions.lecture_url is null, but does NOT attempt to purge the underlying Supabase Storage object. If a prior upload persisted the blob but the URL patch failed (or the row was manually nulled), the storage bucket keeps the orphan and blocks new uploads (interacts with the 409 bug above). Consider always attempting the storage delete regardless of lecture_url."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {"flow": "Replace video for a session with an existing lecture_url", "issue": "Because backend POST /video-signed-url 502s on existing objects, clicking 'Replace' on an already-uploaded row in the Session Videos tab will alert 'Upload failed'. Blocking the replace workflow.", "affected_selectors": ["admin-video-upload-{sid}"]}
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_video_signed_url.py",
+    "/app/test_reports/pytest/admin_video_signed_url_results.xml"
+  ],
+  "action_items": [
+    "P0: Fix POST /admin/sessions/{sid}/video-signed-url to support upsert — call Supabase sign endpoint with `{\"upsert\": true}` (or the equivalent `?upsert=true` query param) so the returned token has upsert-scope. Verify: after uploading a video, calling signed-url again for the same session_id must still return 200 (not 502). This unblocks the 'Replace' button in AdminPanel.",
+    "P2: Consider making DELETE /admin/sessions/{sid}/video always attempt bucket-object deletion (skip the early-return when lecture_url is null) — otherwise orphaned bucket objects can wedge future uploads.",
+    "Bug I already fixed (kept as note): moved `_AdminVideoUrlBody(BaseModel)` out of the `register_wave_endpoints` closure to module scope. FastAPI was mis-classifying the body parameter as a query parameter when the Pydantic class was locally scoped, causing every POST /video-url to return 422 'body missing in query'."
+  ],
+  "critical_code_review_comments": [
+    "wave_endpoints.py line ~1017 (before fix): Pydantic body models defined in function-local scope are silently degraded by FastAPI to query parameters, producing 422 'Field required' for `body`. Rule of thumb: all Pydantic request/response models must live at module scope. Verified fix restored 200 behaviour.",
+    "wave_endpoints.py `admin_video_signed_url`: no upsert flag. Since object keys are deterministic (module/session-order), the endpoint effectively only ever works ONCE per session. Any future re-upload / re-record workflow requires upsert=true.",
+    "wave_endpoints.py `admin_delete_session_video` early-returns on missing lecture_url without touching the storage bucket. Consider decoupling row cleanup from object cleanup so orphans don't accumulate.",
+    "wave_endpoints.py file is now 1289 lines — split (admin_video / referrals / interview / etc.) per the 700-line guideline."
+  ],
+  "updated_files": [
+    "/app/backend/wave_endpoints.py (moved _AdminVideoUrlBody to module scope)",
+    "/app/backend/tests/test_admin_video_signed_url.py (new pytest suite, 6 tests, all passing)"
+  ],
+  "success_rate": {"backend": "100% (6/6 pytest — after in-scope fix + supabase cleanup)", "frontend": "100% (AdminPanel Session Videos tab renders with all required testids)"},
+  "test_credentials": "Admin info@valuevade.com/aa1aa2sam3, Non-admin testagent2026@gmail.com/TestPass123! — both worked via Supabase password grant.",
+  "seed_data_creation": "None persisted. Test creates a signed URL for the last unused session (M1.7 = 2d960e19-341c-4144-93f5-37c089bc3e09), PUTs a 2.8 MB fake blob, PATCHes lecture_url, verifies via /admin/sessions/videos, then cleans up via DELETE /video AND direct storage DELETE of m1/s1-7.mp4 (confirmed removed).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The signed_upload_url endpoint is deterministic on (module_number, order_index) → m{N}/s{N}-{Y}.mp4. When adding upsert support (per action item #1), also re-run /app/backend/tests/test_admin_video_signed_url.py — it already asserts the end-to-end direct-PUT + persist + cleanup path; add a `test_signed_url_supports_replace` case that uploads twice to the same session and expects both to succeed. Also note the DELETE endpoint's early-return caveat before writing that test.",
+  "rca of the issue": {
+    "bug_1_pydantic_scope": {
+      "reproduction": "curl -s -X POST $API/api/admin/sessions/{sid}/video-url -H 'Authorization: Bearer <admin_jwt>' -H 'Content-Type: application/json' -d '{\"public_url\":\"...\"}' → 422 {'loc':['query','body'],'msg':'Field required'}",
+      "root_cause": "`class _AdminVideoUrlBody(BaseModel)` was defined inside `register_wave_endpoints()` (function closure). FastAPI's parameter classifier walks the annotation's MRO at decoration time — the class IS a BaseModel subclass at runtime, but the initial classification fell back to treating the parameter as a query field. Moving the class to module scope (matching _AdminCreateUserBody at line 37) restored correct body detection.",
+      "mitigation": "Applied in wave_endpoints.py — class moved to module scope. All 6 pytest assertions now pass."
+    },
+    "bug_2_no_upsert": {
+      "reproduction": "1) Any session with an already-uploaded lecture_url → click Replace in AdminPanel OR curl POST /video-signed-url → backend logs 'signed_upload_url failed: {\"statusCode\":\"409\",\"error\":\"Duplicate\",\"message\":\"The resource already exists\"}'; API returns HTTPException 502.",
+      "root_cause": "Backend calls `POST {supabase}/storage/v1/object/upload/sign/{bucket}/{key}` with empty body. Supabase issues a signed token with `upsert:false`. If an object already exists at that key, Supabase rejects with 409. Since keys are deterministic per (module,session), replace-uploads always hit an existing object.",
+      "mitigation": "Not applied — requires business-scope decision (upsert-always vs delete-then-sign). Recommended: send `{\"upsert\": true}` in the POST body when signing, so the returned token allows overwriting."
+    }
+  }
+}
