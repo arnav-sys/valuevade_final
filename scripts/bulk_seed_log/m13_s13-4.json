@@ -1,0 +1,505 @@
+{
+  "sim_type": "excel",
+  "title": "Titan's Cost Structure, Margins & Working Capital Forecast",
+  "scenario": "You are modelling Titan Company Limited's FY25–FY27 financials. The jewellery retailer has grown steadily but faces input-cost inflation and working-capital pressure as it expands stores. Your task: build Titan's cost waterfall (COGS, OpEx, D&A), forecast margins by separating fixed and variable costs, compute operating leverage, and model working-capital days (DSO, DIO, DPO) to derive cash conversion cycle.",
+  "instructions": "Build cost-driven margin forecasts, operating-leverage ratios, and working-capital day metrics for Titan across three forecast years, starting from historical actuals. Each answer must use formulas that reference the Data sheet, not hard-coded numbers.",
+  "learning_objective": "Forecast profit margins by modelling cost structure (variable and fixed components separately), compute operating leverage and margin expansion, and derive working-capital requirements (receivables, inventory, payables) using days-based metrics that drive cash flow.",
+  "hints": [
+    "EBITDA = Revenue − COGS − OpEx. To find the margin, divide by Revenue.",
+    "Variable costs scale with revenue; use a percentage assumption (e.g. 65% of revenue). Fixed costs are a separate lump; add them to the variable total.",
+    "DSO = Receivables ÷ Revenue × 365. If you forecast Receivables for FY25, use the FY25 Revenue and the DSO formula rearranged: Receivables = DSO/365 × Revenue."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "COGS (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "OpEx (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "D&A (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Receivables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Inventory (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY22A",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 5100,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 280,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 450,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY23A",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 10200,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 6120,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 2100,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 310,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 580,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY24A",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 12800,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 7680,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 2400,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 340,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 750,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY25E",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 15360,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 9216,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 2700,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 380,
+            "readOnly": true
+          },
+          "F5": {
+            "value": "",
+            "readOnly": false
+          },
+          "G5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "FY26E",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 18432,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 11059,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 2950,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 420,
+            "readOnly": true
+          },
+          "F6": {
+            "value": "",
+            "readOnly": false
+          },
+          "G6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "FY27E",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 22118,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 13271,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 460,
+            "readOnly": true
+          },
+          "F7": {
+            "value": "",
+            "readOnly": false
+          },
+          "G7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Payables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "C8": {
+            "value": "",
+            "readOnly": false
+          },
+          "D8": {
+            "value": "",
+            "readOnly": false
+          },
+          "E8": {
+            "value": "",
+            "readOnly": false
+          },
+          "F8": {
+            "value": "",
+            "readOnly": false
+          },
+          "G8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "FY24A Payables",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 920,
+            "readOnly": true
+          },
+          "C9": {
+            "value": "",
+            "readOnly": false
+          },
+          "D9": {
+            "value": "",
+            "readOnly": false
+          },
+          "E9": {
+            "value": "",
+            "readOnly": false
+          },
+          "F9": {
+            "value": "",
+            "readOnly": false
+          },
+          "G9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "C10": {
+            "value": "",
+            "readOnly": false
+          },
+          "D10": {
+            "value": "",
+            "readOnly": false
+          },
+          "E10": {
+            "value": "",
+            "readOnly": false
+          },
+          "F10": {
+            "value": "",
+            "readOnly": false
+          },
+          "G10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "DSO (days)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 21.4,
+            "readOnly": true
+          },
+          "C11": {
+            "value": "",
+            "readOnly": false
+          },
+          "D11": {
+            "value": "",
+            "readOnly": false
+          },
+          "E11": {
+            "value": "",
+            "readOnly": false
+          },
+          "F11": {
+            "value": "",
+            "readOnly": false
+          },
+          "G11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY25E Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Gross Profit FY25E (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "EBITDA FY25E (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "EBITDA Margin FY25E (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Variable Cost % of Revenue FY24A",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Fixed OpEx FY24A (assumed ₹Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Incremental EBITDA Margin FY25E (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "DSO FY24A (days)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "DIO FY24A (days)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "DPO FY24A (days)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Cash Conversion Cycle FY24A (days)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B5-Data!C5",
+      "expected_value": 6144,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!B5-Data!C5-Data!D5",
+      "expected_value": 3444,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B5-Data!C5-Data!D5)/Data!B5*100",
+      "expected_value": 22.42,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!C4+Data!D4)/Data!B4*100",
+      "expected_value": 78.75,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!D4-Data!C4*0.6",
+      "expected_value": -2208,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=((Data!B5-Data!C5-Data!D5)-(Data!B4-Data!C4-Data!D4))/(Data!B5-Data!B4)*100",
+      "expected_value": 28.281250000000004,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=Data!F4/Data!B4*365",
+      "expected_value": 21.39,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B9": {
+      "formula_pattern": "=Data!G4/Data!C4*365",
+      "expected_value": 85.59,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B10": {
+      "formula_pattern": "=Data!A9/Data!C4*365",
+      "expected_value": 43.85,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B11": {
+      "formula_pattern": "=Data!F4/Data!B4*365+Data!G4/Data!C4*365-Data!A9/Data!C4*365",
+      "expected_value": 63.13,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 14
+    }
+  }
+}

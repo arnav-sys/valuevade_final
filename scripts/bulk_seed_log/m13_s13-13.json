@@ -1,0 +1,419 @@
+{
+  "sim_type": "excel",
+  "title": "HDFC Bank vs PSU Bank: Residual Income & P/B Valuation",
+  "scenario": "You're a Mumbai-desk analyst comparing HDFC Bank and Indian Bank (a PSU lender). Both are profitable, but HDFC trades at 3× book while Indian Bank trades at 0.5× book. Your task: compute residual income, ROE-Ke spreads, and justified P/B ratios to understand why the market values them so differently — and prove that value creation hinges entirely on returns above the cost of capital.",
+  "instructions": "Complete the Answers sheet by computing residual income for each bank-year, the ROE-Ke spread, justified P/B multiples, and EVA. Use the DDM Gordon Growth formula to value Coal India's dividend stream. Trace every formula against the Data sheet.",
+  "learning_objective": "Compute residual income, justified price-to-book ratios, and EVA to explain why banks trading above book create spreads above their cost of capital, and value Coal India using the dividend discount model.",
+  "hints": [
+    "Residual Income = Net Income − (Cost of Equity × Book Equity). Start with the simple subtraction in row 2.",
+    "Justified P/B = (ROE − growth rate) / (Cost of Equity − growth rate). The numerator and denominator both involve the spread; ROE 17%, Ke 13%, g 10% means (0.17−0.10)/(0.13−0.10).",
+    "For DDM: Value = Next Dividend / (Cost of Equity − growth). Coal India has ₹25 next dividend, Ke 12%, growth 5%; solve for share value. For EVA: NOPAT − (WACC × Invested Capital)."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Bank / Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Net Income (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Book Equity (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "ROE (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Cost of Equity (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Growth Rate (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 16842,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 99000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 17.0,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 2023,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 14928,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 87800,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 17.0,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2022,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 12650,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 74600,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 17.0,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 10.0,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Indian Bank",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 2156,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 26800,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 4.0,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Indian Bank",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 2023,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 1998,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 25400,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 4.0,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Indian Bank",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 2022,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1850,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 24200,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 4.0,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Coal India",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 25000,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 50000,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 50.0,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 5.0,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "ITC Ltd",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 6200,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 33.5,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 6.0,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "NTPC",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 13500,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 15.9,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 12.0,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 5.0,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Axis Bank",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 2024,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 9850,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 72500,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 13.6,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 13.0,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 8.0,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. HDFC Bank 2024 Residual Income (₹Cr) = Net Income − (Ke × Book Equity)"
+          },
+          "B2": {},
+          "A3": {
+            "value": "Q2. Indian Bank 2024 Residual Income (₹Cr)"
+          },
+          "B3": {},
+          "A4": {
+            "value": "Q3. HDFC Bank 2024 Justified P/B = (ROE − growth) / (Ke − growth)"
+          },
+          "B4": {},
+          "A5": {
+            "value": "Q4. Indian Bank 2024 Justified P/B"
+          },
+          "B5": {},
+          "A6": {
+            "value": "Q5. Coal India DDM Valuation (₹/share) = Dividend / (Ke − growth). Assume next dividend ₹25."
+          },
+          "B6": {},
+          "A7": {
+            "value": "Q6. NTPC 2024 EVA (₹Cr) = NOPAT − (WACC × Invested Capital). Assume NOPAT = Net Income, WACC = 11%, Invested Capital = Book Equity."
+          },
+          "B7": {}
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!C2-(Data!F2/100)*Data!D2",
+      "expected_value": 3972,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C5-(Data!F5/100)*Data!D5",
+      "expected_value": -1328,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!E2/100-Data!G2/100)/(Data!F2/100-Data!G2/100)",
+      "expected_value": 2.333,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!E5/100-Data!G5/100)/(Data!F5/100-Data!G5/100)",
+      "expected_value": 0.444,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=25/(Data!F8/100-Data!G8/100)",
+      "expected_value": 357.143,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 16
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!C10-((Data!F10/100)*Data!D10)",
+      "expected_value": 3300,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    }
+  }
+}

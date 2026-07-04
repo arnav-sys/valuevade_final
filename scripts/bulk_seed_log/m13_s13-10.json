@@ -1,0 +1,519 @@
+{
+  "sim_type": "excel",
+  "title": "Value the Steering Wheel: Control Premium in IT Services M&A",
+  "scenario": "You are analysing a potential acquisition of Mindtree-like IT services companies for a strategic buyer. Your Mumbai desk has compiled a precedent-transactions table of recent Indian IT services M&A (2018–2024). You must compute control premiums, transaction multiples, and use them to value a hypothetical target company in a control scenario.",
+  "instructions": "Build a precedent-transactions analysis: compute each deal's control premium and transaction EV/EBITDA multiple, find the median transaction multiple across all deals, then apply it to value a mystery IT services target. Compare the implied control price to the trading-comps baseline.",
+  "learning_objective": "Compute control premiums and transaction multiples from real M&A deals, understand why strategic acquirers pay more than market price, and apply precedent multiples to value a company in a control context.",
+  "hints": [
+    "Control Premium = (Offer Price − Market Price Before Deal) / Market Price Before Deal. Compute this for each row, then look for the typical 20–40% range.",
+    "Transaction EV/EBITDA = Deal Enterprise Value / EBITDA at deal date. You'll need to sum Equity Value and Net Debt to get EV. Then divide by EBITDA.",
+    "For the target valuation: Implied EV = Median Transaction Multiple × Target EBITDA. Then Implied Equity = Implied EV − Target Net Debt. Then divide by shares to get price per share."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Deal Name",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Acquirer",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Target",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Market Price/Share (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Offer Price/Share (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Equity Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Net Debt (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Deal 1: TCS–Cognizant Strategic Stake",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Tata Consultancy Services",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "Cognizant-like IT firm",
+            "readOnly": true
+          },
+          "D2": {
+            "value": 2840,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 3421,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 3850,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Deal 2: Infosys–EdgeVerve Acquisition",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "EdgeVerve-like IT services",
+            "readOnly": true
+          },
+          "D3": {
+            "value": 1950,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 2340,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 8750,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 1650,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Deal 3: HCL Tech–Strategic Acquisition",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "HCL Technologies",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "Mid-cap IT services",
+            "readOnly": true
+          },
+          "D4": {
+            "value": 1120,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 1365,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 6890,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 800,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 1240,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Deal 4: Wipro–Capco Acquisition",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Capco-like digital firm",
+            "readOnly": true
+          },
+          "D5": {
+            "value": 510,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 637,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 5120,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 950,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 860,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Deal 5: Tech Mahindra–Strategic IT Buy",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Tech Mahindra",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "IT services consolidation",
+            "readOnly": true
+          },
+          "D6": {
+            "value": 1640,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 2050,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 12300,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 2100,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Deal 6: Mindtree–L&T Acquisition (proxy)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "L&T",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Mindtree-class IT firm",
+            "readOnly": true
+          },
+          "D7": {
+            "value": 980,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 1268,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 8900,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 1450,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 1620,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Deal 7: Accenture–IT Services Bolt-On",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Accenture",
+            "readOnly": true
+          },
+          "C8": {
+            "value": "Boutique IT services",
+            "readOnly": true
+          },
+          "D8": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 2750,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 15600,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 3300,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 3100,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Deal 8: Oracle–NetSuite-class acquisition",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "Oracle India partner",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "Cloud IT services",
+            "readOnly": true
+          },
+          "D9": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 1875,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 9450,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 1800,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 1890,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Deal 9: Atos–IT Services India Play",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "Atos (global)",
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Mid-tier IT services",
+            "readOnly": true
+          },
+          "D10": {
+            "value": 850,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 1020,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 7200,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 1100,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 1340,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Deal 10: IBM–IT Services Consolidation",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "IBM",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Legacy IT services firm",
+            "readOnly": true
+          },
+          "D11": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 1452,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 10100,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 2000,
+            "readOnly": true
+          },
+          "H11": {
+            "value": 1950,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Mystery Target (for valuation)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "Target Market Price/Share (₹)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 1100,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Target EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Target Net Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 1600,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 45,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. Deal 1 Control Premium (%)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "Q2. Deal 3 Transaction EV/EBITDA (x)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q3. Median Transaction EV/EBITDA across all 10 deals (x)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q4. Implied Enterprise Value of Target (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q5. Implied Equity Value of Target (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Q6. Implied Price per Share — Control Scenario (₹)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!E2-Data!D2)/Data!D2",
+      "expected_value": 0.204,
+      "type": "number",
+      "tolerance": 0.005,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(Data!F4+Data!G4)/Data!H4",
+      "expected_value": 6.201612903225806,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=MEDIAN((Data!F2+Data!G2)/Data!H2,(Data!F3+Data!G3)/Data!H3,(Data!F4+Data!G4)/Data!H4,(Data!F5+Data!G5)/Data!H5,(Data!F6+Data!G6)/Data!H6,(Data!F7+Data!G7)/Data!H7,(Data!F8+Data!G8)/Data!H8,(Data!F9+Data!G9)/Data!H9,(Data!F10+Data!G10)/Data!H10,(Data!F11+Data!G11)/Data!H11)",
+      "expected_value": 6.145402022147328,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Answers!B4*Data!B15",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 13
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Answers!B5-Data!B16",
+      "expected_value": -1600,
+      "type": "number",
+      "tolerance": 1,
+      "points": 13
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Answers!B6*100/Data!B17",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    }
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "sim_type": "excel",
+  "title": "Reliance's Working Capital Schedule: Growth Cash Trap",
+  "scenario": "You're a junior analyst on the Mumbai desk covering Reliance Industries. Your senior has asked you to build a working capital schedule for Reliance's next three-year forecast, computing Days Inventory Outstanding (DIO), Days Sales Outstanding (DSO), and Days Payable Outstanding (DPO) from historical actuals, then forecasting the rupee balances and Cash Conversion Cycle. The question: is Reliance's projected 12% revenue growth going to devour cash or generate it?",
+  "instructions": "Compute historical DIO, DSO, DPO from the Data sheet actuals; forecast these days (flat or with judgment); convert back to rupee balances; calculate net working capital and its year-on-year change; compute the Cash Conversion Cycle. Identify whether the forecast CCC is lengthening (growth is hungry) or shortening (business getting more efficient).",
+  "learning_objective": "Build a days-based working capital schedule for Reliance, compute the Cash Conversion Cycle, and interpret whether projected growth will tie up or release cash.",
+  "hints": [
+    "DIO = Inventory ÷ COGS × 365; DSO = Receivables ÷ Revenue × 365; DPO = Payables ÷ COGS × 365. Compute these for each historical year first.",
+    "Once you have the days, forecast them flat (or with your judgment) in the Estimate columns. Then reverse: Inventory = DIO ÷ 365 × COGS. Change in Net WC = this year's Net WC − prior year's Net WC.",
+    "CCC = DIO + DSO − DPO. If CCC is rising, growth is tying up more cash per rupee of sales. If negative, suppliers are funding the business (like D-Mart). Check that Change in Net WC flows logically to the cash flow statement."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY2022A",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY2023A",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY2024A",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY2025E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY2026E",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY2027E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": 450000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 480000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 525000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 588000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 658560,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 737587,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 315000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 336000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 367500,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 411600,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 460992,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 516311,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Inventory (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 48240,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 52800,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 58464,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 65478,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 73335,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Trade Receivables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": 67500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 78750,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 88200,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 98784,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 110638,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Trade Payables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": 28350,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 30240,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 33075,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 37044,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 41487,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 46467,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": "Historical Actuals",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Historical Actuals",
+            "readOnly": true
+          },
+          "D7": {
+            "value": "Historical Actuals",
+            "readOnly": true
+          },
+          "E7": {
+            "value": "Forecast 12% Rev Growth",
+            "readOnly": true
+          },
+          "F7": {
+            "value": "Forecast 12% Rev Growth",
+            "readOnly": true
+          },
+          "G7": {
+            "value": "Forecast 12% Rev Growth",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "COGS as % of Revenue",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Inventory Forecast Days",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 52.1,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 52.4,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 52.4,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Receivables Forecast Days",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 54.6,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 54.8,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 54.7,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Payables Forecast Days",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 32.8,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 32.9,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 32.8,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Working Capital Schedule & Metrics",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY2022A — DIO (Days Inventory Outstanding)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {},
+          "A3": {
+            "value": "FY2023A — DSO (Days Sales Outstanding)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {},
+          "A4": {
+            "value": "FY2024A — DPO (Days Payable Outstanding)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {},
+          "A5": {
+            "value": "FY2024A — Net Working Capital (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {},
+          "A6": {
+            "value": "FY2025E — Forecast Receivables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {},
+          "A7": {
+            "value": "FY2025E — Change in Net Working Capital (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {},
+          "A8": {
+            "value": "FY2027E — Cash Conversion Cycle (days)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {}
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B4/Data!B3*365",
+      "expected_value": 52.06,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!D5/Data!D2*365",
+      "expected_value": 54.81,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!D6/Data!D3*365",
+      "expected_value": 32.85,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!D4+Data!D5-Data!D6",
+      "expected_value": 98475,
+      "type": "number",
+      "tolerance": 1,
+      "points": 13
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!E2/365*Data!E5",
+      "expected_value": 142086575.34246576,
+      "type": "number",
+      "tolerance": 1,
+      "points": 13
+    },
+    "Answers!B7": {
+      "formula_pattern": "=(Data!E4+Data!E5-Data!E6)-(Data!D4+Data!D5-Data!D6)",
+      "expected_value": 11145,
+      "type": "number",
+      "tolerance": 1,
+      "points": 18
+    },
+    "Answers!B8": {
+      "formula_pattern": "=Data!E9+Data!E10-Data!E11",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    }
+  }
+}

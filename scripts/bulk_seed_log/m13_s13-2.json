@@ -1,0 +1,321 @@
+{
+  "sim_type": "excel",
+  "title": "Integrate Titan's P&L, Balance Sheet and Cash Flow",
+  "scenario": "You are building Titan Company's integrated 3-statement financial model for FY25E. The P&L is done (Net Income ₹3,812 Cr), and you have opening Balance Sheet balances. Your task: link the statements so Net Income flows to Retained Earnings, calculate operating cash flow, track working capital changes, and verify the Balance Sheet balances—because if it doesn't, you broke a link.",
+  "instructions": "Build the integrated three-statement model for Titan by completing the Cash Flow Statement and Balance Sheet. Link Net Income to Retained Earnings, calculate working capital impacts on cash flow, compute closing cash and Net PP&E, then verify the balance check equals zero.",
+  "learning_objective": "Construct a live integrated 3-statement model, trace the four golden links (Net Income to equity, income to CFS, BS changes to CFS, closing cash to BS), and debug a balance sheet imbalance by identifying the broken link.",
+  "hints": [
+    "Remember: Depreciation is an expense on the P&L (already there), gets added back on the CFS (non-cash), and reduces Net PP&E on the BS. One number, three statements.",
+    "Working capital impact = −(Closing − Opening) for assets, +(Closing − Opening) for liabilities. Receivables up means cash is stuck; payables up means you owe money you haven't paid yet, so it's a cash source.",
+    "Net Income (₹3,812 Cr) must flow into Retained Earnings. Closing Equity = Opening Equity + Net Income − Dividends. Then on the CFS: Operating CF = Net Income + Depreciation ± Working Capital changes ± other adjustments. Closing Cash = Opening Cash + Operating CF − Capex. That closing cash number goes onto the Balance Sheet."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY24A (Opening)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY25E (Closing)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "INCOME STATEMENT",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 51000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 57120,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Depreciation",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 700,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 700,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Interest Expense",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 500,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Net Income FY25E",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 3812,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "BALANCE SHEET — OPENING (FY24A)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "Cash",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Receivables",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2500,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Inventory",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 14000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Net PP&E",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 4000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "BALANCE SHEET — CLOSING (FY25E)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "Receivables (Closing)",
+            "readOnly": true
+          },
+          "C13": {
+            "value": 2800,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Inventory (Closing)",
+            "readOnly": true
+          },
+          "C14": {
+            "value": 14500,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Payables (Opening)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Payables (Closing)",
+            "readOnly": true
+          },
+          "C16": {
+            "value": 3360,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Debt (Opening)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Equity (Opening)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Dividends Paid FY25E",
+            "readOnly": true
+          },
+          "C19": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Capex FY25E",
+            "readOnly": true
+          },
+          "C20": {
+            "value": 900,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "3-STATEMENT MODEL — TITAN FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. Calculate Operating Cash Flow (Indirect Method)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Operating CF = Net Income + Depreciation − Δ Receivables − Δ Inventory + Δ Payables",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q2. Calculate Closing Cash (Opening + Operating CF − Capex)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "Closing Cash = Opening Cash + Operating CF − Capex",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A8": {
+            "value": "Q3. Calculate Closing Equity (with link from Net Income)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Closing Equity = Opening Equity + Net Income − Dividends",
+            "readOnly": true
+          },
+          "B9": {
+            "value": null
+          },
+          "A11": {
+            "value": "Q4. Calculate Closing Net PP&E (asset roll-forward)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A12": {
+            "value": "Closing Net PP&E = Opening Net PP&E + Capex − Depreciation",
+            "readOnly": true
+          },
+          "B12": {
+            "value": null
+          },
+          "A14": {
+            "value": "Q5. Calculate Total Assets (Closing)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A15": {
+            "value": "Total Assets = Closing Cash + Receivables + Inventory + Net PP&E",
+            "readOnly": true
+          },
+          "B15": {
+            "value": null
+          },
+          "A17": {
+            "value": "Q6. Balance Check (must equal zero)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A18": {
+            "value": "Balance Check = Total Assets − (Debt + Payables + Equity)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B3": {
+      "formula_pattern": "=Data!C6 + Data!C4 - (Data!C13 - Data!B9) - (Data!C14 - Data!B10) + (Data!C16 - Data!B15)",
+      "expected_value": 4072,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B8 + Answers!B3 - Data!C20",
+      "expected_value": 2100,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B9": {
+      "formula_pattern": "=Data!B18 + Data!C6 - Data!C19",
+      "expected_value": 17812,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B12": {
+      "formula_pattern": "=Data!B11 + Data!C20 - Data!C4",
+      "expected_value": 4200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B15": {
+      "formula_pattern": "=Answers!B6 + Data!C13 + Data!C14 + Answers!B12",
+      "expected_value": 17300,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B18": {
+      "formula_pattern": "=Answers!B15 - (Data!B17 + Data!C16 + Answers!B9)",
+      "expected_value": -8360,
+      "type": "number",
+      "tolerance": 0,
+      "points": 25
+    }
+  }
+}

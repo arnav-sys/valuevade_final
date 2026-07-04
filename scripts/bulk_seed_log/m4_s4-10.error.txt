@@ -1,0 +1,66 @@
+ERROR: ValueError: excel: Answers!B5 formula has bare cell ref 'B2' in a multi-sheet workbook — must qualify like Data!B2
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "TCS Scenario Analysis & FCFF Sensitivity - Bull/Base/Bear Model",
+  "scenario": "You are an equity analyst at a Mumbai investment desk building a three-year forecast model for Tata Consultancy Services (TCS). Your senior has asked you to build scenario outputs showing Bull, Base, and Bear cases for revenue growth and EBITDA margin, then create a sensitivity table showing how target price (EPS-derived proxy) moves with changes in these two key assumptions. The model must include a scenario selector dropdown, live assumption rows feeding the engine, and a professional output summary with error checks.",
+  "instructions": "Build a multi-scenario TCS forecast model with a dropdown selector that switches the entire engine between Bull/Base/Bear cases, compute Free Cash Flow for each scenario, create a two-variable sensitivity table showing EPS across growth and margin combinations, and verify all balance-sheet and cash-flow integrity checks pass.",
+  "learning_objective": "Design and implement a professional Bull/Base/Bear scenario model with a single-cell dropdown switch, construct a sensitivity table isolating the impact of two key assumptions, compute Free Cash Flow from schedules, and verify the model through integrity checks before shipping to senior management.",
+  "hints": [
+    "Use MATCH() to convert your scenario dropdown ('Bull'/'Base'/'Bear') into a number (1/2/3), then use CHOOSE() or INDEX() to pull the correct assumption values into your live row — this is the master switch that drives every other formula.",
+    "Your sensitivity table needs two axes: revenue growth rates down the left (8%, 10%, 12%, 14%, 16%), EBITDA margins across the top (16%, 18%, 20%, 22%), and EPS in each grid cell — use Data → What-If Analysis → Data Table with both row and column input cells, or hand-code INDIRECT formulas to swap assumptions and recalculate.",
+    "Free Cash Flow = (EBIT × (1 − tax rate)) + Depreciation − CapEx − Change in Working Capital; source EBIT from your P&L, Depreciation and CapEx from your schedules, and WC change from current-year WC minus prior-year WC; then verify that closing cash from the cash flow statement matches the balance sheet cash cell."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": { "value": "Fiscal Year", "readOnly": true, "bold": true },
+          "B1": { "value": "FY25A", "readOnly": true, "bold": true },
+          "C1": { "value": "FY26E", "readOnly": true, "bold": true },
+          "D1": { "value": "FY27E", "readOnly": true, "bold": true },
+          "E1": { "value": "FY28E", "readOnly": true, "bold": true },
+          "A2": { "value": "Revenue (₹Cr)", "readOnly": true },
+          "B2": { "value": 245000, "readOnly": true },
+          "C2": { "value": 274400, "readOnly": true },
+          "D2": { "value": 307328, "readOnly": true },
+          "E2": { "value": 344608, "readOnly": true },
+          "A3": { "value": "EBITDA Margin (%)", "readOnly": true },
+          "B3": { "value": 21.0, "readOnly": true },
+          "C3": { "value": 21.5, "readOnly": true },
+          "D3": { "value": 22.0, "readOnly": true },
+          "E3": { "value": 22.5, "readOnly": true },
+          "A4": { "value": "Tax Rate (%)", "readOnly": true },
+          "B4": { "value": 25, "readOnly": true },
+          "C4": { "value": 25, "readOnly": true },
+          "D4": { "value": 25, "readOnly": true },
+          "E4": { "value": 25, "readOnly": true },
+          "A5": { "value": "Depreciation (₹Cr)", "readOnly": true },
+          "B5": { "value": 4900, "readOnly": true },
+          "C5": { "value": 5244, "readOnly": true },
+          "D5": { "value": 5615, "readOnly": true },
+          "E5": { "value": 6009, "readOnly": true },
+          "A6": { "value": "CapEx (₹Cr)", "readOnly": true },
+          "B6": { "value": 7350, "readOnly": true },
+          "C6": { "value": 8244, "readOnly": true },
+          "D6": { "value": 9153, "readOnly": true },
+          "E6": { "value": 10378, "readOnly": true },
+          "A7": { "value": "Working Capital (₹Cr)", "readOnly": true },
+          "B7": { "value": 18375, "readOnly": true },
+          "C7": { "value": 20632, "readOnly": true },
+          "D7": { "value": 23220, "readOnly": true },
+          "E7": { "value": 25984, "readOnly": true },
+          "A8": { "value": "Cash & Equivalents (₹Cr)", "readOnly": true },
+          "B8": { "value": 12200, "readOnly": true },
+          "C8": { "value": 14520, "readOnly": true },
+          "D8": { "value": 17240, "readOnly": true },
+          "E8": { "value": 20510, "readOnly": true },
+          "A9": { "value": "Paid-up Capital (₹Cr)", "readOnly": true },
+          "B9": { "value": 3200, "readOnly": true },
+          "C9": { "value": 3200, "readOnly": true },
+          "D9": { "value": 3200, "readOnly": true },
+          "E9": { "value": 3200, "readOnly": true },
+          "A10": { "value": "Shares Outstandi

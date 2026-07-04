@@ -1,0 +1,414 @@
+{
+  "sim_type": "excel",
+  "title": "Titan Initiation Report: Synthesis and Price Target Defence",
+  "scenario": "You are a junior analyst on a Mumbai equity desk completing Titan's initiation of coverage. Your senior has compiled the three-statement model, DCF, trading comps, and precedent-transaction analyses across separate sheets. Now you must synthesise the valuation outputs, compute the rating logic, and defend a price target in the one-page tearsheet that portfolio managers will actually read.",
+  "instructions": "Build the initiation summary by synthesising the DCF, trading-comps, and precedent-transaction valuations into a football-field consensus, compute the price target, justify the rating, and populate the one-page summary metrics that defend your investment thesis on Titan.",
+  "learning_objective": "Synthesise multiple valuation methods into a single price target, compute upside/downside logic to justify a rating, and populate the one-page initiation tearsheet that distils your entire research case into a PM-actionable summary.",
+  "hints": [
+    "The football field combines three valuation ranges weighted by method strength; start with the simple average of the three method midpoints, then refine by weighting.",
+    "Rating logic: upside/downside % determines rating (>15% = Buy, −10% to +15% = Hold, <−10% = Sell). Compute the upside from current price to your target.",
+    "The one-page tearsheet shows CMP, target, upside %, rating, FY25E financials (revenue, EBITDA, margin, PAT, EV/EBITDA), and the football-field valuation range in one tight summary."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Valuation Method",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Low (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Mid (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "High (₹/share)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Weight (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY25E Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DCF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 617,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 833,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 15,
+            "readOnly": true
+          },
+          "F2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "G2": {
+            "value": 59000,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Trading Comps",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 3300,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 3700,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 60,
+            "readOnly": true
+          },
+          "F3": {
+            "value": "EBITDA",
+            "readOnly": true
+          },
+          "G3": {
+            "value": 7348,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Precedent Trans.",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 4525,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 4950,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 25,
+            "readOnly": true
+          },
+          "F4": {
+            "value": "EBITDA Margin (%)",
+            "readOnly": true
+          },
+          "G4": {
+            "value": 12.5,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3650,
+            "readOnly": true
+          },
+          "F5": {
+            "value": "PAT",
+            "readOnly": true
+          },
+          "G5": {
+            "value": 4601,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 889,
+            "readOnly": true
+          },
+          "F6": {
+            "value": "EPS (₹)",
+            "readOnly": true
+          },
+          "G6": {
+            "value": 51.73,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Market Cap (₹ Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 324485,
+            "readOnly": true
+          },
+          "F7": {
+            "value": "Enterprise Value (₹ Cr)",
+            "readOnly": true
+          },
+          "G7": {
+            "value": 321750,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Gold Price Assumption ($/oz)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2050,
+            "readOnly": true
+          },
+          "F8": {
+            "value": "EV/EBITDA",
+            "readOnly": true
+          },
+          "G8": {
+            "value": 43.8,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "FY24 Actual Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 52140,
+            "readOnly": true
+          },
+          "F9": {
+            "value": "P/E Ratio",
+            "readOnly": true
+          },
+          "G9": {
+            "value": 70.6,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FY24 Actual EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 6285,
+            "readOnly": true
+          },
+          "F10": {
+            "value": "ROCE (%)",
+            "readOnly": true
+          },
+          "G10": {
+            "value": 24.5,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Tax Rate Assumption (%)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 25,
+            "readOnly": true
+          },
+          "F11": {
+            "value": "Revenue Growth (FY24-FY25E, %)",
+            "readOnly": true
+          },
+          "G11": {
+            "value": 13.1,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "INITIATION REPORT SUMMARY — TITAN COMPANY LTD",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Football Field — DCF Low (₹/sh)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Football Field — Comps Mid (₹/sh)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Football Field — Precedents High (₹/sh)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Weighted Average Price Target (₹/sh)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Rounded Target (₹/sh, for communication)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Upside/(Downside) vs CMP (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Rating (BUY / HOLD / SELL)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          },
+          "A9": {
+            "value": "FY25E EV/EBITDA at Target (x)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "Discount/(Premium) to Comps EV/EBITDA (%)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "Key Variant Perception: Valuation Discipline in Bullish Market",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B2",
+      "expected_value": 617,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C3",
+      "expected_value": 3700,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!D4",
+      "expected_value": 4950,
+      "type": "number",
+      "tolerance": 1,
+      "points": 5
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!C2*Data!E2 + Data!C3*Data!E3 + Data!C4*Data!E4)/100",
+      "expected_value": 3476.2,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=ROUND(Answers!B5, 0)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B7": {
+      "formula_pattern": "=((Answers!B6 - Data!B5) / Data!B5) * 100",
+      "expected_value": -100,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=IF(Answers!B7 > 15, \"BUY\", IF(Answers!B7 < -10, \"SELL\", \"HOLD\"))",
+      "expected_value": "HOLD",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B9": {
+      "formula_pattern": "=Answers!B6 * Data!B6 / Data!G7",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B10": {
+      "formula_pattern": "=((Answers!B9 - Data!G8) / Data!G8) * 100",
+      "expected_value": -100,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B11": {
+      "formula_pattern": "=\"Full-price premium compounder; formalisation & brand genuine, but FY25E 44x EV/EBITDA leaves no margin of safety\"",
+      "expected_value": "Full-price premium compounder; formalisation & brand genuine, but FY25E 44x EV/EBITDA leaves no margin of safety",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

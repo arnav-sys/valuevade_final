@@ -1,0 +1,377 @@
+{
+  "sim_type": "excel",
+  "title": "Titan Revenue Forecast: Segment Drivers and Scenario Toggle",
+  "scenario": "You're a junior analyst on the Mumbai desk covering Titan Company Limited. The PM wants a driver-based revenue model—not a single growth number, but a segmented forecast showing volume, price, and same-store-sales growth by business unit. Build Titan's FY25–FY27 revenue model with a scenario toggle (Base vs Optimistic) and prove your growth assumptions with a sensitivity table on price and store count.",
+  "instructions": "Build a segmented revenue model for Titan's four divisions (Jewellery, Watches, Eyewear, Emerging Brands) using volume, price, store count, and same-store-sales-growth drivers. Create a scenario toggle in column C to switch between Base and Optimistic cases, compute total revenue by segment and year, and construct a two-way sensitivity table showing how Jewellery revenue changes with gold price realisation and store count. Do not use a PivotTable; write formulas that the PM can audit.",
+  "learning_objective": "Build a multi-segment revenue model from driver-level assumptions (volume, SSSG, store count, price), construct a scenario toggle to test upside vs base case, and use a sensitivity table to isolate which drivers move the needle most on consolidated revenue.",
+  "hints": [
+    "Start by laying out the FY24 actuals and forecast assumptions (SSSG %, new store count, price per unit) in separate rows, then multiply them together: Revenue = Existing stores × Rev per store × (1 + SSSG) + New stores × Ramp factor. Use IF() to switch Scenario values.",
+    "A scenario toggle is just an IF statement that reads a dropdown cell (e.g., 'Base' or 'Optimistic') and returns different assumption values. Example: =IF(Scenario=$B$1, 'optimistic_value', 'base_value'). Put the scenario choice in one cell (like C2), then reference it in all driver formulas.",
+    "For the sensitivity table, create a two-row header (gold price on one axis, store count on the other), then use INDEX-MATCH or nested IFs to pull the revenue outcome for each price-store combination. Alternatively, use INDIRECT to reference the recalculated revenue cell with substituted inputs."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY24 Actuals (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Store Count FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Revenue per Store FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Price per Unit FY24",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Base SSSG %",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Optimistic SSSG %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Jewellery",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 44000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 320,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 13750,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 15200,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Watches",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 85,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 49412,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 5500,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 0.06,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 0.1,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Eyewear",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 65,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 23077,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 2800,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 0.1,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Emerging Brands",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1500,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 45,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 33333,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 0.22,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY25 New Stores (Base)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 12,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 8,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 15,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY25 New Stores (Optimistic)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 65,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 18,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 12,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 22,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "New Store Ramp Factor Y1",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0.7,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Gold Price per Gram FY24 (₹)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 6500,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Gold Price per Gram FY25 Base (₹)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 6800,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Gold Price per Gram FY25 Optimistic (₹)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 7200,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Forecast",
+        "cells": {
+          "A1": {
+            "value": "Scenario Choice",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Base",
+            "readOnly": false,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "JEWELLERY FORECAST",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "FY25 Existing Stores Revenue",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "FY25 New Stores Revenue",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "FY25 Total Jewellery Revenue",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "WATCHES FORECAST",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "FY25 Existing Stores Revenue",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "",
+            "readOnly": false
+          },
+          "A10": {
+            "value": "FY25 New Stores Revenue",
+            "readOnly": true
+          },
+          "B10": {
+            "value": "",
+            "readOnly": false
+          },
+          "A11": {
+            "value": "FY25 Total Watches Revenue",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Forecast!B4": {
+      "formula_pattern": "=IF(Forecast!$B$1=\"Optimistic\", Data!$C$2*Data!$D$2*(1+Data!$G$2), Data!$C$2*Data!$D$2*(1+Data!$F$2))",
+      "expected_value": 4752000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Forecast!B5": {
+      "formula_pattern": "=IF(Forecast!$B$1=\"Optimistic\", Data!$B$7*Data!$D$2*Data!$B$8, Data!$B$6*Data!$D$2*Data!$B$8)",
+      "expected_value": 433125,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Forecast!B6": {
+      "formula_pattern": "=Forecast!B4+Forecast!B5",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Forecast!B9": {
+      "formula_pattern": "=IF(Forecast!$B$1=\"Optimistic\", Data!$C$3*Data!$D$3*(1+Data!$G$3), Data!$C$3*Data!$D$3*(1+Data!$F$3))",
+      "expected_value": 4452021.2,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Forecast!B10": {
+      "formula_pattern": "=IF(Forecast!$B$1=\"Optimistic\", Data!$C$7*Data!$D$3*Data!$B$8, Data!$C$6*Data!$D$3*Data!$B$8)",
+      "expected_value": 415060.8,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Forecast!B11": {
+      "formula_pattern": "=Forecast!B9+Forecast!B10",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 13
+    }
+  }
+}

@@ -1,0 +1,366 @@
+{
+  "sim_type": "excel",
+  "title": "Reliance's Free Cash Flow: EBITDA to True Investor Returns",
+  "scenario": "You are an analyst at a Mumbai equity desk valuing Reliance Industries for a DCF model. Your FY25E operating forecast is complete (EBIT, D&A, working capital), but your desk head asks: 'What free cash flow does Reliance actually generate? And how much of its EBITDA survives to shareholders after taxes, capex, and inventory build?' You must bridge EBITDA to FCFF, compute FCF conversion, and reconcile FCFE from net income.",
+  "instructions": "Build a free cash flow calculation and conversion-quality test on the Answers sheet: compute FCFF using the EBITDA method, derive FCFE, calculate FCF conversion ratio, and identify which year's reinvestment burden is heaviest.",
+  "learning_objective": "Compute FCFF and FCFE from operating and reinvestment data, measure FCF conversion quality, and explain why two companies with identical EBITDA can have vastly different free cash available to investors.",
+  "hints": [
+    "FCFF = EBITDA − Cash Taxes − Capex − Δ Working Capital. Cash Taxes = EBIT × Tax Rate. ΔWC = ending WC − beginning WC.",
+    "FCFE = FCFF − Interest × (1 − Tax Rate) + Net Borrowing. Verify by reconciling FCFE = Net Income + D&A − Capex − ΔWC + Net Borrowing.",
+    "FCF Conversion = FCFF / EBITDA. Watch for the working-capital drag: in high-growth years, inventory build can swallow half of EBITDA, leaving only 30–40% as free cash. Compare FY25E and FY26E conversions to see this effect."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "EBITDA (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "D&A (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Net Income (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Working Capital (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY24A",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 450000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 65000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 48000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 17000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 32400,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 28500,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY25E",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 480000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 73200,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 54000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 19200,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 38250,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 33000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY26E",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 528000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 84672,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 62400,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 22272,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 44280,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 39600,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY27E",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 580800,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 96144,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 70680,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 25464,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 50184,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY28E",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 638880,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 109056,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 79800,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 29256,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 56772,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 51000,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.29,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 2700,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Capex (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 10500,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 11800,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Net Borrowing (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 0,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Note: Capex row B9 is unused; C9:F9 correspond to FY25E:FY28E",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Free Cash Flow Analysis — Reliance Industries",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: FY25E Cash Taxes (EBIT × Tax Rate) [₹Cr]",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: FY25E FCF Change in Working Capital (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: FY25E FCFF using EBITDA method [₹Cr]",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: FY25E FCFE from FCFF [₹Cr]",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: FY25E FCF Conversion Ratio (FCFF / EBITDA)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: FY26E FCFF [₹Cr] — highest reinvestment year?",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!D3*Data!B7",
+      "expected_value": 15660,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!G3-Data!G2",
+      "expected_value": 4500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!C3-Data!D3*Data!B7-Data!C9-Data!G3+Data!G2",
+      "expected_value": 44540,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Answers!B4-Data!B8*(1-Data!B7)+Data!C10",
+      "expected_value": -1917,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Answers!B4/Data!C3",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.001,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!C4-Data!D4*Data!B7-Data!D9-Data!G4+Data!G3",
+      "expected_value": 50776,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

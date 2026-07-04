@@ -1,13 +1,13 @@
 {
   "sim_type": "excel",
-  "title": "Reliance Industries Balance Sheet and Cash Flow Statement Analysis",
-  "scenario": "You're a junior analyst at a Mumbai-based equity desk reviewing Reliance Industries' latest balance sheet and cash flow statement (FY2024). Your senior asks you to verify the balance sheet equation, trace key working capital movements, and reconcile closing cash from the cash flow statement to the balance sheet. This is your first test of understanding how the three statements lock together.",
-  "instructions": "Complete the balance sheet verification, calculate working capital changes, and build a simple cash flow reconciliation to prove that closing cash from operations plus capex and financing equals the balance sheet's cash balance.",
-  "learning_objective": "Verify balance sheet equilibrium, calculate working capital movements (inventory, receivables, payables), and reconcile closing cash from the cash flow statement to the balance sheet cash line to confirm the three statements lock together.",
+  "title": "TCS Balance Sheet and Cash Flow Statement Analysis",
+  "scenario": "You are analyzing TCS's FY2024 consolidated financial statements (year ended 31-Mar-2025). Your Mumbai desk manager has asked you to verify the balance sheet equation, calculate key working capital metrics, and reconcile operating cash flow back to net profit to spot any cash-collection risk.",
+  "instructions": "Complete the balance sheet verification and cash flow analysis by filling in the Answers sheet formulas. Calculate total assets, verify the A=L+E equation, compute working capital ratios, and trace the indirect cash flow method from PAT through operating cash flow.",
+  "learning_objective": "Verify the balance sheet equation (Assets = Liabilities + Equity), calculate working capital metrics (Days Sales Outstanding, inventory turnover), and trace how net profit converts to operating cash flow using the indirect method to identify cash realization risk.",
   "hints": [
-    "Start by checking Assets = Liabilities + Equity using simple addition. Then identify which rows are current assets and current liabilities — these feed the working capital section.",
-    "Working capital changes reverse the balance sheet sign: if receivables went up from ₹1000 cr to ₹1100 cr, that's a +₹100 cr outflow (asset up eats cash). Payables up from ₹800 cr to ₹850 cr is a +₹50 cr inflow (liability up saves cash).",
-    "The cash reconciliation formula is: Opening Cash + CFO + CFI + CFF = Closing Cash. Your Closing Cash number from this formula must match exactly the 'Cash and bank balances' line on the balance sheet — this is the lock."
+    "The balance sheet equation is simple: total all assets, total all liabilities and equity, and confirm they match exactly — it always balances by definition because every rupee of stuff was borrowed or owned.",
+    "Working capital metrics divide balance sheet lines by P&L lines (e.g., receivables ÷ revenue per day to get DSO). Use SUMIF or direct cell references; remember to convert annual revenue to daily rate by dividing by 365.",
+    "Operating cash flow reconciliation: start with PAT, add back depreciation (it reduced profit but didn't use cash), then adjust for working capital changes — if inventory grew, that spent cash (subtract); if payables grew, that saved cash (add)."
   ],
   "multi_tab_excel_workbook": {
     "sheets": [
@@ -15,401 +15,213 @@
         "name": "Data",
         "cells": {
           "A1": {
-            "value": "RELIANCE INDUSTRIES LTD - BALANCE SHEET & CASH FLOW ANALYSIS",
+            "value": "TCS FY2024 Financial Statement Lines (₹ Cr)",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "",
-            "readOnly": true
-          },
-          "A3": {
-            "value": "BALANCE SHEET (As on 31-Mar-2025)",
-            "readOnly": true,
-            "bold": true
-          },
-          "A4": {
-            "value": "Item",
-            "readOnly": true,
-            "bold": true
-          },
-          "B4": {
-            "value": "FY2024 (₹ Cr)",
-            "readOnly": true,
-            "bold": true
-          },
-          "C4": {
-            "value": "FY2025 (₹ Cr)",
-            "readOnly": true,
-            "bold": true
-          },
-          "A5": {
-            "value": "ASSETS",
-            "readOnly": true,
-            "bold": true
-          },
-          "A6": {
             "value": "Property, Plant & Equipment",
             "readOnly": true
           },
-          "B6": {
-            "value": 24500,
-            "readOnly": true
-          },
-          "C6": {
-            "value": 25800,
-            "readOnly": true
-          },
-          "A7": {
-            "value": "Intangible Assets & Goodwill",
-            "readOnly": true
-          },
-          "B7": {
-            "value": 3200,
-            "readOnly": true
-          },
-          "C7": {
-            "value": 3400,
-            "readOnly": true
-          },
-          "A8": {
-            "value": "Investments",
-            "readOnly": true
-          },
-          "B8": {
-            "value": 5600,
-            "readOnly": true
-          },
-          "C8": {
-            "value": 6100,
-            "readOnly": true
-          },
-          "A9": {
-            "value": "Inventory",
-            "readOnly": true
-          },
-          "B9": {
-            "value": 8500,
-            "readOnly": true
-          },
-          "C9": {
-            "value": 9200,
-            "readOnly": true
-          },
-          "A10": {
-            "value": "Trade Receivables",
-            "readOnly": true
-          },
-          "B10": {
-            "value": 6800,
-            "readOnly": true
-          },
-          "C10": {
-            "value": 7600,
-            "readOnly": true
-          },
-          "A11": {
-            "value": "Cash and Bank Balances",
-            "readOnly": true
-          },
-          "B11": {
-            "value": 3400,
-            "readOnly": true
-          },
-          "C11": {
-            "value": 3900,
-            "readOnly": true
-          },
-          "A12": {
-            "value": "Other Assets",
-            "readOnly": true
-          },
-          "B12": {
-            "value": 2000,
-            "readOnly": true
-          },
-          "C12": {
-            "value": 2100,
-            "readOnly": true
-          },
-          "A13": {
-            "value": "TOTAL ASSETS",
-            "readOnly": true,
-            "bold": true
-          },
-          "B13": {
-            "value": 54000,
-            "readOnly": true
-          },
-          "C13": {
-            "value": 58100,
-            "readOnly": true
-          },
-          "A14": {
-            "value": "",
-            "readOnly": true
-          },
-          "A15": {
-            "value": "LIABILITIES & EQUITY",
-            "readOnly": true,
-            "bold": true
-          },
-          "A16": {
-            "value": "Share Capital",
-            "readOnly": true
-          },
-          "B16": {
-            "value": 1200,
-            "readOnly": true
-          },
-          "C16": {
-            "value": 1200,
-            "readOnly": true
-          },
-          "A17": {
-            "value": "Reserves & Surplus",
-            "readOnly": true
-          },
-          "B17": {
-            "value": 28500,
-            "readOnly": true
-          },
-          "C17": {
-            "value": 31200,
-            "readOnly": true
-          },
-          "A18": {
-            "value": "TOTAL EQUITY",
-            "readOnly": true,
-            "bold": true
-          },
-          "B18": {
-            "value": 29700,
-            "readOnly": true
-          },
-          "C18": {
-            "value": 32400,
-            "readOnly": true
-          },
-          "A19": {
-            "value": "Long-term Borrowings",
-            "readOnly": true
-          },
-          "B19": {
-            "value": 12000,
-            "readOnly": true
-          },
-          "C19": {
+          "B2": {
             "value": 12500,
             "readOnly": true
           },
-          "A20": {
-            "value": "Short-term Borrowings",
+          "A3": {
+            "value": "Capital Work-in-Progress",
             "readOnly": true
           },
-          "B20": {
-            "value": 4800,
+          "B3": {
+            "value": 850,
             "readOnly": true
           },
-          "C20": {
-            "value": 5200,
+          "A4": {
+            "value": "Intangible Assets & Goodwill",
             "readOnly": true
           },
-          "A21": {
-            "value": "Trade Payables",
+          "B4": {
+            "value": 4200,
             "readOnly": true
           },
-          "B21": {
-            "value": 5400,
+          "A5": {
+            "value": "Investments (non-current)",
             "readOnly": true
           },
-          "C21": {
-            "value": 6000,
-            "readOnly": true
-          },
-          "A22": {
-            "value": "Other Liabilities",
-            "readOnly": true
-          },
-          "B22": {
+          "B5": {
             "value": 2100,
             "readOnly": true
           },
-          "C22": {
-            "value": 2000,
+          "A6": {
+            "value": "Inventory",
             "readOnly": true
           },
-          "A23": {
-            "value": "TOTAL LIABILITIES",
-            "readOnly": true,
-            "bold": true
-          },
-          "B23": {
-            "value": 24300,
-            "readOnly": true
-          },
-          "C23": {
-            "value": 25700,
-            "readOnly": true
-          },
-          "A24": {
-            "value": "TOTAL LIAB. & EQUITY",
-            "readOnly": true,
-            "bold": true
-          },
-          "B24": {
-            "value": 54000,
-            "readOnly": true
-          },
-          "C24": {
-            "value": 58100,
-            "readOnly": true
-          },
-          "A25": {
-            "value": "",
-            "readOnly": true
-          },
-          "A26": {
-            "value": "CASH FLOW STATEMENT (FY2025)",
-            "readOnly": true,
-            "bold": true
-          },
-          "A27": {
-            "value": "Item",
-            "readOnly": true,
-            "bold": true
-          },
-          "B27": {
-            "value": "₹ Cr",
-            "readOnly": true,
-            "bold": true
-          },
-          "A28": {
-            "value": "Opening Cash (FY2024)",
-            "readOnly": true
-          },
-          "B28": {
+          "B6": {
             "value": 3400,
             "readOnly": true
           },
-          "A29": {
-            "value": "Profit After Tax",
+          "A7": {
+            "value": "Trade Receivables",
             "readOnly": true
           },
-          "B29": {
-            "value": 4500,
+          "B7": {
+            "value": 28500,
             "readOnly": true
           },
-          "A30": {
-            "value": "Add: Depreciation",
+          "A8": {
+            "value": "Cash & Bank Balances",
             "readOnly": true
           },
-          "B30": {
+          "B8": {
+            "value": 15600,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Other Current Assets",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 4850,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Total Assets",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Share Capital",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Reserves & Surplus",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 36800,
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Total Equity",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 36900,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Long-term Borrowings",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Short-term Borrowings",
+            "readOnly": true
+          },
+          "B16": {
             "value": 2800,
             "readOnly": true
           },
-          "A31": {
-            "value": "Less: Change in Inventory",
+          "A17": {
+            "value": "Trade Payables",
             "readOnly": true
           },
-          "B31": {
-            "value": -700,
+          "B17": {
+            "value": 16200,
             "readOnly": true
           },
-          "A32": {
-            "value": "Less: Change in Receivables",
+          "A18": {
+            "value": "Other Current Liabilities",
             "readOnly": true
           },
-          "B32": {
-            "value": -800,
+          "B18": {
+            "value": 6700,
             "readOnly": true
           },
-          "A33": {
-            "value": "Add: Change in Payables",
+          "A19": {
+            "value": "Total Liabilities & Equity",
             "readOnly": true
           },
-          "B33": {
-            "value": 600,
+          "B19": {
+            "value": 72000,
             "readOnly": true
           },
-          "A34": {
-            "value": "Cash from Operations (CFO)",
+          "A20": {
+            "value": "",
             "readOnly": true
           },
-          "B34": {
-            "value": 6400,
+          "A21": {
+            "value": "FY2024 P&L & Cash Flow Data",
+            "readOnly": true,
+            "bold": true
+          },
+          "A22": {
+            "value": "Revenue from Operations",
             "readOnly": true
           },
-          "A35": {
-            "value": "Capital Expenditure (Capex)",
+          "B22": {
+            "value": 277500,
             "readOnly": true
           },
-          "B35": {
-            "value": -2700,
+          "A23": {
+            "value": "Net Profit After Tax (PAT)",
             "readOnly": true
           },
-          "A36": {
-            "value": "Change in Investments",
+          "B23": {
+            "value": 38520,
             "readOnly": true
           },
-          "B36": {
-            "value": -500,
+          "A24": {
+            "value": "Depreciation & Amortization",
             "readOnly": true
           },
-          "A37": {
-            "value": "Cash from Investing (CFI)",
+          "B24": {
+            "value": 2100,
             "readOnly": true
           },
-          "B37": {
-            "value": -3200,
+          "A25": {
+            "value": "Inventory (Previous Year)",
             "readOnly": true
           },
-          "A38": {
-            "value": "New Borrowings",
+          "B25": {
+            "value": 3250,
             "readOnly": true
           },
-          "B38": {
-            "value": 1200,
+          "A26": {
+            "value": "Trade Receivables (Previous Year)",
             "readOnly": true
           },
-          "A39": {
-            "value": "Repayment of Loans",
+          "B26": {
+            "value": 27800,
             "readOnly": true
           },
-          "B39": {
-            "value": -700,
+          "A27": {
+            "value": "Trade Payables (Previous Year)",
             "readOnly": true
           },
-          "A40": {
-            "value": "Dividends Paid",
+          "B27": {
+            "value": 15900,
             "readOnly": true
           },
-          "B40": {
-            "value": -1200,
+          "A28": {
+            "value": "Operating Cash Flow (Actual)",
             "readOnly": true
           },
-          "A41": {
-            "value": "Cash from Financing (CFF)",
-            "readOnly": true
-          },
-          "B41": {
-            "value": -700,
-            "readOnly": true
-          },
-          "A42": {
-            "value": "Net Change in Cash",
-            "readOnly": true
-          },
-          "B42": {
-            "value": 2500,
-            "readOnly": true
-          },
-          "A43": {
-            "value": "Closing Cash (from CFS)",
-            "readOnly": true
-          },
-          "B43": {
-            "value": 5900,
+          "B28": {
+            "value": 44280,
             "readOnly": true
           }
         }
@@ -418,21 +230,33 @@
         "name": "Answers",
         "cells": {
           "A1": {
-            "value": "VERIFICATION & ANALYSIS",
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
             "readOnly": true,
             "bold": true
           },
           "A2": {
-            "value": "",
+            "value": "Q1. Total Non-Current Assets (PPE + CWIP + Intangibles + Investments) — ₹ Cr",
             "readOnly": true
           },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
           "A3": {
-            "value": "Q1: Verify FY2025 Balance Sheet Equation (Assets)",
-            "readOnly": true,
-            "bold": true
+            "value": "Q2. Total Current Assets (Inventory + Receivables + Cash + Other) — ₹ Cr",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
           },
           "A4": {
-            "value": "Sum all FY2025 Assets (C6:C12). Must equal TOTAL ASSETS in C13.",
+            "value": "Q4. Verify Balance Sheet: Total Liabilities (Borrowings + Payables + Other) — ₹ Cr",
             "readOnly": true
           },
           "B4": {
@@ -440,91 +264,26 @@
             "readOnly": false
           },
           "A5": {
-            "value": "",
+            "value": "Q5. Days Sales Outstanding (Receivables ÷ Daily Revenue) — days",
             "readOnly": true
           },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
           "A6": {
-            "value": "Q2: Verify FY2025 Balance Sheet Equation (Liabilities + Equity)",
-            "readOnly": true,
-            "bold": true
+            "value": "Q6. Working Capital Change: Inventory increase ₹ Cr (reduce CFO)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
           },
           "A7": {
-            "value": "Sum FY2025 Equity (C18) + Liabilities (C23). Must equal C13.",
+            "value": "Q7. Reconcile CFO: PAT + Deprec − WC Changes = Operating CF — ₹ Cr",
             "readOnly": true
           },
           "B7": {
-            "value": "",
-            "readOnly": false
-          },
-          "A8": {
-            "value": "",
-            "readOnly": true
-          },
-          "A9": {
-            "value": "Q3: Calculate Change in Inventory (FY2024 to FY2025)",
-            "readOnly": true,
-            "bold": true
-          },
-          "A10": {
-            "value": "Inventory FY2025 (C9) minus Inventory FY2024 (B9). Negative = cash outflow.",
-            "readOnly": true
-          },
-          "B10": {
-            "value": "",
-            "readOnly": false
-          },
-          "A11": {
-            "value": "",
-            "readOnly": true
-          },
-          "A12": {
-            "value": "Q4: Calculate Change in Trade Payables (FY2024 to FY2025)",
-            "readOnly": true,
-            "bold": true
-          },
-          "A13": {
-            "value": "Payables FY2025 (C21) minus Payables FY2024 (B21). Positive = cash inflow.",
-            "readOnly": true
-          },
-          "B13": {
-            "value": "",
-            "readOnly": false
-          },
-          "A14": {
-            "value": "",
-            "readOnly": true
-          },
-          "A15": {
-            "value": "Q5: Reconcile Closing Cash — Does CFS Lock to Balance Sheet?",
-            "readOnly": true,
-            "bold": true
-          },
-          "A16": {
-            "value": "Formula: Opening Cash (B28) + CFO (B34) + CFI (B37) + CFF (B41) = Closing Cash",
-            "readOnly": true
-          },
-          "A17": {
-            "value": "This closing cash MUST equal balance sheet cash in C11. Enter the reconciled closing cash.",
-            "readOnly": true
-          },
-          "B17": {
-            "value": "",
-            "readOnly": false
-          },
-          "A18": {
-            "value": "",
-            "readOnly": true
-          },
-          "A19": {
-            "value": "Q6: Identify the Lock — Balance Sheet Cash vs CFS Closing Cash Match",
-            "readOnly": true,
-            "bold": true
-          },
-          "A20": {
-            "value": "Compare your B17 answer (CFS closing cash) with Data!C11 (balance sheet cash). Enter 'MATCH' if they reconcile, or the variance.",
-            "readOnly": true
-          },
-          "B20": {
             "value": "",
             "readOnly": false
           }
@@ -533,47 +292,47 @@
     ]
   },
   "expected_answers": {
-    "Answers!B4": {
-      "formula_pattern": "=SUM(Data!C6:C12)",
-      "expected_value": 58100,
+    "Answers!B2": {
+      "formula_pattern": "=SUM(Data!B2:B5)",
+      "expected_value": 19650,
       "type": "number",
       "tolerance": 1,
       "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=SUM(Data!B6:B9)",
+      "expected_value": 52350,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!B15+Data!B16+Data!B17+Data!B18",
+      "expected_value": 34200,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B7/(Data!B22/365)",
+      "expected_value": 37.43,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B6-Data!B25",
+      "expected_value": 150,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
     },
     "Answers!B7": {
-      "formula_pattern": "=Data!C18+Data!C23",
-      "expected_value": 58100,
+      "formula_pattern": "=Data!B23+Data!B24-(Data!B7-Data!B26)-(Data!B6-Data!B25)+(Data!B17-Data!B27)",
+      "expected_value": 40070,
       "type": "number",
       "tolerance": 1,
-      "points": 10
-    },
-    "Answers!B10": {
-      "formula_pattern": "=Data!C9-Data!B9",
-      "expected_value": 700,
-      "type": "number",
-      "tolerance": 1,
-      "points": 12
-    },
-    "Answers!B13": {
-      "formula_pattern": "=Data!C21-Data!B21",
-      "expected_value": 600,
-      "type": "number",
-      "tolerance": 1,
-      "points": 12
-    },
-    "Answers!B17": {
-      "formula_pattern": "=Data!B28+Data!B34+Data!B37+Data!B41",
-      "expected_value": 5900,
-      "type": "number",
-      "tolerance": 1,
-      "points": 15
-    },
-    "Answers!B20": {
-      "formula_pattern": "=IF(Data!C11=Answers!B17,\"MATCH\",Data!C11-Answers!B17)",
-      "expected_value": "MATCH",
-      "type": "text",
-      "tolerance": 0,
-      "points": 15
+      "points": 25
     }
   }
 }

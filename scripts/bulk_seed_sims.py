@@ -128,6 +128,7 @@ def session_slices(module_num: int):
     md = md_path.read_text()
     patterns = [
         re.compile(r'^# SESSION (\d+\.\d+):\s*(.+)$',                       re.MULTILINE),
+        re.compile(r'^# SESSION (\d+\.\d+)\s*[—-]\s*(.+)$',                 re.MULTILINE),  # M13 uses em-dash
         re.compile(r'^# MODULE \d+\s*[—-]\s*SESSION (\d+\.\d+):\s*(.+)$',   re.MULTILINE),
         re.compile(r'^##\s+Session\s+(\d+\.\d+):\s*(.+)$',                  re.MULTILINE),
         re.compile(r'^##\s+Session\s+(\d+)\s*[—-]\s*(.+)$',                 re.MULTILINE),
@@ -329,17 +330,33 @@ Pick the BEST fit. Default to "excel" when the session teaches a quantitative sk
 
 # ─── LLM call ─────────────────────────────────────────────────────────────
 def sync_call(system_prompt: str, user_text: str, max_tokens: int = 12000) -> str:
-    chat = (
-        LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f'bulk-{uuid.uuid4()}',
-                system_message=system_prompt)
-        .with_model('anthropic', 'claude-haiku-4-5-20251001')
-        .with_params(max_tokens=max_tokens)
-    )
-    loop = asyncio.new_event_loop()
-    try:
-        return loop.run_until_complete(chat.send_message(UserMessage(text=user_text)))
-    finally:
-        loop.close()
+    """Call Haiku with automatic retry on transient upstream errors
+    (5xx / connection reset). Budget/auth errors are NOT retried."""
+    last_exc = None
+    for attempt in range(4):
+        chat = (
+            LlmChat(api_key=EMERGENT_LLM_KEY, session_id=f'bulk-{uuid.uuid4()}',
+                    system_message=system_prompt)
+            .with_model('anthropic', 'claude-haiku-4-5-20251001')
+            .with_params(max_tokens=max_tokens)
+        )
+        loop = asyncio.new_event_loop()
+        try:
+            return loop.run_until_complete(chat.send_message(UserMessage(text=user_text)))
+        except Exception as e:
+            last_exc = e
+            msg = str(e).lower()
+            # Do not retry on budget-cap / auth failures — those need human intervention.
+            if 'budget' in msg or 'unauthorized' in msg or 'invalid_api_key' in msg:
+                raise
+            # Retry on transient upstream errors (5xx, connection reset, timeout).
+            wait_s = 2.0 * (2 ** attempt)
+            print(f'    [sync_call] transient LLM error attempt {attempt+1}/4 '
+                  f'({str(e)[:120]}) — retrying in {wait_s:.1f}s', flush=True)
+            time.sleep(wait_s)
+        finally:
+            loop.close()
+    raise last_exc
 
 def parse_json_reply(raw: str) -> dict:
     text = raw.strip()
@@ -548,11 +565,16 @@ def build_user_text(session_title: str, notes: str, sim_type: str) -> str:
             f"Produce the JSON object now. Return ONLY the JSON.")
 
 def generate_sim(session_title: str, notes: str, sim_type: str):
-    """Returns (sim_obj, raw_reply, errors). sim_obj=None on failure."""
+    """Returns (sim_obj, raw_reply, errors). sim_obj=None on failure.
+
+    On each retry, the previous validation error is fed back to the LLM as a
+    corrective message so it can fix the specific issue (bare refs, sheet too
+    small, points cap, etc.) rather than blindly regenerating the same mistake."""
     prompts = {'excel': EXCEL_PROMPT, 'document': DOCUMENT_PROMPT, 'decision_making': DECISION_PROMPT}
     sysp = prompts[sim_type]
-    user = build_user_text(session_title, notes, sim_type)
+    base_user = build_user_text(session_title, notes, sim_type)
     last_err = None; raw = ''
+    user = base_user
     for attempt in range(3):
         try:
             raw = sync_call(sysp, user, max_tokens=12000)
@@ -561,6 +583,23 @@ def generate_sim(session_title: str, notes: str, sim_type: str):
             return obj, raw, None
         except (json.JSONDecodeError, ValueError) as e:
             last_err = f'{type(e).__name__}: {e}'
+            # Feed the failure back so retry attempts get corrective context.
+            user = (
+                base_user
+                + f"\n\nPREVIOUS ATTEMPT #{attempt+1} FAILED VALIDATION WITH ERROR:\n"
+                + f"    {last_err}\n\n"
+                + "Fix EXACTLY that issue in your next JSON. Common fixes:\n"
+                + "  • 'data sheet only N rows' → the Data sheet MUST have ≥11 rows "
+                + "of cells (header row + at least 10 data rows). Add more real "
+                + "historicals or forecast years.\n"
+                + "  • 'bare cell ref in a multi-sheet workbook' → every cellref "
+                + "in any Answers!X formula MUST be sheet-qualified like "
+                + "`Data!B5`, `Model!C7`, NEVER a bare `B5` or `C7`.\n"
+                + "  • 'total points N outside 40-120' → sum of all "
+                + "expected_answers[].points must be between 40 and 120 inclusive. "
+                + "Cap Q-level points if needed.\n"
+                + "Return ONLY the corrected JSON."
+            )
             time.sleep(1.5 + attempt * 1.5)
     return None, raw, last_err
 

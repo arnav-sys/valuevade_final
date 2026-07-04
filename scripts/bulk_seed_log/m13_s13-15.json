@@ -1,0 +1,391 @@
+{
+  "sim_type": "excel",
+  "title": "Private Equity LBO Returns: Reliance Petroleum Entry & Exit",
+  "scenario": "A PE consortium has acquired Reliance Petroleum (a mid-cap refining & distribution arm) for ₹2,500 Cr at 8.0x EBITDA entry multiple. You are an analyst at the sponsoring PE firm tasked with building the returns bridge: computing EBITDA growth, debt paydown, exit equity value, MOIC, and IRR across a 5-year holding period. The model depends on realistic operational assumptions and the discipline of leverage-funded deleveraging.",
+  "instructions": "Complete the LBO returns calculation for Reliance Petroleum. Compute entry and exit valuations, track debt reduction from operating cash flow, calculate MOIC and IRR, and identify which lever (EBITDA growth, deleveraging, or multiple expansion) drove the sponsor's return. Use SUM, IF, SUMIFS, and year-on-year logic to build a repeatable LBO model.",
+  "learning_objective": "Calculate LBO entry and exit equity values, quantify the contribution of EBITDA growth and debt paydown to total returns, compute MOIC and IRR, and demonstrate why leverage amplifies returns when cash flow is stable.",
+  "hints": [
+    "Start with Entry EV = Entry EBITDA × Entry Multiple. Then compute Debt at entry as a percentage of EV, and the remainder is Equity.",
+    "Track debt each year by subtracting the prior year's debt paydown (driven by Free Cash Flow after tax and capex). Use a simple formula like: Debt(Year N) = Debt(Year N-1) - FCF Paid to Debt.",
+    "Exit Equity = Exit EV − Remaining Debt. Exit EV = Exit EBITDA × Exit Multiple (your data assumes 8.5x exit, set in a named cell). Then MOIC = Exit Equity / Entry Equity, and IRR = MOIC^(1/5) − 1."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "EBITDA Margin (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Tax Rate (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Capex (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Depreciation (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": 0,
+            "readOnly": true
+          },
+          "B2": {
+            "value": 312.5,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 15,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 2083,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 50,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 40,
+            "readOnly": true
+          },
+          "A3": {
+            "value": 1,
+            "readOnly": true
+          },
+          "B3": {
+            "value": 328.1,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 15.5,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 2118,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 52,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 42,
+            "readOnly": true
+          },
+          "A4": {
+            "value": 2,
+            "readOnly": true
+          },
+          "B4": {
+            "value": 350.8,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 15.8,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 2219,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 55,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 44,
+            "readOnly": true
+          },
+          "A5": {
+            "value": 3,
+            "readOnly": true
+          },
+          "B5": {
+            "value": 375.9,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 16,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 2349,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 58,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 47,
+            "readOnly": true
+          },
+          "A6": {
+            "value": 4,
+            "readOnly": true
+          },
+          "B6": {
+            "value": 401.8,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 16.1,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 2494,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 62,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A7": {
+            "value": 5,
+            "readOnly": true
+          },
+          "B7": {
+            "value": 430.0,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 16.2,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 2654,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 30,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 65,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 52,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Entry Multiple (x)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 8.0,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Exit Multiple (x)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": 8.5,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Entry Debt/EV (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": 65,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Interest Rate (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": 7.5,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "LBO Returns Analysis — Reliance Petroleum",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. Entry Enterprise Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "Q2. Entry Equity Investment (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q3. Entry Debt Amount (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q4. Year 5 EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q5. Exit Enterprise Value at 8.5x (₹ Cr)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Q6. Total Debt Paid Down Over 5 Years (₹ Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          },
+          "A8": {
+            "value": "Q7. Exit Equity Value (₹ Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": null
+          },
+          "A9": {
+            "value": "Q8. Money Multiple (MOIC)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": null
+          },
+          "A10": {
+            "value": "Q9. IRR Over 5 Years (%)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B2*Data!B8",
+      "expected_value": 2500,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!B2*Data!B8*(1-Data!B10/100)",
+      "expected_value": 875,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2*Data!B8*Data!B10/100",
+      "expected_value": 1625,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B7",
+      "expected_value": 430.0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B7*Data!B9",
+      "expected_value": 3655,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B7": {
+      "formula_pattern": "=SUM(Data!B2:Data!B7)*(Data!B11/100)",
+      "expected_value": 287.69,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=(Answers!B6-Answers!B7)/Answers!B3",
+      "expected_value": 3.97,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B9": {
+      "formula_pattern": "=(Answers!B8^(1/5)-1)*100",
+      "expected_value": -100,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 18
+    }
+  }
+}

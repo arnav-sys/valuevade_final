@@ -1,0 +1,532 @@
+{
+  "sim_type": "excel",
+  "title": "Build Titan's Complete DCF Model and Price Target",
+  "scenario": "You're a junior analyst at a Mumbai equity desk tasked with assembling Titan's full discounted cash flow model. Your team has already estimated the five-year FCFF projections, calculated WACC, and computed terminal value present value. Now you integrate these into a complete DCF, bridge from enterprise value to equity value, calculate intrinsic price per share, and stress-test the model across bull/base/bear scenarios.",
+  "instructions": "Complete the DCF engine on the Model sheet: compute discount factors, present values of explicit FCFs, enterprise value, equity value, and intrinsic price per share. Then build a two-variable sensitivity table on the Sensitivity sheet showing how intrinsic value varies with WACC and terminal growth rate.",
+  "learning_objective": "Assemble a complete DCF valuation from components; bridge enterprise value to equity value; compute intrinsic price per share; reverse-engineer bull/base/bear scenarios; and build a two-way sensitivity table to stress-test key assumptions.",
+  "hints": [
+    "Discount factor for year t = 1 / (1 + WACC)^t. For FY25, that's year 1; FY26 is year 2, etc. Lock the WACC cell with $ so it doesn't change when you copy the formula across.",
+    "PV of each year's FCFF = FCFF × its discount factor. Once you have all five PV cells, sum them. Enterprise Value = sum of PV(explicit FCFs) + PV of Terminal Value (given as ₹54,384 Cr). Then subtract net debt to reach Equity Value.",
+    "Intrinsic value per share = Equity Value / Shares Outstanding. For the sensitivity table, use SUMPRODUCT or nested IF to show how the intrinsic value changes when you vary WACC (rows) and Terminal Growth Rate (columns). The terminal value itself will shift with growth rate, so build a helper formula that recomputes it from the perpetuity formula: TV = FCFF(final year) × (1 + g) / (WACC − g)."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Titan Company DCF Inputs",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "FY25E",
+            "readOnly": true,
+            "bold": true
+          },
+          "C2": {
+            "value": "FY26E",
+            "readOnly": true,
+            "bold": true
+          },
+          "D2": {
+            "value": "FY27E",
+            "readOnly": true,
+            "bold": true
+          },
+          "E2": {
+            "value": "FY28E",
+            "readOnly": true,
+            "bold": true
+          },
+          "F2": {
+            "value": "FY29E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "FCFF (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 2584,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 3800,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 6100,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 7000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Valuation Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "WACC (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": 12.5,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Terminal Growth Rate (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": 5.0,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "PV of Terminal Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 54384,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Capital Structure (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "Total Debt",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Cash & Equivalents",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": 3000,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Net Debt",
+            "readOnly": true,
+            "bold": true
+          },
+          "B13": {
+            "value": 2000,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Share Structure",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": 88.8,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Current Market Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": 3650,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Model",
+        "cells": {
+          "A1": {
+            "value": "TITAN DCF — INTRINSIC VALUE BRIDGE",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Projection Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Year Number",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 1,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 2,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 3,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 4,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 5,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FCFF (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=Data!B3"
+          },
+          "C4": {
+            "value": "=Data!C3"
+          },
+          "D4": {
+            "value": "=Data!D3"
+          },
+          "E4": {
+            "value": "=Data!E3"
+          },
+          "F4": {
+            "value": "=Data!F3"
+          },
+          "A5": {
+            "value": "Discount Factor",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "=1/(1+Data!$B$6/100)^B$3"
+          },
+          "C5": {
+            "value": "=1/(1+Data!$B$6/100)^C$3"
+          },
+          "D5": {
+            "value": "=1/(1+Data!$B$6/100)^D$3"
+          },
+          "E5": {
+            "value": "=1/(1+Data!$B$6/100)^E$3"
+          },
+          "F5": {
+            "value": "=1/(1+Data!$B$6/100)^F$3"
+          },
+          "A6": {
+            "value": "PV of FCFF (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "=B4*B5"
+          },
+          "C6": {
+            "value": "=C4*C5"
+          },
+          "D6": {
+            "value": "=D4*D5"
+          },
+          "E6": {
+            "value": "=E4*E5"
+          },
+          "F6": {
+            "value": "=F4*F5"
+          },
+          "A8": {
+            "value": "DCF VALUATION",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "Sum of PV (Explicit FCFs, FY25–FY29) (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "=SUM(Model!B6:F6)"
+          },
+          "A10": {
+            "value": "PV of Terminal Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "=Data!B8"
+          },
+          "A11": {
+            "value": "ENTERPRISE VALUE (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": "=Model!B9+Model!B10"
+          },
+          "A12": {
+            "value": "Less: Net Debt (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B12": {
+            "value": "=Data!B13"
+          },
+          "A13": {
+            "value": "EQUITY VALUE (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B13": {
+            "value": "=Model!B11-Model!B12"
+          },
+          "A15": {
+            "value": "Per-Share Valuation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A16": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": "=Data!B16"
+          },
+          "A17": {
+            "value": "INTRINSIC VALUE PER SHARE (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B17": {
+            "value": "=Model!B13/(Model!B16)"
+          },
+          "A18": {
+            "value": "Current Market Price (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": "=Data!B17"
+          },
+          "A19": {
+            "value": "Upside / (Downside) %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B19": {
+            "value": "=(Model!B17-Model!B18)/Model!B18"
+          }
+        }
+      },
+      {
+        "name": "Sensitivity",
+        "cells": {
+          "A1": {
+            "value": "TWO-WAY SENSITIVITY: INTRINSIC VALUE PER SHARE (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "WACC % (rows) vs Terminal Growth Rate % (columns)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "WACC %",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": "3.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "C3": {
+            "value": "4.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "D3": {
+            "value": "5.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "E3": {
+            "value": "6.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "F3": {
+            "value": "7.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "10.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "11.0%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A6": {
+            "value": "11.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A7": {
+            "value": "12.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "13.5%",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(B$3/100)))/((A4/100)-(B$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A4/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "C4": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(C$3/100)))/((A4/100)-(C$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A4/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "D4": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(D$3/100)))/((A4/100)-(D$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A4/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "E4": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(E$3/100)))/((A4/100)-(E$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A4/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "F4": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(F$3/100)))/((A4/100)-(F$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A4/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "B5": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(B$3/100)))/((A5/100)-(B$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A5/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "C5": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(C$3/100)))/((A5/100)-(C$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A5/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "D5": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(D$3/100)))/((A5/100)-(D$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A5/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "E5": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(E$3/100)))/((A5/100)-(E$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A5/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "F5": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(F$3/100)))/((A5/100)-(F$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A5/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "B6": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(B$3/100)))/((A6/100)-(B$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A6/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "C6": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(C$3/100)))/((A6/100)-(C$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A6/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "D6": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(D$3/100)))/((A6/100)-(D$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A6/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "E6": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(E$3/100)))/((A6/100)-(E$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A6/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "F6": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(F$3/100)))/((A6/100)-(F$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A6/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "B7": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(B$3/100)))/((A7/100)-(B$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A7/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "C7": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(C$3/100)))/((A7/100)-(C$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A7/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "D7": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(D$3/100)))/((A7/100)-(D$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A7/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "E7": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(E$3/100)))/((A7/100)-(E$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A7/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "F7": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(F$3/100)))/((A7/100)-(F$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A7/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "B8": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(B$3/100)))/((A8/100)-(B$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A8/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "C8": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(C$3/100)))/((A8/100)-(C$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A8/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "D8": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(D$3/100)))/((A8/100)-(D$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A8/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "E8": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(E$3/100)))/((A8/100)-(E$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A8/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          },
+          "F8": {
+            "value": "=IFERROR(ROUND((Data!F3*(1+(F$3/100)))/((A8/100)-(F$3/100)) + SUM(Data!B3:E3 * ((1/(1+(A8/100)))^ROW(INDIRECT(\"1:4\")))), 0), \"--\")"
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Model!B9": {
+      "formula_pattern": "=SUM(Model!B6:F6)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Model!B11": {
+      "formula_pattern": "=Model!B9+Model!B10",
+      "expected_value": 54384,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Model!B13": {
+      "formula_pattern": "=Model!B11-Model!B12",
+      "expected_value": 52384,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Model!B17": {
+      "formula_pattern": "=Model!B13/(Model!B16)",
+      "expected_value": 589.90990990991,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Model!B19": {
+      "formula_pattern": "=(Model!B17-Model!B18)/Model!B18",
+      "expected_value": -0.8383808466000247,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    }
+  }
+}

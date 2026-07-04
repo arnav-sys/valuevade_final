@@ -1,0 +1,218 @@
+{
+  "sim_type": "excel",
+  "title": "Titan WACC Build and Valuation Sensitivity Analysis",
+  "scenario": "You're a junior analyst on the Mumbai desk at a boutique investment firm. Your senior has asked you to build Titan's WACC from first principles using real Indian market inputs, then stress-test how sensitive the valuation is to small shifts in the discount rate. The firm's valuation model hinges on this one number — get it slightly wrong and the price target swings 20% without a single operating assumption changing.",
+  "instructions": "Compute Titan's cost of equity using CAPM with Indian inputs, calculate the post-tax cost of debt, weight them by market value, and derive WACC. Then use WACC to discount a perpetuity and measure valuation sensitivity to a ±0.5% WACC shift.",
+  "learning_objective": "Calculate Titan's WACC using CAPM, apply the tax shield to debt, weight by market value, and quantify how WACC movements swing valuation — exposing the leverage an analyst has to manufacture conclusions.",
+  "hints": [
+    "Remember: Cost of Equity = Risk-free rate + (Beta × Equity Risk Premium). Use Indian 10-Yr G-Sec ~7%, Titan beta ~0.82, India ERP ~6.5%.",
+    "Post-tax Cost of Debt = Pre-tax rate × (1 − tax rate). The tax rate at Titan is ~25.17%, so a 9% borrowing cost becomes ~6.73% after the deduction benefit.",
+    "WACC = (E/V) × Ke + (D/V) × Post-tax Kd, where V = market cap + net debt. Use the rounded figures provided; weight equity at 98.3% and debt at 1.7% of total value."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Input / Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Titan Market Cap (₹ Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 324000,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Titan Net Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 5000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Risk-free Rate (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 7.0,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Titan Beta",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.82,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "India Equity Risk Premium (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 6.5,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Pre-tax Cost of Debt (%)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 9.0,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Tax Rate (%)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 25.17,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Long-run Growth Rate (%)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 5.0,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Annual Free Cash Flow (₹ Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Tax Rate Decimal (1 - tax %)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 0.7483,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question / Calculation",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1. Cost of Equity (Ke) — Rf + Beta × ERP, as %",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2. Post-tax Cost of Debt (Kd) — Pre-tax × (1 - Tax Rate), as %",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3. Total Enterprise Value (E + D), ₹ Cr",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4. WACC — (E/V)×Ke + (D/V)×Kd, as %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5. Intrinsic Value at WACC — FCF / (WACC − g), ₹ Cr",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6. Value at WACC + 0.5% (stress test upside sensitivity)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B4+Data!B5*Data!B6",
+      "expected_value": 12.33,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!B7*(1-Data!B8/100)",
+      "expected_value": 6.73,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2+Data!B3",
+      "expected_value": 329000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!B2/Answers!B4)*Answers!B2/100+(Data!B3/Answers!B4)*Answers!B3/100",
+      "expected_value": 12.31,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B10/((Answers!B5/100)-Data!B9/100)",
+      "expected_value": -170000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!B10/(((Answers!B5+0.5)/100)-Data!B9/100)",
+      "expected_value": -188888.88888888888,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    }
+  }
+}

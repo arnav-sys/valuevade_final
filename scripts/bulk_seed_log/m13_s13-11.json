@@ -1,0 +1,372 @@
+{
+  "sim_type": "excel",
+  "title": "Build Titan's Football Field valuation synthesis chart",
+  "scenario": "You're a Titan equity analyst on the Mumbai desk. Your DCF, trading comps, and precedent transaction models have produced wildly different valuations: ₹776, ₹3,701, and ₹4,529 respectively. Your PM wants one price target by close of day, backed by a football field chart that shows where the methods agree. You'll construct the valuation ranges, triangulate the consensus zone, and synthesize a defensible target.",
+  "instructions": "Build Titan's football field by anchoring each valuation method's low-to-high range, identifying the consensus zone where the most relevant methods overlap, and deriving a price target that balances all evidence. Use formulas to compute per-share values, consensus overlaps, and upside calculations.",
+  "learning_objective": "Synthesize four independent valuation methods into a single defensible price target by constructing overlapping ranges, identifying the consensus zone, and weighting methods by relevance to the company.",
+  "hints": [
+    "Start by calculating the equity value (enterprise value minus net debt) and divide by shares outstanding to convert each method's range into per-share bands.",
+    "The consensus zone is where the most relevant methods' ranges overlap—identify the highest low-end and the lowest high-end of those overlapping bands.",
+    "Use MAX() for the consensus zone's lower bound and MIN() for its upper bound, then place your target as a weighted position within that zone."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Valuation Method",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Low Multiple / Scenario",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "High Multiple / Scenario",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Low EV (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "High EV (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Low Per Share (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "High Per Share (₹)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DCF (Bear/Base/Bull)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 617,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Scenario-based intrinsic value",
+            "readOnly": true
+          },
+          "E2": {
+            "value": "Scenario-based intrinsic value",
+            "readOnly": true
+          },
+          "F2": {
+            "value": 617,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Trading Comps (Peer EV/EBITDA)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 40,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 50,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 52272,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 65340,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 3287,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 4115,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Precedent Transactions (Deal EV/EBITDA)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 60,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 65340,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 78408,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 4115,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 4950,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "52-Week Trading Range",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 3100,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 3900,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Market observed range",
+            "readOnly": true
+          },
+          "E5": {
+            "value": "Market observed range",
+            "readOnly": true
+          },
+          "F5": {
+            "value": 3100,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 3900,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Current Market Price",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3650,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 3650,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Today's closing",
+            "readOnly": true
+          },
+          "E6": {
+            "value": "Today's closing",
+            "readOnly": true
+          },
+          "F6": {
+            "value": 3650,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 3650,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Company Parameters",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 7348,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "Net Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "E7": {
+            "value": 2000,
+            "readOnly": true
+          },
+          "F7": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "G7": {
+            "value": 88.8,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Method Relevance Weight",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "DCF",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "D8": {
+            "value": "Trading Comps",
+            "readOnly": true
+          },
+          "E8": {
+            "value": 0.55,
+            "readOnly": true
+          },
+          "F8": {
+            "value": "Precedent TX",
+            "readOnly": true
+          },
+          "G8": {
+            "value": 0.1,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Consensus Zone",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": "Most Relevant Methods: Trading Comps + 52-Week Range",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "Overlap identifies convergence",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Target Placement Logic",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": "Place target inside consensus zone, weighted toward highest-relevance method",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Recommendation Threshold",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": "Upside < 5% = HOLD; 5-15% = ACCUMULATE; > 15% = BUY",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Your Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Calculate Consensus Zone Low (highest of all lows from Trading Comps and 52-Week). Use MAX().",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "Q2: Calculate Consensus Zone High (lowest of all highs from Trading Comps and 52-Week). Use MIN().",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q3: Mid-point of Consensus Zone (average of B2 and B3). This is the analytical center gravity.",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q4: Weighted price target using method weights: (DCF mid × 0.15) + (Trading Comps mid × 0.55) + (Precedent mid × 0.10) + (52-Week mid × 0.20). Sum = 1.0.",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q5: Upside % = (Weighted Target − Current Price) / Current Price. Round to 1 decimal. Recommend: if <5% then HOLD, else ACCUMULATE.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=MAX(Data!F3,Data!F5)",
+      "expected_value": 3287,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B3": {
+      "formula_pattern": "=MIN(Data!G3,Data!G5)",
+      "expected_value": 3900,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Answers!B2+Answers!B3)/2",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=((Data!F2+Data!G2)/2*0.15)+((Data!F3+Data!G3)/2*0.55)+((Data!F4+Data!G4)/2*0.10)+((Data!F5+Data!G5)/2*0.20)",
+      "expected_value": 3313.8250000000003,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=ROUND((Answers!B5-Data!B6)/Data!B6,2)",
+      "expected_value": -1,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 11
+    }
+  }
+}

@@ -1,0 +1,804 @@
+{
+  "sim_type": "excel",
+  "title": "Link HDFC Bank's Three Statements and Pass the Balance Check",
+  "scenario": "You're a junior analyst at a Mumbai research desk preparing a five-year model for HDFC Bank. The Inputs, P&L, schedules (capex, working capital, debt) are ready, but the balance sheet and cash flow remain partially blank. Your task: wire the schedules into the statements, close the loop with cash, and verify the balance check turns green for all five years.",
+  "instructions": "Link the capex depreciation and debt interest into the P&L, populate the balance sheet from schedule sources with cash left blank, converge the schedules into the cash flow statement, then link closing cash back to the balance sheet and confirm the balance check formula passes.",
+  "learning_objective": "Assemble a complete, balanced five-year three-statement model by linking schedules to statements, closing the cash loop, and deploying a balance check formula to verify integrity across all forecast years.",
+  "hints": [
+    "The balance sheet's cash line should reference the cash flow statement's closing cash — not a formula inside cash itself, just a link to another sheet.",
+    "Retained earnings = opening reserves + PAT (from P&L) − dividends paid (PAT × payout ratio). Make sure PAT flows into *both* the balance sheet *and* the cash flow's starting line.",
+    "The balance check is =IF(ABS(Total Assets − Total Liabilities & Equity)<0.5,\"OK\",\"CHECK\"). Place it one row below the balance sheet totals for each year. If it reads CHECK, trace Precedents on cash and reserves to find which link is broken."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "HDFC Bank — Five-Year Model",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "INPUTS & ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Revenue Growth",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "EBITDA Margin",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.42,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Dividend Payout Ratio",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0.3,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Capex as % of Revenue",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 0.08,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Debt / EBITDA Target",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 1.25,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Interest Rate on Debt",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0.06,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "NWC as % of Revenue",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 0.12,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "P&L SUMMARY",
+            "readOnly": true,
+            "bold": true
+          },
+          "A13": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B13": {
+            "value": "FY25",
+            "readOnly": true,
+            "bold": true
+          },
+          "C13": {
+            "value": "FY26",
+            "readOnly": true,
+            "bold": true
+          },
+          "D13": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "E13": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "F13": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "A14": {
+            "value": "Revenue (₹ Cr)",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "C14": {
+            "value": 21275,
+            "readOnly": true
+          },
+          "D14": {
+            "value": 24467,
+            "readOnly": true
+          },
+          "E14": {
+            "value": 28137,
+            "readOnly": true
+          },
+          "F14": {
+            "value": 32358,
+            "readOnly": true
+          },
+          "A15": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 7770,
+            "readOnly": true
+          },
+          "C15": {
+            "value": 8936,
+            "readOnly": true
+          },
+          "D15": {
+            "value": 10276,
+            "readOnly": true
+          },
+          "E15": {
+            "value": 11818,
+            "readOnly": true
+          },
+          "F15": {
+            "value": 13590,
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Depreciation (₹ Cr)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 920,
+            "readOnly": true
+          },
+          "C16": {
+            "value": 1058,
+            "readOnly": true
+          },
+          "D16": {
+            "value": 1217,
+            "readOnly": true
+          },
+          "E16": {
+            "value": 1400,
+            "readOnly": true
+          },
+          "F16": {
+            "value": 1610,
+            "readOnly": true
+          },
+          "A17": {
+            "value": "EBIT (₹ Cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 6850,
+            "readOnly": true
+          },
+          "C17": {
+            "value": 7878,
+            "readOnly": true
+          },
+          "D17": {
+            "value": 9059,
+            "readOnly": true
+          },
+          "E17": {
+            "value": 10418,
+            "readOnly": true
+          },
+          "F17": {
+            "value": 11980,
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Interest (₹ Cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": 891,
+            "readOnly": true
+          },
+          "C18": {
+            "value": 1024,
+            "readOnly": true
+          },
+          "D18": {
+            "value": 1178,
+            "readOnly": true
+          },
+          "E18": {
+            "value": 1355,
+            "readOnly": true
+          },
+          "F18": {
+            "value": 1559,
+            "readOnly": true
+          },
+          "A19": {
+            "value": "PBT (₹ Cr)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": 5959,
+            "readOnly": true
+          },
+          "C19": {
+            "value": 6854,
+            "readOnly": true
+          },
+          "D19": {
+            "value": 7881,
+            "readOnly": true
+          },
+          "E19": {
+            "value": 9063,
+            "readOnly": true
+          },
+          "F19": {
+            "value": 10421,
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Tax (₹ Cr)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 1490,
+            "readOnly": true
+          },
+          "C20": {
+            "value": 1714,
+            "readOnly": true
+          },
+          "D20": {
+            "value": 1970,
+            "readOnly": true
+          },
+          "E20": {
+            "value": 2266,
+            "readOnly": true
+          },
+          "F20": {
+            "value": 2605,
+            "readOnly": true
+          },
+          "A21": {
+            "value": "PAT (₹ Cr)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 4469,
+            "readOnly": true
+          },
+          "C21": {
+            "value": 5140,
+            "readOnly": true
+          },
+          "D21": {
+            "value": 5911,
+            "readOnly": true
+          },
+          "E21": {
+            "value": 6797,
+            "readOnly": true
+          },
+          "F21": {
+            "value": 7816,
+            "readOnly": true
+          },
+          "A23": {
+            "value": "SCHEDULE: CAPEX & PP&E",
+            "readOnly": true,
+            "bold": true
+          },
+          "A24": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B24": {
+            "value": "FY25",
+            "readOnly": true,
+            "bold": true
+          },
+          "C24": {
+            "value": "FY26",
+            "readOnly": true,
+            "bold": true
+          },
+          "D24": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "E24": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "F24": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "A25": {
+            "value": "Opening PP&E (₹ Cr)",
+            "readOnly": true
+          },
+          "B25": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "C25": {
+            "value": 9542,
+            "readOnly": true
+          },
+          "D25": {
+            "value": 11023,
+            "readOnly": true
+          },
+          "E25": {
+            "value": 12711,
+            "readOnly": true
+          },
+          "F25": {
+            "value": 14627,
+            "readOnly": true
+          },
+          "A26": {
+            "value": "Capex (₹ Cr)",
+            "readOnly": true
+          },
+          "B26": {
+            "value": 1480,
+            "readOnly": true
+          },
+          "C26": {
+            "value": 1702,
+            "readOnly": true
+          },
+          "D26": {
+            "value": 1957,
+            "readOnly": true
+          },
+          "E26": {
+            "value": 2251,
+            "readOnly": true
+          },
+          "F26": {
+            "value": 2589,
+            "readOnly": true
+          },
+          "A27": {
+            "value": "Depreciation (₹ Cr)",
+            "readOnly": true
+          },
+          "B27": {
+            "value": 920,
+            "readOnly": true
+          },
+          "C27": {
+            "value": 1058,
+            "readOnly": true
+          },
+          "D27": {
+            "value": 1217,
+            "readOnly": true
+          },
+          "E27": {
+            "value": 1400,
+            "readOnly": true
+          },
+          "F27": {
+            "value": 1610,
+            "readOnly": true
+          },
+          "A28": {
+            "value": "Closing PP&E (₹ Cr)",
+            "readOnly": true
+          },
+          "B28": {
+            "value": 9542,
+            "readOnly": true
+          },
+          "C28": {
+            "value": 11023,
+            "readOnly": true
+          },
+          "D28": {
+            "value": 12711,
+            "readOnly": true
+          },
+          "E28": {
+            "value": 14627,
+            "readOnly": true
+          },
+          "F28": {
+            "value": 16848,
+            "readOnly": true
+          },
+          "A30": {
+            "value": "SCHEDULE: DEBT",
+            "readOnly": true,
+            "bold": true
+          },
+          "A31": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B31": {
+            "value": "FY25",
+            "readOnly": true,
+            "bold": true
+          },
+          "C31": {
+            "value": "FY26",
+            "readOnly": true,
+            "bold": true
+          },
+          "D31": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "E31": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "F31": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "A32": {
+            "value": "Opening Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B32": {
+            "value": 14850,
+            "readOnly": true
+          },
+          "C32": {
+            "value": 14478,
+            "readOnly": true
+          },
+          "D32": {
+            "value": 15228,
+            "readOnly": true
+          },
+          "E32": {
+            "value": 16783,
+            "readOnly": true
+          },
+          "F32": {
+            "value": 18968,
+            "readOnly": true
+          },
+          "A33": {
+            "value": "New Borrowing (₹ Cr)",
+            "readOnly": true
+          },
+          "B33": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C33": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D33": {
+            "value": 1000,
+            "readOnly": true
+          },
+          "E33": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "F33": {
+            "value": 2200,
+            "readOnly": true
+          },
+          "A34": {
+            "value": "Repayment (₹ Cr)",
+            "readOnly": true
+          },
+          "B34": {
+            "value": 372,
+            "readOnly": true
+          },
+          "C34": {
+            "value": 250,
+            "readOnly": true
+          },
+          "D34": {
+            "value": 445,
+            "readOnly": true
+          },
+          "E34": {
+            "value": 1015,
+            "readOnly": true
+          },
+          "F34": {
+            "value": 1015,
+            "readOnly": true
+          },
+          "A35": {
+            "value": "Closing Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B35": {
+            "value": 14478,
+            "readOnly": true
+          },
+          "C35": {
+            "value": 14228,
+            "readOnly": true
+          },
+          "D35": {
+            "value": 15783,
+            "readOnly": true
+          },
+          "E35": {
+            "value": 17968,
+            "readOnly": true
+          },
+          "F35": {
+            "value": 20153,
+            "readOnly": true
+          },
+          "A36": {
+            "value": "Interest on Debt (₹ Cr)",
+            "readOnly": true
+          },
+          "B36": {
+            "value": 891,
+            "readOnly": true
+          },
+          "C36": {
+            "value": 1024,
+            "readOnly": true
+          },
+          "D36": {
+            "value": 1178,
+            "readOnly": true
+          },
+          "E36": {
+            "value": 1355,
+            "readOnly": true
+          },
+          "F36": {
+            "value": 1559,
+            "readOnly": true
+          },
+          "A38": {
+            "value": "SCHEDULE: WORKING CAPITAL",
+            "readOnly": true,
+            "bold": true
+          },
+          "A39": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B39": {
+            "value": "FY25",
+            "readOnly": true,
+            "bold": true
+          },
+          "C39": {
+            "value": "FY26",
+            "readOnly": true,
+            "bold": true
+          },
+          "D39": {
+            "value": "FY27",
+            "readOnly": true,
+            "bold": true
+          },
+          "E39": {
+            "value": "FY28",
+            "readOnly": true,
+            "bold": true
+          },
+          "F39": {
+            "value": "FY29",
+            "readOnly": true,
+            "bold": true
+          },
+          "A40": {
+            "value": "Opening NWC (₹ Cr)",
+            "readOnly": true
+          },
+          "B40": {
+            "value": 2220,
+            "readOnly": true
+          },
+          "C40": {
+            "value": 2553,
+            "readOnly": true
+          },
+          "D40": {
+            "value": 2936,
+            "readOnly": true
+          },
+          "E40": {
+            "value": 3377,
+            "readOnly": true
+          },
+          "F40": {
+            "value": 3883,
+            "readOnly": true
+          },
+          "A41": {
+            "value": "Closing NWC (₹ Cr)",
+            "readOnly": true
+          },
+          "B41": {
+            "value": 2553,
+            "readOnly": true
+          },
+          "C41": {
+            "value": 2936,
+            "readOnly": true
+          },
+          "D41": {
+            "value": 3376,
+            "readOnly": true
+          },
+          "E41": {
+            "value": 3883,
+            "readOnly": true
+          },
+          "F41": {
+            "value": 4467,
+            "readOnly": true
+          },
+          "A42": {
+            "value": "Change in NWC (₹ Cr)",
+            "readOnly": true
+          },
+          "B42": {
+            "value": 333,
+            "readOnly": true
+          },
+          "C42": {
+            "value": 383,
+            "readOnly": true
+          },
+          "D42": {
+            "value": 440,
+            "readOnly": true
+          },
+          "E42": {
+            "value": 506,
+            "readOnly": true
+          },
+          "F42": {
+            "value": 584,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "HDFC BANK — ASSEMBLY WORKBOOK",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "BALANCE SHEET & CASH FLOW BUILD",
+            "readOnly": true,
+            "bold": true
+          },
+          "A4": {
+            "value": "Q1: Total Assets FY26 (₹ Cr) [Assets = PP&E + NWC + Cash]",
+            "readOnly": true
+          },
+          "B4": {},
+          "A5": {
+            "value": "Q2: PAT FY27 (₹ Cr) [from P&L]",
+            "readOnly": true
+          },
+          "B5": {},
+          "A6": {
+            "value": "Q3: Dividends Paid FY28 (₹ Cr) [PAT × Payout Ratio]",
+            "readOnly": true
+          },
+          "B6": {},
+          "A7": {
+            "value": "Q4: CFO FY29 (₹ Cr) [PAT + Depreciation − ΔNW",
+            "readOnly": true
+          },
+          "B7": {},
+          "A8": {
+            "value": "Q5: Closing Cash FY26 (₹ Cr) [Opening + CFO + CFI + CFF]",
+            "readOnly": true
+          },
+          "B8": {},
+          "A9": {
+            "value": "Q6: Balance Check FY28 — Assets vs Liab+Equity Gap (₹ Cr)",
+            "readOnly": true
+          },
+          "B9": {}
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!C28+Data!C41+16847",
+      "expected_value": 30806,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!D21",
+      "expected_value": 5911,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!E21*Data!B6",
+      "expected_value": 2039,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!F21+Data!F27-(Data!F42)",
+      "expected_value": 8842,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=8156+6797+(6797*0.30)+1959+250",
+      "expected_value": 19201.1,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B9": {
+      "formula_pattern": "=ABS((Data!E28+Data!E41+5100)-(Data!E35+12568))",
+      "expected_value": 6926,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    }
+  }
+}

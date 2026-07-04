@@ -1,0 +1,432 @@
+{
+  "sim_type": "excel",
+  "title": "Value Tata Motors via Sum-of-the-Parts and Spot the Holding Company Discount",
+  "scenario": "You are a Mumbai equity analyst tasked with valuing Tata Motors—a sprawling conglomerate with Jaguar Land Rover (JLR), India commercial vehicles, India passenger vehicles, and a finance arm—using sum-of-the-parts (SOTP). Your desk also monitors Bajaj Holdings, a pure holding company trading at a steep discount to NAV. You'll value each segment by its own method, compute the SOTP equity value per share, and measure the holding company discount to understand why trapped value stays trapped.",
+  "instructions": "Build a SOTP valuation for Tata Motors by assigning each segment its appropriate multiple and valuing enterprise value; then compute per-share SOTP equity value after subtracting net debt and finance P/B adjustments. For Bajaj Holdings, calculate NAV per share and the holding company discount from market price. Answers sheet has 5 cells; formulas must reference the Data sheet.",
+  "learning_objective": "Compute sum-of-the-parts equity value for a multi-segment conglomerate, value each business by its own appropriate method, and quantify the holding company discount to understand why discounts persist and when catalysts unlock value.",
+  "hints": [
+    "Start by summing the enterprise values of the four auto segments (JLR, CV, PV, EV platform) using SUM, then subtract net debt to get operating equity value.",
+    "For Tata Motors Finance, use its Price-to-Book ratio (not EBITDA) to value it separately; for Bajaj Holdings, calculate NAV as the sum of all stakeholder value divided by shares outstanding.",
+    "The holding company discount is (NAV − Market Price) / NAV. If it's 50%, the market pays ₹50 for every ₹100 of assets. Check your Bajaj Holdings discount against the provided market price."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Segment",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Enterprise Value (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "EV/EBITDA or Multiple Method",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Jaguar Land Rover (JLR)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 140000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": "3.5x EBITDA (cyclical, capital-heavy)",
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Luxury auto segment",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "India Commercial Vehicles",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 60000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "5.0x EBITDA (industrial cyclical)",
+            "readOnly": true
+          },
+          "D3": {
+            "value": "Truck and bus business",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "India Passenger Vehicles",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 55000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "6.5x EBITDA (core PV + EV optionality)",
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Sedan, SUV, and EV growth platform",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total Operating Enterprise Value",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "=SUM(Data!B2:B4)",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "Sum of segments",
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Before debt adjustment",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Less: Net Debt (Parent Level)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": -40000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "Parent-level debt (negative = cash outflow)",
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Interest-bearing liabilities net of cash",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Operating Equity Value (Auto + CV + PV)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "=Data!B5+Data!B6",
+            "readOnly": true
+          },
+          "C7": {
+            "value": "Net operating equity",
+            "readOnly": true
+          },
+          "D7": {
+            "value": "",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Tata Motors Finance: Book Value",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "C8": {
+            "value": "P/B = 3.5x",
+            "readOnly": true
+          },
+          "D8": {
+            "value": "Finance arm equity value (valued by P/B, not EV/EBITDA)",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Tata Motors Finance: Equity Value",
+            "readOnly": true
+          },
+          "B9": {
+            "value": "=Data!B8*3.5",
+            "readOnly": true
+          },
+          "C9": {
+            "value": "Book Value × Price-to-Book",
+            "readOnly": true
+          },
+          "D9": {
+            "value": "Finances valued separately by their own method",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Other Listed Stakes (market value)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 10000,
+            "readOnly": true
+          },
+          "C10": {
+            "value": "Direct stake valuations",
+            "readOnly": true
+          },
+          "D10": {
+            "value": "Tata Communications, Tata Steel, etc.",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "SOTP Equity Value",
+            "readOnly": true
+          },
+          "B11": {
+            "value": "=Data!B7+Data!B9+Data!B10",
+            "readOnly": true
+          },
+          "C11": {
+            "value": "Sum of all equity pieces",
+            "readOnly": true
+          },
+          "D11": {
+            "value": "Total value available to equity holders",
+            "readOnly": true
+          },
+          "A12": {
+            "value": "",
+            "readOnly": true
+          },
+          "B12": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Tata Motors Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 384,
+            "readOnly": true
+          },
+          "C13": {
+            "value": "",
+            "readOnly": true
+          },
+          "D13": {
+            "value": "Crore of shares",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Bajaj Holdings NAV Calc",
+            "readOnly": true
+          },
+          "B14": {
+            "value": "",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Bajaj Auto Stake Value (₹Cr)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 250000,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Bajaj Holdings owns significant stake at market valuation",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "Bajaj Finserv Stake Value (₹Cr)",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 150000,
+            "readOnly": true
+          },
+          "C16": {
+            "value": "Another major asset",
+            "readOnly": true
+          },
+          "A17": {
+            "value": "Other Investments & Cash (₹Cr)",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 50000,
+            "readOnly": true
+          },
+          "C17": {
+            "value": "Portfolio and liquidity",
+            "readOnly": true
+          },
+          "A18": {
+            "value": "Less: Net Debt Bajaj Holdings (₹Cr)",
+            "readOnly": true
+          },
+          "B18": {
+            "value": -30000,
+            "readOnly": true
+          },
+          "C18": {
+            "value": "Bajaj Holdings has some debt",
+            "readOnly": true
+          },
+          "A19": {
+            "value": "Less: Holdco Operating Costs (₹Cr)",
+            "readOnly": true
+          },
+          "B19": {
+            "value": -5000,
+            "readOnly": true
+          },
+          "C19": {
+            "value": "Corporate overhead of the holding structure",
+            "readOnly": true
+          },
+          "A20": {
+            "value": "Total NAV (₹Cr)",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "=SUM(Data!B15:B17,Data!B18:B19)",
+            "readOnly": true
+          },
+          "C20": {
+            "value": "Sum of all assets and costs",
+            "readOnly": true
+          },
+          "A21": {
+            "value": "Bajaj Holdings Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B21": {
+            "value": 32,
+            "readOnly": true
+          },
+          "C21": {
+            "value": "Crore of shares",
+            "readOnly": true
+          },
+          "A22": {
+            "value": "NAV per share (₹)",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "=Data!B20*100/Data!B21",
+            "readOnly": true
+          },
+          "C22": {
+            "value": "Total NAV ÷ shares (in rupees; NAV in ₹Cr so multiply by 100)",
+            "readOnly": true
+          },
+          "A23": {
+            "value": "Bajaj Holdings Market Price (₹)",
+            "readOnly": true
+          },
+          "B23": {
+            "value": 3700,
+            "readOnly": true
+          },
+          "C23": {
+            "value": "Current market traded price per share",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "SOTP VALUATION ANSWERS",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "",
+            "readOnly": false
+          },
+          "A2": {
+            "value": "Q1: What is Tata Motors' SOTP Equity Value per share (₹)?",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: What is Tata Motors' total SOTP Equity Value (₹ Cr)?",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: What is Bajaj Holdings' NAV per share (₹)?",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: What is Bajaj Holdings' holding company discount (as %)?",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: What is the implied upside if Bajaj Holdings closes its discount to 30%?",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B11*100/Data!B13",
+      "expected_value": 62695.3125,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!B11",
+      "expected_value": 240750,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!B22",
+      "expected_value": 1296875,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!B22-Data!B23)/Data!B22*100",
+      "expected_value": 99.71469879518072,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 20
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!B22*0.7-Data!B23)/Data!B23*100",
+      "expected_value": 24435.472972972973,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 25
+    }
+  }
+}

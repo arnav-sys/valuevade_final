@@ -1,0 +1,383 @@
+{
+  "sim_type": "excel",
+  "title": "Build Titan's Comps Table and Identify Fair Value Range",
+  "scenario": "You are a junior equity analyst at a Mumbai-based investment firm. Your portfolio manager has asked you to build a live comparable company analysis for Titan Company Limited to determine whether it's trading at a fair valuation relative to its peer group. You have collected current-year EBITDA, Net Income, Enterprise Value, and Market Cap for Titan and five peer companies across consumer discretionary and premium retail sectors. Your job is to calculate key multiples (EV/EBITDA, P/E, EV/Sales), identify the median peer multiples, and apply them to Titan to derive an implied share price range.",
+  "instructions": "Calculate EV/EBITDA and P/E multiples for each peer company, determine the median peer multiples, apply those medians to Titan's financials to derive implied enterprise and equity values, and calculate Titan's implied share price under the comps method. Use these formulas to answer all questions in the Answers sheet.",
+  "learning_objective": "Calculate peer-group multiples, apply median multiples to a target company's financials, and derive an implied valuation range to compare against market price—the core mechanics of relative valuation.",
+  "hints": [
+    "For Q1 and Q2, calculate the multiple as a simple division: Enterprise Value ÷ EBITDA, or Market Cap ÷ Net Income.",
+    "For Q3 and Q4, use MEDIAN() across the peer multiples you calculated, then multiply by Titan's own metric (EBITDA or Net Income) to get implied value.",
+    "For Q5 and Q6, once you have the Implied Enterprise Value, subtract Net Debt to get Implied Equity Value, then divide by Shares Outstanding to arrive at Implied Price per Share. Compare this to Titan's Current Share Price (₹3,650) to see if it's cheap, fair, or expensive."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Market Cap (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Enterprise Value (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "EBITDA (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Net Income (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Titan Company Ltd",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Consumer Discretionary",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 323760,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 325760,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 7348,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 5420,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 29840,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Trent Ltd",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Premium Retail",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 157200,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 158600,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 3580,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 2450,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 18920,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Avenue Supermarts Ltd",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Premium Retail",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 202500,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 204200,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 4650,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 3100,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 24560,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Nestlé India Ltd",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Consumer Staples",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 289500,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 290100,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 6200,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 4820,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 31450,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Asian Paints Ltd",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Consumer Discretionary",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 298800,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 300420,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 6850,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 4980,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 27350,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Britannia Industries Ltd",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "Consumer Staples",
+            "readOnly": true
+          },
+          "C7": {
+            "value": 142350,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 143200,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 3200,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 2380,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 14680,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Kalyan Jewellers India Ltd",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "Consumer Discretionary",
+            "readOnly": true
+          },
+          "C8": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 19800,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 790,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 420,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 3950,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Shares Outstanding Titan (Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 88.8,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Net Debt Titan (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 2000,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Current Share Price Titan (₹)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 3650,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer / Formula",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Calculate EV/EBITDA multiple for Trent Ltd",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "",
+            "readOnly": false
+          },
+          "A3": {
+            "value": "Q2: Calculate P/E multiple for Avenue Supermarts Ltd",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q3: Median EV/EBITDA of all peers (excl. Titan)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q4: Median P/E of all peers (excl. Titan)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q5: Implied EV for Titan using median peer EV/EBITDA",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q6: Implied Share Price for Titan using EV/EBITDA method (₹)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!D3/Data!E3",
+      "expected_value": 44.33,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!C4/Data!F4",
+      "expected_value": 65.32,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=MEDIAN(Data!D3/Data!E3,Data!D4/Data!E4,Data!D5/Data!E5,Data!D6/Data!E6,Data!D7/Data!E7,Data!D8/Data!E8)",
+      "expected_value": 44.10782723613865,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B5": {
+      "formula_pattern": "=MEDIAN(Data!C3/Data!F3,Data!C4/Data!F4,Data!C5/Data!F5,Data!C6/Data!F6,Data!C7/Data!F7,Data!C8/Data!F8)",
+      "expected_value": 59.96,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B4*Data!E2",
+      "expected_value": 326289.32,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=(Data!B4*Data!E2-Data!B10)/Data!B9",
+      "expected_value": 3653.45,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

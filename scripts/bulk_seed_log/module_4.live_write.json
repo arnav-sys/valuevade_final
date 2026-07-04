@@ -1,0 +1,101 @@
+{
+  "module": 4,
+  "ran_at": "2026-07-04T08:19:36.927830+00:00",
+  "dry_run": false,
+  "total_files": 10,
+  "ok": 10,
+  "error": 0,
+  "skipped": 0,
+  "rows": [
+    {
+      "session_no": "4.1",
+      "sim_type": "excel",
+      "title": "Build Reliance's P&L Line by Line and Compute Five Margins",
+      "db_session_id": "3a070feb-88dc-40b8-9f00-8ef9fe5e6d0d",
+      "sim_id": "50ee6022-1418-4d89-91d9-d7a4f8081c3b",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-1.json"
+    },
+    {
+      "session_no": "4.2",
+      "sim_type": "excel",
+      "title": "TCS Balance Sheet and Cash Flow Statement Analysis",
+      "db_session_id": "078efee7-08ab-4407-b3ca-6ecc8ceea6bb",
+      "sim_id": "469146af-7bb4-43f9-8e1c-2e3ad9224d68",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-2.json"
+    },
+    {
+      "session_no": "4.3",
+      "sim_type": "excel",
+      "title": "TCS Capex & Depreciation: Walk the Three Statements",
+      "db_session_id": "932d959f-f5bc-4efb-8f05-0fc19b5f1ee2",
+      "sim_id": "dfd52172-18a2-4167-b2fd-fbea3d3237d0",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-3.json"
+    },
+    {
+      "session_no": "4.4",
+      "sim_type": "excel",
+      "title": "Build Sharma Retail's Complete Three-Statement Model & Balance",
+      "db_session_id": "b07e353e-ac3a-46ac-a291-0d7e3e266fcc",
+      "sim_id": "b3069c3e-646b-4779-9802-18c9804e755b",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-4.json"
+    },
+    {
+      "session_no": "4.5",
+      "sim_type": "excel",
+      "title": "Titan Consolidated — Spread Five Years, Build the Spine",
+      "db_session_id": "50198f42-47e6-4ea8-b071-090a774986c0",
+      "sim_id": "a3a171cd-28f5-4ebc-9919-f6fafbf867f1",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-5.json"
+    },
+    {
+      "session_no": "4.6",
+      "sim_type": "excel",
+      "title": "D-Mart Revenue Driver Tree and Cost Build Forecast",
+      "db_session_id": "e7096f53-87ba-4377-a3e7-47cdac5d0d0a",
+      "sim_id": "84b25a26-699f-4c57-bb68-8511c1ec7e76",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-6.json"
+    },
+    {
+      "session_no": "4.7",
+      "sim_type": "excel",
+      "title": "Reliance's Working Capital Schedule: Growth Cash Trap",
+      "db_session_id": "7008c351-19df-47ea-af1c-2402564f3554",
+      "sim_id": "52b80325-f1e4-4786-8c19-2ef605bfb7d3",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-7.json"
+    },
+    {
+      "session_no": "4.8",
+      "sim_type": "excel",
+      "title": "Capex Depreciation Debt Schedules for Reliance Industries",
+      "db_session_id": "da6b8c30-88e2-4beb-af8d-03951024a45f",
+      "sim_id": "3091fe76-5430-4ba9-8606-7dfb89aaa121",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-8.json"
+    },
+    {
+      "session_no": "4.9",
+      "sim_type": "excel",
+      "title": "Link HDFC Bank's Three Statements and Pass the Balance Check",
+      "db_session_id": "bc291b8b-6c88-4ae9-ae57-f0dbe618bd13",
+      "sim_id": "16ae8a32-dad8-4d3e-87f9-13d4db1262e7",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-9.json"
+    },
+    {
+      "session_no": "4.10",
+      "sim_type": "excel",
+      "title": "Reliance Industries: Bull/Base/Bear Scenarios and Margin Sensitivity",
+      "db_session_id": "92af40a8-61ae-4030-9b7c-a999b99d9191",
+      "sim_id": "c659ec6a-c3cc-4270-a681-4affc05369e5",
+      "status": "wrote",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-10.json"
+    }
+  ]
+}

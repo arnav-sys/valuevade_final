@@ -1,0 +1,26 @@
+{
+  "module": 4,
+  "completed_at": "2026-07-04T08:17:26.256658+00:00",
+  "total_sessions": 1,
+  "sims_generated": 1,
+  "sims_failed": 0,
+  "by_type": {
+    "excel": 1
+  },
+  "total_engine_corrections": 3,
+  "elapsed_seconds": 63.8,
+  "rows": [
+    {
+      "session_no": "4.7",
+      "session_title": "The Working Capital Schedule — Where Growth Eats Cash",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 63.8,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 3,
+      "engine_errors": 0
+    }
+  ]
+}

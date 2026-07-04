@@ -180,12 +180,28 @@ def parse_json_reply(raw: str) -> dict:
 
 
 def session_notes(module_num: int) -> dict[str, tuple[str, str]]:
-    """Return { session_no: (title, notes) } for a module."""
+    """Return { session_no: (title, notes) } for a module.
+
+    Supports the same 5 header patterns handled by bulk_seed_sims.py so
+    Sonnet reviewers get the correct notes for every module in the
+    curriculum_v2 folder (colon, em-dash, module-scoped, ## variants)."""
     md_path = Path(f'/app/memory/curriculum_v2/module-{module_num}.md')
     if not md_path.exists():
         return {}
     md = md_path.read_text()
-    headers = list(re.finditer(r'^# SESSION (\d+\.\d+): (.+)$', md, re.MULTILINE))
+    patterns = [
+        re.compile(r'^# SESSION (\d+\.\d+):\s*(.+)$',                       re.MULTILINE),
+        re.compile(r'^# SESSION (\d+\.\d+)\s*[—-]\s*(.+)$',                 re.MULTILINE),
+        re.compile(r'^# MODULE \d+\s*[—-]\s*SESSION (\d+\.\d+):\s*(.+)$',   re.MULTILINE),
+        re.compile(r'^##\s+Session\s+(\d+\.\d+):\s*(.+)$',                  re.MULTILINE),
+        re.compile(r'^##\s+Session\s+(\d+)\s*[—-]\s*(.+)$',                 re.MULTILINE),
+    ]
+    headers = []
+    for pat in patterns:
+        ms = list(pat.finditer(md))
+        if ms:
+            headers = ms
+            break
     out = {}
     for i, m in enumerate(headers):
         start = m.start()

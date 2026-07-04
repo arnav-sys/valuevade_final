@@ -1,0 +1,81 @@
+ERROR: ValueError: excel: data sheet only 6 rows
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "Titan's Free Cash Flow Bridge: From EBITDA to Investor Reality",
+  "scenario": "You're on a Mumbai equity desk building a 5-year DCF model for Titan Company Limited. Your senior has provided EBITDA, capex, and working-capital data for FY24–FY28E. You must construct the EBITDA-to-FCF bridge, calculate FCF conversion ratios, and explain why Titan's headline EBITDA number masks a much lower free cash generation — critical for understanding jewellery-retail capex intensity.",
+  "instructions": "Build the free cash flow schedule from EBITDA, deriving FCFF and FCF conversion ratios for each year. Use the formulas taught in Session 13.5 to bridge EBITDA → Cash Taxes → Capex → Working Capital → Free Cash Flow, then analyse the quality of cash generation.",
+  "learning_objective": "Calculate free cash flow from EBITDA using the standard bridge formula, compute FCF conversion ratios, identify capex-intensity effects on cash generation, and reconcile FCFF to understand why Titan's jewellery expansion buries cash in working capital.",
+  "hints": [
+    "Cash Taxes = EBIT × Tax Rate. Remember EBIT = EBITDA − D&A. Check the Data sheet for the tax rate.",
+    "FCF Conversion = FCFF / EBITDA. If the result is 30–40%, that's normal for a retailer building stores and gold inventory.",
+    "Working Capital increase is the change from prior year to current year. If the prior-year NWC is 13,500 and current is 15,591, the increase (drain) is 2,091."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": { "value": "Fiscal Year", "readOnly": true, "bold": true },
+          "B1": { "value": "EBITDA (₹ Cr)", "readOnly": true, "bold": true },
+          "C1": { "value": "D&A (₹ Cr)", "readOnly": true, "bold": true },
+          "D1": { "value": "EBIT (₹ Cr)", "readOnly": true, "bold": true },
+          "E1": { "value": "Capex (₹ Cr)", "readOnly": true, "bold": true },
+          "F1": { "value": "Net Working Capital (₹ Cr)", "readOnly": true, "bold": true },
+          "G1": { "value": "Tax Rate (%)", "readOnly": true, "bold": true },
+          "A2": { "value": "FY24A", "readOnly": true },
+          "B2": { "value": 6200, "readOnly": true },
+          "C2": { "value": 620, "readOnly": true },
+          "D2": { "value": 5580, "readOnly": true },
+          "E2": { "value": 850, "readOnly": true },
+          "F2": { "value": 11500, "readOnly": true },
+          "G2": { "value": 24.8, "readOnly": true },
+          "A3": { "value": "FY25E", "readOnly": true },
+          "B3": { "value": 7348, "readOnly": true },
+          "C3": { "value": 700, "readOnly": true },
+          "D3": { "value": 6648, "readOnly": true },
+          "E3": { "value": 1000, "readOnly": true },
+          "F3": { "value": 13591, "readOnly": true },
+          "G3": { "value": 25.17, "readOnly": true },
+          "A4": { "value": "FY26E", "readOnly": true },
+          "B4": { "value": 8450, "readOnly": true },
+          "C4": { "value": 780, "readOnly": true },
+          "D4": { "value": 7670, "readOnly": true },
+          "E4": { "value": 1150, "readOnly": true },
+          "F4": { "value": 15200, "readOnly": true },
+          "G4": { "value": 25.5, "readOnly": true },
+          "A5": { "value": "FY27E", "readOnly": true },
+          "B5": { "value": 9680, "readOnly": true },
+          "C5": { "value": 850, "readOnly": true },
+          "D5": { "value": 8830, "readOnly": true },
+          "E5": { "value": 1300, "readOnly": true },
+          "F5": { "value": 16750, "readOnly": true },
+          "G5": { "value": 25.5, "readOnly": true },
+          "A6": { "value": "FY28E", "readOnly": true },
+          "B6": { "value": 10800, "readOnly": true },
+          "C6": { "value": 920, "readOnly": true },
+          "D6": { "value": 9880, "readOnly": true },
+          "E6": { "value": 1450, "readOnly": true },
+          "F6": { "value": 17950, "readOnly": true },
+          "G6": { "value": 25.5, "readOnly": true }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": { "value": "Question", "readOnly": true, "bold": true },
+          "B1": { "value": "Your Answer", "readOnly": true, "bold": true },
+          "A2": { "value": "FY25E: Cash Taxes (₹ Cr)", "readOnly": true },
+          "B2": { "value": "", "readOnly": false },
+          "A3": { "value": "FY25E: Working Capital Increase (₹ Cr)", "readOnly": true },
+          "B3": { "value": "", "readOnly": false },
+          "A4": { "value": "FY25E: FCFF using standard bridge (₹ Cr)", "readOnly": true },
+          "B4": { "value": "", "readOnly": false },
+          "A5": { "value": "FY25E: FCF Conversion Ratio (%)", "readOnly": true },
+          "B5": { "value": "", "readOnly": false },
+          "A6": { "value": "FY26E: FCFF (₹ Cr)", "readOnly": true },
+          "B6": { "value": "", "readOnly": false },
+          "A7": { "value": "Sum of FCFF FY25E–FY28E (₹ Cr)", "readOnly": true },
+          "

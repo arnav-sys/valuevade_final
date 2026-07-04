@@ -1,0 +1,254 @@
+{
+  "sim_type": "excel",
+  "title": "Reliance Industries Terminal Value & Perpetuity Growth Reconciliation",
+  "scenario": "You're building a DCF for Reliance Industries' energy business. Explicit forecasts (FY25–FY29) are solid: ₹85,000 Cr FCFF in FY29E, 13% WACC. But 70% of Reliance's valuation will come from terminal value — the one number you can least defend. You'll compute terminal value two ways (Gordon Growth and Exit Multiple), back out implied multiples, and reconcile them to ensure your core assumption isn't driving a fantasy valuation.",
+  "instructions": "Build and cross-check a two-method terminal value model: calculate Gordon Growth TV at 5.5% sustainable growth, derive the exit-multiple equivalent, compute PV of terminal value, and reconcile the implied EV/EBITDA multiple against Reliance's peer range.",
+  "learning_objective": "Calculate terminal value using both Gordon Growth and Exit Multiple methods, derive implied multiples as a sanity check, and articulate the range of perpetuity growth rates that reconcile with market-observed compounder multiples.",
+  "hints": [
+    "Gordon Growth formula is FCF(year N) × (1 + g) / (WACC − g). Notice the denominator shrinks as g approaches WACC.",
+    "Exit Multiple method is EBITDA(year N) × your assumed EV/EBITDA. Then back out the implied growth by comparing the two TV numbers.",
+    "Always discount terminal value back to today: TV / (1 + WACC)^N. And always ask: does the implied exit multiple match what Reliance's peers actually trade at?"
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FCFF (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "EBITDA (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY25E",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 62000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 48000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "Explicit forecast starts",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY26E",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 68500,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 53200,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "Mid-cycle growth",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY27E",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 73800,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 57600,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Maturing growth",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY28E",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 79200,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 61800,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Terminal year approach",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY29E (Terminal Year)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 85000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 66500,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Normalized for perpetuity",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Model Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A8": {
+            "value": "WACC (%)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 13,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Perpetuity Growth g (%)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 5.5,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Exit Multiple (EV/EBITDA)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 14,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Forecast Period (years)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 5,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Terminal Value Calculation & Reconciliation",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: FY29E FCFF grown one year (FCFF × (1 + g))",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "Q2: Gordon Growth Terminal Value at end of FY29E (₹ Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "Q3: Exit Multiple Terminal Value at end of FY29E (₹ Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "Q4: Implied EV/EBITDA from Gordon Growth method",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "Q5: PV of Gordon Growth TV (discount back 5 years)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Q6: Do implied multiple and exit multiple align? (Yes/No)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B6 * (1 + Data!B9 / 100)",
+      "expected_value": 89675,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=Data!B2 / (Data!B8 / 100 - Data!B9 / 100)",
+      "expected_value": 826666.6666666665,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!C6 * Data!B10",
+      "expected_value": 931000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Answers!B3 / Data!C6",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Answers!B3 / ((1 + Data!B8 / 100) ^ Data!B11)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    },
+    "Answers!B7": {
+      "formula_pattern": "=IF(ABS(Answers!B5 - Data!B10) <= 3, \"Yes\", \"No\")",
+      "expected_value": "No",
+      "type": "text",
+      "tolerance": 0,
+      "points": 10
+    }
+  }
+}

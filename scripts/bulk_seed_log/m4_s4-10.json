@@ -1,0 +1,508 @@
+{
+  "sim_type": "excel",
+  "title": "Reliance Industries: Bull/Base/Bear Scenarios and Margin Sensitivity",
+  "scenario": "As a junior analyst on the Energy desk at a Mumbai-based investment bank, you've built a three-year DCF model for Reliance Industries. Your senior has asked you to create a scenario switcher (Bull/Base/Bear) and a sensitivity table showing how EPS and Free Cash Flow respond to margin and growth assumptions. This is the final step before pitching the investment thesis to the PM.",
+  "instructions": "Build a scenario selector dropdown and use INDEX to switch the entire model between Bull, Base, and Bear cases; then construct a two-variable sensitivity table showing target EPS and Free Cash Flow sensitivity to EBITDA margin and revenue growth, and identify the key swing factors.",
+  "learning_objective": "Construct Bull/Base/Bear scenario switchers using INDEX/CHOOSE and Data Table sensitivities to isolate which assumptions drive valuation; quantify the asymmetry in upside vs downside risk for Reliance Industries.",
+  "hints": [
+    "Start by creating three scenario columns in the Inputs section — Bull, Base, Bear — with each containing coherent sets of revenue growth, EBITDA margin, tax rate, and capex assumptions. Then use a dropdown and INDEX to pull the selected scenario's values into a 'Live Assumptions' row.",
+    "Your entire P&L and FCFF engine should reference only the Live Assumptions row, never the individual scenario rows. That way, changing the dropdown cascades through the entire model. Test by flipping the dropdown and watching all outputs update.",
+    "For the sensitivity table: place your target output (e.g., Year 3 EPS) in cell A1 of a new grid, list EBITDA margins across the top (16%, 18%, 20%), growth rates down the side (6%, 9%, 12%), then use Data > What-If Analysis > Data Table with column input = margin cell and row input = growth cell. The resulting grid shows every scenario's output in one view."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY2024 (Base)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY2025 (Base)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY2026 (Base)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY2027 (Base)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Revenue Growth %",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "EBITDA Margin %",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 450000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 495000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 544500,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 598950,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 10,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 18,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "EBITDA (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 81000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 89100,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 98010,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 107810,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Depreciation (₹Cr)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 15000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 16500,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 18150,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 19965,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 66000,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 72600,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 79860,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 87845,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Tax Rate %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 25,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 25,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 25,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 25,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "NOPAT (₹Cr)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 49500,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 54450,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 59895,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 65884,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Capex (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 18000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 19800,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 21780,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 23958,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Change in WC (₹Cr)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 2250,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 2475,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 2723,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 2995,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Free Cash Flow (₹Cr)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 29250,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 32175,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 35392,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 38931,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Shares Outstanding (Cr)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 282,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 282,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 282,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 282,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "SCENARIO ANALYSIS – RELIANCE INDUSTRIES",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Scenario Selector (Bull / Base / Bear):",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Base"
+          },
+          "A4": {
+            "value": "BULL CASE ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A5": {
+            "value": "Bull Revenue Growth %",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 14
+          },
+          "A6": {
+            "value": "Bull EBITDA Margin %",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 20
+          },
+          "A7": {
+            "value": "Bull Tax Rate %",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 23
+          },
+          "A9": {
+            "value": "BASE CASE ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A10": {
+            "value": "Base Revenue Growth %",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 10
+          },
+          "A11": {
+            "value": "Base EBITDA Margin %",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 18
+          },
+          "A12": {
+            "value": "Base Tax Rate %",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 25
+          },
+          "A14": {
+            "value": "BEAR CASE ASSUMPTIONS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A15": {
+            "value": "Bear Revenue Growth %",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 6
+          },
+          "A16": {
+            "value": "Bear EBITDA Margin %",
+            "readOnly": true
+          },
+          "B16": {
+            "value": 16
+          },
+          "A17": {
+            "value": "Bear Tax Rate %",
+            "readOnly": true
+          },
+          "B17": {
+            "value": 27
+          },
+          "A19": {
+            "value": "LIVE ASSUMPTIONS (ACTIVE SCENARIO)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "Active Revenue Growth %",
+            "readOnly": true
+          },
+          "B20": {
+            "value": "=IFERROR(INDEX(Data!B2:E2,MATCH(B2,{\"Bull\",\"Base\",\"Bear\"},0)),INDEX(Data!F2:G2,1))"
+          },
+          "A21": {
+            "value": "Active EBITDA Margin %",
+            "readOnly": true
+          },
+          "B21": {
+            "value": "=IFERROR(INDEX(B6:B6,MATCH(B2,{\"Bull\",\"Base\",\"Bear\"},0)),B11)"
+          },
+          "A22": {
+            "value": "Active Tax Rate %",
+            "readOnly": true
+          },
+          "B22": {
+            "value": "=IFERROR(INDEX(B7:B7,MATCH(B2,{\"Bull\",\"Base\",\"Bear\"},0)),B12)"
+          },
+          "A24": {
+            "value": "FY2027 SCENARIO OUTPUTS",
+            "readOnly": true,
+            "bold": true
+          },
+          "A25": {
+            "value": "FY2027 Revenue (₹Cr)",
+            "readOnly": true
+          },
+          "B25": {},
+          "A26": {
+            "value": "FY2027 EBITDA (₹Cr)",
+            "readOnly": true
+          },
+          "B26": {},
+          "A27": {
+            "value": "FY2027 NOPAT (₹Cr)",
+            "readOnly": true
+          },
+          "B27": {},
+          "A28": {
+            "value": "FY2027 Free Cash Flow (₹Cr)",
+            "readOnly": true
+          },
+          "B28": {},
+          "A29": {
+            "value": "FY2027 EPS (₹)",
+            "readOnly": true
+          },
+          "B29": {},
+          "A31": {
+            "value": "SENSITIVITY: EPS vs EBITDA Margin & Growth",
+            "readOnly": true,
+            "bold": true
+          },
+          "A32": {
+            "value": "EPS (₹)",
+            "readOnly": true
+          },
+          "B32": {
+            "value": 16,
+            "readOnly": true
+          },
+          "C32": {
+            "value": 18,
+            "readOnly": true
+          },
+          "D32": {
+            "value": 20,
+            "readOnly": true
+          },
+          "A33": {
+            "value": 6,
+            "readOnly": true
+          },
+          "A34": {
+            "value": 9,
+            "readOnly": true
+          },
+          "A35": {
+            "value": 12,
+            "readOnly": true
+          },
+          "A36": {
+            "value": 14,
+            "readOnly": true
+          },
+          "B33": {},
+          "C33": {},
+          "D33": {},
+          "B34": {},
+          "C34": {},
+          "D34": {},
+          "B35": {},
+          "C35": {},
+          "D35": {},
+          "B36": {},
+          "C36": {},
+          "D36": {}
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B25": {
+      "formula_pattern": "=Data!E2*(1+Data!F2/100)",
+      "expected_value": 658845,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B26": {
+      "formula_pattern": "=Answers!B25*(Data!G2/100)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 1,
+      "points": 10
+    },
+    "Answers!B27": {
+      "formula_pattern": "=(Answers!B26-Data!E4)*(1-Data!E6/100)",
+      "expected_value": -14973.75,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B28": {
+      "formula_pattern": "=Answers!B27+Data!E4-Data!E8-Data!E9",
+      "expected_value": -6988,
+      "type": "number",
+      "tolerance": 1,
+      "points": 12
+    },
+    "Answers!B29": {
+      "formula_pattern": "=Answers!B28/Data!E11",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.5,
+      "points": 12
+    },
+    "Answers!B33": {
+      "formula_pattern": "=(Data!E2*(1+(6/100))*(16/100)-Data!E4)*(1-25/100)+Data!E4-Data!E8-(Data!E2*(1+(6/100))*0.1)/Data!E11",
+      "expected_value": 56994.55276595745,
+      "type": "number",
+      "tolerance": 1,
+      "points": 15
+    }
+  }
+}

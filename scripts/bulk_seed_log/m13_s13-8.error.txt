@@ -1,0 +1,58 @@
+ERROR: ValueError: excel: total points 445 outside 40-120
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "Build Titan's Complete Five-Year DCF and Scenario Bridge",
+  "scenario": "You are an equity analyst at a Mumbai prop desk. Your PM has asked you to build a full discounted cash flow for Titan Company Limited, integrating five-year FCFF projections, a 12.5% WACC discount rate, and terminal value. You must assemble enterprise value, bridge to equity value, compute intrinsic value per share, then create a sensitivity table showing how the price target responds to WACC and terminal growth rate assumptions. Titan trades at ₹3,650; your model's base case will reveal whether the market is pricing in exceptional long-term growth.",
+  "instructions": "Build a complete DCF workbook with two sheets: Data (historicals and assumptions) and DCF (the full valuation engine). Compute discount factors, present values of explicit-period FCFF, add terminal value PV to reach enterprise value, subtract net debt to get equity value, divide by shares outstanding to produce intrinsic per-share value, and populate a 3×3 bull/base/bear sensitivity table. Every formula must be sheet-qualified and flow from locked assumptions.",
+  "learning_objective": "Build a full five-year DCF model for an Indian company, bridge from enterprise value to per-share equity value, compute intrinsic value under base-case assumptions, and construct a sensitivity table to visualize how per-share price responds to WACC and terminal growth rate changes.",
+  "hints": [
+    "Discount factors follow the formula 1/(1+WACC)^year. For FY25E (year 1), at 12.5% WACC, you get 1/1.125 = 0.889. The denominator stays constant across all years; only the exponent changes.",
+    "Present value of each year's FCFF is just that year's cash flow multiplied by its discount factor. Sum all five years to get 'Sum of PV of Explicit FCFF.' Then add the pre-computed terminal value PV (₹54,384 Cr) to reach Enterprise Value.",
+    "To move from Enterprise Value to Equity Value, subtract Net Debt (Total Debt minus Cash). Then divide Equity Value by Shares Outstanding (in crores) to land on intrinsic value per share. For sensitivity, create a 3×3 table with WACC on one axis (12.0%, 12.5%, 13.0%) and terminal growth rate on the other (2.5%, 3.5%, 4.5%), each cell computing the resulting per-share value."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": { "value": "Titan Company Limited — DCF Assumptions", "readOnly": true, "bold": true },
+          "A2": { "value": "FORECAST ASSUMPTIONS", "readOnly": true, "bold": true },
+          "A3": { "value": "Year Label", "readOnly": true, "bold": true },
+          "B3": { "value": "FY25E", "readOnly": true, "bold": true },
+          "C3": { "value": "FY26E", "readOnly": true, "bold": true },
+          "D3": { "value": "FY27E", "readOnly": true, "bold": true },
+          "E3": { "value": "FY28E", "readOnly": true, "bold": true },
+          "F3": { "value": "FY29E", "readOnly": true, "bold": true },
+          "A4": { "value": "Year Number", "readOnly": true, "bold": true },
+          "B4": { "value": 1, "readOnly": true },
+          "C4": { "value": 2, "readOnly": true },
+          "D4": { "value": 3, "readOnly": true },
+          "E4": { "value": 4, "readOnly": true },
+          "F4": { "value": 5, "readOnly": true },
+          "A5": { "value": "FCFF Projection (₹ Cr)", "readOnly": true, "bold": true },
+          "B5": { "value": 2584, "readOnly": true },
+          "C5": { "value": 3800, "readOnly": true },
+          "D5": { "value": 5000, "readOnly": true },
+          "E5": { "value": 6100, "readOnly": true },
+          "F5": { "value": 7000, "readOnly": true },
+          "A7": { "value": "DISCOUNT RATE & TERMINAL ASSUMPTIONS", "readOnly": true, "bold": true },
+          "A8": { "value": "WACC (%)", "readOnly": true, "bold": true },
+          "B8": { "value": 12.5, "readOnly": true },
+          "A9": { "value": "Terminal Growth Rate (%)", "readOnly": true, "bold": true },
+          "B9": { "value": 3.5, "readOnly": true },
+          "A10": { "value": "PV of Terminal Value (₹ Cr)", "readOnly": true, "bold": true },
+          "B10": { "value": 54384, "readOnly": true },
+          "A12": { "value": "EQUITY BRIDGE ASSUMPTIONS", "readOnly": true, "bold": true },
+          "A13": { "value": "Total Debt (₹ Cr)", "readOnly": true, "bold": true },
+          "B13": { "value": 5000, "readOnly": true },
+          "A14": { "value": "Cash & Equivalents (₹ Cr)", "readOnly": true, "bold": true },
+          "B14": { "value": 3000, "readOnly": true },
+          "A15": { "value": "Net Debt (₹ Cr)", "readOnly": true, "bold": true },
+          "B15": { "value": 2000, "readOnly": true },
+          "A16": { "value": "Shares Outstanding (Cr)", "readOnly": true, "bold": true },
+          "B16": { "value": 88.8, "readOnly": true },
+          "A17": { "value": "Current Market Price (₹)", "readOnly": true, "bold": true },
+          "B17": { "value": 3650, "re

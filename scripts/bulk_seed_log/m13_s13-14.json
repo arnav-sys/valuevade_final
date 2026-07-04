@@ -1,0 +1,357 @@
+{
+  "sim_type": "excel",
+  "title": "Liquidation Analysis: Distressed Textile Firm Asset Haircuts",
+  "scenario": "You're a credit analyst at ICICI Bank reviewing a potential workout for Surana Textiles Ltd, a distressed machinery-heavy manufacturer. The company's balance sheet shows ₹850 Cr of assets and ₹620 Cr of liabilities—book equity of ₹230 Cr—yet the business is bleeding cash and bankers suspect a wind-up is coming. You must build a liquidation model applying realistic haircuts to each asset class, cascade proceeds through the creditor waterfall (secured banks, workmen, unsecured suppliers), and calculate what equity shareholders would actually receive in a forced liquidation.",
+  "instructions": "Build a liquidation analysis worksheet that applies recovery rates (haircuts) to each asset, deducts liquidation costs and creditor claims in priority order, and calculates the equity recovery value. Use SUM and IF logic to compute proceeds net of creditor claims; identify total equity payout and compare to book value.",
+  "learning_objective": "Apply asset-based valuation via liquidation haircuts and creditor-priority waterfall to expose why 'cheap below book' is often a value trap—and calculate the true floor value of distressed equity.",
+  "hints": [
+    "Start by multiplying each asset line by its recovery rate (cash 100%, receivables 80%, inventory 55%, fixed assets 45%, goodwill 0%) to get real liquidation proceeds.",
+    "After summing gross proceeds and deducting liquidation costs, subtract secured creditors and workmen's dues first (they rank highest), then unsecured creditors from what's left.",
+    "The equity recovery is the final residual after all creditor claims are satisfied—use an IF statement to ensure it doesn't go below zero, and compare your final equity value to the book equity of ₹230 Cr."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Asset / Liability Line",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Book Value (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Recovery Rate (%)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Description",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Cash & Bank",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "D2": {
+            "value": "No haircut",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Receivables",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 120,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 80,
+            "readOnly": true
+          },
+          "D3": {
+            "value": "Some debtors won't pay in distress",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Inventory (Raw & WIP)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 185,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 55,
+            "readOnly": true
+          },
+          "D4": {
+            "value": "Forced sale at steep discount",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Finished Goods",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 95,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 60,
+            "readOnly": true
+          },
+          "D5": {
+            "value": "Slightly better recovery than raw/WIP",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Plant & Machinery",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 290,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 45,
+            "readOnly": true
+          },
+          "D6": {
+            "value": "Specialised textile gear near scrap value",
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Land & Buildings",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 85,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 75,
+            "readOnly": true
+          },
+          "D7": {
+            "value": "Real estate, fair recovery in forced sale",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Goodwill & Intangibles",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 35,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 0,
+            "readOnly": true
+          },
+          "D8": {
+            "value": "Worthless in liquidation",
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Other Assets",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 0,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 100,
+            "readOnly": true
+          },
+          "D9": {
+            "value": "Placeholder",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "TOTAL BOOK ASSETS",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": 850,
+            "readOnly": true,
+            "bold": true
+          },
+          "A11": {
+            "value": "",
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Secured Bank Debt",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 380,
+            "readOnly": true
+          },
+          "C13": {
+            "value": "Priority 1",
+            "readOnly": true
+          },
+          "A14": {
+            "value": "Workmen's Dues & Gratuity",
+            "readOnly": true
+          },
+          "B14": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C14": {
+            "value": "Priority 1 (pari passu with secured)",
+            "readOnly": true
+          },
+          "A15": {
+            "value": "Unsecured Creditors (Suppliers)",
+            "readOnly": true
+          },
+          "B15": {
+            "value": 155,
+            "readOnly": true
+          },
+          "C15": {
+            "value": "Priority 2",
+            "readOnly": true
+          },
+          "A16": {
+            "value": "TOTAL LIABILITIES",
+            "readOnly": true,
+            "bold": true
+          },
+          "B16": {
+            "value": 620,
+            "readOnly": true,
+            "bold": true
+          },
+          "A18": {
+            "value": "Book Equity (Assets − Liabilities)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B18": {
+            "value": 230,
+            "readOnly": true,
+            "bold": true
+          },
+          "A20": {
+            "value": "Liquidation Costs",
+            "readOnly": true
+          },
+          "B20": {
+            "value": 28,
+            "readOnly": true
+          },
+          "C20": {
+            "value": "Auctioneers, legal, insolvency admin fees",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Liquidation Analysis – Surana Textiles",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Q1. Calculate liquidation proceeds from Cash & Bank (recovery rate applied).",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Q2. Calculate liquidation proceeds from Inventory (Raw & WIP + Finished Goods combined recovery).",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Q3. Sum TOTAL GROSS LIQUIDATION PROCEEDS across all asset lines (apply recovery rates).",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Q4. Calculate NET PROCEEDS available to creditors (gross proceeds minus liquidation costs).",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Q5. Calculate UNSECURED CREDITOR RECOVERY RATE (₹ available / ₹ claimed, as %).",
+            "readOnly": true
+          },
+          "B7": {
+            "value": "",
+            "readOnly": false
+          },
+          "A8": {
+            "value": "Q6. Calculate EQUITY SHAREHOLDER RECOVERY (final residual after all creditor claims satisfied, or zero if negative).",
+            "readOnly": true
+          },
+          "B8": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B3": {
+      "formula_pattern": "=Data!B2*(Data!C2/100)",
+      "expected_value": 45,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B4*(Data!C4/100))+(Data!B5*(Data!C5/100))",
+      "expected_value": 158.75,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=SUM(Data!B2:Data!B9*(Data!C2:Data!C9/100))",
+      "expected_value": 490.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=Data!B5-Data!B20",
+      "expected_value": 67,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B7": {
+      "formula_pattern": "=IF(Data!B15>0,(MAX(0,Data!B6-Data!B13-Data!B14)/Data!B15)*100,0)",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=MAX(0,Data!B6-Data!B13-Data!B14-MIN(Data!B15,MAX(0,Data!B6-Data!B13-Data!B14)))",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 16
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "module": 4,
+  "reviewed_at": "2026-07-04T08:18:36.295869+00:00",
+  "sampled": 2,
+  "passed": 2,
+  "failed": 0,
+  "avg_total": 4.75,
+  "avg_per_criterion": {
+    "indian_flavor": 5.0,
+    "session_relevance": 5.0,
+    "hint_progression": 5.0,
+    "difficulty_curve": 4.0
+  },
+  "passed_sessions": [
+    "4.1",
+    "4.6"
+  ],
+  "failed_sessions": [],
+  "rows": [
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
+      },
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Perfect Indian authenticity with Reliance Industries, real ₹ crore values (180,000+ Cr range), Mumbai brokerage setting, and laser-focused on Session 4.1's P&L line-by-line reading and margin computation—every question maps directly to session concepts.",
+      "weaknesses": "Difficulty curve could be sharper; questions 2-4-7 all compute margins using same technique (profit÷revenue×100), creating plateau rather than true escalation; question 6 (EBIT lookup) is easier than question 1 (subtraction), breaking logical ramp.",
+      "fix_directive": "",
+      "session_no": "4.1",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-1.json"
+    },
+    {
+      "scores": {
+        "indian_flavor": 5,
+        "session_relevance": 5,
+        "hint_progression": 5,
+        "difficulty_curve": 4
+      },
+      "avg": 4.75,
+      "verdict": "pass",
+      "strengths": "Perfect Indian authenticity (D-Mart/Avenue Supermarts, plausible ₹ Cr values, FY nomenclature), laser-focused on session content (store rollforward, driver tree, revenue per store, cost as % of revenue, sanity checks), textbook hint escalation from conceptual to formula-specific.",
+      "weaknesses": "Difficulty curve could ramp more aggressively—Q1-Q4 are relatively straightforward ratio/lookup tasks, then Q5-Q6 jump in complexity; missing one intermediate multi-step question between simple and CAGR computation would create smoother progression.",
+      "fix_directive": "",
+      "session_no": "4.6",
+      "sim_type": "excel",
+      "file": "/app/scripts/bulk_seed_log/m4_s4-6.json"
+    }
+  ]
+}

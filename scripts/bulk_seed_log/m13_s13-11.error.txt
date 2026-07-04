@@ -1,0 +1,142 @@
+ERROR: ValueError: excel: Answers!B2 formula_pattern must start with "=" (got '617-1050')
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "Titan Football Field: Synthesising Four Valuation Methods",
+  "scenario": "You're an analyst on the Mumbai equity desk at a bulge-bracket research firm. Your DCF, trading comps, and precedent transaction models for Titan have produced three wildly different valuations (₹776, ₹3,701, and ₹4,529 per share). Your portfolio manager wants a single price target by EOD, backed by a visual that makes the answer look inevitable. You'll build Titan's football field — the horizontal-bar valuation chart — anchor each method's range honestly, identify the consensus zone, and derive a defensible price target.",
+  "instructions": "Build a football field for Titan by computing valuation bands from DCF scenarios, trading comps, and precedent transactions; identify the consensus zone where the most relevant methods overlap; set a price target within that zone; and calculate the upside/downside versus the current market price.",
+  "learning_objective": "Construct a multi-method valuation football field, weight each method by relevance to the company's context, identify convergence and outliers, and synthesise a single defensible price target anchored in the consensus zone.",
+  "hints": [
+    "Start by building each method's low-to-high range independently — DCF bear/bull, comps low/high multiple, precedent low/high multiple. Don't peek at the other methods yet.",
+    "The consensus zone is where the *most relevant* methods overlap, not where all methods agree. For Titan (a premium mega-cap), trading comps is most relevant; DCF undershoots by design; precedents assume control (unlikely). Weight accordingly.",
+    "Place the price target inside the consensus zone, closer to the most relevant method. Calculate upside as (Target − Current Price) / Current Price. If the target is ₹3,800 and the market price is ₹3,650, upside is +4.1%."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Metric",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Current Market Price (₹/share)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 3650,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "DCF Bear Case (₹/share)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 617,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "DCF Base Case (₹/share)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 776,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "DCF Bull Case (₹/share)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 1050,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Trading Comps Low Multiple (₹/share)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 3287,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Trading Comps High Multiple (₹/share)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 4115,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Precedent Transactions Low (₹/share)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 4100,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Precedent Transactions High (₹/share)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 4950,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "52-Week Trading Range Low (₹/share)",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 3100,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "52-Week Trading Range High (₹/share)",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 3900,
+            "readOnly": true
+          },
+          "A12": {
+            "value": "Consensus Zone Low Estimate (₹/share)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": 3300,
+            "readOnly": true
+          },
+          "A13": {
+            "value": "Consensus Zone High Estimate (₹/share)",
+            "readOnly": true
+          },
+          "B13": {
+            "value": 3900,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+     

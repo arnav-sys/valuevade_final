@@ -1,0 +1,74 @@
+{
+  "module": 13,
+  "completed_at": "2026-07-04T08:42:13.171319+00:00",
+  "total_sessions": 5,
+  "sims_generated": 5,
+  "sims_failed": 0,
+  "by_type": {
+    "excel": 5
+  },
+  "total_engine_corrections": 22,
+  "elapsed_seconds": 252.5,
+  "rows": [
+    {
+      "session_no": "13.5",
+      "session_title": "FREE CASH FLOW",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 59.4,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 4,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "13.8",
+      "session_title": "BUILDING THE FULL DCF",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 66.5,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 5,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "13.11",
+      "session_title": "THE FOOTBALL FIELD",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 40.6,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 3,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "13.12",
+      "session_title": "SUM-OF-PARTS VALUATION (SOTP)",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 21.8,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 5,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "13.17",
+      "session_title": "BUILDING A COMPLETE EQUITY RESEARCH INITIATION REPORT",
+      "db_session_id": "<dry>",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 64.2,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 5,
+      "engine_errors": 0
+    }
+  ]
+}
