@@ -152,8 +152,8 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-[var(--color-text-muted)] font-bricolage">
-            New to Valuevade?{' '}
-            <Link to="/signup" className="text-[var(--color-primary)] hover:underline font-medium" data-testid="login-signup-link">Create an account</Link>
+          <p className="text-center text-sm text-[var(--color-text-muted)]" data-testid="login-signup-hint">
+            Already have an account? Sign in above.
           </p>
         </div>
       </div>

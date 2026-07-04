@@ -223,8 +223,8 @@ export default function HeroSection({ onJoinWaitlist }) {
             className="text-sm text-[var(--color-text-muted)] mb-7 font-bricolage text-center lg:text-left"
           >
             Already eligible?{' '}
-            <Link to="/signup" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
-              Sign up now &rarr;
+            <Link to="/login" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
+              Log in &rarr;
             </Link>
           </motion.p>
 

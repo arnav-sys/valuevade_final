@@ -15,11 +15,12 @@ import os
 import random
 import re as _re
 import string
+import urllib.error
 import urllib.parse as _urlparse
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -630,6 +631,163 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "payout_status": e.get("payout_status") or "pending",
             })
         return {"total": len(out), "events": out}
+
+    # ---------------- ADMIN · SESSION VIDEOS ----------------
+    _SUPABASE_REST_URL = (
+        os.environ.get("REACT_APP_SUPABASE_URL")
+        or "https://yuadeybycbfqlkdpxbkv.supabase.co"
+    ).rstrip("/")
+    _SUPABASE_SR = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    _VIDEO_BUCKET = "session-videos"
+    _MAX_VIDEO_BYTES = 500 * 1024 * 1024   # 500 MB
+
+    def _bucket_public_url(key: str) -> str:
+        return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_VIDEO_BUCKET}/{key}"
+
+    def _bucket_key_for(module_number: int, order_index: int) -> str:
+        return f"m{module_number}/s{module_number}-{order_index}.mp4"
+
+    @api_router.get("/admin/sessions/videos")
+    async def admin_sessions_videos(user=Depends(_get_supabase_user)):
+        """Returns every module + its sessions with current lecture_url state."""
+        _ensure_admin(user)
+        modules = _supabase_get(
+            "master_modules?select=id,module_number,title,order_index&order=order_index.asc&limit=100"
+        ) or []
+        sessions = _supabase_get(
+            "master_sessions?select=id,module_id,order_index,title,lecture_url"
+            "&order=module_id,order_index&limit=1000"
+        ) or []
+        by_mod: dict[str, list] = {}
+        for s in sessions:
+            by_mod.setdefault(s["module_id"], []).append(s)
+        out = []
+        for m in modules:
+            rows = sorted(by_mod.get(m["id"], []), key=lambda r: r.get("order_index") or 0)
+            out.append({
+                "module_id":     m["id"],
+                "module_number": m.get("module_number"),
+                "module_title":  m.get("title") or "",
+                "sessions": [{
+                    "id":           s["id"],
+                    "order_index":  s.get("order_index"),
+                    "title":        s.get("title") or "",
+                    "lecture_url":  s.get("lecture_url"),
+                    "has_video":    bool(s.get("lecture_url")),
+                } for s in rows],
+            })
+        return {"modules": out}
+
+    @api_router.post("/admin/sessions/{session_id}/video")
+    async def admin_upload_session_video(session_id: str, file: UploadFile = File(...),
+                                         user=Depends(_get_supabase_user)):
+        """Uploads a video to Supabase Storage and PATCHes master_sessions.lecture_url."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        allowed_ct = {"video/mp4", "video/webm", "video/quicktime", "application/octet-stream"}
+        if (file.content_type or "").lower() not in allowed_ct:
+            raise HTTPException(status_code=400,
+                detail=f"Unsupported content type {file.content_type!r} — mp4/webm only.")
+
+        # Resolve session → module_number + order_index so we can pick a clean key.
+        sess_rows = _supabase_get(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,order_index,module_id&limit=1"
+        ) or []
+        if not sess_rows:
+            raise HTTPException(status_code=404, detail="Session not found.")
+        sess = sess_rows[0]
+        mod_rows = _supabase_get(
+            f"master_modules?id=eq.{_urlparse.quote(sess['module_id'])}"
+            "&select=module_number&limit=1"
+        ) or []
+        if not mod_rows or mod_rows[0].get("module_number") is None:
+            raise HTTPException(status_code=404, detail="Module not found or has no module_number.")
+        module_number = int(mod_rows[0]["module_number"])
+        order_index = int(sess.get("order_index") or 1)
+
+        # Read stream — cap at 500MB
+        blob = await file.read()
+        if len(blob) > _MAX_VIDEO_BYTES:
+            raise HTTPException(status_code=413,
+                detail=f"File too large ({len(blob)/1048576:.1f} MB). Max 500 MB.")
+        if len(blob) < 1024:
+            raise HTTPException(status_code=400, detail="File is empty or too small.")
+
+        key = _bucket_key_for(module_number, order_index)
+        import urllib.request
+        req = urllib.request.Request(
+            f"{_SUPABASE_REST_URL}/storage/v1/object/{_VIDEO_BUCKET}/{key}",
+            data=blob, method="POST",
+            headers={
+                "apikey": _SUPABASE_SR,
+                "Authorization": f"Bearer {_SUPABASE_SR}",
+                "Content-Type": (file.content_type or "video/mp4"),
+                "x-upsert": "true",
+                "cache-control": "public, max-age=31536000, immutable",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=300) as resp:
+                resp.read()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+
+        public_url = _bucket_public_url(key)
+        _supabase_patch(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
+            {"lecture_url": public_url},
+        )
+        return {"ok": True, "lecture_url": public_url, "bytes": len(blob), "key": key}
+
+    @api_router.delete("/admin/sessions/{session_id}/video")
+    async def admin_delete_session_video(session_id: str, user=Depends(_get_supabase_user)):
+        """Removes video from Supabase Storage AND nulls master_sessions.lecture_url."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        sess_rows = _supabase_get(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,order_index,module_id,lecture_url&limit=1"
+        ) or []
+        if not sess_rows:
+            raise HTTPException(status_code=404, detail="Session not found.")
+        sess = sess_rows[0]
+        if not sess.get("lecture_url"):
+            return {"ok": True, "already_empty": True}
+        mod_rows = _supabase_get(
+            f"master_modules?id=eq.{_urlparse.quote(sess['module_id'])}"
+            "&select=module_number&limit=1"
+        ) or []
+        module_number = int((mod_rows or [{}])[0].get("module_number") or 0)
+        order_index = int(sess.get("order_index") or 1)
+        key = _bucket_key_for(module_number, order_index)
+
+        import urllib.request
+        req = urllib.request.Request(
+            f"{_SUPABASE_REST_URL}/storage/v1/object/{_VIDEO_BUCKET}/{key}",
+            method="DELETE",
+            headers={
+                "apikey": _SUPABASE_SR,
+                "Authorization": f"Bearer {_SUPABASE_SR}",
+            },
+        )
+        # Best-effort delete from bucket — swallow 404 (file may already be gone).
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                resp.read()
+        except urllib.error.HTTPError as e:  # type: ignore[attr-defined]
+            if e.code not in (404,):
+                logger.warning("Video bucket delete failed for %s: %s", key, e)
+        except Exception as e:
+            logger.warning("Video bucket delete failed for %s: %s", key, e)
+
+        _supabase_patch(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
+            {"lecture_url": None},
+        )
+        return {"ok": True}
 
     @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):

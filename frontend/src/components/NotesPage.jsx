@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 // All under /components/notes/. Behavior must remain identical.
 import { MarkdownCard } from './notes/MarkdownCard';
 import { CARD_THEME, bucketOf } from './notes/constants';
+import SessionVideoPlayer from './notes/SessionVideoPlayer';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -1652,14 +1653,20 @@ export default function NotesPage() {
           return;
         }
 
-        const { data: notes, error: nErr } = await supabase
-          .from('master_notes_cards')
-          .select('*')
-          .eq('session_id', sess.master_session_id)
-          .order('order_index');
-        if (nErr) throw nErr;
+        // Parallel: notes cards + master session (for lecture_url / video)
+        const [notesRes, masterRes] = await Promise.all([
+          supabase.from('master_notes_cards').select('*')
+            .eq('session_id', sess.master_session_id).order('order_index'),
+          supabase.from('master_sessions').select('lecture_url')
+            .eq('id', sess.master_session_id).maybeSingle(),
+        ]);
+        if (notesRes.error) throw notesRes.error;
         if (!mounted) return;
-        setCards(notes || []);
+        setCards(notesRes.data || []);
+        if (masterRes.data?.lecture_url) {
+          // Merge lecture_url into session so the player picks it up
+          setSession((prev) => (prev ? { ...prev, lecture_url: masterRes.data.lecture_url } : prev));
+        }
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load notes');
       } finally {
@@ -1818,6 +1825,13 @@ export default function NotesPage() {
         onTouchEnd={onTouchEnd}
       >
         <div className="w-full max-w-3xl mx-auto">
+          {/* Session lecture video (renders only when master_sessions.lecture_url
+              is set — silently absent for other sessions). Sits above the phase
+              tabs so it's the first thing visible when opening a session. */}
+          {session?.lecture_url && (
+            <SessionVideoPlayer src={session.lecture_url} title={session.title} />
+          )}
+
           {/* Wave 1 / 1B — Video / Notes tab toggle. Default = Video (placeholder),
               switch to Notes for the existing flow. Phase-complete is unaffected
               — the existing notes-completion logic still fires when the user

@@ -136,14 +136,15 @@ function App() {
                 <MilestoneCelebrationOverlay />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
-                <EnrollmentGate>
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/m3-sample-preview" element={<M3SamplePreview />} />
                   <Route path="/m3-dryrun-preview" element={<M3DryRunPreview />} />
-                  <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
-                  <Route path="/signuproute1" element={<Navigate to="/signup" replace />} />
+                  {/* Signup UI removed — existing users can still log in.
+                      Any old /signup, /signuproute1 links land on /login. */}
+                  <Route path="/signup" element={<Navigate to="/login" replace />} />
+                  <Route path="/signuproute1" element={<Navigate to="/login" replace />} />
                   <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                   <Route path="/referral" element={<AdminDashboard />} />
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />
@@ -204,15 +205,16 @@ function App() {
                   <Route path="/mock-interview/:id" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id/results" element={<Learning><MockInterviewResults /></Learning>} />
 
-                  {/* Wave 4 — Payments + Orders */}
-                  <Route path="/start" element={<ProtectedRoute><EnrollmentChoicePage /></ProtectedRoute>} />
-                  <Route path="/upgrade" element={<ProtectedRoute><UpgradePage /></ProtectedRoute>} />
-                  <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
+                  {/* Payment routes (temporarily disabled — auto-enrollment
+                      now handles course access without paywall). Any lingering
+                      link to /start, /upgrade or /my-orders redirects to /courses. */}
+                  <Route path="/start" element={<Navigate to="/courses" replace />} />
+                  <Route path="/upgrade" element={<Navigate to="/courses" replace />} />
+                  <Route path="/my-orders" element={<Navigate to="/profile" replace />} />
 
                   {/* 404 catch-all */}
                   <Route path="*" element={<NotFoundPage />} />
                 </Routes>
-                </EnrollmentGate>
               </PageTransition>
             </Suspense>
                 </MilestonesProvider>

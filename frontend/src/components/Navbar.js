@@ -123,7 +123,7 @@ export default function Navbar({ onJoinWaitlist, landingTheme, onToggleLandingTh
                 Log In
               </Link>
               <Link
-                to="/signup"
+                to="/login"
                 className="px-4 lg:px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage whitespace-nowrap"
                 data-testid="nav-signup-link"
               >
@@ -213,7 +213,7 @@ export default function Navbar({ onJoinWaitlist, landingTheme, onToggleLandingTh
                 Log In
               </Link>
               <Link
-                to="/signup"
+                to="/login"
                 onClick={() => setMenuOpen(false)}
                 className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
                 data-testid="mobile-nav-signup"
