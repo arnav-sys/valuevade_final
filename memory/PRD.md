@@ -1,4 +1,63 @@
 # ============================================================================
+# CHANGELOG — 2026-02-07 (M1 project seed + Module Projects full CRUD)
+# ============================================================================
+
+## Shipped
+
+### DB seed
+- Fetched `wklactwp_module-1.md` (1539 lines) and parsed the `# 📁 MODULE 1 PROJECT` block.
+- Updated `master_module_projects` where `module_id = 7cc30595-36fb-4c8d-b736-e787e40f8c36` (M1):
+  - title → "Decode a Company's DNA"
+  - description → Objective + Company Assigned (Asian Paints Ltd, NSE: ASIANPAINT)
+  - deliverable_description → One-page snapshot + "What great looks like" bullets
+  - estimated_hours → 6 (upper bound of "4–6 hours")
+  - tasks.todo → 10 numbered items from the To-Do List
+- **Verified SELECT snippet**:
+  ```
+  title: Decode a Company's DNA
+  estimated_hours: 6
+  description first line: **Objective:** Read and interpret all three financial statements...
+  tasks.todo count: 10
+  first task: Go to screener.in (or the company's investor relations page)...
+  ```
+- Also re-seeded M2 from `/app/memory/curriculum_v2/module-2.md` after a test-CRUD collision corrupted it. M2 now correctly shows "Trace a Share's Journey" (Zomato) again.
+
+### Backend (`/app/backend/wave_endpoints.py`)
+- **New**: `DELETE /api/admin/module-projects/{module_id}` — admin-guarded. Traps Supabase FK violations (from `user_module_projects` progress rows) and returns a clean **409 Conflict** with:
+  *"Cannot delete — one or more users have progress on this project. Unlink or clear their progress first."*
+
+### Frontend (`/app/frontend/src/components/admin/ModuleProjectModal.jsx`)
+- **New Delete button** on the left of the modal footer, visible only when a project row exists. Confirms with `window.confirm("Delete project for '<module title>'? This cannot be undone.")`.
+- **Save label** now: `Create Project` when no row exists, `Save changes` when editing.
+
+### One-off script
+- `/app/scripts/seed_m1_project.py` — reusable across modules:
+  `python3 seed_m1_project.py <mod_no> <md_path>` (parses `# 📁 MODULE N PROJECT` heading, To-Do List, Deliverable, Time Estimate, What Great Looks Like).
+
+## Curl proof
+
+```
+# M2 upsert (before FK-safety fix)
+GET  /api/admin/module-projects/{M2_id}                → "Trace a Share's Journey"
+PATCH ... {title:"CURL TEST project"...}               → 200 (row updated in-place)
+DELETE ...                                             → 409 Conflict (from FK to user_module_projects)
+# After M2 restored + FK trap added
+DELETE ...                                             → 409 with clean "Cannot delete — users have progress..." message
+```
+
+## Screenshot
+- `/tmp/m1_project_seeded.png` — Admin > View Course > M1 Edit-project modal open, showing all seeded fields (title "Decode a Company's DNA", 6 hrs, description with Objective + Asian Paints, deliverable + What great looks like, tasks JSON with 10 items). Delete + Cancel + Save changes buttons all visible in the footer.
+
+## Files
+- + `/app/scripts/seed_m1_project.py`
+- ~ `/app/backend/wave_endpoints.py` (DELETE endpoint + FK-conflict trap)
+- ~ `/app/frontend/src/components/admin/ModuleProjectModal.jsx` (Delete button, dynamic save label)
+
+# ============================================================================
+
+
+
+# ============================================================================
 # CHANGELOG — 2026-02-07 (Error Tracking System — end-to-end)
 # ============================================================================
 

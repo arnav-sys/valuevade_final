@@ -1523,6 +1523,24 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         ) or []
         return {"project": rows[0] if rows else None}
 
+    @api_router.delete("/admin/module-projects/{module_id}")
+    async def admin_module_project_delete(module_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            _supabase_delete(
+                f"master_module_projects?module_id=eq.{_urlparse.quote(module_id)}"
+            )
+        except Exception as e:
+            msg = str(e)
+            if "user_module_projects" in msg or "foreign key" in msg.lower():
+                raise HTTPException(
+                    status_code=409,
+                    detail="Cannot delete — one or more users have progress on this project. "
+                           "Unlink or clear their progress first.",
+                )
+            raise HTTPException(status_code=500, detail=f"delete failed: {msg[:200]}")
+        return {"ok": True}
+
     # ─── Error tracking (public ingest + admin read/action) ──────────────
     @api_router.post("/errors/report")
     async def report_error(body: _ErrorReportBody):

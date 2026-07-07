@@ -4,7 +4,7 @@
  */
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { X as XIcon, Save } from 'lucide-react';
+import { X as XIcon, Save, Trash2 } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -74,6 +74,17 @@ export default function ModuleProjectModal({ moduleId, moduleTitle, onClose }) {
         estimated_hours: Number(draft.estimated_hours) || 0,
         tasks: tasksObj,
       });
+      onClose(true);
+    } catch (e) { setErr(e.message); }
+    finally { setSaving(false); }
+  };
+
+  const del = async () => {
+    if (!existed) return;
+    if (!window.confirm(`Delete project for "${moduleTitle}"? This cannot be undone.`)) return;
+    setSaving(true); setErr(null);
+    try {
+      await req(`/api/admin/module-projects/${moduleId}`, 'DELETE');
       onClose(true);
     } catch (e) { setErr(e.message); }
     finally { setSaving(false); }
@@ -159,6 +170,16 @@ export default function ModuleProjectModal({ moduleId, moduleTitle, onClose }) {
         )}
 
         <div className="px-6 py-3 border-t border-[var(--color-border)] flex items-center justify-end gap-2">
+          {existed && (
+            <button
+              onClick={del}
+              disabled={saving || loading}
+              data-testid="module-project-delete-btn"
+              className="mr-auto inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-red-500/50 text-red-500 text-sm hover:bg-red-500/10 disabled:opacity-50"
+            >
+              <Trash2 size={14} /> Delete
+            </button>
+          )}
           <button
             onClick={() => onClose(false)}
             data-testid="module-project-cancel-btn"
@@ -172,7 +193,7 @@ export default function ModuleProjectModal({ moduleId, moduleTitle, onClose }) {
             data-testid="module-project-save-btn"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[var(--color-accent-purple)] text-white text-sm font-semibold hover:brightness-110 disabled:opacity-50"
           >
-            <Save size={14} /> {saving ? 'Saving…' : existed ? 'Save changes' : 'Create'}
+            <Save size={14} /> {saving ? 'Saving…' : existed ? 'Save changes' : 'Create Project'}
           </button>
         </div>
       </div>
