@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo, useCallback } from 'react';import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { getNextPhase, computeStreak, updateStats } from '../utils/progress';
@@ -19,8 +18,9 @@ import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
-  HelpCircle, MessageSquare, Wrench, Rocket, Loader2, CalendarDays,
+  HelpCircle, MessageSquare, Wrench, Rocket, Loader2, CalendarDays, Briefcase,
 } from 'lucide-react';
+import { getPendingModuleProject } from '../lib/pendingModuleProject';
 import { Skeleton } from './ui/skeleton';
 import AskPariButton from './tutor/AskPariButton'; // P54: kept for legacy refs, no longer rendered on dashboard
 import StudyPlanWizard from './study-planner/StudyPlanWizard';
@@ -271,6 +271,18 @@ export default function DashboardPage() {
   const [planSummary, setPlanSummary] = useState(null);
   const [planSummaryLoading, setPlanSummaryLoading] = useState(false);
   const [planResetOpen, setPlanResetOpen] = useState(false);
+
+  // Retro-lock: earliest pending Module Project for this user (or null).
+  const [pendingProject, setPendingProject] = useState(null);
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    (async () => {
+      const p = await getPendingModuleProject(user.id);
+      if (alive) setPendingProject(p);
+    })();
+    return () => { alive = false; };
+  }, [user?.id]);
 
   const loadPlanSummary = useCallback(async () => {
     setPlanSummaryLoading(true);
@@ -599,6 +611,38 @@ export default function DashboardPage() {
           {/* Main dashboard */}
           {!loading && !error && enrollment && (
             <div className="space-y-8" data-testid="dashboard-content">
+
+              {/* Retro-lock banner: earliest pending Module Project (if any). */}
+              {pendingProject && (
+                <div
+                  data-testid="pending-module-project-banner"
+                  className="rounded-2xl border border-[var(--color-accent-purple)]/40 bg-gradient-to-r from-[var(--color-accent-purple)]/12 to-[var(--color-primary)]/12 px-5 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+                >
+                  <div className="flex items-start gap-3 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-[var(--color-accent-purple)]/20 flex-shrink-0 flex items-center justify-center">
+                      <Briefcase size={18} className="text-[var(--color-accent-purple)]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[10px] uppercase font-mono tracking-wider text-[var(--color-accent-purple)]">Pending Module Project</p>
+                      <p className="text-sm font-bricolage font-semibold text-[var(--color-text)] mt-0.5">
+                        Module {pendingProject.module_number} —{' '}
+                        {pendingProject.master_project_title || pendingProject.module_title}
+                      </p>
+                      <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                        Complete this project to continue with the next module.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => navigate(`/module/${pendingProject.user_module_id}/project/start`)}
+                    data-testid="resume-module-project"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-primary)] text-white text-sm font-semibold hover:brightness-110 whitespace-nowrap"
+                  >
+                    Resume Project
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+              )}
 
               {/* Sequential P2 / Step 5 — Drift Recovery Banner. Slim, soft
                   one-line nudge if the user's last-7d XP dropped ≥70% vs the

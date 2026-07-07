@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link, useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { Link, useParams, useNavigate } from 'react-router-dom';import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { getPendingModuleProject } from '../lib/pendingModuleProject';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, FileText, HelpCircle, MessageSquare, Wrench,
@@ -43,6 +43,20 @@ export default function SessionStartPage() {
         if (!mounted) return;
         setSession(sess);
         setModule(sess.user_modules || null);
+
+        // Retro-lock guard: if the user has an earlier pending Module Project,
+        // block navigation into any later module's sessions.
+        try {
+          const pending = await getPendingModuleProject(user.id);
+          if (!mounted) return;
+          if (pending && sess.user_modules
+              && Number.isFinite(sess.user_modules.order_index)
+              && sess.user_modules.order_index > pending.module_order_index
+              && sess.user_module_id !== pending.user_module_id) {
+            navigate(`/module/${pending.user_module_id}/project/start`, { replace: true });
+            return;
+          }
+        } catch { /* helper cannot throw; guard is best-effort */ }
 
         if (sess.master_session_id) {
           const { data: m } = await supabase
