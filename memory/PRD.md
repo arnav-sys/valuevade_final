@@ -1,4 +1,79 @@
 # ============================================================================
+# CHANGELOG — 2026-02-07 (Phase B.2 — Admin Curriculum Editors: Quiz/Interview/Video)
+# ============================================================================
+
+## Shipped
+
+### Backend (`/app/backend/wave_endpoints.py`)
+- **Pydantic bodies added**: `_AdminQuizItemBody` (session_id, question,
+  options[], correct_answer_index, explanation, difficulty, order_index),
+  `_AdminInterviewQuestionBody` (session_id, question, context,
+  sample_strong_answer, evaluation_criteria (jsonb), order_index).
+  `typing.Any` added to import for JSON blob criteria.
+- **8 new admin CRUD endpoints (all `_ensure_admin`-guarded):**
+  - `GET/POST/PATCH/DELETE /api/admin/quiz-items` on `master_quiz_questions`
+  - `GET/POST/PATCH/DELETE /api/admin/interview-questions` on `master_interview_questions`
+- Video tab reuses existing endpoints — no new endpoints:
+  - `POST /api/admin/sessions/{id}/video-signed-url` (returns signed direct-upload URL)
+  - `POST /api/admin/sessions/{id}/video-url` (records public_url after upload)
+  - `DELETE /api/admin/sessions/{id}/video` (nulls lecture_url + deletes blob)
+
+### Frontend
+- **`/app/frontend/src/components/admin/QuizEditor.jsx`** (new, ~215 LOC) —
+  flat list of 5-Q quizzes with textarea for question, difficulty picker
+  (easy/medium/hard), A-F option inputs with click-to-mark-correct pill,
+  explanation textarea. Options ≥2, ≤6. Auto-fixes correct_answer_index if
+  it goes out of bounds after option removal.
+- **`/app/frontend/src/components/admin/InterviewEditor.jsx`** (new, ~155 LOC) —
+  flat list with question, optional context, sample_strong_answer, and a
+  freeform JSON `evaluation_criteria` textarea (client-parsed on save with
+  friendly error).
+- **`/app/frontend/src/components/admin/VideoEditor.jsx`** (new, ~180 LOC) —
+  wraps the direct-to-Supabase upload flow: XHR PUT with progress bar,
+  Replace / Delete / inline preview. Reuses existing session-videos endpoints.
+- **`/app/frontend/src/components/admin/CurriculumTab.jsx`** — right rail
+  swapped from a single `<NotesEditor>` to a 4-tab segmented control
+  (Notes / Quiz / Interview / Video). Active tab persists per-session via
+  `activeTab` state. Video onChange callback flips the middle-column
+  🎥 badge optimistically.
+
+## Verification
+
+### Curl (admin `info@valuevade.com`, session M1.S1 `de9b4348-c4eb-48ea-bc40-111a676e121d`)
+| Endpoint | Result |
+|---|---|
+| GET /api/admin/quiz-items | 200 · 5 items |
+| POST /api/admin/quiz-items | 200 · new item.id, order_index=6 |
+| PATCH /api/admin/quiz-items/{id} | 200 · question+difficulty updated |
+| DELETE /api/admin/quiz-items/{id} | 200 · {ok:true} |
+| GET /api/admin/interview-questions | 200 · 3 items |
+| POST /api/admin/interview-questions | 200 · new item.id |
+| DELETE /api/admin/interview-questions/{id} | 200 · {ok:true} |
+
+### Screenshots
+- `/tmp/phaseB2_notes_tab.png` — Notes tab (7 lesson cards) — regression check
+- `/tmp/phaseB2_quiz_tab.png` — Quiz tab (5 MEDIUM items Q1-Q5 with Edit)
+- `/tmp/phaseB2_interview_tab.png` — Interview tab (3 IQs)
+- `/tmp/phaseB2_video_tab.png` — Video tab ("Video attached" + Replace/Delete/Preview)
+
+## Files
+- + `/app/frontend/src/components/admin/QuizEditor.jsx`
+- + `/app/frontend/src/components/admin/InterviewEditor.jsx`
+- + `/app/frontend/src/components/admin/VideoEditor.jsx`
+- ~ `/app/frontend/src/components/admin/CurriculumTab.jsx` (4-tab shell)
+- ~ `/app/backend/wave_endpoints.py` (+8 endpoints, +2 pydantic bodies)
+
+## What's still queued (per user's sequential plan)
+1. Phase C — Capstones + Module Projects CRUD (`PATCH /api/admin/capstones/{code}`,
+   `PATCH /api/admin/module-projects/{module_id}`)
+2. Error Tracking System — `POST /api/errors/report` + Admin "Errors" tab
+3. Bulk sim seed M9-M18 (resume from S9.4)
+
+# ============================================================================
+
+
+
+# ============================================================================
 # CHANGELOG — 2026-06-25 (Step 5 — Pivot UI + Hybrid Engine + M3 Bulk Seed)
 # ============================================================================
 

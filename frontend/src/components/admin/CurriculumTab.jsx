@@ -10,7 +10,10 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 import NotesEditor from './NotesEditor';
-import { Plus, Trash2, Pencil, Check, X, ChevronRight, AlertTriangle } from 'lucide-react';
+import QuizEditor from './QuizEditor';
+import InterviewEditor from './InterviewEditor';
+import VideoEditor from './VideoEditor';
+import { Plus, Trash2, Pencil, AlertTriangle } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -40,6 +43,7 @@ export default function CurriculumTab() {
   const [editingMod, setEditingMod] = useState(null);  // module_id being renamed
   const [editingSess, setEditingSess] = useState(null);
   const [selSession, setSelSession] = useState(null);  // Phase B — currently-open session
+  const [activeTab, setActiveTab] = useState('notes'); // notes | quiz | interview | video
   const [confirm, setConfirm] = useState(null);        // { kind, id, name, impact? }
 
   const reloadModules = async () => {
@@ -240,15 +244,59 @@ export default function CurriculumTab() {
         </ul>
       </div>
 
-      {/* Right rail — Notes editor (Phase B.1). Quiz/Interview/Video ship next. */}
-      <div className="w-96 flex-shrink-0 border border-[var(--color-border)] rounded-xl p-4 overflow-hidden flex flex-col">
+      {/* Right rail — Content editors (Phase B.2). 4-tab segmented control. */}
+      <div className="w-96 flex-shrink-0 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         {selSession ? (
-          <NotesEditor sessionId={selSession.id} sessionTitle={selSession.title} />
+          <>
+            <div className="border-b border-[var(--color-border)] p-1.5 flex gap-1 flex-shrink-0" data-testid="editor-tabs">
+              {[
+                { k: 'notes',     label: 'Notes' },
+                { k: 'quiz',      label: 'Quiz' },
+                { k: 'interview', label: 'Interview' },
+                { k: 'video',     label: 'Video' },
+              ].map((t) => (
+                <button
+                  key={t.k}
+                  onClick={() => setActiveTab(t.k)}
+                  data-testid={`editor-tab-${t.k}`}
+                  className={`flex-1 px-2 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+                    activeTab === t.k
+                      ? 'bg-[var(--color-primary)] text-white'
+                      : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'
+                  }`}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
+            <div className="flex-1 overflow-hidden p-4">
+              {activeTab === 'notes' && (
+                <NotesEditor sessionId={selSession.id} sessionTitle={selSession.title} />
+              )}
+              {activeTab === 'quiz' && (
+                <QuizEditor sessionId={selSession.id} sessionTitle={selSession.title} />
+              )}
+              {activeTab === 'interview' && (
+                <InterviewEditor sessionId={selSession.id} sessionTitle={selSession.title} />
+              )}
+              {activeTab === 'video' && (
+                <VideoEditor
+                  sessionId={selSession.id}
+                  sessionTitle={selSession.title}
+                  lectureUrl={selSession.lecture_url}
+                  onChange={(url) => {
+                    // Optimistic local update so the middle column's video badge flips.
+                    setSelSession({ ...selSession, lecture_url: url });
+                    setSessions(sessions.map((s) => (s.id === selSession.id ? { ...s, lecture_url: url } : s)));
+                  }}
+                />
+              )}
+            </div>
+          </>
         ) : (
-          <div className="text-sm text-[var(--color-text-muted)]">
+          <div className="text-sm text-[var(--color-text-muted)] p-4">
             <p className="font-semibold text-[var(--color-text)] mb-2">Content editors</p>
-            <p className="mb-3">Click a session in the middle column to edit its notes cards.</p>
-            <p className="text-xs">Quiz / Interview / Video editors ship in Phase B.2.</p>
+            <p>Click a session in the middle column to edit its Notes, Quiz, Interview, and Video content.</p>
           </div>
         )}
       </div>

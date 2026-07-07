@@ -18,7 +18,7 @@ import string
 import urllib.error
 import urllib.parse as _urlparse
 from datetime import datetime, timedelta, timezone
-from typing import Optional, List
+from typing import Optional, List, Any
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from pydantic import BaseModel, Field
@@ -122,6 +122,25 @@ class _AdminNotesCardBody(BaseModel):
 
 class _AdminReorderBody(BaseModel):
     ids: List[str]  # ordered list of card ids — new order_index = position+1
+
+
+class _AdminQuizItemBody(BaseModel):
+    session_id: Optional[str] = None
+    question: Optional[str] = None
+    options: Optional[List[Any]] = None            # list[str] (or list[obj])
+    correct_answer_index: Optional[int] = None
+    explanation: Optional[str] = None
+    difficulty: Optional[str] = None               # 'easy'|'medium'|'hard'
+    order_index: Optional[int] = None
+
+
+class _AdminInterviewQuestionBody(BaseModel):
+    session_id: Optional[str] = None
+    question: Optional[str] = None
+    context: Optional[str] = None
+    sample_strong_answer: Optional[str] = None
+    evaluation_criteria: Optional[Any] = None      # dict/json blob
+    order_index: Optional[int] = None
 
 
 class ReferralAttachReq(BaseModel):
@@ -1275,6 +1294,111 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 {"order_index": i + 1},
             )
         return {"ok": True, "reordered": len(body.ids)}
+
+    # ─── Quiz items CRUD (Phase B.2) ─────────────────────────────────────
+    @api_router.get("/admin/quiz-items")
+    async def admin_quiz_list(session_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_quiz_questions?session_id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,session_id,question,options,correct_answer_index,explanation,difficulty,order_index"
+            "&order=order_index&limit=200"
+        ) or []
+        return {"items": rows}
+
+    @api_router.post("/admin/quiz-items")
+    async def admin_quiz_create(body: _AdminQuizItemBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        if not body.session_id:
+            raise HTTPException(status_code=400, detail="session_id required.")
+        existing = _supabase_get(
+            f"master_quiz_questions?session_id=eq.{_urlparse.quote(body.session_id)}"
+            "&select=order_index&order=order_index.desc&limit=1"
+        ) or []
+        next_order = (existing[0]["order_index"] + 1) if existing else 1
+        payload = {
+            "session_id": body.session_id,
+            "question": body.question or "",
+            "options": body.options if body.options is not None else ["", "", "", ""],
+            "correct_answer_index": body.correct_answer_index if body.correct_answer_index is not None else 0,
+            "explanation": body.explanation or "",
+            "difficulty": body.difficulty or "medium",
+            "order_index": body.order_index if body.order_index is not None else next_order,
+        }
+        row = _supabase_post("master_quiz_questions", payload, prefer="return=representation")
+        if isinstance(row, list): row = row[0] if row else None
+        return {"item": row}
+
+    @api_router.patch("/admin/quiz-items/{item_id}")
+    async def admin_quiz_update(item_id: str, body: _AdminQuizItemBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.model_dump().items() if v is not None and k != "session_id"}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}", patch)
+        rows = _supabase_get(
+            f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}"
+            "&select=id,session_id,question,options,correct_answer_index,explanation,difficulty,order_index&limit=1"
+        ) or []
+        return {"item": rows[0] if rows else None}
+
+    @api_router.delete("/admin/quiz-items/{item_id}")
+    async def admin_quiz_delete(item_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        _supabase_delete(f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}")
+        return {"ok": True}
+
+    # ─── Interview questions CRUD (Phase B.2) ────────────────────────────
+    @api_router.get("/admin/interview-questions")
+    async def admin_iq_list(session_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_interview_questions?session_id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,session_id,question,context,sample_strong_answer,evaluation_criteria,order_index"
+            "&order=order_index&limit=200"
+        ) or []
+        return {"items": rows}
+
+    @api_router.post("/admin/interview-questions")
+    async def admin_iq_create(body: _AdminInterviewQuestionBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        if not body.session_id:
+            raise HTTPException(status_code=400, detail="session_id required.")
+        existing = _supabase_get(
+            f"master_interview_questions?session_id=eq.{_urlparse.quote(body.session_id)}"
+            "&select=order_index&order=order_index.desc&limit=1"
+        ) or []
+        next_order = (existing[0]["order_index"] + 1) if existing else 1
+        payload = {
+            "session_id": body.session_id,
+            "question": body.question or "",
+            "context": body.context or "",
+            "sample_strong_answer": body.sample_strong_answer or "",
+            "evaluation_criteria": body.evaluation_criteria if body.evaluation_criteria is not None else {},
+            "order_index": body.order_index if body.order_index is not None else next_order,
+        }
+        row = _supabase_post("master_interview_questions", payload, prefer="return=representation")
+        if isinstance(row, list): row = row[0] if row else None
+        return {"item": row}
+
+    @api_router.patch("/admin/interview-questions/{item_id}")
+    async def admin_iq_update(item_id: str, body: _AdminInterviewQuestionBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.model_dump().items() if v is not None and k != "session_id"}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(f"master_interview_questions?id=eq.{_urlparse.quote(item_id)}", patch)
+        rows = _supabase_get(
+            f"master_interview_questions?id=eq.{_urlparse.quote(item_id)}"
+            "&select=id,session_id,question,context,sample_strong_answer,evaluation_criteria,order_index&limit=1"
+        ) or []
+        return {"item": rows[0] if rows else None}
+
+    @api_router.delete("/admin/interview-questions/{item_id}")
+    async def admin_iq_delete(item_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        _supabase_delete(f"master_interview_questions?id=eq.{_urlparse.quote(item_id)}")
+        return {"ok": True}
 
     @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):
