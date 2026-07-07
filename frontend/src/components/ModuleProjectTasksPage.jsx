@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { normalizeProjectTasks } from '../lib/normalizeProjectTasks';
 import { checkCapstoneUnlock, updateDailyChallengesForPhase } from '../utils/progress';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import Sidebar from './Sidebar';
@@ -67,29 +68,11 @@ export default function ModuleProjectTasksPage() {
     return () => { mounted = false; };
   }, [moduleId, user?.id]);
 
-  // masterProject.tasks is JSONB. Historically an array; the current curriculum
-  // seeder produces { todo: [{ task, hint?, ... }] }. Support both shapes and
-  // normalize each entry to TaskCard's { title, description, hints?, resources? } API.
-  const tasks = useMemo(() => {
-    const raw = masterProject?.tasks;
-    let arr = [];
-    if (Array.isArray(raw)) arr = raw;
-    else if (raw && Array.isArray(raw.todo)) arr = raw.todo;
-    else if (raw && Array.isArray(raw.tasks)) arr = raw.tasks;
-    return arr.map((t, i) => {
-      if (t && typeof t === 'object') {
-        const title = t.title || t.task || t.name || `Task ${i + 1}`;
-        const description = t.description || t.detail || '';
-        const hint = t.hint;
-        const hints = Array.isArray(t.hints)
-          ? t.hints
-          : (typeof hint === 'string' && hint.trim() ? [hint] : []);
-        return { title, description, hints, resources: t.resources || [] };
-      }
-      // string entries → title only
-      return { title: String(t || `Task ${i + 1}`), description: '', hints: [], resources: [] };
-    });
-  }, [masterProject]);
+  // masterProject.tasks is JSONB. See normalizeProjectTasks for accepted shapes.
+  const tasks = useMemo(
+    () => normalizeProjectTasks(masterProject?.tasks),
+    [masterProject]
+  );
 
   const isTaskDone = useCallback(
     (idx) => {

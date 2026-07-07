@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { normalizeProjectTasks } from '../lib/normalizeProjectTasks';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, Target, AlertCircle, RefreshCw, Lock,
@@ -79,7 +80,7 @@ export default function ModuleProjectStartPage() {
 
   const incompleteSessions = sessions.filter((s) => !s.is_completed);
   const isUnlocked = sessions.length > 0 && incompleteSessions.length === 0;
-  const taskCount = Array.isArray(masterProject?.tasks) ? masterProject.tasks.length : 0;
+  const taskCount = normalizeProjectTasks(masterProject?.tasks).length;
 
   const handleStart = async () => {
     try {
