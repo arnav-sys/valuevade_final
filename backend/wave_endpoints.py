@@ -143,6 +143,23 @@ class _AdminInterviewQuestionBody(BaseModel):
     order_index: Optional[int] = None
 
 
+# --- Phase C bodies ---------------------------------------------------------
+class _AdminCapstoneBody(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    deliverable_description: Optional[str] = None
+    estimated_hours: Optional[int] = None
+    phases: Optional[Any] = None                   # full phases jsonb blob
+
+
+class _AdminModuleProjectBody(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    deliverable_description: Optional[str] = None
+    estimated_hours: Optional[int] = None
+    tasks: Optional[Any] = None                    # jsonb blob
+
+
 class ReferralAttachReq(BaseModel):
     ref_code: str = Field(..., min_length=4, max_length=12)
 
@@ -1399,6 +1416,97 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         _ensure_admin(user)
         _supabase_delete(f"master_interview_questions?id=eq.{_urlparse.quote(item_id)}")
         return {"ok": True}
+
+    # ─── Capstones CRUD (Phase C) ────────────────────────────────────────
+    @api_router.get("/admin/capstones")
+    async def admin_capstones_list(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            "master_capstone_projects?select=id,path_id,title,description,"
+            "estimated_hours,deliverable_description,phases"
+            "&order=phases-%3E%3Ecode&limit=50"
+        ) or []
+        # Enrich with the code pulled from phases for convenient FE routing
+        for r in rows:
+            r["code"] = (r.get("phases") or {}).get("code")
+        return {"capstones": rows}
+
+    @api_router.patch("/admin/capstones/{code}")
+    async def admin_capstone_update(code: str, body: _AdminCapstoneBody,
+                                    user=Depends(_get_supabase_user)):
+        """Route by phases->>code. Accepts scalar updates + optional full
+        phases blob replacement."""
+        _ensure_admin(user)
+        # Find the row (need id for a stable PATCH filter — jsonb filter is fine but slower)
+        rows = _supabase_get(
+            f"master_capstone_projects?phases-%3E%3Ecode=eq.{_urlparse.quote(code)}"
+            "&select=id&limit=1"
+        ) or []
+        if not rows:
+            raise HTTPException(status_code=404, detail=f"Capstone {code} not found.")
+        row_id = rows[0]["id"]
+        patch = {k: v for k, v in body.model_dump().items() if v is not None}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        # If phases is provided, make sure it retains a `code` (else FE won't be able to find it)
+        if "phases" in patch:
+            ph = patch["phases"]
+            if not isinstance(ph, dict) or not ph.get("code"):
+                raise HTTPException(status_code=400, detail="phases must be an object containing 'code'.")
+        _supabase_patch(f"master_capstone_projects?id=eq.{_urlparse.quote(row_id)}", patch)
+        updated = _supabase_get(
+            f"master_capstone_projects?id=eq.{_urlparse.quote(row_id)}"
+            "&select=id,title,description,estimated_hours,deliverable_description,phases&limit=1"
+        ) or []
+        out = updated[0] if updated else None
+        if out: out["code"] = (out.get("phases") or {}).get("code")
+        return {"capstone": out}
+
+    # ─── Module projects CRUD (Phase C) ──────────────────────────────────
+    @api_router.get("/admin/module-projects/{module_id}")
+    async def admin_module_project_get(module_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_module_projects?module_id=eq.{_urlparse.quote(module_id)}"
+            "&select=id,module_id,title,description,estimated_hours,deliverable_description,tasks"
+            "&limit=1"
+        ) or []
+        return {"project": rows[0] if rows else None}
+
+    @api_router.patch("/admin/module-projects/{module_id}")
+    async def admin_module_project_upsert(module_id: str, body: _AdminModuleProjectBody,
+                                          user=Depends(_get_supabase_user)):
+        """Upsert by module_id. If no row exists, create; otherwise patch."""
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.model_dump().items() if v is not None}
+        existing = _supabase_get(
+            f"master_module_projects?module_id=eq.{_urlparse.quote(module_id)}"
+            "&select=id&limit=1"
+        ) or []
+        if existing:
+            if not patch:
+                raise HTTPException(status_code=400, detail="No fields to update.")
+            _supabase_patch(
+                f"master_module_projects?id=eq.{_urlparse.quote(existing[0]['id'])}",
+                patch,
+            )
+        else:
+            # Create with sensible defaults for required-ish columns
+            payload = {
+                "module_id": module_id,
+                "title": patch.get("title") or "Untitled project",
+                "description": patch.get("description") or "",
+                "deliverable_description": patch.get("deliverable_description") or "",
+                "estimated_hours": patch.get("estimated_hours") if patch.get("estimated_hours") is not None else 5,
+                "tasks": patch.get("tasks") if patch.get("tasks") is not None else {"todo": []},
+            }
+            _supabase_post("master_module_projects", payload, prefer="return=representation")
+        rows = _supabase_get(
+            f"master_module_projects?module_id=eq.{_urlparse.quote(module_id)}"
+            "&select=id,module_id,title,description,estimated_hours,deliverable_description,tasks"
+            "&limit=1"
+        ) or []
+        return {"project": rows[0] if rows else None}
 
     @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):

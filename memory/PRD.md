@@ -1,4 +1,66 @@
 # ============================================================================
+# CHANGELOG — 2026-02-07 (Phase C — Admin Capstones + Module Projects CRUD)
+# ============================================================================
+
+## Shipped
+
+### Backend (`/app/backend/wave_endpoints.py`)
+- **Pydantic bodies**: `_AdminCapstoneBody` (title, description, deliverable_description,
+  estimated_hours, phases[Any]) and `_AdminModuleProjectBody` (title, description,
+  deliverable_description, estimated_hours, tasks[Any]).
+- **4 new admin endpoints (all `_ensure_admin`-guarded):**
+  - `GET  /api/admin/capstones` — lists CAP-01/02/03, enriches each row with a
+    top-level `code` field pulled from `phases->>code`
+  - `PATCH /api/admin/capstones/{code}` — routes by `phases->>code`, guards
+    against removing the code from the phases blob on update
+  - `GET  /api/admin/module-projects/{module_id}` — returns the single project row
+    or `{project: null}`
+  - `PATCH /api/admin/module-projects/{module_id}` — upserts by module_id
+    (creates if none exists; PATCHes if it does)
+
+### Frontend
+- **`/app/frontend/src/components/admin/CapstonesEditor.jsx`** (new, ~200 LOC) —
+  left rail with 3 capstone rows + right pane form (title, hours, prereq codes,
+  brief, deliverables, advanced phases JSON textarea). Save merges the prereq
+  codes (comma-separated) back into `phases.prerequisite_capstone_codes`
+  and preserves `phases.code`.
+- **`/app/frontend/src/components/admin/ModuleProjectModal.jsx`** (new, ~155 LOC) —
+  modal that GETs the project on open, and PATCHes on save. Handles the
+  "no project yet" case (creation via same endpoint). Tasks JSON is
+  client-parsed with friendly error surfacing.
+- **`/app/frontend/src/components/admin/CurriculumTab.jsx`** — added a
+  top-level Modules ↔ Capstones view-mode toggle above the 3-column layout.
+  Each module row gets a Folder-icon "Edit project" button next to Edit/Delete.
+
+## Verification
+
+### Curl (admin `info@valuevade.com`)
+| Endpoint | Result |
+|---|---|
+| GET /api/admin/capstones | 200 · 3 rows, `code` populated for each |
+| PATCH /api/admin/capstones/CAP-01 (title change) | 200 · title updated, reverted post-test |
+| GET /api/admin/module-projects/{M1_id} | 200 · "Decode a Company's DNA" (5h) |
+| PATCH /api/admin/module-projects/{M1_id} (hours 5→6) | 200 · hours updated, reverted |
+
+### Screenshots
+- `/tmp/phaseC_capstones_editor.png` — Capstones sub-tab active, editing CAP-01 (title, 60h, prereqs empty, brief, deliverables, phases JSON visible)
+- `/tmp/phaseC_module_project_modal.png` — Module project modal open on M1 showing "Decode a Company's DNA" fully hydrated (title, 5h, description, deliverable, tasks JSON with todo[])
+
+## Files
+- + `/app/frontend/src/components/admin/CapstonesEditor.jsx`
+- + `/app/frontend/src/components/admin/ModuleProjectModal.jsx`
+- ~ `/app/frontend/src/components/admin/CurriculumTab.jsx` (view toggle + Edit-project button + modal mount)
+- ~ `/app/backend/wave_endpoints.py` (+4 endpoints, +2 pydantic bodies)
+
+## What's still queued
+1. Error Tracking System — `POST /api/errors/report` + Admin "Errors" tab (P1)
+2. Bulk sim seed M9-M18 (resume from S9.4) (P1)
+
+# ============================================================================
+
+
+
+# ============================================================================
 # CHANGELOG — 2026-02-07 (Phase B.2 — Admin Curriculum Editors: Quiz/Interview/Video)
 # ============================================================================
 

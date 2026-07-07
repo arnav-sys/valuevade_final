@@ -13,7 +13,9 @@ import NotesEditor from './NotesEditor';
 import QuizEditor from './QuizEditor';
 import InterviewEditor from './InterviewEditor';
 import VideoEditor from './VideoEditor';
-import { Plus, Trash2, Pencil, AlertTriangle } from 'lucide-react';
+import CapstonesEditor from './CapstonesEditor';
+import ModuleProjectModal from './ModuleProjectModal';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -44,6 +46,8 @@ export default function CurriculumTab() {
   const [editingSess, setEditingSess] = useState(null);
   const [selSession, setSelSession] = useState(null);  // Phase B — currently-open session
   const [activeTab, setActiveTab] = useState('notes'); // notes | quiz | interview | video
+  const [viewMode, setViewMode] = useState('modules'); // 'modules' | 'capstones'
+  const [projModule, setProjModule] = useState(null);  // { id, title } when the modal is open
   const [confirm, setConfirm] = useState(null);        // { kind, id, name, impact? }
 
   const reloadModules = async () => {
@@ -129,7 +133,32 @@ export default function CurriculumTab() {
   if (loading) return <div className="p-4 text-[var(--color-text-muted)]">Loading curriculum…</div>;
 
   return (
-    <div className="flex gap-4 h-[calc(100vh-280px)] min-h-[500px]" data-testid="curriculum-tab">
+    <div className="flex flex-col gap-3" data-testid="curriculum-tab">
+      {/* Top-level view toggle: Modules ↔ Capstones (Phase C) */}
+      <div className="inline-flex gap-1 p-1 rounded-lg bg-[var(--color-surface)] w-fit" data-testid="curriculum-view-toggle">
+        <button
+          onClick={() => setViewMode('modules')}
+          data-testid="view-mode-modules"
+          className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+            viewMode === 'modules' ? 'bg-[var(--color-primary)] text-white' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+          }`}
+        >
+          Modules
+        </button>
+        <button
+          onClick={() => setViewMode('capstones')}
+          data-testid="view-mode-capstones"
+          className={`px-4 py-1.5 rounded-md text-xs font-semibold transition-colors ${
+            viewMode === 'capstones' ? 'bg-[var(--color-primary)] text-white' : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)]'
+          }`}
+        >
+          Capstones
+        </button>
+      </div>
+
+    {viewMode === 'capstones' && <CapstonesEditor />}
+    {viewMode === 'modules' && (
+    <div className="flex gap-4 h-[calc(100vh-320px)] min-h-[500px]">
       {/* Left rail — modules */}
       <div className="w-72 flex-shrink-0 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
@@ -168,6 +197,14 @@ export default function CurriculumTab() {
                   <div className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{m.session_count} sessions</div>
                 </button>
                 <div className="flex flex-col gap-1">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setProjModule({ id: m.id, title: m.title }); }}
+                    title="Edit module project"
+                    data-testid={`edit-project-${m.id}`}
+                    className="text-[var(--color-text-muted)] hover:text-[var(--color-accent-purple)]"
+                  >
+                    <Folder size={11} />
+                  </button>
                   <button onClick={(e) => { e.stopPropagation(); setEditingMod(m.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-module-${m.id}`}>
                     <Pencil size={11} />
                   </button>
@@ -336,6 +373,17 @@ export default function CurriculumTab() {
           </div>
         </div>
       )}
+    </div>
+    )}
+
+    {/* Module project modal (Phase C) */}
+    {projModule && (
+      <ModuleProjectModal
+        moduleId={projModule.id}
+        moduleTitle={projModule.title}
+        onClose={() => setProjModule(null)}
+      />
+    )}
     </div>
   );
 }
