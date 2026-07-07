@@ -4462,3 +4462,23 @@ Total: 91 sims live. Remaining: M9(9), M10, M11, M12, M14, M15, M18 ≈ ~70 sess
 - Top-up + resume M9 → M18 sim seeding.
 - Post-completion: preview URL + 1 sample screenshot per module.
 
+
+---
+
+## 2026-07-07 — Admin "View Course" Phase A + video 413 fix
+
+### Fixed / delivered
+- **P0 nginx 413 on video upload** → direct-to-Supabase signed-URL architecture. New endpoints:  returns signed URL; FE PUTs the file directly;  persists the public URL on . Nginx completely bypassed.  in sign body so re-uploads work.
+- **Admin "View Course" Phase A** — new tab in AdminPanel with modules + sessions CRUD. Left rail: module list with add/edit/delete + cascade impact preview. Middle: sessions with add/edit/delete. Right rail: Phase B placeholder.
+- **P0 hot-fix**:  import missing in NotesPage → error boundary. One-line fix, testing_agent verified.
+
+### Files added
+- 
+- Backend endpoints: , , , , , , 
+
+### Backlog / next
+- Phase B (session content editors: notes cards, quiz items, interview Qs, video)
+- Phase C (capstones + module projects)
+- Sim seed M9(9 sessions) → M10-M12, M14, M15, M18 — user has 14+ credits but per-key cap bumps by /top-up
+- Error tracking system (previous request paused mid-implementation — Supabase migration returned success but table verify still 404; needs re-run via Management API or manual apply)
+- Delete-user endpoint + confirmation modal (earlier task, not implemented)

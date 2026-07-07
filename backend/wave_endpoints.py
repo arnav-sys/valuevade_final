@@ -1069,18 +1069,22 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         _ensure_admin(user)
         paths = _supabase_get("master_paths?select=id,title&limit=5") or []
         path_id = paths[0]["id"] if paths else None
+        if not path_id:
+            return {"path_id": None, "modules": []}
+        # PostgREST embed — single request returns modules with their session
+        # counts, avoiding an N+1 loop that scaled to ~30-90s at 23 modules.
         mods = _supabase_get(
             f"master_modules?path_id=eq.{_urlparse.quote(path_id)}"
-            "&select=id,path_id,title,description,module_number,order_index"
+            "&select=id,path_id,title,description,module_number,order_index,master_sessions(count)"
             "&order=order_index&limit=100"
-        ) if path_id else []
-        # Session counts per module
+        ) or []
         out = []
-        for m in mods or []:
-            sess = _supabase_get(
-                f"master_sessions?module_id=eq.{_urlparse.quote(m['id'])}&select=id&limit=200"
-            ) or []
-            out.append({**m, "session_count": len(sess)})
+        for m in mods:
+            sess_agg = m.get("master_sessions") or []
+            count = sess_agg[0]["count"] if sess_agg else 0
+            m2 = {k: v for k, v in m.items() if k != "master_sessions"}
+            m2["session_count"] = count
+            out.append(m2)
         return {"path_id": path_id, "modules": out}
 
     @api_router.get("/admin/curriculum/sessions")
