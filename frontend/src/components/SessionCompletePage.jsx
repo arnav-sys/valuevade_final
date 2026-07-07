@@ -83,6 +83,7 @@ export default function SessionCompletePage() {
   const [module, setModule] = useState(null);
   const [nextSession, setNextSession] = useState(null);
   const [moduleComplete, setModuleComplete] = useState(false);
+  const [hasModuleProject, setHasModuleProject] = useState(false);  // Batch: gate M1→M2 unlock via project
   const [showConfetti, setShowConfetti] = useState(true);
 
   // Phase B — doubt flag state
@@ -102,7 +103,7 @@ export default function SessionCompletePage() {
       try {
         const { data: sess, error: sErr } = await supabase
           .from('user_sessions')
-          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed)')
+          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed, master_module_id)')
           .eq('id', sessionId)
           .single();
         if (sErr) throw sErr;
@@ -127,6 +128,45 @@ export default function SessionCompletePage() {
 
           const allDone = active.every((s) => s.is_completed);
           if (mounted) setModuleComplete(allDone);
+
+          // Batch: gate the M1→M2 unlock via the module project.
+          // When the user finishes the last session of a module that has a
+          // master_module_projects row, ensure their user_module_projects
+          // row exists (lazy-seed for legacy/failed enrollments) and set
+          // hasModuleProject so the CTAs route to the project page.
+          if (allDone && !next) {
+            const masterModId = sess.user_modules?.master_module_id;
+            if (masterModId) {
+              const { data: mpRows } = await supabase
+                .from('master_module_projects')
+                .select('id')
+                .eq('module_id', masterModId)
+                .limit(1);
+              const mp = (mpRows && mpRows[0]) || null;
+              if (mp) {
+                const { data: existing } = await supabase
+                  .from('user_module_projects')
+                  .select('id, is_completed')
+                  .eq('user_module_id', modId)
+                  .limit(1);
+                if (!existing || existing.length === 0) {
+                  // Idempotent seed — best-effort, don't block UI on failure
+                  try {
+                    await supabase.from('user_module_projects').insert({
+                      user_module_id: modId,
+                      master_project_id: mp.id,
+                      is_completed: false,
+                      started_at: null,
+                    });
+                  } catch { /* row race → ignore */ }
+                }
+                // hasModuleProject stays true even if the project is already
+                // is_completed (rare — a redo/replay path). In that case, we
+                // still route to project/start which will show its complete-state.
+                if (mounted) setHasModuleProject(true);
+              }
+            }
+          }
         }
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load session');
@@ -320,8 +360,19 @@ export default function SessionCompletePage() {
       {showConfetti && <Confetti />}
 
       <div className="relative z-10 max-w-2xl mx-auto" data-testid="session-complete-content">
-        {/* Phase-4 SessionSummaryCard — XP breakdown + badge progress + streak + next-level + challenges */}
-        <SessionSummaryCard sessionId={sessionId} onContinue={() => navigate(nextSession ? `/session/${nextSession.id}/start` : '/dashboard')} />
+        {/* Phase-4 SessionSummaryCard — XP breakdown + badge progress + streak + next-level + challenges.
+            Batch: unified "Continue" routing — if this is the last session and
+            the module has a project, land on the project start page (not dashboard). */}
+        <SessionSummaryCard
+          sessionId={sessionId}
+          onContinue={() => {
+            if (nextSession) return navigate(`/session/${nextSession.id}/start`);
+            if (moduleComplete && hasModuleProject && module?.id) {
+              return navigate(`/module/${module.id}/project/start`);
+            }
+            return navigate('/dashboard');
+          }}
+        />
         <div className="text-center mb-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)] text-xs font-mono uppercase tracking-[0.2em] mb-5">
             <Trophy size={12} /> Session complete
@@ -526,7 +577,7 @@ export default function SessionCompletePage() {
               Next Session: {nextSession.title}
               <ArrowRight size={16} />
             </button>
-          ) : moduleComplete ? (
+          ) : moduleComplete && hasModuleProject ? (
             <button
               onClick={() => navigate(`/module/${module.id}/project/start`)}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(106,92,255,0.4)] hover:brightness-110 transition-all"

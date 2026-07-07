@@ -58,6 +58,7 @@ export default function ModuleProjectCompletePage() {
   const [module, setModule] = useState(null);
   const [masterProject, setMasterProject] = useState(null);
   const [nextModule, setNextModule] = useState(null);
+  const [nextSessionId, setNextSessionId] = useState(null);
   const [allModulesDone, setAllModulesDone] = useState(false);
 
   useEffect(() => {
@@ -104,6 +105,22 @@ export default function ModuleProjectCompletePage() {
         const next = thisIdx >= 0 && thisIdx < siblings.length - 1 ? siblings[thisIdx + 1] : null;
         setNextModule(next);
         setAllModulesDone(siblings.length > 0 && siblings.every((m) => m.is_completed));
+
+        // Batch: on project complete, prefer routing directly to the next
+        // module's first uncompleted session so the user doesn't have to
+        // click through the dashboard.
+        if (next?.id) {
+          const { data: nextSessions } = await supabase
+            .from('user_sessions')
+            .select('id, order_index, is_completed, is_removed')
+            .eq('user_module_id', next.id)
+            .eq('is_removed', false)
+            .order('order_index');
+          const firstUncompleted = (nextSessions || []).find((s) => !s.is_completed);
+          if (mounted && firstUncompleted) {
+            setNextSessionId(firstUncompleted.id);
+          }
+        }
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load completion');
       } finally {
@@ -226,7 +243,7 @@ export default function ModuleProjectCompletePage() {
             </button>
           ) : nextModule ? (
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(nextSessionId ? `/session/${nextSessionId}/start` : '/dashboard')}
               className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
               data-testid="module-project-continue-next"
             >
