@@ -1,0 +1,124 @@
+{
+  "module": 9,
+  "completed_at": "2026-07-07T18:18:48.972163+00:00",
+  "total_sessions": 9,
+  "sims_generated": 7,
+  "sims_failed": 2,
+  "by_type": {
+    "excel": 3,
+    "decision_making": 2,
+    "document": 2
+  },
+  "total_engine_corrections": 4,
+  "elapsed_seconds": 439.9,
+  "rows": [
+    {
+      "session_no": "9.4",
+      "session_title": "DuPont Analysis — Cracking ROE into Its DNA (3-Step and 5-Step)",
+      "db_session_id": "b4e5a36e-95de-432c-97d2-746616a39647",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 74.5,
+      "status": "fail",
+      "error": "ValueError: excel: Answers!B5 formula has bare cell ref 'B2' in a multi-sheet workbook — must qualify like Data!B2",
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.5",
+      "session_title": "Liquidity & Solvency Ratios — Can the Company Survive?",
+      "db_session_id": "0c393d90-51e1-4701-856c-a3e87f2e1dab",
+      "sim_type": "excel",
+      "sim_id": "ba6f73df-e006-498e-93dc-a79a8e62a772",
+      "seconds": 43.7,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.6",
+      "session_title": "Efficiency & Working-Capital Ratios — The Cash Conversion Cycle",
+      "db_session_id": "11d0b1d0-c584-429b-b6e1-704a159cf5af",
+      "sim_type": "excel",
+      "sim_id": "295ad8bc-56aa-401e-baeb-f7788d546344",
+      "seconds": 43.5,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 4,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.7",
+      "session_title": "Valuation Multiples I — P/E, P/B, EV/EBITDA & the Core Toolkit",
+      "db_session_id": "ca1d1eea-d2a8-4248-9e06-e36842c5c6c3",
+      "sim_type": "decision_making",
+      "sim_id": "c2cdb3b7-60cd-4cf6-bec1-81ae0c107972",
+      "seconds": 53.3,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.8",
+      "session_title": "Valuation Multiples II — The Full Toolkit, Triangulation & the Traps",
+      "db_session_id": "8f9f8224-ea5c-4a10-8324-8abf9046f12a",
+      "sim_type": "decision_making",
+      "sim_id": "6ea6bb3d-4ede-4e32-b563-70a4be05984f",
+      "seconds": 54.5,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.9",
+      "session_title": "Cross-Ratio Synthesis — Reading Ratios as a System",
+      "db_session_id": "16371a04-2e24-4e90-bcf7-211b93710d29",
+      "sim_type": "document",
+      "sim_id": "41e916a5-1aad-4df4-b994-52301e8ea9d4",
+      "seconds": 27.9,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.10",
+      "session_title": "Banking & Financial-Sector Ratios — A Different Toolkit Entirely",
+      "db_session_id": "c4ed97a9-6d19-4a20-8975-bf17c7a2352c",
+      "sim_type": "excel",
+      "sim_id": "4872fc4f-a2f5-4cac-b9b9-bedd28836b79",
+      "seconds": 42.4,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 2
+    },
+    {
+      "session_no": "9.11",
+      "session_title": "Sector-Specific Ratio Toolkits — NBFCs, Insurance, Real Estate & Beyond",
+      "db_session_id": "a998d014-72bd-4f98-883f-7daf9ee20cd4",
+      "sim_type": "document",
+      "sim_id": "357fbdb9-a913-4623-8fb6-4406a67654bf",
+      "seconds": 25.0,
+      "status": "ok",
+      "error": null,
+      "engine_corrections": 0,
+      "engine_errors": 0
+    },
+    {
+      "session_no": "9.12",
+      "session_title": "Building & Interpreting a Complete Ratio Dashboard",
+      "db_session_id": "04ae5f75-6064-49d5-aeb9-67ada4743e8f",
+      "sim_type": "excel",
+      "sim_id": null,
+      "seconds": 75.1,
+      "status": "fail",
+      "error": "ValueError: excel: Answers!B7 formula has bare cell ref 'B2' in a multi-sheet workbook — must qualify like Data!B2",
+      "engine_corrections": 0,
+      "engine_errors": 0
+    }
+  ]
+}

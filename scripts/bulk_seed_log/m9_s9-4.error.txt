@@ -1,0 +1,142 @@
+ERROR: ValueError: excel: Answers!B5 formula has bare cell ref 'B2' in a multi-sheet workbook — must qualify like Data!B2
+
+RAW REPLY:
+```json
+{
+  "sim_type": "excel",
+  "title": "DuPont Diagnosis: Unmasking ROE Quality in Indian Banks",
+  "scenario": "You are a junior equity analyst at a Mumbai investment desk comparing two major Indian banks — HDFC Bank and ICICI Bank — both reporting similar headline ROE figures of ~15-16%. Your senior wants a DuPont decomposition (3-step and 5-step) across 5 years to diagnose whether their returns are driven by quality operations or amplified by leverage and tax effects, and to catch any danger signs of rising ROE from rising debt rather than genuine operating improvement.",
+  "instructions": "Using the historical financial data provided, compute 3-step and 5-step DuPont components for both banks across 5 years, then identify which bank's ROE is higher quality and which shows the danger sign of leverage-driven improvement.",
+  "learning_objective": "Decompose ROE into 3-step (margin, turnover, leverage) and 5-step (tax burden, interest burden, operating margin, turnover, leverage) components across multiple years to diagnose whether ROE growth is driven by sustainable operating improvement or by rising leverage and tax windfalls.",
+  "hints": [
+    "Start with the simplest components: Net Margin = Net Profit ÷ Sales, Asset Turnover = Sales ÷ Total Assets. Once you have those two, you can compute Equity Multiplier = Total Assets ÷ Equity, and multiply the three to verify they equal ROE.",
+    "For the 5-step, first compute Operating Margin (EBIT ÷ Sales), then Interest Burden (Pre-tax Profit ÷ EBIT), then Tax Burden (Net Profit ÷ Pre-tax Profit). Multiply all five terms and they should equal ROE. Check your arithmetic by comparing 5-step product to the 3-step product.",
+    "To spot the danger sign, compare the Equity Multiplier across years for each bank. If it rises significantly while margins stay flat, that's leverage-driven ROE growth — a warning. Then check whether Interest Burden is shrinking (rising debt costs less than expected) or Tax Burden is rising (one-off tax benefit). These clues expose whether ROE improvement is real or engineered."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Bank",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Net Profit (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Sales/Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Total Assets (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Equity (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "Pre-tax Profit (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 2019,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 3760,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 36850,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 280000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 26500,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 5240,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 4680,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 2020,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 4250,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 40120,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 305000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 29200,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 5880,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 5320,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 2021,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 5320,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 45680,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 340000

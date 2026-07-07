@@ -1,0 +1,39 @@
+{
+  "summary": "Phase A Admin Curriculum CRUD (modules + sessions) end-to-end tested. All 19 backend pytest cases PASSED (auth 401/403 guardrails, list/reads shape, create/patch/delete lifecycle, cascade-delete of sessions, impact preview, validation errors). Frontend UI smoke also PASSED: curriculum-tab renders under /admin-panel?tab=curriculum for admin, add-module/session buttons visible, module click reveals sessions-list, delete confirmation modal opens with cascade counts (0 sessions/0 notes/0 quiz/0 IQ for empty test modules), delete-confirm-btn removes the module, and non-admin (testagent2026) is redirected away from /admin-panel (curriculum-tab not visible).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /api/admin/curriculum/modules", "issue": "N+1 query pattern — the endpoint loops over every module and issues a separate _supabase_get(session_count) call per module. With 23 modules the full response takes ~30-90s under load. Consider a single grouped count RPC or PostgREST embed (master_modules?select=id,title,module_number,order_index,master_sessions(count)) to cut round-trips."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "AdminPanel > View Course", "issues": ["ESLint warning: useEffect on CurriculumTab.jsx line 60 declares missing dependency 'reloadModules'. Non-blocking but flagged in `yarn build` output."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_curriculum.py",
+    "/app/test_reports/pytest/admin_curriculum_results.xml"
+  ],
+  "action_items": [
+    "(Optional) Optimize GET /api/admin/curriculum/modules to avoid N+1 session-count queries. Currently the list can take ~30-90s.",
+    "(Optional) Silence eslint 'exhaustive-deps' warning on CurriculumTab.jsx:60 (already prefixed with an eslint-disable-next-line but appears one line too early — comment on line 60 targets line 61)."
+  ],
+  "critical_code_review_comments": [
+    "wave_endpoints.py admin_curr_modules() (line 1067) iterates per-module _supabase_get for session counts — replace with a single grouped query. Not blocking but painful UX for the admin.",
+    "wave_endpoints.py admin_create_module() (line 1096): fallback module_number derivation uses `(existing[0].get('module_number') or existing[0]['order_index']) + 1`; when the very last existing module has NULL module_number and low order_index this could collide with lower numbers. Works today because seed data has module_number populated, but worth adding a MAX() check.",
+    "CurriculumTab.jsx uses `window.prompt` and `alert` for add/rename/error UX. Fine for admin-only Phase A but should move to a proper modal in Phase B alongside the notes/quiz/IQ editors."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_admin_curriculum.py (new)"
+  ],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "admin info@valuevade.com/aa1aa2sam3, non-admin testagent2026@gmail.com/TestPass123!",
+  "seed_data_creation": "Created and cleaned up __TEST_TB, __TEST_RENAMED, __TEST_second_sess (backend tests) and __TEST_UI_MOD, __TEST_UI_MOD_XYZ (UI tests). All confirmed deleted via backend cleanup script.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Phase A (modules + sessions CRUD) is stable. Backend endpoints /api/admin/curriculum/modules, /api/admin/curriculum/sessions, /api/admin/modules[/{id}], /api/admin/modules/{id}/impact, /api/admin/sessions[/{id}] all return 401 unauth / 403 non-admin / 200 admin. Cascade delete works (module delete removes child sessions). UI tab under /admin-panel?tab=curriculum functions end-to-end. For Phase B (notes/quiz/IQ editors) — those are gated in the right-rail placeholder and explicitly out of scope for this iteration.",
+  "rca of the issue": "n/a — all tests green"
+}

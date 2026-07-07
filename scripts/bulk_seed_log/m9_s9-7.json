@@ -1,0 +1,231 @@
+{
+  "sim_type": "decision_making",
+  "title": "Valuation Call on Nestlé India: Is 65× P/E Justified?",
+  "scenario": "You're an equity analyst at a Mumbai investment bank. Nestlé India trades at ₹28,500 per share (market cap ₹180,000 crore), with trailing P/E of 65× and forward P/E of 52×. Your head of research asks: is this a quality premium we should defend, or a bubble ready to burst? You have 48 hours to build a case and recommend Buy, Hold, or Reduce.",
+  "instructions": "Step through 4 decision points. At each, pick an action that gathers evidence or builds your valuation argument. Your choices accumulate a score across three dimensions: rigor (depth of analysis), speed (time to recommendation), and conviction (confidence in your call). Your final total score determines whether your recommendation is defensible to clients and the investment committee.",
+  "learning_objective": "Judge whether a high valuation multiple is deserved by examining growth, quality, and risk using P/E, P/B, and EV/EBITDA together.",
+  "hints": [
+    "A 65× P/E is high even for FMCG. Start by asking: what would justify it? Growth rate, ROE, and earnings stability are the clues.",
+    "Don't rely on P/E alone. Pull P/B and EV/EBITDA to triangulate. A high P/E might hide high debt or weak returns on equity.",
+    "Nestlé India's moat (brand, pricing power, asset-light model) is real. The question is whether the market's growth and quality assumptions are realistic given macro headwinds and competition."
+  ],
+  "scenario_context": "Nestlé India is a compounder — consistent mid-teens growth, ROE above 90%, pristine balance sheet. But the 65× P/E implies ~8% annual earnings growth for the next 10 years (a rough PEG-style assumption). The FMCG sector is facing input cost inflation, slower urban consumption, and rising competition from private labels. Your job is to decide whether Nestlé's brand moat and capital efficiency justify the market's expectations, or whether the multiple has gotten ahead of reality. The investment committee expects rigor (multiple perspectives), but also a clear call in 48 hours (speed matters in a trading desk).",
+  "initial_data": {
+    "Company": "Nestlé India",
+    "Current Price": "₹28,500",
+    "Market Cap": "₹180,000 crore",
+    "Trailing P/E": "65×",
+    "Forward P/E": "52×",
+    "Your Recommendation": "Pending",
+    "Time Limit": "48 hours",
+    "Session Focus": "Valuation Multiples: P/E, P/B, EV/EBITDA"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Which multiples to pull first?",
+      "narrative": "Your head asks: before diving into forecasts, what does the current multiple tell us? You have three quick routes: (A) deep-dive the P/E and implied growth assumptions, (B) pull P/B and ROE to judge whether the equity value is justified by returns, or (C) calculate EV/EBITDA and compare to industry peers to see if leverage or capital intensity is hiding something. Each takes different time and reveals different angles.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Forensic P/E analysis: back out the growth assumption.",
+          "description": "Use a simple reverse-DCF or PEG-based model to ask: what earnings growth rate does the 65× P/E imply? Then judge if that's realistic.",
+          "consequence": "You calculate that 65× P/E on current earnings implies the market expects ~7.5% sustainable earnings growth. That's slow for a compounder and seems to ignore Nestlé's long-term track record of double-digit growth. This flags that the market may be pricing in a slowdown — possibly justified by macro, but worth questioning. You gain rigor and a clear hypothesis to test.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "P/B and ROE check: is the equity premium earned?",
+          "description": "Pull the P/B (typically ~8–10× for Nestlé) and benchmark it against ROE (~95%). Ask: does a 95% ROE justify the P/B? If it does, the P/E might follow naturally.",
+          "consequence": "Nestlé's P/B of 9× paired with ROE of 95% signals that shareholders are earning excellent returns on equity. A high ROE justifies a high P/B, and by extension, a high P/E (since ROE × P/B approximates justified P/E). This gives you confidence the premium has *some* foundation — but it doesn't address whether those high returns are *sustainable* as competition and macro headwinds intensify. You've validated one angle but haven't tested durability.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "EV/EBITDA relative to peers: is debt or structure hiding risk?",
+          "description": "Calculate Nestlé India's EV/EBITDA (~32–35×) and compare to HUL, ITC, and Britannia. See if the multiple is driven by high leverage or low EBITDA margins.",
+          "consequence": "You find Nestlé's EV/EBITDA of 34× is also high — higher than HUL's 28× and ITC's 18×. This tells you the premium isn't just an equity story (P/E) — it's baked into the whole business value. The balance sheet is pristine (net cash position), so leverage isn't the hidden factor. The multiple reflects market confidence in the *operating business itself*, not financial engineering. You've narrowed the question: is the high multiple justified by superior operational quality and durability?",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "conviction": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "What threat do you prioritize testing?",
+      "narrative": "Whatever multiples you pulled in d1, the question now is: what's the bear case? Three risks could justify a lower multiple: (A) earnings growth is slowing (macro headwinds, competition eating share), (B) ROE is under pressure (input costs squeezing margins, capex needs rising), or (C) the moat is fading (private labels, e-commerce disintermediation, new competitors). Pick which risk to investigate first — it determines your conviction level.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Test earnings growth by modeling next 3 years under stress.",
+          "description": "Run a conservative scenario: 5% topline growth (vs. historical 10%+), margin compression of 50 bps per year due to input costs, and see what that does to EPS.",
+          "consequence": "Your stress model shows EPS growth of 3–4% under a conservative macro scenario. That would compress the justified P/E from 65× to perhaps 45–50× — a 20–25% downside. This is material but not catastrophic. It highlights that Nestlé *does* have earnings risk if growth stalls, but also that even under stress, it's not a value trap — the business is robust. You've quantified the downside, raising your conviction in a Hold-or-Reduce thesis if macro worsens.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "Forensic margin analysis: are input costs and capex eating into ROE?",
+          "description": "Pull the past 5 years of gross margin, EBIT margin, and capex as % of sales. Trend them and ask: is ROE sustainable or eroding?",
+          "consequence": "You find margins have held steady at ~30% EBIT despite commodity inflation (a sign of pricing power), and capex is only ~2% of sales (very capital-light). ROE has been stable at 90%+. This evidence supports the bull case: Nestlé's moat is *real* — it can pass through costs and doesn't need heavy reinvestment. However, it also reveals that you're not finding much hidden erosion in the fundamentals. Your conviction in a lower multiple weakens; you lean toward the quality story holding. But you haven't yet stress-tested the moat itself.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "Competitive threat: model market-share loss to private labels and D2C.",
+          "description": "Research private-label penetration trends in Nestlé's categories (soups, coffee, nutrition). Estimate if D2C channels are taking share. Ask: does the 65× P/E assume share is stable?",
+          "consequence": "You find private-label penetration in premium segments is still <5%, but growing 20% annually. Nestlé's e-commerce and D2C presence is strong. The risk is real but early-stage — not yet a earnings headwind. However, this is the *structural* threat the market may be underestimating (or overestimating, if 65× already prices in some share loss). You realize the P/E is highly sensitive to the moat holding. Your conviction is conditional: Buy only if you believe the moat stays intact. If you doubt it, Reduce is safer.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "How do you reconcile the multiple across timeframes?",
+      "narrative": "By now you've looked at current multiples, growth implications, and fundamental risks. But here's the nuance: the *forward* P/E (52×) is lower than the *trailing* P/E (65×), suggesting the market expects earnings growth. The question is: do you trust the market's forward earnings estimates, or do you think they're too optimistic? This determines whether you see the multiple as justifiable (market's growth view is right) or a valuation trap (market is too bullish).",
+      "options": [
+        {
+          "id": "A",
+          "label": "Trust the consensus: market's forward EPS growth of 12–15% is realistic.",
+          "description": "Assume sell-side consensus estimates (typically 12–15% growth over next 2 years for Nestlé) are reasonable. At that growth rate, 52× forward P/E is not expensive.",
+          "consequence": "If earnings do grow at 12–15%, the forward P/E of 52× is justified and the stock stays at or near ₹28,500. You recommend Buy, with the thesis that the market is fairly pricing a quality compounder. This is a higher-conviction call but depends entirely on consensus estimates being right. Your rigor is slightly lower because you're anchoring to sell-side consensus rather than building a bottom-up view. But your speed is high — you can recommend within 48 hours.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 2,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "B",
+          "label": "Build a bottom-up earnings forecast: challenge the consensus.",
+          "description": "Model Nestlé's categories (soups, coffee, nutrition, culinary) separately, estimating volume growth, pricing, and margin by segment. Compare your bottom-up view to consensus to see if consensus is too optimistic or conservative.",
+          "consequence": "Your bottom-up model shows 10% EPS growth (more conservative than consensus 12–15%) due to slower volume growth in mature urban markets and input-cost headwinds. This suggests the forward P/E of 52× is *slightly* high — perhaps 48–50× is more justified on your numbers. You're not calling it a sell, but you're recommending Hold rather than Buy. Your rigor is high, but you've spent 20+ hours on the model, eating into your 48-hour window. Your conviction is strong because you've built the thesis yourself, not borrowed it.",
+          "score_impact": {
+            "rigor": 3,
+            "speed": -2,
+            "conviction": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        },
+        {
+          "id": "C",
+          "label": "Split the difference: build a base case, but stress-test it hard.",
+          "description": "Use consensus growth (12% EPS CAGR) as your base case, but run a 30% bear case (7% growth) and 30% bull case (18% growth). Assign probabilities and see where that lands the fair value range.",
+          "consequence": "Your probability-weighted fair value is ₹26,500–₹30,000, with current price ₹28,500 near the midpoint. This is a Hold: the stock isn't screaming cheap or expensive, it's fairly valued with balanced risks. Your rigor is good (you've thought through scenarios), speed is adequate (scenario analysis is faster than bottom-up), and conviction is moderate (you're not taking a strong directional call, but you're comfortable saying it's fair). This is the cautious analyst's path — defensible but not high-impact.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 1,
+            "conviction": 0
+          },
+          "is_terminal": false,
+          "next_decision": "d4"
+        }
+      ]
+    },
+    {
+      "id": "d4",
+      "title": "Final call: Buy, Hold, or Reduce?",
+      "narrative": "You've now built a multi-angle case. You know the P/E, P/B, and EV/EBITDA. You've tested growth, margins, and competitive risk. You've either anchored to consensus or built your own forecast. Now you make the final call to your head of research. This choice sets the tone for your client research, trading desk conversations, and internal credibility. Choose based on the evidence you've gathered — not what you wish the answer was.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Buy: the 65× P/E is a quality premium earned by a durable compounder.",
+          "description": "The moat is real, growth will be double-digit, ROE will stay above 90%, and the market is rationally pricing durability and pricing power.",
+          "consequence": "You send a Buy note to the investment committee, arguing that Nestlé India is a compounder worth owning at 50–65× P/E given its unmatched margins, capital efficiency, and brand. This is a conviction call. If earnings grow 12%+ as you believe, the stock will compound double-digits and you'll be right. If growth stalls (to 5–7%) and the multiple compresses to 45×, you'll face losses and client criticism. You're betting the moat holds and the market's growth view is right.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 0,
+            "conviction": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Hold: fairly valued, but risks outweigh upside at ₹28,500.",
+          "description": "The quality case is strong, but the multiple leaves little margin of safety. Growth could disappoint (macro, competition), and at 52–65× P/E, there's limited room for error before the stock falls 15–20%.",
+          "consequence": "You recommend Hold, arguing Nestlé is a great business at a fair price — but not a buy. This is the safe call. It acknowledges the quality (no Reduce) but respects the valuation risk (no Buy). Clients appreciate it as balanced. If the stock stays flat or edges up, you look wise. If it rallies 15%+, you'll wish you'd been bolder. If it falls 20%, you'll be praised for the caution.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 0,
+            "conviction": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Reduce: the 65× P/E assumes perfection; risks are asymmetric to downside.",
+          "description": "Growth is slowing (5–8% base case), private-label competition is rising, and the margin of safety is zero. The stock is vulnerable to a re-rating if consensus growth disappoints.",
+          "consequence": "You recommend Reduce, arguing the valuation doesn't compensate for the risks. This is a bold, bearish call. It signals you see the moat eroding or growth disappointing. If you're right and the stock falls to ₹22,000–₹25,000 (a 30% correction to a 40× P/E), you'll be a star — and clients will trust your negative calls. But if the moat holds, growth surprises upward, and the stock drifts to ₹32,000, you'll face difficult conversations. You're risking your credibility on conviction that the market is wrong.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 0,
+            "conviction": 0
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Strong analyst call",
+        "narrative": "You've built a rigorous, multi-angle case using P/E, P/B, and EV/EBITDA together. You stress-tested key assumptions, didn't anchor blindly to consensus, and made a conviction call (Buy, Hold, or Reduce) with clear logic. Your final recommendation is defensible to the investment committee and clients because you've earned it through depth, not speed shortcuts. Nestlé India investors will respect a note built this way, even if the call proves wrong — rigor and conviction matter more than being right every time."
+      },
+      {
+        "min_total": 5,
+        "label": "Defensible call",
+        "narrative": "You pulled key multiples and tested at least one major assumption (growth, margins, or competition). Your final call has some backing, though it's not airtight. You may have anchored to consensus or run only a single scenario, but you've shown enough thinking to justify the recommendation to colleagues. It's a solid B-grade analysis — good enough for a weekly call, but not the kind of research that builds an analyst's long-term credibility."
+      },
+      {
+        "min_total": 1,
+        "label": "Call needs review",
+        "narrative": "Your recommendation lacks depth. You may have relied on one multiple (P/E alone), skipped testing the bear case, or made a call without building a forecast. The investment committee will ask 'why?' and your answer will be thin. This isn't a shameful outcome — you've logged the hours — but it's not the research that influences portfolios or builds client trust."
+      },
+      {
+        "min_total": -99,
+        "label": "Misread the scenario",
+        "narrative": "You've built a case for the *wrong thesis* — e.g., recommending Buy on 65× P/E without testing growth assumptions, or Reduce without understanding Nestlé's capital-light moat. Your recommendation contradicts your own evidence, or you've ignored major risks. This signals a misunderstanding of valuation multiples: what they measure, when to use which, and how to judge whether a multiple is deserved. Go back to the session notes on P/E, P/B, and EV/EBITDA, and practice reading the three multiples together."
+      }
+    ]
+  }
+}

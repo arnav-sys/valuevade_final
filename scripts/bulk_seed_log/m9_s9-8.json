@@ -1,0 +1,224 @@
+{
+  "sim_type": "decision_making",
+  "title": "Infosys Valuation Call: Triangulating Across Multiples Before Earnings",
+  "scenario": "It's Monday morning at your Mumbai desk. Infosys reports Q3 earnings in 3 days. Your model has built a base-case fair value, but the stock has run 8% in two weeks. You need to decide whether to issue a Buy, Hold, or Reduce recommendation — and you must justify it using the full valuation toolkit, not just one multiple. Your desk head is asking: \"Which multiples are telling you the real story here?\"",
+  "instructions": "Walk through a valuation decision on Infosys by selecting the multiples that suit the business, computing them, and triangulating across them to spot where they agree and where they diverge. Each choice commits you to a dimension of analysis (rigor, speed, conviction). Your final recommendation is graded on how well you've triangulated and defended against the traps.",
+  "learning_objective": "Triangulate across multiple valuation methods to form a defended recommendation, recognising which multiples suit the business and what disagreements between them reveal.",
+  "hints": [
+    "Infosys is a stable, profitable software-services company with consistent margins and free-cash-flow generation — think about which multiples best capture that profile.",
+    "When P/E looks one way and P/FCF looks another, the gap is telling you something about earnings quality or capex; investigate before concluding.",
+    "A stock running 8% in two weeks often outpaces fundamentals — consider whether current multiples are stretched relative to peers and history, not just absolute levels."
+  ],
+  "scenario_context": "You cover Infosys (TCS's peer in the large-cap IT services space). Current price is ₹1,580. Your 12-month DCF fair-value model came in at ₹1,620 — a modest 2.5% upside. But momentum traders are bidding the stock, and your P/E-based peer comp suggested it was trading in-line with history. However, your desk head has just reminded you: \"One multiple is not enough. Build me a triangulation — P/E, P/FCF, and one forward metric — so I know what we're really saying when we recommend this stock and whether the recent run is justified or a trap.\" You have 3 hours to make the call before market close, when you'll publish. The pressure is on — get the triangulation right, or risk a call that looks foolish when Q3 earnings land in 3 days.",
+  "initial_data": {
+    "Stock": "Infosys Limited",
+    "Current Price": "₹1,580",
+    "Market Cap": "₹660,000 crore",
+    "Your DCF Fair Value": "₹1,620",
+    "52-Week Range": "₹1,320–₹1,580",
+    "P/E (trailing TTM)": "24.5×",
+    "Historical P/E Range": "20–28×",
+    "Dividend Yield": "1.9%",
+    "Time to Earnings": "3 days"
+  },
+  "decision_points": [
+    {
+      "id": "d1",
+      "title": "Which Multiples Suit Infosys's Business Profile?",
+      "narrative": "Your desk head is right: you need to build a triangulation, but the first step is to *select* the right multiples for the company. Infosys is a mature, profitable software-services player with stable EBITDA margins (~21%), strong free-cash-flow generation (FCF conversion is 80%+), low capex intensity, and a consistent dividend. It's not loss-making (so P/S is unnecessary), not capital-heavy like telecom (so EV/EBIT vs. EV/EBITDA matters less), and not a hyper-growth stock (so PEG is less critical). But it *is* a cash-generative business with quality earnings, so cash multiples matter. Your choice here sets the entire analysis direction: which combination best reveals whether this stock is cheap, fair, or expensive given what Infosys actually is?",
+      "options": [
+        {
+          "id": "A",
+          "label": "P/E + EV/EBITDA + Dividend Yield",
+          "description": "The traditional trio — captures equity return, enterprise value, and income — but ignores cash quality.",
+          "consequence": "You compute P/E at 24.5×, EV/EBITDA at 19.2×, dividend yield at 1.9%. Both multiples sit in the historical range, and yield is stable. You conclude the stock looks 'fairly valued on consensus multiples.' But your analysis stops at headline numbers and misses the earnings-quality check that P/FCF provides — a classic trap for companies where earnings don't convert to cash.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 1,
+            "conviction": -1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "B",
+          "label": "P/E + P/FCF + EV/EBITDA",
+          "description": "Adds cash-quality check to the traditional pair — flags if earnings are real (converting to cash) or accounting illusions.",
+          "consequence": "You compute P/E at 24.5×, P/FCF at 23.8× (very tight to P/E — earnings are converting to cash), and EV/EBITDA at 19.2×. The tight P/E–P/FCF match is a green signal: high-quality earnings. EV/EBITDA being lower than P/E is expected (EBITDA is larger than net earnings), so no red flag there. You've diagnosed that this stock's earnings are *real*, which is the first rigorous check.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "C",
+          "label": "P/E + PEG + Peer Multiples (TCS, HCL Tech, Tech Mahindra)",
+          "description": "Growth-adjusts the P/E and compares across the IT services peer set to catch relative cheapness/expensiveness.",
+          "consequence": "You estimate Infosys's 3-year earnings CAGR at ~13% (solid but not exceptional for IT services). PEG = 24.5 ÷ 13 = 1.88 — above the 1.0–1.3 range for fairly-valued IT services peers. TCS trades at PEG ~1.6, HCL Tech at ~1.5. Infosys's PEG premium signals it may be relatively expensive. But you've bracketed it against peers, which is crucial — the stock is not absolutely expensive, but it *is* pricey relative to its growth rate.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        },
+        {
+          "id": "D",
+          "label": "Just P/E Relative to History",
+          "description": "Quick, but minimal — avoids the full toolkit and relies on a single historical anchor.",
+          "consequence": "P/E at 24.5× is inside the 20–28× historical range, so you conclude it's 'normal valuation.' You publish a Hold, citing fair valuation. But you've missed the cash-quality check, the peer relative comparison, and the forward growth adjustment — three separate diagnostics that might all point the same way (or reveal a divergence) that would strengthen or weaken your conviction.",
+          "score_impact": {
+            "rigor": -2,
+            "speed": 2,
+            "conviction": -2
+          },
+          "is_terminal": false,
+          "next_decision": "d2"
+        }
+      ]
+    },
+    {
+      "id": "d2",
+      "title": "What Does the Divergence (If Any) Tell You?",
+      "narrative": "You've selected your multiples and computed them. Now the real skill: reading the *constellation*. If all your multiples agree (all say cheap, or all say expensive), your conviction rises — multiple independent angles point the same way. But if they *disagree* — one multiple looks cheap while another looks expensive — that divergence is a diagnostic. It points you to the *hidden factor*: debt leverage (showing up as P/E cheap but EV/EBITDA expensive), earnings quality (P/E fair but P/FCF expensive), or cyclical peak (current earnings inflated by a one-time factor). What does your triangulation reveal?",
+      "options": [
+        {
+          "id": "A",
+          "label": "All multiples agree: fairly valued, all in normal range",
+          "description": "P/E, P/FCF, EV/EBITDA, and peers all point to fair value with no red flags.",
+          "consequence": "Strong conviction that the stock is neither a trap nor a bargain — fairly priced for a stable, cash-generative IT services business. The 8% recent run is modest momentum, not a fundamental repricing. Your recommendation: Hold at ₹1,580, fair value ₹1,620 (2.5% upside). The triangulation supports this — no hidden factor is screaming danger, but also no margin of safety.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 0,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "B",
+          "label": "P/E and P/FCF agree, but PEG and peers show premium — earnings are high-quality but growth justifies no premium",
+          "description": "Cash multiples are tight and healthy, but relative to peers and growth, Infosys is paying a premium — suggesting the market may be over-weighting quality at the expense of growth reality.",
+          "consequence": "You've spotted a subtle but important divergence: Infosys's earnings are *real* (P/E–P/FCF tight), but the company isn't growing fast enough to justify its PEG premium over TCS or HCL Tech. This is not a screaming red flag, but it is a caution: the stock is fairly valued at best, expensive relative to peers at worst. You revise to Hold with a target of ₹1,540 (a slight downside to current price), citing 'fair valuation but limited upside relative to higher-growth peers.' The recent 8% run is unjustified given stalling growth.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": 0,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "C",
+          "label": "P/E looks fair but P/FCF looks stretched — earnings quality red flag",
+          "description": "The gap between P/E and P/FCF (e.g., P/E 24.5× but P/FCF 28×) signals earnings not converting to cash — a warning sign.",
+          "consequence": "You've spotted the key divergence: current earnings are being reported at a higher quality level than actual cash generation. This could flag working capital bloat, one-time earnings items, or capex inflation. You dig deeper: perhaps receivables are stretching or capex is ramping for future growth but not yet showing in cash. This is a *yellow flag*, not red — but it demands investigation before earnings release. You issue a Reduce with a ₹1,480 target (6% downside), citing 'earnings quality concerns ahead of Q3 results.' The 8% recent run is suspicious given the cash headwind.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "conviction": 1
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        },
+        {
+          "id": "D",
+          "label": "Major divergence: P/E looks cheap, but EV/EBITDA and peers say expensive",
+          "description": "A flag that leverage or debt is hiding — the company may be using financial engineering to keep per-share earnings low-priced, while the whole enterprise is expensive.",
+          "consequence": "You've uncovered a leverage trap: Infosys's equity-per-share (reflected in P/E) looks cheap, but the *whole business* (reflected in EV/EBITDA) is expensive. This happens when debt is high or share buybacks are inflating per-share earnings. You dig into the balance sheet and confirm Infosys has modest debt, so this isn't a capital structure trap — but the divergence *is* telling you that the market is pricing the whole business more richly than the per-share metrics suggest. You issue a Reduce with a ₹1,500 target, citing 'valuation stretched at the enterprise level despite fair per-share metrics.' The recent run exploited retail/momentum inattention to the broader valuation.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "conviction": 2
+          },
+          "is_terminal": false,
+          "next_decision": "d3"
+        }
+      ]
+    },
+    {
+      "id": "d3",
+      "title": "How Do You Frame Your Earnings-Release Risk Narrative?",
+      "narrative": "You've triangulated, spotted (or ruled out) divergences, and formed a recommendation. But Q3 results land in 3 days — they could confirm your call or upend it. Your final decision is *how you position the recommendation* relative to earnings risk. Do you pre-empt with caveats? Do you commit boldly? Do you frame earnings as an upside/downside surprise? This is where you signal conviction and manage client expectations.",
+      "options": [
+        {
+          "id": "A",
+          "label": "Issue clear Hold with narrow range, flag earnings as key test",
+          "description": "Publish a crisp Hold / Fair Value recommendation with a tight range (₹1,520–₹1,640), explicitly noting that Q3 earnings will be the pivot.",
+          "consequence": "You frame Infosys as fairly valued with triangulation supporting that view, but you acknowledge Q3 is a test. If earnings beat and growth accelerates, you'll move to Buy. If they miss or flag slowing, you'll move to Reduce. This is a *conditional* Hold — professional, not wishy-washy. Your desk head appreciates the clarity and the pre-commitment to how results will move you. If Q3 beats, you'll upgrade pre-market; if it misses, you'll defend your Hold as having been prudent.",
+          "score_impact": {
+            "rigor": 1,
+            "speed": 1,
+            "conviction": 0
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "B",
+          "label": "Issue Buy with caveats, betting triangulation and peers support upside",
+          "description": "Triangulation says fairly valued, but you frame that as 'enough margin' and commit to a Buy target of ₹1,680 (6.3% upside), betting Q3 confirms your thesis and delivers a positive surprise.",
+          "consequence": "You're taking conviction from triangulation — multiples agree, cash quality is high, dividend is sustainable — and you're betting that the market's recent momentum reflects early recognition of what you think Q3 will confirm. Your target assumes earnings beat slightly and management guides to accelerating growth. If you're right, you'll have caught the early mover story. If you're wrong (Q3 misses), you'll face significant client criticism for over-committing. This is high-conviction but high-risk positioning — appropriate only if your triangulation is truly *strong* (multiples agree, no divergences, peer comps support it).",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 0,
+            "conviction": 2
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "C",
+          "label": "Issue Reduce with specific P/FCF or PEG red flag, require proof in Q3",
+          "description": "If your triangulation flagged a divergence (earnings quality or growth premium), lean into it and demand Q3 proves you wrong before you'll upgrade.",
+          "consequence": "You frame the stock as 'fairly valued at best, but with specific risks that Q3 must address.' You cite the P/FCF gap or PEG premium, and you commit: 'We'll move to Hold post-Q3 only if [specific metric improves].' This is defensive positioning — you're not calling the stock a collapse, but you're saying 'show me' before I get bullish. It's appropriate when your triangulation revealed a *concern* (not a red flag, but a caution). Your desk head respects the specificity — you're not just saying 'I'm worried,' you're saying 'here's what I'm watching,' which clients find credible.",
+          "score_impact": {
+            "rigor": 2,
+            "speed": -1,
+            "conviction": 1
+          },
+          "is_terminal": true
+        },
+        {
+          "id": "D",
+          "label": "Publish Hold without explicit earnings caveat — let results speak",
+          "description": "Issue a straightforward Hold with fair value ₹1,620, making no specific mention of Q3 as a pivot or test.",
+          "consequence": "You're confident enough in triangulation that you don't feel the need to hedge with 'subject to Q3.' This works if your triangulation is truly clean (no divergences, multiples in agreement). But it's risky if results surprise, because you'll look like you missed the key catalyst. Your desk head will ask: 'Why didn't you flag Q3 as the test?' Use this only if you've genuinely ruled out earnings upside or downside risk — i.e., you believe Q3 will be in-line and won't move the stock. If there's genuine *uncertainty* about Q3, the previous options (B or C) frame that more professionally.",
+          "score_impact": {
+            "rigor": 0,
+            "speed": 1,
+            "conviction": -1
+          },
+          "is_terminal": true
+        }
+      ]
+    }
+  ],
+  "scoring": {
+    "max_total": 12,
+    "outcome_mapping": [
+      {
+        "min_total": 9,
+        "label": "Sophisticated triangulation call",
+        "narrative": "You selected multiples suited to Infosys's stable, cash-generative profile, triangulated across them to detect agreements or divergences, and framed a recommendation (Buy, Hold, or Reduce) that accounts for Q3 earnings risk. Your conviction is grounded in multiple independent angles — not a single number. If results confirm your setup, you'll have demonstrated genuine analytical discipline. If they surprise, you'll have positioned defensively or explicitly flagged the test, so you're protected."
+      },
+      {
+        "min_total": 5,
+        "label": "Competent valuation read with triangulation",
+        "narrative": "You applied the extended toolkit — at least two multiples in concert, and you checked for divergences. Your recommendation (Hold or cautious Buy) reflects that analysis, and you've framed earnings as a key near-term event. Your call is defensible on fundamentals, though it may lack the specificity or pre-commitment to edge-case results that institutional investors demand. Q3 earnings will test whether your multiples were truly in alignment."
+      },
+      {
+        "min_total": 1,
+        "label": "Single-multiple or lightly-triangulated call — risky",
+        "narrative": "You relied on one or two multiples (e.g., just P/E and history), skipped the cash-quality or peer-comparison checks, and didn't diagnose divergences. Your recommendation (likely a generic Hold) lacks conviction backing. If Q3 results surprise, you'll struggle to explain why your analysis didn't catch the signal — because you didn't triangulate broadly enough to see it."
+      },
+      {
+        "min_total": -99,
+        "label": "Minimal valuation rigor — recommendation unfounded",
+        "narrative": "You issued a recommendation (Buy, Hold, or Reduce) without building a real triangulation, or your multiples work contradicted your conclusion and you didn't investigate the divergence. Your call is essentially a guess dressed up as analysis. Q3 earnings will expose this, and your credibility with clients will suffer."
+      }
+    ]
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "sim_type": "document",
+  "title": "Bajaj Finance Q3 FY24: NBFC Funding & Asset Quality Deep Dive",
+  "scenario": "You're on the Mumbai equity desk covering non-banking financials. Bajaj Finance has just filed its Q3 results. Your PM asks: is this NBFC's funding structure sustainable, and how is loan quality holding up in a rising-rate environment?",
+  "instructions": "Read Bajaj Finance's Q3 FY24 statement below. Hover tooltips on key line items. Answer questions on NIM, cost of funds, NPA quality, and the NBFC-specific risk profile.",
+  "learning_objective": "Apply NBFC-specific metrics (NIM, cost of funds, NPAs, funding mix) to assess an NBFC's sustainability and asset quality vs. the standard ratios.",
+  "hints": [
+    "NBFCs don't take deposits — look at how Bajaj funds its lending book.",
+    "The spread between lending yield and funding cost is the NBFC's heartbeat. Compare the two.",
+    "GNPA and NNPA reveal asset quality deterioration — a critical NBFC risk when rates rise."
+  ],
+  "document_data": {
+    "company_name": "Bajaj Finance Limited",
+    "period": "Q3 FY24 (Dec 2023) Quarterly Results",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Income Statement (Q3 FY24 vs Q3 FY23)",
+        "line_items": [
+          {
+            "id": "interest_income",
+            "label": "Interest Income",
+            "current_year": 4850,
+            "previous_year": 3920
+          },
+          {
+            "id": "interest_expense",
+            "label": "Interest Expense (Cost of Funds)",
+            "current_year": 2160,
+            "previous_year": 1540
+          },
+          {
+            "id": "net_interest_income",
+            "label": "Net Interest Income",
+            "current_year": 2690,
+            "previous_year": 2380
+          },
+          {
+            "id": "provisions_impairment",
+            "label": "Provisions & Impairment (loan loss reserve)",
+            "current_year": 320,
+            "previous_year": 240
+          },
+          {
+            "id": "other_operating_expenses",
+            "label": "Other Operating Expenses",
+            "current_year": 1140,
+            "previous_year": 980
+          },
+          {
+            "id": "profit_before_tax",
+            "label": "Profit Before Tax",
+            "current_year": 1230,
+            "previous_year": 1160
+          }
+        ],
+        "section_total": {
+          "label": "Profit Before Tax",
+          "current_year": 1230,
+          "previous_year": 1160
+        }
+      },
+      {
+        "title": "Balance Sheet (as at 31 Dec 2023 vs 30 Jun 2023)",
+        "line_items": [
+          {
+            "id": "total_assets",
+            "label": "Total Assets",
+            "current_year": 185400,
+            "previous_year": 168200
+          },
+          {
+            "id": "advances_gross",
+            "label": "Advances (Gross Loan Book)",
+            "current_year": 154200,
+            "previous_year": 137800
+          },
+          {
+            "id": "gnpa",
+            "label": "Gross NPAs",
+            "current_year": 2316,
+            "previous_year": 1928
+          },
+          {
+            "id": "nnpa",
+            "label": "Net NPAs",
+            "current_year": 980,
+            "previous_year": 756
+          },
+          {
+            "id": "borrowings",
+            "label": "Borrowings (bank loans, bonds, debentures)",
+            "current_year": 98600,
+            "previous_year": 88200
+          },
+          {
+            "id": "equity_capital",
+            "label": "Equity & Reserves",
+            "current_year": 22140,
+            "previous_year": 20800
+          }
+        ],
+        "section_total": {
+          "label": "Total Liabilities",
+          "current_year": 185400,
+          "previous_year": 168200
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "interest_expense",
+      "tooltip": "NBFC funding cost is critical — Bajaj borrows from banks and capital markets (no deposits). Rising rates make this expense grow fast. This is the NBFC-specific risk standard ratios miss."
+    },
+    {
+      "id": "net_interest_income",
+      "tooltip": "The spread (Interest Income minus Interest Expense) is the NBFC's core engine. Here NII is ₹2690 Cr — this must fund all operating costs, provisions, and profit. Spreading pressure is an NBFC warning sign."
+    },
+    {
+      "id": "gnpa",
+      "tooltip": "Gross NPA of ₹2316 Cr is 1.50% of the ₹154,200 Cr loan book — acceptable but rising YoY. In rising-rate stress, watch GNPA closely; weak underwriting shows here first."
+    },
+    {
+      "id": "borrowings",
+      "tooltip": "Bajaj's ₹98,600 Cr in borrowings vs ₹154,200 Cr loan book shows the NBFC is ~64% funded by debt. This leverage is normal for NBFCs but is the funding-access risk — if market closes, refinance risk rises."
+    },
+    {
+      "id": "provisions_impairment",
+      "tooltip": "Loan loss provisions of ₹320 Cr (Q3 vs ₹240 Cr in Q3 FY23) suggest management is guarding against future slippage. Watch if this % rises relative to NPA growth — early warning of asset quality stress."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "Calculate Bajaj Finance's Net Interest Margin (NIM) for Q3 FY24 as a % of average earning assets. Use the approximation: NIM = (Net Interest Income ÷ Average Advances) × 100. Assume average advances = (154,200 + 137,800) ÷ 2.",
+      "answer_type": "number",
+      "expected_value": 3.48,
+      "tolerance": 0.2,
+      "unit": "%",
+      "explanation": "Average Advances = (154,200 + 137,800) ÷ 2 = 146,000. NIM = (2,690 ÷ 146,000) × 100 = 1.84% (quarterly). Annualised ~7.4%, but the quarterly NIM proxy is (2,690 ÷ 146,000) × 100 = 1.84%. For full-year annualised perspective, Q3 NII of 2,690 × 4 ÷ 146,000 × 100 ≈ 7.37%. Accept answer in range 3.4–3.7% for the half-year proxy or 1.8–1.9% for quarterly."
+    },
+    {
+      "id": "t2",
+      "question": "What was the YoY growth in Gross NPAs (%) from Q3 FY23 to Q3 FY24?",
+      "answer_type": "number",
+      "expected_value": 20.1,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(2,316 - 1,928) ÷ 1,928 × 100 = 388 ÷ 1,928 × 100 = 20.1%. NPA growth is outpacing loan book growth (~12%), signalling asset quality deterioration — a key NBFC stress indicator in rising-rate cycles."
+    },
+    {
+      "id": "t3",
+      "question": "Calculate Gross NPA Ratio (GNPA as % of gross advances) for Q3 FY24 and explain what it tells an NBFC analyst.",
+      "answer_type": "number",
+      "expected_value": 1.5,
+      "tolerance": 0.1,
+      "unit": "%",
+      "explanation": "GNPA Ratio = (2,316 ÷ 154,200) × 100 = 1.50%. For a consumer-lending NBFC like Bajaj, 1.50% is acceptable but rising (was 1.40% implied in FY23). GNPA ratio is the core NBFC metric — it shows the % of the loan book in stress. Rising GNPA in an environment of rate hikes signals weakening borrower servicing and is a red flag for NBFC stability."
+    },
+    {
+      "id": "t4",
+      "question": "NBFCs fund themselves through borrowings, not deposits. What is Bajaj's funding leverage ratio — borrowings as a % of equity?",
+      "answer_type": "number",
+      "expected_value": 445.3,
+      "tolerance": 2,
+      "unit": "%",
+      "explanation": "Borrowings ÷ Equity = 98,600 ÷ 22,140 = 4.45x or 445%. This is a high-leverage NBFC structure, typical for the sector. It means Bajaj is funding 81.6% of assets with borrowings vs 11.9% with equity. This is the NBFC-specific leverage risk: funding access crisis can quickly force asset sales or trigger solvency issues."
+    },
+    {
+      "id": "t5",
+      "question": "What is the implication for Bajaj Finance if the RBI were to raise repo rates by another 100 bps in Q4 FY24, and the NBFC cannot fully pass through rate increases to borrowers?",
+      "answer_type": "free_text",
+      "sample_answer": "If repo rates rise 100 bps, Bajaj's cost of funds (Interest Expense) will rise sharply while lending yields lag due to competition and borrower sensitivity. NII margin will compress, squeezing profitability. Simultaneously, higher EMIs will stress borrower servicing, raising NPAs. The NBFC faces a dual squeeze: lower spread and higher loan losses — both NBFC-specific risks that the standard P/E or ROE ratios completely miss.",
+      "explanation": "This tests whether the student grasps the NBFC-specific dual risk: funding-cost pass-through and asset-quality deterioration under rate stress. A strong answer notes both the NII compression (from borrowing-cost rise) and the GNPA acceleration (from borrower stress), showing the sector-specific understanding that NBFCs live on the spread and asset quality."
+    }
+  ]
+}

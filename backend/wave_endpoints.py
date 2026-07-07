@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 _supabase_get = None
 _supabase_post = None
 _supabase_patch = None
+_supabase_delete = None
 _get_supabase_user = None
 _EMERGENT_LLM_KEY = None
 ADMIN_ALLOWED_EMAILS = {"info@valuevade.com"}
@@ -91,6 +92,24 @@ def _ensure_referral_code(user_id: str) -> Optional[str]:
 # ===========================================================================
 class _AdminVideoUrlBody(BaseModel):
     public_url: str
+
+
+# --- Admin curriculum CRUD (Phase A: modules + sessions) ------------------
+class _AdminModuleBody(BaseModel):
+    path_id: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    module_number: Optional[int] = None
+    order_index: Optional[int] = None
+
+
+class _AdminSessionBody(BaseModel):
+    module_id: Optional[str] = None
+    title: Optional[str] = None
+    description: Optional[str] = None
+    order_index: Optional[int] = None
+    estimated_minutes: Optional[int] = None
+    lecture_url: Optional[str] = None
 
 
 class ReferralAttachReq(BaseModel):
@@ -365,10 +384,11 @@ async def _finalize_verdict(interview_id: str) -> dict:
 # ===========================================================================
 def register_wave_endpoints(api_router: APIRouter, deps: dict):
     """Inject helpers from server.py and register the new routes."""
-    global _supabase_get, _supabase_post, _supabase_patch, _get_supabase_user, _EMERGENT_LLM_KEY
+    global _supabase_get, _supabase_post, _supabase_patch, _supabase_delete, _get_supabase_user, _EMERGENT_LLM_KEY
     _supabase_get = deps["supabase_get"]
     _supabase_post = deps["supabase_post"]
     _supabase_patch = deps["supabase_patch"]
+    _supabase_delete = deps.get("supabase_delete")
     _get_supabase_user = deps["get_supabase_user"]
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
@@ -986,17 +1006,20 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         order_index = int(sess.get("order_index") or 1)
         key = _bucket_key_for(module_number, order_index)
 
-        # Ask Supabase Storage for a signed upload URL
+        # Ask Supabase Storage for a signed upload URL. `upsert:true` so
+        # replace-uploads succeed even when the deterministic object key
+        # (m{module}/s{module}-{order}.mp4) already exists in the bucket.
         import urllib.request as _ur
         try:
             req = _ur.Request(
                 f"{_SUPABASE_REST_URL}/storage/v1/object/upload/sign/{_VIDEO_BUCKET}/{key}",
                 method="POST",
-                data=b"{}",
+                data=b'{"upsert":true}',
                 headers={
                     "apikey": _SUPABASE_SR,
                     "Authorization": f"Bearer {_SUPABASE_SR}",
                     "Content-Type": "application/json",
+                    "x-upsert": "true",
                 },
             )
             with _ur.urlopen(req, timeout=20) as resp:
@@ -1036,6 +1059,145 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             {"lecture_url": url},
         )
         return {"ok": True, "lecture_url": url}
+
+    # ═══════════════════════════════════════════════════════════════════════
+    # Admin curriculum CRUD — Phase A: modules + sessions
+    # ═══════════════════════════════════════════════════════════════════════
+    @api_router.get("/admin/curriculum/modules")
+    async def admin_curr_modules(user=Depends(_get_supabase_user)):
+        """List every module (with session counts) for the AdminPanel curriculum tab."""
+        _ensure_admin(user)
+        paths = _supabase_get("master_paths?select=id,title&limit=5") or []
+        path_id = paths[0]["id"] if paths else None
+        mods = _supabase_get(
+            f"master_modules?path_id=eq.{_urlparse.quote(path_id)}"
+            "&select=id,path_id,title,description,module_number,order_index"
+            "&order=order_index&limit=100"
+        ) if path_id else []
+        # Session counts per module
+        out = []
+        for m in mods or []:
+            sess = _supabase_get(
+                f"master_sessions?module_id=eq.{_urlparse.quote(m['id'])}&select=id&limit=200"
+            ) or []
+            out.append({**m, "session_count": len(sess)})
+        return {"path_id": path_id, "modules": out}
+
+    @api_router.get("/admin/curriculum/sessions")
+    async def admin_curr_sessions(module_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
+            "&select=id,module_id,title,description,order_index,estimated_minutes,lecture_url"
+            "&order=order_index&limit=200"
+        ) or []
+        return {"sessions": rows}
+
+    @api_router.post("/admin/modules")
+    async def admin_create_module(body: _AdminModuleBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        if not body.title or not body.path_id:
+            raise HTTPException(status_code=400, detail="path_id and title required.")
+        # Next order_index defaults to (max+1) for the path
+        existing = _supabase_get(
+            f"master_modules?path_id=eq.{_urlparse.quote(body.path_id)}"
+            "&select=order_index,module_number&order=order_index.desc&limit=1"
+        ) or []
+        next_order = (existing[0]["order_index"] + 1) if existing else 1
+        next_num   = (existing[0].get("module_number") or existing[0]["order_index"]) + 1 if existing else 1
+        payload = {
+            "path_id": body.path_id,
+            "title": body.title,
+            "description": body.description or "",
+            "module_number": body.module_number if body.module_number is not None else next_num,
+            "order_index":   body.order_index   if body.order_index   is not None else next_order,
+        }
+        row = _supabase_post("master_modules", payload, prefer="return=representation")
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"module": row}
+
+    @api_router.patch("/admin/modules/{module_id}")
+    async def admin_update_module(module_id: str, body: _AdminModuleBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.model_dump().items() if v is not None and k != "path_id"}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(f"master_modules?id=eq.{_urlparse.quote(module_id)}", patch)
+        # Return the updated row
+        rows = _supabase_get(
+            f"master_modules?id=eq.{_urlparse.quote(module_id)}"
+            "&select=id,path_id,title,description,module_number,order_index&limit=1"
+        ) or []
+        return {"module": rows[0] if rows else None}
+
+    @api_router.get("/admin/modules/{module_id}/impact")
+    async def admin_module_impact(module_id: str, user=Depends(_get_supabase_user)):
+        """Preview counts of dependent rows before a delete cascade so the admin
+        knows what they're nuking."""
+        _ensure_admin(user)
+        sessions = _supabase_get(
+            f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}&select=id&limit=200"
+        ) or []
+        sess_ids = ",".join(_urlparse.quote(s["id"]) for s in sessions) if sessions else ""
+        notes = quiz = iq = 0
+        if sess_ids:
+            n = _supabase_get(f"master_notes_cards?session_id=in.({sess_ids})&select=id&limit=1000") or []
+            q = _supabase_get(f"master_quiz_questions?session_id=in.({sess_ids})&select=id&limit=1000") or []
+            i = _supabase_get(f"master_interview_questions?session_id=in.({sess_ids})&select=id&limit=1000") or []
+            notes, quiz, iq = len(n), len(q), len(i)
+        return {"sessions": len(sessions), "notes_cards": notes, "quiz_items": quiz, "interview_questions": iq}
+
+    @api_router.delete("/admin/modules/{module_id}")
+    async def admin_delete_module(module_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        _supabase_delete(f"master_modules?id=eq.{_urlparse.quote(module_id)}")
+        return {"ok": True}
+
+    @api_router.post("/admin/sessions")
+    async def admin_create_session(body: _AdminSessionBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        if not body.title or not body.module_id:
+            raise HTTPException(status_code=400, detail="module_id and title required.")
+        existing = _supabase_get(
+            f"master_sessions?module_id=eq.{_urlparse.quote(body.module_id)}"
+            "&select=order_index&order=order_index.desc&limit=1"
+        ) or []
+        next_order = (existing[0]["order_index"] + 1) if existing else 1
+        payload = {
+            "module_id": body.module_id,
+            "title": body.title,
+            "description": body.description or "",
+            "order_index":       body.order_index       if body.order_index       is not None else next_order,
+            "estimated_minutes": body.estimated_minutes if body.estimated_minutes is not None else 30,
+        }
+        if body.lecture_url:
+            payload["lecture_url"] = body.lecture_url
+        row = _supabase_post("master_sessions", payload, prefer="return=representation")
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"session": row}
+
+    @api_router.patch("/admin/sessions/{session_id}")
+    async def admin_update_session(session_id: str, body: _AdminSessionBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.model_dump().items() if v is not None and k != "module_id"}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(f"master_sessions?id=eq.{_urlparse.quote(session_id)}", patch)
+        rows = _supabase_get(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,module_id,title,description,order_index,estimated_minutes,lecture_url&limit=1"
+        ) or []
+        return {"session": rows[0] if rows else None}
+
+    @api_router.delete("/admin/sessions/{session_id}")
+    async def admin_delete_session(session_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        _supabase_delete(f"master_sessions?id=eq.{_urlparse.quote(session_id)}")
+        return {"ok": True}
+
+    @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):
         """Called by the SignupPage right after a successful signup when a
         ?ref= code is present in localStorage. Sets profiles.referred_by_user_id

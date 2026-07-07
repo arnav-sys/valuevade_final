@@ -1,0 +1,495 @@
+{
+  "sim_type": "excel",
+  "title": "Avenue Supermarts Cash Conversion Cycle Analysis",
+  "scenario": "You are analysing Avenue Supermarts (DMart) for a Mumbai equity desk. The company's negative cash conversion cycle is a key structural advantage — it collects from customers before paying suppliers, funding growth internally. Build the full CCC calculation from historical balance-sheet and P&L data to understand how DMart achieves this superpower and compare it to a competitor with a positive CCC.",
+  "instructions": "Calculate Days Inventory Outstanding (DIO), Days Sales Outstanding (DSO), Days Payable Outstanding (DPO), and the Cash Conversion Cycle (CCC) for DMart and a competitor; then interpret which business model is capital-efficient and identify the key driver of each company's working capital profile.",
+  "learning_objective": "Compute DIO, DSO, DPO, and CCC for two retailers; identify whether each has a negative or positive cycle; explain which driver (inventory, receivables, or payables) is the key efficiency lever; and assess the strategic implications for growth funding.",
+  "hints": [
+    "DIO = (Average Inventory ÷ COGS) × 365. Use AVERAGE() for opening + closing inventory.",
+    "CCC = DIO + DSO − DPO. Subtract DPO because delaying payment *frees* cash (reduces the trap).",
+    "A negative CCC means the company collects before it pays — no working-capital funding needed. Look for which company has very low DSO (fast collections) and higher DPO (delayed payments)."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Financial Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "DMart Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "DMart COGS (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "DMart Inventory (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "DMart Receivables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "DMart Payables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY2020",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 5284,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 3854,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 287,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 82,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 445,
+            "readOnly": true
+          },
+          "G2": {
+            "value": "Opening year",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY2021",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 6832,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 4985,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 356,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 95,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 567,
+            "readOnly": true
+          },
+          "G3": {
+            "value": "Rapid expansion",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY2022",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 8650,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 6305,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 423,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 104,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 712,
+            "readOnly": true
+          },
+          "G4": {
+            "value": "Strong growth",
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY2023",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 11203,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 8168,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 518,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 118,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 956,
+            "readOnly": true
+          },
+          "G5": {
+            "value": "Post-pandemic",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 14256,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 10386,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 621,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 135,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 1245,
+            "readOnly": true
+          },
+          "G6": {
+            "value": "Latest audited",
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Competitor: BigMart",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": "BigMart Revenue (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C8": {
+            "value": "BigMart COGS (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D8": {
+            "value": "BigMart Inventory (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E8": {
+            "value": "BigMart Receivables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F8": {
+            "value": "BigMart Payables (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G8": {
+            "value": "Notes",
+            "readOnly": true,
+            "bold": true
+          },
+          "A9": {
+            "value": "FY2022",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 5632,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 4105,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 1856,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 412,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 289,
+            "readOnly": true
+          },
+          "G9": {
+            "value": "Wholesale model",
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FY2023",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 6845,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 4990,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 2134,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 518,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 301,
+            "readOnly": true
+          },
+          "G10": {
+            "value": "Slower inventory turn",
+            "readOnly": true
+          },
+          "A11": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 7956,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 5795,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 2456,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 684,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 312,
+            "readOnly": true
+          },
+          "G11": {
+            "value": "Latest audited",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Working Capital Analysis — DMart & BigMart",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: DMart Average Inventory FY2023–FY2024 (₹Cr)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2: DMart Average COGS FY2023–FY2024 (₹Cr)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q3: DMart DIO (Days Inventory Outstanding)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q4: DMart DSO (Days Sales Outstanding) FY2024",
+            "readOnly": true
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q5: DMart DPO (Days Payable Outstanding) FY2024",
+            "readOnly": true
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q6: DMart Cash Conversion Cycle (CCC)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": ""
+          },
+          "A8": {
+            "value": "Q7: BigMart Average Inventory FY2023–FY2024 (₹Cr)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": ""
+          },
+          "A9": {
+            "value": "Q8: BigMart DIO (Days Inventory Outstanding)",
+            "readOnly": true
+          },
+          "B9": {
+            "value": ""
+          },
+          "A10": {
+            "value": "Q9: BigMart DSO (Days Sales Outstanding) FY2024",
+            "readOnly": true
+          },
+          "B10": {
+            "value": ""
+          },
+          "A11": {
+            "value": "Q10: BigMart DPO (Days Payable Outstanding) FY2024",
+            "readOnly": true
+          },
+          "B11": {
+            "value": ""
+          },
+          "A12": {
+            "value": "Q11: BigMart Cash Conversion Cycle (CCC)",
+            "readOnly": true
+          },
+          "B12": {
+            "value": ""
+          },
+          "A13": {
+            "value": "Q12: Difference (DMart CCC − BigMart CCC) in days",
+            "readOnly": true
+          },
+          "B13": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=AVERAGE(Data!D5:D6)",
+      "expected_value": 569.5,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 8
+    },
+    "Answers!B3": {
+      "formula_pattern": "=AVERAGE(Data!C5:C6)",
+      "expected_value": 9277,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B3/Data!C5)*365",
+      "expected_value": 305.29872673849167,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!E6/Data!B6)*365",
+      "expected_value": 3.46,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!F6/Data!C6)*365",
+      "expected_value": 43.84,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!B4+Data!B5-Data!B6",
+      "expected_value": 5597,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B8": {
+      "formula_pattern": "=AVERAGE(Data!D10:D11)",
+      "expected_value": 2295,
+      "type": "number",
+      "tolerance": 1,
+      "points": 8
+    },
+    "Answers!B9": {
+      "formula_pattern": "=(Data!D11/Data!C11)*365",
+      "expected_value": 154.61,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B10": {
+      "formula_pattern": "=(Data!E11/Data!B11)*365",
+      "expected_value": 31.37,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B11": {
+      "formula_pattern": "=(Data!F11/Data!C11)*365",
+      "expected_value": 19.65,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 10
+    },
+    "Answers!B12": {
+      "formula_pattern": "=Data!B9+Data!B10-Data!B11",
+      "expected_value": 4521,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    },
+    "Answers!B13": {
+      "formula_pattern": "=Data!B7-Data!B12",
+      "expected_value": 0,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 12
+    }
+  }
+}

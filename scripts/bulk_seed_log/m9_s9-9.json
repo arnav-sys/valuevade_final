@@ -1,0 +1,240 @@
+{
+  "sim_type": "document",
+  "title": "Maruti Suzuki FY24: Reading the System, Not the List",
+  "scenario": "Your Mumbai desk has flagged Maruti Suzuki for a cross-ratio synthesis review. The auto-maker shows strong margins and a tempting 12× P/E, but you need to read it as a *system* — checking returns against leverage, growth against capital efficiency, and valuation against the full quality-growth-survival picture. The client wants a single coherent verdict, not five separate checklists.",
+  "instructions": "Read the Maruti FY24 statement. Hover tooltips on key line items to understand the cross-checks. Answer 5 questions that test your ability to synthesise across ratio categories and spot contradictions.",
+  "learning_objective": "Synthesise across ratio categories to build one coherent investment verdict by checking returns against solvency, margins against capital efficiency, profit against cash, and valuation against the complete quality-growth-risk picture.",
+  "hints": [
+    "The P/E looks cheap at 12×, but what does the ROCE tell you about capital efficiency, and what does the net-debt tell you about leverage risk?",
+    "Maruti's operating margin is healthy at ~9%, but ROE is only 14% — check the asset turnover and equity multiplier from DuPont to understand why.",
+    "Strong profit (₹6,100 Cr PAT) is only trustworthy if it converts to cash — look at the operating cash flow relative to reported earnings."
+  ],
+  "document_data": {
+    "company_name": "Maruti Suzuki India Limited",
+    "period": "FY24 Annual Report (Year ended 31 March 2024)",
+    "currency": "₹ Cr",
+    "sections": [
+      {
+        "title": "Consolidated Income Statement",
+        "line_items": [
+          {
+            "id": "rev",
+            "label": "Revenue from operations",
+            "current_year": 68450,
+            "previous_year": 61208
+          },
+          {
+            "id": "cogs",
+            "label": "Cost of materials consumed",
+            "current_year": 38920,
+            "previous_year": 35840
+          },
+          {
+            "id": "emp",
+            "label": "Employee benefits expense",
+            "current_year": 4280,
+            "previous_year": 4050
+          },
+          {
+            "id": "depr",
+            "label": "Depreciation and amortisation",
+            "current_year": 2100,
+            "previous_year": 2000
+          },
+          {
+            "id": "opex",
+            "label": "Other operating expenses",
+            "current_year": 8750,
+            "previous_year": 8200
+          },
+          {
+            "id": "ebit",
+            "label": "EBIT (Operating Profit)",
+            "current_year": 14400,
+            "previous_year": 11118
+          },
+          {
+            "id": "fin",
+            "label": "Finance costs",
+            "current_year": 650,
+            "previous_year": 720
+          },
+          {
+            "id": "oi",
+            "label": "Other income",
+            "current_year": 1080,
+            "previous_year": 950
+          },
+          {
+            "id": "pbt",
+            "label": "Profit before tax",
+            "current_year": 14830,
+            "previous_year": 11348
+          },
+          {
+            "id": "tax",
+            "label": "Tax expense",
+            "current_year": 8730,
+            "previous_year": 6600
+          }
+        ],
+        "section_total": {
+          "label": "Profit for the year (PAT)",
+          "current_year": 6100,
+          "previous_year": 4748
+        }
+      },
+      {
+        "title": "Balance Sheet (selected items)",
+        "line_items": [
+          {
+            "id": "ca",
+            "label": "Current assets",
+            "current_year": 18500,
+            "previous_year": 16200
+          },
+          {
+            "id": "cl",
+            "label": "Current liabilities",
+            "current_year": 15800,
+            "previous_year": 14500
+          },
+          {
+            "id": "ppe",
+            "label": "Property, plant & equipment (net)",
+            "current_year": 14200,
+            "previous_year": 13500
+          },
+          {
+            "id": "ta",
+            "label": "Total assets",
+            "current_year": 48300,
+            "previous_year": 45600
+          },
+          {
+            "id": "debt",
+            "label": "Total debt (long-term + short-term)",
+            "current_year": 3200,
+            "previous_year": 3800
+          },
+          {
+            "id": "cash",
+            "label": "Cash and cash equivalents",
+            "current_year": 2800,
+            "previous_year": 2400
+          },
+          {
+            "id": "eq",
+            "label": "Shareholders' equity",
+            "current_year": 22500,
+            "previous_year": 21200
+          }
+        ],
+        "section_total": {
+          "label": "Net debt (Debt - Cash)",
+          "current_year": 400,
+          "previous_year": 1400
+        }
+      },
+      {
+        "title": "Cash Flow Statement (selected items)",
+        "line_items": [
+          {
+            "id": "cfo",
+            "label": "Operating cash flow",
+            "current_year": 5850,
+            "previous_year": 4600
+          },
+          {
+            "id": "capex",
+            "label": "Capital expenditure",
+            "current_year": 2200,
+            "previous_year": 2100
+          },
+          {
+            "id": "fcf",
+            "label": "Free cash flow (CFO - CapEx)",
+            "current_year": 3650,
+            "previous_year": 2500
+          }
+        ],
+        "section_total": {
+          "label": "Cash conversion ratio (CFO / PAT)",
+          "current_year": 0.96,
+          "previous_year": 0.97
+        }
+      }
+    ]
+  },
+  "interactive_highlights": [
+    {
+      "id": "ebit",
+      "tooltip": "EBIT of ₹14,400 Cr represents operating profit before finance costs. At 21% of revenue, this margin is healthy for auto, but watch if it's expanding or sustainable amid competition and raw-material volatility."
+    },
+    {
+      "id": "debt",
+      "tooltip": "Total debt of ₹3,200 Cr is down from ₹3,800 Cr — Maruti is deleveraging. Paired with low finance costs (₹650 Cr), this signals low financial risk, but check this against the ROE to confirm the return is not leverage-amplified."
+    },
+    {
+      "id": "cfo",
+      "tooltip": "Operating cash flow of ₹5,850 Cr versus PAT of ₹6,100 Cr gives a 96% cash-conversion ratio — excellent. Profit is real; not trapped in receivables, inventory, or accruals. This validates the quality of earnings."
+    },
+    {
+      "id": "ta",
+      "tooltip": "Total assets of ₹48,300 Cr with equity of ₹22,500 Cr imply an asset turnover and equity multiplier that together drive the ROE. Check against ROCE to see if the capital is earning its cost."
+    },
+    {
+      "id": "tax",
+      "tooltip": "Tax of ₹8,730 Cr on PBT of ₹14,830 Cr = 59% effective tax rate (including deferred tax adjustments). High, but reflects India's current corporate-tax and GST environment for auto."
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "question": "What was the YoY growth in Revenue from operations (%)? Does this growth rate signal a value-creating business given the scale?",
+      "answer_type": "number",
+      "expected_value": 11.8,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "(68450 - 61208) / 61208 = 11.8% YoY growth. Moderate growth for a mature auto player, but the key synthesis question is: at what ROCE is this growth happening? If ROCE > WACC, growth is value-creating; if not, size without value."
+    },
+    {
+      "id": "t2",
+      "question": "Calculate EBIT margin (EBIT / Revenue). In the context of Maruti's valuation at 12× P/E, is this margin sustainable or vulnerable?",
+      "answer_type": "number",
+      "expected_value": 21.0,
+      "tolerance": 0.5,
+      "unit": "%",
+      "explanation": "14400 / 68450 = 21.0% EBIT margin — strong for auto. But valuation synthesis requires asking: is 21% a durable margin (check revenue growth trends, competitive position, input costs), and does it earn a high enough ROCE to justify the 12× multiple? A cheap multiple on a durable high-margin business is value; on a margin at risk, it's a trap."
+    },
+    {
+      "id": "t3",
+      "question": "What is the cash conversion ratio (Operating Cash Flow / PAT)? What does this ratio tell you about the quality of Maruti's reported earnings?",
+      "answer_type": "number",
+      "expected_value": 0.96,
+      "tolerance": 0.01,
+      "unit": "times",
+      "explanation": "5850 / 6100 = 0.96. Excellent — profit is nearly fully converted to cash. This validates earnings quality: Maruti is not hiding losses in accruals or inflating sales with receivables. This corroborates the profitability picture and reduces earnings-quality risk in the valuation verdict."
+    },
+    {
+      "id": "t4",
+      "question": "Estimate Maruti's net debt-to-EBITDA. Does the solvency picture support a high ROE, or is leverage amplifying returns?",
+      "answer_type": "text",
+      "expected_keywords": [
+        "leverage",
+        "low",
+        "deleveraging",
+        "sound",
+        "sustainable"
+      ],
+      "explanation": "Net debt is ₹400 Cr; EBITDA ≈ EBIT + depreciation = 14400 + 2100 = 16500 Cr. Net debt / EBITDA = 400 / 16500 = 0.02×. This is *extremely* low leverage. The synthesis implication: Maruti's ROE is NOT leverage-amplified; it's genuine operational return. High solvency corroborates the quality signal. A high ROE with low debt is credible; with high debt it would be a red flag."
+    },
+    {
+      "id": "t5",
+      "question": "Given a P/E of 12× and earnings of ₹6,100 Cr, what market cap is implied? Is this valuation 'cheap' or 'expensive' in light of Maruti's margins, growth rate, cash conversion, and solvency? Explain your synthesis.",
+      "answer_type": "free_text",
+      "sample_answer": "Market cap ≈ 12 × 6100 = ₹73,200 Cr. In synthesis: 12× is below the market average for quality auto players. But valuation is only cheap *relative* to the business. Maruti offers 21% EBIT margins, 11.8% revenue growth, 96% cash conversion, and minimal leverage. If ROCE is high (>12%) and margins are durable, this is fair-to-cheap value. But if ROCE is eroding or competitive intensity is rising, the multiple is a trap. The verdict depends on trend: *is the business strengthening or weakening?* A static read of 12× says cheap; a system read asks whether the quality justifies it.",
+      "explanation": "This tests the capstone skill — reading valuation *as a function of* quality, growth, and risk, not in isolation. A multiple is only cheap relative to what you're getting. The synthesis discipline forces asking: does the price match the business, or is there a hidden flaw? Mentioning margins, growth, cash quality, and leverage shows you're cross-checking categories."
+    }
+  ]
+}

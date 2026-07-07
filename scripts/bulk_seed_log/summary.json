@@ -1,21 +1,25 @@
 {
-  "completed_at": "2026-07-04T09:58:55.371992+00:00",
+  "completed_at": "2026-07-07T18:18:48.972383+00:00",
   "modules": [
-    8
+    9
   ],
-  "total_sims": 1,
-  "total_failed": 0,
+  "total_sims": 7,
+  "total_failed": 2,
   "by_type_total": {
-    "decision_making": 1
+    "excel": 3,
+    "decision_making": 2,
+    "document": 2
   },
-  "total_engine_corrections": 0,
+  "total_engine_corrections": 4,
   "per_module": [
     {
-      "m": 8,
-      "ok": 1,
-      "fail": 0,
+      "m": 9,
+      "ok": 7,
+      "fail": 2,
       "by_type": {
-        "decision_making": 1
+        "excel": 3,
+        "decision_making": 2,
+        "document": 2
       }
     }
   ]

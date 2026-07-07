@@ -1,0 +1,641 @@
+{
+  "sim_type": "excel",
+  "title": "Banking Ratios Toolkit: Analyse HDFC Bank FY2015–2024",
+  "scenario": "You're a junior analyst on a Mumbai desk covering HDFC Bank. Your senior asks you to compute the five essential banking ratios (NIM, CASA, GNPA, CAR, ROA) across a decade of financials and identify which years signalled strength versus stress. This is how you move beyond standard leverage ratios to sector-specific insights.",
+  "instructions": "Using the Data sheet with HDFC Bank's 10-year annual financials, compute NIM, CASA Ratio, GNPA Ratio, CAR, and ROA in the Answers sheet. Then identify the year with the highest NIM and flag whether rising GNPA ever signalled stress.",
+  "learning_objective": "Compute Net Interest Margin, CASA Ratio, Gross NPA Ratio, Capital Adequacy Ratio, and ROA for a bank; then synthesise these five ratios to identify periods of profitability strength and asset-quality stress.",
+  "hints": [
+    "NIM = (Net Interest Income ÷ Average Interest-Earning Assets) × 100. CASA = (Current & Savings Deposits ÷ Total Deposits) × 100. Both are percentages.",
+    "GNPA Ratio = (Gross NPAs ÷ Gross Advances) × 100. CAR = (Capital ÷ Risk-Weighted Assets) × 100. ROA = (Net Profit ÷ Average Total Assets) × 100.",
+    "For 'Year with Highest NIM', use INDEX and MATCH on the NIM row; for 'GNPA Stress Flag', use an IF to check if any GNPA Ratio > 2%."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "FY2015",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "FY2016",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "FY2017",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "FY2018",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "FY2019",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "FY2020",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "FY2021",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "FY2022",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "FY2023",
+            "readOnly": true,
+            "bold": true
+          },
+          "K1": {
+            "value": "FY2024",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Net Interest Income (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": 6234,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 7015,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 8102,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 9456,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 10821,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 11945,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 13567,
+            "readOnly": true
+          },
+          "I2": {
+            "value": 15234,
+            "readOnly": true
+          },
+          "J2": {
+            "value": 17089,
+            "readOnly": true
+          },
+          "K2": {
+            "value": 19123,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Avg Interest-Earning Assets (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B3": {
+            "value": 145000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 162000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 185000,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 210000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 238000,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 267000,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 301000,
+            "readOnly": true
+          },
+          "I3": {
+            "value": 340000,
+            "readOnly": true
+          },
+          "J3": {
+            "value": 385000,
+            "readOnly": true
+          },
+          "K3": {
+            "value": 435000,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Current & Savings Deposits (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": 52000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 58500,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 67200,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 76800,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 87500,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 99200,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 112500,
+            "readOnly": true
+          },
+          "I4": {
+            "value": 127800,
+            "readOnly": true
+          },
+          "J4": {
+            "value": 145200,
+            "readOnly": true
+          },
+          "K4": {
+            "value": 165000,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Total Deposits (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": 130000,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 146000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 168000,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 192000,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 219000,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 248000,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 281000,
+            "readOnly": true
+          },
+          "I5": {
+            "value": 318000,
+            "readOnly": true
+          },
+          "J5": {
+            "value": 360000,
+            "readOnly": true
+          },
+          "K5": {
+            "value": 408000,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Gross Advances (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": 120000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 135000,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 154000,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 175000,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 199000,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 225000,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 256000,
+            "readOnly": true
+          },
+          "I6": {
+            "value": 290000,
+            "readOnly": true
+          },
+          "J6": {
+            "value": 328000,
+            "readOnly": true
+          },
+          "K6": {
+            "value": 372000,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "Gross NPAs (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B7": {
+            "value": 1200,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 1350,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 1848,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 2625,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 2985,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 3150,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 2816,
+            "readOnly": true
+          },
+          "I7": {
+            "value": 2030,
+            "readOnly": true
+          },
+          "J7": {
+            "value": 1640,
+            "readOnly": true
+          },
+          "K7": {
+            "value": 1488,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Capital (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 14500,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 15200,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 16000,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 17100,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 20200,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 22100,
+            "readOnly": true
+          },
+          "I8": {
+            "value": 24300,
+            "readOnly": true
+          },
+          "J8": {
+            "value": 26800,
+            "readOnly": true
+          },
+          "K8": {
+            "value": 29500,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Risk-Weighted Assets (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": 175000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 190000,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 210000,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 235000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 265000,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 298000,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 335000,
+            "readOnly": true
+          },
+          "I9": {
+            "value": 378000,
+            "readOnly": true
+          },
+          "J9": {
+            "value": 425000,
+            "readOnly": true
+          },
+          "K9": {
+            "value": 478000,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "Net Profit (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B10": {
+            "value": 3122,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 3687,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 4451,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 5289,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 6087,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 6701,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 7454,
+            "readOnly": true
+          },
+          "I10": {
+            "value": 8236,
+            "readOnly": true
+          },
+          "J10": {
+            "value": 9121,
+            "readOnly": true
+          },
+          "K10": {
+            "value": 10342,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "Avg Total Assets (₹ Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "B11": {
+            "value": 295000,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 330000,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 372000,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 420000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 475000,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 535000,
+            "readOnly": true
+          },
+          "H11": {
+            "value": 603000,
+            "readOnly": true
+          },
+          "I11": {
+            "value": 680000,
+            "readOnly": true
+          },
+          "J11": {
+            "value": 765000,
+            "readOnly": true
+          },
+          "K11": {
+            "value": 860000,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "NIM FY2024 (%)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": null
+          },
+          "A3": {
+            "value": "CASA Ratio FY2024 (%)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": null
+          },
+          "A4": {
+            "value": "GNPA Ratio FY2020 (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": null
+          },
+          "A5": {
+            "value": "CAR FY2023 (%)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": null
+          },
+          "A6": {
+            "value": "ROA FY2019 (%)",
+            "readOnly": true
+          },
+          "B6": {
+            "value": null
+          },
+          "A7": {
+            "value": "Fiscal Year with Highest NIM",
+            "readOnly": true
+          },
+          "B7": {
+            "value": null
+          },
+          "A8": {
+            "value": "Peak GNPA Year (highest ratio %)",
+            "readOnly": true
+          },
+          "B8": {
+            "value": null
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=(Data!K2/Data!K3)*100",
+      "expected_value": 4.39,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(Data!K4/Data!K5)*100",
+      "expected_value": 40.44,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=(Data!G7/Data!G6)*100",
+      "expected_value": 1.4,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!J8/Data!J9)*100",
+      "expected_value": 6.31,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!F10/Data!F11)*100",
+      "expected_value": 1.28,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B7": {
+      "formula_pattern": "=INDEX(Data!B1:K1,MATCH(MAX((Data!B2/Data!B3)*100,(Data!C2/Data!C3)*100,(Data!D2/Data!D3)*100,(Data!E2/Data!E3)*100,(Data!F2/Data!F3)*100,(Data!G2/Data!G3)*100,(Data!H2/Data!H3)*100,(Data!I2/Data!I3)*100,(Data!J2/Data!J3)*100,(Data!K2/Data!K3)*100),((Data!B2/Data!B3)*100,(Data!C2/Data!C3)*100,(Data!D2/Data!D3)*100,(Data!E2/Data!E3)*100,(Data!F2/Data!F3)*100,(Data!G2/Data!G3)*100,(Data!H2/Data!H3)*100,(Data!I2/Data!I3)*100,(Data!J2/Data!J3)*100,(Data!K2/Data!K3)*100),0))",
+      "expected_value": "FY2024",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    },
+    "Answers!B8": {
+      "formula_pattern": "=INDEX(Data!B1:K1,MATCH(MAX((Data!B7/Data!B6)*100,(Data!C7/Data!C6)*100,(Data!D7/Data!D6)*100,(Data!E7/Data!E6)*100,(Data!F7/Data!F6)*100,(Data!G7/Data!G6)*100,(Data!H7/Data!H6)*100,(Data!I7/Data!I6)*100,(Data!J7/Data!J6)*100,(Data!K7/Data!K6)*100),((Data!B7/Data!B6)*100,(Data!C7/Data!C6)*100,(Data!D7/Data!D6)*100,(Data!E7/Data!E6)*100,(Data!F7/Data!F6)*100,(Data!G7/Data!G6)*100,(Data!H7/Data!H6)*100,(Data!I7/Data!I6)*100,(Data!J7/Data!J6)*100,(Data!K7/Data!K6)*100),0))",
+      "expected_value": "FY2018",
+      "type": "text",
+      "tolerance": 0,
+      "points": 15
+    }
+  }
+}

@@ -1,0 +1,572 @@
+{
+  "sim_type": "excel",
+  "title": "HDFC Bank Solvency: Can It Service Its Debt?",
+  "scenario": "You're a credit analyst at a Mumbai mutual fund. HDFC Bank is a key holding, but the desk is debating whether recent loan-growth expansion has stretched its solvency too thin. You have 10 years of HDFC financials (EBIT, interest expense, total debt, equity, cash). Build liquidity and solvency ratios to assess whether the bank can comfortably service its debt, or whether coverage is deteriorating toward danger.",
+  "instructions": "Using the HDFC Bank financial data provided, compute current ratio, quick ratio, debt-to-equity, interest coverage, and net-debt-to-EBITDA for the latest year. Then identify whether the trend in interest coverage over the past decade shows strength or emerging distress.",
+  "learning_objective": "Compute liquidity ratios (current, quick) and solvency ratios (debt-to-equity, interest coverage, net-debt-to-EBITDA) for HDFC Bank, and identify whether interest coverage is trending toward the danger threshold of 1× or remaining safely above 3–4×, signalling survival strength or emerging distress.",
+  "hints": [
+    "Current Ratio = Current Assets ÷ Current Liabilities. For banks, current liabilities include deposits due within the year; current assets are liquid holdings and short-term loans. Look at the Data sheet labels carefully.",
+    "Interest Coverage = EBIT ÷ Interest Expense. EBIT for a bank is often called net interest income minus operating expenses, or operating profit. Make sure you're dividing a profit measure by an expense measure, not mixing them up.",
+    "Net Debt ÷ EBITDA = (Total Debt − Cash & Equivalents) ÷ EBITDA. If the numerator is negative (more cash than debt), net debt is negative, which is a fortress position. For the latest year (FY2024), subtract cash from total debt in the numerator, then divide by that year's EBITDA."
+  ],
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Fiscal Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Current Assets (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Current Liabilities (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Inventory (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Total Debt (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "F1": {
+            "value": "Equity (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "G1": {
+            "value": "Cash & Equivalents (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "H1": {
+            "value": "EBIT (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "I1": {
+            "value": "Interest Expense (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "J1": {
+            "value": "EBITDA (₹Cr)",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY2015",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 245000,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 185000,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 8000,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 42000,
+            "readOnly": true
+          },
+          "F2": {
+            "value": 68000,
+            "readOnly": true
+          },
+          "G2": {
+            "value": 35000,
+            "readOnly": true
+          },
+          "H2": {
+            "value": 18500,
+            "readOnly": true
+          },
+          "I2": {
+            "value": 4200,
+            "readOnly": true
+          },
+          "J2": {
+            "value": 21500,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY2016",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 268000,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 198000,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 8500,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 45000,
+            "readOnly": true
+          },
+          "F3": {
+            "value": 75000,
+            "readOnly": true
+          },
+          "G3": {
+            "value": 38000,
+            "readOnly": true
+          },
+          "H3": {
+            "value": 21000,
+            "readOnly": true
+          },
+          "I3": {
+            "value": 4500,
+            "readOnly": true
+          },
+          "J3": {
+            "value": 24500,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY2017",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 295000,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 215000,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 9000,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 48000,
+            "readOnly": true
+          },
+          "F4": {
+            "value": 82000,
+            "readOnly": true
+          },
+          "G4": {
+            "value": 42000,
+            "readOnly": true
+          },
+          "H4": {
+            "value": 24500,
+            "readOnly": true
+          },
+          "I4": {
+            "value": 4800,
+            "readOnly": true
+          },
+          "J4": {
+            "value": 28200,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY2018",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 328000,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 238000,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 9500,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 52000,
+            "readOnly": true
+          },
+          "F5": {
+            "value": 91000,
+            "readOnly": true
+          },
+          "G5": {
+            "value": 46000,
+            "readOnly": true
+          },
+          "H5": {
+            "value": 28000,
+            "readOnly": true
+          },
+          "I5": {
+            "value": 5200,
+            "readOnly": true
+          },
+          "J5": {
+            "value": 32100,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY2019",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 365000,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 265000,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 10000,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 58000,
+            "readOnly": true
+          },
+          "F6": {
+            "value": 102000,
+            "readOnly": true
+          },
+          "G6": {
+            "value": 51000,
+            "readOnly": true
+          },
+          "H6": {
+            "value": 32500,
+            "readOnly": true
+          },
+          "I6": {
+            "value": 5800,
+            "readOnly": true
+          },
+          "J6": {
+            "value": 37200,
+            "readOnly": true
+          },
+          "A7": {
+            "value": "FY2020",
+            "readOnly": true
+          },
+          "B7": {
+            "value": 405000,
+            "readOnly": true
+          },
+          "C7": {
+            "value": 298000,
+            "readOnly": true
+          },
+          "D7": {
+            "value": 10500,
+            "readOnly": true
+          },
+          "E7": {
+            "value": 65000,
+            "readOnly": true
+          },
+          "F7": {
+            "value": 115000,
+            "readOnly": true
+          },
+          "G7": {
+            "value": 58000,
+            "readOnly": true
+          },
+          "H7": {
+            "value": 37500,
+            "readOnly": true
+          },
+          "I7": {
+            "value": 6500,
+            "readOnly": true
+          },
+          "J7": {
+            "value": 42800,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "FY2021",
+            "readOnly": true
+          },
+          "B8": {
+            "value": 452000,
+            "readOnly": true
+          },
+          "C8": {
+            "value": 328000,
+            "readOnly": true
+          },
+          "D8": {
+            "value": 11000,
+            "readOnly": true
+          },
+          "E8": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "F8": {
+            "value": 128000,
+            "readOnly": true
+          },
+          "G8": {
+            "value": 64000,
+            "readOnly": true
+          },
+          "H8": {
+            "value": 42500,
+            "readOnly": true
+          },
+          "I8": {
+            "value": 7200,
+            "readOnly": true
+          },
+          "J8": {
+            "value": 48500,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "FY2022",
+            "readOnly": true
+          },
+          "B9": {
+            "value": 498000,
+            "readOnly": true
+          },
+          "C9": {
+            "value": 358000,
+            "readOnly": true
+          },
+          "D9": {
+            "value": 11500,
+            "readOnly": true
+          },
+          "E9": {
+            "value": 82000,
+            "readOnly": true
+          },
+          "F9": {
+            "value": 142000,
+            "readOnly": true
+          },
+          "G9": {
+            "value": 72000,
+            "readOnly": true
+          },
+          "H9": {
+            "value": 48500,
+            "readOnly": true
+          },
+          "I9": {
+            "value": 8200,
+            "readOnly": true
+          },
+          "J9": {
+            "value": 55200,
+            "readOnly": true
+          },
+          "A10": {
+            "value": "FY2023",
+            "readOnly": true
+          },
+          "B10": {
+            "value": 548000,
+            "readOnly": true
+          },
+          "C10": {
+            "value": 388000,
+            "readOnly": true
+          },
+          "D10": {
+            "value": 12000,
+            "readOnly": true
+          },
+          "E10": {
+            "value": 92000,
+            "readOnly": true
+          },
+          "F10": {
+            "value": 158000,
+            "readOnly": true
+          },
+          "G10": {
+            "value": 81000,
+            "readOnly": true
+          },
+          "H10": {
+            "value": 54200,
+            "readOnly": true
+          },
+          "I10": {
+            "value": 9200,
+            "readOnly": true
+          },
+          "J10": {
+            "value": 62100,
+            "readOnly": true
+          },
+          "A11": {
+            "value": "FY2024",
+            "readOnly": true
+          },
+          "B11": {
+            "value": 615000,
+            "readOnly": true
+          },
+          "C11": {
+            "value": 428000,
+            "readOnly": true
+          },
+          "D11": {
+            "value": 12500,
+            "readOnly": true
+          },
+          "E11": {
+            "value": 108000,
+            "readOnly": true
+          },
+          "F11": {
+            "value": 178000,
+            "readOnly": true
+          },
+          "G11": {
+            "value": 95000,
+            "readOnly": true
+          },
+          "H11": {
+            "value": 61500,
+            "readOnly": true
+          },
+          "I11": {
+            "value": 10800,
+            "readOnly": true
+          },
+          "J11": {
+            "value": 70200,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Question",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Answer",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1: Current Ratio (FY2024)",
+            "readOnly": true
+          },
+          "B2": {
+            "value": ""
+          },
+          "A3": {
+            "value": "Q2: Quick Ratio (FY2024)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": ""
+          },
+          "A4": {
+            "value": "Q3: Debt-to-Equity (FY2024)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": ""
+          },
+          "A5": {
+            "value": "Q4: Interest Coverage FY2024 (times)",
+            "readOnly": true
+          },
+          "B5": {
+            "value": ""
+          },
+          "A6": {
+            "value": "Q5: Net Debt ÷ EBITDA FY2024",
+            "readOnly": true
+          },
+          "B6": {
+            "value": ""
+          },
+          "A7": {
+            "value": "Q6: Interest Coverage FY2015 (times)",
+            "readOnly": true
+          },
+          "B7": {
+            "value": ""
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B2": {
+      "formula_pattern": "=Data!B11/Data!C11",
+      "expected_value": 1.44,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B3": {
+      "formula_pattern": "=(Data!B11-Data!D11)/Data!C11",
+      "expected_value": 1.41,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 10
+    },
+    "Answers!B4": {
+      "formula_pattern": "=Data!E11/Data!F11",
+      "expected_value": 0.61,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 12
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!H11/Data!I11",
+      "expected_value": 5.69,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B6": {
+      "formula_pattern": "=(Data!E11-Data!G11)/Data!J11",
+      "expected_value": 0.19,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 15
+    },
+    "Answers!B7": {
+      "formula_pattern": "=Data!H2/Data!I2",
+      "expected_value": 4.4,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 18
+    }
+  }
+}
