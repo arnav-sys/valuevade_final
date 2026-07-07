@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import { HelmetProvider } from "react-helmet-async";
+import { installErrorReporter } from "@/lib/errorReporter";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { XPProvider } from "@/contexts/XPContext";
@@ -98,6 +99,10 @@ const SessionPhase = ({ phase, children }) => (
     <SessionPhaseGuard phase={phase}>{children}</SessionPhaseGuard>
   </Learning>
 );
+
+// Install global error / unhandled-rejection reporters at module load. The
+// reporter is idempotent and cannot throw, so it's safe to run before render.
+installErrorReporter();
 
 function App() {
   return (

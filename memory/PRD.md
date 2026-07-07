@@ -1,4 +1,64 @@
 # ============================================================================
+# CHANGELOG — 2026-02-07 (Error Tracking System — end-to-end)
+# ============================================================================
+
+## Shipped
+
+### DB (already applied last session)
+- `public.error_reports` (id, signature UNIQUE, error_message, error_stack,
+  error_type CHECK (runtime|promise|react_boundary), url, user_agent, user_id,
+  first_seen_at, last_seen_at, occurrence_count, unique_users, is_silenced,
+  resolved_at, resolved_by, resolution_notes, regressed_at)
+- `public.error_report_events` — trimmed rolling ledger of latest occurrences
+  per report (report_id, user_id, url, user_agent, occurred_at)
+- Verified via `GET .../rest/v1/error_reports?limit=1` returning 200.
+
+### Backend (`/app/backend/wave_endpoints.py`)
+- **Pydantic**: `_ErrorReportBody` (signature, error_message, error_stack?, error_type?, url?, user_agent?, user_id?) and `_ErrorActionBody` (action=resolve|silence|reopen, resolution_notes?).
+- **4 new endpoints**:
+  - `POST /api/errors/report` — **no auth**; upserts by signature. Silenced rows dropped silently. Occurrences on a resolved row auto-set `regressed_at` and null out `resolved_at`. Also inserts an event row (best-effort).
+  - `GET  /api/admin/errors?status=new|resolved|regressed|silenced|all` — admin-guarded, ordered by last_seen desc
+  - `PATCH /api/admin/errors/{id}` — admin actions (resolve / silence / reopen). Stamps `resolved_by = admin.id` on resolve.
+  - `GET  /api/admin/errors/{id}/events` — recent event ledger
+
+### Frontend
+- **`/app/frontend/src/lib/errorReporter.js`** (new) — global `window.error` + `unhandledrejection` capture. Djb2-hash signature = (message + first non-header stack frame). Client-side 5-second per-signature throttle. Fire-and-forget POST via `keepalive: true`. Skips ResizeObserver spam + chrome-extension frames. Never throws itself.
+- **`/app/frontend/src/App.js`** — calls `installErrorReporter()` at module load, before render.
+- **`/app/frontend/src/components/ErrorBoundary.jsx`** — `componentDidCatch` now also POSTs with `error_type: react_boundary` and the componentStack.
+- **`/app/frontend/src/components/admin/ErrorsTab.jsx`** (new) — table + drawer. Status pills (New/Regressed/Resolved/Silenced/All), search box, refresh. Click row → drawer with signature, occurrences, unique users, first/last seen, sample URL, user agent, full stack (pre wrap), resolution notes textarea, and action buttons (Mark Resolved / Silence / Reopen) filtered to current state.
+- **`/app/frontend/src/components/AdminPanel.jsx`** — new tab `errors` with AlertTriangle icon, labelled honestly as "Errors" (not "Auto-Fix").
+
+## Verification
+
+### Curl (admin `info@valuevade.com`)
+```
+POST /api/errors/report              → {ok:true, id:...}
+POST same sig                        → occurrence_count++ (idempotent upsert)
+GET  /api/admin/errors?status=new    → shows sig with count=2
+PATCH id resolve, notes=...          → resolved_at set, resolution_notes stored
+POST same sig                        → regressed_at set, resolved_at cleared
+GET  status=regressed                → sig shown as REGRESSED, count=3
+PATCH id silence                     → is_silenced=true
+POST same sig                        → {ok:true, dropped:"silenced"} — no new row
+```
+
+### Screenshots
+- `/tmp/errors_tab.png` — Errors tab active with 3 NEW captured errors (runtime type, "Cannot read property 'foo' of undefined at renderCard(1/2/3)"), status filter chips, search + refresh, 3 rows count
+- `/tmp/errors_drawer.png` — Drawer opened on row 3: NEW badge, message, signature, occurrences, unique users, first/last seen, sample URL (valuevade.com/module/3), user agent, stack area, resolution notes textarea, Mark Resolved + Silence buttons
+
+## Files
+- + `/app/frontend/src/lib/errorReporter.js`
+- + `/app/frontend/src/components/admin/ErrorsTab.jsx`
+- ~ `/app/frontend/src/App.js` (install reporter at module load)
+- ~ `/app/frontend/src/components/ErrorBoundary.jsx` (POST from componentDidCatch)
+- ~ `/app/frontend/src/components/AdminPanel.jsx` (Errors tab entry + render)
+- ~ `/app/backend/wave_endpoints.py` (+4 endpoints, +2 pydantic bodies, added `error_stack` to admin list SELECT)
+
+# ============================================================================
+
+
+
+# ============================================================================
 # CHANGELOG — 2026-02-07 (Phase C — Admin Capstones + Module Projects CRUD)
 # ============================================================================
 

@@ -160,6 +160,21 @@ class _AdminModuleProjectBody(BaseModel):
     tasks: Optional[Any] = None                    # jsonb blob
 
 
+class _ErrorReportBody(BaseModel):
+    signature: str
+    error_message: str
+    error_stack: Optional[str] = None
+    error_type: Optional[str] = "runtime"          # runtime|promise|react_boundary
+    url: Optional[str] = None
+    user_agent: Optional[str] = None
+    user_id: Optional[str] = None
+
+
+class _ErrorActionBody(BaseModel):
+    action: str                                     # resolve|silence|reopen
+    resolution_notes: Optional[str] = None
+
+
 class ReferralAttachReq(BaseModel):
     ref_code: str = Field(..., min_length=4, max_length=12)
 
@@ -1507,6 +1522,124 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             "&limit=1"
         ) or []
         return {"project": rows[0] if rows else None}
+
+    # ─── Error tracking (public ingest + admin read/action) ──────────────
+    @api_router.post("/errors/report")
+    async def report_error(body: _ErrorReportBody):
+        """Public error-ingest endpoint. Upserts by `signature`. Silenced rows
+        are dropped silently. Resolved rows regressing get `regressed_at` set."""
+        sig = (body.signature or "").strip()[:128]
+        if not sig or not body.error_message:
+            raise HTTPException(status_code=400, detail="signature + error_message required.")
+        now_iso = datetime.now(timezone.utc).isoformat()
+        existing = _supabase_get(
+            f"error_reports?signature=eq.{_urlparse.quote(sig)}"
+            "&select=id,is_silenced,resolved_at,occurrence_count&limit=1"
+        ) or []
+        if existing:
+            row = existing[0]
+            if row.get("is_silenced"):
+                return {"ok": True, "dropped": "silenced"}
+            patch = {
+                "last_seen_at": now_iso,
+                "occurrence_count": (row.get("occurrence_count") or 0) + 1,
+            }
+            # Regression path — was resolved, now firing again
+            if row.get("resolved_at"):
+                patch["resolved_at"] = None
+                patch["regressed_at"] = now_iso
+            _supabase_patch(f"error_reports?id=eq.{_urlparse.quote(row['id'])}", patch)
+            report_id = row["id"]
+        else:
+            payload = {
+                "signature": sig,
+                "error_message": (body.error_message or "")[:4000],
+                "error_stack": (body.error_stack or "")[:16000] if body.error_stack else None,
+                "error_type": body.error_type if body.error_type in ("runtime", "promise", "react_boundary") else "runtime",
+                "url": (body.url or "")[:2048] or None,
+                "user_agent": (body.user_agent or "")[:512] or None,
+                "user_id": body.user_id or None,
+            }
+            created = _supabase_post("error_reports", payload, prefer="return=representation")
+            if isinstance(created, list): created = created[0] if created else None
+            if not created:
+                return {"ok": False}
+            report_id = created["id"]
+        # Ledger — trimmed rolling event log (best-effort, don't fail parent on error)
+        try:
+            _supabase_post("error_report_events", {
+                "report_id": report_id,
+                "user_id": body.user_id or None,
+                "url": (body.url or "")[:2048] or None,
+                "user_agent": (body.user_agent or "")[:512] or None,
+            })
+        except Exception:
+            pass
+        return {"ok": True, "id": report_id}
+
+    @api_router.get("/admin/errors")
+    async def admin_errors_list(status: str = "new", user=Depends(_get_supabase_user)):
+        """`status`: new | resolved | regressed | silenced | all"""
+        _ensure_admin(user)
+        filt = ""
+        if status == "new":
+            filt = "&is_silenced=eq.false&resolved_at=is.null&regressed_at=is.null"
+        elif status == "resolved":
+            filt = "&resolved_at=not.is.null&is_silenced=eq.false"
+        elif status == "regressed":
+            filt = "&regressed_at=not.is.null&resolved_at=is.null&is_silenced=eq.false"
+        elif status == "silenced":
+            filt = "&is_silenced=eq.true"
+        rows = _supabase_get(
+            "error_reports?select=id,signature,error_message,error_stack,error_type,url,user_agent,"
+            "first_seen_at,last_seen_at,occurrence_count,unique_users,is_silenced,"
+            "resolved_at,resolution_notes,regressed_at"
+            f"{filt}&order=last_seen_at.desc&limit=200"
+        ) or []
+        return {"errors": rows}
+
+    @api_router.patch("/admin/errors/{report_id}")
+    async def admin_error_action(report_id: str, body: _ErrorActionBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        now_iso = datetime.now(timezone.utc).isoformat()
+        admin_id = user.get("id") if isinstance(user, dict) else None
+        action = (body.action or "").lower()
+        if action == "resolve":
+            patch = {
+                "resolved_at": now_iso,
+                "resolved_by": admin_id,
+                "resolution_notes": body.resolution_notes,
+                "regressed_at": None,
+            }
+        elif action == "silence":
+            patch = {
+                "is_silenced": True,
+                "resolution_notes": body.resolution_notes,
+            }
+        elif action == "reopen":
+            patch = {
+                "resolved_at": None,
+                "resolved_by": None,
+                "is_silenced": False,
+                "regressed_at": None,
+            }
+        else:
+            raise HTTPException(status_code=400, detail="action must be resolve|silence|reopen.")
+        _supabase_patch(f"error_reports?id=eq.{_urlparse.quote(report_id)}", patch)
+        rows = _supabase_get(
+            f"error_reports?id=eq.{_urlparse.quote(report_id)}"
+            "&select=id,signature,error_message,is_silenced,resolved_at,resolution_notes,regressed_at&limit=1"
+        ) or []
+        return {"error": rows[0] if rows else None}
+
+    @api_router.get("/admin/errors/{report_id}/events")
+    async def admin_error_events(report_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"error_report_events?report_id=eq.{_urlparse.quote(report_id)}"
+            "&select=id,user_id,url,user_agent,occurred_at&order=occurred_at.desc&limit=50"
+        ) or []
+        return {"events": rows}
 
     @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):

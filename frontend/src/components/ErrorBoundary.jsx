@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { isChunkLoadError } from '@/utils/lazyWithRetry';
+import { reportError } from '@/lib/errorReporter';
 
 const RELOAD_FLAG = 'vv-chunk-reloaded';
 
@@ -17,6 +18,13 @@ export default class ErrorBoundary extends Component {
   componentDidCatch(error, info) {
     // eslint-disable-next-line no-console
     console.error('[ErrorBoundary]', error, info);
+
+    // Report to admin observability layer (fire-and-forget, cannot throw)
+    reportError({
+      message: (error && (error.message || String(error))) || 'react_boundary',
+      stack: (error && error.stack) || (info && info.componentStack) || '',
+      type: 'react_boundary',
+    });
 
     // Self-heal stale-deploy chunk failures: hard-reload once to pick up new index.html.
     if (isChunkLoadError(error)) {

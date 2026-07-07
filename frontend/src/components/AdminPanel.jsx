@@ -4,7 +4,8 @@ import { supabase } from '../lib/supabase';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Share2, Lock, CreditCard, ArrowDownToLine, Eye, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap } from 'lucide-react';
+import ErrorsTab from './admin/ErrorsTab';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Share2, Lock, CreditCard, ArrowDownToLine, Eye, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -59,6 +60,7 @@ function AdminTabs({ tab, setTab }) {
     { k: 'payouts',   label: 'Payouts',            icon: ArrowDownToLine },
     { k: 'videos',    label: 'Session Videos',     icon: Video },
     { k: 'curriculum', label: 'View Course',       icon: GraduationCap },
+    { k: 'errors',    label: 'Errors',             icon: AlertTriangle },
   ];
   return (
     <div className="flex gap-2 mb-6 border-b border-[var(--color-border)] flex-wrap" data-testid="admin-tabs">
@@ -612,6 +614,7 @@ export default function AdminPanel() {
           {tab === 'payouts'   && <PayoutsTab />}
           {tab === 'videos'    && <SessionVideosTab />}
           {tab === 'curriculum' && <CurriculumTab />}
+          {tab === 'errors' && <ErrorsTab />}
         </div>
         <ProgressModal user={selected} onClose={() => setSelected(null)} />
       </main>
