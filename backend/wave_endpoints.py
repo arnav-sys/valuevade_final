@@ -18,7 +18,7 @@ import string
 import urllib.error
 import urllib.parse as _urlparse
 from datetime import datetime, timedelta, timezone
-from typing import Optional
+from typing import Optional, List
 
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from pydantic import BaseModel, Field
@@ -110,6 +110,18 @@ class _AdminSessionBody(BaseModel):
     order_index: Optional[int] = None
     estimated_minutes: Optional[int] = None
     lecture_url: Optional[str] = None
+
+
+class _AdminNotesCardBody(BaseModel):
+    session_id: Optional[str] = None
+    card_type: Optional[str] = None
+    title: Optional[str] = None
+    content: Optional[str] = None
+    order_index: Optional[int] = None
+
+
+class _AdminReorderBody(BaseModel):
+    ids: List[str]  # ordered list of card ids — new order_index = position+1
 
 
 class ReferralAttachReq(BaseModel):
@@ -1200,6 +1212,69 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         _ensure_admin(user)
         _supabase_delete(f"master_sessions?id=eq.{_urlparse.quote(session_id)}")
         return {"ok": True}
+
+    # ─── Notes cards CRUD (Phase B.1) ────────────────────────────────────
+    @api_router.get("/admin/notes-cards")
+    async def admin_notes_list(session_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_notes_cards?session_id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,session_id,card_type,title,content,order_index"
+            "&order=order_index&limit=200"
+        ) or []
+        return {"cards": rows}
+
+    @api_router.post("/admin/notes-cards")
+    async def admin_notes_create(body: _AdminNotesCardBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        if not body.session_id or not body.card_type:
+            raise HTTPException(status_code=400, detail="session_id and card_type required.")
+        existing = _supabase_get(
+            f"master_notes_cards?session_id=eq.{_urlparse.quote(body.session_id)}"
+            "&select=order_index&order=order_index.desc&limit=1"
+        ) or []
+        next_order = (existing[0]["order_index"] + 1) if existing else 1
+        payload = {
+            "session_id": body.session_id,
+            "card_type": body.card_type,
+            "title": body.title or "",
+            "content": body.content or "",
+            "order_index": body.order_index if body.order_index is not None else next_order,
+        }
+        row = _supabase_post("master_notes_cards", payload, prefer="return=representation")
+        if isinstance(row, list): row = row[0] if row else None
+        return {"card": row}
+
+    @api_router.patch("/admin/notes-cards/{card_id}")
+    async def admin_notes_update(card_id: str, body: _AdminNotesCardBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.model_dump().items() if v is not None and k != "session_id"}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(f"master_notes_cards?id=eq.{_urlparse.quote(card_id)}", patch)
+        rows = _supabase_get(
+            f"master_notes_cards?id=eq.{_urlparse.quote(card_id)}"
+            "&select=id,session_id,card_type,title,content,order_index&limit=1"
+        ) or []
+        return {"card": rows[0] if rows else None}
+
+    @api_router.delete("/admin/notes-cards/{card_id}")
+    async def admin_notes_delete(card_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        _supabase_delete(f"master_notes_cards?id=eq.{_urlparse.quote(card_id)}")
+        return {"ok": True}
+
+    @api_router.post("/admin/notes-cards/reorder")
+    async def admin_notes_reorder(body: _AdminReorderBody, user=Depends(_get_supabase_user)):
+        """Rewrite order_index for a batch of cards. `ids` is the new order —
+        position 0 → order_index 1, position 1 → order_index 2, ..."""
+        _ensure_admin(user)
+        for i, cid in enumerate(body.ids):
+            _supabase_patch(
+                f"master_notes_cards?id=eq.{_urlparse.quote(cid)}",
+                {"order_index": i + 1},
+            )
+        return {"ok": True, "reordered": len(body.ids)}
 
     @api_router.post("/referrals/attach")
     async def referrals_attach(req: ReferralAttachReq, user=Depends(_get_supabase_user)):

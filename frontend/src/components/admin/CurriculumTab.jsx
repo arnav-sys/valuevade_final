@@ -9,6 +9,7 @@
  */
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import NotesEditor from './NotesEditor';
 import { Plus, Trash2, Pencil, Check, X, ChevronRight, AlertTriangle } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -38,6 +39,7 @@ export default function CurriculumTab() {
   const [err, setErr] = useState(null);
   const [editingMod, setEditingMod] = useState(null);  // module_id being renamed
   const [editingSess, setEditingSess] = useState(null);
+  const [selSession, setSelSession] = useState(null);  // Phase B — currently-open session
   const [confirm, setConfirm] = useState(null);        // { kind, id, name, impact? }
 
   const reloadModules = async () => {
@@ -200,7 +202,10 @@ export default function CurriculumTab() {
           {sessions.map((s) => (
             <li
               key={s.id}
-              className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface)] px-4 py-2.5 flex items-center gap-3"
+              onClick={() => setSelSession(s)}
+              className={`border-b border-[var(--color-border)] px-4 py-2.5 flex items-center gap-3 cursor-pointer transition-colors ${
+                selSession?.id === s.id ? 'bg-[var(--color-primary)]/10' : 'hover:bg-[var(--color-surface)]'
+              }`}
               data-testid={`session-row-${s.order_index}`}
             >
               <span className="text-xs text-[var(--color-text-muted)] font-mono flex-shrink-0 w-8">{s.order_index}</span>
@@ -215,11 +220,11 @@ export default function CurriculumTab() {
                 <span className="flex-1 text-sm text-[var(--color-text)] truncate">{s.title}</span>
               )}
               {s.lecture_url && <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] font-mono">🎥</span>}
-              <button onClick={() => setEditingSess(s.id)} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-session-${s.id}`}>
+              <button onClick={(e) => { e.stopPropagation(); setEditingSess(s.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-session-${s.id}`}>
                 <Pencil size={12} />
               </button>
               <button
-                onClick={() => setConfirm({ kind: 'session', id: s.id, name: s.title })}
+                onClick={(e) => { e.stopPropagation(); setConfirm({ kind: 'session', id: s.id, name: s.title }); }}
                 className="text-[var(--color-text-muted)] hover:text-red-500"
                 data-testid={`delete-session-${s.id}`}
               >
@@ -235,11 +240,17 @@ export default function CurriculumTab() {
         </ul>
       </div>
 
-      {/* Right rail — Phase B placeholder */}
-      <div className="w-80 flex-shrink-0 border border-dashed border-[var(--color-border)] rounded-xl p-6 text-sm text-[var(--color-text-muted)]">
-        <p className="font-semibold text-[var(--color-text)] mb-2">Content editors</p>
-        <p className="mb-3">Notes / Quiz / Interview / Video editors ship in Phase B (next release). For now, use module & session CRUD on the left.</p>
-        <p className="text-xs">Videos: use the <b>Session Videos</b> tab.</p>
+      {/* Right rail — Notes editor (Phase B.1). Quiz/Interview/Video ship next. */}
+      <div className="w-96 flex-shrink-0 border border-[var(--color-border)] rounded-xl p-4 overflow-hidden flex flex-col">
+        {selSession ? (
+          <NotesEditor sessionId={selSession.id} sessionTitle={selSession.title} />
+        ) : (
+          <div className="text-sm text-[var(--color-text-muted)]">
+            <p className="font-semibold text-[var(--color-text)] mb-2">Content editors</p>
+            <p className="mb-3">Click a session in the middle column to edit its notes cards.</p>
+            <p className="text-xs">Quiz / Interview / Video editors ship in Phase B.2.</p>
+          </div>
+        )}
       </div>
 
       {/* Delete confirmation modal */}
