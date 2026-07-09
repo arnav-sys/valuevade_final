@@ -5130,6 +5130,21 @@ try:
 except Exception as _e:
     logger.warning(f"[payment_endpoints] failed to register: {_e}")
 
+
+# Temporary read-only codebase download endpoint (used to hand the code to the
+# user when the platform's VSCode/IDE URL isn't reachable). Remove when no
+# longer needed.
+from fastapi.responses import FileResponse as _FileResponse
+
+@api_router.get("/_download/codebase")
+async def _download_codebase():
+    return _FileResponse(
+        "/tmp/valuevade.tar.gz",
+        media_type="application/gzip",
+        filename="valuevade.tar.gz",
+    )
+
+
 app.include_router(api_router)
 
 # CORS — the FastAPI/Starlette middleware (per CORS spec) rejects the combo
