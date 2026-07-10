@@ -307,40 +307,46 @@ async def main():
         if len(plan) > 20: print(f'  ... ({len(plan) - 20} more)')
         return
 
-    # Actually generate
-    print(f'\n=== Generating {len(plan)} sims ===')
-    successes = 0; failures = 0
-    for idx, p in enumerate(plan, start=1):
+    # Actually generate (parallelized)
+    print(f'\n=== Generating {len(plan)} sims (concurrency=4) ===')
+    successes = 0; failures = 0; done = 0
+    sem = asyncio.Semaphore(4)
+    lock = asyncio.Lock()
+
+    async def gen_one(idx_p):
+        nonlocal successes, failures, done
+        idx, p = idx_p
         sess = p['session']
         stype = p['sim_type']
         title_preview = sess['title'][:70]
-        print(f'[{idx}/{len(plan)}] {p["module_key"]} · {stype:<15} · {title_preview}')
+        async with sem:
+            try:
+                content = await generate_sim_content(stype, sess, p['module_title'], sess['id'])
+                # 'book' isn't allowed by the DB CHECK constraint on sim_type — store it as
+                # 'document' with a `format='book'` marker so the frontend router picks BookSim.
+                db_sim_type = 'document' if stype == 'book' else stype
+                if stype == 'book':
+                    content['format'] = 'book'
+                row = {
+                    'session_id': sess['id'],
+                    'sim_type': db_sim_type,
+                    'title': content.get('title') or sess['title'][:100],
+                    'scenario': content.get('scenario_context') or content.get('brief') or content.get('summary') or content.get('instructions') or sess.get('description', '')[:400] or 'Auto-generated simulation.',
+                    'instructions': content.get('instructions') or content.get('scenario_context') or content.get('summary') or 'Follow the on-screen guidance.',
+                    'objectives': content.get('objectives') or [sess.get('title', 'Complete the simulation')],
+                    'config': content,
+                }
+                # Wrap the sync HTTP post in a thread to avoid blocking the loop.
+                await asyncio.to_thread(sb_post, 'master_simulations', row)
+                async with lock:
+                    successes += 1; done += 1
+                    print(f'[{done:>3}/{len(plan)}] ✓ {p["module_key"]:>4} · {stype:<15} · {title_preview}')
+            except Exception as e:
+                async with lock:
+                    failures += 1; done += 1
+                    print(f'[{done:>3}/{len(plan)}] ✗ {p["module_key"]:>4} · {stype:<15} · {title_preview} — FAILED: {e}')
 
-        try:
-            content = await generate_sim_content(stype, sess, p['module_title'], sess['id'])
-            # 'book' isn't allowed by the DB CHECK constraint on sim_type — store it as
-            # 'document' with a `format='book'` marker so the frontend router picks BookSim.
-            db_sim_type = 'document' if stype == 'book' else stype
-            if stype == 'book':
-                content['format'] = 'book'
-            # Build the simulation row
-            row = {
-                'session_id': sess['id'],
-                'sim_type': db_sim_type,
-                'title': content.get('title') or sess['title'][:100],
-                'scenario': content.get('scenario_context') or content.get('brief') or content.get('summary') or content.get('instructions') or sess.get('description', '')[:400] or 'Auto-generated simulation.',
-                'instructions': content.get('instructions') or content.get('scenario_context') or content.get('summary') or 'Follow the on-screen guidance.',
-                'objectives': content.get('objectives') or [sess.get('title', 'Complete the simulation')],
-                'config': content,
-            }
-            sb_post('master_simulations', row)
-            print(f'    ✓ inserted')
-            successes += 1
-        except Exception as e:
-            print(f'    ✗ FAILED: {e}')
-            failures += 1
-        # Small delay to be nice to the LLM
-        await asyncio.sleep(0.5)
+    await asyncio.gather(*[gen_one((i + 1, p)) for i, p in enumerate(plan)])
 
     print(f'\n=== Done: {successes} succeeded, {failures} failed ===')
     # Force clean exit — the httpx client in emergentintegrations sometimes hangs.

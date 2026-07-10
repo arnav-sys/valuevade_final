@@ -1,14 +1,23 @@
 /**
  * Phase B.2 — Video editor for the Admin Curriculum tab.
- * Wraps the direct-to-Supabase upload flow (bypasses nginx 1 MB body cap)
- * for a single session. Also supports Delete, external-URL paste (for videos
- * too large for the Supabase project's global upload cap), and inline preview.
+ *
+ * Uses TUS resumable uploads (tus-js-client) authenticated with the admin's
+ * Supabase JWT — bypasses the 50 MB cap on anon/signed-URL uploads and lets
+ * Pro-plan projects push files up to 50 GB (bucket + global-limit permitting).
+ *
+ * Fallback: paste an external URL (YouTube / Vimeo / Cloudflare Stream / Mux /
+ * BunnyCDN) for cases where the project global upload cap has not been raised
+ * from the 50 MB default.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import * as tus from 'tus-js-client';
 import { supabase } from '../../lib/supabase';
 import { Upload, Trash2, Loader2, Play, Link2, X } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
+const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+const VIDEO_BUCKET = 'session-videos';
+const CHUNK_SIZE = 6 * 1024 * 1024; // 6 MB — the TUS chunk size required by Supabase Storage
 
 async function req(path, method = 'GET', body = null) {
   const { data: { session } } = await supabase.auth.getSession();
@@ -26,6 +35,67 @@ async function req(path, method = 'GET', body = null) {
   return j;
 }
 
+// Slugify a filename so Supabase Storage accepts the object key.
+function safeKey(name) {
+  const dot = name.lastIndexOf('.');
+  const stem = dot > 0 ? name.slice(0, dot) : name;
+  const ext = dot > 0 ? name.slice(dot).toLowerCase() : '';
+  return `${stem.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'video'}${ext || '.mp4'}`;
+}
+
+async function uploadTusResumable(file, objectPath, onProgress) {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.access_token) throw new Error('You must be signed in as admin to upload.');
+
+  return new Promise((resolve, reject) => {
+    const upload = new tus.Upload(file, {
+      endpoint: `${SUPABASE_URL}/storage/v1/upload/resumable`,
+      retryDelays: [0, 3000, 5000, 10000, 20000],
+      headers: {
+        authorization: `Bearer ${session.access_token}`,
+        'x-upsert': 'true',
+      },
+      uploadDataDuringCreation: true,
+      removeFingerprintOnSuccess: true,
+      metadata: {
+        bucketName: VIDEO_BUCKET,
+        objectName: objectPath,
+        contentType: file.type || 'video/mp4',
+        cacheControl: '3600',
+      },
+      chunkSize: CHUNK_SIZE,
+      allowedMetaFields: ['bucketName', 'objectName', 'contentType', 'cacheControl'],
+      onError: (err) => {
+        // Surface the Supabase 413 message clearly.
+        const status = err?.originalResponse?.getStatus?.();
+        if (status === 413) {
+          reject(new Error(
+            'File exceeds the Supabase Storage upload cap on this project. '
+            + 'Even on the Pro plan the default is 50 MB — go to Supabase Dashboard → '
+            + 'Storage → Settings → "Global upload file size limit" and raise it (up to '
+            + '50 GB on Pro). Then reload this page and try again. As an alternative, use '
+            + '"Use URL" below to attach a YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN link.'
+          ));
+        } else {
+          reject(new Error(err?.message || String(err)));
+        }
+      },
+      onProgress: (bytesUploaded, bytesTotal) => {
+        onProgress(Math.round((bytesUploaded / bytesTotal) * 100));
+      },
+      onSuccess: () => {
+        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${VIDEO_BUCKET}/${objectPath}`;
+        resolve(publicUrl);
+      },
+    });
+
+    upload.findPreviousUploads().then((previousUploads) => {
+      if (previousUploads.length > 0) upload.resumeFromPreviousUpload(previousUploads[0]);
+      upload.start();
+    });
+  });
+}
+
 export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onChange }) {
   const [busy, setBusy] = useState(null);       // 'upload' | 'delete' | 'url' | null
   const [progress, setProgress] = useState(0);
@@ -34,41 +104,17 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
   const [current, setCurrent] = useState(lectureUrl || null);
   const [urlPanelOpen, setUrlPanelOpen] = useState(false);
   const [externalUrl, setExternalUrl] = useState('');
+  const abortRef = useRef(null);
 
   useEffect(() => { setCurrent(lectureUrl || null); }, [lectureUrl]);
 
   const upload = async (file) => {
     setBusy('upload'); setProgress(0); setErr(null);
     try {
-      const signed = await req(`/api/admin/sessions/${sessionId}/video-signed-url`, 'POST', {});
-      if (!signed?.upload_url) throw new Error('missing signed upload URL');
-      await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', signed.upload_url);
-        xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
-        xhr.setRequestHeader('x-upsert', 'true');
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) setProgress(Math.round((e.loaded / e.total) * 100));
-        };
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) resolve();
-          else if (xhr.status === 413) {
-            // Bucket / global storage cap hit — surface a helpful message.
-            reject(new Error(
-              'File exceeds the Supabase Storage upload cap on this project '
-              + '(usually 50 MB on Free tier). For a 30-min video, either '
-              + 'upgrade Supabase to Pro (up to 50 GB) or use the "external '
-              + 'video URL" option below (YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN).'
-            ));
-          } else {
-            reject(new Error(`storage upload ${xhr.status}: ${xhr.responseText?.slice(0, 200)}`));
-          }
-        };
-        xhr.onerror = () => reject(new Error('network error during upload'));
-        xhr.send(file);
-      });
+      const objectPath = `${sessionId}/${Date.now()}-${safeKey(file.name)}`;
+      const publicUrl = await uploadTusResumable(file, objectPath, setProgress);
       const saved = await req(`/api/admin/sessions/${sessionId}/video-url`, 'POST', {
-        public_url: signed.public_url,
+        public_url: publicUrl,
       });
       const busted = `${saved.lecture_url}?t=${Date.now()}`;
       setCurrent(busted);
@@ -80,13 +126,13 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
   const pickAndUpload = () => {
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = 'video/mp4,video/webm';
+    input.accept = 'video/mp4,video/webm,video/quicktime';
     input.onchange = () => {
       const f = input.files?.[0];
       if (!f) return;
-      // 5 GB frontend guardrail (matches Pro-tier Supabase Storage ceiling).
-      if (f.size > 5 * 1024 * 1024 * 1024) {
-        setErr(`File too large (${(f.size / 1073741824).toFixed(2)} GB). Max 5 GB.`);
+      // 50 GB frontend guardrail (matches Supabase Pro-tier ceiling for TUS resumable uploads).
+      if (f.size > 50 * 1024 * 1024 * 1024) {
+        setErr(`File too large (${(f.size / 1073741824).toFixed(2)} GB). Max 50 GB.`);
         return;
       }
       upload(f);
@@ -193,7 +239,7 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
           disabled={busy !== null}
           data-testid="video-url-btn"
           className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-[var(--color-border)] text-[var(--color-text)] text-xs hover:bg-[var(--color-surface)] disabled:opacity-50"
-          title="For 30-min+ videos that exceed the Supabase Storage cap, paste a YouTube/Vimeo/Cloudflare Stream/Mux/BunnyCDN URL."
+          title="Use for 30-min+ videos when you can't (or don't want to) upload to Supabase Storage."
         >
           <Link2 size={13} /> Use URL
         </button>
@@ -219,8 +265,7 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
             </button>
           </div>
           <p className="text-[10px] text-[var(--color-text-muted)] mb-2 font-bricolage leading-relaxed">
-            For videos larger than the Supabase Storage cap on this project (typically 50 MB on Free tier), host the video on
-            YouTube, Vimeo, Cloudflare Stream, Mux, or BunnyCDN and paste the direct/embed URL below.
+            Host the video on YouTube, Vimeo, Cloudflare Stream, Mux, or BunnyCDN and paste the direct/embed URL below.
           </p>
           <input
             type="url"
@@ -257,8 +302,8 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
       {err && <p className="text-xs text-red-500 mt-2 font-bricolage leading-relaxed" data-testid="video-editor-error">{err}</p>}
 
       <p className="text-[10px] text-[var(--color-text-muted)] mt-4 font-bricolage leading-relaxed">
-        Direct upload goes to Supabase Storage — capped by your project&apos;s global limit (50 MB on Free tier, up to 50 GB on Pro).
-        For a 30-min video, use <span className="text-[var(--color-text)]">Use URL</span> and host on YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN.
+        Uploads use TUS resumable transfer (auto-retries, chunked 6 MB) — up to 50 GB on Pro. If you hit a 413 error,
+        raise the &ldquo;Global upload file size limit&rdquo; in Supabase Dashboard → Storage → Settings, then reload.
       </p>
     </div>
   );

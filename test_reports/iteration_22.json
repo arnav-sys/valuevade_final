@@ -1,0 +1,52 @@
+{
+  "summary": "Iteration 22 — Verified the TUS-resumable upload fix for the 413 payload-too-large bug. Backend endpoint POST /api/admin/sessions/{sid}/video-url continues to accept any http(s) URL (9/9 pytest pass, regression preserved). Frontend VideoEditor (Curriculum → session → Video tab) and AdminPanel SessionVideosTab both wire the new TUS uploader from tus-js-client@4.3.1 without console errors — 'Upload video' opens the OS file chooser, 'Use URL' opens the fallback panel, and the footer now explicitly mentions TUS resumable transfer, the 50 GB Pro ceiling, and directs admins to Supabase Dashboard → Storage → Settings → 'Global upload file size limit' on 413. The /_dev/sim/session/1772af9e-… route renders the spreadsheet-grid cleanly with no red webpack-dev overlay — the FixedSizeGrid issue reported in iteration 21 has been resolved (react-window pinned to 1.8.11). No 'tus is not defined' or FixedSizeGrid errors observed anywhere.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_video_url_external.py",
+    "/app/test_reports/pytest/iter22_video_url_tus.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "VideoEditor.jsx and AdminPanel.jsx > SessionVideosTab.uploadFor duplicate the TUS setup block (metadata, retryDelays, onError, onProgress, onSuccess). Consider extracting into a shared `lib/tusUpload.js` helper so future tweaks (chunk size, retry policy, 413 message) don't have to be applied twice.",
+    "Both files hard-code the bucket name 'session-videos'. Move to a single constant in a shared module.",
+    "AdminPanel.jsx is 1204 lines and mixes admin dashboard, waitlist, users, curriculum, videos, payments, and payouts tabs. Consider splitting into per-tab files under /components/admin/ — this file is well over the 700-line file-size guideline.",
+    "Testid inconsistency (minor, does not affect functionality): the review request references `admin-tab-session-videos` but the actual testid is `admin-tab-videos`. Both AdminPanel tab and SessionVideosTab still work correctly. If external QA references the review-request name, either add an alias data-testid or update docs."
+  ],
+  "updated_files": [],
+  "success_rate": {
+    "backend": "100% (9/9 pytest cases pass)",
+    "frontend": "100% (all TUS wiring + testids present, no console errors, dev-sim page renders spreadsheet cleanly)"
+  },
+  "test_credentials": "Admin: info@valuevade.com / aa1aa2sam3 (Supabase auth). /admin-panel requires this login; /referral has a SEPARATE mini admin login for waitlist review that also accepts these credentials.",
+  "seed_data_creation": "None. Test file restores the original lecture_url on the touched session via a module-scope teardown fixture.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Everything in the video-upload flow is now correct in code. The remaining out-of-code step is for the USER to raise Supabase Dashboard → Storage → Settings → 'Global upload file size limit' from 50 MB to whatever they need (up to 50 GB on Pro). Until that dashboard toggle is flipped, actual >50 MB TUS uploads will still 413 — that is expected and NOT a code bug. The FE now displays a clear 413 message pointing to that exact setting. Verified testids: video-editor, video-upload-btn, video-url-btn, video-delete-btn, video-url-panel, video-url-input, video-url-save, video-url-close, video-preview-toggle, admin-tab-videos, admin-tab-curriculum, admin-video-upload-{sid}, admin-video-url-{sid}, admin-video-delete-{sid}, editor-tab-video (needed to click into VideoEditor from Curriculum). Session tested for VideoEditor: bd1c604c-016f-44d9-9f34-ca9334b053bf (M1.1 'What Is Finance, Really?'). No unresolved issues.",
+  "verification_details": {
+    "backend_pytest_pass": [
+      "TestExternalUrlAccept::test_accepts_youtube_url",
+      "TestExternalUrlAccept::test_accepts_direct_cdn_url",
+      "TestExternalUrlAccept::test_accepts_vimeo_url",
+      "TestExternalUrlAccept::test_accepts_supabase_bucket_url_regression",
+      "TestUrlValidation::test_rejects_non_url",
+      "TestUrlValidation::test_rejects_empty_url",
+      "TestUrlValidation::test_rejects_ftp_url",
+      "TestSignedUrlMaxBytes::test_signed_url_returns_5gb_cap",
+      "TestAuthRegression::test_unauthenticated_video_url_returns_401"
+    ],
+    "frontend_video_editor": "Curriculum tab → session-row-1 → editor-tab-video → data-testid='video-editor' renders. All buttons (upload/url/delete) present and enabled. Footer text verified: contains 'TUS resumable transfer (auto-retries, chunked 6 MB) — up to 50 GB on Pro' and 'raise the \"Global upload file size limit\" in Supabase Dashboard → Storage → Settings, then reload.' Use URL click opens video-url-panel with input/save/close testids all present.",
+    "frontend_upload_click": "Clicking video-upload-btn opens native file chooser (verified with page.expect_file_chooser — resolved successfully). No exception, no console error.",
+    "frontend_admin_session_videos_tab": "admin-tab-videos click reveals rows with admin-video-upload-{sid}, admin-video-url-{sid}, admin-video-delete-{sid} for all 7 M1 sessions. First row's upload and URL buttons both is_enabled=True.",
+    "dev_sim_route": "/_dev/sim/session/1772af9e-4a3a-4c6f-9a45-ef3e278ead40 loads cleanly: spreadsheet-grid testid present, 'DEV SIM PREVIEW · TYPE: EXCEL' header + full jspreadsheet grid with 5 companies (TCS/Infosys/Wipro/HCL Tech/Tech Mahindra) rendered. No red webpack overlay. Zero console errors.",
+    "no_tus_errors": "Zero 'tus is not defined' or 'tus.Upload is not a function' errors across /admin-panel, VideoEditor render, and /_dev/sim page.",
+    "no_fixedgrid_errors": "Zero FixedSizeGrid import errors — the react-window ^2.x downgrade from iteration 21 (now pinned to 1.8.11) resolved the webpack overlay issue."
+  }
+}

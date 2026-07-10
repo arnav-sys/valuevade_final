@@ -77,6 +77,7 @@ const AdminPanel = lazyWithRetry(() => import("@/components/AdminPanel"));
 const MockInterviewPage = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewPage"));
 const MockInterviewResults = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewResults"));
 const M3SamplePreview = lazyWithRetry(() => import("@/components/M3SamplePreview"));
+const DevSimPreview = lazyWithRetry(() => import("@/components/DevSimPreview"));
 const M3DryRunPreview = lazyWithRetry(() => import("@/components/M3DryRunPreview"));
 const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
@@ -147,6 +148,8 @@ function App() {
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/m3-sample-preview" element={<M3SamplePreview />} />
                   <Route path="/m3-dryrun-preview" element={<M3DryRunPreview />} />
+                  <Route path="/_dev/sim/:simId" element={<DevSimPreview />} />
+                  <Route path="/_dev/sim/session/:sessionId" element={<DevSimPreview />} />
                   {/* Signup UI removed — existing users can still log in.
                       Any old /signup, /signuproute1 links land on /login. */}
                   <Route path="/signup" element={<Navigate to="/login" replace />} />

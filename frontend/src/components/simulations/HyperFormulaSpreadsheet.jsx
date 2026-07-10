@@ -297,6 +297,11 @@ export default function HyperFormulaSpreadsheet({
         maxRows: MAX_ROWS,
         maxColumns: MAX_COLS,
       });
+      // HyperFormula does not treat bare TRUE / FALSE as boolean literals — it
+      // parses them as named expressions. Register them so formulas like
+      // =VLOOKUP("Infosys",A2:H6,3,FALSE) evaluate correctly instead of #NAME?.
+      try { hfRef.current.addNamedExpression('TRUE', '=TRUE()'); } catch { /* already exists */ }
+      try { hfRef.current.addNamedExpression('FALSE', '=FALSE()'); } catch { /* already exists */ }
     } catch (e) {
       // eslint-disable-next-line no-console
       console.error('[HF] init failed', e);

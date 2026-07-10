@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Navigate, useSearchParams } from 'react-router-dom';
+import * as tus from 'tus-js-client';
 import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
 import ErrorsTab from './admin/ErrorsTab';
@@ -951,43 +952,64 @@ function SessionVideosTab() {
     setBusy((b) => ({ ...b, [session_id]: 'upload' }));
     setProgress((p) => ({ ...p, [session_id]: 0 }));
     try {
-      // Direct-to-Supabase upload — bypasses nginx (1 MB cap → 413) entirely.
-      // 1. Ask backend for a signed upload URL (small JSON round-trip only)
-      const signed = await authPost(
-        `/api/admin/sessions/${session_id}/video-signed-url`, {}
-      );
-      if (!signed?.upload_url) throw new Error('missing signed upload URL');
+      // Get admin's Supabase JWT for TUS auth
+      const { data: { session: authSession } } = await supabase.auth.getSession();
+      if (!authSession?.access_token) throw new Error('You must be signed in as admin.');
 
-      // 2. PUT the file straight to Supabase Storage
-      await new Promise((resolve, reject) => {
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', signed.upload_url);
-        xhr.setRequestHeader('Content-Type', file.type || 'video/mp4');
-        xhr.setRequestHeader('x-upsert', 'true');
-        xhr.upload.onprogress = (e) => {
-          if (e.lengthComputable) {
-            setProgress((p) => ({ ...p, [session_id]: Math.round((e.loaded / e.total) * 100) }));
-          }
-        };
-        xhr.onload = () => {
-          if (xhr.status >= 200 && xhr.status < 300) resolve();
-          else if (xhr.status === 413) {
-            reject(new Error(
-              'File exceeds the Supabase Storage upload cap on this project '
-              + '(usually 50 MB on Free tier). For a 30-min video, either '
-              + 'upgrade Supabase to Pro or use the "Paste URL" option (YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN).'
-            ));
-          } else {
-            reject(new Error(`storage upload ${xhr.status}: ${xhr.responseText?.slice(0, 200)}`));
-          }
-        };
-        xhr.onerror = () => reject(new Error('network error during upload'));
-        xhr.send(file);
+      const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
+      const VIDEO_BUCKET = 'session-videos';
+      const dot = file.name.lastIndexOf('.');
+      const stem = dot > 0 ? file.name.slice(0, dot) : file.name;
+      const ext = dot > 0 ? file.name.slice(dot).toLowerCase() : '.mp4';
+      const safeName = `${stem.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'video'}${ext}`;
+      const objectPath = `${session_id}/${Date.now()}-${safeName}`;
+
+      // TUS resumable upload — supports files up to 50 GB on Supabase Pro,
+      // versus 50 MB for anon/signed-URL uploads.
+      const publicUrl = await new Promise((resolve, reject) => {
+        const upload = new tus.Upload(file, {
+          endpoint: `${SUPABASE_URL}/storage/v1/upload/resumable`,
+          retryDelays: [0, 3000, 5000, 10000, 20000],
+          headers: {
+            authorization: `Bearer ${authSession.access_token}`,
+            'x-upsert': 'true',
+          },
+          uploadDataDuringCreation: true,
+          removeFingerprintOnSuccess: true,
+          metadata: {
+            bucketName: VIDEO_BUCKET,
+            objectName: objectPath,
+            contentType: file.type || 'video/mp4',
+            cacheControl: '3600',
+          },
+          chunkSize: 6 * 1024 * 1024,
+          allowedMetaFields: ['bucketName', 'objectName', 'contentType', 'cacheControl'],
+          onError: (err) => {
+            const status = err?.originalResponse?.getStatus?.();
+            if (status === 413) {
+              reject(new Error(
+                'File exceeds the Supabase Storage upload cap. Even on Pro the default is 50 MB — '
+                + 'go to Supabase Dashboard → Storage → Settings → "Global upload file size limit" '
+                + 'and raise it (up to 50 GB on Pro), then reload and retry. Or use "URL" to paste a link.'
+              ));
+            } else {
+              reject(new Error(err?.message || String(err)));
+            }
+          },
+          onProgress: (bytesUploaded, bytesTotal) => {
+            setProgress((p) => ({ ...p, [session_id]: Math.round((bytesUploaded / bytesTotal) * 100) }));
+          },
+          onSuccess: () => resolve(`${SUPABASE_URL}/storage/v1/object/public/${VIDEO_BUCKET}/${objectPath}`),
+        });
+        upload.findPreviousUploads().then((prev) => {
+          if (prev.length > 0) upload.resumeFromPreviousUpload(prev[0]);
+          upload.start();
+        });
       });
 
-      // 3. Tell backend to save the URL on master_sessions (small JSON payload)
+      // Save the URL on master_sessions (small JSON payload)
       await authPost(`/api/admin/sessions/${session_id}/video-url`, {
-        public_url: signed.public_url,
+        public_url: publicUrl,
       });
       await reload();
     } catch (e) {
@@ -1000,12 +1022,12 @@ function SessionVideosTab() {
 
   const pickAndUpload = (session_id) => {
     const input = document.createElement('input');
-    input.type = 'file'; input.accept = 'video/mp4,video/webm';
+    input.type = 'file'; input.accept = 'video/mp4,video/webm,video/quicktime';
     input.onchange = () => {
       const f = input.files?.[0];
       if (!f) return;
-      // 5 GB frontend guardrail (matches Pro-tier Supabase Storage ceiling).
-      if (f.size > 5 * 1024 * 1024 * 1024) { alert(`File too large (${(f.size/1073741824).toFixed(2)} GB). Max 5 GB.`); return; }
+      // 50 GB frontend guardrail (matches Pro-tier TUS ceiling).
+      if (f.size > 50 * 1024 * 1024 * 1024) { alert(`File too large (${(f.size/1073741824).toFixed(2)} GB). Max 50 GB.`); return; }
       uploadFor(session_id, f);
     };
     input.click();
