@@ -1,0 +1,63 @@
+{
+  "summary": "Iteration 23 — Verified the TUS-proxy chunked-upload fix for the RLS-403 bug. Backend endpoints POST /api/admin/sessions/{id}/tus-create-upload and POST /api/admin/tus-patch-chunk both work end-to-end: 5 MB single-chunk and 12 MB two-chunk uploads succeed, HEAD on the resulting Supabase public URL returns 200 with the correct content-length. Frontend VideoEditor and AdminPanel SessionVideosTab both use the new chunk-proxy flow (tus-js-client has been removed from imports). All testids present and enabled, footer text mentions both '8 MB' chunk size and '50 GB Pro ceiling'. No 'tus is not defined' or any tus-related errors in the console. Dev-sim spreadsheet renders correctly.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Global (unrelated to this fix)",
+        "issues": [
+          "One React hydration warning in the console: '<span> option cannot be a child of ...'. This is emitted somewhere in the sidebar/nav tree — unrelated to video-upload but visible in dev builds. Consider tracking down and fixing separately."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_tus_upload.py",
+    "/app/test_reports/pytest/iter23_tus_upload.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "VideoEditor.jsx (uploadWithChunkProxy) and AdminPanel.jsx > SessionVideosTab.uploadFor still duplicate the chunk-proxy loop (same CHUNK_SIZE constant, same offset accumulation, same 3-attempt retry). Extract into a shared helper (e.g. /lib/tusChunkUpload.js) — this is the third iteration where the same block has been copy-pasted between the two files.",
+    "Bucket name 'session-videos' is still hard-coded in both files; move to a shared constants module.",
+    "wave_endpoints.py is now 2069 lines — well over the 700-line guideline. Consider splitting admin endpoints into per-domain modules (admin_video.py, admin_curriculum.py, admin_users.py, etc.).",
+    "admin_tus_create_upload validates upload_length with Field(ge=1, le=53_687_091_200) via _AdminTusCreateBody but the class is redefined a second time INSIDE the router function (line 1112). The duplicate class shadows the module-level one — harmless but confusing. Remove one of the two definitions.",
+    "admin_tus_patch_chunk currently uses synchronous urllib.request inside an async endpoint (line 1144–1160). For large chunks, this blocks the event loop. Consider using httpx.AsyncClient or running via run_in_executor."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_admin_tus_upload.py (created)"
+  ],
+  "success_rate": {
+    "backend": "100% (11/11 pytest cases pass, including 5 MB and 12 MB multi-chunk end-to-end with HEAD verification)",
+    "frontend": "100% — all testids present, both chunk-proxy paths wired, no tus-* console errors"
+  },
+  "test_credentials": "Admin: info@valuevade.com / aa1aa2sam3 (Supabase auth).",
+  "seed_data_creation": "None. Test file uses a module-scope fixture to snapshot and restore lecture_url on session bd1c604c-016f-44d9-9f34-ca9334b053bf.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The RLS-403 TUS upload bug is fully fixed. Backend proxy endpoints work: 5 MB single-chunk (test_full_5mb_upload) and 12 MB two-chunk (test_multi_chunk_12mb_upload) both PASS with HEAD verification of the resulting Supabase public URL. FE VideoEditor (Curriculum → session → Video tab) and AdminPanel > Session Videos tab both use the new chunk-proxy path — tus-js-client is no longer imported in either file (grep confirms only a comment reference remains in VideoEditor.jsx). Testids verified present + enabled: video-editor, video-upload-btn, video-url-btn, video-delete-btn (visible because video attached), video-url-panel, video-url-input, video-url-save, video-url-close, admin-tab-videos, admin-tab-curriculum, editor-tab-video, admin-video-upload-{sid} (7), admin-video-url-{sid} (7), admin-video-delete-{sid} (7). Dev-sim route /_dev/sim/session/1772af9e-4a3a-4c6f-9a45-ef3e278ead40 renders spreadsheet-grid + Data + Answers tabs cleanly. Zero 'tus is not defined' errors.",
+  "verification_details": {
+    "backend_pytest_pass": [
+      "TestTusCreateUpload::test_unauthenticated_returns_401",
+      "TestTusCreateUpload::test_happy_path_returns_location — location starts with expected supabase prefix, bucket=session-videos, public_url present, max_bytes>0",
+      "TestTusCreateUpload::test_invalid_session_returns_404",
+      "TestTusCreateUpload::test_negative_upload_length_returns_422",
+      "TestTusCreateUpload::test_huge_upload_length_returns_422 (100 GB request rejected by Field le=50 GB)",
+      "TestTusPatchChunk::test_unauthenticated_returns_401",
+      "TestTusPatchChunk::test_invalid_location_returns_400 — 'Invalid TUS location URL.'",
+      "TestTusPatchChunk::test_full_5mb_upload — upload_offset=5242880, HEAD returns 200 with content-length=5242880",
+      "TestTusPatchChunk::test_multi_chunk_12mb_upload — chunk1 offset=8388608, chunk2 offset=12582912, HEAD returns 200 with content-length=12582912",
+      "TestTusPatchChunk::test_chunk_past_eof_bubbles_up_as_502 — extra chunk after EOF returns 4xx/502 upstream",
+      "TestVideoUrlRegression::test_external_url_saves — external https URL persisted to master_sessions.lecture_url"
+    ],
+    "frontend_video_editor": "Admin Panel → Curriculum tab → M1 → session-row 1 → editor-tab-video → data-testid='video-editor' renders with 'What Is Finance, Really?'. All 4 buttons (video-upload-btn, video-url-btn, video-delete-btn — present because video is attached — plus video-preview-toggle) render and are enabled. Footer text 'Uploads are chunked (8 MB) through the backend so they bypass Supabase RLS and support the full 50 GB Pro ceiling.' verified.",
+    "frontend_url_panel": "Clicking video-url-btn opens video-url-panel with video-url-input, video-url-save, video-url-close all present. Close works.",
+    "frontend_session_videos_tab": "admin-tab-videos → 7 M1 sessions, each with admin-video-upload-{sid}, admin-video-url-{sid}, admin-video-delete-{sid} (all 3 enabled per row) — verified via querySelectorAll.",
+    "no_tus_errors": "Zero 'tus is not defined' errors in console across /login, /admin-panel curriculum, /admin-panel videos, and /_dev/sim/session pages. grep -rn 'tus-js-client' src/ finds only a comment in VideoEditor.jsx (import removed).",
+    "dev_sim_route": "/_dev/sim/session/1772af9e-4a3a-4c6f-9a45-ef3e278ead40 loads: DEV SIM PREVIEW · TYPE: EXCEL header, 'Valuation Multiples & DCF Analysis — Indian Companies' title, spreadsheet-grid with 5 companies (TCS/Infosys/Wipro/HCL Tech/Tech Mahindra), formula bar (fx), and Data + Answers tabs all render."
+  }
+}

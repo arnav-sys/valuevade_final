@@ -1,23 +1,20 @@
 /**
- * Phase B.2 — Video editor for the Admin Curriculum tab.
+ * VideoEditor — TUS proxy upload flow.
  *
- * Uses TUS resumable uploads (tus-js-client) authenticated with the admin's
- * Supabase JWT — bypasses the 50 MB cap on anon/signed-URL uploads and lets
- * Pro-plan projects push files up to 50 GB (bucket + global-limit permitting).
- *
- * Fallback: paste an external URL (YouTube / Vimeo / Cloudflare Stream / Mux /
- * BunnyCDN) for cases where the project global upload cap has not been raised
- * from the 50 MB default.
+ * We can't use tus-js-client directly against Supabase because RLS on
+ * storage.objects blocks admin JWTs on TUS PATCH. Instead:
+ *   1. Backend pre-creates a TUS session with service_role → Location URL.
+ *   2. FE splits file into ≤8 MB chunks and POSTs each via
+ *      /api/admin/tus-patch-chunk (multipart). Backend forwards each chunk
+ *      to the Location URL with service_role → 204 → returns new offset.
+ * This bypasses RLS entirely without exposing service_role to the browser.
  */
 import { useEffect, useState, useRef } from 'react';
-import * as tus from 'tus-js-client';
 import { supabase } from '../../lib/supabase';
 import { Upload, Trash2, Loader2, Play, Link2, X } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
-const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
-const VIDEO_BUCKET = 'session-videos';
-const CHUNK_SIZE = 6 * 1024 * 1024; // 6 MB — the TUS chunk size required by Supabase Storage
+const CHUNK_SIZE = 8 * 1024 * 1024; // 8 MB per chunk — well under the ingress body cap.
 
 async function req(path, method = 'GET', body = null) {
   const { data: { session } } = await supabase.auth.getSession();
@@ -35,69 +32,63 @@ async function req(path, method = 'GET', body = null) {
   return j;
 }
 
-// Slugify a filename so Supabase Storage accepts the object key.
-function safeKey(name) {
-  const dot = name.lastIndexOf('.');
-  const stem = dot > 0 ? name.slice(0, dot) : name;
-  const ext = dot > 0 ? name.slice(dot).toLowerCase() : '';
-  return `${stem.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'video'}${ext || '.mp4'}`;
+async function patchChunkViaProxy(location, offset, chunkBlob, accessToken, signal) {
+  const fd = new FormData();
+  fd.append('location', location);
+  fd.append('offset', String(offset));
+  fd.append('chunk', chunkBlob, 'chunk.bin');
+  const r = await fetch(`${API}/api/admin/tus-patch-chunk`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: fd,
+    signal,
+  });
+  const text = await r.text();
+  let j = null; try { j = text ? JSON.parse(text) : null; } catch (_e) { /* noop */ }
+  if (!r.ok) throw new Error((j && (j.detail || j.message)) || text || `${r.status}`);
+  return j.upload_offset;
 }
 
-async function uploadTusResumable(file, objectPath, onProgress) {
+async function uploadWithChunkProxy(sessionId, file, onProgress, abortSignal) {
   const { data: { session } } = await supabase.auth.getSession();
   if (!session?.access_token) throw new Error('You must be signed in as admin to upload.');
 
-  return new Promise((resolve, reject) => {
-    const upload = new tus.Upload(file, {
-      endpoint: `${SUPABASE_URL}/storage/v1/upload/resumable`,
-      retryDelays: [0, 3000, 5000, 10000, 20000],
-      headers: {
-        authorization: `Bearer ${session.access_token}`,
-        'x-upsert': 'true',
-      },
-      uploadDataDuringCreation: true,
-      removeFingerprintOnSuccess: true,
-      metadata: {
-        bucketName: VIDEO_BUCKET,
-        objectName: objectPath,
-        contentType: file.type || 'video/mp4',
-        cacheControl: '3600',
-      },
-      chunkSize: CHUNK_SIZE,
-      allowedMetaFields: ['bucketName', 'objectName', 'contentType', 'cacheControl'],
-      onError: (err) => {
-        // Surface the Supabase 413 message clearly.
-        const status = err?.originalResponse?.getStatus?.();
-        if (status === 413) {
-          reject(new Error(
-            'File exceeds the Supabase Storage upload cap on this project. '
-            + 'Even on the Pro plan the default is 50 MB — go to Supabase Dashboard → '
-            + 'Storage → Settings → "Global upload file size limit" and raise it (up to '
-            + '50 GB on Pro). Then reload this page and try again. As an alternative, use '
-            + '"Use URL" below to attach a YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN link.'
-          ));
-        } else {
-          reject(new Error(err?.message || String(err)));
-        }
-      },
-      onProgress: (bytesUploaded, bytesTotal) => {
-        onProgress(Math.round((bytesUploaded / bytesTotal) * 100));
-      },
-      onSuccess: () => {
-        const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/${VIDEO_BUCKET}/${objectPath}`;
-        resolve(publicUrl);
-      },
-    });
-
-    upload.findPreviousUploads().then((previousUploads) => {
-      if (previousUploads.length > 0) upload.resumeFromPreviousUpload(previousUploads[0]);
-      upload.start();
-    });
+  // 1) Pre-create the TUS session (backend, service_role, bypasses RLS).
+  const created = await req(`/api/admin/sessions/${sessionId}/tus-create-upload`, 'POST', {
+    upload_length: file.size,
+    content_type: file.type || 'video/mp4',
   });
+  if (!created?.location) throw new Error('Backend did not return a TUS upload location.');
+
+  // 2) Stream chunks through the backend proxy until the whole file is uploaded.
+  let offset = 0;
+  while (offset < file.size) {
+    if (abortSignal?.aborted) throw new Error('Upload cancelled.');
+    const end = Math.min(offset + CHUNK_SIZE, file.size);
+    const blob = file.slice(offset, end);
+    let attempt = 0;
+    // Retry each chunk up to 3 times on transient failures.
+    // eslint-disable-next-line no-constant-condition
+    while (true) {
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const newOffset = await patchChunkViaProxy(created.location, offset, blob, session.access_token, abortSignal);
+        offset = typeof newOffset === 'number' && newOffset > offset ? newOffset : end;
+        onProgress(Math.round((offset / file.size) * 100));
+        break;
+      } catch (e) {
+        attempt += 1;
+        if (attempt > 3) throw e;
+        // eslint-disable-next-line no-await-in-loop
+        await new Promise((r) => setTimeout(r, 800 * attempt));
+      }
+    }
+  }
+  return created.public_url;
 }
 
 export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onChange }) {
-  const [busy, setBusy] = useState(null);       // 'upload' | 'delete' | 'url' | null
+  const [busy, setBusy] = useState(null);
   const [progress, setProgress] = useState(0);
   const [preview, setPreview] = useState(false);
   const [err, setErr] = useState(null);
@@ -110,9 +101,10 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
 
   const upload = async (file) => {
     setBusy('upload'); setProgress(0); setErr(null);
+    const controller = new AbortController();
+    abortRef.current = controller;
     try {
-      const objectPath = `${sessionId}/${Date.now()}-${safeKey(file.name)}`;
-      const publicUrl = await uploadTusResumable(file, objectPath, setProgress);
+      const publicUrl = await uploadWithChunkProxy(sessionId, file, setProgress, controller.signal);
       const saved = await req(`/api/admin/sessions/${sessionId}/video-url`, 'POST', {
         public_url: publicUrl,
       });
@@ -120,7 +112,7 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
       setCurrent(busted);
       onChange?.(saved.lecture_url);
     } catch (e) { setErr(e.message); }
-    finally { setBusy(null); setProgress(0); }
+    finally { setBusy(null); setProgress(0); abortRef.current = null; }
   };
 
   const pickAndUpload = () => {
@@ -130,7 +122,6 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
     input.onchange = () => {
       const f = input.files?.[0];
       if (!f) return;
-      // 50 GB frontend guardrail (matches Supabase Pro-tier ceiling for TUS resumable uploads).
       if (f.size > 50 * 1024 * 1024 * 1024) {
         setErr(`File too large (${(f.size / 1073741824).toFixed(2)} GB). Max 50 GB.`);
         return;
@@ -239,7 +230,7 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
           disabled={busy !== null}
           data-testid="video-url-btn"
           className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md border border-[var(--color-border)] text-[var(--color-text)] text-xs hover:bg-[var(--color-surface)] disabled:opacity-50"
-          title="Use for 30-min+ videos when you can't (or don't want to) upload to Supabase Storage."
+          title="For videos hosted externally (YouTube/Vimeo/Cloudflare Stream/Mux/BunnyCDN)."
         >
           <Link2 size={13} /> Use URL
         </button>
@@ -302,8 +293,8 @@ export default function VideoEditor({ sessionId, sessionTitle, lectureUrl, onCha
       {err && <p className="text-xs text-red-500 mt-2 font-bricolage leading-relaxed" data-testid="video-editor-error">{err}</p>}
 
       <p className="text-[10px] text-[var(--color-text-muted)] mt-4 font-bricolage leading-relaxed">
-        Uploads use TUS resumable transfer (auto-retries, chunked 6 MB) — up to 50 GB on Pro. If you hit a 413 error,
-        raise the &ldquo;Global upload file size limit&rdquo; in Supabase Dashboard → Storage → Settings, then reload.
+        Uploads are chunked (8 MB) through the backend so they bypass Supabase RLS and support the full 50 GB Pro ceiling.
+        Long videos may take several minutes — the tab must stay open while uploading.
       </p>
     </div>
   );

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Navigate, useSearchParams } from 'react-router-dom';
-import * as tus from 'tus-js-client';
 import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
 import ErrorsTab from './admin/ErrorsTab';
@@ -952,64 +951,58 @@ function SessionVideosTab() {
     setBusy((b) => ({ ...b, [session_id]: 'upload' }));
     setProgress((p) => ({ ...p, [session_id]: 0 }));
     try {
-      // Get admin's Supabase JWT for TUS auth
       const { data: { session: authSession } } = await supabase.auth.getSession();
       if (!authSession?.access_token) throw new Error('You must be signed in as admin.');
 
-      const SUPABASE_URL = process.env.REACT_APP_SUPABASE_URL;
-      const VIDEO_BUCKET = 'session-videos';
-      const dot = file.name.lastIndexOf('.');
-      const stem = dot > 0 ? file.name.slice(0, dot) : file.name;
-      const ext = dot > 0 ? file.name.slice(dot).toLowerCase() : '.mp4';
-      const safeName = `${stem.toLowerCase().replace(/[^a-z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'video'}${ext}`;
-      const objectPath = `${session_id}/${Date.now()}-${safeName}`;
-
-      // TUS resumable upload — supports files up to 50 GB on Supabase Pro,
-      // versus 50 MB for anon/signed-URL uploads.
-      const publicUrl = await new Promise((resolve, reject) => {
-        const upload = new tus.Upload(file, {
-          endpoint: `${SUPABASE_URL}/storage/v1/upload/resumable`,
-          retryDelays: [0, 3000, 5000, 10000, 20000],
-          headers: {
-            authorization: `Bearer ${authSession.access_token}`,
-            'x-upsert': 'true',
-          },
-          uploadDataDuringCreation: true,
-          removeFingerprintOnSuccess: true,
-          metadata: {
-            bucketName: VIDEO_BUCKET,
-            objectName: objectPath,
-            contentType: file.type || 'video/mp4',
-            cacheControl: '3600',
-          },
-          chunkSize: 6 * 1024 * 1024,
-          allowedMetaFields: ['bucketName', 'objectName', 'contentType', 'cacheControl'],
-          onError: (err) => {
-            const status = err?.originalResponse?.getStatus?.();
-            if (status === 413) {
-              reject(new Error(
-                'File exceeds the Supabase Storage upload cap. Even on Pro the default is 50 MB — '
-                + 'go to Supabase Dashboard → Storage → Settings → "Global upload file size limit" '
-                + 'and raise it (up to 50 GB on Pro), then reload and retry. Or use "URL" to paste a link.'
-              ));
-            } else {
-              reject(new Error(err?.message || String(err)));
-            }
-          },
-          onProgress: (bytesUploaded, bytesTotal) => {
-            setProgress((p) => ({ ...p, [session_id]: Math.round((bytesUploaded / bytesTotal) * 100) }));
-          },
-          onSuccess: () => resolve(`${SUPABASE_URL}/storage/v1/object/public/${VIDEO_BUCKET}/${objectPath}`),
-        });
-        upload.findPreviousUploads().then((prev) => {
-          if (prev.length > 0) upload.resumeFromPreviousUpload(prev[0]);
-          upload.start();
-        });
+      // Backend pre-creates the TUS session with service_role (bypasses RLS).
+      const created = await authPost(`/api/admin/sessions/${session_id}/tus-create-upload`, {
+        upload_length: file.size,
+        content_type: file.type || 'video/mp4',
       });
+      if (!created?.location) throw new Error('Backend did not return a TUS upload location.');
 
-      // Save the URL on master_sessions (small JSON payload)
+      // Chunk the file through the backend proxy — each chunk is patched to
+      // the Supabase TUS location using service_role auth.
+      const CHUNK = 8 * 1024 * 1024;
+      let offset = 0;
+      while (offset < file.size) {
+        const end = Math.min(offset + CHUNK, file.size);
+        const blob = file.slice(offset, end);
+        const fd = new FormData();
+        fd.append('location', created.location);
+        fd.append('offset', String(offset));
+        fd.append('chunk', blob, 'chunk.bin');
+        let attempt = 0;
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            const r = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/admin/tus-patch-chunk`, {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${authSession.access_token}` },
+              body: fd,
+            });
+            if (!r.ok) {
+              // eslint-disable-next-line no-await-in-loop
+              const txt = await r.text();
+              throw new Error(`chunk ${offset}-${end} failed [${r.status}]: ${txt.slice(0, 200)}`);
+            }
+            // eslint-disable-next-line no-await-in-loop
+            const j = await r.json();
+            offset = typeof j.upload_offset === 'number' && j.upload_offset > offset ? j.upload_offset : end;
+            setProgress((p) => ({ ...p, [session_id]: Math.round((offset / file.size) * 100) }));
+            break;
+          } catch (e) {
+            attempt += 1;
+            if (attempt > 3) throw e;
+            // eslint-disable-next-line no-await-in-loop
+            await new Promise((r) => setTimeout(r, 800 * attempt));
+          }
+        }
+      }
+
       await authPost(`/api/admin/sessions/${session_id}/video-url`, {
-        public_url: publicUrl,
+        public_url: created.public_url,
       });
       await reload();
     } catch (e) {

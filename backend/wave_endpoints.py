@@ -20,7 +20,7 @@ import urllib.parse as _urlparse
 from datetime import datetime, timedelta, timezone
 from typing import Optional, List, Any
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -92,6 +92,11 @@ def _ensure_referral_code(user_id: str) -> Optional[str]:
 # ===========================================================================
 class _AdminVideoUrlBody(BaseModel):
     public_url: str
+
+
+class _AdminTusCreateBody(BaseModel):
+    upload_length: int = Field(..., ge=1, le=53_687_091_200)
+    content_type: str = "video/mp4"
 
 
 # --- Admin curriculum CRUD (Phase A: modules + sessions) ------------------
@@ -1098,6 +1103,156 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         return {
             "upload_url": upload_url,
             "token": signed.get("token"),
+            "key": key,
+            "bucket": _VIDEO_BUCKET,
+            "public_url": _bucket_public_url(key),
+            "max_bytes": _MAX_VIDEO_BYTES,
+        }
+
+    class _AdminTusCreateBody(BaseModel):
+        upload_length: int = Field(..., ge=1, le=53_687_091_200)
+        content_type: str = "video/mp4"
+
+    @api_router.post("/admin/tus-patch-chunk")
+    async def admin_tus_patch_chunk(
+        location: str = Form(...),
+        offset: int = Form(...),
+        chunk: UploadFile = File(...),
+        user=Depends(_get_supabase_user),
+    ):
+        """Forwards a single TUS chunk from the browser to Supabase Storage's
+        TUS Location URL, authenticated with service_role so RLS on
+        storage.objects is bypassed. FE splits the file into ≤10 MB chunks
+        (well under our ingress body cap of ~100 MB) and calls this once per
+        chunk. Returns the new upload offset.
+
+        We do it this way because Supabase RLS on `storage.objects` blocks
+        admin JWTs on TUS PATCH — the only clean bypass is service_role,
+        which we do NOT expose to the browser."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing")
+
+        # Guard against arbitrary URL forwarding
+        if not location.startswith(f"{_SUPABASE_REST_URL}/storage/v1/upload/resumable/"):
+            raise HTTPException(status_code=400, detail="Invalid TUS location URL.")
+
+        raw = await chunk.read()
+        if not raw:
+            raise HTTPException(status_code=400, detail="Empty chunk.")
+
+        import urllib.request as _ur
+        try:
+            req = _ur.Request(
+                location,
+                method="PATCH",
+                data=raw,
+                headers={
+                    "Authorization": f"Bearer {_SUPABASE_SR}",
+                    "Tus-Resumable": "1.0.0",
+                    "Upload-Offset": str(offset),
+                    "Content-Type": "application/offset+octet-stream",
+                    "Content-Length": str(len(raw)),
+                },
+            )
+            with _ur.urlopen(req, timeout=120) as resp:
+                new_offset = int(resp.headers.get("Upload-Offset") or (offset + len(raw)))
+                return {"upload_offset": new_offset}
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="replace")
+            logger.error("tus patch chunk failed [%s]: %s", e.code, err_body[:400])
+            raise HTTPException(status_code=502, detail=f"Storage TUS patch failed [{e.code}]: {err_body[:200]}")
+
+    @api_router.post("/admin/sessions/{session_id}/tus-create-upload")
+    async def admin_tus_create_upload(session_id: str, body: _AdminTusCreateBody,
+                                       user=Depends(_get_supabase_user)):
+        """Pre-creates a TUS resumable-upload session using the service_role
+        key so RLS on storage.objects is bypassed. Returns the Location URL
+        the FE then streams chunks to via /admin/tus-patch-chunk (which also
+        proxies with service_role — needed because Supabase RLS blocks admin
+        JWTs on TUS PATCH as of 2026).
+
+        Any existing object at the deterministic key is DELETED first so
+        the completing INSERT into storage.objects doesn't 409.
+        This unblocks large (>50 MB) video uploads on Pro plan without
+        requiring the user to add custom RLS INSERT policies for admins."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing")
+
+        # Resolve session → deterministic object key
+        sess_rows = _supabase_get(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}"
+            "&select=id,order_index,module_id&limit=1"
+        ) or []
+        if not sess_rows:
+            raise HTTPException(status_code=404, detail="Session not found.")
+        sess = sess_rows[0]
+        mod_rows = _supabase_get(
+            f"master_modules?id=eq.{_urlparse.quote(sess['module_id'])}"
+            "&select=module_number&limit=1"
+        ) or []
+        if not mod_rows or mod_rows[0].get("module_number") is None:
+            raise HTTPException(status_code=404, detail="Module not found.")
+        module_number = int(mod_rows[0]["module_number"])
+        order_index = int(sess.get("order_index") or 1)
+        key = _bucket_key_for(module_number, order_index)
+
+        import urllib.request as _ur
+        # 1) Delete any existing object at this key so the TUS completion
+        #    INSERT doesn't collide (Supabase TUS returns 409 otherwise).
+        try:
+            del_req = _ur.Request(
+                f"{_SUPABASE_REST_URL}/storage/v1/object/{_VIDEO_BUCKET}/{key}",
+                method="DELETE",
+                headers={
+                    "apikey": _SUPABASE_SR,
+                    "Authorization": f"Bearer {_SUPABASE_SR}",
+                },
+            )
+            with _ur.urlopen(del_req, timeout=20) as resp:
+                _ = resp.read()
+        except urllib.error.HTTPError as e:
+            # 404 is fine (no prior object); anything else we log but don't fail hard.
+            if e.code != 404:
+                logger.warning("pre-delete of %s returned %s", key, e.code)
+
+        # 2) TUS Upload-Metadata is `key1 base64value1,key2 base64value2,...`
+        def b64(s: str) -> str:
+            import base64 as _b64
+            return _b64.b64encode(s.encode("utf-8")).decode("ascii")
+        meta = ",".join([
+            f"bucketName {b64(_VIDEO_BUCKET)}",
+            f"objectName {b64(key)}",
+            f"contentType {b64(body.content_type or 'video/mp4')}",
+            f"cacheControl {b64('3600')}",
+        ])
+
+        try:
+            req = _ur.Request(
+                f"{_SUPABASE_REST_URL}/storage/v1/upload/resumable",
+                method="POST",
+                data=b"",
+                headers={
+                    "apikey": _SUPABASE_SR,
+                    "Authorization": f"Bearer {_SUPABASE_SR}",
+                    "Tus-Resumable": "1.0.0",
+                    "Upload-Length": str(body.upload_length),
+                    "Upload-Metadata": meta,
+                    "x-upsert": "true",
+                },
+            )
+            with _ur.urlopen(req, timeout=30) as resp:
+                location = resp.headers.get("Location") or resp.headers.get("location") or ""
+                if not location:
+                    raise HTTPException(status_code=502, detail="Storage TUS create returned no Location.")
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="replace")
+            logger.error("tus create failed: %s", err_body[:400])
+            raise HTTPException(status_code=502, detail=f"Storage TUS create failed: {err_body[:200]}")
+
+        return {
+            "location": location,
             "key": key,
             "bucket": _VIDEO_BUCKET,
             "public_url": _bucket_public_url(key),
