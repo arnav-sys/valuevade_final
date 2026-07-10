@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import { adaptSimToWorkbook } from './excelSimAdapter';
-import SpreadsheetSim from './SpreadsheetSim';
+import SpreadsheetSim from './HyperFormulaSpreadsheet';
 import AskPariButton from '../tutor/AskPariButton';
 import { supabase } from '../../lib/supabase';
 

@@ -1,0 +1,58 @@
+{
+  "summary": "Verified the external-video-URL bug-fix (413 workaround). Backend endpoint POST /api/admin/sessions/{sid}/video-url now accepts ANY https URL (YouTube, Vimeo, Cloudflare, direct CDN, Supabase bucket) and rejects non-http/ftp/empty with 400. Signed-URL endpoint returns max_bytes=5GB. Frontend VideoEditor 'Use URL' flow works end-to-end and the AdminPanel Session-Videos tab per-row 'URL' button prompts + saves correctly. All 9 pytest tests pass; both FE flows verified via Playwright.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Entire app (dev-server only)",
+        "issues": [
+          "Frontend webpack currently compiles WITH 1 UNRELATED ERROR: `./src/components/simulations/HyperFormulaSpreadsheet.jsx:1610 — export 'FixedSizeGrid' (imported as 'FixedSizeGrid') was not found in 'react-window' (possible exports: Grid, List, ...)`. Root cause: react-window ^2.x removed FixedSizeGrid (now `Grid`). This is COMPLETELY UNRELATED to the video-upload bug fix, but it renders a red webpack-dev overlay that hides the login and every page until dismissed. I dismissed it programmatically during tests. Main agent should update HyperFormulaSpreadsheet.jsx to use the new `Grid` API or pin react-window to a 1.x version."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_admin_video_url_external.py",
+    "/app/test_reports/pytest/iter21_video_url_external.xml"
+  ],
+  "action_items": [
+    "(UNRELATED to this bug fix) Fix `FixedSizeGrid` import in /app/frontend/src/components/simulations/HyperFormulaSpreadsheet.jsx — react-window v2 renamed it to `Grid`. This webpack error currently blocks all UI with a red overlay on first load."
+  ],
+  "critical_code_review_comments": [
+    "Backend `admin_save_video_url` (wave_endpoints.py:1107) is correct — now accepts any https URL and persists it via _supabase_patch. Good validation with .startswith(('http://','https://')).",
+    "Note: the endpoint accepts BOTH http:// and https:// — the review request mentions 'ANY https URL'. Accepting http:// is a minor deviation but not a bug (external providers will normally give https).",
+    "The old test file /app/backend/tests/test_admin_video_signed_url.py has 2 stale assertions that now fail against the new behaviour: line 112 asserts max_bytes==500MB (now 5GB) and step 5 (line 210) asserts a non-bucket URL returns 400 (now returns 200). Consider deleting or updating that file — the new /app/backend/tests/test_admin_video_url_external.py supersedes it."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_admin_video_url_external.py (created)"
+  ],
+  "success_rate": {
+    "backend": "100% (9/9 pytest cases)",
+    "frontend": "100% (VideoEditor + AdminPanel URL flows verified)"
+  },
+  "test_credentials": "Admin: info@valuevade.com / aa1aa2sam3 (Supabase auth). Session used: bd1c604c-016f-44d9-9f34-ca9334b053bf ('What Is Finance, Really?') — restored to a valid Supabase bucket URL after tests.",
+  "seed_data_creation": "None. Existing sessions used; lecture_url restored to a valid bucket URL for the session I touched.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "The bug fix is fully verified. Backend endpoint at wave_endpoints.py:1107 accepts any http(s) URL, rejects invalid URLs with 400, and max_bytes on signed-url is 5GB. Frontend testids all present (video-upload-btn, video-url-btn, video-url-panel, video-url-input, video-url-save, video-url-close, admin-video-upload-{id}, admin-video-url-{id}). One UNRELATED frontend compile error exists (HyperFormulaSpreadsheet.jsx / react-window / FixedSizeGrid) — the webpack error overlay blocks the UI until dismissed via document.getElementById('webpack-dev-server-client-overlay').remove(). Not caused by this fix.",
+  "verification_details": {
+    "backend_pytest_pass": [
+      "TestExternalUrlAccept::test_accepts_youtube_url — 200 with lecture_url persisted to https://www.youtube.com/watch?v=abc123TEST",
+      "TestExternalUrlAccept::test_accepts_direct_cdn_url — 200 with https://cdn.example.com/lecture.mp4",
+      "TestExternalUrlAccept::test_accepts_vimeo_url — 200 with https://vimeo.com/123456789",
+      "TestExternalUrlAccept::test_accepts_supabase_bucket_url_regression — 200 (regression, bucket URL still accepted)",
+      "TestUrlValidation::test_rejects_non_url — 400 on 'not-a-url'",
+      "TestUrlValidation::test_rejects_empty_url — 400 on empty",
+      "TestUrlValidation::test_rejects_ftp_url — 400 on 'ftp://server/file.mp4'",
+      "TestSignedUrlMaxBytes::test_signed_url_returns_5gb_cap — max_bytes==5368709120",
+      "TestAuthRegression::test_unauthenticated_video_url_returns_401 — 401 without Bearer"
+    ],
+    "frontend_video_editor_flow": "Curriculum → session 'What Is Finance, Really?' → Video tab → Use URL button (data-testid=video-url-btn) opens panel (video-url-panel) with input, save, and close testids → paste 'https://example.com/big.mp4' → Save → POST /api/admin/sessions/{id}/video-url returns 200 → UI updates to show 'Video attached — https://example.com/big.mp4'. Footer text lists all required providers (50MB / 50GB / YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN).",
+    "frontend_admin_panel_flow": "Session Videos tab → per-row Upload (admin-video-upload-{sid}) and URL (admin-video-url-{sid}) buttons visible. Click URL → window.prompt('Paste an external video URL for \"...\": ...') → accept with URL → POST /api/admin/sessions/{sid}/video-url with {public_url: '<url>'} returns 200 and reload() re-renders the row."
+  }
+}

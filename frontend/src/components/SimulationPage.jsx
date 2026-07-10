@@ -16,6 +16,7 @@ import {
 import ExcelSim from './simulations/ExcelSim';
 import DocumentSim from './simulations/DocumentSim';
 import DecisionMakingSim from './simulations/DecisionMakingSim';
+import BookSim from './simulations/BookSim';
 import InteractiveSim from './simulations/InteractiveSim';
 import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
@@ -28,6 +29,7 @@ const TYPE_META = {
   excel: { label: 'Excel', Icon: FileSpreadsheet, color: '#10B981' },
   document: { label: 'Document', Icon: FileText, color: '#246BFD' },
   decision_making: { label: 'Decision Making', Icon: GitBranch, color: '#6A5CFF' },
+  book: { label: 'Book', Icon: FileText, color: '#F59E0B' },
   interactive: { label: 'Interactive', Icon: MousePointerClick, color: '#FF6AC1' },
 };
 
@@ -79,7 +81,7 @@ export default function SimulationPage() {
           .select('*')
           .eq('session_id', sess.master_session_id);
         if (simErr && simErr.code !== 'PGRST116') throw simErr;
-        const pickPriority = ['excel', 'interactive', 'decision_making', 'document'];
+        const pickPriority = ['excel', 'interactive', 'decision_making', 'book', 'document'];
         const sorted = (sList || []).slice().sort(
           (a, b) => {
             const ai = pickPriority.indexOf(a.sim_type);
@@ -295,16 +297,22 @@ export default function SimulationPage() {
         {sim.sim_type === 'excel' && (
           <ExcelSim config={config} title={sim.title} sim={sim} onProgress={setProgress} onComplete={handleComplete} />
         )}
-        {sim.sim_type === 'document' && (
+        {sim.sim_type === 'document' && config?.format === 'book' && (
+          <BookSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
+        )}
+        {sim.sim_type === 'document' && config?.format !== 'book' && (
           <DocumentSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
         {sim.sim_type === 'decision_making' && (
           <DecisionMakingSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
+        {sim.sim_type === 'book' && (
+          <BookSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
+        )}
         {sim.sim_type === 'interactive' && (
           <InteractiveSim config={config} title={sim.title} onProgress={setProgress} onComplete={handleComplete} />
         )}
-        {!['excel', 'document', 'decision_making', 'interactive'].includes(sim.sim_type) && (
+        {!['excel', 'document', 'decision_making', 'interactive', 'book'].includes(sim.sim_type) && (
           <GenericRenderer config={config} title={sim.title} typeLabel={sim.sim_type || 'Simulation'} onComplete={handleComplete} />
         )}
         <div className="mt-6 flex justify-center">

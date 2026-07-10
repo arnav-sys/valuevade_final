@@ -5,7 +5,7 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
 import ErrorsTab from './admin/ErrorsTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Share2, Lock, CreditCard, ArrowDownToLine, Eye, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle } from 'lucide-react';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Share2, Lock, CreditCard, ArrowDownToLine, Eye, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2 } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -971,7 +971,15 @@ function SessionVideosTab() {
         };
         xhr.onload = () => {
           if (xhr.status >= 200 && xhr.status < 300) resolve();
-          else reject(new Error(`storage upload ${xhr.status}: ${xhr.responseText?.slice(0, 200)}`));
+          else if (xhr.status === 413) {
+            reject(new Error(
+              'File exceeds the Supabase Storage upload cap on this project '
+              + '(usually 50 MB on Free tier). For a 30-min video, either '
+              + 'upgrade Supabase to Pro or use the "Paste URL" option (YouTube / Vimeo / Cloudflare Stream / Mux / BunnyCDN).'
+            ));
+          } else {
+            reject(new Error(`storage upload ${xhr.status}: ${xhr.responseText?.slice(0, 200)}`));
+          }
         };
         xhr.onerror = () => reject(new Error('network error during upload'));
         xhr.send(file);
@@ -996,10 +1004,35 @@ function SessionVideosTab() {
     input.onchange = () => {
       const f = input.files?.[0];
       if (!f) return;
-      if (f.size > 500 * 1024 * 1024) { alert(`File too large (${(f.size/1048576).toFixed(1)} MB). Max 500 MB.`); return; }
+      // 5 GB frontend guardrail (matches Pro-tier Supabase Storage ceiling).
+      if (f.size > 5 * 1024 * 1024 * 1024) { alert(`File too large (${(f.size/1073741824).toFixed(2)} GB). Max 5 GB.`); return; }
       uploadFor(session_id, f);
     };
     input.click();
+  };
+
+  const pasteUrlFor = async (session_id, title) => {
+    // Prompt for an external video URL — used when the file is larger than the
+    // Supabase Storage cap (50 MB on Free tier). Host on YouTube / Vimeo /
+    // Cloudflare Stream / Mux / BunnyCDN and paste the direct/embed URL.
+    const u = window.prompt(
+      `Paste an external video URL for "${title}":\n\n`
+      + 'Use this for 30-min+ videos that exceed the Supabase Storage cap.\n'
+      + 'Supported: YouTube, Vimeo, Cloudflare Stream, Mux, BunnyCDN, any direct .mp4 link.',
+      '',
+    );
+    if (!u || !u.trim()) return;
+    const url = u.trim();
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      alert('URL must start with http:// or https://');
+      return;
+    }
+    setBusy((b) => ({ ...b, [session_id]: 'url' }));
+    try {
+      await authPost(`/api/admin/sessions/${session_id}/video-url`, { public_url: url });
+      await reload();
+    } catch (e) { alert(`Save URL failed: ${e.message}`); }
+    finally { setBusy((b) => { const n = { ...b }; delete n[session_id]; return n; }); }
   };
 
   const deleteVideo = async (session_id, title) => {
@@ -1105,6 +1138,14 @@ function SessionVideosTab() {
                             data-testid={`admin-video-upload-${s.id}`}
                           >
                             <Upload size={11} /> {s.has_video ? 'Replace' : 'Upload'}
+                          </button>
+                          <button
+                            onClick={() => pasteUrlFor(s.id, s.title)}
+                            className="px-2.5 py-1 rounded-md text-[11px] font-mono border border-[var(--color-accent-purple)]/40 bg-[var(--color-accent-purple)]/10 text-[var(--color-accent-purple)] hover:bg-[var(--color-accent-purple)]/20 flex items-center gap-1"
+                            data-testid={`admin-video-url-${s.id}`}
+                            title="Paste a YouTube/Vimeo/Cloudflare Stream/Mux/BunnyCDN URL — use for 30-min+ videos that exceed the Supabase Storage cap."
+                          >
+                            <Link2 size={11} /> URL
                           </button>
                           {s.has_video && (
                             <button

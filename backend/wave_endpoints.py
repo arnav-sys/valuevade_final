@@ -891,7 +891,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     ).rstrip("/")
     _SUPABASE_SR = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
     _VIDEO_BUCKET = "session-videos"
-    _MAX_VIDEO_BYTES = 500 * 1024 * 1024   # 500 MB
+    _MAX_VIDEO_BYTES = 5 * 1024 * 1024 * 1024   # 5 GB — matches Supabase Pro tier ceiling
 
     def _bucket_public_url(key: str) -> str:
         return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_VIDEO_BUCKET}/{key}"
@@ -1108,15 +1108,18 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     async def admin_save_video_url(session_id: str, body: _AdminVideoUrlBody,
                                     user=Depends(_get_supabase_user)):
         """Small JSON payload — safely under any nginx cap. Called by the FE
-        after a successful direct-to-Supabase upload."""
+        after a successful direct-to-Supabase upload OR when an admin pastes
+        an external video URL (e.g. YouTube, Vimeo, Cloudflare Stream, Mux,
+        BunnyCDN) — used when the file is larger than the Supabase Storage
+        global upload cap (50 MB on Free tier, up to 50 GB on Pro+)."""
         _ensure_admin(user)
         url = (body.public_url or "").strip()
-        if not url or not url.startswith("http"):
+        if not url or not url.startswith(("http://", "https://")):
             raise HTTPException(status_code=400, detail="Invalid public_url.")
-        # Sanity: the URL must belong to our project's bucket
-        if _VIDEO_BUCKET not in url:
-            raise HTTPException(status_code=400,
-                detail=f"URL does not point at the {_VIDEO_BUCKET} bucket.")
+        # Accept EITHER (a) URLs inside our own Supabase bucket, OR (b) any
+        # externally-hosted video URL (YouTube/Vimeo/Cloudflare/Mux/etc.).
+        # Historically we required the bucket path — that blocked large
+        # video uploads that can't fit under the Free-tier 50 MB storage cap.
         _supabase_patch(
             f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
             {"lecture_url": url},
