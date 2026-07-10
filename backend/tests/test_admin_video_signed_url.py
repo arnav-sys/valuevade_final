@@ -109,7 +109,7 @@ class TestSignedUrlAuth:
         for k in ("upload_url", "token", "key", "bucket", "public_url", "max_bytes"):
             assert k in data, f"missing '{k}' in {data}"
         assert data["bucket"] == "session-videos"
-        assert data["max_bytes"] == 500 * 1024 * 1024, f"max_bytes mismatch: {data['max_bytes']}"
+        assert data["max_bytes"] == 5 * 1024 * 1024 * 1024, f"max_bytes mismatch: {data['max_bytes']}"
         mn = test_session["module_number"]
         oi = test_session["order_index"]
         expected_key = f"m{mn}/s{mn}-{oi}.mp4"
@@ -203,14 +203,16 @@ class TestEndToEndDirectUpload:
                     assert s.get("lecture_url") == public_url
         assert found, "test session not found in listing"
 
-        # 5) Reject non-bucket URL (400)
+        # 5) Accept external (non-bucket) URLs — this was previously rejected but
+        # is now allowed so admins can attach large videos hosted on YouTube/Vimeo/
+        # Cloudflare Stream/Mux/BunnyCDN when the file exceeds the Supabase Storage cap.
         r = requests.post(
             f"{BASE_URL}/api/admin/sessions/{sid}/video-url",
             headers={"Authorization": f"Bearer {admin_token}"},
             json={"public_url": "https://example.com/not-in-bucket.mp4"},
             timeout=30,
         )
-        assert r.status_code == 400, f"expected 400 got {r.status_code}"
+        assert r.status_code == 200, f"expected 200 got {r.status_code}"
 
         # 6) Cleanup — delete the video (nulls master_sessions.lecture_url)
         r = requests.delete(
