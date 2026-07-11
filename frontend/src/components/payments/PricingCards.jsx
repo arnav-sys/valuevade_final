@@ -56,7 +56,7 @@ export default function PricingCards({ onPaid }) {
     '68 hands-on Excel finance simulations',
     'AI tutor "Pari" — unlimited questions',
     '3-round mock interview capstone',
-    'Live news + daily challenges',
+    'Daily challenges + streaks',
     'Earn 20% commission on every referral',
   ];
 

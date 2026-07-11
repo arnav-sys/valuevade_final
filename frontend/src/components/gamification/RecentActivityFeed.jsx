@@ -13,7 +13,6 @@ const REASON_META = {
   badge_unlock_bonus:{ icon: Trophy,  label: 'Badge unlocked' },
   daily_challenge_complete:{ icon: Target, label: 'Daily challenge complete' },
   daily_champion_bonus:{ icon: Flame, label: 'Daily Champion!' },
-  news_read:        { icon: BookOpen, label: 'Read finance news' },
   plan_daily_target:{ icon: Target,   label: 'Hit daily plan target' },
 };
 

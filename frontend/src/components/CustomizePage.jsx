@@ -464,7 +464,7 @@ export default function CustomizePage() {
                   </h3>
                 </div>
                 <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5">
-                  This personalizes your news, market examples, and currency formatting. You can change it later in your profile.
+                  This personalizes market examples and currency formatting. You can change it later in your profile.
                 </p>
                 <select
                   value={countryCode}
