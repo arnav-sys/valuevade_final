@@ -463,11 +463,144 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     # ---------------- ADMIN PANEL ----------------
     @api_router.get("/admin/waitlist")
     async def admin_waitlist(user=Depends(_get_supabase_user)):
+        """Read all waitlist signups from Supabase (persistent). Was Mongo
+        pre-Feb 2026 but that got wiped on production redeploys — see
+        scripts/migrations/0031_waitlist.sql."""
         _ensure_admin(user)
-        from server import db  # local import to avoid circular
-        cursor = db.waitlist.find({}, {"_id": 0}).sort("timestamp", -1)
-        rows = await cursor.to_list(length=5000)
+        rows = _supabase_get(
+            "waitlist?select=id,first_name,email,position,referral_code,"
+            "referral_count,referred_by,timestamp"
+            "&order=timestamp.desc&limit=5000"
+        ) or []
         return {"total": len(rows), "entries": rows}
+
+    @api_router.post("/admin/waitlist/import")
+    async def admin_waitlist_import(body: dict, user=Depends(_get_supabase_user)):
+        """Bulk-import waitlist rows from a CSV the admin exported from
+        production Mongo (post Feb-2026 migration). Body shape:
+
+            { "csv": "first_name,email,timestamp,referral_code\\n..." }
+
+        - `email` is required; other fields optional (defaulted).
+        - The trailing header row is auto-detected.
+        - Existing emails are skipped (not overwritten). Referral codes that
+          collide with existing rows are regenerated.
+        - Returns a per-row summary: {inserted, skipped_existing, errors[]}.
+
+        Only admins (via _ensure_admin) can call this endpoint.
+        """
+        import csv as _csv
+        import io as _io
+        import random as _random
+        import string as _string
+        import uuid as _uuid
+        from datetime import datetime as _dt, timezone as _tz
+
+        _ensure_admin(user)
+        raw = (body or {}).get("csv") or ""
+        if not raw.strip():
+            raise HTTPException(status_code=400, detail="csv field is empty")
+
+        reader = _csv.DictReader(_io.StringIO(raw))
+        if not reader.fieldnames:
+            raise HTTPException(status_code=400, detail="CSV has no header row")
+
+        # Normalise header lookup (case + whitespace insensitive)
+        def _norm(k):
+            return (k or "").strip().lower().replace(" ", "_")
+        headers_map = { _norm(h): h for h in reader.fieldnames }
+        if "email" not in headers_map:
+            raise HTTPException(status_code=400, detail="CSV must have an 'email' column")
+
+        # Pull existing emails + referral codes in one shot to avoid N round-trips
+        existing_rows = _supabase_get(
+            "waitlist?select=email,referral_code&limit=100000"
+        ) or []
+        existing_emails = {(r.get("email") or "").lower() for r in existing_rows}
+        existing_codes = {r.get("referral_code") for r in existing_rows if r.get("referral_code")}
+
+        def _gen_code():
+            for _ in range(10):
+                c = "".join(_random.choices(_string.ascii_uppercase + _string.digits, k=6))
+                if c not in existing_codes:
+                    existing_codes.add(c)
+                    return c
+            return "".join(_random.choices(_string.ascii_uppercase + _string.digits, k=8))
+
+        to_insert = []
+        skipped = 0
+        errors = []
+        for i, row in enumerate(reader, start=1):
+            email_raw = (row.get(headers_map["email"]) or "").strip().lower()
+            if not email_raw or "@" not in email_raw:
+                errors.append({"row": i, "reason": f"invalid email: {email_raw!r}"})
+                continue
+            if email_raw in existing_emails:
+                skipped += 1
+                continue
+            existing_emails.add(email_raw)
+
+            first_name = (row.get(headers_map.get("first_name", "")) or "").strip() or "Friend"
+            ts_raw = (row.get(headers_map.get("timestamp", "")) or "").strip()
+            try:
+                # Accept either ISO8601 or common formats; fall back to now.
+                if ts_raw:
+                    # If bare date, promote to midnight UTC.
+                    if len(ts_raw) == 10 and ts_raw.count("-") == 2:
+                        ts_iso = ts_raw + "T00:00:00+00:00"
+                    else:
+                        ts_iso = ts_raw
+                    # Validate by parsing
+                    _dt.fromisoformat(ts_iso.replace("Z", "+00:00"))
+                else:
+                    ts_iso = _dt.now(_tz.utc).isoformat()
+            except Exception:
+                ts_iso = _dt.now(_tz.utc).isoformat()
+
+            pos_raw = (row.get(headers_map.get("position", "")) or "").strip()
+            try:
+                position = int(pos_raw) if pos_raw else _random.randint(200, 350)
+            except ValueError:
+                position = _random.randint(200, 350)
+
+            code = (row.get(headers_map.get("referral_code", "")) or "").strip().upper()
+            if not code or code in existing_codes:
+                code = _gen_code()
+            else:
+                existing_codes.add(code)
+
+            try:
+                ref_count = int((row.get(headers_map.get("referral_count", "")) or "0").strip() or 0)
+            except ValueError:
+                ref_count = 0
+
+            to_insert.append({
+                "id": str(_uuid.uuid4()),
+                "first_name": first_name,
+                "email": email_raw,
+                "position": position,
+                "timestamp": ts_iso,
+                "referral_code": code,
+                "referral_count": ref_count,
+                "referred_by": (row.get(headers_map.get("referred_by", "")) or "").strip() or None,
+            })
+
+        inserted = 0
+        # Batch insert in chunks of 500
+        for i in range(0, len(to_insert), 500):
+            batch = to_insert[i:i + 500]
+            try:
+                _supabase_post("waitlist", batch, prefer="return=minimal")
+                inserted += len(batch)
+            except HTTPException as e:
+                errors.append({"batch_start": i, "reason": str(e.detail)[:400]})
+
+        return {
+            "inserted": inserted,
+            "skipped_existing": skipped,
+            "errors": errors,
+            "parsed_rows": inserted + skipped + len(errors),
+        }
 
     @api_router.get("/admin/users")
     async def admin_users(user=Depends(_get_supabase_user)):

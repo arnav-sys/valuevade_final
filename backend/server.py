@@ -3753,67 +3753,117 @@ async def admin_login(creds: AdminLogin):
 
 @api_router.get("/waitlist/all")
 async def get_all_waitlist(payload=Depends(verify_token)):
-    cursor = db.waitlist.find(
-        {},
-        {"first_name": 1, "email": 1, "position": 1, "referral_code": 1, "referral_count": 1, "referred_by": 1, "timestamp": 1},
-    ).sort("_id", -1)
-    entries = await cursor.to_list(1000)
-    for e in entries:
-        e.pop("_id", None)
-    return entries
+    """Legacy JWT-protected endpoint. Now reads from Supabase (persistent)
+    instead of the ephemeral pod Mongo. See 0031_waitlist.sql."""
+    rows = _supabase_get(
+        'waitlist?select=id,first_name,email,position,referral_code,referral_count,referred_by,timestamp'
+        '&order=timestamp.desc&limit=1000'
+    ) or []
+    return rows
 
 
 @api_router.post("/waitlist", response_model=WaitlistResponse)
 async def join_waitlist(entry: WaitlistCreate):
-    existing = await db.waitlist.find_one({"email": entry.email}, {"_id": 0})
+    """Persist a waitlist signup to Supabase. Idempotent on email (returns the
+    existing row). Migrated Feb 2026 from Mongo → Supabase because production
+    deploy containers have ephemeral Mongo that wiped older signups."""
+    email_norm = entry.email.strip().lower()
+    # 1) Existing?
+    existing = _supabase_get(
+        f'waitlist?email=eq.{_urlparse.quote(email_norm)}&limit=1'
+    ) or []
     if existing:
-        if "referral_code" not in existing:
-            referral_code = generate_referral_code()
-            while await db.waitlist.find_one({"referral_code": referral_code}):
-                referral_code = generate_referral_code()
-            existing["referral_code"] = referral_code
-        if "referral_count" not in existing:
-            existing["referral_count"] = 0
-        await db.waitlist.update_one(
-            {"email": entry.email},
-            {"$set": {"referral_code": existing["referral_code"], "referral_count": existing["referral_count"]}}
-        )
-        return existing
+        return existing[0]
 
+    # 2) Fresh referral code
     referral_code = generate_referral_code()
-    while await db.waitlist.find_one({"referral_code": referral_code}):
+    # Loop until unique (collision probability is tiny with 6 chars alnum,
+    # but the DB unique index will 409 if we're unlucky, so retry).
+    for _ in range(6):
+        clash = _supabase_get(
+            f'waitlist?referral_code=eq.{_urlparse.quote(referral_code)}&limit=1'
+        ) or []
+        if not clash:
+            break
         referral_code = generate_referral_code()
 
     position = random.randint(200, 350)
+    now_iso = datetime.now(timezone.utc).isoformat()
     doc = {
         "id": str(uuid.uuid4()),
         "first_name": entry.first_name,
-        "email": entry.email,
+        "email": email_norm,
         "position": position,
-        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "timestamp": now_iso,
         "referral_code": referral_code,
         "referral_count": 0,
         "referred_by": entry.ref_code or None,
     }
-    await db.waitlist.insert_one(doc)
-    doc.pop("_id", None)
+    try:
+        inserted = _supabase_post(
+            "waitlist",
+            doc,
+            prefer="return=representation",
+        )
+    except HTTPException as e:
+        # Race on unique email → re-fetch and return.
+        if e.status_code in (409, 400):
+            re_read = _supabase_get(
+                f'waitlist?email=eq.{_urlparse.quote(email_norm)}&limit=1'
+            ) or []
+            if re_read:
+                return re_read[0]
+        raise
 
+    row = inserted[0] if isinstance(inserted, list) and inserted else doc
+
+    # 3) Referral bump — the referrer moves up 5 spots and their count +1.
     if entry.ref_code:
-        referrer = await db.waitlist.find_one({"referral_code": entry.ref_code})
-        if referrer:
-            new_position = max(1, referrer["position"] - 5)
-            await db.waitlist.update_one(
-                {"referral_code": entry.ref_code},
-                {"$inc": {"referral_count": 1}, "$set": {"position": new_position}},
+        refs = _supabase_get(
+            f'waitlist?referral_code=eq.{_urlparse.quote(entry.ref_code)}&select=id,position,referral_count&limit=1'
+        ) or []
+        if refs:
+            r = refs[0]
+            _supabase_patch(
+                f'waitlist?id=eq.{r["id"]}',
+                {
+                    "position": max(1, int(r.get("position") or 250) - 5),
+                    "referral_count": int(r.get("referral_count") or 0) + 1,
+                },
             )
 
-    return doc
+    return row
 
 
 @api_router.get("/waitlist/count")
 async def get_waitlist_count():
-    count = await db.waitlist.count_documents({})
-    return {"count": count + 500}
+    """Public count endpoint. Reads from Supabase with a HEAD request so we
+    don't ship the full row list back to every landing page hit."""
+    if not _SUPABASE_SR:
+        return {"count": 500}
+    url = f"{_SUPABASE_REST}/rest/v1/waitlist?select=id"
+    req = _urlreq.Request(
+        url,
+        method="HEAD",
+        headers={
+            "apikey": _SUPABASE_SR,
+            "Authorization": f"Bearer {_SUPABASE_SR}",
+            "Prefer": "count=exact",
+            "Range-Unit": "items",
+            "Range": "0-0",
+        },
+    )
+    try:
+        with _urlreq.urlopen(req, timeout=8) as r:
+            cr = r.headers.get("content-range") or ""
+            # Format: "0-0/N" or "*/N"
+            if "/" in cr:
+                total = cr.split("/", 1)[1].strip()
+                if total.isdigit():
+                    return {"count": int(total) + 500}
+    except Exception:
+        pass
+    return {"count": 500}
 
 
 from emergentintegrations.llm.chat import LlmChat, UserMessage
@@ -4485,8 +4535,10 @@ async def generate_visual(req: VisualGenRequest):
 
 @api_router.delete("/waitlist/{entry_id}")
 async def delete_waitlist_entry(entry_id: str, payload=Depends(verify_token)):
-    result = await db.waitlist.delete_one({"id": entry_id})
-    if result.deleted_count == 0:
+    deleted = _supabase_delete(
+        f"waitlist?id=eq.{_urlparse.quote(entry_id)}"
+    ) or []
+    if not deleted:
         raise HTTPException(status_code=404, detail="Entry not found")
     return {"deleted": True}
 

@@ -82,3 +82,37 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - Visually verified via screenshot tool: headline renders, 3/3 capstones
   tile, cert panel shows "issued to Priya Kapoor · dated 12 July 2026",
   confetti particles visible mid-animation.
+
+## Feb 2026 — Waitlist migration Mongo → Supabase (bug fix)
+
+**Bug**: `/admin-panel?tab=waitlist` on production only showed 3 signups instead
+of 15+. Root cause: waitlist was stored in the deploy container's Mongo
+(`db.waitlist`), which is ephemeral on Emergent redeploys, so historical
+entries were wiped every redeploy.
+
+**Fix**:
+- New SQL migration `/app/scripts/migrations/0031_waitlist.sql` — creates
+  `public.waitlist` with the same column shape as the old Mongo docs
+  (`id, first_name, email, position, timestamp, referral_code, referral_count,
+  referred_by`), unique indexes on `lower(email)` and `referral_code`, RLS
+  enabled + service-role-only access.
+- Backend endpoints migrated from `db.waitlist` → `_supabase_*` helpers:
+    - `POST /api/waitlist` (join, idempotent on email)
+    - `GET  /api/waitlist/all` (legacy JWT-protected)
+    - `GET  /api/waitlist/count` (uses PostgREST HEAD + count=exact)
+    - `DELETE /api/waitlist/{id}`
+    - `GET  /api/admin/waitlist` (Supabase auth)
+- **New endpoint**: `POST /api/admin/waitlist/import` — takes `{csv: "..."}`
+  body, batch-inserts to Supabase, skips existing emails, regenerates
+  colliding referral codes, returns `{inserted, skipped_existing, errors[]}`.
+- Frontend `WaitlistTab` gained an **Import CSV** button + modal
+  (`waitlist-import-btn`, `waitlist-import-modal`, `waitlist-import-textarea`,
+  `waitlist-import-submit`).
+
+**Deployment required**: SQL migration must be applied to Supabase before the
+production backend can serve any waitlist route. Two ways:
+1. Supabase Studio → SQL Editor → paste `0031_waitlist.sql` → Run.
+2. `SUPABASE_MGMT_PAT=sbp_... python3 scripts/migrations/apply_migration_via_api.py 0031_waitlist.sql`
+
+After that, user redeploys the app + uses the new "Import CSV" button to
+paste the Mongo export.
