@@ -253,6 +253,30 @@ export default function CapstoneCompletePage() {
     return () => clearTimeout(t);
   }, []);
 
+  // Auto-redirect to /course-complete when ALL capstone projects are done —
+  // the CapstoneComplete screen celebrates ONE capstone; the CourseComplete
+  // screen celebrates the whole programme (all capstones).
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      if (!user?.id) return;
+      try {
+        const { data: enrs } = await supabase.from('user_enrollments').select('id').eq('user_id', user.id).limit(1);
+        const enrId = enrs && enrs[0] ? enrs[0].id : null;
+        if (!enrId) return;
+        const [{ data: masterList }, { data: userList }] = await Promise.all([
+          supabase.from('master_capstone_projects').select('id'),
+          supabase.from('user_capstone_projects').select('capstone_id,is_completed').eq('enrollment_id', enrId).eq('is_completed', true),
+        ]);
+        if (cancelled) return;
+        const total = (masterList || []).length;
+        const done = new Set((userList || []).map((r) => r.capstone_id)).size;
+        if (total > 0 && done >= total) navigate('/course-complete', { replace: true });
+      } catch { /* silent — stay on CapstoneComplete */ }
+    })();
+    return () => { cancelled = true; };
+  }, [user?.id, navigate]);
+
   useEffect(() => {
     let mounted = true;
     async function load() {

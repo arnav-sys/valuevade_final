@@ -1,0 +1,49 @@
+{
+  "summary": "Iteration 25 — Course-Complete page, PDF certificate, intro video on course details, and auto-redirect from CapstoneCompletePage. Backend sanity confirmed, frontend live tests + code review passed. One minor spec deviation in video positioning noted.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "CourseDetailsPage",
+        "issues": [
+          "Spec said intro video should sit BETWEEN 'What you'll be able to do' section and the animated stats. Actual DOM order is: detail-hero -> detail-intro-video-section -> detail-stats-reveal -> detail-what-you-learn -> detail-modules-section. Intro video renders ABOVE both the animated stats AND the What-You-Learn section, so it is not 'between' them as required. Functionality works but placement doesn't match the brief."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "OPTIONAL: reorder sections in CourseDetailsPage.jsx so detail-intro-video-section sits between detail-what-you-learn and detail-stats-reveal (spec: 'below What you'll be able to do and above the animated stats'). Currently the intro video is placed before both."
+  ],
+  "critical_code_review_comments": [
+    "CourseCompletePage.jsx (422 LOC) — logic clean, uses jsPDF at runtime; html2canvas is installed but unused, safe to remove to shrink bundle.",
+    "Certificate PDF: recipient name uses helvetica bold at 38pt centered (line 118-121); issue date uses new Date().toLocaleDateString('en-GB', {day:'2-digit', month:'long', year:'numeric'}) inside handleDownload (line 221) — computed at CLICK time not on mount, matching the user requirement 'change the date of issue to the date user has downloaded the certificate'.",
+    "Cert ID format: `VV-${today.getFullYear()}-${String(user.id).slice(0,8).toUpperCase()}` (line 222) — matches spec VV-YYYY-USERPREFIX.",
+    "Empty full_name flow works: handleDownload line 214-215 does `if (!name) { setAskName(true); ... return; }` BEFORE downloading. On next click after name is filled, line 219 persists it to profiles via supabase.from('profiles').update({full_name}).eq('id', user.id) — best-effort, wrapped in try/catch.",
+    "CapstoneCompletePage.jsx auto-redirect (line 259-278): queries user_enrollments -> master_capstone_projects vs user_capstone_projects (enrollment_scoped) and navigate('/course-complete', {replace:true}) when done>=total. Silent catch keeps user on capstone page if the query fails — good defensive default.",
+    "CourseDetailsPage.jsx intro video section (line 420-439): <video controls preload='metadata' playsInline> pointing to correct customer-assets URL; wrapped in border+shadow container; has 'Watch the intro' eyebrow. Testids `detail-intro-video-section` and `detail-intro-video` both present.",
+    "MINOR: The full-congrats branch of CourseCompletePage is unreachable via live test today (admin has no completed capstones); reviewed by reading JSX — all required testids and stat cards are present (`course-complete-page`, `course-complete-headline`, `course-complete-edge-panel`, `course-complete-cert-panel`, `course-complete-download-btn`, `course-complete-back-dashboard`, `course-complete-name-panel`, `course-complete-name-input`, `course-complete-downloaded-badge`). Stats: Modules 22, Sessions 246, Simulations 246, Capstones dynamic N/N — matches spec. Six edge bullets present. Footer copy present."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (admin)",
+  "seed_data_creation": "None. Full-congrats state not seeded per agent-to-agent note (schema constraints on user_capstone_projects).",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Feature is production-ready. The full-congrats page can only be exercised via a user with all 3 capstone projects marked is_completed=true on their enrollment; the admin acct has no enrollment so only the 'Almost there' branch was verified live. If a future retest needs to hit the completed state, seed 3 rows into user_capstone_projects with is_completed=true for a test enrollment (schema had non-null issues per prior notes). The intro video URL is publicly cached from customer-assets.emergentagent.com and did not require auth.",
+  "verified_features": [
+    "/course-complete unauthenticated -> redirects to /login (ProtectedRoute wrapping in App.js line 154)",
+    "/course-complete authenticated with 0 capstones -> renders course-complete-not-yet with copy 'You've completed 0 of 3.' and course-complete-cta-capstones button",
+    "/course/:courseId shows detail-intro-video-section + detail-intro-video with correct src, controls, preload='metadata'",
+    "'Watch the intro' eyebrow label visible",
+    "Dashboard still loads normally (no regressions from news removal)",
+    "Backend /api/ returns 200 {\"message\":\"Valuevade API\"}",
+    "Backend /api/me/pari_welcome returns 401 without bearer (correct auth behavior)",
+    "Backend /api/admin/sessions/videos returns 401 without bearer (correct auth behavior)"
+  ]
+}
