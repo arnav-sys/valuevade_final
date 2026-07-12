@@ -61,3 +61,24 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - P1: Delete the now-unused `SpreadsheetSim.jsx` + `excelFormula.js` + `excelSimAdapter.js` once the new engine is confirmed stable across all existing Excel sims.
 - P1: Book renderer regression test on legacy `sim_type='document'` sims (should still use `DocumentSim`).
 - P2: Optionally upgrade Supabase project to Pro so direct video uploads > 50 MB work without external URL.
+
+## Feb 2026 update — Course Complete QA seed + confetti polish
+
+- Created `/app/scripts/seed_qa_complete_user.py` — idempotent seed for a
+  dedicated QA user (`qa-complete@valuevade.test` / `QaComplete2026!`,
+  full_name "Priya Kapoor", user_id `d0ab804b-...`) with an active
+  enrollment and all 3 `master_capstone_projects` marked `is_completed=true`
+  on their `user_capstone_projects` rows. Enrollment ID
+  `c179f15d-2177-44b3-a855-8e6881139e93`.
+- Fixed a latent detection bug in `CourseCompletePage.jsx`:
+  the query selected `capstone_id` (nonexistent column) — replaced with
+  `master_capstone_id`. Without this fix the "Congratulations" branch could
+  never render for a real user.
+- Added `canvas-confetti` burst on the Congratulations branch: center
+  burst + two side cannons + a soft trailing burst, colors matched to
+  brand palette. Fires exactly once (guarded by ref), respects
+  `prefers-reduced-motion`.
+- Test credentials file updated with the QA account (§ "QA — Course Complete").
+- Visually verified via screenshot tool: headline renders, 3/3 capstones
+  tile, cert panel shows "issued to Priya Kapoor · dated 12 July 2026",
+  confetti particles visible mid-animation.

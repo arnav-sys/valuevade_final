@@ -14,6 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import jsPDF from 'jspdf';
+import confetti from 'canvas-confetti';
 import {
   Award, Sparkles, Download, ArrowRight, Loader2, CheckCircle2,
   TrendingUp, Layers, FileSpreadsheet, GitBranch, BookOpen, Trophy,
@@ -180,6 +181,52 @@ export default function CourseCompletePage() {
   const [downloading, setDownloading] = useState(false);
   const [downloaded, setDownloaded] = useState(false);
   const nameInputRef = useRef(null);
+  const confettiFiredRef = useRef(false);
+
+  // Confetti burst — fires ONCE when we detect the user has completed the
+  // full programme. Uses canvas-confetti (bundled). Respects prefers-reduced-motion.
+  useEffect(() => {
+    if (!state.allDone || confettiFiredRef.current) return;
+    if (typeof window !== 'undefined'
+        && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+      confettiFiredRef.current = true;
+      return;
+    }
+    confettiFiredRef.current = true;
+    const colors = ['#246bfd', '#6a5cff', '#ff5c9d', '#ffd166', '#ffffff'];
+    // Center burst
+    confetti({
+      particleCount: 140,
+      spread: 90,
+      startVelocity: 45,
+      origin: { x: 0.5, y: 0.35 },
+      colors,
+      zIndex: 200,
+    });
+    // Side cannons for a wider spread
+    const shoot = (originX, angle) => confetti({
+      particleCount: 70,
+      spread: 60,
+      startVelocity: 55,
+      angle,
+      origin: { x: originX, y: 0.6 },
+      colors,
+      zIndex: 200,
+    });
+    setTimeout(() => shoot(0.15, 60), 200);
+    setTimeout(() => shoot(0.85, 120), 350);
+    // Soft trailing burst
+    setTimeout(() => confetti({
+      particleCount: 60,
+      spread: 120,
+      startVelocity: 25,
+      gravity: 0.7,
+      ticks: 300,
+      origin: { x: 0.5, y: 0.4 },
+      colors,
+      zIndex: 200,
+    }), 900);
+  }, [state.allDone]);
 
   useEffect(() => {
     let cancelled = false;
@@ -192,14 +239,14 @@ export default function CourseCompletePage() {
         const [{ data: masterList }, userListRes, { data: profile }] = await Promise.all([
           supabase.from('master_capstone_projects').select('id'),
           enrId
-            ? supabase.from('user_capstone_projects').select('capstone_id,is_completed').eq('enrollment_id', enrId).eq('is_completed', true)
+            ? supabase.from('user_capstone_projects').select('master_capstone_id,is_completed').eq('enrollment_id', enrId).eq('is_completed', true)
             : Promise.resolve({ data: [] }),
           supabase.from('profiles').select('full_name').eq('id', user.id).maybeSingle(),
         ]);
         if (cancelled) return;
         const userList = userListRes.data || [];
         const totalCap = (masterList || []).length;
-        const doneCap = new Set(userList.map((r) => r.capstone_id)).size;
+        const doneCap = new Set(userList.map((r) => r.master_capstone_id)).size;
         const allDone = totalCap > 0 && doneCap >= totalCap;
         setFullName(profile?.full_name || '');
         setState({ loading: false, allDone, totalCap, doneCap });

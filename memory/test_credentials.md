@@ -21,6 +21,17 @@
 - Password: TestPass123!
 - Name: Test Agent User
 
+## QA — Course Complete branch (seeded Feb 2026)
+- Email: qa-complete@valuevade.test
+- Password: QaComplete2026!
+- Name: Priya Kapoor
+- User ID: d0ab804b-4004-46c2-b245-1ba9e6a23698
+- Enrollment ID: c179f15d-2177-44b3-a855-8e6881139e93
+- All 3 master capstones are marked `is_completed=true` for this user's
+  enrollment. Use this account to visually QA the /course-complete
+  "Congratulations" branch + certificate PDF download. Reseed via:
+  `python3 /app/scripts/seed_qa_complete_user.py`
+
 Notes for testing agent:
 - Frontend URL: read REACT_APP_BACKEND_URL from /app/frontend/.env (do NOT hardcode).
 - Backend health: GET /api/ returns {"message":"Valuevade API"}.
