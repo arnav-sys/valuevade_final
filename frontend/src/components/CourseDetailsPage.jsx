@@ -414,30 +414,6 @@ export default function CourseDetailsPage() {
                 )}
               </section>
 
-              {/* Intro reel — premium video preview of the programme.
-                  Uploaded once as an asset (16:9). Kept lazy: <video preload="metadata">
-                  so it doesn't cost the first paint. */}
-              <section className="mb-12" data-testid="detail-intro-video-section">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
-                    <PlayCircle size={12} className="text-[var(--color-primary)]" />
-                  </div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Watch the intro</p>
-                </div>
-                <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-w-3xl">
-                  <video
-                    src="https://customer-assets.emergentagent.com/job_excel-rebuild/artifacts/d5e8lw4b_valuevade-reel-16x9.mp4"
-                    controls
-                    preload="metadata"
-                    playsInline
-                    className="w-full h-auto aspect-video bg-black"
-                    data-testid="detail-intro-video"
-                  >
-                    <track kind="captions" />
-                  </video>
-                </div>
-              </section>
-
               {/* Animated stats reveal — counts up on scroll-into-view */}
               <section className="mb-14" data-testid="detail-stats-reveal">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
@@ -468,6 +444,29 @@ export default function CourseDetailsPage() {
                   </div>
                 </section>
               )}
+
+              {/* Intro reel — premium video preview of the programme.
+                  Placed AFTER 'What You'll Learn' so users have context before pressing play. */}
+              <section className="mb-12" data-testid="detail-intro-video-section">
+                <div className="flex items-center gap-2 mb-3">
+                  <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
+                    <PlayCircle size={12} className="text-[var(--color-primary)]" />
+                  </div>
+                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Watch the intro</p>
+                </div>
+                <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-w-3xl">
+                  <video
+                    src="https://customer-assets.emergentagent.com/job_excel-rebuild/artifacts/d5e8lw4b_valuevade-reel-16x9.mp4"
+                    controls
+                    preload="metadata"
+                    playsInline
+                    className="w-full h-auto aspect-video bg-black"
+                    data-testid="detail-intro-video"
+                  >
+                    <track kind="captions" />
+                  </video>
+                </div>
+              </section>
 
               {/* Course Modules */}
               {modules.length > 0 && (
