@@ -9,7 +9,6 @@ Wire into server.py via register_payment_endpoints(api_router, deps={...}).
 """
 from __future__ import annotations
 
-import base64
 import hashlib
 import hmac
 import json as _json
@@ -44,48 +43,6 @@ def _ensure_admin(user: dict):
     email = (user.get("email") or "").strip().lower()
     if email not in {e.lower() for e in ADMIN_ALLOWED_EMAILS}:
         raise HTTPException(status_code=403, detail="Admin access required.")
-
-
-def _get_encryption_key() -> bytes:
-    """Returns 32-byte AES-256 key from PAYOUT_DETAILS_ENCRYPTION_KEY (b64).
-    If missing, generates one in-memory and warns; existing encrypted rows
-    can't be decrypted in that case."""
-    raw = (os.environ.get("PAYOUT_DETAILS_ENCRYPTION_KEY") or "").strip()
-    if raw:
-        try:
-            key = base64.b64decode(raw)
-            if len(key) == 32:
-                return key
-        except Exception:
-            pass
-    # Fallback — generates a random key per worker. Encrypted rows from
-    # previous workers won't decrypt. Real fix: set the env var.
-    logger.warning(
-        "PAYOUT_DETAILS_ENCRYPTION_KEY missing/invalid. Generating ephemeral "
-        "key; previously-encrypted payout details will become unreadable. "
-        "Set a stable 32-byte base64 key in backend/.env."
-    )
-    return secrets.token_bytes(32)
-
-
-def encrypt_payout_details(plaintext: dict) -> str:
-    """AES-256-GCM. Returns base64(iv || ciphertext+tag) suitable for storage."""
-    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-    key = _get_encryption_key()
-    iv = secrets.token_bytes(12)
-    aes = AESGCM(key)
-    pt = _json.dumps(plaintext, separators=(",", ":")).encode("utf-8")
-    ct = aes.encrypt(iv, pt, None)
-    return base64.b64encode(iv + ct).decode("ascii")
-
-
-def decrypt_payout_details(ciphertext_b64: str) -> dict:
-    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
-    key = _get_encryption_key()
-    blob = base64.b64decode(ciphertext_b64)
-    iv, ct = blob[:12], blob[12:]
-    pt = AESGCM(key).decrypt(iv, ct, None)
-    return _json.loads(pt.decode("utf-8"))
 
 
 # ---------------------------------------------------------------------------
@@ -209,20 +166,6 @@ def _pricing_for_user(status_row: dict) -> tuple[str, int]:
     return ("upfront", 1500)
 
 
-def _award_referral_commission(paying_user_id: str, amount_inr: int):
-    """Calls the SQL RPC that bumps the matching referral_events row's
-    referred_user_revenue. commission_amount is a generated column → auto."""
-    if amount_inr <= 0:
-        return
-    try:
-        _supabase_post(
-            "rpc/update_referral_revenue",
-            {"p_referred_user_id": paying_user_id, "p_amount": amount_inr},
-        )
-    except Exception as e:
-        logger.warning(f"[payments] referral commission update failed: {e}")
-
-
 def _award_paid_completion_xp(user_id: str):
     """Optional +250 XP when a user goes from free → paid. One-shot per user
     via the reason='paid_upgrade' constraint."""
@@ -239,7 +182,7 @@ def _award_paid_completion_xp(user_id: str):
 
 
 def _mark_paid(user_id: str, amount_inr: int, tier_code: str):
-    """Idempotently mark user as paid. Triggers referral commission once."""
+    """Idempotently mark user as paid."""
     cur = _ensure_payment_status_row(user_id)
     if cur.get("paid"):
         return
@@ -252,7 +195,6 @@ def _mark_paid(user_id: str, amount_inr: int, tier_code: str):
             "pricing_tier": tier_code,
         },
     )
-    _award_referral_commission(user_id, amount_inr)
     _award_paid_completion_xp(user_id)
 
 
@@ -271,17 +213,6 @@ class VerifyPaymentReq(BaseModel):
 
 class MockSuccessReq(BaseModel):
     order_id: str  # our internal razorpay_orders.id
-
-
-class PayoutRequestReq(BaseModel):
-    amount_inr: int = Field(..., ge=500)
-    payout_method: str = Field(..., pattern="^(upi|bank_transfer)$")
-    details: dict  # {upi_id} OR {account_no, ifsc, account_name}
-
-
-class AdminPayoutDecisionReq(BaseModel):
-    admin_notes: Optional[str] = None
-    txn_reference: Optional[str] = None
 
 
 # ===========================================================================
@@ -594,231 +525,6 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
             "free_session_used": bool(status_row.get("free_session_used")),
         }}
 
-    # ---------------- PAYOUTS — USER ----------------
-    @api_router.post("/payouts/request")
-    async def payouts_request(req: PayoutRequestReq,
-                              user=Depends(_get_supabase_user)):
-        # Validate the user has enough pending commission
-        events = _supabase_get(
-            f"referral_events?referrer_user_id=eq.{_urlparse.quote(user['id'])}"
-            "&select=id,commission_amount,payout_status&order=created_at.asc"
-        ) or []
-        eligible = [e for e in events if (e.get("payout_status") or "pending") == "pending"]
-        available = round(sum(float(e.get("commission_amount") or 0) for e in eligible), 2)
-        if req.amount_inr > available:
-            raise HTTPException(
-                status_code=400,
-                detail=f"requested ₹{req.amount_inr} but only ₹{available:.2f} pending",
-            )
-        # Validate the payout details payload
-        if req.payout_method == "upi":
-            upi = (req.details.get("upi_id") or "").strip()
-            if "@" not in upi or len(upi) < 5:
-                raise HTTPException(status_code=400, detail="invalid upi_id")
-            details = {"upi_id": upi}
-        else:
-            acc = (req.details.get("account_no") or "").strip()
-            ifsc = (req.details.get("ifsc") or "").strip().upper()
-            holder = (req.details.get("account_name") or "").strip()
-            import re as _re
-            if not acc or len(acc) < 6:
-                raise HTTPException(status_code=400, detail="invalid account_no")
-            if not _re.match(r"^[A-Z]{4}0[A-Z0-9]{6}$", ifsc):
-                raise HTTPException(status_code=400, detail="invalid IFSC")
-            if not holder:
-                raise HTTPException(status_code=400, detail="account_name required")
-            details = {"account_no": acc, "ifsc": ifsc, "account_name": holder}
-        # Lock referral_events: pick FIFO until we reach the requested amount
-        covers = []
-        running = 0.0
-        for e in eligible:
-            amt = float(e.get("commission_amount") or 0)
-            if amt <= 0:
-                continue
-            covers.append(e["id"])
-            running += amt
-            if running >= req.amount_inr:
-                break
-        # Mark them as 'approved' (locked) — admin will mark them 'paid' on payout
-        if covers:
-            ids_csv = ",".join(covers)
-            _supabase_patch(
-                f"referral_events?id=in.({ids_csv})",
-                {"payout_status": "approved"},
-            )
-        encrypted = encrypt_payout_details(details)
-        created = _supabase_post(
-            "payout_requests",
-            {
-                "user_id": user["id"],
-                "amount_inr": req.amount_inr,
-                "payout_method": req.payout_method,
-                "payout_details_encrypted": encrypted,
-                "status": "pending",
-                "covers_event_ids": covers,
-            },
-            prefer="return=representation",
-        )
-        if isinstance(created, list):
-            created = created[0]
-        return {"ok": True, "request_id": created["id"], "status": "pending"}
-
-    @api_router.get("/payouts/my-requests")
-    async def payouts_my_requests(user=Depends(_get_supabase_user)):
-        rows = _supabase_get(
-            f"payout_requests?user_id=eq.{_urlparse.quote(user['id'])}"
-            "&select=id,amount_inr,payout_method,status,admin_notes,txn_reference,"
-            "requested_at,approved_at,paid_at,rejected_at"
-            "&order=requested_at.desc&limit=50"
-        ) or []
-        return {"requests": rows}
-
-    # ---------------- PAYOUTS — ADMIN ----------------
-    @api_router.get("/admin/payouts/pending")
-    async def admin_payouts_pending(user=Depends(_get_supabase_user)):
-        _ensure_admin(user)
-        rows = _supabase_get(
-            "payout_requests?status=in.(pending,approved)"
-            "&select=*&order=requested_at.asc&limit=200"
-        ) or []
-        # Enrich with profiles
-        ids = list({r["user_id"] for r in rows if r.get("user_id")})
-        prof_by_id = {}
-        if ids:
-            id_list = ",".join(ids)
-            profs = _supabase_get(
-                f"profiles?id=in.({id_list})&select=id,full_name,email"
-            ) or []
-            prof_by_id = {p["id"]: p for p in profs}
-        for r in rows:
-            p = prof_by_id.get(r["user_id"], {})
-            r["full_name"] = p.get("full_name") or ""
-            r["email"] = p.get("email") or ""
-            r.pop("payout_details_encrypted", None)  # NEVER expose unless asked
-        return {"total": len(rows), "requests": rows}
-
-    @api_router.get("/admin/payouts/recent")
-    async def admin_payouts_recent(limit: int = 50, user=Depends(_get_supabase_user)):
-        _ensure_admin(user)
-        limit = max(1, min(200, int(limit or 50)))
-        rows = _supabase_get(
-            "payout_requests?status=in.(paid,rejected)"
-            f"&select=*&order=requested_at.desc&limit={limit}"
-        ) or []
-        ids = list({r["user_id"] for r in rows if r.get("user_id")})
-        prof_by_id = {}
-        if ids:
-            id_list = ",".join(ids)
-            profs = _supabase_get(
-                f"profiles?id=in.({id_list})&select=id,full_name,email"
-            ) or []
-            prof_by_id = {p["id"]: p for p in profs}
-        for r in rows:
-            p = prof_by_id.get(r["user_id"], {})
-            r["full_name"] = p.get("full_name") or ""
-            r["email"] = p.get("email") or ""
-            r.pop("payout_details_encrypted", None)
-        return {"total": len(rows), "requests": rows}
-
-    @api_router.get("/admin/payouts/{request_id}/details")
-    async def admin_payouts_details(request_id: str, user=Depends(_get_supabase_user)):
-        _ensure_admin(user)
-        rows = _supabase_get(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}"
-            "&select=*&limit=1"
-        ) or []
-        if not rows:
-            raise HTTPException(status_code=404, detail="not found")
-        row = rows[0]
-        try:
-            decrypted = decrypt_payout_details(row["payout_details_encrypted"])
-        except Exception as e:
-            logger.warning(f"[payments] decrypt failed: {e}")
-            decrypted = {"error": "decryption failed"}
-        row.pop("payout_details_encrypted", None)
-        row["decrypted_details"] = decrypted
-        return row
-
-    @api_router.post("/admin/payouts/{request_id}/approve")
-    async def admin_payouts_approve(request_id: str,
-                                    body: AdminPayoutDecisionReq = Body(default=AdminPayoutDecisionReq()),
-                                    user=Depends(_get_supabase_user)):
-        _ensure_admin(user)
-        rows = _supabase_get(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}&select=*&limit=1"
-        ) or []
-        if not rows:
-            raise HTTPException(status_code=404, detail="not found")
-        if rows[0]["status"] != "pending":
-            raise HTTPException(status_code=400, detail="not pending")
-        _supabase_patch(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}",
-            {"status": "approved",
-             "approved_at": datetime.now(timezone.utc).isoformat(),
-             "admin_notes": (body.admin_notes or rows[0].get("admin_notes"))},
-        )
-        return {"ok": True, "status": "approved"}
-
-    @api_router.post("/admin/payouts/{request_id}/mark-paid")
-    async def admin_payouts_mark_paid(request_id: str,
-                                      body: AdminPayoutDecisionReq = Body(default=AdminPayoutDecisionReq()),
-                                      user=Depends(_get_supabase_user)):
-        _ensure_admin(user)
-        rows = _supabase_get(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}&select=*&limit=1"
-        ) or []
-        if not rows:
-            raise HTTPException(status_code=404, detail="not found")
-        row = rows[0]
-        if row["status"] not in ("pending", "approved"):
-            raise HTTPException(status_code=400, detail="already paid/rejected")
-        now_iso = datetime.now(timezone.utc).isoformat()
-        _supabase_patch(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}",
-            {"status": "paid", "paid_at": now_iso,
-             "txn_reference": body.txn_reference or row.get("txn_reference"),
-             "admin_notes": body.admin_notes or row.get("admin_notes")},
-        )
-        # Mark covered referral_events as paid
-        covers = row.get("covers_event_ids") or []
-        if covers:
-            ids_csv = ",".join(covers)
-            _supabase_patch(
-                f"referral_events?id=in.({ids_csv})",
-                {"payout_status": "paid", "paid_at": now_iso},
-            )
-        return {"ok": True, "status": "paid"}
-
-    @api_router.post("/admin/payouts/{request_id}/reject")
-    async def admin_payouts_reject(request_id: str,
-                                   body: AdminPayoutDecisionReq = Body(...),
-                                   user=Depends(_get_supabase_user)):
-        _ensure_admin(user)
-        if not (body.admin_notes or "").strip():
-            raise HTTPException(status_code=400, detail="admin_notes required")
-        rows = _supabase_get(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}&select=*&limit=1"
-        ) or []
-        if not rows:
-            raise HTTPException(status_code=404, detail="not found")
-        row = rows[0]
-        if row["status"] not in ("pending", "approved"):
-            raise HTTPException(status_code=400, detail="cannot reject")
-        _supabase_patch(
-            f"payout_requests?id=eq.{_urlparse.quote(request_id)}",
-            {"status": "rejected",
-             "rejected_at": datetime.now(timezone.utc).isoformat(),
-             "admin_notes": body.admin_notes},
-        )
-        # Unlock the referral_events back to pending
-        covers = row.get("covers_event_ids") or []
-        if covers:
-            ids_csv = ",".join(covers)
-            _supabase_patch(
-                f"referral_events?id=in.({ids_csv})",
-                {"payout_status": "pending"},
-            )
-        return {"ok": True, "status": "rejected"}
 
     # ---------------- ADMIN — PAYMENTS OVERVIEW ----------------
     @api_router.get("/admin/payments/overview")

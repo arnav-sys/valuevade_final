@@ -32,13 +32,6 @@ export default function SignupPage() {
     setErrors(v);
     if (Object.keys(v).length) return;
 
-    // Capture ?ref= from URL into localStorage before signup
-    try {
-      const url = new URL(window.location.href);
-      const ref = url.searchParams.get('ref');
-      if (ref) localStorage.setItem('vv_pending_ref', ref);
-    } catch { /* ignore */ }
-
     setSubmitting(true);
     const { error } = await signUp({ email: form.email, password: form.password, fullName: form.fullName });
     setSubmitting(false);
@@ -47,22 +40,6 @@ export default function SignupPage() {
       setApiError(error.message);
       return;
     }
-    // Best-effort referral attach (non-blocking, errors swallowed)
-    try {
-      const ref = localStorage.getItem('vv_pending_ref');
-      if (ref) {
-        const { supabase } = await import('../lib/supabase');
-        const { data: { session } } = await supabase.auth.getSession();
-        if (session?.access_token) {
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/api/referrals/attach`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-            body: JSON.stringify({ ref_code: ref }),
-          }).catch(() => {});
-        }
-        localStorage.removeItem('vv_pending_ref');
-      }
-    } catch { /* */ }
     navigate('/courses');
   };
 

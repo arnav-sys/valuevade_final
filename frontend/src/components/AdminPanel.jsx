@@ -5,7 +5,7 @@ import { Navigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
 import ErrorsTab from './admin/ErrorsTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Share2, Lock, CreditCard, ArrowDownToLine, Eye, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2 } from 'lucide-react';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2 } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -55,9 +55,7 @@ function AdminTabs({ tab, setTab }) {
     { k: 'waitlist',  label: 'Waitlist Signups',   icon: ListChecks },
     { k: 'users',     label: 'Enrolled Users',     icon: Users },
     { k: 'progress',  label: 'Per-User Progress',  icon: BookOpen },
-    { k: 'referrals', label: 'Referrals',          icon: Share2 },
     { k: 'payments',  label: 'Payments',           icon: CreditCard },
-    { k: 'payouts',   label: 'Payouts',            icon: ArrowDownToLine },
     { k: 'videos',    label: 'Session Videos',     icon: Video },
     { k: 'curriculum', label: 'View Course',       icon: GraduationCap },
     { k: 'errors',    label: 'Errors',             icon: AlertTriangle },
@@ -527,150 +525,6 @@ const fmtINR = (n) => new Intl.NumberFormat('en-IN', {
   style: 'currency', currency: 'INR', maximumFractionDigits: 0,
 }).format(Number(n || 0));
 
-function ReferralsTab() {
-  const [overview, setOverview] = useState(null);
-  const [recent, setRecent] = useState(null);
-  const [err, setErr] = useState(null);
-
-  useEffect(() => {
-    Promise.all([
-      authFetch('/api/admin/referrals/overview'),
-      authFetch('/api/admin/referrals/recent?limit=20'),
-    ]).then(([o, r]) => { setOverview(o); setRecent(r); })
-      .catch(e => setErr(e.message));
-  }, []);
-
-  if (err) return <div className="text-red-500 p-4">{err}</div>;
-  if (!overview || !recent) return <div className="p-4 text-[var(--color-text-muted)]">Loading…</div>;
-
-  const s = overview.stats;
-  const paymentsLive = !!overview.payment_processing_live;
-
-  return (
-    <div data-testid="admin-referrals-tab">
-      {!paymentsLive && (
-        <div
-          data-testid="referrals-payments-banner"
-          className="mb-4 px-4 py-2 rounded-lg bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] text-xs text-[var(--color-text-muted)] inline-flex items-center gap-2"
-        >
-          <Lock className="w-3.5 h-3.5" />
-          Payment processing not live — commissions are tracked as credits only.
-        </div>
-      )}
-
-      {/* Stat chips */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-6" data-testid="referrals-stats">
-        <Stat label="Total Referrers" value={s.unique_referrers} />
-        <Stat label="Total Referrals" value={s.total_referrals} />
-        <Stat label="Enrollments" value={s.total_enrollments} />
-        <Stat label="Referred Revenue" value={fmtINR(s.lifetime_revenue)} />
-        <Stat label="Pending Commission" value={fmtINR(s.pending_commission)} />
-        <Stat label="Paid Commission" value={fmtINR(s.paid_commission)} />
-      </div>
-
-      {/* Leaderboard */}
-      <div className="mb-8">
-        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 uppercase tracking-wider">
-          Top Referrers Leaderboard
-        </h3>
-        <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="referrals-leaderboard">
-          <table className="w-full text-sm">
-            <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
-              <tr>
-                <th className="p-3 w-10">#</th>
-                <th className="p-3">Referrer</th>
-                <th className="p-3">Code</th>
-                <th className="p-3 text-right">Signups</th>
-                <th className="p-3 text-right">Enrolled</th>
-                <th className="p-3 text-right">Referred Rev.</th>
-                <th className="p-3 text-right">Pending</th>
-                <th className="p-3 text-right">Paid</th>
-              </tr>
-            </thead>
-            <tbody>
-              {overview.leaderboard.map((row, i) => (
-                <tr key={row.referrer_user_id} className="border-t border-[var(--color-border)]">
-                  <td className="p-3 text-[var(--color-text-muted)]">{i + 1}</td>
-                  <td className="p-3">
-                    <div className="font-medium text-[var(--color-text)]">{row.full_name || '—'}</div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{row.email || '—'}</div>
-                  </td>
-                  <td className="p-3 font-mono text-xs">{row.referral_code || '—'}</td>
-                  <td className="p-3 text-right font-semibold">{row.signups}</td>
-                  <td className="p-3 text-right">{row.enrollments}</td>
-                  <td className="p-3 text-right">{fmtINR(row.lifetime_revenue)}</td>
-                  <td className="p-3 text-right text-[var(--color-text-muted)]">{fmtINR(row.pending_commission)}</td>
-                  <td className="p-3 text-right">{fmtINR(row.paid_commission)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {overview.leaderboard.length === 0 && (
-            <div className="p-8 text-center text-[var(--color-text-muted)]">No referrals yet.</div>
-          )}
-        </div>
-      </div>
-
-      {/* Recent feed */}
-      <div>
-        <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 uppercase tracking-wider">
-          Recent Referrals
-        </h3>
-        <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="referrals-recent">
-          <table className="w-full text-sm">
-            <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
-              <tr>
-                <th className="p-3">When</th>
-                <th className="p-3">Referrer</th>
-                <th className="p-3">Referred</th>
-                <th className="p-3">Stage</th>
-                <th className="p-3 text-right">Commission</th>
-                <th className="p-3">Payout</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recent.events.map((e, i) => (
-                <tr key={i} className="border-t border-[var(--color-border)]">
-                  <td className="p-3">{fmt(e.created_at)}</td>
-                  <td className="p-3">
-                    <div className="font-medium">{e.referrer_name || '—'}</div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{e.referrer_email}</div>
-                  </td>
-                  <td className="p-3">
-                    <div className="font-medium">{e.referred_name || '—'}</div>
-                    <div className="text-xs text-[var(--color-text-muted)]">{e.referred_email}</div>
-                  </td>
-                  <td className="p-3">
-                    {e.enrollment_xp_awarded ? (
-                      <span className="text-green-500 text-xs font-medium">Enrolled</span>
-                    ) : e.signup_xp_awarded ? (
-                      <span className="text-[var(--color-primary)] text-xs font-medium">Signed up</span>
-                    ) : (
-                      <span className="text-[var(--color-text-muted)] text-xs">—</span>
-                    )}
-                  </td>
-                  <td className="p-3 text-right">{fmtINR(e.commission_amount)}</td>
-                  <td className="p-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                      e.payout_status === 'paid' ? 'bg-green-500/10 text-green-500 border-green-500/30' :
-                      e.payout_status === 'approved' ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' :
-                      'bg-[var(--color-bg-card-hover)] text-[var(--color-text-muted)] border-[var(--color-border)]'
-                    }`}>
-                      {e.payout_status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {recent.events.length === 0 && (
-            <div className="p-8 text-center text-[var(--color-text-muted)]">No referral events yet.</div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function AdminPanel() {
   const { user, profile } = useAuth();
@@ -712,9 +566,7 @@ export default function AdminPanel() {
           {tab === 'waitlist'  && <WaitlistTab />}
           {tab === 'users'     && <UsersTab onSelect={(u) => { setSelected(u); setTab('users'); }} />}
           {tab === 'progress'  && <UsersTab onSelect={setSelected} />}
-          {tab === 'referrals' && <ReferralsTab />}
           {tab === 'payments'  && <PaymentsTab />}
-          {tab === 'payouts'   && <PayoutsTab />}
           {tab === 'videos'    && <SessionVideosTab />}
           {tab === 'curriculum' && <CurriculumTab />}
           {tab === 'errors' && <ErrorsTab />}
@@ -822,184 +674,6 @@ function PaymentsTab() {
   );
 }
 
-function PayoutsTab() {
-  const [pending, setPending] = useState(null);
-  const [recent, setRecent] = useState(null);
-  const [err, setErr] = useState(null);
-  const [detailRequest, setDetailRequest] = useState(null);
-
-  const load = () => {
-    Promise.all([
-      authFetch('/api/admin/payouts/pending'),
-      authFetch('/api/admin/payouts/recent?limit=50'),
-    ]).then(([p, r]) => { setPending(p); setRecent(r); })
-      .catch(e => setErr(e.message));
-  };
-  useEffect(() => { load(); }, []);
-
-  const decide = async (id, action, payload = {}) => {
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      const r = await fetch(`${API}/api/admin/payouts/${id}/${action}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token || ''}` },
-        body: JSON.stringify(payload),
-      });
-      if (!r.ok) {
-        alert(`${action} failed: ${await r.text()}`);
-        return;
-      }
-      load();
-    } catch (e) {
-      alert(`${action} error: ${e.message}`);
-    }
-  };
-
-  if (err) return <div className="text-red-500 p-4">{err}</div>;
-  if (!pending || !recent) return <div className="p-4 text-[var(--color-text-muted)]">Loading…</div>;
-
-  return (
-    <div data-testid="admin-payouts-tab">
-      <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 uppercase tracking-wider">
-        Pending / Approved Requests ({pending.total})
-      </h3>
-      <div className="overflow-x-auto rounded-xl border border-[var(--color-border)] mb-6" data-testid="payouts-pending-table">
-        <table className="w-full text-sm">
-          <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
-            <tr>
-              <th className="p-3">Requested</th>
-              <th className="p-3">User</th>
-              <th className="p-3 text-right">Amount</th>
-              <th className="p-3">Method</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pending.requests.map(r => (
-              <tr key={r.id} className="border-t border-[var(--color-border)]">
-                <td className="p-3">{fmt(r.requested_at)}</td>
-                <td className="p-3">
-                  <div className="font-medium">{r.full_name || '—'}</div>
-                  <div className="text-xs text-[var(--color-text-muted)]">{r.email}</div>
-                </td>
-                <td className="p-3 text-right font-semibold">{fmtINR(r.amount_inr)}</td>
-                <td className="p-3 uppercase text-xs">{r.payout_method === 'upi' ? 'UPI' : 'Bank'}</td>
-                <td className="p-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                    r.status === 'approved' ? 'bg-blue-500/10 text-blue-500 border-blue-500/30' :
-                    'bg-[var(--color-bg-card-hover)] text-[var(--color-text-muted)] border-[var(--color-border)]'
-                  }`}>{r.status}</span>
-                </td>
-                <td className="p-3 space-x-1 whitespace-nowrap">
-                  <button onClick={() => setDetailRequest(r.id)}
-                    data-testid={`payout-view-${r.id}`}
-                    className="px-2 py-1 rounded-md border border-[var(--color-border)] text-xs hover:bg-[var(--color-bg-card-hover)] inline-flex items-center gap-1">
-                    <Eye className="w-3 h-3" /> Details
-                  </button>
-                  {r.status === 'pending' && (
-                    <button onClick={() => decide(r.id, 'approve', {})}
-                      data-testid={`payout-approve-${r.id}`}
-                      className="px-2 py-1 rounded-md bg-blue-500/15 text-blue-500 text-xs hover:bg-blue-500/25 inline-flex items-center gap-1">
-                      <Check className="w-3 h-3" /> Approve
-                    </button>
-                  )}
-                  <button
-                    onClick={() => {
-                      const ref = window.prompt('Optional txn reference (e.g. UTR):', '');
-                      if (ref === null) return;
-                      decide(r.id, 'mark-paid', { txn_reference: ref });
-                    }}
-                    data-testid={`payout-markpaid-${r.id}`}
-                    className="px-2 py-1 rounded-md bg-green-500/15 text-green-500 text-xs hover:bg-green-500/25 inline-flex items-center gap-1">
-                    <Check className="w-3 h-3" /> Mark Paid
-                  </button>
-                  <button
-                    onClick={() => {
-                      const reason = window.prompt('Reason for rejection (required):', '');
-                      if (!reason) return;
-                      decide(r.id, 'reject', { admin_notes: reason });
-                    }}
-                    data-testid={`payout-reject-${r.id}`}
-                    className="px-2 py-1 rounded-md bg-red-500/15 text-red-500 text-xs hover:bg-red-500/25 inline-flex items-center gap-1">
-                    <XIcon className="w-3 h-3" /> Reject
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {pending.requests.length === 0 && <div className="p-8 text-center text-[var(--color-text-muted)]">No pending payout requests.</div>}
-      </div>
-
-      <h3 className="text-sm font-semibold text-[var(--color-text)] mb-2 uppercase tracking-wider">
-        Paid / Rejected History
-      </h3>
-      <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="payouts-history-table">
-        <table className="w-full text-sm">
-          <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
-            <tr>
-              <th className="p-3">When</th>
-              <th className="p-3">User</th>
-              <th className="p-3 text-right">Amount</th>
-              <th className="p-3">Status</th>
-              <th className="p-3">Admin notes</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recent.requests.map(r => (
-              <tr key={r.id} className="border-t border-[var(--color-border)]">
-                <td className="p-3">{fmt(r.paid_at || r.rejected_at || r.requested_at)}</td>
-                <td className="p-3">
-                  <div className="font-medium">{r.full_name || '—'}</div>
-                  <div className="text-xs text-[var(--color-text-muted)]">{r.email}</div>
-                </td>
-                <td className="p-3 text-right font-semibold">{fmtINR(r.amount_inr)}</td>
-                <td className="p-3">
-                  <span className={`text-xs px-2 py-0.5 rounded-full border ${
-                    r.status === 'paid' ? 'bg-green-500/10 text-green-500 border-green-500/30' :
-                    'bg-red-500/10 text-red-500 border-red-500/30'
-                  }`}>{r.status}</span>
-                </td>
-                <td className="p-3 text-xs italic text-[var(--color-text-muted)]">{r.admin_notes || '—'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        {recent.requests.length === 0 && <div className="p-8 text-center text-[var(--color-text-muted)]">No payout history yet.</div>}
-      </div>
-
-      {detailRequest && <PayoutDetailModal id={detailRequest} onClose={() => setDetailRequest(null)} />}
-    </div>
-  );
-}
-
-function PayoutDetailModal({ id, onClose }) {
-  const [data, setData] = useState(null);
-  useEffect(() => {
-    authFetch(`/api/admin/payouts/${id}/details`).then(setData).catch(() => setData({ error: 'failed' }));
-  }, [id]);
-  return (
-    <div className="fixed inset-0 z-[90] bg-black/70 flex items-center justify-center p-4" onClick={onClose} data-testid="payout-detail-modal">
-      <div className="bg-[var(--color-bg-card)] rounded-2xl max-w-md w-full p-6 border border-[var(--color-border)]" onClick={e => e.stopPropagation()}>
-        <h3 className="text-lg font-bold text-[var(--color-text)] mb-4">Decrypted Payout Details</h3>
-        {!data && <div className="text-sm text-[var(--color-text-muted)]">Loading…</div>}
-        {data?.error && <div className="text-sm text-red-500">{data.error}</div>}
-        {data?.decrypted_details && (
-          <pre className="bg-[var(--color-bg-card-hover)] p-3 rounded-lg text-xs font-mono whitespace-pre-wrap break-all border border-[var(--color-border)]">
-            {JSON.stringify(data.decrypted_details, null, 2)}
-          </pre>
-        )}
-        <div className="mt-4 text-xs text-[var(--color-text-muted)] italic">
-          Use these details to transfer the payout manually, then click &quot;Mark Paid&quot; on the request.
-        </div>
-        <button onClick={onClose} className="mt-4 px-4 py-2 rounded-lg border border-[var(--color-border)] text-sm">
-          Close
-        </button>
-      </div>
-    </div>
-  );
-}
 
 // ─────────────────────────────────────────────────────────────
 // Session Videos tab — admin uploads / replaces / deletes lecture

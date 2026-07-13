@@ -16,7 +16,6 @@ import {
 } from 'lucide-react';
 import { Skeleton } from './ui/skeleton';
 import { getStudyPlanDashboardSummary } from '../utils/studyPlanner';
-import ReferralsBlock from './profile/ReferralsBlock';
 
 function initialsFrom(name, email) {
   if (name) {
@@ -354,7 +353,6 @@ export default function ProfilePage() {
           {/* Learning journey */}
           <div className="mb-6">
             <BadgeCabinet className="mb-6" />
-            <ReferralsBlock />
             <div className="mt-6"><ActivityHeatmap /></div>
             <div className="mt-6"><RecentActivityFeed limit={10} /></div>
             <div className="flex items-end justify-between mb-4">

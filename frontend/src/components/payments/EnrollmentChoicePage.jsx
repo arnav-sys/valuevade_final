@@ -55,7 +55,6 @@ export default function EnrollmentChoicePage() {
     'AI tutor "Pari" — unlimited questions',
     '3-round mock interview capstone',
     'Daily challenges + streaks',
-    'Earn 20% commission on every referral',
   ];
 
   return (
