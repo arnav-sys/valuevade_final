@@ -1309,9 +1309,104 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     @api_router.delete("/admin/modules/{module_id}")
     async def admin_delete_module(module_id: str, user=Depends(_get_supabase_user)):
+        """Cascade-delete a module. Supabase FKs on user_modules /
+        user_sessions / master_sessions don't have ON DELETE CASCADE, so we
+        clean dependents explicitly in dependency order:
+
+            user_sessions → master_notes_cards / master_quiz_questions /
+            master_interview_questions / master_simulations →
+            master_sessions → user_modules → master_module_projects →
+            master_modules
+        """
         _ensure_admin(user)
-        _supabase_delete(f"master_modules?id=eq.{_urlparse.quote(module_id)}")
-        return {"ok": True}
+        mid_q = _urlparse.quote(module_id)
+
+        # 1) Collect session ids belonging to this module.
+        sessions = _supabase_get(
+            f"master_sessions?module_id=eq.{mid_q}&select=id&limit=1000"
+        ) or []
+        session_ids = [s["id"] for s in sessions]
+
+        # 2) Collect user_module ids that reference this master module.
+        user_mods = _supabase_get(
+            f"user_modules?master_module_id=eq.{mid_q}&select=id&limit=10000"
+        ) or []
+        user_module_ids = [u["id"] for u in user_mods]
+
+        def _in_list(vals):
+            return "(" + ",".join(_urlparse.quote(v) for v in vals) + ")"
+
+        # 3) Delete user_sessions in TWO passes to catch both FK columns.
+        if session_ids:
+            for i in range(0, len(session_ids), 100):
+                chunk = session_ids[i:i + 100]
+                try:
+                    _supabase_delete(
+                        f"user_sessions?master_session_id=in.{_in_list(chunk)}"
+                    )
+                except HTTPException as e:
+                    logger.warning(f"[delete-module] user_sessions by session_id failed: {e.detail}")
+        if user_module_ids:
+            for i in range(0, len(user_module_ids), 100):
+                chunk = user_module_ids[i:i + 100]
+                try:
+                    _supabase_delete(
+                        f"user_sessions?user_module_id=in.{_in_list(chunk)}"
+                    )
+                except HTTPException as e:
+                    logger.warning(f"[delete-module] user_sessions by user_module_id failed: {e.detail}")
+
+        # 4) Delete master content items for these sessions.
+        if session_ids:
+            for tbl in ("master_notes_cards", "master_quiz_questions",
+                        "master_interview_questions", "master_simulations"):
+                for i in range(0, len(session_ids), 100):
+                    chunk = session_ids[i:i + 100]
+                    try:
+                        _supabase_delete(
+                            f"{tbl}?session_id=in.{_in_list(chunk)}"
+                        )
+                    except HTTPException as e:
+                        logger.warning(f"[delete-module] {tbl} sweep failed: {e.detail}")
+
+        # 5) Delete master_sessions for this module.
+        try:
+            _supabase_delete(f"master_sessions?module_id=eq.{mid_q}")
+        except HTTPException as e:
+            logger.warning(f"[delete-module] master_sessions delete failed: {e.detail}")
+
+        # 6) Delete user_modules referencing this master module.
+        try:
+            _supabase_delete(f"user_modules?master_module_id=eq.{mid_q}")
+        except HTTPException as e:
+            logger.warning(f"[delete-module] user_modules delete failed: {e.detail}")
+
+        # 7) Delete module-level projects (best-effort — table may not exist
+        #    or column name may vary).
+        for tbl_query in (
+            f"master_module_projects?module_id=eq.{mid_q}",
+            f"master_module_projects?master_module_id=eq.{mid_q}",
+        ):
+            try:
+                _supabase_delete(tbl_query)
+                break
+            except HTTPException:
+                continue
+
+        # 8) Finally, drop the module itself. If this still fails, bubble the
+        #    Postgres FK error to the admin so they know what else references
+        #    the module (e.g. XP events, milestones, badges, plan days).
+        try:
+            _supabase_delete(f"master_modules?id=eq.{mid_q}")
+        except HTTPException as e:
+            raise HTTPException(
+                status_code=e.status_code or 409,
+                detail=f"Module delete blocked by remaining references: {e.detail}",
+            )
+        return {"ok": True, "cleaned": {
+            "master_sessions": len(session_ids),
+            "user_modules":    len(user_module_ids),
+        }}
 
     @api_router.post("/admin/sessions")
     async def admin_create_session(body: _AdminSessionBody, user=Depends(_get_supabase_user)):
@@ -1352,8 +1447,31 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     @api_router.delete("/admin/sessions/{session_id}")
     async def admin_delete_session(session_id: str, user=Depends(_get_supabase_user)):
+        """Cascade-delete a session. Cleans dependent rows in order:
+        user_sessions → master_notes_cards / master_quiz_questions /
+        master_interview_questions / master_simulations → master_sessions."""
         _ensure_admin(user)
-        _supabase_delete(f"master_sessions?id=eq.{_urlparse.quote(session_id)}")
+        sid_q = _urlparse.quote(session_id)
+        # 1) User progress rows for this session
+        try:
+            _supabase_delete(f"user_sessions?master_session_id=eq.{sid_q}")
+        except HTTPException as e:
+            logger.warning(f"[delete-session] user_sessions failed: {e.detail}")
+        # 2) All master content items for this session
+        for tbl in ("master_notes_cards", "master_quiz_questions",
+                    "master_interview_questions", "master_simulations"):
+            try:
+                _supabase_delete(f"{tbl}?session_id=eq.{sid_q}")
+            except HTTPException as e:
+                logger.warning(f"[delete-session] {tbl} failed: {e.detail}")
+        # 3) The session itself
+        try:
+            _supabase_delete(f"master_sessions?id=eq.{sid_q}")
+        except HTTPException as e:
+            raise HTTPException(
+                status_code=e.status_code or 409,
+                detail=f"Session delete blocked by remaining references: {e.detail}",
+            )
         return {"ok": True}
 
     # ─── Notes cards CRUD (Phase B.1) ────────────────────────────────────
