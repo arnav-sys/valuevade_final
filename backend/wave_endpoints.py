@@ -1205,10 +1205,38 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         url = (body.public_url or "").strip()
         if not url or not url.startswith(("http://", "https://")):
             raise HTTPException(status_code=400, detail="Invalid public_url.")
-        # Accept EITHER (a) URLs inside our own Supabase bucket, OR (b) any
-        # externally-hosted video URL (YouTube/Vimeo/Cloudflare/Mux/etc.).
-        # Historically we required the bucket path — that blocked large
-        # video uploads that can't fit under the Free-tier 50 MB storage cap.
+        # Post-upload sanity guard — if this is a Supabase-hosted URL, HEAD it
+        # to confirm the file is actually a real video, not a truncated stub.
+        # Some TUS uploads have historically silently finalized at 0-1 KB when
+        # the browser tab was closed or the network hiccuped, leaving admins
+        # with a black video player. External URLs (YouTube/Vimeo/etc.) are
+        # skipped since we can't HEAD them reliably.
+        if _SUPABASE_REST_URL and url.startswith(_SUPABASE_REST_URL):
+            import urllib.request as _ur
+            try:
+                req = _ur.Request(url, method="HEAD")
+                with _ur.urlopen(req, timeout=10) as resp:
+                    size = int(resp.headers.get("content-length") or 0)
+                    if size < 100_000:  # <100 KB → definitely a broken stub
+                        raise HTTPException(
+                            status_code=400,
+                            detail=(
+                                f"Upload appears corrupted (only {size} bytes on Supabase). "
+                                "Retry the upload — a real lecture video should be several MB. "
+                                "Nothing has been saved."
+                            ),
+                        )
+            except urllib.error.HTTPError as e:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Uploaded video is not readable (HTTP {e.code}). Retry the upload.",
+                )
+            except HTTPException:
+                raise
+            except Exception as e:
+                # Network flakiness — log but don't block the save; the admin
+                # can always re-check the video plays.
+                logger.warning("Post-upload HEAD check failed for %s: %s", url, e)
         _supabase_patch(
             f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
             {"lecture_url": url},
