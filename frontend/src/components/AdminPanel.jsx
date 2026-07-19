@@ -1010,6 +1010,17 @@ function FaqsTab() {
 
   return (
     <div data-testid="faqs-tab">
+      {data.table_ready === false && (
+        <div
+          className="mb-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-600 dark:text-amber-300"
+          data-testid="faqs-migration-banner"
+        >
+          <div className="font-semibold mb-0.5">FAQs database table not created yet</div>
+          <div className="text-xs">
+            Run <code className="px-1 py-0.5 rounded bg-black/20 font-mono">/app/scripts/migrations/0033_faqs.sql</code> in Supabase Studio → SQL Editor to enable saving. The public landing page continues to show the 22 built-in FAQs until then.
+          </div>
+        </div>
+      )}
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-sm font-medium" data-testid="faqs-total">

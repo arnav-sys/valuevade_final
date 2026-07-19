@@ -1,0 +1,37 @@
+{
+  "summary": "Verified FAQ graceful-degradation behavior end-to-end (backend + frontend) while the Supabase `faqs` table is intentionally absent. Backend endpoints return friendly empty-state payloads (no PGRST205 leak). Landing page renders 22 static FAQs via useFaqs fallback, chatbot search works, and admin FAQs tab shows migration banner, 'Add FAQ' button, and '0 FAQs' chip with no error.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_faqs_graceful.py",
+    "/app/test_reports/pytest/faqs_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AdminPanel.jsx is now >1140 lines — approaching the 700-line split threshold. FaqsTab + FaqEditModal could be extracted to /app/frontend/src/components/admin/FaqsTab.jsx for maintainability, but this is a hygiene issue, not a blocker.",
+    "backend/wave_endpoints.py is 2214 lines — same maintainability concern applies (should be split into resource-specific routers)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_faqs_graceful.py"
+  ],
+  "success_rate": {"backend": "100% (6/6 pytest)", "frontend": "100% (all critical selectors verified)"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (admin) — logged in successfully via Supabase auth",
+  "seed_data_creation": "None. Table `faqs` intentionally absent — static fallback path exercised.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "FAQ backend endpoints (`GET /api/faqs`, `GET /api/admin/faqs`, `POST /api/admin/faqs`) all correctly handle missing table. After user runs /app/scripts/migrations/0033_faqs.sql, re-test the CRUD path: POST should return 201/200 with `{faq: {...}}`, GET /api/admin/faqs should return `table_ready: true` with the row. Update /app/backend/tests/test_faqs_graceful.py accordingly (currently asserts empty/503 states).",
+  "verified_flows": {
+    "GET /api/faqs (public)": "200 -> {faqs: [], table_ready: false}",
+    "GET /api/admin/faqs (admin auth)": "200 -> {total: 0, faqs: [], table_ready: false, hint: '...0033_faqs.sql...'}",
+    "POST /api/admin/faqs (admin auth)": "503 -> detail contains 'faqs' and '0033_faqs.sql'",
+    "Landing /": "landing-faq-section renders 22 items, first faq-toggle expands, chatbot bubble at bottom-right (x=1797,y=1004), 'refund' search returns 2 results",
+    "Admin /admin-panel FAQs tab": "faqs-migration-banner visible (amber), faqs-add-btn visible, faqs-total chip = '0 FAQs', no faqs-tab-error"
+  }
+}

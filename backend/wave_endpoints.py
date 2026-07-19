@@ -423,23 +423,60 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     # ---------------- ADMIN PANEL ----------------
     # ---- FAQs (public read + admin CRUD) -------------------------------
+    #
+    # Gracefully degrade when the `faqs` table hasn't been created yet in
+    # Supabase (migration 0033_faqs.sql not yet applied). The frontend then
+    # falls back to the static 22-item list from `/app/frontend/src/data/faqs.js`.
+    _FAQ_TABLE_MISSING_HINT = (
+        "The `faqs` table isn't present in Supabase yet. Run "
+        "`/app/scripts/migrations/0033_faqs.sql` in the Supabase SQL editor. "
+        "The public site keeps working via the static fallback until then."
+    )
+
+    def _is_faq_table_missing(exc: HTTPException) -> bool:
+        try:
+            detail = str(exc.detail or "")
+        except Exception:
+            return False
+        return "PGRST205" in detail or "Could not find the table 'public.faqs'" in detail
+
     @api_router.get("/faqs")
     async def public_faqs():
-        """Public — powers the landing accordion + help chatbot."""
-        rows = _supabase_get(
-            "faqs?select=id,category,question,answer,tags,order_index"
-            "&is_published=eq.true&order=order_index.asc&limit=500"
-        ) or []
-        return {"faqs": rows}
+        """Public — powers the landing accordion + help chatbot. Returns an
+        empty list if the table hasn't been provisioned yet so the FE's
+        static fallback engages cleanly."""
+        try:
+            rows = _supabase_get(
+                "faqs?select=id,category,question,answer,tags,order_index"
+                "&is_published=eq.true&order=order_index.asc&limit=500"
+            ) or []
+            return {"faqs": rows}
+        except HTTPException as e:
+            if _is_faq_table_missing(e):
+                return {"faqs": [], "table_ready": False}
+            raise
 
     @api_router.get("/admin/faqs")
     async def admin_faqs_list(user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        rows = _supabase_get(
-            "faqs?select=id,category,question,answer,tags,order_index,is_published,updated_at"
-            "&order=order_index.asc&limit=500"
-        ) or []
-        return {"total": len(rows), "faqs": rows}
+        try:
+            rows = _supabase_get(
+                "faqs?select=id,category,question,answer,tags,order_index,is_published,updated_at"
+                "&order=order_index.asc&limit=500"
+            ) or []
+            return {"total": len(rows), "faqs": rows, "table_ready": True}
+        except HTTPException as e:
+            if _is_faq_table_missing(e):
+                # Return an empty state + a machine-readable flag so the
+                # admin FE can render a "Run migration first" banner instead
+                # of a scary error page.
+                return {
+                    "total": 0,
+                    "faqs": [],
+                    "table_ready": False,
+                    "hint": _FAQ_TABLE_MISSING_HINT,
+                }
+            raise
 
     @api_router.post("/admin/faqs")
     async def admin_faqs_create(body: dict, user=Depends(_get_supabase_user)):
@@ -452,18 +489,23 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         tags = body.get("tags") or []
         if isinstance(tags, str):
             tags = [t.strip() for t in tags.split(",") if t.strip()]
-        row = _supabase_post(
-            "faqs",
-            {
-                "category": category,
-                "question": question,
-                "answer": answer,
-                "tags": tags,
-                "order_index": int(body.get("order_index") or 100),
-                "is_published": bool(body.get("is_published", True)),
-            },
-            prefer="return=representation",
-        )
+        try:
+            row = _supabase_post(
+                "faqs",
+                {
+                    "category": category,
+                    "question": question,
+                    "answer": answer,
+                    "tags": tags,
+                    "order_index": int(body.get("order_index") or 100),
+                    "is_published": bool(body.get("is_published", True)),
+                },
+                prefer="return=representation",
+            )
+        except HTTPException as e:
+            if _is_faq_table_missing(e):
+                raise HTTPException(status_code=503, detail=_FAQ_TABLE_MISSING_HINT)
+            raise
         if isinstance(row, list):
             row = row[0] if row else None
         return {"faq": row}
@@ -478,16 +520,26 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         if not patch:
             raise HTTPException(status_code=400, detail="No valid fields to update")
         patch["updated_at"] = datetime.now(timezone.utc).isoformat()
-        _supabase_patch(f"faqs?id=eq.{_urlparse.quote(faq_id)}", patch)
-        rows = _supabase_get(
-            f"faqs?id=eq.{_urlparse.quote(faq_id)}&select=*&limit=1"
-        ) or []
+        try:
+            _supabase_patch(f"faqs?id=eq.{_urlparse.quote(faq_id)}", patch)
+            rows = _supabase_get(
+                f"faqs?id=eq.{_urlparse.quote(faq_id)}&select=*&limit=1"
+            ) or []
+        except HTTPException as e:
+            if _is_faq_table_missing(e):
+                raise HTTPException(status_code=503, detail=_FAQ_TABLE_MISSING_HINT)
+            raise
         return {"faq": rows[0] if rows else None}
 
     @api_router.delete("/admin/faqs/{faq_id}")
     async def admin_faqs_delete(faq_id: str, user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        deleted = _supabase_delete(f"faqs?id=eq.{_urlparse.quote(faq_id)}") or []
+        try:
+            deleted = _supabase_delete(f"faqs?id=eq.{_urlparse.quote(faq_id)}") or []
+        except HTTPException as e:
+            if _is_faq_table_missing(e):
+                raise HTTPException(status_code=503, detail=_FAQ_TABLE_MISSING_HINT)
+            raise
         if not deleted:
             raise HTTPException(status_code=404, detail="FAQ not found")
         return {"ok": True}
