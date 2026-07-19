@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { enrollDirect } from '../lib/enrollDirect';
-import { ArrowRight, BookOpen, Layers, Clock, Award, ChevronDown, ChevronUp, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, BookOpen, Layers, Clock, Award, ChevronDown, ChevronUp, CheckCircle2, Sparkles } from 'lucide-react';
 import { BreathingGlow, ScrollProgressBar } from './cinematic/primitives';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
 
@@ -28,6 +28,19 @@ export default function EnrollmentPage() {
   const [enrolling, setEnrolling] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [error, setError] = useState(null);
+  // AI customisation mode fetched from public app-settings endpoint.
+  //   'off'       -> only standard CTA
+  //   'optional'  -> both CTAs
+  //   'mandatory' -> only "Customise with AI"
+  const [aiMode, setAiMode] = useState('off');
+
+  useEffect(() => {
+    // Non-blocking fetch — defaults to 'off' if unreachable/table missing
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/api/app-settings/ai-customization`)
+      .then((r) => r.ok ? r.json() : Promise.resolve({ mode: 'off' }))
+      .then((j) => setAiMode((j && j.mode) || 'off'))
+      .catch(() => setAiMode('off'));
+  }, []);
 
   useEffect(() => {
     if (!user) { navigate('/login'); return; }
@@ -223,19 +236,47 @@ export default function EnrollmentPage() {
               {error}
             </div>
           )}
-          <BreathingGlow testid="enrollment-glow">
-            <button
-              onClick={handleStart}
-              disabled={enrolling}
-              data-testid="enrollment-start-button"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm sm:text-base font-semibold font-bricolage hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
-            >
-              Start My Journey <ArrowRight size={16} />
-            </button>
-          </BreathingGlow>
-          <p className="mt-4 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-fineprint">
-            You'll get the full standard curriculum. No personalization.
-          </p>
+
+          {aiMode !== 'mandatory' && (
+            <>
+              <BreathingGlow testid="enrollment-glow">
+                <button
+                  onClick={handleStart}
+                  disabled={enrolling}
+                  data-testid="enrollment-start-button"
+                  className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm sm:text-base font-semibold font-bricolage hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                >
+                  Start My Journey <ArrowRight size={16} />
+                </button>
+              </BreathingGlow>
+              <p className="mt-4 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-fineprint">
+                Full standard curriculum — start immediately.
+              </p>
+            </>
+          )}
+
+          {(aiMode === 'optional' || aiMode === 'mandatory') && (
+            <div className={aiMode === 'optional' ? 'mt-8' : ''} data-testid="enrollment-ai-cta-block">
+              {aiMode === 'optional' && (
+                <div className="flex items-center gap-3 max-w-xs mx-auto mb-4">
+                  <div className="flex-1 h-px bg-[var(--color-border)]" />
+                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">or</span>
+                  <div className="flex-1 h-px bg-[var(--color-border)]" />
+                </div>
+              )}
+              <Link
+                to={`/course/${courseId}/customize`}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[var(--color-accent-purple)]/50 bg-[var(--color-accent-purple)]/10 text-[var(--color-accent-purple)] text-sm font-semibold font-bricolage hover:bg-[var(--color-accent-purple)]/20 transition-all"
+                data-testid="enrollment-customize-button"
+              >
+                <Sparkles size={15} /> Customise my path with AI
+              </Link>
+              <p className="mt-3 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-ai-fineprint">
+                Answer a few questions — Pari tailors the modules to your background and goals.
+              </p>
+            </div>
+          )}
+
           <Link
             to={`/course/${courseId}`}
             className="mt-6 inline-block text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text)] font-bricolage transition-colors"

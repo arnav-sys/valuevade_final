@@ -422,6 +422,165 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
     # ---------------- ADMIN PANEL ----------------
+    # ---- AI Customisation mode + questions (admin CRUD) ----------------
+    _AI_MODE_KEY = "ai_customization_mode"
+    _VALID_MODES = {"off", "optional", "mandatory"}
+
+    @api_router.get("/app-settings/ai-customization")
+    async def public_ai_customization_mode():
+        """Public — the enrolment page reads this to decide whether to show
+        the 'Customise with AI' button. Defaults to 'off' if the row/table
+        is missing (safe default)."""
+        try:
+            rows = _supabase_get(
+                f"app_settings?key=eq.{_AI_MODE_KEY}&select=value_json&limit=1"
+            ) or []
+            mode = (rows[0].get("value_json") or {}).get("mode", "off") if rows else "off"
+        except HTTPException:
+            mode = "off"
+        if mode not in _VALID_MODES:
+            mode = "off"
+        return {"mode": mode}
+
+    @api_router.patch("/admin/app-settings/ai-customization")
+    async def admin_set_ai_customization_mode(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        mode = (body.get("mode") or "").strip().lower()
+        if mode not in _VALID_MODES:
+            raise HTTPException(status_code=400, detail=f"mode must be one of {sorted(_VALID_MODES)}")
+        # Upsert
+        try:
+            _supabase_post(
+                "app_settings?on_conflict=key",
+                {"key": _AI_MODE_KEY, "value_json": {"mode": mode},
+                 "updated_at": datetime.now(timezone.utc).isoformat()},
+                prefer="resolution=merge-duplicates,return=representation",
+            )
+        except HTTPException as e:
+            raise HTTPException(status_code=e.status_code, detail=f"Failed to persist mode: {e.detail}")
+        return {"mode": mode}
+
+    def _is_cust_table_missing(exc: HTTPException) -> bool:
+        try:
+            detail = str(exc.detail or "")
+        except Exception:
+            return False
+        return "PGRST205" in detail and "master_customization_questions" in detail
+
+    _CUST_QS_ALLOWED_TYPES = {"single_select", "multi_select", "text", "number"}
+
+    @api_router.get("/customization-questions")
+    async def public_customization_questions(path_id: Optional[str] = None):
+        """Powers the customisation wizard. Filters by path_id when given."""
+        path_filter = f"&path_id=eq.{_urlparse.quote(path_id)}" if path_id else ""
+        try:
+            rows = _supabase_get(
+                "master_customization_questions?select=id,path_id,question_text,"
+                "question_type,options,order_index,is_required,purpose"
+                f"{path_filter}&order=order_index.asc&limit=200"
+            ) or []
+            return {"questions": rows}
+        except HTTPException as e:
+            if _is_cust_table_missing(e):
+                return {"questions": []}
+            raise
+
+    @api_router.get("/admin/customization-questions")
+    async def admin_customization_questions(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            rows = _supabase_get(
+                "master_customization_questions?select=id,path_id,question_text,"
+                "question_type,options,order_index,is_required,purpose"
+                "&order=order_index.asc&limit=500"
+            ) or []
+            return {"total": len(rows), "questions": rows}
+        except HTTPException as e:
+            if _is_cust_table_missing(e):
+                return {"total": 0, "questions": [], "table_ready": False}
+            raise
+
+    def _validate_cust_q_body(body: dict) -> dict:
+        question_text = (body.get("question_text") or "").strip()
+        qtype = (body.get("question_type") or "").strip().lower()
+        if not question_text:
+            raise HTTPException(status_code=400, detail="question_text is required")
+        if qtype not in _CUST_QS_ALLOWED_TYPES:
+            raise HTTPException(status_code=400, detail=f"question_type must be one of {sorted(_CUST_QS_ALLOWED_TYPES)}")
+        # options: JSON list for select types, ignored for text/number
+        options = body.get("options") or []
+        if qtype in {"single_select", "multi_select"}:
+            if not isinstance(options, list) or len(options) < 2:
+                raise HTTPException(status_code=400, detail="Select-type questions need at least 2 options")
+            for i, opt in enumerate(options):
+                if not isinstance(opt, dict) or not opt.get("value") or not opt.get("label"):
+                    raise HTTPException(status_code=400, detail=f"Option #{i+1} must have both `value` and `label`")
+        else:
+            options = []
+        return {
+            "question_text": question_text,
+            "question_type": qtype,
+            "options": options,
+            "order_index": int(body.get("order_index") or 100),
+            "is_required": bool(body.get("is_required", True)),
+            "purpose": (body.get("purpose") or "").strip() or None,
+            "path_id": body.get("path_id") or None,
+        }
+
+    @api_router.post("/admin/customization-questions")
+    async def admin_customization_create(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        payload = _validate_cust_q_body(body)
+        if not payload.get("path_id"):
+            raise HTTPException(status_code=400, detail="path_id is required (which course does this apply to?)")
+        row = _supabase_post(
+            "master_customization_questions", payload,
+            prefer="return=representation",
+        )
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"question": row}
+
+    @api_router.patch("/admin/customization-questions/{qid}")
+    async def admin_customization_update(qid: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        # Only validate fields the caller actually provided
+        allowed = {"question_text", "question_type", "options", "order_index",
+                   "is_required", "purpose", "path_id"}
+        supplied = {k: v for k, v in body.items() if k in allowed and v is not None}
+        if not supplied:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+        # If question_type is changing OR options are provided for a select-type,
+        # re-validate the shape.
+        if "question_type" in supplied or "options" in supplied:
+            merged = {**body}
+            # Pull the current row for a safe merge
+            cur = _supabase_get(
+                f"master_customization_questions?id=eq.{_urlparse.quote(qid)}&select=*&limit=1"
+            ) or []
+            if not cur:
+                raise HTTPException(status_code=404, detail="Question not found")
+            for k in ("question_text", "question_type", "options"):
+                merged.setdefault(k, cur[0].get(k))
+            _validate_cust_q_body(merged)
+        _supabase_patch(
+            f"master_customization_questions?id=eq.{_urlparse.quote(qid)}", supplied,
+        )
+        rows = _supabase_get(
+            f"master_customization_questions?id=eq.{_urlparse.quote(qid)}&select=*&limit=1"
+        ) or []
+        return {"question": rows[0] if rows else None}
+
+    @api_router.delete("/admin/customization-questions/{qid}")
+    async def admin_customization_delete(qid: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        deleted = _supabase_delete(
+            f"master_customization_questions?id=eq.{_urlparse.quote(qid)}"
+        ) or []
+        if not deleted:
+            raise HTTPException(status_code=404, detail="Question not found")
+        return {"ok": True}
+
     # ---- FAQs (public read + admin CRUD) -------------------------------
     #
     # Gracefully degrade when the `faqs` table hasn't been created yet in

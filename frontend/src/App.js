@@ -168,14 +168,15 @@ function App() {
                   <Route path="/course/:courseId" element={<CourseDetailsPage />} />
                   {/* Proper enrollment page — preview + confirm, no AI customization */}
                   <Route path="/enroll/:courseId" element={<ProtectedRoute><EnrollmentPage /></ProtectedRoute>} />
-                  {/* Customization wizard removed — every enrollee gets the
-                      standard 22-module curriculum via direct one-click enroll.
-                      Old wizard URLs land straight on the dashboard. */}
-                  <Route path="/course/:courseId/customize" element={<Navigate to="/dashboard" replace />} />
-                  <Route path="/course/:courseId/preview" element={<Navigate to="/dashboard" replace />} />
-                  <Route path="/course/:courseId/confirm" element={<Navigate to="/dashboard" replace />} />
-                  <Route path="/course/:courseId/loading" element={<Navigate to="/dashboard" replace />} />
-                  <Route path="/course/:courseId/enrolled" element={<Navigate to="/dashboard" replace />} />
+                  {/* AI customisation wizard (admin-toggleable via
+                      app_settings.ai_customization_mode). Available as an
+                      optional flow when mode = 'optional', mandatory when
+                      mode = 'mandatory'. */}
+                  <Route path="/course/:courseId/customize" element={<ProtectedRoute><CustomizePage /></ProtectedRoute>} />
+                  <Route path="/course/:courseId/preview" element={<ProtectedRoute><PreviewPage /></ProtectedRoute>} />
+                  <Route path="/course/:courseId/confirm" element={<ProtectedRoute><ConfirmPage /></ProtectedRoute>} />
+                  <Route path="/course/:courseId/loading" element={<ProtectedRoute><LoadingPage /></ProtectedRoute>} />
+                  <Route path="/course/:courseId/enrolled" element={<ProtectedRoute><EnrolledPage /></ProtectedRoute>} />
 
                   {/* Account (auth only) */}
                   <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

@@ -1,0 +1,52 @@
+{
+  "summary": "Verified Phase 27 AI Customisation restore + Pari/Help collision fix end-to-end. Backend: 9/9 pytest cases pass (public mode default, admin PATCH auth+validation+persistence-reachable, public+admin question list with 13 seeded rows, admin POST→DELETE round-trip w/cleanup, validation errors). Frontend: dashboard help bubble now at bottom-LEFT (x=32) with `left-5 sm:left-8`; Pari bubble stays bottom-right; landing bubble still bottom-right (x=1797). Admin panel AI Customisation tab renders all 3 mode buttons (Off marked active via purple border/bg), 13-row questions table, working Add-question modal with 4 type options, and the options editor correctly hides for text/number types. FAQs tab still loads without regression.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "PATCH /api/admin/app-settings/ai-customization", "issue": "app_settings table exists in Supabase but with an older schema — missing `value_json` column. PostgREST returns PGRST204 which the endpoint bubbles up as HTTP 400 (with body 'Failed to persist mode: ...value_json column...'). The graceful GET default 'off' still works fine, but PATCH cannot actually persist a mode until 0034_app_settings.sql is applied (or the existing table is amended). Not a regression; matches the review-request expectation that persistence would fail until migration."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_ai_customization.py",
+    "/app/test_reports/pytest/ai_customization_results.xml"
+  ],
+  "action_items": [
+    "Apply /app/scripts/migrations/0034_app_settings.sql (or amend the existing `app_settings` table to include a `value_json JSONB` column + `updated_at` + UNIQUE(key) constraint) so admin can persist AI-mode changes. Until then, /admin/app-settings/ai-customization PATCH will keep returning 400 with a PGRST204 detail. GET remains gracefully 'off'."
+  ],
+  "critical_code_review_comments": [
+    "AdminPanel.jsx is now 1728 lines (was 1140 last iteration) — well past the 700-line split threshold. Extract CustomizationTab + CustomizationEditModal into /app/frontend/src/components/admin/CustomizationTab.jsx alongside the existing FaqsTab candidate.",
+    "wave_endpoints.py is 2373 lines — still growing. Route groups (AI Customisation, FAQs, Portfolio, Doubts, etc.) should be split into resource-specific routers.",
+    "PATCH persistence-error mapping in admin_set_ai_customization_mode() re-raises with the original Supabase status code — a PGRST schema error surfaces as HTTP 400 which reads like a validation failure. Consider forcing 503 (or 500) for any downstream PostgREST failure so the FE can render an infra-vs-user-input distinction."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_ai_customization.py"
+  ],
+  "success_rate": {"backend": "100% (9/9 pytest)", "frontend": "100% (all reviewed selectors + flows verified)"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (admin, Supabase user ea4121ce-6c0c-4113-af9a-5d94df5a5d54)",
+  "seed_data_creation": "None. Test creates one temporary customization question and DELETES it in the same test — no test data leaks into master_customization_questions.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend endpoints for AI Customisation are wired at wave_endpoints.py line 425-582. app_settings table currently has an incompatible schema in Supabase — the PATCH endpoint returns HTTP 400 with PGRST204 detail; GET gracefully falls back to 'off'. master_customization_questions has 13 rows for path 5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c and CRUD works. Admin panel AI Customisation tab (data-testid=admin-tab-customization) fully verified. Sidebar-mounted FaqChatbot now uses align='bottom-left' → data-testid=faq-chatbot-bubble sits at x≈32 on dashboard. EnrollmentPage /enroll/:pathId auto-redirects to /dashboard when the user already has that enrollment (line 61-69) — to visually verify Start button rendering with mode='off', use a user with no active enrollment for that path.",
+  "verified_flows": {
+    "GET /api/app-settings/ai-customization (public)": "200 -> {mode: 'off'} (graceful fallback OK)",
+    "PATCH /api/admin/app-settings/ai-customization no-auth": "401 -> missing bearer token",
+    "PATCH /api/admin/app-settings/ai-customization invalid mode": "400 -> mode must be one of ['mandatory','off','optional']",
+    "PATCH /api/admin/app-settings/ai-customization mode=off (admin)": "400 -> 'Failed to persist mode: ... value_json column' (table schema mismatch — persistence attempt reached, matches review expectation)",
+    "GET /api/customization-questions?path_id=... (public)": "200 -> {questions: [...13 rows]}, order asc, first q text = 'What\\u2019s your finance background?'",
+    "GET /api/admin/customization-questions (admin)": "200 -> {total:13, questions:[...]}, sorted by order_index",
+    "POST + DELETE /api/admin/customization-questions round-trip": "201 with {question:{id,...}} then 204/200 on DELETE; list count back to 13 after cleanup",
+    "POST validation (question_type='foo')": "400 -> question_type must be one of [...]",
+    "POST validation (single_select w/ 1 option)": "400 -> 'at least 2 options'",
+    "Landing / bubble position": "faq-chatbot-bubble x=1797 (bottom-right, unchanged)",
+    "Dashboard bubble position": "faq-chatbot-bubble x=32, class contains 'left-5 sm:left-8' (bottom-left)",
+    "Admin /admin-panel Customisation tab": "renders customization-mode-{off,optional,mandatory}; off active (accent-purple bg); customization-questions-table has 13 rows; customization-total = '13'",
+    "Add-question modal": "opens; all fields (path, type, question, purpose, order, required, add-option-btn) present; type dropdown values = ['single_select','multi_select','text','number']; options editor hidden for type=text and type=number, visible for single_select",
+    "FAQs tab": "still loads without error (no regression from new Customisation tab)",
+    "Enrollment page": "auto-redirects to /dashboard because admin is already enrolled — expected behavior per EnrollmentPage.jsx L61-69"
+  }
+}
