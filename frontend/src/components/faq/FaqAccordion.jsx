@@ -5,16 +5,25 @@
  */
 import { useState, useMemo } from 'react';
 import { ChevronDown, HelpCircle } from 'lucide-react';
-import { FAQS, FAQ_CATEGORIES } from '../../data/faqs';
+import { useFaqs, FAQ_CATEGORIES } from '../../data/useFaqs';
 
 export default function FaqAccordion() {
+  const { faqs, loading } = useFaqs();
   const [openId, setOpenId] = useState(null);
   const [activeCat, setActiveCat] = useState('All');
 
   const visible = useMemo(() => {
-    if (activeCat === 'All') return FAQS;
-    return FAQS.filter(f => f.category === activeCat);
-  }, [activeCat]);
+    if (activeCat === 'All') return faqs;
+    return faqs.filter(f => f.category === activeCat);
+  }, [activeCat, faqs]);
+
+  // Derive the category list dynamically from the loaded FAQs so admin-added
+  // categories show up automatically. Fallback to the static list.
+  const catsFromData = useMemo(() => {
+    const set = new Set(faqs.map(f => f.category).filter(Boolean));
+    const dyn = Array.from(set);
+    return dyn.length ? dyn : FAQ_CATEGORIES;
+  }, [faqs]);
 
   return (
     <section
@@ -45,7 +54,7 @@ export default function FaqAccordion() {
 
       {/* Category filter chips */}
       <div className="flex flex-wrap justify-center gap-2 mb-8" data-testid="faq-category-filter">
-        {['All', ...FAQ_CATEGORIES].map((cat) => (
+        {['All', ...catsFromData].map((cat) => (
           <button
             key={cat}
             type="button"
@@ -106,7 +115,7 @@ export default function FaqAccordion() {
 
       {visible.length === 0 && (
         <p className="text-center text-sm text-[var(--color-text-muted)] font-bricolage mt-8">
-          Nothing in this category yet.
+          {loading ? 'Loading FAQs…' : 'Nothing in this category yet.'}
         </p>
       )}
 

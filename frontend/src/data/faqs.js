@@ -1,11 +1,9 @@
 /**
- * Static FAQ knowledge base for the Valuevade help chatbot + landing-page
- * accordion. Grouped by category. Add a keyword-heavy `tags` array so the
- * chatbot's substring/token search finds these entries even with typos or
- * paraphrasing.
- *
- * To edit later, add rows here. Categories are auto-derived from the
- * `category` field — no separate registry needed.
+ * Static FAQ knowledge base — used as offline fallback for the landing
+ * accordion + help chatbot. The primary source is now the Supabase `faqs`
+ * table via GET /api/faqs (admins can CRUD from the Admin panel). This
+ * static copy stays in sync with 0033_faqs.sql so the UI still works if
+ * the backend is unreachable.
  */
 export const FAQ_CATEGORIES = ['Course', 'Pricing', 'Certificate', 'Simulations', 'Support', 'Careers'];
 

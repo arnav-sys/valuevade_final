@@ -7,7 +7,8 @@
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HelpCircle, X, Search as SearchIcon, ChevronRight, MessageCircleQuestion } from 'lucide-react';
-import { FAQS, searchFaqs } from '../../data/faqs';
+import { scoreFaq } from '../../data/faqs';
+import { useFaqs } from '../../data/useFaqs';
 
 const INITIAL_SUGGESTIONS = [
   'How much does the course cost?',
@@ -18,6 +19,7 @@ const INITIAL_SUGGESTIONS = [
 ];
 
 export default function FaqChatbot({ align = 'bottom-right' }) {
+  const { faqs } = useFaqs();
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
   const [expandedId, setExpandedId] = useState(null);
@@ -39,9 +41,14 @@ export default function FaqChatbot({ align = 'bottom-right' }) {
 
   const results = useMemo(() => {
     const query = q.trim();
-    if (!query) return FAQS.slice(0, 6); // show most common ones when empty
-    return searchFaqs(query, 8);
-  }, [q]);
+    if (!query) return faqs.slice(0, 6);
+    return faqs
+      .map((f) => ({ faq: f, score: scoreFaq(f, query) }))
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 8)
+      .map((x) => x.faq);
+  }, [q, faqs]);
 
   const positionClass = align === 'bottom-left' ? 'left-5 sm:left-8' : 'right-5 sm:right-8';
 

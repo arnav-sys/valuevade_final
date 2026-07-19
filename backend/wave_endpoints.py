@@ -422,6 +422,76 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
     # ---------------- ADMIN PANEL ----------------
+    # ---- FAQs (public read + admin CRUD) -------------------------------
+    @api_router.get("/faqs")
+    async def public_faqs():
+        """Public — powers the landing accordion + help chatbot."""
+        rows = _supabase_get(
+            "faqs?select=id,category,question,answer,tags,order_index"
+            "&is_published=eq.true&order=order_index.asc&limit=500"
+        ) or []
+        return {"faqs": rows}
+
+    @api_router.get("/admin/faqs")
+    async def admin_faqs_list(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            "faqs?select=id,category,question,answer,tags,order_index,is_published,updated_at"
+            "&order=order_index.asc&limit=500"
+        ) or []
+        return {"total": len(rows), "faqs": rows}
+
+    @api_router.post("/admin/faqs")
+    async def admin_faqs_create(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        category = (body.get("category") or "").strip()
+        question = (body.get("question") or "").strip()
+        answer = (body.get("answer") or "").strip()
+        if not category or not question or not answer:
+            raise HTTPException(status_code=400, detail="category, question, and answer are required")
+        tags = body.get("tags") or []
+        if isinstance(tags, str):
+            tags = [t.strip() for t in tags.split(",") if t.strip()]
+        row = _supabase_post(
+            "faqs",
+            {
+                "category": category,
+                "question": question,
+                "answer": answer,
+                "tags": tags,
+                "order_index": int(body.get("order_index") or 100),
+                "is_published": bool(body.get("is_published", True)),
+            },
+            prefer="return=representation",
+        )
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"faq": row}
+
+    @api_router.patch("/admin/faqs/{faq_id}")
+    async def admin_faqs_update(faq_id: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        allowed = {"category", "question", "answer", "tags", "order_index", "is_published"}
+        patch = {k: v for k, v in body.items() if k in allowed and v is not None}
+        if "tags" in patch and isinstance(patch["tags"], str):
+            patch["tags"] = [t.strip() for t in patch["tags"].split(",") if t.strip()]
+        if not patch:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+        patch["updated_at"] = datetime.now(timezone.utc).isoformat()
+        _supabase_patch(f"faqs?id=eq.{_urlparse.quote(faq_id)}", patch)
+        rows = _supabase_get(
+            f"faqs?id=eq.{_urlparse.quote(faq_id)}&select=*&limit=1"
+        ) or []
+        return {"faq": rows[0] if rows else None}
+
+    @api_router.delete("/admin/faqs/{faq_id}")
+    async def admin_faqs_delete(faq_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        deleted = _supabase_delete(f"faqs?id=eq.{_urlparse.quote(faq_id)}") or []
+        if not deleted:
+            raise HTTPException(status_code=404, detail="FAQ not found")
+        return {"ok": True}
+
     @api_router.get("/admin/waitlist")
     async def admin_waitlist(user=Depends(_get_supabase_user)):
         """Read all waitlist signups from Supabase (persistent). Was Mongo
