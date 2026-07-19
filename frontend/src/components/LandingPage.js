@@ -14,6 +14,8 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import FinalCTASection from '@/components/FinalCTASection';
 import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
+import FaqAccordion from '@/components/faq/FaqAccordion';
+import FaqChatbot from '@/components/faq/FaqChatbot';
 import { courseJsonLd, orgJsonLd } from '@/components/landing/jsonLd';
 import LandingIntroSequence from '@/components/landing/LandingIntroSequence';
 import { ScrollProgressBar } from '@/components/cinematic/primitives';
@@ -139,10 +141,12 @@ export default function LandingPage() {
         <HowItWorksSection />
         <AIProofSection />
         <TestimonialsSection />
+        <FaqAccordion />
         <FinalCTASection onSubmit={handleWaitlistSubmit} />
       </main>
 
       <Footer />
+      <FaqChatbot />
 
       {showMobileBar && (
         <div

@@ -8,6 +8,7 @@ import {
   Sun, Moon, ChevronLeft, Trophy, Library, MessageCircleQuestion, Sparkles,
 } from 'lucide-react';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
+import FaqChatbot from './faq/FaqChatbot';
 
 /**
  * Persistent left sidebar for all authenticated pages.
@@ -272,6 +273,9 @@ export default function Sidebar() {
           </div>
         </>
       )}
+
+      {/* Global help chatbot bubble — bottom-right, all authenticated pages */}
+      <FaqChatbot />
     </>
   );
 }
