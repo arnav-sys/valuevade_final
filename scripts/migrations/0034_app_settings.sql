@@ -21,7 +21,8 @@ alter table public.app_settings
 alter table public.app_settings
     add column if not exists updated_at timestamptz not null default now();
 
--- Best-effort migrate any legacy `value` column into value_json.
+-- Best-effort migrate any legacy `value` column into value_json, THEN drop
+-- it so future inserts don't hit its (usually NOT NULL) constraint.
 do $$
 declare has_value_col boolean;
 begin
@@ -37,6 +38,7 @@ begin
                 jsonb_build_object('legacy_value', value::text)
             else value_json
         end;
+        execute 'alter table public.app_settings drop column value';
     end if;
 end$$;
 
