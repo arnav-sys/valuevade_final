@@ -421,6 +421,125 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     _get_supabase_user = deps["get_supabase_user"]
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
+    # ---------------- SESSION FEEDBACK (student → admin) ----------------
+    _FEEDBACK_CATEGORIES = {"content_issue", "quality_issue", "other"}
+
+    @api_router.post("/sessions/{session_id}/feedback")
+    async def submit_session_feedback(session_id: str, body: dict,
+                                       user=Depends(_get_supabase_user)):
+        """Student-submitted feedback on a session lecture. Categories:
+        content_issue | quality_issue | other. Requires message (>=5 chars).
+        Rate-limited at the DB via a soft app-level check — a user can't
+        spam more than 5 feedback rows per session."""
+        category = (body.get("category") or "").strip().lower()
+        message = (body.get("message") or "").strip()
+        if category not in _FEEDBACK_CATEGORIES:
+            raise HTTPException(status_code=400, detail=f"category must be one of {sorted(_FEEDBACK_CATEGORIES)}")
+        if len(message) < 5:
+            raise HTTPException(status_code=400, detail="message must be at least 5 characters")
+        if len(message) > 2000:
+            raise HTTPException(status_code=400, detail="message must be under 2000 characters")
+        # Soft rate-limit: cap at 5 rows per (user, session)
+        existing = _supabase_get(
+            f"session_feedback?user_id=eq.{_urlparse.quote(user['id'])}"
+            f"&session_id=eq.{_urlparse.quote(session_id)}"
+            f"&select=id"
+        ) or []
+        if len(existing) >= 5:
+            raise HTTPException(status_code=429, detail="You've already submitted the max 5 feedback entries for this session.")
+        row = _supabase_post(
+            "session_feedback",
+            {
+                "user_id": user["id"],
+                "session_id": session_id,
+                "category": category,
+                "message": message,
+            },
+            prefer="return=representation",
+        )
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"ok": True, "feedback": row}
+
+    @api_router.get("/admin/session-feedback")
+    async def admin_session_feedback_list(
+        resolved: Optional[bool] = None,
+        category: Optional[str] = None,
+        user=Depends(_get_supabase_user),
+    ):
+        _ensure_admin(user)
+        filters = ["select=id,user_id,session_id,category,message,resolved,admin_notes,created_at,resolved_at"]
+        if resolved is not None:
+            filters.append(f"resolved=eq.{'true' if resolved else 'false'}")
+        if category and category in _FEEDBACK_CATEGORIES:
+            filters.append(f"category=eq.{_urlparse.quote(category)}")
+        filters.append("order=created_at.desc")
+        filters.append("limit=1000")
+        try:
+            rows = _supabase_get("session_feedback?" + "&".join(filters)) or []
+        except HTTPException as e:
+            detail = str(e.detail or "")
+            if "PGRST205" in detail and "session_feedback" in detail:
+                return {"total": 0, "feedback": [], "table_ready": False}
+            raise
+        # Best-effort enrich with user + session names (small N of admin views)
+        user_ids = list({r["user_id"] for r in rows if r.get("user_id")})
+        session_ids = list({r["session_id"] for r in rows if r.get("session_id")})
+        users_map = {}
+        sessions_map = {}
+        if user_ids:
+            profs = _supabase_get(
+                f"profiles?id=in.({','.join(user_ids)})&select=id,full_name,email"
+            ) or []
+            users_map = {p["id"]: p for p in profs}
+        if session_ids:
+            sess = _supabase_get(
+                f"master_sessions?id=in.({','.join(session_ids)})&select=id,title,module_id"
+            ) or []
+            sessions_map = {s["id"]: s for s in sess}
+        for r in rows:
+            u = users_map.get(r.get("user_id") or "", {})
+            s = sessions_map.get(r.get("session_id") or "", {})
+            r["user_full_name"] = u.get("full_name")
+            r["user_email"] = u.get("email")
+            r["session_title"] = s.get("title")
+            r["module_id"] = s.get("module_id")
+        return {
+            "total": len(rows),
+            "feedback": rows,
+            "counts": {
+                "open": sum(1 for r in rows if not r.get("resolved")),
+                "resolved": sum(1 for r in rows if r.get("resolved")),
+            },
+            "table_ready": True,
+        }
+
+    @api_router.patch("/admin/session-feedback/{fid}/resolve")
+    async def admin_resolve_feedback(fid: str, body: dict,
+                                      user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        resolved = bool(body.get("resolved", True))
+        notes = (body.get("admin_notes") or "").strip() or None
+        patch = {
+            "resolved": resolved,
+            "admin_notes": notes,
+            "resolved_at": datetime.now(timezone.utc).isoformat() if resolved else None,
+        }
+        _supabase_patch(
+            f"session_feedback?id=eq.{_urlparse.quote(fid)}", patch,
+        )
+        return {"ok": True}
+
+    @api_router.delete("/admin/session-feedback/{fid}")
+    async def admin_delete_feedback(fid: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        deleted = _supabase_delete(
+            f"session_feedback?id=eq.{_urlparse.quote(fid)}"
+        ) or []
+        if not deleted:
+            raise HTTPException(status_code=404, detail="Feedback not found")
+        return {"ok": True}
+
     # ---------------- ADMIN PANEL ----------------
     # ---- AI Customisation mode + questions (admin CRUD) ----------------
     _AI_MODE_KEY = "ai_customization_mode"

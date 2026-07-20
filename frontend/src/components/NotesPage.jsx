@@ -24,6 +24,7 @@ import { resolveTutorPhase } from '../contexts/TutorContext';
 import PariTeachingHeader from './tutor/PariTeachingHeader';
 import AskPariAboutCard from './tutor/AskPariAboutCard';
 import AskPariButton from './tutor/AskPariButton';
+import SessionFeedbackWidget from './SessionFeedbackWidget';
 
 // -----------------------------------------------------------
 // HELPER: ExtraFields — renders any content keys not already handled,
@@ -1543,6 +1544,7 @@ function NotesPhaseTabs({ session, tab, setTab, onVideoEnded, videoWatched, onCo
   const lectureUrl = session?.lecture_url || null;
   const isYouTube = lectureUrl && /youtube\.com|youtu\.be/i.test(lectureUrl);
   const videoRef = useRef(null);
+  const feedbackSessionId = session?.master_session_id || session?.id || null;
   return (
     <div className="mb-6" data-testid="notes-phase-tabs">
       <div className="flex gap-2 mb-3 border-b border-[var(--color-border)]" role="tablist">
@@ -1612,6 +1614,7 @@ function NotesPhaseTabs({ session, tab, setTab, onVideoEnded, videoWatched, onCo
                   </button>
                 </div>
               </div>
+              <SessionFeedbackWidget sessionId={feedbackSessionId} />
             </>
           ) : (
             <div className="text-center py-8">
