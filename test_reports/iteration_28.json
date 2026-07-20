@@ -1,0 +1,58 @@
+{
+  "summary": "Validated Pari-chat lazy-provisioning bug fix end-to-end on preview. Drawer opens instantly (~197 ms) with zero upfront /api/doubts/start calls. Opening + closing the drawer multiple times does NOT consume any of the 5 daily doubt sessions (DB row count stayed flat across 4 open + 3 close cycles). Session is provisioned only on first send: sessions_today advanced 0 -> 1 after the first message; turn counter decremented on follow-up. Quota-exhausted handler still present in code. /doubts page loads without errors.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_results": {
+    "test_A_instant_drawer_open": {
+      "status": "PASS",
+      "click_to_visible_ms": 197,
+      "doubts_start_calls_on_click": 0
+    },
+    "test_B_no_session_consumption_on_open_close": {
+      "status": "PASS",
+      "open_close_cycles": 4,
+      "doubts_start_calls_total": 0,
+      "db_sessions_delta": 0
+    },
+    "test_C_lazy_provision_on_first_message": {
+      "status": "PASS",
+      "header_before_ask": "Turns: 3/3 Tokens: 1500/1500 (no Sessions chip — placeholder)",
+      "header_after_ask": "Sessions left: 4/5 Turns: 2/3 Tokens: 1240/1500",
+      "doubts_start_calls": 1,
+      "doubts_ask_calls": 1,
+      "db_sessions_today_after": 1
+    },
+    "test_D_multi_turn": {
+      "status": "PASS",
+      "assistant_messages_after_2_asks": 2,
+      "turns_after_2_asks": "1/3",
+      "db_turn_count": 2
+    },
+    "test_E_quota_exhausted_handler_present": {
+      "status": "PASS",
+      "location": "/app/frontend/src/components/tutor/DoubtsSession.jsx L165, L308-313, L355-361",
+      "note": "429/quota_exhausted branch handles the lazy /doubts/start failure; UI disables composer + surfaces amber block."
+    },
+    "test_F_doubts_page_renders": {
+      "status": "PASS",
+      "url": "/doubts",
+      "note": "Page renders sidebar + hero + Open/Resolved tabs cleanly, no JS errors."
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "DoubtsLauncherContext.jsx: `openDoubts()` correctly no longer awaits or fires /doubts/start — sets a placeholder session with doubt_session_id=null and opens immediately. Clean.",
+    "DoubtsSession.jsx send(): lazy provisioning chain works — /doubts/start then /doubts/ask on first send only. 429 path sets quotaExhausted and gates the composer.",
+    "Minor code quality: `bootstrapping` state variable is now dead (always false since lazy refactor) — could be removed in a follow-up cleanup along with the `Opening doubt session…` branch at L303-307, but harmless.",
+    "The `supabase` import at DoubtsLauncherContext.jsx line 3 is now unused (no direct SDK calls in the file). Consider removing to keep lint clean."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (Supabase user_id ea4121ce-6c0c-4113-af9a-5d94df5a5d54)",
+  "seed_data_creation": "Reset admin's doubts quota before test by DELETE user_doubt_sessions WHERE user_id=<admin> AND ist_date=today. After test: sessions_today=1, sessions_left=4. Cleanup not performed — one legitimate 2-turn session ('What is DCF?' + 'Explain more…') remains for today.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Fix is validated. Admin (ea4121ce-…) currently has 1/5 sessions used today (turn_count=2). If a re-test is requested, reset via: DELETE from user_doubt_sessions where user_id='ea4121ce-6c0c-4113-af9a-5d94df5a5d54' and ist_date='<today IST>'. Note: dev_reset_daily_doubts RPC currently errors with 'column value does not exist' — use direct DELETE via PostgREST + service-role key instead.",
+  "rca of the issue": "ROOT CAUSE: Old openDoubts() awaited POST /api/doubts/start on avatar click before setOpen(true). That call (a) blocked the drawer render (~2s LLM/DB latency) and (b) inserted a user_doubt_sessions row via RPC start_doubt_session, consuming one of the 5 daily quotas even if the user immediately closed the drawer. FIX: openDoubts() now synchronously sets a placeholder session {doubt_session_id: null, turns_left:3, sessions_left_today:null} and calls setOpen(true) immediately. DoubtsSession.send() lazily calls /doubts/start only when the user sends their first message (>=5 chars), then chains /doubts/ask with the returned id. VERIFICATION: DB row count confirmed 0 new sessions across 4 open + 3 close cycles, then +1 exactly on the first send."
+}

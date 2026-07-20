@@ -33,64 +33,37 @@ export function DoubtsLauncherProvider({ children }) {
     setError(null);
   }, []);
 
-  const openDoubts = useCallback(async ({
+  // Open the doubts drawer INSTANTLY. No upfront network call — the drawer
+  // renders in "ready to ask" state and only allocates a doubt session
+  // (via /api/doubts/start) when the user actually sends their first
+  // message. This fixes two bugs:
+  //   1. The ~2s stall between icon click and drawer appearing (was
+  //      blocking on the /doubts/start round-trip).
+  //   2. Every icon click silently consuming one of the 5 daily sessions
+  //      even if the user closed the drawer without chatting.
+  const openDoubts = useCallback(({
     phase = 'dashboard',
     moduleCode = null,
     courseSessionId = null,
     attemptContext: ctx = null,
     currentFocus: focus = null,
   } = {}) => {
-    if (busy) return;
-    setBusy(true);
     setError(null);
-    try {
-      const { data: { session: supaSession } } = await supabase.auth.getSession();
-      const token = supaSession?.access_token;
-      if (!token) {
-        setError('Please sign in to ask Pari.');
-        return;
-      }
-      const res = await fetch(`${BACKEND}/api/doubts/start`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          phase,
-          module_code: moduleCode,
-          course_session_id: courseSessionId,
-          attempt_context: ctx,
-          current_focus: focus,
-        }),
-      });
-      const json = await res.json().catch(() => ({}));
-      if (res.status === 429) {
-        setError("You've used all 5 doubt sessions for today — see you tomorrow!");
-        return;
-      }
-      if (!res.ok || !json?.ok) {
-        setError(json?.detail?.message || json?.detail || 'Could not start doubt session.');
-        return;
-      }
-      setSession({
-        doubt_session_id: json.doubt_session_id,
-        phase,
-        module_code: moduleCode,
-        course_session_id: courseSessionId,
-        turns_left: json.turns_left,
-        tokens_left: json.tokens_left,
-        sessions_left_today: json.sessions_left_today,
-      });
-      setAttemptContext(ctx);
-      setCurrentFocus(focus);
-      setOpen(true);
-    } catch (e) {
-      setError(e.message || 'Could not start doubt session.');
-    } finally {
-      setBusy(false);
-    }
-  }, [busy]);
+    setSession({
+      // No doubt_session_id yet — DoubtsSession.send() will provision on
+      // first ask, chaining /doubts/start → /doubts/ask.
+      doubt_session_id: null,
+      phase,
+      module_code: moduleCode,
+      course_session_id: courseSessionId,
+      turns_left: 3,
+      tokens_left: 1500,
+      sessions_left_today: null, // "-/5" placeholder until first ask returns real quota
+    });
+    setAttemptContext(ctx);
+    setCurrentFocus(focus);
+    setOpen(true);
+  }, []);
 
   const value = useMemo(() => ({ openDoubts, close, isOpen: open, busy, error }),
     [openDoubts, close, open, busy, error]);

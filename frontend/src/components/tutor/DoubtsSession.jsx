@@ -85,7 +85,11 @@ export default function DoubtsSession({
   currentFocus = null,         // Batch 3 (Item 2): what user is looking at
 }) {
   const { enabled } = useTutor();
-  const [bootstrapping, setBootstrapping] = useState(!doubtSession);
+  // Post-launcher-refactor: the drawer opens instantly with NO session yet.
+  // The session is provisioned via /api/doubts/start ONLY when the user
+  // sends their first message (see `send()`). So `bootstrapping` stays
+  // false until then — and `sessionId` starts as null.
+  const [bootstrapping, setBootstrapping] = useState(false);
   const [sessionId, setSessionId] = useState(doubtSession?.doubt_session_id || null);
   const [error, setError] = useState(null);
   const [quotaExhausted, setQuotaExhausted] = useState(false);
@@ -102,53 +106,19 @@ export default function DoubtsSession({
   const inputRef = useRef(null);
   const autoCloseRef = useRef(null);
 
-  // Start a session on first open. Re-uses if already open with the same id.
+  // Hydrate state if a real (already-started) session was passed in by a
+  // legacy caller. Modern launcher flow passes doubt_session_id=null and
+  // relies on lazy provisioning inside `send()`.
   useEffect(() => {
-    if (!open || !enabled) return undefined;
-    if (sessionId) { setBootstrapping(false); return undefined; }
-    if (doubtSession?.doubt_session_id) {
-      // Launcher already started the session — just hydrate state.
+    if (!open || !enabled) return;
+    if (doubtSession?.doubt_session_id && doubtSession.doubt_session_id !== sessionId) {
       setSessionId(doubtSession.doubt_session_id);
       setTurnsLeft(doubtSession.turns_left ?? 3);
       setTokensLeft(doubtSession.tokens_left ?? 1500);
       setSessionsLeftToday(doubtSession.sessions_left_today ?? null);
-      setBootstrapping(false);
-      return undefined;
     }
-    let alive = true;
-    (async () => {
-      setBootstrapping(true);
-      setError(null);
-      setQuotaExhausted(false);
-      setMessages([]);
-      try {
-        const { ok, status, data } = await authedFetch('/api/doubts/start', {
-          phase,
-          course_session_id: courseSessionId,
-          module_code: moduleCode,
-          attempt_context: attemptContext,
-          current_focus: currentFocus,
-        });
-        if (!alive) return;
-        if (status === 429 || (data?.detail && data.detail.reason === 'quota_exhausted')) {
-          setQuotaExhausted(true);
-          setSessionsLeftToday(0);
-        } else if (!ok || !data.ok) {
-          setError(data?.detail || 'Failed to open a doubt session');
-        } else {
-          setSessionId(data.doubt_session_id);
-          setTurnsLeft(data.turns_left ?? 3);
-          setTokensLeft(data.tokens_left ?? 1500);
-          setSessionsLeftToday(data.sessions_left_today);
-        }
-      } catch (e) {
-        if (alive) setError(e.message || 'Network error');
-      } finally {
-        if (alive) setBootstrapping(false);
-      }
-    })();
-    return () => { alive = false; };
-  }, [open, enabled, phase, courseSessionId, moduleCode, sessionId, doubtSession, attemptContext, currentFocus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open, enabled, doubtSession?.doubt_session_id]);
 
   // Auto-scroll on new messages.
   useEffect(() => {
@@ -175,16 +145,50 @@ export default function DoubtsSession({
 
   const send = useCallback(async () => {
     const msg = input.trim();
-    if (!msg || msg.length < 5 || pending || sessionEnded || !sessionId) return;
+    if (!msg || msg.length < 5 || pending || sessionEnded) return;
     setInput('');
     setMessages((m) => [...m, { role: 'user', content: msg }]);
     setPending(true);
     try {
-      const askBody = {
-        doubt_session_id: sessionId, message: msg,
-      };
-      // P54: send attempt_context with the FIRST ask (if not already persisted via /start).
-      if (!firstAskSent && attemptContext && !doubtSession?.doubt_session_id) {
+      // Lazy provisioning: no session yet? call /doubts/start first. This is
+      // the ONLY point at which one of the 5 daily sessions is consumed —
+      // clicking the icon and closing without asking never allocates one.
+      let sid = sessionId;
+      if (!sid) {
+        const { ok: sOk, status: sStatus, data: sData } = await authedFetch('/api/doubts/start', {
+          phase,
+          course_session_id: courseSessionId,
+          module_code: moduleCode,
+          attempt_context: attemptContext,
+          current_focus: currentFocus,
+        });
+        if (sStatus === 429 || (sData?.detail && sData.detail.reason === 'quota_exhausted')) {
+          setQuotaExhausted(true);
+          setSessionsLeftToday(0);
+          setPending(false);
+          return;
+        }
+        if (!sOk || !sData?.ok || !sData?.doubt_session_id) {
+          setMessages((m) => [...m, {
+            role: 'assistant',
+            content: (sData?.detail?.message || sData?.detail || 'Could not start doubt session.'),
+            isError: true,
+          }]);
+          setPending(false);
+          return;
+        }
+        sid = sData.doubt_session_id;
+        setSessionId(sid);
+        setTurnsLeft(sData.turns_left ?? 3);
+        setTokensLeft(sData.tokens_left ?? 1500);
+        setSessionsLeftToday(sData.sessions_left_today ?? null);
+      }
+
+      const askBody = { doubt_session_id: sid, message: msg };
+      // Attach attempt_context on the FIRST ask if the /start call above
+      // just persisted it (harmless duplicate) OR if we came in with a
+      // pre-existing session that didn't get it.
+      if (!firstAskSent && attemptContext) {
         askBody.attempt_context = attemptContext;
       }
       const { ok, status, data } = await authedFetch('/api/doubts/ask', askBody);
@@ -217,7 +221,7 @@ export default function DoubtsSession({
       setPending(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [input, pending, sessionEnded, sessionId]);
+  }, [input, pending, sessionEnded, sessionId, phase, courseSessionId, moduleCode, attemptContext, currentFocus, firstAskSent]);
 
   const handleEnd = useCallback(async () => {
     if (sessionId && !sessionEnded) {
