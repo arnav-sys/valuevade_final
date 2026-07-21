@@ -1,0 +1,34 @@
+{
+  "summary": "Verified capstone tasks-page fix end-to-end. The `normaliseCapstonePhases` parser correctly turns the JSONB `phases.tasks_raw` markdown blob into a single 'Tasks' phase with N task cards. Tested with seeded user_capstone_projects row for testagent2026 pointing to CAP-02 (Sector Coverage & Comparative Stock Ranking, tasks_raw contains 6 tasks). Renderer showed exactly 6 task cards with the correct titles, checkbox toggle updated the counter (0/6 → 1/6, complete-row '6 tasks left' → '5 tasks left'), persisted across reload, collapse/expand worked, and /capstones grid regressed cleanly (3 non-prereq cards).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/capstone/tasks — phase 1 body header", "issues": ["The phase_description now shows the raw `required_structure` markdown blob ('1. **Sector snapshot** — size, growth ... 2. **Where we are in the cycle** ...') as plain text — the asterisks and headers render literally. Consider (a) rendering with a markdown component, or (b) hiding `required_structure` from the phase header and moving it into a dedicated 'Required structure' collapsible / into the capstone start page instead. It reads OK but looks unpolished compared to the task cards."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "(Optional polish) Render `phase_description` as markdown OR strip it from CapstoneTasksPage's phase header and surface `required_structure` in a purpose-built section — currently the raw ** and numbered list appear as literal text.",
+    "(Data hygiene) A stale row exists in `user_capstone_projects` with all-null fields (id=2491d01c-2ff9-4ea3-ba9a-2ef3e24bb77f, enrollment_id=null, master_capstone_id=null). Consider adding NOT NULL constraints or a cleanup migration.",
+    "(Access) The `phases` JSONB blob is shape-typed at the client boundary via a util. Consider mirroring the same normalisation in CapstoneStartPage.jsx (if it also reads `phases.tasks_raw`) so behaviour stays consistent across all capstone surfaces."
+  ],
+  "critical_code_review_comments": [
+    "utils/capstonePhases.js correctly handles: array pass-through, wrapped `{tasks:[...]}` pass-through, and markdown `tasks_raw` parsing with a robust `\\*\\*Task N.M —` split lookahead. Fallback to [] is safe.",
+    "CapstoneTasksPage.jsx line 60 uses supabase `.select('*, master_capstone_projects(*)')` embed — assumes the FK is `user_capstone_projects.master_capstone_id -> master_capstone_projects.id`, which the actual schema confirms. This is correct.",
+    "The 'No phases configured' fallback state is still reachable if the parser returns [] (e.g. `phases` is present but has neither an array `tasks` nor a valid `tasks_raw`). Good defensive UX.",
+    "Minor: 3 different capstone surfaces (CapstonesListPage, CapstoneStartPage, CapstoneTasksPage) each parse `phases` differently (CapstonesListPage reads `phases.code`/`prerequisite_capstone_codes` directly, CapstoneTasksPage uses normaliseCapstonePhases). Consider centralising all `phases`-JSONB parsing in the same util."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only)", "frontend": "100%"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (Supabase user 13a690c4-96d7-4827-8117-fde4f696e999, enrollment ab43a64a-70bc-473f-b533-fb958267a739). Admin info@valuevade.com / aa1aa2sam3 also verified /capstones grid.",
+  "seed_data_creation": "Inserted (and deleted after test) a user_capstone_projects row: {enrollment_id: ab43a64a-70bc-473f-b533-fb958267a739, master_capstone_id: 7ae85a83-42e1-4980-9b3e-c4f442d0c1a0 (CAP-02), started_at: 2026-07-21}. Row was DELETED at end of test — testagent2026 is back to zero capstone-project rows. If manual re-verification is needed, re-insert via SUPABASE_SERVICE_ROLE_KEY.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Fix confirmed working. The parser correctly derives phase/task cards from `master_capstone_projects.phases.tasks_raw`. To re-test, seed a `user_capstone_projects` row (see seed_data_creation above). Note: admin (info@valuevade.com) has NO active enrollment, so /capstone/tasks shows an empty page (no error, no phases) — this is a pre-existing state, not a bug. QA account qa-complete@valuevade.test has status='completed' enrollment so the `.eq('status','active')` filter also excludes it — also pre-existing. Use testagent2026@gmail.com (active enrollment) + a seeded user_capstone_projects row for any future retest.",
+  "rca of the issue": "Original bug: `master_capstone_projects.phases` is JSONB OBJECT (containing markdown tasks_raw), but CapstoneTasksPage line 78 previously did `Array.isArray(phases) ? phases : []`, which always returned [] for the real DB shape → 'No phases configured' fallback. Fix: new util `normaliseCapstonePhases(rawPhases)` recognises the object form, parses `tasks_raw` with regex `/\\n(?=\\*\\*Task\\s+[\\d.]+\\s*[—-])/`, and returns [{phase_title:'Tasks', tasks:[{title, description}, ...]}]. Verified: 6 task cards rendered for CAP-02 (matches tasks_raw 2.1–2.6), titles like 'Sector selection & structure' parsed correctly, no console errors, checkbox toggle + persistence + collapse all work."
+}

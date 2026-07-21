@@ -10,6 +10,7 @@ import { XP_REASONS } from '../utils/xp';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
 import TaskCard from './projects/TaskCard';
+import { normaliseCapstonePhases } from '../utils/capstonePhases';
 import {
   ArrowLeft, ArrowRight, AlertCircle, RefreshCw, Trophy, CheckCircle2, Loader2,
   ChevronDown, ChevronRight, Layers,
@@ -75,7 +76,10 @@ export default function CapstoneTasksPage() {
   }, [user?.id]);
 
   const phases = useMemo(
-    () => (Array.isArray(masterCapstone?.phases) ? masterCapstone.phases : []),
+    // Adapt the raw DB `phases` blob (may be JSON object with markdown
+    // `tasks_raw` OR an array) into the phase array the renderer needs.
+    // See utils/capstonePhases.js.
+    () => normaliseCapstonePhases(masterCapstone?.phases),
     [masterCapstone]
   );
 
