@@ -1680,6 +1680,119 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         ) or []
         return {"sessions": rows}
 
+    @api_router.get("/admin/curriculum/export")
+    async def admin_curriculum_export(user=Depends(_get_supabase_user)):
+        """Return the full curriculum tree — every module, every session,
+        every module-project, every capstone — for a single 'Download full
+        curriculum' click on the admin View Course tab.
+
+        Response shape (large but flat + serialisable):
+            {
+              path: { id, title },
+              modules: [
+                { id, title, description, module_number, order_index,
+                  sessions: [ { id, title, description, order_index,
+                                estimated_minutes, has_video: bool } ],
+                  projects: [ { id, title, brief, order_index } ]
+                }
+              ],
+              capstones: [
+                { id, code, title, order_index, meta, learning_outcomes,
+                  required_structure, tasks_raw }
+              ],
+              generated_at: iso8601,
+              summary: { module_count, session_count, project_count, capstone_count }
+            }
+        """
+        _ensure_admin(user)
+        # 1) Path (we ship a single-path product today).
+        paths = _supabase_get("master_paths?select=id,title&limit=5") or []
+        if not paths:
+            raise HTTPException(status_code=404, detail="No master path found.")
+        p = paths[0]
+        path_id = p["id"]
+        path_id_q = _urlparse.quote(path_id)
+
+        # 2) Modules + embedded sessions + embedded projects — one round-trip.
+        mods = _supabase_get(
+            f"master_modules?path_id=eq.{path_id_q}"
+            "&select=id,path_id,title,description,module_number,order_index,"
+            "master_sessions(id,title,description,order_index,estimated_minutes,lecture_url),"
+            "master_module_projects(id,title,description,deliverable_description,estimated_hours)"
+            "&order=order_index&limit=500"
+        ) or []
+
+        module_out = []
+        session_count = 0
+        project_count = 0
+        for m in mods:
+            sessions = m.get("master_sessions") or []
+            projects = m.get("master_module_projects") or []
+            sessions.sort(key=lambda s: (s.get("order_index") or 0))
+            sess_clean = [{
+                "id": s["id"],
+                "title": s.get("title") or "",
+                "description": s.get("description") or "",
+                "order_index": s.get("order_index"),
+                "estimated_minutes": s.get("estimated_minutes"),
+                "has_video": bool(s.get("lecture_url")),
+            } for s in sessions]
+            proj_clean = [{
+                "id": p["id"],
+                "title": p.get("title") or "",
+                "description": p.get("description") or "",
+                "deliverable": p.get("deliverable_description") or "",
+                "estimated_hours": p.get("estimated_hours"),
+            } for p in projects]
+            session_count += len(sess_clean)
+            project_count += len(proj_clean)
+            module_out.append({
+                "id": m["id"],
+                "title": m.get("title") or "",
+                "description": m.get("description") or "",
+                "module_number": m.get("module_number"),
+                "order_index": m.get("order_index"),
+                "sessions": sess_clean,
+                "projects": proj_clean,
+            })
+
+        # 3) Capstones (may reference path_id; fall back to all if none matched).
+        # `code` lives inside the JSONB `phases.code`, not as a column.
+        caps = _supabase_get(
+            f"master_capstone_projects?path_id=eq.{path_id_q}"
+            "&select=id,title,phases&limit=100"
+        ) or []
+        if not caps:
+            caps = _supabase_get(
+                "master_capstone_projects?select=id,title,phases&limit=100"
+            ) or []
+        cap_out = []
+        for c in caps:
+            ph = c.get("phases") or {}
+            cap_out.append({
+                "id": c["id"],
+                "code": ph.get("code") if isinstance(ph, dict) else None,
+                "title": c.get("title") or "",
+                "meta": ph.get("meta") if isinstance(ph, dict) else None,
+                "learning_outcomes": ph.get("learning_outcomes") if isinstance(ph, dict) else None,
+                "required_structure": ph.get("required_structure") if isinstance(ph, dict) else None,
+                "tasks_raw": ph.get("tasks_raw") if isinstance(ph, dict) else None,
+            })
+        cap_out.sort(key=lambda c: (c.get("code") or ""))
+
+        return {
+            "path": {"id": path_id, "title": p.get("title") or ""},
+            "modules": module_out,
+            "capstones": cap_out,
+            "summary": {
+                "module_count": len(module_out),
+                "session_count": session_count,
+                "project_count": project_count,
+                "capstone_count": len(cap_out),
+            },
+            "generated_at": datetime.now(timezone.utc).isoformat(),
+        }
+
     @api_router.post("/admin/modules")
     async def admin_create_module(body: _AdminModuleBody, user=Depends(_get_supabase_user)):
         _ensure_admin(user)

@@ -15,7 +15,7 @@ import InterviewEditor from './InterviewEditor';
 import VideoEditor from './VideoEditor';
 import CapstonesEditor from './CapstonesEditor';
 import ModuleProjectModal from './ModuleProjectModal';
-import { Plus, Trash2, Pencil, AlertTriangle, Folder } from 'lucide-react';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -134,8 +134,9 @@ export default function CurriculumTab() {
 
   return (
     <div className="flex flex-col gap-3" data-testid="curriculum-tab">
-      {/* Top-level view toggle: Modules ↔ Capstones (Phase C) */}
-      <div className="inline-flex gap-1 p-1 rounded-lg bg-[var(--color-surface)] w-fit" data-testid="curriculum-view-toggle">
+      {/* Top-level view toggle + full-curriculum download */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="inline-flex gap-1 p-1 rounded-lg bg-[var(--color-surface)] w-fit" data-testid="curriculum-view-toggle">
         <button
           onClick={() => setViewMode('modules')}
           data-testid="view-mode-modules"
@@ -155,6 +156,8 @@ export default function CurriculumTab() {
           Capstones
         </button>
       </div>
+      <DownloadCurriculumButton />
+    </div>
 
     {viewMode === 'capstones' && <CapstonesEditor />}
     {viewMode === 'modules' && (
@@ -387,3 +390,153 @@ export default function CurriculumTab() {
     </div>
   );
 }
+
+/**
+ * DownloadCurriculumButton — small dropdown that pulls the full curriculum
+ * tree from GET /api/admin/curriculum/export and offers three formats:
+ *   • JSON   — structured, machine-readable, complete
+ *   • Markdown — human-readable, printable, great for review/sharing
+ *   • CSV    — flat rows of every session, opens in Excel
+ */
+function DownloadCurriculumButton() {
+  const [open, setOpen] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState(null);
+
+  const download = async (format) => {
+    setBusy(true); setErr(null); setOpen(false);
+    try {
+      const data = await req('/api/admin/curriculum/export');
+      const stamp = new Date().toISOString().slice(0, 10);
+      const base = `valuevade-curriculum-${stamp}`;
+
+      let blob, filename;
+      if (format === 'json') {
+        blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        filename = `${base}.json`;
+      } else if (format === 'md') {
+        blob = new Blob([toMarkdown(data)], { type: 'text/markdown' });
+        filename = `${base}.md`;
+      } else {
+        blob = new Blob([toCsv(data)], { type: 'text/csv' });
+        filename = `${base}.csv`;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        disabled={busy}
+        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white text-xs font-semibold hover:brightness-110 disabled:opacity-60"
+        data-testid="curriculum-download-btn"
+      >
+        <Download size={13} />
+        {busy ? 'Downloading…' : 'Download full curriculum'}
+      </button>
+      {open && (
+        <div
+          className="absolute right-0 top-full mt-1 w-56 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-lg z-10 py-1"
+          data-testid="curriculum-download-menu"
+        >
+          <button type="button" onClick={() => download('md')} className="w-full text-left px-3 py-2 text-xs hover:bg-[var(--color-surface)] text-[var(--color-text)]" data-testid="curriculum-download-md">
+            <div className="font-semibold">Markdown (.md)</div>
+            <div className="text-[10px] text-[var(--color-text-muted)]">Human-readable, printable</div>
+          </button>
+          <button type="button" onClick={() => download('csv')} className="w-full text-left px-3 py-2 text-xs hover:bg-[var(--color-surface)] text-[var(--color-text)]" data-testid="curriculum-download-csv">
+            <div className="font-semibold">CSV (.csv)</div>
+            <div className="text-[10px] text-[var(--color-text-muted)]">Every session as a row — Excel</div>
+          </button>
+          <button type="button" onClick={() => download('json')} className="w-full text-left px-3 py-2 text-xs hover:bg-[var(--color-surface)] text-[var(--color-text)]" data-testid="curriculum-download-json">
+            <div className="font-semibold">JSON (.json)</div>
+            <div className="text-[10px] text-[var(--color-text-muted)]">Structured, complete tree</div>
+          </button>
+        </div>
+      )}
+      {err && <p className="text-[10px] text-red-500 mt-1" data-testid="curriculum-download-error">{err}</p>}
+    </div>
+  );
+}
+
+// -- format helpers ---------------------------------------------------------
+function toMarkdown(data) {
+  const lines = [];
+  lines.push(`# ${data.path?.title || 'Valuevade Curriculum'}`);
+  lines.push('');
+  const s = data.summary || {};
+  lines.push(`_${s.module_count || 0} modules · ${s.session_count || 0} sessions · ${s.project_count || 0} module projects · ${s.capstone_count || 0} capstone projects_`);
+  lines.push(`_Generated ${data.generated_at || new Date().toISOString()}_`);
+  lines.push('');
+  (data.modules || []).forEach((m) => {
+    const num = m.module_number ?? m.order_index ?? '';
+    lines.push(`## Module ${num}. ${m.title}`);
+    if (m.description) { lines.push(''); lines.push(m.description); }
+    if ((m.sessions || []).length) {
+      lines.push('');
+      lines.push('**Sessions**');
+      m.sessions.forEach((sess, i) => {
+        const mins = sess.estimated_minutes ? ` — ${sess.estimated_minutes} min` : '';
+        const vid = sess.has_video ? ' 🎥' : '';
+        lines.push(`${i + 1}. ${sess.title}${mins}${vid}`);
+        if (sess.description) lines.push(`   > ${sess.description.replace(/\n/g, ' ')}`);
+      });
+    }
+    if ((m.projects || []).length) {
+      lines.push('');
+      lines.push('**Module Projects**');
+      m.projects.forEach((p) => {
+        const hrs = p.estimated_hours ? ` (${p.estimated_hours}h)` : '';
+        lines.push(`- ${p.title}${hrs}`);
+        if (p.description) lines.push(`   > ${p.description.replace(/\n/g, ' ')}`);
+        if (p.deliverable) lines.push(`   > **Deliverable:** ${p.deliverable.replace(/\n/g, ' ')}`);
+      });
+    }
+    lines.push('');
+  });
+  if ((data.capstones || []).length) {
+    lines.push('---');
+    lines.push('# Capstone Projects');
+    lines.push('');
+    data.capstones.forEach((c) => {
+      lines.push(`## ${c.code ? c.code + ' — ' : ''}${c.title}`);
+      if (c.learning_outcomes) { lines.push(''); lines.push(`**Learning outcomes**: ${c.learning_outcomes}`); }
+      if (c.required_structure) { lines.push(''); lines.push(`**Required structure**: ${c.required_structure}`); }
+      if (c.tasks_raw) { lines.push(''); lines.push(c.tasks_raw); }
+      lines.push('');
+    });
+  }
+  return lines.join('\n');
+}
+
+function toCsv(data) {
+  const rows = [];
+  const esc = (v) => {
+    const s = v == null ? '' : String(v).replace(/"/g, '""').replace(/\r?\n/g, ' ');
+    return `"${s}"`;
+  };
+  rows.push(['type','module_number','module_title','session_or_project_title','description','estimated_minutes','has_video','capstone_code'].map(esc).join(','));
+  (data.modules || []).forEach((m) => {
+    (m.sessions || []).forEach((s) => {
+      rows.push(['session', m.module_number ?? '', m.title, s.title, s.description || '', s.estimated_minutes ?? '', s.has_video ? 'Y' : 'N', ''].map(esc).join(','));
+    });
+    (m.projects || []).forEach((p) => {
+      rows.push(['module_project', m.module_number ?? '', m.title, p.title, p.description || '', p.estimated_hours ?? '', '', ''].map(esc).join(','));
+    });
+  });
+  (data.capstones || []).forEach((c) => {
+    rows.push(['capstone', '', '', c.title, (c.learning_outcomes || '').slice(0, 500), '', '', c.code || ''].map(esc).join(','));
+  });
+  return rows.join('\n');
+}
+
