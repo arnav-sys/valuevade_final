@@ -46,27 +46,51 @@ export default function EnrollmentPage() {
     if (!user) { navigate('/login'); return; }
     let alive = true;
     (async () => {
+      // Independent queries with hard 15s timeout — prevents the page
+      // from getting stuck on "Loading course…" if Supabase hangs.
+      const TIMEOUT_MS = 15000;
+      const withTimeout = (p, label) => Promise.race([
+        p,
+        new Promise((_, rej) => setTimeout(() => rej(new Error(`${label} timed out`)), TIMEOUT_MS)),
+      ]);
       try {
-        const [{ data: c }, { data: m }] = await Promise.all([
-          supabase.from('master_paths').select('*').eq('id', courseId).single(),
-          supabase
-            .from('master_modules')
-            .select('id, title, order_index, module_number, description, master_sessions(id, title, order_index)')
-            .eq('path_id', courseId)
-            .order('order_index'),
+        const [cRes, mRes] = await Promise.allSettled([
+          withTimeout(
+            supabase.from('master_paths').select('*').eq('id', courseId).single(),
+            'course',
+          ),
+          withTimeout(
+            supabase.from('master_modules')
+              .select('id, title, order_index, module_number, description, master_sessions(id, title, order_index)')
+              .eq('path_id', courseId).order('order_index'),
+            'modules',
+          ),
         ]);
         if (!alive) return;
-        setCourse(c);
-        setModules(m || []);
-        // If already enrolled, skip straight to dashboard
-        const { data: existing } = await supabase
-          .from('user_enrollments')
-          .select('id')
-          .eq('user_id', user.id)
-          .eq('master_path_id', courseId)
-          .eq('status', 'active')
-          .limit(1);
-        if (alive && existing?.length) navigate('/dashboard', { replace: true });
+
+        if (cRes.status === 'fulfilled' && !cRes.value.error) {
+          setCourse(cRes.value.data);
+        } else if (cRes.status === 'rejected') {
+          throw new Error(cRes.reason?.message || 'Could not load the course.');
+        }
+
+        if (mRes.status === 'fulfilled' && !mRes.value.error) {
+          setModules(mRes.value.data || []);
+        } else {
+          // Modules failure isn't fatal — page still renders CTAs.
+          setModules([]);
+        }
+
+        // If already enrolled, skip straight to dashboard (non-blocking).
+        try {
+          const { data: existing } = await withTimeout(
+            supabase.from('user_enrollments').select('id')
+              .eq('user_id', user.id).eq('master_path_id', courseId)
+              .eq('status', 'active').limit(1),
+            'enrollment-check',
+          );
+          if (alive && existing?.length) navigate('/dashboard', { replace: true });
+        } catch { /* soft-fail: user can still enrol from here */ }
       } catch (e) {
         if (alive) setError(e?.message || 'Failed to load course.');
       } finally {

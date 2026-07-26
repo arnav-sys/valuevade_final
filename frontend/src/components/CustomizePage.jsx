@@ -251,25 +251,65 @@ export default function CustomizePage() {
     }
   };
 
-  // Fetch data
+  // Fetch data — each query runs independently so one failure doesn't
+  // block the whole page loading. Also enforces a 15s hard timeout so
+  // the loading skeleton can never stick forever (previously if any query
+  // hung, the entire page did too — that was the "stuck on loading, no
+  // projects" bug users reported).
   const fetchData = async () => {
     setLoading(true);
     setError(null);
+    const TIMEOUT_MS = 15000;
+    const withTimeout = (p, label) => Promise.race([
+      p,
+      new Promise((_, rej) => setTimeout(() => rej(new Error(`${label} timed out`)), TIMEOUT_MS)),
+    ]);
     try {
-      const [qRes, mRes, pRes] = await Promise.all([
-        supabase.from('master_customization_questions').select('*').eq('path_id', courseId).order('order_index'),
-        supabase.from('master_modules').select('id, title, description, order_index, learning_objectives, prerequisite_knowledge, master_sessions(id, title, description, order_index, learning_objectives, prerequisite_knowledge)').eq('path_id', courseId).order('order_index'),
-        supabase.from('master_paths').select('title').eq('id', courseId).single(),
+      // Run all 3 in parallel but SETTLE (not race) — we handle each result.
+      const [qRes, mRes, pRes] = await Promise.allSettled([
+        withTimeout(
+          supabase.from('master_customization_questions')
+            .select('*').eq('path_id', courseId).order('order_index'),
+          'questions',
+        ),
+        withTimeout(
+          supabase.from('master_modules')
+            .select('id, title, description, order_index, learning_objectives, prerequisite_knowledge, master_sessions(id, title, description, order_index, learning_objectives, prerequisite_knowledge)')
+            .eq('path_id', courseId).order('order_index'),
+          'modules',
+        ),
+        withTimeout(
+          supabase.from('master_paths').select('title').eq('id', courseId).single(),
+          'path',
+        ),
       ]);
-      if (qRes.error) throw qRes.error;
-      if (mRes.error) throw mRes.error;
-      setQuestions(qRes.data || []);
-      const sorted = (mRes.data || []).map((m) => ({
-        ...m,
-        master_sessions: (m.master_sessions || []).sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)),
-      }));
-      setCourseStructure(sorted);
-      setCourseTitle(pRes.data?.title || 'Course');
+
+      // Questions: soft-fail. If missing, wizard still renders with just modules.
+      if (qRes.status === 'fulfilled' && !qRes.value.error) {
+        setQuestions(qRes.value.data || []);
+      } else {
+        setQuestions([]);
+      }
+
+      // Modules: this is the actual "projects/sessions" the user came to see.
+      // If this fails, surface the error but DON'T stay stuck on loading.
+      if (mRes.status === 'fulfilled' && !mRes.value.error) {
+        const sorted = (mRes.value.data || []).map((m) => ({
+          ...m,
+          master_sessions: (m.master_sessions || []).sort((a, b) => (a.order_index ?? 0) - (b.order_index ?? 0)),
+        }));
+        setCourseStructure(sorted);
+      } else {
+        const reason = mRes.status === 'rejected' ? mRes.reason : mRes.value?.error;
+        throw new Error(reason?.message || String(reason) || 'Could not load course modules');
+      }
+
+      // Course title: nice-to-have. Silently fall back on failure.
+      if (pRes.status === 'fulfilled' && !pRes.value.error) {
+        setCourseTitle(pRes.value.data?.title || 'Course');
+      } else {
+        setCourseTitle('Course');
+      }
     } catch (err) {
       setError(err.message || 'Failed to load customization data');
     } finally {
