@@ -6,7 +6,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import HyperFormulaSpreadsheet from './simulations/HyperFormulaSpreadsheet';
+import HyperFormulaSpreadsheet from './simulations/UniverSpreadsheet';
 import DecisionMakingSim from './simulations/DecisionMakingSim';
 import BookSim from './simulations/BookSim';
 import DocumentSim from './simulations/DocumentSim';

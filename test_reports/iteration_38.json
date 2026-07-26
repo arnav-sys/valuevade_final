@@ -1,0 +1,38 @@
+{
+  "summary": "Frontend-only testing of the new Univer-based Excel simulation on /_dev/sim/13dbfa5a-bce2-4f84-babf-1c327c4dba4c. Grid renders with ribbon (Start/Formulas/Data), formula bar, name box, sheet tabs (Data, Answers). Formula calc verified: =SUM(B2:B11)=521860 and =AVERAGE(C2:C11)=10370 both compute correctly; formula bar shows the formula while cell shows the number. Read-only protection on Data!A2 works (edit cancelled, FY15 preserved). Cross-sheet references work: Answers!B1==SUM(Data!B2:B11)->521860 and Answers!B2==AVERAGE(Data!C2:C11)->10370. Submit produced score banner 'Score: 33/100 · 2 correct / 3 need work' with green/red cell highlighting. Post-submit lock works (writes rejected) BUT surfaces as an Uncaught runtime error React overlay because the guard throws a raw Error inside onBeforeCommandExecute.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "UniverSpreadsheet (post-submit / read-only guard)",
+        "issue": "Guard in onBeforeCommandExecute throws raw Error('Submitted — the workbook is locked.') and Error('This sheet is part of the exercise and cannot be restructured.') / Error('These cells are read-only.'). Univer treats these as unhandled exceptions and CRA's runtime error overlay is triggered (visible red 'Uncaught runtime errors' panel obscures the sim). Reproduced by clicking Submit, then typing anything in any cell — instantly shows the fullscreen error overlay.",
+        "selector": "[data-testid=\"spreadsheet-grid\"]",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Dev sim preview", "issues": ["React console warning: 'Attempted to synchronously unmount a root while React was already rendering.' fires on navigation to /_dev/sim/:id — likely a StrictMode double-invoke or missing cleanup in DevSimPreview / Univer disposer. Non-blocking but noisy."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Replace `throw new Error(...)` inside onBeforeCommandExecute callbacks in /app/frontend/src/components/simulations/UniverSpreadsheet.jsx (lines ~331, ~338, ~347) with `command.cancel = true;` (or the Univer-approved cancel mechanism / returning false). Throwing surfaces as an Uncaught runtime error to React's dev overlay and to production error reporters. Suggested pattern: track submittedRef and read-only guard, and CANCEL commands instead of throwing. Also handle: (a) BeforeSheetEditStart already cancels via params.cancel — good; (b) also intercept clear-selection / structural / paste commands the same way, e.g. `command.cancel = true; return;` — DO NOT throw.",
+    "Investigate the React 'synchronously unmount a root while React was already rendering' warning on the /_dev/sim/:simId route (likely a race between the Univer dispose in the effect cleanup and a re-render); consider running the disposer async via queueMicrotask or a small setTimeout, or ensure the effect isn't re-running on StrictMode double-mount."
+  ],
+  "critical_code_review_comments": [
+    "UniverSpreadsheet.jsx uses `throw new Error(...)` inside onBeforeCommandExecute — Univer/CommandService bubbles the exception; the correct API for a soft-cancel is `command.cancel = true` (as already used correctly in BeforeSheetEditStart / BeforeClipboardPaste). Consistency fix needed.",
+    "Post-submit read-only enforcement duplicates the BeforeSheetEditStart guard — the command-level guard is helpful but should not throw. Consider dropping the throw entirely and relying on BeforeSheetEditStart + BeforeClipboardPaste + a `submitted` boolean to filter mutating commands via `cancel`.",
+    "canonical workbook is memoized with `[]` deps (eslint-disable) — acceptable for a one-shot mount, but any parent re-mount with new workbook prop will silently keep the old snapshot; document or guard.",
+    "engineReady/engineError state is set inside try/catch after createUniver, but if createUniver throws synchronously the containerRef is left in a partial state — the return cleanup still runs safely (guarded try/catch inside) so acceptable.",
+    "Autosave indicator flips to 'unsaved' the moment SheetValueChanged fires and stays until the 4s debounce completes (or onAutoSave resolves). On the dev preview onAutoSave is noop, so the debounced effect still fires and clears dirty — behaviour verified OK."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "~92% (all functional flows pass; 1 HIGH issue: post-submit throw surfaces as runtime error overlay)"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123!",
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Univer canvas grid is not DOM-inspectable. Use the Name Box input at the top-left (locator: `[data-testid=\"spreadsheet-grid\"] input` .last, value like 'A1') to navigate: Ctrl+A, type addr, Enter. Then page.keyboard.type formula, Enter. To read a cell after selection, capture screenshot or read the formula bar span (it appears just to the right of the 'fx' label). Sheet tabs are simple text buttons — click by role/text: `page.get_by_text('Answers', exact=True).click()`. Submit btn: `[data-testid=\"spreadsheet-submit-btn\"]`; score banner: `[data-testid=\"spreadsheet-score-banner\"]`. Verified expected answers keyed 'Answers!B1' and 'Answers!B2' resolve correctly with cross-sheet refs; 3 other answer cells (B3/B4/B5) remain graded but not tested. Autosave was not verifiable on /_dev/sim (noop autosave) — recommend the main agent verify autosave/restore on the real /session/:id/simulation route.",
+  "rca of the issue": "In UniverSpreadsheet.jsx the onBeforeCommandExecute handler uses `throw new Error('Submitted — the workbook is locked.')` (line ~331) to block mutating commands after submit, and similar throws at lines ~338 and ~347 for structural / clear guards. Univer's CommandService does not treat thrown exceptions as a soft cancel — it re-raises them. Because these fire from a keyboard shortcut path (ShortcutService.disposeWithMe.fromGlobalEvent.capture in the stack trace), the exception escapes to window.onerror and React's dev overlay intercepts it. Mitigation: replace throws with `command.cancel = true` / `return false` (whichever Univer's onBeforeCommandExecute accepts as cancel). Reproduction: 1) Load /_dev/sim/13dbfa5a-bce2-4f84-babf-1c327c4dba4c, 2) fill Answers!B1/B2 with correct formulas, 3) click Submit → score banner appears, 4) select any cell and type any character → full-screen red 'Uncaught runtime errors' overlay appears with stack ending in ShortcutService."
+}
