@@ -116,3 +116,72 @@ production backend can serve any waitlist route. Two ways:
 
 After that, user redeploys the app + uses the new "Import CSV" button to
 paste the Mongo export.
+
+
+## Feb 2026 — LLM Limits + Capstone Bug Fix + Pari Focus Mode
+
+**User requirements (this session)**:
+1. Personalised path generation capped at **4 lifetime** per user.
+2. Pari chatbot cumulative LLM cost capped at **₹500** per user; once
+   exceeded, Pari is disabled everywhere.
+3. Capstones **locked** until every session + module project is done.
+4. Pari **hidden** during quiz / interview / simulation active pages.
+5. **Bug fix**: capstone pages were rendering "No capstone configured"
+   because the multi-capstone (CAP-01/02/03) flow only checked for a
+   single legacy user_capstone_projects row.
+
+**Implementation**:
+- Migration `0036_llm_limits.sql`: adds
+  `profiles.customize_generations_count`, `profiles.pari_total_cost_inr`,
+  RPCs `increment_customize_generations(uuid)` and
+  `add_pari_cost(uuid, numeric)`, plus a backfill of
+  `user_capstone_projects` for every (enrollment, master capstone).
+  **NOT applied automatically** — requires Supabase Studio SQL Editor.
+- Backend (`server.py`):
+  - Helpers `_profile_snapshot`, `_pari_is_over_budget`, `_bump_pari_cost`,
+    `_bump_customize_generations` (graceful degradation on missing columns).
+  - New endpoint `GET /api/pari/status` returns
+    `{pari:{total_cost_inr, limit_inr, over_budget, remaining_inr},
+      customize:{generations_used, generations_limit, generations_remaining, exhausted}}`.
+  - `/api/customize/generate` now requires `Authorization: Bearer`.
+    Returns HTTP 429 with `detail.reason='customize_generation_limit_reached'`
+    once count ≥ 4.
+  - `/api/doubts/start`, `/api/doubts/ask`,
+    `/api/doubts/extended/start`, `/api/doubts/extended/ask` return HTTP
+    402 with `detail.reason='pari_cost_limit_reached'` when
+    `pari_total_cost_inr ≥ 500`.
+  - Every non-cached LLM turn calls `_bump_pari_cost` with a Claude
+    Haiku 4.5 pricing estimate (input $1/M, output $5/M @ INR 85/USD).
+- Frontend:
+  - New hook `useIsPariBlocked` matches `/session/:id/{quiz|interview|simulation}`
+    and `/mock-interview[/:id]`.
+  - `DoubtsLauncherProvider` fetches `/api/pari/status` on mount, blocks
+    `openDoubts` on those routes or when over-budget, and surfaces a
+    toast to the user.
+  - `AvatarPersona` (fixed positions) and `AskPariButton` both return
+    null when `pariBlocked` — no floating chat trigger on graded surfaces.
+  - `DoubtsSession` handles HTTP 402 inline (turns the session into an
+    error state, blocks further messages).
+  - `CustomizePage` shows a counter chip
+    (`data-testid=customize-generation-counter`) with used/limit/remaining
+    on the final wizard step. Button disabled when exhausted.
+  - `PreviewPage` sends the Supabase Bearer token and handles 401/429.
+  - `CapstonesListPage` fully locks the capstone grid behind an amber
+    banner until every module + module project is complete. Card clicks
+    now route to `/capstone/<masterCapstoneId>/start`.
+  - `CapstoneStartPage` and `CapstoneTasksPage` accept `:capstoneId`,
+    filter `user_capstone_projects` by (enrollment_id,
+    master_capstone_id), and **auto-seed** a missing row so CAP-02/03
+    never fall back to "No capstone configured".
+  - `App.js` exposes new routes `/capstone/:capstoneId/start` and
+    `/capstone/:capstoneId/tasks` (legacy routes preserved).
+
+**Testing**: `iteration_33.json` (9/9 backend PASS, capstone bug + Pari
+focus-mode verified) → `iteration_34.json` (regression on locked/unlocked
+`/capstones` gate — 100% PASS).
+
+**Deploy note**: For the cost / generation caps to actually enforce,
+apply `0036_llm_limits.sql` via Supabase Studio → SQL Editor. Until then
+the counters read 0 and every call passes through (graceful degradation
+is intentional — no user gets locked out because of a missing column).
+
