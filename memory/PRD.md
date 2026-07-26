@@ -185,3 +185,63 @@ apply `0036_llm_limits.sql` via Supabase Studio → SQL Editor. Until then
 the counters read 0 and every call passes through (graceful degradation
 is intentional — no user gets locked out because of a missing column).
 
+
+
+## Feb 2026 — Session-level Interview phase disabled (cost reduction)
+
+**Rationale**: `/api/interview/evaluate` was the platform's only Claude
+Sonnet 4.5 (5× the price of Haiku) call path. Hiding the phase for
+learners cuts per-user AI cost by **~40-45%** with zero data loss — all
+126 interview-bearing sessions also have quiz + simulation + notes, so
+nothing gets stranded. Session-interviews previously awarded 0 direct
+XP (comment: "interview pays via overall feedback"), so no XP
+redistribution was required.
+
+**Implementation** (fully reversible via a single feature flag):
+- New flag `SESSION_INTERVIEW_ENABLED = false` in
+  `frontend/src/utils/sessionPhases.js`. Also exports
+  `SESSION_PHASE_ORDER = ['notes','quiz','simulation']`.
+- `utils/progress.js`: `allDone` gate no longer requires
+  `interview_completed`; `PHASE_ORDER = ['notes','quiz','simulation']`.
+  `getNextPhaseRoute` naturally skips interview.
+- `SessionPhaseGuard.jsx`: `PREV_PHASE.simulation = 'quiz'`; the
+  legacy `interview` key redirects forward to `simulation/start`.
+- `QuizCompletePage.jsx`: default `nextRoute` = Simulation.
+- `DashboardPage.jsx`, `SessionStartPage.jsx`, `SessionCompletePage.jsx`,
+  `useSessionTimer.js`: interview phase removed from all phase lists
+  and progress bars. Copy updated to "3-phase journey" / "all 3 phases".
+- `NotesCompletePage.jsx`: badge says "Phase 1 of 3 done".
+- `App.js`: `/session/:sessionId/interview[/start|/complete]` routes
+  replaced with an `InterviewToSimulation` wrapper that reads
+  `useParams().sessionId` and Navigates absolutely to
+  `/session/${sessionId}/simulation/start` (avoids the React Router v6
+  flat-route `..` pitfall which was flagged as CRITICAL in
+  iteration_35 and fixed in iteration_36).
+- Backend `server.py::evaluate_interview_response`: raises HTTP 410
+  Gone with `detail.reason='session_interview_disabled'`. Legacy body
+  preserved unreachable so re-enable is a one-line revert.
+
+**What was deliberately NOT touched**:
+- `master_interview_questions` Supabase table — data preserved.
+- Admin panel interview-question CRUD — still fully functional.
+- `InterviewPage.jsx`, `InterviewStartPage.jsx`,
+  `InterviewCompletePage.jsx` — code intact on disk.
+- Existing `user_sessions` rows with `interview_completed=true` — the
+  new `allDone` gate ignores that column gracefully.
+- `/api/mock-interview/*` (Haiku) — untouched and still the recommended
+  interview practice surface.
+
+**Testing**: `iteration_35.json` (found 1 CRITICAL Navigate bug + 2
+copy issues) → `iteration_36.json` (100% pass on all 3 fixes).
+
+**Expected per-user cost after this ship**:
+| Profile | Before | After |
+|---|---|---|
+| Typical user | ~₹165 | **~₹90** (~45% cheaper) |
+| Power user | ~₹425 | **~₹250** (~40% cheaper) |
+| Absolute worst-case with existing caps | ~₹600 | **~₹380** |
+
+To fully close the gap, next step is extending the ₹500 profile-level
+cap to also attribute mock-interview cost (currently only Pari doubts
++ customise contribute). That would yield a true single ceiling.
+
