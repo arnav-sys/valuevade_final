@@ -197,9 +197,13 @@ function App() {
                   <Route path="/session/:sessionId/quiz" element={<SessionPhase phase="quiz"><QuizPage /></SessionPhase>} />
                   <Route path="/session/:sessionId/quiz/complete" element={<Learning><QuizCompletePage /></Learning>} />
 
-                  <Route path="/session/:sessionId/interview/start" element={<SessionPhase phase="interview"><InterviewStartPage /></SessionPhase>} />
-                  <Route path="/session/:sessionId/interview" element={<SessionPhase phase="interview"><InterviewPage /></SessionPhase>} />
-                  <Route path="/session/:sessionId/interview/complete" element={<Learning><InterviewCompletePage /></Learning>} />
+                  {/* Feb 2026 — session-level interview phase disabled to
+                    cut per-user AI cost by ~40%. Old URLs redirect forward
+                    to simulation so no bookmark 404s. Pages + components
+                    are kept intact for easy re-enable. */}
+                  <Route path="/session/:sessionId/interview/start" element={<Navigate to="../simulation/start" replace />} />
+                  <Route path="/session/:sessionId/interview" element={<Navigate to="../simulation/start" replace />} />
+                  <Route path="/session/:sessionId/interview/complete" element={<Navigate to="../simulation/start" replace />} />
 
                   <Route path="/session/:sessionId/simulation/start" element={<SessionPhase phase="simulation"><SimulationStartPage /></SessionPhase>} />
                   <Route path="/session/:sessionId/simulation" element={<SessionPhase phase="simulation"><SimulationPage /></SessionPhase>} />

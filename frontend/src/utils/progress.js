@@ -126,10 +126,14 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null, 
     if (updErr) throw updErr;
 
     // 2) Did this update just flip the session to "all phases done"?
+    //
+    // Feb 2026 — session-level interview phase disabled for cost reasons.
+    // `interview_completed` is no longer required for `allDone`. Existing
+    // rows with interview_completed=true are ignored (still counted as
+    // complete either way). See utils/sessionPhases.js flag.
     const allDone =
       updated.notes_completed &&
       updated.quiz_completed &&
-      updated.interview_completed &&
       updated.simulation_completed;
 
     let sessionJustCompleted = false;
@@ -420,7 +424,7 @@ export function computeStreak(completedAtIsoDates, todayIso = null) {
 }
 
 /** Ordered phase sequence. Source of truth for "what's next". */
-export const PHASE_ORDER = ['notes', 'quiz', 'interview', 'simulation'];
+export const PHASE_ORDER = ['notes', 'quiz', 'simulation'];
 
 /**
  * Determine the next phase to work on for a session.

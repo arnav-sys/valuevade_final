@@ -100,7 +100,7 @@ export default function NotesCompletePage() {
 
         {/* Title */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)] text-xs font-mono uppercase tracking-[0.2em] mb-4">
-          <Sparkles size={12} /> Phase 1 of 4 done
+          <Sparkles size={12} /> Phase 1 of 3 done
         </div>
         <h1 className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-3" data-testid="notes-complete-title">
           Notes complete!

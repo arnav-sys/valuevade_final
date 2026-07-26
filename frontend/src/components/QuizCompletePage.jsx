@@ -123,7 +123,7 @@ export default function QuizCompletePage() {
   const [showConfetti, setShowConfetti] = useState(passed);
   const [expandedIdx, setExpandedIdx] = useState(null);
   const [saved, setSaved] = useState(false);
-  const [nextRoute, setNextRoute] = useState({ phase: 'interview', route: 'interview/start', label: 'Interview' });
+  const [nextRoute, setNextRoute] = useState({ phase: 'simulation', route: 'simulation/start', label: 'Simulation' });
   const { awardXP } = useXP();
 
   // Save results once. Quiz is marked "completed" on ANY attempt

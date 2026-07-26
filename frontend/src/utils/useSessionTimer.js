@@ -82,7 +82,7 @@ export function getMeasuredMinutes(sessionId, phase, { fallbackMinutes = 0 } = {
  * open all night and inflating their day_row.actual_minutes.
  */
 export function getMeasuredMinutesTotal(sessionId, { estimatedMinutes = 0 } = {}) {
-  const phases = ['notes', 'quiz', 'interview', 'simulation'];
+  const phases = ['notes', 'quiz', 'simulation'];
   const sum = phases.reduce((acc, p) => acc + Math.max(0, Math.round(readSnapshot(sessionId, p).totalSeconds / 60)), 0);
   // Per the spec: prevent zero writes — at least 1 min.
   const floored = Math.max(1, sum);

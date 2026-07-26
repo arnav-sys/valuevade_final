@@ -28,10 +28,13 @@ import PlanTrendChart from './study-planner/PlanTrendChart';
 import PlanResetModal from './study-planner/PlanResetModal';
 import { getActiveStudyPlan, getStudyPlanDashboardSummary } from '../utils/studyPlanner';
 
+// Feb 2026 — session-level interview phase disabled. Kept in the map so
+// legacy user_sessions rows with interview_completed=true still render
+// gracefully, but the phase is filtered out of the visible sequence by
+// SESSION_PHASE_ORDER in utils/sessionPhases.js.
 const PHASE_META = {
   notes: { label: 'Notes', icon: FileText, path: 'notes' },
   quiz: { label: 'Quiz', icon: HelpCircle, path: 'quiz' },
-  interview: { label: 'Interview', icon: MessageSquare, path: 'interview' },
   simulation: { label: 'Simulation', icon: Wrench, path: 'simulation' },
 };
 
@@ -165,7 +168,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
           {showSessionList && (
             <div className="mt-4 space-y-1.5" data-testid={`module-sessions-${module.order_index}`}>
               {activeSessions.map((s, sidx) => {
-                const phases = ['notes', 'quiz', 'interview', 'simulation'];
+                const phases = ['notes', 'quiz', 'simulation'];
                 return (
                   <Link
                     key={s.id}

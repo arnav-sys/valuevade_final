@@ -20,10 +20,14 @@ import {
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase, AlertTriangle, Brain,
 } from 'lucide-react';
 
+// Feb 2026 — session-level interview phase disabled; PHASE_DEFS no longer
+// includes the interview column so the summary shows 3 phases instead of 4.
+// The `interview_completed` DB field still exists — legacy rows are ignored
+// gracefully. Flip SESSION_INTERVIEW_ENABLED in utils/sessionPhases.js to
+// re-enable everywhere.
 const PHASE_DEFS = [
   { key: 'notes', label: 'Notes', icon: FileText, color: '#246BFD', scoreField: null },
   { key: 'quiz', label: 'Quiz', icon: HelpCircle, color: '#6A5CFF', scoreField: 'quiz_score' },
-  { key: 'interview', label: 'Interview', icon: MessageSquare, color: '#FF6AC1', scoreField: 'interview_score' },
   { key: 'simulation', label: 'Simulation', icon: Wrench, color: '#10B981', scoreField: 'simulation_score' },
 ];
 
@@ -211,7 +215,6 @@ export default function SessionCompletePage() {
     const allPhasesDone =
       session.notes_completed &&
       session.quiz_completed &&
-      session.interview_completed &&
       session.simulation_completed;
     if (!allPhasesDone) return;
     let mounted = true;
@@ -243,7 +246,6 @@ export default function SessionCompletePage() {
     const allPhasesDone =
       session.notes_completed &&
       session.quiz_completed &&
-      session.interview_completed &&
       session.simulation_completed;
     if (!allPhasesDone) return;
     planSyncRef.current = true;
@@ -286,7 +288,6 @@ export default function SessionCompletePage() {
     const allPhasesDone =
       session.notes_completed &&
       session.quiz_completed &&
-      session.interview_completed &&
       session.simulation_completed;
     if (!allPhasesDone) return;
     milestoneCheckedRef.current = true;
@@ -387,7 +388,7 @@ export default function SessionCompletePage() {
           )}
           <p className="text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto leading-relaxed">
             {allPhasesComplete
-              ? 'You crushed all 4 phases. This is how real analysts learn — notes → quiz → interview → simulation.'
+              ? 'You crushed all 3 phases. This is how real analysts learn — notes → quiz → simulation.'
               : 'Great work. Finish the remaining phases when you\'re ready to cement what you learned.'}
           </p>
         </div>
@@ -464,7 +465,7 @@ export default function SessionCompletePage() {
             <div className="flex-1 min-w-0">
               <div className="font-clash text-sm font-semibold text-[var(--color-text)] mb-0.5">Half-XP redo in progress (redo #{redoInfo.redo_count})</div>
               <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                Finish all 4 phases and we'll auto-resolve the doubt. XP earned this round is halved.
+                Finish all 3 phases and we'll auto-resolve the doubt. XP earned this round is halved.
               </p>
             </div>
           </div>

@@ -4817,6 +4817,19 @@ Return ONLY the JSON object. No code fences. No preamble."""
 
 @api_router.post("/interview/evaluate")
 async def evaluate_interview_response(req: InterviewEvalRequest):
+    # Feb 2026 — session-level interview practice disabled to cut per-user
+    # AI cost (~40% reduction). This was the platform's only Claude Sonnet
+    # 4.5 call path. Users now get their interview practice through the
+    # dedicated /mock-interview flow (Haiku, much cheaper). Return 410 Gone
+    # so any stale FE still on old code fails loudly instead of billing us.
+    raise HTTPException(
+        status_code=410,
+        detail={
+            "reason": "session_interview_disabled",
+            "message": "Session-level interview practice is no longer available. Use Mock Interview instead.",
+        },
+    )
+    # ---- legacy body preserved below; unreachable ----
     if not EMERGENT_LLM_KEY:
         raise HTTPException(status_code=500, detail="LLM key not configured")
 
