@@ -245,3 +245,64 @@ To fully close the gap, next step is extending the ₹500 profile-level
 cap to also attribute mock-interview cost (currently only Pari doubts
 + customise contribute). That would yield a true single ceiling.
 
+
+
+## Feb 2026 — LinkedIn-share Rewards Engine
+
+**User request**: When a learner completes a module project (defaults:
+Module 1, Module 10, Module 23 / final) or the first capstone (CAP-01),
+show a card offering a free resource (resume template, IB toolkit, etc.)
+in exchange for sharing the milestone on LinkedIn. Admin can add/edit/
+reorder/delete rewards, re-attach them to different modules, and upload
+files up to 25MB (pdf/docx/xlsx/zip).
+
+**Implementation**:
+- **DB migration `0037_rewards.sql`** — `master_rewards`
+  (trigger_type = module_complete | capstone_complete, trigger_ref_id,
+  resource_file_path, linkedin_message, order_index, is_active) +
+  `user_reward_claims` (unique per user × reward) + private storage
+  bucket `rewards`. RLS: learners read active rewards + read/insert
+  their own claims; service_role writes.
+- **Backend** (`wave_endpoints.py` +240 lines) —
+  learner API: `GET /api/rewards/eligible`, `POST /api/rewards/claim`,
+  `GET /api/rewards/{id}/download` (re-issues signed URL);
+  admin API: `GET/POST/PATCH/DELETE /api/admin/rewards`,
+  `GET /api/admin/rewards/triggers` (populates dropdowns),
+  `POST /api/admin/rewards/upload` (25MB max + MIME whitelist,
+  service_role → Supabase Storage). Server-side eligibility check on
+  every claim so the FE can never fake it. All endpoints degrade
+  gracefully if the migration hasn't run (return `table_ready:false`
+  with a hint).
+- **Frontend** —
+  new shared `components/rewards/RewardCard.jsx` handles the whole
+  "Share on LinkedIn → I've shared → download" flow. Uses a standard
+  (non-AI) post template — admin can override per reward.
+  Wired into `ModuleProjectCompletePage.jsx` (fetches
+  `master_module_id` from `user_modules`) and `CapstoneCompletePage.jsx`
+  (uses `capstone.master_capstone_id`).
+- **AdminPanel** — new "Rewards" tab (alongside FAQ, Customisation,
+  Feedback). Full CRUD + upload + toggle active + reorder via
+  `order_index`. Editor modal populates trigger-target dropdowns from
+  `/api/admin/rewards/triggers` and validates before save.
+
+**Bug found & fixed during testing (iteration_37)**:
+FastAPI 422 on every `/api/rewards/claim` because
+`_RewardClaimReq(BaseModel)` was declared *inside* the
+`register_wave_endpoints()` closure — FastAPI's dependency inspector
+can't classify function-locally-defined BaseModels as request bodies,
+so it fell back to treating them as query params. Fixed by switching
+to the `body: dict` + explicit `.get(...)` pattern used by every
+sibling endpoint in the same file. Reproducible with a plain curl.
+
+**Testing**: `iteration_37.json` — 100 % pass on 16 backend tests
+(auth guards, admin-CRUD gating, upload, graceful-degradation, abuse
+guards, idempotency) + 100 % pass on the admin-panel Rewards tab +
+RewardCard null-when-no-reward FE checks. Full E2E (LinkedIn share →
+claim → download) blocked only until the user applies migration 0037.
+
+**Deploy note**: apply `/app/scripts/migrations/0037_rewards.sql` via
+Supabase Studio → SQL Editor. Then in AdminPanel → Rewards tab, click
+"Add Reward" for each of Module 1 / Module 10 / Module 23 / CAP-01,
+upload the file, and set the LinkedIn post. Learners on those trigger
+events see the reward card automatically.
+
