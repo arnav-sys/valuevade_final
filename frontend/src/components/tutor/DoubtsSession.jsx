@@ -168,6 +168,17 @@ export default function DoubtsSession({
           setPending(false);
           return;
         }
+        if (sStatus === 402 || (sData?.detail && sData.detail.reason === 'pari_cost_limit_reached')) {
+          setMessages((m) => [...m, {
+            role: 'assistant',
+            content: (sData?.detail?.message || 'Pari is disabled — usage limit reached.'),
+            isError: true,
+          }]);
+          setSessionEnded(true);
+          setEndReason('cost_limit_reached');
+          setPending(false);
+          return;
+        }
         if (!sOk || !sData?.ok || !sData?.doubt_session_id) {
           setMessages((m) => [...m, {
             role: 'assistant',
@@ -194,6 +205,16 @@ export default function DoubtsSession({
       const { ok, status, data } = await authedFetch('/api/doubts/ask', askBody);
       if (!firstAskSent) setFirstAskSent(true);
       if (!ok) {
+        if (status === 402 || (data?.detail && data.detail.reason === 'pari_cost_limit_reached')) {
+          setMessages((m) => [...m, {
+            role: 'assistant',
+            content: (data?.detail?.message || 'Pari is disabled — usage limit reached.'),
+            isError: true,
+          }]);
+          setSessionEnded(true);
+          setEndReason('cost_limit_reached');
+          return;
+        }
         setMessages((m) => [...m, {
           role: 'assistant',
           content: status >= 500 ? "Pari hit a snag — please try again." : (data?.detail || 'Something went wrong.'),

@@ -214,6 +214,8 @@ function App() {
                   <Route path="/capstones" element={<Learning><CapstonesListPage /></Learning>} />
                   <Route path="/capstone/start" element={<Learning><CapstoneStartPage /></Learning>} />
                   <Route path="/capstone/tasks" element={<Learning><CapstoneTasksPage /></Learning>} />
+                  <Route path="/capstone/:capstoneId/start" element={<Learning><CapstoneStartPage /></Learning>} />
+                  <Route path="/capstone/:capstoneId/tasks" element={<Learning><CapstoneTasksPage /></Learning>} />
                   <Route path="/capstone/complete" element={<Learning><CapstoneCompletePage /></Learning>} />
 
                   {/* Wave 1 / 2 — Admin + Mock Interview */}

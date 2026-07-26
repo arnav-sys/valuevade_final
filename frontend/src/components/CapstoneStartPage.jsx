@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
@@ -12,6 +12,10 @@ import { Skeleton } from './ui/skeleton';
 export default function CapstoneStartPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  // Feb 2026 — new route pattern `/capstone/:capstoneId/start`. If undefined
+  // we fall back to the legacy behaviour of "any user_capstone_projects row"
+  // so old bookmarks keep working.
+  const { capstoneId } = useParams();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,16 +47,6 @@ export default function CapstoneStartPage() {
           return;
         }
 
-        const { data: cap, error: capErr } = await supabase
-          .from('user_capstone_projects')
-          .select('*, master_capstone_projects(*)')
-          .eq('enrollment_id', enr.id)
-          .maybeSingle();
-        if (capErr) throw capErr;
-        if (!mounted) return;
-        setCapstone(cap || null);
-        setMasterCapstone(cap?.master_capstone_projects || null);
-
         // Curriculum v2: load ALL master capstones for this path so the page
         // surfaces CAP-01 / CAP-02 / CAP-03 (was only one before).
         const { data: allCaps } = await supabase
@@ -61,6 +55,65 @@ export default function CapstoneStartPage() {
           .eq('path_id', enr.master_path_id);
         if (!mounted) return;
         setAllCapstones(allCaps || []);
+
+        // Resolve which master capstone this page is showing.
+        // If :capstoneId was passed, pin to it. Otherwise default to CAP-01
+        // (first sorted by phases.code) so the legacy /capstone/start URL
+        // still shows something sensible.
+        let targetMasterId = capstoneId || null;
+        if (!targetMasterId) {
+          const decorated = (allCaps || []).map((c) => {
+            let phases = c.phases;
+            if (typeof phases === 'string') {
+              try { phases = JSON.parse(phases); } catch { phases = {}; }
+            }
+            return { ...c, _code: (phases || {}).code || '' };
+          }).sort((a, b) => (a._code || '').localeCompare(b._code || ''));
+          targetMasterId = (decorated[0] || {}).id || null;
+        }
+
+        // Find or auto-create the user_capstone_projects row for this
+        // enrollment × target master capstone. This fixes the "no capstone
+        // configured" bug where old enrollments only had ONE user_capstone
+        // row for CAP-01 and CAP-02/03 pages silently rendered empty.
+        let userCap = null;
+        if (targetMasterId) {
+          const { data: existingRows, error: findErr } = await supabase
+            .from('user_capstone_projects')
+            .select('*, master_capstone_projects(*)')
+            .eq('enrollment_id', enr.id)
+            .eq('master_capstone_id', targetMasterId)
+            .limit(1);
+          if (findErr) throw findErr;
+          userCap = (existingRows || [])[0] || null;
+
+          if (!userCap) {
+            // Auto-seed a missing row. Schema uses enrollment_id + master_capstone_id.
+            const { data: inserted, error: insErr } = await supabase
+              .from('user_capstone_projects')
+              .insert({
+                enrollment_id: enr.id,
+                master_capstone_id: targetMasterId,
+              })
+              .select('*, master_capstone_projects(*)')
+              .maybeSingle();
+            if (!insErr && inserted) {
+              userCap = inserted;
+            } else if (insErr) {
+              // If unique-violation, refetch (row exists but our first select missed it).
+              const { data: retryRows } = await supabase
+                .from('user_capstone_projects')
+                .select('*, master_capstone_projects(*)')
+                .eq('enrollment_id', enr.id)
+                .eq('master_capstone_id', targetMasterId)
+                .limit(1);
+              userCap = (retryRows || [])[0] || null;
+            }
+          }
+        }
+        if (!mounted) return;
+        setCapstone(userCap || null);
+        setMasterCapstone(userCap?.master_capstone_projects || null);
 
         const { data: mods, error: mErr } = await supabase
           .from('user_modules')
@@ -88,7 +141,7 @@ export default function CapstoneStartPage() {
     }
     load();
     return () => { mounted = false; };
-  }, [user?.id]);
+  }, [user?.id, capstoneId]);
 
   const allModulesDone = modules.length > 0 && modules.every((m) => m.is_completed);
   const projectsMap = new Map(moduleProjects.map((p) => [p.user_module_id, p]));
@@ -107,9 +160,15 @@ export default function CapstoneStartPage() {
           .update({ started_at: new Date().toISOString() })
           .eq('id', capstone.id);
       }
-      navigate('/capstone/tasks');
+      const targetId = capstoneId || masterCapstone?.id;
+      if (targetId) {
+        navigate(`/capstone/${targetId}/tasks`);
+      } else {
+        navigate('/capstone/tasks');
+      }
     } catch {
-      navigate('/capstone/tasks');
+      const targetId = capstoneId || masterCapstone?.id;
+      navigate(targetId ? `/capstone/${targetId}/tasks` : '/capstone/tasks');
     }
   };
 

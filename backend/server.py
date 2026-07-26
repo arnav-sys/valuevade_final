@@ -238,6 +238,119 @@ def get_supabase_user(authorization: Optional[str] = Header(None)) -> dict:
     return user
 
 
+# ──────────────────────────────────────────────────────────────────────
+# Per-user LLM limits (Feb 2026)
+#
+# Two hard limits enforced across every user:
+#   (a) `/customize/generate`  → max 4 generations lifetime.
+#   (b) All Pari LLM calls     → cumulative INR cost capped at ₹500.
+#
+# The counters live in `public.profiles` (see migration 0036_llm_limits.sql).
+# If the migration hasn't been applied yet, the helpers degrade gracefully:
+# they log a warning and treat the user as under-limit so we never lock a
+# healthy production user out because of a missing column.
+# ──────────────────────────────────────────────────────────────────────
+
+CUSTOMIZE_GENERATION_LIMIT = 4
+PARI_COST_LIMIT_INR = 500.0
+
+# Claude Haiku 4.5 pricing (per 1M tokens) → INR (assume USD→INR ~85).
+# input: $1.00/M ; output: $5.00/M
+_INR_PER_INPUT_TOKEN  = (1.0 / 1_000_000.0) * 85.0
+_INR_PER_OUTPUT_TOKEN = (5.0 / 1_000_000.0) * 85.0
+
+
+def _estimate_llm_cost_inr(input_tokens: int, output_tokens: int) -> float:
+    """Convert Claude Haiku token counts to INR."""
+    inp = max(0, int(input_tokens or 0))
+    out = max(0, int(output_tokens or 0))
+    return round(inp * _INR_PER_INPUT_TOKEN + out * _INR_PER_OUTPUT_TOKEN, 4)
+
+
+def _profile_snapshot(user_id: str) -> dict:
+    """Fetch just the LLM-limit columns from profiles. Returns an empty dict
+    on any error (missing table/columns → treat as fresh account)."""
+    try:
+        rows = _supabase_get(
+            f"profiles?id=eq.{_urlparse.quote(user_id)}"
+            "&select=customize_generations_count,pari_total_cost_inr&limit=1"
+        ) or []
+        return rows[0] if rows else {}
+    except HTTPException as e:
+        # 42703 undefined_column (migration 0036 not applied yet) — degrade.
+        if e.status_code in (400, 404):
+            logger.warning(f"[llm-limits] profile snapshot degraded: {e.detail}")
+            return {}
+        raise
+
+
+def _pari_is_over_budget(user_id: str) -> tuple[bool, float]:
+    snap = _profile_snapshot(user_id)
+    total = float(snap.get("pari_total_cost_inr") or 0.0)
+    return (total >= PARI_COST_LIMIT_INR, total)
+
+
+def _bump_pari_cost(user_id: str, cost_inr: float) -> None:
+    """Atomically add `cost_inr` to profiles.pari_total_cost_inr via RPC.
+    Fire-and-forget: failures are logged, never raised, so an LLM answer is
+    never blocked by an accounting hiccup."""
+    if not user_id or cost_inr <= 0:
+        return
+    try:
+        _supabase_post(
+            "rpc/add_pari_cost",
+            {"p_user_id": user_id, "p_cost_inr": round(cost_inr, 4)},
+        )
+    except Exception as e:
+        logger.warning(f"[llm-limits] bump_pari_cost failed for {user_id}: {e}")
+
+
+def _bump_customize_generations(user_id: str) -> int:
+    """Atomically +1 customize_generations_count. Returns the new count, or
+    0 on any error (so the FE doesn't lock the user out if the RPC is
+    unavailable)."""
+    if not user_id:
+        return 0
+    try:
+        payload = _supabase_post(
+            "rpc/increment_customize_generations", {"p_user_id": user_id}
+        )
+        if isinstance(payload, int):
+            return payload
+        if isinstance(payload, dict):
+            return int(payload.get("count") or 0)
+        return 0
+    except Exception as e:
+        logger.warning(f"[llm-limits] increment_customize_generations failed: {e}")
+        return 0
+
+
+
+
+@api_router.get("/pari/status")
+async def pari_status(supa_user: dict = Depends(get_supabase_user)):
+    """Return current LLM-limit state for the authenticated user.
+    Used by the FE to show usage meters + gate the Pari widget."""
+    user_id = supa_user.get("id")
+    snap = _profile_snapshot(user_id)
+    cost = float(snap.get("pari_total_cost_inr") or 0.0)
+    gens = int(snap.get("customize_generations_count") or 0)
+    return {
+        "pari": {
+            "total_cost_inr": round(cost, 2),
+            "limit_inr": PARI_COST_LIMIT_INR,
+            "over_budget": cost >= PARI_COST_LIMIT_INR,
+            "remaining_inr": max(0.0, round(PARI_COST_LIMIT_INR - cost, 2)),
+        },
+        "customize": {
+            "generations_used": gens,
+            "generations_limit": CUSTOMIZE_GENERATION_LIMIT,
+            "generations_remaining": max(0, CUSTOMIZE_GENERATION_LIMIT - gens),
+            "exhausted": gens >= CUSTOMIZE_GENERATION_LIMIT,
+        },
+    }
+
+
 
 
 @api_router.get("/health/xp")
@@ -778,6 +891,21 @@ async def doubts_start(req: DoubtsStartReq, supa_user: dict = Depends(get_supaba
     user_id = supa_user.get("id")
     if not user_id:
         raise HTTPException(status_code=401, detail="user id missing on token")
+    # Feb 2026 — hard ₹500 lifetime cap on Pari LLM spend per user.
+    over_budget, total_inr = _pari_is_over_budget(user_id)
+    if over_budget:
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "reason": "pari_cost_limit_reached",
+                "message": (
+                    f"Pari is temporarily disabled — you've reached the "
+                    f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
+                ),
+                "total_cost_inr": round(total_inr, 2),
+                "limit_inr": PARI_COST_LIMIT_INR,
+            },
+        )
     if req.phase not in {"notes","quiz","interview","simulation","project","capstone","dashboard","module_complete"}:
         raise HTTPException(status_code=400, detail="invalid phase")
     payload = _supabase_post(
@@ -842,6 +970,21 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
     if not EMERGENT_LLM_KEY:
         raise HTTPException(status_code=500, detail="LLM key not configured")
     user_id = supa_user.get("id")
+    # Feb 2026 — ₹500 lifetime Pari spend cap. Once over, no further turns.
+    over_budget, total_inr = _pari_is_over_budget(user_id)
+    if over_budget:
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "reason": "pari_cost_limit_reached",
+                "message": (
+                    f"Pari is temporarily disabled — you've reached the "
+                    f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
+                ),
+                "total_cost_inr": round(total_inr, 2),
+                "limit_inr": PARI_COST_LIMIT_INR,
+            },
+        )
     msg = (req.message or "").strip()
     if not msg or len(msg) < 5:
         raise HTTPException(status_code=400, detail="message too short (min 5 chars)")
@@ -1065,6 +1208,17 @@ async def doubts_ask(req: DoubtsAskReq, supa_user: dict = Depends(get_supabase_u
             "p_off_topic": bool(is_off_topic),
         },
     ) or {}
+
+    # Feb 2026 — attribute LLM spend to the user (skip cache hits, which
+    # don't actually hit Claude). Fire-and-forget; failures don't block.
+    if not is_cached:
+        try:
+            _bump_pari_cost(
+                user_id,
+                _estimate_llm_cost_inr(user_tokens, answer_tokens),
+            )
+        except Exception:
+            pass
 
     # Today's quota — for the header chip on the frontend.
     today_ist = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
@@ -1982,6 +2136,20 @@ async def session_doubts_redo(doubt_id: str, supa_user: dict = Depends(get_supab
 @api_router.post("/doubts/extended/start")
 async def extended_doubt_start(req: ExtendedDoubtStartReq, supa_user: dict = Depends(get_supabase_user)):
     user_id = supa_user.get("id")
+    over_budget, total_inr = _pari_is_over_budget(user_id)
+    if over_budget:
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "reason": "pari_cost_limit_reached",
+                "message": (
+                    f"Pari is temporarily disabled — you've reached the "
+                    f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
+                ),
+                "total_cost_inr": round(total_inr, 2),
+                "limit_inr": PARI_COST_LIMIT_INR,
+            },
+        )
     payload = _supabase_post(
         "rpc/start_extended_doubt_session",
         {"p_user_id": user_id, "p_session_doubt_id": req.doubt_id},
@@ -2017,6 +2185,20 @@ async def extended_doubt_start(req: ExtendedDoubtStartReq, supa_user: dict = Dep
 @api_router.post("/doubts/extended/ask")
 async def extended_doubt_ask(req: ExtendedDoubtAskReq, supa_user: dict = Depends(get_supabase_user)):
     user_id = supa_user.get("id")
+    over_budget, total_inr = _pari_is_over_budget(user_id)
+    if over_budget:
+        raise HTTPException(
+            status_code=402,
+            detail={
+                "reason": "pari_cost_limit_reached",
+                "message": (
+                    f"Pari is temporarily disabled — you've reached the "
+                    f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
+                ),
+                "total_cost_inr": round(total_inr, 2),
+                "limit_inr": PARI_COST_LIMIT_INR,
+            },
+        )
     msg = (req.message or "").strip()
     if len(msg) < 2:
         raise HTTPException(status_code=400, detail="message too short")
@@ -2114,6 +2296,12 @@ async def extended_doubt_ask(req: ExtendedDoubtAskReq, supa_user: dict = Depends
 
     user_tokens = _approx_tokens(msg)
     assistant_tokens = _approx_tokens(answer)
+
+    # Feb 2026 — attribute extended-chat LLM spend to the user.
+    try:
+        _bump_pari_cost(user_id, _estimate_llm_cost_inr(user_tokens, assistant_tokens))
+    except Exception:
+        pass
 
     rpc = _supabase_post(
         "rpc/record_extended_doubt_turn",
@@ -4383,9 +4571,28 @@ def _validate_and_normalize_plan(plan, req):
 
 
 @api_router.post("/customize/generate")
-async def generate_customization(req: CustomizeRequest):
+async def generate_customization(req: CustomizeRequest, supa_user: dict = Depends(get_supabase_user)):
     if not EMERGENT_LLM_KEY:
         raise HTTPException(status_code=500, detail="LLM key not configured")
+
+    user_id = supa_user.get("id")
+    # Feb 2026 — lifetime cap of 4 personalised-path generations per user.
+    snap = _profile_snapshot(user_id)
+    used = int(snap.get("customize_generations_count") or 0)
+    if used >= CUSTOMIZE_GENERATION_LIMIT:
+        raise HTTPException(
+            status_code=429,
+            detail={
+                "reason": "customize_generation_limit_reached",
+                "message": (
+                    f"You've already generated a personalised path "
+                    f"{CUSTOMIZE_GENERATION_LIMIT} times. Please stick with your "
+                    "current plan or contact support if you need another regenerate."
+                ),
+                "generations_used": used,
+                "generations_limit": CUSTOMIZE_GENERATION_LIMIT,
+            },
+        )
 
     # Build course structure for the prompt
     modules_for_prompt = []
@@ -4443,6 +4650,15 @@ async def generate_customization(req: CustomizeRequest):
 
         plan = json_module.loads(response_text)
         plan = _validate_and_normalize_plan(plan, req)
+        _bump_customize_generations(user_id)
+        # Estimate LLM cost so the ₹500 pool also reflects customize spend.
+        try:
+            _bump_pari_cost(user_id, _estimate_llm_cost_inr(
+                _approx_tokens(user_message_text) + _approx_tokens(CUSTOMIZE_SYSTEM_PROMPT),
+                _approx_tokens(response or ""),
+            ))
+        except Exception:
+            pass
         return plan
 
     except json_module.JSONDecodeError as e:
@@ -4456,6 +4672,7 @@ async def generate_customization(req: CustomizeRequest):
             "final_modules": [],
             "conservative_flags": ["llm_parse_failed_fallback"],
         }, req)
+        _bump_customize_generations(user_id)
         return fallback
     except Exception as e:
         logger.error(f"LLM call failed: {e}")
@@ -4466,6 +4683,7 @@ async def generate_customization(req: CustomizeRequest):
             "final_modules": [],
             "conservative_flags": ["llm_unavailable_fallback"],
         }, req)
+        _bump_customize_generations(user_id)
         return fallback
 
 

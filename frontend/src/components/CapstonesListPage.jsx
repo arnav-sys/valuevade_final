@@ -22,7 +22,12 @@ export default function CapstonesListPage() {
   const [error, setError] = useState(null);
   const [enrollment, setEnrollment] = useState(null);
   const [capstones, setCapstones] = useState([]);
-  const [userCapstone, setUserCapstone] = useState(null); // single row from user_capstone_projects (existing schema)
+  const [userCapstones, setUserCapstones] = useState([]); // ALL user_capstone_projects for this enrollment
+  // Feb 2026 — module + module-project completion state to gate ALL
+  // capstones behind "finish everything else first" (user requirement).
+  const [allModulesDone, setAllModulesDone] = useState(false);
+  const [remainingModules, setRemainingModules] = useState(0);
+  const [remainingProjects, setRemainingProjects] = useState(0);
 
   useEffect(() => {
     let mounted = true;
@@ -74,14 +79,40 @@ export default function CapstonesListPage() {
         }).sort((a, b) => (a.code || '').localeCompare(b.code || ''));
         setCapstones(decorated);
 
-        // existing user capstone progress row (any of them — schema only stores one)
-        const { data: uc } = await supabase
+        // ALL user capstone rows (Feb 2026 — schema supports many per enrollment).
+        const { data: ucRows } = await supabase
           .from('user_capstone_projects')
-          .select('id, capstone_id, started_at, is_completed')
-          .eq('enrollment_id', enr.id)
-          .maybeSingle();
+          .select('id, master_capstone_id, started_at, is_completed')
+          .eq('enrollment_id', enr.id);
         if (!mounted) return;
-        setUserCapstone(uc || null);
+        setUserCapstones(ucRows || []);
+
+        // Module + project completion state — gates every capstone card.
+        const { data: mods } = await supabase
+          .from('user_modules')
+          .select('id, is_completed, is_removed')
+          .eq('enrollment_id', enr.id)
+          .eq('is_removed', false);
+        const activeModules = mods || [];
+        const incompleteMods = activeModules.filter((m) => !m.is_completed);
+        let incompleteProjs = [];
+        if (activeModules.length) {
+          const { data: projs } = await supabase
+            .from('user_module_projects')
+            .select('user_module_id, is_completed')
+            .in('user_module_id', activeModules.map((m) => m.id));
+          const projMap = new Map((projs || []).map((p) => [p.user_module_id, p]));
+          incompleteProjs = activeModules.filter((m) => {
+            const p = projMap.get(m.id);
+            return !p || !p.is_completed;
+          });
+        }
+        if (!mounted) return;
+        setRemainingModules(incompleteMods.length);
+        setRemainingProjects(incompleteProjs.length);
+        setAllModulesDone(
+          activeModules.length > 0 && incompleteMods.length === 0 && incompleteProjs.length === 0
+        );
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load capstones');
       } finally {
@@ -92,18 +123,25 @@ export default function CapstonesListPage() {
     return () => { mounted = false; };
   }, [user?.id]);
 
+  // Match user_capstone rows to master capstones by master_capstone_id.
+  const userCapByMaster = new Map();
+  userCapstones.forEach((uc) => {
+    const key = uc.master_capstone_id;
+    if (key) userCapByMaster.set(key, uc);
+  });
+
   const completedCodes = new Set(
     capstones
-      .filter((c) => userCapstone?.is_completed && userCapstone?.capstone_id === c.id)
+      .filter((c) => userCapByMaster.get(c.id)?.is_completed)
       .map((c) => c.code)
   );
 
-  const startedCapstoneId = userCapstone?.started_at && !userCapstone?.is_completed
-    ? userCapstone.capstone_id : null;
-
   function statusFor(cap) {
-    if (userCapstone?.is_completed && userCapstone?.capstone_id === cap.id) return 'completed';
-    if (startedCapstoneId === cap.id) return 'in-progress';
+    // Feb 2026 — global gate: nothing is available until modules + projects done.
+    if (!allModulesDone) return 'locked-modules';
+    const uc = userCapByMaster.get(cap.id);
+    if (uc?.is_completed) return 'completed';
+    if (uc?.started_at) return 'in-progress';
     const allPrereqsMet = (cap.prereq_codes || []).every((p) => completedCodes.has(p));
     if (!allPrereqsMet) return 'locked';
     return 'available';
@@ -111,11 +149,12 @@ export default function CapstonesListPage() {
 
   function handleOpen(cap) {
     const status = statusFor(cap);
-    if (status === 'locked') return;
-    // Route into the existing single-capstone flow. The CapstoneStartPage already
-    // loads the user's user_capstone_projects row + module/project gates; for v2
-    // the additional grid renders alongside the existing UI.
-    navigate('/capstone/start');
+    if (status === 'locked' || status === 'locked-modules') return;
+    // Feb 2026 — route into the per-capstone flow so CapstoneStartPage
+    // knows exactly which of CAP-01/02/03 to load (was buggy: legacy flow
+    // loaded any user_capstone_projects row, so CAP-02 showed
+    // "no capstone configured" when the seeded row was for CAP-01).
+    navigate(`/capstone/${cap.id}/start`);
   }
 
   return (
@@ -177,13 +216,39 @@ export default function CapstonesListPage() {
             </div>
           )}
 
+          {!loading && !error && enrollment && !allModulesDone && capstones.length > 0 && (
+            <div
+              className="glass-card rounded-2xl p-5 sm:p-6 mb-6 border-[var(--color-warning)]/25"
+              data-testid="capstones-list-locked-banner"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Lock size={16} className="text-[var(--color-warning)]" />
+                <h2 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)]">
+                  Capstones unlock after every session
+                </h2>
+              </div>
+              <p className="text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                Finish all modules and module projects first. You have{' '}
+                <span className="text-[var(--color-text)] font-semibold" data-testid="capstones-list-remaining-modules">
+                  {remainingModules}
+                </span>{' '}
+                module{remainingModules === 1 ? '' : 's'} and{' '}
+                <span className="text-[var(--color-text)] font-semibold" data-testid="capstones-list-remaining-projects">
+                  {remainingProjects}
+                </span>{' '}
+                project{remainingProjects === 1 ? '' : 's'} left.
+              </p>
+            </div>
+          )}
+
           {!loading && !error && capstones.length > 0 && (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5" data-testid="capstones-list-grid">
               {capstones.map((cap) => {
                 const status = statusFor(cap);
-                const locked = status === 'locked';
+                const locked = status === 'locked' || status === 'locked-modules';
                 const completed = status === 'completed';
                 const inProgress = status === 'in-progress';
+                const lockedByModules = status === 'locked-modules';
                 return (
                   <button
                     key={cap.id}
@@ -244,7 +309,16 @@ export default function CapstonesListPage() {
                       ) : null}
                     </div>
 
-                    {locked && (cap.prereq_codes || []).length > 0 && (
+                    {lockedByModules && (
+                      <div
+                        className="text-[11px] font-mono text-[var(--color-text-faint)] mt-auto"
+                        data-testid={`capstone-card-${cap.code}-locked-modules`}
+                      >
+                        Finish all sessions & projects to unlock
+                      </div>
+                    )}
+
+                    {!lockedByModules && locked && (cap.prereq_codes || []).length > 0 && (
                       <div
                         className="text-[11px] font-mono text-[var(--color-text-faint)] mt-auto"
                         data-testid={`capstone-card-${cap.code}-prereq`}

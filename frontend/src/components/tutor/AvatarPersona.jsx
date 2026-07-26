@@ -71,7 +71,7 @@ export default function AvatarPersona({
   doubtsAttemptContext = null,
 }) {
   const { enabled } = useTutor();
-  const { openDoubts } = useDoubtsLauncher();
+  const { openDoubts, pariBlocked } = useDoubtsLauncher();
   const reducedMotion = useMemo(prefersReducedMotion, []);
 
   // Cross-fade between poses: keep both the current and the next image
@@ -145,6 +145,10 @@ export default function AvatarPersona({
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
   if (!enabled) return null;
+  // Feb 2026 — never show the floating tutor on graded surfaces (quiz /
+  // interview / simulation) or once the ₹500 Pari-spend cap is hit.
+  const isFixed = position && position !== 'inline';
+  if (pariBlocked && isFixed) return null;
 
   const sizeCfg = SIZE_MAP[size] || SIZE_MAP.md;
   const posCfg = POSITION_CLASSES[position] || POSITION_CLASSES.inline;

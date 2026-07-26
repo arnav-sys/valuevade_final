@@ -2,7 +2,7 @@
 
 > **Date:** 2026-05-30
 > **Scope:** Observational audit only. No fixes were applied during this report.
-> **Environment audited:** preview (`https://valuevade-structure.preview.emergentagent.com`).
+> **Environment audited:** preview (`https://valuevade-mvp2.preview.emergentagent.com`).
 > **Production deployment:** out of scope (no direct prod URL probed).
 
 ---
@@ -50,7 +50,7 @@ Auth gating works correctly; routes are reachable through ingress.
 - Source: `backend/server.py` reads `CORS_ORIGINS` env var.
 - Current value in `backend/.env`: **`*`** (wildcard).
 - Wildcard is functional but loosens browser security. Before going public:
-  - Set `CORS_ORIGINS="https://valuevade.com,https://www.valuevade.com,https://valuevade-structure.preview.emergentagent.com"` (or the actual production domain).
+  - Set `CORS_ORIGINS="https://valuevade.com,https://www.valuevade.com,https://valuevade-mvp2.preview.emergentagent.com"` (or the actual production domain).
   - The middleware code already handles comma-separated origins (`_cors_origins_env.split(',')`).
 
 **Not a deploy blocker** (still works); should be tightened the same day post-launch.

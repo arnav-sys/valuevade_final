@@ -203,7 +203,7 @@ curl -X POST "$SUPABASE_URL/rest/v1/rpc/dev_reset_daily_doubts" \
 ### Health probe (no auth, service-role on the server)
 
 ```bash
-curl "$API_URL/api/health/doubts?user_id=13a690c4-96d7-4827-8117-fde4f696e999"
+curl "$API_URL/api/health/doubts?user_id=valuevade-mvp2"
 ```
 
 Returns counts: `sessions_today`, `sessions_left`, `total_tokens_today`,
@@ -884,7 +884,68 @@ delete from public.user_study_plans     where user_id = '13a690c4-96d7-4827-8117
 
 
 
-## Phase D2 — Plan Tracking + Gamification (Feb 2026)
+## Feb 2026 — LLM limits + capstone bug fix (Phase LLM-Limits)
+
+Migration required in Supabase Studio before enforcement kicks in:
+  `/app/scripts/migrations/0036_llm_limits.sql`
+  (adds `profiles.customize_generations_count`,
+   `profiles.pari_total_cost_inr`, RPCs `increment_customize_generations`
+   and `add_pari_cost`, plus backfills `user_capstone_projects` rows).
+Without the migration the code degrades gracefully — endpoints still
+return 200s but the counters don't persist.
+
+New endpoint (auth required — Bearer):
+  `GET /api/pari/status` → returns
+    { pari:{total_cost_inr, limit_inr, over_budget, remaining_inr},
+      customize:{generations_used, generations_limit, generations_remaining, exhausted} }
+
+New route patterns:
+  `/capstone/:capstoneId/start`
+  `/capstone/:capstoneId/tasks`
+  (legacy `/capstone/start` and `/capstone/tasks` still work.)
+
+Behaviours the testing agent should verify:
+  1. `/api/customize/generate` requires `Authorization: Bearer <jwt>`.
+     Rejects with 401 without one.
+  2. `/api/customize/generate` bumps `profiles.customize_generations_count`
+     by 1 per successful call. After 4 calls, returns HTTP 429 with
+     detail.reason='customize_generation_limit_reached'.
+  3. `/api/doubts/start` and `/api/doubts/ask` return HTTP 402 with
+     detail.reason='pari_cost_limit_reached' once
+     `profiles.pari_total_cost_inr` >= 500. Same for
+     `/api/doubts/extended/{start,ask}`.
+  4. Frontend: `/capstones` lists all master capstones; grid is fully
+     locked with an amber banner while any module or module-project is
+     incomplete.
+  5. Frontend: Clicking a card routes to `/capstone/<uuid>/start`. That
+     page auto-inserts a `user_capstone_projects` row if none exists
+     for `(enrollment_id, master_capstone_id)` — fixes the "no capstone
+     configured" bug for CAP-02/03 previously.
+  6. Frontend: Pari widget (`AvatarPersona` fixed positions +
+     `AskPariButton`) is hidden on:
+       - /session/:id/quiz
+       - /session/:id/interview
+       - /session/:id/simulation
+       - /mock-interview and /mock-interview/:id
+     Clicking a hypothetical `openDoubts` call on those routes surfaces
+     a toast "Pari is paused during quizzes, interviews and simulations".
+  7. CustomizePage's final step shows a counter chip
+     (`customize-generation-counter`) with used / limit / remaining.
+     When exhausted, the generate button is disabled.
+
+Testing checklist for capstone bug (highest priority):
+  a. Log in as `testagent2026@gmail.com`.
+  b. Navigate to `/capstones`. Expect: 3 capstone cards + amber "unlock"
+     banner (since testagent has incomplete modules).
+  c. Force-complete all sessions/projects for the testagent enrollment
+     (SQL update) OR use Priya Kapoor's `qa-complete@valuevade.test`
+     enrollment which has everything completed.
+  d. Click a capstone card. Expect: navigate to
+     `/capstone/<uuid>/start` (not the legacy /capstone/start), page
+     renders "The Final Challenge" premium card without hitting the
+     "No capstone configured" empty state.
+  e. Click Begin → routes to `/capstone/<uuid>/tasks` — tasks render
+     from `phases.tasks_raw` markdown (see utils/capstonePhases.js).
 
 ### Auth-free probe (service-role)
 

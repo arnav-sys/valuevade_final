@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { supabase } from '../lib/supabase';
 import {
   LogOut, ArrowLeft, ArrowRight, Sun, Moon, Sparkles, Trash2, Plus, ArrowUpDown,
   CheckCircle2, AlertCircle, RefreshCw, Loader2, ChevronRight, Lock,
@@ -61,9 +62,14 @@ export default function PreviewPage() {
 
     const url = `${API}/api/customize/generate`;
     try {
+      const { data: { session } } = await supabase.auth.getSession();
+      const token = session?.access_token;
       const res = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({
           answers,
           free_text: freeText,
@@ -74,13 +80,23 @@ export default function PreviewPage() {
 
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
-        const detail = errData.detail || `Server returned ${res.status} ${res.statusText || ''}`.trim();
+        const detailObj = errData.detail;
+        const detailMsg = (detailObj && typeof detailObj === 'object')
+          ? (detailObj.message || JSON.stringify(detailObj))
+          : (detailObj || `Server returned ${res.status} ${res.statusText || ''}`.trim());
         // eslint-disable-next-line no-console
-        console.error('[customize/generate] failed', { url, status: res.status, detail });
+        console.error('[customize/generate] failed', { url, status: res.status, detail: detailMsg });
+        if (res.status === 429 && detailObj?.reason === 'customize_generation_limit_reached') {
+          throw new Error(detailObj.message ||
+            `You've already regenerated your path ${detailObj.generations_limit || 4} times. Please stick with your current plan.`);
+        }
+        if (res.status === 401) {
+          throw new Error('Your session expired. Please sign in again and retry.');
+        }
         if (res.status === 404) {
           throw new Error('We couldn\'t reach the AI service (404). Please hard-refresh the page (Cmd/Ctrl + Shift + R) and try again.');
         }
-        throw new Error(detail);
+        throw new Error(detailMsg);
       }
 
       const data = await res.json();

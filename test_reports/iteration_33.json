@@ -1,0 +1,53 @@
+{
+  "summary": "Verified Feb 2026 LLM-limit + capstone bug-fix + Pari-off-during-graded-activities changes. Backend: 9/9 pytest pass (401 gating on /pari/status, /customize/generate, /doubts/*). /api/pari/status returns correct schema (over_budget:false, exhausted:false — migration 0036 NOT applied so counters are 0 via graceful degradation, matches request expectation). Frontend: capstone bug fix VERIFIED via direct /capstone/<uuid>/start URLs for CAP-01/02/03 — each renders the correct title (Initiating Coverage / Sector Coverage / AI Copilot), no 'No capstone configured'. Pari widget hidden on /mock-interview and shown on /dashboard as required. Locked banner correctly shown for testagent2026 (15 modules + 15 projects left, cards disabled). ONE HIGH-priority issue: qa-complete@valuevade.test cannot click capstone cards on /capstones because CapstonesListPage requires activeModules.length > 0 AND all complete; the qa-complete seed script does NOT create user_modules rows, so allModulesDone stays false and all cards remain locked even though all 3 user_capstone_projects rows are is_completed=true.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "profiles table", "issue": "Migration 0036_llm_limits.sql NOT applied on Supabase (columns customize_generations_count / pari_total_cost_inr and rpc/add_pari_cost / rpc/increment_customize_generations missing). Graceful degradation confirmed working — /pari/status returns zeros, cap enforcement branches unreachable. Requires SUPABASE_MGMT_PAT to apply."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "CapstonesListPage", "issue": "qa-complete@valuevade.test — the 'all capstones unlocked' seed account — still sees locked banner and non-clickable cards on /capstones. Root cause: gating requires activeModules.length > 0 AND incompleteMods===0 AND incompleteProjs===0, but qa-complete has ZERO user_modules rows (seed_qa_complete_user.py only seeds user_capstone_projects, not user_modules). Cannot exercise 'click card → /capstone/<uuid>/start' via the list page for this account.", "selector": "[data-testid=capstones-list-locked-banner]", "priority": "HIGH"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_llm_limits_and_pari.py",
+    "/app/test_reports/pytest/llm_limits.xml"
+  ],
+  "action_items": [
+    "Fix seed_qa_complete_user.py to ALSO upsert user_modules + user_module_projects (is_completed=true, is_removed=false) for the qa-complete enrollment so allModulesDone evaluates true. Alternatively, adjust CapstonesListPage gating so that when activeModules.length===0 AND userCapstones.every(is_completed), allModulesDone is true.",
+    "(Optional / previously noted) Apply migration 0036_llm_limits.sql via Supabase Management API using SUPABASE_MGMT_PAT so the 4-generation and ₹500 caps actually enforce (currently silently degraded to no-op)."
+  ],
+  "critical_code_review_comments": [
+    "server.py graceful degradation of _profile_snapshot / _bump_pari_cost / _bump_customize_generations is well-designed: 42703 undefined_column returns empty snap, caps let calls through — no user is locked out due to missing migration.",
+    "CapstonesListPage.jsx line 113-115: activeModules.length > 0 requirement is a footgun for any user with completed capstones but empty user_modules. Consider treating 'no active modules' as 'not applicable' rather than 'incomplete'.",
+    "CapstoneStartPage/CapstoneTasksPage :capstoneId + auto-seed rows verified working — CAP-01/02/03 each render distinct correct title via direct URL.",
+    "useIsPariBlocked regex covers /session/:id/quiz|interview|simulation + /mock-interview[/id] — verified /mock-interview page hides Ask-Pari button.",
+    "CustomizePage counter chip (data-testid=customize-generation-counter) is only rendered on final wizard step (isLastStep && genStatus) — code-verified but not exercised end-to-end (wizard requires multi-step interaction). Disable-on-exhaust logic also in place (button disabled when genStatus.exhausted)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_llm_limits_and_pari.py (new — 9 tests)"
+  ],
+  "success_rate": {"backend": "100% (9/9)", "frontend": "~85% (bug on qa-complete list page; direct-URL bug fix verified)"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! ; qa-complete@valuevade.test / QaComplete2026!",
+  "seed_data_creation": "None. Verified existing qa-complete seed is INCOMPLETE — missing user_modules rows.",
+  "retest_needed": true,
+  "main_agent_can_self_test": false,
+  "context_for_next_testing_agent": "After main agent fixes qa-complete seed (or the CapstonesListPage gate), re-run: login as qa-complete → /capstones → verify NO locked banner + cards clickable → click first card → verify URL becomes /capstone/<uuid>/start. If SUPABASE_MGMT_PAT gets configured, also verify: (a) after setting profiles.customize_generations_count=4, POST /api/customize/generate returns 429 with detail.reason='customize_generation_limit_reached'; (b) after setting profiles.pari_total_cost_inr=500, POST /api/doubts/start returns 402 with detail.reason='pari_cost_limit_reached'.",
+  "test_results": {
+    "backend_pari_status_unauth_401": "PASS",
+    "backend_pari_status_auth_200_schema": "PASS (limit_inr=500, generations_limit=4, counters=0 due to migration not applied)",
+    "backend_customize_generate_unauth_401": "PASS",
+    "backend_doubts_start_ask_extended_unauth_401": "PASS (4/4)",
+    "frontend_capstones_locked_banner_testagent": "PASS (banner + 15 modules + 15 projects + card disabled)",
+    "frontend_capstones_unlocked_qa_complete": "FAIL (still shows locked banner; cards non-clickable) — seed script gap",
+    "frontend_capstone_start_direct_url_CAP01_02_03": "PASS (each renders distinct correct title, no 'No capstone configured')",
+    "frontend_pari_hidden_mock_interview": "PASS (Ask-Pari button absent on /mock-interview)",
+    "frontend_pari_visible_dashboard": "PASS",
+    "frontend_customize_counter_chip": "CODE-VERIFIED (rendered on isLastStep && genStatus; disable-on-exhaust wired)"
+  },
+  "rca of the issue": "qa-complete /capstones lock bug: CapstonesListPage.jsx line 113-115 requires (a) activeModules.length > 0 AND (b) all mods+projs complete for allModulesDone. seed_qa_complete_user.py only writes user_capstone_projects (grep confirms zero mentions of user_modules). Supabase query GET user_modules?enrollment_id=eq.c179f15d-... returns []. Result: (a) fails → allModulesDone=false → statusFor()='locked-modules' for every card → button disabled + navigation blocked. Fix options: (1) extend seed script to insert user_modules + user_module_projects with is_completed=true, is_removed=false for every master_module tied to that path; (2) relax gate to allModulesDone = incompleteMods===0 && incompleteProjs===0 (drops the > 0 requirement)."
+}

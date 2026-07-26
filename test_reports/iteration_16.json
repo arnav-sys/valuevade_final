@@ -34,7 +34,7 @@
     "/app/backend/tests/test_studycard_migration.py (new file — pytest for DB migration verification)"
   ],
   "success_rate": {"backend": "100% (6/6)", "frontend": "0% (blocked, not failed) — static review confirms implementation is correct"},
-  "seed_data_creation": "Inserted master_notes_cards row id=c198f096-c019-467d-9165-3c12b8b20e95 with card_type='study-card' on session_id=bd1c604c-... (M1 S1), then moved to 1671aff6-... (M1 S2), then DELETED. DB totals confirmed restored to total=1264, study-card=304.",
+  "seed_data_creation": "Inserted master_notes_cards row id=valuevade-mvp2 with card_type='study-card' on session_id=bd1c604c-... (M1 S1), then moved to 1671aff6-... (M1 S2), then DELETED. DB totals confirmed restored to total=1264, study-card=304.",
   "test_credentials": "testagent2026@gmail.com / TestPass123! (UUID 13a690c4-96d7-4827-8117-fde4f696e999) — paywall-locked after Session 1.",
   "retest_needed": false,
   "should_main_agent_self_test": true,

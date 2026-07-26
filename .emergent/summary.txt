@@ -1,0 +1,122 @@
+<analysis>**original_problem_statement**: 
+Continuing the MVP 2.0 build and bug-fixing phase. Original requests included seeding a QA user, fixing Waitlist ephemeral data loss, dropping the referral system, fixing broken video uploads, implementing an FAQ chatbot & accordion, restoring AI Customisation, fixing Pari chat delays/session consumption, adding session feedback, fixing missing capstone tasks, adding full curriculum download, and finally resolving an infinite loading bug on enrollment pages. 
+
+**User's preferred language**: English (INSTRUCT next agent to respond in English only)
+
+**what currently exists?** 
+A full-stack equity research course platform (Valuevade) using React, FastAPI, MongoDB, and Supabase. The platform features 22 modules, 246 sessions, interactive simulations (built with HyperFormula), an AI Tutor (Pari), TUS resumable video uploads, a customisation wizard, mock interviews, PDF certificate generation, waitlist, and admin dashboard.
+
+**Last working item**:
+- **Last item agent was working**: Fixing an infinite loading bug on the  and . The agent replaced  queries with defensive, independent query fetching using a 5-second  timeout to prevent the UI from hanging on Supabase network hiccups. 
+- **Status**: COMPLETED
+- **Agent Testing Done**: Y
+- **Which testing method agent to use?**: testing_agent (Iteration 32)
+- **User Testing Done**: N
+
+**All Pending/In progress Issue list**:
+*No explicit bugs are currently pending. The system is stable based on the latest test reports.*
+
+**In progress Task List**:
+*None.*
+
+**Upcoming and Future Tasks**:
+- **Task 1 (P1)**: Sweep the codebase to apply the defensive  timeout data-fetching pattern to other data-heavy pages (Dashboard, Capstones list, Portfolio) to preemptively fix stuck on loading UI bugs.
+- **Task 2 (P2)**: Add drag-and-drop ordering (e.g., using ) for Admin FAQ and AI Customisation questions tabs to make reordering easier.
+- **Task 3 (P2)**: Add a Share on LinkedIn button on the Course Complete screen that pre-fills a post with the certificate image.
+- **Task 4 (P2)**: Add a real-time LLM Spend per user view in the admin panel to track token consumption.
+- **Task 5 (P2)**: Add a notification badge in the Admin sidebar showing the count of open session feedback reports.
+
+**Completed work in this session**:
+- Seeded QA user and added confetti animation to Course Complete page (DONE).
+- Migrated Waitlist from ephemeral MongoDB to persistent Supabase () (DONE).
+- Removed the user referral system entirely () (DONE).
+- Fixed module cascade-delete foreign key bug in the admin panel (DONE).
+- Fixed a broken TUS video upload issue (added >100KB file size validation) (DONE).
+- Built Landing Page FAQ Accordion & Claude-powered FAQ Chatbot () (DONE).
+- Restored AI Customisation with admin toggle & question CRUD () (DONE).
+- Fixed Pari chatbot 2s opening delay and unwanted session consumption via lazy-provisioning (DONE).
+- Built Session Feedback widget and Admin panel viewer () (DONE).
+- Fixed missing Capstone tasks by building a  JSONB parser (DONE).
+- Built Download Full Curriculum (MD/CSV/JSON) feature in Admin View Course (DONE).
+- Fixed infinite loading bug on Enrollment/Customize pages (DONE).
+
+**Earlier issues found/mentioned but not fixed**:
+None.
+
+**Known issue recurrence from previous fork**:
+- Recurrence count: 0
+- Status: RESOLVED
+
+**Code Architecture**:
+
+
+**Key Technical Concepts**:
+React (Frontend), FastAPI (Backend), MongoDB (Local ephemeral state), Supabase (Primary persistent DB, Storage, RLS), HyperFormula (Simulations), TUS Protocol (Video uploads).
+
+**key DB schema**:
+- : {id, user_id, course_id, status}
+- : {id, email, position, ...} (Migrated to Supabase)
+- : {id, category, question, answer, order_index, is_published}
+- : {key, value_json, updated_at}
+- : {id, user_id, session_id, category, message, resolved}
+- : {id, title, phases (JSONB array/markdown)}
+
+**changes in tech stack**:
+- Completely removed the user referral infrastructure.
+- Introduced  for dynamic feature flagging (AI customization mode toggle).
+
+**All files of reference**:
+- : Extensively refactored (added FAQ, Customisation, Session Feedback, and Download Curriculum tabs; removed Referral/Payouts tabs).
+-  & : Added numerous endpoints (waitlist Supabase proxy, FAQ CRUD, App Settings, Session Feedback, Curriculum Export).
+- : Refactored to lazy-load Pari chat sessions to prevent quota drains.
+-  & : Updated with defensive  timeout fetching.
+-  to : New Supabase migrations generated in this session.
+
+**Areas that need refactoring**:
+- Heavy data-fetching components (Dashboard, Capstones list, Portfolio) still use standard  logic and should be refactored to use the new defensive  pattern introduced in .
+
+**key api endpoints**:
+- : Downloads the entire module/session/project curriculum.
+-  & : Proxies Supabase waitlist persistence.
+- : Handles AI tutor session provisioning (now lazy-loaded).
+
+**Critical Info for New Agent**:
+- **SQL Migrations Live/Preview Mismatch**: Migrations  through  have been generated. The backend code has been written with *graceful degradation* (e.g., returning  if a table doesn't exist) so the app works before the user manually runs the SQL in Supabase Studio. **Do NOT assume these tables instantly exist in Production unless verified**.
+- **Supabase vs Mongo**: MongoDB is strictly ephemeral in production due to container redeploys. All persistent data MUST be routed to Supabase (this was the root cause of the Waitlist bug fixed in this session).
+- **TUS Uploads / Supabase**: Supabase Storage RLS blocked direct TUS uploads from the frontend. The current working solution proxies file chunks through the FastAPI backend using  credentials. Do not revert this.
+
+**documents and test reports created in this job**:
+-  (Updated repeatedly with changelog)
+-  to 
+- 
+
+**Last 10 User Messages and any pending HUMAN messages**:
+1. when I click on pari chat icon it opens two seconds later... (Fixed)
+2. even when I click on pari icon and even when I did not chat it reduces turns left. (Fixed)
+3. in each session video notes add a feedback form... (Fixed)
+4. the capstone project tasks are missing (Fixed)
+5. Redeploy this job using the deployer agent. (Executed)
+6. give an option in admin panel view course to download full course curriculum... (Fixed)
+7. what is maximum per user cost of llm (Answered)
+8. what is the cost of deploying this app with average daily users of 1000 (Answered)
+9. in what you will build it is just showing loading and not projects when I click enroll... fix it (Fixed)
+
+**Project Health Check**:
+Healthy.
+
+**3rd Party Integrations**:
+- Supabase (Storage, Auth, Postgres) — Requires Environment Keys
+- Razorpay (Payments) — Requires Environment Keys
+- Emergent LLM Key (used for Claude Sonnet 4.5 via Pari Chatbot and AI Customisation) — Uses Emergent LLM Key
+
+**Testing status**:
+- Testing agent used after significant changes: YES (Iterations 26, 27, 28, 29, 30, 31, 32)
+- Troubleshoot agent used after agent stuck in loop: NO
+- Test files created:  through 
+- Known regressions: None
+
+**Credentials to test flow**:
+Stored in .
+
+**What agent forgot to execute**:
+Nothing. All requested tasks, UI bug fixes, and feature additions were completed and tested. Ensure you read the  section to propose standardizing the timeout-fetching behavior on other pages.</analysis>

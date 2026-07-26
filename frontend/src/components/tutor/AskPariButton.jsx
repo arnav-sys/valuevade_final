@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Sparkles } from 'lucide-react';
 import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
+import { useDoubtsLauncher } from '../../contexts/DoubtsLauncherContext';
 import DoubtsSession from './DoubtsSession';
 
 // Lightweight trigger that opens the DoubtsSession modal. Designed for any
@@ -30,6 +31,7 @@ export default function AskPariButton({
   getCurrentFocus = null,
 }) {
   const { enabled } = useTutor();
+  const { pariBlocked } = useDoubtsLauncher();
   const [open, setOpen] = useState(false);
   const [focus, setFocus] = useState(null);
   const [promptShown, setPromptShown] = useState(autoPrompt);
@@ -55,6 +57,7 @@ export default function AskPariButton({
   }, [getCurrentFocus]);
 
   if (!enabled) return null;
+  if (pariBlocked) return null;
 
   return (
     <>

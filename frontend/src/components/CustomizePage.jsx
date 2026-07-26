@@ -217,6 +217,28 @@ export default function CustomizePage() {
   const [answers, setAnswers] = useState({});
   const [freeText, setFreeText] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
+  // Feb 2026 — surface the personalised-path generation count. Once it hits
+  // 4, the backend rejects further calls to /customize/generate.
+  const [genStatus, setGenStatus] = useState(null); // {generations_used, generations_limit, generations_remaining, exhausted}
+  useEffect(() => {
+    let cancelled = false;
+    async function fetchStatus() {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const token = session?.access_token;
+        if (!token) return;
+        const res = await fetch(`${BACKEND}/api/pari/status`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (!cancelled && data?.customize) setGenStatus(data.customize);
+        }
+      } catch { /* non-fatal */ }
+    }
+    fetchStatus();
+    return () => { cancelled = true; };
+  }, []);
 
   // Batch 2 (Item 2) — country picker step at the start.
   // Skipped entirely if profile.country_code is already set on first mount.
@@ -586,7 +608,7 @@ export default function CustomizePage() {
 
               <button
                 onClick={handleNext}
-                disabled={!isFreeTextStep && !currentStepValid}
+                disabled={(!isFreeTextStep && !currentStepValid) || (isLastStep && genStatus?.exhausted)}
                 className={`px-6 py-3 rounded-xl text-sm font-semibold font-bricolage flex items-center gap-2 transition-all disabled:opacity-40 disabled:cursor-not-allowed ${
                   isLastStep
                     ? 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110'
@@ -601,6 +623,30 @@ export default function CustomizePage() {
                 )}
               </button>
             </div>
+
+            {/* Feb 2026 — regeneration allowance counter on the final step. */}
+            {isLastStep && genStatus && (
+              <div className="mt-4 text-right" data-testid="customize-generation-counter">
+                {genStatus.exhausted ? (
+                  <p className="text-xs font-mono text-[var(--color-error)]">
+                    You&apos;ve used all {genStatus.generations_limit} personalised-path
+                    regenerations. Stick with your current plan or contact support.
+                  </p>
+                ) : (
+                  <p className="text-xs font-mono text-[var(--color-text-muted)]">
+                    <span className="text-[var(--color-text)] font-semibold" data-testid="customize-generations-used">
+                      {genStatus.generations_used}
+                    </span>
+                    {' / '}
+                    <span data-testid="customize-generations-limit">{genStatus.generations_limit}</span>
+                    {' '}personalisations used ·{' '}
+                    <span className="text-[var(--color-accent-purple)]" data-testid="customize-generations-remaining">
+                      {genStatus.generations_remaining} left
+                    </span>
+                  </p>
+                )}
+              </div>
+            )}
           </>
         )}
       </main>

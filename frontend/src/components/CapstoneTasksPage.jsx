@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../contexts/AuthContext';
 import { useXP } from '../contexts/XPContext';
@@ -22,6 +22,7 @@ import { Skeleton } from './ui/skeleton';
 export default function CapstoneTasksPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { capstoneId } = useParams();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -55,12 +56,58 @@ export default function CapstoneTasksPage() {
           return;
         }
 
-        const { data: cap, error: capErr } = await supabase
-          .from('user_capstone_projects')
-          .select('*, master_capstone_projects(*)')
-          .eq('enrollment_id', enr.id)
-          .maybeSingle();
-        if (capErr) throw capErr;
+        // Resolve target master capstone id (from URL param or fall back to
+        // the earliest capstone by phases.code).
+        let targetMasterId = capstoneId || null;
+        if (!targetMasterId) {
+          const { data: allCaps } = await supabase
+            .from('master_capstone_projects')
+            .select('id, phases')
+            .eq('path_id', enr.master_path_id);
+          const decorated = (allCaps || []).map((c) => {
+            let phases = c.phases;
+            if (typeof phases === 'string') {
+              try { phases = JSON.parse(phases); } catch { phases = {}; }
+            }
+            return { ...c, _code: (phases || {}).code || '' };
+          }).sort((a, b) => (a._code || '').localeCompare(b._code || ''));
+          targetMasterId = (decorated[0] || {}).id || null;
+        }
+
+        let cap = null;
+        if (targetMasterId) {
+          const { data: rows, error: capErr } = await supabase
+            .from('user_capstone_projects')
+            .select('*, master_capstone_projects(*)')
+            .eq('enrollment_id', enr.id)
+            .eq('master_capstone_id', targetMasterId)
+            .limit(1);
+          if (capErr) throw capErr;
+          cap = (rows || [])[0] || null;
+
+          if (!cap) {
+            // Auto-seed missing row (same fix as CapstoneStartPage).
+            const { data: inserted, error: insErr } = await supabase
+              .from('user_capstone_projects')
+              .insert({
+                enrollment_id: enr.id,
+                master_capstone_id: targetMasterId,
+              })
+              .select('*, master_capstone_projects(*)')
+              .maybeSingle();
+            if (!insErr && inserted) {
+              cap = inserted;
+            } else if (insErr) {
+              const { data: retry } = await supabase
+                .from('user_capstone_projects')
+                .select('*, master_capstone_projects(*)')
+                .eq('enrollment_id', enr.id)
+                .eq('master_capstone_id', targetMasterId)
+                .limit(1);
+              cap = (retry || [])[0] || null;
+            }
+          }
+        }
         if (!mounted) return;
         setCapstone(cap || null);
         setMasterCapstone(cap?.master_capstone_projects || null);
@@ -73,7 +120,7 @@ export default function CapstoneTasksPage() {
     }
     load();
     return () => { mounted = false; };
-  }, [user?.id]);
+  }, [user?.id, capstoneId]);
 
   const phases = useMemo(
     // Adapt the raw DB `phases` blob (may be JSON object with markdown
@@ -203,7 +250,7 @@ export default function CapstoneTasksPage() {
       <main className="flex-1 min-w-0 relative z-10 pt-16 lg:pt-0">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-10">
           <Link
-            to="/capstone/start"
+            to={capstoneId ? `/capstone/${capstoneId}/start` : '/capstone/start'}
             className="inline-flex items-center gap-1.5 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors mb-6 group font-bricolage"
             data-testid="capstone-tasks-back"
           >
