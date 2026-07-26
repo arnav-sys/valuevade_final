@@ -306,3 +306,56 @@ Supabase Studio → SQL Editor. Then in AdminPanel → Rewards tab, click
 upload the file, and set the LinkedIn post. Learners on those trigger
 events see the reward card automatically.
 
+
+## Jun 2026 — Excel simulation rebuilt on Univer (real-Excel experience)
+
+**User request (previously missed, P0)**: "create the full excel simulation
+like a real excel with all the real excel functionalities accurately...
+it should work perfectly and operate smoothly". Pain points: formulas not
+calculating, drag-fill not working, paste failing.
+
+**Implementation**:
+- New `/app/frontend/src/components/simulations/UniverSpreadsheet.jsx`
+  built on **Univer 0.25.1** (`@univerjs/presets` + core/filter/sort/
+  find-replace presets, `rxjs` peer dep added). Real Excel UI out of the
+  box: ribbon toolbar (Start/Formulas/Data), formula bar + name box,
+  500+ functions, cross-sheet refs (`Data!B2:B11`), cell formatting,
+  number formats, column/row resize, merge, freeze, filters, sorting,
+  find & replace, drag-fill/autofill, clipboard paste (incl. from real
+  Excel), undo/redo, multi-sheet tabs, right-click menus, dark mode
+  (auto-detected from the app's `.dark` class).
+- `ExcelSim.jsx` + `DevSimPreview.jsx` swapped from
+  `HyperFormulaSpreadsheet` → `UniverSpreadsheet` (identical props
+  contract; old component left on disk).
+- Canonical workbook → Univer `IWorkbookData` converter with styles:
+  bold headers (violet), read-only cells (grey), answer cells (amber).
+- **Read-only protection**: `BeforeSheetEditStart` cancel on protected
+  cells; `BeforeClipboardPaste` cancel when paste lands on protected
+  ranges; `BeforeCommandExecute` soft-cancel (`event.cancel = true`,
+  NEVER throw — throwing surfaced CRA's error overlay, found in
+  iteration_38) for structural commands (remove/rename sheet,
+  insert/remove rows/cols, move) on exercise sheets and all mutations
+  after submit.
+- **Auto-grader kept**: reads computed values via facade
+  `getRange(addr).getValue()`, same tolerance/points logic, colours
+  graded cells green/red, same score banner + testids
+  (`spreadsheet-submit-btn`, `spreadsheet-score-banner`, ...).
+- **Autosave/restore kept**: state v2 = `{version:2, univer_snapshot,
+  pivot_states}` via existing `/api/simulations/workbook*` endpoints;
+  legacy v1 drafts (`{sheets:[{name,cells}]}`) merge into the canonical
+  workbook before conversion. Verified E2E on
+  `/session/:id/simulation` (typed value → autosave → reload → restored).
+- Pivot sheets (1 sim) render via an outer tab strip → `PivotTableSheet`
+  (previously they rendered as an empty grid — regression fixed for free).
+- **StrictMode gotcha**: Univer must be disposed *synchronously* in the
+  effect cleanup. A deferred (`setTimeout`) dispose kills the second
+  StrictMode mount's canvas → blank grid. The resulting React
+  "synchronously unmount a root" console warning is dev-only noise.
+
+**Testing**: `iteration_38.json` (~92% pass; 1 HIGH: throw-based command
+guard triggered error overlay → fixed with `event.cancel`) + manual
+verification of the fix, autosave/restore on the real session route, and
+post-submit lock without overlay. Test user session
+`7b6958fc-e468-427a-b4cd-514ebe8d4cfd` (M1 "Navigate the Grid") has
+notes/quiz flags set true to allow direct simulation-phase access.
+

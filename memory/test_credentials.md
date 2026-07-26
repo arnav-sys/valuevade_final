@@ -1,3 +1,13 @@
+# 2026-06-26 update (Excel sim / Univer)
+- testagent2026's user_session `7b6958fc-e468-427a-b4cd-514ebe8d4cfd`
+  (M1 "Navigate the Grid: TCS Quarterly Data Entry", master_session
+  `955b2fd1-8b76-45d7-8ebe-2015572a77a1`) has notes_completed=true and
+  quiz_completed=true so /session/7b6958fc-e468-427a-b4cd-514ebe8d4cfd/simulation
+  is directly reachable for Excel-sim (Univer) testing. A saved workbook
+  draft (value 777 in Data!I1) exists for this user+sim.
+- Dev preview of any sim: /_dev/sim/:simId (login first). Excel sim id:
+  13dbfa5a-bce2-4f84-babf-1c327c4dba4c.
+
 # 2026-06-23 update
 - testagent2026@gmail.com / TestPass123! is now `paid=true` in
   `user_payment_status` (pricing_tier='upfront'). Use this account for any

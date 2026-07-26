@@ -323,19 +323,21 @@ export default function UniverSpreadsheet({
         }));
       }
 
-      // 3. Structural + clear guards via command interception.
-      disposers.push(univerAPI.onBeforeCommandExecute((command) => {
-        const id = command?.id || '';
+      // 3. Structural + clear guards via command interception (soft-cancel, never throw).
+      disposers.push(univerAPI.addEvent(univerAPI.Event.BeforeCommandExecute, (event) => {
+        const id = event?.id || '';
         if (!id.startsWith('sheet.command.')) return;
         if (submittedRef.current && MUTATING_HINTS.some((k) => id.includes(k))) {
-          throw new Error('Submitted — the workbook is locked.');
+          event.cancel = true;
+          return;
         }
         if (STRUCTURAL_GUARDS.some((k) => id.includes(k))) {
-          const p = command.params || {};
+          const p = event.params || {};
           const target = p.subUnitId
             || (() => { try { return apiRef.current.fWorkbook.getActiveSheet().getSheetId(); } catch { return null; } })();
           if (target && guardedSheetIdsRef.current.has(target)) {
-            throw new Error('This sheet is part of the exercise and cannot be restructured.');
+            event.cancel = true;
+            return;
           }
         }
         if (id.includes('clear-selection')) {
@@ -343,11 +345,9 @@ export default function UniverSpreadsheet({
             const ws = apiRef.current.fWorkbook.getActiveSheet();
             const rng = ws.getSelection()?.getActiveRange?.();
             if (rng && rangeOverlapsProtected(ws.getSheetName(), rng.getRange())) {
-              throw new Error('These cells are read-only.');
+              event.cancel = true;
             }
-          } catch (e) {
-            if (String(e?.message || '').includes('read-only')) throw e;
-          }
+          } catch { /* noop */ }
         }
       }));
 
@@ -462,6 +462,7 @@ export default function UniverSpreadsheet({
     if (canonical.scoring?.mode === 'auto' && expectedCells.length > 0) score = gradeWorkbook();
     submittedRef.current = true;
     setSubmitState({ submitted: true, score });
+    setDirty(false);
     if (onSubmit) await onSubmit(buildSaveState(), score);
   };
 
