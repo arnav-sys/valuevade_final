@@ -21,7 +21,7 @@ import pytest
 import requests
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/") or \
-           "https://valuevade-mvp2.preview.emergentagent.com"
+           "https://pivot-power-1.preview.emergentagent.com"
 
 SUPABASE_URL = "https://yuadeybycbfqlkdpxbkv.supabase.co"
 SUPABASE_ANON = (
