@@ -359,3 +359,50 @@ post-submit lock without overlay. Test user session
 `7b6958fc-e468-427a-b4cd-514ebe8d4cfd` (M1 "Navigate the Grid") has
 notes/quiz flags set true to allow direct simulation-phase access.
 
+
+## 2026-02-XX — LinkedIn Rewards: mandatory post-URL proof
+
+**Goal**: A reward can no longer be unlocked by merely "clicking share".
+The learner must paste the actual URL of the LinkedIn post they published,
+which the backend validates and persists for admin audit.
+
+**Migration** `0038_reward_claim_post_url.sql` — applied to production
+Supabase via Management API:
+- Adds `user_reward_claims.linkedin_post_url text` (nullable at DB level;
+  backend enforces required for new claims → keeps forward-compat with any
+  historical rows).
+- Adds `user_reward_claims_reward_idx (reward_id)` for the new
+  `/admin/rewards/{id}/claims` audit endpoint.
+
+**Backend** (`wave_endpoints.py`):
+- `_LINKEDIN_POST_RE` regex accepts `linkedin.com/{posts|feed/update|pulse
+  |embed/feed/update}/…` (with or without subdomain / www).
+- `POST /api/rewards/claim` now requires `linkedin_post_url` in the body,
+  validates it (400 + `reason: linkedin_post_url_required` /
+  `linkedin_post_url_invalid`), and stores it via an upsert on the
+  composite unique constraint (`?on_conflict=user_id,reward_id`,
+  `resolution=merge-duplicates`) so a re-submission can correct a mistyped
+  URL.
+- `GET /api/rewards/eligible` now returns `linkedin_post_url` on claimed
+  rewards so the FE can render a "View your shared post" link.
+- `GET /api/admin/rewards` — each reward row now includes `claim_count`.
+- New `GET /api/admin/rewards/{reward_id}/claims` — admin-only, returns
+  all claim rows with `linkedin_post_url` + resolved `user_email` /
+  `user_name` for spot-checking.
+
+**Frontend** (`RewardCard.jsx`):
+- Adds a required URL input (`reward-post-url-input`) between the
+  Share button and the Unlock button.
+- Client-side regex mirrors the backend; the Unlock button stays disabled
+  until (a) the share intent was opened AND (b) a valid LinkedIn post URL
+  is pasted.
+- Backend 400 responses with `reason: linkedin_post_url_invalid` /
+  `linkedin_post_url_required` are surfaced inline against the input.
+- Claimed-state now shows a `Linkedin`-icon "View your shared post" link
+  pointing at the stored URL.
+
+**Verified**:
+- 11/11 regex cases pass (posts, feed/update, pulse, subdomains, empty,
+  profile URL, twitter URL, etc.).
+- Backend restarts clean, `/api/rewards/claim` 401s without auth,
+  ESLint + ruff clean on both files.

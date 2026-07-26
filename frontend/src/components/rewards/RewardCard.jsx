@@ -5,6 +5,11 @@ import { toast } from 'sonner';
 
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
+// Must match backend regex in wave_endpoints.py (_LINKEDIN_POST_RE).
+// Accepts /posts/, /feed/update/, /pulse/, /embed/feed/update/ on linkedin.com.
+const LINKEDIN_POST_RE =
+  /^https?:\/\/(?:[a-z]{2,3}\.)?(?:www\.)?linkedin\.com\/(?:posts\/|feed\/update\/|pulse\/|embed\/feed\/update\/)[^\s]+$/i;
+
 /**
  * RewardCard — shown on ModuleProjectCompletePage + CapstoneCompletePage
  * whenever the user has just unlocked a "share on LinkedIn → free resource"
@@ -15,12 +20,15 @@ const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
  *      LinkedIn post text (no AI).
  *   2) User clicks "Share on LinkedIn" → opens LinkedIn's share intent in a
  *      new tab with the pre-composed text.
- *   3) On return, the "I've shared — unlock my resource" button appears (the
- *      Share button flips into a "shared ✓" state after opening).
- *   4) Clicking that button calls /api/rewards/claim → server verifies
- *      eligibility, upserts the claim row, and returns a signed URL that
- *      immediately triggers the download.
- *   5) Once claimed, the card stays visible with a "Downloaded" state and a
+ *   3) After posting, the learner copies the URL of that LinkedIn post (⋯ →
+ *      "Copy link to post") and pastes it into the required input field.
+ *   4) The "I've shared — unlock my resource" button unlocks ONLY after (a)
+ *      the share intent was opened AND (b) a valid LinkedIn post URL is
+ *      pasted. Backend re-validates the URL before granting the reward.
+ *   5) On success we call /api/rewards/claim → server verifies eligibility,
+ *      persists the LinkedIn URL, upserts the claim row, and returns a signed
+ *      download URL that immediately triggers the download.
+ *   6) Once claimed, the card stays visible with a "Downloaded" state and a
  *      Re-download button (fresh signed URL each time).
  */
 export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) {
@@ -29,6 +37,8 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
   const [shared, setShared] = useState(false);
   const [claiming, setClaiming] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const [postUrl, setPostUrl] = useState('');
+  const [urlError, setUrlError] = useState('');
 
   const fetchRewards = useCallback(async () => {
     try {
@@ -60,7 +70,6 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
     `I just finished a major milestone in my equity research journey on Valuevade — the "${reward.title}" milestone. Excited to keep building analyst-grade skills. #EquityResearch #InvestmentBanking #Finance #LearningJourney`;
 
   const shareUrl = 'https://www.linkedin.com/feed/';
-  // LinkedIn's share intent URL — text goes via `text` query param on the sharing composer.
   const composeUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(linkedinText)}`;
 
   const openShare = () => {
@@ -68,7 +77,17 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
     setShared(true);
   };
 
+  const trimmedUrl = postUrl.trim();
+  const urlLooksValid = LINKEDIN_POST_RE.test(trimmedUrl);
+  const canClaim = shared && urlLooksValid && !claiming;
+
   const claim = async () => {
+    // Client-side guard; backend also re-validates.
+    if (!urlLooksValid) {
+      setUrlError('Paste the URL of your LinkedIn post (⋯ menu → "Copy link to post").');
+      return;
+    }
+    setUrlError('');
     setClaiming(true);
     try {
       const { data: { session } } = await supabase.auth.getSession();
@@ -80,12 +99,19 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify({ reward_id: reward.id }),
+        body: JSON.stringify({ reward_id: reward.id, linkedin_post_url: trimmedUrl }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data?.detail?.message || data?.detail || 'Failed to unlock');
+      if (!res.ok) {
+        const msg = data?.detail?.message || data?.detail || 'Failed to unlock';
+        // Backend surface for URL validation errors → highlight the input.
+        const reason = data?.detail?.reason;
+        if (reason === 'linkedin_post_url_invalid' || reason === 'linkedin_post_url_required') {
+          setUrlError(typeof msg === 'string' ? msg : 'Invalid LinkedIn post URL.');
+        }
+        throw new Error(typeof msg === 'string' ? msg : 'Failed to unlock');
+      }
       if (data.download_url) {
-        // Immediate download
         const a = document.createElement('a');
         a.href = data.download_url;
         a.download = data.resource_file_name || 'reward';
@@ -93,7 +119,6 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
         document.body.appendChild(a); a.click(); a.remove();
       }
       toast.success('Reward unlocked! Your download has started.');
-      // Refresh so we now render the claimed state.
       fetchRewards();
     } catch (e) {
       toast.error(e.message || 'Failed to unlock reward');
@@ -160,7 +185,7 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
             {linkedinText}
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 mb-3">
             <button
               onClick={openShare}
               className={`flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold font-bricolage transition-all ${
@@ -176,36 +201,98 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
                 <><Linkedin size={16} /> Share on LinkedIn <ExternalLink size={13} /></>
               )}
             </button>
-            <button
-              onClick={claim}
-              disabled={!shared || claiming}
-              className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold font-bricolage bg-gradient-to-r from-[#f59e0b] to-[var(--color-accent-pink)] text-white hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              data-testid={`${testidPrefix}-claim-btn`}
-            >
-              {claiming ? <><Loader2 size={14} className="animate-spin" /> Unlocking…</> : <><Download size={16} /> I&apos;ve shared — unlock</>}
-            </button>
           </div>
+
+          {/* Mandatory LinkedIn post URL input */}
+          <div className="mb-3">
+            <label
+              htmlFor={`${testidPrefix}-post-url-input`}
+              className="block text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-faint)] mb-1.5"
+            >
+              Paste your LinkedIn post URL <span className="text-[#f59e0b]">*</span>
+            </label>
+            <input
+              id={`${testidPrefix}-post-url-input`}
+              type="url"
+              inputMode="url"
+              autoComplete="off"
+              spellCheck={false}
+              placeholder="https://www.linkedin.com/posts/your-name-activity-…"
+              value={postUrl}
+              onChange={(e) => {
+                setPostUrl(e.target.value);
+                if (urlError) setUrlError('');
+              }}
+              disabled={!shared || claiming}
+              className={`w-full px-3 py-2.5 rounded-xl bg-[var(--color-surface)]/80 border font-bricolage text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-faint)] focus:outline-none focus:ring-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all ${
+                urlError
+                  ? 'border-[var(--color-danger)]/60 focus:ring-[var(--color-danger)]/40'
+                  : urlLooksValid
+                  ? 'border-[var(--color-success)]/50 focus:ring-[var(--color-success)]/40'
+                  : 'border-[var(--color-border)] focus:ring-[#f59e0b]/40 focus:border-[#f59e0b]/50'
+              }`}
+              data-testid={`${testidPrefix}-post-url-input`}
+            />
+            {urlError ? (
+              <p className="text-[11px] font-mono text-[var(--color-danger)] mt-1.5" data-testid={`${testidPrefix}-post-url-error`}>
+                {urlError}
+              </p>
+            ) : (
+              <p className="text-[11px] font-mono text-[var(--color-text-faint)] mt-1.5">
+                Open your post → click the <span className="text-[var(--color-text-muted)]">⋯</span> menu →
+                &ldquo;Copy link to post&rdquo; → paste here.
+              </p>
+            )}
+          </div>
+
+          <button
+            onClick={claim}
+            disabled={!canClaim}
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold font-bricolage bg-gradient-to-r from-[#f59e0b] to-[var(--color-accent-pink)] text-white hover:brightness-110 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+            data-testid={`${testidPrefix}-claim-btn`}
+          >
+            {claiming ? (
+              <><Loader2 size={14} className="animate-spin" /> Unlocking…</>
+            ) : (
+              <><Download size={16} /> I&apos;ve shared — unlock my resource</>
+            )}
+          </button>
+
           {!shared && (
             <p className="text-[11px] font-mono text-[var(--color-text-faint)] mt-2" data-testid={`${testidPrefix}-hint`}>
-              Step 1: click &ldquo;Share on LinkedIn&rdquo;. Step 2: once posted, click &ldquo;I&apos;ve shared&rdquo; to download the resource.
+              Step 1: click &ldquo;Share on LinkedIn&rdquo;. Step 2: paste the post URL above. Step 3: unlock the resource.
             </p>
           )}
         </>
       )}
 
       {alreadyClaimed && (
-        <div className="flex items-center gap-3" data-testid={`${testidPrefix}-claimed`}>
-          <div className="flex-1 inline-flex items-center gap-2 text-sm font-bricolage text-[var(--color-success)]">
-            <CheckCircle2 size={16} /> You&apos;ve already claimed this resource.
+        <div className="flex flex-col gap-2" data-testid={`${testidPrefix}-claimed`}>
+          <div className="flex items-center gap-3">
+            <div className="flex-1 inline-flex items-center gap-2 text-sm font-bricolage text-[var(--color-success)]">
+              <CheckCircle2 size={16} /> You&apos;ve already claimed this resource.
+            </div>
+            <button
+              onClick={redownload}
+              disabled={downloading}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold font-bricolage bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)]/50 disabled:opacity-40 transition-all"
+              data-testid={`${testidPrefix}-redownload-btn`}
+            >
+              {downloading ? <><Loader2 size={14} className="animate-spin" /> Downloading…</> : <><Download size={16} /> Re-download</>}
+            </button>
           </div>
-          <button
-            onClick={redownload}
-            disabled={downloading}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold font-bricolage bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] hover:border-[var(--color-primary)]/50 disabled:opacity-40 transition-all"
-            data-testid={`${testidPrefix}-redownload-btn`}
-          >
-            {downloading ? <><Loader2 size={14} className="animate-spin" /> Downloading…</> : <><Download size={16} /> Re-download</>}
-          </button>
+          {reward.linkedin_post_url && (
+            <a
+              href={reward.linkedin_post_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[var(--color-text-faint)] hover:text-[#0A66C2] transition-colors truncate"
+              data-testid={`${testidPrefix}-view-shared-post`}
+            >
+              <Linkedin size={12} /> View your shared post
+              <ExternalLink size={11} />
+            </a>
+          )}
         </div>
       )}
     </div>

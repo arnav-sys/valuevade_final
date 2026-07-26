@@ -2680,7 +2680,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             ) or []
             claims = _supabase_get(
                 f"user_reward_claims?user_id=eq.{_urlparse.quote(user_id)}"
-                "&select=reward_id,shared_at,claimed_at"
+                "&select=reward_id,shared_at,claimed_at,linkedin_post_url"
             ) or []
         except HTTPException as e:
             if _is_rewards_missing(e):
@@ -2739,19 +2739,58 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             r_out["eligible"] = bool(eligible)
             r_out["claimed"] = bool(claim)
             r_out["claimed_at"] = (claim or {}).get("claimed_at")
+            r_out["linkedin_post_url"] = (claim or {}).get("linkedin_post_url")
             r_out["has_file"] = True  # FE doesn't need path — download comes from /rewards/{id}/download
             out.append(r_out)
         return {"table_ready": True, "rewards": out}
 
+    # Accept LinkedIn post URLs from:
+    #   https://www.linkedin.com/posts/<slug>-activity-<id>-xxxx
+    #   https://www.linkedin.com/feed/update/urn:li:activity:...
+    #   https://www.linkedin.com/pulse/<slug>
+    # (also `linkedin.com/...` without `www.`)
+    _LINKEDIN_POST_RE = _re.compile(
+        r"^https?://(?:[a-z]{2,3}\.)?(?:www\.)?linkedin\.com/"
+        r"(?:posts/|feed/update/|pulse/|embed/feed/update/)[^\s]+$",
+        _re.IGNORECASE,
+    )
+
+    def _validate_linkedin_post_url(raw: str) -> str:
+        url = (raw or "").strip()
+        if not url:
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "reason": "linkedin_post_url_required",
+                    "message": "Paste the URL of your LinkedIn post to claim this reward.",
+                },
+            )
+        if len(url) > 500:
+            raise HTTPException(status_code=400, detail="LinkedIn post URL is too long")
+        if not _LINKEDIN_POST_RE.match(url):
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "reason": "linkedin_post_url_invalid",
+                    "message": (
+                        "That doesn't look like a LinkedIn post URL. Open your post on LinkedIn, "
+                        "click the ⋯ menu → 'Copy link to post', and paste that URL here."
+                    ),
+                },
+            )
+        return url
+
     @api_router.post("/rewards/claim")
     async def rewards_claim(body: dict, user=Depends(_get_supabase_user)):
         """Called after the learner clicks 'I've shared on LinkedIn'. Verifies
-        eligibility server-side, upserts the claim row, and returns a signed
-        download URL for the resource file."""
+        eligibility server-side, upserts the claim row (with the mandatory
+        LinkedIn post URL) and returns a signed download URL for the resource
+        file."""
         user_id = user["id"]
         reward_id = (body or {}).get("reward_id") or ""
         if not reward_id:
             raise HTTPException(status_code=400, detail="reward_id required")
+        linkedin_post_url = _validate_linkedin_post_url((body or {}).get("linkedin_post_url"))
         try:
             reward_rows = _supabase_get(
                 f"master_rewards?id=eq.{_urlparse.quote(reward_id)}"
@@ -2798,14 +2837,21 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             )
 
         # Idempotent upsert — unique(user_id, reward_id) makes the second call a no-op.
+        # We ALSO update linkedin_post_url on conflict so a learner can correct
+        # a mis-pasted URL by re-submitting (still requires eligibility above).
+        # `on_conflict` targets the composite unique constraint, not the PK.
         try:
             _supabase_post(
-                "user_reward_claims",
-                {"user_id": user_id, "reward_id": reward_id},
-                prefer="return=minimal,resolution=ignore-duplicates",
+                "user_reward_claims?on_conflict=user_id,reward_id",
+                {
+                    "user_id": user_id,
+                    "reward_id": reward_id,
+                    "linkedin_post_url": linkedin_post_url,
+                },
+                prefer="return=minimal,resolution=merge-duplicates",
             )
         except Exception as e:
-            # ignore-duplicates should swallow uniqueness violations, but log if not.
+            # merge-duplicates should swallow uniqueness violations, but log if not.
             logger.warning(f"[rewards] claim upsert warn: {e}")
 
         download_url = _reward_signed_download_url(reward.get("resource_file_path") or "")
@@ -2866,6 +2912,22 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             in_clause = ",".join([f"\"{i}\"" for i in cap_ids])
             caps = _supabase_get(f"master_capstone_projects?id=in.({in_clause})&select=id,title,phases") or []
             cap_map = {c["id"]: c for c in caps}
+
+        # Aggregate claim counts per reward for the admin overview.
+        reward_ids = [r["id"] for r in rewards]
+        claim_count_map = {}
+        if reward_ids:
+            in_clause = ",".join([f"\"{i}\"" for i in reward_ids])
+            claim_rows = _supabase_get(
+                f"user_reward_claims?reward_id=in.({in_clause})&select=reward_id"
+            ) or []
+            for row in claim_rows:
+                rid = row.get("reward_id")
+                if rid:
+                    claim_count_map[rid] = claim_count_map.get(rid, 0) + 1
+
+        for r in rewards:
+            r["claim_count"] = claim_count_map.get(r["id"], 0)
         for r in rewards:
             if r["trigger_type"] == "module_complete":
                 m = module_map.get(r["trigger_ref_id"])
@@ -2930,6 +2992,36 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         if isinstance(row, list):
             row = row[0] if row else None
         return {"reward": row}
+
+    @api_router.get("/admin/rewards/{reward_id}/claims")
+    async def admin_rewards_claims(reward_id: str, user=Depends(_get_supabase_user)):
+        """Return the LinkedIn share submissions for a specific reward so an
+        admin can audit / spot-check the URLs learners posted."""
+        _ensure_admin(user)
+        try:
+            claims = _supabase_get(
+                f"user_reward_claims?reward_id=eq.{_urlparse.quote(reward_id)}"
+                "&select=id,user_id,linkedin_post_url,shared_at,claimed_at"
+                "&order=claimed_at.desc&limit=500"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                return {"table_ready": False, "hint": _REWARDS_TABLE_HINT, "claims": []}
+            raise
+        # Resolve user email/name for the admin view.
+        user_ids = list({c["user_id"] for c in claims if c.get("user_id")})
+        profile_map = {}
+        if user_ids:
+            in_clause = ",".join([f"\"{i}\"" for i in user_ids])
+            profs = _supabase_get(
+                f"profiles?id=in.({in_clause})&select=id,email,full_name"
+            ) or []
+            profile_map = {p["id"]: p for p in profs}
+        for c in claims:
+            p = profile_map.get(c.get("user_id")) or {}
+            c["user_email"] = p.get("email")
+            c["user_name"] = p.get("full_name")
+        return {"table_ready": True, "claims": claims}
 
     @api_router.patch("/admin/rewards/{reward_id}")
     async def admin_rewards_update(reward_id: str, body: dict, user=Depends(_get_supabase_user)):
