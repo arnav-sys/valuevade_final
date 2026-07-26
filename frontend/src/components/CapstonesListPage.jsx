@@ -110,8 +110,11 @@ export default function CapstonesListPage() {
         if (!mounted) return;
         setRemainingModules(incompleteMods.length);
         setRemainingProjects(incompleteProjs.length);
+        // Feb 2026 — treat "no active modules" as "nothing left to finish"
+        // so the gate doesn't lock users whose enrollment predates the
+        // user_modules seed (e.g. legacy accounts / QA fixtures).
         setAllModulesDone(
-          activeModules.length > 0 && incompleteMods.length === 0 && incompleteProjs.length === 0
+          incompleteMods.length === 0 && incompleteProjs.length === 0
         );
       } catch (err) {
         if (mounted) setError(err.message || 'Failed to load capstones');
