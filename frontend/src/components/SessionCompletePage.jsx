@@ -398,7 +398,7 @@ export default function SessionCompletePage() {
           <div className="flex items-center gap-2 mb-4 pb-3 border-b border-[var(--color-border)]">
             <Sparkles size={14} className="text-[var(--color-primary)]" />
             <h3 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)]">
-              Your 4-phase journey
+              Your 3-phase journey
             </h3>
           </div>
           <div className="space-y-2">

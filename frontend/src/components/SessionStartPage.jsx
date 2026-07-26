@@ -183,7 +183,7 @@ export default function SessionStartPage() {
               {/* Phases */}
               <div className="mb-8">
                 <h2 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)] mb-3">
-                  Your 4-phase journey
+                  Your 3-phase journey
                 </h2>
                 <div className="space-y-2" data-testid="session-phase-list">
                   {PHASES.map((p, idx) => {

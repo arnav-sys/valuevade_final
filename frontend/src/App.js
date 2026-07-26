@@ -1,6 +1,6 @@
 import "@/App.css";
 import { Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { Toaster } from "sonner";
 import { HelmetProvider } from "react-helmet-async";
 import { installErrorReporter } from "@/lib/errorReporter";
@@ -102,6 +102,16 @@ const SessionPhase = ({ phase, children }) => (
   </Learning>
 );
 
+// Feb 2026 — session-level interview phase disabled. Any legacy URL under
+// /session/:sessionId/interview[...] is redirected to that same session's
+// simulation-start route. Uses useParams() because a plain
+// `<Navigate to="../simulation/start" />` in a flat top-level route walks
+// up to `/` (not up one URL segment) and would strip the sessionId → 404.
+const InterviewToSimulation = () => {
+  const { sessionId } = useParams();
+  return <Navigate to={`/session/${sessionId}/simulation/start`} replace />;
+};
+
 // Install global error / unhandled-rejection reporters at module load. The
 // reporter is idempotent and cannot throw, so it's safe to run before render.
 installErrorReporter();
@@ -201,9 +211,9 @@ function App() {
                     cut per-user AI cost by ~40%. Old URLs redirect forward
                     to simulation so no bookmark 404s. Pages + components
                     are kept intact for easy re-enable. */}
-                  <Route path="/session/:sessionId/interview/start" element={<Navigate to="../simulation/start" replace />} />
-                  <Route path="/session/:sessionId/interview" element={<Navigate to="../simulation/start" replace />} />
-                  <Route path="/session/:sessionId/interview/complete" element={<Navigate to="../simulation/start" replace />} />
+                  <Route path="/session/:sessionId/interview/start" element={<InterviewToSimulation />} />
+                  <Route path="/session/:sessionId/interview" element={<InterviewToSimulation />} />
+                  <Route path="/session/:sessionId/interview/complete" element={<InterviewToSimulation />} />
 
                   <Route path="/session/:sessionId/simulation/start" element={<SessionPhase phase="simulation"><SimulationStartPage /></SessionPhase>} />
                   <Route path="/session/:sessionId/simulation" element={<SessionPhase phase="simulation"><SimulationPage /></SessionPhase>} />
