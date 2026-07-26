@@ -6,6 +6,7 @@ import {
   ArrowRight, Trophy, Sparkles, CheckCircle2, Loader2, AlertCircle, RefreshCw,
   Briefcase, Rocket, Target,
 } from 'lucide-react';
+import RewardCard from './rewards/RewardCard';
 
 function Confetti() {
   const pieces = Array.from({ length: 60 });
@@ -57,6 +58,7 @@ export default function ModuleProjectCompletePage() {
   const [showConfetti, setShowConfetti] = useState(true);
   const [module, setModule] = useState(null);
   const [masterProject, setMasterProject] = useState(null);
+  const [masterModuleId, setMasterModuleId] = useState(null);
   const [nextModule, setNextModule] = useState(null);
   const [nextSessionId, setNextSessionId] = useState(null);
   const [allModulesDone, setAllModulesDone] = useState(false);
@@ -75,13 +77,14 @@ export default function ModuleProjectCompletePage() {
       try {
         const { data: upRows, error: upErr } = await supabase
           .from('user_module_projects')
-          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed)')
+          .select('*, user_modules(id, title, order_index, module_number, enrollment_id, is_completed, master_module_id)')
           .eq('user_module_id', moduleId);
         if (upErr) throw upErr;
         if (!mounted) return;
         const up = Array.isArray(upRows) && upRows.length > 0 ? upRows[0] : null;
         if (!up) throw new Error('No project found for this module.');
         setModule(up.user_modules || null);
+        setMasterModuleId(up.user_modules?.master_module_id || null);
 
         const [mpRes, sibRes] = await Promise.all([
           up.master_project_id
@@ -227,6 +230,15 @@ export default function ModuleProjectCompletePage() {
               ))}
             </div>
           </div>
+        )}
+
+        {/* Feb 2026 — LinkedIn-share reward (Module 1 / 10 / final by default; admin-configurable). */}
+        {masterModuleId && (
+          <RewardCard
+            trigger="module_complete"
+            refId={masterModuleId}
+            testidPrefix="module-project-reward"
+          />
         )}
 
         {/* CTAs */}

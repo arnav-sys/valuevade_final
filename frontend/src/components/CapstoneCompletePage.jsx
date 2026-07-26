@@ -7,6 +7,7 @@ import {
   Trophy, Sparkles, Award, Share2, ArrowRight, Loader2, AlertCircle,
   RefreshCw, CheckCircle2, Clock, BookOpen, Layers, Briefcase, HelpCircle,
 } from 'lucide-react';
+import RewardCard from './rewards/RewardCard';
 
 /* ------------------------------------------------------------------ */
 /* Decorative layers                                                   */
@@ -506,6 +507,15 @@ export default function CapstoneCompletePage() {
             completedAt={capstone?.completed_at || enrollment?.completed_at}
           />
         </div>
+
+        {/* Feb 2026 — LinkedIn-share reward for capstone completion (default CAP-01). */}
+        {capstone?.master_capstone_id && (
+          <RewardCard
+            trigger="capstone_complete"
+            refId={capstone.master_capstone_id}
+            testidPrefix="capstone-reward"
+          />
+        )}
 
         {/* Journey summary */}
         <div className="glass-card rounded-2xl p-5 sm:p-6 mb-8" data-testid="capstone-journey-summary">

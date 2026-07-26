@@ -2602,3 +2602,439 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         except Exception as e:
             logger.warning(f"[mock-interview] xp award failed: {e}")
         return verdict
+
+
+    # =========================================================================
+    # REWARDS — LinkedIn share → free resource unlock (Feb 2026)
+    # =========================================================================
+    # Data lives in `master_rewards` + `user_reward_claims` (migration 0037).
+    # Files sit in a private Supabase Storage bucket called `rewards`; the
+    # backend generates signed download URLs after a claim is recorded.
+    # =========================================================================
+    _REWARDS_BUCKET = "rewards"
+    _REWARDS_MAX_BYTES = 25 * 1024 * 1024  # 25MB per the spec
+    _REWARDS_ALLOWED_MIME = {
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        "application/zip",
+        "application/x-zip-compressed",
+    }
+    _REWARDS_TABLE_HINT = (
+        "master_rewards table is missing. Apply "
+        "/app/scripts/migrations/0037_rewards.sql via Supabase Studio → SQL Editor."
+    )
+
+    def _is_rewards_missing(err: HTTPException) -> bool:
+        try:
+            detail = str(err.detail or "")
+            return err.status_code in (400, 404) and (
+                "master_rewards" in detail or "user_reward_claims" in detail
+                or "relation" in detail.lower()
+            )
+        except Exception:
+            return False
+
+    def _reward_signed_download_url(path: str, ttl_seconds: int = 3600) -> Optional[str]:
+        """Ask Supabase Storage for a short-lived signed URL for a rewards file."""
+        if not path or not _SUPABASE_SR:
+            return None
+        try:
+            import urllib.request
+            req = urllib.request.Request(
+                f"{_SUPABASE_REST_URL}/storage/v1/object/sign/{_REWARDS_BUCKET}/{path}",
+                method="POST",
+                headers={
+                    "Authorization": f"Bearer {_SUPABASE_SR}",
+                    "apikey": _SUPABASE_SR,
+                    "Content-Type": "application/json",
+                },
+                data=_json.dumps({"expiresIn": ttl_seconds}).encode(),
+            )
+            with urllib.request.urlopen(req, timeout=8) as r:
+                body = _json.loads(r.read())
+            rel = body.get("signedURL") or body.get("signedUrl")
+            if not rel:
+                return None
+            return f"{_SUPABASE_REST_URL}/storage/v1{rel}"
+        except Exception as e:
+            logger.warning(f"[rewards] sign URL failed for {path}: {e}")
+            return None
+
+    # ---- LEARNER-FACING ------------------------------------------------------
+
+    @api_router.get("/rewards/eligible")
+    async def rewards_eligible(user=Depends(_get_supabase_user)):
+        """Return the rewards this user has unlocked (trigger event completed)
+        plus each reward's claim state so the FE can decide whether to show
+        the 'Share on LinkedIn' CTA vs the download button."""
+        user_id = user["id"]
+        try:
+            rewards = _supabase_get(
+                "master_rewards?is_active=eq.true"
+                "&select=id,title,description,linkedin_message,trigger_type,trigger_ref_id,"
+                "resource_file_name,resource_mime,resource_size_bytes,order_index"
+                "&order=order_index.asc"
+            ) or []
+            claims = _supabase_get(
+                f"user_reward_claims?user_id=eq.{_urlparse.quote(user_id)}"
+                "&select=reward_id,shared_at,claimed_at"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                return {"table_ready": False, "hint": _REWARDS_TABLE_HINT, "rewards": []}
+            raise
+        claim_map = {c["reward_id"]: c for c in claims}
+
+        # Which trigger events has this user completed?
+        # (a) Module completions: user_modules where is_completed=true AND
+        #     the underlying master_module_id matches a reward's trigger_ref_id.
+        module_ref_ids = [r["trigger_ref_id"] for r in rewards if r["trigger_type"] == "module_complete"]
+        capstone_ref_ids = [r["trigger_ref_id"] for r in rewards if r["trigger_type"] == "capstone_complete"]
+
+        completed_module_master_ids = set()
+        if module_ref_ids:
+            in_clause = ",".join([f"\"{i}\"" for i in module_ref_ids])
+            done = _supabase_get(
+                f"user_modules?user_id=eq.{_urlparse.quote(user_id)}"
+                f"&is_completed=eq.true"
+                f"&master_module_id=in.({in_clause})"
+                "&select=master_module_id&limit=500"
+            ) or []
+            completed_module_master_ids = {r["master_module_id"] for r in done}
+
+        completed_capstone_master_ids = set()
+        if capstone_ref_ids:
+            in_clause = ",".join([f"\"{i}\"" for i in capstone_ref_ids])
+            done = _supabase_get(
+                f"user_capstone_projects?is_completed=eq.true"
+                f"&master_capstone_id=in.({in_clause})"
+                "&select=master_capstone_id,enrollment_id&limit=500"
+            ) or []
+            # Scope to this user via enrollment
+            if done:
+                enr_ids = list({r["enrollment_id"] for r in done})
+                in_enr = ",".join([f"\"{i}\"" for i in enr_ids])
+                my_enrs = _supabase_get(
+                    f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}"
+                    f"&id=in.({in_enr})&select=id"
+                ) or []
+                my_enr_ids = {r["id"] for r in my_enrs}
+                completed_capstone_master_ids = {
+                    r["master_capstone_id"] for r in done if r["enrollment_id"] in my_enr_ids
+                }
+
+        out = []
+        for r in rewards:
+            eligible = False
+            if r["trigger_type"] == "module_complete":
+                eligible = r["trigger_ref_id"] in completed_module_master_ids
+            elif r["trigger_type"] == "capstone_complete":
+                eligible = r["trigger_ref_id"] in completed_capstone_master_ids
+            claim = claim_map.get(r["id"])
+            r_out = dict(r)
+            r_out.pop("resource_file_path", None)  # never leak storage path
+            r_out["eligible"] = bool(eligible)
+            r_out["claimed"] = bool(claim)
+            r_out["claimed_at"] = (claim or {}).get("claimed_at")
+            r_out["has_file"] = True  # FE doesn't need path — download comes from /rewards/{id}/download
+            out.append(r_out)
+        return {"table_ready": True, "rewards": out}
+
+    @api_router.post("/rewards/claim")
+    async def rewards_claim(body: dict, user=Depends(_get_supabase_user)):
+        """Called after the learner clicks 'I've shared on LinkedIn'. Verifies
+        eligibility server-side, upserts the claim row, and returns a signed
+        download URL for the resource file."""
+        user_id = user["id"]
+        reward_id = (body or {}).get("reward_id") or ""
+        if not reward_id:
+            raise HTTPException(status_code=400, detail="reward_id required")
+        try:
+            reward_rows = _supabase_get(
+                f"master_rewards?id=eq.{_urlparse.quote(reward_id)}"
+                "&is_active=eq.true&select=*&limit=1"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                raise HTTPException(status_code=503, detail=_REWARDS_TABLE_HINT)
+            raise
+        if not reward_rows:
+            raise HTTPException(status_code=404, detail="Reward not found or inactive")
+        reward = reward_rows[0]
+
+        # Server-side eligibility check (never trust the FE).
+        eligible = False
+        if reward["trigger_type"] == "module_complete":
+            done = _supabase_get(
+                f"user_modules?user_id=eq.{_urlparse.quote(user_id)}"
+                f"&master_module_id=eq.{_urlparse.quote(reward['trigger_ref_id'])}"
+                "&is_completed=eq.true&select=id&limit=1"
+            ) or []
+            eligible = bool(done)
+        elif reward["trigger_type"] == "capstone_complete":
+            done = _supabase_get(
+                f"user_capstone_projects?master_capstone_id=eq.{_urlparse.quote(reward['trigger_ref_id'])}"
+                "&is_completed=eq.true&select=enrollment_id&limit=5"
+            ) or []
+            if done:
+                enr_ids = list({r["enrollment_id"] for r in done})
+                in_enr = ",".join([f"\"{i}\"" for i in enr_ids])
+                my_enrs = _supabase_get(
+                    f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}"
+                    f"&id=in.({in_enr})&select=id"
+                ) or []
+                eligible = bool(my_enrs)
+
+        if not eligible:
+            raise HTTPException(
+                status_code=403,
+                detail={
+                    "reason": "reward_not_eligible",
+                    "message": "Complete the required module or capstone before claiming this reward.",
+                },
+            )
+
+        # Idempotent upsert — unique(user_id, reward_id) makes the second call a no-op.
+        try:
+            _supabase_post(
+                "user_reward_claims",
+                {"user_id": user_id, "reward_id": reward_id},
+                prefer="return=minimal,resolution=ignore-duplicates",
+            )
+        except Exception as e:
+            # ignore-duplicates should swallow uniqueness violations, but log if not.
+            logger.warning(f"[rewards] claim upsert warn: {e}")
+
+        download_url = _reward_signed_download_url(reward.get("resource_file_path") or "")
+        return {
+            "ok": True,
+            "download_url": download_url,
+            "resource_file_name": reward.get("resource_file_name"),
+        }
+
+    @api_router.get("/rewards/{reward_id}/download")
+    async def rewards_download(reward_id: str, user=Depends(_get_supabase_user)):
+        """Re-issue a fresh signed URL for a reward the user already claimed
+        (so they can re-download if the previous URL expired)."""
+        user_id = user["id"]
+        try:
+            claim = _supabase_get(
+                f"user_reward_claims?user_id=eq.{_urlparse.quote(user_id)}"
+                f"&reward_id=eq.{_urlparse.quote(reward_id)}&select=id&limit=1"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                raise HTTPException(status_code=503, detail=_REWARDS_TABLE_HINT)
+            raise
+        if not claim:
+            raise HTTPException(status_code=403, detail="You haven't claimed this reward yet")
+        reward = (_supabase_get(
+            f"master_rewards?id=eq.{_urlparse.quote(reward_id)}&select=*&limit=1"
+        ) or [None])[0]
+        if not reward or not reward.get("resource_file_path"):
+            raise HTTPException(status_code=404, detail="Reward file not available")
+        url = _reward_signed_download_url(reward["resource_file_path"])
+        if not url:
+            raise HTTPException(status_code=502, detail="Failed to generate download URL")
+        return {"download_url": url, "resource_file_name": reward.get("resource_file_name")}
+
+    # ---- ADMIN ---------------------------------------------------------------
+
+    @api_router.get("/admin/rewards")
+    async def admin_rewards_list(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            rewards = _supabase_get(
+                "master_rewards?select=*&order=order_index.asc&limit=500"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                return {"table_ready": False, "hint": _REWARDS_TABLE_HINT, "rewards": []}
+            raise
+        # Resolve trigger_ref names (module/capstone titles) for a nicer admin UI.
+        module_ids = list({r["trigger_ref_id"] for r in rewards if r["trigger_type"] == "module_complete"})
+        cap_ids = list({r["trigger_ref_id"] for r in rewards if r["trigger_type"] == "capstone_complete"})
+        module_map, cap_map = {}, {}
+        if module_ids:
+            in_clause = ",".join([f"\"{i}\"" for i in module_ids])
+            mods = _supabase_get(f"master_modules?id=in.({in_clause})&select=id,title,module_number") or []
+            module_map = {m["id"]: m for m in mods}
+        if cap_ids:
+            in_clause = ",".join([f"\"{i}\"" for i in cap_ids])
+            caps = _supabase_get(f"master_capstone_projects?id=in.({in_clause})&select=id,title,phases") or []
+            cap_map = {c["id"]: c for c in caps}
+        for r in rewards:
+            if r["trigger_type"] == "module_complete":
+                m = module_map.get(r["trigger_ref_id"])
+                r["trigger_label"] = f"Module {m['module_number']} — {m['title']}" if m else "(module deleted)"
+            else:
+                c = cap_map.get(r["trigger_ref_id"])
+                phases = c.get("phases") if c else None
+                if isinstance(phases, str):
+                    try: phases = _json.loads(phases)
+                    except Exception: phases = {}
+                code = (phases or {}).get("code") if isinstance(phases, dict) else None
+                r["trigger_label"] = f"{code or 'Capstone'} — {c['title']}" if c else "(capstone deleted)"
+        return {"table_ready": True, "rewards": rewards}
+
+    @api_router.get("/admin/rewards/triggers")
+    async def admin_rewards_triggers(user=Depends(_get_supabase_user)):
+        """Return the available module + capstone options so the admin form
+        can render a dropdown instead of asking for a raw UUID."""
+        _ensure_admin(user)
+        modules = _supabase_get(
+            "master_modules?select=id,title,module_number,path_id"
+            "&order=module_number.asc&limit=500"
+        ) or []
+        capstones = _supabase_get(
+            "master_capstone_projects?select=id,title,phases,path_id&limit=200"
+        ) or []
+        # Decorate capstones with code
+        for c in capstones:
+            phases = c.get("phases")
+            if isinstance(phases, str):
+                try: phases = _json.loads(phases)
+                except Exception: phases = {}
+            c["code"] = (phases or {}).get("code") if isinstance(phases, dict) else None
+        return {"modules": modules, "capstones": capstones}
+
+    @api_router.post("/admin/rewards")
+    async def admin_rewards_create(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        title = (body.get("title") or "").strip()
+        trigger_type = (body.get("trigger_type") or "").strip()
+        trigger_ref_id = (body.get("trigger_ref_id") or "").strip()
+        if not title or trigger_type not in ("module_complete", "capstone_complete") or not trigger_ref_id:
+            raise HTTPException(status_code=400, detail="title, trigger_type, trigger_ref_id are required")
+        try:
+            row = _supabase_post("master_rewards", {
+                "title": title,
+                "description": (body.get("description") or "").strip() or None,
+                "linkedin_message": (body.get("linkedin_message") or "").strip() or None,
+                "trigger_type": trigger_type,
+                "trigger_ref_id": trigger_ref_id,
+                "resource_file_path": body.get("resource_file_path") or None,
+                "resource_file_name": body.get("resource_file_name") or None,
+                "resource_mime": body.get("resource_mime") or None,
+                "resource_size_bytes": body.get("resource_size_bytes") or None,
+                "order_index": int(body.get("order_index") or 100),
+                "is_active": bool(body.get("is_active", True)),
+            }, prefer="return=representation")
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                raise HTTPException(status_code=503, detail=_REWARDS_TABLE_HINT)
+            raise
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"reward": row}
+
+    @api_router.patch("/admin/rewards/{reward_id}")
+    async def admin_rewards_update(reward_id: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        allowed = {
+            "title", "description", "linkedin_message",
+            "trigger_type", "trigger_ref_id",
+            "resource_file_path", "resource_file_name", "resource_mime", "resource_size_bytes",
+            "order_index", "is_active",
+        }
+        patch = {k: v for k, v in body.items() if k in allowed and v is not None}
+        if "trigger_type" in patch and patch["trigger_type"] not in ("module_complete", "capstone_complete"):
+            raise HTTPException(status_code=400, detail="invalid trigger_type")
+        if not patch:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+        patch["updated_at"] = datetime.now(timezone.utc).isoformat()
+        try:
+            _supabase_patch(f"master_rewards?id=eq.{_urlparse.quote(reward_id)}", patch)
+            rows = _supabase_get(
+                f"master_rewards?id=eq.{_urlparse.quote(reward_id)}&select=*&limit=1"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                raise HTTPException(status_code=503, detail=_REWARDS_TABLE_HINT)
+            raise
+        return {"reward": rows[0] if rows else None}
+
+    @api_router.delete("/admin/rewards/{reward_id}")
+    async def admin_rewards_delete(reward_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        # Fetch file path first so we can also purge the storage object.
+        try:
+            existing = _supabase_get(
+                f"master_rewards?id=eq.{_urlparse.quote(reward_id)}&select=resource_file_path&limit=1"
+            ) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                raise HTTPException(status_code=503, detail=_REWARDS_TABLE_HINT)
+            raise
+        if not existing:
+            raise HTTPException(status_code=404, detail="Reward not found")
+        file_path = (existing[0] or {}).get("resource_file_path")
+        _supabase_delete(f"master_rewards?id=eq.{_urlparse.quote(reward_id)}")
+        if file_path and _SUPABASE_SR:
+            try:
+                import urllib.request
+                req = urllib.request.Request(
+                    f"{_SUPABASE_REST_URL}/storage/v1/object/{_REWARDS_BUCKET}/{file_path}",
+                    method="DELETE",
+                    headers={"Authorization": f"Bearer {_SUPABASE_SR}", "apikey": _SUPABASE_SR},
+                )
+                urllib.request.urlopen(req, timeout=8).read()
+            except Exception as e:
+                logger.warning(f"[rewards] failed to delete storage file {file_path}: {e}")
+        return {"ok": True}
+
+    @api_router.post("/admin/rewards/upload")
+    async def admin_rewards_upload(
+        file: UploadFile = File(...),
+        user=Depends(_get_supabase_user),
+    ):
+        """Multipart file upload → Supabase Storage. Returns the object path
+        + metadata to plug into `POST /admin/rewards` (or a subsequent PATCH)."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        raw = await file.read()
+        if len(raw) > _REWARDS_MAX_BYTES:
+            raise HTTPException(status_code=413, detail=f"File exceeds {_REWARDS_MAX_BYTES // (1024*1024)}MB limit")
+        mime = (file.content_type or "").lower()
+        if mime and _REWARDS_ALLOWED_MIME and mime not in _REWARDS_ALLOWED_MIME:
+            # Some clients send generic octet-stream — accept those; only
+            # hard-reject known bad types (e.g. images/executables).
+            if not mime.startswith("application/") and mime != "text/csv":
+                raise HTTPException(status_code=415, detail=f"MIME type {mime} not allowed for rewards")
+        # Sanitize filename → keep original for display, prefix with uuid for
+        # dedupe + safety.
+        import uuid as _uuid
+        safe_name = _re.sub(r"[^A-Za-z0-9._-]", "_", (file.filename or "reward.bin"))[:80]
+        key = f"{_uuid.uuid4().hex}_{safe_name}"
+
+        import urllib.request
+        try:
+            req = urllib.request.Request(
+                f"{_SUPABASE_REST_URL}/storage/v1/object/{_REWARDS_BUCKET}/{key}",
+                method="POST",
+                data=raw,
+                headers={
+                    "Authorization": f"Bearer {_SUPABASE_SR}",
+                    "apikey": _SUPABASE_SR,
+                    "Content-Type": mime or "application/octet-stream",
+                    "x-upsert": "true",
+                    "cache-control": "3600",
+                },
+            )
+            urllib.request.urlopen(req, timeout=60).read()
+        except urllib.error.HTTPError as e:
+            body = e.read().decode(errors="ignore")[:250]
+            raise HTTPException(status_code=502, detail=f"Storage upload failed [{e.code}]: {body}")
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+
+        return {
+            "resource_file_path": key,
+            "resource_file_name": file.filename or safe_name,
+            "resource_mime": mime or None,
+            "resource_size_bytes": len(raw),
+        }

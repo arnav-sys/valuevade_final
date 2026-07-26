@@ -1,0 +1,37 @@
+{
+  "summary": "Tested new LinkedIn-share Rewards feature (backend + frontend admin). 16 backend tests written & all passing (auth guards, admin CRUD gating, graceful degradation, upload endpoint, eligibility abuse guard). Frontend Admin Panel Rewards tab renders correctly with amber 'Migration needed' banner (since migration 0037 not yet applied), Add Reward button visible, and clicking it opens a fully-populated modal with ALL expected data-testids (title, desc, trigger_type, trigger_ref, linkedin_msg, file, order, active, save, cancel). RewardCard on module/capstone complete pages correctly returns null when no reward exists — safe default. Fixed ONE critical backend bug: /api/rewards/claim was returning 422 for every request because _RewardClaimReq(BaseModel) was defined inside register_wave_endpoints() function scope and FastAPI could not resolve it as a request body (interpreted as query param 'body'). Swapped to `body: dict` + explicit .get('reward_id') pattern (matches surrounding endpoints). Endpoint is now functional (returns 404/403/503 correctly). Migration 0037 remains NOT applied on Supabase — cannot end-to-end test the LinkedIn share → claim → download flow, but all graceful-degradation paths verified.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_rewards.py",
+    "/app/test_reports/pytest/rewards_results.xml"
+  ],
+  "action_items": [
+    "Apply migration /app/scripts/migrations/0037_rewards.sql via Supabase Studio → SQL Editor so full E2E flow can be tested (create master_rewards + user_reward_claims tables + 'rewards' storage bucket).",
+    "After migration is applied, re-run test_rewards.py + do an E2E playwright test (seed a reward on Module 1 → force-complete Module 1 for testagent2026 via service_role SQL → visit /module/<user_module_id>/project/complete → verify RewardCard renders, Share button opens LinkedIn share URL in new tab, and clicking 'I've shared — unlock' calls /api/rewards/claim then downloads the file)."
+  ],
+  "critical_code_review_comments": [
+    "CRITICAL BUG FIXED: /api/rewards/claim signature used a function-locally-defined Pydantic BaseModel (_RewardClaimReq) which FastAPI misinterpreted as a query parameter, causing every POST to return 422 'Field required'. Fixed by switching to `body: dict` pattern used by all sibling admin endpoints in the same file. Root cause: BaseModel subclasses declared inside a function scope inside register_wave_endpoints() are not always resolved by FastAPI's type-hint inspector; module-level BaseModel classes work fine (as used elsewhere in the file).",
+    "Rewards Storage bucket usage in /admin/rewards/upload uses urllib.request synchronously inside an async endpoint (blocks event loop). Consider httpx.AsyncClient. Not blocking for MVP but flag for later.",
+    "In /admin/rewards/delete, storage object deletion happens after the DB row is already deleted — if storage call raises, we get an orphan file. Consider swapping order or awaiting delete before DB delete. Minor.",
+    "wave_endpoints.py is now ~3040 lines and growing. Recommend splitting rewards + admin CRUD into their own modules for maintainability (system rule: files > 700 lines should be split)."
+  ],
+  "updated_files": [
+    "/app/backend/wave_endpoints.py (fixed rewards_claim body parsing)",
+    "/app/backend/tests/test_rewards.py (new test file, 16 tests)"
+  ],
+  "success_rate": {"backend": "100% (16/16)", "frontend": "100% (all admin-panel data-testids present + modal renders + graceful RewardCard null-when-no-reward)"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (admin) + testagent2026@gmail.com / TestPass123! (non-admin)",
+  "seed_data_creation": "None — migration 0037 is not applied so no rewards can be created. All tests are green using the graceful-degradation code paths (503 / table_ready:false).",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Migration 0037 (master_rewards + user_reward_claims + rewards storage bucket) is STILL NOT APPLIED on Supabase. Backend gracefully degrades: GET /api/rewards/eligible returns {table_ready:false, rewards:[]}; POST /api/admin/rewards returns 503; RewardCard on ModuleProjectCompletePage & CapstoneCompletePage correctly returns null (hidden). Fixed a critical FastAPI body-parsing bug in /api/rewards/claim (was returning 422 always). Once migration is applied, the next testing agent should: (a) create a reward attached to Module 1 via admin panel; (b) force-complete Module 1 for testagent2026 via service_role SQL — see prev testing note about UPDATE user_modules SET is_completed=true WHERE ...; (c) visit /module/<user_module_id>/project/complete as testagent2026 and validate the full LinkedIn-share → claim → download flow (data-testid=module-project-reward-card + module-project-reward-share-btn + module-project-reward-claim-btn); (d) verify idempotency by clicking claim twice; (e) test capstone-reward flow with qa-complete@valuevade.test (all capstones complete for that user). Backend test_rewards.py can then be extended to seed data through the API and assert the eligibility → claim → signed download URL happy path (16 tests currently only cover the degraded / gating paths).",
+  "rca of the issue": "Bug: POST /api/rewards/claim always returned 422 {loc:['query','body']}. RCA: FastAPI's dependency-inspector could not classify the parameter `body: _RewardClaimReq` as a request body because `_RewardClaimReq(BaseModel)` was declared *inside* the register_wave_endpoints(api_router, deps) closure. FastAPI needs the annotated Pydantic class to be resolvable in a stable namespace (typically module scope) to detect Body vs Query. When it fails to detect, it falls back to treating the arg as a query parameter of primitive type, which yields the 'field required' error observed. Fix: switched to `body: dict` and explicit key access, matching all sibling endpoints in the same file. Reproduction: `curl -X POST $BASE/api/rewards/claim -H 'Authorization: Bearer <valid>' -H 'Content-Type: application/json' -d '{\"reward_id\":\"xxx\"}'` — pre-fix returned 422; post-fix returns 404 (unknown reward) as expected."
+}
