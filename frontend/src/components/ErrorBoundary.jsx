@@ -25,15 +25,21 @@ export default class ErrorBoundary extends Component {
     // eslint-disable-next-line no-console
     console.error('[ErrorBoundary]', error, info);
 
-    // Report to admin observability layer (fire-and-forget, cannot throw)
-    reportError({
-      message: (error && (error.message || String(error))) || 'react_boundary',
-      stack: (error && error.stack) || (info && info.componentStack) || '',
-      type: 'react_boundary',
-    });
+    // Chunk-load failures self-heal via a one-shot hard reload below.
+    // Skip reporting them — they're deploy noise, not code bugs.
+    const chunkErr = isChunkLoadError(error);
+
+    if (!chunkErr) {
+      // Report to admin observability layer (fire-and-forget, cannot throw)
+      reportError({
+        message: (error && (error.message || String(error))) || 'react_boundary',
+        stack: (error && error.stack) || (info && info.componentStack) || '',
+        type: 'react_boundary',
+      });
+    }
 
     // Self-heal stale-deploy chunk failures: hard-reload once to pick up new index.html.
-    if (isChunkLoadError(error)) {
+    if (chunkErr) {
       const alreadyReloaded = window.sessionStorage.getItem(RELOAD_FLAG);
       if (!alreadyReloaded) {
         window.sessionStorage.setItem(RELOAD_FLAG, '1');

@@ -8,10 +8,38 @@
  * Never allowed to throw itself — the reporter cannot become an error source.
  */
 import { supabase } from './supabase';
+import { isChunkLoadError } from '@/utils/lazyWithRetry';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 const RECENT = new Map();           // signature → last-sent-timestamp
 const THROTTLE_MS = 5000;
+
+// Known-noise patterns — these are browser bugs or self-healed failures that
+// carry no actionable signal for us. Filtering here keeps the admin errors
+// tab focused on real issues.
+const NOISE_PATTERNS = [
+  // Cross-origin script error: the browser strips message/stack for security,
+  // leaving us with just "Script error." — no way to fix, pure noise.
+  /^Script error\.?$/i,
+  // Safari iOS autofill leaks its internal callback name onto window before
+  // it's defined. Known WebKit bug (bugs.webkit.org #… tracked upstream).
+  /_AutofillCallbackHandler/i,
+  // Passive-listener spam from browsers, framework internals, etc.
+  /^ResizeObserver/i,
+  // Chunk-load failures — handled by lazyWithRetry + ErrorBoundary via a
+  // one-shot hard reload. Reporting adds noise; the fix is deploy-driven.
+  /Loading chunk [\w-]+ failed/i,
+  /Loading CSS chunk [\w-]+ failed/i,
+  /Failed to fetch dynamically imported module/i,
+  /Importing a module script failed/i,
+];
+
+function isNoise(message, stack) {
+  const msg = String(message || '');
+  if (NOISE_PATTERNS.some((re) => re.test(msg))) return true;
+  if (/chrome-extension:|moz-extension:|safari-extension:/i.test(stack || '')) return true;
+  return false;
+}
 
 async function hashSignature(message, frame) {
   // Cheap non-crypto hash — plenty for a group key
@@ -55,9 +83,9 @@ async function send(payload) {
 export async function reportError({ message, stack, type = 'runtime', user_description = null }) {
   try {
     if (!message) return;
-    // Skip obvious noise (Chrome/Firefox extensions, ResizeObserver spam, etc.)
-    if (/^ResizeObserver/i.test(message)) return;
-    if (/chrome-extension:|moz-extension:/i.test(stack || '')) return;
+    // User-driven reports always pass through — even if the message would
+    // otherwise be considered noise, the user *intent* to report is signal.
+    if (!user_description && isNoise(message, stack)) return;
     const frame = firstStackFrame(stack);
     const signature = await hashSignature(message, frame);
     const now = Date.now();
