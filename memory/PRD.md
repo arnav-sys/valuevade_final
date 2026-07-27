@@ -463,3 +463,32 @@ actively report bugs (not just uncaught crashes).
   visible in Supabase with the correct URL and description.
 - 11/11 LinkedIn URL regex cases still pass; verifier helper tested
   standalone with a real HTTP fetch.
+
+## 2026-02-XX — Admin Errors Tab: noise-filter cleanup (iteration_39)
+
+**Symptom**: 6 stale rows cluttering AdminPanel → Errors tab:
+- 2× QA smoke-test `user_report` entries from own testing
+- 1× "Submitted — the workbook is locked." (`promise`) — fixed in iteration_38 but the pre-fix report persisted
+- 3× "Script error." (`runtime`) — cross-origin browser noise (browser strips message+stack for security)
+- 2× "Loading chunk 7020 failed." (`react_boundary`) — chunk-load failure that already self-heals via `ErrorBoundary` hard-reload
+- 4× "ReferenceError: Can't find variable: `_AutofillCallbackHandler`" — Safari iOS autofill bug (WebKit leaks the internal callback name)
+
+**Fix (frontend-only, no backend change)**:
+1. **`errorReporter.js`** — added `NOISE_PATTERNS` regex list + `isNoise(message, stack)` helper. Any error matching is silently dropped BEFORE the POST to `/api/errors/report`. Patterns:
+   - `/^Script error\.?$/i` (cross-origin)
+   - `/_AutofillCallbackHandler/i` (Safari)
+   - `/^ResizeObserver/i` (framework spam)
+   - `/Loading chunk [\w-]+ failed/i`, `/Loading CSS chunk/i`, `/Failed to fetch dynamically imported module/i`, `/Importing a module script failed/i`
+   - Extension-origin stacks (`chrome-extension:`, `moz-extension:`, `safari-extension:`)
+2. **User-driven reports bypass the filter** — when `user_description` is present, the reporter always sends (user intent > noise heuristics).
+3. **`ErrorBoundary.componentDidCatch`** now checks `isChunkLoadError(error)` FIRST and skips `reportError` for chunk failures — they're deploy noise handled by the existing one-shot `sessionStorage`-flagged hard reload.
+4. Silenced the 6 stale rows in Supabase (marked `resolved_at` + explanatory `resolution_notes` — using resolve instead of hard-silence so if any signature *does* recur it will regress and surface).
+
+**Verified (testing_agent iteration_39, 7/7 pass)**:
+- Dispatching synthetic `Script error.`, `_AutofillCallbackHandler`, and `Loading chunk 9999 failed.` ErrorEvents → **zero** rows created in `error_reports`.
+- Dispatching a real `TestingAgent verification` runtime error → row created as expected.
+- BugReportButton flow (login → click pill → fill description → submit) → row created with `error_type='user_report'` and correct description.
+- Previously-resolved noise signatures still have `resolved_at NOT NULL` and `regressed_at NULL` (no regressions).
+- ErrorsTab admin drawer render path still exposes `error-boundary-report-desc` + `error-boundary-report-submit` testids.
+
+**Note (informational, not a bug)**: In dev/preview mode, CRA's runtime-error overlay activates on any `window.error` event and can obscure the UI until dismissed. Does not affect production builds where the overlay is stripped by CRACO.
