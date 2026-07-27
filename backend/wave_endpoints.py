@@ -134,10 +134,11 @@ class _ErrorReportBody(BaseModel):
     signature: str
     error_message: str
     error_stack: Optional[str] = None
-    error_type: Optional[str] = "runtime"          # runtime|promise|react_boundary
+    error_type: Optional[str] = "runtime"          # runtime|promise|react_boundary|user_report
     url: Optional[str] = None
     user_agent: Optional[str] = None
     user_id: Optional[str] = None
+    user_description: Optional[str] = None         # optional colour from the learner
 
 
 class _ErrorActionBody(BaseModel):
@@ -2296,14 +2297,20 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.post("/errors/report")
     async def report_error(body: _ErrorReportBody):
         """Public error-ingest endpoint. Upserts by `signature`. Silenced rows
-        are dropped silently. Resolved rows regressing get `regressed_at` set."""
+        are dropped silently. Resolved rows regressing get `regressed_at` set.
+
+        Also accepts `user_description` — free-text detail the learner adds
+        from the crash screen or the site-wide "Report a bug" button — and
+        appends it to whichever row we ended up (append, not overwrite, so we
+        keep every learner's context across duplicates)."""
         sig = (body.signature or "").strip()[:128]
         if not sig or not body.error_message:
             raise HTTPException(status_code=400, detail="signature + error_message required.")
         now_iso = datetime.now(timezone.utc).isoformat()
+        user_desc = (body.user_description or "").strip()[:2000] or None
         existing = _supabase_get(
             f"error_reports?signature=eq.{_urlparse.quote(sig)}"
-            "&select=id,is_silenced,resolved_at,occurrence_count&limit=1"
+            "&select=id,is_silenced,resolved_at,occurrence_count,user_description&limit=1"
         ) or []
         if existing:
             row = existing[0]
@@ -2317,6 +2324,13 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             if row.get("resolved_at"):
                 patch["resolved_at"] = None
                 patch["regressed_at"] = now_iso
+            # Merge new user description into the aggregate row (chronological
+            # ledger). Keep newest at the top; cap at 8k chars.
+            if user_desc:
+                prev = (row.get("user_description") or "").strip()
+                stamped = f"[{now_iso}] {user_desc}"
+                merged = (stamped + "\n\n---\n\n" + prev) if prev else stamped
+                patch["user_description"] = merged[:8000]
             _supabase_patch(f"error_reports?id=eq.{_urlparse.quote(row['id'])}", patch)
             report_id = row["id"]
         else:
@@ -2324,10 +2338,11 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "signature": sig,
                 "error_message": (body.error_message or "")[:4000],
                 "error_stack": (body.error_stack or "")[:16000] if body.error_stack else None,
-                "error_type": body.error_type if body.error_type in ("runtime", "promise", "react_boundary") else "runtime",
+                "error_type": body.error_type if body.error_type in ("runtime", "promise", "react_boundary", "user_report") else "runtime",
                 "url": (body.url or "")[:2048] or None,
                 "user_agent": (body.user_agent or "")[:512] or None,
                 "user_id": body.user_id or None,
+                "user_description": user_desc,
             }
             created = _supabase_post("error_reports", payload, prefer="return=representation")
             if isinstance(created, list): created = created[0] if created else None
@@ -2341,6 +2356,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "user_id": body.user_id or None,
                 "url": (body.url or "")[:2048] or None,
                 "user_agent": (body.user_agent or "")[:512] or None,
+                "user_description": user_desc,
             })
         except Exception:
             pass
@@ -2362,7 +2378,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         rows = _supabase_get(
             "error_reports?select=id,signature,error_message,error_stack,error_type,url,user_agent,"
             "first_seen_at,last_seen_at,occurrence_count,unique_users,is_silenced,"
-            "resolved_at,resolution_notes,regressed_at"
+            "resolved_at,resolution_notes,regressed_at,user_description"
             f"{filt}&order=last_seen_at.desc&limit=200"
         ) or []
         return {"errors": rows}
@@ -2406,7 +2422,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         _ensure_admin(user)
         rows = _supabase_get(
             f"error_report_events?report_id=eq.{_urlparse.quote(report_id)}"
-            "&select=id,user_id,url,user_agent,occurred_at&order=occurred_at.desc&limit=50"
+            "&select=id,user_id,url,user_agent,user_description,occurred_at&order=occurred_at.desc&limit=50"
         ) or []
         return {"events": rows}
 
@@ -2780,12 +2796,70 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             )
         return url
 
+    # Sanity-check the pasted LinkedIn URL by fetching it with a bot User-Agent
+    # (LinkedIn returns OpenGraph tags to bots without a login wall) and looking
+    # for the expected brand/hashtag in the response body.
+    #
+    # Return value semantics:
+    #   {"verified": True,  "reason": "ok"}                 → OK, mark verified.
+    #   {"verified": False, "reason": "content_mismatch"}   → HTTP 200 but body
+    #                                                          did not mention
+    #                                                          any expected
+    #                                                          hashtag → REJECT
+    #                                                          the claim.
+    #   {"verified": False, "reason": "unreachable"}        → LinkedIn was 4xx
+    #                                                          (login wall) /
+    #                                                          5xx / timeout →
+    #                                                          allow but mark
+    #                                                          verified=false
+    #                                                          for admin review.
+    _LINKEDIN_VERIFY_UA = (
+        "Mozilla/5.0 (compatible; ValuevadeRewardsBot/1.0; +https://valuevade.com/rewards) "
+        "facebookexternalhit/1.1"
+    )
+
+    def _verify_linkedin_post_content(url: str, expected_keywords: list) -> dict:
+        try:
+            import urllib.request as _ureq
+            req = _ureq.Request(
+                url,
+                headers={
+                    "User-Agent": _LINKEDIN_VERIFY_UA,
+                    "Accept": "text/html,application/xhtml+xml",
+                    "Accept-Language": "en-US,en;q=0.9",
+                },
+            )
+            with _ureq.urlopen(req, timeout=6) as resp:
+                # LinkedIn public posts serve the OG bundle to bots (~30-80KB).
+                # Guard against a runaway response.
+                raw = resp.read(300_000)
+                body = raw.decode("utf-8", errors="ignore").lower()
+        except Exception as e:
+            logger.info(f"[rewards] linkedin verify unreachable for {url}: {e}")
+            return {"verified": False, "reason": "unreachable"}
+
+        # Look for at least one of the expected keywords/hashtags.
+        # `expected_keywords` are pre-lowered by the caller.
+        for kw in expected_keywords:
+            if kw and kw in body:
+                return {"verified": True, "reason": "ok"}
+        return {"verified": False, "reason": "content_mismatch"}
+
+    def _reward_expected_keywords(reward: dict) -> list:
+        """Extract hashtags from the reward's linkedin_message (if any) plus
+        a hard-coded brand fallback so we always have at least one signal."""
+        keywords = {"valuevade"}
+        msg = (reward.get("linkedin_message") or "")
+        for m in _re.findall(r"#([A-Za-z0-9_]{3,40})", msg):
+            keywords.add(m.lower())
+        return sorted(keywords)
+
     @api_router.post("/rewards/claim")
     async def rewards_claim(body: dict, user=Depends(_get_supabase_user)):
         """Called after the learner clicks 'I've shared on LinkedIn'. Verifies
         eligibility server-side, upserts the claim row (with the mandatory
-        LinkedIn post URL) and returns a signed download URL for the resource
-        file."""
+        LinkedIn post URL + a `linkedin_post_verified` flag from the content
+        check) and returns a signed download URL for the resource file."""
         user_id = user["id"]
         reward_id = (body or {}).get("reward_id") or ""
         if not reward_id:
@@ -2836,6 +2910,31 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 },
             )
 
+        # Content sanity-check: fetch the pasted LinkedIn URL and confirm it
+        # mentions Valuevade / the reward's specific hashtag. This blocks
+        # learners from pasting a random public post to farm the reward.
+        # Wrapped in `to_thread` because the verifier uses blocking urllib.
+        expected_kws = _reward_expected_keywords(reward)
+        verify_res = await asyncio.to_thread(
+            _verify_linkedin_post_content, linkedin_post_url, expected_kws
+        )
+        if verify_res.get("reason") == "content_mismatch":
+            raise HTTPException(
+                status_code=403,
+                detail={
+                    "reason": "linkedin_post_content_mismatch",
+                    "message": (
+                        "We opened your LinkedIn post but couldn't find any Valuevade-related content. "
+                        "Please make sure the post is public and mentions Valuevade (or a hashtag from "
+                        "the suggested post text above), then paste the URL again."
+                    ),
+                },
+            )
+        # `unreachable` → we allow the claim but mark it as not-verified so
+        # admin can spot-check. Real users behind LinkedIn's login wall or
+        # brief LinkedIn outages should not get blocked.
+        is_verified = verify_res.get("verified") is True
+
         # Idempotent upsert — unique(user_id, reward_id) makes the second call a no-op.
         # We ALSO update linkedin_post_url on conflict so a learner can correct
         # a mis-pasted URL by re-submitting (still requires eligibility above).
@@ -2847,6 +2946,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                     "user_id": user_id,
                     "reward_id": reward_id,
                     "linkedin_post_url": linkedin_post_url,
+                    "linkedin_post_verified": is_verified,
                 },
                 prefer="return=minimal,resolution=merge-duplicates",
             )
@@ -3001,7 +3101,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         try:
             claims = _supabase_get(
                 f"user_reward_claims?reward_id=eq.{_urlparse.quote(reward_id)}"
-                "&select=id,user_id,linkedin_post_url,shared_at,claimed_at"
+                "&select=id,user_id,linkedin_post_url,linkedin_post_verified,shared_at,claimed_at"
                 "&order=claimed_at.desc&limit=500"
             ) or []
         except HTTPException as e:

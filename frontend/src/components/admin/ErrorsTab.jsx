@@ -80,7 +80,8 @@ export default function ErrorsTab() {
       (r) =>
         (r.error_message || '').toLowerCase().includes(needle) ||
         (r.signature || '').toLowerCase().includes(needle) ||
-        (r.url || '').toLowerCase().includes(needle),
+        (r.url || '').toLowerCase().includes(needle) ||
+        (r.user_description || '').toLowerCase().includes(needle),
     );
   }, [rows, q]);
 
@@ -166,8 +167,11 @@ export default function ErrorsTab() {
                       <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-mono uppercase ${BADGE[s]}`}>{s}</span>
                     </td>
                     <td className="px-3 py-2">
-                      <div className="text-xs text-[var(--color-text)] truncate max-w-lg" title={r.error_message}>
-                        {r.error_message || '(no message)'}
+                      <div className="text-xs text-[var(--color-text)] truncate max-w-lg flex items-center gap-1.5" title={r.error_message}>
+                        {r.error_type === 'user_report' && (
+                          <span className="inline-block px-1.5 py-0.5 rounded bg-[#a78bfa]/20 text-[9px] font-mono uppercase text-[#a78bfa] shrink-0">user</span>
+                        )}
+                        <span className="truncate">{r.error_message || '(no message)'}</span>
                       </div>
                       <div className="text-[10px] text-[var(--color-text-muted)] font-mono truncate max-w-lg">{r.signature}</div>
                     </td>
@@ -236,6 +240,17 @@ export default function ErrorsTab() {
                 <p className="text-[10px] uppercase font-mono text-[var(--color-text-muted)]">Sample URL</p>
                 <p className="text-xs font-mono break-all">{sel.url || '—'}</p>
               </div>
+              {sel.user_description && (
+                <div data-testid="error-drawer-user-description">
+                  <p className="text-[10px] uppercase font-mono" style={{ color: '#a78bfa' }}>
+                    User description
+                    {sel.error_type === 'user_report' && <span className="ml-2 px-1.5 py-0.5 rounded bg-[#a78bfa]/15 text-[10px]">user report</span>}
+                  </p>
+                  <pre className="text-xs font-bricolage bg-[#a78bfa]/8 rounded p-2 mt-1 max-h-48 overflow-auto whitespace-pre-wrap break-words" style={{ border: '1px solid rgba(167,139,250,0.20)' }}>
+                    {sel.user_description}
+                  </pre>
+                </div>
+              )}
               <div>
                 <p className="text-[10px] uppercase font-mono text-[var(--color-text-muted)]">User agent</p>
                 <p className="text-xs text-[var(--color-text-muted)] break-all">{sel.user_agent || '—'}</p>

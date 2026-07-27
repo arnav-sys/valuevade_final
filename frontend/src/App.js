@@ -25,6 +25,7 @@ import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
 import SessionPhaseGuard from "@/components/SessionPhaseGuard";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import BugReportButton from "@/components/BugReportButton";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
 import lazyWithRetry from "@/utils/lazyWithRetry";
@@ -152,6 +153,7 @@ function App() {
                 <BadgeRoot />
                 <DailyChampionRoot />
                 <MilestoneCelebrationOverlay />
+                <BugReportButton />
                 <Suspense fallback={<RouteLoader />}>
               <PageTransition>
                 <Routes>

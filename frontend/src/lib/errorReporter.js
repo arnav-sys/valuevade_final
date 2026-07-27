@@ -52,7 +52,7 @@ async function send(payload) {
   }
 }
 
-export async function reportError({ message, stack, type = 'runtime' }) {
+export async function reportError({ message, stack, type = 'runtime', user_description = null }) {
   try {
     if (!message) return;
     // Skip obvious noise (Chrome/Firefox extensions, ResizeObserver spam, etc.)
@@ -62,7 +62,9 @@ export async function reportError({ message, stack, type = 'runtime' }) {
     const signature = await hashSignature(message, frame);
     const now = Date.now();
     const prev = RECENT.get(signature);
-    if (prev && now - prev < THROTTLE_MS) return;
+    // User-driven reports (with a description) bypass throttling — the user
+    // actively wants the report to land, and each report may carry new colour.
+    if (!user_description && prev && now - prev < THROTTLE_MS) return;
     RECENT.set(signature, now);
     const user_id = await currentUserId();
     await send({
@@ -73,6 +75,7 @@ export async function reportError({ message, stack, type = 'runtime' }) {
       url: window.location?.href?.slice(0, 2048) || null,
       user_agent: (navigator.userAgent || '').slice(0, 512),
       user_id,
+      user_description: user_description ? String(user_description).slice(0, 2000) : null,
     });
   } catch {
     /* never throw */

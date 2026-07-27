@@ -406,3 +406,60 @@ Supabase via Management API:
   profile URL, twitter URL, etc.).
 - Backend restarts clean, `/api/rewards/claim` 401s without auth,
   ESLint + ruff clean on both files.
+
+## 2026-02-XX — LinkedIn URL sanity-check + User-driven bug reports
+
+### 1. LinkedIn URL content verification for rewards
+The reward flow already required the learner to paste their LinkedIn post URL.
+We now ALSO fetch that URL server-side to confirm it actually mentions
+Valuevade (or the reward's own hashtag), which blocks learners from pasting
+any random public LinkedIn post to farm the free resource.
+
+- New helper `_verify_linkedin_post_content(url, keywords)` in
+  `wave_endpoints.py` — fetches with a bot User-Agent
+  (`ValuevadeRewardsBot/1.0 … facebookexternalhit/1.1`) that LinkedIn serves
+  OpenGraph tags to; body is scanned for any keyword.
+- Keywords come from `_reward_expected_keywords(reward)`: `{"valuevade"} ∪ #hashtags` parsed from `reward.linkedin_message`.
+- Verifier is wrapped in `asyncio.to_thread` so blocking I/O doesn't stall the loop.
+- Three outcomes:
+  - `verified` → claim upserted with `linkedin_post_verified=true`.
+  - `content_mismatch` (2xx but no keyword) → **REJECT** claim with 403 +
+    `reason: linkedin_post_content_mismatch`.
+  - `unreachable` (timeout / login wall / 5xx) → claim allowed but
+    `linkedin_post_verified=false` so admin can review.
+- Migration `0039_bug_reports_and_linkedin_verify.sql` adds
+  `user_reward_claims.linkedin_post_verified boolean NOT NULL DEFAULT false`.
+- `/api/admin/rewards/{id}/claims` now returns this flag for spot-checking.
+
+### 2. User-driven bug reports
+Extended the existing `error_reports` observability pipeline so users can
+actively report bugs (not just uncaught crashes).
+
+- Migration `0039` adds `error_reports.user_description text` and mirrors
+  it on `error_report_events` (per-occurrence ledger).
+- `error_type` CHECK constraint extended to include `'user_report'`.
+- `POST /api/errors/report` now accepts `user_description` — for repeat
+  reports on the same signature, descriptions are appended chronologically
+  (newest first) so multiple learners can pile on one bug.
+- New `BugReportButton.jsx` — floating pill (bottom-left, above the FAQ
+  chatbot) visible only to authenticated users. Opens a compact panel with
+  a required textarea + Send button. Uses `error_type='user_report'` so
+  admins can filter these from crashes.
+- `ErrorBoundary.jsx` now shows a **"Help us fix this"** panel on crash
+  with a textarea → learner can add colour ("what were you doing?") and
+  submit. Result is `{ok, id}` and a friendly success state.
+- `errorReporter.js` — `reportError()` accepts `user_description` and
+  bypasses the 5-second throttle when a description is present (user
+  intent overrides noise-suppression).
+- Admin `ErrorsTab.jsx` — added a **user** badge on rows where
+  `error_type='user_report'`, a purple "User description" panel in the
+  drawer, and description-based fuzzy search.
+
+**End-to-end verified**:
+- Curl → `POST /api/errors/report` with `user_description` returns 200 +
+  row persisted with correct fields.
+- Playwright login → click floating "Report a bug" → fill textarea →
+  submit → "Thanks — our team has been notified." confirmation → row
+  visible in Supabase with the correct URL and description.
+- 11/11 LinkedIn URL regex cases still pass; verifier helper tested
+  standalone with a real HTTP fetch.

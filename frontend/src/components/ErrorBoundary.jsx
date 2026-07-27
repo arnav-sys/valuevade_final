@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { AlertTriangle, RefreshCw, Home, Send, CheckCircle2, Loader2 } from 'lucide-react';
 import { isChunkLoadError } from '@/utils/lazyWithRetry';
 import { reportError } from '@/lib/errorReporter';
 
@@ -8,7 +8,13 @@ const RELOAD_FLAG = 'vv-chunk-reloaded';
 export default class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = {
+      hasError: false,
+      error: null,
+      description: '',
+      submitting: false,
+      submitted: false,
+    };
   }
 
   static getDerivedStateFromError(error) {
@@ -37,11 +43,29 @@ export default class ErrorBoundary extends Component {
   }
 
   handleReset = () => {
-    this.setState({ hasError: false, error: null });
+    this.setState({ hasError: false, error: null, description: '', submitting: false, submitted: false });
   };
 
   handleReload = () => {
     window.location.reload();
+  };
+
+  submitReport = async () => {
+    const desc = (this.state.description || '').trim();
+    if (!desc || this.state.submitting) return;
+    this.setState({ submitting: true });
+    const err = this.state.error;
+    try {
+      await reportError({
+        message: (err && (err.message || String(err))) || 'react_boundary',
+        stack: (err && err.stack) || '',
+        type: 'react_boundary',
+        user_description: desc,
+      });
+      this.setState({ submitted: true });
+    } finally {
+      this.setState({ submitting: false });
+    }
   };
 
   render() {
@@ -111,6 +135,69 @@ export default class ErrorBoundary extends Component {
               {String(this.state.error.message)}
             </pre>
           )}
+
+          {/* User-driven bug report */}
+          <div
+            className="text-left rounded-xl p-4 mb-6"
+            style={{
+              background: 'rgba(167,139,250,0.06)',
+              border: '1px solid rgba(167,139,250,0.20)',
+            }}
+            data-testid="error-boundary-report-block"
+          >
+            <div className="text-[10px] font-mono uppercase tracking-[0.2em] mb-2" style={{ color: '#a78bfa' }}>
+              Help us fix this
+            </div>
+            {this.state.submitted ? (
+              <div
+                className="flex items-center gap-2 text-sm font-bricolage"
+                style={{ color: '#86efac' }}
+                data-testid="error-boundary-report-submitted"
+              >
+                <CheckCircle2 size={16} />
+                Thanks! Your report was sent to our admin team.
+              </div>
+            ) : (
+              <>
+                <p className="text-xs font-bricolage mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                  Tell us what you were doing when this happened (optional but very helpful).
+                </p>
+                <textarea
+                  value={this.state.description}
+                  onChange={(e) => this.setState({ description: e.target.value })}
+                  disabled={this.state.submitting}
+                  placeholder="e.g. I clicked Submit on the Module 3 quiz after answering the last question…"
+                  rows={3}
+                  className="w-full rounded-lg px-3 py-2 text-sm font-bricolage resize-y focus:outline-none focus:ring-2 disabled:opacity-40"
+                  style={{
+                    background: 'rgba(255,255,255,0.04)',
+                    border: '1px solid rgba(167,139,250,0.25)',
+                    color: '#ffffff',
+                  }}
+                  data-testid="error-boundary-report-desc"
+                />
+                <div className="flex justify-end mt-2">
+                  <button
+                    onClick={this.submitReport}
+                    disabled={!this.state.description.trim() || this.state.submitting}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold font-bricolage disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                    style={{
+                      background: 'rgba(167,139,250,0.18)',
+                      border: '1px solid rgba(167,139,250,0.40)',
+                      color: '#e9d5ff',
+                    }}
+                    data-testid="error-boundary-report-submit"
+                  >
+                    {this.state.submitting ? (
+                      <><Loader2 size={14} className="animate-spin" /> Sending…</>
+                    ) : (
+                      <><Send size={14} /> Send bug report</>
+                    )}
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
