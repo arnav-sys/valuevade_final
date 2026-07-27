@@ -492,3 +492,34 @@ actively report bugs (not just uncaught crashes).
 - ErrorsTab admin drawer render path still exposes `error-boundary-report-desc` + `error-boundary-report-submit` testids.
 
 **Note (informational, not a bug)**: In dev/preview mode, CRA's runtime-error overlay activates on any `window.error` event and can obscure the UI until dismissed. Does not affect production builds where the overlay is stripped by CRACO.
+
+---
+
+## Module 20 — Full Interview Simulations (2026-07-27, verified via testing_agent iteration_40 — 100% pass)
+
+### Requirement (user)
+Module 20 "EQUITY RESEARCH INTERVIEW MASTERY" is a special mock-interview module: sessions are video+notes only (no quizzes/simulations — existing 75 quiz Qs + 7 sims HIDDEN, not deleted). After all video lectures, 5 FULL interview simulations (J.P. Morgan, Morgan Stanley, Goldman Sachs, Motilal Oswal, Kotak Institutional Equities), each replicating a real top-firm hiring process with AI feedback at every step and voice-answered interviews. Module completion REQUIRES all 5 sims finished. Admin panel marks the module as mock-interview.
+
+### Pipeline per firm (max 2 attempts/firm, rejection counts as "finished")
+application form → AI recruiter screening feedback → timed aptitude test (12 LLM-generated MCQs, 15 min, 40% cutoff, fail = realistic rejection) → HR/behavioural interview (4 Q&A, voice via existing Whisper VoiceInputButton or text) → technical interview (5 Q&A) → case study (firm-specific case brief + Univer Excel modelling task auto-graded + 150-300 word written recommendation, 50/50 blend) → hiring-committee decision (weights: apt 15% / HR 25% / tech 30% / case 30%; offer ≥65) with offer/rejection letter + personalized debrief (Sonnet 4.5; all other turns Haiku 4.5).
+
+### DB (migration 0040 applied via mgmt API + /app/scripts/seed_interview_sims.py)
+- master_modules.is_interview_module bool (M20 = true)
+- master_interview_sims: 5 firms {firm_slug, brand, process(persona/focus/counts), case_config(brief_md, workbook canonical, expected_summary)}
+- user_interview_attempts: {user_id, sim_id, attempt_number 1-2, status, current_stage, stage_data jsonb (full state machine), final_score, verdict offer|rejected}. RLS: own-select; writes via service role.
+
+### Key files
+- Backend: /app/backend/interview_sim_endpoints.py — /api/interview-sim/{overview,start,attempt/*,application,aptitude/*,interview/*,case/submit}; flips user_modules.is_completed when 5th sim finishes (_maybe_complete_module).
+- Frontend: /app/frontend/src/components/interview-sim/ (Hub at /interview-sims, Player at /interview-sim/:attemptId + Application/Aptitude/Interview/Case/Decision stages, simShared.jsx)
+- utils/interviewSim.js (cached interview-module detection + sim gate), progress.js checkModuleCompletion gates interview modules on sims
+- NotesPage auto-completes quiz/sim flags for interview sessions; SessionStartPage shows 1-phase journey; NotesCompletePage CTA now dynamic (Finish Session when no next phase)
+- DashboardPage: notes-only phase icons for M20, "Final round — Interview simulations x/5" row, FINAL ROUND hero card blocks progression to M21 until sims done
+- Admin CurriculumTab: Mock Interview badge + mic toggle (PATCH is_interview_module); Pari blocked on /interview-sim/:id (useIsPariBlocked)
+
+### QA account
+qa-interview@valuevade.test / QaInterview2026! (M20-only enrollment, videos complete, sims unlocked; reset: python3 /app/scripts/seed_qa_interview_user.py)
+
+## Backlog additions
+- P2: persist mid-case spreadsheet drafts (case workbook state resets if the learner leaves the case stage before submitting)
+- P2: admin analytics for interview sims (avg scores per stage/firm, offer rate)
+- P3: /admin → /admin-panel redirect (testing agent noted /admin 404s; curriculum tab lives at /admin-panel?tab=curriculum)
