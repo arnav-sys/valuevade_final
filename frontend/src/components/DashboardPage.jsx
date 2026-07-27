@@ -20,6 +20,7 @@ import {
   HelpCircle, MessageSquare, Wrench, Rocket, Loader2, CalendarDays, Briefcase,
 } from 'lucide-react';
 import { getPendingModuleProject } from '../lib/pendingModuleProject';
+import { getInterviewMasterModuleIds, getInterviewSimGate } from '../utils/interviewSim';
 import { Skeleton } from './ui/skeleton';
 import AskPariButton from './tutor/AskPariButton'; // P54: kept for legacy refs, no longer rendered on dashboard
 import StudyPlanWizard from './study-planner/StudyPlanWizard';
@@ -58,12 +59,13 @@ function StatCard({ icon: Icon, label, value, suffix, accent = 'primary', testid
   );
 }
 
-function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
+function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, interviewMod = false, interviewGate = { done: 0, total: 0, allDone: false } }) {
   const activeSessions = sessions.filter((s) => !s.is_removed);
   const completedCount = activeSessions.filter((s) => s.is_completed).length;
   const total = activeSessions.length;
   const pct = total ? Math.round((completedCount / total) * 100) : 0;
-  const isComplete = module.is_completed || (total > 0 && completedCount === total);
+  const isComplete = module.is_completed || (total > 0 && completedCount === total && !interviewMod);
+  const sessionsAllDone = total > 0 && completedCount === total;
   // Completed modules are expandable so the user can revisit any phase of any
   // session; default-collapsed to keep the dashboard scannable but click the
   // card header to open. Active module remains expanded by default.
@@ -168,7 +170,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
           {showSessionList && (
             <div className="mt-4 space-y-1.5" data-testid={`module-sessions-${module.order_index}`}>
               {activeSessions.map((s, sidx) => {
-                const phases = ['notes', 'quiz', 'simulation'];
+                const phases = interviewMod ? ['notes'] : ['notes', 'quiz', 'simulation'];
                 return (
                   <Link
                     key={s.id}
@@ -231,6 +233,28 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked }) {
               </span>
             </div>
           )}
+
+          {/* Interview simulations indicator (M20 mock-interview module) */}
+          {interviewMod && !isLocked && (
+            <Link
+              to="/interview-sims"
+              onClick={(e) => e.stopPropagation()}
+              className="mt-3 flex items-center gap-2 text-[11px] font-mono group"
+              data-testid={`module-interview-sims-${module.order_index}`}
+            >
+              <Briefcase size={12} className={
+                module.is_completed || interviewGate.allDone
+                  ? 'text-[var(--color-success)]'
+                  : sessionsAllDone
+                  ? 'text-[var(--color-primary)]'
+                  : 'text-[var(--color-text-faint)]'
+              } />
+              <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-text)] transition-colors">
+                Final round — Interview simulations: {interviewGate.done}/{interviewGate.total || 5}
+                {sessionsAllDone ? ' · Enter →' : ' · Unlocks after all videos'}
+              </span>
+            </Link>
+          )}
         </div>
       </div>
     </div>
@@ -273,6 +297,21 @@ export default function DashboardPage() {
 
   // Retro-lock: earliest pending Module Project for this user (or null).
   const [pendingProject, setPendingProject] = useState(null);
+  // M20 interview module — which master modules are interview modules and
+  // how many of the 5 simulations this user has completed.
+  const [interviewInfo, setInterviewInfo] = useState({ masterIds: new Set(), gate: { done: 0, total: 0, allDone: false } });
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    (async () => {
+      try {
+        const masterIds = await getInterviewMasterModuleIds();
+        const gate = masterIds.size ? await getInterviewSimGate(user.id) : { done: 0, total: 0, allDone: false };
+        if (alive) setInterviewInfo({ masterIds, gate });
+      } catch { /* non-fatal */ }
+    })();
+    return () => { alive = false; };
+  }, [user?.id]);
   useEffect(() => {
     if (!user?.id) return;
     let alive = true;
@@ -471,6 +510,18 @@ export default function DashboardPage() {
         currentSession = incomplete;
         break;
       }
+      // All sessions in this module are complete — but interview modules
+      // (M20) also require all 5 interview simulations before moving on.
+      if (
+        ms.length > 0 &&
+        interviewInfo.masterIds.has(m.master_module_id) &&
+        !m.is_completed &&
+        !interviewInfo.gate.allDone
+      ) {
+        currentModule = m;
+        currentSession = null;
+        break;
+      }
       // All sessions in this module are complete — but if its project is still
       // pending, the user should finish that BEFORE jumping to the next module.
       const project = projectMap[m.id];
@@ -499,7 +550,7 @@ export default function DashboardPage() {
       allModulesComplete,
       sessionsByModule,
     };
-  }, [enrollment, modules, sessions, moduleProjects]);
+  }, [enrollment, modules, sessions, moduleProjects, interviewInfo]);
 
   const projectByModule = useMemo(() => {
     const map = {};
@@ -662,6 +713,7 @@ export default function DashboardPage() {
                   enrollment={enrollment}
                   capstone={capstone}
                   projectByModule={projectByModule}
+                  interviewInfo={interviewInfo}
                   onNavigate={navigate}
                 />
               </section>
@@ -777,6 +829,8 @@ export default function DashboardPage() {
                         projectStatus={projectByModule[mod.id]}
                         isActive={isActive}
                         isLocked={isLocked}
+                        interviewMod={interviewInfo.masterIds.has(mod.master_module_id)}
+                        interviewGate={interviewInfo.gate}
                       />
                     );
                   })}
@@ -862,7 +916,7 @@ export default function DashboardPage() {
   );
 }
 
-function ContinueLearningCard({ computed, enrollment, capstone, projectByModule, onNavigate }) {
+function ContinueLearningCard({ computed, enrollment, capstone, projectByModule, interviewInfo, onNavigate }) {
   const { currentModule, currentSession, nextPhase, allModulesComplete } = computed;
 
   // State 1: all modules done, capstone available
@@ -887,6 +941,35 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
           data-testid="begin-capstone-btn"
         >
           <Sparkles size={16} /> Begin Capstone <ArrowRight size={16} />
+        </button>
+      </div>
+    );
+  }
+
+  // State 2a: interview module (M20) — videos done, simulations pending
+  if (currentModule && !currentSession && interviewInfo?.masterIds?.has(currentModule.master_module_id)) {
+    const gate = interviewInfo.gate || { done: 0, total: 5 };
+    return (
+      <div
+        className="glass-card rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-[var(--color-accent-purple)]/10 to-transparent border-[var(--color-accent-purple)]/25"
+        data-testid="continue-learning-interview"
+      >
+        <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-accent-purple)] mb-3">
+          <Briefcase size={14} /> FINAL ROUND — INTERVIEW SIMULATIONS
+        </div>
+        <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-1">
+          Face 5 real hiring processes
+        </h2>
+        <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5 max-w-lg">
+          You've finished the Module 20 lectures. Now run the full gauntlet at J.P. Morgan, Morgan Stanley,
+          Goldman Sachs, Motilal Oswal and Kotak — application to offer letter. {gate.done}/{gate.total || 5} completed.
+        </p>
+        <button
+          onClick={() => onNavigate('/interview-sims')}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-accent-purple)] to-[var(--color-primary)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all"
+          data-testid="enter-interview-sims-btn"
+        >
+          <Briefcase size={16} /> Enter the Careers Portal <ArrowRight size={16} />
         </button>
       </div>
     );

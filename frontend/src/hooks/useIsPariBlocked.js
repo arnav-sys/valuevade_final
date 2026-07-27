@@ -10,6 +10,7 @@ const BLOCKED_PATH_PATTERNS = [
   /^\/session\/[^/]+\/interview$/,
   /^\/session\/[^/]+\/simulation$/,
   /^\/mock-interview(\/[^/]+)?$/,
+  /^\/interview-sim\/[^/]+$/,
 ];
 
 export function isPariBlockedPathname(pathname) {

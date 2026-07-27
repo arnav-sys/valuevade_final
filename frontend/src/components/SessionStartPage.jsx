@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { getPendingModuleProject } from '../lib/pendingModuleProject';
+import { isInterviewUserModule } from '../utils/interviewSim';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, FileText, HelpCircle, MessageSquare, Wrench,
@@ -15,6 +16,10 @@ const PHASES = [
   { key: 'simulation', label: 'Simulation', icon: Wrench, path: 'simulation/start', blurb: 'Apply in a real scenario' },
 ];
 
+const INTERVIEW_PHASES = [
+  { key: 'notes', label: 'Video + Notes', icon: FileText, path: 'notes', blurb: 'Watch the lecture and review the notes' },
+];
+
 export default function SessionStartPage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -25,6 +30,7 @@ export default function SessionStartPage() {
   const [session, setSession] = useState(null);
   const [module, setModule] = useState(null);
   const [master, setMaster] = useState(null);
+  const [isInterviewSession, setIsInterviewSession] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -42,6 +48,10 @@ export default function SessionStartPage() {
         if (!mounted) return;
         setSession(sess);
         setModule(sess.user_modules || null);
+
+        isInterviewUserModule(sess.user_module_id)
+          .then((flag) => { if (mounted) setIsInterviewSession(flag); })
+          .catch(() => {});
 
         // Retro-lock guard: if the user has an earlier pending Module Project,
         // block navigation into any later module's sessions.
@@ -75,8 +85,9 @@ export default function SessionStartPage() {
     return () => { mounted = false; };
   }, [sessionId, user?.id]);
 
+  const phaseList = isInterviewSession ? INTERVIEW_PHASES : PHASES;
   const firstIncomplete = session
-    ? PHASES.find((p) => !session[`${p.key}_completed`])
+    ? phaseList.find((p) => !session[`${p.key}_completed`])
     : null;
   const allDone = session && !firstIncomplete;
 
@@ -183,10 +194,10 @@ export default function SessionStartPage() {
               {/* Phases */}
               <div className="mb-8">
                 <h2 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)] mb-3">
-                  Your 3-phase journey
+                  {isInterviewSession ? 'Your session' : 'Your 3-phase journey'}
                 </h2>
                 <div className="space-y-2" data-testid="session-phase-list">
-                  {PHASES.map((p, idx) => {
+                  {phaseList.map((p, idx) => {
                     const isDone = session[`${p.key}_completed`];
                     const isNext = firstIncomplete?.key === p.key;
                     const Icon = p.icon;
@@ -272,7 +283,7 @@ export default function SessionStartPage() {
                     data-testid="session-begin-btn"
                   >
                     <PlayCircle size={16} />
-                    {PHASES.some((p) => session[`${p.key}_completed`]) ? 'Continue' : 'Begin'} with {firstIncomplete.label}
+                    {phaseList.some((p) => session[`${p.key}_completed`]) ? 'Continue' : 'Begin'} with {firstIncomplete.label}
                     <ArrowRight size={16} />
                   </button>
                 )}

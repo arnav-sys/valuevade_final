@@ -1083,3 +1083,10 @@ delete from public.user_xp_events       where user_id = '13a690c4-96d7-4827-8117
   login streak (`user_streaks`). Don't confuse them in tests.
 
 
+
+## Interview Simulations QA account (Module 20 mock-interview feature, added 2026-07-27)
+- Email: qa-interview@valuevade.test
+- Password: QaInterview2026!
+- State: active enrollment containing ONLY Module 20 (3 sessions, all video+notes complete) → /interview-sims hub UNLOCKED.
+- Existing history: 1 completed J.P. Morgan attempt (verdict: rejected, attempt 1/2). Other 4 firms untouched.
+- Re-seed / reset anytime with: python3 /app/scripts/seed_qa_interview_user.py (clears all interview attempts + module completion).

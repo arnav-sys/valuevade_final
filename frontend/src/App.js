@@ -77,6 +77,8 @@ const DoubtsPage = lazyWithRetry(() => import("@/components/DoubtsPage"));
 const AdminPanel = lazyWithRetry(() => import("@/components/AdminPanel"));
 const MockInterviewPage = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewPage"));
 const MockInterviewResults = lazyWithRetry(() => import("@/components/mock-interview/MockInterviewResults"));
+const InterviewSimHub = lazyWithRetry(() => import("@/components/interview-sim/InterviewSimHub"));
+const InterviewSimPlayer = lazyWithRetry(() => import("@/components/interview-sim/InterviewSimPlayer"));
 const M3SamplePreview = lazyWithRetry(() => import("@/components/M3SamplePreview"));
 const CourseCompletePage = lazyWithRetry(() => import("@/components/CourseCompletePage"));
 const DevSimPreview = lazyWithRetry(() => import("@/components/DevSimPreview"));
@@ -239,6 +241,10 @@ function App() {
                   <Route path="/mock-interview" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id/results" element={<Learning><MockInterviewResults /></Learning>} />
+
+                  {/* Module 20 — full interview simulations */}
+                  <Route path="/interview-sims" element={<Learning><InterviewSimHub /></Learning>} />
+                  <Route path="/interview-sim/:attemptId" element={<Learning><InterviewSimPlayer /></Learning>} />
 
                   {/* Payment routes (temporarily disabled — auto-enrollment
                       now handles course access without paywall). Any lingering

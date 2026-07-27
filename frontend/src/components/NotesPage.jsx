@@ -12,6 +12,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
+import { isInterviewUserModule } from '../utils/interviewSim';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import useTimeTracking from '../utils/useTimeTracking';
 import useSessionTimer, { getMeasuredMinutes } from '../utils/useSessionTimer';
@@ -1659,6 +1660,9 @@ export default function NotesPage() {
   // When true AND the video tab is active, the bottom nav CTA swaps to
   // "Complete Session" and marks the session complete on click.
   const [videoWatched, setVideoWatched] = useState(false);
+  // M20 — interview-module sessions are video+notes only. Completing notes
+  // auto-completes quiz/simulation flags so the session finishes in one phase.
+  const [isInterviewSession, setIsInterviewSession] = useState(false);
 
   // Track active reading time on this page → user_stats.total_time_minutes
   useTimeTracking(user?.id);
@@ -1696,6 +1700,10 @@ export default function NotesPage() {
           return;
         }
         setSession(sess);
+
+        isInterviewUserModule(sess.user_module_id)
+          .then((flag) => { if (mounted) setIsInterviewSession(flag); })
+          .catch(() => {});
 
         if (!sess.master_session_id) {
           setCards([]);
@@ -1775,7 +1783,12 @@ export default function NotesPage() {
       fallbackMinutes: Math.max(1, Math.round(timeSpent / 60)),
     });
     try {
-      await markPhaseComplete(session.id, 'notes', null, { actualMinutes: measuredMin });
+      await markPhaseComplete(
+        session.id,
+        'notes',
+        isInterviewSession ? { quiz_completed: true, simulation_completed: true } : null,
+        { actualMinutes: measuredMin },
+      );
       try {
         await triggerBadgeEvaluation({
           source_event: 'notes_complete',
@@ -1791,7 +1804,7 @@ export default function NotesPage() {
     navigate(`/session/${sessionId}/notes/complete`, {
       state: { cardsReviewed: total, timeSpentSeconds: timeSpent },
     });
-  }, [completing, session, startedAt, navigate, sessionId, total, user]);
+  }, [completing, session, startedAt, navigate, sessionId, total, user, isInterviewSession]);
 
   // Keyboard navigation
   useEffect(() => {

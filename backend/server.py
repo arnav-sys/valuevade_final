@@ -5042,6 +5042,19 @@ try:
 except Exception as _e:
     logger.warning(f"[wave_endpoints] failed to register: {_e}")
 
+# ----------------------- Module 20 full interview simulations ----------------
+try:
+    from interview_sim_endpoints import register_interview_sim_endpoints
+    register_interview_sim_endpoints(api_router, {
+        "supabase_get": _supabase_get,
+        "supabase_post": _supabase_post,
+        "supabase_patch": _supabase_patch,
+        "get_supabase_user": get_supabase_user,
+        "emergent_llm_key": EMERGENT_LLM_KEY,
+    })
+except Exception as _e:
+    logger.warning(f"[interview_sim_endpoints] failed to register: {_e}")
+
 # ----------------------- Wave 4 endpoints (payments + payouts) --------------
 try:
     from payment_endpoints import register_payment_endpoints

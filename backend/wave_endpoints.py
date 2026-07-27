@@ -71,6 +71,7 @@ class _AdminModuleBody(BaseModel):
     description: Optional[str] = None
     module_number: Optional[int] = None
     order_index: Optional[int] = None
+    is_interview_module: Optional[bool] = None
 
 
 class _AdminSessionBody(BaseModel):
@@ -1659,7 +1660,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         # counts, avoiding an N+1 loop that scaled to ~30-90s at 23 modules.
         mods = _supabase_get(
             f"master_modules?path_id=eq.{_urlparse.quote(path_id)}"
-            "&select=id,path_id,title,description,module_number,order_index,master_sessions(count)"
+            "&select=id,path_id,title,description,module_number,order_index,is_interview_module,master_sessions(count)"
             "&order=order_index&limit=100"
         ) or []
         out = []
@@ -1828,7 +1829,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         # Return the updated row
         rows = _supabase_get(
             f"master_modules?id=eq.{_urlparse.quote(module_id)}"
-            "&select=id,path_id,title,description,module_number,order_index&limit=1"
+            "&select=id,path_id,title,description,module_number,order_index,is_interview_module&limit=1"
         ) or []
         return {"module": rows[0] if rows else None}
 

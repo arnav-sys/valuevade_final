@@ -1,6 +1,7 @@
 import { supabase } from '../lib/supabase';
 import { computeQuizXP, XP_REASONS } from './xp';
 import { getRedoForSession } from './redoState';
+import { isInterviewMasterModule, getInterviewSimGate } from './interviewSim';
 
 /**
  * Daily-challenge progress helper.
@@ -256,6 +257,24 @@ export async function checkModuleCompletion(userModuleId) {
 
     const allDone = active.every((s) => s.is_completed);
     if (allDone) {
+      // Interview modules (M20) additionally require all 5 interview
+      // simulations to be completed before the module can flip complete.
+      // The backend flips user_modules.is_completed itself when the 5th
+      // simulation finishes.
+      try {
+        const { data: um } = await supabase
+          .from('user_modules')
+          .select('master_module_id')
+          .eq('id', userModuleId)
+          .maybeSingle();
+        if (um?.master_module_id && (await isInterviewMasterModule(um.master_module_id))) {
+          const { data: { user } = { user: null } } = await supabase.auth.getUser();
+          const gate = await getInterviewSimGate(user?.id);
+          if (!gate.allDone) {
+            return { success: true, data: { completed: false, interview_sims_pending: true } };
+          }
+        }
+      } catch { /* fall through to normal completion */ }
       const { error: modErr } = await supabase
         .from('user_modules')
         .update({ is_completed: true, completed_at: new Date().toISOString() })

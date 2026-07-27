@@ -15,7 +15,7 @@ import InterviewEditor from './InterviewEditor';
 import VideoEditor from './VideoEditor';
 import CapstonesEditor from './CapstonesEditor';
 import ModuleProjectModal from './ModuleProjectModal';
-import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download } from 'lucide-react';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -86,6 +86,18 @@ export default function CurriculumTab() {
       setEditingMod(null);
       await reloadModules();
     } catch (e) { alert(`Rename failed: ${e.message}`); }
+  };
+
+  const toggleInterviewModule = async (m) => {
+    const next = !m.is_interview_module;
+    const msg = next
+      ? `Mark "${m.title}" as a MOCK INTERVIEW module?\n\nIts sessions become video+notes only (quizzes/simulations hidden) and the module ends with the 5 full interview simulations.`
+      : `Remove the MOCK INTERVIEW flag from "${m.title}"?\n\nIts sessions revert to the normal notes → quiz → simulation flow.`;
+    if (!window.confirm(msg)) return;
+    try {
+      await req(`/api/admin/modules/${m.id}`, 'PATCH', { is_interview_module: next });
+      await reloadModules();
+    } catch (e) { alert(`Failed: ${e.message}`); }
   };
 
   const askDeleteModule = async (m) => {
@@ -198,8 +210,24 @@ export default function CurriculumTab() {
                     <div className="text-sm text-[var(--color-text)] truncate">{m.title}</div>
                   )}
                   <div className="text-[10px] text-[var(--color-text-muted)] mt-0.5">{m.session_count} sessions</div>
+                  {m.is_interview_module && (
+                    <span
+                      className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded bg-[var(--color-accent-purple)]/15 border border-[var(--color-accent-purple)]/30 text-[var(--color-accent-purple)] text-[9px] font-mono uppercase tracking-wider"
+                      data-testid={`interview-module-badge-${m.id}`}
+                    >
+                      <Mic size={9} /> Mock Interview
+                    </span>
+                  )}
                 </button>
                 <div className="flex flex-col gap-1">
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleInterviewModule(m); }}
+                    title={m.is_interview_module ? 'Unmark mock interview module' : 'Mark as mock interview module'}
+                    data-testid={`toggle-interview-module-${m.id}`}
+                    className={m.is_interview_module ? 'text-[var(--color-accent-purple)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-accent-purple)]'}
+                  >
+                    <Mic size={11} />
+                  </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); setProjModule({ id: m.id, title: m.title }); }}
                     title="Edit module project"

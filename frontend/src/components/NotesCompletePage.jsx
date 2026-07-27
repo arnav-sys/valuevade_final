@@ -100,13 +100,15 @@ export default function NotesCompletePage() {
 
         {/* Title */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)] text-xs font-mono uppercase tracking-[0.2em] mb-4">
-          <Sparkles size={12} /> Phase 1 of 3 done
+          <Sparkles size={12} /> {nextRoute.phase ? 'Phase 1 of 3 done' : 'Session complete'}
         </div>
         <h1 className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-3" data-testid="notes-complete-title">
           Notes complete!
         </h1>
         <p className="text-[var(--color-text-muted)] font-bricolage mb-8">
-          You've reviewed the core concepts. Time to prove you've got it.
+          {nextRoute.phase
+            ? "You've reviewed the core concepts. Time to prove you've got it."
+            : "You've finished this session's video and notes. On to the next one."}
         </p>
 
         {/* Stats */}
@@ -138,11 +140,15 @@ export default function NotesCompletePage() {
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
-            onClick={() => navigate(`/session/${sessionId}/quiz/start`)}
+            onClick={() => navigate(
+              nextRoute.phase
+                ? `/session/${sessionId}/${nextRoute.route}`
+                : `/session/${sessionId}/complete`
+            )}
             className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
             data-testid="continue-to-quiz"
           >
-            Continue to Quiz <ArrowRight size={16} />
+            {nextRoute.phase ? `Continue to ${nextRoute.label}` : 'Finish Session'} <ArrowRight size={16} />
           </button>
           <Link
             to={`/session/${sessionId}/notes`}
