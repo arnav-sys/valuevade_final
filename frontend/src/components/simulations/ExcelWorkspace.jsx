@@ -72,16 +72,90 @@ function toColumnLetter(n) {
    Excel Workspace — full spreadsheet with formula support
    ============================================================= */
 
+// Parse "E5" → {row:4, col:4} (0-indexed).
+function parseCellAddress(addr) {
+  const m = /^([A-Z]+)(\d+)$/.exec(String(addr).trim().toUpperCase());
+  if (!m) return null;
+  const [, letters, digits] = m;
+  let col = 0;
+  for (let i = 0; i < letters.length; i++) {
+    col = col * 26 + (letters.charCodeAt(i) - 64);
+  }
+  return { row: parseInt(digits, 10) - 1, col: col - 1 };
+}
+
+// Overlay a starter dataset with per-cell answers {"E5": 484, "A18": "Target"}.
+function overlayCells(baseRows, headers, overrides) {
+  const rows = baseRows.map((r) => (Array.isArray(r) ? [...r] : [r]));
+  let maxCols = headers?.length || 0;
+  for (const [addr, val] of Object.entries(overrides || {})) {
+    const p = parseCellAddress(addr);
+    if (!p) continue;
+    while (rows.length <= p.row) rows.push([]);
+    while (rows[p.row].length <= p.col) rows[p.row].push('');
+    rows[p.row][p.col] = val == null ? '' : (typeof val === 'object' ? JSON.stringify(val) : String(val));
+    if (p.col + 1 > maxCols) maxCols = p.col + 1;
+  }
+  return { rows, headers, source: 'cells-overlay' };
+}
+
+function pickSolutionDataset(config, starterDataset) {
+  // 1) A full solution grid provided directly.
+  const gridKeys = [
+    'solution_data', 'solution_dataset', 'answer_data', 'answer_dataset',
+    'answer_grid', 'completed_data', 'filled_data', 'model_answer',
+  ];
+  for (const key of gridKeys) {
+    const v = config?.[key];
+    if (!v) continue;
+    if (Array.isArray(v) && v.length > 0) {
+      if (Array.isArray(v[0])) return { rows: v, headers: null, source: key };
+      if (typeof v[0] === 'object') {
+        const headers = Object.keys(v[0]);
+        const rows = v.map((obj) => headers.map((h) => {
+          const val = obj[h];
+          if (val == null) return '';
+          if (typeof val === 'object') return JSON.stringify(val).slice(0, 100);
+          return String(val);
+        }));
+        return { rows, headers, source: key };
+      }
+    }
+  }
+  // 2) Nested solution object with its own dataset.
+  const nested = config?.solution?.dataset || config?.solution?.rows || config?.answer?.rows;
+  if (nested && Array.isArray(nested) && nested.length > 0) {
+    if (Array.isArray(nested[0])) return { rows: nested, headers: null, source: 'solution.rows' };
+  }
+  // 3) Per-cell answer map — overlay on starter dataset.
+  const cellKeys = ['solution_cells', 'answer_cells', 'expected_cells', 'correct_cells'];
+  for (const key of cellKeys) {
+    const cells = config?.[key];
+    if (cells && typeof cells === 'object' && Object.keys(cells).length > 0 && starterDataset) {
+      return overlayCells(starterDataset.rows, starterDataset.headers, cells);
+    }
+  }
+  return null;
+}
+
+/* =============================================================
+   Excel Workspace — full spreadsheet with formula support
+   ============================================================= */
+
 export default function ExcelWorkspace({ config, title, onComplete }) {
   const containerRef = useRef(null);
+  const solutionRef = useRef(null);
+  const solutionInstanceRef = useRef(null);
   const instanceRef = useRef(null);
   const [completed, setCompleted] = useState(false);
   const [rowsToAdd, setRowsToAdd] = useState(0);
 
   const dataset = useMemo(() => pickDataset(config), [config]);
+  const solutionDataset = useMemo(() => pickSolutionDataset(config, dataset), [config, dataset]);
   const taskDescription = config?.task_description || config?.description || config?.scenario_context;
   const hints = config?.hints || config?.tips || [];
   const expectedOutput = config?.expected_output || config?.expected_results || config?.solution || config?.acid_test;
+  const solutionNotes = config?.solution_notes || config?.solution_explanation || config?.solution_walkthrough;
   const evaluationCriteria = config?.evaluation_criteria || config?.scoring_rubric || config?.scoring;
   const toolsRequired = config?.tools_required || config?.formulas_required;
   const timeLimit = config?.time_limit_minutes;
@@ -199,6 +273,64 @@ export default function ExcelWorkspace({ config, title, onComplete }) {
     });
   };
 
+  // Render the correct-solution read-only grid after submit
+  useEffect(() => {
+    if (!completed || !solutionDataset || !solutionRef.current) return;
+
+    if (solutionInstanceRef.current) {
+      try { solutionInstanceRef.current.destroy(); } catch {/* noop */}
+      solutionInstanceRef.current = null;
+    }
+    solutionRef.current.innerHTML = '';
+
+    const MIN_COLS = 12;
+    const rows = solutionDataset.rows;
+    const headers = solutionDataset.headers;
+    const maxCols = Math.max(
+      MIN_COLS,
+      headers?.length || 0,
+      ...rows.map((r) => (Array.isArray(r) ? r.length : 0))
+    );
+    const padded = rows.map((r) => {
+      const arr = Array.isArray(r) ? [...r] : [r];
+      while (arr.length < maxCols) arr.push('');
+      return arr.slice(0, maxCols);
+    });
+    const cols = [];
+    for (let i = 0; i < maxCols; i++) {
+      const hdr = headers?.[i];
+      cols.push({
+        type: 'text',
+        title: hdr ? String(hdr) : toColumnLetter(i),
+        width: 140,
+        readOnly: true,
+      });
+    }
+
+    solutionInstanceRef.current = jspreadsheet(solutionRef.current, {
+      data: padded,
+      columns: cols,
+      minDimensions: [cols.length, padded.length],
+      tableOverflow: true,
+      tableWidth: '100%',
+      tableHeight: '420px',
+      allowInsertRow: false,
+      allowDeleteRow: false,
+      allowInsertColumn: false,
+      allowDeleteColumn: false,
+      allowRenameColumn: false,
+      editable: false,
+      contextMenu: function () { return []; },
+    });
+
+    return () => {
+      if (solutionInstanceRef.current) {
+        try { solutionInstanceRef.current.destroy(); } catch {/* noop */}
+        solutionInstanceRef.current = null;
+      }
+    };
+  }, [completed, solutionDataset]);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-5" data-testid="excel-workspace">
       {/* Spreadsheet */}
@@ -262,6 +394,68 @@ export default function ExcelWorkspace({ config, title, onComplete }) {
             {!completed && <ArrowRight size={15} />}
           </button>
         </div>
+
+        {/* Correct solution — revealed after submit */}
+        {completed && solutionDataset && (
+          <div className="mt-4 space-y-3" data-testid="excel-ws-solution-block">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 size={16} className="text-[var(--color-success)]" />
+              <h4 className="font-clash text-sm font-semibold text-[var(--color-text)]">
+                Correct solution — this is what the finished model looks like
+              </h4>
+            </div>
+            <p className="text-[11px] font-mono text-[var(--color-text-muted)]">
+              Compare against your work above. This grid is read-only.
+            </p>
+            <div
+              ref={solutionRef}
+              className="rounded-2xl overflow-hidden border-2 border-[var(--color-success)]/40 bg-white shadow-[0_8px_32px_rgba(0,0,0,0.3)] jexcel-wrapper jexcel-wrapper-solution"
+              data-testid="excel-ws-solution-grid"
+            />
+            {solutionNotes && (
+              <div className="glass-card rounded-xl p-3 border-l-2 border-[var(--color-success)]">
+                <p className="text-xs font-bricolage text-[var(--color-text)] leading-relaxed whitespace-pre-wrap break-words">
+                  {typeof solutionNotes === 'string' ? solutionNotes : JSON.stringify(solutionNotes, null, 2)}
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Fallback: no filled grid but the config still exposes an expected-output description */}
+        {completed && !solutionDataset && expectedOutput && (
+          <div className="mt-4 glass-card rounded-2xl p-4 border-l-2 border-[var(--color-success)]" data-testid="excel-ws-solution-fallback">
+            <div className="flex items-center gap-2 mb-2">
+              <CheckCircle2 size={14} className="text-[var(--color-success)]" />
+              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                Correct solution
+              </span>
+            </div>
+            {typeof expectedOutput === 'string' ? (
+              <p className="text-xs font-bricolage text-[var(--color-text)] leading-relaxed whitespace-pre-wrap break-words">{expectedOutput}</p>
+            ) : Array.isArray(expectedOutput) ? (
+              <ul className="space-y-1">
+                {expectedOutput.map((it, i) => (
+                  <li key={i} className="text-xs font-bricolage text-[var(--color-text)] break-words flex items-start gap-2">
+                    <CheckCircle2 size={11} className="text-[var(--color-success)] shrink-0 mt-0.5" />
+                    <span>{typeof it === 'string' ? it : (it.label || it.text || JSON.stringify(it).slice(0, 200))}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className="text-xs font-mono text-[var(--color-text)] space-y-0.5">
+                {Object.entries(expectedOutput).map(([k, v]) => (
+                  <div key={k} className="flex items-start justify-between gap-2 break-words">
+                    <span className="text-[var(--color-text-muted)]">{k.replace(/_/g, ' ')}:</span>
+                    <span className="text-[var(--color-text)] text-right">
+                      {typeof v === 'string' ? v : JSON.stringify(v)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Side panel */}
@@ -334,7 +528,7 @@ export default function ExcelWorkspace({ config, title, onComplete }) {
           </div>
         )}
 
-        {expectedOutput && (
+        {expectedOutput && completed && (
           <div className="glass-card rounded-2xl p-4" data-testid="excel-ws-expected">
             <div className="flex items-center gap-2 mb-2">
               <Target size={13} className="text-[var(--color-success)]" />

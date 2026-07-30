@@ -28,9 +28,82 @@ import '@univerjs/preset-sheets-filter/lib/index.css';
 import '@univerjs/preset-sheets-sort/lib/index.css';
 import '@univerjs/preset-sheets-find-replace/lib/index.css';
 import {
-  Save, Send, Loader2, FileSpreadsheet, CheckCircle2, AlertCircle, Table2,
+  Save, Send, Loader2, FileSpreadsheet, CheckCircle2, AlertCircle, Table2, Eye, EyeOff,
 } from 'lucide-react';
 import PivotTableSheet from './PivotTableSheet';
+
+function formatCellValue(v) {
+  if (v == null || v === '') return '—';
+  if (typeof v === 'number') return v.toLocaleString('en-IN', { maximumFractionDigits: 4 });
+  return String(v);
+}
+
+function SolutionReveal({ details }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="rounded-xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 px-4 py-3" data-testid="spreadsheet-solution-reveal">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between gap-2 text-left"
+        data-testid="spreadsheet-solution-toggle"
+      >
+        <span className="inline-flex items-center gap-2">
+          <CheckCircle2 size={14} className="text-[var(--color-success)]" />
+          <span className="font-clash text-sm font-semibold text-[var(--color-text)]">
+            Correct solution — see the finished model
+          </span>
+        </span>
+        <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-[var(--color-text-muted)]">
+          {open ? <><EyeOff size={11} /> Hide</> : <><Eye size={11} /> Reveal</>}
+        </span>
+      </button>
+      {open && (
+        <div className="mt-3 overflow-x-auto rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)]" data-testid="spreadsheet-solution-table">
+          <table className="w-full text-xs font-mono">
+            <thead className="bg-[var(--color-surface)]">
+              <tr className="text-[10px] uppercase tracking-wider text-[var(--color-text-muted)]">
+                <th className="px-3 py-2 text-left">Cell</th>
+                <th className="px-3 py-2 text-left">Your answer</th>
+                <th className="px-3 py-2 text-left">Correct answer</th>
+                <th className="px-3 py-2 text-left">Formula pattern</th>
+                <th className="px-3 py-2 text-right">Pts</th>
+              </tr>
+            </thead>
+            <tbody>
+              {details.map((d) => (
+                <tr
+                  key={d.key}
+                  className={`border-t border-[var(--color-border)] ${d.passes ? 'bg-[var(--color-success)]/5' : 'bg-[var(--color-error)]/5'}`}
+                  data-testid={`solution-row-${d.sheetName}-${d.addr}`}
+                >
+                  <td className="px-3 py-2 text-[var(--color-text)] font-semibold whitespace-nowrap">
+                    {d.sheetName}!{d.addr}
+                  </td>
+                  <td className={`px-3 py-2 ${d.passes ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
+                    {formatCellValue(d.user_value)}
+                  </td>
+                  <td className="px-3 py-2 text-[var(--color-text)] font-semibold">
+                    {formatCellValue(d.expected_value)}
+                  </td>
+                  <td className="px-3 py-2 text-[var(--color-text-muted)] break-all">
+                    {d.formula_pattern || '—'}
+                  </td>
+                  <td className="px-3 py-2 text-right text-[var(--color-text-muted)]">{d.points}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {!open && (
+        <p className="text-[11px] font-mono text-[var(--color-text-muted)] mt-1">
+          Click to see the finished Excel file — every graded cell&apos;s correct value and formula pattern.
+        </p>
+      )}
+    </div>
+  );
+}
 
 // ---------- Address helpers ----------
 function letterToColIndex(s) {
@@ -430,7 +503,7 @@ export default function UniverSpreadsheet({
   // ---- Grading ----
   const gradeWorkbook = useCallback(() => {
     const fWorkbook = apiRef.current?.fWorkbook;
-    const perCell = {}; let earned = 0; let total = 0;
+    const perCell = {}; const details = []; let earned = 0; let total = 0;
     expectedCells.forEach(({ sheetName, addr, cell }) => {
       const pts = cell.points || 10;
       total += pts;
@@ -446,13 +519,25 @@ export default function UniverSpreadsheet({
         }
       } catch { /* missing sheet → fail */ }
       const passes = cellPasses(userVal, cell);
-      perCell[`${sheetName}!${addr}`] = passes ? 'pass' : 'fail';
+      const key = `${sheetName}!${addr}`;
+      perCell[key] = passes ? 'pass' : 'fail';
+      details.push({
+        key,
+        sheetName,
+        addr,
+        user_value: userVal == null || userVal === '' ? null : userVal,
+        expected_value: cell.expected,
+        formula_pattern: cell.formula_pattern || cell.formula || null,
+        points: pts,
+        passes,
+      });
       if (passes) earned += pts;
       try { range?.setBackgroundColor(passes ? '#D7F5E3' : '#FBDCDC'); } catch { /* noop */ }
     });
     return {
       total: total > 0 ? Math.round((earned / total) * 100) : 0,
       per_cell: perCell,
+      details,
       accepted: true,
     };
   }, [expectedCells]);
@@ -583,6 +668,11 @@ export default function UniverSpreadsheet({
           </div>
           <p className="text-[11px] font-mono text-[var(--color-text-muted)] mt-1">Graded cells are highlighted green (correct) or red (needs work) in the sheet.</p>
         </div>
+      )}
+
+      {/* Correct solution reveal — after submit, shows the correct file value for every graded cell */}
+      {submitState.submitted && submitState.score && Array.isArray(submitState.score.details) && submitState.score.details.length > 0 && (
+        <SolutionReveal details={submitState.score.details} />
       )}
       {submitState.submitted && !submitState.score && (
         <div className="rounded-xl border border-[var(--color-accent-purple)]/30 bg-[var(--color-accent-purple)]/5 px-4 py-3" data-testid="spreadsheet-submitted-freeform">
