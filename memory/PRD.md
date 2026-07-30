@@ -523,3 +523,26 @@ qa-interview@valuevade.test / QaInterview2026! (M20-only enrollment, videos comp
 - P2: persist mid-case spreadsheet drafts (case workbook state resets if the learner leaves the case stage before submitting)
 - P2: admin analytics for interview sims (avg scores per stage/firm, offer rate)
 - P3: /admin → /admin-panel redirect (testing agent noted /admin 404s; curriculum tab lives at /admin-panel?tab=curriculum)
+
+## Feb 2026 (Jul 30) — Admin Mock Interviews CRUD tab
+
+Admin can now fully manage the 5 firm interview simulations (`master_interview_sims`) from `/admin-panel?tab=mock` — no more editing `seed_interview_sims.py` for content changes.
+
+### Backend endpoints (all `_ensure_admin` gated)
+- `GET  /api/admin/interview-sims` — list all firms + per-sim `attempts_count`
+- `GET  /api/admin/interview-sims/{id}` — full row for edit
+- `POST /api/admin/interview-sims` — create new firm (unique slug enforced)
+- `PATCH /api/admin/interview-sims/{id}` — partial update any field (firm meta / brand / process / case_config / order_index / is_active)
+- `DELETE /api/admin/interview-sims/{id}[?hard=true]` — default soft (is_active=false, preserves attempts); `?hard=true` cascades via FK
+- `POST /api/admin/interview-sims/{id}/duplicate` — clones with new firm_slug
+- `POST /api/admin/interview-sims/reorder` — batch order_index update
+- `POST /api/admin/interview-sims/rebuild-workbook` — regenerates the Excel case workbook + expected_summary from friendly numeric params (mirrors `seed_interview_sims.build_case_workbook`)
+
+### Frontend — /app/frontend/src/components/admin/MockInterviewsTab.jsx
+- Table view: rank, firm badge, role, location, slug, attempts count, active toggle, edit/duplicate/reorder/delete
+- 5-tab modal editor: Firm • Brand (with color picker + live preview badge) • Rounds (persona + aptitude/behavioural/technical/case configs) • Case Study (markdown brief + friendly params form → Rebuild button → expected FY27 outputs preview) • Raw JSON (advanced escape hatch for brand/process/case_config)
+- Delete flow: modal offers Hide (soft, recommended) vs Hard delete with clear cascade impact + attempts count
+- Data-testids everywhere for automation (`mock-sim-row-*`, `mock-edit-*`, `mock-editor-modal`, `edit-case-*` etc)
+
+### Wired into AdminPanel
+- New tab "Mock Interviews" (Building2 icon) between "View Course" and "AI Customisation"

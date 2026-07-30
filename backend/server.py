@@ -5049,6 +5049,7 @@ try:
         "supabase_get": _supabase_get,
         "supabase_post": _supabase_post,
         "supabase_patch": _supabase_patch,
+        "supabase_delete": _supabase_delete,
         "get_supabase_user": get_supabase_user,
         "emergent_llm_key": EMERGENT_LLM_KEY,
     })

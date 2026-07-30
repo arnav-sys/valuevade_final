@@ -27,8 +27,16 @@ logger = logging.getLogger(__name__)
 _supabase_get = None
 _supabase_post = None
 _supabase_patch = None
+_supabase_delete = None
 _get_supabase_user = None
 _EMERGENT_LLM_KEY = None
+ADMIN_ALLOWED_EMAILS = {"info@valuevade.com"}
+
+
+def _ensure_admin(user: dict):
+    email = (user.get("email") or "").strip().lower()
+    if email not in {e.lower() for e in ADMIN_ALLOWED_EMAILS}:
+        raise HTTPException(status_code=403, detail="Admin access required.")
 
 HAIKU = ("anthropic", "claude-haiku-4-5-20251001")
 SONNET = ("anthropic", "claude-sonnet-4-5-20250929")
@@ -463,10 +471,11 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
 # Router
 # ---------------------------------------------------------------------------
 def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
-    global _supabase_get, _supabase_post, _supabase_patch, _get_supabase_user, _EMERGENT_LLM_KEY
+    global _supabase_get, _supabase_post, _supabase_patch, _supabase_delete, _get_supabase_user, _EMERGENT_LLM_KEY
     _supabase_get = deps["supabase_get"]
     _supabase_post = deps["supabase_post"]
     _supabase_patch = deps["supabase_patch"]
+    _supabase_delete = deps.get("supabase_delete")
     _get_supabase_user = deps["get_supabase_user"]
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
@@ -830,5 +839,307 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         }
         result = await _finalize_attempt({**att, "stage_data": sd}, sim, sd)
         return {"ok": True, "case_study": sd["case_study"], "next_stage": "decision", **result}
+
+    # =========================================================================
+    # ADMIN CRUD — manage the 5 mock interview firms + their content
+    # =========================================================================
+    def _module_id_for_admin() -> str:
+        rows = _supabase_get(
+            "master_modules?is_interview_module=eq.true&select=id&order=order_index.asc&limit=1"
+        ) or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="No interview module found (set master_modules.is_interview_module=true).")
+        return rows[0]["id"]
+
+    def _admin_sim_full(row: dict) -> dict:
+        return {
+            "id": row.get("id"),
+            "module_id": row.get("module_id"),
+            "firm_slug": row.get("firm_slug"),
+            "firm_name": row.get("firm_name"),
+            "firm_type": row.get("firm_type") or "global",
+            "role_title": row.get("role_title"),
+            "location": row.get("location"),
+            "salary_band": row.get("salary_band"),
+            "about_md": row.get("about_md"),
+            "brand": row.get("brand") or {},
+            "process": row.get("process") or {},
+            "case_config": row.get("case_config") or {},
+            "order_index": row.get("order_index") or 1,
+            "is_active": bool(row.get("is_active", True)),
+            "created_at": row.get("created_at"),
+        }
+
+    def _slug_ok(s: str) -> str:
+        s = (s or "").strip().lower()
+        if not _re.fullmatch(r"[a-z0-9][a-z0-9-]{1,63}", s or ""):
+            raise HTTPException(status_code=400, detail="firm_slug must be lowercase letters/digits/dashes (2-64 chars)")
+        return s
+
+    @api_router.get("/admin/interview-sims")
+    async def admin_interview_sims_list(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            "master_interview_sims?select=*&order=order_index.asc&limit=100"
+        ) or []
+        # attach attempt count per sim (for delete-safety warnings)
+        counts = _supabase_get("user_interview_attempts?select=sim_id&limit=10000") or []
+        by_sim: dict[str, int] = {}
+        for c in counts:
+            by_sim[c["sim_id"]] = by_sim.get(c["sim_id"], 0) + 1
+        out = []
+        for r in rows:
+            item = _admin_sim_full(r)
+            item["attempts_count"] = by_sim.get(r["id"], 0)
+            out.append(item)
+        return {"sims": out}
+
+    @api_router.get("/admin/interview-sims/{sim_id}")
+    async def admin_interview_sim_get(sim_id: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}&select=*&limit=1"
+        ) or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="simulation not found")
+        return {"sim": _admin_sim_full(rows[0])}
+
+    @api_router.post("/admin/interview-sims")
+    async def admin_interview_sim_create(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        body = body or {}
+        firm_slug = _slug_ok(body.get("firm_slug"))
+        firm_name = (body.get("firm_name") or "").strip()
+        role_title = (body.get("role_title") or "").strip()
+        if not firm_name or not role_title:
+            raise HTTPException(status_code=400, detail="firm_name and role_title are required")
+
+        # unique slug check
+        existing = _supabase_get(
+            f"master_interview_sims?firm_slug=eq.{_urlparse.quote(firm_slug)}&select=id&limit=1"
+        ) or []
+        if existing:
+            raise HTTPException(status_code=409, detail=f"firm_slug '{firm_slug}' is already taken")
+
+        # compute next order_index
+        all_rows = _supabase_get("master_interview_sims?select=order_index&order=order_index.desc&limit=1") or []
+        next_order = int(body.get("order_index") or ((all_rows[0]["order_index"] + 1) if all_rows else 1))
+
+        payload = {
+            "module_id": body.get("module_id") or _module_id_for_admin(),
+            "firm_slug": firm_slug,
+            "firm_name": firm_name,
+            "firm_type": body.get("firm_type") if body.get("firm_type") in ("global", "india") else "global",
+            "role_title": role_title,
+            "location": body.get("location") or None,
+            "salary_band": body.get("salary_band") or None,
+            "about_md": body.get("about_md") or None,
+            "brand": body.get("brand") or {},
+            "process": body.get("process") or {},
+            "case_config": body.get("case_config") or {},
+            "order_index": next_order,
+            "is_active": bool(body.get("is_active", True)),
+        }
+        row = _supabase_post("master_interview_sims", payload, prefer="return=representation")
+        if isinstance(row, list):
+            row = row[0] if row else None
+        if not row:
+            raise HTTPException(status_code=500, detail="could not create simulation")
+        return {"sim": _admin_sim_full(row)}
+
+    @api_router.patch("/admin/interview-sims/{sim_id}")
+    async def admin_interview_sim_update(sim_id: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        body = body or {}
+        rows = _supabase_get(
+            f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}&select=id,firm_slug&limit=1"
+        ) or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="simulation not found")
+
+        allowed = ("firm_slug", "firm_name", "firm_type", "role_title", "location",
+                   "salary_band", "about_md", "brand", "process", "case_config",
+                   "order_index", "is_active", "module_id")
+        patch: dict = {}
+        for k in allowed:
+            if k in body:
+                patch[k] = body[k]
+
+        if "firm_slug" in patch:
+            new_slug = _slug_ok(patch["firm_slug"])
+            if new_slug != rows[0]["firm_slug"]:
+                dup = _supabase_get(
+                    f"master_interview_sims?firm_slug=eq.{_urlparse.quote(new_slug)}"
+                    f"&id=neq.{_urlparse.quote(sim_id)}&select=id&limit=1"
+                ) or []
+                if dup:
+                    raise HTTPException(status_code=409, detail=f"firm_slug '{new_slug}' is already taken")
+            patch["firm_slug"] = new_slug
+
+        if "firm_type" in patch and patch["firm_type"] not in ("global", "india"):
+            raise HTTPException(status_code=400, detail="firm_type must be 'global' or 'india'")
+        if not patch:
+            raise HTTPException(status_code=400, detail="no fields to update")
+
+        _supabase_patch(f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}", patch)
+        updated = _supabase_get(
+            f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}&select=*&limit=1"
+        ) or []
+        return {"sim": _admin_sim_full(updated[0]) if updated else None}
+
+    @api_router.delete("/admin/interview-sims/{sim_id}")
+    async def admin_interview_sim_delete(sim_id: str, hard: bool = False, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}&select=id&limit=1"
+        ) or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="simulation not found")
+        if hard:
+            if not _supabase_delete:
+                raise HTTPException(status_code=500, detail="delete not available")
+            _supabase_delete(f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}")
+            return {"ok": True, "deleted": True}
+        # soft: deactivate (preserves user attempts)
+        _supabase_patch(f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}",
+                        {"is_active": False})
+        return {"ok": True, "deactivated": True}
+
+    @api_router.post("/admin/interview-sims/{sim_id}/duplicate")
+    async def admin_interview_sim_duplicate(sim_id: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}&select=*&limit=1"
+        ) or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="simulation not found")
+        src = rows[0]
+        new_slug = _slug_ok((body or {}).get("firm_slug") or f"{src['firm_slug']}-copy")
+        dup = _supabase_get(
+            f"master_interview_sims?firm_slug=eq.{_urlparse.quote(new_slug)}&select=id&limit=1"
+        ) or []
+        if dup:
+            raise HTTPException(status_code=409, detail=f"firm_slug '{new_slug}' already exists")
+        all_rows = _supabase_get("master_interview_sims?select=order_index&order=order_index.desc&limit=1") or []
+        next_order = (all_rows[0]["order_index"] + 1) if all_rows else 1
+        payload = {
+            "module_id": src["module_id"],
+            "firm_slug": new_slug,
+            "firm_name": (body or {}).get("firm_name") or f"{src['firm_name']} (copy)",
+            "firm_type": src.get("firm_type") or "global",
+            "role_title": src.get("role_title"),
+            "location": src.get("location"),
+            "salary_band": src.get("salary_band"),
+            "about_md": src.get("about_md"),
+            "brand": src.get("brand") or {},
+            "process": src.get("process") or {},
+            "case_config": src.get("case_config") or {},
+            "order_index": next_order,
+            "is_active": True,
+        }
+        row = _supabase_post("master_interview_sims", payload, prefer="return=representation")
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"sim": _admin_sim_full(row) if row else None}
+
+    @api_router.post("/admin/interview-sims/reorder")
+    async def admin_interview_sim_reorder(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        ids = (body or {}).get("ids") or []
+        if not isinstance(ids, list) or not ids:
+            raise HTTPException(status_code=400, detail="ids (list) required")
+        for i, sim_id in enumerate(ids, start=1):
+            _supabase_patch(f"master_interview_sims?id=eq.{_urlparse.quote(sim_id)}",
+                            {"order_index": i})
+        return {"ok": True, "count": len(ids)}
+
+    @api_router.post("/admin/interview-sims/rebuild-workbook")
+    async def admin_rebuild_workbook(body: dict, user=Depends(_get_supabase_user)):
+        """Rebuild the Excel case workbook from friendly input params.
+        Body: { rev0, growth:[g1,g2,g3], ebitda_margin, dna, interest, tax, shares, exit_pe, company, firm, role }
+        Returns { workbook, expected_summary } — the same shape as the seed script.
+        Admin can preview then save via PATCH."""
+        _ensure_admin(user)
+        b = body or {}
+        try:
+            rev0 = float(b.get("rev0"))
+            growth = [float(g) for g in (b.get("growth") or [])]
+            ebitda_margin = float(b.get("ebitda_margin"))
+            dna = float(b.get("dna"))
+            interest = float(b.get("interest"))
+            tax = float(b.get("tax"))
+            shares = float(b.get("shares"))
+            exit_pe = float(b.get("exit_pe"))
+        except Exception:
+            raise HTTPException(status_code=400, detail="numeric fields required: rev0, growth[3], ebitda_margin, dna, interest, tax, shares, exit_pe")
+        if len(growth) != 3:
+            raise HTTPException(status_code=400, detail="growth must be a 3-item list")
+        firm = (b.get("firm") or "").strip() or "Firm"
+        role = (b.get("role") or "").strip() or "Analyst"
+        company = (b.get("company") or "").strip() or "Company"
+
+        rev = [rev0]
+        for g in growth:
+            rev.append(round(rev[-1] * (1 + g / 100.0), 1))
+        r25, r26, r27 = rev[1], rev[2], rev[3]
+        ebitda27 = round(r27 * ebitda_margin / 100.0, 1)
+        ebit27 = round(ebitda27 - dna, 1)
+        pbt27 = round(ebit27 - interest, 1)
+        pat27 = round(pbt27 * (1 - tax / 100.0), 1)
+        eps27 = round(pat27 / max(shares, 0.0001), 2)
+        tp = round(eps27 * exit_pe, 0)
+
+        ro = {"readOnly": True}
+        rob = {"readOnly": True, "bold": True}
+        cells = {
+            "A1": {"value": f"{company} — FY25E-FY27E Earnings Model", **rob},
+            "A2": {"value": "All figures in ₹ Cr unless stated. Fill the amber cells (use formulas).", **ro},
+            "B4": {"value": "FY24A", **rob}, "C4": {"value": "FY25E", **rob},
+            "D4": {"value": "FY26E", **rob}, "E4": {"value": "FY27E", **rob},
+            "A5": {"value": "Revenue", **rob},
+            "B5": {"value": rev0, **ro},
+            "C5": {"value": "", "expected": r25, "tolerance": 2, "points": 10},
+            "D5": {"value": "", "expected": r26, "tolerance": 2, "points": 10},
+            "E5": {"value": "", "expected": r27, "tolerance": 3, "points": 10},
+            "A6": {"value": "Revenue growth (%)", **ro},
+            "C6": {"value": growth[0], **ro}, "D6": {"value": growth[1], **ro}, "E6": {"value": growth[2], **ro},
+            "A7": {"value": f"EBITDA (@ {ebitda_margin}% margin)", **rob},
+            "E7": {"value": "", "expected": ebitda27, "tolerance": 3, "points": 15},
+            "A8": {"value": "Less: D&A", **ro}, "E8": {"value": dna, **ro},
+            "A9": {"value": "EBIT", **ro},
+            "A10": {"value": "Less: Interest", **ro}, "E10": {"value": interest, **ro},
+            "A11": {"value": "PBT", **ro},
+            "A12": {"value": f"Tax @ {tax}%", **ro},
+            "A13": {"value": "PAT", **rob},
+            "E13": {"value": "", "expected": pat27, "tolerance": 3, "points": 20},
+            "A15": {"value": "Shares outstanding (Cr)", **ro}, "E15": {"value": shares, **ro},
+            "A16": {"value": "FY27E EPS (₹)", **rob},
+            "E16": {"value": "", "expected": eps27, "tolerance": 0.3, "points": 15},
+            "A17": {"value": "Exit P/E multiple (x)", **ro}, "E17": {"value": exit_pe, **ro},
+            "A18": {"value": "Target Price (₹)", **rob},
+            "E18": {"value": "", "expected": tp, "tolerance": 8, "points": 20},
+        }
+        workbook = {
+            "header": {
+                "firm": firm, "role": role, "category": "Live Modelling Test",
+                "instructions": (
+                    f"Build the FY25E-FY27E earnings model for {company}. Amber cells are graded. "
+                    "Use formulas (e.g. =B5*1.12) — the grader checks computed values."
+                ),
+            },
+            "scoring": {"mode": "auto"},
+            "sheets": [{"name": "Model", "rowCount": 26, "colCount": 8, "cells": cells}],
+        }
+        expected_summary = {
+            "rev_fy27": r27, "ebitda_fy27": ebitda27, "pat_fy27": pat27,
+            "eps_fy27": eps27, "target_price": tp, "exit_pe": exit_pe,
+        }
+        return {"workbook": workbook, "expected_summary": expected_summary,
+                "case_params": {
+                    "rev0": rev0, "growth": growth, "ebitda_margin": ebitda_margin,
+                    "dna": dna, "interest": interest, "tax": tax,
+                    "shares": shares, "exit_pe": exit_pe,
+                    "company": company, "firm": firm, "role": role,
+                }}
 
     logger.info("[interview-sim] endpoints registered")
