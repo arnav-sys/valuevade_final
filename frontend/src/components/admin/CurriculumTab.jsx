@@ -239,9 +239,6 @@ export default function CurriculumTab() {
                   <button onClick={(e) => { e.stopPropagation(); setEditingMod(m.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-module-${m.id}`}>
                     <Pencil size={11} />
                   </button>
-                  <button onClick={(e) => { e.stopPropagation(); askDeleteModule(m); }} className="text-[var(--color-text-muted)] hover:text-red-500" data-testid={`delete-module-${m.id}`}>
-                    <Trash2 size={11} />
-                  </button>
                 </div>
               </div>
             </li>
@@ -294,13 +291,6 @@ export default function CurriculumTab() {
               {s.lecture_url && <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] font-mono">🎥</span>}
               <button onClick={(e) => { e.stopPropagation(); setEditingSess(s.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-session-${s.id}`}>
                 <Pencil size={12} />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); setConfirm({ kind: 'session', id: s.id, name: s.title }); }}
-                className="text-[var(--color-text-muted)] hover:text-red-500"
-                data-testid={`delete-session-${s.id}`}
-              >
-                <Trash2 size={12} />
               </button>
             </li>
           ))}
