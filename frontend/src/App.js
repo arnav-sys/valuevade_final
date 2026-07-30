@@ -246,12 +246,10 @@ function App() {
                   <Route path="/interview-sims" element={<Learning><InterviewSimHub /></Learning>} />
                   <Route path="/interview-sim/:attemptId" element={<Learning><InterviewSimPlayer /></Learning>} />
 
-                  {/* Payment routes (temporarily disabled — auto-enrollment
-                      now handles course access without paywall). Any lingering
-                      link to /start, /upgrade or /my-orders redirects to /courses. */}
-                  <Route path="/start" element={<Navigate to="/courses" replace />} />
-                  <Route path="/upgrade" element={<Navigate to="/courses" replace />} />
-                  <Route path="/my-orders" element={<Navigate to="/profile" replace />} />
+                  {/* Payment routes */}
+                  <Route path="/start" element={<ProtectedRoute><EnrollmentChoicePage /></ProtectedRoute>} />
+                  <Route path="/upgrade" element={<ProtectedRoute><UpgradePage /></ProtectedRoute>} />
+                  <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
 
                   {/* 404 catch-all */}
                   <Route path="*" element={<NotFoundPage />} />
