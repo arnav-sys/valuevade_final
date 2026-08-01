@@ -46,6 +46,8 @@ export default function SimulationPage() {
   const [progress, setProgress] = useState({ correct: 0, total: 0 });
   const [saving, setSaving] = useState(false);
   const [submittedScore, setSubmittedScore] = useState(null); // P56: drives Pari post-submit pose
+  const [readyToContinue, setReadyToContinue] = useState(false); // gate the redirect until user clicks Continue
+  const [pendingContinueState, setPendingContinueState] = useState(null);
   const { awardXP } = useXP();
 
   // Track active time on this page → user_stats.total_time_minutes
@@ -120,9 +122,10 @@ export default function SimulationPage() {
     setSubmittedScore(Math.round((accuracy || 0) * 100));
     if (saving) return;
     // In review mode (already completed once) — skip the DB write and just
-    // navigate the user back to the session start page.
+    // let the user review the solution inline. Show Continue button.
     if (session?.simulation_completed) {
-      navigate(`/session/${sessionId}/start`);
+      setPendingContinueState({ tasks_completed, tasks_total, accuracy, review: true });
+      setReadyToContinue(true);
       return;
     }
     setSaving(true);
@@ -155,13 +158,33 @@ export default function SimulationPage() {
           }
         } catch { /* fire-and-forget */ }
       }
-      navigate(`/session/${sessionId}/simulation/complete`, {
-        state: { tasks_completed, tasks_total, accuracy, sim_type: sim?.sim_type, title: sim?.title },
-      });
+      // Bug fix (Jul 30 2026): don't auto-redirect. Save the target state and
+      // surface a "Continue" button so the user can review the score banner +
+      // SolutionReveal panel before advancing to the completion screen.
+      setPendingContinueState({ tasks_completed, tasks_total, accuracy });
+      setReadyToContinue(true);
     } catch (err) {
       console.error('[simulation] save error:', err);
+    } finally {
       setSaving(false);
     }
+  };
+
+  const handleContinue = () => {
+    const st = pendingContinueState || {};
+    if (st.review) {
+      navigate(`/session/${sessionId}/start`);
+      return;
+    }
+    navigate(`/session/${sessionId}/simulation/complete`, {
+      state: {
+        tasks_completed: st.tasks_completed,
+        tasks_total: st.tasks_total,
+        accuracy: st.accuracy,
+        sim_type: sim?.sim_type,
+        title: sim?.title,
+      },
+    });
   };
 
   const isReview = !!session?.simulation_completed;
@@ -350,6 +373,25 @@ export default function SimulationPage() {
             Ask Pari about this simulation
           </button>
         </div>
+
+        {/* Continue button — appears only after submission is complete + saved.
+            Prevents auto-redirect so the user can review the score banner +
+            correct-solution reveal before moving on. */}
+        {readyToContinue && (
+          <div className="mt-4 flex flex-col sm:flex-row items-center justify-center gap-3" data-testid="simulation-continue-block">
+            <p className="text-xs font-mono text-[var(--color-text-muted)] text-center sm:text-left">
+              Take your time reviewing the correct solution above. Click Continue when you&apos;re ready.
+            </p>
+            <button
+              type="button"
+              onClick={handleContinue}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white px-6 py-2.5 text-sm font-semibold font-bricolage hover:brightness-110 shadow-[0_0_24px_rgba(36,107,253,0.35)] transition-all"
+              data-testid="simulation-continue-btn"
+            >
+              Continue to results →
+            </button>
+          </div>
+        )}
       </main>
       {(() => {
         const t = resolveTutorPhase('simulation_intro');

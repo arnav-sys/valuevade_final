@@ -128,16 +128,20 @@ const STYLE_BOLD = 'vv-b';
 
 function canonicalToUniverData(wb) {
   const styles = {
-    [STYLE_HEADER]: { bl: 1, bg: { rgb: '#EDE9FE' }, cl: { rgb: '#312E81' } },
-    [STYLE_RO]: { bg: { rgb: '#F4F5F7' }, cl: { rgb: '#3B4252' } },
+    [STYLE_HEADER]: { bl: 1, bg: { rgb: '#EDE9FE' }, cl: { rgb: '#312E81' }, tb: 3 },
+    [STYLE_RO]: { bg: { rgb: '#F4F5F7' }, cl: { rgb: '#3B4252' }, tb: 3 },
     [STYLE_ANS]: { bg: { rgb: '#FFF4D6' } },
-    [STYLE_BOLD]: { bl: 1 },
+    [STYLE_BOLD]: { bl: 1, tb: 3 },
   };
   const sheets = {};
   const sheetOrder = [];
   wb.sheets.filter((s) => s.kind !== 'pivot').forEach((s, idx) => {
     const id = `vv-sheet-${idx}`;
     const cellData = {};
+    const columnData = {};
+    let maxColUsed = 0;
+    // Track longest string per column so we can widen columns automatically
+    const colLen = {};
     Object.entries(s.cells || {}).forEach(([addr, cell]) => {
       const rc = addrToRC(addr);
       if (!rc) return;
@@ -153,6 +157,18 @@ function canonicalToUniverData(wb) {
       if (out.v === undefined && out.f === undefined && out.s === undefined) return;
       if (!cellData[rc.row]) cellData[rc.row] = {};
       cellData[rc.row][rc.col] = out;
+      if (rc.col > maxColUsed) maxColUsed = rc.col;
+      // Widen the column to fit long text labels (only for string values)
+      if (typeof v === 'string' && !v.startsWith('=')) {
+        const len = v.length;
+        if (!colLen[rc.col] || len > colLen[rc.col]) colLen[rc.col] = len;
+      }
+    });
+    // Set per-column widths based on the longest string in that column
+    // 7px per char + 24px padding, clamped [104, 320]
+    Object.entries(colLen).forEach(([col, len]) => {
+      const width = Math.min(320, Math.max(104, Math.round(len * 7 + 24)));
+      if (width > 104) columnData[col] = { w: width };
     });
     sheets[id] = {
       id,
@@ -160,8 +176,9 @@ function canonicalToUniverData(wb) {
       rowCount: Math.max(s.rowCount || 0, 200),
       columnCount: Math.max(s.colCount || 0, 30),
       cellData,
+      columnData,
       defaultColumnWidth: 104,
-      defaultRowHeight: 24,
+      defaultRowHeight: 28,
     };
     sheetOrder.push(id);
   });
