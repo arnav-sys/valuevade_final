@@ -141,7 +141,7 @@ function Input(props) {
   return (
     <input
       {...props}
-      className={`w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)] ${props.className || ''}`}
+      className={`w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--bg-primary)] text-[var(--color-text)] ${props.className || ''}`}
     />
   );
 }
@@ -150,7 +150,7 @@ function Textarea(props) {
   return (
     <textarea
       {...props}
-      className={`w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)] resize-y font-mono ${props.className || ''}`}
+      className={`w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--bg-primary)] text-[var(--color-text)] resize-y font-mono ${props.className || ''}`}
     />
   );
 }
@@ -279,7 +279,7 @@ export default function MockInterviewsTab() {
         <div className="flex gap-2">
           <button
             onClick={reload}
-            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-hover)]"
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-bg-card-hover)]"
             data-testid="mock-refresh-btn"
           ><RefreshCw size={12} /> Refresh</button>
           <button
@@ -295,7 +295,7 @@ export default function MockInterviewsTab() {
       ) : (
         <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="mock-sims-table">
           <table className="w-full text-sm">
-            <thead className="bg-[var(--color-hover)] text-[10px] uppercase font-mono text-[var(--color-text-muted)]">
+            <thead className="bg-[var(--color-bg-card-hover)] text-[10px] uppercase font-mono text-[var(--color-text-muted)]">
               <tr>
                 <th className="px-3 py-2 text-left w-10">#</th>
                 <th className="px-3 py-2 text-left">Firm</th>
@@ -344,16 +344,16 @@ export default function MockInterviewsTab() {
                   <td className="px-3 py-2">
                     <div className="flex items-center gap-1 justify-end">
                       <button onClick={() => move(idx, -1)} disabled={idx === 0}
-                              className="p-1 rounded hover:bg-[var(--color-hover)] disabled:opacity-30"
+                              className="p-1 rounded hover:bg-[var(--color-bg-card-hover)] disabled:opacity-30"
                               title="Move up" data-testid={`mock-up-${s.firm_slug}`}><ArrowUp size={12}/></button>
                       <button onClick={() => move(idx, 1)} disabled={idx === sims.length - 1}
-                              className="p-1 rounded hover:bg-[var(--color-hover)] disabled:opacity-30"
+                              className="p-1 rounded hover:bg-[var(--color-bg-card-hover)] disabled:opacity-30"
                               title="Move down" data-testid={`mock-down-${s.firm_slug}`}><ArrowDown size={12}/></button>
                       <button onClick={() => openEdit(s)}
-                              className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] text-[var(--color-primary)] hover:bg-[var(--color-hover)]"
+                              className="inline-flex items-center gap-1 px-2 py-1 rounded text-[11px] text-[var(--color-primary)] hover:bg-[var(--color-bg-card-hover)]"
                               data-testid={`mock-edit-${s.firm_slug}`}><Pencil size={11}/> Edit</button>
                       <button onClick={() => duplicate(s)}
-                              className="p-1 rounded hover:bg-[var(--color-hover)] text-[var(--color-text-muted)]"
+                              className="p-1 rounded hover:bg-[var(--color-bg-card-hover)] text-[var(--color-text-muted)]"
                               title="Duplicate" data-testid={`mock-duplicate-${s.firm_slug}`}><Copy size={12}/></button>
                       <button onClick={() => setConfirm({ kind: 'delete', sim: s, hard: false })}
                               className="p-1 rounded hover:bg-red-500/10 text-red-500"
@@ -415,13 +415,13 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" data-testid="mock-editor-modal">
-      <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl">
+      <div className="bg-[var(--color-bg-card)] rounded-xl border border-[var(--color-border)] w-full max-w-5xl max-h-[92vh] flex flex-col shadow-2xl">
         <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--color-border)]">
           <div>
             <p className="text-[10px] uppercase font-mono text-[var(--color-text-muted)]">{isNew ? 'New firm' : 'Editing firm'}</p>
             <h3 className="text-base font-semibold text-[var(--color-text)]">{draft.firm_name || '(unnamed)'} <span className="text-xs font-mono text-[var(--color-text-muted)]">/{draft.firm_slug || '…'}</span></h3>
           </div>
-          <button onClick={onClose} className="p-1.5 rounded hover:bg-[var(--color-hover)]" data-testid="mock-editor-close"><XIcon size={16} /></button>
+          <button onClick={onClose} className="p-1.5 rounded hover:bg-[var(--color-bg-card-hover)]" data-testid="mock-editor-close"><XIcon size={16} /></button>
         </div>
 
         <div className="flex gap-1 px-5 pt-3 border-b border-[var(--color-border)]">
@@ -444,7 +444,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
               <Field label="Firm name"><Input value={draft.firm_name} onChange={(e) => set({ firm_name: e.target.value })} data-testid="edit-firm-name" placeholder="J.P. Morgan" /></Field>
               <Field label="Firm type">
                 <select value={draft.firm_type} onChange={(e) => set({ firm_type: e.target.value })}
-                        className="w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)]"
+                        className="w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--bg-primary)] text-[var(--color-text)]"
                         data-testid="edit-firm-type">
                   <option value="global">🌐 Global bank</option>
                   <option value="india">🇮🇳 Indian firm</option>
@@ -456,7 +456,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
               <Field label="Order index"><Input type="number" value={draft.order_index} onChange={(e) => set({ order_index: parseInt(e.target.value || '1', 10) })} data-testid="edit-order-index" /></Field>
               <Field label="Active">
                 <select value={draft.is_active ? '1' : '0'} onChange={(e) => set({ is_active: e.target.value === '1' })}
-                        className="w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--color-bg)] text-[var(--color-text)]"
+                        className="w-full text-sm px-2.5 py-1.5 rounded-md border border-[var(--color-border)] bg-[var(--bg-primary)] text-[var(--color-text)]"
                         data-testid="edit-active">
                   <option value="1">Active (visible to learners)</option>
                   <option value="0">Hidden</option>
@@ -475,7 +475,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
               <Field label="Accent color (hex)">
                 <div className="flex items-center gap-2">
                   <input type="color" value={draft.brand.accent} onChange={(e) => setBrand({ accent: e.target.value })}
-                         className="h-9 w-14 rounded border border-[var(--color-border)] bg-[var(--color-bg)] cursor-pointer"
+                         className="h-9 w-14 rounded border border-[var(--color-border)] bg-[var(--bg-primary)] cursor-pointer"
                          data-testid="edit-brand-accent-picker" />
                   <Input value={draft.brand.accent} onChange={(e) => setBrand({ accent: e.target.value })} data-testid="edit-brand-accent" />
                 </div>
@@ -485,7 +485,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
                 <Field label="Tagline"><Input value={draft.brand.tagline} onChange={(e) => setBrand({ tagline: e.target.value })} data-testid="edit-brand-tagline" placeholder="Global Investment Bank · New York HQ" /></Field>
               </div>
 
-              <div className="col-span-2 flex items-center gap-3 mt-2 p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-hover)]">
+              <div className="col-span-2 flex items-center gap-3 mt-2 p-4 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card-hover)]">
                 <p className="text-[10px] uppercase font-mono text-[var(--color-text-muted)]">Preview:</p>
                 <span className="inline-flex items-center justify-center w-9 h-9 rounded-md text-xs font-bold text-white"
                       style={{ background: draft.brand.accent || '#666' }}>
@@ -583,7 +583,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
           )}
         </div>
 
-        <div className="flex items-center justify-between px-5 py-3 border-t border-[var(--color-border)] bg-[var(--color-hover)]">
+        <div className="flex items-center justify-between px-5 py-3 border-t border-[var(--color-border)] bg-[var(--color-bg-card-hover)]">
           <p className="text-[10px] text-[var(--color-text-muted)]">
             <AlertTriangle size={11} className="inline mr-1" />
             Changes take effect immediately for learners not currently mid-attempt.
@@ -704,7 +704,7 @@ function CaseEditor({ draft, setCase }) {
         </div>
 
         {Object.keys(summary).length > 0 && (
-          <div className="mt-4 grid grid-cols-3 gap-2 p-3 rounded-md bg-[var(--color-hover)] border border-[var(--color-border)]">
+          <div className="mt-4 grid grid-cols-3 gap-2 p-3 rounded-md bg-[var(--color-bg-card-hover)] border border-[var(--color-border)]">
             <p className="col-span-3 text-[10px] uppercase font-mono text-[var(--color-text-muted)] mb-1">Expected model outputs</p>
             <Stat label="Revenue FY27E" value={`₹${summary.rev_fy27} Cr`} />
             <Stat label="EBITDA FY27E" value={`₹${summary.ebitda_fy27} Cr`} />
@@ -733,7 +733,7 @@ function ConfirmDelete({ sim, hard, onSetHard, onClose, onConfirm }) {
   const hasAttempts = (sim.attempts_count || 0) > 0;
   return (
     <div className="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" data-testid="mock-delete-modal">
-      <div className="bg-[var(--color-card)] rounded-xl border border-[var(--color-border)] w-full max-w-md p-5 shadow-2xl">
+      <div className="bg-[var(--color-bg-card)] rounded-xl border border-[var(--color-border)] w-full max-w-md p-5 shadow-2xl">
         <div className="flex items-start gap-3 mb-4">
           <AlertTriangle className="text-red-500 shrink-0 mt-0.5" size={20} />
           <div>
