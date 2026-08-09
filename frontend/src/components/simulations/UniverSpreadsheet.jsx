@@ -130,7 +130,7 @@ function canonicalToUniverData(wb) {
   const styles = {
     [STYLE_HEADER]: { bl: 1, bg: { rgb: '#EDE9FE' }, cl: { rgb: '#312E81' }, tb: 3 },
     [STYLE_RO]: { bg: { rgb: '#F4F5F7' }, cl: { rgb: '#3B4252' }, tb: 3 },
-    [STYLE_ANS]: { bg: { rgb: '#FFF4D6' } },
+    [STYLE_ANS]: { bg: { rgb: '#FFF4D6' }, tb: 3 },
     [STYLE_BOLD]: { bl: 1, tb: 3 },
   };
   const sheets = {};
@@ -139,9 +139,11 @@ function canonicalToUniverData(wb) {
     const id = `vv-sheet-${idx}`;
     const cellData = {};
     const columnData = {};
-    let maxColUsed = 0;
+    const rowData = {};
     // Track longest string per column so we can widen columns automatically
     const colLen = {};
+    // Track the longest string in each row so we can grow row height for wrapped text
+    const rowLen = {};
     Object.entries(s.cells || {}).forEach(([addr, cell]) => {
       const rc = addrToRC(addr);
       if (!rc) return;
@@ -157,11 +159,11 @@ function canonicalToUniverData(wb) {
       if (out.v === undefined && out.f === undefined && out.s === undefined) return;
       if (!cellData[rc.row]) cellData[rc.row] = {};
       cellData[rc.row][rc.col] = out;
-      if (rc.col > maxColUsed) maxColUsed = rc.col;
       // Widen the column to fit long text labels (only for string values)
       if (typeof v === 'string' && !v.startsWith('=')) {
         const len = v.length;
         if (!colLen[rc.col] || len > colLen[rc.col]) colLen[rc.col] = len;
+        if (!rowLen[rc.row] || len > rowLen[rc.row]) rowLen[rc.row] = len;
       }
     });
     // Set per-column widths based on the longest string in that column
@@ -170,6 +172,17 @@ function canonicalToUniverData(wb) {
       const width = Math.min(320, Math.max(104, Math.round(len * 7 + 24)));
       if (width > 104) columnData[col] = { w: width };
     });
+    // Grow row heights when a row has a long wrapped string that won't fit in
+    // a single 28px line. Assumes 40 chars/line at width 320, ~20px per line.
+    Object.entries(rowLen).forEach(([row, len]) => {
+      if (len <= 40) return;
+      const col = Object.keys(colLen).find((c) => colLen[c] === len);
+      const colW = col && columnData[col]?.w ? columnData[col].w : 104;
+      const charsPerLine = Math.max(12, Math.floor((colW - 16) / 7));
+      const lines = Math.min(6, Math.ceil(len / charsPerLine));
+      const h = Math.min(140, Math.max(28, 20 * lines + 8));
+      if (h > 28) rowData[row] = { h, hd: 0 };
+    });
     sheets[id] = {
       id,
       name: s.name,
@@ -177,6 +190,7 @@ function canonicalToUniverData(wb) {
       columnCount: Math.max(s.colCount || 0, 30),
       cellData,
       columnData,
+      rowData,
       defaultColumnWidth: 104,
       defaultRowHeight: 28,
     };
