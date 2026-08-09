@@ -13,6 +13,7 @@ committee report uses Sonnet 4.5.
 from __future__ import annotations
 
 import asyncio
+import time as _time
 import json as _json
 import logging
 import re as _re
@@ -111,6 +112,13 @@ def _get_attempt_owned(attempt_id: str, user_id: str) -> dict:
 
 def _patch_attempt(attempt_id: str, patch: dict):
     _supabase_patch(f"user_interview_attempts?id=eq.{_urlparse.quote(attempt_id)}", patch)
+
+
+def _get_attempt(attempt_id: str) -> dict:
+    rows = _supabase_get(
+        f"user_interview_attempts?id=eq.{_urlparse.quote(attempt_id)}&select=*&limit=1"
+    ) or []
+    return rows[0] if rows else {}
 
 
 def _interview_module_gate(user_id: str) -> dict:
@@ -620,16 +628,61 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         cfg = _stage_cfg(sim, "aptitude")
         sd = att.get("stage_data") or {}
         apt = sd.get("aptitude") or {}
-        if not apt.get("questions"):
-            questions = await _generate_aptitude(sim, attempt_id)
-            apt = {"questions": questions, "started_at": _now_iso()}
+
+        # Fast path: questions already generated.
+        if apt.get("questions"):
+            public_qs = [{k: v for k, v in q.items() if k not in ("correct_index", "explanation")}
+                         for q in apt["questions"]]
+            return {
+                "questions": public_qs,
+                "started_at": apt["started_at"],
+                "time_limit_minutes": int(cfg.get("time_limit_minutes") or 15),
+                "pass_pct": int(cfg.get("pass_pct") or 40),
+            }
+
+        # Slow path: LLM generation takes ~30-45s which trips the ingress 30s
+        # timeout (520 error). Fire the work in a background task and let the
+        # frontend poll this same endpoint every few seconds.
+        gen_started_at = apt.get("_gen_started_at")
+        now_ts = _time.time()
+        # Restart the task if the previous one stalled for >120s
+        should_start = not gen_started_at or (now_ts - float(gen_started_at)) > 120
+
+        if should_start:
+            apt["_gen_started_at"] = now_ts
             sd["aptitude"] = apt
             _patch_attempt(attempt_id, {"stage_data": sd})
-        public_qs = [{k: v for k, v in q.items() if k not in ("correct_index", "explanation")}
-                     for q in apt["questions"]]
+
+            async def _bg_generate():
+                try:
+                    questions = await _generate_aptitude(sim, attempt_id)
+                    # Re-fetch to avoid clobbering concurrent writes.
+                    fresh = _get_attempt(attempt_id)
+                    fsd = fresh.get("stage_data") or {}
+                    fapt = fsd.get("aptitude") or {}
+                    fapt["questions"] = questions
+                    fapt["started_at"] = _now_iso()
+                    fapt.pop("_gen_started_at", None)
+                    fsd["aptitude"] = fapt
+                    _patch_attempt(attempt_id, {"stage_data": fsd})
+                except Exception as exc:
+                    logger.exception("[interview-sim] background aptitude gen failed: %s", exc)
+                    fresh = _get_attempt(attempt_id) or {}
+                    fsd = fresh.get("stage_data") or {}
+                    fapt = fsd.get("aptitude") or {}
+                    fapt.pop("_gen_started_at", None)
+                    fapt["_gen_error"] = str(exc)[:200]
+                    fsd["aptitude"] = fapt
+                    try:
+                        _patch_attempt(attempt_id, {"stage_data": fsd})
+                    except Exception:
+                        pass
+
+            asyncio.create_task(_bg_generate())
+
         return {
-            "questions": public_qs,
-            "started_at": apt["started_at"],
+            "pending": True,
+            "poll_seconds": 3,
             "time_limit_minutes": int(cfg.get("time_limit_minutes") or 15),
             "pass_pct": int(cfg.get("pass_pct") or 40),
         }

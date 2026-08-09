@@ -36,7 +36,28 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
   const start = async () => {
     setStarting(true);
     try {
-      const r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/aptitude/start`, { method: 'POST' });
+      // The backend generates the 12 aptitude questions via an LLM which
+      // takes ~30-45s — too slow for a single HTTP request (ingress 520).
+      // Poll until questions are ready (max ~90s).
+      let r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/aptitude/start`, { method: 'POST' });
+      const pollMs = Math.max(1500, (r?.poll_seconds || 3) * 1000);
+      let waited = 0;
+      while (r?.pending && waited < 120000) {
+        await new Promise((res) => setTimeout(res, pollMs));
+        waited += pollMs;
+        try {
+          r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/aptitude/start`, { method: 'POST' });
+        } catch (e) {
+          // Ignore transient failures during polling; keep trying.
+          console.warn('[aptitude] poll failed, retrying:', e?.message);
+        }
+      }
+      if (r?.pending) {
+        throw new Error("Questions took too long to generate. Please try again.");
+      }
+      if (!r?.questions?.length) {
+        throw new Error("Could not load questions. Please try again.");
+      }
       setTest(r);
     } catch (e) {
       toast.error(e.message);

@@ -1,0 +1,22 @@
+{
+  "summary": "Verified bug fix for aptitude test 520 timeout. Full flow tested: login as mocktest@valuevade.test → interview-sims → Apply to J.P. Morgan → fill application form (why_firm, why_er, achievement, cover_note) → submit → advance to aptitude stage → click 'Start the timed test'. UI showed 'Preparing your test…' for ~15-18s while frontend polled POST /api/interview-sim/attempt/{id}/aptitude/start every 3s (5 polls observed, all 200 OK). At ~18s the 12 aptitude questions rendered fully with 4 options each and a live 15:00 countdown timer (observed 14:58). No 520, no 'Request failed' toast, no error banner anywhere. Regression checks: application submission worked (POST /application returned 200 with recruiter feedback), aptitude UI is interactive (question cards, options visible).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Aptitude options rendered as styled div/button elements without a data-testid pattern like 'aptitude-option-*'. Adding data-testids on option buttons and the timer would improve automated coverage of the aptitude flow."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (skipped per request)", "frontend": "100%" },
+  "test_credentials": "mocktest@valuevade.test / MockTest2026!",
+  "seed_data_creation": "None. Used existing test user; a new interview_attempt (9e730ce6-813d-4513-a847-43d74d22cabf) was auto-created via 'Apply now'.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Bug fix for aptitude 520 timeout confirmed working end-to-end. Polling pattern: frontend hits POST /api/interview-sim/attempt/{id}/aptitude/start every ~3s until response includes questions. Observed ~18s from click to questions rendered. Attempt id used: 9e730ce6-813d-4513-a847-43d74d22cabf (now at aptitude stage with 12 questions loaded). If retesting, mocktest user already has an in-progress aptitude attempt — start button won't show; either resume via /interview-sim/{id} or clear interview_attempts first.",
+  "rca of the issue": "Original 520 was ingress 30s timeout because /aptitude/start did LLM MCQ generation synchronously (30-45s). Fix (verified): backend fires asyncio.create_task(_bg_generate) and returns {pending: true, poll_seconds: 3} immediately; frontend AptitudeStage.jsx polls same endpoint every 3s (timeout 120s) until questions array is returned. Duplicate task guard via _gen_started_at timestamp (retry after 120s)."
+}
