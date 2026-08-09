@@ -135,30 +135,31 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
   }
 
   // ---------------- Test view ----------------
-  if (test) {
+  if (test && Array.isArray(test.questions) && test.questions.length > 0) {
     const answered = Object.keys(answers).length;
+    const qs = test.questions;
     return (
       <div className="space-y-4" data-testid="aptitude-test">
         <div className="sticky top-2 z-20 glass-card rounded-xl px-4 py-3 flex items-center justify-between backdrop-blur-xl">
           <span className="text-xs font-mono text-[var(--color-text-muted)]" data-testid="aptitude-progress">
-            {answered}/{test.questions.length} answered
+            {answered}/{qs.length} answered
           </span>
           <span className={`inline-flex items-center gap-1.5 font-mono text-sm font-bold ${secondsLeft != null && secondsLeft < 120 ? 'text-red-400 animate-pulse' : 'text-[var(--color-text)]'}`} data-testid="aptitude-timer">
             <Timer size={14} /> {secondsLeft != null ? fmt(secondsLeft) : '--:--'}
           </span>
         </div>
 
-        {test.questions.map((q, i) => (
+        {qs.map((q, i) => (
           <div key={i} className="glass-card rounded-2xl p-5" data-testid={`aptitude-q-${i}`}>
             <div className="flex items-start gap-3 mb-3">
               <span className="text-[10px] font-mono text-[var(--color-text-faint)] mt-1 shrink-0">Q{i + 1}</span>
               <div className="flex-1">
-                <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{q.q}</p>
-                <span className="text-[9px] font-mono uppercase tracking-wider text-[var(--color-text-faint)]">{q.topic}</span>
+                <p className="text-sm font-bricolage text-[var(--color-text)] leading-relaxed">{q?.q || ''}</p>
+                <span className="text-[9px] font-mono uppercase tracking-wider text-[var(--color-text-faint)]">{q?.topic || ''}</span>
               </div>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {q.options.map((opt, oi) => (
+              {(Array.isArray(q?.options) ? q.options : []).map((opt, oi) => (
                 <button
                   key={oi}
                   type="button"
@@ -179,9 +180,9 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
         ))}
 
         <div className="flex items-center justify-between gap-3 pt-2">
-          {answered < test.questions.length && (
+          {answered < qs.length && (
             <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-500">
-              <AlertTriangle size={12} /> {test.questions.length - answered} unanswered
+              <AlertTriangle size={12} /> {qs.length - answered} unanswered
             </span>
           )}
           <button
@@ -228,7 +229,7 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
 
 function ReviewAccordion({ review }) {
   const [open, setOpen] = useState(false);
-  if (!review?.length) return null;
+  if (!Array.isArray(review) || review.length === 0) return null;
   return (
     <div className="rounded-xl border border-[var(--color-border)] overflow-hidden">
       <button
@@ -241,23 +242,28 @@ function ReviewAccordion({ review }) {
       </button>
       {open && (
         <div className="divide-y divide-[var(--color-border)]" data-testid="aptitude-review-list">
-          {review.map((r, i) => (
-            <div key={i} className="px-4 py-3">
-              <div className="flex items-start gap-2">
-                {r.correct
-                  ? <CheckCircle2 size={14} className="text-[var(--color-success)] mt-0.5 shrink-0" />
-                  : <XCircle size={14} className="text-red-400 mt-0.5 shrink-0" />}
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-bricolage text-[var(--color-text)]">{r.q}</p>
-                  <p className="text-[11px] font-mono text-[var(--color-text-muted)] mt-1">
-                    Your answer: {r.given_index != null ? r.options[r.given_index] : '—'}
-                    {!r.correct && <> · Correct: <span className="text-[var(--color-success)]">{r.options[r.correct_index]}</span></>}
-                  </p>
-                  {r.explanation && <p className="text-[11px] text-[var(--color-text-faint)] mt-0.5">{r.explanation}</p>}
+          {review.map((r, i) => {
+            const opts = Array.isArray(r?.options) ? r.options : [];
+            const givenLabel = r?.given_index != null && opts[r.given_index] != null ? opts[r.given_index] : '—';
+            const correctLabel = r?.correct_index != null && opts[r.correct_index] != null ? opts[r.correct_index] : '—';
+            return (
+              <div key={i} className="px-4 py-3">
+                <div className="flex items-start gap-2">
+                  {r?.correct
+                    ? <CheckCircle2 size={14} className="text-[var(--color-success)] mt-0.5 shrink-0" />
+                    : <XCircle size={14} className="text-red-400 mt-0.5 shrink-0" />}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bricolage text-[var(--color-text)]">{r?.q || ''}</p>
+                    <p className="text-[11px] font-mono text-[var(--color-text-muted)] mt-1">
+                      Your answer: {givenLabel}
+                      {!r?.correct && <> · Correct: <span className="text-[var(--color-success)]">{correctLabel}</span></>}
+                    </p>
+                    {r?.explanation && <p className="text-[11px] text-[var(--color-text-faint)] mt-0.5">{r.explanation}</p>}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

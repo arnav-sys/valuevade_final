@@ -1,0 +1,32 @@
+{
+  "summary": "Verified bug fix: clicking 'Start the timed test' (aptitude-start-btn) on the JPM aptitude intro NO LONGER crashes with the 'A glitch in the cosmos' React error boundary. Flow tested end-to-end as mocktest@valuevade.test → /interview-sims → Resume JPM → filled application (4 textareas, 30+ chars each) → submitted → Application Shortlisted screen → Continue to Online Aptitude Test → aptitude-intro → clicked aptitude-start-btn. Button correctly flipped to 'Preparing your test…' spinner and remained in that state during 5 polling POSTs to /api/interview-sim/attempt/{id}/aptitude/start (all 200 OK). Test view rendered at ~18s with all 12 questions, 48 option buttons (12x4), timer counting down from 14:59, and Submit test button present. Clicked Q1 option A and progress correctly updated 0/12 → 1/12. NO React error boundary, NO whole-page crash, NO toast error observed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AptitudeStage.jsx guards are correctly in place: test-view branch is gated by `test && Array.isArray(test.questions) && test.questions.length > 0`; per-question options use `Array.isArray(q?.options) ? q.options : []`; ReviewAccordion is guarded by `Array.isArray(review)` and per-row `Array.isArray(r?.options)` with null-safe correct/given lookups. The prior crash on `.length` of undefined is no longer reachable.",
+    "Polling loop (lines 42-57) is clean: max ~120s cap, catches transient failures with warn+retry, and throws user-visible errors that surface as toast (never as an uncaught render error).",
+    "Auto-submit useEffect (line 90-93) correctly guards on submittedRef to prevent double submissions."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (skipped per request)", "frontend": "100%"},
+  "test_credentials": "mocktest@valuevade.test / MockTest2026! — JPM attempt 4ff805da-88d7-4f68-8ab2-98c7dffe7904 is currently past the application stage (shortlisted, on aptitude-test stage in progress — questions have been generated and one answer recorded). Attempts used remains 1/2.",
+  "seed_data_creation": "Did NOT re-run seed script (would wipe prior state). The JPM attempt was already at application stage from earlier iteration; testing advanced it to aptitude-test stage.",
+  "measurements": {
+    "poll_calls_observed": 5,
+    "time_to_questions_seconds": 18,
+    "questions_rendered": 12,
+    "option_buttons_rendered": 48,
+    "timer_started_at": "14:59",
+    "crashes_observed": 0,
+    "toasts_error": null
+  },
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Aptitude start bug is fully fixed. Flow verified end-to-end. If retesting the fresh-attempt path is needed, re-run /app/scripts/seed_mock_test_user.py to wipe user_interview_attempts (idempotent). Current mocktest JPM attempt (4ff805da-88d7-4f68-8ab2-98c7dffe7904) has an in-progress aptitude test with 1/12 answered."
+}
