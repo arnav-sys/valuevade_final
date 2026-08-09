@@ -368,11 +368,13 @@ export default function UniverSpreadsheet({
 
     // BUG FIX (Aug 2026): When Univer's canvas mounts / grabs focus, the
     // browser's default focus() call scrolls the container into view,
-    // yanking the outer page upward. We monkey-patch focus() on every
-    // element inside the container to always pass { preventScroll: true },
-    // and add scroll-anchoring off so subsequent DOM growth doesn't nudge
-    // the viewport either. The patch is scoped to this instance and torn
-    // down when the component unmounts.
+    // yanking the outer page upward. When a user types in a cell, Univer
+    // also mounts a floating cell-editor input which either calls
+    // element.scrollIntoView() or focus() again — pushing the outer page
+    // in either direction. We monkey-patch BOTH focus() and scrollIntoView()
+    // on every element inside the container to be scroll-safe, and add
+    // scroll-anchoring off so DOM growth doesn't nudge the viewport either.
+    // Scoped to this instance and torn down when the component unmounts.
     container.style.overflowAnchor = 'none';
     const patchedElements = new WeakSet();
     const patchFocus = (el) => {
@@ -382,6 +384,15 @@ export default function UniverSpreadsheet({
       if (typeof originalFocus === 'function') {
         el.focus = function scrollSafeFocus(opts) {
           return originalFocus.call(this, { ...(opts || {}), preventScroll: true });
+        };
+      }
+      // Turn scrollIntoView into a no-op so Univer's cell editor cannot
+      // push the outer page around. Univer's grid rendering uses its own
+      // canvas coordinates — this DOM method is safe to neutralize.
+      const originalSIV = el.scrollIntoView;
+      if (typeof originalSIV === 'function') {
+        el.scrollIntoView = function scrollSafeSIV() {
+          // no-op
         };
       }
     };
@@ -400,6 +411,37 @@ export default function UniverSpreadsheet({
       }
     });
     mo.observe(container, { subtree: true, childList: true });
+
+    // Freeze the outer scroll position for a few seconds after mount and
+    // whenever a Univer input inside the container gets focus. This is a
+    // last-resort belt against edge cases where a Univer sub-component
+    // bypasses the DOM methods we patched above (e.g. by using
+    // window.scrollTo directly) and yanks the page around.
+    let savedScroll = window.scrollY;
+    const snapshotScroll = () => { savedScroll = window.scrollY; };
+    const restoreScroll = () => {
+      if (Math.abs(window.scrollY - savedScroll) > 4) {
+        window.scrollTo({ top: savedScroll, left: window.scrollX, behavior: 'auto' });
+      }
+    };
+    // Watch for focusin events INSIDE our container — snapshot before,
+    // schedule a restore right after (in case Univer scrolls on focus).
+    const onFocusIn = () => {
+      snapshotScroll();
+      // Restore over the next few frames to catch async scrolls.
+      requestAnimationFrame(restoreScroll);
+      setTimeout(restoreScroll, 50);
+      setTimeout(restoreScroll, 200);
+    };
+    container.addEventListener('focusin', onFocusIn, true);
+    // Also snapshot on any 'input' event (typing) — Univer's cell editor
+    // fires these. If the outer page has drifted from our snapshot, it's
+    // Univer that moved it, so we restore.
+    const onInput = () => {
+      requestAnimationFrame(restoreScroll);
+    };
+    container.addEventListener('input', onInput, true);
+    container.addEventListener('keydown', onInput, true);
 
     let disposed = false;
     const disposers = [];
@@ -527,6 +569,11 @@ export default function UniverSpreadsheet({
     return () => {
       disposed = true;
       try { mo.disconnect(); } catch { /* noop */ }
+      try {
+        container.removeEventListener('focusin', onFocusIn, true);
+        container.removeEventListener('input', onInput, true);
+        container.removeEventListener('keydown', onInput, true);
+      } catch { /* noop */ }
       disposers.forEach((d) => { try { d?.dispose?.(); } catch { /* noop */ } });
       try { univer?.dispose(); } catch { /* noop */ }
       apiRef.current = null;
