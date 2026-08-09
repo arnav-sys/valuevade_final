@@ -365,6 +365,42 @@ export default function UniverSpreadsheet({
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return undefined;
+
+    // BUG FIX (Aug 2026): When Univer's canvas mounts / grabs focus, the
+    // browser's default focus() call scrolls the container into view,
+    // yanking the outer page upward. We monkey-patch focus() on every
+    // element inside the container to always pass { preventScroll: true },
+    // and add scroll-anchoring off so subsequent DOM growth doesn't nudge
+    // the viewport either. The patch is scoped to this instance and torn
+    // down when the component unmounts.
+    container.style.overflowAnchor = 'none';
+    const patchedElements = new WeakSet();
+    const patchFocus = (el) => {
+      if (!el || patchedElements.has(el)) return;
+      patchedElements.add(el);
+      const originalFocus = el.focus;
+      if (typeof originalFocus === 'function') {
+        el.focus = function scrollSafeFocus(opts) {
+          return originalFocus.call(this, { ...(opts || {}), preventScroll: true });
+        };
+      }
+    };
+    const patchTree = (root) => {
+      if (!root) return;
+      patchFocus(root);
+      const nodes = root.querySelectorAll ? root.querySelectorAll('*') : [];
+      nodes.forEach(patchFocus);
+    };
+    patchTree(container);
+    const mo = new MutationObserver((records) => {
+      for (const rec of records) {
+        rec.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) patchTree(node);
+        });
+      }
+    });
+    mo.observe(container, { subtree: true, childList: true });
+
     let disposed = false;
     const disposers = [];
     let univer = null;
@@ -490,6 +526,7 @@ export default function UniverSpreadsheet({
     }
     return () => {
       disposed = true;
+      try { mo.disconnect(); } catch { /* noop */ }
       disposers.forEach((d) => { try { d?.dispose?.(); } catch { /* noop */ } });
       try { univer?.dispose(); } catch { /* noop */ }
       apiRef.current = null;
