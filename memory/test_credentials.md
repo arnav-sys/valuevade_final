@@ -1,3 +1,19 @@
+# 2026-07-30 — Mock Interview only test account (fresh seed)
+
+Account: **mocktest@valuevade.test** / **MockTest2026!**
+
+State:
+- Auth user + profile created (full_name = "Mock Interview Tester")
+- `user_payment_status` = paid, pricing_tier=upfront (no paywall)
+- Enrollment `32d75a34-fa37-41ae-8f66-cf74145ba9b2` on the ER path
+- ONLY M20 (Mock Interview Mastery) in `user_modules` (uid c1560559-4741-4ecc-b971-3c42bc5090cd) — no other module clutter
+- All 3 M20 sessions marked notes+quiz+simulation complete → interview simulations unlocked immediately on login
+- No prior `user_interview_attempts` — fresh state for a complete run
+
+Login → Dashboard should show ONLY the "Mock Interview" module. Clicking it goes straight to the Interview Hub with all 5 firms (JPM, MS, GS, Motilal Oswal, Kotak) ready to attempt.
+
+Re-seed with: `python3 /app/scripts/seed_mock_test_user.py` (idempotent, safe to re-run)
+
 # 2026-06-26 update (Excel sim / Univer)
 - testagent2026's user_session `7b6958fc-e468-427a-b4cd-514ebe8d4cfd`
   (M1 "Navigate the Grid: TCS Quarterly Data Entry", master_session

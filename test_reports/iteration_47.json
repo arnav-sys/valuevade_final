@@ -1,0 +1,39 @@
+{
+  "summary": "Frontend-only QA of the fresh Mock Interview test user (mocktest@valuevade.test). Ran /app/scripts/seed_mock_test_user.py to (re)provision the account. Verified all 4 requested test scenarios end-to-end via Playwright. All 4 scenarios PASS. Only Module 20 renders on the dashboard, the /interview-sims hub renders all 5 firm cards with correct data-testids, and clicking Apply on J.P. Morgan loads the Application stage form (4 fields) with no eligibility block. Attempt shown as 1/2 (consistent with retries_left=1).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "InterviewSimHub",
+        "issue": "Intermittent: when arriving on /interview-sims via the dashboard 'Enter the Careers Portal' CTA immediately after dismissing the Pari welcome modal + daily-goal modal, the hub remained stuck on the 'Loading careers portal…' state (data-testid=hub-loading) even though /api/interview-sim/overview returned 200 with full payload. Reloading / direct navigation to /interview-sims rendered the 5 firm cards correctly. Suggests a race with auth/session hydration in interviewSimFetch (Bearer token could be empty on first mount if supabase.auth.getSession() resolves after the effect fires). Repro'd once during test; recovered on direct navigation.",
+        "selector": "[data-testid=\"hub-loading\"]",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Investigate the intermittent 'Loading careers portal…' hang on /interview-sims when navigating from the dashboard CTA right after modal dismissals. Consider awaiting supabase session hydration before firing the overview fetch, or adding a retry-on-mount if data is null and no error after N seconds.",
+    "Optional: expose a 'skip Pari welcome' behaviour for QA / testing accounts, or auto-close on route change, so hub navigation flow is deterministic."
+  ],
+  "critical_code_review_comments": [
+    "InterviewSimHub.jsx effect fires interviewSimFetch on mount without gating on auth session readiness. If supabase.auth.getSession() returns null token, request goes out as `Bearer ` (empty) and would 401; the component currently sets error on failure but our repro showed neither data nor error state — worth adding a defensive timeout / retry.",
+    "Overview response is large due to embedded per-firm about_md and case company_blur; consider trimming or lazy-loading heavy strings so hub first paint is faster.",
+    "Seed script correctly restricts dashboard to M20 only and marks all 3 sessions complete; module_completed still shows false in overview (videos_done=3/3 but module_completed=false). Since unlocked=true is what actually gates the hub, this is not blocking, but the flag is inconsistent."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (not tested per request)", "frontend": "100% (4/4 required scenarios pass)"},
+  "test_credentials": "mocktest@valuevade.test / MockTest2026!",
+  "seed_data_creation": "Ran /app/scripts/seed_mock_test_user.py — idempotent. Confirmed auth user, profile, paid payment_status, enrollment (32d75a34-fa37-41ae-8f66-cf74145ba9b2), single M20 user_module (c1560559-4741-4ecc-b971-3c42bc5090cd), and 3 M20 sessions marked complete. Prior interview attempts cleared.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "All 5 firm cards use data-testid=firm-card-<slug> where slug is one of: jpmorgan, morganstanley, goldmansachs, motilaloswal, kotak. Apply button is firm-apply-<slug>. Application stage exposes application-field-why_firm / why_er / achievement / cover_note and application-submit-btn. To reach hub reliably, go DIRECTLY to /interview-sims after login rather than clicking the dashboard CTA (the CTA path had a one-off loading hang). API /api/interview-sim/overview returns unlocked=true, sims_completed=0/5, attempts_used=0 attempts_left=2 for every firm.",
+  "verified_scenarios": [
+    "Login flow: /login accepts credentials, redirects to /dashboard without paywall.",
+    "Dashboard shows ONLY Module 20 (EQUITY RESEARCH INTERVIEW MASTERY, 3/3). constellation-node-* has only M20; dashboard-module-* count = 2 (dashboard-module-timeline + dashboard-module-20). No M1..M19 present.",
+    "Interview Hub renders all 5 firm cards (JPM/MS/GS/MO/KIE) each with 'NOT APPLIED' status chip and 'Apply now' CTA. Attempts state: 0 used, 2 total per firm.",
+    "Clicking Apply on J.P. Morgan navigates to /interview-sim/<attempt_id> with Application stage form (why_firm, why_er, achievement, cover_note textareas + application-submit-btn). Attempt 1/2. No eligibility / 'Complete other modules first' error."
+  ]
+}
