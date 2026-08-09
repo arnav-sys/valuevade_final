@@ -1,0 +1,22 @@
+{
+  "summary": "Verified aptitude no longer terminates the interview flow. Logged in as mocktest@valuevade.test, applied to J.P. Morgan (attempt eabfed6f-7f9d-495f-9500-ce85a63d6f28), submitted application form (why_firm, why_er, achievement, cover_note), advanced to aptitude intro, started test (polled ~15s), deliberately scored 0/12 by answering only 2 questions with option A. On the result screen: pill correctly shows 'Round complete' (rendered uppercase via CSS but source string is 'Round complete'), score is 0% (0/12), sub-copy reads 'Score recorded. Final decision revealed after all rounds.', NO 'Below cutoff' / 'Cutoff cleared' text, CTA button reads exactly 'Continue to HR Interview' (NOT 'See the final decision'). Clicking Continue advanced to the HR / Behavioural round with the interviewer question rendered and a 0/4-answered progress indicator — did NOT jump to any decision/rejection screen. Pre-test intro copy verified to say 'Reference score: 40%. Your score is recorded — the final selection decision is revealed after all rounds are complete' with no terminal 'Score below it and this process ends here' wording. All 3 behaviour verifications and the regression check pass.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "AptitudeStage.jsx result view still keeps 'passed' semantics implicitly (backend still returns `passed`). Consider removing unused `passed` from the response payload later since UI no longer branches on it, to avoid confusion for future maintainers.",
+    "The 'Continue to Online Aptitude Test' interstitial button after application submit does not appear to have a dedicated data-testid — adding one (e.g. `application-continue-btn`) would tighten automated coverage between stages."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "n/a (skipped per request)", "frontend": "100%" },
+  "test_credentials": "mocktest@valuevade.test / MockTest2026!",
+  "seed_data_creation": "Used existing attempt eabfed6f-7f9d-495f-9500-ce85a63d6f28 which is now at behavioural stage after this run.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The mocktest user's J.P. Morgan attempt (eabfed6f-7f9d-495f-9500-ce85a63d6f28) is now progressed to the HR/behavioural stage after a 0% aptitude score. If retesting the aptitude→behavioural transition, either wipe the attempt or create a new firm attempt. Data-testids used successfully: firm-apply-jpmorgan, application-field-{why_firm|why_er|achievement|cover_note}, application-submit-btn, aptitude-intro, aptitude-start-btn, aptitude-test, aptitude-q-{i}-opt-{oi}, aptitude-submit-btn, aptitude-result, aptitude-score, aptitude-continue-btn. Note: pill text is CSS-uppercased via tailwind `uppercase` class — assert on lowercase 'Round complete' by reading source (data-testid=aptitude-result contains it), not on inner_text."
+}

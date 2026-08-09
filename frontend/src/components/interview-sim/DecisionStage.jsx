@@ -29,7 +29,6 @@ export default function DecisionStage({ attempt, sim }) {
           <strong className="text-[var(--color-text)]" data-testid="decision-final-score">
             {decision.final_score ?? attempt.final_score}/100
           </strong>
-          {decision.rejected_at === 'aptitude' && ' · process ended at the online aptitude test'}
         </p>
       </div>
 

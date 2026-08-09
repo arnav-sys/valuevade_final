@@ -95,16 +95,20 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
   // ---------------- Result view ----------------
   if (result) {
     const apt = result.aptitude;
-    const passed = result.passed;
+    // NOTE: score is informational only — the final selection verdict is
+    // shown after ALL rounds. Every candidate advances to HR Interview.
     return (
       <div className="glass-card rounded-2xl p-6 sm:p-8" data-testid="aptitude-result">
-        <div className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] mb-4 ${passed ? 'bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)]' : 'bg-red-500/10 border border-red-500/25 text-red-400'}`}>
-          {passed ? <CheckCircle2 size={12} /> : <XCircle size={12} />}
-          {passed ? 'Cutoff cleared' : 'Below cutoff'}
+        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-[0.2em] mb-4 bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/25 text-[var(--color-primary)]">
+          <CheckCircle2 size={12} />
+          Round complete
         </div>
         <h2 className="font-clash text-2xl font-bold text-[var(--color-text)] mb-1" data-testid="aptitude-score">
-          {apt.score_pct}% <span className="text-base font-bricolage text-[var(--color-text-muted)] font-normal">({apt.correct}/{apt.total} correct · cutoff {meta.pass_pct || 40}%)</span>
+          {apt.score_pct}% <span className="text-base font-bricolage text-[var(--color-text-muted)] font-normal">({apt.correct}/{apt.total} correct)</span>
         </h2>
+        <p className="text-xs font-mono text-[var(--color-text-muted)] mb-4">
+          Score recorded. Final decision revealed after all rounds.
+        </p>
         <div className="flex flex-wrap gap-2 my-4">
           {Object.entries(apt.by_topic || {}).map(([t, v]) => (
             <span key={t} className="px-2.5 py-1 rounded-full text-[10px] font-mono bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)]">
@@ -120,10 +124,10 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
         <div className="mt-6">
           <button
             onClick={onAdvance}
-            className={`inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all ${passed ? 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)]' : 'bg-[var(--color-surface)] border border-[var(--color-border)] !text-[var(--color-text)]'}`}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)]"
             data-testid="aptitude-continue-btn"
           >
-            {passed ? 'Continue to HR Interview' : 'See the final decision'} <ArrowRight size={15} />
+            Continue to HR Interview <ArrowRight size={15} />
           </button>
         </div>
       </div>
@@ -206,7 +210,7 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
       <ul className="space-y-2 text-sm font-bricolage text-[var(--color-text)] mb-6">
         <li>• <strong>{meta.num_questions || 12} questions</strong> — numerical, data interpretation, logical &amp; verbal reasoning</li>
         <li>• <strong>{meta.time_limit_minutes || 15} minutes</strong>, timed — the test auto-submits when time runs out</li>
-        <li>• Cutoff: <strong>{meta.pass_pct || 40}%</strong>. Score below it and this process ends here — just like the real thing</li>
+        <li>• Reference score: <strong>{meta.pass_pct || 40}%</strong>. Your score is recorded — the final selection decision is revealed after all rounds are complete</li>
         <li>• No calculator needed. Rough paper is allowed (real tests permit it too)</li>
       </ul>
       <button

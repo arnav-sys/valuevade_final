@@ -733,8 +733,8 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         raw = await _llm(
             "You are an assessment coach. Be specific and concise.",
             f"A candidate scored {pct}% ({correct}/{len(questions)}) on {sim['firm_name']}'s online aptitude test "
-            f"(cutoff {pass_pct}%). Topic breakdown — {topic_lines}. "
-            f"They {'PASSED and advance to interviews' if passed else 'were CUT at this stage'}. "
+            f"(reference cutoff {pass_pct}%). Topic breakdown — {topic_lines}. "
+            f"They are advancing to the interview rounds regardless of this score (the final verdict is decided after all rounds). "
             "Write 90-130 words of markdown feedback: their strongest area, their weakest area with ONE concrete practice tip, and one line on pacing for timed tests.",
             f"ivs-{attempt_id}-apt-fb",
             max_tokens=500,
@@ -744,20 +744,18 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             "score_pct": pct,
             "correct": correct,
             "total": len(questions),
-            "passed": passed,
+            "passed": passed,  # informational only — no longer gates progression
             "by_topic": {t: {"correct": c, "total": n} for t, (c, n) in by_topic.items()},
             "review": review,
-            "feedback_md": raw or f"You scored {pct}% against a {pass_pct}% cutoff.",
+            "feedback_md": raw or f"You scored {pct}% against a {pass_pct}% reference cutoff.",
             "completed_at": _now_iso(),
         })
         sd["aptitude"] = apt
 
-        if not passed:
-            result = await _finalize_attempt({**att, "stage_data": sd}, sim, sd, rejected_at="aptitude")
-            return {"ok": True, "aptitude": apt, "passed": False,
-                    "next_stage": "decision", **result}
+        # Always advance — no early termination. The final selection decision
+        # is revealed only at the end (in _finalize_attempt).
         _patch_attempt(attempt_id, {"stage_data": sd, "current_stage": "behavioural"})
-        return {"ok": True, "aptitude": apt, "passed": True, "next_stage": "behavioural"}
+        return {"ok": True, "aptitude": apt, "passed": passed, "next_stage": "behavioural"}
 
     # ------------------------------------------------------ interview rounds
     def _interview_stage_or_409(att: dict, stage: str):
