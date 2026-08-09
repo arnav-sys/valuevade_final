@@ -13,6 +13,8 @@ committee report uses Sonnet 4.5.
 from __future__ import annotations
 
 import asyncio
+import base64 as _b64
+import hashlib as _hashlib
 import time as _time
 import json as _json
 import logging
@@ -1192,5 +1194,52 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
                     "shares": shares, "exit_pe": exit_pe,
                     "company": company, "firm": firm, "role": role,
                 }}
+
+    # ----------------------------------------------------------------------
+    # TTS — Pari's voice for HR + Technical interview questions.
+    # Uses OpenAI tts-1 via the Emergent LLM key. Responses are cached
+    # in-memory by (text, voice, model) hash so re-plays don't re-bill.
+    # ----------------------------------------------------------------------
+    _TTS_CACHE: dict[str, str] = {}
+    _TTS_CACHE_MAX = 500  # simple FIFO cap
+
+    @api_router.post("/interview-sim/tts")
+    async def interview_sim_tts(body: dict, user=Depends(_get_supabase_user)):
+        text = (body or {}).get("text") or ""
+        text = text.strip()
+        if not text:
+            raise HTTPException(status_code=400, detail="text is required")
+        # Guard: keep within OpenAI's 4096-char limit and clip runaway inputs.
+        if len(text) > 3800:
+            text = text[:3800]
+        voice = (body or {}).get("voice") or "nova"
+        if voice not in {"alloy", "ash", "coral", "echo", "fable",
+                          "nova", "onyx", "sage", "shimmer"}:
+            voice = "nova"
+        model = "tts-1"
+
+        key = _hashlib.sha1(f"{model}|{voice}|{text}".encode("utf-8")).hexdigest()
+        cached = _TTS_CACHE.get(key)
+        if cached:
+            return {"audio_base64": cached, "mime": "audio/mpeg", "cached": True}
+
+        if not _EMERGENT_LLM_KEY:
+            raise HTTPException(status_code=500, detail="TTS is not configured")
+        try:
+            from emergentintegrations.llm.openai import OpenAITextToSpeech
+            tts = OpenAITextToSpeech(api_key=_EMERGENT_LLM_KEY)
+            audio_bytes = await tts.generate_speech(
+                text=text, model=model, voice=voice, response_format="mp3",
+            )
+        except Exception as exc:
+            logger.warning("[interview-sim] tts failed: %s", exc)
+            raise HTTPException(status_code=502, detail=f"tts failed: {exc}")
+
+        b64 = _b64.b64encode(audio_bytes).decode("ascii")
+        if len(_TTS_CACHE) >= _TTS_CACHE_MAX:
+            # drop the oldest entry (dict preserves insertion order in py3.7+)
+            _TTS_CACHE.pop(next(iter(_TTS_CACHE)))
+        _TTS_CACHE[key] = b64
+        return {"audio_base64": b64, "mime": "audio/mpeg", "cached": False}
 
     logger.info("[interview-sim] endpoints registered")

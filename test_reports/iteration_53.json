@@ -1,0 +1,39 @@
+{
+  "summary": "Verified Pari's TTS voice feature end-to-end. Backend: 5/5 pytest tests pass for POST /api/interview-sim/tts (unauth, missing text, first-call, repeat-call cached=true, invalid-voice fallback). Audio is valid mp3 (ID3/0xFF frame sync, >1KB). Frontend: logged in as mocktest@valuevade.test, pushed attempt through application -> aptitude via API (frontend-driven flow validated separately for Apply-now navigation), then landed on HR (behavioural) round and verified: (a) interview-voice-toggle badge visible + defaults ON, (b) POST /api/interview-sim/tts fires automatically when the first interviewer question renders (200 OK), (c) interview-replay-* button visible ONLY on the latest interviewer turn, (d) amber 'Browser blocked auto-play — hit Replay to hear the question' warning renders because Playwright Chromium blocks autoplay (graceful fallback works), (e) clicking Replay fires another POST /api/interview-sim/tts (cached response, instant), (f) toggling voice OFF hides the Replay button, toggling ON brings it back without auto-replay (expected behaviour), (g) typing an answer + submitting still works and the next interviewer question fires 2 new TTS calls (req+resp) automatically. NO console errors during voice playback. TTS endpoint was NOT called during the aptitude phase (verified — 0 tts calls before HR stage).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_interview_sim_tts.py",
+    "/app/test_reports/pytest/tts_results.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "interview_sim_endpoints.py:1203 — _TTS_CACHE is an in-process dict scoped to the closure of register_interview_sim_endpoints. Cache is not shared across worker processes (uvicorn --workers >1) but is fine for the current single-worker setup. Consider Redis-backed cache if scaled out.",
+    "interview_sim_endpoints.py:1206 — TTS endpoint has no per-user rate limit. A malicious client could burn Emergent-LLM-key credits by sending many distinct texts. Consider a simple per-user rate limit (e.g., 30 unique-text calls per minute).",
+    "useInterviewerVoice.js:87-97 — auto-play effect uses spokenIndexRef to avoid re-narrating; but if the last interviewer turn's index equals a previously-narrated one (e.g., after replacing the array with an equal-length one from server begin resume), the guard could over-suppress. Current UX is fine because turns only grow, but noting for future refactors.",
+    "InterviewStage.jsx:120-125 — lastInterviewerIdx recomputed inside .map for each turn (O(n^2)). For a 4-8 turn round this is negligible; keeping the note for larger transcripts.",
+    "Overall: implementation is clean, well-scoped, and the graceful-degradation path (autoplay-blocked -> Replay) is well-executed."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_interview_sim_tts.py (new)"
+  ],
+  "success_rate": {"backend": "100% (5/5)", "frontend": "100% (all 5 acceptance criteria met including bonus autoplay-blocked graceful fallback)"},
+  "test_credentials": "mocktest@valuevade.test / MockTest2026! — attempt 5566307b advanced to behavioural stage during this test.",
+  "seed_data_creation": "None. Used existing mocktest user; attempt state changed from application -> behavioural via API calls (application submit + aptitude start+submit) as a fast path to reach the voice-under-test UI.",
+  "verification_evidence": {
+    "backend_pytest": "5 passed in 9.25s (test_interview_sim_tts.py)",
+    "frontend_tts_calls_observed": 6,
+    "voice_toggle_visible": true,
+    "replay_button_on_latest_turn": true,
+    "autoplay_blocked_warning_shown": true,
+    "replay_fires_new_tts_request": true,
+    "toggle_off_hides_replay": true,
+    "toggle_on_restores_replay_without_autoplay": true,
+    "next_question_auto_narrates": true,
+    "console_errors_during_playback": 0,
+    "tts_not_called_during_aptitude": true
+  },
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "TTS + Pari voice is fully working. The attempt 5566307b for JPM was advanced to behavioural stage during this test — if a future test wants a fresh JPM run they need to reseed. The autoplay-blocked path is the primary path under headless Playwright (Chromium blocks autoplay); Replay is the escape hatch and works with cached backend audio (~instant). Backend TTS uses OpenAITextToSpeech from emergentintegrations with tts-1 / voice=nova; response is ~40-50KB mp3."
+}

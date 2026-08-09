@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { Send, Loader2, ArrowRight, CheckCircle2, Users, Brain } from 'lucide-react';
+import { Send, Loader2, ArrowRight, CheckCircle2, Users, Brain, Volume2, VolumeX, RotateCcw } from 'lucide-react';
 import { interviewSimFetch } from '../../utils/interviewSim';
+import useInterviewerVoice from '../../utils/useInterviewerVoice';
 import VoiceInputButton from '../VoiceInputButton';
 import { SimpleMarkdown } from './simShared';
 import { toast } from 'sonner';
@@ -16,7 +17,12 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance }) {
   const [thinking, setThinking] = useState(false);
   const [roundResult, setRoundResult] = useState(existing?.completed_at ? existing : null);
   const [began, setBegan] = useState((existing?.turns || []).length > 0);
+  const [voiceOn, setVoiceOn] = useState(true);
   const endRef = useRef(null);
+
+  // Auto-narrate every new interviewer turn with Pari's voice (nova).
+  const { speaking, loading: voiceLoading, replay, stop: stopVoice, error: voiceError } =
+    useInterviewerVoice(turns, { voice: 'nova', autoPlay: voiceOn, enabled: voiceOn });
 
   useEffect(() => {
     let alive = true;
@@ -92,23 +98,72 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance }) {
         <span className="text-xs font-mono text-[var(--color-text-muted)] shrink-0" data-testid="interview-progress">
           {Math.min(answered, numQuestions)}/{numQuestions} answered
         </span>
+        <button
+          type="button"
+          onClick={() => { if (voiceOn) stopVoice(); setVoiceOn((v) => !v); }}
+          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-[10px] font-mono uppercase tracking-wider transition-colors ${
+            voiceOn
+              ? 'border-[var(--color-accent-purple)]/40 bg-[var(--color-accent-purple)]/10 text-[var(--color-accent-purple)]'
+              : 'border-[var(--color-border)] bg-[var(--color-surface)]/50 text-[var(--color-text-muted)]'
+          }`}
+          title={voiceOn ? 'Turn off Pari\'s voice' : 'Turn on Pari\'s voice'}
+          data-testid="interview-voice-toggle"
+        >
+          {voiceOn ? <Volume2 size={12} /> : <VolumeX size={12} />}
+          Pari&apos;s voice
+        </button>
       </div>
 
       {/* Transcript */}
       <div className="space-y-3" data-testid="interview-transcript">
-        {turns.map((t, i) => (
-          <div
-            key={i}
-            className={`p-4 rounded-2xl ${t.role === 'interviewer'
-              ? 'glass-card'
-              : 'bg-[var(--color-primary)]/8 border border-[var(--color-primary)]/25 ml-6 sm:ml-12'}`}
-          >
-            <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1.5">
-              {t.role === 'interviewer' ? `${sim.firm_name} Interviewer` : 'You'}
-            </p>
-            <p className="text-sm font-bricolage text-[var(--color-text)] whitespace-pre-wrap leading-relaxed">{t.content}</p>
-          </div>
-        ))}
+        {turns.map((t, i) => {
+          const lastInterviewerIdx = (() => {
+            for (let k = turns.length - 1; k >= 0; k--) {
+              if (turns[k].role === 'interviewer') return k;
+            }
+            return -1;
+          })();
+          const isLastQuestion = t.role === 'interviewer' && i === lastInterviewerIdx;
+          return (
+            <div
+              key={i}
+              className={`p-4 rounded-2xl ${t.role === 'interviewer'
+                ? 'glass-card'
+                : 'bg-[var(--color-primary)]/8 border border-[var(--color-primary)]/25 ml-6 sm:ml-12'}`}
+            >
+              <div className="flex items-start justify-between gap-3 mb-1.5">
+                <p className="text-[9px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)]">
+                  {t.role === 'interviewer' ? `${sim.firm_name} Interviewer` : 'You'}
+                  {t.role === 'interviewer' && isLastQuestion && speaking && (
+                    <span className="ml-2 inline-flex items-center gap-1 text-[var(--color-accent-purple)] normal-case tracking-normal">
+                      <span className="w-1 h-1 bg-[var(--color-accent-purple)] rounded-full animate-pulse" />
+                      Pari speaking…
+                    </span>
+                  )}
+                </p>
+                {t.role === 'interviewer' && isLastQuestion && voiceOn && (
+                  <button
+                    type="button"
+                    onClick={replay}
+                    disabled={voiceLoading}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-mono text-[var(--color-accent-purple)] hover:bg-[var(--color-accent-purple)]/10 disabled:opacity-50 shrink-0"
+                    title="Replay question"
+                    data-testid={`interview-replay-${i}`}
+                  >
+                    {voiceLoading ? <Loader2 size={11} className="animate-spin" /> : <RotateCcw size={11} />}
+                    Replay
+                  </button>
+                )}
+              </div>
+              <p className="text-sm font-bricolage text-[var(--color-text)] whitespace-pre-wrap leading-relaxed">{t.content}</p>
+              {t.role === 'interviewer' && isLastQuestion && voiceError === 'autoplay-blocked' && voiceOn && (
+                <p className="mt-2 text-[10px] font-mono text-amber-500">
+                  Browser blocked auto-play — hit Replay to hear the question.
+                </p>
+              )}
+            </div>
+          );
+        })}
         {thinking && (
           <div className="p-4 flex items-center gap-2 text-xs font-mono text-[var(--color-text-muted)]" data-testid="interviewer-thinking">
             <Loader2 size={13} className="animate-spin" /> Interviewer is thinking…
@@ -142,7 +197,7 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance }) {
           </div>
           {(roundResult.feedback_bullets || []).length > 0 && (
             <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/50 p-3 mb-5">
-              <p className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-accent-purple)] mb-1.5">Coach's notes</p>
+              <p className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-accent-purple)] mb-1.5">Coach&apos;s notes</p>
               <ul className="text-xs font-bricolage text-[var(--color-text)] space-y-1">
                 {roundResult.feedback_bullets.map((s, i) => <li key={i}>• {s}</li>)}
               </ul>
