@@ -1,0 +1,29 @@
+{
+  "summary": "Verified bug fix for expired-Supabase-token during AI Mock Interview HR round. Logged in as mocktest@valuevade.test, corrupted the Supabase session in localStorage (set expires_at to 1000000000 = year 2001 AND replaced the last 20 chars of access_token with A's so any direct use would 401), then navigated to /interview-sims to trigger interviewSimFetch. Result: the overview endpoint returned 200 on the first attempt — proving getFreshAccessToken()'s proactive refresh (expires_at - now < 60s branch) fired transparently. Network trace showed GET /api/interview-sim/overview → 200 with a fresh Authorization: Bearer <token> whose tail differed from the corrupted local token, confirming supabase.auth.refreshSession() minted a new access_token via the untouched refresh_token. UI rendered all 5 firm cards (JPM 'Resume process' / MS 'Resume process' / GS/Motilal/Kotak 'Apply now') with correct stage state. NO 'invalid or expired token' toast was shown. NO error banner. Fix is working as designed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "interviewSim.js:16 — proactive refresh threshold of 60s is reasonable for long HR/technical answer screens. Good.",
+    "interviewSim.js:44-52 — 401 retry path forces refreshSession() and retries ONCE. Correctly bounded (no infinite loop). Original error still surfaces if the retry also fails — preserves prior error contract for the UI.",
+    "Minor: on the retry path if refreshSession() throws OR returns no session (e.g., refresh_token itself is expired/revoked), the original 401 body is surfaced to the user — this is acceptable; the user will see 'invalid or expired token' only if they've been logged out for real, in which case a full re-login is the correct next step. Consider optionally routing to /login in that terminal case for a smoother UX, but not required for this fix."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only per request)", "frontend": "100%"},
+  "test_credentials": "mocktest@valuevade.test / MockTest2026! — JPM at 'application' stage, MS at 'aptitude' stage per seed. Both showed 'Resume process' correctly. No state change made during this test.",
+  "seed_data_creation": "None. Did NOT run seed_mock_test_user.py.",
+  "verification_evidence": {
+    "localStorage_corruption": "sb-yuadeybycbfqlkdpxbkv-auth-token: set expires_at=1000000000 and last 20 chars of access_token replaced with 'AAAAAAAAAAAAAAAAAAAA'. refresh_token was NOT touched (mirrors real expiry scenario).",
+    "network_after_corruption": [
+      {"method": "GET", "endpoint": "/api/interview-sim/overview", "status": 200, "auth_token_tail": "Sq8EAHdmbw (fresh, != corrupted 'AAAA…' tail)"},
+      {"method": "GET", "endpoint": "/api/interview-sim/overview", "status": 200, "auth_token_tail": "Sq8EAHdmbw"}
+    ],
+    "toast_error_text": "none",
+    "invalid_or_expired_token_text_present": false,
+    "ui_final_state": "All 5 firm cards rendered with correct stage badges and CTAs; no infinite spinner; no error boundary."
+  },
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Bug fix verified end-to-end at the proactive-refresh layer (expires_at < now branch of getFreshAccessToken). The 401→refresh→retry branch (lines 44-52 of interviewSim.js) was NOT explicitly exercised because the proactive branch caught it first — which is by design and the more common path. If a future test wants to isolate the retry branch, it can (a) leave expires_at valid but replace access_token with a well-formed-but-signature-invalid JWT so getFreshAccessToken skips the refresh and the server 401s, OR (b) briefly disable the proactive-refresh block. Either way, the observable fix (no 'invalid or expired token' toast, request succeeds) is confirmed."
+}
