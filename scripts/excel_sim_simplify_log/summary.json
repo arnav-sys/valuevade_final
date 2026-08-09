@@ -1,0 +1,634 @@
+[
+  {
+    "id": "923d2e67-f528-41fd-891b-f8a1447a4222",
+    "title": "Integrate Titan's P&L, Balance Sheet and Cash Flow",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 8.1
+  },
+  {
+    "id": "13dbfa5a-bce2-4f84-babf-1c327c4dba4c",
+    "title": "Navigate the Grid: TCS Quarterly Data Entry and Movement",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 8.4
+  },
+  {
+    "id": "6a07a8b0-4fc2-40fd-a0cc-0af4b5a9c45a",
+    "title": "Titan's Model Workbench: Build Professional Financial Architecture",
+    "status": "ok",
+    "answers": 3,
+    "module": "M13",
+    "seconds": 10.8
+  },
+  {
+    "id": "a99120bb-62db-44a7-9766-a4d571e549d8",
+    "title": "Format Titan's P&L Like a Mumbai Desk Analyst",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 8.8
+  },
+  {
+    "id": "ef5c79d9-bd12-48b6-b89e-208db90ba811",
+    "title": "Indian IT Sector - Quarterly Performance Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M20",
+    "seconds": 9.4
+  },
+  {
+    "id": "bfa74979-f0dd-4ddb-b458-5c4a701fb1d9",
+    "title": "TCS Margin Staircase: Reading Profitability Layers",
+    "status": "ok",
+    "answers": 2,
+    "module": "M9",
+    "seconds": 10.1
+  },
+  {
+    "id": "e0da2558-31c9-436c-9aa4-0c527202f90e",
+    "title": "DCF Intrinsic Value Calculation - Indian Tech Sector",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 8.9
+  },
+  {
+    "id": "efe3681c-be92-4f00-81a0-e153e017c559",
+    "title": "Financial Ratio Analysis: Indian FMCG Sector Comparison",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 9.9
+  },
+  {
+    "id": "917204bc-a830-4438-ae2a-f98f11f48348",
+    "title": "Inflation Impact on Consumer Sector Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M10",
+    "seconds": 8.7
+  },
+  {
+    "id": "50e42c6a-8fff-4fd8-b9a3-54dc25ff694e",
+    "title": "Free Cash Flow Analysis for Indian IT Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 11.8
+  },
+  {
+    "id": "66223d75-a6cc-43ab-bcd6-375513e95684",
+    "title": "Titan Revenue Forecast: Segment Drivers and Scenario Toggle",
+    "status": "ok",
+    "answers": 3,
+    "module": "M13",
+    "seconds": 10.3
+  },
+  {
+    "id": "539b1b80-be66-4010-ad18-a7c77ff30b66",
+    "title": "Return Ratios & Capital Efficiency: TCS vs Titan Stock Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M9",
+    "seconds": 9.1
+  },
+  {
+    "id": "50a322b0-ff53-46d1-92bd-9168b49c2d59",
+    "title": "HDFC Bank Balance Sheet Analysis: Assets, Liabilities, Net Worth",
+    "status": "ok",
+    "answers": 3,
+    "module": "M1",
+    "seconds": 9.8
+  },
+  {
+    "id": "97cf13d1-0d51-4f5d-b4e8-e217270c093f",
+    "title": "Reliance Revenue Growth: References, Relative vs Absolute",
+    "status": "ok",
+    "answers": 4,
+    "module": "M3",
+    "seconds": 28.2
+  },
+  {
+    "id": "632da861-6239-429f-b168-4eb888eff7c9",
+    "title": "Reliance Segment Revenue Rollup — SUMIFS & Reconciliation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 9.7
+  },
+  {
+    "id": "37e1d3b5-2118-4b21-a240-a9b907f66bc0",
+    "title": "3-Statement Model: Linking Cash Flow to Balance Sheet",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 7.2
+  },
+  {
+    "id": "fc7adae8-932b-4d6a-b6d0-ca5d8b36573d",
+    "title": "HDFC Bank Cash Flow Forensics: Profit Versus Reality",
+    "status": "ok",
+    "answers": 2,
+    "module": "M8",
+    "seconds": 9.6
+  },
+  {
+    "id": "2560d2ee-1abe-4ab3-8336-7b5598e571d2",
+    "title": "Nifty 50 Weights: Calculate Index Component Influence",
+    "status": "ok",
+    "answers": 2,
+    "module": "M2",
+    "seconds": 8.9
+  },
+  {
+    "id": "7002d46c-a510-46bb-9214-be2632b719fa",
+    "title": "Calculate WACC for Indian IT Companies",
+    "status": "ok",
+    "answers": 3,
+    "module": "M12",
+    "seconds": 14.4
+  },
+  {
+    "id": "00d4e86a-9565-4fe3-8e2d-d13e1063f040",
+    "title": "Asian Paints P&L: Trace Revenue to Net Profit",
+    "status": "ok",
+    "answers": 2,
+    "module": "M1",
+    "seconds": 7.4
+  },
+  {
+    "id": "dcfa5da8-ce8e-42d5-b40a-dba8b901c47a",
+    "title": "DuPont ROE Decomposition: 3-Step Analysis",
+    "status": "ok",
+    "answers": 4,
+    "module": "M9",
+    "seconds": 14.0
+  },
+  {
+    "id": "adc566e3-e4a9-44bf-a2c2-76490c8f6712",
+    "title": "RBI Rate Decision Impact on Banking Stocks",
+    "status": "ok",
+    "answers": 2,
+    "module": "M10",
+    "seconds": 9.6
+  },
+  {
+    "id": "afc846d9-6071-4608-9976-cccd6b5bf102",
+    "title": "HDFC Bank & Kotak Mahindra: Comparing Margins & Drift",
+    "status": "ok",
+    "answers": 2,
+    "module": "M7",
+    "seconds": 12.7
+  },
+  {
+    "id": "04551978-4830-44a6-981a-d0d81ec421b3",
+    "title": "DCF Valuation: FCFF, WACC & Terminal Value Calculation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 7.8
+  },
+  {
+    "id": "ecb8e62a-e1ec-4ccb-a560-b96685ba485a",
+    "title": "Titan's Cost Structure, Margins & Working Capital Forecast",
+    "status": "ok",
+    "answers": 3,
+    "module": "M13",
+    "seconds": 9.2
+  },
+  {
+    "id": "08754852-66ae-48ba-9960-37bce33a722d",
+    "title": "HDFC Bank Loan Portfolio—SMA Classification & Early Warning Logic",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 9.3
+  },
+  {
+    "id": "ba6f73df-e006-498e-93dc-a79a8e62a772",
+    "title": "HDFC Bank Solvency: Can It Service Its Debt?",
+    "status": "ok",
+    "answers": 2,
+    "module": "M9",
+    "seconds": 8.1
+  },
+  {
+    "id": "2f0780e5-9077-4de4-9349-7ee83a039b43",
+    "title": "Terminal Value Calculation for Indian IT Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 9.9
+  },
+  {
+    "id": "b942eff9-40b9-4f04-bcde-560cab68ba5a",
+    "title": "Indian Economic Indicators: GDP Growth & Inflation Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M16",
+    "seconds": 8.3
+  },
+  {
+    "id": "b435c189-d403-42f0-a554-65bfc0caed56",
+    "title": "Reliance's Free Cash Flow: EBITDA to True Investor Returns",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 11.3
+  },
+  {
+    "id": "36fc46e6-93f0-43a7-bfc5-21bf018f7ab4",
+    "title": "Union Budget Sectoral Allocation & Stock Impact Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M10",
+    "seconds": 7.6
+  },
+  {
+    "id": "15071b6e-41c4-48a4-9247-2158b50caf1c",
+    "title": "Titan WACC Build and Perpetuity Valuation Sensitivity",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 8.6
+  },
+  {
+    "id": "1dc58254-910e-49a6-9029-e8679cfd036d",
+    "title": "Expectations vs Reality: TCS Stock Moves on Earnings Surprise",
+    "status": "ok",
+    "answers": 2,
+    "module": "M2",
+    "seconds": 9.4
+  },
+  {
+    "id": "0613094c-b6a4-4e27-ac0b-885f2c8acc5d",
+    "title": "Indian Auto Sector Comps Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M20",
+    "seconds": 11.5
+  },
+  {
+    "id": "519d1678-8340-47cb-b70a-d46fd947f1ac",
+    "title": "India's External Sector Analysis: Rupee Impact on Export Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M10",
+    "seconds": 9.0
+  },
+  {
+    "id": "295ad8bc-56aa-401e-baeb-f7788d546344",
+    "title": "Avenue Supermarts Cash Conversion Cycle Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M9",
+    "seconds": 10.5
+  },
+  {
+    "id": "0203c63e-b4f6-4247-8d70-731474a03304",
+    "title": "NSE Bhavcopy Join — Portfolio Prices with VLOOKUP, INDEX-MATCH & XLOOKUP",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 10.7
+  },
+  {
+    "id": "64467ffd-c7d6-4cfe-b118-f0b129f5fe8a",
+    "title": "DCF Valuation Model - Terminal Value & Equity Value Calculation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 8.5
+  },
+  {
+    "id": "41fead5f-77df-4dfe-b6e1-f2cf7b063f5d",
+    "title": "Clean BSE Market Data: Text Surgery & Date Repair Pipeline",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 8.8
+  },
+  {
+    "id": "6c708762-a5ef-4ced-acf8-b3717ecc8f8e",
+    "title": "Forensic Screening: M-Score and Z-Score Red-Flag Detector",
+    "status": "ok",
+    "answers": 2,
+    "module": "M8",
+    "seconds": 12.6
+  },
+  {
+    "id": "101f9e82-f9ae-4e8d-9a04-4e42fb4a3cc6",
+    "title": "Reliance Industries Terminal Value & Perpetuity Growth Reconciliation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 8.9
+  },
+  {
+    "id": "896e1df4-5c51-4a71-8bc5-e0bbc04c894c",
+    "title": "Normalise TCS Earnings: Strip One-Offs to Find Real Profit",
+    "status": "ok",
+    "answers": 2,
+    "module": "M7",
+    "seconds": 8.0
+  },
+  {
+    "id": "03ebea7d-5c74-4ac9-93d1-730c53352b22",
+    "title": "Indian FMCG Sector: Quarterly Performance Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 8.7
+  },
+  {
+    "id": "b35dbdd6-3dcc-4ec4-b91b-3dfe5550d608",
+    "title": "Nifty Screener Export: Sort, Filter, Validate & Deduplicate",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 9.3
+  },
+  {
+    "id": "5ec814c4-ac51-40dd-a25d-f6fbbd2c81b9",
+    "title": "Comparable Company Analysis: Indian IT Services Sector",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 11.9
+  },
+  {
+    "id": "1803af86-9afe-40bf-8d18-91ce4f92b395",
+    "title": "Building Revenue & Earnings Forecasts for Top Indian Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M14",
+    "seconds": 8.5
+  },
+  {
+    "id": "fd358570-95cf-41c1-a693-9c9f48ed0a4a",
+    "title": "Build Titan's Complete DCF Model and Price Target",
+    "status": "ok",
+    "answers": 3,
+    "module": "M13",
+    "seconds": 9.9
+  },
+  {
+    "id": "14608890-2ba3-4328-9e30-231e08db04df",
+    "title": "FP&A Budget Variance Analysis - Indian FMCG Sector",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 9.6
+  },
+  {
+    "id": "f748f7e9-e43a-45bd-a4ff-fb415b48ae64",
+    "title": "Valuation Multiples Analysis: Indian IT Sector",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 9.0
+  },
+  {
+    "id": "04d53f5c-885c-471d-ae84-13b533ea3b3b",
+    "title": "Sector-Specific Valuation Metrics Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 9.7
+  },
+  {
+    "id": "68517509-adae-4c30-a533-3a3779f536e4",
+    "title": "DCF Valuation Workbook – Terminal Value & Price Target",
+    "status": "ok",
+    "answers": 2,
+    "module": "M14",
+    "seconds": 8.2
+  },
+  {
+    "id": "37ef2ee5-3fd3-4ca6-a9ae-b21c62794e08",
+    "title": "NPV & IRR Analysis for Capital Investment Decision",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 8.4
+  },
+  {
+    "id": "8d1ebadb-6b11-4063-b6d4-0ecdfd2d0560",
+    "title": "Financial Metrics Analysis: Top Indian Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M18",
+    "seconds": 8.1
+  },
+  {
+    "id": "8f4c05e5-338a-4515-bc2d-2392a3233c87",
+    "title": "Build Titan's Comps Table and Identify Fair Value Range",
+    "status": "ok",
+    "answers": 3,
+    "module": "M13",
+    "seconds": 12.4
+  },
+  {
+    "id": "782dd75a-1551-43f4-913d-e09d40e91298",
+    "title": "NSE Sector Revenue PivotTable — Build the FY25 Cross-Tab",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 20.2
+  },
+  {
+    "id": "9dad4a19-35b8-402c-9b3e-eecb9d7d9563",
+    "title": "Value the Steering Wheel: Control Premium in IT Services M&A",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 10.8
+  },
+  {
+    "id": "8a2dac9a-b6cf-4747-a0d8-e001786023b8",
+    "title": "Building a 3-Statement Financial Model: Revenue to Cash Flow",
+    "status": "ok",
+    "answers": 2,
+    "module": "M18",
+    "seconds": 16.5
+  },
+  {
+    "id": "0fac20bc-8504-4053-b4a8-33d308116600",
+    "title": "Risk-Adjusted Revenue Scenarios for IT Services Sector",
+    "status": "ok",
+    "answers": 2,
+    "module": "M14",
+    "seconds": 8.8
+  },
+  {
+    "id": "400f99a3-3969-4ae0-9777-8c74c04dc27c",
+    "title": "Reliance Standalone vs Consolidated: Equity Bridge Reconciliation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M7",
+    "seconds": 9.2
+  },
+  {
+    "id": "ddb7d1f9-731e-427f-b2da-039d48ce10ec",
+    "title": "Titan's FY26 Target: Reverse-Engineer Growth via Goal Seek",
+    "status": "ok",
+    "answers": 2,
+    "module": "M3",
+    "seconds": 8.2
+  },
+  {
+    "id": "4872fc4f-a2f5-4cac-b9b9-bedd28836b79",
+    "title": "Banking Ratios Toolkit: Analyse HDFC Bank FY2015–2024",
+    "status": "ok",
+    "answers": 2,
+    "module": "M9",
+    "seconds": 11.2
+  },
+  {
+    "id": "6c89c060-df7d-46ac-abd7-e1b899f896b4",
+    "title": "Valuation Analysis: DDM & Relative Valuation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M16",
+    "seconds": 12.8
+  },
+  {
+    "id": "5fe3f760-6eea-457d-b9ee-cd3b7c149651",
+    "title": "Dashboard Metrics & Sensitivity Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 8.6
+  },
+  {
+    "id": "109adb94-1ab6-4e2f-82c6-91162c2280c5",
+    "title": "Control Premium Analysis for M&A Transactions",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 10.7
+  },
+  {
+    "id": "b34d7f13-3371-44ad-81e6-5028fc18aff2",
+    "title": "Track TCS Guidance Accuracy and Build Management Credibility Score",
+    "status": "ok",
+    "answers": 2,
+    "module": "M6",
+    "seconds": 12.6
+  },
+  {
+    "id": "0cf4b052-0e01-419c-85f8-ba56bd9c44cf",
+    "title": "Build Titan's Football Field valuation synthesis chart",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 8.7
+  },
+  {
+    "id": "428b1ea2-fc11-4c79-b7d5-5b975f3d5b08",
+    "title": "FMCG Sector Comparative Analysis — Revenue & Margin Assessment",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 9.1
+  },
+  {
+    "id": "a5c8fc46-fa12-4f91-9405-05dddfc675eb",
+    "title": "Sum-of-Parts Valuation for Conglomerate Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 8.9
+  },
+  {
+    "id": "fe70fd56-68d3-437e-8318-d9e634052f2c",
+    "title": "Sector Screening: Identifying Top Auto Stocks by Key Metrics",
+    "status": "ok",
+    "answers": 2,
+    "module": "M18",
+    "seconds": 8.6
+  },
+  {
+    "id": "9d08331d-4fd8-45ea-a5bd-c8c1329db53c",
+    "title": "Value Tata Motors via Sum-of-the-Parts and Spot the Holding Company Discount",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 8.5
+  },
+  {
+    "id": "92a01566-77c1-4e62-b094-1128e63682c3",
+    "title": "DCF Valuation: Free Cash Flow Projection & Terminal Value",
+    "status": "ok",
+    "answers": 2,
+    "module": "M18",
+    "seconds": 8.9
+  },
+  {
+    "id": "48281827-0699-4bf3-8c02-bb76c55ccd59",
+    "title": "FMCG Sector Quarterly Analysis: Multi-Metric Valuation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M17",
+    "seconds": 8.5
+  },
+  {
+    "id": "784e439c-b07f-4d73-9c1d-e79f2d868b37",
+    "title": "Building & Interpreting a Complete Ratio Dashboard",
+    "status": "ok",
+    "answers": 2,
+    "module": "M9",
+    "seconds": 8.6
+  },
+  {
+    "id": "9944251f-9cf9-4baf-bd51-ce55b2f7d198",
+    "title": "DCF Stress Testing: Revenue & WACC Sensitivity Analysis",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 9.1
+  },
+  {
+    "id": "6b6ceed7-a21a-4082-a375-06cc445bc7fe",
+    "title": "HDFC Bank vs PSU Bank: Residual Income & P/B Valuation",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 10.1
+  },
+  {
+    "id": "b633aed2-9899-4df2-9a57-ebbcec9ee1d9",
+    "title": "Liquidation Analysis: Distressed Textile Firm Asset Haircuts",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 11.0
+  },
+  {
+    "id": "44b661ba-8779-4aa4-85d5-f8e91d90979c",
+    "title": "NAV Calculation for Indian Real Estate Companies",
+    "status": "ok",
+    "answers": 3,
+    "module": "M12",
+    "seconds": 9.9
+  },
+  {
+    "id": "e9a8b63c-b077-45b5-ac45-f3fc13ece388",
+    "title": "Private Equity LBO Returns: Reliance Petroleum Entry & Exit",
+    "status": "ok",
+    "answers": 2,
+    "module": "M13",
+    "seconds": 7.6
+  },
+  {
+    "id": "b2a1cc7c-4134-4224-8902-060c835c3845",
+    "title": "Valuation Multiples & DCF Analysis - Indian Companies",
+    "status": "ok",
+    "answers": 2,
+    "module": "M12",
+    "seconds": 10.1
+  }
+]

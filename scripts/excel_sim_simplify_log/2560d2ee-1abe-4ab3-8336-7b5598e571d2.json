@@ -1,0 +1,113 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Free-Float Market Cap",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reliance",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 120,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "HDFC Bank",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 80,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 60,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "ITC",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 40,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =SUM(Data!B2:B6) to find total market cap.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =(Data!B2/B4)*100 to find Reliance weight.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Total Free-Float Market Cap:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Reliance Weight (%):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=SUM(Data!B2:B6)",
+      "expected_value": 400,
+      "type": "number",
+      "tolerance": 1,
+      "points": 30
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!B2/B4)*100",
+      "expected_value": 30,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 40
+    }
+  }
+}

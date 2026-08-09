@@ -1,0 +1,131 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Free Cash Flow",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "2024",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "2025",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 110,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "2026",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 120,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "2027",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 130,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "2028",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 140,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Growth Rate",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 0.05,
+            "readOnly": true
+          },
+          "A9": {
+            "value": "Discount Rate",
+            "readOnly": true,
+            "bold": true
+          },
+          "B9": {
+            "value": 0.1,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4, type =SUM(Data!B2:B6) then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5, type =Data!B6*(1+Data!B8)/(Data!B9-Data!B8) then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Total FCF:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Terminal Value:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=SUM(Data!B2:B6)",
+      "expected_value": 600,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B6*(1+Data!B8)/(Data!B9-Data!B8)",
+      "expected_value": 2940,
+      "type": "number",
+      "tolerance": 2,
+      "points": 50
+    }
+  }
+}

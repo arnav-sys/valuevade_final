@@ -1,0 +1,182 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 110,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Q3",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 125,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Q4",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 140,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Q5",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 150,
+            "readOnly": true
+          },
+          "D1": {
+            "value": "Tax Rate",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": 0.3,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In C3 below type =(B3-B2)/B2 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In D3 type =B3*$E$1 using dollar signs then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Step 3: Copy D3 down to D4 and D5.",
+            "readOnly": true
+          },
+          "B1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Growth",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Tax",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Rate",
+            "readOnly": true,
+            "bold": true
+          },
+          "B2": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Q3",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Q4",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Q5",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D3": {
+            "value": "",
+            "readOnly": false
+          },
+          "D4": {
+            "value": "",
+            "readOnly": false
+          },
+          "D5": {
+            "value": "",
+            "readOnly": false
+          },
+          "E2": {
+            "value": 0.3,
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!C3": {
+      "formula_pattern": "=(Data!B3-Data!B2)/Data!B2",
+      "expected_value": 0.1,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 30
+    },
+    "Answers!D3": {
+      "formula_pattern": "=Data!B3*$E$2",
+      "expected_value": 33,
+      "type": "number",
+      "tolerance": 1,
+      "points": 25
+    },
+    "Answers!D4": {
+      "formula_pattern": "=Data!B4*$E$2",
+      "expected_value": 37.5,
+      "type": "number",
+      "tolerance": 1,
+      "points": 25
+    },
+    "Answers!D5": {
+      "formula_pattern": "=Data!B5*$E$2",
+      "expected_value": 42,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    }
+  }
+}

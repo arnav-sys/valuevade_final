@@ -1,0 +1,122 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Business Unit",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "JLR",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 120,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Commercial Vehicles",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 80,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Passenger Vehicles",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 60,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "EV Platform",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 40,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Finance Division",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A8": {
+            "value": "Market Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "B8": {
+            "value": 175,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =SUM(Data!B2:B6) then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =(B4-Data!B8)/B4 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Sum-of-Parts Value:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Holding Discount:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=SUM(Data!B2:B6)",
+      "expected_value": 350,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(B4-Data!B8)/B4",
+      "expected_value": 0.5,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 50
+    }
+  }
+}

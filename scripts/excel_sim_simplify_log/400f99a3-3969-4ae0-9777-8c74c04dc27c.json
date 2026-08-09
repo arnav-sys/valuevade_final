@@ -1,0 +1,113 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Amount",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Opening Equity",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 500,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Net Profit",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 80,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Dividends Paid",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "OCI",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Capital Changes",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 0,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, calculate Closing Equity using formula Opening plus Profit minus Dividends plus OCI.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type the exact formula =Data!B2+Data!B3-Data!B4+Data!B5+Data!B6 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Closing Equity (calculate):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Closing Equity (formula):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2+Data!B3-Data!B4+Data!B5+Data!B6",
+      "expected_value": 560,
+      "type": "number",
+      "tolerance": 1,
+      "points": 25
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B2+Data!B3-Data!B4+Data!B5+Data!B6",
+      "expected_value": 560,
+      "type": "number",
+      "tolerance": 1,
+      "points": 25
+    }
+  }
+}

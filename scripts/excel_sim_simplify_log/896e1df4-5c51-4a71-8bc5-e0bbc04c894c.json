@@ -1,0 +1,113 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Amount",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Reported PAT",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 150,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "One-time gain (land sale)",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 20,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "One-time loss (impairment)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Share price",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 300,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Shares outstanding",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 10,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 compute normalised PAT using =Data!B2-Data!B3+Data!B4 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 compute normalised EPS using =B4/Data!B6 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Normalised PAT:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Normalised EPS:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2-Data!B3+Data!B4",
+      "expected_value": 140,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=B4/Data!B6",
+      "expected_value": 14,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    }
+  }
+}

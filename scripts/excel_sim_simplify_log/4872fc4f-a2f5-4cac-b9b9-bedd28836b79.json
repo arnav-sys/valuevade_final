@@ -1,0 +1,188 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Net Interest Income",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Avg Assets",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Gross NPA",
+            "readOnly": true,
+            "bold": true
+          },
+          "E1": {
+            "value": "Gross Advances",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "FY21",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 500,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 5,
+            "readOnly": true
+          },
+          "E2": {
+            "value": 400,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "FY22",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 60,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 600,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 4,
+            "readOnly": true
+          },
+          "E3": {
+            "value": 480,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "FY23",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 70,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 700,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 3,
+            "readOnly": true
+          },
+          "E4": {
+            "value": 560,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "FY24",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 80,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 800,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 2,
+            "readOnly": true
+          },
+          "E5": {
+            "value": 640,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "FY25",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 90,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 900,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 2,
+            "readOnly": true
+          },
+          "E6": {
+            "value": 720,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =(Data!B2/Data!C2)*100 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =(Data!D2/Data!E2)*100 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Net Interest Margin FY21 (%):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Gross NPA Ratio FY21 (%):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=(Data!B2/Data!C2)*100",
+      "expected_value": 10,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!D2/Data!E2)*100",
+      "expected_value": 1.25,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 50
+    }
+  }
+}

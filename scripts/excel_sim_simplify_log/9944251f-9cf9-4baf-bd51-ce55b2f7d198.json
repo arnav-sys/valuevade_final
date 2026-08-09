@@ -1,0 +1,138 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Year",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Free Cash Flow",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "WACC",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": 1,
+            "readOnly": true
+          },
+          "B2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 0.1,
+            "readOnly": true
+          },
+          "A3": {
+            "value": 2,
+            "readOnly": true
+          },
+          "B3": {
+            "value": 110,
+            "readOnly": true
+          },
+          "C3": {
+            "value": "",
+            "readOnly": true
+          },
+          "A4": {
+            "value": 3,
+            "readOnly": true
+          },
+          "B4": {
+            "value": 121,
+            "readOnly": true
+          },
+          "C4": {
+            "value": "",
+            "readOnly": true
+          },
+          "A5": {
+            "value": 4,
+            "readOnly": true
+          },
+          "B5": {
+            "value": 133,
+            "readOnly": true
+          },
+          "C5": {
+            "value": "",
+            "readOnly": true
+          },
+          "A6": {
+            "value": 5,
+            "readOnly": true
+          },
+          "B6": {
+            "value": 146,
+            "readOnly": true
+          },
+          "C6": {
+            "value": "",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =NPV(Data!C2,Data!B2:B6) then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =NPV(0.12,Data!B2:B6) then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Base Case Enterprise Value (WACC 10%):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Stress Case Enterprise Value (WACC 12%):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=NPV(Data!C2,Data!B2:B6)",
+      "expected_value": 473,
+      "type": "number",
+      "tolerance": 2,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=NPV(0.12,Data!B2:B6)",
+      "expected_value": 450,
+      "type": "number",
+      "tolerance": 2,
+      "points": 50
+    }
+  }
+}

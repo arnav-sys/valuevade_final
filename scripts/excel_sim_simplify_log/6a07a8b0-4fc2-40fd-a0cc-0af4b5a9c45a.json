@@ -1,0 +1,120 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Assumptions",
+        "cells": {
+          "A1": {
+            "value": "Assumptions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Revenue Growth Rate",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 0.15,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Tax Rate",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 0.25,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Base Revenue",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 100,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Model",
+        "cells": {
+          "A1": {
+            "value": "Model",
+            "readOnly": true,
+            "bold": true
+          },
+          "A3": {
+            "value": "Year 1 Revenue",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "",
+            "readOnly": false
+          },
+          "A4": {
+            "value": "Year 2 Revenue",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      },
+      {
+        "name": "Checks",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: Go to Model sheet, in B3 type =Assumptions!B5 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In Model B4 type =B3*(1+Assumptions!$B$3) then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Step 3: Back here in B6 below, type =IF(Model!B4>Model!B3,\"OK\",\"Error\") then press Enter.",
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Growth Check:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Model!B3": {
+      "formula_pattern": "=Assumptions!B5",
+      "expected_value": 100,
+      "type": "number",
+      "tolerance": 1,
+      "points": 30
+    },
+    "Model!B4": {
+      "formula_pattern": "=B3*(1+Assumptions!$B$3)",
+      "expected_value": 115,
+      "type": "number",
+      "tolerance": 1,
+      "points": 35
+    },
+    "Checks!B6": {
+      "formula_pattern": "=IF(Model!B4>Model!B3,\"OK\",\"Error\")",
+      "expected_value": "OK",
+      "type": "text",
+      "tolerance": 0,
+      "points": 35
+    }
+  }
+}

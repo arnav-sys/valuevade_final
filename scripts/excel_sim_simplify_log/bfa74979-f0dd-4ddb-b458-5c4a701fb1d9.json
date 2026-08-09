@@ -1,0 +1,163 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Gross Profit",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "Net Profit",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 200,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 40,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 180,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 90,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 150,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 75,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 25,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "HCL Tech",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 140,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 70,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 22,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Tech Mahindra",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 120,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 60,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 18,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =(Data!C2/Data!B2)*100 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =(Data!D2/Data!B2)*100 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TCS Gross Margin %:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "TCS Net Margin %:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=(Data!C2/Data!B2)*100",
+      "expected_value": 50,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=(Data!D2/Data!B2)*100",
+      "expected_value": 20,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 50
+    }
+  }
+}

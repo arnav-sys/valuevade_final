@@ -1,0 +1,138 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Sector",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Quarter",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "B2": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "C2": {
+            "value": 120,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "IT",
+            "readOnly": true
+          },
+          "B3": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "C3": {
+            "value": 140,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "B4": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "C4": {
+            "value": 90,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Banking",
+            "readOnly": true
+          },
+          "B5": {
+            "value": "Q2",
+            "readOnly": true
+          },
+          "C5": {
+            "value": 110,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Pharma",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "Q1",
+            "readOnly": true
+          },
+          "C6": {
+            "value": 80,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4, calculate total IT revenue using =SUMIF(Data!A:A,\"IT\",Data!C:C).",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5, calculate average Banking revenue using =AVERAGEIF(Data!A:A,\"Banking\",Data!C:C).",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Total IT revenue:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Avg Banking revenue:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=SUMIF(Data!A:A,\"IT\",Data!C:C)",
+      "expected_value": 260,
+      "type": "number",
+      "tolerance": 1,
+      "points": 30
+    },
+    "Answers!B5": {
+      "formula_pattern": "=AVERAGEIF(Data!A:A,\"Banking\",Data!C:C)",
+      "expected_value": 100,
+      "type": "number",
+      "tolerance": 1,
+      "points": 20
+    }
+  }
+}

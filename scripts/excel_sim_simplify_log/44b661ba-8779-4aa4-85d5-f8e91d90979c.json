@@ -1,0 +1,158 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Assets",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Liabilities",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DLF",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 500,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 200,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Godrej Properties",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 400,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 150,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Oberoi Realty",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 350,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Prestige Estates",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 450,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 180,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Brigade Enterprises",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 300,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 120,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =SUM(Data!B2:B6) then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =SUM(Data!C2:C6) then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Total Assets:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Total Liabilities:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Net Asset Value (NAV):",
+            "readOnly": true,
+            "bold": true
+          },
+          "A7": {
+            "value": "Step 3: In B6 above, type =B4-B5 then press Enter.",
+            "readOnly": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=SUM(Data!B2:B6)",
+      "expected_value": 2000,
+      "type": "number",
+      "tolerance": 1,
+      "points": 30
+    },
+    "Answers!B5": {
+      "formula_pattern": "=SUM(Data!C2:C6)",
+      "expected_value": 750,
+      "type": "number",
+      "tolerance": 1,
+      "points": 30
+    },
+    "Answers!B6": {
+      "formula_pattern": "=B4-B5",
+      "expected_value": 1250,
+      "type": "number",
+      "tolerance": 1,
+      "points": 40
+    }
+  }
+}

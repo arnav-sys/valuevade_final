@@ -1,0 +1,137 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Price",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Date",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": " TCS ",
+            "readOnly": true
+          },
+          "B2": {
+            "value": " 150 ",
+            "readOnly": true
+          },
+          "C2": {
+            "value": "15/12/2024",
+            "readOnly": true
+          },
+          "A3": {
+            "value": " Infosys ",
+            "readOnly": true
+          },
+          "B3": {
+            "value": " 120 ",
+            "readOnly": true
+          },
+          "C3": {
+            "value": "20/12/2024",
+            "readOnly": true
+          },
+          "A4": {
+            "value": " Wipro ",
+            "readOnly": true
+          },
+          "B4": {
+            "value": " 90 ",
+            "readOnly": true
+          },
+          "C4": {
+            "value": "18/12/2024",
+            "readOnly": true
+          },
+          "A5": {
+            "value": " HDFC ",
+            "readOnly": true
+          },
+          "B5": {
+            "value": " 80 ",
+            "readOnly": true
+          },
+          "C5": {
+            "value": "22/12/2024",
+            "readOnly": true
+          },
+          "A6": {
+            "value": " Reliance ",
+            "readOnly": true
+          },
+          "B6": {
+            "value": " 110 ",
+            "readOnly": true
+          },
+          "C6": {
+            "value": "25/12/2024",
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 type =TRIM(Data!A2) then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 type =VALUE(TRIM(Data!B2)) then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Cleaned company name:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Cleaned price as number:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=TRIM(Data!A2)",
+      "expected_value": "TCS",
+      "type": "string",
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=VALUE(TRIM(Data!B2))",
+      "expected_value": 150,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    }
+  }
+}

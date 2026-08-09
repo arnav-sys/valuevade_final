@@ -1,0 +1,138 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Net Income",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "Revenue",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "TCS",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 20,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Infosys",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 15,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 90,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Wipro",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 12,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 80,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "HCL",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 10,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 70,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Tech Mahindra",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 8,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 60,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =Data!B2/Data!C2 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 below, type =AVERAGE(Data!B2:B6)/AVERAGE(Data!C2:C6) then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "TCS profit margin:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Average profit margin:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2/Data!C2",
+      "expected_value": 0.2,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=AVERAGE(Data!B2:B6)/AVERAGE(Data!C2:C6)",
+      "expected_value": 0.1625,
+      "type": "number",
+      "tolerance": 0.01,
+      "points": 50
+    }
+  }
+}

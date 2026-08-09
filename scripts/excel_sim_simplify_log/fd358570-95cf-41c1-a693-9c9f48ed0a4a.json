@@ -1,0 +1,133 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Value",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Free Cash Flow Year 1",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Free Cash Flow Year 2",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 120,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "WACC (%)",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 10,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Debt",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Cash",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 20,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 below, type =Data!B2/(1+Data!B4/100) then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5, type =Data!B3/(1+Data!B4/100)^2 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "PV of Year 1 Cash Flow:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "PV of Year 2 Cash Flow:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          },
+          "A6": {
+            "value": "Enterprise Value:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B6": {
+            "value": "",
+            "readOnly": false
+          },
+          "A7": {
+            "value": "Step 3: In B6, type =B4+B5 then press Enter.",
+            "readOnly": true
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2/(1+Data!B4/100)",
+      "expected_value": 90.91,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 35
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B3/(1+Data!B4/100)^2",
+      "expected_value": 99.17,
+      "type": "number",
+      "tolerance": 0.1,
+      "points": 35
+    },
+    "Answers!B6": {
+      "formula_pattern": "=B4+B5",
+      "expected_value": 190.08,
+      "type": "number",
+      "tolerance": 0.2,
+      "points": 30
+    }
+  }
+}

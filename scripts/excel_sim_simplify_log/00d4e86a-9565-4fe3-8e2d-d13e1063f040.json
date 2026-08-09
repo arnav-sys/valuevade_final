@@ -1,0 +1,113 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Item",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "Amount",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Revenue",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 500,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "COGS",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 200,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Operating Expenses",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 100,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Tax",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 50,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Interest",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 30,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4, type =Data!B2-Data!B3 then press Enter.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5, type =Data!B2-Data!B3-Data!B4-Data!B5-Data!B6 then press Enter.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Gross Profit:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Net Profit:",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2-Data!B3",
+      "expected_value": 300,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B2-Data!B3-Data!B4-Data!B5-Data!B6",
+      "expected_value": 120,
+      "type": "number",
+      "tolerance": 1,
+      "points": 50
+    }
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "multi_tab_excel_workbook": {
+    "sheets": [
+      {
+        "name": "Data",
+        "cells": {
+          "A1": {
+            "value": "Company",
+            "readOnly": true,
+            "bold": true
+          },
+          "B1": {
+            "value": "DIO",
+            "readOnly": true,
+            "bold": true
+          },
+          "C1": {
+            "value": "DSO",
+            "readOnly": true,
+            "bold": true
+          },
+          "D1": {
+            "value": "DPO",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "DMart",
+            "readOnly": true
+          },
+          "B2": {
+            "value": 30,
+            "readOnly": true
+          },
+          "C2": {
+            "value": 2,
+            "readOnly": true
+          },
+          "D2": {
+            "value": 45,
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Big Bazaar",
+            "readOnly": true
+          },
+          "B3": {
+            "value": 40,
+            "readOnly": true
+          },
+          "C3": {
+            "value": 5,
+            "readOnly": true
+          },
+          "D3": {
+            "value": 25,
+            "readOnly": true
+          },
+          "A4": {
+            "value": "Reliance Retail",
+            "readOnly": true
+          },
+          "B4": {
+            "value": 35,
+            "readOnly": true
+          },
+          "C4": {
+            "value": 3,
+            "readOnly": true
+          },
+          "D4": {
+            "value": 38,
+            "readOnly": true
+          },
+          "A5": {
+            "value": "Future Retail",
+            "readOnly": true
+          },
+          "B5": {
+            "value": 50,
+            "readOnly": true
+          },
+          "C5": {
+            "value": 8,
+            "readOnly": true
+          },
+          "D5": {
+            "value": 30,
+            "readOnly": true
+          },
+          "A6": {
+            "value": "Spencer's",
+            "readOnly": true
+          },
+          "B6": {
+            "value": 45,
+            "readOnly": true
+          },
+          "C6": {
+            "value": 6,
+            "readOnly": true
+          },
+          "D6": {
+            "value": 32,
+            "readOnly": true
+          }
+        }
+      },
+      {
+        "name": "Answers",
+        "cells": {
+          "A1": {
+            "value": "Instructions",
+            "readOnly": true,
+            "bold": true
+          },
+          "A2": {
+            "value": "Step 1: In B4 calculate DMart CCC using formula B2 plus C2 minus D2.",
+            "readOnly": true
+          },
+          "A3": {
+            "value": "Step 2: In B5 calculate Big Bazaar CCC using B3 plus C3 minus D3.",
+            "readOnly": true
+          },
+          "A4": {
+            "value": "DMart CCC (days):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B4": {
+            "value": "",
+            "readOnly": false
+          },
+          "A5": {
+            "value": "Big Bazaar CCC (days):",
+            "readOnly": true,
+            "bold": true
+          },
+          "B5": {
+            "value": "",
+            "readOnly": false
+          }
+        }
+      }
+    ]
+  },
+  "expected_answers": {
+    "Answers!B4": {
+      "formula_pattern": "=Data!B2+Data!C2-Data!D2",
+      "expected_value": -13,
+      "type": "number",
+      "tolerance": 1,
+      "points": 25
+    },
+    "Answers!B5": {
+      "formula_pattern": "=Data!B3+Data!C3-Data!D3",
+      "expected_value": 20,
+      "type": "number",
+      "tolerance": 1,
+      "points": 25
+    }
+  }
+}
