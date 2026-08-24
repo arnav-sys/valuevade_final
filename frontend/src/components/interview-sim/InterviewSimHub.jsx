@@ -126,6 +126,27 @@ export default function InterviewSimHub() {
                     <div className="h-1.5 rounded-full bg-[var(--color-surface)] overflow-hidden mt-2 max-w-xs">
                       <div className="h-full bg-amber-500 rounded-full transition-all" style={{ width: `${data.videos_total ? Math.round((data.videos_done / data.videos_total) * 100) : 0}%` }} />
                     </div>
+                    {typeof localStorage !== 'undefined' && localStorage.getItem('vv_free_trial_id') && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const trialId = localStorage.getItem('vv_free_trial_id');
+                          try {
+                            const { data: { session } } = await (await import('../../lib/supabase')).supabase.auth.getSession();
+                            const r = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/free-trial/${trialId}/provision`, {
+                              method: 'POST',
+                              headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session?.access_token || ''}` },
+                            });
+                            if (!r.ok) throw new Error((await r.json()).detail || 'provision failed');
+                            window.location.reload();
+                          } catch (e) { alert(e.message || 'Could not unlock'); }
+                        }}
+                        className="mt-3 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-xs font-semibold font-bricolage hover:brightness-110"
+                        data-testid="hub-unlock-trial-btn"
+                      >
+                        Unlock my free trial
+                      </button>
+                    )}
                   </div>
                 </div>
               )}

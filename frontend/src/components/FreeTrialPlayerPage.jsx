@@ -43,6 +43,17 @@ export default function FreeTrialPlayerPage() {
         nav('/login', { state: { redirectTo: '/interview-sims', prefillEmail: email } });
         return;
       }
+      // Provision the newly-created account so the JPM interview hub is
+      // unlocked immediately (M20 + all sessions complete + paid).
+      try {
+        await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/free-trial/${trialId}/provision`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${data.session.access_token}`,
+          },
+        });
+      } catch (e) { console.warn('[free-trial] provision warning:', e?.message); }
       toast.success('Account created — heading to your free simulation.');
       nav('/interview-sims');
     } catch (e) {

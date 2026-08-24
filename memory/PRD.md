@@ -19,6 +19,17 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Free Trial mock interview flow VERIFIED (iteration_55)
+
+- Landing FreeTrialCTA + /free-trial/{trialId} auto-signup + /provision endpoint verified end-to-end.
+- Backend `POST /api/free-trial/start` returns 200 with trial_id (400 on invalid email). Uses `waitlist` fallback when `free_mock_trials` table missing.
+- Backend `POST /api/free-trial/{trial_id}/provision` (auth required): idempotently sets up M20 enrollment + user_module + 3 completed sessions + `user_payment_status.paid=true` (pricing_tier='trial'). Hub renders UNLOCKED after this call.
+- InterviewSimHub recovery button (`hub-unlock-trial-btn`) rendered inside `hub-locked-banner` only when `localStorage.vv_free_trial_id` exists.
+- Test artifacts: `/app/backend/tests/test_free_trial.py`, `/app/test_reports/iteration_55.json`.
+- Known perf note: first paint of /interview-sims after fresh signup takes ~10-15s due to badge/enrollment prefetch chain. Flow works but funnel-perceived latency is high — future optimization.
+- Known abuse-guard: `/free-trial/start` returns 409 when same IP-hash bucket has an existing trial. Could soft-block legitimate shared-wifi users; consider fingerprint-only bypass in future.
+
+
 ## What's been implemented (2026-07-10)
 
 ### Video-upload bug fix (verified via testing_agent iteration_21 — 9/9 pytest pass)
