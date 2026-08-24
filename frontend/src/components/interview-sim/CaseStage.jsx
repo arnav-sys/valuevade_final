@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Send, Loader2, ArrowRight, BarChart3, CheckCircle2 } from 'lucide-react';
 import UniverSpreadsheet from '../simulations/UniverSpreadsheet';
-import { interviewSimFetch } from '../../utils/interviewSim';
 import { SimpleMarkdown } from './simShared';
+import { buildAuthSimApi } from './simApi';
 import { toast } from 'sonner';
 
-export default function CaseStage({ attempt, sim, onAdvance }) {
+export default function CaseStage({ attempt, sim, onAdvance, simApi }) {
+  const api = simApi || buildAuthSimApi(attempt.id);
   const caseCfg = sim.case_config || {};
   const existing = attempt.stage_data?.case_study;
   const [excelScore, setExcelScore] = useState(null);
@@ -19,11 +20,23 @@ export default function CaseStage({ attempt, sim, onAdvance }) {
   const submit = async () => {
     setSubmitting(true);
     try {
-      const r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/case/submit`, {
+      const r = await api.fetch(api.endpoints.caseSubmit, {
         method: 'POST',
-        body: JSON.stringify({ excel_score: excelScore, recommendation: recommendation.trim() }),
+        // Guest mode is stateless — pass the full stage_data so the server
+        // can compute the final verdict. Auth mode ignores stage_data (it
+        // reads from the attempt row instead).
+        body: JSON.stringify({
+          excel_score: excelScore,
+          recommendation: recommendation.trim(),
+          stage_data: attempt.stage_data || {},
+        }),
       });
       setResult(r.case_study);
+      await api.onStageComplete('case_study', r.case_study, 'decision', {
+        decision: r.decision,
+        final_score: r.final_score,
+        verdict: r.verdict,
+      });
     } catch (e) {
       toast.error(e.message);
     } finally {

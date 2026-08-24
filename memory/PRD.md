@@ -19,6 +19,18 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Guest (no-signup) free trial mock interview at /free-trial/{trialId} (iteration_56)
+
+- REPLACED the old auto-signup free-trial flow: /free-trial/{trialId} now renders `GuestInterviewPlayer` directly — no Supabase account creation, no dashboard, no hub, no sidebar.
+- New backend module `/app/backend/guest_interview_sim_endpoints.py` — stateless endpoints under `/api/guest-sim/{trial_id}/*` (sim, application, aptitude/start, aptitude/submit, interview/begin, interview/answer, case/submit, tts). Aptitude answers held in an in-memory LRU cache keyed by trial_id (TTL 30 min, cap 500).
+- New frontend `/app/frontend/src/components/GuestInterviewPlayer.jsx` — persists full state in `localStorage['guest-sim:{trialId}']` and reuses the existing stage components via a new `simApi` prop indirection.
+- New `/app/frontend/src/components/interview-sim/simApi.js` — `buildAuthSimApi(attemptId)` (default for existing hub player) and `buildGuestSimApi(trialId, onStageComplete)` (new).
+- Refactored ApplicationStage / AptitudeStage / InterviewStage / CaseStage to consume `simApi.endpoints.X` + `simApi.fetch` instead of hardcoded URLs + `interviewSimFetch`. DecisionStage accepts a `guestMode` prop to swap the "Back" destination between /interview-sims (auth) and / (guest). Backward-compatible: auth flow unchanged.
+- useInterviewerVoice now accepts optional `ttsUrl` + `fetchFn` options — guest player passes `/api/guest-sim/{tid}/tts` + plain fetch.
+- Test artifacts: `/app/backend/tests/test_guest_sim.py`, `/app/test_reports/iteration_56.json`.
+- Known trade-offs (accepted): (1) aptitude cache is per-backend-worker — if backend restarts mid-aptitude, user must restart the round; (2) guest endpoints have no per-IP rate limit yet — a scraper could burn LLM quota via /guest-sim/*/tts. Consider adding a signed trial token + rate limit in a follow-up.
+
+
 ## Feb 2026 — Free Trial mock interview flow VERIFIED (iteration_55)
 
 - Landing FreeTrialCTA + /free-trial/{trialId} auto-signup + /provision endpoint verified end-to-end.

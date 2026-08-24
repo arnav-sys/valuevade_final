@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { Send, Loader2, ArrowRight, CheckCircle2, Users, Brain, Volume2, VolumeX, RotateCcw } from 'lucide-react';
-import { interviewSimFetch } from '../../utils/interviewSim';
 import useInterviewerVoice from '../../utils/useInterviewerVoice';
 import VoiceInputButton from '../VoiceInputButton';
 import { SimpleMarkdown } from './simShared';
+import { buildAuthSimApi } from './simApi';
 import { toast } from 'sonner';
 
 /** Shared player for the behavioural (HR) and technical rounds — voice-first. */
-export default function InterviewStage({ stage, attempt, sim, onAdvance }) {
+export default function InterviewStage({ stage, attempt, sim, onAdvance, simApi }) {
+  const api = simApi || buildAuthSimApi(attempt.id);
   const isHR = stage === 'behavioural';
   const existing = attempt.stage_data?.[stage];
   const [turns, setTurns] = useState(existing?.turns || []);
@@ -22,13 +23,16 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance }) {
 
   // Auto-narrate every new interviewer turn with Pari's voice (nova).
   const { speaking, loading: voiceLoading, replay, stop: stopVoice, error: voiceError } =
-    useInterviewerVoice(turns, { voice: 'nova', autoPlay: voiceOn, enabled: voiceOn });
+    useInterviewerVoice(turns, {
+      voice: 'nova', autoPlay: voiceOn, enabled: voiceOn,
+      ttsUrl: api.ttsUrl, fetchFn: api.fetch,
+    });
 
   useEffect(() => {
     let alive = true;
     if (!began && !roundResult) {
       setThinking(true);
-      interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/interview/begin`, {
+      api.fetch(api.endpoints.interviewBegin, {
         method: 'POST',
         body: JSON.stringify({ stage }),
       })
@@ -53,18 +57,22 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance }) {
     const answer = draft.trim();
     if (!answer || thinking) return;
     setThinking(true);
-    setTurns((p) => [...p, { role: 'candidate', content: answer }]);
+    const nextTurns = [...turns, { role: 'candidate', content: answer }];
+    setTurns(nextTurns);
     setDraft('');
     const method = usedVoice ? 'voice' : 'text';
     setUsedVoice(false);
     try {
-      const r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/interview/answer`, {
+      const r = await api.fetch(api.endpoints.interviewAnswer, {
         method: 'POST',
-        body: JSON.stringify({ stage, answer, input_method: method }),
+        // Guest mode is stateless — it needs the full transcript. Auth mode
+        // ignores this field (server reads turns from the DB row).
+        body: JSON.stringify({ stage, answer, input_method: method, turns }),
       });
       if (r.round_complete) {
         setTurns((p) => [...p, { role: 'interviewer', content: r.closing }]);
         setRoundResult(r.result);
+        await api.onStageComplete(stage, r.result, r.next_stage);
       } else {
         setTurns((p) => [...p, { role: 'interviewer', content: r.next_question }]);
       }

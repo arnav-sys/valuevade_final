@@ -5062,6 +5062,11 @@ try:
         "get_supabase_user": get_supabase_user,
         "ensure_admin": _ivsim_ensure_admin,
     })
+    from guest_interview_sim_endpoints import register_guest_interview_sim_endpoints
+    register_guest_interview_sim_endpoints(api_router, {
+        "supabase_get": _supabase_get,
+        "emergent_llm_key": EMERGENT_LLM_KEY,
+    })
 except Exception as _e:
     logger.warning(f"[interview_sim_endpoints] failed to register: {_e}")
 

@@ -26,7 +26,10 @@ function b64ToObjectUrl(b64, mime = 'audio/mpeg') {
 }
 
 export default function useInterviewerVoice(turns, options = {}) {
-  const { voice = 'nova', autoPlay = true, enabled = true } = options;
+  const {
+    voice = 'nova', autoPlay = true, enabled = true,
+    ttsUrl = '/api/interview-sim/tts', fetchFn = interviewSimFetch,
+  } = options;
   const audioRef = useRef(null);
   const spokenIndexRef = useRef(-1); // highest turn index we've narrated
   const lastTextRef = useRef(null);
@@ -50,7 +53,7 @@ export default function useInterviewerVoice(turns, options = {}) {
     setLoading(true);
     setError(null);
     try {
-      const r = await interviewSimFetch('/api/interview-sim/tts', {
+      const r = await fetchFn(ttsUrl, {
         method: 'POST',
         body: JSON.stringify({ text, voice }),
       });
@@ -81,7 +84,7 @@ export default function useInterviewerVoice(turns, options = {}) {
       setSpeaking(false);
       setError(e?.message || 'tts failed');
     }
-  }, [voice, enabled, stop]);
+  }, [voice, enabled, stop, ttsUrl, fetchFn]);
 
   // Auto-play whenever a new interviewer turn appears at the tail.
   useEffect(() => {

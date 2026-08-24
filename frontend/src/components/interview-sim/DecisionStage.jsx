@@ -2,12 +2,12 @@ import { useNavigate } from 'react-router-dom';
 import { Trophy, XCircle, ArrowRight, RotateCcw } from 'lucide-react';
 import { SimpleMarkdown, StageScorePill } from './simShared';
 
-export default function DecisionStage({ attempt, sim }) {
+export default function DecisionStage({ attempt, sim, guestMode = false }) {
   const navigate = useNavigate();
   const decision = attempt.stage_data?.decision || {};
   const isOffer = (attempt.verdict || decision.verdict) === 'offer';
   const scores = decision.stage_scores || {};
-  const attemptsLeft = attempt.attempt_number < 2;
+  const attemptsLeft = !guestMode && attempt.attempt_number < 2;
 
   return (
     <div className="space-y-5" data-testid="decision-stage">
@@ -58,11 +58,11 @@ export default function DecisionStage({ attempt, sim }) {
 
       <div className="flex flex-col sm:flex-row items-center gap-3">
         <button
-          onClick={() => navigate('/interview-sims')}
+          onClick={() => navigate(guestMode ? '/' : '/interview-sims')}
           className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all"
           data-testid="decision-back-hub-btn"
         >
-          Back to all openings <ArrowRight size={15} />
+          {guestMode ? 'Back to home' : 'Back to all openings'} <ArrowRight size={15} />
         </button>
         {!isOffer && attemptsLeft && (
           <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-muted)]" data-testid="decision-retry-hint">

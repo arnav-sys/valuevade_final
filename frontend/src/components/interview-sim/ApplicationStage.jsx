@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Send, Loader2, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { interviewSimFetch } from '../../utils/interviewSim';
 import { SimpleMarkdown } from './simShared';
+import { buildAuthSimApi } from './simApi';
 import { toast } from 'sonner';
 
 const FIELDS = [
@@ -11,7 +11,8 @@ const FIELDS = [
   { key: 'cover_note', label: 'Short cover note (optional)', ph: 'Anything else the recruiter should know — 2-3 lines.', required: false },
 ];
 
-export default function ApplicationStage({ attempt, sim, onAdvance }) {
+export default function ApplicationStage({ attempt, sim, onAdvance, simApi }) {
+  const api = simApi || buildAuthSimApi(attempt.id);
   const existing = attempt.stage_data?.application;
   const [form, setForm] = useState({ why_firm: '', why_er: '', achievement: '', cover_note: '' });
   const [submitting, setSubmitting] = useState(false);
@@ -22,11 +23,12 @@ export default function ApplicationStage({ attempt, sim, onAdvance }) {
   const submit = async () => {
     setSubmitting(true);
     try {
-      const r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/application`, {
+      const r = await api.fetch(api.endpoints.application, {
         method: 'POST',
         body: JSON.stringify({ responses: form }),
       });
       setResult(r.application);
+      await api.onStageComplete('application', r.application, 'aptitude');
     } catch (e) {
       toast.error(e.message);
     } finally {

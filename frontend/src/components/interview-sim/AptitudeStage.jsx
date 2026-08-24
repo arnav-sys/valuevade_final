@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Timer, Loader2, ArrowRight, CheckCircle2, XCircle, AlertTriangle, PlayCircle, ChevronDown } from 'lucide-react';
-import { interviewSimFetch } from '../../utils/interviewSim';
 import { SimpleMarkdown } from './simShared';
+import { buildAuthSimApi } from './simApi';
 import { toast } from 'sonner';
 
 function fmt(sec) {
@@ -10,7 +10,8 @@ function fmt(sec) {
   return `${m}:${String(s).padStart(2, '0')}`;
 }
 
-export default function AptitudeStage({ attempt, sim, onAdvance }) {
+export default function AptitudeStage({ attempt, sim, onAdvance, simApi }) {
+  const api = simApi || buildAuthSimApi(attempt.id);
   const meta = sim.process_meta?.aptitude || {};
   const [test, setTest] = useState(null);          // {questions, started_at, time_limit_minutes, pass_pct}
   const [answers, setAnswers] = useState({});
@@ -39,16 +40,15 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
       // The backend generates the 12 aptitude questions via an LLM which
       // takes ~30-45s — too slow for a single HTTP request (ingress 520).
       // Poll until questions are ready (max ~90s).
-      let r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/aptitude/start`, { method: 'POST' });
+      let r = await api.fetch(api.endpoints.aptitudeStart, { method: 'POST' });
       const pollMs = Math.max(1500, (r?.poll_seconds || 3) * 1000);
       let waited = 0;
       while (r?.pending && waited < 120000) {
         await new Promise((res) => setTimeout(res, pollMs));
         waited += pollMs;
         try {
-          r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/aptitude/start`, { method: 'POST' });
+          r = await api.fetch(api.endpoints.aptitudeStart, { method: 'POST' });
         } catch (e) {
-          // Ignore transient failures during polling; keep trying.
           console.warn('[aptitude] poll failed, retrying:', e?.message);
         }
       }
@@ -72,11 +72,12 @@ export default function AptitudeStage({ attempt, sim, onAdvance }) {
     setSubmitting(true);
     try {
       const list = (test?.questions || []).map((_, i) => (Number.isInteger(answers[i]) ? answers[i] : null));
-      const r = await interviewSimFetch(`/api/interview-sim/attempt/${attempt.id}/aptitude/submit`, {
+      const r = await api.fetch(api.endpoints.aptitudeSubmit, {
         method: 'POST',
         body: JSON.stringify({ answers: list }),
       });
       setResult(r);
+      await api.onStageComplete('aptitude', r.aptitude, 'behavioural');
       if (auto) toast.warning('Time up — your test was auto-submitted.');
     } catch (e) {
       submittedRef.current = false;
