@@ -12,6 +12,7 @@ import HowItWorksSection from '@/components/HowItWorksSection';
 import AIProofSection from '@/components/AIProofSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import FinalCTASection from '@/components/FinalCTASection';
+import FreeTrialCTA from '@/components/FreeTrialCTA';
 import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import FaqAccordion from '@/components/faq/FaqAccordion';
@@ -140,6 +141,7 @@ export default function LandingPage() {
         <ComparisonSection />
         <HowItWorksSection />
         <AIProofSection />
+        <FreeTrialCTA />
         <TestimonialsSection />
         <FaqAccordion />
         <FinalCTASection onSubmit={handleWaitlistSubmit} />

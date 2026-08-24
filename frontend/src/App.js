@@ -84,6 +84,7 @@ const CourseCompletePage = lazyWithRetry(() => import("@/components/CourseComple
 const DevSimPreview = lazyWithRetry(() => import("@/components/DevSimPreview"));
 const M3DryRunPreview = lazyWithRetry(() => import("@/components/M3DryRunPreview"));
 const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
+const FreeTrialPlayerPage = lazyWithRetry(() => import("@/components/FreeTrialPlayerPage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
 const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
 import SessionPaymentGate from "@/components/payments/SessionPaymentGate";
@@ -161,6 +162,7 @@ function App() {
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
+                  <Route path="/free-trial/:trialId" element={<FreeTrialPlayerPage />} />
                   <Route path="/m3-sample-preview" element={<M3SamplePreview />} />
                   <Route path="/m3-dryrun-preview" element={<M3DryRunPreview />} />
                   <Route path="/_dev/sim/:simId" element={<DevSimPreview />} />

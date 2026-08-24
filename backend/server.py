@@ -5044,7 +5044,7 @@ except Exception as _e:
 
 # ----------------------- Module 20 full interview simulations ----------------
 try:
-    from interview_sim_endpoints import register_interview_sim_endpoints
+    from interview_sim_endpoints import register_interview_sim_endpoints, _ensure_admin as _ivsim_ensure_admin
     register_interview_sim_endpoints(api_router, {
         "supabase_get": _supabase_get,
         "supabase_post": _supabase_post,
@@ -5052,6 +5052,15 @@ try:
         "supabase_delete": _supabase_delete,
         "get_supabase_user": get_supabase_user,
         "emergent_llm_key": EMERGENT_LLM_KEY,
+    })
+    from free_trial_endpoints import register_free_trial_endpoints
+    register_free_trial_endpoints(api_router, {
+        "supabase_get": _supabase_get,
+        "supabase_post": _supabase_post,
+        "supabase_patch": _supabase_patch,
+        "supabase_delete": _supabase_delete,
+        "get_supabase_user": get_supabase_user,
+        "ensure_admin": _ivsim_ensure_admin,
     })
 except Exception as _e:
     logger.warning(f"[interview_sim_endpoints] failed to register: {_e}")

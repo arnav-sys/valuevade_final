@@ -6,7 +6,8 @@ import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
 import ErrorsTab from './admin/ErrorsTab';
 import MockInterviewsTab from './admin/MockInterviewsTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2 } from 'lucide-react';
+import FreeTrialsTab from './admin/FreeTrialsTab';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -60,6 +61,7 @@ function AdminTabs({ tab, setTab }) {
     { k: 'videos',    label: 'Session Videos',     icon: Video },
     { k: 'curriculum', label: 'View Course',       icon: GraduationCap },
     { k: 'mock',      label: 'Mock Interviews',    icon: Building2 },
+    { k: 'trials',    label: 'Free Trials',        icon: Mail },
     { k: 'customization', label: 'AI Customisation', icon: Sparkles },
     { k: 'feedback',  label: 'Session Feedback',  icon: MessageSquareWarning },
     { k: 'faqs',      label: 'FAQs',               icon: HelpCircle },
@@ -579,6 +581,7 @@ export default function AdminPanel() {
           {tab === 'feedback' && <SessionFeedbackTab />}
           {tab === 'curriculum' && <CurriculumTab />}
           {tab === 'mock' && <MockInterviewsTab />}
+          {tab === 'trials' && <FreeTrialsTab />}
           {tab === 'rewards' && <RewardsTab />}
           {tab === 'errors' && <ErrorsTab />}
         </div>
