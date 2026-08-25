@@ -7,6 +7,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
+import WhoBuiltThisSection from './WhoBuiltThisSection';
 import {
   LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
 } from './cinematic/primitives';
@@ -103,6 +104,7 @@ import {
   Sun,
   Moon,
   PlayCircle,
+  Award,
 } from 'lucide-react';
 
 function DifficultyBadge({ level }) {
@@ -240,19 +242,17 @@ export default function CourseDetailsPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
       <Helmet>
-        {/* Prompt-3 will replace the copy; here we only fix the per-route head
-            so /course/:id has its own title, description and self-canonical. */}
-        <title>{course?.title ? `${course.title} — Syllabus & Fees | Valuevade` : 'Course — Valuevade'}</title>
+        <title>Equity Research Analyst Course — Syllabus & Fees | Valuevade</title>
         <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
         <link rel="canonical" href={`https://valuevade.com/course/${courseId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://valuevade.com/course/${courseId}`} />
-        <meta property="og:title" content={course?.title ? `${course.title} — Syllabus & Fees | Valuevade` : 'Course — Valuevade'} />
+        <meta property="og:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
         <meta property="og:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={course?.title ? `${course.title} — Syllabus & Fees | Valuevade` : 'Course — Valuevade'} />
+        <meta name="twitter:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
         <meta name="twitter:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
       </Helmet>
@@ -318,6 +318,19 @@ export default function CourseDetailsPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8 sm:py-12 relative z-10">
+        {/* Breadcrumb — Prompt 3 task 14 */}
+        <nav
+          className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] font-bricolage mb-6"
+          aria-label="Breadcrumb"
+          data-testid="detail-breadcrumb"
+        >
+          <Link to="/" className="hover:text-[var(--color-text)] transition-colors">Home</Link>
+          <ChevronRight size={12} className="text-[var(--color-text-faint)]" />
+          <Link to="/courses" className="hover:text-[var(--color-text)] transition-colors">Courses</Link>
+          <ChevronRight size={12} className="text-[var(--color-text-faint)]" />
+          <span className="text-[var(--color-text)]">Equity Research Analyst Program</span>
+        </nav>
+
         {/* Back link */}
         <Link
           to="/courses"
@@ -354,7 +367,9 @@ export default function CourseDetailsPage() {
           <div className="flex flex-col lg:flex-row gap-10">
             {/* Left content */}
             <div className="flex-1 min-w-0">
-              {/* Hero section */}
+              {/* Hero section — Prompt 3 task 5: static verbatim copy
+                  (no longer DB-driven). Preserves the halo dot animation
+                  aesthetic. */}
               <section className="mb-12 relative" data-testid="detail-hero">
                 {/* Title-side halo dots (smaller variant of /courses hero halo) */}
                 <div
@@ -373,7 +388,7 @@ export default function CourseDetailsPage() {
                   </svg>
                 </div>
                 <LetterStaggerHeadline
-                  text={course.title}
+                  text="Equity Research Analyst Program — Financial Modelling & Valuation Course"
                   className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 tracking-tight relative"
                   testid="detail-title"
                 />
@@ -381,10 +396,28 @@ export default function CourseDetailsPage() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-6 max-w-2xl"
+                  className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-4 max-w-3xl"
                   data-testid="detail-description"
                 >
-                  {course.long_description || course.description}
+                  The Equity Research Analyst Program is Valuevade&apos;s flagship online course for
+                  Indian finance students and early-career switchers. Across 21 modules and 239
+                  hands-on sessions (about 60 hours, including 42 hours of video lectures), you learn
+                  accounting under Ind AS, financial statement and ratio analysis, three-statement
+                  financial modelling, and valuation by DCF, comparable companies and SOTP — then
+                  finish with three portfolio capstones: an initiating-coverage report, a sector
+                  coverage note, and a working AI research copilot. Lifetime access costs ₹1,500
+                  one-time, and your first session is free.
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.55, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="text-xs sm:text-sm text-[var(--color-text-faint)] font-bricolage italic mb-6 max-w-3xl"
+                  data-testid="detail-audience-line"
+                >
+                  For B.Com/BBA/MBA students, CFA and FRM candidates, CA students moving toward markets
+                  roles, and early-career professionals switching into equity research, IB, asset
+                  management or Big 4 advisory.
                 </motion.p>
 
                 {/* Stats bar (preserved for tests/legacy a11y) */}
@@ -404,7 +437,7 @@ export default function CourseDetailsPage() {
                   <DifficultyBadge level={course.difficulty} />
                 </div>
 
-                {/* CTA — wrapped in breathing-glow for premium primary actions */}
+                {/* CTA — Prompt 3: "Start with a free session →" + trust line */}
                 {isCompleted ? (
                   <span className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold font-bricolage bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20" data-testid="detail-completed-badge">
                     <CheckCircle2 size={18} /> Course Completed
@@ -420,15 +453,20 @@ export default function CourseDetailsPage() {
                     </button>
                   </BreathingGlow>
                 ) : (
-                  <BreathingGlow testid="detail-cta-glow">
-                    <button
-                      onClick={goCustomize}
-                      className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
-                      data-testid="detail-customize-enroll"
-                    >
-                      {user ? 'Enroll — Preview & Start' : 'Login to Enroll'} <ArrowRight size={16} />
-                    </button>
-                  </BreathingGlow>
+                  <>
+                    <BreathingGlow testid="detail-cta-glow">
+                      <button
+                        onClick={goCustomize}
+                        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                        data-testid="detail-customize-enroll"
+                      >
+                        Start with a free session <ArrowRight size={16} />
+                      </button>
+                    </BreathingGlow>
+                    <p className="mt-3 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-text-faint)]" data-testid="detail-hero-trust">
+                      ₹1,500 lifetime · No subscription
+                    </p>
+                  </>
                 )}
               </section>
 
@@ -442,26 +480,33 @@ export default function CourseDetailsPage() {
                 </div>
               </section>
 
-              {/* What You'll Learn */}
-              {whatYouLearn.length > 0 && (
-                <section className="mb-12" data-testid="detail-what-you-learn">
-                  <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
-                    What You'll Learn
-                  </h2>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {whatYouLearn.map((item, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-3 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"
-                        data-testid={`learn-item-${idx}`}
-                      >
-                        <CheckCircle2 size={18} className="text-[var(--color-success)] shrink-0 mt-0.5" />
-                        <span className="text-sm text-[var(--color-text)] font-bricolage">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </section>
-              )}
+              {/* What you'll be able to do — Prompt 3 task 7 (verbatim). */}
+              <section className="mb-12" data-testid="detail-what-you-learn">
+                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
+                  What you&apos;ll be able to do
+                </h2>
+                <ul className="space-y-3">
+                  {[
+                    'Build a linked three-statement financial model with debt and depreciation schedules and sensitivity tables',
+                    'Complete a DCF valuation of an NSE-listed company and defend your WACC and terminal-value assumptions',
+                    'Run a comparable-companies analysis: pick a peer set, normalise the numbers, and triangulate a value range',
+                    'Perform ratio and DuPont analysis on real Indian financials, including banks',
+                    'Spot forensic red flags in annual reports and SEBI filings',
+                    'Write a full initiating-coverage report and a sector coverage note to sell-side conventions',
+                    'Clear a multi-round mock interview with scored feedback on technicals, communication and structure',
+                    'Build and ship a working AI research copilot as a portfolio project',
+                  ].map((line, idx) => (
+                    <li
+                      key={idx}
+                      className="flex items-start gap-3 p-3 sm:p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"
+                      data-testid={`learn-item-${idx}`}
+                    >
+                      <CheckCircle2 size={18} className="text-[var(--color-success)] shrink-0 mt-0.5" />
+                      <span className="text-sm text-[var(--color-text)] font-bricolage leading-relaxed">{line}</span>
+                    </li>
+                  ))}
+                </ul>
+              </section>
 
               {/* Intro reel — premium video preview of the programme.
                   Placed AFTER 'What You'll Learn' so users have context before pressing play. */}
@@ -486,11 +531,13 @@ export default function CourseDetailsPage() {
                 </div>
               </section>
 
-              {/* Course Modules */}
+              {/* Full syllabus — module by module (Prompt 3 task 6).
+                  Data-driven from master_modules; capstones appended below
+                  the accordion as named deliverables. */}
               {modules.length > 0 && (
                 <section className="mb-12" data-testid="detail-modules-section">
                   <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
-                    Course Modules
+                    The full syllabus — module by module
                   </h2>
                   <Accordion type="single" collapsible defaultValue="module-0" className="space-y-3">
                     {modules.map((mod, idx) => {
@@ -573,6 +620,30 @@ export default function CourseDetailsPage() {
                       );
                     })}
                   </Accordion>
+
+                  {/* Capstone deliverables at the end of the syllabus list — Prompt 3 task 6. */}
+                  <div
+                    className="mt-6 rounded-2xl border border-[var(--color-accent-purple)]/20 bg-[var(--color-accent-purple)]/[0.05] p-5 space-y-4"
+                    data-testid="detail-capstones-inline"
+                  >
+                    <p className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-purple)] mb-1">
+                      Capstone deliverables (after all modules)
+                    </p>
+                    {[
+                      { n: 1, t: 'Capstone 1: Full initiating-coverage report on a listed Indian company' },
+                      { n: 2, t: 'Capstone 2: Sector coverage note' },
+                      { n: 3, t: 'Capstone 3: Build a working AI equity research copilot' },
+                    ].map((c) => (
+                      <div key={c.n} className="flex items-start gap-3" data-testid={`inline-capstone-${c.n}`}>
+                        <span className="w-7 h-7 rounded-lg bg-[var(--color-accent-purple)]/15 border border-[var(--color-accent-purple)]/30 flex items-center justify-center text-xs font-mono text-[var(--color-accent-purple)] shrink-0">
+                          C{c.n}
+                        </span>
+                        <span className="text-sm text-[var(--color-text)] font-bricolage leading-relaxed">
+                          {c.t}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </section>
               )}
             </div>
@@ -643,29 +714,225 @@ export default function CourseDetailsPage() {
           </div>
         )}
 
-        {/* Your Capstone Projects — surfaced near the bottom (after the module
-            list) per the updated brief. Same CapstoneProjectsGrid used inside
-            the M23 accordion expansion and on /capstones → single source of
-            truth. */}
+        {/* All the below-fold sections — Prompt 3 tasks 8–13.
+            Order: how it works → certificate & standards → who built this
+            → capstone showcase → FAQ → deep comparison → closing CTA. */}
+
+        {/* Task 8 — How the course works (verbatim) */}
+        {!loading && !error && course && (
+          <section className="mt-20 mb-16" data-testid="detail-how-it-works">
+            <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-5">
+              How the course works
+            </h2>
+            <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed max-w-3xl">
+              Every session follows the same loop: interactive notes → adaptive quiz → hands-on
+              simulation, with Pari available in context at every step. Simulations come in three
+              formats — interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet; auto-graded),
+              branch-based decision scenarios, and applied reading with quizzes. The Study Planner
+              takes your deadline or daily-hours budget and schedules all 239 sessions; progress,
+              streaks, XP and doubt history persist if you pause. Excel simulations are
+              desktop/laptop-only.
+            </p>
+          </section>
+        )}
+
+        {/* Task 9 — Certificate & external standards */}
+        {!loading && !error && course && (
+          <section className="mb-16" data-testid="detail-cert-standards">
+            <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
+              Certificate & external standards
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                {
+                  title: 'Valuevade Certificate of Completion',
+                  body: "A PDF issued in your full name with the completion date and a unique certificate ID, the moment you finish all three capstones. Formatted for LinkedIn's Licenses & Certifications field.",
+                  icon: Award, tone: 'primary',
+                },
+                {
+                  title: 'NISM Series-VIII (Equity Research)',
+                  body: 'The curriculum maps to the exam syllabus so you can sit the SEBI-established NISM exam with confidence. Valuevade prepares you for it; the NISM certificate itself is earned by passing NISM\'s exam.',
+                  icon: GraduationCap, tone: 'accent-purple',
+                },
+                {
+                  title: 'CFI certification prep',
+                  body: 'The curriculum also prepares you for CFI certifications — same principle: Valuevade prepares you, the issuing body certifies you.',
+                  icon: CheckCircle2, tone: 'accent-pink',
+                },
+              ].map((c, i) => {
+                const Icon = c.icon;
+                return (
+                  <div
+                    key={i}
+                    className="glass-card rounded-2xl p-5"
+                    data-testid={`cert-block-${i}`}
+                  >
+                    <div className={`w-10 h-10 rounded-xl bg-[var(--color-${c.tone})]/10 border border-[var(--color-${c.tone})]/25 flex items-center justify-center mb-4`}>
+                      <Icon size={18} className={`text-[var(--color-${c.tone})]`} />
+                    </div>
+                    <h3 className="font-clash text-sm font-bold text-[var(--color-text)] mb-2">{c.title}</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed">{c.body}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* Task 10 — Who built this. Reuses the homepage component (same 3 paragraphs). */}
+        {!loading && !error && course && <WhoBuiltThisSection />}
+
+        {/* Task 11 — Capstone showcase. Replaces the previous data-driven
+            "Your Capstone Projects" grid with the 3 fixed deliverable cards.
+            Sample excerpts intentionally omitted per Prompt 3 (HTML TODO). */}
         {!loading && !error && course && (
           <motion.section
-            initial={{ opacity: 0, y: 28 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-20 mb-16"
-            data-testid="detail-capstones-bottom"
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="mb-16"
+            data-testid="detail-capstone-showcase"
           >
-            <div className="mb-8 text-center">
+            <div className="mb-8">
               <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-purple)] mb-2">
                 Final Track Output
               </div>
-              <h2 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)]" data-testid="detail-capstones-heading">
-                Your Capstone Projects
+              <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)]" data-testid="detail-capstone-showcase-heading">
+                What you&apos;ll walk away with
               </h2>
             </div>
-            <CapstoneProjectsGrid pathId={courseId} />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {[
+                { n: 1, title: 'Initiating-Coverage Report',
+                  body: 'Company analysis, three-statement model, DCF and comps valuation, and a full recommendation write-up on a listed Indian company.' },
+                { n: 2, title: 'Sector Coverage Note',
+                  body: 'Industry structure, comparables set, and a house coverage view — written to sell-side conventions.' },
+                { n: 3, title: 'AI Research Copilot',
+                  body: 'A working research tool you built end-to-end — the portfolio artefact that demonstrates you can deploy AI, not compete with it.' },
+              ].map((c) => (
+                <div
+                  key={c.n}
+                  className="glass-card rounded-2xl p-5"
+                  data-testid={`showcase-card-${c.n}`}
+                >
+                  <div className="w-10 h-10 rounded-xl bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 flex items-center justify-center mb-4 text-xs font-mono text-[var(--color-accent-purple)]">
+                    C{c.n}
+                  </div>
+                  <h3 className="font-clash text-sm font-bold text-[var(--color-text)] mb-2">{c.title}</h3>
+                  <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed">{c.body}</p>
+                  {/* TODO: embed real sample excerpt when available */}
+                </div>
+              ))}
+            </div>
           </motion.section>
+        )}
+
+        {/* Task 12 — Course-page FAQ (13 Qs verbatim, in prescribed order). */}
+        {!loading && !error && course && (
+          <section id="course-faq" className="mb-16" data-testid="detail-course-faq">
+            <div className="mb-6">
+              <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-2">
+                Frequently asked questions
+              </h2>
+              <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-faint)]" data-testid="detail-faq-last-updated">
+                Last updated: 25 August 2026
+              </p>
+            </div>
+            <Accordion type="single" collapsible className="space-y-2">
+              {[
+                { q: 'What are the prerequisites for the Equity Research Analyst Program?',
+                  a: "None. The course starts from absolute foundations — what finance is, how the three statements work — before building toward modelling and valuation. Basic Excel familiarity helps but isn't assumed; the early sessions teach the spreadsheet skills the later simulations use. If you can commit about an hour a day, you have everything you need." },
+                { q: 'How long does the course take to complete?',
+                  a: "Most students finish in about 2 months at 1 hour a day; the full program is roughly 60 hours of guided work, including 42 hours of video lectures. The Study Planner lets you set a target deadline or a daily-hours budget and auto-schedules all 239 sessions accordingly. Because access is lifetime, going slower costs nothing." },
+                { q: 'How long does it take to learn DCF valuation?',
+                  a: "Inside the program, you build your first complete DCF — on Reliance — in the valuation modules, roughly five weeks in at an hour a day, after the accounting, analysis and modelling foundations that make the DCF's assumptions defensible. Getting comfortable defending WACC, growth and terminal-value choices in an interview usually takes a further few weeks of the valuation and mock-interview modules." },
+                { q: 'What does the syllabus cover?',
+                  a: "Accounting and economics foundations, financial statement analysis, ratio and forensic analysis, three-statement financial modelling, valuation (DCF, comparable companies, SOTP), industry and competitive analysis, and AI skills for analysts — across 21 modules and 239 sessions — ending with three capstones: a full initiating-coverage report, a sector coverage note, and a working AI research copilot. The full module-by-module breakdown is on this page above." },
+                { q: 'What kind of simulations does the course have?',
+                  a: "239 hands-on simulations — one per session — across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet, auto-graded), branch-based decision scenarios, and applied reading with quizzes." },
+                { q: 'Is the certificate recognised?',
+                  a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certifications — the curriculum prepares you for the SEBI-established NISM Series-VIII exam and for CFI certifications — and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
+                { q: 'What happens if I pause for a few weeks?',
+                  a: "Nothing is lost. Progress, streaks, XP, badges, doubt history and your study plan are all persisted, and access is lifetime — you pick up exactly where you left off. The Study Planner can reschedule your remaining sessions around a new deadline." },
+                { q: 'Will this course get me a finance job?',
+                  a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series-VIII and CFI preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
+                { q: 'Is Valuevade worth it?',
+                  a: "For ₹1,500 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series-VIII and CFI certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
+                { q: 'How is Valuevade different from WallStreet School?',
+                  a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹1,500. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
+                { q: 'How is Valuevade different from Imarticus or Upgrad?',
+                  a: "Imarticus and Upgrad offer longer university-style finance programs, often with placement-assistance structures and cohort schedules. Valuevade is a focused equity-research skill program: shorter (about 2 months at an hour a day), self-paced, simulation-first, and ₹1,500 lifetime. If you want a long credentialed program with placement services, they're built for that; if you want the specific analyst skill set and portfolio, fast and affordable, that's what Valuevade is for." },
+                { q: 'How is Valuevade different from Valuation School?',
+                  a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software — auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹1,500 lifetime. Pick the format that matches how you actually study." },
+                { q: 'How do I become an equity research analyst in India?',
+                  a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA — not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series-VIII is the SEBI-established equity-research certification; CFA helps for buy-side), and — increasingly the differentiator — a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
+              ].map((f, i) => (
+                <AccordionItem
+                  key={i}
+                  value={`course-faq-${i}`}
+                  className="glass-card rounded-xl border-[var(--color-border)] overflow-hidden"
+                  data-testid={`detail-faq-item-${i}`}
+                >
+                  <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-[var(--color-surface-hover)] transition-colors text-left text-sm font-semibold text-[var(--color-text)] font-bricolage">
+                    {f.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-5 pb-4 text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </section>
+        )}
+
+        {/* Task 13 — Deep comparison table. Competitor cells stay "—" per
+            Prompt 3 (founder verifies them herself). */}
+        {!loading && !error && course && (
+          <section className="mb-16 overflow-x-auto" data-testid="detail-deep-compare">
+            <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
+              How Valuevade compares
+            </h2>
+            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
+              <table className="w-full text-sm" data-testid="detail-compare-table">
+                <thead>
+                  <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]">
+                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Feature</th>
+                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-primary)]">Valuevade</th>
+                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">WallStreet School</th>
+                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">IFMC</th>
+                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Coursera</th>
+                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Imarticus / Upgrad</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--color-border)]">
+                  {[
+                    ['Modules', '21'],
+                    ['Sessions & simulations', '239 hands-on sessions, one simulation per session'],
+                    ['Capstone deliverables', '3 (initiating-coverage report, sector note, AI research copilot)'],
+                    ['Mock interviews', 'AI, multi-round, scored feedback'],
+                    ['NISM Series-VIII prep', 'Included, mapped to syllabus'],
+                    ['24/7 AI tutor', 'Included (Pari, context-aware)'],
+                    ['Price', '₹1,500 one-time'],
+                    ['Access', 'Lifetime'],
+                  ].map(([feat, vv], i) => (
+                    <tr key={i} data-testid={`compare-row-${i}`}>
+                      <td className="px-4 py-3 text-[var(--color-text)] font-bricolage">{feat}</td>
+                      <td className="px-4 py-3 text-[var(--color-text)] font-bricolage">{vv}</td>
+                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
+                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
+                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
+                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="px-4 py-3 text-xs text-[var(--color-text-faint)] font-bricolage border-t border-[var(--color-border)]">
+                Competitor cells (—) will be filled by the founder after verifying each provider&apos;s
+                current published values.
+              </p>
+            </div>
+          </section>
         )}
 
         {/* Closing CTA band */}

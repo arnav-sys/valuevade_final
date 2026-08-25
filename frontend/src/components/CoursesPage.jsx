@@ -422,7 +422,10 @@ export default function CoursesPage() {
           </section>
         )}
 
-        {/* Closing CTA band */}
+        {/* Closing CTA band — Prompt-3 removed the duplicate "Choose Your
+            Career Path" H2 that was echoing the hero title. The band now
+            leads with the "Career Outcomes" eyebrow and a fresh sub-headline
+            focused on the CTA action. */}
         {!loading && !error && courses.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 28 }}
@@ -438,9 +441,6 @@ export default function CoursesPage() {
                 <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-purple)] mb-3">
                   <Trophy size={12} className="inline -translate-y-0.5 mr-1" /> Career Outcomes
                 </div>
-                <h2 className="font-clash text-2xl sm:text-3xl lg:text-4xl font-bold text-[var(--color-text)] mb-3" data-testid="courses-closing-heading">
-                  Choose Your Career Path
-                </h2>
                 <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto mb-7">
                   AI-personalized learning paths built for finance careers
                 </p>
