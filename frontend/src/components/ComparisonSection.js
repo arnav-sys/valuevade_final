@@ -1,9 +1,12 @@
 import { Check, Minus } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import { ComparisonSplitDecor } from '@/components/landing/CinematicSections';
 
-/* Comparison + Pricing Wedge — light, minimal, matches the existing
- * landing aesthetic (var(--bg-primary), glass-card, primary accent). */
+/* Editorial finance / Bloomberg-terminal ComparisonSection (Feb 2026).
+ * - Chapter rail §05 // SIDE-BY-SIDE.
+ * - Datagrid restyled: sharp corners, mono column headers, hairline rows,
+ *   Valuevade column highlighted with a left/right primary rail.
+ * - Pricing wedge → lv-panel with mono readout.
+ * Content copy and data verbatim from the previous version. */
 
 const COMPETITORS = ['Valuevade', 'WallStreet School', 'IFMC Institute', 'Coursera', 'Imarticus/Upgrad'];
 
@@ -22,12 +25,22 @@ const ROWS = [
 
 const Cell = ({ value, vv }) => {
   if (value === true) {
-    return <Check size={18} className={vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'} aria-label="yes" />;
+    return (
+      <span className="inline-flex items-center gap-1.5">
+        <Check size={13} strokeWidth={2.5} className={vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'} aria-hidden="true" />
+        <span className={`font-jetbrains text-[10px] uppercase tracking-[0.16em] ${vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>YES</span>
+      </span>
+    );
   }
   if (value === false) {
-    return <Minus size={16} className="text-[var(--color-text-faint)]" aria-label="no" />;
+    return (
+      <span className="inline-flex items-center gap-1.5">
+        <Minus size={12} strokeWidth={2.5} className="text-[var(--color-text-faint)]" aria-hidden="true" />
+        <span className="font-jetbrains text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-faint)]">NO</span>
+      </span>
+    );
   }
-  return <span className="text-xs sm:text-sm text-[var(--color-text-muted)]">{value}</span>;
+  return <span className={`text-[12.5px] ${vv ? 'text-[var(--color-text)] font-semibold' : 'text-[var(--color-text-muted)]'} font-bricolage`}>{value}</span>;
 };
 
 export default function ComparisonSection() {
@@ -35,47 +48,64 @@ export default function ComparisonSection() {
   return (
     <section
       id="compare"
-      className="relative py-24 lg:py-32 bg-[var(--bg-primary)]"
+      className="relative py-24 lg:py-28 bg-[var(--bg-primary)]"
       data-testid="comparison-section"
     >
-      <div ref={sectionRef} className="max-w-6xl mx-auto px-6">
-        <div className="text-center mb-14">
-          <p className={`section-label ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>SIDE-BY-SIDE</p>
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-40" aria-hidden="true" />
+
+      <div ref={sectionRef} className="relative max-w-6xl mx-auto px-6">
+        {/* Chapter rail */}
+        <div className="flex items-center gap-3 mb-10 lg:mb-12">
+          <span className="lv-chapter">§05 // BENCHMARK</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">SIDE-BY-SIDE · 5 PROVIDERS</span>
+        </div>
+
+        <div className="max-w-3xl mb-12 lg:mb-14">
+          <p className={`lv-chapter mb-4 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>
+            SIDE-BY-SIDE
+          </p>
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] leading-tight ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-            style={{ animationDelay: '0.1s' }}
+            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
           >
-            Why pay 30× more for less?
+            Why pay{' '}
+            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+              30×
+            </span>{' '}
+            more for less?
           </h2>
           <p
-            className={`mt-4 text-[var(--color-text-muted)] font-bricolage max-w-2xl mx-auto text-base ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            className={`mt-5 text-[var(--color-text-muted)] font-bricolage max-w-2xl text-[14.5px] leading-relaxed ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
             style={{ animationDelay: '0.18s' }}
           >
             We benchmarked Valuevade against the four programs most Indian finance students consider.
           </p>
+          <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
         </div>
 
-        <ComparisonSplitDecor />
-
+        {/* Datagrid — Bloomberg terminal aesthetic */}
         <div
-          className={`glass-card rounded-2xl overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-          style={{ animationDelay: '0.26s', borderColor: 'rgba(36, 107, 253, 0.15)' }}
+          className={`lv-panel overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+          style={{ animationDelay: '0.26s' }}
         >
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[760px]" data-testid="comparison-table">
+            <table className="w-full min-w-[820px]" data-testid="comparison-table">
               <thead>
-                <tr className="text-left">
-                  <th className="px-6 py-5 text-xs uppercase tracking-wider text-[var(--color-text-faint)] font-medium">Feature</th>
+                <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]/60">
+                  <th className="px-5 py-3 text-left font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-faint)]">
+                    Feature
+                  </th>
                   {COMPETITORS.map((c, i) => (
                     <th
                       key={c}
-                      className={`px-4 py-5 text-xs uppercase tracking-wider font-semibold ${
-                        i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-faint)]'
+                      className={`px-4 py-3 text-left font-jetbrains text-[10.5px] uppercase tracking-[0.18em] ${
+                        i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'
                       }`}
                       style={i === 0 ? {
-                        background: 'linear-gradient(180deg, rgba(36,107,253,0.06), transparent)',
-                        borderLeft: '1px solid rgba(36,107,253,0.18)',
-                        borderRight: '1px solid rgba(36,107,253,0.18)',
+                        borderLeft: '1px solid color-mix(in oklab, var(--color-primary) 55%, transparent)',
+                        borderRight: '1px solid color-mix(in oklab, var(--color-primary) 55%, transparent)',
+                        background: 'color-mix(in oklab, var(--color-primary) 12%, transparent)',
                       } : {}}
                     >
                       {c}
@@ -85,22 +115,20 @@ export default function ComparisonSection() {
               </thead>
               <tbody>
                 {ROWS.map((r, idx) => (
-                  <tr key={r.label} className="border-t border-[var(--color-border)]">
-                    <td className="px-6 py-4 text-sm text-[var(--color-text)] font-medium">{r.label}</td>
+                  <tr key={r.label} className="border-t border-[var(--color-border)]" data-testid={`compare-row-${idx}`}>
+                    <td className="px-5 py-3.5 text-[13px] text-[var(--color-text)] font-bricolage">{r.label}</td>
                     <td
-                      className="px-4 py-4 text-sm text-[var(--color-text)] font-semibold"
+                      className="px-4 py-3.5"
                       style={{
-                        background: idx % 2 === 0
-                          ? 'linear-gradient(180deg, rgba(36,107,253,0.04), rgba(36,107,253,0.02))'
-                          : 'linear-gradient(180deg, rgba(36,107,253,0.025), rgba(36,107,253,0.01))',
-                        borderLeft: '1px solid rgba(36,107,253,0.18)',
-                        borderRight: '1px solid rgba(36,107,253,0.18)',
+                        background: 'color-mix(in oklab, var(--color-primary) 6%, transparent)',
+                        borderLeft: '1px solid color-mix(in oklab, var(--color-primary) 40%, transparent)',
+                        borderRight: '1px solid color-mix(in oklab, var(--color-primary) 40%, transparent)',
                       }}
                     >
                       <Cell value={r.vv} vv />
                     </td>
                     {r.v.map((v, i) => (
-                      <td key={i} className="px-4 py-4 text-sm">
+                      <td key={i} className="px-4 py-3.5">
                         <Cell value={v} />
                       </td>
                     ))}
@@ -109,32 +137,45 @@ export default function ComparisonSection() {
               </tbody>
             </table>
           </div>
+          {/* Datagrid footer with source line */}
+          <div className="px-5 py-2.5 border-t border-[var(--color-border)] flex items-center justify-between bg-[var(--bg-primary)]/40">
+            <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+              SRC · PUBLIC LISTINGS · REVIEWED Q1 2026
+            </span>
+            <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+              10 ROWS · 5 COLS
+            </span>
+          </div>
         </div>
 
-        {/* Pricing wedge */}
+        {/* Pricing wedge — editorial panel */}
         <div
-          className={`mt-10 glass-card rounded-2xl px-8 py-7 flex flex-col md:flex-row items-center justify-between gap-5 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-          style={{ animationDelay: '0.34s', borderColor: 'rgba(36, 107, 253, 0.15)' }}
+          className={`mt-8 lv-panel px-7 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+          style={{ animationDelay: '0.34s' }}
           data-testid="pricing-wedge"
         >
-          <div>
-            <p className="section-label" style={{ animation: 'none' }}>THE PRICING WEDGE</p>
-            <h3 className="font-clash text-2xl text-[var(--color-text)] mt-1">
-              Same skills. Same certifications. <span className="text-[var(--color-primary)]">30× less.</span>
+          <div className="min-w-0">
+            <p className="lv-chapter mb-2">THE PRICING WEDGE</p>
+            <h3 className="font-clash text-2xl text-[var(--color-text)]" style={{ lineHeight: 1.15 }}>
+              Same skills. Same certifications.{' '}
+              <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+                30× less.
+              </span>
             </h3>
-            <p className="text-[var(--color-text-muted)] font-bricolage text-sm mt-1">
-              WallStreet School ₹50,000 · Imarticus ₹1,20,000 · Valuevade <strong className="text-[var(--color-text)]">₹1,500 lifetime.</strong>
+            <p className="text-[var(--color-text-muted)] font-bricolage text-[13.5px] mt-2 leading-relaxed">
+              WallStreet School ₹50,000 · Imarticus ₹1,20,000 · Valuevade{' '}
+              <strong className="text-[var(--color-text)] font-semibold">₹1,500 lifetime.</strong>
             </p>
           </div>
-          <div className="flex items-center gap-4 text-sm font-bricolage">
-            <div className="text-center">
-              <div className="text-xs text-[var(--color-text-faint)] uppercase tracking-wider">Theirs</div>
-              <div className="font-clash text-2xl text-[var(--color-text-muted)] line-through">₹50k+</div>
+          <div className="flex items-center gap-5 shrink-0">
+            <div className="text-right">
+              <div className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">THEIRS</div>
+              <div className="font-jetbrains text-2xl text-[var(--color-text-muted)] line-through mt-1">₹50k+</div>
             </div>
-            <div className="w-px h-10 bg-[var(--color-border)]" />
-            <div className="text-center">
-              <div className="text-xs text-[var(--color-primary)] uppercase tracking-wider font-semibold">Valuevade</div>
-              <div className="font-clash text-3xl text-[var(--color-text)] font-bold">₹1,500</div>
+            <div className="w-px h-10 bg-[var(--color-border)]" aria-hidden="true" />
+            <div className="text-right">
+              <div className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-primary)]">VALUEVADE</div>
+              <div className="font-jetbrains text-3xl text-[var(--color-text)] font-bold mt-1">₹1,500</div>
             </div>
           </div>
         </div>

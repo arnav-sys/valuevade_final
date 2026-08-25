@@ -19,6 +19,17 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Editorial terminal language extended (Features / HowItWorks / Comparison)
+
+Follow-up to the hero redesign. Rolled the same `lv-panel` / `lv-chapter` / mono uppercase / framed-icon language down through the mid-landing so the whole product reads as one editorial finance surface.
+
+- **FeaturesSection** (`FeaturesSection.js`) rewritten: `§03 // FEATURES` chapter rail + 14-UNITS suffix. H2 "One platform. *Your* entire finance career journey." with serif italic accent. 14 bento cards converted from pillowy `glass-card rounded-2xl` to sharp `lv-panel` (2px radius, corner ticks). Every card now carries a mono `FT-NN · TAG` prefix (FT-01 ROADMAP through FT-14 XP) and a framed 9×9 square icon (no more gradient washes). Large cards get a hairline data footer ("MODULE · CORE  SHIPPED · IN PLATFORM"). Retired the `FeatureMicro3D` + `RoadmapVisual` decorations — they read as AI-slop, no longer imported here.
+- **HowItWorksSection** (`HowItWorksSection.js`) rewritten: `§04 // PROCESS · 04 STEPS · 2 MONTHS · 1 HR/DAY` chapter rail. H2 "From where you are. *To* where you want to be." with italic serif accent. 4 pillowy circle-and-glow step nodes replaced with 4 sharp `lv-panel` step cards showing big mono `01/02/03/04` numeric prefixes, `STEP · INPUT/ROADMAP/BUILD/DEPLOY` mono labels, framed icons, and a `PHASE · N/4  NEXT →/OUTCOME` hairline footer. Kept the sticky-scroll `TimelinePath` bezier but dialled back to 40% opacity.
+- **ComparisonSection** (`ComparisonSection.js`) rewritten: `§05 // BENCHMARK · SIDE-BY-SIDE · 5 PROVIDERS` chapter rail. H2 "Why pay *30×* more for less?" with italic serif accent. Table converted to a Bloomberg-style datagrid — mono uppercase column headers, hairline row borders, Valuevade column highlighted with `color-mix()` primary rails, `YES / NO` cell markers now use mono uppercase labels alongside the check/minus icon. Added a datagrid footer strip ("SRC · PUBLIC LISTINGS · REVIEWED Q1 2026 · 10 ROWS · 5 COLS"). Pricing wedge converted from rounded glass-card to `lv-panel` with mono `THEIRS / VALUEVADE` readouts and serif italic "30× less." pull-quote.
+
+All content copy, data rows, and data-testids preserved verbatim. Verified via screenshots at 1440×900 — the entire visible landing now reads as a cohesive editorial finance product.
+
+
 ## Feb 2026 — Editorial finance / Bloomberg-terminal redesign (above-the-fold)
 
 User feedback: "misaligned and ugly on laptop screen … website looks vibe coded … change landing page design to more visual cinematic". Confirmed scope: hero + all above-the-fold (Navbar, HeroSection, ProblemSection). Direction: Bloomberg-terminal / editorial finance. Content unchanged; only visuals.

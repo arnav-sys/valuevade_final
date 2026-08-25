@@ -1,147 +1,128 @@
 import { useState } from 'react';
-import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer, CalendarRange } from 'lucide-react';
+import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer, CalendarRange, Compass } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
-import FeatureMicro3D from '@/components/landing/FeatureMicro3D';
+
+/* Editorial finance / Bloomberg-terminal FeaturesSection (Feb 2026).
+ * - Chapter rail §03 // WHAT VALUEVADE GIVES YOU.
+ * - Sharp 1px lv-panel cards with corner ticks (no rounded pillowy glass).
+ * - Numeric FT-NN / TAG prefix on every card. Framed square icons.
+ * - Bento grid retained; hover treatment restrained.
+ * Content and copy are verbatim from the previous version. */
 
 const features = [
   {
+    idx: 'FT-01', tag: 'ROADMAP', icon: Compass,
     title: 'Personalised AI Roadmap',
     body: "Tell it your target role and current skills; it maps your exact gap and sequences your path through the program — personalised to you, not a generic syllabus.",
     span: 'col-span-12 lg:col-span-7',
     size: 'large',
-    gradient: 'from-[var(--color-primary)]/10 to-transparent',
-    borderColor: 'rgba(36, 107, 253, 0.2)',
+    accent: 'var(--color-primary)',
   },
   {
+    idx: 'FT-02', tag: 'AI-PROOF', icon: Shield,
     title: 'AI-Proof Your Career',
     body: "Every roadmap includes the AI skills finance professionals need — Python, AI-assisted modelling, prompt engineering for analysts. You won't just land the role. You'll be irreplaceable.",
-    icon: Shield,
     span: 'col-span-12 lg:col-span-5',
     size: 'large',
-    gradient: 'from-[var(--color-accent-purple)]/10 to-transparent',
-    borderColor: 'rgba(106, 92, 255, 0.2)',
+    accent: 'var(--color-accent-purple)',
   },
   {
+    idx: 'FT-03', tag: 'TUTOR', icon: Sparkles,
     title: 'Pari — Your 24/7 AI Tutor',
     body: "Stuck on a DCF cell or a ratio question? Ask Pari. She sees the exact note, quiz or simulation you're on and answers in context — like a senior analyst pair-working with you.",
-    icon: Sparkles,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(36, 107, 253, 0.15)',
+    accent: 'var(--color-primary)',
   },
   {
+    idx: 'FT-04', tag: 'NOTES', icon: BookOpen,
     title: 'Interactive Notes',
     body: "Live, clickable, visual notes covering financial modelling and valuation concepts from first principles — built for beginners, not PDF dumps.",
-    icon: BookOpen,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(36, 107, 253, 0.15)',
+    accent: 'var(--color-primary)',
   },
   {
+    idx: 'FT-05', tag: 'SIMULATIONS', icon: Briefcase,
     title: '239 hands-on sessions',
     body: "Build a DCF on Reliance. Ratio-analyse HDFC Bank. Model an LBO on Tata Steel. Every session pairs a concept with a simulation — interactive Excel, decision scenarios, or applied reading — all auto-graded.",
-    icon: Briefcase,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(106, 92, 255, 0.15)',
+    accent: 'var(--color-accent-purple)',
   },
   {
+    idx: 'FT-06', tag: 'INTERVIEW', icon: Mic,
     title: 'AI Mock Interviews',
     body: "3-round equity-research interviewer with voice or text. You speak, it grills, you get verdict + feedback.",
-    icon: Mic,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(255, 106, 193, 0.15)',
+    accent: 'var(--color-accent-pink)',
   },
   {
+    idx: 'FT-07', tag: 'PLANNER', icon: CalendarRange,
     title: 'Study Planner',
     body: "Pick a deadline or an hours-per-day budget and it auto-schedules all 239 sessions around your college timetable.",
-    icon: CalendarRange,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(36, 107, 253, 0.15)',
+    accent: 'var(--color-primary)',
   },
   {
+    idx: 'FT-08', tag: 'CAREER', icon: FileText,
     title: 'Resume + LinkedIn Networking',
     body: "Recruiter-tuned resume reviewer, AI-skill highlighting guide, plus the outreach playbook to get warm replies — not just qualified, hired.",
-    icon: FileText,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(36, 107, 253, 0.15)',
+    accent: 'var(--color-primary)',
   },
   {
+    idx: 'FT-09', tag: 'CERT', icon: Award,
     title: 'NISM + CFI certification prep, certificate included',
     body: "Structured preparation for the NISM Series XV (Research Analyst) exam and CFI certifications, mapped into the curriculum — plus Valuevade's own Certificate of Completion when you finish all three capstones.",
-    icon: Award,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(106, 92, 255, 0.15)',
+    accent: 'var(--color-accent-purple)',
   },
   {
+    idx: 'FT-10', tag: 'CAPSTONE', icon: Hammer,
     title: 'AI Capstone Project',
     body: "Finish with a full initiating-coverage report, a sector coverage note, and a working AI research copilot — a portfolio recruiters can actually open, not just a certificate.",
-    icon: Hammer,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
-    borderColor: 'rgba(255, 106, 193, 0.15)',
+    accent: 'var(--color-accent-pink)',
   },
   {
+    idx: 'FT-11', tag: 'MINDSET', icon: Brain,
     title: 'Top-Analyst Mindset',
     body: "Frameworks, soft skills, and thinking habits AI can't replace. Don't get replaced — become the analyst who deploys AI.",
-    icon: Brain,
     span: 'col-span-6 lg:col-span-3',
     size: 'small',
-    borderColor: 'rgba(36, 107, 253, 0.12)',
+    accent: 'var(--color-primary)',
   },
   {
+    idx: 'FT-12', tag: 'QUIZ', icon: BarChart3,
     title: 'Adaptive Quizzes',
     body: 'Quizzes that track weak spots and patch them — automatically.',
-    icon: BarChart3,
     span: 'col-span-6 lg:col-span-3',
     size: 'small',
-    borderColor: 'rgba(106, 92, 255, 0.12)',
+    accent: 'var(--color-accent-purple)',
   },
   {
+    idx: 'FT-13', tag: 'PORTFOLIO', icon: BookMarked,
     title: 'CV-Ready Projects',
     body: 'DCF models, credit memos, risk reports — every artefact lands on your resume.',
-    icon: BookMarked,
     span: 'col-span-6 lg:col-span-3',
     size: 'small',
-    borderColor: 'rgba(255, 106, 193, 0.12)',
+    accent: 'var(--color-accent-pink)',
   },
   {
+    idx: 'FT-14', tag: 'XP', icon: Gamepad2,
     title: 'Gamified XP',
     body: 'Earn XP, hit streaks, unlock levels. Learning finance should feel like levelling up.',
-    icon: Gamepad2,
     span: 'col-span-6 lg:col-span-3',
     size: 'small',
-    borderColor: 'rgba(36, 107, 253, 0.12)',
+    accent: 'var(--color-primary)',
   },
 ];
-
-function RoadmapVisual() {
-  return (
-    <div className="flex items-center gap-3 mt-6">
-      <div className="flex items-center gap-1">
-        <div className="w-8 h-8 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center text-xs text-[var(--color-text-muted)] font-jetbrains">
-          IN
-        </div>
-        <div className="w-12 h-px bg-gradient-to-r from-[var(--color-border)] to-[var(--color-primary)]/60" />
-      </div>
-      <div className="w-10 h-10 rounded-full bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40 flex items-center justify-center relative">
-        <div className="w-3 h-3 rounded-full bg-[var(--color-primary)] animate-pulse" />
-      </div>
-      <div className="flex items-center gap-1">
-        <div className="w-12 h-px bg-gradient-to-r from-[var(--color-primary)]/60 to-[var(--color-accent-purple)]/60" />
-        <div className="flex gap-1">
-          <div className="w-6 h-6 rounded bg-[var(--color-accent-purple)]/20 border border-[var(--color-accent-purple)]/30" />
-          <div className="w-6 h-6 rounded bg-[var(--color-accent-pink)]/20 border border-[var(--color-accent-pink)]/30" />
-          <div className="w-6 h-6 rounded bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/30" />
-        </div>
-      </div>
-    </div>
-  );
-}
 
 export default function FeaturesSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
@@ -150,71 +131,106 @@ export default function FeaturesSection() {
   return (
     <section
       id="features"
-      className="relative py-24 lg:py-32 bg-[var(--bg-primary)]"
+      className="relative py-24 lg:py-28 bg-[var(--bg-primary)]"
       data-testid="features-section"
     >
-      <div ref={sectionRef} className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <p className={`section-label ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>
-            WHAT VALUEVADE GIVES YOU
-          </p>
-          <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] leading-tight ${
-              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
-            }`}
-            style={{ animationDelay: '0.1s' }}
-          >
-            One platform. Your entire finance career journey.
-          </h2>
+      {/* Terminal grid — subtle continuation of the editorial thread */}
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-40" aria-hidden="true" />
+
+      <div ref={sectionRef} className="relative max-w-7xl mx-auto px-6">
+        {/* Chapter rail */}
+        <div className="flex items-center gap-3 mb-10 lg:mb-12">
+          <span className="lv-chapter">§03 // FEATURES</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">WHAT VALUEVADE GIVES YOU · 14 UNITS</span>
         </div>
 
-        <div className="grid grid-cols-12 gap-4">
+        <div className="max-w-3xl mb-12 lg:mb-14">
+          <p className={`lv-chapter mb-4 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>
+            THE PLATFORM
+          </p>
+          <h2
+            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] ${
+              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
+            }`}
+            style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
+          >
+            One platform.{' '}
+            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+              Your
+            </span>{' '}
+            entire finance career journey.
+          </h2>
+          <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
+        </div>
+
+        <div className="grid grid-cols-12 gap-3 lg:gap-4">
           {features.map((feature, i) => {
             const Icon = feature.icon;
-            const useMicro3D = feature.size !== 'small';
             const isHover = hoveredIdx === i;
             return (
-              <div
+              <article
                 key={feature.title}
                 onMouseEnter={() => setHoveredIdx(i)}
                 onMouseLeave={() => setHoveredIdx(null)}
-                className={`${feature.span} glass-card glass-card-hover rounded-2xl transition-all duration-300 ${
-                  feature.size === 'large' ? 'p-8' : feature.size === 'medium' ? 'p-6' : 'p-5'
-                } ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'} ${
-                  feature.gradient ? `bg-gradient-to-br ${feature.gradient}` : ''
-                } ${isHover ? 'shadow-[0_18px_60px_rgba(139,92,246,0.32)] -translate-y-1.5' : ''}`}
+                className={`${feature.span} lv-panel ${
+                  feature.size === 'large' ? 'p-7' : feature.size === 'medium' ? 'p-5' : 'p-4'
+                } ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'} transition-transform duration-300`}
                 style={{
-                  animationDelay: `${0.1 + i * 0.05}s`,
-                  borderColor: isHover ? 'rgba(167,139,250,0.55)' : feature.borderColor,
+                  animationDelay: `${0.1 + i * 0.04}s`,
+                  transform: isHover ? 'translateY(-2px)' : 'none',
                   willChange: 'transform',
                 }}
                 data-testid={`feature-card-${i}`}
               >
-                {useMicro3D ? (
-                  <div className="mb-4 -ml-2" data-testid={`feature-card-${i}-3d-wrap`}>
-                    <FeatureMicro3D title={feature.title} hovered={isHover} />
-                  </div>
-                ) : (Icon && (
-                  <div className="w-10 h-10 rounded-lg bg-[var(--color-surface)] flex items-center justify-center mb-4">
-                    <Icon size={feature.size === 'small' ? 18 : 22} className="text-[var(--color-accent-purple)]" />
-                  </div>
-                ))}
+                {/* Mono prefix rail */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+                    {feature.idx} · {feature.tag}
+                  </span>
+                  {Icon && (
+                    <span
+                      className={`inline-flex items-center justify-center border border-[var(--color-border)] ${
+                        feature.size === 'small' ? 'w-7 h-7' : 'w-9 h-9'
+                      }`}
+                      style={{ borderRadius: 2 }}
+                    >
+                      <Icon size={feature.size === 'small' ? 14 : 16} style={{ color: feature.accent }} />
+                    </span>
+                  )}
+                </div>
+
                 <h3
                   className={`font-clash text-[var(--color-text)] mb-2 ${
-                    feature.size === 'large' ? 'text-2xl' : feature.size === 'medium' ? 'text-lg' : 'text-base'
+                    feature.size === 'large' ? 'text-2xl' : feature.size === 'medium' ? 'text-lg' : 'text-[15px]'
                   }`}
+                  style={{ lineHeight: 1.2, letterSpacing: '-0.01em' }}
                 >
                   {feature.title}
                 </h3>
                 <p
                   className={`text-[var(--color-text-muted)] font-bricolage leading-relaxed ${
-                    feature.size === 'small' ? 'text-xs' : 'text-sm'
+                    feature.size === 'small' ? 'text-xs' : 'text-[13.5px]'
                   }`}
                 >
                   {feature.body}
                 </p>
-                {i === 0 && <RoadmapVisual />}
-              </div>
+
+                {/* Hairline data footer — feature.large only for editorial weight */}
+                {feature.size === 'large' && (
+                  <div className="mt-6 pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
+                    <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+                      MODULE · CORE
+                    </span>
+                    <span
+                      className="font-jetbrains text-[10px] uppercase tracking-[0.2em]"
+                      style={{ color: feature.accent }}
+                    >
+                      SHIPPED · IN PLATFORM
+                    </span>
+                  </div>
+                )}
+              </article>
             );
           })}
         </div>
