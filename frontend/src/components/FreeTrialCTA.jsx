@@ -82,17 +82,17 @@ export default function FreeTrialCTA() {
               Free · One-time · No signup
             </div>
             <h2 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)] leading-tight">
-              Try a full <span className="text-[var(--color-primary)]">J.P. Morgan</span> Mock Interview.
+              Try a full analyst mock interview.
               <br className="hidden sm:block" />
-              Free. On us.
+              <span className="text-[var(--color-primary)]">Free.</span>
             </h2>
             <p className="mt-4 text-sm sm:text-base font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-              5 real rounds — application, aptitude, HR, technical, and a live case study in Excel.
-              Pari (your AI interviewer) talks to you like a real analyst would. Get a full
-              scorecard + verdict at the end.
+              Five rounds — application, aptitude, HR, technical, and a live Excel case study — run by
+              Pari as a bulge-bracket-style interviewer. You get a full scorecard and verdict at the end.
+              One free trial per person. No card required.
             </p>
             <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3 text-[11px] font-mono text-[var(--color-text-muted)]">
-              <div className="flex items-center gap-1.5"><Building2 size={12}/> J.P. Morgan sim</div>
+              <div className="flex items-center gap-1.5"><Building2 size={12}/> Bulge-bracket sim</div>
               <div className="flex items-center gap-1.5"><Clock size={12}/> 30-45 min</div>
               <div className="flex items-center gap-1.5"><Users size={12}/> AI grades every round</div>
             </div>

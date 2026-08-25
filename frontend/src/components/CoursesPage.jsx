@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
@@ -227,6 +228,23 @@ export default function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+      <Helmet>
+        {/* Prompt-2/3 will replace the copy; here we only fix the per-route
+            head so /courses no longer canonicalizes to the homepage. */}
+        <title>Finance Courses — Equity Research Analyst Program | Valuevade</title>
+        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹1,500 lifetime." />
+        <link rel="canonical" href="https://valuevade.com/courses" />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://valuevade.com/courses" />
+        <meta property="og:title" content="Finance Courses — Equity Research Analyst Program | Valuevade" />
+        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹1,500 lifetime." />
+        <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
+        <meta property="og:site_name" content="Valuevade" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Finance Courses — Equity Research Analyst Program | Valuevade" />
+        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹1,500 lifetime." />
+        <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
+      </Helmet>
       {/* Cinematic Three.js bg — only renders meaningfully in dark mode; in
           light mode the ambient orbs already carry the cream aesthetic. */}
       {theme === 'dark' && (
@@ -375,19 +393,22 @@ export default function CoursesPage() {
           </div>
         )}
 
-        {/* Stats strip — animated counters of curriculum scope */}
+        {/* Stats strip — real DB-derived values. Fallbacks reflect the
+            canonical curriculum (21 modules · 239 sessions · 3 capstones).
+            The "Practice Questions" counter was a made-up 260 with no data
+            source, so it's REMOVED per Prompt-1 rule ("no truthful value → remove"). */}
         {!loading && !error && courses.length > 0 && (
           <section className="mt-16 sm:mt-20" data-testid="courses-stats-strip">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <AnimatedStat
                 testid="stat-modules"
-                value={Object.values(moduleCounts).reduce((a, b) => a + b, 0) || 22}
+                value={Object.values(moduleCounts).reduce((a, b) => a + b, 0) || 21}
                 label="Modules"
                 icon={<Layers size={18} />}
               />
               <AnimatedStat
                 testid="stat-sessions"
-                value={Object.values(sessionCounts).reduce((a, b) => a + b, 0) || 166}
+                value={Object.values(sessionCounts).reduce((a, b) => a + b, 0) || 239}
                 label="Sessions"
                 icon={<BookOpen size={18} />}
               />
@@ -396,13 +417,6 @@ export default function CoursesPage() {
                 value={3}
                 label="Capstone Projects"
                 icon={<Award size={18} />}
-              />
-              <AnimatedStat
-                testid="stat-questions"
-                value={260}
-                label="Practice Questions"
-                suffix="+"
-                icon={<GraduationCap size={18} />}
               />
             </div>
           </section>

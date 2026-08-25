@@ -1,5 +1,6 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useTheme } from '../contexts/ThemeContext';
@@ -238,6 +239,23 @@ export default function CourseDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+      <Helmet>
+        {/* Prompt-3 will replace the copy; here we only fix the per-route head
+            so /course/:id has its own title, description and self-canonical. */}
+        <title>{course?.title ? `${course.title} — Syllabus & Fees | Valuevade` : 'Course — Valuevade'}</title>
+        <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
+        <link rel="canonical" href={`https://valuevade.com/course/${courseId}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://valuevade.com/course/${courseId}`} />
+        <meta property="og:title" content={course?.title ? `${course.title} — Syllabus & Fees | Valuevade` : 'Course — Valuevade'} />
+        <meta property="og:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
+        <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
+        <meta property="og:site_name" content="Valuevade" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={course?.title ? `${course.title} — Syllabus & Fees | Valuevade` : 'Course — Valuevade'} />
+        <meta name="twitter:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
+        <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
+      </Helmet>
       {/* Scroll progress — thin violet bar at top of viewport, premium signal */}
       <ScrollProgressBar />
       {/* Cinematic Three.js bg — denser than /courses since this is a deeper

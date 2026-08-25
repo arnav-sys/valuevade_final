@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { X, ArrowRight } from 'lucide-react';
@@ -13,6 +14,8 @@ import AIProofSection from '@/components/AIProofSection';
 import TestimonialsSection from '@/components/TestimonialsSection';
 import FinalCTASection from '@/components/FinalCTASection';
 import FreeTrialCTA from '@/components/FreeTrialCTA';
+import WhatYoullLearnSection from '@/components/WhatYoullLearnSection';
+import WhoBuiltThisSection from '@/components/WhoBuiltThisSection';
 import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import FaqAccordion from '@/components/faq/FaqAccordion';
@@ -97,19 +100,18 @@ export default function LandingPage() {
       style={{ transition: 'background-color 250ms ease, color 250ms ease' }}
     >
       <Helmet>
-        <title>Valuevade — Land your equity research job with AI · ₹1,500 lifetime course</title>
-        <meta name="description" content="India's first AI-personalised finance career program. CFA/FRM prep, real Indian-market simulations, 24/7 AI tutor, mock interviews, NISM + CFI certifications. ₹1,500 lifetime." />
-        <meta name="keywords" content="equity research course India, CFA FRM prep, AI finance tutor, NISM certification, finance career India, equity analyst training, financial modeling course, AI for finance students" />
+        <title>Equity Research & Financial Modelling Course — Valuevade</title>
+        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series-VIII prep, certificate — ₹1,500 lifetime." />
         <link rel="canonical" href="https://valuevade.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/" />
-        <meta property="og:title" content="Valuevade — Land your equity research job with AI · ₹1,500 lifetime" />
-        <meta property="og:description" content="AI-personalised finance career program. CFA/FRM prep, real Indian-market sims, NISM + CFI certs. ₹1,500 lifetime." />
+        <meta property="og:title" content="Equity Research & Financial Modelling Course — Valuevade" />
+        <meta property="og:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹1,500 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Valuevade — AI-personalised finance career platform" />
-        <meta name="twitter:description" content="₹1,500 lifetime · CFA/FRM prep · AI tutor · NISM + CFI certifications · Mock interviews · 68 finance simulations." />
+        <meta name="twitter:title" content="Equity Research & Financial Modelling Course — Valuevade" />
+        <meta name="twitter:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹1,500 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         <script type="application/ld+json">{JSON.stringify(courseJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
@@ -138,6 +140,8 @@ export default function LandingPage() {
         <HeroSection onJoinWaitlist={scrollToWaitlist} />
         <ProblemSection />
         <FeaturesSection />
+        <WhatYoullLearnSection />
+        <WhoBuiltThisSection />
         <ComparisonSection />
         <HowItWorksSection />
         <AIProofSection />
@@ -157,15 +161,15 @@ export default function LandingPage() {
         >
           <div className="bg-[var(--bg-primary)]/95 backdrop-blur-xl border-t border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
             <p className="text-[var(--color-text-muted)] text-sm font-bricolage flex-1">
-              Join 500+ students
+              ₹1,500 lifetime · Free first session
             </p>
-            <button
-              onClick={scrollToWaitlist}
+            <Link
+              to="/signup"
               className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full flex items-center gap-1.5"
               data-testid="mobile-bar-cta"
             >
-              Claim your spot <ArrowRight size={14} />
-            </button>
+              Start free <ArrowRight size={14} />
+            </Link>
             <button
               onClick={() => setShowMobileBar(false)}
               className="ml-2 text-[var(--color-text-faint)] hover:text-[var(--color-text)]"

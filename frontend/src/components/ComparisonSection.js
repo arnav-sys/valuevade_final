@@ -11,12 +11,12 @@ const ROWS = [
   { label: 'AI personalised path',             vv: true, v: [false, false, false, false] },
   { label: 'Live AI tutor (24/7)',             vv: true, v: [false, false, false, false] },
   { label: 'AI-proofing curriculum',           vv: true, v: [false, false, false, false] },
-  { label: 'Price',                            vv: '₹1,500 lifetime',     v: ['₹50k–80k', '₹25k–40k', '₹4k–15k/yr', '₹50k–2L'] },
-  { label: 'Duration',                         vv: '4–12 weeks · self-paced', v: ['3–6 months', '3–4 months', '6–12 months', '6–18 months'] },
+  { label: 'Price',                            vv: '₹1,500 lifetime, one-time',   v: ['₹50k–80k', '₹25k–40k', '₹4k–15k/yr', '₹50k–2L'] },
+  { label: 'Duration',                         vv: 'Lifetime access · ~2 months at 1 hr/day', v: ['3–6 months', '3–4 months', '6–12 months', '6–18 months'] },
   { label: 'AI mock interviews + feedback',    vv: true, v: ['manual', 'manual', false, 'manual'] },
-  { label: 'Real Indian-market simulations',   vv: true, v: ['partial', 'partial', false, 'partial'] },
+  { label: 'Simulations',                      vv: '239, auto-graded, Indian companies', v: ['partial', 'partial', false, 'partial'] },
   { label: 'Job-ready portfolio projects',     vv: true, v: ['partial', false, false, 'partial'] },
-  { label: 'NISM + CFI certifications',        vv: true, v: ['partial', 'extra cost', false, 'partial'] },
+  { label: 'NISM + CFI certification prep',    vv: 'NISM Series-VIII + CFI prep', v: ['partial', 'extra cost', false, 'partial'] },
   { label: 'Resume + LinkedIn guide',          vv: true, v: [false, false, false, 'partial'] },
 ];
 

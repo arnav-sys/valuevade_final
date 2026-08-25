@@ -8,20 +8,20 @@ const ProblemAssemblyScene = lazy(() => import('@/components/landing/ProblemAsse
 const problems = [
   {
     icon: Compass,
-    title: 'No Clear Roadmap',
-    body: "You know you want IB or AM — but no one tells you exactly what skills, credentials, and timeline gets you there.",
+    title: 'No clear roadmap',
+    body: "You know you want equity research, investment banking or asset management — but nobody shows you the exact skills, projects and credentials that get you there. B.Com and BBA syllabi test theory; analyst interviews test whether you can build a model, defend a valuation and write a coverage note.",
     color: '#246BFD',
   },
   {
     icon: Layers,
-    title: 'Generic Resources, Zero Personalisation',
-    body: "YouTube videos, random courses, LinkedIn posts. None of it is built around your specific gaps and target role.",
+    title: 'Courses built for the wrong market',
+    body: "Most online finance courses teach US GAAP, 10-Ks and S&P 500 case studies. Indian analysts work with Ind AS, SEBI filings and NSE/BSE data — and Indian interviews test exactly that.",
     color: '#6A5CFF',
   },
   {
     icon: Cpu,
-    title: 'AI Is Coming for Finance Jobs',
-    body: "Junior analysts, screeners, report writers — AI is replacing entry-level finance roles fast. Students who don't adapt won't get hired.",
+    title: 'AI is changing entry-level finance',
+    body: "Screening, data pulls and first-draft models are being automated. The junior analysts still getting hired are the ones who can direct AI tools — not the ones competing with them.",
     color: '#FF6AC1',
   },
 ];
@@ -156,7 +156,7 @@ export default function ProblemSection() {
             style={{ animationDelay: '0.5s' }}
             data-testid="problem-transition-line"
           >
-            Valuevade was built to close every one of these gaps.
+            Valuevade was built to close all three gaps at once.
           </p>
         </div>
       </div>

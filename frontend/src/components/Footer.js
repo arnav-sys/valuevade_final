@@ -1,4 +1,5 @@
-import { Instagram, Linkedin, Youtube } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Instagram, Linkedin, Twitter } from 'lucide-react';
 
 const footerLinks = [
   { label: 'Features', id: 'features' },
@@ -6,10 +7,13 @@ const footerLinks = [
   { label: 'AI-Proof', id: 'ai-proof' },
 ];
 
+// Social links — Prompt 2 (Aug 2026) provided real LinkedIn + X URLs.
+// YouTube icon was previously an `#` placeholder — removed entirely per
+// Prompt 2 ("remove any icon that still has no real URL").
 const socialLinks = [
   { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/valuevade/' },
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
-  { icon: Youtube, label: 'YouTube', href: '#' },
+  { icon: Linkedin,  label: 'LinkedIn',  href: 'https://www.linkedin.com/company/valuevade' },
+  { icon: Twitter,   label: 'X',         href: 'https://x.com/valuevade' },
 ];
 
 export default function Footer() {
@@ -34,7 +38,9 @@ export default function Footer() {
 
           <div className="flex flex-wrap gap-6">
             {footerLinks.map((link) => (
-              <button key={link.label} onClick={() => link.id ? scrollTo(link.id) : undefined}
+              <button
+                key={link.label}
+                onClick={() => (link.id ? scrollTo(link.id) : undefined)}
                 className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors font-bricolage"
                 data-testid={`footer-link-${link.label.toLowerCase().replace(/\s/g, '-')}`}
               >
@@ -47,9 +53,14 @@ export default function Footer() {
             {socialLinks.map((social) => {
               const Icon = social.icon;
               return (
-                <a key={social.label} href={social.href} target="_blank" rel="noopener noreferrer"
+                <a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-9 h-9 rounded-full bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-faint)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all"
-                  aria-label={social.label} data-testid={`footer-social-${social.label.toLowerCase()}`}
+                  aria-label={social.label}
+                  data-testid={`footer-social-${social.label.toLowerCase()}`}
                 >
                   <Icon size={16} />
                 </a>
@@ -59,10 +70,17 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[var(--color-border)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-faint)] font-bricolage">
-          <p>2025 Valuevade. Built for the finance students who want more.</p>
+          <p>© 2026 Valuevade. Built for the finance students who want more.</p>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-[var(--color-text-muted)] transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-[var(--color-text-muted)] transition-colors">Terms</a>
+            <Link to="/privacy" className="hover:text-[var(--color-text-muted)] transition-colors" data-testid="footer-privacy">
+              Privacy Policy
+            </Link>
+            <Link to="/terms" className="hover:text-[var(--color-text-muted)] transition-colors" data-testid="footer-terms">
+              Terms
+            </Link>
+            <Link to="/refund-policy" className="hover:text-[var(--color-text-muted)] transition-colors" data-testid="footer-refund">
+              Refund Policy
+            </Link>
           </div>
         </div>
       </div>

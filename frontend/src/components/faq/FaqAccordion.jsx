@@ -48,8 +48,11 @@ export default function FaqAccordion() {
           answered.
         </span>
       </h2>
-      <p className="text-center text-base font-bricolage text-[var(--color-text-muted)] max-w-xl mx-auto mb-10">
+      <p className="text-center text-base font-bricolage text-[var(--color-text-muted)] max-w-xl mx-auto mb-3">
         Everything you might want to know about the course, pricing, certificate, and support.
+      </p>
+      <p className="text-center text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-faint)] mb-8" data-testid="faq-last-updated">
+        Last updated: 25 August 2026
       </p>
 
       {/* Category filter chips */}

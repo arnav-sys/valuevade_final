@@ -1,72 +1,70 @@
 /**
  * Static FAQ knowledge base — used as offline fallback for the landing
- * accordion + help chatbot. The primary source is now the Supabase `faqs`
- * table via GET /api/faqs (admins can CRUD from the Admin panel). This
- * static copy stays in sync with 0033_faqs.sql so the UI still works if
- * the backend is unreachable.
+ * accordion + help chatbot. The primary source is the Supabase `faqs`
+ * table via GET /api/faqs (admins CRUD from the Admin panel). This
+ * static copy stays in sync with the homepage FAQ set defined by Prompt-2
+ * of the Aug-2026 SEO/GEO rebuild.
  */
-export const FAQ_CATEGORIES = ['Course', 'Pricing', 'Certificate', 'Simulations', 'Support', 'Careers'];
+export const FAQ_CATEGORIES = ['Course', 'Pricing', 'Certificate', 'Simulations', 'Support'];
 
 export const FAQS = [
-  // ─── COURSE STRUCTURE ─────────────────────────────────────────────────
   {
     id: 'course-what-is-valuevade',
     category: 'Course',
     question: 'What is Valuevade?',
-    answer: "Valuevade is an AI-personalised equity research and financial modelling programme for Indian finance students and career-switchers. It combines 22 modules, 246 sessions, 246 interactive simulations, and 3 capstone projects — with a 24/7 AI tutor, mock interviews, and a downloadable completion certificate.",
+    answer: "Valuevade is an AI-personalised equity research and financial modelling course for Indian finance students and early-career switchers. The Equity Research Analyst Program includes 21 modules, 239 hands-on sessions and 3 capstone projects, with a personalised AI roadmap, a 24/7 AI tutor (Pari), AI mock interviews, NISM Series-VIII and CFI certification preparation, and a downloadable Certificate of Completion. It's fully self-paced online, built on Indian companies and Ind AS conventions, and costs ₹1,500 one-time for lifetime access.",
     tags: ['what', 'about', 'platform', 'valuevade', 'introduction'],
   },
   {
-    id: 'course-duration',
-    category: 'Course',
-    question: 'How long does the full course take?',
-    answer: "Most students finish in 3–6 months at 1 hour a day. The Study Planner lets you pick a deadline or hours-per-day and it auto-schedules the sessions for you.",
-    tags: ['duration', 'time', 'how long', 'hours', 'weeks', 'months', 'schedule'],
-  },
-  {
-    id: 'course-modules',
-    category: 'Course',
-    question: 'What topics do the modules cover?',
-    answer: "You start from accounting and economics foundations, move through financial statement analysis, ratio analysis, forensic accounting, valuation (DCF, comps, SOTP), industry & competitive analysis, and finish with 3 capstones: a full initiating-coverage report, sector coverage, and an AI equity research copilot.",
-    tags: ['modules', 'topics', 'curriculum', 'syllabus', 'content', 'what will i learn'],
+    id: 'pricing-cost',
+    category: 'Pricing',
+    question: 'How much does the Valuevade course cost?',
+    answer: "The Equity Research Analyst Program costs ₹1,500 as a one-time payment for lifetime access. That includes all 21 modules, 239 sessions and simulations, the three capstone projects, Pari (the 24/7 AI tutor), AI mock interviews, NISM Series-VIII and CFI certification prep, and your Certificate of Completion. There is no subscription, no post-trial price change, and no extra charge for the certificate. You can try your first full session — notes, quiz, interview and simulation — free before paying, with no card required.",
+    tags: ['price', 'cost', 'fee', 'pricing', 'rupees', 'inr', 'how much', 'subscription'],
   },
   {
     id: 'course-prerequisites',
     category: 'Course',
     question: 'Do I need prior finance knowledge?',
-    answer: "No. Module 1 starts from zero — you learn what finance actually is, how the three financial statements work, and build up from there. Prior Excel or maths is helpful but not required.",
+    answer: "No. Module 1 starts from zero — what finance actually is, how the three financial statements work — and builds up from there. Basic Excel and maths help but aren't required, and Pari can explain any prerequisite concept the moment you're stuck on it. The program is designed for B.Com, BBA and other students taking a financial modelling course for beginners as their first serious step.",
     tags: ['prerequisites', 'beginner', 'zero', 'requirements', 'background', 'excel'],
   },
   {
-    id: 'course-cfa-frm',
+    id: 'pricing-vs-competitors',
+    category: 'Pricing',
+    question: 'How is Valuevade so much cheaper than other equity research courses in India?',
+    answer: "Because it's software, not batches. Traditional programs price in live faculty hours, physical classrooms and sales teams — typically ₹25,000 to ₹1,20,000. Valuevade delivers the same skill set through recorded expert lectures, auto-graded simulations and an AI tutor, built by a solo founder with no campus and no sales floor. Lower cost structure, lower price — ₹1,500 lifetime. The free first session exists so you can judge the quality before paying anything.",
+    tags: ['cheap', 'price comparison', 'affordable', 'why cheap', 'cost'],
+  },
+  {
+    id: 'cert-what',
+    category: 'Certificate',
+    question: 'What certificate do I get?',
+    answer: "You receive Valuevade's Certificate of Completion — a PDF issued in your full name with the completion date and a unique certificate ID, generated the moment you finish all three capstone projects. It's formatted for LinkedIn's Licenses & Certifications section. The curriculum also prepares you for the NISM Series-VIII (Equity Research) exam — a SEBI-established certification — and for CFI certifications; you sit those exams with the issuing bodies, and Valuevade's course maps to their content rather than issuing their certificates.",
+    tags: ['certificate', 'certification', 'nism', 'cfi', 'linkedin', 'proof'],
+  },
+  {
+    id: 'support-mobile',
+    category: 'Support',
+    question: 'Does Valuevade work on mobile?',
+    answer: "Mostly, yes. Notes, quizzes, mock interviews, your dashboard and Pari all work well on mobile. The Excel simulations are desktop/laptop-only by design — spreadsheet grid work doesn't translate to a phone screen — so plan your hands-on sessions for a computer.",
+    tags: ['mobile', 'phone', 'android', 'ios', 'tablet', 'responsive', 'excel'],
+  },
+  {
+    id: 'sim-pari',
+    category: 'Simulations',
+    question: 'Who is Pari?',
+    answer: "Pari is Valuevade's AI tutor, available 24/7. Ask her a doubt during any note, quiz, interview or simulation and she answers with the context of the exact item you're stuck on. Free users get 5 quick chats a day; paid users get unlimited quick chats plus extended 15-turn sessions.",
+    tags: ['pari', 'tutor', 'ai', 'chat', 'doubt', 'assistant', 'help'],
+  },
+  {
+    id: 'course-instructor',
     category: 'Course',
-    question: 'Does this replace CFA / FRM?',
-    answer: "No — it complements them. Valuevade is skills- and workflow-focused: you build real 3-statement models, valuations, and a variant-perception thesis. CFA/FRM tests theory; Valuevade proves you can do the actual job.",
-    tags: ['cfa', 'frm', 'nism', 'certification', 'exam', 'replace'],
+    question: 'Who teaches the course?',
+    answer: "The 42 hours of video lectures are designed and taught by Saarthak Bhatia, who built the full course content. The platform, curriculum architecture and AI systems were built by founder Arnav Aggarwal, a Delhi University B.Com (Hons) student who has himself built full valuation models and equity research reports on TCS and Infosys. You can read more in the 'Who built this' section above.",
+    tags: ['teacher', 'instructor', 'who', 'saarthak', 'arnav', 'founder'],
   },
-
-  // ─── PRICING & PAYMENT ────────────────────────────────────────────────
-  {
-    id: 'pricing-cost',
-    category: 'Pricing',
-    question: 'How much does the course cost?',
-    answer: "₹1,500 for lifetime access if you enrol upfront. Post-trial (after using the free session) it's ₹1,700. One-time payment — no subscription, no hidden fees.",
-    tags: ['price', 'cost', 'fee', 'pricing', 'rupees', 'inr', 'how much', 'subscription'],
-  },
-  {
-    id: 'pricing-free-trial',
-    category: 'Pricing',
-    question: 'Is there a free trial?',
-    answer: "Yes. You can start with one full session (notes + quiz + interview + simulation) completely free before paying. No card required.",
-    tags: ['free', 'trial', 'demo', 'sample', 'try'],
-  },
-  {
-    id: 'pricing-refund',
-    category: 'Pricing',
-    question: 'Do you offer refunds?',
-    answer: "We offer refunds within 7 days of purchase if you've completed fewer than 3 sessions. Email support@valuevade.com with your account email and we'll process it within 3 business days.",
-    tags: ['refund', 'money back', 'cancel', 'return', 'guarantee'],
-  },
+  // Preserved verbatim from the previous set
   {
     id: 'pricing-payment-methods',
     category: 'Pricing',
@@ -75,61 +73,6 @@ export const FAQS = [
     tags: ['payment', 'razorpay', 'upi', 'card', 'debit', 'credit', 'net banking', 'international'],
   },
   {
-    id: 'pricing-emi',
-    category: 'Pricing',
-    question: 'Is there an EMI option?',
-    answer: "Given the ₹1,500 total, EMI isn't cost-effective. Razorpay does support EMI for eligible cards, but the transaction fees typically exceed the savings.",
-    tags: ['emi', 'installment', 'monthly', 'plan'],
-  },
-
-  // ─── CERTIFICATE ──────────────────────────────────────────────────────
-  {
-    id: 'cert-what',
-    category: 'Certificate',
-    question: 'Do I get a certificate on completion?',
-    answer: "Yes — a downloadable PDF Certificate of Completion is issued the moment you finish all 3 capstone projects. It's issued in your full name with the completion date and a unique certificate ID.",
-    tags: ['certificate', 'certification', 'diploma', 'proof', 'pdf'],
-  },
-  {
-    id: 'cert-recognized',
-    category: 'Certificate',
-    question: 'Is the certificate recognised by employers?',
-    answer: "The certificate demonstrates you've completed real analyst deliverables (a full initiating-coverage report, sector coverage, and an AI research copilot). It's not a regulatory credential like CFA/NISM — but the capstone artifacts themselves are what recruiters review.",
-    tags: ['recognition', 'employer', 'recruiter', 'accreditation', 'validity'],
-  },
-  {
-    id: 'cert-linkedin',
-    category: 'Certificate',
-    question: 'Can I share the certificate on LinkedIn?',
-    answer: "Yes — the PDF is designed for LinkedIn's Add License/Certification field. We're also planning a one-click LinkedIn share button in a future update.",
-    tags: ['linkedin', 'share', 'social', 'profile'],
-  },
-
-  // ─── SIMULATIONS & TOOLS ──────────────────────────────────────────────
-  {
-    id: 'sim-what',
-    category: 'Simulations',
-    question: 'What kind of simulations do you have?',
-    answer: "246 hands-on simulations across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet — auto-graded), decision-making scenarios (branch-based case studies), and book-style read + quiz for concept-heavy topics. Every session has one.",
-    tags: ['simulation', 'excel', 'practice', 'hands-on', 'interactive', 'decision'],
-  },
-  {
-    id: 'sim-pari',
-    category: 'Simulations',
-    question: 'Who is Pari?',
-    answer: "Pari is your AI tutor. Ask her any doubt during notes, quiz, interview, or simulation — she answers with context of the exact question you're stuck on. Free users get 5 quick chats/day; paid users get extended 15-turn sessions and unlimited quick chats.",
-    tags: ['pari', 'tutor', 'ai', 'chat', 'doubt', 'assistant', 'help'],
-  },
-  {
-    id: 'sim-mock-interview',
-    category: 'Simulations',
-    question: 'How do the mock interviews work?',
-    answer: "3-round mock interview capstone unlocks after Module 14 (Valuation). An AI interviewer from a top Indian firm asks up to 6 questions per round, evaluates your voice or typed responses on technical/communication/structure, and gives round-by-round scores + feedback.",
-    tags: ['interview', 'mock', 'practice', 'voice', 'oral', 'analyst', 'hiring'],
-  },
-
-  // ─── SUPPORT & TECHNICAL ──────────────────────────────────────────────
-  {
     id: 'support-contact',
     category: 'Support',
     question: 'How do I contact support?',
@@ -137,41 +80,11 @@ export const FAQS = [
     tags: ['contact', 'support', 'email', 'help', 'reach'],
   },
   {
-    id: 'support-mobile',
-    category: 'Support',
-    question: 'Does it work on mobile?',
-    answer: "Yes — the notes, quiz, interviews, dashboard, and doubts chat work well on mobile. Excel simulations are best on laptop/desktop because of the grid interactions.",
-    tags: ['mobile', 'phone', 'android', 'ios', 'app', 'tablet', 'responsive'],
-  },
-  {
-    id: 'support-progress',
-    category: 'Support',
-    question: 'Will I lose progress if I stop for a few weeks?',
-    answer: "No. Your progress, streak, XP, badges, doubts history, and study plan are all persisted. You can pause any time and pick up exactly where you left off.",
-    tags: ['progress', 'pause', 'break', 'lose', 'save', 'streak', 'xp'],
-  },
-  {
     id: 'support-account',
     category: 'Support',
     question: 'Can I change my email or delete my account?',
     answer: "Yes — email support@valuevade.com for account changes or deletion. GDPR/DPDP delete requests are honoured within 30 days.",
     tags: ['account', 'delete', 'gdpr', 'dpdp', 'email change', 'privacy'],
-  },
-
-  // ─── CAREERS ──────────────────────────────────────────────────────────
-  {
-    id: 'careers-job',
-    category: 'Careers',
-    question: 'Will Valuevade help me get a finance job?',
-    answer: "The 3 capstones are designed as portfolio artefacts a recruiter can actually review: a full initiating-coverage report, a sector coverage note, and a working AI research copilot. Combined with the mock interview prep, they give you the exact deliverables junior analyst roles ask for.",
-    tags: ['job', 'career', 'placement', 'hire', 'recruiter', 'analyst', 'role'],
-  },
-  {
-    id: 'careers-portfolio',
-    category: 'Careers',
-    question: 'Can I share my learning progress publicly?',
-    answer: "Yes. Every student gets a shareable Portfolio page (`/p/your-slug`) that shows XP, modules completed, capstones, and badges — no email exposed. Toggle it on from your Portfolio → Share.",
-    tags: ['portfolio', 'public', 'share', 'link', 'showcase', 'recruiter'],
   },
 ];
 
@@ -184,15 +97,11 @@ export function normaliseText(s) {
 
 /**
  * Score an FAQ against a user's query. Returns 0..∞.
- * - Every full-word match in the question adds a lot
- * - Full-word matches in tags/answer add less
- * - Substring matches on question add a little
- * - Zero if no words overlap
  */
 export function scoreFaq(faq, query) {
   const q = normaliseText(query);
   if (!q) return 0;
-  const words = q.split(' ').filter(w => w.length > 1);
+  const words = q.split(' ').filter((w) => w.length > 1);
   if (!words.length) return 0;
 
   const questionText = normaliseText(faq.question);
@@ -201,7 +110,6 @@ export function scoreFaq(faq, query) {
 
   let score = 0;
   for (const w of words) {
-    // Exact word match — biggest signal
     if (new RegExp(`\\b${w}\\b`).test(questionText)) score += 6;
     else if (questionText.includes(w)) score += 3;
 
@@ -211,20 +119,15 @@ export function scoreFaq(faq, query) {
     if (new RegExp(`\\b${w}\\b`).test(answerText)) score += 2;
     else if (answerText.includes(w)) score += 1;
   }
-  // Bonus if the FULL query appears as a substring of the question
   if (questionText.includes(q)) score += 8;
   return score;
 }
 
-/**
- * Return top-N FAQ matches for a query, sorted by score descending.
- * Excludes zero-scoring entries.
- */
 export function searchFaqs(query, limit = 5) {
   return FAQS
-    .map(f => ({ faq: f, score: scoreFaq(f, query) }))
-    .filter(x => x.score > 0)
+    .map((f) => ({ faq: f, score: scoreFaq(f, query) }))
+    .filter((x) => x.score > 0)
     .sort((a, b) => b.score - a.score)
     .slice(0, limit)
-    .map(x => x.faq);
+    .map((x) => x.faq);
 }

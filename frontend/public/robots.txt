@@ -4,4 +4,78 @@ Disallow: /admin-panel
 Disallow: /my-orders
 Disallow: /dashboard
 
+# AI search & retrieval agents — explicitly allowed for public pages
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: Claude-User
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+# Training crawlers — left allowed (owner's decision to opt out later)
+User-agent: GPTBot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
+User-agent: CCBot
+Allow: /
+Disallow: /admin-panel
+Disallow: /my-orders
+Disallow: /dashboard
+
 Sitemap: https://valuevade.com/sitemap.xml

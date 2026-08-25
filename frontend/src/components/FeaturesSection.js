@@ -1,12 +1,12 @@
 import { useState } from 'react';
-import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer } from 'lucide-react';
+import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer, CalendarRange } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import FeatureMicro3D from '@/components/landing/FeatureMicro3D';
 
 const features = [
   {
     title: 'Personalised AI Roadmap',
-    body: "Tell Valuevade your dream role and current skills. The AI maps your exact gap and builds a week-by-week path — personalised to you, not a generic syllabus.",
+    body: "Tell it your target role and current skills; it maps your exact gap and sequences your path through the program — personalised to you, not a generic syllabus.",
     span: 'col-span-12 lg:col-span-7',
     size: 'large',
     gradient: 'from-[var(--color-primary)]/10 to-transparent',
@@ -23,7 +23,7 @@ const features = [
   },
   {
     title: 'Pari — Your 24/7 AI Tutor',
-    body: "Stuck on a DCF cell or a CFA concept? Ask Pari. She sees your exact notes, simulation, or quiz answer and replies like a senior analyst pair-debugging with you.",
+    body: "Stuck on a DCF cell or a ratio question? Ask Pari. She sees the exact note, quiz or simulation you're on and answers in context — like a senior analyst pair-working with you.",
     icon: Sparkles,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
@@ -31,15 +31,15 @@ const features = [
   },
   {
     title: 'Interactive Notes',
-    body: "Live, clickable, visual notes built around CFA, FRM, and finance fundamentals — not PDFs.",
+    body: "Live, clickable, visual notes covering financial modelling and valuation concepts from first principles — built for beginners, not PDF dumps.",
     icon: BookOpen,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
     borderColor: 'rgba(36, 107, 253, 0.15)',
   },
   {
-    title: 'Real-World Simulations',
-    body: "Build a DCF on Reliance. Ratio-analyse HDFC. Model an LBO on Tata Steel. 68 hands-on Excel sims, not toy problems.",
+    title: '239 hands-on sessions',
+    body: "Build a DCF on Reliance. Ratio-analyse HDFC Bank. Model an LBO on Tata Steel. Every session pairs a concept with a simulation — interactive Excel, decision scenarios, or applied reading — all auto-graded.",
     icon: Briefcase,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
@@ -54,6 +54,14 @@ const features = [
     borderColor: 'rgba(255, 106, 193, 0.15)',
   },
   {
+    title: 'Study Planner',
+    body: "Pick a deadline or an hours-per-day budget and it auto-schedules all 239 sessions around your college timetable.",
+    icon: CalendarRange,
+    span: 'col-span-12 sm:col-span-6 lg:col-span-4',
+    size: 'medium',
+    borderColor: 'rgba(36, 107, 253, 0.15)',
+  },
+  {
     title: 'Resume + LinkedIn Networking',
     body: "Recruiter-tuned resume reviewer, AI-skill highlighting guide, plus the outreach playbook to get warm replies — not just qualified, hired.",
     icon: FileText,
@@ -62,8 +70,8 @@ const features = [
     borderColor: 'rgba(36, 107, 253, 0.15)',
   },
   {
-    title: 'NISM + CFI Certifications',
-    body: "The only program bundling skills with the certifications recruiters actually look for. SEBI-recognised NISM + CFI partner certs at no extra cost.",
+    title: 'NISM + CFI certification prep, certificate included',
+    body: "Structured preparation for the NISM Series-VIII (Equity Research) exam and CFI certifications, mapped into the curriculum — plus Valuevade's own Certificate of Completion when you finish all three capstones.",
     icon: Award,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
@@ -71,7 +79,7 @@ const features = [
   },
   {
     title: 'AI Capstone Project',
-    body: "Build a real finance tool with AI, ship it to your portfolio. Recruiters want builders now, not just learners.",
+    body: "Finish with a full initiating-coverage report, a sector coverage note, and a working AI research copilot — a portfolio recruiters can actually open, not just a certificate.",
     icon: Hammer,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',

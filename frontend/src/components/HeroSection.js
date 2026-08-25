@@ -5,14 +5,21 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 
 /* Premium hero — minimalist polish on the existing light aesthetic */
 
+// New H1 (Aug-26 SEO/GEO rebuild, Prompt 2). One serif italic accent word
+// preserved from the previous visual language ("Financial" here).
 const H1_LINES = [
-  { weight: 500, words: ['Stop', 'Guessing.'] },
-  { weight: 900, words: ['Start', 'Building', 'Your'] },
-  { weight: 900, words: ['Finance', 'Career.'], serif: 'Finance' },
+  { weight: 500, words: ['The', 'Equity', 'Research', '&'] },
+  { weight: 900, words: ['Financial', 'Modelling', 'Course'], serif: 'Financial' },
+  { weight: 500, words: ['Built', 'for', 'Indian'] },
+  { weight: 900, words: ['Finance', 'Students'] },
 ];
 
 export default function HeroSection({ onJoinWaitlist }) {
   const reduceMotion = useReducedMotion();
+  // Client-only mount flag — used to keep the blinking H1 cursor "|" out of
+  // the edge-prerender snapshot so crawlers see a clean headline.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   const stars = useMemo(
     () =>
       Array.from({ length: 80 }, () => ({
@@ -83,21 +90,7 @@ export default function HeroSection({ onJoinWaitlist }) {
       <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20 pt-32 pb-20 lg:pt-36 lg:pb-24">
         {/* Left content */}
         <div className="flex-1 text-center lg:text-left">
-          {/* Eyebrow with live pulse dot */}
-          <motion.div
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[var(--color-accent-pink)]/40 text-[var(--color-accent-pink)] text-[11px] font-jetbrains font-semibold mb-10 uppercase tracking-[0.12em]"
-            style={{ boxShadow: '0 0 22px rgba(255, 106, 193, 0.10)' }}
-            data-testid="hero-badge"
-          >
-            <span className="relative flex h-2 w-2" aria-hidden="true">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent-pink)] opacity-70 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-accent-pink)]" />
-            </span>
-            Now in Beta · Limited Early Access
-          </motion.div>
+          {/* Prompt-2: "Now in Beta · Limited Early Access" badge removed. */}
 
           {/* H1 — word-by-word stagger + mixed weights + serif accent */}
           <h1
@@ -116,22 +109,32 @@ export default function HeroSection({ onJoinWaitlist }) {
                 custom={lineIdx}
               >
                 {line.words.map((w, wi) => (
-                  <motion.span
-                    key={wi}
-                    variants={wordVariants}
-                    className="inline-block mr-[0.24em]"
-                    style={
-                      line.serif && w === line.serif
-                        ? { fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500,
-                            color: 'var(--color-primary)', letterSpacing: '-0.01em' }
-                        : {}
-                    }
-                  >
-                    {w}
-                  </motion.span>
+                  <span key={wi}>
+                    <motion.span
+                      variants={wordVariants}
+                      className="inline-block mr-[0.24em]"
+                      style={
+                        line.serif && w === line.serif
+                          ? { fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500,
+                              color: 'var(--color-primary)', letterSpacing: '-0.01em' }
+                          : {}
+                      }
+                    >
+                      {w}
+                    </motion.span>
+                    {/* Real space char between words so the crawlable text is
+                        properly spaced (inline-block eats layout whitespace). */}
+                    {' '}
+                  </span>
                 ))}
-                {/* Blinking cursor only at end of last line */}
-                {lineIdx === H1_LINES.length - 1 && !reduceMotion && (
+                {/* Trailing real space char so the crawlable text has proper
+                    inter-line spacing (browsers ignore whitespace across
+                    inline-block elements). */}
+                {' '}
+                {/* Blinking cursor only at end of last line.
+                    `mounted` is false during the edge-prerender snapshot so
+                    the cursor "|" never lands in the crawlable static HTML. */}
+                {lineIdx === H1_LINES.length - 1 && mounted && !reduceMotion && (
                   <motion.span
                     aria-hidden="true"
                     className="inline-block align-baseline ml-1"
@@ -156,54 +159,68 @@ export default function HeroSection({ onJoinWaitlist }) {
             aria-hidden="true"
           />
 
-          {/* Subheading */}
+          {/* Subheading — new lead-in line (Prompt 2) */}
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-base lg:text-lg text-[var(--color-text-muted)] max-w-xl mb-10 font-bricolage leading-relaxed mx-auto lg:mx-0"
+            className="text-lg lg:text-xl font-clash text-[var(--color-text)] max-w-xl mb-5 font-semibold mx-auto lg:mx-0"
+            data-testid="hero-subhead"
           >
-            Valuevade is the AI copilot that analyses your skills, maps your dream role, and builds your
-            personalised learning path &mdash; with interactive notes, real simulations, and interview
-            prep that actually works.
+            Stop guessing. Start building your finance career.
           </motion.p>
 
-          {/* CTAs — sheen sweep on primary, hairline ghost */}
+          {/* Descriptive paragraph — verbatim from Prompt 2 */}
+          <motion.p
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="text-base lg:text-lg text-[var(--color-text-muted)] max-w-xl mb-10 font-bricolage leading-relaxed mx-auto lg:mx-0"
+            data-testid="hero-paragraph"
+          >
+            Valuevade is an AI-personalised equity research and financial modelling course for Indian
+            finance students and early-career switchers. The Equity Research Analyst Program covers 21
+            modules and 239 hands-on sessions built on real Indian companies and Ind AS conventions,
+            prepares you for the NISM Series-VIII exam, and ends with three portfolio-grade capstone
+            projects. Lifetime access is a one-time ₹1,500 — no subscription, and your first session is
+            free.
+          </motion.p>
+
+          {/* CTAs — primary → signup/trial, secondary → details route */}
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             className="flex flex-col sm:flex-row gap-3 mb-7 justify-center lg:justify-start"
           >
-            <button
-              onClick={onJoinWaitlist}
+            <Link
+              to="/signup"
               className="hero-cta-primary group relative overflow-hidden inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-4 text-base font-semibold text-white rounded-full"
               style={{
                 background: 'var(--color-primary)',
                 boxShadow: '0 8px 24px -8px rgba(36,107,253,0.55), 0 0 0 1px rgba(36,107,253,0.18) inset',
                 transition: 'transform 220ms ease, box-shadow 220ms ease',
               }}
-              data-testid="hero-join-waitlist-btn"
+              data-testid="hero-primary-cta"
             >
-              <span className="relative z-10">Join the Waitlist Free</span>
+              <span className="relative z-10">Start with a free session</span>
               <ArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-              {/* Sheen sweep */}
               <span aria-hidden="true" className="hero-sheen" />
-            </button>
-            <button
-              onClick={() => scrollTo('how-it-works')}
+            </Link>
+            <Link
+              to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
               className="inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-medium text-[var(--color-text)] rounded-full transition-colors"
               style={{ border: '1px solid var(--color-border)', background: 'transparent' }}
               onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-surface)')}
               onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-              data-testid="hero-how-it-works-btn"
+              data-testid="hero-secondary-cta"
             >
-              See How It Works
+              See the full curriculum
               <ArrowRight size={16} className="opacity-70" />
-            </button>
+            </Link>
           </motion.div>
 
-          {/* Trust strip — small editorial credibility line */}
+          {/* Trust line — new (Prompt 2) */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -211,45 +228,25 @@ export default function HeroSection({ onJoinWaitlist }) {
             className="text-[11px] font-jetbrains font-black uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
             data-testid="hero-trust-strip"
           >
-            CFA Institute aligned <span className="opacity-50 mx-1">·</span> NISM Series-VIII compatible
-            <span className="opacity-50 mx-1">·</span> CFI partnered
+            NISM Series-VIII + CFI certification prep included
+            <span className="opacity-50 mx-1">·</span> One-time ₹1,500
+            <span className="opacity-50 mx-1">·</span> Lifetime access
           </motion.p>
 
-          {/* Secondary signup CTA */}
+          {/* Login link — kept as-is for existing customers */}
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1.5, duration: 0.5 }}
-            className="text-sm text-[var(--color-text-muted)] mb-7 font-bricolage text-center lg:text-left"
+            className="text-sm text-[var(--color-text-muted)] font-bricolage text-center lg:text-left"
           >
-            Already eligible?{' '}
+            Already enrolled?{' '}
             <Link to="/login" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
               Log in &rarr;
             </Link>
           </motion.p>
 
-          {/* Social proof */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.6, duration: 0.5 }}
-            className="flex items-center gap-3 justify-center lg:justify-start"
-          >
-            <div className="flex -space-x-2.5">
-              {[
-                'linear-gradient(135deg, #246BFD, #6A5CFF)',
-                'linear-gradient(135deg, #6A5CFF, #FF6AC1)',
-                'linear-gradient(135deg, #FF6AC1, #246BFD)',
-                'linear-gradient(135deg, #246BFD, #FF6AC1)',
-                'linear-gradient(135deg, #6A5CFF, #246BFD)',
-              ].map((bg, i) => (
-                <div key={i} className="w-9 h-9 rounded-full border-2 border-[var(--bg-primary)]" style={{ background: bg }} />
-              ))}
-            </div>
-            <p className="text-[var(--color-text-muted)] text-sm font-bricolage" data-testid="social-proof-text">
-              Join 500+ finance students already on the waitlist
-            </p>
-          </motion.div>
+          {/* Prompt-2: "Join 500+ finance students already on the waitlist" removed. */}
         </div>
 
         {/* Right: Floating roadmap card with premium frame */}
@@ -288,7 +285,7 @@ export default function HeroSection({ onJoinWaitlist }) {
               <div className="w-px h-5 bg-gradient-to-b from-[var(--color-primary)]/40 to-[var(--color-accent-pink)]/40" />
               <div className="px-4 py-2 bg-[var(--color-accent-pink)]/10 text-[var(--color-accent-pink)] text-sm rounded-full font-jetbrains border border-[var(--color-accent-pink)]/30"
                    style={{ boxShadow: '0 0 16px rgba(255, 106, 193, 0.15)' }}>
-                AM Analyst @ DSP Blackrock
+                AM Analyst @ a top Indian AMC
               </div>
             </div>
             <div className="mt-6">

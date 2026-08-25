@@ -6,10 +6,16 @@ import { motion } from 'framer-motion';
 
 /* ---------- useCountUp: simple rAF ease-out counter ---------- */
 export function useCountUp(target, { duration = 1200, start = 0, run = true } = {}) {
-  const [value, setValue] = useState(start);
+  // Initial state is the REAL target value — so the first render (used by
+  // SSR / edge prerender snapshots) shows the real number to crawlers.
+  // When the effect fires in the browser (after IO intersect), we reset to
+  // `start` and animate up to `target`.
+  const [value, setValue] = useState(target);
   useEffect(() => {
     if (!run) return;
     let raf = 0;
+    // Reset to start, then animate up.
+    setValue(start);
     const t0 = performance.now();
     const ease = (t) => 1 - Math.pow(1 - t, 3); // easeOutCubic
     const loop = (now) => {
