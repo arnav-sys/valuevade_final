@@ -106,7 +106,7 @@ export default function HeroSection() {
         {/* Full-width H1 — occupies the entire container so the headline
             gets the visual weight it deserves (Feb 2026 tweak). */}
         <h1
-          className="font-clash text-[var(--color-text)] text-center lg:text-left"
+          className="font-clash text-[var(--color-text)] text-center"
           style={{
             fontSize: 'clamp(38px, 6vw, 92px)',
             lineHeight: 1.02,
