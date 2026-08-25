@@ -1,12 +1,16 @@
-import { useMemo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
 
-/* Premium hero — minimalist polish on the existing light aesthetic */
+/* Editorial-finance Hero (Feb 2026 redesign).
+ * - 12-col grid: 7 cols headline stack (left), 5 cols terminal roadmap (right).
+ * - Clamped magazine H1 (no more page-eating scale).
+ * - Bloomberg-inspired mono meta rails, ticker, sparkline chart backdrop.
+ * - Sharp CTAs (2px radius) with mono uppercase labels.
+ * - Motion restraint: staggered word fade-in only. No blob/orbital/stars/cursor.
+ * Content copy is verbatim from the previous version. */
 
-// New H1 (Aug-26 SEO/GEO rebuild, Prompt 2). One serif italic accent word
-// preserved from the previous visual language ("Financial" here).
 const H1_LINES = [
   { weight: 500, words: ['The', 'Equity', 'Research', '&'] },
   { weight: 900, words: ['Financial', 'Modelling', 'Course'], serif: 'Financial' },
@@ -14,311 +18,357 @@ const H1_LINES = [
   { weight: 900, words: ['Finance', 'Students'] },
 ];
 
+// Bottom marquee ticker items — static equity samples.
+const TICKER = [
+  { s: 'RELIANCE', p: '2,932.15', c: '+1.24%', d: 'up' },
+  { s: 'HDFCBANK', p: '1,678.40', c: '+0.62%', d: 'up' },
+  { s: 'INFY', p: '1,842.05', c: '−0.34%', d: 'down' },
+  { s: 'TCS', p: '4,128.90', c: '+0.51%', d: 'up' },
+  { s: 'ICICIBANK', p: '1,142.25', c: '+0.88%', d: 'up' },
+  { s: 'BAJFINANCE', p: '7,215.60', c: '−0.14%', d: 'down' },
+  { s: 'LT', p: '3,684.20', c: '+1.02%', d: 'up' },
+  { s: 'ITC', p: '432.85', c: '+0.28%', d: 'up' },
+  { s: 'MARUTI', p: '12,410.00', c: '+0.71%', d: 'up' },
+  { s: 'SBIN', p: '812.35', c: '−0.22%', d: 'down' },
+];
+
+// Compact roadmap panel content — same info as before, terminal styling.
+const ROADMAP = {
+  from: 'B.COM · FINAL YEAR',
+  chips: ['VALUATION', 'DCF MODELLING', 'FRM L1', 'PYTHON FOR FINANCE'],
+  to: 'AM ANALYST · TOP INDIAN AMC',
+  progress: 68,
+};
+
 export default function HeroSection() {
   const reduceMotion = useReducedMotion();
-  // Client-only mount flag — used to keep the blinking H1 cursor "|" out of
-  // the edge-prerender snapshot so crawlers see a clean headline.
   const [mounted, setMounted] = useState(false);
   useEffect(() => { setMounted(true); }, []);
-  const stars = useMemo(
-    () =>
-      Array.from({ length: 80 }, () => ({
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        size: `${1 + Math.random() * 2}px`,
-        delay: `${Math.random() * 5}s`,
-        duration: `${2 + Math.random() * 3}s`,
-      })),
-    []
-  );
 
-  // Gentle scroll parallax on the right card (max 10px)
-  const [scrollY, setScrollY] = useState(0);
-  useEffect(() => {
-    if (reduceMotion) return;
-    const onScroll = () => setScrollY(Math.min(window.scrollY, 200));
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [reduceMotion]);
-  const parallaxY = (scrollY / 200) * 10;
-
-  const scrollTo = (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-
-  // Word-by-word stagger — 60ms between words, 400ms duration
   const lineVariants = {
     hidden: {},
-    visible: (i = 0) => ({ transition: { staggerChildren: 0.06, delayChildren: 0.15 + i * 0.05 } }),
+    visible: (i = 0) => ({ transition: { staggerChildren: 0.05, delayChildren: 0.1 + i * 0.04 } }),
   };
   const wordVariants = {
-    hidden: { opacity: 0, y: 24, filter: 'blur(6px)' },
-    visible: { opacity: 1, y: 0, filter: 'blur(0px)',
-      transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+    hidden: { opacity: 0, y: 16 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
   };
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center overflow-hidden bg-[var(--bg-primary)]"
+      className="relative min-h-screen flex items-stretch overflow-hidden bg-[var(--bg-primary)]"
       data-testid="hero-section"
     >
-      {/* Subtle SVG grain overlay — 1.5% opacity, premium tactile feel */}
-      <svg aria-hidden="true" className="absolute inset-0 w-full h-full pointer-events-none z-[1]" style={{ opacity: 0.06, mixBlendMode: 'multiply' }}>
-        <filter id="hero-grain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#hero-grain)" />
+      {/* Dot-matrix grid backdrop — threads sections together */}
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-60" aria-hidden="true" />
+      {/* CRT scanline overlay */}
+      <div className="absolute inset-0 lv-crt-scan pointer-events-none" aria-hidden="true" />
+
+      {/* Faint editorial finance chart line behind headline */}
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full pointer-events-none z-[1]"
+        viewBox="0 0 1440 900"
+        preserveAspectRatio="none"
+        style={{ opacity: 0.18 }}
+      >
+        <defs>
+          <linearGradient id="hero-chart-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0" />
+            <stop offset="35%" stopColor="var(--color-primary)" stopOpacity="0.6" />
+            <stop offset="70%" stopColor="var(--color-accent-purple)" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="var(--color-accent-pink)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          className="lv-sparkline-path"
+          d="M0,620 L120,540 L220,590 L320,470 L440,510 L560,410 L680,450 L820,340 L960,380 L1080,300 L1200,340 L1320,260 L1440,290"
+          fill="none"
+          stroke="url(#hero-chart-grad)"
+          strokeWidth="1.5"
+        />
       </svg>
 
-      {/* Star particles */}
-      {stars.map((star, i) => (
-        <div key={i} className="star-particle"
-          style={{ left: star.left, top: star.top, width: star.size, height: star.size,
-                   animation: `twinkle ${star.duration} ease-in-out ${star.delay} infinite` }} />
-      ))}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-6 pt-24 md:pt-28 pb-24 flex flex-col">
+        {/* Chapter label */}
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="flex items-center gap-3 mb-8 md:mb-10"
+        >
+          <span className="lv-chapter" data-testid="hero-chapter">§01 // PROGRAM</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">EQUITY RESEARCH · IND-AS · NISM XV</span>
+        </motion.div>
 
-      {/* Orbital ellipses — kept from original */}
-      <div className="orbital border-[var(--color-primary)]/20" style={{ width: '700px', height: '300px', animation: 'orbit 25s linear infinite' }} />
-      <div className="orbital border-[var(--color-accent-purple)]/[0.15]" style={{ width: '900px', height: '400px', animation: 'orbit-reverse 40s linear infinite' }} />
-      <div className="orbital border-[var(--color-accent-pink)]/10" style={{ width: '1100px', height: '480px', animation: 'orbit 60s linear infinite' }} />
-
-      {/* Glow blobs */}
-      <div className="absolute top-[10%] right-[10%] w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] bg-[var(--color-primary)]/20 rounded-full animate-blob" style={{ filter: 'blur(120px)' }} />
-      <div className="absolute bottom-[10%] left-[10%] w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] bg-[var(--color-accent-purple)]/20 rounded-full animate-blob" style={{ filter: 'blur(120px)', animationDelay: '-4s' }} />
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-6 w-full flex flex-col lg:flex-row items-center gap-12 lg:gap-20 pt-32 pb-20 lg:pt-36 lg:pb-24">
-        {/* Left content */}
-        <div className="flex-1 text-center lg:text-left">
-          {/* Prompt-2: "Now in Beta · Limited Early Access" badge removed. */}
-
-          {/* H1 — word-by-word stagger + mixed weights + serif accent */}
-          <h1
-            className="font-clash text-[52px] sm:text-6xl lg:text-[88px] xl:text-[96px] text-[var(--color-text)] mb-8"
-            style={{ lineHeight: 0.94, letterSpacing: '-0.035em' }}
-            data-testid="hero-h1"
-          >
-            {H1_LINES.map((line, lineIdx) => (
-              <motion.span
-                key={lineIdx}
-                className="block"
-                style={{ fontWeight: line.weight }}
-                variants={lineVariants}
-                initial={reduceMotion ? 'visible' : 'hidden'}
-                animate="visible"
-                custom={lineIdx}
-              >
-                {line.words.map((w, wi) => (
-                  <span key={wi}>
-                    <motion.span
-                      variants={wordVariants}
-                      className="inline-block mr-[0.24em]"
-                      style={
-                        line.serif && w === line.serif
-                          ? { fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500,
-                              color: 'var(--color-primary)', letterSpacing: '-0.01em' }
-                          : {}
-                      }
-                    >
-                      {w}
-                    </motion.span>
-                    {/* Real space char between words so the crawlable text is
-                        properly spaced (inline-block eats layout whitespace). */}
-                    {' '}
-                  </span>
-                ))}
-                {/* Trailing real space char so the crawlable text has proper
-                    inter-line spacing (browsers ignore whitespace across
-                    inline-block elements). */}
-                {' '}
-                {/* Blinking cursor only at end of last line.
-                    `mounted` is false during the edge-prerender snapshot so
-                    the cursor "|" never lands in the crawlable static HTML. */}
-                {lineIdx === H1_LINES.length - 1 && mounted && !reduceMotion && (
-                  <motion.span
-                    aria-hidden="true"
-                    className="inline-block align-baseline ml-1"
-                    style={{ color: 'var(--color-accent-pink)', fontWeight: 300 }}
-                    animate={{ opacity: [1, 0, 1] }}
-                    transition={{ duration: 1.2, repeat: Infinity, ease: 'linear' }}
-                  >
-                    |
-                  </motion.span>
-                )}
-              </motion.span>
-            ))}
-          </h1>
-
-          {/* Hairline gradient divider under H1 — editorial polish */}
-          <motion.div
-            initial={{ opacity: 0, scaleX: 0 }}
-            animate={{ opacity: 1, scaleX: 1 }}
-            transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="h-px w-32 origin-left mb-7 mx-auto lg:mx-0"
-            style={{ background: 'linear-gradient(90deg, rgba(36,107,253,0.55), transparent)' }}
-            aria-hidden="true"
-          />
-
-          {/* Subheading — new lead-in line (Prompt 2) */}
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.0, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-lg lg:text-xl font-clash text-[var(--color-text)] max-w-xl mb-5 font-semibold mx-auto lg:mx-0"
-            data-testid="hero-subhead"
-          >
-            Stop guessing. Start building your finance career.
-          </motion.p>
-
-          {/* Descriptive paragraph — verbatim from Prompt 2 */}
-          <motion.p
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.05, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="text-base lg:text-lg text-[var(--color-text-muted)] max-w-xl mb-10 font-bricolage leading-relaxed mx-auto lg:mx-0"
-            data-testid="hero-paragraph"
-          >
-            Valuevade is an AI-personalised equity research and financial modelling course for Indian
-            finance students and early-career switchers. The Equity Research Analyst Program covers 21
-            modules and 239 hands-on sessions built on real Indian companies and Ind AS conventions,
-            prepares you for the NISM Series XV exam, and ends with three portfolio-grade capstone
-            projects. Lifetime access is a one-time ₹1,500 — no subscription, and your first session is
-            free.
-          </motion.p>
-
-          {/* CTAs — primary → signup/trial, secondary → details route */}
-          <motion.div
-            initial={{ opacity: 0, y: 14 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.15, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-            className="flex flex-col sm:flex-row gap-3 mb-7 justify-center lg:justify-start"
-          >
-            <Link
-              to="/signup"
-              className="hero-cta-primary group relative overflow-hidden inline-flex items-center justify-center gap-2 w-full sm:w-auto px-7 py-4 text-base font-semibold text-white rounded-full"
+        {/* 12-col editorial grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start flex-1">
+          {/* LEFT — 7 cols headline stack */}
+          <div className="lg:col-span-7">
+            <h1
+              className="font-clash text-[var(--color-text)]"
               style={{
-                background: 'var(--color-primary)',
-                boxShadow: '0 8px 24px -8px rgba(36,107,253,0.55), 0 0 0 1px rgba(36,107,253,0.18) inset',
-                transition: 'transform 220ms ease, box-shadow 220ms ease',
+                fontSize: 'clamp(38px, 5.4vw, 76px)',
+                lineHeight: 1.02,
+                letterSpacing: '-0.028em',
+                marginBottom: '28px',
               }}
-              data-testid="hero-primary-cta"
+              data-testid="hero-h1"
             >
-              <span className="relative z-10">Start with a free session</span>
-              <ArrowRight size={18} className="relative z-10 transition-transform duration-300 group-hover:translate-x-1" />
-              <span aria-hidden="true" className="hero-sheen" />
-            </Link>
-            <Link
-              to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
-              className="inline-flex items-center justify-center gap-2 px-6 py-4 text-base font-medium text-[var(--color-text)] rounded-full transition-colors"
-              style={{ border: '1px solid var(--color-border)', background: 'transparent' }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--color-surface)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = 'transparent')}
-              data-testid="hero-secondary-cta"
+              {H1_LINES.map((line, lineIdx) => (
+                <motion.span
+                  key={lineIdx}
+                  className="block"
+                  style={{ fontWeight: line.weight }}
+                  variants={lineVariants}
+                  initial={reduceMotion ? 'visible' : 'hidden'}
+                  animate="visible"
+                  custom={lineIdx}
+                >
+                  {line.words.map((w, wi) => (
+                    <span key={wi}>
+                      <motion.span
+                        variants={wordVariants}
+                        className="inline-block mr-[0.22em]"
+                        style={
+                          line.serif && w === line.serif
+                            ? {
+                                fontFamily: '"Fraunces", Georgia, serif',
+                                fontStyle: 'italic',
+                                fontWeight: 500,
+                                color: 'var(--color-primary)',
+                                letterSpacing: '-0.01em',
+                                position: 'relative',
+                              }
+                            : {}
+                        }
+                      >
+                        {w}
+                        {line.serif && w === line.serif && (
+                          <span
+                            aria-hidden="true"
+                            style={{
+                              position: 'absolute',
+                              left: '2%',
+                              right: '10%',
+                              bottom: '0.02em',
+                              height: '2px',
+                              background: 'var(--color-primary)',
+                              opacity: 0.55,
+                            }}
+                          />
+                        )}
+                      </motion.span>
+                      {' '}
+                    </span>
+                  ))}
+                  {' '}
+                </motion.span>
+              ))}
+            </h1>
+
+            {/* Hairline + subhead */}
+            <motion.div
+              initial={{ opacity: 0, scaleX: 0 }}
+              animate={{ opacity: 1, scaleX: 1 }}
+              transition={{ delay: 0.6, duration: 0.55 }}
+              className="h-px w-24 origin-left mb-6 bg-[var(--color-primary)]/60"
+              aria-hidden="true"
+            />
+
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              className="font-clash text-[var(--color-text)] text-lg lg:text-xl font-semibold mb-4"
+              data-testid="hero-subhead"
             >
-              See the full curriculum
-              <ArrowRight size={16} className="opacity-70" />
-            </Link>
-          </motion.div>
+              Stop guessing. Start building your finance career.
+            </motion.p>
 
-          {/* Trust line — new (Prompt 2) */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.4, duration: 0.6 }}
-            className="text-[11px] font-jetbrains font-black uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
-            data-testid="hero-trust-strip"
+            <motion.p
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.78, duration: 0.5 }}
+              className="text-[15px] lg:text-base text-[var(--color-text-muted)] max-w-xl mb-8 font-bricolage leading-relaxed"
+              data-testid="hero-paragraph"
+            >
+              Valuevade is an AI-personalised equity research and financial modelling course for Indian
+              finance students and early-career switchers. The Equity Research Analyst Program covers 21
+              modules and 239 hands-on sessions built on real Indian companies and Ind AS conventions,
+              prepares you for the NISM Series XV exam, and ends with three portfolio-grade capstone
+              projects. Lifetime access is a one-time ₹1,500 — no subscription, and your first session is
+              free.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.86, duration: 0.5 }}
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-7"
+            >
+              <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
+                Start Free Session
+                <ArrowRight size={14} strokeWidth={2.5} />
+              </Link>
+              <Link
+                to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
+                className="inline-flex items-center gap-2 text-sm text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors font-bricolage font-medium"
+                data-testid="hero-secondary-cta"
+              >
+                <ArrowUpRight size={14} strokeWidth={2.4} />
+                See the full curriculum
+                <span className="h-px w-6 bg-[var(--color-text-muted)]" aria-hidden="true" />
+              </Link>
+            </motion.div>
+
+            {/* Trust strip — mono uppercase with pipe dividers */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.0, duration: 0.5 }}
+              className="font-jetbrains text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-6"
+              data-testid="hero-trust-strip"
+            >
+              NISM SERIES XV + CFI PREP
+              <span className="mx-2.5 opacity-40">|</span>
+              ONE-TIME ₹1,500
+              <span className="mx-2.5 opacity-40">|</span>
+              LIFETIME ACCESS
+            </motion.p>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.08, duration: 0.45 }}
+              className="text-sm text-[var(--color-text-muted)] font-bricolage"
+            >
+              Already enrolled?{' '}
+              <Link to="/login" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
+                Log in &rarr;
+              </Link>
+            </motion.p>
+          </div>
+
+          {/* RIGHT — 5 cols terminal roadmap panel */}
+          <motion.aside
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 lg:pl-4 xl:pl-8 mt-4 lg:mt-0"
           >
-            NISM Series XV + CFI certification prep included
-            <span className="opacity-50 mx-1">·</span> One-time ₹1,500
-            <span className="opacity-50 mx-1">·</span> Lifetime access
-          </motion.p>
+            <div className="lv-panel p-6" data-testid="hero-roadmap-card">
+              {/* Panel header */}
+              <header className="flex items-center justify-between border-b border-[var(--color-border)] pb-3 mb-5">
+                <div className="flex items-center gap-2">
+                  <span className="lv-live-dot" aria-hidden="true" />
+                  <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-muted)]">
+                    ROADMAP // STUDENT PATH
+                  </span>
+                </div>
+                <span className="font-jetbrains text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-faint)]">
+                  VV.PATH · 001
+                </span>
+              </header>
 
-          {/* Login link — kept as-is for existing customers */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 0.5 }}
-            className="text-sm text-[var(--color-text-muted)] font-bricolage text-center lg:text-left"
-          >
-            Already enrolled?{' '}
-            <Link to="/login" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
-              Log in &rarr;
-            </Link>
-          </motion.p>
+              {/* From */}
+              <div className="mb-4">
+                <div className="font-jetbrains text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-1.5">
+                  FROM
+                </div>
+                <div className="font-jetbrains text-sm text-[var(--color-text)] tracking-wide">
+                  {ROADMAP.from}
+                </div>
+              </div>
 
-          {/* Prompt-2: "Join 500+ finance students already on the waitlist" removed. */}
+              {/* Skills */}
+              <div className="mb-4">
+                <div className="font-jetbrains text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-2">
+                  BUILD
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {ROADMAP.chips.map((s) => (
+                    <span
+                      key={s}
+                      className="font-jetbrains text-[10.5px] uppercase tracking-[0.14em] px-2 py-1 border border-[var(--color-primary)]/40 text-[var(--color-primary)] bg-[var(--color-primary)]/8"
+                      style={{ borderRadius: 2 }}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Small sparkline mid-panel */}
+              <svg viewBox="0 0 300 40" className="w-full h-8 mb-4" aria-hidden="true">
+                <path
+                  d="M0,30 L30,25 L60,28 L90,18 L120,22 L150,14 L180,17 L210,10 L240,13 L270,6 L300,9"
+                  fill="none"
+                  stroke="var(--color-primary)"
+                  strokeWidth="1.25"
+                  strokeOpacity="0.75"
+                />
+                <path
+                  d="M0,30 L30,25 L60,28 L90,18 L120,22 L150,14 L180,17 L210,10 L240,13 L270,6 L300,9 L300,40 L0,40 Z"
+                  fill="var(--color-primary)"
+                  fillOpacity="0.08"
+                />
+              </svg>
+
+              {/* To */}
+              <div className="mb-5">
+                <div className="font-jetbrains text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-1.5">
+                  TARGET
+                </div>
+                <div className="font-jetbrains text-sm text-[var(--color-accent-pink)] tracking-wide">
+                  {ROADMAP.to}
+                </div>
+              </div>
+
+              {/* Progress readout */}
+              <div className="border-t border-[var(--color-border)] pt-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="lv-progress-readout">PROGRESS</span>
+                  <span className="lv-progress-readout text-[var(--color-text)]">
+                    {ROADMAP.progress}% · 143/210
+                  </span>
+                </div>
+                <div className="h-1.5 bg-[var(--color-surface)] overflow-hidden" style={{ borderRadius: 1 }}>
+                  <div
+                    className="h-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)]"
+                    style={{ width: `${ROADMAP.progress}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sub-caption under panel */}
+            <p className="mt-3 font-jetbrains text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-faint)] text-right">
+              Sample cohort · {mounted ? 'personalised on signup' : ''}
+            </p>
+          </motion.aside>
         </div>
 
-        {/* Right: Floating roadmap card with premium frame */}
-        <motion.div
-          initial={{ opacity: 0, y: 24, scale: 0.97 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="flex-shrink-0 animate-hero-float"
-          style={{ transform: `translateY(${parallaxY}px)`, transition: 'transform 600ms cubic-bezier(0.22,1,0.36,1)' }}
+        {/* Bottom ticker marquee */}
+        <div
+          className="mt-14 border-y border-[var(--color-border)] overflow-hidden lv-ticker-wrap"
+          data-testid="hero-ticker"
         >
-          <div
-            className="w-[320px] sm:w-[360px] p-6 rounded-2xl glass-card relative"
-            style={{
-              borderColor: 'rgba(106, 92, 255, 0.25)',
-              boxShadow:
-                '0 0 0 1px rgba(106, 92, 255, 0.08), 0 24px 48px -16px rgba(36, 107, 253, 0.18), 0 0 40px rgba(106, 92, 255, 0.12)',
-            }}
-            data-testid="hero-roadmap-card"
-          >
-            <div className="flex items-center gap-2 mb-6">
-              <Sparkles className="text-[var(--color-accent-pink)]" size={18} />
-              <span className="text-[var(--color-text)] font-clash text-lg">Your Roadmap</span>
-            </div>
-            <div className="flex flex-col items-center gap-3">
-              <div className="px-4 py-2 bg-[var(--color-surface)] rounded-full text-[var(--color-text-muted)] text-sm font-jetbrains">
-                B.Com Final Year
-              </div>
-              <div className="w-px h-5 bg-gradient-to-b from-[var(--color-border)] to-[var(--color-primary)]/40" />
-              <div className="flex flex-wrap justify-center gap-2">
-                {['Valuation', 'DCF Modelling', 'FRM L1', 'Python for Finance'].map((skill) => (
-                  <span key={skill} className="px-3 py-1 bg-[var(--color-primary)]/10 text-[var(--color-primary)] text-xs rounded-full font-jetbrains border border-[var(--color-primary)]/20">
-                    {skill}
-                  </span>
-                ))}
-              </div>
-              <div className="w-px h-5 bg-gradient-to-b from-[var(--color-primary)]/40 to-[var(--color-accent-pink)]/40" />
-              <div className="px-4 py-2 bg-[var(--color-accent-pink)]/10 text-[var(--color-accent-pink)] text-sm rounded-full font-jetbrains border border-[var(--color-accent-pink)]/30"
-                   style={{ boxShadow: '0 0 16px rgba(255, 106, 193, 0.15)' }}>
-                AM Analyst @ a top Indian AMC
-              </div>
-            </div>
-            <div className="mt-6">
-              <div className="flex justify-between text-xs text-[var(--color-text-faint)] mb-2 font-jetbrains">
-                <span>Progress</span>
-                <span>68% complete</span>
-              </div>
-              <div className="h-2 bg-[var(--color-surface)] rounded-full overflow-hidden">
-                <div className="h-full w-[68%] bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] rounded-full" />
-              </div>
+          <div className="max-w-7xl mx-auto py-2.5 whitespace-nowrap">
+            <div className="lv-ticker-track font-jetbrains text-[11px] uppercase tracking-[0.14em]">
+              {[...TICKER, ...TICKER].map((t, i) => (
+                <span key={i} className="inline-flex items-center gap-2">
+                  <span className="text-[var(--color-text-muted)]">{t.s}</span>
+                  <span className="text-[var(--color-text)]">{t.p}</span>
+                  <span className={t.d === 'up' ? 'text-[#22c55e]' : 'text-[#ef4444]'}>{t.c}</span>
+                </span>
+              ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
-
-      {/* Local styles for the sheen + reduced-motion guard */}
-      <style>{`
-        .hero-cta-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 14px 32px -10px rgba(36,107,253,0.65), 0 0 0 1px rgba(36,107,253,0.22) inset;
-        }
-        .hero-sheen {
-          position: absolute; inset: 0; pointer-events: none;
-          background: linear-gradient(120deg, transparent 0%, transparent 40%, rgba(255,255,255,0.35) 50%, transparent 60%, transparent 100%);
-          transform: translateX(-120%);
-          transition: transform 700ms ease;
-        }
-        .hero-cta-primary:hover .hero-sheen { transform: translateX(120%); }
-        @media (prefers-reduced-motion: reduce) {
-          .hero-cta-primary, .hero-cta-primary:hover { transform: none !important; transition: none !important; }
-          .hero-sheen { display: none !important; }
-        }
-      `}</style>
     </section>
   );
 }

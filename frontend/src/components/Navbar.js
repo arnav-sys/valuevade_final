@@ -2,7 +2,13 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { Menu, X, LogOut, Sun, Moon } from 'lucide-react';
+import { Menu, X, LogOut, Sun, Moon, ArrowRight } from 'lucide-react';
+
+/* Editorial finance / Bloomberg-terminal Navbar (Feb 2026).
+ * - Thin top status bar with mock market widgets (static content).
+ * - Mono uppercase primary nav with underline-on-hover.
+ * - Sharp signup CTA (2px radius).
+ * - Mobile overlay layout untouched — brief kept it out of scope. */
 
 const navLinks = [
   { label: 'Features', id: 'features' },
@@ -11,14 +17,21 @@ const navLinks = [
   { label: 'Roadmap', id: 'features' },
 ];
 
+// Static market widgets — restrained mock data. Real feed would go
+// through a socket; static is fine for the marketing landing.
+const STATUS_ITEMS = [
+  { label: 'NIFTY 50', value: '22,415.30', chg: '+0.42%', dir: 'up' },
+  { label: 'SENSEX', value: '73,824.60', chg: '+0.38%', dir: 'up' },
+  { label: 'USD/INR', value: '83.21', chg: '−0.08%', dir: 'down' },
+  { label: 'GOLD', value: '₹62,340', chg: '+0.11%', dir: 'up' },
+];
+
 export default function Navbar({ landingTheme, onToggleLandingTheme }) {
   const { user, profile, loading, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // When the LandingPage passes its own theme state in, the navbar's toggle
-  // controls the landing palette only (not the global app theme).
   const isLandingScoped = typeof onToggleLandingTheme === 'function';
   const activeTheme = isLandingScoped ? landingTheme : theme;
   const onToggleTheme = isLandingScoped ? onToggleLandingTheme : toggleTheme;
@@ -36,17 +49,49 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
 
   const isLoggedIn = !loading && !!user;
 
+  // Freeze the "last updated" stamp on client mount so SSR/prerender
+  // doesn't ship a moving value. Static IST time is fine editorially.
+  const [ts, setTs] = useState('12:34 IST');
+  useEffect(() => {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    setTs(`${hh}:${mm} IST`);
+  }, []);
+
   return (
     <header
       data-testid="navbar"
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-[background-color,backdrop-filter,border-color] duration-300 ${
         scrolled
-          ? 'bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--color-border)]'
-          : 'bg-transparent'
+          ? 'bg-[var(--bg-primary)]/85 backdrop-blur-xl border-b border-[var(--color-border)]'
+          : 'bg-[var(--bg-primary)]/40 backdrop-blur-md border-b border-transparent'
       }`}
     >
+      {/* Top status bar — mono, market widgets */}
+      <div className="lv-statusbar hidden md:block" data-testid="nav-status-bar">
+        <div className="max-w-7xl mx-auto px-6 h-6 flex items-center justify-between gap-6 overflow-hidden">
+          <div className="flex items-center gap-5 min-w-0">
+            <span className="text-[var(--color-text-faint)]">
+              <span className="lv-live-dot inline-block mr-2 align-middle" aria-hidden="true" />
+              LIVE · MARKETS
+            </span>
+            {STATUS_ITEMS.map((it) => (
+              <span key={it.label} className="whitespace-nowrap" data-testid={`nav-ticker-${it.label.replace(/[^A-Z0-9]/gi, '').toLowerCase()}`}>
+                <span className="text-[var(--color-text-muted)]">{it.label}</span>
+                <span className="mx-1.5 text-[var(--color-text)]">{it.value}</span>
+                <span className={it.dir}>{it.chg}</span>
+              </span>
+            ))}
+          </div>
+          <span className="text-[var(--color-text-faint)] whitespace-nowrap">
+            LAST UPD · {ts}
+          </span>
+        </div>
+      </div>
+
+      {/* Main nav row */}
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2"
@@ -56,24 +101,16 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
           <span className="font-clash text-xl font-semibold logo-gradient">Valuevade</span>
         </button>
 
-        {/* Center links - desktop */}
-        <div className="hidden md:flex items-center gap-4 lg:gap-8 md:ml-8 lg:ml-12">
-          <Link
-            to="/courses"
-            className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
-            data-testid="nav-link-courses"
-          >
+        <div className="hidden md:flex items-center gap-6 lg:gap-8 md:ml-8 lg:ml-14">
+          <Link to="/courses" className="lv-nav-link" data-testid="nav-link-courses">
             Courses
           </Link>
-          <Link
-            to="/free-mock-interview"
-            className="text-sm font-semibold text-[var(--color-accent-purple)] hover:brightness-125 transition-colors font-bricolage whitespace-nowrap inline-flex items-center gap-1.5"
-            data-testid="nav-link-free-mock"
-          >
+          <Link to="/free-mock-interview" className="lv-nav-link inline-flex items-center gap-1.5"
+            style={{ color: 'var(--color-accent-purple)' }} data-testid="nav-link-free-mock">
             Free Mock
             <span
-              className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-pink)]"
-              style={{ boxShadow: '0 0 8px rgba(255,106,193,0.85)' }}
+              className="inline-block w-1 h-1 rounded-full bg-[var(--color-accent-pink)]"
+              style={{ boxShadow: '0 0 6px rgba(255,106,193,0.85)' }}
               aria-hidden="true"
             />
           </Link>
@@ -81,7 +118,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
             <button
               key={link.label}
               onClick={() => scrollTo(link.id)}
-              className="text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
+              className="lv-nav-link"
               data-testid={`nav-link-${link.id}`}
             >
               {link.label}
@@ -89,16 +126,14 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
           ))}
         </div>
 
-        {/* Right side - desktop */}
         <div className="hidden md:flex items-center gap-3">
-          {/* Theme toggle */}
           <button
             onClick={onToggleTheme}
-            className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all"
+            className="w-9 h-9 rounded flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors"
             data-testid="theme-toggle"
             aria-label="Toggle theme"
           >
-            {activeTheme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            {activeTheme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
 
           {loading ? (
@@ -107,55 +142,53 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
             <>
               <Link
                 to="/dashboard"
-                className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage"
+                className="lv-nav-link"
                 data-testid="nav-dashboard-link"
               >
                 Dashboard
               </Link>
               {profile && (
-                <span className="text-sm text-[var(--color-text-muted)] font-bricolage px-2" data-testid="nav-user-name">
+                <span className="text-xs text-[var(--color-text-muted)] font-jetbrains uppercase tracking-wider px-2" data-testid="nav-user-name">
                   {profile.full_name}
                 </span>
               )}
               <button
                 onClick={signOut}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all font-bricolage"
+                className="flex items-center gap-1.5 px-2.5 py-1.5 rounded text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors"
                 data-testid="nav-signout-button"
+                aria-label="Sign out"
               >
                 <LogOut size={14} />
               </button>
             </>
           ) : (
             <>
-              <Link
-                to="/login"
-                className="px-3 lg:px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage whitespace-nowrap"
-                data-testid="nav-login-link"
-              >
+              <Link to="/login" className="lv-nav-link" data-testid="nav-login-link">
                 Log In
               </Link>
               <Link
                 to="/login"
-                className="px-4 lg:px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage whitespace-nowrap"
+                className="lv-cta"
+                style={{ padding: '9px 16px', fontSize: '11px' }}
                 data-testid="nav-signup-link"
               >
-                Sign Up
+                Sign Up <ArrowRight size={12} strokeWidth={2.5} />
               </Link>
             </>
           )}
         </div>
 
-        {/* Hamburger - mobile */}
         <button
           onClick={() => setMenuOpen(!menuOpen)}
           className="md:hidden text-[var(--color-text)]"
           data-testid="nav-hamburger"
+          aria-label="Open menu"
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </nav>
 
-      {/* Mobile overlay menu */}
+      {/* Mobile overlay menu — kept exactly as before per brief scope */}
       {menuOpen && (
         <div
           className="md:hidden fixed left-0 right-0 bottom-0 z-40 flex flex-col items-center justify-center gap-8 overflow-y-auto py-10"
@@ -199,7 +232,6 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
             </button>
           ))}
 
-          {/* Mobile theme toggle */}
           <button
             onClick={onToggleTheme}
             className="flex items-center gap-2 text-lg text-[var(--color-text-muted)] font-bricolage"

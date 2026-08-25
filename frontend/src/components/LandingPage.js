@@ -88,16 +88,20 @@ export default function LandingPage() {
         onToggleLandingTheme={toggleLandingTheme}
       />
 
-      {/* Cinematic Three.js background — mounted in BOTH modes; palette
-          (particles / grid / fog / blending) flips with the theme. */}
-      <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
-        <Suspense fallback={null}>
-          <LandingHero3D
-            theme={landingTheme}
-            mobile={typeof window !== 'undefined' && window.innerWidth < 768}
-          />
-        </Suspense>
-      </div>
+      {/* Cinematic Three.js background — retired from the above-the-fold
+          in Feb 2026 editorial redesign. HeroSection now ships its own
+          restrained chart/grid backdrop. Kept lazy import in case we
+          bring it back for a section further down the page. */}
+      {false && (
+        <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
+          <Suspense fallback={null}>
+            <LandingHero3D
+              theme={landingTheme}
+              mobile={typeof window !== 'undefined' && window.innerWidth < 768}
+            />
+          </Suspense>
+        </div>
+      )}
 
       <main className="relative z-10">
         <HeroSection />

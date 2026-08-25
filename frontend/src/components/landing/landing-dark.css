@@ -158,3 +158,192 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 @media (prefers-reduced-motion: reduce) {
   .landing-dark .hero-cta-primary { animation: none; }
 }
+
+
+/* ============================================================
+ * Bloomberg-terminal / editorial finance visual language
+ * Applies to nav, hero and ProblemSection (above-the-fold).
+ * ============================================================ */
+
+/* Terminal dot-matrix background — subtle, ~6% opacity, threads sections */
+.lv-terminal-grid {
+  background-image:
+    radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px),
+    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
+  background-size: 32px 32px, 8px 8px;
+  background-position: 0 0, 0 0;
+}
+.landing-light .lv-terminal-grid {
+  background-image:
+    radial-gradient(rgba(0,0,0,0.12) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+}
+
+/* CRT scanline overlay — ultra subtle, applied above content but pointer-events:none */
+.lv-crt-scan {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.02) 0px,
+    rgba(255,255,255,0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: overlay;
+}
+
+/* Sharp editorial card frame — replaces "glass-card" pillowy look */
+.lv-panel {
+  background: color-mix(in oklab, var(--color-surface) 92%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  position: relative;
+}
+.lv-panel::before {
+  /* corner tick marks — Bloomberg terminal signature */
+  content: '';
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) top left / 100% 1px no-repeat,
+    linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) bottom right / 100% 1px no-repeat,
+    linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) top left / 1px 100% no-repeat,
+    linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) bottom right / 1px 100% no-repeat;
+  opacity: 0.55;
+}
+
+/* LIVE indicator dot — restrained pulse */
+.lv-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--color-accent-pink);
+  box-shadow: 0 0 6px rgba(255,106,193,0.6);
+  animation: lv-live-pulse 1.6s ease-in-out infinite;
+}
+@keyframes lv-live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+
+/* Ticker marquee — slow, restrained horizontal drift */
+.lv-ticker-track {
+  display: inline-flex;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  animation: lv-ticker-scroll 60s linear infinite;
+  will-change: transform;
+}
+@keyframes lv-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.lv-ticker-wrap:hover .lv-ticker-track { animation-play-state: paused; }
+
+/* Sparkline gentle drift — path dash animation */
+.lv-sparkline-path {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: lv-spark-draw 3.2s ease-out 0.4s forwards, lv-spark-drift 6s ease-in-out 3.6s infinite;
+}
+@keyframes lv-spark-draw {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes lv-spark-drift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+/* Section chapter label — mono uppercase, faint */
+.lv-chapter {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+
+/* Sharp editorial CTA button */
+.lv-cta {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 14px 22px;
+  border-radius: 2px;
+  border: 1px solid color-mix(in oklab, var(--color-primary) 92%, black);
+  background: color-mix(in oklab, var(--color-primary) 88%, black);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
+  box-shadow: 0 0 0 0 rgba(36,107,253,0);
+}
+.lv-cta:hover {
+  background: var(--color-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -12px color-mix(in oklab, var(--color-primary) 60%, transparent);
+}
+.lv-cta-ghost {
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+}
+.lv-cta-ghost:hover {
+  border-color: var(--color-text-muted);
+  background: color-mix(in oklab, var(--color-surface) 60%, transparent);
+}
+
+/* Text link with underline reveal — Bloomberg nav pattern */
+.lv-nav-link {
+  position: relative;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  transition: color 200ms ease;
+}
+.lv-nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -6px;
+  height: 1px;
+  background: var(--color-primary);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 240ms ease;
+}
+.lv-nav-link:hover { color: var(--color-text); }
+.lv-nav-link:hover::after { transform: scaleX(1); }
+
+/* Status bar row — top of navbar */
+.lv-statusbar {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+  border-bottom: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--bg-primary) 85%, black);
+}
+.landing-light .lv-statusbar {
+  background: color-mix(in oklab, var(--bg-primary) 92%, black);
+}
+.lv-statusbar .up { color: #22c55e; }
+.lv-statusbar .down { color: #ef4444; }
+
+/* Numeric roadmap progress readout */
+.lv-progress-readout {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lv-ticker-track, .lv-live-dot, .lv-sparkline-path { animation: none !important; }
+}

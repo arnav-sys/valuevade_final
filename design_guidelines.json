@@ -1,0 +1,68 @@
+{
+  "theme": "dark",
+  "typography": {
+    "headings": "Clash Display (magazine-editorial scale, clamped sizes, tight line-height)",
+    "body": "Bricolage Grotesque (clean, readable)",
+    "accents": "Fraunces (italic serif, used for words like 'Financial')",
+    "mono": "JetBrains Mono (terminal data, labels, tickers, small caps)"
+  },
+  "colors": {
+    "strategy": "Retain existing CSS variables. Use for sharp, high-contrast, editorial aesthetics.",
+    "background": "var(--bg-primary)",
+    "text": "var(--color-text)",
+    "text_muted": "var(--color-text-muted)",
+    "text_faint": "var(--color-text-faint)",
+    "surface": "var(--color-surface)",
+    "surface_hover": "var(--color-surface-hover)",
+    "border": "var(--color-border)",
+    "primary": "var(--color-primary)",
+    "accent_purple": "var(--color-accent-purple)",
+    "accent_pink": "var(--color-accent-pink)"
+  },
+  "visual enhancers": {
+    "overlays": "Apply a subtle CRT/terminal grain overlay at ~4% opacity across the above-the-fold zone.",
+    "grids": "Introduce a 1px dot-matrix/graph-paper grid background at ~6% opacity to thread sections together.",
+    "borders": "Use sharp 1px borders for cards and sections. Avoid rounded pillowy glows.",
+    "backgrounds": "Remove 3D glowing blobs and orbital ellipses. Add faint, static SVG finance charts (candlestick/line)."
+  },
+  "component name": [
+    "/app/frontend/src/components/Navbar.js",
+    "/app/frontend/src/components/HeroSection.js",
+    "/app/frontend/src/components/ProblemSection.js",
+    "/app/frontend/src/components/landing/landing-dark.css"
+  ],
+  "grids": "12-column editorial grid for main layouts (e.g., Hero: 7 cols left, 4 cols right, 1 col gutter). 3-column grids for cards.",
+  "layouts": {
+    "Navbar": "Add top thin status bar (Bloomberg-style): 'NSE +0.42% · BSE +0.38% · USD/INR 83.21 · Last updated 12:34 IST' with mono type, ~24px tall. Nav links: JetBrains Mono uppercase small caps. Add underline-on-hover effect. Free Mock: Keep pink pulse dot restrained to 4px. Sign up: Sharper corners, mono label. Header background: Must be semi-solid or glassmorphic, NO fully transparent background.",
+    "HeroSection": "12-column grid. Left side (7 cols): Text content. H1 clamped size (magazine scale), 'Financial' in italic serif with colored underline. Primary CTA: Sharp pill/squared button, mono cap label. Secondary: Text link with leading arrow. Trust strip: Mono uppercase with pipe dividers. Right side (4 cols): Roadmap panel redesigned as Bloomberg terminal panel. Mono uppercase header ('ROADMAP // STUDENT PATH'), 1px sharp corners, 'LIVE' dot, numeric mono readout progress bar. Bottom: Slow horizontal marquee ticker with static dummy data.",
+    "ProblemSection": "Add a stripe of mono caption above the title ('PROBLEM // MARKET GAP'). Add a mono chapter label ('§01 // PROGRAM'). Cards: 3-column editorial grid. Sharp corners, thin 1px borders. Add numeric prefix ('01 / NO CLEAR ROADMAP') in mono. Frame lucide-react icons in a bordered square with a mono label ('01 · ROADMAP'). No colored gradient washes."
+  },
+  "motion": {
+    "restraint": "Strict restraint. No parallax, no blinking cursor, no blob animations.",
+    "allowed": "Sparkline gentle drift, ticker slow horizontal marquee, staggered fade-in of copy on mount."
+  },
+  "accessibility": {
+    "contrast": "Maintain high contrast ratios (APCA/WCAG). Use Text Shadow where needed if text is over terminal grids.",
+    "data_testid": "Preserve all existing data-testid attributes perfectly. All interactive elements MUST have a data-testid."
+  },
+  "media": "Static dummy data and SVG charts only.",
+  "3d libraries": "Keep LandingHero3D/ProblemAssemblyScene but dial back opacity significantly. Ensure it doesn't compete with text.",
+  "image urls": {},
+  "instructions_to_main_agent": [
+    "DO NOT change any text copy. Use exact strings provided in the existing files.",
+    "DO NOT introduce new fonts or color tokens. Use existing CSS variables.",
+    "DO NOT break existing routing or Links.",
+    "DO NOT touch the mobile menu overlay layout.",
+    "Apply the redesign focusing on 1440x900 and 1920x1080 laptop layouts.",
+    "Ensure all interactive elements have data-testid attributes.",
+    "Output in .js files, NOT .tsx files."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "Avoid generic centered layouts. Use grid-based left-aligned typography.",
+    "Use generous spacing (p-8, p-12) within constrained grid columns.",
+    "Never apply universal transition (transition: all). Use specific transition properties.",
+    "Do not use complete transparent background in headers, overlays, or surfaces containing content.",
+    "Always use specific, sharp button styles rather than generic soft rounded blobs.",
+    "All interactive and key informational elements MUST include a data-testid attribute."
+  ]
+}

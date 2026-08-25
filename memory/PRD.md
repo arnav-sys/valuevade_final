@@ -19,6 +19,21 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Editorial finance / Bloomberg-terminal redesign (above-the-fold)
+
+User feedback: "misaligned and ugly on laptop screen … website looks vibe coded … change landing page design to more visual cinematic". Confirmed scope: hero + all above-the-fold (Navbar, HeroSection, ProblemSection). Direction: Bloomberg-terminal / editorial finance. Content unchanged; only visuals.
+
+Design blueprint (from `design_agent_full_stack` → `/app/design_guidelines.json`) implemented:
+
+- **Global utility CSS** appended to `landing-dark.css`: `.lv-terminal-grid` (2-layer dot-matrix backdrop), `.lv-crt-scan` (scanline overlay), `.lv-panel` (sharp 1px card with Bloomberg-style corner tick marks), `.lv-live-dot` (pink 6px pulse), `.lv-ticker-track` (60s marquee, pauses on hover), `.lv-sparkline-path` (path-draw + drift animation), `.lv-chapter` (mono uppercase section rail), `.lv-cta` (2px-radius mono uppercase CTA), `.lv-nav-link` (mono uppercase link with 1px underline reveal), `.lv-statusbar` (top status row), `.lv-progress-readout`. Strict `prefers-reduced-motion` guards.
+- **Navbar** (`Navbar.js`) rewritten: added a top Bloomberg-style status bar with live-dot + NIFTY / SENSEX / USD-INR / GOLD tickers + timestamp. Nav links converted to mono-uppercase (`.lv-nav-link`). Sign-up CTA converted to sharp 2px-radius `.lv-cta` pill with mono label. Mobile overlay kept identical (out of scope).
+- **HeroSection** (`HeroSection.js`) rewritten: replaced page-eating 96px H1 + floating blobs / orbitals / twinkling stars / blinking cursor with a **12-col editorial grid** (7-col headline / 5-col terminal panel). H1 clamped to `clamp(38px, 5.4vw, 76px)`. Serif italic accent "Financial" retained but with a coloured 2px underline for editorial signature. Motion restrained to word fade-in. Backdrop: dot-matrix grid + CRT scanline + a single low-opacity SVG chart line with animated dash-draw. Right side: **Bloomberg terminal-style Roadmap panel** with `LIVE` dot, `ROADMAP // STUDENT PATH` header, mono `FROM / BUILD / TARGET` sections, mid-panel sparkline, numeric `PROGRESS · 68% · 143/210` readout. CTAs: sharp mono `START FREE SESSION →` primary and text-arrow secondary. Trust strip converted to mono uppercase with pipe dividers. Bottom-of-hero: 10-symbol equity ticker marquee.
+- **ProblemSection** (`ProblemSection.js`) rewritten: matching `§02 // WHY VALUEVADE` chapter rail. H2 kept verbatim ("Your college prepared you for exams. Not for a finance career.") with "Not" now serif-italic in primary colour. 3 cards converted from pillowy `glass-card` (2xl radius) to sharp `.lv-panel` (2px radius, corner ticks, 1px borders) with `01 · ROADMAP` / `02 · MARKET` / `03 · AI` mono prefixes, framed square icons (no gradient wash), and a hairline data footer per card ("GAP · 01" / "CLOSED BY VALUEVADE"). Retained the sticky-scroll Three.js assembly scene but dialled back to 50% opacity so it doesn't compete with copy.
+- **LandingPage.js**: the always-on `<LandingHero3D />` (constellation particles that were colliding with the italic "Financial" word) is now gated off (`{false && (...)`). Editorial hero ships its own restrained backdrop.
+
+All data-testids preserved. All copy verbatim. All Link targets unchanged. Verified at 1440×900, 1920×900, and 390×900 mobile via screenshot tool — all three viewports render cleanly, italic accent aligns, roadmap panel sits within grid, ticker scrolls, dot-matrix grid subtle enough not to compete.
+
+
 ## Feb 2026 — Competitor table filled + landing cleanup + module casing fix
 
 Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog items:
