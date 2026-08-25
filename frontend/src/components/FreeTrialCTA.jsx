@@ -60,6 +60,14 @@ export default function FreeTrialCTA() {
       });
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j?.detail || 'Could not start trial.');
+      // Device-blocked branch — backend captured to waitlist. Show a
+      // friendly info toast rather than routing into the interview.
+      if (j?.waitlisted || j?.device_blocked) {
+        toast.success(j.message || "You're on the waitlist — we'll be in touch.");
+        localStorage.setItem('vv_free_trial_used', '1');
+        setEmail('');
+        return;
+      }
       localStorage.setItem('vv_free_trial_used', '1');
       localStorage.setItem('vv_free_trial_id', j.trial_id);
       localStorage.setItem('vv_free_trial_email', clean);

@@ -68,15 +68,33 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
             return None, msg
 
     def _add_to_waitlist(email: str, ref: str) -> dict | None:
-        """Fallback: add the email to the existing waitlist table. Idempotent."""
+        """Fallback: add the email to the existing waitlist table. Idempotent.
+        `ref` is threaded into `first_name` (via a `[TAG] user` prefix) so
+        admins can spot device-blocked or table-missing leads in the same
+        waitlist view without a schema change.
+        """
         try:
             existing = _sb_get(
                 f"waitlist?email=eq.{_urlparse.quote(email)}&select=id&limit=1"
             ) or []
             if existing:
                 return {"id": existing[0]["id"], "email": email, "reused": True}
-            row = {"email": email, "first_name": email.split("@")[0][:60],
-                   "referral_code": f"trial-{email.split('@')[0][:20]}"}
+            local = email.split("@")[0][:40]
+            if ref and ref.startswith("free-trial-device-blocked"):
+                first_name = f"[DEVICE-BLOCKED] {local}"[:60]
+            elif ref and ref.startswith("free-trial-fallback"):
+                first_name = f"[TABLE-MISSING] {local}"[:60]
+            else:
+                first_name = local[:60]
+            # `waitlist.position` is NOT NULL — compute next position.
+            try:
+                head = _sb_get("waitlist?select=position&order=position.desc&limit=1") or []
+                next_pos = int(((head or [{}])[0] or {}).get("position") or 0) + 1
+            except Exception:
+                next_pos = 1
+            row = {"email": email, "first_name": first_name,
+                   "referral_code": f"trial-{local[:20]}",
+                   "position": next_pos}
             created = _sb_post("waitlist", row, prefer="return=representation")
             if isinstance(created, list):
                 created = created[0] if created else None
@@ -100,6 +118,11 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
         ua = (request.headers.get("user-agent") or "")[:400]
 
         # Uniqueness check (best-effort — soft-fails when the table is missing).
+        # If email matches → resume the existing trial.
+        # If ip_hash / fingerprint_hash matches but email is BRAND NEW
+        # → still capture the lead to `waitlist` (so admins can see it in
+        #   the dashboard) and return a friendly response with a
+        #   `waitlisted` flag rather than silently dropping the email.
         table_missing = False
         for field, val in (("email", email), ("ip_hash", ip_hash), ("fingerprint_hash", fp_hash)):
             if not val:
@@ -122,10 +145,15 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
                         "attempt_id": existing.get("attempt_id"),
                         "status": existing.get("status"),
                     }
-                raise HTTPException(
-                    status_code=409,
-                    detail="Free trial already used on this device. Sign up for full access.",
-                )
+                # Device/fingerprint dedup hit with a NEW email —
+                # capture to waitlist before rejecting so no lead is dropped.
+                wl = _add_to_waitlist(email, f"free-trial-device-blocked:{ref}")
+                return {
+                    "ok": False, "waitlisted": True, "device_blocked": True,
+                    "trial_id": (wl or {}).get("id") or email,
+                    "status": "device_blocked",
+                    "message": "Free trial already used on this device. We've added your email — we'll ping you when you can try it on another device or sign up for full access.",
+                }
 
         row = {
             "email": email, "firm_slug": FREE_TRIAL_FIRM,
@@ -148,7 +176,7 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
 
         # Table missing → gracefully record on the existing waitlist and let
         # the visitor still go through the signup flow.
-        wl = _add_to_waitlist(email, ref)
+        wl = _add_to_waitlist(email, f"free-trial-fallback:{ref}")
         return {
             "ok": True, "resumed": bool(wl and wl.get("reused")),
             "trial_id": (wl or {}).get("id") or email,
