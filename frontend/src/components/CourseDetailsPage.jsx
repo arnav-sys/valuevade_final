@@ -855,23 +855,44 @@ export default function CourseDetailsPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
                 { n: 1, title: 'Initiating-Coverage Report',
-                  body: 'Company analysis, three-statement model, DCF and comps valuation, and a full recommendation write-up on a listed Indian company.' },
+                  body: 'Company analysis, three-statement model, DCF and comps valuation, and a full recommendation write-up on a listed Indian company.',
+                  img: '/capstones/c1-initiating-coverage.png',
+                  alt: 'Sample page from a Valuevade student initiating-coverage report on an Indian large-cap' },
                 { n: 2, title: 'Sector Coverage Note',
-                  body: 'Industry structure, comparables set, and a house coverage view — written to sell-side conventions.' },
+                  body: 'Industry structure, comparables set, and a house coverage view — written to sell-side conventions.',
+                  img: '/capstones/c2-sector-note.png',
+                  alt: 'Sample page from a Valuevade student sector coverage note showing a comparables table for Indian private-sector banks' },
                 { n: 3, title: 'AI Research Copilot',
-                  body: 'A working research tool you built end-to-end — the portfolio artefact that demonstrates you can deploy AI, not compete with it.' },
+                  body: 'A working research tool you built end-to-end — the portfolio artefact that demonstrates you can deploy AI, not compete with it.',
+                  img: '/capstones/c3-ai-copilot.png',
+                  alt: 'Sample screenshot of a Valuevade student-built AI equity research copilot web app' },
               ].map((c) => (
                 <div
                   key={c.n}
-                  className="glass-card rounded-2xl p-5"
+                  className="glass-card rounded-2xl p-5 overflow-hidden"
                   data-testid={`showcase-card-${c.n}`}
                 >
                   <div className="w-10 h-10 rounded-xl bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 flex items-center justify-center mb-4 text-xs font-mono text-[var(--color-accent-purple)]">
                     C{c.n}
                   </div>
                   <h3 className="font-clash text-sm font-bold text-[var(--color-text)] mb-2">{c.title}</h3>
-                  <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed">{c.body}</p>
-                  {/* TODO: embed real sample excerpt when available */}
+                  <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-4">{c.body}</p>
+                  {/* Sample preview — generated mockup, labelled as such. */}
+                  <div
+                    className="rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-hover)]"
+                    data-testid={`showcase-preview-${c.n}`}
+                  >
+                    <img
+                      src={c.img}
+                      alt={c.alt}
+                      loading="lazy"
+                      className="w-full h-auto block"
+                      style={{ aspectRatio: '4 / 3', objectFit: 'cover', objectPosition: 'top' }}
+                    />
+                  </div>
+                  <p className="mt-2 text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-text-faint)]">
+                    Sample preview — student capstone
+                  </p>
                 </div>
               ))}
             </div>
