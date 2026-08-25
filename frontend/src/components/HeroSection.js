@@ -14,7 +14,7 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react';
 const H1_LINES = [
   { weight: 500, words: ['The', 'Equity', 'Research', '&'] },
   { weight: 900, words: ['Financial', 'Modelling', 'Course'], serif: 'Financial' },
-  { weight: 500, words: ['Built', 'for', 'Indian'] },
+  { weight: 500, words: ['Built', 'for', 'Real'] },
   { weight: 900, words: ['Finance', 'Students'] },
 ];
 
