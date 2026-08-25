@@ -19,6 +19,24 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Editorial terminal language: light-mode audit
+
+Appended a `.landing-light` override block to `landing-dark.css` so the whole `lv-*` language reads cleanly on the cream-pink light palette:
+
+- **Terminal grid** softened (12%→8% dot opacity) so the dot-matrix doesn't feel gritty on cream.
+- **CRT scanline** hidden in light mode (dark-mode-only signature).
+- **`.lv-panel`** re-tuned: `rgba(255,255,255,0.78)` fill + `rgba(26,26,46,0.10)` border + subtle backdrop-blur so the terminal frame actually reads as a card on cream. Corner-tick bracket opacity bumped from 55% → 75%.
+- **`.lv-chapter` / `.lv-nav-link` / mono meta labels** shifted from a 40% white token (invisible on cream) to explicit `rgba(26,26,46,0.55/.68)` navy so section rails and nav links stay readable.
+- **`.lv-statusbar`** switched from color-mixed muddy-black to `rgba(255,255,255,0.82)` glass + navy text; up/down ticker colours darkened (`#22c55e→#16a34a`, `#ef4444→#dc2626`) for cream contrast.
+- **`.lv-cta`** forced to a punchy `#1e56d4` (with `#246BFD` hover) — the dark-mode `color-mix(--color-primary, black)` had produced a pale washed-out button against the light `--color-primary` (#246BFD).
+- **`.lv-live-dot`** switched from the dark-mode lavender-pink to `#E53E5C` deeper rose so it stays visible on cream.
+- **Emotional italic pink lines** (ProblemSection "Valuevade was built to close all three gaps at once" and AI-Proof "Don't just land the role. Make yourself impossible to replace.") were washing out against cream — overridden to `#d02891` darker rose.
+- **Hero ticker up/down** colours also darkened via testid-scoped selectors.
+- **`--color-text-faint` overrides** — the 40% cream faint token was near-invisible against the cream bg; bumped to `rgba(26,26,46,0.48)` for readability.
+
+Verified section-by-section (hero, problem, features, ai-proof, comparison, faq, final-cta, footer) at 1440×900 in light mode. Terminal look now works on both palettes without dark-mode assumptions leaking through.
+
+
 ## Feb 2026 — Terminal continuity: remaining sections converted
 
 Closed the loop — the whole landing now reads as one editorial finance product from hero to footer. Every section carries the `§NN // TAG` chapter rail, `lv-panel` sharp cards, mono uppercase labels, and one italic serif accent in the H2.

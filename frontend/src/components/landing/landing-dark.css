@@ -347,3 +347,101 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 @media (prefers-reduced-motion: reduce) {
   .lv-ticker-track, .lv-live-dot, .lv-sparkline-path { animation: none !important; }
 }
+
+/* ============================================================
+ * Light-mode tuning for the editorial terminal language.
+ * Reruns the exact tokens above but with tighter contrast for
+ * the cream-pink light palette so nothing washes out.
+ * ============================================================ */
+
+/* Dot-matrix grid — softer in light mode so it doesn't feel gritty */
+.landing-light .lv-terminal-grid {
+  background-image:
+    radial-gradient(rgba(20,20,40,0.08) 1px, transparent 1px),
+    radial-gradient(rgba(20,20,40,0.035) 1px, transparent 1px) !important;
+  background-size: 32px 32px, 8px 8px !important;
+}
+
+/* CRT scanline is a dark-mode-only signature — remove on cream */
+.landing-light .lv-crt-scan { display: none; }
+
+/* Panels — more opaque white so the terminal frame reads as a card */
+.landing-light .lv-panel {
+  background: rgba(255,255,255,0.78);
+  border: 1px solid rgba(26,26,46,0.10);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.landing-light .lv-panel::before {
+  opacity: 0.75;
+}
+
+/* Chapter rail — slightly darker on cream so it stays readable */
+.landing-light .lv-chapter {
+  color: rgba(26,26,46,0.55);
+}
+
+/* Nav links — dark navy on cream */
+.landing-light .lv-nav-link {
+  color: rgba(26,26,46,0.68);
+}
+.landing-light .lv-nav-link:hover { color: #1A1A2E; }
+.landing-light .lv-nav-link::after { background: #246BFD; }
+
+/* Status bar — white-tinted so it doesn't muddy the cream */
+.landing-light .lv-statusbar {
+  background: rgba(255,255,255,0.82) !important;
+  border-bottom: 1px solid rgba(26,26,46,0.08);
+  color: rgba(26,26,46,0.62);
+}
+.landing-light .lv-statusbar .up   { color: #16a34a; }
+.landing-light .lv-statusbar .down { color: #dc2626; }
+
+/* CTA — force a punchy dark-blue on cream (color-mix produced a
+ * washed-out light-blue when computed against the light --color-primary) */
+.landing-light .lv-cta {
+  background: #1e56d4;
+  border-color: #1e56d4;
+}
+.landing-light .lv-cta:hover {
+  background: #246BFD;
+  box-shadow: 0 10px 24px -12px rgba(36,107,253,0.35);
+}
+
+/* LIVE dot — deeper rose in light mode (the dark-mode lavender-pink
+ * disappears on cream) */
+.landing-light .lv-live-dot {
+  background: #E53E5C;
+  box-shadow: 0 0 6px rgba(229,62,92,0.45);
+}
+
+/* Progress readout labels & small mono spans — tighten default gray */
+.landing-light .lv-progress-readout {
+  color: rgba(26,26,46,0.62);
+}
+
+/* Emotional italic pink lines wash out on cream — bump to a darker rose */
+.landing-light [data-testid="problem-transition-line"],
+.landing-light [data-testid="ai-proof-emotional-line"] {
+  color: #d02891;
+}
+
+/* Hero ticker up/down colour tuning */
+.landing-light [data-testid="hero-ticker"] .text-\[\#22c55e\] { color: #16a34a !important; }
+.landing-light [data-testid="hero-ticker"] .text-\[\#ef4444\] { color: #dc2626 !important; }
+
+/* Feature card FT-NN prefix / footer meta text — tighten on cream */
+.landing-light [data-testid^="feature-card-"] .font-jetbrains,
+.landing-light [data-testid^="step-"] .font-jetbrains,
+.landing-light [data-testid="stats-bar"] .font-jetbrains,
+.landing-light [data-testid="hero-roadmap-card"] .font-jetbrains,
+.landing-light [data-testid="hero-trust-strip"],
+.landing-light [data-testid="hero-chapter"] {
+  color: rgba(26,26,46,0.62);
+}
+
+/* Ensure faint faint text stays readable on cream */
+.landing-light .text-\[var\(--color-text-faint\)\] {
+  color: rgba(26,26,46,0.48) !important;
+}
+
