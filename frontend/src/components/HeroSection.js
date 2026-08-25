@@ -103,72 +103,74 @@ export default function HeroSection() {
           <span className="lv-chapter">EQUITY RESEARCH · IND-AS · NISM XV</span>
         </motion.div>
 
-        {/* 12-col editorial grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 lg:items-center flex-1">
-          {/* LEFT — 7 cols headline stack */}
-          <div className="lg:col-span-7 text-center lg:text-left">
-            <h1
-              className="font-clash text-[var(--color-text)]"
-              style={{
-                fontSize: 'clamp(38px, 5.4vw, 76px)',
-                lineHeight: 1.02,
-                letterSpacing: '-0.028em',
-                marginBottom: '28px',
-              }}
-              data-testid="hero-h1"
+        {/* Full-width H1 — occupies the entire container so the headline
+            gets the visual weight it deserves (Feb 2026 tweak). */}
+        <h1
+          className="font-clash text-[var(--color-text)] text-center lg:text-left"
+          style={{
+            fontSize: 'clamp(38px, 6vw, 92px)',
+            lineHeight: 1.02,
+            letterSpacing: '-0.028em',
+            marginBottom: '40px',
+          }}
+          data-testid="hero-h1"
+        >
+          {H1_LINES.map((line, lineIdx) => (
+            <motion.span
+              key={lineIdx}
+              className="block"
+              style={{ fontWeight: line.weight }}
+              variants={lineVariants}
+              initial={reduceMotion ? 'visible' : 'hidden'}
+              animate="visible"
+              custom={lineIdx}
             >
-              {H1_LINES.map((line, lineIdx) => (
-                <motion.span
-                  key={lineIdx}
-                  className="block"
-                  style={{ fontWeight: line.weight }}
-                  variants={lineVariants}
-                  initial={reduceMotion ? 'visible' : 'hidden'}
-                  animate="visible"
-                  custom={lineIdx}
-                >
-                  {line.words.map((w, wi) => (
-                    <span key={wi}>
-                      <motion.span
-                        variants={wordVariants}
-                        className="inline-block mr-[0.22em]"
-                        style={
-                          line.serif && w === line.serif
-                            ? {
-                                fontFamily: '"Fraunces", Georgia, serif',
-                                fontStyle: 'italic',
-                                fontWeight: 500,
-                                color: 'var(--color-primary)',
-                                letterSpacing: '-0.01em',
-                                position: 'relative',
-                              }
-                            : {}
-                        }
-                      >
-                        {w}
-                        {line.serif && w === line.serif && (
-                          <span
-                            aria-hidden="true"
-                            style={{
-                              position: 'absolute',
-                              left: '2%',
-                              right: '10%',
-                              bottom: '0.02em',
-                              height: '2px',
-                              background: 'var(--color-primary)',
-                              opacity: 0.55,
-                            }}
-                          />
-                        )}
-                      </motion.span>
-                      {' '}
-                    </span>
-                  ))}
+              {line.words.map((w, wi) => (
+                <span key={wi}>
+                  <motion.span
+                    variants={wordVariants}
+                    className="inline-block mr-[0.22em]"
+                    style={
+                      line.serif && w === line.serif
+                        ? {
+                            fontFamily: '"Fraunces", Georgia, serif',
+                            fontStyle: 'italic',
+                            fontWeight: 500,
+                            color: 'var(--color-primary)',
+                            letterSpacing: '-0.01em',
+                            position: 'relative',
+                          }
+                        : {}
+                    }
+                  >
+                    {w}
+                    {line.serif && w === line.serif && (
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          position: 'absolute',
+                          left: '2%',
+                          right: '10%',
+                          bottom: '0.02em',
+                          height: '2px',
+                          background: 'var(--color-primary)',
+                          opacity: 0.55,
+                        }}
+                      />
+                    )}
+                  </motion.span>
                   {' '}
-                </motion.span>
+                </span>
               ))}
-            </h1>
+              {' '}
+            </motion.span>
+          ))}
+        </h1>
 
+        {/* Below-H1 12-col grid — left content stack + right-aligned terminal panel */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 lg:items-start flex-1">
+          {/* LEFT — 7 cols content stack (starts under H1 on lg) */}
+          <div className="lg:col-span-7 text-center lg:text-left">
             {/* Hairline + subhead */}
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
@@ -252,12 +254,12 @@ export default function HeroSection() {
             </motion.p>
           </div>
 
-          {/* RIGHT — 5 cols terminal roadmap panel */}
+          {/* RIGHT — 5 cols terminal roadmap panel, right-aligned within its column */}
           <motion.aside
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 lg:pl-4 xl:pl-8 mt-4 lg:mt-0"
+            className="lg:col-span-5 mt-4 lg:mt-0 lg:ml-auto w-full lg:max-w-[440px]"
           >
             <div className="lv-panel p-6" data-testid="hero-roadmap-card">
               {/* Panel header */}
