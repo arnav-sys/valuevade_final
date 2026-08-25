@@ -71,7 +71,7 @@ const features = [
   },
   {
     title: 'NISM + CFI certification prep, certificate included',
-    body: "Structured preparation for the NISM Series-VIII (Equity Research) exam and CFI certifications, mapped into the curriculum — plus Valuevade's own Certificate of Completion when you finish all three capstones.",
+    body: "Structured preparation for the NISM Series XV (Research Analyst) exam and CFI certifications, mapped into the curriculum — plus Valuevade's own Certificate of Completion when you finish all three capstones.",
     icon: Award,
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',

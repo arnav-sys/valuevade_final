@@ -20,7 +20,7 @@ import Footer from '@/components/Footer';
 import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import FaqAccordion from '@/components/faq/FaqAccordion';
 import FaqChatbot from '@/components/faq/FaqChatbot';
-import { courseJsonLd, orgJsonLd } from '@/components/landing/jsonLd';
+import { homeOrgJsonLd } from '@/components/landing/jsonLd';
 import LandingIntroSequence from '@/components/landing/LandingIntroSequence';
 import { ScrollProgressBar } from '@/components/cinematic/primitives';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -101,7 +101,7 @@ export default function LandingPage() {
     >
       <Helmet>
         <title>Equity Research & Financial Modelling Course — Valuevade</title>
-        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series-VIII prep, certificate — ₹1,500 lifetime." />
+        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series XV prep, certificate — ₹1,500 lifetime." />
         <link rel="canonical" href="https://valuevade.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/" />
@@ -113,8 +113,7 @@ export default function LandingPage() {
         <meta name="twitter:title" content="Equity Research & Financial Modelling Course — Valuevade" />
         <meta name="twitter:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹1,500 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
-        <script type="application/ld+json">{JSON.stringify(courseJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(orgJsonLd)}</script>
+        <script type="application/ld+json">{JSON.stringify(homeOrgJsonLd)}</script>
       </Helmet>
       <CustomCursor />
       <ScrollProgressBar />

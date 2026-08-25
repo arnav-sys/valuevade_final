@@ -12,14 +12,14 @@ export const FAQS = [
     id: 'course-what-is-valuevade',
     category: 'Course',
     question: 'What is Valuevade?',
-    answer: "Valuevade is an AI-personalised equity research and financial modelling course for Indian finance students and early-career switchers. The Equity Research Analyst Program includes 21 modules, 239 hands-on sessions and 3 capstone projects, with a personalised AI roadmap, a 24/7 AI tutor (Pari), AI mock interviews, NISM Series-VIII and CFI certification preparation, and a downloadable Certificate of Completion. It's fully self-paced online, built on Indian companies and Ind AS conventions, and costs ₹1,500 one-time for lifetime access.",
+    answer: "Valuevade is an AI-personalised equity research and financial modelling course for Indian finance students and early-career switchers. The Equity Research Analyst Program includes 21 modules, 239 hands-on sessions and 3 capstone projects, with a personalised AI roadmap, a 24/7 AI tutor (Pari), AI mock interviews, NISM Series XV and CFI certification preparation, and a downloadable Certificate of Completion. It's fully self-paced online, built on Indian companies and Ind AS conventions, and costs ₹1,500 one-time for lifetime access.",
     tags: ['what', 'about', 'platform', 'valuevade', 'introduction'],
   },
   {
     id: 'pricing-cost',
     category: 'Pricing',
     question: 'How much does the Valuevade course cost?',
-    answer: "The Equity Research Analyst Program costs ₹1,500 as a one-time payment for lifetime access. That includes all 21 modules, 239 sessions and simulations, the three capstone projects, Pari (the 24/7 AI tutor), AI mock interviews, NISM Series-VIII and CFI certification prep, and your Certificate of Completion. There is no subscription, no post-trial price change, and no extra charge for the certificate. You can try your first full session — notes, quiz, interview and simulation — free before paying, with no card required.",
+    answer: "The Equity Research Analyst Program costs ₹1,500 as a one-time payment for lifetime access. That includes all 21 modules, 239 sessions and simulations, the three capstone projects, Pari (the 24/7 AI tutor), AI mock interviews, NISM Series XV and CFI certification prep, and your Certificate of Completion. There is no subscription, no post-trial price change, and no extra charge for the certificate. You can try your first full session — notes, quiz, interview and simulation — free before paying, with no card required.",
     tags: ['price', 'cost', 'fee', 'pricing', 'rupees', 'inr', 'how much', 'subscription'],
   },
   {
@@ -40,7 +40,7 @@ export const FAQS = [
     id: 'cert-what',
     category: 'Certificate',
     question: 'What certificate do I get?',
-    answer: "You receive Valuevade's Certificate of Completion — a PDF issued in your full name with the completion date and a unique certificate ID, generated the moment you finish all three capstone projects. It's formatted for LinkedIn's Licenses & Certifications section. The curriculum also prepares you for the NISM Series-VIII (Equity Research) exam — a SEBI-established certification — and for CFI certifications; you sit those exams with the issuing bodies, and Valuevade's course maps to their content rather than issuing their certificates.",
+    answer: "You receive Valuevade's Certificate of Completion — a PDF issued in your full name with the completion date and a unique certificate ID, generated the moment you finish all three capstone projects. It's formatted for LinkedIn's Licenses & Certifications section. The curriculum also prepares you for the NISM Series XV (Research Analyst) exam — a SEBI-established certification — and for CFI certifications; you sit those exams with the issuing bodies, and Valuevade's course maps to their content rather than issuing their certificates.",
     tags: ['certificate', 'certification', 'nism', 'cfi', 'linkedin', 'proof'],
   },
   {

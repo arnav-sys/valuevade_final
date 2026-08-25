@@ -453,7 +453,7 @@ function CreateUserModal({ onClose, onCreated }) {
                 data-testid="cu-autoenroll"
                 className="mt-0.5 accent-[var(--color-primary)]"
               />
-              <span>Auto-enroll in <b>Equity Research Analyst</b> (all 22 modules)</span>
+              <span>Auto-enroll in <b>Equity Research Analyst</b> (all 21 modules)</span>
             </label>
             {err && (
               <div className="rounded-lg bg-red-500/10 border border-red-500/30 px-3 py-2 text-xs text-red-500" data-testid="cu-error">

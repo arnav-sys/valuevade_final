@@ -139,7 +139,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   pdf.setFont('helvetica', 'normal');
   pdf.setFontSize(10.5);
   pdf.setTextColor(60, 66, 78);
-  const line3 = 'including 22 modules, 246 sessions, 246 interactive simulations, and all 3 capstone projects.';
+  const line3 = 'including 21 modules, 239 sessions, 239 interactive simulations, and all 3 capstone projects.';
   pdf.text(line3, W / 2, 128, { align: 'center' });
   const line4 = 'They have demonstrated analyst-grade judgement in financial modelling, valuation, and equity research.';
   pdf.text(line4, W / 2, 135, { align: 'center' });
@@ -340,8 +340,8 @@ export default function CourseCompletePage() {
           className="text-center text-base sm:text-lg font-bricolage text-[var(--color-text-muted)] max-w-2xl mx-auto mb-10 leading-relaxed"
           style={{ animation: 'vvCourseFade 800ms ease-out 200ms both' }}
         >
-          You&apos;ve finished the full Valuevade programme — 22 modules, 246 sessions,
-          246 hands-on simulations, and 3 capstone projects. That&apos;s not a
+          You&apos;ve finished the full Valuevade programme — 21 modules, 239 sessions,
+          239 hands-on simulations, and 3 capstone projects. That&apos;s not a
           badge you claim; it&apos;s a workflow you own.
         </p>
 
@@ -352,8 +352,8 @@ export default function CourseCompletePage() {
         >
           {[
             { icon: Layers, label: 'Modules', value: '22' },
-            { icon: BookOpen, label: 'Sessions', value: '246' },
-            { icon: FileSpreadsheet, label: 'Simulations', value: '246' },
+            { icon: BookOpen, label: 'Sessions', value: '239' },
+            { icon: FileSpreadsheet, label: 'Simulations', value: '239' },
             { icon: Trophy, label: 'Capstones', value: `${state.doneCap}/${state.totalCap}` },
           ].map((s, i) => (
             <div key={i} className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)]/70 backdrop-blur-sm px-4 py-4 text-center">

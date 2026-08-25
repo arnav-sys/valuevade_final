@@ -30,24 +30,10 @@
     <link href="https://api.fontshare.com/v2/css?f[]=clash-display@200,300,400,500,600,700&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebSite",
-      "name": "Valuevade",
-      "url": "https://valuevade.com",
-      "description": "AI-powered career copilot for finance students"
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Valuevade",
-      "url": "https://valuevade.com",
-      "logo": "https://valuevade.com/valuevade-logo.png"
-    }
-    </script>
+    <!-- JSON-LD is injected per-route via react-helmet-async in each page
+         component. Do NOT re-add generic WebSite/Organization schemas here —
+         they conflict with the per-page EducationalOrganization / Course /
+         BreadcrumbList / FAQPage schemas emitted by Helmet. -->
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/valuevade-logo.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />

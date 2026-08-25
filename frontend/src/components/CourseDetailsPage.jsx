@@ -9,6 +9,11 @@ import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
 import WhoBuiltThisSection from './WhoBuiltThisSection';
 import {
+  buildCourseJsonLd,
+  buildCourseBreadcrumbJsonLd,
+  buildFaqPageJsonLd,
+} from './landing/jsonLd';
+import {
   LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
 } from './cinematic/primitives';
 
@@ -144,6 +149,38 @@ function DetailSkeleton() {
   );
 }
 
+// Course-details FAQ set — Prompt 3 task 12 verbatim. Kept at module scope
+// so it drives both the visible accordion AND the FAQPage JSON-LD schema
+// (Prompt 4: same source, never duplicate the strings).
+const COURSE_DETAILS_FAQS = [
+  { q: 'What are the prerequisites for the Equity Research Analyst Program?',
+    a: "None. The course starts from absolute foundations — what finance is, how the three statements work — before building toward modelling and valuation. Basic Excel familiarity helps but isn't assumed; the early sessions teach the spreadsheet skills the later simulations use. If you can commit about an hour a day, you have everything you need." },
+  { q: 'How long does the course take to complete?',
+    a: "Most students finish in about 2 months at 1 hour a day; the full program is roughly 60 hours of guided work, including 42 hours of video lectures. The Study Planner lets you set a target deadline or a daily-hours budget and auto-schedules all 239 sessions accordingly. Because access is lifetime, going slower costs nothing." },
+  { q: 'How long does it take to learn DCF valuation?',
+    a: "Inside the program, you build your first complete DCF — on Reliance — in the valuation modules, roughly five weeks in at an hour a day, after the accounting, analysis and modelling foundations that make the DCF's assumptions defensible. Getting comfortable defending WACC, growth and terminal-value choices in an interview usually takes a further few weeks of the valuation and mock-interview modules." },
+  { q: 'What does the syllabus cover?',
+    a: "Accounting and economics foundations, financial statement analysis, ratio and forensic analysis, three-statement financial modelling, valuation (DCF, comparable companies, SOTP), industry and competitive analysis, and AI skills for analysts — across 21 modules and 239 sessions — ending with three capstones: a full initiating-coverage report, a sector coverage note, and a working AI research copilot. The full module-by-module breakdown is on this page above." },
+  { q: 'What kind of simulations does the course have?',
+    a: "239 hands-on simulations — one per session — across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet, auto-graded), branch-based decision scenarios, and applied reading with quizzes." },
+  { q: 'Is the certificate recognised?',
+    a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certifications — the curriculum prepares you for the SEBI-established NISM Series XV exam and for CFI certifications — and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
+  { q: 'What happens if I pause for a few weeks?',
+    a: "Nothing is lost. Progress, streaks, XP, badges, doubt history and your study plan are all persisted, and access is lifetime — you pick up exactly where you left off. The Study Planner can reschedule your remaining sessions around a new deadline." },
+  { q: 'Will this course get me a finance job?',
+    a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series XV and CFI preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
+  { q: 'Is Valuevade worth it?',
+    a: "For ₹1,500 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV and CFI certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
+  { q: 'How is Valuevade different from WallStreet School?',
+    a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹1,500. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
+  { q: 'How is Valuevade different from Imarticus or Upgrad?',
+    a: "Imarticus and Upgrad offer longer university-style finance programs, often with placement-assistance structures and cohort schedules. Valuevade is a focused equity-research skill program: shorter (about 2 months at an hour a day), self-paced, simulation-first, and ₹1,500 lifetime. If you want a long credentialed program with placement services, they're built for that; if you want the specific analyst skill set and portfolio, fast and affordable, that's what Valuevade is for." },
+  { q: 'How is Valuevade different from Valuation School?',
+    a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software — auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹1,500 lifetime. Pick the format that matches how you actually study." },
+  { q: 'How do I become an equity research analyst in India?',
+    a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA — not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series XV is the SEBI-established research-analyst certification; CFA helps for buy-side), and — increasingly the differentiator — a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
+];
+
 export default function CourseDetailsPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -255,6 +292,19 @@ export default function CourseDetailsPage() {
         <meta name="twitter:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
         <meta name="twitter:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
+        {/* JSON-LD (Prompt 4): Course + BreadcrumbList + FAQPage.
+            NO aggregateRating, NO Review markup. FAQPage is generated from
+            the SAME COURSE_DETAILS_FAQS array that renders the visible
+            accordion below. */}
+        <script type="application/ld+json">
+          {JSON.stringify(buildCourseJsonLd(`https://valuevade.com/course/${courseId}`))}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(buildCourseBreadcrumbJsonLd(`https://valuevade.com/course/${courseId}`))}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify(buildFaqPageJsonLd(COURSE_DETAILS_FAQS))}
+        </script>
       </Helmet>
       {/* Scroll progress — thin violet bar at top of viewport, premium signal */}
       <ScrollProgressBar />
@@ -750,7 +800,7 @@ export default function CourseDetailsPage() {
                   icon: Award, tone: 'primary',
                 },
                 {
-                  title: 'NISM Series-VIII (Equity Research)',
+                  title: 'NISM Series XV (Research Analyst)',
                   body: 'The curriculum maps to the exam syllabus so you can sit the SEBI-established NISM exam with confidence. Valuevade prepares you for it; the NISM certificate itself is earned by passing NISM\'s exam.',
                   icon: GraduationCap, tone: 'accent-purple',
                 },
@@ -840,34 +890,7 @@ export default function CourseDetailsPage() {
               </p>
             </div>
             <Accordion type="single" collapsible className="space-y-2">
-              {[
-                { q: 'What are the prerequisites for the Equity Research Analyst Program?',
-                  a: "None. The course starts from absolute foundations — what finance is, how the three statements work — before building toward modelling and valuation. Basic Excel familiarity helps but isn't assumed; the early sessions teach the spreadsheet skills the later simulations use. If you can commit about an hour a day, you have everything you need." },
-                { q: 'How long does the course take to complete?',
-                  a: "Most students finish in about 2 months at 1 hour a day; the full program is roughly 60 hours of guided work, including 42 hours of video lectures. The Study Planner lets you set a target deadline or a daily-hours budget and auto-schedules all 239 sessions accordingly. Because access is lifetime, going slower costs nothing." },
-                { q: 'How long does it take to learn DCF valuation?',
-                  a: "Inside the program, you build your first complete DCF — on Reliance — in the valuation modules, roughly five weeks in at an hour a day, after the accounting, analysis and modelling foundations that make the DCF's assumptions defensible. Getting comfortable defending WACC, growth and terminal-value choices in an interview usually takes a further few weeks of the valuation and mock-interview modules." },
-                { q: 'What does the syllabus cover?',
-                  a: "Accounting and economics foundations, financial statement analysis, ratio and forensic analysis, three-statement financial modelling, valuation (DCF, comparable companies, SOTP), industry and competitive analysis, and AI skills for analysts — across 21 modules and 239 sessions — ending with three capstones: a full initiating-coverage report, a sector coverage note, and a working AI research copilot. The full module-by-module breakdown is on this page above." },
-                { q: 'What kind of simulations does the course have?',
-                  a: "239 hands-on simulations — one per session — across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet, auto-graded), branch-based decision scenarios, and applied reading with quizzes." },
-                { q: 'Is the certificate recognised?',
-                  a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certifications — the curriculum prepares you for the SEBI-established NISM Series-VIII exam and for CFI certifications — and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
-                { q: 'What happens if I pause for a few weeks?',
-                  a: "Nothing is lost. Progress, streaks, XP, badges, doubt history and your study plan are all persisted, and access is lifetime — you pick up exactly where you left off. The Study Planner can reschedule your remaining sessions around a new deadline." },
-                { q: 'Will this course get me a finance job?',
-                  a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series-VIII and CFI preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
-                { q: 'Is Valuevade worth it?',
-                  a: "For ₹1,500 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series-VIII and CFI certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
-                { q: 'How is Valuevade different from WallStreet School?',
-                  a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹1,500. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
-                { q: 'How is Valuevade different from Imarticus or Upgrad?',
-                  a: "Imarticus and Upgrad offer longer university-style finance programs, often with placement-assistance structures and cohort schedules. Valuevade is a focused equity-research skill program: shorter (about 2 months at an hour a day), self-paced, simulation-first, and ₹1,500 lifetime. If you want a long credentialed program with placement services, they're built for that; if you want the specific analyst skill set and portfolio, fast and affordable, that's what Valuevade is for." },
-                { q: 'How is Valuevade different from Valuation School?',
-                  a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software — auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹1,500 lifetime. Pick the format that matches how you actually study." },
-                { q: 'How do I become an equity research analyst in India?',
-                  a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA — not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series-VIII is the SEBI-established equity-research certification; CFA helps for buy-side), and — increasingly the differentiator — a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
-              ].map((f, i) => (
+              {COURSE_DETAILS_FAQS.map((f, i) => (
                 <AccordionItem
                   key={i}
                   value={`course-faq-${i}`}
@@ -911,7 +934,7 @@ export default function CourseDetailsPage() {
                     ['Sessions & simulations', '239 hands-on sessions, one simulation per session'],
                     ['Capstone deliverables', '3 (initiating-coverage report, sector note, AI research copilot)'],
                     ['Mock interviews', 'AI, multi-round, scored feedback'],
-                    ['NISM Series-VIII prep', 'Included, mapped to syllabus'],
+                    ['NISM Series XV prep', 'Included, mapped to syllabus'],
                     ['24/7 AI tutor', 'Included (Pari, context-aware)'],
                     ['Price', '₹1,500 one-time'],
                     ['Access', 'Lifetime'],

@@ -84,7 +84,7 @@ export default function WhoBuiltThisSection() {
               <ShieldCheck size={20} className="text-[var(--color-accent-pink)]" />
             </div>
             <p className="text-sm lg:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-              The curriculum maps to the NISM Series-VIII (Equity Research) exam syllabus and CFI
+              The curriculum maps to the NISM Series XV (Research Analyst) exam syllabus and CFI
               certification content — so what you learn is checked against external standards, not
               just our own.
             </p>

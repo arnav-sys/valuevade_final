@@ -87,6 +87,10 @@ const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePag
 const FreeTrialPlayerPage = lazyWithRetry(() => import("@/components/FreeTrialPlayerPage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
 const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
+// Legal pages — public, DRAFT copy pending founder review (Prompt-4 rebuild).
+const PrivacyPolicyPage = lazyWithRetry(() => import("@/components/legal/PrivacyPolicyPage"));
+const TermsPage = lazyWithRetry(() => import("@/components/legal/TermsPage"));
+const RefundPolicyPage = lazyWithRetry(() => import("@/components/legal/RefundPolicyPage"));
 import SessionPaymentGate from "@/components/payments/SessionPaymentGate";
 import EnrollmentGate from "@/components/payments/EnrollmentGate";
 
@@ -182,6 +186,10 @@ function App() {
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
                   <Route path="/courses" element={<CoursesPage />} />
                   <Route path="/course/:courseId" element={<CourseDetailsPage />} />
+                  {/* Public legal pages */}
+                  <Route path="/privacy" element={<PrivacyPolicyPage />} />
+                  <Route path="/terms" element={<TermsPage />} />
+                  <Route path="/refund-policy" element={<RefundPolicyPage />} />
                   {/* Proper enrollment page — preview + confirm, no AI customization */}
                   <Route path="/enroll/:courseId" element={<ProtectedRoute><EnrollmentPage /></ProtectedRoute>} />
                   {/* AI customisation wizard (admin-toggleable via

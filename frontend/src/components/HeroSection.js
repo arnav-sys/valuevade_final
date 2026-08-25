@@ -181,7 +181,7 @@ export default function HeroSection({ onJoinWaitlist }) {
             Valuevade is an AI-personalised equity research and financial modelling course for Indian
             finance students and early-career switchers. The Equity Research Analyst Program covers 21
             modules and 239 hands-on sessions built on real Indian companies and Ind AS conventions,
-            prepares you for the NISM Series-VIII exam, and ends with three portfolio-grade capstone
+            prepares you for the NISM Series XV exam, and ends with three portfolio-grade capstone
             projects. Lifetime access is a one-time ₹1,500 — no subscription, and your first session is
             free.
           </motion.p>
@@ -228,7 +228,7 @@ export default function HeroSection({ onJoinWaitlist }) {
             className="text-[11px] font-jetbrains font-black uppercase tracking-[0.14em] text-[var(--color-text-faint)] mb-8 text-center lg:text-left"
             data-testid="hero-trust-strip"
           >
-            NISM Series-VIII + CFI certification prep included
+            NISM Series XV + CFI certification prep included
             <span className="opacity-50 mx-1">·</span> One-time ₹1,500
             <span className="opacity-50 mx-1">·</span> Lifetime access
           </motion.p>

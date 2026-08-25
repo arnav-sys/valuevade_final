@@ -4,13 +4,20 @@
  * no network.
  */
 import { useState, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ChevronDown, HelpCircle } from 'lucide-react';
 import { useFaqs, FAQ_CATEGORIES } from '../../data/useFaqs';
+import { buildFaqPageJsonLd } from '../landing/jsonLd';
 
 export default function FaqAccordion() {
   const { faqs, loading } = useFaqs();
   const [openId, setOpenId] = useState(null);
   const [activeCat, setActiveCat] = useState('All');
+
+  // FAQPage JSON-LD wired to the SAME `faqs` array that renders the visible
+  // accordion — one source of truth, so any admin edit changes the schema
+  // automatically (per Prompt 4 rule).
+  const faqSchema = useMemo(() => buildFaqPageJsonLd(faqs), [faqs]);
 
   const visible = useMemo(() => {
     if (activeCat === 'All') return faqs;
@@ -31,6 +38,11 @@ export default function FaqAccordion() {
       className="relative max-w-3xl mx-auto px-6 py-20 sm:py-28"
       data-testid="landing-faq-section"
     >
+      {faqs.length > 0 && (
+        <Helmet>
+          <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
+        </Helmet>
+      )}
       {/* Eyebrow */}
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)]">
