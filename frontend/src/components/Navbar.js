@@ -65,6 +65,18 @@ export default function Navbar({ onJoinWaitlist, landingTheme, onToggleLandingTh
           >
             Courses
           </Link>
+          <Link
+            to="/free-mock-interview"
+            className="text-sm font-semibold text-[var(--color-accent-purple)] hover:brightness-125 transition-colors font-bricolage whitespace-nowrap inline-flex items-center gap-1.5"
+            data-testid="nav-link-free-mock"
+          >
+            Free Mock
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent-pink)]"
+              style={{ boxShadow: '0 0 8px rgba(255,106,193,0.85)' }}
+              aria-hidden="true"
+            />
+          </Link>
           {navLinks.map((link) => (
             <button
               key={link.label}
@@ -162,6 +174,19 @@ export default function Navbar({ onJoinWaitlist, landingTheme, onToggleLandingTh
             data-testid="mobile-nav-courses"
           >
             Courses
+          </Link>
+          <Link
+            to="/free-mock-interview"
+            onClick={() => setMenuOpen(false)}
+            className="text-2xl font-semibold text-[var(--color-accent-purple)] font-clash inline-flex items-center gap-2"
+            data-testid="mobile-nav-free-mock"
+          >
+            Free Mock
+            <span
+              className="w-2 h-2 rounded-full bg-[var(--color-accent-pink)]"
+              style={{ boxShadow: '0 0 10px rgba(255,106,193,0.85)' }}
+              aria-hidden="true"
+            />
           </Link>
           {navLinks.map((link) => (
             <button

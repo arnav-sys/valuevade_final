@@ -1,4 +1,4 @@
-import { GraduationCap, Users, ShieldCheck } from 'lucide-react';
+import { GraduationCap, ShieldCheck } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 /**
@@ -47,8 +47,11 @@ export default function WhoBuiltThisSection() {
             <p className="text-sm lg:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
               The program&apos;s 42 hours of video lectures are designed and taught by Saarthak Bhatia,
               who built the full course content end-to-end. Every module is scripted and recorded
-              before release.
-              {/* TODO: add instructor credential clause */}
+              before release. Saarthak is a qualified Chartered Accountant (CA), US Certified
+              Management Accountant (CMA US) and ACCA (UK) — a triple-credential accounting and
+              finance stack — with close to five years of teaching experience across Grant Thornton
+              Bharat (Learning GT), FinTram Global, Zell Education and QuintEdge, and earlier at The
+              Narayana Group and Byju&apos;s Learning App.
             </p>
           </div>
 
@@ -56,28 +59,7 @@ export default function WhoBuiltThisSection() {
             className={`glass-card rounded-2xl p-6 lg:p-8 flex gap-4 ${
               isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
             }`}
-            style={{ animationDelay: '0.20s', borderColor: 'rgba(106, 92, 255, 0.18)' }}
-            data-testid="who-founder-card"
-          >
-            <div className="shrink-0 w-11 h-11 rounded-xl bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 flex items-center justify-center">
-              <Users size={20} className="text-[var(--color-accent-purple)]" />
-            </div>
-            <p className="text-sm lg:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-              Valuevade itself was built end-to-end by Arnav Aggarwal, a B.Com (Hons) student at Delhi
-              University — the curriculum architecture, the AI tutor and the platform. Before
-              Valuevade, he built a 30-page financial modelling and valuation study on TCS
-              (three-statement model, DCF, comparable companies, DuPont and Altman Z-score analysis)
-              and a full equity research report on Infosys. He built Valuevade to close the exact gap
-              he faced: no affordable, India-specific path from a B.Com classroom to analyst-grade
-              skills.
-            </p>
-          </div>
-
-          <div
-            className={`glass-card rounded-2xl p-6 lg:p-8 flex gap-4 ${
-              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
-            }`}
-            style={{ animationDelay: '0.26s', borderColor: 'rgba(255, 106, 193, 0.18)' }}
+            style={{ animationDelay: '0.20s', borderColor: 'rgba(255, 106, 193, 0.18)' }}
             data-testid="who-standards-card"
           >
             <div className="shrink-0 w-11 h-11 rounded-xl bg-[var(--color-accent-pink)]/10 border border-[var(--color-accent-pink)]/25 flex items-center justify-center">

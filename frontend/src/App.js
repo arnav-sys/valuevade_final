@@ -91,6 +91,7 @@ const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/E
 const PrivacyPolicyPage = lazyWithRetry(() => import("@/components/legal/PrivacyPolicyPage"));
 const TermsPage = lazyWithRetry(() => import("@/components/legal/TermsPage"));
 const RefundPolicyPage = lazyWithRetry(() => import("@/components/legal/RefundPolicyPage"));
+const FreeMockInterviewPage = lazyWithRetry(() => import("@/components/FreeMockInterviewPage"));
 import SessionPaymentGate from "@/components/payments/SessionPaymentGate";
 import EnrollmentGate from "@/components/payments/EnrollmentGate";
 
@@ -186,6 +187,7 @@ function App() {
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
                   <Route path="/courses" element={<CoursesPage />} />
                   <Route path="/course/:courseId" element={<CourseDetailsPage />} />
+                  <Route path="/free-mock-interview" element={<FreeMockInterviewPage />} />
                   {/* Public legal pages */}
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms" element={<TermsPage />} />

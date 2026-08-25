@@ -7,6 +7,7 @@
 - [Home](https://valuevade.com/): Overview of Valuevade, the Equity Research Analyst Program (21 modules · 239 sessions · 3 capstones), and how the AI tutor Pari, mock interviews and NISM/CFI prep fit together.
 - [Courses](https://valuevade.com/courses): Catalog of Valuevade's finance career paths, starting with the Equity Research Analyst Program.
 - [Equity Research Analyst Program](https://valuevade.com/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c): Full syllabus (module-by-module), learning outcomes, capstone deliverables, and enrolment details. ₹1,500 one-time lifetime access.
+- [Free Mock Interview](https://valuevade.com/free-mock-interview): 5-round AI-graded equity research mock interview (application → aptitude → HR → technical → live Excel case). No signup, no card, one free trial per person.
 
 ## Contact
 

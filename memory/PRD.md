@@ -19,6 +19,26 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Aug 25 2026 — Post-rebuild trims + dedicated Free Mock page
+
+Follow-up work after the 4-prompt SEO/GEO rebuild:
+
+- **Saarthak's credential clause filled in** (WhoBuiltThisSection.jsx + homepage "Who teaches the course?" FAQ answer in Supabase + static faqs.js). Clause reads: qualified CA + CMA US + ACCA (UK), close to 5 years teaching finance faculty roles at Grant Thornton Bharat / FinTram Global / Zell Education / QuintEdge and earlier at The Narayana Group and Byju's Learning App. Source: LinkedIn profile confirmed by founder. TODO comment removed.
+- **Arnav Aggarwal founder paragraph REMOVED** from WhoBuiltThisSection.jsx (2 blocks remaining: instructor credentials + NISM/CFI external standards). Founder mention also removed from the "Who teaches the course?" FAQ answer (both static and Supabase).
+- **New public page /free-mock-interview** — dedicated marketing landing for the 1-time free equity-research mock interview trial. New file `FreeMockInterviewPage.jsx` wraps the existing `FreeTrialCTA` section with:
+  * SEO-optimised H1 "Try a full analyst mock interview. Free." + verbatim 5-rounds paragraph + trust strip ("30-45 min · Voice + Excel · Instant AI scorecard")
+  * 5-round walkthrough grid (Application / Aptitude / HR / Technical / Case study)
+  * embedded FreeTrialCTA (email-capture, no new backend surface)
+  * "What you walk away with" 4-bullet outcomes list
+  * Fine-print eligibility strip
+  * Secondary CTA → paid course details page ("Liked the trial? See the full course · ₹1,500 lifetime")
+  * Full Navbar + Footer chrome (unlike the chromeless guest player)
+  * Per-route Helmet: title / description / self-canonical / OG / Twitter
+- **Navbar link added** — "Free Mock" with a small pink pulse dot for lead-gen prominence, on both desktop (data-testid `nav-link-free-mock`) and mobile menu (data-testid `mobile-nav-free-mock`). Placed second in the primary nav order (after Courses).
+- **Sitemap.xml + llms.txt updated** to include /free-mock-interview.
+- **Preview verified** — H1 renders, canonical `https://valuevade.com/free-mock-interview`, 5 rounds render, embedded FreeTrialCTA form present, navbar link works, Arnav absent from Who Built This section, NISM Series XV present.
+
+
 ## Feb/Aug 2026 — Full public-page SEO/GEO rebuild (Prompts 1-4)
 
 **Prompt 1** (technical foundation): Per-route Helmet titles/descriptions/self-canonicals across /, /courses, /course/:id. Fixed /courses→homepage canonical bug (removed the global canonical from public/index.html; each route now sets its own). `useCountUp` initializes to target value so prerender snapshot shows real numbers (was "0"). Removed public/index.html `<meta keywords>`. Footer year updated to 2026. Blinking H1 cursor "|" now gated on client-mount so prerender snapshot has clean headline. robots.txt allows OAI-SearchBot/ChatGPT-User/Claude-SearchBot/Claude-User/PerplexityBot/Perplexity-User/Googlebot/Bingbot and keeps GPTBot/ClaudeBot/Google-Extended/CCBot allowed. sitemap.xml lists /, /courses, /course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c with lastmod 2026-08-25. /llms.txt created. Data surface: 21 active modules · 239 sessions in DB. User chose reconciliation (a): ship "21 modules" everywhere.
