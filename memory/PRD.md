@@ -19,6 +19,22 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Terminal continuity: remaining sections converted
+
+Closed the loop — the whole landing now reads as one editorial finance product from hero to footer. Every section carries the `§NN // TAG` chapter rail, `lv-panel` sharp cards, mono uppercase labels, and one italic serif accent in the H2.
+
+- **WhatYoullLearnSection** (`WhatYoullLearnSection.jsx`): `§06 // CURRICULUM · 21 MODULES · 239 SESSIONS` chapter rail. H2 "What you'll learn — *from zero to analyst*". Layout switched from centered to editorial left-aligned. CTA converted to text-with-arrow-and-rule.
+- **WhoBuiltThisSection** (`WhoBuiltThisSection.jsx`): `§07 // TRUST · TRANSPARENCY · INSTRUCTOR · STANDARDS` chapter rail. H2 "Who built this — and *why* you can trust it". Two pillowy glass-cards converted to sharp `lv-panel` cards with `01 · INSTRUCTOR` / `02 · STANDARDS` mono prefixes, framed square icons, and hairline data footers (`CA · CMA US · ACCA (UK) — ~5 YRS · TEACHING` / `NISM SERIES XV · CFI — EXTERNALLY ANCHORED`).
+- **AIProofSection** (`AIProofSection.js`): `§08 // AI-PROOF` chapter rail. Retired the pill-shaped centred badge; kept the "THE SKILL NO ONE IS TEACHING" strapline as a mono chapter tag. H2 "Finance jobs are changing. *Your* skills should too." NeuralNetBg dialled back to 40% opacity. The two-column comparison card converted to `lv-panel` datagrid: `ROLES · REPLACED` (with `01/02/03` mono row prefixes and `STATUS · AUTOMATED` footer) vs `SKILLS · IRREPLACEABLE` (with mono prefixes and `STATUS · HIRING SIGNAL` footer).
+- **FreeTrialCTA** (`FreeTrialCTA.jsx`): `§ // TRIAL · FREE · ONE-TIME · NO SIGNUP` chapter rail. Retired the 3xl rounded gradient panel + glow shadow. H2 "Try a full analyst mock interview. *Free.*". Bullet strip converted to mono uppercase. Email input squared (2px), submit button converted to `.lv-cta`.
+- **TestimonialsSection** (`TestimonialsSection.js`): `§09 // PROOF · FROM STUDENTS IN THE GRIND` chapter rail. H2 "Built by a finance student. *For* finance students." Stats bar redesigned: `lv-panel` split into 4 monospace readouts — `MOD 21`, `SIM 239`, `VID 42h`, `PRS 100%` — each with a `LIVE` tag. Retired the misleading "500+ Students on Waitlist" figure (waitlist is dead).
+- **FaqAccordion** (`FaqAccordion.jsx`): `§10 // FAQ · LAST UPDATED · 25 AUG 2026` chapter rail. Retired the gradient bg-clip-text "answered" heading in favour of italic serif accent. Retired the "shadow-glow when open" halo. Categories converted to sharp mono terminal chips (2px radius). Accordion rows are now datagrid-style inside a single `lv-panel` with `Q01 … QN` mono row prefixes and a hairline divider between rows. Trailing "still stuck" line converted to mono uppercase status line.
+- **FinalCTASection** (`FinalCTASection.js`): `§11 // ENROL · ₹1,500 · LIFETIME · NO CARD REQUIRED` chapter rail. Retired the pink/violet gradient CTA + breathing halo + Three.js convergence bg. Content wrapped in an `lv-panel` with `ENROL · OPEN NOW` LIVE dot header. H2 "…It starts *today*." Sharp mono `.lv-cta` "START THE PROGRAM · ₹1,500 LIFETIME" primary. Added a data-bar footer with PRICE / ACCESS / MODULES / SESSIONS.
+- **Footer** (`Footer.js`): `§∞ // FOOTER · VALUEVADE · IND · EQUITY RESEARCH SW` chapter rail. Column grid with `EXPLORE` + `CHANNELS` mono labels. Nav links converted to `.lv-nav-link`. Social icons converted to 9×9 square-bordered buttons (2px radius). Copyright and legal links converted to mono uppercase. Added `ENROLMENT · OPEN` LIVE-dot status under the logo tagline.
+
+All content copy, links, and data-testids preserved verbatim (except the honest stats-bar refresh in TestimonialsSection). Verified end-to-end at 1440×900 via screenshot pass across every section (curriculum, trust, ai-proof, free-trial, testimonials, faq, final-cta, footer).
+
+
 ## Feb 2026 — Editorial terminal language extended (Features / HowItWorks / Comparison)
 
 Follow-up to the hero redesign. Rolled the same `lv-panel` / `lv-chapter` / mono uppercase / framed-icon language down through the mid-landing so the whole product reads as one editorial finance surface.

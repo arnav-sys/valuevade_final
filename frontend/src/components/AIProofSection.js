@@ -2,6 +2,9 @@ import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { X, Check } from 'lucide-react';
 import { NeuralNetBg } from '@/components/landing/CinematicSections';
 
+/* Editorial finance AIProofSection (Feb 2026).
+ * Copy verbatim. NeuralNetBg dialled back so it doesn't compete. */
+
 const replacing = ['Junior Analyst', 'Report Writer', 'Data Screener'];
 const irreplaceable = ['AI-Assisted Modelling', 'Python for Finance', 'Prompt Engineering', 'Strategic Judgement'];
 
@@ -12,64 +15,90 @@ export default function AIProofSection() {
   return (
     <section
       id="ai-proof"
-      className="relative py-24 lg:py-32 overflow-hidden bg-[var(--bg-primary)]"
+      className="relative py-24 lg:py-28 overflow-hidden bg-[var(--bg-primary)]"
       data-testid="ai-proof-section"
     >
-      {/* Bespoke neural-network bg — slowly rotating proximity graph,
-          edge opacity pulses to suggest computation. */}
-      <NeuralNetBg mobile={mobile} />
-      <div className="absolute top-0 left-0 w-full h-32 z-[1]" style={{ background: 'linear-gradient(135deg, rgba(36,107,253,0.08), rgba(106,92,255,0.08))' }} />
+      <div className="absolute inset-0 opacity-40" aria-hidden="true">
+        <NeuralNetBg mobile={mobile} />
+      </div>
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-30" aria-hidden="true" />
 
       <div ref={sectionRef} className="max-w-7xl mx-auto px-6 relative z-10">
-        <div className="text-center mb-6">
-          <span
-            className={`inline-block px-4 py-2 rounded-full border border-[var(--color-accent-pink)]/40 text-[var(--color-accent-pink)] text-sm font-jetbrains ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-            style={{ boxShadow: '0 0 16px rgba(255, 106, 193, 0.12)' }}
-            data-testid="ai-proof-badge"
-          >
-            THE SKILL NO ONE IS TEACHING
-          </span>
+        <div className="flex items-center gap-3 mb-10 lg:mb-12">
+          <span className="lv-chapter">§08 // AI-PROOF</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">THE SKILL NO ONE IS TEACHING</span>
         </div>
 
-        <h2
-          className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] text-center leading-tight mb-16 max-w-3xl mx-auto ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-          style={{ animationDelay: '0.1s' }}
-        >
-          Finance jobs are changing.<br />Your skills should too.
-        </h2>
+        <div className="max-w-3xl mb-12 lg:mb-16">
+          <p className={`lv-chapter mb-4 text-[var(--color-accent-pink)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`} data-testid="ai-proof-badge">
+            THE SKILL NO ONE IS TEACHING
+          </p>
+          <h2
+            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
+          >
+            Finance jobs are changing.{' '}
+            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+              Your
+            </span>{' '}
+            skills should too.
+          </h2>
+          <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
+        </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
           <div className={`${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`} style={{ animationDelay: '0.2s' }}>
-            <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-sm lg:text-base mb-6">
+            <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-[14.5px] lg:text-[15.5px] mb-6">
               AI is already replacing junior analysts, screeners, and report writers at major banks. But finance professionals who understand AI — who can use it, direct it, and build on top of it — are more valuable than ever.
             </p>
-            <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-sm lg:text-base">
+            <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-[14.5px] lg:text-[15.5px]">
               Every Valuevade roadmap includes the AI skills that make you irreplaceable: Python for finance, AI-assisted modelling, prompt engineering for analysts, and knowing exactly what AI can and cannot replace in your specific role.
             </p>
           </div>
 
-          <div className={`glass-card rounded-2xl overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`} style={{ animationDelay: '0.3s' }} data-testid="ai-proof-comparison-card">
+          <div
+            className={`lv-panel overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            style={{ animationDelay: '0.3s' }}
+            data-testid="ai-proof-comparison-card"
+          >
             <div className="grid grid-cols-2">
-              <div className="p-6 border-r border-[var(--color-border)]" style={{ background: 'rgba(220, 38, 38, 0.04)' }}>
-                <p className="text-red-400/80 text-xs font-jetbrains uppercase tracking-wider mb-4">Roles AI is replacing</p>
+              <div className="p-6 border-r border-[var(--color-border)]" style={{ background: 'rgba(220, 38, 38, 0.05)' }}>
+                <p className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-red-400/85 mb-4">
+                  ROLES · REPLACED
+                </p>
                 <div className="space-y-3">
-                  {replacing.map((role) => (
+                  {replacing.map((role, i) => (
                     <div key={role} className="flex items-center gap-2">
-                      <X size={14} className="text-red-400/60 flex-shrink-0" />
-                      <span className="text-[var(--color-text-faint)] text-sm line-through font-bricolage">{role}</span>
+                      <span className="font-jetbrains text-[10px] text-red-400/70">0{i + 1}</span>
+                      <X size={12} className="text-red-400/60 flex-shrink-0" strokeWidth={2.5} />
+                      <span className="text-[var(--color-text-faint)] text-[13px] line-through font-bricolage">{role}</span>
                     </div>
                   ))}
                 </div>
+                <div className="mt-5 pt-4 border-t border-[var(--color-border)]">
+                  <span className="font-jetbrains text-[9.5px] uppercase tracking-[0.2em] text-red-400/70">
+                    STATUS · AUTOMATED
+                  </span>
+                </div>
               </div>
-              <div className="p-6" style={{ background: 'rgba(34, 197, 94, 0.04)' }}>
-                <p className="text-emerald-400/80 text-xs font-jetbrains uppercase tracking-wider mb-4">Skills that make you irreplaceable</p>
+              <div className="p-6" style={{ background: 'rgba(34, 197, 94, 0.05)' }}>
+                <p className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-emerald-400/90 mb-4">
+                  SKILLS · IRREPLACEABLE
+                </p>
                 <div className="space-y-3">
-                  {irreplaceable.map((skill) => (
+                  {irreplaceable.map((skill, i) => (
                     <div key={skill} className="flex items-center gap-2">
-                      <Check size={14} className="text-emerald-400 flex-shrink-0" />
-                      <span className="text-[var(--color-text-secondary)] text-sm font-bricolage">{skill}</span>
+                      <span className="font-jetbrains text-[10px] text-emerald-400/80">0{i + 1}</span>
+                      <Check size={12} className="text-emerald-400 flex-shrink-0" strokeWidth={2.5} />
+                      <span className="text-[var(--color-text-secondary)] text-[13px] font-bricolage">{skill}</span>
                     </div>
                   ))}
+                </div>
+                <div className="mt-5 pt-4 border-t border-[var(--color-border)]">
+                  <span className="font-jetbrains text-[9.5px] uppercase tracking-[0.2em] text-emerald-400/80">
+                    STATUS · HIRING SIGNAL
+                  </span>
                 </div>
               </div>
             </div>
@@ -77,11 +106,11 @@ export default function AIProofSection() {
         </div>
 
         <p
-          className={`text-center mt-16 text-[var(--color-accent-pink)] italic font-bricolage text-lg lg:text-xl ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
-          style={{ animationDelay: '0.4s' }}
+          className={`mt-14 text-[var(--color-accent-pink)] font-bricolage text-lg lg:text-xl ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+          style={{ animationDelay: '0.4s', fontStyle: 'italic' }}
           data-testid="ai-proof-emotional-line"
         >
-          Don't just land the role. Make yourself impossible to replace.
+          Don&apos;t just land the role. Make yourself impossible to replace.
         </p>
       </div>
     </section>

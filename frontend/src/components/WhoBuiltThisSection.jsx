@@ -2,49 +2,64 @@ import { GraduationCap, ShieldCheck } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 /**
- * "Who built this — and why you can trust it" — a founder + instructor
- * transparency block introduced by Prompt-2 of the Aug-2026 SEO/GEO rebuild.
- *
- * IMPORTANT (from Prompt 2): the instructor credential clause is intentionally
- * omitted here — an HTML comment marks the exact spot to paste it once the
- * founder verifies Saarthak's credentials. Do not invent one.
+ * Who built this — editorial terminal treatment (Feb 2026).
+ * Copy verbatim.
  */
 export default function WhoBuiltThisSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
   return (
     <section
       id="who-built-this"
-      className="relative py-20 lg:py-28 bg-[var(--bg-primary)]"
+      className="relative py-20 lg:py-24 bg-[var(--bg-primary)]"
       data-testid="who-built-this-section"
     >
-      <div ref={sectionRef} className="max-w-4xl mx-auto px-6">
-        <div className="text-center mb-12">
-          <p className={`section-label ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-30" aria-hidden="true" />
+
+      <div ref={sectionRef} className="relative max-w-4xl mx-auto px-6">
+        <div className="flex items-center gap-3 mb-10 lg:mb-12">
+          <span className="lv-chapter">§07 // TRUST</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">TRANSPARENCY · INSTRUCTOR · STANDARDS</span>
+        </div>
+
+        <div className="mb-10 lg:mb-12">
+          <p className={`lv-chapter mb-4 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>
             TRANSPARENCY
           </p>
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] leading-tight ${
+            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] ${
               isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
             }`}
-            style={{ animationDelay: '0.08s' }}
+            style={{ animationDelay: '0.08s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
             data-testid="who-built-this-heading"
           >
-            Who built this — and why you can trust it
+            Who built this — and{' '}
+            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+              why
+            </span>{' '}
+            you can trust it
           </h2>
+          <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
         </div>
 
-        <div className="space-y-6">
-          <div
-            className={`glass-card rounded-2xl p-6 lg:p-8 flex gap-4 ${
-              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
-            }`}
-            style={{ animationDelay: '0.14s', borderColor: 'rgba(36, 107, 253, 0.18)' }}
+        <div className="space-y-4">
+          <article
+            className={`lv-panel p-6 lg:p-7 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            style={{ animationDelay: '0.14s' }}
             data-testid="who-instructor-card"
           >
-            <div className="shrink-0 w-11 h-11 rounded-xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/25 flex items-center justify-center">
-              <GraduationCap size={20} className="text-[var(--color-primary)]" />
+            <div className="flex items-center justify-between mb-5">
+              <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+                01 · INSTRUCTOR
+              </span>
+              <span
+                className="inline-flex items-center justify-center w-9 h-9 border border-[var(--color-border)]"
+                style={{ borderRadius: 2 }}
+              >
+                <GraduationCap size={16} className="text-[var(--color-primary)]" />
+              </span>
             </div>
-            <p className="text-sm lg:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
+            <p className="text-[13.5px] lg:text-[14.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed">
               The program&apos;s 42 hours of video lectures are designed and taught by Saarthak Bhatia,
               who built the full course content end-to-end. Every module is scripted and recorded
               before release. Saarthak is a qualified Chartered Accountant (CA), US Certified
@@ -53,24 +68,46 @@ export default function WhoBuiltThisSection() {
               Bharat (Learning GT), FinTram Global, Zell Education and QuintEdge, and earlier at The
               Narayana Group and Byju&apos;s Learning App.
             </p>
-          </div>
+            <div className="mt-5 pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
+              <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+                CA · CMA US · ACCA (UK)
+              </span>
+              <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-primary)]">
+                ~5 YRS · TEACHING
+              </span>
+            </div>
+          </article>
 
-          <div
-            className={`glass-card rounded-2xl p-6 lg:p-8 flex gap-4 ${
-              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
-            }`}
-            style={{ animationDelay: '0.20s', borderColor: 'rgba(255, 106, 193, 0.18)' }}
+          <article
+            className={`lv-panel p-6 lg:p-7 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            style={{ animationDelay: '0.2s' }}
             data-testid="who-standards-card"
           >
-            <div className="shrink-0 w-11 h-11 rounded-xl bg-[var(--color-accent-pink)]/10 border border-[var(--color-accent-pink)]/25 flex items-center justify-center">
-              <ShieldCheck size={20} className="text-[var(--color-accent-pink)]" />
+            <div className="flex items-center justify-between mb-5">
+              <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+                02 · STANDARDS
+              </span>
+              <span
+                className="inline-flex items-center justify-center w-9 h-9 border border-[var(--color-border)]"
+                style={{ borderRadius: 2 }}
+              >
+                <ShieldCheck size={16} className="text-[var(--color-accent-pink)]" />
+              </span>
             </div>
-            <p className="text-sm lg:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
+            <p className="text-[13.5px] lg:text-[14.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed">
               The curriculum maps to the NISM Series XV (Research Analyst) exam syllabus and CFI
               certification content — so what you learn is checked against external standards, not
               just our own.
             </p>
-          </div>
+            <div className="mt-5 pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
+              <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
+                NISM SERIES XV · CFI
+              </span>
+              <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent-pink)]">
+                EXTERNALLY ANCHORED
+              </span>
+            </div>
+          </article>
         </div>
       </div>
     </section>

@@ -1,90 +1,117 @@
-import { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-// Lazy three.js convergence — only loads when the section approaches view.
-const FinalCTAConvergence = lazy(() => import('@/components/landing/FinalCTAConvergence'));
-
 /**
- * Final CTA — rebuilt by Prompt-2 of the Aug-2026 SEO/GEO overhaul.
- * The old waitlist form is gone; the primary CTA now links straight into
- * signup, and the pricing promise "₹1,500 lifetime · no card required" is
- * front-and-centre.
+ * Final CTA — editorial finance treatment (Feb 2026).
+ * Copy verbatim. Retired the pink/violet gradient CTA and the
+ * three.js convergence bg; replaced with lv-panel + lv-cta + terminal grid.
  */
 export default function FinalCTASection() {
   const [sectionRef, isVisible] = useScrollAnimation();
-  const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
     <section
       id="waitlist"
-      className="relative py-24 lg:py-32 overflow-hidden light-rays bg-[var(--bg-primary)]"
+      className="relative py-24 lg:py-28 overflow-hidden bg-[var(--bg-primary)]"
       data-testid="final-cta-section"
     >
-      {/* Particle convergence behind the CTA — gravity-well feel */}
-      <Suspense fallback={null}>
-        <FinalCTAConvergence mobile={mobile} />
-      </Suspense>
-      <div ref={sectionRef} className="max-w-3xl mx-auto px-6 relative z-10 text-center">
-        <h2
-          className={`font-clash text-3xl sm:text-4xl lg:text-5xl text-[var(--color-text)] leading-tight mb-6 ${
-            isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
-          }`}
-          data-testid="final-cta-heading"
-        >
-          Your finance career doesn&apos;t start at placement season.
-          <br className="hidden sm:block" />
-          It starts today.
-        </h2>
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-40" aria-hidden="true" />
+
+      {/* Faint editorial chart line as backdrop */}
+      <svg
+        aria-hidden="true"
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 1440 400"
+        preserveAspectRatio="none"
+        style={{ opacity: 0.18 }}
+      >
+        <defs>
+          <linearGradient id="cta-chart-grad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"  stopColor="var(--color-primary)" stopOpacity="0" />
+            <stop offset="50%" stopColor="var(--color-primary)" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="var(--color-accent-pink)" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path
+          d="M0,320 L120,300 L240,240 L360,260 L480,180 L600,200 L720,120 L840,140 L960,90 L1080,120 L1200,60 L1320,80 L1440,40"
+          fill="none"
+          stroke="url(#cta-chart-grad)"
+          strokeWidth="1.5"
+        />
+      </svg>
+
+      <div ref={sectionRef} className="relative z-10 max-w-4xl mx-auto px-6">
+        <div className="flex items-center gap-3 mb-10 lg:mb-12">
+          <span className="lv-chapter">§11 // ENROL</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">₹1,500 · LIFETIME · NO CARD REQUIRED</span>
+        </div>
 
         <div
-          className={`flex flex-col items-center gap-4 mt-10 ${
-            isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
-          }`}
-          style={{ animationDelay: '0.15s' }}
+          className={`lv-panel px-6 py-10 lg:px-10 lg:py-14 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+          style={{ animationDelay: '0.08s' }}
         >
-          {/* Breathing halo behind the button — replaces the old form-anchored one */}
-          <div className="relative">
-            <div
-              aria-hidden="true"
-              data-testid="final-cta-breathing-halo"
-              className="pointer-events-none absolute left-1/2 top-1/2 w-[420px] h-[220px] -z-10"
-              style={{
-                background: 'radial-gradient(closest-side, rgba(139,92,246,0.45), transparent 70%)',
-                filter: 'blur(36px)',
-                animation: 'cta-breathe 4.5s ease-in-out infinite',
-                transform: 'translate(-50%, -50%)',
-              }}
-            />
-            <Link
-              to="/signup"
-              className="inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full font-semibold text-white text-sm sm:text-base transition-all hover:brightness-110"
-              style={{
-                background: 'linear-gradient(135deg, #FF6AC1, #6A5CFF)',
-                boxShadow: '0 0 24px rgba(255, 106, 193, 0.35)',
-              }}
-              data-testid="final-cta-button"
-            >
-              Start the Equity Research Analyst Program — ₹1,500 lifetime
-              <ArrowRight size={16} />
-            </Link>
+          <div className="flex items-center gap-2 mb-6">
+            <span className="lv-live-dot" aria-hidden="true" />
+            <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+              ENROL · OPEN NOW
+            </span>
           </div>
 
-          <p className="text-[var(--color-text-muted)] font-bricolage text-sm" data-testid="final-cta-trust">
-            Try your first session free. No card required.
-          </p>
+          <h2
+            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] mb-6 ${
+              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
+            }`}
+            style={{ animationDelay: '0.12s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
+            data-testid="final-cta-heading"
+          >
+            Your finance career doesn&apos;t start at placement season.
+            <br className="hidden sm:block" />
+            It starts{' '}
+            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+              today
+            </span>
+            .
+          </h2>
+
+          <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
+
+          <div
+            className={`flex flex-col sm:flex-row items-start sm:items-center gap-6 mt-10 ${
+              isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
+            }`}
+            style={{ animationDelay: '0.18s' }}
+          >
+            <Link
+              to="/signup"
+              className="lv-cta"
+              data-testid="final-cta-button"
+            >
+              Start The Program · ₹1,500 Lifetime
+              <ArrowRight size={14} strokeWidth={2.5} />
+            </Link>
+            <p className="font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-muted)]" data-testid="final-cta-trust">
+              TRY FIRST SESSION FREE · NO CARD REQUIRED
+            </p>
+          </div>
+
+          {/* Data-bar footer */}
+          <div className="mt-10 pt-6 border-t border-[var(--color-border)] grid grid-cols-2 sm:grid-cols-4 gap-4">
+            {[
+              ['PRICE', '₹1,500'],
+              ['ACCESS', 'LIFETIME'],
+              ['MODULES', '21'],
+              ['SESSIONS', '239'],
+            ].map(([k, v]) => (
+              <div key={k}>
+                <div className="font-jetbrains text-[9.5px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">{k}</div>
+                <div className="font-jetbrains text-lg text-[var(--color-text)] mt-1" style={{ letterSpacing: '-0.01em' }}>{v}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
-      <style>{`
-        @keyframes cta-breathe {
-          0%,100% { opacity: 0.45; transform: translate(-50%, -50%) scale(0.94); }
-          50%     { opacity: 0.85; transform: translate(-50%, -50%) scale(1.06); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [data-testid="final-cta-breathing-halo"] { animation: none !important; opacity: 0.55; }
-        }
-      `}</style>
     </section>
   );
 }

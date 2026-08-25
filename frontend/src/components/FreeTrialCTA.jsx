@@ -9,7 +9,7 @@
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { Sparkles, ArrowRight, Loader2, Building2, Clock, Users } from 'lucide-react';
+import { ArrowRight, Loader2, Building2, Clock, Users } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -74,58 +74,74 @@ export default function FreeTrialCTA() {
       className="relative py-20 px-4 sm:px-8 lg:px-16"
       data-testid="free-trial-section"
     >
-      <div className="max-w-5xl mx-auto rounded-3xl border border-[var(--color-primary)]/30 bg-gradient-to-br from-[var(--color-primary)]/8 to-[var(--color-accent-purple)]/8 backdrop-blur-xl p-8 sm:p-12 shadow-[0_0_60px_rgba(36,107,253,0.15)]">
-        <div className="flex flex-col lg:flex-row items-start gap-10">
-          <div className="flex-1 min-w-0">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/25 text-[var(--color-accent-purple)] text-[10px] font-mono uppercase tracking-[0.2em] mb-4">
-              <Sparkles size={11} />
-              Free · One-time · No signup
-            </div>
-            <h2 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)] leading-tight">
-              Try a full analyst mock interview.
-              <br className="hidden sm:block" />
-              <span className="text-[var(--color-primary)]">Free.</span>
-            </h2>
-            <p className="mt-4 text-sm sm:text-base font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-              Five rounds — application, aptitude, HR, technical, and a live Excel case study — run by
-              Pari as a bulge-bracket-style interviewer. You get a full scorecard and verdict at the end.
-              One free trial per person. No card required.
-            </p>
-            <div className="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-3 text-[11px] font-mono text-[var(--color-text-muted)]">
-              <div className="flex items-center gap-1.5"><Building2 size={12}/> Bulge-bracket sim</div>
-              <div className="flex items-center gap-1.5"><Clock size={12}/> 30-45 min</div>
-              <div className="flex items-center gap-1.5"><Users size={12}/> AI grades every round</div>
-            </div>
-          </div>
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-30" aria-hidden="true" />
+      <div className="relative max-w-5xl mx-auto">
+        {/* Chapter rail */}
+        <div className="flex items-center gap-3 mb-8">
+          <span className="lv-chapter">§ // TRIAL</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">FREE · ONE-TIME · NO SIGNUP</span>
+        </div>
 
-          <form onSubmit={start} className="w-full lg:w-96 shrink-0 space-y-3" data-testid="free-trial-form">
-            <label className="block text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
-              Enter your email to begin
-            </label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@work.email"
-              className="w-full px-4 py-3 rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] text-[var(--color-text)] font-bricolage focus:border-[var(--color-primary)] outline-none"
-              data-testid="free-trial-email-input"
-              disabled={busy}
-            />
-            <button
-              type="submit"
-              disabled={busy}
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white font-semibold font-bricolage text-sm hover:brightness-110 disabled:opacity-60 transition-all shadow-[0_0_24px_rgba(36,107,253,0.35)]"
-              data-testid="free-trial-start-btn"
-            >
-              {busy ? <Loader2 size={15} className="animate-spin"/> : null}
-              {busy ? 'Starting…' : 'Start free simulation'}
-              {!busy && <ArrowRight size={15}/>}
-            </button>
-            <p className="text-[10px] font-mono text-[var(--color-text-faint)] text-center">
-              One free trial per email + device. We don&apos;t spam.
-            </p>
-          </form>
+        <div className="lv-panel p-8 sm:p-10">
+          <div className="flex flex-col lg:flex-row items-start gap-10">
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="lv-live-dot" aria-hidden="true" />
+                <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-[var(--color-accent-purple)]" data-testid="free-trial-badge">
+                  FREE · ONE-TIME · NO SIGNUP
+                </span>
+              </div>
+              <h2 className="font-clash text-3xl sm:text-4xl text-[var(--color-text)]" style={{ lineHeight: 1.08, letterSpacing: '-0.02em' }}>
+                Try a full analyst mock interview.
+                <br className="hidden sm:block" />
+                <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+                  Free.
+                </span>
+              </h2>
+              <div className="mt-5 h-px w-20 bg-[var(--color-primary)]/60" aria-hidden="true" />
+              <p className="mt-5 text-[14px] font-bricolage text-[var(--color-text-muted)] leading-relaxed">
+                Five rounds — application, aptitude, HR, technical, and a live Excel case study — run by
+                Pari as a bulge-bracket-style interviewer. You get a full scorecard and verdict at the end.
+                One free trial per person. No card required.
+              </p>
+              <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-2 font-jetbrains text-[10.5px] uppercase tracking-[0.16em] text-[var(--color-text-muted)]">
+                <div className="flex items-center gap-2"><Building2 size={12} strokeWidth={2}/> BULGE-BRACKET SIM</div>
+                <div className="flex items-center gap-2"><Clock size={12} strokeWidth={2}/> 30-45 MIN</div>
+                <div className="flex items-center gap-2"><Users size={12} strokeWidth={2}/> AI GRADES EACH ROUND</div>
+              </div>
+            </div>
+
+            <form onSubmit={start} className="w-full lg:w-96 shrink-0 space-y-3" data-testid="free-trial-form">
+              <label className="block font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                Enter your email to begin
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@work.email"
+                className="w-full px-4 py-3 bg-[var(--bg-primary)]/60 border border-[var(--color-border)] text-[var(--color-text)] font-bricolage text-sm focus:border-[var(--color-primary)] outline-none transition-colors"
+                style={{ borderRadius: 2 }}
+                data-testid="free-trial-email-input"
+                disabled={busy}
+              />
+              <button
+                type="submit"
+                disabled={busy}
+                className="lv-cta w-full justify-center disabled:opacity-60"
+                data-testid="free-trial-start-btn"
+              >
+                {busy ? <Loader2 size={13} className="animate-spin"/> : null}
+                {busy ? 'STARTING…' : 'START FREE SIMULATION'}
+                {!busy && <ArrowRight size={13} strokeWidth={2.5}/>}
+              </button>
+              <p className="font-jetbrains text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-faint)] text-center">
+                ONE TRIAL PER EMAIL + DEVICE · NO SPAM
+              </p>
+            </form>
+          </div>
         </div>
       </div>
     </section>

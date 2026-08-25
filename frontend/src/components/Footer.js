@@ -7,9 +7,6 @@ const footerLinks = [
   { label: 'AI-Proof', id: 'ai-proof' },
 ];
 
-// Social links — Prompt 2 (Aug 2026) provided real LinkedIn + X URLs.
-// YouTube icon was previously an `#` placeholder — removed entirely per
-// Prompt 2 ("remove any icon that still has no real URL").
 const socialLinks = [
   { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/valuevade/' },
   { icon: Linkedin,  label: 'LinkedIn',  href: 'https://www.linkedin.com/company/valuevade' },
@@ -23,63 +20,119 @@ export default function Footer() {
 
   return (
     <footer
-      className="border-t border-[var(--color-border)] py-12 lg:py-16 bg-[var(--bg-primary)]"
+      className="relative border-t border-[var(--color-border)] pt-14 pb-8 bg-[var(--bg-primary)]"
       data-testid="footer"
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 mb-10">
+      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-25" aria-hidden="true" />
+
+      <div className="relative max-w-7xl mx-auto px-6">
+        {/* Chapter rail */}
+        <div className="flex items-center gap-3 mb-10">
+          <span className="lv-chapter">§∞ // FOOTER</span>
+          <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+          <span className="lv-chapter">VALUEVADE · IND · EQUITY RESEARCH SW</span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-10 border-b border-[var(--color-border)]">
+          {/* Logo + tagline */}
           <div>
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-3">
               <img src="/valuevade-logo.svg" alt="Valuevade Logo" className="w-7 h-7 object-contain" />
               <span className="font-clash text-lg font-semibold logo-gradient">Valuevade</span>
             </div>
-            <p className="text-[var(--color-text-faint)] text-sm font-bricolage">Your AI-powered path to a finance career.</p>
+            <p className="text-[var(--color-text-muted)] text-[13.5px] font-bricolage leading-relaxed max-w-xs">
+              Your AI-powered path to a finance career.
+            </p>
+            <div className="mt-5 pt-4 border-t border-[var(--color-border)] flex items-center gap-4">
+              <span className="lv-live-dot" aria-hidden="true" />
+              <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-muted)]">
+                ENROLMENT · OPEN
+              </span>
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-6">
-            {footerLinks.map((link) => (
-              <button
-                key={link.label}
-                onClick={() => (link.id ? scrollTo(link.id) : undefined)}
-                className="text-sm text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors font-bricolage"
-                data-testid={`footer-link-${link.label.toLowerCase().replace(/\s/g, '-')}`}
-              >
-                {link.label}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4">
-            {socialLinks.map((social) => {
-              const Icon = social.icon;
-              return (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-text-faint)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all"
-                  aria-label={social.label}
-                  data-testid={`footer-social-${social.label.toLowerCase()}`}
+          {/* Nav column */}
+          <div>
+            <p className="font-jetbrains text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-faint)] mb-4">
+              EXPLORE
+            </p>
+            <ul className="space-y-2.5">
+              <li>
+                <Link
+                  to="/courses"
+                  className="lv-nav-link"
+                  data-testid="footer-link-courses"
                 >
-                  <Icon size={16} />
-                </a>
-              );
-            })}
+                  Courses
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/free-mock-interview"
+                  className="lv-nav-link"
+                  data-testid="footer-link-free-mock"
+                >
+                  Free Mock
+                </Link>
+              </li>
+              {footerLinks.map((link) => (
+                <li key={link.label}>
+                  <button
+                    onClick={() => (link.id ? scrollTo(link.id) : undefined)}
+                    className="lv-nav-link"
+                    data-testid={`footer-link-${link.label.toLowerCase().replace(/\s/g, '-')}`}
+                  >
+                    {link.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Social */}
+          <div>
+            <p className="font-jetbrains text-[10px] uppercase tracking-[0.22em] text-[var(--color-text-faint)] mb-4">
+              CHANNELS
+            </p>
+            <div className="flex items-center gap-3">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <a
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center w-9 h-9 border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:border-[var(--color-primary)] transition-colors"
+                    style={{ borderRadius: 2 }}
+                    aria-label={social.label}
+                    data-testid={`footer-social-${social.label.toLowerCase()}`}
+                  >
+                    <Icon size={14} strokeWidth={2} />
+                  </a>
+                );
+              })}
+            </div>
+            <p className="mt-5 font-jetbrains text-[10px] uppercase tracking-[0.18em] text-[var(--color-text-faint)]">
+              REACH · @VALUEVADE
+            </p>
           </div>
         </div>
 
-        <div className="border-t border-[var(--color-border)] pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[var(--color-text-faint)] font-bricolage">
-          <p>© 2026 Valuevade. Built for the finance students who want more.</p>
-          <div className="flex gap-4">
-            <Link to="/privacy" className="hover:text-[var(--color-text-muted)] transition-colors" data-testid="footer-privacy">
-              Privacy Policy
+        {/* Bottom strip */}
+        <div className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <p className="font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-faint)]">
+            © 2026 VALUEVADE · BUILT FOR FINANCE STUDENTS WHO WANT MORE
+          </p>
+          <div className="flex gap-5">
+            <Link to="/privacy" className="lv-nav-link" data-testid="footer-privacy">
+              Privacy
             </Link>
-            <Link to="/terms" className="hover:text-[var(--color-text-muted)] transition-colors" data-testid="footer-terms">
+            <Link to="/terms" className="lv-nav-link" data-testid="footer-terms">
               Terms
             </Link>
-            <Link to="/refund-policy" className="hover:text-[var(--color-text-muted)] transition-colors" data-testid="footer-refund">
-              Refund Policy
+            <Link to="/refund-policy" className="lv-nav-link" data-testid="footer-refund">
+              Refund
             </Link>
           </div>
         </div>

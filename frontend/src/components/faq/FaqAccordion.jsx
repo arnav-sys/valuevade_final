@@ -1,11 +1,10 @@
 /**
- * FaqAccordion — landing-page FAQ section. Groups the shared FAQS constant
- * by category and renders as an accessible accordion. Client-side only —
- * no network.
+ * FaqAccordion — editorial finance / Bloomberg-terminal treatment (Feb 2026).
+ * Content copy, categories, and dynamic loading behaviour verbatim.
  */
 import { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { ChevronDown, HelpCircle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useFaqs, FAQ_CATEGORIES } from '../../data/useFaqs';
 import { buildFaqPageJsonLd } from '../landing/jsonLd';
 
@@ -14,9 +13,6 @@ export default function FaqAccordion() {
   const [openId, setOpenId] = useState(null);
   const [activeCat, setActiveCat] = useState('All');
 
-  // FAQPage JSON-LD wired to the SAME `faqs` array that renders the visible
-  // accordion — one source of truth, so any admin edit changes the schema
-  // automatically (per Prompt 4 rule).
   const faqSchema = useMemo(() => buildFaqPageJsonLd(faqs), [faqs]);
 
   const visible = useMemo(() => {
@@ -24,8 +20,6 @@ export default function FaqAccordion() {
     return faqs.filter(f => f.category === activeCat);
   }, [activeCat, faqs]);
 
-  // Derive the category list dynamically from the loaded FAQs so admin-added
-  // categories show up automatically. Fallback to the static list.
   const catsFromData = useMemo(() => {
     const set = new Set(faqs.map(f => f.category).filter(Boolean));
     const dyn = Array.from(set);
@@ -35,7 +29,7 @@ export default function FaqAccordion() {
   return (
     <section
       id="faq"
-      className="relative max-w-3xl mx-auto px-6 py-20 sm:py-28"
+      className="relative max-w-4xl mx-auto px-6 py-20 sm:py-24"
       data-testid="landing-faq-section"
     >
       {faqs.length > 0 && (
@@ -43,84 +37,91 @@ export default function FaqAccordion() {
           <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
         </Helmet>
       )}
-      {/* Eyebrow */}
-      <div className="text-center mb-6">
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)]">
-          <HelpCircle size={11} /> FAQ
-        </div>
+
+      {/* Chapter rail */}
+      <div className="flex items-center gap-3 mb-10">
+        <span className="lv-chapter">§10 // FAQ</span>
+        <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
+        <span className="lv-chapter" data-testid="faq-last-updated">LAST UPDATED · 25 AUG 2026</span>
       </div>
 
-      <h2
-        className="font-clash text-center text-4xl sm:text-5xl font-bold text-[var(--color-text)] leading-[1.05] mb-4"
-        data-testid="landing-faq-heading"
-      >
-        Questions,
-        <br />
-        <span className="bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent-purple)] to-[var(--color-accent-pink)] bg-clip-text text-transparent">
-          answered.
-        </span>
-      </h2>
-      <p className="text-center text-base font-bricolage text-[var(--color-text-muted)] max-w-xl mx-auto mb-3">
-        Everything you might want to know about the course, pricing, certificate, and support.
-      </p>
-      <p className="text-center text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-faint)] mb-8" data-testid="faq-last-updated">
-        Last updated: 25 August 2026
-      </p>
+      <div className="mb-10">
+        <p className="lv-chapter mb-4">FREQUENTLY ASKED</p>
+        <h2
+          className="font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)]"
+          style={{ lineHeight: 1.06, letterSpacing: '-0.02em' }}
+          data-testid="landing-faq-heading"
+        >
+          Questions,{' '}
+          <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+            answered.
+          </span>
+        </h2>
+        <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
+        <p className="mt-6 text-[14.5px] font-bricolage text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
+          Everything you might want to know about the course, pricing, certificate, and support.
+        </p>
+      </div>
 
-      {/* Category filter chips */}
-      <div className="flex flex-wrap justify-center gap-2 mb-8" data-testid="faq-category-filter">
+      {/* Category filter — mono terminal chips */}
+      <div className="flex flex-wrap gap-2 mb-8" data-testid="faq-category-filter">
         {['All', ...catsFromData].map((cat) => (
           <button
             key={cat}
             type="button"
             onClick={() => { setActiveCat(cat); setOpenId(null); }}
             data-testid={`faq-cat-${cat.toLowerCase()}`}
-            className={`px-3 py-1.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all border ${
+            className={`px-3 py-1.5 font-jetbrains text-[10.5px] uppercase tracking-[0.16em] border transition-colors ${
               activeCat === cat
                 ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
-                : 'bg-transparent text-[var(--color-text-muted)] border-[var(--color-border)] hover:text-[var(--color-text)] hover:border-[var(--color-text-muted)]'
+                : 'bg-transparent text-[var(--color-text-muted)] border-[var(--color-border)] hover:text-[var(--color-text)] hover:border-[var(--color-primary)]'
             }`}
+            style={{ borderRadius: 2 }}
           >
             {cat}
           </button>
         ))}
       </div>
 
-      {/* Accordion */}
-      <div className="space-y-3" data-testid="faq-list">
-        {visible.map((faq) => {
+      {/* Accordion — datagrid-styled rows */}
+      <div className="lv-panel divide-y divide-[var(--color-border)]" data-testid="faq-list">
+        {visible.map((faq, idx) => {
           const isOpen = openId === faq.id;
           return (
-            <div
-              key={faq.id}
-              className={`rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)]/60 backdrop-blur-sm overflow-hidden transition-all ${isOpen ? 'shadow-[0_0_30px_rgba(36,107,253,0.08)]' : ''}`}
-              data-testid={`faq-item-${faq.id}`}
-            >
+            <div key={faq.id} data-testid={`faq-item-${faq.id}`}>
               <button
                 type="button"
                 onClick={() => setOpenId(isOpen ? null : faq.id)}
                 aria-expanded={isOpen}
-                className="w-full flex items-center justify-between gap-3 px-5 py-4 text-left"
+                className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left group"
                 data-testid={`faq-toggle-${faq.id}`}
               >
-                <span className="font-bricolage text-[var(--color-text)] text-sm sm:text-base font-medium">
-                  {faq.question}
-                </span>
+                <div className="flex items-baseline gap-4 min-w-0">
+                  <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)] shrink-0">
+                    Q{String(idx + 1).padStart(2, '0')}
+                  </span>
+                  <span className="font-bricolage text-[var(--color-text)] text-[14.5px] font-medium">
+                    {faq.question}
+                  </span>
+                </div>
                 <ChevronDown
-                  size={16}
-                  className={`shrink-0 text-[var(--color-text-muted)] transition-transform ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : ''}`}
+                  size={14}
+                  strokeWidth={2}
+                  className={`shrink-0 transition-transform ${isOpen ? 'rotate-180 text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}
                 />
               </button>
               <div
                 className={`grid transition-[grid-template-rows] duration-300 ease-out ${isOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
               >
                 <div className="overflow-hidden">
-                  <p
-                    className="px-5 pb-5 text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed"
-                    data-testid={`faq-answer-${faq.id}`}
-                  >
-                    {faq.answer}
-                  </p>
+                  <div className="px-5 pb-5 pl-[68px]">
+                    <p
+                      className="text-[13.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed"
+                      data-testid={`faq-answer-${faq.id}`}
+                    >
+                      {faq.answer}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -134,8 +135,9 @@ export default function FaqAccordion() {
         </p>
       )}
 
-      <p className="text-center text-xs text-[var(--color-text-muted)] font-bricolage mt-12">
-        Still stuck? Click the <span className="text-[var(--color-primary)] font-medium">Help</span> bubble in the corner and search for anything.
+      <p className="mt-10 font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-faint)]">
+        STILL STUCK? OPEN THE{' '}
+        <span className="text-[var(--color-primary)]">HELP</span> BUBBLE · CTRL-K
       </p>
     </section>
   );
