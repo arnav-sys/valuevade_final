@@ -445,3 +445,22 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: rgba(26,26,46,0.48) !important;
 }
 
+
+/* Free-trial email input — explicit contrast in both palettes so the
+ * placeholder + typed text never camouflages with the surrounding panel. */
+.lv-trial-input {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.18);
+  color: #ffffff;
+}
+.lv-trial-input::placeholder { color: rgba(255,255,255,0.42); }
+.lv-trial-input:focus { border-color: var(--color-primary); }
+
+.landing-light .lv-trial-input {
+  background: #ffffff;
+  border-color: rgba(26,26,46,0.18);
+  color: #1A1A2E;
+}
+.landing-light .lv-trial-input::placeholder { color: rgba(26,26,46,0.38); }
+.landing-light .lv-trial-input:focus { border-color: #246BFD; }
+

@@ -122,7 +122,7 @@ export default function FreeTrialCTA() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@work.email"
-                className="w-full px-4 py-3 bg-[var(--bg-primary)]/60 border border-[var(--color-border)] text-[var(--color-text)] font-bricolage text-sm focus:border-[var(--color-primary)] outline-none transition-colors"
+                className="lv-trial-input w-full px-4 py-3 border font-bricolage text-sm outline-none transition-colors"
                 style={{ borderRadius: 2 }}
                 data-testid="free-trial-email-input"
                 disabled={busy}

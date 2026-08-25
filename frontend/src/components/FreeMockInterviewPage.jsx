@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import FreeTrialCTA from '@/components/FreeTrialCTA';
+import { useTheme } from '@/contexts/ThemeContext';
 import { CheckCircle2, Clock, FileSpreadsheet, Mic, Trophy, Users, ArrowRight, Sparkles } from 'lucide-react';
+import '@/components/landing/landing-dark.css';
 
 /**
  * FreeMockInterviewPage — dedicated public marketing page for the one-time
@@ -30,14 +32,37 @@ const ROUNDS = [
 ];
 
 export default function FreeMockInterviewPage() {
-  const [landingTheme, setLandingTheme] = useState('dark');
-  const toggleLandingTheme = () =>
-    setLandingTheme((t) => (t === 'dark' ? 'light' : 'dark'));
+  // Reuse the app-global ThemeContext so the toggle here mirrors the
+  // landing page and persists across routes. This also ensures the
+  // landing-active body class gets applied so `.landing-dark` /
+  // `.landing-light` token overrides fully cascade to child components.
+  const { theme, toggleTheme } = useTheme();
+  const landingTheme = theme;
+  const toggleLandingTheme = toggleTheme;
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const body = document.body;
+    root.classList.add('landing-active');
+    body.classList.add('landing-active');
+    if (landingTheme === 'light') {
+      root.classList.add('landing-light');
+      body.classList.add('landing-light');
+    } else {
+      root.classList.remove('landing-light');
+      body.classList.remove('landing-light');
+    }
+    return () => {
+      root.classList.remove('landing-active', 'landing-light');
+      body.classList.remove('landing-active', 'landing-light');
+    };
+  }, [landingTheme]);
 
   return (
     <div
-      className={`min-h-screen bg-[var(--bg-primary)] text-[var(--color-text)] ${landingTheme === 'light' ? 'landing-light' : ''}`}
+      className={`${landingTheme === 'dark' ? 'landing-dark' : 'landing-light'} min-h-screen bg-[var(--bg-primary)] text-[var(--color-text)]`}
       data-testid="free-mock-page"
+      data-landing-theme={landingTheme}
     >
       <Helmet>
         <title>Free Equity Research Mock Interview — 5 Rounds, AI-Graded | Valuevade</title>
