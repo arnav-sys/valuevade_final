@@ -14,7 +14,7 @@ const H1_LINES = [
   { weight: 900, words: ['Finance', 'Students'] },
 ];
 
-export default function HeroSection({ onJoinWaitlist }) {
+export default function HeroSection() {
   const reduceMotion = useReducedMotion();
   // Client-only mount flag — used to keep the blinking H1 cursor "|" out of
   // the edge-prerender snapshot so crawlers see a clean headline.

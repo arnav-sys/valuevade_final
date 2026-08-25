@@ -11,7 +11,7 @@ const navLinks = [
   { label: 'Roadmap', id: 'features' },
 ];
 
-export default function Navbar({ onJoinWaitlist, landingTheme, onToggleLandingTheme }) {
+export default function Navbar({ landingTheme, onToggleLandingTheme }) {
   const { user, profile, loading, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);

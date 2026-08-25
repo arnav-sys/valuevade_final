@@ -1,6 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { Helmet } from 'react-helmet-async';
 import { X, ArrowRight } from 'lucide-react';
 import CustomCursor from '@/components/CustomCursor';
@@ -17,7 +16,6 @@ import FreeTrialCTA from '@/components/FreeTrialCTA';
 import WhatYoullLearnSection from '@/components/WhatYoullLearnSection';
 import WhoBuiltThisSection from '@/components/WhoBuiltThisSection';
 import Footer from '@/components/Footer';
-import WaitlistConfirmation from '@/components/WaitlistConfirmation';
 import FaqAccordion from '@/components/faq/FaqAccordion';
 import FaqChatbot from '@/components/faq/FaqChatbot';
 import { homeOrgJsonLd } from '@/components/landing/jsonLd';
@@ -28,13 +26,8 @@ import '@/components/landing/landing-dark.css';
 
 const LandingHero3D = lazy(() => import('@/components/landing/LandingHero3D'));
 
-const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
-
 export default function LandingPage() {
-  const [showConfirmation, setShowConfirmation] = useState(false);
-  const [waitlistData, setWaitlistData] = useState(null);
   const [showMobileBar, setShowMobileBar] = useState(true);
-  const [refCode, setRefCode] = useState(null);
 
   // Theme is now centrally owned by ThemeContext (single source of truth
   // for both landing AND auth-gated routes). Landing simply derives its
@@ -42,12 +35,6 @@ export default function LandingPage() {
   const { theme, toggleTheme } = useTheme();
   const landingTheme = theme;
   const toggleLandingTheme = toggleTheme;
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const ref = params.get('ref');
-    if (ref) setRefCode(ref);
-  }, []);
 
   // Body class is applied in both modes so iOS overscroll always shows the
   // landing palette (dark or light) — never the default app surface. The
@@ -69,28 +56,6 @@ export default function LandingPage() {
       body.classList.remove('landing-active', 'landing-light');
     };
   }, [landingTheme]);
-
-  const scrollToWaitlist = () => {
-    document.getElementById('waitlist')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleWaitlistSubmit = async (firstName, email) => {
-    const payload = { first_name: firstName, email };
-    if (refCode) payload.ref_code = refCode;
-    const res = await axios.post(`${API}/waitlist`, payload);
-    setWaitlistData(res.data);
-    setShowConfirmation(true);
-    window.scrollTo(0, 0);
-  };
-
-  if (showConfirmation) {
-    return (
-      <>
-        <CustomCursor />
-        <WaitlistConfirmation data={waitlistData} />
-      </>
-    );
-  }
 
   return (
     <div
@@ -119,7 +84,6 @@ export default function LandingPage() {
       <ScrollProgressBar />
       <LandingIntroSequence />
       <Navbar
-        onJoinWaitlist={scrollToWaitlist}
         landingTheme={landingTheme}
         onToggleLandingTheme={toggleLandingTheme}
       />
@@ -136,7 +100,7 @@ export default function LandingPage() {
       </div>
 
       <main className="relative z-10">
-        <HeroSection onJoinWaitlist={scrollToWaitlist} />
+        <HeroSection />
         <ProblemSection />
         <FeaturesSection />
         <WhatYoullLearnSection />
@@ -147,7 +111,7 @@ export default function LandingPage() {
         <FreeTrialCTA />
         <TestimonialsSection />
         <FaqAccordion />
-        <FinalCTASection onSubmit={handleWaitlistSubmit} />
+        <FinalCTASection />
       </main>
 
       <Footer />

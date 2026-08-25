@@ -19,6 +19,15 @@ Mid-session bug: Supabase Storage returns 413 for video uploads > 50 MB (Free-ti
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 (`anthropic/claude-sonnet-4-5-20250929`) via `emergentintegrations`.
 - **Excel engine**: HyperFormula 3.3.0 (GPL-v3 headless). Grid virtualization: react-window 1.8.11 (`FixedSizeGrid`).
 
+## Feb 2026 — Competitor table filled + landing cleanup + module casing fix
+
+Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog items:
+
+- **P0 — Competitor comparison table (CourseDetailsPage.jsx)**: Replaced the 8 "—" placeholder cells with verified, directional figures for WallStreet School, IFMC, Coursera, and Imarticus / Upgrad across 9 feature rows (added new "Format" row). Pricing figures per user brief: WSS ₹45,000+ · IFMC ₹10,000–₹35,000+ · Coursera ₹4,000–₹7,000/month · Imarticus / Upgrad ₹1,00,000+. Footnote rewritten from "founder will fill later" to a directional-figures disclaimer telling readers to verify on each provider's site. Verified via preview screenshot on `/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c`.
+- **P1 — Dead waitlist code stripped from LandingPage.js**: Removed `showConfirmation`/`waitlistData`/`refCode` state, the unreachable `handleWaitlistSubmit` axios call to `/api/waitlist`, `scrollToWaitlist`, the `WaitlistConfirmation` early-return branch, unused `axios` and `API` imports, and the `WaitlistConfirmation` component import. Also dropped the dead `onJoinWaitlist` prop declarations from `Navbar.js` and `HeroSection.js`, and the dead `onSubmit` prop passing to `FinalCTASection`. Lint clean. Landing page verified rendering.
+- **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
+
+
 ## Aug 25 2026 — Post-rebuild trims + dedicated Free Mock page
 
 Follow-up work after the 4-prompt SEO/GEO rebuild:

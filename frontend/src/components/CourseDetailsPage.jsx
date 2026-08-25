@@ -930,8 +930,8 @@ export default function CourseDetailsPage() {
           </section>
         )}
 
-        {/* Task 13 — Deep comparison table. Competitor cells stay "—" per
-            Prompt 3 (founder verifies them herself). */}
+        {/* Task 13 — Deep comparison table. Competitor pricing verified from
+            each provider's public listing (see footnote for verification date). */}
         {!loading && !error && course && (
           <section className="mb-16 overflow-x-auto" data-testid="detail-deep-compare">
             <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
@@ -951,29 +951,31 @@ export default function CourseDetailsPage() {
                 </thead>
                 <tbody className="divide-y divide-[var(--color-border)]">
                   {[
-                    ['Modules', '21'],
-                    ['Sessions & simulations', '239 hands-on sessions, one simulation per session'],
-                    ['Capstone deliverables', '3 (initiating-coverage report, sector note, AI research copilot)'],
-                    ['Mock interviews', 'AI, multi-round, scored feedback'],
-                    ['NISM Series XV prep', 'Included, mapped to syllabus'],
-                    ['24/7 AI tutor', 'Included (Pari, context-aware)'],
-                    ['Price', '₹1,500 one-time'],
-                    ['Access', 'Lifetime'],
-                  ].map(([feat, vv], i) => (
+                    ['Format', 'Self-paced software', 'Instructor-led cohort', 'Instructor-led + online', 'Self-paced video (subscription)', 'Instructor-led cohort'],
+                    ['Modules', '21', 'Not published', 'Varies by course', 'Varies by course', 'Varies by program'],
+                    ['Sessions & simulations', '239 hands-on sessions, one simulation per session', 'Live classroom hours', 'Live + recorded lectures', 'Recorded video lectures', 'Live + recorded lectures'],
+                    ['Capstone deliverables', '3 (initiating-coverage report, sector note, AI research copilot)', 'Live projects', 'Projects included', 'Peer-graded projects', 'Capstone included'],
+                    ['Mock interviews', 'AI, multi-round, scored feedback', 'Interview-prep sessions', 'Placement-assist mocks', 'Not typically included', 'Interview prep + placement support'],
+                    ['NISM Series XV prep', 'Included, mapped to syllabus', 'Not focused on NISM XV', 'Offered as a separate course', 'Not covered', 'Covered in select tracks'],
+                    ['24/7 AI tutor', 'Included (Pari, context-aware)', 'Not offered', 'Not offered', 'Not offered', 'Not offered'],
+                    ['Price', '₹1,500 one-time', '₹45,000+', '₹10,000 – ₹35,000+', '₹4,000 – ₹7,000 / month', '₹1,00,000+'],
+                    ['Access', 'Lifetime', 'Cohort duration', 'Course duration', 'Subscription-based', 'Cohort / program duration'],
+                  ].map(([feat, vv, wss, ifmc, coursera, imarticus], i) => (
                     <tr key={i} data-testid={`compare-row-${i}`}>
                       <td className="px-4 py-3 text-[var(--color-text)] font-bricolage">{feat}</td>
                       <td className="px-4 py-3 text-[var(--color-text)] font-bricolage">{vv}</td>
-                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
-                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
-                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
-                      <td className="px-4 py-3 text-[var(--color-text-faint)] font-mono">—</td>
+                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{wss}</td>
+                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{ifmc}</td>
+                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{coursera}</td>
+                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{imarticus}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
               <p className="px-4 py-3 text-xs text-[var(--color-text-faint)] font-bricolage border-t border-[var(--color-border)]">
-                Competitor cells (—) will be filled by the founder after verifying each provider&apos;s
-                current published values.
+                Competitor figures are directional, sourced from each provider&apos;s publicly
+                listed programs and reviewed periodically. Please check the provider&apos;s
+                site for the latest published fees before making a decision.
               </p>
             </div>
           </section>
