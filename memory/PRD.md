@@ -682,3 +682,11 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 
 ### Wired into AdminPanel
 - New tab "Mock Interviews" (Building2 icon) between "View Course" and "AI Customisation"
+
+## 2026-08-26 — Admin Curriculum tab: delete module, delete session, reorder sessions
+- Added visible delete-module trash icon (wires the pre-existing askDeleteModule() + impact-preview confirm modal — backend endpoints were already built, just unwired in UI).
+- Added delete-session trash icon (new askDeleteSession(); same confirm modal, no cascade-impact block for sessions).
+- Added up/down chevron reorder buttons per session row (new moveSession(); swaps order_index via 2x PATCH /api/admin/sessions/{id}, using a transient sentinel value on the target row first so no two sessions ever share an order_index mid-swap — testing agent flagged the naive 2-step swap as non-atomic, fixed before finishing).
+- No backend changes needed — DELETE /api/admin/modules/{id}, DELETE /api/admin/sessions/{id}, PATCH .../order_index already existed from earlier phases.
+- File: /app/frontend/src/components/admin/CurriculumTab.jsx
+- Tested via testing_agent: 5/5 flows passed (delete module w/ cascade preview using throwaway ZZZ-named module, delete session, up/down reorder + restore on M1, editor tabs regression). Report: /app/test_reports/iteration_57.json

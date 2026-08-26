@@ -15,7 +15,7 @@ import InterviewEditor from './InterviewEditor';
 import VideoEditor from './VideoEditor';
 import CapstonesEditor from './CapstonesEditor';
 import ModuleProjectModal from './ModuleProjectModal';
-import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic } from 'lucide-react';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -117,7 +117,9 @@ export default function CurriculumTab() {
         await reloadModules();
       } else if (c.kind === 'session') {
         await req(`/api/admin/sessions/${c.id}`, 'DELETE');
+        if (selSession?.id === c.id) setSelSession(null);
         await reloadSessions(sel.id);
+        await reloadModules();
       }
     } catch (e) { alert(`Delete failed: ${e.message}`); }
   };
@@ -139,6 +141,24 @@ export default function CurriculumTab() {
       setEditingSess(null);
       await reloadSessions(sel.id);
     } catch (e) { alert(`Rename failed: ${e.message}`); }
+  };
+
+  const askDeleteSession = (s) => {
+    setConfirm({ kind: 'session', id: s.id, name: s.title });
+  };
+
+  const moveSession = async (s, dir) => {
+    const idx = sessions.findIndex((x) => x.id === s.id);
+    const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+    if (targetIdx < 0 || targetIdx >= sessions.length) return;
+    const target = sessions[targetIdx];
+    try {
+      // Swap via a transient sentinel so no two sessions ever share an order_index mid-swap.
+      await req(`/api/admin/sessions/${target.id}`, 'PATCH', { order_index: -1 });
+      await req(`/api/admin/sessions/${s.id}`, 'PATCH', { order_index: target.order_index });
+      await req(`/api/admin/sessions/${target.id}`, 'PATCH', { order_index: s.order_index });
+      await reloadSessions(sel.id);
+    } catch (e) { alert(`Reorder failed: ${e.message}`); }
   };
 
   if (err) return <div className="p-4 text-red-500" data-testid="curriculum-error">{err}</div>;
@@ -239,6 +259,14 @@ export default function CurriculumTab() {
                   <button onClick={(e) => { e.stopPropagation(); setEditingMod(m.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-module-${m.id}`}>
                     <Pencil size={11} />
                   </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); askDeleteModule(m); }}
+                    title="Delete module"
+                    data-testid={`delete-module-${m.id}`}
+                    className="text-[var(--color-text-muted)] hover:text-red-500"
+                  >
+                    <Trash2 size={11} />
+                  </button>
                 </div>
               </div>
             </li>
@@ -289,9 +317,37 @@ export default function CurriculumTab() {
                 <span className="flex-1 text-sm text-[var(--color-text)] truncate">{s.title}</span>
               )}
               {s.lecture_url && <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] font-mono">🎥</span>}
-              <button onClick={(e) => { e.stopPropagation(); setEditingSess(s.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-session-${s.id}`}>
-                <Pencil size={12} />
-              </button>
+              <div className="flex items-center gap-0.5 flex-shrink-0">
+                <button
+                  onClick={(e) => { e.stopPropagation(); moveSession(s, 'up'); }}
+                  disabled={sessions.findIndex((x) => x.id === s.id) === 0}
+                  title="Move up"
+                  data-testid={`move-session-up-${s.id}`}
+                  className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] disabled:opacity-25 disabled:hover:text-[var(--color-text-muted)]"
+                >
+                  <ChevronUp size={12} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); moveSession(s, 'down'); }}
+                  disabled={sessions.findIndex((x) => x.id === s.id) === sessions.length - 1}
+                  title="Move down"
+                  data-testid={`move-session-down-${s.id}`}
+                  className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] disabled:opacity-25 disabled:hover:text-[var(--color-text-muted)]"
+                >
+                  <ChevronDown size={12} />
+                </button>
+                <button onClick={(e) => { e.stopPropagation(); setEditingSess(s.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-session-${s.id}`}>
+                  <Pencil size={12} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); askDeleteSession(s); }}
+                  title="Delete session"
+                  data-testid={`delete-session-${s.id}`}
+                  className="text-[var(--color-text-muted)] hover:text-red-500"
+                >
+                  <Trash2 size={12} />
+                </button>
+              </div>
             </li>
           ))}
           {sessions.length === 0 && sel && (

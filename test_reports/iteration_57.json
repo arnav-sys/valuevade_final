@@ -1,0 +1,25 @@
+{
+  "summary": "Frontend testing of the CurriculumTab additions in Admin Panel > View Course: delete-module button, session up/down reorder buttons, and delete-session button. All new UI wiring works end-to-end via the real backend. First run had misleading 'still present' logs due to insufficient wait between reload and next assertion (fetch was intermittently slow/flaky, one initial Supabase login attempt failed with TypeError: Failed to fetch — retry succeeded). Rerun with a longer wait confirmed every flow is functional and idempotent, and cleaned up all ZZZ test artefacts.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "moveSession() fires two sequential PATCH /api/admin/sessions/{id} calls with intermediate state where both sessions can temporarily share the same order_index. On a table with a UNIQUE (module_id, order_index) constraint, the 2nd PATCH would 409 and leave the ordering permanently corrupted. Consider a single backend swap endpoint or a temporary sentinel order_index (e.g. negative) to make the swap safe/atomic. Not a bug observed today because the current schema apparently allows the transient duplicate, but it's brittle.",
+    "askDeleteModule catches impact-fetch errors and shows alert(e.message) — acceptable, but a non-2xx impact response silently blocks the delete UX without indicating retry. Minor.",
+    "reloadModules() preserves current `sel` when its id no longer exists only via the `if (sel?.id === c.id) setSel(null)` guard in doDelete. If sel is set to a non-current module id via some other path (e.g. deleting from a different session) the sessions column can show stale rows. Low risk given current UI paths.",
+    "Delete modal cancel-on-backdrop uses e.target === e.currentTarget check on the outer wrapper (good), and Cancel/X buttons work — no ESC-to-close handler though. Minor UX nit."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (indirect only)", "frontend": "100% on retest (5/5 flows)"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (admin)",
+  "seed_data_creation": "Created and deleted 'ZZZ Retest Mod' module and 'ZZZ Retest Sess' session for destructive testing. Left over 'ZZZ Test Delete Module' from first run was cleaned in run 2. Curriculum state restored to 21 modules with M1 having 7 sessions in the original order (What Is Finance, Really? → Meet the Big Three → …).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Feature is complete and stable. Verified end-to-end: (1) delete-module button opens confirmation modal with correct cascade counts, deletes, and refreshes the modules list; (2) up-arrow disabled on the top session, down-arrow disabled on the bottom, mid-list down-then-up swap correctly reorders and restores; (3) delete-session opens the same modal WITHOUT the cascade block (correct — session has no impact fetch), deletes the session, and M1 session_count decrements 8→7; (4) Regression: editor tabs (Notes/Quiz/Interview/Video) still render after clicking a session. IMPORTANT for the next agent: the Supabase login endpoint was intermittently flaky (one TypeError: Failed to fetch) — always give the login page 15-20s and retry the submit if page.url is still /login. Also, the moveSession() double-PATCH is not atomic (see critical_code_review_comments) — if backend later adds a UNIQUE constraint on (module_id, order_index), reorder will break.",
+  "rca of the issue": "N/A — no bugs found. Initial-run false 'still present' assertions were due to test-script wait timing (2500ms vs the 4000ms needed for two PATCH + reload roundtrips)."
+}
