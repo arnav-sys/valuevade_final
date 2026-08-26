@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
 
 export default function LoginPage() {
   const { signIn } = useAuth();
@@ -117,7 +116,7 @@ export default function LoginPage() {
                 <label className="block text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)]">Password</label>
                 <button
                   type="button"
-                  onClick={() => toast.info('Password reset is coming soon!')}
+                  onClick={() => navigate('/forgot-password')}
                   className="text-xs text-[var(--color-primary)] hover:underline font-bricolage"
                   data-testid="login-forgot-password"
                 >

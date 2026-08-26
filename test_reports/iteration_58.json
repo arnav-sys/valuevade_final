@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only verification of (1) ProblemSection mobile clipping fix and desktop regression, and (2) new Forgot/Reset Password flow. All 13 assertions passed. Mobile @390x844: section min-height computed 0px, inner wrapper position=relative overflow=visible, 3D bg scene display:none (hidden lg:block honored); all 3 problem cards render fully with no overlap (card0 bottom 778 → card1 top 794; card1 bottom 1128 → card2 top 1145) and complete text including 'GAP · 0X · CLOSED BY VALUEVADE' footers. Screenshots confirm each card is fully readable when scrolled into view. Desktop @1920x1080: section min-height=1836px (~170vh), inner position=sticky, overflow=hidden, bg-scene display=block — parallax pin behavior preserved (regression clean). Forgot Password: /login button now navigates to /forgot-password (no toast); submitting info@valuevade.com and nonexistent-xyz123@example.com both land on the SAME generic 'Check your inbox' sent-state (no account enumeration leak). Back-to-Sign-In link routes back to /login. Reset Password: visiting /reset-password directly shows the verifying spinner briefly, then falls back to the 'Link expired' invalid-state; 'Request a new link' button navigates to /forgot-password. Regression: admin login info@valuevade.com / aa1aa2sam3 succeeds and lands on /dashboard.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "IMPORTANT (config, cannot verify from code): Confirm Supabase Auth → URL Configuration → 'Redirect URLs' allow-list includes BOTH https://pivot-power-1.preview.emergentagent.com/reset-password AND https://valuevade.com/reset-password so the emailed recovery link actually lands on the right page. This must be done in the Supabase dashboard.",
+    "The full happy-path (email link → PASSWORD_RECOVERY session → new password → login) requires actually reading the info@valuevade.com inbox and was NOT executed to avoid changing production credentials. Recommend a manual round-trip once redirect URLs are confirmed in the Supabase dashboard.",
+    "Minor UX consideration (not a bug): on /reset-password direct-visit, the 'verifying' spinner shows for ~2.5s before falling back — acceptable, but if you want faster feedback, consider also inspecting URL hash for absence of 'access_token' / 'type=recovery' to short-circuit the wait."
+  ],
+  "critical_code_review_comments": [
+    "ResetPasswordPage.jsx: the 2500ms timeout is a reasonable fallback but if PASSWORD_RECOVERY event fires AFTER the timeout (slow networks), the invalid-state could show incorrectly. Consider also checking session presence continuously or extending the timer to 4-5s.",
+    "ForgotPasswordPage: error is displayed verbatim from supabase (setError(err.message)) — for the anti-enumeration promise to hold end-to-end, consider swallowing rate-limit or user-not-found errors and always showing the sent-state (currently we did not observe any such error since Supabase resetPasswordForEmail is intentionally generic, but be aware).",
+    "ProblemSection.js fix is clean and minimal; lg: prefix strategy correctly leaves desktop untouched."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100% (13/13 assertions)"},
+  "test_credentials": "info@valuevade.com / aa1aa2sam3 (admin) — used for login regression and forgot-password email trigger. NOT changed.",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Mobile mid-scroll screenshots at /app/.screenshots/mobile_problem_card{0,1,2}.png visually confirm no clipping. All new data-testids (forgot-password-*, reset-password-*) verified. Only outstanding item is Supabase dashboard redirect-URL allow-list config which cannot be tested from inside the app.",
+  "rca of the issue": "Original mobile clipping RCA (confirmed fixed): outer <section> had inline minHeight:170vh always-on, and inner wrapper was always sticky top-0 h-screen overflow-hidden. On mobile the grid stacks vertically (~1450px of cards), which exceeded the 100vh sticky container → overflow-hidden clipped everything below the fold. Fix: gate sticky/overflow-hidden/min-height-170vh + 3D scene behind lg: breakpoint. Verified mobile now uses position:relative, overflow:visible, section height grows naturally (1671px) to fit all cards + copy."
+}

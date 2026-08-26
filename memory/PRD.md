@@ -696,3 +696,13 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - Kept all NISM Series XV mentions (only CFI was in scope).
 - Also patched the 3 live Supabase `faqs` DB rows (source of truth for GET /api/faqs; the frontend faqs.js file is only an offline fallback) that still had CFI text, and removed the stray "cfi" tag.
 - Verified via grep (frontend source) + supabase REST query (master_paths/modules/sessions/module_projects/capstones + faqs table) — zero remaining CFI hits anywhere live. Only /app/frontend/src/components/landing/LandingPageV2.archived.jsx still mentions CFI — confirmed dead/unimported file, left as-is.
+
+## 2026-08-26 — Fixed mobile Problem-section clipping + built real Forgot/Reset Password flow
+- BUG FIX (production, mobile only): ProblemSection.js used a desktop-only scroll-hijack pattern (`sticky top-0 h-screen overflow-hidden` + `minHeight:170vh` always-on) that clipped the 3 stacked cards on phone screens. Fixed by gating sticky/overflow-hidden/min-height/3D-bg-scene behind `lg:` breakpoint — mobile now flows naturally, desktop parallax pin unchanged (regression-clean, verified).
+- NEW FEATURE: Forgot/Reset Password using Supabase native auth email (user chose this over custom email provider).
+  - LoginPage.jsx: "Forgot Password?" now routes to /forgot-password instead of a stub toast.
+  - New /app/frontend/src/components/ForgotPasswordPage.jsx: calls supabase.auth.resetPasswordForEmail(), generic "check your inbox" state regardless of whether account exists (no enumeration leak).
+  - New /app/frontend/src/components/ResetPasswordPage.jsx: listens for PASSWORD_RECOVERY auth event, then supabase.auth.updateUser({password}); falls back to an "expired link" state after 4s if no recovery session found.
+  - App.js: /forgot-password wrapped in PublicOnlyRoute (like /login); /reset-password intentionally NOT wrapped (Supabase creates a temp session during recovery which would otherwise get redirected away by PublicOnlyRoute).
+- Tested via testing_agent: 13/13 assertions passed (mobile no-clip, desktop regression, forgot-password anti-enumeration, invalid reset-link fallback, admin login regression). Report: /app/test_reports/iteration_58.json
+- ACTION NEEDED FROM USER (cannot be done from code): In the Supabase dashboard → Authentication → URL Configuration → Redirect URLs, add both `https://valuevade.com/reset-password` and the current preview origin + `/reset-password`. Without this, the emailed reset link will not land on the app's reset-password page. Full email-link happy path was not executed end-to-end (would require reading the admin inbox and risks changing real prod credentials) — only the send + invalid-link fallback were verified.

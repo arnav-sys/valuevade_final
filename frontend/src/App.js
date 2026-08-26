@@ -34,6 +34,8 @@ import lazyWithRetry from "@/utils/lazyWithRetry";
 import LandingPage from "@/components/LandingPage";
 import SignupPage from "@/components/SignupPage";
 import LoginPage from "@/components/LoginPage";
+import ForgotPasswordPage from "@/components/ForgotPasswordPage";
+import ResetPasswordPage from "@/components/ResetPasswordPage";
 import AdminDashboard from "@/components/AdminDashboard";
 import NotFoundPage from "@/components/NotFoundPage";
 
@@ -178,6 +180,8 @@ function App() {
                   <Route path="/signup" element={<Navigate to="/login" replace />} />
                   <Route path="/signuproute1" element={<Navigate to="/login" replace />} />
                   <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
+                  <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPasswordPage /></PublicOnlyRoute>} />
+                  <Route path="/reset-password" element={<ResetPasswordPage />} />
                   <Route path="/referral" element={<AdminDashboard />} />
                   <Route path="/waitlist-arnav" element={<AdminDashboard />} />
 

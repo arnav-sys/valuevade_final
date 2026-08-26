@@ -79,14 +79,13 @@ export default function ProblemSection() {
   return (
     <section
       ref={lockRef}
-      className="relative bg-[var(--bg-primary)]"
+      className="relative bg-[var(--bg-primary)] lg:min-h-[170vh]"
       data-testid="problem-section"
-      style={{ minHeight: '170vh' }}
     >
-      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
+      <div className="relative lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden flex items-center py-16 lg:py-0">
         {/* Terminal grid + faint 3D scene — dialled back */}
         <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-40" aria-hidden="true" />
-        <div className="absolute inset-0 z-0 pointer-events-none" data-testid="problem-bg-wrap" style={{ opacity: 0.5 }}>
+        <div className="absolute inset-0 z-0 pointer-events-none hidden lg:block" data-testid="problem-bg-wrap" style={{ opacity: 0.5 }}>
           {mountScene && (
             <Suspense fallback={null}>
               <ProblemAssemblyScene progress={progress} />
