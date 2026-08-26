@@ -24,7 +24,6 @@ const KIND_FROM_TITLE = {
   'Mock Interviews': 'mic',
   'Resume': 'document',
   'NISM': 'trophy',
-  'CFI Certifications': 'trophy',
   'Gamification': 'trophy',
   'XP': 'trophy',
 };

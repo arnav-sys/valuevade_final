@@ -690,3 +690,9 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - No backend changes needed — DELETE /api/admin/modules/{id}, DELETE /api/admin/sessions/{id}, PATCH .../order_index already existed from earlier phases.
 - File: /app/frontend/src/components/admin/CurriculumTab.jsx
 - Tested via testing_agent: 5/5 flows passed (delete module w/ cascade preview using throwaway ZZZ-named module, delete session, up/down reorder + restore on M1, editor tabs regression). Report: /app/test_reports/iteration_57.json
+
+## 2026-08-26 — Removed all CFI mentions site-wide
+- Removed "CFI certification"/"CFI prep" text from: faqs.js, WhoBuiltThisSection.jsx, FeaturesSection.js, HeroSection.js, CourseDetailsPage.jsx (incl. removing the whole CFI card, grid-cols-3 -> grid-cols-2), ComparisonSection.js, FeatureMicro3D.jsx icon map, jsonLd.js, TermsPage.jsx.
+- Kept all NISM Series XV mentions (only CFI was in scope).
+- Also patched the 3 live Supabase `faqs` DB rows (source of truth for GET /api/faqs; the frontend faqs.js file is only an offline fallback) that still had CFI text, and removed the stray "cfi" tag.
+- Verified via grep (frontend source) + supabase REST query (master_paths/modules/sessions/module_projects/capstones + faqs table) — zero remaining CFI hits anywhere live. Only /app/frontend/src/components/landing/LandingPageV2.archived.jsx still mentions CFI — confirmed dead/unimported file, left as-is.

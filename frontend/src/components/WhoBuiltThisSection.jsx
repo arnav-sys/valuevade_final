@@ -95,13 +95,12 @@ export default function WhoBuiltThisSection() {
               </span>
             </div>
             <p className="text-[13.5px] lg:text-[14.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-              The curriculum maps to the NISM Series XV (Research Analyst) exam syllabus and CFI
-              certification content — so what you learn is checked against external standards, not
-              just our own.
+              The curriculum maps to the NISM Series XV (Research Analyst) exam syllabus — so
+              what you learn is checked against external standards, not just our own.
             </p>
             <div className="mt-5 pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
               <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
-                NISM SERIES XV · CFI
+                NISM SERIES XV
               </span>
               <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-accent-pink)]">
                 EXTERNALLY ANCHORED

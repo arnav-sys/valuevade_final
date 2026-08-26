@@ -44,7 +44,7 @@ export default function TermsPage() {
             Valuevade is a self-paced online learning platform. Our flagship product is
             the Equity Research Analyst Program: 21 modules, 239 hands-on sessions on
             Indian companies, 3 capstone projects, an AI tutor (Pari), AI mock interviews,
-            NISM Series XV and CFI certification preparation, and a downloadable
+            NISM Series XV certification preparation, and a downloadable
             Certificate of Completion. The first session is free; the full programme
             costs ₹1,500 as a one-time payment.
           </p>

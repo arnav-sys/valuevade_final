@@ -234,7 +234,7 @@ export default function HeroSection() {
               className="font-jetbrains text-[11px] uppercase tracking-[0.18em] text-[var(--color-text-faint)] mb-6"
               data-testid="hero-trust-strip"
             >
-              NISM SERIES XV + CFI PREP
+              NISM SERIES XV PREP
               <span className="mx-2.5 opacity-40">|</span>
               ONE-TIME ₹1,500
               <span className="mx-2.5 opacity-40">|</span>

@@ -164,13 +164,13 @@ const COURSE_DETAILS_FAQS = [
   { q: 'What kind of simulations does the course have?',
     a: "239 hands-on simulations — one per session — across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet, auto-graded), branch-based decision scenarios, and applied reading with quizzes." },
   { q: 'Is the certificate recognised?',
-    a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certifications — the curriculum prepares you for the SEBI-established NISM Series XV exam and for CFI certifications — and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
+    a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certification — the curriculum prepares you for the SEBI-established NISM Series XV exam — and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
   { q: 'What happens if I pause for a few weeks?',
     a: "Nothing is lost. Progress, streaks, XP, badges, doubt history and your study plan are all persisted, and access is lifetime — you pick up exactly where you left off. The Study Planner can reschedule your remaining sessions around a new deadline." },
   { q: 'Will this course get me a finance job?',
-    a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series XV and CFI preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
+    a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series XV preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
   { q: 'Is Valuevade worth it?',
-    a: "For ₹1,500 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV and CFI certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
+    a: "For ₹1,500 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
   { q: 'How is Valuevade different from WallStreet School?',
     a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹1,500. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
   { q: 'How is Valuevade different from Imarticus or Upgrad?',
@@ -792,7 +792,7 @@ export default function CourseDetailsPage() {
             <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
               Certificate & external standards
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {[
                 {
                   title: 'Valuevade Certificate of Completion',
@@ -803,11 +803,6 @@ export default function CourseDetailsPage() {
                   title: 'NISM Series XV (Research Analyst)',
                   body: 'The curriculum maps to the exam syllabus so you can sit the SEBI-established NISM exam with confidence. Valuevade prepares you for it; the NISM certificate itself is earned by passing NISM\'s exam.',
                   icon: GraduationCap, tone: 'accent-purple',
-                },
-                {
-                  title: 'CFI certification prep',
-                  body: 'The curriculum also prepares you for CFI certifications — same principle: Valuevade prepares you, the issuing body certifies you.',
-                  icon: CheckCircle2, tone: 'accent-pink',
                 },
               ].map((c, i) => {
                 const Icon = c.icon;

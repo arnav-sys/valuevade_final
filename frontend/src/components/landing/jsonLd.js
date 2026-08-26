@@ -34,7 +34,7 @@ export function buildCourseJsonLd(courseUrl) {
     '@type': 'Course',
     name: 'Equity Research Analyst Program',
     description:
-      'Self-paced online equity research and financial modelling course for Indian finance students: 21 modules, 239 hands-on sessions on Indian companies, 3 capstone projects, NISM Series XV and CFI certification preparation, and a certificate of completion.',
+      'Self-paced online equity research and financial modelling course for Indian finance students: 21 modules, 239 hands-on sessions on Indian companies, 3 capstone projects, NISM Series XV certification preparation, and a certificate of completion.',
     url: courseUrl,
     provider: {
       '@type': 'EducationalOrganization',

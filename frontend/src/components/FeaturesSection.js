@@ -76,8 +76,8 @@ const features = [
   },
   {
     idx: 'FT-09', tag: 'CERT', icon: Award,
-    title: 'NISM + CFI certification prep, certificate included',
-    body: "Structured preparation for the NISM Series XV (Research Analyst) exam and CFI certifications, mapped into the curriculum — plus Valuevade's own Certificate of Completion when you finish all three capstones.",
+    title: 'NISM certification prep, certificate included',
+    body: "Structured preparation for the NISM Series XV (Research Analyst) exam, mapped into the curriculum — plus Valuevade's own Certificate of Completion when you finish all three capstones.",
     span: 'col-span-12 sm:col-span-6 lg:col-span-4',
     size: 'medium',
     accent: 'var(--color-accent-purple)',

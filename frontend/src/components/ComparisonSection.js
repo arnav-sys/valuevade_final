@@ -19,7 +19,7 @@ const ROWS = [
   { label: 'AI mock interviews + feedback',    vv: true, v: ['manual', 'manual', false, 'manual'] },
   { label: 'Simulations',                      vv: '239, auto-graded, Indian companies', v: ['partial', 'partial', false, 'partial'] },
   { label: 'Job-ready portfolio projects',     vv: true, v: ['partial', false, false, 'partial'] },
-  { label: 'NISM + CFI certification prep',    vv: 'NISM Series XV + CFI prep', v: ['partial', 'extra cost', false, 'partial'] },
+  { label: 'NISM certification prep',           vv: 'NISM Series XV prep', v: ['partial', 'extra cost', false, 'partial'] },
   { label: 'Resume + LinkedIn guide',          vv: true, v: [false, false, false, 'partial'] },
 ];
 
