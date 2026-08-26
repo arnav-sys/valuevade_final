@@ -48,6 +48,14 @@ api_router = APIRouter(prefix="/api")
 security = HTTPBearer()
 
 
+@app.get("/health")
+async def _root_health_liveness():
+    """Root-level (non-/api) liveness probe for the platform's pod-level
+    health check, which hits the container directly and does not go
+    through the /api ingress prefix. Mirrors /api/health."""
+    return {"status": "ok"}
+
+
 def generate_referral_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 

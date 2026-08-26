@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Send, X, Loader2, AlertCircle, Sparkles } from 'lucide-react';
+import { Send, X, Loader2, AlertCircle, Sparkles, RotateCcw } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import AvatarPersona from './AvatarPersona';
 import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
@@ -143,10 +143,14 @@ export default function DoubtsSession({
     return () => { if (autoCloseRef.current) clearTimeout(autoCloseRef.current); };
   }, [sessionEnded, onClose]);
 
-  const send = useCallback(async () => {
-    const msg = input.trim();
+  const [lastFailedMsg, setLastFailedMsg] = useState(null);
+
+  const send = useCallback(async (overrideMsg) => {
+    const raw = typeof overrideMsg === 'string' ? overrideMsg : input;
+    const msg = raw.trim();
     if (!msg || msg.length < 5 || pending || sessionEnded) return;
     setInput('');
+    setLastFailedMsg(null);
     setMessages((m) => [...m, { role: 'user', content: msg }]);
     setPending(true);
     try {
@@ -185,6 +189,7 @@ export default function DoubtsSession({
             content: (sData?.detail?.message || sData?.detail || 'Could not start doubt session.'),
             isError: true,
           }]);
+          setLastFailedMsg(msg);
           setPending(false);
           return;
         }
@@ -220,6 +225,7 @@ export default function DoubtsSession({
           content: status >= 500 ? "Pari hit a snag — please try again." : (data?.detail || 'Something went wrong.'),
           isError: true,
         }]);
+        setLastFailedMsg(msg);
       } else {
         setMessages((m) => [...m, {
           role: 'assistant',
@@ -237,12 +243,25 @@ export default function DoubtsSession({
         }
       }
     } catch (e) {
-      setMessages((m) => [...m, { role: 'assistant', content: 'Network error — try again.', isError: true }]);
+      const isAuthErr = e?.message === 'not_authenticated';
+      setMessages((m) => [...m, {
+        role: 'assistant',
+        content: isAuthErr
+          ? 'Your session expired — refresh the page and try again.'
+          : 'Network error — try again.',
+        isError: true,
+      }]);
+      setLastFailedMsg(msg);
     } finally {
       setPending(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [input, pending, sessionEnded, sessionId, phase, courseSessionId, moduleCode, attemptContext, currentFocus, firstAskSent]);
+
+  const retry = useCallback(() => {
+    if (lastFailedMsg) send(lastFailedMsg);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lastFailedMsg, send]);
 
   const handleEnd = useCallback(async () => {
     if (sessionId && !sessionEnded) {
@@ -341,6 +360,15 @@ export default function DoubtsSession({
               {messages.map((m, i) => (
                 <ChatBubble key={i} {...m} />
               ))}
+              {lastFailedMsg && !pending && (
+                <button
+                  onClick={retry}
+                  className="self-start inline-flex items-center gap-1.5 text-xs text-[var(--color-primary)] hover:underline font-bricolage px-1"
+                  data-testid="doubts-retry-button"
+                >
+                  <RotateCcw size={12} /> Retry
+                </button>
+              )}
               {pending && (
                 <div className="self-start text-xs text-[var(--color-text-muted)] flex items-center gap-2 px-1">
                   <Loader2 size={12} className="animate-spin" /> Thinking…

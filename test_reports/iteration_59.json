@@ -1,0 +1,59 @@
+{
+  "summary": "Tested the Ask Pari Doubts fix (retry UX + /health) on preview. The DoubtsSession modal opens, both dashboard-pill and in-modal Pari avatars render correctly (pari_waving.png + pari_listening.png, 1024x1024, no broken image — the user's screenshot broken-image icon reproduces NEITHER on the pill nor inside the modal in this env). /api/health returns 200 {\"status\":\"ok\"} as before, and the backend /health route works on port 8001 directly (pod probe path — verified with localhost curl). However a CRITICAL REGRESSION was introduced by this fix: clicking the Send button (or, in offline test, sending any message) throws an uncaught 'TypeError: (intermediate value)(intermediate value)(intermediate value).trim is not a function' at bundle.js line matching DoubtsSession.jsx send() `const msg = (overrideMsg ?? input).trim();`. Because `send` is now attached as `onClick={send}`, React passes the click MouseEvent as first arg, so `overrideMsg = MouseEvent` and .trim() blows up. Result: happy-path send is BROKEN (no assistant reply), and offline path can't reach the new retry state either (retry button never renders). Root cause + one-line fix noted in action_items. Retry button test could not be completed end-to-end because the send() crash short-circuits everything.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "GET /health (external via REACT_APP_BACKEND_URL)", "issue": "Returns the frontend HTML (HTTP 200), NOT the backend {\"status\":\"ok\"} — because the platform ingress only forwards /api/* to :8001; /health hits the frontend at :3000. Pod liveness probe (which hits :8001 directly) DOES work — curl http://localhost:8001/health returns {\"status\":\"ok\"}. Not a bug but worth documenting: the review request's implied external-URL check of /health cannot actually reach the backend route in this environment."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "DoubtsSession.jsx send()",
+        "issue": "REGRESSION FROM THIS FIX: `send = useCallback(async (overrideMsg) => { const msg = (overrideMsg ?? input).trim(); ... })` is passed directly as `onClick={send}` on the Send button (line ~408). React passes the MouseEvent as the first arg, so overrideMsg is a MouseEvent object, `(overrideMsg ?? input)` returns the event, and `.trim()` throws TypeError. Every click of the Send button now crashes with an Uncaught runtime error; no /api/doubts/start or /api/doubts/ask call is fired, no user or assistant bubble appears from the click path (Enter-key path is unaffected because the onKeyDown handler explicitly calls `send()` with no args).",
+        "selector": "[data-testid='doubts-send']",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "DoubtsSession.jsx retry()",
+        "issue": "Same shape as above — `retry` is defined as `useCallback(() => { if (lastFailedMsg) send(lastFailedMsg); })` which is fine, but `<button onClick={retry}>` also passes a MouseEvent → retry itself is fine (it doesn't touch the arg), and it then calls send(lastFailedMsg) with a string, so retry path would work IF a retry state could ever be reached. Given the send() crash above, retry state is currently unreachable via button-click. Enter-key send + retry SHOULD still work end-to-end (unverified — blocked by same crash on any subsequent Send button click).",
+        "selector": "[data-testid='doubts-retry-button']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Ask Pari happy path (click Send)",
+        "issue": "Send button click crashes before any network call; no assistant reply arrives; ChatBubble for the user's message DOES render (setMessages fires before .trim in the code, wait — actually setInput('') and setMessages(m => [...m, {role:'user', content: msg}]) come AFTER the .trim so they never run either). Screenshot 42 shows the modal with only the placeholder 'Ask me anything about this.' state and no bubbles after clicking Send.",
+        "affected_selectors": ["[data-testid='doubts-send']", "[data-testid='doubts-msg-user']", "[data-testid='doubts-msg-assistant']"]
+      },
+      {
+        "flow": "Ask Pari offline retry UX (the whole point of this fix)",
+        "issue": "Could not be validated end-to-end. Because the Send-button click crashes with the .trim TypeError BEFORE fetch() runs, the try/catch never fires, `lastFailedMsg` never gets set, and the Retry button never renders. The new retry UX is currently DEAD CODE via the button click path. Enter-key submission may still exercise it correctly but was not testable because the first happy-path send has to succeed for a session to be provisioned before offline testing makes sense.",
+        "affected_selectors": ["[data-testid='doubts-retry-button']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "CRITICAL FIX in /app/frontend/src/components/tutor/DoubtsSession.jsx: The Send button and retry button pass a MouseEvent to `send`, which then does `(overrideMsg ?? input).trim()` and crashes. Change either the send handler signature or the button wiring. Simplest one-line fix on line ~148: `const send = useCallback(async (overrideMsg) => { const raw = typeof overrideMsg === 'string' ? overrideMsg : input; const msg = raw.trim(); ... }` OR change the button to `onClick={() => send()}` (line ~408) — same for the retry button `onClick={() => retry()}`. Recommend the signature guard (safer + future-proof).",
+    "Re-verify offline → Retry → online flow end-to-end after the fix; also verify Enter-key send still works (should already, but confirm).",
+    "Consider adding a smoke test that mounts DoubtsSession and clicks Send once — this would have caught the regression immediately.",
+    "(Optional) The external-URL /health probe cannot reach the new backend route because the ingress only forwards /api/*. If the RCA assumed external readiness probing, this fix only helps the pod-internal liveness path on :8001 (which does work). Confirm with platform team which probe path was 404'ing."
+  ],
+  "critical_code_review_comments": [
+    "DoubtsSession.jsx line 148: `send = useCallback(async (overrideMsg) => { const msg = (overrideMsg ?? input).trim(); ... })` — the parameter should either be validated (typeof === 'string') or the callers should wrap: `onClick={() => send()}`. This is a classic React footgun.",
+    "The dependency array for `send` useCallback (line 258) omits `attemptContext` and a few other referenced values — ESLint disable line is in place but consider whether stale-closure behavior on those props is acceptable when the modal stays open across attemptContext updates.",
+    "AvatarPersona.jsx is unchanged and correctly resolves /tutor/pari_<pose>.png. No 404s observed for pari_waving, pari_listening, or pari_idle in this test. The broken-image icon reported by the user is not reproducible in the current preview build — likely a stale CDN/browser cache in the user's session or a transient pod-restart 404 (which is what this fix's /health addition is meant to prevent going forward).",
+    "Backend server.py root-level `@app.get('/health')` route is correctly defined and returns {\"status\":\"ok\"} when hit on :8001 directly. This is only useful for pod-internal probes — external traffic through the platform ingress still hits the frontend for /health. That's fine, just document."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "20% (avatar images verified OK; retry UX blocked by send() crash regression)"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "none",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "After E1 patches the send() TypeError, re-test: (1) click-Send happy path, (2) offline → Network error bubble + Retry button visible, (3) click Retry after going online → same message re-sent, no re-typing, retry button disappears on success. Also check auth-expired path shows the new 'Your session expired — refresh the page and try again.' copy (would require expiring a token, non-trivial in preview). Avatars and /api/health regression are green — no need to re-verify.",
+  "rca of the issue": "The fix added `send = useCallback(async (overrideMsg) => { const msg = (overrideMsg ?? input).trim(); ... })` and a new `retry` callback, but the Send button was left wired as `onClick={send}`. React's onClick invokes the handler with a synthetic MouseEvent as arg 0, so `overrideMsg` is that MouseEvent, `overrideMsg ?? input` returns the event (nullish-coalescing only defaults on null/undefined), and `.trim()` throws. Reproduction: open dashboard → click Pari pill → modal opens → type any 5+ char message → click Send button (NOT Enter key) → 'Uncaught runtime errors: TypeError: (intermediate value)(intermediate value)(intermediate value).trim is not a function' overlay appears; no user bubble, no /api/doubts/start call. Mitigation: change line ~408 to `onClick={() => send()}` and line ~364 to `onClick={() => retry()}`, OR guard inside send() with `const raw = typeof overrideMsg === 'string' ? overrideMsg : input;`."
+}
