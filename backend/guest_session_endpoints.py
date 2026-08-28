@@ -1,7 +1,10 @@
 """
 Public (no-auth) endpoints that serve content for the two admin-marked free
-trial sessions.  These never require a Supabase JWT — they gate on
-is_free_session=TRUE or is_preview_session=TRUE in master_sessions.
+trial sessions.  These never require a Supabase JWT.
+
+Migration-resilient: every query falls back to base columns when the
+is_free_session / is_preview_session / video_duration_minutes / difficulty
+columns don't exist yet in the DB.
 """
 
 from __future__ import annotations
@@ -19,15 +22,16 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
     _urlparse_quote = deps["urlparse_quote"]
     _json           = deps["json"]
 
-    # ── helpers ──────────────────────────────────────────────────────────────
-
     import re as _re
-    _UUID_RE = _re.compile(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', _re.I)
+    _UUID_RE = _re.compile(
+        r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', _re.I
+    )
 
     def _is_valid_uuid(val: str) -> bool:
         return bool(_UUID_RE.match(val))
 
     def _get_free_session(session_id: str) -> dict:
+        """Fetch a session row. Falls back to base columns if new ones are missing."""
         if not _is_valid_uuid(session_id):
             raise HTTPException(status_code=404, detail="Session not found")
         try:
@@ -38,6 +42,7 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
                 "&limit=1"
             ) or []
         except Exception:
+            # Columns from migration 0041 don't exist yet — use base select
             rows = _supabase_get(
                 f"master_sessions?id=eq.{_urlparse_quote(session_id)}"
                 "&select=id,title,description,order_index,module_id,lecture_url"
@@ -47,27 +52,24 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
             raise HTTPException(status_code=404, detail="Session not found")
         return rows[0]
 
-    def _get_preview_session(session_id: str) -> dict:
-        try:
-            rows = _supabase_get(
-                f"master_sessions?id=eq.{_urlparse_quote(session_id)}"
-                "&select=id,title,description,lecture_url,video_duration_minutes,"
-                "is_preview_session&limit=1"
-            ) or []
-        except Exception:
-            rows = _supabase_get(
-                f"master_sessions?id=eq.{_urlparse_quote(session_id)}"
-                "&select=id,title,description,lecture_url&limit=1"
-            ) or []
-        if not rows:
-            raise HTTPException(status_code=404, detail="Session not found")
-        return rows[0]
+    def _check_free(sess: dict) -> None:
+        """
+        Guard: block if the DB has the is_free_session column AND it is
+        explicitly False.  When the column is absent (migration not applied),
+        allow through so the free-trial UX still works.
+        """
+        if "is_free_session" in sess and not sess["is_free_session"]:
+            raise HTTPException(
+                status_code=403,
+                detail="This session is not available for free trial."
+            )
 
     def _parse_content(raw) -> object:
-        """Content may be stored as JSON string or already parsed object."""
         if isinstance(raw, str):
-            try: return _json.loads(raw)
-            except Exception: return raw
+            try:
+                return _json.loads(raw)
+            except Exception:
+                return raw
         return raw
 
     # ── public preview-session listing ───────────────────────────────────────
@@ -102,16 +104,14 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
 
     @api_router.get("/free-session/{session_id}")
     async def guest_session_info(session_id: str):
-        """Return session metadata for a free-trial session (no auth required)."""
         sess = _get_free_session(session_id)
-        if not sess.get("is_free_session"):
-            raise HTTPException(status_code=403, detail="This session is not available for free trial.")
+        _check_free(sess)
 
-        # Fetch module title for display
         module_title = ""
         if sess.get("module_id"):
             mod_rows = _supabase_get(
-                f"master_modules?id=eq.{_urlparse_quote(sess['module_id'])}&select=title&limit=1"
+                f"master_modules?id=eq.{_urlparse_quote(sess['module_id'])}"
+                "&select=title&limit=1"
             ) or []
             module_title = (mod_rows[0].get("title") or "") if mod_rows else ""
 
@@ -134,11 +134,8 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
 
     @api_router.get("/free-session/{session_id}/notes")
     async def guest_session_notes(session_id: str):
-        """Return notes cards for a free-trial session (no auth required).
-        pdf_document cards are excluded (require auth to stream from storage)."""
         sess = _get_free_session(session_id)
-        if not sess.get("is_free_session"):
-            raise HTTPException(status_code=403, detail="This session is not available for free trial.")
+        _check_free(sess)
 
         cards = _supabase_get(
             f"master_notes_cards?session_id=eq.{_urlparse_quote(session_id)}"
@@ -149,7 +146,7 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
         parsed = []
         for c in cards:
             if c.get("card_type") == "pdf_document":
-                continue  # skip file cards
+                continue
             content = _parse_content(c.get("content") or "")
             parsed.append({
                 "id": c["id"],
@@ -165,24 +162,20 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
 
     @api_router.get("/free-session/{session_id}/quiz")
     async def guest_session_quiz(session_id: str):
-        """Return quiz questions WITH correct_answer_index for the guest experience.
-        Grading is done client-side (no persistence required)."""
         sess = _get_free_session(session_id)
-        if not sess.get("is_free_session"):
-            raise HTTPException(status_code=403, detail="This session is not available for free trial.")
+        _check_free(sess)
 
-        # Master sessions link to quiz questions via session_id
         try:
             questions = _supabase_get(
                 f"master_quiz_questions?session_id=eq.{_urlparse_quote(session_id)}"
-                "&select=id,question_text,options,correct_answer_index,explanation,difficulty"
+                "&select=id,question,options,correct_answer_index,explanation,difficulty"
                 "&order=order_index&limit=20"
             ) or []
         except Exception:
             questions = _supabase_get(
                 f"master_quiz_questions?session_id=eq.{_urlparse_quote(session_id)}"
-                "&select=id,question_text,options,correct_answer_index,explanation"
-                "&order=order_index&limit=20"
+                "&select=id,question,options,correct_answer_index,explanation"
+                "&limit=20"
             ) or []
 
         parsed = []
@@ -190,7 +183,7 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
             opts = _parse_content(q.get("options") or [])
             parsed.append({
                 "id": q["id"],
-                "question_text": q.get("question_text") or "",
+                "question_text": q.get("question") or q.get("question_text") or "",
                 "options": opts if isinstance(opts, list) else [],
                 "correct_answer_index": q.get("correct_answer_index"),
                 "explanation": q.get("explanation") or "",
@@ -203,23 +196,20 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
 
     @api_router.get("/free-session/{session_id}/simulation")
     async def guest_session_simulation(session_id: str):
-        """Return simulation data for a free-trial session (no auth required).
-        Returns sim_type + config so the frontend can render the appropriate sim."""
         sess = _get_free_session(session_id)
-        if not sess.get("is_free_session"):
-            raise HTTPException(status_code=403, detail="This session is not available for free trial.")
+        _check_free(sess)
 
         try:
             sims = _supabase_get(
                 f"master_simulations?session_id=eq.{_urlparse_quote(session_id)}"
                 "&select=id,sim_type,title,config,difficulty"
-                "&order=order_index&limit=1"
+                "&limit=1"
             ) or []
         except Exception:
             sims = _supabase_get(
                 f"master_simulations?session_id=eq.{_urlparse_quote(session_id)}"
                 "&select=id,sim_type,title,config"
-                "&order=order_index&limit=1"
+                "&limit=1"
             ) or []
 
         if not sims:
