@@ -15,7 +15,8 @@ import InterviewEditor from './InterviewEditor';
 import VideoEditor from './VideoEditor';
 import CapstonesEditor from './CapstonesEditor';
 import ModuleProjectModal from './ModuleProjectModal';
-import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown, Eye, Unlock } from 'lucide-react';
+import MockExamModal from './MockExamModal';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown, Eye, Unlock, ClipboardList } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -48,6 +49,7 @@ export default function CurriculumTab() {
   const [activeTab, setActiveTab] = useState('notes'); // notes | quiz | interview | video
   const [viewMode, setViewMode] = useState('modules'); // 'modules' | 'capstones'
   const [projModule, setProjModule] = useState(null);  // { id, title } when the modal is open
+  const [examModule, setExamModule] = useState(null);  // { id, title } for mock exam modal
   const [confirm, setConfirm] = useState(null);        // { kind, id, name, impact? }
 
   const reloadModules = async () => {
@@ -310,6 +312,14 @@ export default function CurriculumTab() {
                   >
                     <Folder size={11} />
                   </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setExamModule({ id: m.id, title: m.title }); }}
+                    title="Edit mock exam"
+                    data-testid={`edit-mock-exam-${m.id}`}
+                    className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]"
+                  >
+                    <ClipboardList size={11} />
+                  </button>
                   <button onClick={(e) => { e.stopPropagation(); setEditingMod(m.id); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]" data-testid={`edit-module-${m.id}`}>
                     <Pencil size={11} />
                   </button>
@@ -541,6 +551,15 @@ export default function CurriculumTab() {
         moduleId={projModule.id}
         moduleTitle={projModule.title}
         onClose={() => setProjModule(null)}
+      />
+    )}
+
+    {/* Mock exam modal */}
+    {examModule && (
+      <MockExamModal
+        moduleId={examModule.id}
+        moduleTitle={examModule.title}
+        onClose={() => setExamModule(null)}
       />
     )}
     </div>

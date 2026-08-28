@@ -66,6 +66,9 @@ const SessionCompletePage = lazyWithRetry(() => import("@/components/SessionComp
 const ModuleProjectStartPage = lazyWithRetry(() => import("@/components/ModuleProjectStartPage"));
 const ModuleProjectTasksPage = lazyWithRetry(() => import("@/components/ModuleProjectTasksPage"));
 const ModuleProjectCompletePage = lazyWithRetry(() => import("@/components/ModuleProjectCompletePage"));
+const MockExamStartPage = lazyWithRetry(() => import("@/components/MockExamStartPage"));
+const MockExamPage = lazyWithRetry(() => import("@/components/MockExamPage"));
+const MockExamResultPage = lazyWithRetry(() => import("@/components/MockExamResultPage"));
 const CapstoneStartPage = lazyWithRetry(() => import("@/components/CapstoneStartPage"));
 const CapstonesListPage = lazyWithRetry(() => import("@/components/CapstonesListPage"));
 const CapstoneTasksPage = lazyWithRetry(() => import("@/components/CapstoneTasksPage"));
@@ -248,6 +251,10 @@ function App() {
                   <Route path="/module/:moduleId/project/start" element={<Learning><ModuleProjectStartPage /></Learning>} />
                   <Route path="/module/:moduleId/project/tasks" element={<Learning><ModuleProjectTasksPage /></Learning>} />
                   <Route path="/module/:moduleId/project/complete" element={<Learning><ModuleProjectCompletePage /></Learning>} />
+
+                  <Route path="/module/:moduleId/mock-exam/start" element={<Learning><MockExamStartPage /></Learning>} />
+                  <Route path="/module/:moduleId/mock-exam" element={<Learning><MockExamPage /></Learning>} />
+                  <Route path="/module/:moduleId/mock-exam/result" element={<Learning><MockExamResultPage /></Learning>} />
 
                   <Route path="/capstones" element={<Learning><CapstonesListPage /></Learning>} />
                   <Route path="/capstone/start" element={<Learning><CapstoneStartPage /></Learning>} />

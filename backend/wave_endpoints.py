@@ -132,6 +132,29 @@ class _AdminModuleProjectBody(BaseModel):
     tasks: Optional[Any] = None                    # jsonb blob
 
 
+class _AdminMockExamBody(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    time_limit_minutes: Optional[int] = None
+    pass_percentage: Optional[float] = None
+
+
+class _AdminMockExamQuestionBody(BaseModel):
+    exam_id: Optional[str] = None
+    question: Optional[str] = None
+    options: Optional[Any] = None
+    correct_answer_index: Optional[int] = None
+    explanation: Optional[str] = None
+    difficulty: Optional[str] = None
+    topic_tag: Optional[str] = None
+
+
+class _MockExamSubmitBody(BaseModel):
+    attempt_id: str
+    answers: Any        # list of ints (selected option index per question, -1 = skipped)
+    time_taken_seconds: Optional[int] = None
+
+
 class _ErrorReportBody(BaseModel):
     signature: str
     error_message: str
@@ -2560,6 +2583,261 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 )
             raise HTTPException(status_code=500, detail=f"delete failed: {msg[:200]}")
         return {"ok": True}
+
+    # ─── Mock Exam Admin endpoints ─────────────────────────────────────────
+
+    @api_router.get("/admin/mock-exams/{module_id}")
+    async def admin_mock_exam_get(module_id: str, user=Depends(_get_supabase_user)):
+        """Get (or auto-create) the mock exam for a module."""
+        _ensure_admin(user)
+        mid_q = _urlparse.quote(module_id)
+        rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
+        if not rows:
+            return {"exam": None}
+        exam = rows[0]
+        q_count_rows = _supabase_get(
+            f"master_mock_exam_questions?exam_id=eq.{_urlparse.quote(exam['id'])}"
+            "&select=id&limit=1000"
+        ) or []
+        exam["question_count"] = len(q_count_rows)
+        return {"exam": exam}
+
+    @api_router.post("/admin/mock-exams/{module_id}")
+    async def admin_mock_exam_create(module_id: str, body: _AdminMockExamBody,
+                                     user=Depends(_get_supabase_user)):
+        """Create a new mock exam for a module."""
+        _ensure_admin(user)
+        mid_q = _urlparse.quote(module_id)
+        existing = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
+        if existing:
+            raise HTTPException(status_code=409, detail="Mock exam already exists for this module.")
+        payload = {
+            "module_id": module_id,
+            "title": body.title or "Mock Exam",
+            "description": body.description or "",
+            "time_limit_minutes": body.time_limit_minutes or 120,
+            "pass_percentage": body.pass_percentage or 60,
+        }
+        row = _supabase_post("master_mock_exams", payload, prefer="return=representation")
+        exam = row[0] if isinstance(row, list) else row
+        exam["question_count"] = 0
+        return {"exam": exam}
+
+    @api_router.patch("/admin/mock-exams/{exam_id}")
+    async def admin_mock_exam_update(exam_id: str, body: _AdminMockExamBody,
+                                     user=Depends(_get_supabase_user)):
+        """Update mock exam settings."""
+        _ensure_admin(user)
+        patch = {k: v for k, v in body.dict().items() if v is not None}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(f"master_mock_exams?id=eq.{_urlparse.quote(exam_id)}", patch)
+        rows = _supabase_get(f"master_mock_exams?id=eq.{_urlparse.quote(exam_id)}&limit=1") or []
+        return {"exam": rows[0] if rows else None}
+
+    @api_router.get("/admin/mock-exam-questions")
+    async def admin_mock_exam_questions_list(exam_id: str, user=Depends(_get_supabase_user)):
+        """List all questions for an exam, ordered by order_index."""
+        _ensure_admin(user)
+        rows = _supabase_get(
+            f"master_mock_exam_questions?exam_id=eq.{_urlparse.quote(exam_id)}"
+            "&order=order_index.asc,created_at.asc&limit=500"
+        ) or []
+        return {"questions": rows}
+
+    @api_router.post("/admin/mock-exam-questions")
+    async def admin_mock_exam_question_create(body: _AdminMockExamQuestionBody,
+                                              user=Depends(_get_supabase_user)):
+        """Add a new question to a mock exam."""
+        _ensure_admin(user)
+        if not body.exam_id:
+            raise HTTPException(status_code=400, detail="exam_id required.")
+        existing = _supabase_get(
+            f"master_mock_exam_questions?exam_id=eq.{_urlparse.quote(body.exam_id)}"
+            "&select=order_index&order=order_index.desc&limit=1"
+        ) or []
+        next_idx = (existing[0]["order_index"] + 1) if existing else 1
+        payload = {
+            "exam_id": body.exam_id,
+            "question": body.question or "New question?",
+            "options": body.options or ["", "", "", ""],
+            "correct_answer_index": body.correct_answer_index or 0,
+            "explanation": body.explanation or "",
+            "difficulty": body.difficulty or "medium",
+            "topic_tag": body.topic_tag or "",
+            "order_index": next_idx,
+        }
+        row = _supabase_post(
+            "master_mock_exam_questions", payload, prefer="return=representation"
+        )
+        return {"question": row[0] if isinstance(row, list) else row}
+
+    @api_router.patch("/admin/mock-exam-questions/{question_id}")
+    async def admin_mock_exam_question_update(question_id: str, body: _AdminMockExamQuestionBody,
+                                              user=Depends(_get_supabase_user)):
+        """Update a mock exam question."""
+        _ensure_admin(user)
+        patch = {}
+        if body.question is not None: patch["question"] = body.question
+        if body.options is not None: patch["options"] = body.options
+        if body.correct_answer_index is not None: patch["correct_answer_index"] = body.correct_answer_index
+        if body.explanation is not None: patch["explanation"] = body.explanation
+        if body.difficulty is not None: patch["difficulty"] = body.difficulty
+        if body.topic_tag is not None: patch["topic_tag"] = body.topic_tag
+        if not patch:
+            raise HTTPException(status_code=400, detail="No fields to update.")
+        _supabase_patch(
+            f"master_mock_exam_questions?id=eq.{_urlparse.quote(question_id)}", patch
+        )
+        rows = _supabase_get(
+            f"master_mock_exam_questions?id=eq.{_urlparse.quote(question_id)}&limit=1"
+        ) or []
+        return {"question": rows[0] if rows else None}
+
+    @api_router.delete("/admin/mock-exam-questions/{question_id}")
+    async def admin_mock_exam_question_delete(question_id: str, user=Depends(_get_supabase_user)):
+        """Delete a mock exam question."""
+        _ensure_admin(user)
+        _supabase_delete(
+            f"master_mock_exam_questions?id=eq.{_urlparse.quote(question_id)}"
+        )
+        return {"ok": True}
+
+    # ─── Mock Exam Student endpoints ───────────────────────────────────────
+
+    @api_router.get("/mock-exams/{module_id}")
+    async def student_mock_exam_get(module_id: str, user=Depends(_get_supabase_user)):
+        """Return exam meta + shuffled questions (correct_answer_index hidden)."""
+        mid_q = _urlparse.quote(module_id)
+        rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="No mock exam found for this module.")
+        exam = rows[0]
+        qs = _supabase_get(
+            f"master_mock_exam_questions?exam_id=eq.{_urlparse.quote(exam['id'])}"
+            "&order=order_index.asc&limit=500"
+        ) or []
+        # Strip correct answer for the student
+        safe_qs = [
+            {
+                "id": q["id"],
+                "question": q["question"],
+                "options": q["options"],
+                "difficulty": q.get("difficulty", "medium"),
+                "topic_tag": q.get("topic_tag", ""),
+                "order_index": q["order_index"],
+            }
+            for q in qs
+        ]
+        return {
+            "exam": {
+                "id": exam["id"],
+                "module_id": exam["module_id"],
+                "title": exam["title"],
+                "description": exam.get("description", ""),
+                "time_limit_minutes": exam["time_limit_minutes"],
+                "pass_percentage": exam["pass_percentage"],
+                "question_count": len(qs),
+            },
+            "questions": safe_qs,
+        }
+
+    @api_router.post("/mock-exams/{module_id}/start")
+    async def student_mock_exam_start(module_id: str, user=Depends(_get_supabase_user)):
+        """Create a new attempt row and return its id."""
+        mid_q = _urlparse.quote(module_id)
+        rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
+        if not rows:
+            raise HTTPException(status_code=404, detail="No mock exam found for this module.")
+        exam_id = rows[0]["id"]
+        payload = {
+            "user_id": str(user["id"]),
+            "exam_id": exam_id,
+            "answers": [],
+        }
+        row = _supabase_post("user_mock_exam_attempts", payload, prefer="return=representation")
+        attempt = row[0] if isinstance(row, list) else row
+        return {"attempt_id": attempt["id"], "exam_id": exam_id}
+
+    @api_router.post("/mock-exams/{module_id}/submit")
+    async def student_mock_exam_submit(module_id: str, body: _MockExamSubmitBody,
+                                       user=Depends(_get_supabase_user)):
+        """Score the exam and persist the result."""
+        mid_q = _urlparse.quote(module_id)
+        exam_rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
+        if not exam_rows:
+            raise HTTPException(status_code=404, detail="No mock exam found for this module.")
+        exam = exam_rows[0]
+        # Verify attempt belongs to this user
+        att_rows = _supabase_get(
+            f"user_mock_exam_attempts?id=eq.{_urlparse.quote(body.attempt_id)}"
+            f"&user_id=eq.{_urlparse.quote(str(user['id']))}&limit=1"
+        ) or []
+        if not att_rows:
+            raise HTTPException(status_code=403, detail="Attempt not found or unauthorized.")
+        # Fetch correct answers
+        qs = _supabase_get(
+            f"master_mock_exam_questions?exam_id=eq.{_urlparse.quote(exam['id'])}"
+            "&order=order_index.asc&limit=500"
+        ) or []
+        answers = body.answers or []
+        correct_count = 0
+        review = []
+        for i, q in enumerate(qs):
+            selected = answers[i] if i < len(answers) else -1
+            is_correct = (selected == q["correct_answer_index"])
+            if is_correct:
+                correct_count += 1
+            review.append({
+                "question_id": q["id"],
+                "question": q["question"],
+                "options": q["options"],
+                "selected": selected,
+                "correct_answer_index": q["correct_answer_index"],
+                "explanation": q.get("explanation", ""),
+                "is_correct": is_correct,
+                "topic_tag": q.get("topic_tag", ""),
+            })
+        total = len(qs)
+        score = round((correct_count / total * 100), 1) if total else 0
+        passed = score >= float(exam["pass_percentage"])
+        from datetime import datetime, timezone as _tz
+        patch = {
+            "answers": answers,
+            "score": score,
+            "total_questions": total,
+            "correct_count": correct_count,
+            "completed_at": datetime.now(_tz.utc).isoformat(),
+            "passed": passed,
+            "time_taken_seconds": body.time_taken_seconds,
+        }
+        _supabase_patch(
+            f"user_mock_exam_attempts?id=eq.{_urlparse.quote(body.attempt_id)}", patch
+        )
+        return {
+            "score": score,
+            "correct_count": correct_count,
+            "total_questions": total,
+            "passed": passed,
+            "pass_percentage": float(exam["pass_percentage"]),
+            "attempt_id": body.attempt_id,
+            "review": review,
+        }
+
+    @api_router.get("/mock-exams/{module_id}/my-attempts")
+    async def student_mock_exam_my_attempts(module_id: str, user=Depends(_get_supabase_user)):
+        """Return the current user's completed attempts for this module's exam."""
+        mid_q = _urlparse.quote(module_id)
+        exam_rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
+        if not exam_rows:
+            return {"attempts": []}
+        exam_id = exam_rows[0]["id"]
+        attempts = _supabase_get(
+            f"user_mock_exam_attempts?exam_id=eq.{_urlparse.quote(exam_id)}"
+            f"&user_id=eq.{_urlparse.quote(str(user['id']))}"
+            "&completed_at=not.is.null&order=completed_at.desc&limit=20"
+        ) or []
+        return {"attempts": attempts}
 
     # ─── Error tracking (public ingest + admin read/action) ──────────────
     @api_router.post("/errors/report")

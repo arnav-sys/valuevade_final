@@ -32,7 +32,19 @@ Continuing the existing Valuevade project (equity-research / financial-modelling
 ### Backend graceful fallbacks
 All new endpoints fall back gracefully if migrations haven't been applied yet (return empty arrays, not 500 errors).
 
-## Feb 2026 — Notes PDF/PPT Upload
+## Feb 2026 — Mock Exam System (NISM-style, Module-level)
+
+### Features Added
+1. **Admin MockExamModal**: `ClipboardList` icon on every module row → opens modal with Settings (title, time limit, pass %) + full question CRUD (add/edit/delete MCQ questions with topic tags, difficulty, options, correct answer, explanation).
+2. **Student exam flow** (3 pages):
+   - `MockExamStartPage` (`/module/:id/mock-exam/start`) — info card with question count, timer, pass mark, previous attempts history.
+   - `MockExamPage` (`/module/:id/mock-exam`) — countdown timer (red when < 10 min), question navigator pill grid (green = answered, amber = flagged), MCQ card, flag-for-review button, auto-submit on timeout.
+   - `MockExamResultPage` (`/module/:id/mock-exam/result`) — score ring animation, pass/fail badge, per-question review accordion with explanations, retake button.
+3. **Backend endpoints** (10 total): admin CRUD + student get/start/submit/attempts.
+4. **DB Migration** `0043_mock_exams.sql` — creates `master_mock_exams`, `master_mock_exam_questions`, `user_mock_exam_attempts` tables.
+
+### DB Migration Required
+Run `/app/scripts/migrations/0043_mock_exams.sql` in Supabase Studio to activate the mock exam system.
 - Admin can upload a PDF or PPTX for each session (replaces card-based notes for students)
 - Storage bucket: `session-notes` (public)
 - Card type: `pdf_document` in `master_notes_cards`
@@ -74,7 +86,6 @@ All new endpoints fall back gracefully if migrations haven't been applied yet (r
 - ~~Referral admin login fix~~ ✅
 
 ### P2 — Upcoming
-- Mock Exam for Module 16 (NISM XV) — replace module project with timed mock exam; admin CRUD for questions
 - Module Reorder: up/down arrows for module ordering (code done, test pending)
 
 ## Key Files
