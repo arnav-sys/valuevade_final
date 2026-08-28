@@ -172,11 +172,18 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
             raise HTTPException(status_code=403, detail="This session is not available for free trial.")
 
         # Master sessions link to quiz questions via session_id
-        questions = _supabase_get(
-            f"master_quiz_questions?session_id=eq.{_urlparse_quote(session_id)}"
-            "&select=id,question_text,options,correct_answer_index,explanation,difficulty"
-            "&order=order_index&limit=20"
-        ) or []
+        try:
+            questions = _supabase_get(
+                f"master_quiz_questions?session_id=eq.{_urlparse_quote(session_id)}"
+                "&select=id,question_text,options,correct_answer_index,explanation,difficulty"
+                "&order=order_index&limit=20"
+            ) or []
+        except Exception:
+            questions = _supabase_get(
+                f"master_quiz_questions?session_id=eq.{_urlparse_quote(session_id)}"
+                "&select=id,question_text,options,correct_answer_index,explanation"
+                "&order=order_index&limit=20"
+            ) or []
 
         parsed = []
         for q in questions:
@@ -202,11 +209,18 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
         if not sess.get("is_free_session"):
             raise HTTPException(status_code=403, detail="This session is not available for free trial.")
 
-        sims = _supabase_get(
-            f"master_simulations?session_id=eq.{_urlparse_quote(session_id)}"
-            "&select=id,sim_type,title,config,difficulty"
-            "&order=order_index&limit=1"
-        ) or []
+        try:
+            sims = _supabase_get(
+                f"master_simulations?session_id=eq.{_urlparse_quote(session_id)}"
+                "&select=id,sim_type,title,config,difficulty"
+                "&order=order_index&limit=1"
+            ) or []
+        except Exception:
+            sims = _supabase_get(
+                f"master_simulations?session_id=eq.{_urlparse_quote(session_id)}"
+                "&select=id,sim_type,title,config"
+                "&order=order_index&limit=1"
+            ) or []
 
         if not sims:
             return {"has_simulation": False}

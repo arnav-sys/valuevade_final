@@ -2395,11 +2395,18 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.get("/admin/quiz-items")
     async def admin_quiz_list(session_id: str, user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        rows = _supabase_get(
-            f"master_quiz_questions?session_id=eq.{_urlparse.quote(session_id)}"
-            "&select=id,session_id,question,options,correct_answer_index,explanation,difficulty,order_index"
-            "&order=order_index&limit=200"
-        ) or []
+        try:
+            rows = _supabase_get(
+                f"master_quiz_questions?session_id=eq.{_urlparse.quote(session_id)}"
+                "&select=id,session_id,question,options,correct_answer_index,explanation,difficulty,order_index"
+                "&order=order_index&limit=200"
+            ) or []
+        except Exception:
+            rows = _supabase_get(
+                f"master_quiz_questions?session_id=eq.{_urlparse.quote(session_id)}"
+                "&select=id,session_id,question,options,correct_answer_index,explanation,order_index"
+                "&order=order_index&limit=200"
+            ) or []
         return {"items": rows}
 
     @api_router.post("/admin/quiz-items")
@@ -2432,10 +2439,16 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         if not patch:
             raise HTTPException(status_code=400, detail="No fields to update.")
         _supabase_patch(f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}", patch)
-        rows = _supabase_get(
-            f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}"
-            "&select=id,session_id,question,options,correct_answer_index,explanation,difficulty,order_index&limit=1"
-        ) or []
+        try:
+            rows = _supabase_get(
+                f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}"
+                "&select=id,session_id,question,options,correct_answer_index,explanation,difficulty,order_index&limit=1"
+            ) or []
+        except Exception:
+            rows = _supabase_get(
+                f"master_quiz_questions?id=eq.{_urlparse.quote(item_id)}"
+                "&select=id,session_id,question,options,correct_answer_index,explanation,order_index&limit=1"
+            ) or []
         return {"item": rows[0] if rows else None}
 
     @api_router.delete("/admin/quiz-items/{item_id}")
