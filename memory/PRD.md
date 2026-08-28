@@ -9,7 +9,14 @@ Continuing the existing Valuevade project (equity-research / financial-modelling
 - **Data**: Supabase (Postgres + Storage). `master_sessions`, `master_simulations`, `master_modules`. `session-videos`, `session-notes` buckets.
 - **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 via `emergentintegrations`.
 
-## Feb 2026 — Session Preview + Free Trial (Latest)
+### Dynamic Hours in Stats Bar (Added Feb 2026)
+- `totalHours` now uses `totalMinutes / 60` (dynamic, from `effectiveMinutes()`) instead of the static `course.estimated_hours` DB field
+- When `video_duration_minutes` is null: shows estimated hours based on 25 min/session default
+- When `video_duration_minutes` is populated: shows accurate hours derived from real video lengths
+- Stats bar label switches `"Hours (est.)"` → `"Hours of Content"` automatically once real video durations are present
+- Hero pill shows a `video` suffix to make the source clear
+
+## Feb 2026 — Preview Videos + Free Trial Sessions
 
 ### Features Added
 1. **Preview Video Modal** (CourseDetailsPage): admin-marked sessions show a "▶ Preview" play button in the syllabus. Clicking opens inline video modal. Max 2 preview sessions at a time.

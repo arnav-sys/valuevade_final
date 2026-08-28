@@ -304,10 +304,20 @@ export default function CourseDetailsPage() {
     (sum, m) => sum + (m.master_sessions || []).reduce((s, sess) => s + effectiveMinutes(sess), 0),
     0
   );
-  const totalHours = course?.estimated_hours || Math.round(totalMinutes / 60) || 0;
+  // Prefer dynamically calculated hours (from video_duration_minutes) over the
+  // static estimated_hours field in the course row. Fall back to the static
+  // value only while sessions are still loading (totalMinutes === 0).
+  const totalHours = totalMinutes > 0
+    ? Math.round(totalMinutes / 60)
+    : (course?.estimated_hours || 0);
 
-  // Flat list of all sessions with flags
+  // How many of those hours are pure video (to surface in the stats bar label)
   const allSessions = modules.flatMap((m) => m.master_sessions || []);
+  const totalVideoMinutes = allSessions.reduce(
+    (sum, s) => sum + (s.video_duration_minutes > 0 ? Math.round(Number(s.video_duration_minutes)) : 0),
+    0
+  );
+  const videoHoursKnown = totalVideoMinutes > 0; // true once at least one session has duration set
   const freeSessions = allSessions.filter((s) => s.is_free_session);
 
   // Navigate to the proper enrollment page — a preview + confirm flow
@@ -535,7 +545,7 @@ export default function CourseDetailsPage() {
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock size={16} className="text-[var(--color-accent-pink)]" />
-                    {totalHours}h
+                    {totalHours}h {videoHoursKnown && <span className="text-[10px] text-[var(--color-text-faint)] font-mono">video</span>}
                   </span>
                   <DifficultyBadge level={course.difficulty} />
                 </div>
@@ -578,7 +588,7 @@ export default function CourseDetailsPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <AnimatedStat testid="detail-stat-modules"   value={modules.length || 0}  label="Modules"   icon={<Layers size={18} />} />
                   <AnimatedStat testid="detail-stat-sessions"  value={totalSessions || 0}   label="Sessions"  icon={<BookOpen size={18} />} />
-                  <AnimatedStat testid="detail-stat-hours"     value={totalHours || 0}      label="Hours"     icon={<Clock size={18} />} suffix="h" />
+                  <AnimatedStat testid="detail-stat-hours"     value={totalHours || 0}      label={videoHoursKnown ? 'Hours of Content' : 'Hours (est.)'}     icon={<Clock size={18} />} suffix="h" />
                   <AnimatedStat testid="detail-stat-capstones" value={3}                    label="Capstones" icon={<CheckCircle2 size={18} />} />
                 </div>
               </section>
