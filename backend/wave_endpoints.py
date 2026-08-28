@@ -2120,6 +2120,34 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         )
         return {"ok": True, **patch}
 
+    @api_router.get("/admin/migration-status")
+    async def admin_migration_status(user=Depends(_get_supabase_user)):
+        """Check which DB migrations have been applied. Returns status for each expected column."""
+        _ensure_admin(user)
+        checks = {
+            "video_duration_minutes": ("master_sessions", "video_duration_minutes"),
+            "is_preview_session":     ("master_sessions", "is_preview_session"),
+            "is_free_session":        ("master_sessions", "is_free_session"),
+            "pdf_document_card_type": ("master_notes_cards", None),  # checked via constraint
+        }
+        results = {}
+        for key, (table, column) in checks.items():
+            if column:
+                try:
+                    _supabase_get(f"{table}?select={column}&limit=1")
+                    results[key] = True
+                except Exception:
+                    results[key] = False
+            else:
+                # Check pdf_document card type by trying to fetch one
+                try:
+                    _supabase_get(f"master_notes_cards?card_type=eq.pdf_document&select=id&limit=1")
+                    results[key] = True
+                except Exception:
+                    results[key] = False
+        all_done = all(results.values())
+        return {"all_applied": all_done, "checks": results}
+
     @api_router.post("/admin/notes-cards/reorder")
     async def admin_notes_reorder(body: _AdminReorderBody, user=Depends(_get_supabase_user)):
         """Rewrite order_index for a batch of cards. `ids` is the new order —

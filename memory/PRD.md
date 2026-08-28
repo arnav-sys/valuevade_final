@@ -56,19 +56,26 @@ All new endpoints fall back gracefully if migrations haven't been applied yet (r
 
 ## Prioritized Backlog
 
-### P0 (Critical security)
-- `GET /api/_download/codebase` — remove or secure this unauthenticated code download endpoint
+### P0 (Security — RESOLVED Feb 2026)
+- ~~`GET /api/_download/codebase` — removed unauthenticated codebase download endpoint~~
+
+### P1 (RESOLVED Feb 2026)
+- ~~Broken `/referral` admin login — added ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_SECRET to backend/.env~~
 
 ### P1 (Soon)
 - Module Reorder: up/down arrows for module ordering (currently only sessions)
 - Apply DB migrations 0041, 0042 in Supabase Studio to enable timing + preview/free features
 
-### P2 (Nice to have)
-- Password Strength Meter on reset screen
-- Auto-Retry Once in Pari chat before showing error
-- Session Expiry Banner for Supabase token lapses
-- Device-Blocked Filter in Free Trials tab
-- Referral admin login fix (ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_SECRET env vars)
+### P2 (RESOLVED Feb 2026)
+- ~~Password Strength Meter on reset screen~~ ✅
+- ~~Auto-Retry Once in Pari chat before showing error~~ ✅
+- ~~Session Expiry Banner for Supabase token lapses~~ ✅
+- ~~Device-Blocked Filter in Free Trials tab~~ ✅
+- ~~Referral admin login fix~~ ✅
+
+### P2 — Upcoming
+- Mock Exam for Module 16 (NISM XV) — replace module project with timed mock exam; admin CRUD for questions
+- Module Reorder: up/down arrows for module ordering (code done, test pending)
 
 ## Key Files
 - `/app/backend/server.py` — FastAPI setup, study planner

@@ -8,7 +8,11 @@ export function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isReconnecting, setIsReconnecting] = useState(false);
   const resolved = useRef(false);
+  const hadSessionRef = useRef(false);
+  const isReconnectingRef = useRef(false);
+  const reconnectTimerRef = useRef(null);
 
   const done = useCallback(() => {
     if (!resolved.current) {
@@ -42,8 +46,20 @@ export function AuthProvider({ children }) {
     // onAuthStateChange fires on INITIAL_SESSION and then on token changes.
     // This is the fastest path to getting the session on page load.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, s) => {
+      async (event, s) => {
         if (!mounted) return;
+        // Detect brief lapse: had session, now null → show reconnecting banner
+        if (hadSessionRef.current && !s && event !== 'SIGNED_OUT') {
+          isReconnectingRef.current = true;
+          setIsReconnecting(true);
+        }
+        // Session restored / token refreshed — hide banner after brief delay
+        if (isReconnectingRef.current && s) {
+          isReconnectingRef.current = false;
+          if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
+          reconnectTimerRef.current = setTimeout(() => setIsReconnecting(false), 1500);
+        }
+        if (s) hadSessionRef.current = true;
         setSession(s);
         setUser(s?.user ?? null);
         if (s?.user) {
@@ -70,6 +86,7 @@ export function AuthProvider({ children }) {
     return () => {
       mounted = false;
       clearTimeout(timeout);
+      if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
       subscription.unsubscribe();
     };
   }, [done, fetchProfile]);
@@ -174,7 +191,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, signUp, signIn, signOut, updateProfile }}>
+    <AuthContext.Provider value={{ user, profile, session, loading, isReconnecting, signUp, signIn, signOut, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

@@ -3,6 +3,42 @@ import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { Eye, EyeOff, Loader2, CheckCircle2 } from 'lucide-react';
 
+function getPasswordStrength(pw) {
+  if (!pw) return { level: 0, label: '', color: '' };
+  const len = pw.length;
+  const hasUpper = /[A-Z]/.test(pw);
+  const hasLower = /[a-z]/.test(pw);
+  const hasNum = /[0-9]/.test(pw);
+  const hasSpecial = /[^A-Za-z0-9]/.test(pw);
+  const variety = [hasUpper, hasLower, hasNum, hasSpecial].filter(Boolean).length;
+
+  if (len < 6) return { level: 1, label: 'Weak', color: 'bg-red-500' };
+  if (len < 8 || variety <= 1) return { level: 2, label: 'Fair', color: 'bg-amber-500' };
+  if (variety === 2) return { level: 3, label: 'Good', color: 'bg-blue-500' };
+  return { level: 4, label: 'Strong', color: 'bg-[var(--color-success)]' };
+}
+
+function PasswordStrengthBar({ password }) {
+  const { level, label, color } = getPasswordStrength(password);
+  if (!password) return null;
+  return (
+    <div className="mt-2 space-y-1" data-testid="password-strength-bar">
+      <div className="flex gap-1">
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full transition-all duration-300 ${i <= level ? color : 'bg-[var(--color-border)]'}`}
+          />
+        ))}
+      </div>
+      <p className={`text-[10px] font-mono ${level <= 1 ? 'text-red-500' : level === 2 ? 'text-amber-500' : level === 3 ? 'text-blue-400' : 'text-[var(--color-success)]'}`}
+        data-testid="password-strength-label">
+        {label}
+      </p>
+    </div>
+  );
+}
+
 export default function ResetPasswordPage() {
   const navigate = useNavigate();
   const [ready, setReady] = useState(false);
@@ -111,6 +147,7 @@ export default function ResetPasswordPage() {
                       {showPw ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                   </div>
+                  <PasswordStrengthBar password={password} />
                 </div>
 
                 <div>

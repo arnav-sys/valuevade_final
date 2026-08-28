@@ -44,6 +44,7 @@ export default function FreeTrialsTab() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(null);
   const [tab, setTab] = useState('trials');
+  const [showBlockedOnly, setShowBlockedOnly] = useState(false);
 
   const reload = useCallback(async () => {
     setLoading(true); setErr(null);
@@ -57,6 +58,10 @@ export default function FreeTrialsTab() {
   if (err) return <div className="text-red-500 p-4" data-testid="ft-error">{err}</div>;
 
   const stats = data.counts || {};
+  const deviceBlockedCount = (data.waitlist || []).filter((w) => (w.first_name || '').startsWith('[DEVICE-BLOCKED]')).length;
+  const filteredWaitlist = showBlockedOnly
+    ? (data.waitlist || []).filter((w) => (w.first_name || '').startsWith('[DEVICE-BLOCKED]'))
+    : (data.waitlist || []);
 
   return (
     <div data-testid="admin-free-trials-tab">
@@ -72,11 +77,12 @@ export default function FreeTrialsTab() {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-5">
         <Stat label="Trials started" value={stats.trials_total || 0}/>
         <Stat label="Trials completed" value={stats.trials_completed || 0}/>
         <Stat label="Verdict: Offer" value={stats.trials_offer || 0}/>
         <Stat label="Waitlist signups" value={stats.waitlist_total || 0}/>
+        <Stat label="Device-blocked" value={deviceBlockedCount} highlight={deviceBlockedCount > 0}/>
       </div>
 
       <div className="flex gap-1 border-b border-[var(--color-border)] mb-4">
@@ -114,17 +120,41 @@ export default function FreeTrialsTab() {
       </div>
 
       {loading ? <p className="text-sm text-[var(--color-text-muted)]">Loading…</p> : (
-        tab === 'trials' ? <TrialsTable rows={data.trials}/> : <WaitlistTable rows={data.waitlist}/>
+        tab === 'trials' ? <TrialsTable rows={data.trials}/> : (
+          <>
+            {tab === 'waitlist' && (
+              <div className="flex items-center gap-2 mb-3">
+                <button
+                  onClick={() => setShowBlockedOnly((v) => !v)}
+                  data-testid="ft-blocked-filter"
+                  className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono uppercase tracking-wider border transition-all ${
+                    showBlockedOnly
+                      ? 'bg-red-500/15 border-red-500/40 text-red-400'
+                      : 'border-[var(--color-border)] text-[var(--color-text-muted)] hover:border-red-500/40 hover:text-red-400'
+                  }`}
+                >
+                  <XIcon size={9}/> Device-blocked only {deviceBlockedCount > 0 && `(${deviceBlockedCount})`}
+                </button>
+                {showBlockedOnly && (
+                  <span className="text-[10px] text-[var(--color-text-muted)] font-mono">
+                    Showing {filteredWaitlist.length} of {data.waitlist.length}
+                  </span>
+                )}
+              </div>
+            )}
+            <WaitlistTable rows={filteredWaitlist}/>
+          </>
+        )
       )}
     </div>
   );
 }
 
-function Stat({ label, value }) {
+function Stat({ label, value, highlight }) {
   return (
-    <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-card)] p-3">
+    <div className={`rounded-xl border p-3 ${highlight ? 'border-red-500/30 bg-red-500/5' : 'border-[var(--color-border)] bg-[var(--color-bg-card)]'}`}>
       <p className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-text-muted)]">{label}</p>
-      <p className="text-xl font-bold text-[var(--color-text)] mt-1">{value}</p>
+      <p className={`text-xl font-bold mt-1 ${highlight ? 'text-red-400' : 'text-[var(--color-text)]'}`}>{value}</p>
     </div>
   );
 }

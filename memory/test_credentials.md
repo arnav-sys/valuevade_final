@@ -38,9 +38,11 @@ Re-seed with: `python3 /app/scripts/seed_mock_test_user.py` (idempotent, safe to
 
 # Test Credentials
 
-## Admin Dashboard (/referral)
-- Email: info@valuevade.com
-- Password: aa1aa2sam3
+## Admin Dashboard (/referral) — Legacy Referral Panel
+- Email: admin@valuevade.com
+- Password: VV-Admin#2026-Sec
+- Secret (JWT signing): vv-jwt-secret-9f3a2b8e1d4c7f6e0a5b2d9c8e7f1a3b
+- Note: These are set via ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_SECRET in backend/.env
 
 ## Supabase Test User (use for any gamification / learning flow QA)
 - Email: testagent2026@gmail.com
@@ -69,8 +71,8 @@ Notes for testing agent:
 ## Admin / Mock Interview / Referrals — VERIFIED 2026-06-18
 
 - Admin account
-  - Email: `info@valuevade.com`
-  - Password: `aa1aa2sam3`
+  - Email: `admin@valuevade.com`
+  - Password: `VV-Admin#2026-Sec`
   - Supabase user_id: `ea4121ce-6c0c-4113-af9a-5d94df5a5d54`
   - Use for `/admin-panel` access (login flow standard)
 

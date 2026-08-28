@@ -207,7 +207,13 @@ export default function DoubtsSession({
       if (!firstAskSent && attemptContext) {
         askBody.attempt_context = attemptContext;
       }
-      const { ok, status, data } = await authedFetch('/api/doubts/ask', askBody);
+      // Silent auto-retry once for transient server errors (5xx / network).
+      let askResult = await authedFetch('/api/doubts/ask', askBody);
+      if ((!askResult.ok && askResult.status >= 500) || (askResult.status === 0)) {
+        await new Promise((r) => setTimeout(r, 800));
+        askResult = await authedFetch('/api/doubts/ask', askBody);
+      }
+      const { ok, status, data } = askResult;
       if (!firstAskSent) setFirstAskSent(true);
       if (!ok) {
         if (status === 402 || (data?.detail && data.detail.reason === 'pari_cost_limit_reached')) {

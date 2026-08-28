@@ -28,6 +28,7 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import BugReportButton from "@/components/BugReportButton";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
+import SessionReconnectBanner from "@/components/SessionReconnectBanner";
 import lazyWithRetry from "@/utils/lazyWithRetry";
 
 // Public (eager-load: small, fast, frequent entry points)
@@ -163,6 +164,7 @@ function App() {
                 <StreakRoot />
                 <BadgeRoot />
                 <DailyChampionRoot />
+                <SessionReconnectBanner />
                 <MilestoneCelebrationOverlay />
                 <BugReportButton />
                 <Suspense fallback={<RouteLoader />}>

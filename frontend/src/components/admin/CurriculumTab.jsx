@@ -161,6 +161,27 @@ export default function CurriculumTab() {
     }
   };
 
+  const moveModule = async (m, dir) => {
+    const idx = modules.findIndex((x) => x.id === m.id);
+    const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
+    if (targetIdx < 0 || targetIdx >= modules.length) return;
+    const target = modules[targetIdx];
+    // Optimistic UI swap
+    const next = [...modules];
+    [next[idx], next[targetIdx]] = [next[targetIdx], next[idx]];
+    setModules(next);
+    try {
+      // Sentinel swap to avoid unique-constraint collision during reorder
+      await req(`/api/admin/modules/${target.id}`, 'PATCH', { order_index: -1 });
+      await req(`/api/admin/modules/${m.id}`, 'PATCH', { order_index: target.order_index });
+      await req(`/api/admin/modules/${target.id}`, 'PATCH', { order_index: m.order_index });
+      await reloadModules();
+    } catch (e) {
+      setModules(modules); // revert on failure
+      alert(`Module reorder failed: ${e.message}`);
+    }
+  };
+
   const moveSession = async (s, dir) => {
     const idx = sessions.findIndex((x) => x.id === s.id);
     const targetIdx = dir === 'up' ? idx - 1 : idx + 1;
@@ -254,6 +275,25 @@ export default function CurriculumTab() {
                   )}
                 </button>
                 <div className="flex flex-col gap-1">
+                  {/* Module reorder */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); moveModule(m, 'up'); }}
+                    disabled={modules.indexOf(m) === 0}
+                    title="Move module up"
+                    data-testid={`move-module-up-${m.id}`}
+                    className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] disabled:opacity-20"
+                  >
+                    <ChevronUp size={11} />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); moveModule(m, 'down'); }}
+                    disabled={modules.indexOf(m) === modules.length - 1}
+                    title="Move module down"
+                    data-testid={`move-module-down-${m.id}`}
+                    className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)] disabled:opacity-20"
+                  >
+                    <ChevronDown size={11} />
+                  </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); toggleInterviewModule(m); }}
                     title={m.is_interview_module ? 'Unmark mock interview module' : 'Mark as mock interview module'}
@@ -438,10 +478,12 @@ export default function CurriculumTab() {
                   sessionId={selSession.id}
                   sessionTitle={selSession.title}
                   lectureUrl={selSession.lecture_url}
-                  onChange={(url) => {
+                  initialDurationMins={selSession.video_duration_minutes || null}
+                  onChangeUrl={(url, duration) => {
                     // Optimistic local update so the middle column's video badge flips.
-                    setSelSession({ ...selSession, lecture_url: url });
-                    setSessions(sessions.map((s) => (s.id === selSession.id ? { ...s, lecture_url: url } : s)));
+                    const updated = { ...selSession, lecture_url: url, video_duration_minutes: duration ?? selSession.video_duration_minutes };
+                    setSelSession(updated);
+                    setSessions(sessions.map((s) => (s.id === selSession.id ? { ...s, lecture_url: url, video_duration_minutes: duration ?? s.video_duration_minutes } : s)));
                   }}
                 />
               )}
