@@ -2635,10 +2635,17 @@ def _fetch_plan_inventory(user_id: str, enrollment_id: str) -> dict:
     master_session_map: dict = {}
     master_session_ids = [s["master_session_id"] for s in user_sessions if s.get("master_session_id")]
     if master_session_ids:
-        master_session_rows = _supabase_get(
-            f"master_sessions?id=in.({','.join(master_session_ids)})"
-            f"&select=id,video_duration_minutes,estimated_minutes"
-        ) or []
+        try:
+            master_session_rows = _supabase_get(
+                f"master_sessions?id=in.({','.join(master_session_ids)})"
+                f"&select=id,video_duration_minutes,estimated_minutes"
+            ) or []
+        except Exception:
+            # Migration 0041 not yet applied — fall back to estimated_minutes only
+            master_session_rows = _supabase_get(
+                f"master_sessions?id=in.({','.join(master_session_ids)})"
+                f"&select=id,estimated_minutes"
+            ) or []
         def _effective_mins(r: dict) -> int:
             vd = r.get("video_duration_minutes")
             if vd is not None:

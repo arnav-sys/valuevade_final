@@ -604,3 +604,53 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
                 "email": pr.get("email") or "",
             })
         return {"total": len(out), "payments": out}
+
+    @api_router.get("/admin/payments/export")
+    async def admin_payments_export(user=Depends(_get_supabase_user)):
+        """Return all paid users as a downloadable CSV file for Google Sheets import."""
+        import csv as _csv
+        import io as _io
+        from fastapi.responses import StreamingResponse
+        _ensure_admin(user)
+
+        statuses = _supabase_get(
+            "user_payment_status?select=user_id,paid,paid_amount_inr,paid_at,pricing_tier&limit=10000"
+        ) or []
+        paid_rows = [s for s in statuses if s.get("paid")]
+
+        ids = [s["user_id"] for s in paid_rows]
+        prof_by_id = {}
+        if ids:
+            profs = _supabase_get(
+                f"profiles?id=in.({','.join(ids)})&select=id,full_name,email"
+            ) or []
+            prof_by_id = {p["id"]: p for p in profs}
+
+        rp_pmt = _supabase_get(
+            f"razorpay_payments?user_id=in.({','.join(ids)})&select=user_id,method&order=created_at.desc&limit=2000"
+            if ids else "razorpay_payments?select=user_id,method&limit=1"
+        ) or []
+        method_by_user = {}
+        for p in rp_pmt:
+            method_by_user.setdefault(p["user_id"], p.get("method") or "")
+
+        output = _io.StringIO()
+        writer = _csv.writer(output)
+        writer.writerow(["Name", "Email", "Pricing Tier", "Amount (INR)", "Payment Method", "Date Paid"])
+        for s in sorted(paid_rows, key=lambda x: (x.get("paid_at") or ""), reverse=True):
+            p = prof_by_id.get(s["user_id"], {})
+            writer.writerow([
+                p.get("full_name") or "",
+                p.get("email") or "",
+                s.get("pricing_tier") or "",
+                int(s.get("paid_amount_inr") or 0),
+                method_by_user.get(s["user_id"]) or "",
+                (s.get("paid_at") or "")[:19].replace("T", " "),  # human readable
+            ])
+
+        csv_bytes = output.getvalue().encode("utf-8")
+        return StreamingResponse(
+            iter([csv_bytes]),
+            media_type="text/csv",
+            headers={"Content-Disposition": "attachment; filename=\"valuevade_payments.csv\""},
+        )

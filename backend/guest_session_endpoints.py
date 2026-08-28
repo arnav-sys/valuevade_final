@@ -48,11 +48,17 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
         return rows[0]
 
     def _get_preview_session(session_id: str) -> dict:
-        rows = _supabase_get(
-            f"master_sessions?id=eq.{_urlparse_quote(session_id)}"
-            "&select=id,title,description,lecture_url,video_duration_minutes,"
-            "is_preview_session&limit=1"
-        ) or []
+        try:
+            rows = _supabase_get(
+                f"master_sessions?id=eq.{_urlparse_quote(session_id)}"
+                "&select=id,title,description,lecture_url,video_duration_minutes,"
+                "is_preview_session&limit=1"
+            ) or []
+        except Exception:
+            rows = _supabase_get(
+                f"master_sessions?id=eq.{_urlparse_quote(session_id)}"
+                "&select=id,title,description,lecture_url&limit=1"
+            ) or []
         if not rows:
             raise HTTPException(status_code=404, detail="Session not found")
         return rows[0]

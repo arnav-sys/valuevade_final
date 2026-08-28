@@ -256,12 +256,25 @@ export default function CourseDetailsPage() {
       if (pathErr) throw pathErr;
       setCourse(pathData);
 
-      // 2. Modules with sessions
-      const { data: modulesData, error: modErr } = await supabase
+      // 2. Modules with sessions — try full select (migration 0041), fall back
+      //    to base columns if the DB hasn't been migrated yet.
+      const _FULL_SEL = '*, master_sessions(id, title, description, order_index, estimated_minutes, video_duration_minutes, lecture_url, is_preview_session, is_free_session)';
+      const _BASE_SEL = '*, master_sessions(id, title, description, order_index, estimated_minutes, lecture_url)';
+
+      let { data: modulesData, error: modErr } = await supabase
         .from('master_modules')
-        .select('*, master_sessions(id, title, description, order_index, estimated_minutes, video_duration_minutes, lecture_url, is_preview_session, is_free_session)')
+        .select(_FULL_SEL)
         .eq('path_id', courseId)
         .order('order_index');
+
+      if (modErr?.message?.includes('does not exist')) {
+        // Migration 0041 not yet applied — retry with guaranteed base columns
+        ({ data: modulesData, error: modErr } = await supabase
+          .from('master_modules')
+          .select(_BASE_SEL)
+          .eq('path_id', courseId)
+          .order('order_index'));
+      }
 
       if (modErr) throw modErr;
 
