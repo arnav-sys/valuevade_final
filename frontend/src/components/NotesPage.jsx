@@ -1533,6 +1533,121 @@ function CardRenderer({ card }) {
 const CARD_THEME_DELETED_SEE_NOTES_FOLDER = null; // moved to /notes/constants.js + /notes/MarkdownCard.jsx (Step 3 P2)
 
 // -----------------------------------------------------------
+// DOCUMENT VIEWER  (PDF / PPTX from admin upload)
+// -----------------------------------------------------------
+
+function DocumentViewer({ card, onComplete, completing, isReview }) {
+  const [fullscreen, setFullscreen] = useState(false);
+  const [viewerError, setViewerError] = useState(false);
+  const c = card?.content || {};
+  const fileUrl = c.file_url || '';
+  const fileName = c.file_name || 'Document';
+  const fileType = (c.file_type || 'pdf').toLowerCase();
+  const isPdf = fileType === 'pdf';
+
+  // Viewer URL: direct for PDF, Office Online for PPTX
+  const viewerSrc = isPdf
+    ? fileUrl
+    : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+
+  const handleViewerError = () => setViewerError(true);
+
+  return (
+    <div className="w-full" data-testid="document-viewer">
+      {/* File header bar */}
+      <div className="flex items-center gap-3 mb-3 px-1">
+        <div className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/20 flex items-center justify-center flex-shrink-0">
+          <FileText size={15} className="text-[var(--color-primary)]" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-semibold text-[var(--color-text)] truncate font-bricolage">{fileName}</div>
+          <div className="flex items-center gap-2">
+            <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20">
+              {fileType.toUpperCase()}
+            </span>
+            <span className="text-[10px] text-[var(--color-text-muted)] font-mono">Session document</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <a
+            href={fileUrl}
+            download={fileName}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-text-muted)] border border-[var(--color-border)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] transition-all"
+            data-testid="document-download-btn"
+          >
+            <ArrowRight size={11} className="rotate-90" /> Download
+          </a>
+          <button
+            onClick={() => setFullscreen(!fullscreen)}
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-primary)] border border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/10 transition-all"
+            data-testid="document-fullscreen-btn"
+          >
+            {fullscreen ? 'Collapse' : 'Expand'}
+          </button>
+        </div>
+      </div>
+
+      {/* Document frame */}
+      <div
+        className={`relative rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_40px_rgba(0,0,0,0.18)] transition-all duration-300 ${fullscreen ? 'h-[85vh]' : 'h-[72vh] min-h-[500px]'}`}
+        data-testid="document-frame"
+      >
+        {viewerError ? (
+          <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
+            <AlertCircle size={32} className="text-[var(--color-text-muted)]" />
+            <p className="text-sm text-[var(--color-text)] font-bricolage">Document preview unavailable</p>
+            <p className="text-xs text-[var(--color-text-muted)]">Your browser may be blocking the inline viewer.</p>
+            <a
+              href={fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold"
+              data-testid="document-open-external"
+            >
+              Open in New Tab <ArrowRight size={14} />
+            </a>
+          </div>
+        ) : (
+          <iframe
+            src={viewerSrc}
+            title={fileName}
+            className="w-full h-full border-0"
+            allow="fullscreen"
+            onError={handleViewerError}
+            data-testid="document-iframe"
+          />
+        )}
+      </div>
+
+      {/* Complete notes action */}
+      <div className="mt-5 flex items-center justify-between gap-4 px-1">
+        <p className="text-xs text-[var(--color-text-muted)] font-bricolage">
+          {isReview ? 'Reviewing your notes.' : 'Read through the document, then mark as complete.'}
+        </p>
+        {isReview ? (
+          <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-semibold bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]">
+            <CheckCircle2 size={14} /> Completed
+          </span>
+        ) : (
+          <button
+            onClick={onComplete}
+            disabled={completing}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bricolage font-semibold bg-gradient-to-r from-[var(--color-success)] to-emerald-500 text-white hover:shadow-[0_0_24px_rgba(16,185,129,0.4)] transition-all disabled:opacity-60"
+            data-testid="document-complete-btn"
+          >
+            {completing ? <Loader2 size={14} className="animate-spin" /> : <CheckCircle2 size={14} />}
+            {completing ? 'Saving…' : 'Complete Notes'}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+
+// -----------------------------------------------------------
 // MAIN PAGE
 // -----------------------------------------------------------
 
@@ -1646,6 +1761,7 @@ export default function NotesPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [cards, setCards] = useState([]);
+  const [documentCard, setDocumentCard] = useState(null); // pdf_document card if uploaded
   const [session, setSession] = useState(null);
   const [idx, setIdx] = useState(0);
   const [completing, setCompleting] = useState(false);
@@ -1720,7 +1836,11 @@ export default function NotesPage() {
         ]);
         if (notesRes.error) throw notesRes.error;
         if (!mounted) return;
-        setCards(notesRes.data || []);
+        const allCards = notesRes.data || [];
+        const docCard = allCards.find((c) => c.card_type === 'pdf_document') || null;
+        const regularCards = allCards.filter((c) => c.card_type !== 'pdf_document');
+        setCards(regularCards);
+        setDocumentCard(docCard);
         if (masterRes.data?.lecture_url) {
           // Merge lecture_url into session so the player picks it up
           setSession((prev) => (prev ? { ...prev, lecture_url: masterRes.data.lecture_url } : prev));
@@ -1866,9 +1986,9 @@ export default function NotesPage() {
             </div>
           )}
 
-          {total > 0 && (
+          {(total > 0 || documentCard) && (
             <div className="text-xs font-mono text-[var(--color-text-muted)] shrink-0" data-testid="notes-counter">
-              {filteredTotal > 0 ? `${idx + 1} / ${filteredTotal}` : `0 / ${total}`}
+              {documentCard ? 'Document' : filteredTotal > 0 ? `${idx + 1} / ${filteredTotal}` : `0 / ${total}`}
             </div>
           )}
         </div>
@@ -1906,11 +2026,23 @@ export default function NotesPage() {
               doesn't bleed through when the user is on the Video tab. */}
           {tab === 'notes' && (
           <>
+          {/* Document viewer mode — when admin uploaded a PDF/PPT for this session */}
+          {!loading && !error && documentCard && (
+            <div className="mb-4" data-testid="notes-document-mode">
+              <DocumentViewer
+                card={documentCard}
+                onComplete={complete}
+                completing={completing}
+                isReview={isReview}
+              />
+            </div>
+          )}
+
           {/* C1 (Batch 1) — AskPariButton moved to the TOP of notes content,
               above the cards, so it's the first thing visible. Was
               previously a sibling of the card area which placed it to
               the right on wide viewports. */}
-          {!loading && !error && session?.master_session_id && total > 0 && (
+          {!loading && !error && session?.master_session_id && total > 0 && !documentCard && (
             <div className="mb-6" data-testid="notes-ask-pari-top">
               <AskPariButton
                 phase="notes"
@@ -1965,7 +2097,7 @@ export default function NotesPage() {
           )}
 
           {/* Filter chips — only when session has both lesson + practice cards */}
-          {!loading && !error && session?.master_session_id && counts.practice > 0 && counts.lessons > 0 && (
+          {!loading && !error && session?.master_session_id && counts.practice > 0 && counts.lessons > 0 && !documentCard && (
             <div
               className="mb-6 flex items-center gap-2 overflow-x-auto pb-1"
               data-testid="notes-filter-chips"
@@ -2060,14 +2192,14 @@ export default function NotesPage() {
             </div>
           )}
 
-          {!loading && !error && filteredTotal > 0 && currentCard && (
+          {!loading && !error && filteredTotal > 0 && currentCard && !documentCard && (
             <div key={currentCard.id || idx} className="animate-[fadeIn_0.35s_ease-out]" data-testid="notes-card">
               <CardRenderer card={currentCard} />
             </div>
           )}
 
           {/* Filter present + 0 cards after filtering */}
-          {!loading && !error && total > 0 && filteredTotal === 0 && (
+          {!loading && !error && total > 0 && filteredTotal === 0 && !documentCard && (
             <div className="flex flex-col items-center text-center py-16" data-testid="notes-filter-empty">
               <p className="text-[var(--color-text-muted)] font-bricolage mb-5">
                 No {filter === 'practice' ? 'practice questions' : 'lesson cards'} in this session.
@@ -2082,7 +2214,7 @@ export default function NotesPage() {
             </div>
           )}
 
-          {!loading && !error && session?.master_session_id && total === 0 && (
+          {!loading && !error && session?.master_session_id && total === 0 && !documentCard && (
             <div className="flex flex-col items-center text-center py-16" data-testid="notes-empty">
               <p className="text-[var(--color-text-muted)] font-bricolage mb-5">
                 No notes cards for this session yet.
@@ -2116,8 +2248,8 @@ export default function NotesPage() {
         );
       })()}
 
-      {/* Bottom nav bar */}
-      {!loading && !error && filteredTotal > 0 && (
+      {/* Bottom nav bar — only in card mode (document mode has its own Complete button) */}
+      {!loading && !error && filteredTotal > 0 && !documentCard && (
         <div className="sticky bottom-0 z-40 bg-[var(--bg-primary)]/85 backdrop-blur-xl border-t border-[var(--color-border)]" data-testid="notes-nav-bar">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
             <button

@@ -181,6 +181,53 @@ const COURSE_DETAILS_FAQS = [
     a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA — not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series XV is the SEBI-established research-analyst certification; CFA helps for buy-side), and — increasingly the differentiator — a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
 ];
 
+import { effectiveMinutes, formatDuration } from '../utils/sessionTime';
+
+// ── Video Preview Modal ──────────────────────────────────────────────────────
+function VideoPreviewModal({ session, onClose }) {
+  if (!session) return null;
+  const url = session.lecture_url || '';
+  const isYouTube = /youtu\.?be/.test(url);
+  const ytId = isYouTube ? (url.match(/(?:v=|youtu\.be\/)([A-Za-z0-9_-]{11})/)?.[1] || '') : '';
+
+  return (
+    <div
+      className="fixed inset-0 z-[200] bg-black/80 flex items-center justify-center p-4"
+      onClick={onClose}
+      data-testid="video-preview-modal"
+    >
+      <div
+        className="bg-[var(--color-bg)] rounded-2xl overflow-hidden shadow-2xl w-full max-w-3xl"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between px-5 py-3 border-b border-[var(--color-border)]">
+          <div>
+            <p className="text-xs font-mono uppercase tracking-widest text-[var(--color-primary)] mb-0.5">Preview</p>
+            <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">{session.title}</p>
+          </div>
+          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors text-xl leading-none" data-testid="preview-modal-close">✕</button>
+        </div>
+        <div className="aspect-video bg-black relative">
+          {isYouTube && ytId ? (
+            <iframe
+              src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`}
+              allow="autoplay; fullscreen"
+              allowFullScreen
+              className="w-full h-full border-0"
+              title={session.title}
+            />
+          ) : url ? (
+            <video src={url} controls autoPlay className="w-full h-full" />
+          ) : (
+            <div className="flex items-center justify-center h-full text-[var(--color-text-muted)] text-sm">No video available</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Component ────────────────────────────────────────────────────────────
 export default function CourseDetailsPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
@@ -192,6 +239,7 @@ export default function CourseDetailsPage() {
   const [enrollment, setEnrollment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [previewSession, setPreviewSession] = useState(null); // video preview modal
 
   const fetchData = async () => {
     setLoading(true);
@@ -211,7 +259,7 @@ export default function CourseDetailsPage() {
       // 2. Modules with sessions
       const { data: modulesData, error: modErr } = await supabase
         .from('master_modules')
-        .select('*, master_sessions(id, title, description, order_index, estimated_minutes)')
+        .select('*, master_sessions(id, title, description, order_index, estimated_minutes, video_duration_minutes, lecture_url, is_preview_session, is_free_session)')
         .eq('path_id', courseId)
         .order('order_index');
 
@@ -253,10 +301,14 @@ export default function CourseDetailsPage() {
 
   const totalSessions = modules.reduce((sum, m) => sum + (m.master_sessions?.length || 0), 0);
   const totalMinutes = modules.reduce(
-    (sum, m) => sum + (m.master_sessions || []).reduce((s, sess) => s + (sess.estimated_minutes || 0), 0),
+    (sum, m) => sum + (m.master_sessions || []).reduce((s, sess) => s + effectiveMinutes(sess), 0),
     0
   );
   const totalHours = course?.estimated_hours || Math.round(totalMinutes / 60) || 0;
+
+  // Flat list of all sessions with flags
+  const allSessions = modules.flatMap((m) => m.master_sessions || []);
+  const freeSessions = allSessions.filter((s) => s.is_free_session);
 
   // Navigate to the proper enrollment page — a preview + confirm flow
   // (no AI customization / no instant enroll).
@@ -278,6 +330,7 @@ export default function CourseDetailsPage() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+      <VideoPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
       <Helmet>
         <title>Equity Research Analyst Course — Syllabus & Fees | Valuevade</title>
         <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹1,500 lifetime access." />
@@ -586,13 +639,44 @@ export default function CourseDetailsPage() {
                   the accordion as named deliverables. */}
               {modules.length > 0 && (
                 <section className="mb-12" data-testid="detail-modules-section">
-                  <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
+                  {/* ─── Free Trial Strip ─────────────────────────────────────── */}
+                  {freeSessions.length > 0 && !isEnrolled && !isCompleted && (
+                    <div
+                      className="mb-6 rounded-2xl border border-emerald-500/25 bg-gradient-to-br from-emerald-500/[0.07] to-transparent p-5"
+                      data-testid="free-sessions-strip"
+                    >
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-emerald-500">Try Free — No Account Needed</span>
+                      </div>
+                      <p className="text-sm text-[var(--color-text-muted)] mb-4 font-bricolage">
+                        Experience {freeSessions.length === 1 ? 'a full session' : `${freeSessions.length} full sessions`} — video, notes, quiz and simulation — before committing. No sign-up required.
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {freeSessions.map((s) => (
+                          <a
+                            key={s.id}
+                            href={`/try-free/${s.id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500 text-white text-sm font-semibold font-bricolage hover:bg-emerald-400 transition-colors shadow-[0_0_18px_rgba(16,185,129,0.3)]"
+                            data-testid={`try-free-btn-${s.id}`}
+                          >
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                            Try: {s.title}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* The full syllabus — module by module */}
+                  <h2 className="text-base font-semibold font-bricolage text-[var(--color-text)] mb-4">
                     The full syllabus — module by module
                   </h2>
                   <Accordion type="single" collapsible defaultValue="module-0" className="space-y-3">
                     {modules.map((mod, idx) => {
                       const sessions = mod.master_sessions || [];
-                      const modMinutes = sessions.reduce((s, sess) => s + (sess.estimated_minutes || 0), 0);
+                      const modMinutes = sessions.reduce((s, sess) => s + effectiveMinutes(sess), 0);
                       const modHours = (modMinutes / 60).toFixed(1);
 
                       return (
@@ -648,15 +732,44 @@ export default function CourseDetailsPage() {
                                   className="flex items-center gap-3 py-2.5 px-3 rounded-lg hover:bg-[var(--color-surface)] transition-colors"
                                   data-testid={`session-item-${idx}-${sIdx}`}
                                 >
-                                  <ChevronRight size={14} className="text-[var(--color-text-muted)] shrink-0" />
+                                  {/* Preview play button */}
+                                  {sess.is_preview_session && sess.lecture_url ? (
+                                    <button
+                                      onClick={() => setPreviewSession(sess)}
+                                      className="w-6 h-6 rounded-full flex items-center justify-center bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 text-[var(--color-primary)] hover:bg-[var(--color-primary)]/25 transition-all flex-shrink-0"
+                                      title="Preview this lecture"
+                                      data-testid={`preview-btn-${sess.id}`}
+                                    >
+                                      <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                    </button>
+                                  ) : (
+                                    <ChevronRight size={14} className="text-[var(--color-text-muted)] shrink-0" />
+                                  )}
                                   <span className="text-sm text-[var(--color-text)] font-bricolage flex-1 min-w-0">
                                     {sess.title}
                                   </span>
-                                  {sess.estimated_minutes && (
-                                    <span className="text-xs text-[var(--color-text-muted)] font-mono shrink-0">
-                                      {sess.estimated_minutes}min
+                                  {/* FREE badge */}
+                                  {sess.is_free_session && (
+                                    <a
+                                      href={`/try-free/${sess.id}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-md bg-emerald-500/15 border border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/25 transition-all flex-shrink-0"
+                                      onClick={(e) => e.stopPropagation()}
+                                      data-testid={`free-badge-${sess.id}`}
+                                    >
+                                      Free
+                                    </a>
+                                  )}
+                                  {/* Preview badge */}
+                                  {sess.is_preview_session && (
+                                    <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded-md bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 text-[var(--color-primary)] flex-shrink-0">
+                                      Preview
                                     </span>
                                   )}
+                                  <span className="text-xs text-[var(--color-text-muted)] font-mono shrink-0">
+                                    {formatDuration(effectiveMinutes(sess))}
+                                  </span>
                                 </div>
                               ))}
                               {sessions.length === 0 && (

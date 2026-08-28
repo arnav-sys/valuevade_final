@@ -15,7 +15,7 @@ import InterviewEditor from './InterviewEditor';
 import VideoEditor from './VideoEditor';
 import CapstonesEditor from './CapstonesEditor';
 import ModuleProjectModal from './ModuleProjectModal';
-import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown } from 'lucide-react';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown, Eye, Unlock } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -145,6 +145,20 @@ export default function CurriculumTab() {
 
   const askDeleteSession = (s) => {
     setConfirm({ kind: 'session', id: s.id, name: s.title });
+  };
+
+  const toggleFlag = async (e, s, flag) => {
+    e.stopPropagation();
+    const newVal = !s[flag];
+    // Optimistic update
+    setSessions((prev) => prev.map((x) => x.id === s.id ? { ...x, [flag]: newVal } : x));
+    try {
+      await req(`/api/admin/sessions/${s.id}/flags`, 'PATCH', { [flag]: newVal });
+    } catch (err) {
+      // Revert on failure (e.g. max-2 exceeded)
+      setSessions((prev) => prev.map((x) => x.id === s.id ? { ...x, [flag]: !newVal } : x));
+      alert(err.message);
+    }
   };
 
   const moveSession = async (s, dir) => {
@@ -316,7 +330,33 @@ export default function CurriculumTab() {
               ) : (
                 <span className="flex-1 text-sm text-[var(--color-text)] truncate">{s.title}</span>
               )}
-              {s.lecture_url && <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] font-mono">🎥</span>}
+              {s.lecture_url && <span className="text-[10px] px-1.5 py-0.5 rounded bg-[var(--color-primary)]/20 text-[var(--color-primary)] font-mono">video</span>}
+              {/* Preview toggle */}
+              <button
+                onClick={(e) => toggleFlag(e, s, 'is_preview_session')}
+                title={s.is_preview_session ? 'Remove preview' : 'Mark as preview (video play button on course page)'}
+                data-testid={`preview-toggle-${s.id}`}
+                className={`flex items-center gap-0.5 text-[9px] font-mono px-1.5 py-0.5 rounded transition-all ${
+                  s.is_preview_session
+                    ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
+                    : 'text-[var(--color-text-faint)] hover:text-blue-400 opacity-40 hover:opacity-100'
+                }`}
+              >
+                <Eye size={9} /> preview
+              </button>
+              {/* Free trial toggle */}
+              <button
+                onClick={(e) => toggleFlag(e, s, 'is_free_session')}
+                title={s.is_free_session ? 'Remove free access' : 'Mark as free trial (guest can access full session)'}
+                data-testid={`free-toggle-${s.id}`}
+                className={`flex items-center gap-0.5 text-[9px] font-mono px-1.5 py-0.5 rounded transition-all ${
+                  s.is_free_session
+                    ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                    : 'text-[var(--color-text-faint)] hover:text-emerald-400 opacity-40 hover:opacity-100'
+                }`}
+              >
+                <Unlock size={9} /> free
+              </button>
               <div className="flex items-center gap-0.5 flex-shrink-0">
                 <button
                   onClick={(e) => { e.stopPropagation(); moveSession(s, 'up'); }}

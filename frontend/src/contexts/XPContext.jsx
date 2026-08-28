@@ -155,12 +155,12 @@ export function XPProvider({ children }) {
 
     // Always spawn the floating +N particle when we have a known origin
     if (origin && result.awarded_amount > 0) {
-      setXpParticle({
+      setXpParticles((prev) => [...prev, {
         amount: result.awarded_amount,
         x: origin.x,
         y: origin.y,
         key: Date.now() + Math.random(),
-      });
+      }]);
     }
 
     // Fire badge evaluator for non-phase XP events only. Phase events

@@ -57,6 +57,7 @@ def _ensure_admin(user: dict):
 # ===========================================================================
 class _AdminVideoUrlBody(BaseModel):
     public_url: str
+    video_duration_minutes: Optional[float] = None  # auto-extracted by FE from video metadata
 
 
 class _AdminTusCreateBody(BaseModel):
@@ -1378,7 +1379,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
         _supabase_patch(
             f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
-            {"lecture_url": None},
+            {"lecture_url": None, "video_duration_minutes": None},
         )
         return {"ok": True}
 
@@ -1639,9 +1640,12 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 # Network flakiness — log but don't block the save; the admin
                 # can always re-check the video plays.
                 logger.warning("Post-upload HEAD check failed for %s: %s", url, e)
+        patch_payload: dict = {"lecture_url": url}
+        if body.video_duration_minutes is not None and body.video_duration_minutes > 0:
+            patch_payload["video_duration_minutes"] = round(body.video_duration_minutes, 2)
         _supabase_patch(
             f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
-            {"lecture_url": url},
+            patch_payload,
         )
         return {"ok": True, "lecture_url": url}
 
@@ -1675,11 +1679,19 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.get("/admin/curriculum/sessions")
     async def admin_curr_sessions(module_id: str, user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        rows = _supabase_get(
-            f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
-            "&select=id,module_id,title,description,order_index,estimated_minutes,lecture_url"
-            "&order=order_index&limit=200"
-        ) or []
+        try:
+            rows = _supabase_get(
+                f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
+                "&select=id,module_id,title,description,order_index,estimated_minutes,video_duration_minutes,lecture_url,is_preview_session,is_free_session"
+                "&order=order_index&limit=200"
+            ) or []
+        except HTTPException:
+            # Fallback: new columns (video_duration_minutes / flags) not yet migrated
+            rows = _supabase_get(
+                f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
+                "&select=id,module_id,title,description,order_index,estimated_minutes,lecture_url"
+                "&order=order_index&limit=200"
+            ) or []
         return {"sessions": rows}
 
     @api_router.get("/admin/curriculum/export")
@@ -2068,6 +2080,46 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         _supabase_delete(f"master_notes_cards?id=eq.{_urlparse.quote(card_id)}")
         return {"ok": True}
 
+    @api_router.patch("/admin/sessions/{session_id}/flags")
+    async def admin_session_flags(
+        session_id: str,
+        body: dict,
+        user=Depends(_get_supabase_user),
+    ):
+        """Toggle is_preview_session and/or is_free_session on a session.
+        Enforces max 2 sessions per flag across all modules."""
+        _ensure_admin(user)
+        patch: dict = {}
+
+        for flag in ("is_preview_session", "is_free_session"):
+            if flag not in body:
+                continue
+            new_val = bool(body[flag])
+            if new_val:
+                # Count how many sessions already have this flag set
+                try:
+                    existing = _supabase_get(
+                        f"master_sessions?{flag}=eq.true&select=id&limit=3"
+                    ) or []
+                except HTTPException:
+                    existing = []  # Column doesn't exist yet — allow (migration pending)
+                already_set = any(r["id"] == session_id for r in existing)
+                if not already_set and len(existing) >= 2:
+                    flag_label = "Preview" if flag == "is_preview_session" else "Free Trial"
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"Maximum 2 sessions can have '{flag_label}' enabled. Disable another session first."
+                    )
+            patch[flag] = new_val
+
+        if not patch:
+            raise HTTPException(status_code=400, detail="Provide at least one flag to update.")
+        _supabase_patch(
+            f"master_sessions?id=eq.{_urlparse.quote(session_id)}",
+            patch,
+        )
+        return {"ok": True, **patch}
+
     @api_router.post("/admin/notes-cards/reorder")
     async def admin_notes_reorder(body: _AdminReorderBody, user=Depends(_get_supabase_user)):
         """Rewrite order_index for a batch of cards. `ids` is the new order —
@@ -2079,6 +2131,193 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 {"order_index": i + 1},
             )
         return {"ok": True, "reordered": len(body.ids)}
+
+    # ─── Notes file (PDF / PPTX) upload ──────────────────────────────────
+    _NOTES_BUCKET = "session-notes"
+    _MAX_NOTES_FILE_BYTES = 50 * 1024 * 1024  # 50 MB
+
+    def _notes_file_public_url(key: str) -> str:
+        return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_NOTES_BUCKET}/{key}"
+
+    def _ensure_notes_bucket() -> None:
+        """Best-effort: create the session-notes public bucket if it doesn't exist."""
+        import urllib.request as _ur
+        import urllib.error as _ue
+        req = _ur.Request(
+            f"{_SUPABASE_REST_URL}/storage/v1/bucket",
+            data=_json.dumps({"id": _NOTES_BUCKET, "name": _NOTES_BUCKET, "public": True}).encode(),
+            headers={
+                "apikey": _SUPABASE_SR or "",
+                "Authorization": f"Bearer {_SUPABASE_SR or ''}",
+                "Content-Type": "application/json",
+            },
+            method="POST",
+        )
+        try:
+            _ur.urlopen(req, timeout=10).read()
+        except _ue.HTTPError as e:
+            # 409 = bucket already exists — that's fine
+            if e.code != 409:
+                logger.warning("[notes-file] bucket ensure failed: %s", e)
+        except Exception as e:
+            logger.warning("[notes-file] bucket ensure failed: %s", e)
+
+    @api_router.post("/admin/sessions/{session_id}/notes-file")
+    async def admin_upload_notes_file(
+        session_id: str,
+        file: UploadFile = File(...),
+        user=Depends(_get_supabase_user),
+    ):
+        """Upload a PDF or PPTX/PPT file for a session's notes. Stores it in
+        Supabase Storage and upserts a pdf_document notes card so the student
+        view picks it up automatically."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing")
+
+        fname = (file.filename or "").lower()
+        ct = (file.content_type or "").lower()
+        allowed_ext = {"pdf", "pptx", "ppt"}
+        ext = fname.rsplit(".", 1)[-1] if "." in fname else ""
+        if ext not in allowed_ext and not any(k in ct for k in ("pdf", "powerpoint", "presentationml")):
+            raise HTTPException(
+                status_code=400,
+                detail="Only PDF and PPT/PPTX files are supported.",
+            )
+        if ext not in allowed_ext:
+            ext = "pdf" if "pdf" in ct else "pptx"
+
+        blob = await file.read()
+        if not blob:
+            raise HTTPException(status_code=400, detail="File is empty.")
+        if len(blob) > _MAX_NOTES_FILE_BYTES:
+            raise HTTPException(
+                status_code=413,
+                detail=f"File too large ({len(blob) / 1048576:.1f} MB). Max 50 MB.",
+            )
+
+        # Ensure the bucket exists (idempotent).
+        _ensure_notes_bucket()
+
+        # Build a deterministic key so re-uploads overwrite cleanly.
+        key = f"{session_id}/notes.{ext}"
+        content_type = "application/pdf" if ext == "pdf" else "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+
+        import urllib.request as _ur
+        upload_req = _ur.Request(
+            f"{_SUPABASE_REST_URL}/storage/v1/object/{_NOTES_BUCKET}/{key}",
+            data=blob,
+            method="POST",
+            headers={
+                "apikey": _SUPABASE_SR,
+                "Authorization": f"Bearer {_SUPABASE_SR}",
+                "Content-Type": content_type,
+                "x-upsert": "true",
+                "cache-control": "public, max-age=3600",
+            },
+        )
+        try:
+            with _ur.urlopen(upload_req, timeout=120) as r:
+                r.read()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+
+        public_url = _notes_file_public_url(key)
+        display_name = file.filename or f"notes.{ext}"
+
+        # Upsert a pdf_document card for this session (order_index=0 so it floats to top).
+        existing = _supabase_get(
+            f"master_notes_cards?session_id=eq.{_urlparse.quote(session_id)}"
+            "&card_type=eq.pdf_document&select=id&limit=1"
+        ) or []
+        card_content = _json.dumps({"file_url": public_url, "file_name": display_name, "file_type": ext})
+        if existing:
+            _supabase_patch(
+                f"master_notes_cards?id=eq.{_urlparse.quote(existing[0]['id'])}",
+                {"content": card_content, "title": display_name},
+            )
+            card_id = existing[0]["id"]
+        else:
+            row = _supabase_post(
+                "master_notes_cards",
+                {"session_id": session_id, "card_type": "pdf_document",
+                 "title": display_name, "content": card_content, "order_index": 0},
+                prefer="return=representation",
+            )
+            if isinstance(row, list): row = row[0] if row else {}
+            card_id = (row or {}).get("id")
+
+        return {"ok": True, "file_url": public_url, "file_name": display_name, "file_type": ext, "card_id": card_id}
+
+    @api_router.delete("/admin/sessions/{session_id}/notes-file")
+    async def admin_delete_notes_file(session_id: str, user=Depends(_get_supabase_user)):
+        """Remove the uploaded PDF/PPT for a session (deletes from storage and
+        removes the pdf_document notes card)."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing")
+
+        existing = _supabase_get(
+            f"master_notes_cards?session_id=eq.{_urlparse.quote(session_id)}"
+            "&card_type=eq.pdf_document&select=id,content&limit=1"
+        ) or []
+        if not existing:
+            return {"ok": True, "was_empty": True}
+
+        card = existing[0]
+        raw_c = card.get("content") or {}
+        if isinstance(raw_c, str):
+            try: raw_c = _json.loads(raw_c)
+            except Exception: raw_c = {}
+        file_type = raw_c.get("file_type", "pdf")
+        key = f"{session_id}/notes.{file_type}"
+
+        # Best-effort delete from storage.
+        import urllib.request as _ur
+        import urllib.error as _ue
+        del_req = _ur.Request(
+            f"{_SUPABASE_REST_URL}/storage/v1/object/{_NOTES_BUCKET}/{key}",
+            method="DELETE",
+            headers={
+                "apikey": _SUPABASE_SR,
+                "Authorization": f"Bearer {_SUPABASE_SR}",
+            },
+        )
+        try:
+            with _ur.urlopen(del_req, timeout=30) as r:
+                r.read()
+        except _ue.HTTPError as e:
+            if e.code not in (404,):
+                logger.warning("[notes-file] storage delete failed: %s", e)
+        except Exception as e:
+            logger.warning("[notes-file] storage delete failed: %s", e)
+
+        _supabase_delete(f"master_notes_cards?id=eq.{_urlparse.quote(card['id'])}")
+        return {"ok": True}
+
+    @api_router.get("/admin/sessions/{session_id}/notes-file")
+    async def admin_get_notes_file(session_id: str, user=Depends(_get_supabase_user)):
+        """Return current notes-file info for a session (or null if none uploaded)."""
+        _ensure_admin(user)
+        existing = _supabase_get(
+            f"master_notes_cards?session_id=eq.{_urlparse.quote(session_id)}"
+            "&card_type=eq.pdf_document&select=id,title,content&limit=1"
+        ) or []
+        if not existing:
+            return {"has_file": False}
+        card = existing[0]
+        raw_c = card.get("content") or {}
+        # Content may be stored as a JSON string or already parsed object
+        if isinstance(raw_c, str):
+            try: raw_c = _json.loads(raw_c)
+            except Exception: raw_c = {}
+        return {
+            "has_file": True,
+            "card_id": card["id"],
+            "file_url": raw_c.get("file_url"),
+            "file_name": raw_c.get("file_name") or card.get("title"),
+            "file_type": raw_c.get("file_type", "pdf"),
+        }
 
     # ─── Quiz items CRUD (Phase B.2) ─────────────────────────────────────
     @api_router.get("/admin/quiz-items")

@@ -87,6 +87,7 @@ const DevSimPreview = lazyWithRetry(() => import("@/components/DevSimPreview"));
 const M3DryRunPreview = lazyWithRetry(() => import("@/components/M3DryRunPreview"));
 const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
 const FreeTrialPlayerPage = lazyWithRetry(() => import("@/components/FreeTrialPlayerPage"));
+const GuestSessionPage = lazyWithRetry(() => import("@/components/GuestSessionPage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
 const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
 // Legal pages — public, DRAFT copy pending founder review (Prompt-4 rebuild).
@@ -170,6 +171,7 @@ function App() {
                   {/* Public */}
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/free-trial/:trialId" element={<FreeTrialPlayerPage />} />
+                  <Route path="/try-free/:sessionId" element={<GuestSessionPage />} />
                   <Route path="/m3-sample-preview" element={<M3SamplePreview />} />
                   <Route path="/m3-dryrun-preview" element={<M3DryRunPreview />} />
                   <Route path="/_dev/sim/:simId" element={<DevSimPreview />} />

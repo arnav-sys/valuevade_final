@@ -1,4 +1,78 @@
-# Valuevade — MVP 2.0 Part 1 & Video Upload Bug PRD
+# Valuevade — MVP 2.0 PRD (Live)
+
+## Original problem statement
+Continuing the existing Valuevade project (equity-research / financial-modelling course, Supabase-backed FastAPI+React).
+
+## Architecture
+- **Backend**: FastAPI (uvicorn) at 8001, routes prefixed `/api`.
+- **Frontend**: React (CRA/craco) at 3000, Tailwind + shadcn/ui, `lucide-react` icons.
+- **Data**: Supabase (Postgres + Storage). `master_sessions`, `master_simulations`, `master_modules`. `session-videos`, `session-notes` buckets.
+- **AI**: Emergent Universal LLM key → Claude Sonnet 4.5 via `emergentintegrations`.
+
+## Feb 2026 — Session Preview + Free Trial (Latest)
+
+### Features Added
+1. **Preview Video Modal** (CourseDetailsPage): admin-marked sessions show a "▶ Preview" play button in the syllabus. Clicking opens inline video modal. Max 2 preview sessions at a time.
+2. **Free Trial Sessions** (CourseDetailsPage + GuestSessionPage): admin marks up to 2 sessions as "free". A "Try Free" strip appears on the course page with CTAs to `/try-free/:sessionId`. 
+3. **GuestSessionPage** (`/try-free/:sessionId`): full session experience (video → notes → quiz → simulation) for anonymous visitors. No account required. Progress in localStorage only. After completing both free sessions → enrollment paywall CTA.
+4. **Admin toggles**: CurriculumTab shows "preview" and "free" toggle buttons on each session row. Max 2 each enforced server-side.
+
+### DB Migrations Required (Supabase Studio)
+- `0041_video_duration_minutes.sql` — adds `video_duration_minutes NUMERIC` to `master_sessions`
+- `0042_preview_and_free_sessions.sql` — adds `is_preview_session BOOLEAN DEFAULT FALSE` and `is_free_session BOOLEAN DEFAULT FALSE` to `master_sessions`
+- `0040_notes_pdf_card_type.sql` — updates `master_notes_cards.card_type` check constraint to include `pdf_document`
+
+### Backend graceful fallbacks
+All new endpoints fall back gracefully if migrations haven't been applied yet (return empty arrays, not 500 errors).
+
+## Feb 2026 — Notes PDF/PPT Upload
+- Admin can upload a PDF or PPTX for each session (replaces card-based notes for students)
+- Storage bucket: `session-notes` (public)
+- Card type: `pdf_document` in `master_notes_cards`
+- Student view: DocumentViewer component in NotesPage
+- Requires migration 0040 for the new card type
+
+## Feb 2026 — Dynamic Session Timing
+- `effective_minutes(session) = round(video_duration_minutes || 15) + 10`
+- Study planner uses this formula instead of `estimated_minutes`
+- VideoEditor admin auto-extracts duration via `<video>` element on file pick
+- Requires migration 0041 for `video_duration_minutes` column
+- `src/utils/sessionTime.js` exports `effectiveMinutes()` and `formatDuration()`
+
+## Feb 2026 — Delete/reorder, CFI cleanup, mobile fixes, Forgot Password, Pari chat fix
+- Delete module (cascade warning), delete session, session reorder
+- Removed CFI certification references
+- Mobile UI fix in ProblemSection
+- Forgot Password + Reset Password via Supabase native auth
+- Added root `/health` endpoint for K8s liveness probes
+- Added Retry UX button to Pari chat
+
+## Prioritized Backlog
+
+### P0 (Critical security)
+- `GET /api/_download/codebase` — remove or secure this unauthenticated code download endpoint
+
+### P1 (Soon)
+- Module Reorder: up/down arrows for module ordering (currently only sessions)
+- Apply DB migrations 0041, 0042 in Supabase Studio to enable timing + preview/free features
+
+### P2 (Nice to have)
+- Password Strength Meter on reset screen
+- Auto-Retry Once in Pari chat before showing error
+- Session Expiry Banner for Supabase token lapses
+- Device-Blocked Filter in Free Trials tab
+- Referral admin login fix (ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_SECRET env vars)
+
+## Key Files
+- `/app/backend/server.py` — FastAPI setup, study planner
+- `/app/backend/wave_endpoints.py` — curriculum CRUD, admin endpoints
+- `/app/backend/guest_session_endpoints.py` — public guest session endpoints (no auth)
+- `/app/frontend/src/components/GuestSessionPage.jsx` — free trial page
+- `/app/frontend/src/components/CourseDetailsPage.jsx` — preview modal + free strip
+- `/app/frontend/src/components/admin/CurriculumTab.jsx` — admin curriculum + flags
+- `/app/frontend/src/components/admin/NotesEditor.jsx` — PDF/PPT upload
+- `/app/frontend/src/utils/sessionTime.js` — timing helpers
+- `/app/scripts/migrations/` — SQL migrations to apply in Supabase Studio
 
 ## Original problem statement
 Continuing the existing Valuevade project (equity-research / financial-modelling course, Supabase-backed FastAPI+React).

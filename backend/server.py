@@ -2628,15 +2628,25 @@ def _fetch_plan_inventory(user_id: str, enrollment_id: str) -> dict:
             f"&order=order_index.asc"
         ) or []
 
-    # (3) master_sessions for estimated_minutes.
+    # (3) master_sessions for video_duration_minutes → effective_minutes.
+    # Formula: effective_minutes = round(video_duration_minutes or 15) + 10
+    #   - video part  : actual video length (or 15 min when no video)
+    #   - fixed part  : 10 min reserved for quiz + simulation
     master_session_map: dict = {}
     master_session_ids = [s["master_session_id"] for s in user_sessions if s.get("master_session_id")]
     if master_session_ids:
         master_session_rows = _supabase_get(
             f"master_sessions?id=in.({','.join(master_session_ids)})"
-            f"&select=id,estimated_minutes"
+            f"&select=id,video_duration_minutes,estimated_minutes"
         ) or []
-        master_session_map = {r["id"]: int(r.get("estimated_minutes") or 50) for r in master_session_rows}
+        def _effective_mins(r: dict) -> int:
+            vd = r.get("video_duration_minutes")
+            if vd is not None:
+                video_part = max(1, round(float(vd))) if float(vd) > 0 else 15
+            else:
+                video_part = 15
+            return video_part + 10
+        master_session_map = {r["id"]: _effective_mins(r) for r in master_session_rows}
 
     # (4) master_module_projects for the modules involved.
     projects_by_module: dict = {}
@@ -5048,7 +5058,7 @@ try:
         "emergent_llm_key": EMERGENT_LLM_KEY,
     })
 except Exception as _e:
-    logger.warning(f"[wave_endpoints] failed to register: {_e}")
+    logging.warning("[wave_endpoints] failed to register: %s", _e)
 
 # ----------------------- Module 20 full interview simulations ----------------
 try:
@@ -5076,7 +5086,20 @@ try:
         "emergent_llm_key": EMERGENT_LLM_KEY,
     })
 except Exception as _e:
-    logger.warning(f"[interview_sim_endpoints] failed to register: {_e}")
+    logging.warning("[interview_sim_endpoints] failed to register: %s", _e)
+
+# ----------------------- Guest session (free trial) endpoints ---------------
+try:
+    import json as _json_mod
+    import urllib.parse as _urlparse_mod
+    from guest_session_endpoints import register_guest_session_endpoints
+    register_guest_session_endpoints(api_router, {
+        "supabase_get": _supabase_get,
+        "urlparse_quote": _urlparse_mod.quote,
+        "json": _json_mod,
+    })
+except Exception as _e:
+    logging.warning("[guest_session_endpoints] failed to register: %s", _e)
 
 # ----------------------- Wave 4 endpoints (payments + payouts) --------------
 try:
@@ -5089,7 +5112,7 @@ try:
         "get_supabase_user": get_supabase_user,
     })
 except Exception as _e:
-    logger.warning(f"[payment_endpoints] failed to register: {_e}")
+    logging.warning("[payment_endpoints] failed to register: %s", _e)
 
 
 # Temporary read-only codebase download endpoint (used to hand the code to the
