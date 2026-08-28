@@ -13,6 +13,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { isInterviewUserModule } from '../utils/interviewSim';
+import { isExamUserModule } from '../utils/examModule';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
 import useTimeTracking from '../utils/useTimeTracking';
 import useSessionTimer, { getMeasuredMinutes } from '../utils/useSessionTimer';
@@ -1779,6 +1780,9 @@ export default function NotesPage() {
   // M20 — interview-module sessions are video+notes only. Completing notes
   // auto-completes quiz/simulation flags so the session finishes in one phase.
   const [isInterviewSession, setIsInterviewSession] = useState(false);
+  // Exam-module sessions (e.g. Module 16 NISM) are notes-only. Completing notes
+  // also auto-marks quiz/sim so the session is counted as fully complete.
+  const [isExamSession, setIsExamSession] = useState(false);
 
   // Track active reading time on this page → user_stats.total_time_minutes
   useTimeTracking(user?.id);
@@ -1819,6 +1823,10 @@ export default function NotesPage() {
 
         isInterviewUserModule(sess.user_module_id)
           .then((flag) => { if (mounted) setIsInterviewSession(flag); })
+          .catch(() => {});
+
+        isExamUserModule(sess.user_module_id)
+          .then((flag) => { if (mounted) setIsExamSession(flag); })
           .catch(() => {});
 
         if (!sess.master_session_id) {
@@ -1906,7 +1914,7 @@ export default function NotesPage() {
       await markPhaseComplete(
         session.id,
         'notes',
-        isInterviewSession ? { quiz_completed: true, simulation_completed: true } : null,
+        (isInterviewSession || isExamSession) ? { quiz_completed: true, simulation_completed: true } : null,
         { actualMinutes: measuredMin },
       );
       try {

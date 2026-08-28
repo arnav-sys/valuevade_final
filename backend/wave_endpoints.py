@@ -52,6 +52,23 @@ def _ensure_admin(user: dict):
         raise HTTPException(status_code=403, detail="Admin access required.")
 
 
+def _resolve_exam_master_module_id(module_id: str) -> str:
+    """Resolve a user_modules.id OR master_modules.id to master_modules.id.
+
+    The student-facing routes receive user_modules.id (from the URL
+    /module/:moduleId/mock-exam/start), but master_mock_exams is keyed by
+    master_modules.id. We look up user_modules first; if not found, we treat
+    the incoming id directly as a master module id (backward compat).
+    """
+    rows = _supabase_get(
+        f"user_modules?id=eq.{_urlparse.quote(module_id)}"
+        "&select=master_module_id&limit=1"
+    ) or []
+    if rows and rows[0].get("master_module_id"):
+        return rows[0]["master_module_id"]
+    return module_id
+
+
 # ===========================================================================
 # Pydantic
 # ===========================================================================
@@ -153,6 +170,10 @@ class _MockExamSubmitBody(BaseModel):
     attempt_id: str
     answers: Any        # list of ints (selected option index per question, -1 = skipped)
     time_taken_seconds: Optional[int] = None
+
+
+class _MockExamCsvImportBody(BaseModel):
+    rows: Any   # list of question dicts parsed by the frontend
 
 
 class _ErrorReportBody(BaseModel):
@@ -2703,12 +2724,63 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         )
         return {"ok": True}
 
+    @api_router.post("/admin/mock-exams/{exam_id}/questions/csv")
+    async def admin_mock_exam_questions_csv(exam_id: str, body: _MockExamCsvImportBody,
+                                            user=Depends(_get_supabase_user)):
+        """Bulk-insert questions from pre-parsed CSV rows sent by the admin UI.
+
+        Expects body.rows: list of dicts with keys:
+          question, options (list), correct_answer_index, explanation, difficulty, topic_tag
+        Returns { inserted, errors: list of { index, reason } }.
+        """
+        _ensure_admin(user)
+        rows = body.rows or []
+        if not rows:
+            raise HTTPException(status_code=400, detail="No rows provided.")
+
+        # Get current max order_index so new questions are appended
+        existing = _supabase_get(
+            f"master_mock_exam_questions?exam_id=eq.{_urlparse.quote(exam_id)}"
+            "&select=order_index&order=order_index.desc&limit=1"
+        ) or []
+        next_idx = (existing[0]["order_index"] + 1) if existing else 1
+
+        inserted = 0
+        errors = []
+        for i, row in enumerate(rows):
+            try:
+                question = (row.get("question") or "").strip()
+                options = row.get("options") or []
+                correct_answer_index = int(row.get("correct_answer_index", 0))
+                if not question or len(options) < 2:
+                    errors.append({"index": i, "reason": "Missing question or fewer than 2 options"})
+                    continue
+                if correct_answer_index >= len(options):
+                    correct_answer_index = 0
+                payload = {
+                    "exam_id": exam_id,
+                    "question": question,
+                    "options": options,
+                    "correct_answer_index": correct_answer_index,
+                    "explanation": (row.get("explanation") or "").strip(),
+                    "difficulty": row.get("difficulty") or "medium",
+                    "topic_tag": (row.get("topic_tag") or "").strip(),
+                    "order_index": next_idx,
+                }
+                _supabase_post("master_mock_exam_questions", payload)
+                next_idx += 1
+                inserted += 1
+            except Exception as exc:
+                errors.append({"index": i, "reason": str(exc)[:120]})
+        return {"inserted": inserted, "errors": errors}
+
     # ─── Mock Exam Student endpoints ───────────────────────────────────────
 
     @api_router.get("/mock-exams/{module_id}")
     async def student_mock_exam_get(module_id: str, user=Depends(_get_supabase_user)):
         """Return exam meta + shuffled questions (correct_answer_index hidden)."""
-        mid_q = _urlparse.quote(module_id)
+        master_mod_id = _resolve_exam_master_module_id(module_id)
+        mid_q = _urlparse.quote(master_mod_id)
         rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
         if not rows:
             raise HTTPException(status_code=404, detail="No mock exam found for this module.")
@@ -2745,7 +2817,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.post("/mock-exams/{module_id}/start")
     async def student_mock_exam_start(module_id: str, user=Depends(_get_supabase_user)):
         """Create a new attempt row and return its id."""
-        mid_q = _urlparse.quote(module_id)
+        master_mod_id = _resolve_exam_master_module_id(module_id)
+        mid_q = _urlparse.quote(master_mod_id)
         rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
         if not rows:
             raise HTTPException(status_code=404, detail="No mock exam found for this module.")
@@ -2763,7 +2836,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     async def student_mock_exam_submit(module_id: str, body: _MockExamSubmitBody,
                                        user=Depends(_get_supabase_user)):
         """Score the exam and persist the result."""
-        mid_q = _urlparse.quote(module_id)
+        master_mod_id = _resolve_exam_master_module_id(module_id)
+        mid_q = _urlparse.quote(master_mod_id)
         exam_rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
         if not exam_rows:
             raise HTTPException(status_code=404, detail="No mock exam found for this module.")
@@ -2827,7 +2901,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.get("/mock-exams/{module_id}/my-attempts")
     async def student_mock_exam_my_attempts(module_id: str, user=Depends(_get_supabase_user)):
         """Return the current user's completed attempts for this module's exam."""
-        mid_q = _urlparse.quote(module_id)
+        master_mod_id = _resolve_exam_master_module_id(module_id)
+        mid_q = _urlparse.quote(master_mod_id)
         exam_rows = _supabase_get(f"master_mock_exams?module_id=eq.{mid_q}&limit=1") or []
         if not exam_rows:
             return {"attempts": []}

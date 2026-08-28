@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import { getPendingModuleProject } from '../lib/pendingModuleProject';
 import { getInterviewMasterModuleIds, getInterviewSimGate } from '../utils/interviewSim';
+import { getExamMasterModuleIds } from '../utils/examModule';
 import { Skeleton } from './ui/skeleton';
 import AskPariButton from './tutor/AskPariButton'; // P54: kept for legacy refs, no longer rendered on dashboard
 import StudyPlanWizard from './study-planner/StudyPlanWizard';
@@ -59,12 +60,12 @@ function StatCard({ icon: Icon, label, value, suffix, accent = 'primary', testid
   );
 }
 
-function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, interviewMod = false, interviewGate = { done: 0, total: 0, allDone: false } }) {
+function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, interviewMod = false, examMod = false, interviewGate = { done: 0, total: 0, allDone: false } }) {
   const activeSessions = sessions.filter((s) => !s.is_removed);
   const completedCount = activeSessions.filter((s) => s.is_completed).length;
   const total = activeSessions.length;
   const pct = total ? Math.round((completedCount / total) * 100) : 0;
-  const isComplete = module.is_completed || (total > 0 && completedCount === total && !interviewMod);
+  const isComplete = module.is_completed || (total > 0 && completedCount === total && !interviewMod && !examMod);
   const sessionsAllDone = total > 0 && completedCount === total;
   // Completed modules are expandable so the user can revisit any phase of any
   // session; default-collapsed to keep the dashboard scannable but click the
@@ -170,7 +171,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
           {showSessionList && (
             <div className="mt-4 space-y-1.5" data-testid={`module-sessions-${module.order_index}`}>
               {activeSessions.map((s, sidx) => {
-                const phases = interviewMod ? ['notes'] : ['notes', 'quiz', 'simulation'];
+                const phases = (interviewMod || examMod) ? ['notes'] : ['notes', 'quiz', 'simulation'];
                 return (
                   <Link
                     key={s.id}
@@ -255,6 +256,28 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
               </span>
             </Link>
           )}
+
+          {/* Mock exam indicator (exam modules like Module 16) */}
+          {examMod && !isLocked && (
+            <Link
+              to={`/module/${module.id}/mock-exam/start`}
+              onClick={(e) => e.stopPropagation()}
+              className="mt-3 flex items-center gap-2 text-[11px] font-mono group"
+              data-testid={`module-mock-exam-link-${module.order_index}`}
+            >
+              <Trophy size={12} className={
+                module.is_completed
+                  ? 'text-[var(--color-success)]'
+                  : sessionsAllDone
+                  ? 'text-[#F59E0B]'
+                  : 'text-[var(--color-text-faint)]'
+              } />
+              <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-text)] transition-colors">
+                NISM Mock Exam — 100 questions, 120 min
+                {sessionsAllDone ? ' · Take exam →' : ' · Unlocks after all sessions'}
+              </span>
+            </Link>
+          )}
         </div>
       </div>
     </div>
@@ -310,6 +333,17 @@ export default function DashboardPage() {
         if (alive) setInterviewInfo({ masterIds, gate });
       } catch { /* non-fatal */ }
     })();
+    return () => { alive = false; };
+  }, [user?.id]);
+
+  // Exam modules (e.g. Module 16 — NISM Series XV) — detect once and cache.
+  const [examInfo, setExamInfo] = useState({ masterIds: new Set() });
+  useEffect(() => {
+    if (!user?.id) return;
+    let alive = true;
+    getExamMasterModuleIds()
+      .then((ids) => { if (alive) setExamInfo({ masterIds: ids }); })
+      .catch(() => {});
     return () => { alive = false; };
   }, [user?.id]);
   useEffect(() => {
@@ -522,6 +556,17 @@ export default function DashboardPage() {
         currentSession = null;
         break;
       }
+      // All sessions done in an exam module (e.g. Module 16 NISM) — prompt
+      // the student to take the mock exam before continuing.
+      if (
+        ms.length > 0 &&
+        examInfo.masterIds.has(m.master_module_id) &&
+        !m.is_completed
+      ) {
+        currentModule = m;
+        currentSession = null;
+        break;
+      }
       // All sessions in this module are complete — but if its project is still
       // pending, the user should finish that BEFORE jumping to the next module.
       const project = projectMap[m.id];
@@ -549,8 +594,9 @@ export default function DashboardPage() {
       completedModules,
       allModulesComplete,
       sessionsByModule,
+      isExamModule: examInfo.masterIds.has(currentModule?.master_module_id),
     };
-  }, [enrollment, modules, sessions, moduleProjects, interviewInfo]);
+  }, [enrollment, modules, sessions, moduleProjects, interviewInfo, examInfo]);
 
   const projectByModule = useMemo(() => {
     const map = {};
@@ -714,6 +760,7 @@ export default function DashboardPage() {
                   capstone={capstone}
                   projectByModule={projectByModule}
                   interviewInfo={interviewInfo}
+                  examInfo={examInfo}
                   onNavigate={navigate}
                 />
               </section>
@@ -830,6 +877,7 @@ export default function DashboardPage() {
                         isActive={isActive}
                         isLocked={isLocked}
                         interviewMod={interviewInfo.masterIds.has(mod.master_module_id)}
+                        examMod={examInfo.masterIds.has(mod.master_module_id)}
                         interviewGate={interviewInfo.gate}
                       />
                     );
@@ -916,8 +964,8 @@ export default function DashboardPage() {
   );
 }
 
-function ContinueLearningCard({ computed, enrollment, capstone, projectByModule, interviewInfo, onNavigate }) {
-  const { currentModule, currentSession, nextPhase, allModulesComplete } = computed;
+function ContinueLearningCard({ computed, enrollment, capstone, projectByModule, interviewInfo, examInfo, onNavigate }) {
+  const { currentModule, currentSession, nextPhase, allModulesComplete, isExamModule } = computed;
 
   // State 1: all modules done, capstone available
   if (allModulesComplete) {
@@ -970,6 +1018,36 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
           data-testid="enter-interview-sims-btn"
         >
           <Briefcase size={16} /> Enter the Careers Portal <ArrowRight size={16} />
+        </button>
+      </div>
+    );
+  }
+
+  // State 2b: exam module (e.g. Module 16 NISM) — sessions done, take mock exam
+  if (currentModule && !currentSession && isExamModule) {
+    return (
+      <div
+        className="glass-card rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-[#F59E0B]/10 via-transparent to-[#F59E0B]/5 border-[#F59E0B]/25"
+        data-testid="continue-learning-mock-exam"
+      >
+        <div className="flex items-center gap-2 text-xs font-mono text-[#F59E0B] mb-3">
+          <Trophy size={14} /> CERTIFICATION EXAM
+        </div>
+        <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-1">
+          Ready for the NISM Series XV Mock Exam?
+        </h2>
+        <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5 max-w-lg">
+          You've completed all sessions in {/^\s*module\b/i.test(currentModule.title || '')
+            ? currentModule.title
+            : `Module ${currentModule.module_number ?? currentModule.order_index}: ${currentModule.title}`}.
+          Test your knowledge — 100 questions, 120 minutes, 60% to pass.
+        </p>
+        <button
+          onClick={() => onNavigate(`/module/${currentModule.id}/mock-exam/start`)}
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-[#F59E0B] to-[#D97706] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(245,158,11,0.4)] hover:brightness-110 transition-all"
+          data-testid="take-mock-exam-btn"
+        >
+          <Trophy size={16} /> Take Mock Exam <ArrowRight size={16} />
         </button>
       </div>
     );

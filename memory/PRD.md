@@ -36,20 +36,25 @@ All new endpoints fall back gracefully if migrations haven't been applied yet (r
 
 ### Features Added
 1. **Admin MockExamModal**: `ClipboardList` icon on every module row → opens modal with Settings (title, time limit, pass %) + full question CRUD (add/edit/delete MCQ questions with topic tags, difficulty, options, correct answer, explanation).
-2. **Student exam flow** (3 pages):
+2. **CSV Bulk Question Import**: "Import CSV" button in admin modal → paste CSV → live row count preview → bulk insert. Format: `question, option_a, option_b, option_c, option_d, correct_index (0-3), explanation, difficulty, topic_tag`
+3. **Student exam flow** (3 pages):
    - `MockExamStartPage` (`/module/:id/mock-exam/start`) — info card with question count, timer, pass mark, previous attempts history.
    - `MockExamPage` (`/module/:id/mock-exam`) — countdown timer (red when < 10 min), question navigator pill grid (green = answered, amber = flagged), MCQ card, flag-for-review button, auto-submit on timeout.
    - `MockExamResultPage` (`/module/:id/mock-exam/result`) — score ring animation, pass/fail badge, per-question review accordion with explanations, retake button.
-3. **Backend endpoints** (10 total): admin CRUD + student get/start/submit/attempts.
-4. **DB Migration** `0043_mock_exams.sql` — creates `master_mock_exams`, `master_mock_exam_questions`, `user_mock_exam_attempts` tables.
+4. **Session Flow (exam modules)**: Exam module sessions show Notes ONLY (no quiz/sim). Notes completion auto-marks quiz+sim complete so sessions count as done.
+5. **Dashboard CTA**: When all sessions in an exam module are done, a gold "Take Mock Exam" card appears in `ContinueLearningCard`. Module cards show a "NISM Mock Exam" indicator link.
+6. **Backend fix**: Student endpoints now resolve `user_modules.id` → `master_modules.id` correctly before querying mock exam data.
+7. **Backend endpoints** (11 total): admin CRUD + CSV bulk import + student get/start/submit/attempts.
+8. **DB Migration** `0043_mock_exams.sql` — creates `master_mock_exams`, `master_mock_exam_questions`, `user_mock_exam_attempts` tables + `is_exam_module` column on `master_modules`.
 
 ### DB Migration Required
-Run `/app/scripts/migrations/0043_mock_exams.sql` in Supabase Studio to activate the mock exam system.
-- Admin can upload a PDF or PPTX for each session (replaces card-based notes for students)
-- Storage bucket: `session-notes` (public)
-- Card type: `pdf_document` in `master_notes_cards`
-- Student view: DocumentViewer component in NotesPage
-- Requires migration 0040 for the new card type
+Run `/app/scripts/migrations/0043_mock_exams.sql` in Supabase Studio. Then mark Module 16 as exam module:
+```sql
+UPDATE master_modules SET is_exam_module = true WHERE module_number = 16;
+```
+
+### Utility files
+- `src/utils/examModule.js` — `getExamMasterModuleIds()`, `isExamMasterModule()`, `isExamUserModule()` (mirrors interviewSim.js pattern)
 
 ## Feb 2026 — Dynamic Session Timing
 - `effective_minutes(session) = round(video_duration_minutes || 15) + 10`

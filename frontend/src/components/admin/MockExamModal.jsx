@@ -10,7 +10,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
 import {
   X as XIcon, Save, Trash2, Plus, ChevronUp, ChevronDown, ClipboardList,
-  Clock, Target, BookOpen, Loader2,
+  Clock, Target, BookOpen, Loader2, UploadCloud, CheckCircle2,
 } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -324,6 +324,53 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
     } catch (e) { alert(e.message); }
   };
 
+  // ─── CSV import ───────────────────────────────────────────────────────────
+  const [showCsvPanel, setShowCsvPanel] = useState(false);
+  const [csvText, setCsvText] = useState('');
+  const [csvImporting, setCsvImporting] = useState(false);
+  const [csvResult, setCsvResult] = useState(null); // { inserted, errors }
+
+  const parsedCsvRows = (() => {
+    const lines = csvText.split('\n').map((l) => l.trim()).filter(Boolean);
+    const rows = [];
+    for (const line of lines) {
+      // Support comma-separated with optional quoting
+      const parts = line.match(/("(?:[^"]|"")*"|[^,]*)/g)?.map((p) =>
+        p.startsWith('"') ? p.slice(1, -1).replace(/""/g, '"') : p.trim()
+      ) || [];
+      if (parts.length < 6) continue;
+      const [question, option_a, option_b, option_c, option_d, correct_raw, explanation, difficulty, topic_tag] = parts;
+      const correct_answer_index = parseInt(correct_raw, 10);
+      if (!question || isNaN(correct_answer_index)) continue;
+      const options = [option_a, option_b, option_c, option_d].filter(Boolean);
+      if (options.length < 2) continue;
+      rows.push({
+        question,
+        options,
+        correct_answer_index: Math.min(correct_answer_index, options.length - 1),
+        explanation: explanation || '',
+        difficulty: ['easy', 'medium', 'hard'].includes(difficulty) ? difficulty : 'medium',
+        topic_tag: topic_tag || '',
+      });
+    }
+    return rows;
+  })();
+
+  const importCsv = async () => {
+    if (!exam || parsedCsvRows.length === 0) return;
+    setCsvImporting(true); setCsvResult(null);
+    try {
+      const j = await req(`/api/admin/mock-exams/${exam.id}/questions/csv`, 'POST', { rows: parsedCsvRows });
+      setCsvResult(j);
+      await loadQuestions(exam.id);
+      setCsvText('');
+    } catch (e) {
+      setCsvResult({ error: e.message });
+    } finally {
+      setCsvImporting(false);
+    }
+  };
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
@@ -487,15 +534,76 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
                 <p className="text-xs font-semibold text-[var(--color-text)]">
                   Questions ({questions.length})
                 </p>
-                <button
-                  onClick={startNewQuestion}
-                  disabled={!!editingQId}
-                  data-testid="add-mock-exam-question"
-                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-[var(--color-primary)] text-white text-xs hover:brightness-110 disabled:opacity-50"
-                >
-                  <Plus size={12} /> Add Question
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => { setShowCsvPanel((v) => !v); setCsvResult(null); }}
+                    disabled={!!editingQId}
+                    data-testid="import-csv-btn"
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] text-xs hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] disabled:opacity-50 transition-colors"
+                  >
+                    <UploadCloud size={12} /> Import CSV
+                  </button>
+                  <button
+                    onClick={startNewQuestion}
+                    disabled={!!editingQId || showCsvPanel}
+                    data-testid="add-mock-exam-question"
+                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-md bg-[var(--color-primary)] text-white text-xs hover:brightness-110 disabled:opacity-50"
+                  >
+                    <Plus size={12} /> Add Question
+                  </button>
+                </div>
               </div>
+
+              {/* CSV import panel */}
+              {showCsvPanel && (
+                <div className="border-b border-[var(--color-border)] p-4 bg-[var(--color-surface)]/40 space-y-3 flex-shrink-0" data-testid="csv-import-panel">
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold text-[var(--color-text)]">Bulk import via CSV</p>
+                    <button onClick={() => { setShowCsvPanel(false); setCsvText(''); setCsvResult(null); }} className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
+                      <XIcon size={14} />
+                    </button>
+                  </div>
+                  <p className="text-[10px] font-mono text-[var(--color-text-muted)] leading-relaxed bg-[var(--color-bg)] px-3 py-2 rounded border border-[var(--color-border)]">
+                    Format: question, option_a, option_b, option_c, option_d, correct_index (0-3), explanation, difficulty, topic_tag
+                  </p>
+                  <textarea
+                    value={csvText}
+                    onChange={(e) => { setCsvText(e.target.value); setCsvResult(null); }}
+                    rows={6}
+                    placeholder={"What is SEBI's primary role?,Regulating securities markets,Printing currency,Setting tax rates,Managing FDI,0,SEBI regulates and develops securities markets in India,easy,Regulation\nAnother question here,..."}
+                    data-testid="csv-textarea"
+                    className="w-full text-xs font-mono px-3 py-2 rounded border border-[var(--color-border)] bg-[var(--color-bg)] resize-y"
+                  />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="text-[10px] font-mono text-[var(--color-text-muted)]">
+                      {parsedCsvRows.length > 0 ? (
+                        <span className="text-[var(--color-success)]">{parsedCsvRows.length} valid row{parsedCsvRows.length !== 1 ? 's' : ''} detected</span>
+                      ) : csvText.trim() ? (
+                        <span className="text-red-500">No valid rows found — check format</span>
+                      ) : (
+                        <span>Paste CSV above</span>
+                      )}
+                    </div>
+                    <button
+                      onClick={importCsv}
+                      disabled={csvImporting || parsedCsvRows.length === 0}
+                      data-testid="confirm-csv-import"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-success)] text-white text-xs font-semibold hover:brightness-110 disabled:opacity-50"
+                    >
+                      {csvImporting ? <Loader2 size={11} className="animate-spin" /> : <UploadCloud size={11} />}
+                      Import {parsedCsvRows.length > 0 ? `${parsedCsvRows.length} questions` : ''}
+                    </button>
+                  </div>
+                  {csvResult && (
+                    <div className={`text-xs rounded-lg px-3 py-2 ${csvResult.error ? 'bg-red-500/10 text-red-400 border border-red-500/20' : 'bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20'}`} data-testid="csv-import-result">
+                      {csvResult.error
+                        ? `Error: ${csvResult.error}`
+                        : <span className="flex items-center gap-1.5"><CheckCircle2 size={12} /> {csvResult.inserted} questions imported successfully. {csvResult.errors?.length ? `${csvResult.errors.length} skipped.` : ''}</span>
+                      }
+                    </div>
+                  )}
+                </div>
+              )}
 
               <div className="flex-1 overflow-y-auto p-3 space-y-2" data-testid="mock-exam-questions-list">
                 {editingQId === 'new' && draft && (

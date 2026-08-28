@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from 'react-router-dom';import { useAuth
 import { supabase } from '../lib/supabase';
 import { getPendingModuleProject } from '../lib/pendingModuleProject';
 import { isInterviewUserModule } from '../utils/interviewSim';
+import { isExamUserModule } from '../utils/examModule';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, FileText, HelpCircle, MessageSquare, Wrench,
@@ -20,6 +21,10 @@ const INTERVIEW_PHASES = [
   { key: 'notes', label: 'Video + Notes', icon: FileText, path: 'notes', blurb: 'Watch the lecture and review the notes' },
 ];
 
+const EXAM_PHASES = [
+  { key: 'notes', label: 'Study Notes', icon: FileText, path: 'notes', blurb: 'Review the study material for this session' },
+];
+
 export default function SessionStartPage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
@@ -31,6 +36,7 @@ export default function SessionStartPage() {
   const [module, setModule] = useState(null);
   const [master, setMaster] = useState(null);
   const [isInterviewSession, setIsInterviewSession] = useState(false);
+  const [isExamSession, setIsExamSession] = useState(false);
 
   useEffect(() => {
     let mounted = true;
@@ -51,6 +57,10 @@ export default function SessionStartPage() {
 
         isInterviewUserModule(sess.user_module_id)
           .then((flag) => { if (mounted) setIsInterviewSession(flag); })
+          .catch(() => {});
+
+        isExamUserModule(sess.user_module_id)
+          .then((flag) => { if (mounted) setIsExamSession(flag); })
           .catch(() => {});
 
         // Retro-lock guard: if the user has an earlier pending Module Project,
@@ -85,7 +95,7 @@ export default function SessionStartPage() {
     return () => { mounted = false; };
   }, [sessionId, user?.id]);
 
-  const phaseList = isInterviewSession ? INTERVIEW_PHASES : PHASES;
+  const phaseList = isInterviewSession ? INTERVIEW_PHASES : isExamSession ? EXAM_PHASES : PHASES;
   const firstIncomplete = session
     ? phaseList.find((p) => !session[`${p.key}_completed`])
     : null;
@@ -194,7 +204,7 @@ export default function SessionStartPage() {
               {/* Phases */}
               <div className="mb-8">
                 <h2 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)] mb-3">
-                  {isInterviewSession ? 'Your session' : 'Your 3-phase journey'}
+                  {isInterviewSession ? 'Your session' : isExamSession ? 'Exam prep session' : 'Your 3-phase journey'}
                 </h2>
                 <div className="space-y-2" data-testid="session-phase-list">
                   {phaseList.map((p, idx) => {
