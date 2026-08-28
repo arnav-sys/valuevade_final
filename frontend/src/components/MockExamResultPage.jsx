@@ -8,7 +8,7 @@ import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import {
   CheckCircle2, XCircle, ClipboardList, RotateCcw, ChevronDown, ChevronUp,
-  Home, Target,
+  Home, Target, Trophy, ArrowRight,
 } from 'lucide-react';
 
 function pad(n) { return String(n).padStart(2, '0'); }
@@ -123,6 +123,31 @@ export default function MockExamResultPage() {
             ))}
           </div>
 
+          {/* Module Complete banner — only on pass */}
+          {passed && (
+            <div
+              className="rounded-2xl p-5 mb-8 bg-gradient-to-r from-[#F59E0B]/15 via-[var(--color-success)]/10 to-[#F59E0B]/15 border border-[#F59E0B]/30 flex flex-col sm:flex-row items-center gap-4"
+              data-testid="module-complete-banner"
+            >
+              <div className="flex-shrink-0 w-12 h-12 rounded-full bg-[#F59E0B]/20 flex items-center justify-center">
+                <Trophy size={22} className="text-[#F59E0B]" />
+              </div>
+              <div className="flex-1 text-center sm:text-left">
+                <p className="font-clash text-base font-bold text-[var(--color-text)]">Module Complete!</p>
+                <p className="text-sm text-[var(--color-text-muted)]">
+                  Your module has been marked complete and the next module is now unlocked on your dashboard.
+                </p>
+              </div>
+              <Link
+                to="/dashboard"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#F59E0B] text-white text-sm font-semibold hover:brightness-110 transition-all flex-shrink-0"
+                data-testid="module-complete-dashboard-btn"
+              >
+                Continue <ArrowRight size={14} />
+              </Link>
+            </div>
+          )}
+
           {/* CTA buttons */}
           <div className="flex items-center gap-3 mb-10 flex-wrap">
             <button
@@ -132,13 +157,15 @@ export default function MockExamResultPage() {
             >
               <RotateCcw size={14} /> Retake exam
             </button>
-            <Link
-              to="/dashboard"
-              data-testid="mock-exam-dashboard-btn"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold hover:brightness-110 transition-all"
-            >
-              <Home size={14} /> Dashboard
-            </Link>
+            {!passed && (
+              <Link
+                to="/dashboard"
+                data-testid="mock-exam-dashboard-btn"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold hover:brightness-110 transition-all"
+              >
+                <Home size={14} /> Dashboard
+              </Link>
+            )}
           </div>
 
           {/* Question review */}

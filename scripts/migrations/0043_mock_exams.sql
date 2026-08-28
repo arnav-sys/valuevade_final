@@ -56,14 +56,17 @@ ALTER TABLE master_mock_exam_questions     ENABLE ROW LEVEL SECURITY;
 ALTER TABLE user_mock_exam_attempts        ENABLE ROW LEVEL SECURITY;
 
 -- Allow authenticated users to read exam meta and questions
-CREATE POLICY IF NOT EXISTS "anon read mock exams"
+DROP POLICY IF EXISTS "anon read mock exams" ON master_mock_exams;
+CREATE POLICY "anon read mock exams"
   ON master_mock_exams FOR SELECT TO authenticated USING (TRUE);
 
-CREATE POLICY IF NOT EXISTS "anon read mock exam questions"
+DROP POLICY IF EXISTS "anon read mock exam questions" ON master_mock_exam_questions;
+CREATE POLICY "anon read mock exam questions"
   ON master_mock_exam_questions FOR SELECT TO authenticated USING (TRUE);
 
 -- Users can insert/select their own attempts
-CREATE POLICY IF NOT EXISTS "users manage own attempts"
+DROP POLICY IF EXISTS "users manage own attempts" ON user_mock_exam_attempts;
+CREATE POLICY "users manage own attempts"
   ON user_mock_exam_attempts FOR ALL TO authenticated
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);

@@ -2876,18 +2876,52 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         score = round((correct_count / total * 100), 1) if total else 0
         passed = score >= float(exam["pass_percentage"])
         from datetime import datetime, timezone as _tz
+        now_iso = datetime.now(_tz.utc).isoformat()
         patch = {
             "answers": answers,
             "score": score,
             "total_questions": total,
             "correct_count": correct_count,
-            "completed_at": datetime.now(_tz.utc).isoformat(),
+            "completed_at": now_iso,
             "passed": passed,
             "time_taken_seconds": body.time_taken_seconds,
         }
         _supabase_patch(
             f"user_mock_exam_attempts?id=eq.{_urlparse.quote(body.attempt_id)}", patch
         )
+
+        # ── Exam Pass = Module Complete ────────────────────────────────────
+        # When the student passes, flip user_modules.is_completed = true so
+        # the next module unlocks on their dashboard.
+        if passed:
+            try:
+                # 1. Resolve the master_module_id (exam.module_id already is one)
+                master_mod_id_q = _urlparse.quote(exam["module_id"])
+                # 2. Get user's active enrollment
+                enroll_rows = _supabase_get(
+                    f"user_enrollments?user_id=eq.{_urlparse.quote(str(user['id']))}"
+                    "&status=eq.active&select=id&limit=1"
+                ) or []
+                if enroll_rows:
+                    enroll_id = enroll_rows[0]["id"]
+                    # 3. Find the user_modules row for this exam module
+                    um_rows = _supabase_get(
+                        f"user_modules?enrollment_id=eq.{_urlparse.quote(enroll_id)}"
+                        f"&master_module_id=eq.{master_mod_id_q}"
+                        "&is_removed=eq.false&select=id,is_completed&limit=1"
+                    ) or []
+                    if um_rows and not um_rows[0].get("is_completed"):
+                        _supabase_patch(
+                            f"user_modules?id=eq.{_urlparse.quote(um_rows[0]['id'])}",
+                            {"is_completed": True, "completed_at": now_iso},
+                        )
+                        logger.info(
+                            f"[mock-exam] user {user['id']} passed exam for module "
+                            f"{exam['module_id']} — user_modules {um_rows[0]['id']} marked complete"
+                        )
+            except Exception as _e:
+                logger.warning(f"[mock-exam] module-complete flip failed: {_e}")
+
         return {
             "score": score,
             "correct_count": correct_count,

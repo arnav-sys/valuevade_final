@@ -2,6 +2,7 @@ import { supabase } from '../lib/supabase';
 import { computeQuizXP, XP_REASONS } from './xp';
 import { getRedoForSession } from './redoState';
 import { isInterviewMasterModule, getInterviewSimGate } from './interviewSim';
+import { isExamMasterModule } from './examModule';
 
 /**
  * Daily-challenge progress helper.
@@ -273,6 +274,13 @@ export async function checkModuleCompletion(userModuleId) {
           if (!gate.allDone) {
             return { success: true, data: { completed: false, interview_sims_pending: true } };
           }
+        }
+        // Exam modules (e.g. Module 16 NISM) complete only when the student
+        // passes the mock exam — the backend handles that flip. We skip the
+        // auto-complete here so sessions finishing notes-only don't prematurely
+        // unlock the next module.
+        if (um?.master_module_id && (await isExamMasterModule(um.master_module_id))) {
+          return { success: true, data: { completed: false, exam_pending: true } };
         }
       } catch { /* fall through to normal completion */ }
       const { error: modErr } = await supabase
