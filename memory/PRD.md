@@ -881,6 +881,7 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - Change: `/signup` route now renders `SignupPage` (wrapped in `PublicOnlyRoute`, same as `/login`); `/signuproute1` now redirects to `/signup` instead of `/login`; LoginPage's bottom hint is now "New here? Create an account" linking to `/signup`.
 - Verified live (screenshot + curl): fresh signup → auto-logged-in → redirected to `/courses` → `profiles` row auto-created correctly. Tested via testing_agent iteration_75.json — 100% pass (8/8 scenarios: link visibility, validation errors, successful signup, duplicate-email error, login-page regression, back/login links). Test account cleaned up afterward.
 - Note (not fixed, low priority per testing agent): SignupPage surfaces raw Supabase error text (e.g. "User already registered") — could be friendlier copy; no rate-limiting/captcha on the public signup endpoint beyond Supabase defaults.
+- Follow-up fix: found CourseDetailsPage.jsx's header "Sign up" button (`detail-signup-link`) was still wired to `/login` (leftover from before signup was disabled). Fixed to point to `/signup`. Verified directly via screenshot (click → lands on signup-card).
 
 ## 2026-08-29 — Verified: Study Planner already uses real video duration (not static 25min)
 - User asked to confirm the Study Planner ("deadline" / "hours per day" / "hours per week" wizard modes) computes load using ACTUAL video duration and only falls back to 25min per session when no video exists — not a static 25min for every session like the old bug.

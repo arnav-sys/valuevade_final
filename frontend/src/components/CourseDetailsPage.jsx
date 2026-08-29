@@ -437,7 +437,7 @@ export default function CourseDetailsPage() {
                   Log in
                 </Link>
                 <Link
-                  to="/login"
+                  to="/signup"
                   className="px-3 py-1.5 rounded-lg text-sm font-semibold font-bricolage bg-[var(--color-primary)] text-white hover:shadow-[0_0_20px_rgba(36,107,253,0.35)] transition-all"
                   data-testid="detail-signup-link"
                 >
