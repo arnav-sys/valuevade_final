@@ -2,7 +2,7 @@
 
 Generated: 2026-06-25 · Model: claude-haiku-4-5-20251001 · Engine-validated against `excelFormula.js`
 
-Preview URL (live in the app): `https://pivot-power-1.preview.emergentagent.com/m3-sample-preview`
+Preview URL (live in the app): `https://mock-exam-mvp.preview.emergentagent.com/m3-sample-preview`
 Per-sample: `?s=3.3` · `?s=3.5` · `?s=3.6`
 
 ---

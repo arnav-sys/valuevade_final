@@ -826,3 +826,18 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - Both module list and single-module GET queries now return `is_exam_module` field.
 - Frontend `CurriculumTab.jsx`: added `toggleExamModule()` handler + `FileText` icon button per module row (amber when active). Shows amber "Exam Module" badge inline under module title when flagged. Confirmation dialog explains the impact before toggling.
 - DB migration `0043_mock_exams.sql` adds the `is_exam_module` column (must be applied in Supabase Studio).
+
+## Jun 2026 — Mock Exam E2E verified + Video-duration backfill
+### 1. DB migrations confirmed applied by user (0041, 0042, 0043 + Module 16 is_exam_module=true)
+- master_mock_exams / master_mock_exam_questions / user_mock_exam_attempts live on prod Supabase.
+### 2. Mock Exam full E2E — PASSED (iteration_67, 14/14 backend + admin UI verified)
+- Admin auto-create exam, PATCH settings, CSV bulk import (error rows handled), question CRUD, student GET (answers hidden), start, submit scoring, pass→module-complete, 403 security all pass.
+- Note: testagent2026's enrollment has no user_modules row for Module 16, so the student CTA doesn't render for that account (data condition, not a bug).
+### 3. BUG FIX: all sessions showed uniform "25min" (user-reported)
+- Root cause: video_duration_minutes NULL for all 59 existing lecture videos → formula round(NULL||15)+10 = 25.
+- Fix: /app/scripts/backfill_video_durations.py parses MP4 mvhd atom via HTTP range requests, PATCHed real durations (ok=59 fail=0, range 3.91–36.48 min).
+- Verified (iteration_68, 100% pass): course page shows varied durations (34min/15min/16min...), module hour totals correct.
+- Sessions WITHOUT a video still show 25min by design (15 default + 10 quiz/sim). New uploads auto-capture duration via VideoEditor frontend metadata.
+### Remaining backlog
+- P2: Remove graceful DB-fallbacks in guest_session_endpoints.py / wave_endpoints.py / server.py now schema is synced.
+- P3 (testing-agent suggestion): show "Coming soon" instead of 25min pill for sessions without video.

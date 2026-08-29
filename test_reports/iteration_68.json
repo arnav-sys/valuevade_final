@@ -1,0 +1,34 @@
+{
+  "summary": "Verified the video-duration backfill fix. Supabase now has 0 NULL video_duration_minutes among the 59 master_sessions rows that have a lecture_url (was 59/59 NULL before). Course Details page (/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c) no longer shows uniform 25min per session — Module 1 sessions render as 34min, 15min, 15min, 15min, 15min, 16min, 15min. Module-level hour totals also reflect summed real durations (M1=2.1h, M2=1.5h, M3=5.0h, M5=1.5h, M6=5.4h, M7=5.0h, M8=2.9h, M9=5.0h, M10=1.6h, M11=1.9h, M12=5.8h, M13=7.3h, M14=7.9h, M15=2.5h, M16=6.3h, M18=8.3h, M20=4.6h, M21=5.0h, M22=5.8h, M23=5.0h) — not 25*sessionCount. Dashboard + course page load with no console errors. No regression observed.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "verification_details": {
+    "supabase_check": {
+      "total_master_sessions": 228,
+      "with_lecture_url": 59,
+      "with_lecture_url_and_null_duration": 0,
+      "without_lecture_url": 169,
+      "duration_range_minutes": "3.91 – 36.48",
+      "effective_minutes_distribution_for_videos": {"14":12,"15":19,"16":3,"20":2,"22":1,"23":2,"24":3,"25":2,"27":4,"28":1,"30":2,"31":1,"32":1,"33":1,"34":1,"35":1,"36":1,"40":1,"46":1}
+    },
+    "frontend_check": {
+      "route_tested": "/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c (Equity Research Analyst)",
+      "module_1_session_durations_seen": ["34min","15min","15min","15min","15min","16min","15min"],
+      "note_on_25min_cells": "12 sessions in the mental-models/'Think Like an Elite Analyst' module still show 25min — this is EXPECTED because those sessions have no lecture_url (no video uploaded yet), so effectiveMinutes falls back to round(15)+10=25. Not a regression.",
+      "module_hour_totals_varied": true
+    }
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "sessionTime.effectiveMinutes: consider distinguishing 'no video yet' from 'video with 15min duration' so upcoming/not-yet-recorded sessions don't collectively surface as a hardcoded 25min block; a small badge like 'Coming soon' + hiding the min pill would communicate reality better to prospective students."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (student, used to hit the auth-protected route via cookie session; the course-details route is publicly accessible so login is not strictly required)",
+  "seed_data_creation": "None. Read-only verification.",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Backfill of master_sessions.video_duration_minutes is complete: 59/59 sessions with lecture_url now have real MP4-derived durations. Formula in /app/frontend/src/utils/sessionTime.js is effectiveMinutes = round(video_duration_minutes || 15) + 10. Sessions with no lecture_url still show 25min — that's by design. If the product team wants those sessions to appear differently (e.g., 'TBD' or hidden pill), that would be a separate feature, not a bug.",
+  "rca of the issue": "Root cause was data-only: master_sessions.video_duration_minutes column was added by migration 0041 but never backfilled for the 59 existing lecture videos, so all rows had NULL. The frontend formula round(NULL||15)+10 collapsed every session to 25min. Fix applied by main agent: /app/scripts/backfill_video_durations.py parsed each MP4's mvhd atom via HTTP range requests and PATCHed real durations into Supabase (ok=59 fail=0). Verified end-to-end: DB rows populated with 3.91–36.48 min values, frontend now displays varied durations and correct module totals."
+}
