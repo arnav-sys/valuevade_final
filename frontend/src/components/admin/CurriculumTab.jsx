@@ -16,7 +16,7 @@ import VideoEditor from './VideoEditor';
 import CapstonesEditor from './CapstonesEditor';
 import ModuleProjectModal from './ModuleProjectModal';
 import MockExamModal from './MockExamModal';
-import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown, Eye, Unlock, ClipboardList } from 'lucide-react';
+import { Plus, Trash2, Pencil, AlertTriangle, Folder, Download, Mic, ChevronUp, ChevronDown, Eye, Unlock, ClipboardList, FileText } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -88,6 +88,18 @@ export default function CurriculumTab() {
       setEditingMod(null);
       await reloadModules();
     } catch (e) { alert(`Rename failed: ${e.message}`); }
+  };
+
+  const toggleExamModule = async (m) => {
+    const next = !m.is_exam_module;
+    const msg = next
+      ? `Mark "${m.title}" as an EXAM MODULE?\n\nIts sessions will show Notes only (quiz/sim hidden). A timed Mock Exam becomes available after all sessions are done.`
+      : `Remove the EXAM MODULE flag from "${m.title}"?\n\nSessions revert to the normal notes → quiz → simulation flow.`;
+    if (!window.confirm(msg)) return;
+    try {
+      await req(`/api/admin/modules/${m.id}`, 'PATCH', { is_exam_module: next });
+      await reloadModules();
+    } catch (e) { alert(`Failed: ${e.message}`); }
   };
 
   const toggleInterviewModule = async (m) => {
@@ -275,6 +287,14 @@ export default function CurriculumTab() {
                       <Mic size={9} /> Mock Interview
                     </span>
                   )}
+                  {m.is_exam_module && (
+                    <span
+                      className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded bg-amber-500/15 border border-amber-500/30 text-amber-400 text-[9px] font-mono uppercase tracking-wider"
+                      data-testid={`exam-module-badge-${m.id}`}
+                    >
+                      <ClipboardList size={9} /> Exam Module
+                    </span>
+                  )}
                 </button>
                 <div className="flex flex-col gap-1">
                   {/* Module reorder */}
@@ -303,6 +323,14 @@ export default function CurriculumTab() {
                     className={m.is_interview_module ? 'text-[var(--color-accent-purple)]' : 'text-[var(--color-text-muted)] hover:text-[var(--color-accent-purple)]'}
                   >
                     <Mic size={11} />
+                  </button>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); toggleExamModule(m); }}
+                    title={m.is_exam_module ? 'Unmark exam module' : 'Mark as exam module (NISM-style mock exam)'}
+                    data-testid={`toggle-exam-module-${m.id}`}
+                    className={m.is_exam_module ? 'text-amber-400' : 'text-[var(--color-text-muted)] hover:text-amber-400'}
+                  >
+                    <FileText size={11} />
                   </button>
                   <button
                     onClick={(e) => { e.stopPropagation(); setProjModule({ id: m.id, title: m.title }); }}

@@ -818,3 +818,11 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - Cleaned up /app/.gitignore (was duplicated ~7x from repeated appends across sessions); removed `.env`/`.env.*`/`*.env` ignore entries per deployment_agent policy (env files must ship to the deploy pipeline) and added `memory/test_credentials.md` to the ignore list.
 - REGRESSION CAUGHT + FIXED: first patch attempt passed `overrideMsg` straight into `.trim()`, but the Send button's onClick={send} makes React pass a MouseEvent as the first arg, crashing every button-click send (Enter-key path was unaffected). Fixed with `typeof overrideMsg === 'string' ? overrideMsg : input` guard. Caught by testing_agent (iteration_59), verified fixed (iteration_60, 4/4 pass).
 - OTHER DEPLOYMENT FINDINGS from deployment_agent scan (flagged to user, NOT yet fixed — need explicit decision): (1) `/api/admin/login` (legacy /referral admin dashboard, separate from the Supabase-based /admin-panel) will always 401 because ADMIN_EMAIL/ADMIN_PASSWORD/ADMIN_SECRET are missing from backend/.env; (2) an unauthenticated `/api/_download/codebase` endpoint in server.py serves the whole codebase tarball — should likely be removed before further prod exposure.
+
+## Feb 2026 — Admin Exam Module Toggle (P1)
+
+- Added `is_exam_module` field to `_AdminModuleBody` in `wave_endpoints.py`.
+- Backend `PATCH /api/admin/modules/{id}` now accepts `is_exam_module` boolean.
+- Both module list and single-module GET queries now return `is_exam_module` field.
+- Frontend `CurriculumTab.jsx`: added `toggleExamModule()` handler + `FileText` icon button per module row (amber when active). Shows amber "Exam Module" badge inline under module title when flagged. Confirmation dialog explains the impact before toggling.
+- DB migration `0043_mock_exams.sql` adds the `is_exam_module` column (must be applied in Supabase Studio).
