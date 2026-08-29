@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import { enrollDirect } from '../lib/enrollDirect';
+import { usePaymentFlow } from './payments/usePaymentFlow';
 import { ArrowRight, BookOpen, Layers, Clock, Award, ChevronDown, ChevronUp, CheckCircle2, Sparkles } from 'lucide-react';
 import { BreathingGlow, ScrollProgressBar } from './cinematic/primitives';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
@@ -111,6 +112,14 @@ export default function EnrollmentPage() {
       setError(e?.message || 'Enrollment failed. Please try again.');
       setEnrolling(false);
     }
+  };
+
+  // Payment must succeed before enrollDirect() ever runs — enrolling for
+  // free was a bug (the "Enrol Now — ₹1,500" CTA promised payment).
+  const { startPayment, busy: paying, mockModal } = usePaymentFlow({ onSuccess: handleStart });
+  const handlePayAndStart = () => {
+    setError(null);
+    startPayment('upfront');
   };
 
   if (enrolling) {
@@ -265,16 +274,16 @@ export default function EnrollmentPage() {
             <>
               <BreathingGlow testid="enrollment-glow">
                 <button
-                  onClick={handleStart}
-                  disabled={enrolling}
+                  onClick={handlePayAndStart}
+                  disabled={enrolling || paying}
                   data-testid="enrollment-start-button"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm sm:text-base font-semibold font-bricolage hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                 >
-                  Start My Journey <ArrowRight size={16} />
+                  {paying ? 'Opening payment…' : 'Pay ₹1,500 & Start My Journey'} <ArrowRight size={16} />
                 </button>
               </BreathingGlow>
               <p className="mt-4 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-fineprint">
-                Full standard curriculum — start immediately.
+                ₹1,500 lifetime access · one-time payment via Razorpay · full standard curriculum
               </p>
             </>
           )}
@@ -310,6 +319,7 @@ export default function EnrollmentPage() {
           </Link>
         </section>
       </main>
+      {mockModal}
     </div>
   );
 }
