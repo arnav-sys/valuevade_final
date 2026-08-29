@@ -1,0 +1,35 @@
+{
+  "summary": "Tested new Admin Courses tab (list, inline title edit + persistence + revert, Preview & Free Sessions modal with idempotent toggle), CourseDetailsPage new dual hero CTAs (Enrol Now + Start a free session with scroll behavior), guest paywall dynamic /enroll/{courseId} href, and backend regression for course_id on /api/free-session[/s] plus admin /api/admin/courses[/preview-sessions]. All 5 pytest tests pass. All 12 UI checks pass. Free-trial session set (2 ids) preserved. Course title reverted to original. One minor cosmetic bug found in paywall header count.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "PaywallCTA (GuestSessionPage.jsx line ~583)", "issue": "Paywall header reads '3 FREE SESSIONS COMPLETED' after finishing 2 free sessions. completedCount is computed as freeSessions.filter(done).length + 1 which double-counts the just-finished current session (it is already in the done list by the time PaywallCTA renders). Should just be freeSessions.filter(done).length (== 2).", "selector": "[data-testid='guest-paywall']", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_courses_admin.py",
+    "/app/test_reports/pytest/courses_admin.xml"
+  ],
+  "action_items": [
+    "(LOW/optional) Fix paywall completedCount off-by-one so header shows '2 FREE SESSIONS COMPLETED' instead of 3. Change `freeSessions.filter((s) => getDoneList().includes(s.id)).length + 1` to `freeSessions.filter((s) => getDoneList().includes(s.id)).length` in the paywall render at GuestSessionPage.jsx ~line 583."
+  ],
+  "critical_code_review_comments": [
+    "GuestSessionPage.jsx line 583: completedCount arithmetic adds +1 unnecessarily; the current session is already added to vv_guest_done inside advancePhase (markSessionDone) before setShowPaywall is called, so filtering already returns the correct count.",
+    "CoursesTab.jsx: input at line 175 has no explicit type attribute; while it defaults to text, adding type=\"text\" avoids selector footguns for tests. Not a blocker."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_courses_admin.py (new)"
+  ],
+  "success_rate": {"backend": "100% (5/5)", "frontend": "100% (12/12 assertions)"},
+  "test_credentials": "admin: info@valuevade.com / aa1aa2sam3 (Supabase auth). Backend admin endpoints require Supabase Bearer token, not /api/admin/login JWT — /api/admin/login endpoint exists but rejects Supabase creds; wave_endpoints._ensure_admin gates on Supabase user email match.",
+  "seed_data_creation": "None. Test-mutated the course title but reverted it to 'Equity Research Analyst'. Verified via GET /api/free-sessions that the 2 free-trial session ids (18bfb490-... and b5b21761-...) remain is_free_session=true.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Admin auth pattern: obtain Supabase access_token by POSTing to https://yuadeybycbfqlkdpxbkv.supabase.co/auth/v1/token?grant_type=password with anon key header. Use as Bearer. Admin allowlist is info@valuevade.com (see wave_endpoints.py ADMIN_ALLOWED_EMAILS). Guest paywall trigger requires actually clicking sim-continue-btn on the last free session (localStorage-only preset does not auto-render paywall on mount; setShowPaywall only fires in advancePhase after last sim).",
+  "rca of the issue": "No critical issues. The minor paywall header count bug: in GuestSessionPage.jsx PaywallCTA prop `completedCount` receives `freeSessions.filter((s) => getDoneList().includes(s.id)).length + 1`, but by the time showPaywall is true the current session id has already been pushed into vv_guest_done via markSessionDone() inside advancePhase. The filter therefore already returns 2, and adding +1 renders '3 FREE SESSIONS COMPLETED'. Fix: drop the `+ 1`."
+}

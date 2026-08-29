@@ -93,6 +93,10 @@ class _AdminModuleBody(BaseModel):
     is_exam_module: Optional[bool] = None
 
 
+class _AdminCourseBody(BaseModel):
+    title: Optional[str] = None
+
+
 class _AdminSessionBody(BaseModel):
     module_id: Optional[str] = None
     title: Optional[str] = None
@@ -1738,6 +1742,46 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "&order=order_index&limit=200"
             ) or []
         return {"sessions": rows}
+
+    # --- Admin "Courses" tab: edit course title + quick preview/free toggles ---
+    @api_router.get("/admin/courses")
+    async def admin_list_courses(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        rows = _supabase_get("master_paths?select=id,title,description&order=created_at") or []
+        return {"courses": rows}
+
+    @api_router.patch("/admin/courses/{path_id}")
+    async def admin_update_course(path_id: str, body: _AdminCourseBody, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        title = (body.title or "").strip()
+        if not title:
+            raise HTTPException(status_code=400, detail="Title cannot be empty.")
+        _supabase_patch(f"master_paths?id=eq.{_urlparse.quote(path_id)}", {"title": title})
+        return {"ok": True}
+
+    @api_router.get("/admin/courses/{path_id}/preview-sessions")
+    async def admin_course_preview_sessions(path_id: str, user=Depends(_get_supabase_user)):
+        """Flat list of every session in this course, for quick preview/free-trial
+        toggling without digging through the full module tree."""
+        _ensure_admin(user)
+        mods = _supabase_get(
+            f"master_modules?path_id=eq.{_urlparse.quote(path_id)}"
+            "&select=id,title,order_index,"
+            "master_sessions(id,title,order_index,lecture_url,is_preview_session,is_free_session)"
+            "&order=order_index&limit=500"
+        ) or []
+        out = []
+        for m in mods:
+            for s in sorted(m.get("master_sessions") or [], key=lambda x: (x.get("order_index") or 0)):
+                out.append({
+                    "id": s["id"],
+                    "title": s.get("title") or "",
+                    "module_title": m.get("title") or "",
+                    "has_video": bool(s.get("lecture_url")),
+                    "is_preview_session": bool(s.get("is_preview_session")),
+                    "is_free_session": bool(s.get("is_free_session")),
+                })
+        return {"sessions": out}
 
     @api_router.get("/admin/curriculum/export")
     async def admin_curriculum_export(user=Depends(_get_supabase_user)):

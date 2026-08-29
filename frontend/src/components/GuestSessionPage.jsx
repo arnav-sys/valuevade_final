@@ -9,6 +9,10 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import DecisionMakingSim from './simulations/DecisionMakingSim';
 import BookSim from './simulations/BookSim';
+import DocumentSim from './simulations/DocumentSim';
+import InteractiveSim from './simulations/InteractiveSim';
+import GenericRenderer from './simulations/GenericRenderer';
+import ExcelSim from './simulations/ExcelSim';
 import {
   Play, FileText, HelpCircle, BarChart2, CheckCircle2, Loader2,
   ArrowRight, AlertCircle, ChevronLeft, ChevronRight, X as XIcon,
@@ -214,7 +218,7 @@ function NotesPhase({ sessionId, onComplete, isDone }) {
 }
 
 // ── QUIZ PHASE ───────────────────────────────────────────────────────────────
-function QuizPhase({ sessionId, onComplete, isDone, savedScore }) {
+function QuizPhase({ sessionId, onComplete, isDone, savedScore, onAdvance }) {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers]     = useState({});
   const [submitted, setSubmitted] = useState(isDone);
@@ -267,6 +271,15 @@ function QuizPhase({ sessionId, onComplete, isDone, savedScore }) {
               </div>
             );
           })}
+        </div>
+        <div className="flex justify-end pt-1">
+          <button
+            onClick={onAdvance}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 transition-all"
+            data-testid="quiz-continue-btn"
+          >
+            Continue to Simulation <ArrowRight size={14} />
+          </button>
         </div>
       </div>
     );
@@ -329,7 +342,7 @@ function QuizPhase({ sessionId, onComplete, isDone, savedScore }) {
 }
 
 // ── SIMULATION PHASE ─────────────────────────────────────────────────────────
-function SimPhase({ sessionId, onComplete, isDone }) {
+function SimPhase({ sessionId, onComplete, isDone, onAdvance }) {
   const [data, setData]     = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr]       = useState(null);
@@ -363,68 +376,53 @@ function SimPhase({ sessionId, onComplete, isDone }) {
         <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">Simulation Complete</p>
         <p className="text-xs text-[var(--color-text-muted)]">Great work! You've completed this simulation.</p>
       </div>
+      <div className="flex justify-end">
+        <button
+          onClick={onAdvance}
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 transition-all"
+          data-testid="sim-continue-btn"
+        >
+          Continue <ArrowRight size={14} />
+        </button>
+      </div>
     </div>
   );
 
-  // Excel sims — show a guided scenario description, let guests mark complete
-  if (sim_type === 'excel') {
-    const scenario = config?.scenario || config?.description || 'Build a financial model for a company using the data provided.';
-    const hints = Array.isArray(config?.hints) ? config.hints : [];
-    return (
-      <div className="space-y-4" data-testid="excel-sim-guest">
-        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 space-y-4">
-          <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-primary)] uppercase tracking-wider">
-            <BarChart2 size={14} /> Financial Modelling Simulation
-          </div>
-          <h3 className="text-base font-semibold text-[var(--color-text)] font-bricolage">{title || 'Excel Modelling Exercise'}</h3>
-          <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{scenario}</p>
-          {hints.length > 0 && (
-            <div className="space-y-2">
-              <p className="text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wider">Hints</p>
-              {hints.map((h, i) => (
-                <div key={i} className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]">
-                  <span className="text-[var(--color-primary)] font-mono flex-shrink-0">{i + 1}.</span> {h}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="flex justify-end">
-          <button onClick={() => onComplete()}
-            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 transition-all"
-            data-testid="sim-complete-btn">
-            Mark Complete <CheckCircle2 size={14} />
-          </button>
-        </div>
-      </div>
-    );
-  }
-
-  // Decision making or Book — render the real component
-  const handleSimComplete = () => onComplete();
+  // Render the real simulation component — mirrors the authenticated
+  // SimulationPage.jsx mapping exactly so guests get the actual interactive
+  // simulation (not just a text summary), for every sim_type.
+  const handleSimComplete = (extra) => onComplete(extra);
 
   return (
     <div data-testid="guest-sim-phase">
+      {sim_type === 'excel' && (
+        <ExcelSim config={config} title={title} sim={data} onProgress={() => {}} onComplete={handleSimComplete} />
+      )}
+      {sim_type === 'document' && config?.format === 'book' && (
+        <BookSim config={config} title={title} onComplete={handleSimComplete} />
+      )}
+      {sim_type === 'document' && config?.format !== 'book' && (
+        <DocumentSim config={config} title={title} onComplete={handleSimComplete} />
+      )}
       {(sim_type === 'decision_making' || sim_type === 'generic') && (
         <DecisionMakingSim config={config} title={title} onComplete={handleSimComplete} />
       )}
-      {(sim_type === 'book' || sim_type === 'document') && (
+      {sim_type === 'book' && (
         <BookSim config={config} title={title} onComplete={handleSimComplete} />
       )}
-      {!['decision_making','generic','book','document','excel'].includes(sim_type) && (
-        <div className="text-center py-8 space-y-3">
-          <p className="text-sm text-[var(--color-text-muted)]">Simulation type: {sim_type}</p>
-          <button onClick={() => onComplete()} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold">
-            Continue <ArrowRight size={14} />
-          </button>
-        </div>
+      {sim_type === 'interactive' && (
+        <InteractiveSim config={config} title={title} onComplete={handleSimComplete} />
+      )}
+      {!['excel', 'document', 'decision_making', 'generic', 'book', 'interactive'].includes(sim_type) && (
+        <GenericRenderer config={config} title={title} typeLabel={sim_type || 'Simulation'} onComplete={handleSimComplete} />
       )}
     </div>
   );
 }
 
 // ── PAYWALL CTA ──────────────────────────────────────────────────────────────
-function PaywallCTA({ completedCount }) {
+function PaywallCTA({ completedCount, courseId }) {
+  const enrollHref = courseId ? `/enroll/${courseId}` : '/courses';
   return (
     <div className="min-h-screen flex items-center justify-center p-6 bg-[var(--color-bg)]" data-testid="guest-paywall">
       <div className="w-full max-w-lg space-y-8 text-center">
@@ -460,7 +458,7 @@ function PaywallCTA({ completedCount }) {
             ))}
           </ul>
           <a
-            href="/courses"
+            href={enrollHref}
             className="block w-full py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold text-center hover:brightness-110 transition-all shadow-[0_0_24px_rgba(99,102,241,0.4)]"
             data-testid="paywall-enroll-btn"
           >
@@ -533,12 +531,12 @@ export default function GuestSessionPage() {
     });
   }, [sessionId]);
 
-  const handlePhaseComplete = (phaseKey, extra = {}) => {
-    const updates = { [`${phaseKey}Complete`]: true, ...extra };
-    if (phaseKey === 'video') updates.videoWatched = true;
-    updateProgress(updates);
-
-    // Auto-advance to next phase
+  // Advance to the next phase/session. For video & notes this fires right
+  // after marking complete (no results to review). For quiz & sim, the
+  // phase component shows its results/completion screen first and calls
+  // this itself via an explicit "Continue" button — so the score/feedback
+  // is never skipped past.
+  const advancePhase = (phaseKey) => {
     const order = ['video', 'notes', 'quiz', 'sim'];
     const nextIdx = order.indexOf(phaseKey) + 1;
     if (nextIdx < order.length) {
@@ -547,12 +545,7 @@ export default function GuestSessionPage() {
       // All phases done — mark session complete
       markSessionDone(sessionId);
       const done = getDoneList();
-      const doneFreeSessions = freeSessions.filter((s) => done.includes(s.id));
-      // Find next free session
-      const freeIds = freeSessions.map((s) => s.id);
-      const currentIndex = freeIds.indexOf(sessionId);
       const nextFreeSession = freeSessions.find((s) => !done.includes(s.id) && s.id !== sessionId);
-
       if (nextFreeSession) {
         // Navigate to next free session
         navigate(`/try-free/${nextFreeSession.id}`);
@@ -561,6 +554,19 @@ export default function GuestSessionPage() {
         setShowPaywall(true);
       }
     }
+  };
+
+  const handlePhaseComplete = (phaseKey, extra = {}) => {
+    const updates = { [`${phaseKey}Complete`]: true, ...extra };
+    if (phaseKey === 'video') updates.videoWatched = true;
+    updateProgress(updates);
+
+    // Video & notes have no results screen to review — advance immediately.
+    if (phaseKey === 'video' || phaseKey === 'notes') {
+      advancePhase(phaseKey);
+    }
+    // Quiz & sim show their results/completion screen first; the user
+    // advances manually via the "Continue" button (see onAdvance below).
   };
 
   const isPhaseComplete = (key) => {
@@ -572,9 +578,9 @@ export default function GuestSessionPage() {
   };
 
   const done = getDoneList();
-  const doneCount = freeSessions.filter((s) => done.includes(s.id)).length + (done.includes(sessionId) ? 0 : 0);
+  const doneCount = freeSessions.filter((s) => done.includes(s.id)).length;
 
-  if (showPaywall) return <PaywallCTA completedCount={freeSessions.filter((s) => getDoneList().includes(s.id)).length + 1} />;
+  if (showPaywall) return <PaywallCTA completedCount={freeSessions.filter((s) => getDoneList().includes(s.id)).length} courseId={session?.course_id} />;
 
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center bg-[var(--color-bg)]">
@@ -659,6 +665,7 @@ export default function GuestSessionPage() {
             onComplete={(score) => handlePhaseComplete('quiz', { quizScore: score })}
             isDone={isPhaseComplete('quiz')}
             savedScore={progress.quizScore}
+            onAdvance={() => advancePhase('quiz')}
           />
         )}
         {phase === 'sim' && (
@@ -666,6 +673,7 @@ export default function GuestSessionPage() {
             sessionId={sessionId}
             onComplete={() => handlePhaseComplete('sim')}
             isDone={isPhaseComplete('sim')}
+            onAdvance={() => advancePhase('sim')}
           />
         )}
       </div>

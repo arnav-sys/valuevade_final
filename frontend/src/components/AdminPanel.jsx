@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import CurriculumTab from './admin/CurriculumTab';
+import CoursesTab from './admin/CoursesTab';
 import ErrorsTab from './admin/ErrorsTab';
 import MockInterviewsTab from './admin/MockInterviewsTab';
 import FreeTrialsTab from './admin/FreeTrialsTab';
@@ -60,6 +61,7 @@ function AdminTabs({ tab, setTab }) {
     { k: 'progress',  label: 'Per-User Progress',  icon: BookOpen },
     { k: 'payments',  label: 'Payments',           icon: CreditCard },
     { k: 'videos',    label: 'Session Videos',     icon: Video },
+    { k: 'courses',   label: 'Courses',            icon: FolderOpen },
     { k: 'curriculum', label: 'View Course',       icon: GraduationCap },
     { k: 'mock',      label: 'Mock Interviews',    icon: Building2 },
     { k: 'trials',    label: 'Free Trials',        icon: Mail },
@@ -581,6 +583,7 @@ export default function AdminPanel() {
           {tab === 'customization' && <CustomizationTab />}
           {tab === 'feedback' && <SessionFeedbackTab />}
           {tab === 'curriculum' && <CurriculumTab />}
+          {tab === 'courses' && <CoursesTab />}
           {tab === 'mock' && <MockInterviewsTab />}
           {tab === 'trials' && <FreeTrialsTab />}
           {tab === 'rewards' && <RewardsTab />}

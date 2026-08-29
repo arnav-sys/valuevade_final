@@ -93,11 +93,25 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
         try:
             rows = _supabase_get(
                 "master_sessions?is_free_session=eq.true"
-                "&select=id,title,description,lecture_url,video_duration_minutes"
+                "&select=id,title,description,lecture_url,video_duration_minutes,module_id"
                 "&order=order_index&limit=5"
             ) or []
         except Exception:
             rows = []
+        # Resolve module_id -> path_id (course_id) in one batched lookup so the
+        # frontend can link straight to /enroll/{course_id} after free sessions.
+        mod_ids = list({r["module_id"] for r in rows if r.get("module_id")})
+        path_by_mod = {}
+        if mod_ids:
+            try:
+                mods = _supabase_get(
+                    f"master_modules?id=in.({','.join(mod_ids)})&select=id,path_id"
+                ) or []
+                path_by_mod = {m["id"]: m.get("path_id") for m in mods}
+            except Exception:
+                pass
+        for r in rows:
+            r["course_id"] = path_by_mod.get(r.get("module_id"))
         return {"sessions": rows}
 
     # ── guest session info ────────────────────────────────────────────────────
@@ -108,12 +122,14 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
         _check_free(sess)
 
         module_title = ""
+        course_id = None
         if sess.get("module_id"):
             mod_rows = _supabase_get(
                 f"master_modules?id=eq.{_urlparse_quote(sess['module_id'])}"
-                "&select=title&limit=1"
+                "&select=title,path_id&limit=1"
             ) or []
             module_title = (mod_rows[0].get("title") or "") if mod_rows else ""
+            course_id = mod_rows[0].get("path_id") if mod_rows else None
 
         vd = sess.get("video_duration_minutes")
         video_part = max(1, round(float(vd))) if vd and float(vd) > 0 else 15
@@ -124,6 +140,7 @@ def register_guest_session_endpoints(api_router: APIRouter, deps: dict) -> None:
             "title": sess["title"],
             "description": sess.get("description") or "",
             "module_title": module_title,
+            "course_id": course_id,
             "lecture_url": sess.get("lecture_url"),
             "has_video": bool(sess.get("lecture_url")),
             "video_duration_minutes": vd,

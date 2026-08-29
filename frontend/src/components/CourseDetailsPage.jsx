@@ -343,6 +343,12 @@ export default function CourseDetailsPage() {
     navigate(`/enroll/${courseId}`);
   };
 
+  // Scroll guests down to the "Try Free" strip instead of forcing a login —
+  // trying a free session never requires an account.
+  const scrollToFreeTrials = () => {
+    document.querySelector('[data-testid="free-sessions-strip"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   const isEnrolled = enrollment?.status === 'active';
   const isCompleted = enrollment?.status === 'completed';
 
@@ -563,7 +569,10 @@ export default function CourseDetailsPage() {
                   <DifficultyBadge level={course.difficulty} />
                 </div>
 
-                {/* CTA — Prompt 3: "Start with a free session →" + trust line */}
+                {/* CTA — hero button is the payment/enroll CTA; a secondary
+                    link scrolls guests to the free-trial strip below instead
+                    of forcing a login (that used to be the "Start free
+                    session" button's behaviour, which was misleading). */}
                 {isCompleted ? (
                   <span className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl text-sm font-semibold font-bricolage bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20" data-testid="detail-completed-badge">
                     <CheckCircle2 size={18} /> Course Completed
@@ -580,15 +589,26 @@ export default function CourseDetailsPage() {
                   </BreathingGlow>
                 ) : (
                   <>
-                    <BreathingGlow testid="detail-cta-glow">
-                      <button
-                        onClick={goCustomize}
-                        className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
-                        data-testid="detail-customize-enroll"
-                      >
-                        Start with a free session <ArrowRight size={16} />
-                      </button>
-                    </BreathingGlow>
+                    <div className="flex flex-wrap items-center gap-4">
+                      <BreathingGlow testid="detail-cta-glow">
+                        <button
+                          onClick={goCustomize}
+                          className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                          data-testid="detail-customize-enroll"
+                        >
+                          Enrol Now — ₹1,500 <ArrowRight size={16} />
+                        </button>
+                      </BreathingGlow>
+                      {freeSessions.length > 0 && (
+                        <button
+                          onClick={scrollToFreeTrials}
+                          className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-emerald-500/30 text-emerald-500 text-sm font-semibold font-bricolage hover:bg-emerald-500/10 transition-all"
+                          data-testid="detail-start-free-session"
+                        >
+                          <PlayCircle size={16} /> Start a free session
+                        </button>
+                      )}
+                    </div>
                     <p className="mt-3 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-text-faint)]" data-testid="detail-hero-trust">
                       ₹1,500 lifetime · No subscription
                     </p>
