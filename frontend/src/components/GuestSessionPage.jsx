@@ -359,42 +359,42 @@ function SimPhase({ sessionId, onComplete, isDone, onAdvance }) {
     <div className="rounded-2xl border border-dashed border-[var(--color-border)] p-8 text-center space-y-3">
       <BarChart2 size={28} className="mx-auto text-[var(--color-text-muted)] opacity-40" />
       <p className="text-sm text-[var(--color-text-muted)] font-bricolage">No simulation for this session.</p>
-      {!isDone && (
-        <button onClick={() => onComplete()} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold">
-          Continue <ArrowRight size={14} />
-        </button>
-      )}
+      <button onClick={isDone ? onAdvance : () => onComplete()} className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold">
+        Continue <ArrowRight size={14} />
+      </button>
     </div>
   );
 
   const { sim_type, config, title } = data;
 
-  if (isDone) return (
-    <div className="space-y-4" data-testid="sim-result">
-      <div className="rounded-2xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 p-6 text-center space-y-3">
-        <CheckCircle2 size={28} className="mx-auto text-[var(--color-success)]" />
-        <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">Simulation Complete</p>
-        <p className="text-xs text-[var(--color-text-muted)]">Great work! You've completed this simulation.</p>
-      </div>
-      <div className="flex justify-end">
-        <button
-          onClick={onAdvance}
-          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 transition-all"
-          data-testid="sim-continue-btn"
-        >
-          Continue <ArrowRight size={14} />
-        </button>
-      </div>
-    </div>
-  );
-
   // Render the real simulation component — mirrors the authenticated
   // SimulationPage.jsx mapping exactly so guests get the actual interactive
-  // simulation (not just a text summary), for every sim_type.
+  // simulation (not just a text summary), for every sim_type. Once done, we
+  // keep this component MOUNTED (instead of swapping to a generic card) so
+  // the per-task feedback / correct-solution reveal the user just saw stays
+  // visible — a "Simulation Complete" banner is layered above it instead.
   const handleSimComplete = (extra) => onComplete(extra);
 
   return (
-    <div data-testid="guest-sim-phase">
+    <div data-testid="guest-sim-phase" className="space-y-4">
+      {isDone && (
+        <div className="rounded-2xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 p-4 flex flex-wrap items-center justify-between gap-3" data-testid="sim-result">
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 size={22} className="text-[var(--color-success)] flex-shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">Simulation Complete</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Review your answers/solution below, then continue.</p>
+            </div>
+          </div>
+          <button
+            onClick={onAdvance}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 transition-all"
+            data-testid="sim-continue-btn"
+          >
+            Continue <ArrowRight size={14} />
+          </button>
+        </div>
+      )}
       {sim_type === 'excel' && (
         <ExcelSim config={config} title={title} sim={data} onProgress={() => {}} onComplete={handleSimComplete} />
       )}
