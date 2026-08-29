@@ -1,0 +1,26 @@
+{
+  "summary": "Verified end-to-end 'Free Full Analyst Mock Interview' flow: landing-page CTA (FreeTrialCTA.jsx) + Admin Free Trials tab (FreeTrialsTab.jsx). All 7 requested subflows pass. Invalid email shows sonner toast; existing email correctly resumes into /free-trial/{trial_id}; admin Free Trials tab renders trials table with the existing lead 'verify.freetrial.1787966116@example.com' (firm=jpmorgan, status=Started, source=manual-verify, timestamp visible); stats cards populated (Trials started=6, Waitlist=75, Device-blocked=2); Refresh reloads without error; Export CSV triggers a download (free_trials.csv); Waitlist sub-tab renders without crash.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/free_trial_after_submit.png",
+    "/app/test_reports/free_trials_tab.png",
+    "/app/test_reports/free_trials_final.png"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "FreeTrialCTA input has both HTML5 `type=\"email\" required` AND a JS regex check. HTML5 validation may pre-empt the sonner toast for wholly-invalid strings like 'notanemail' (browser native tooltip shows first). Verified sonner toast still fires for edge cases HTML5 accepts but the JS regex rejects (e.g. 'a@b'). Consider removing HTML5 `required`/using `type=text` if consistent sonner UX is desired.",
+    "Backend free_trial_start dedups on (email, ip_hash, fingerprint_hash) IN ORDER. When multiple visitors share an egress IP (e.g. corporate NAT, or curl+browser from the same test host), any new email from that IP is silently pushed to the waitlist with device_blocked=true. This is the intended one-per-device rule but is worth confirming with product for shared-network cases."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (backend not tested per request)", "frontend": "100%"},
+  "test_credentials": "Admin: info@valuevade.com / aa1aa2sam3 (works). Existing trial lead used for verification: verify.freetrial.1787966116@example.com",
+  "seed_data_creation": "None. Reused prior lead seeded by main agent's curl. New submissions from playwright's egress IP hit device_blocked (expected) and were captured into waitlist (verify.freetrial.1787966297@example.com, probe.test.1787966453@example.com now visible in waitlist tab with [DEVICE-BLOCKED] prefix).",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "The public preview server IP has already produced a trial row for verify.freetrial.1787966116@example.com. Any NEW email submitted via curl or from the same-region playwright browser will hit the ip_hash dedup and get device_blocked (routed to waitlist). To retest the fresh-lead path end-to-end you either need a truly different egress IP or to delete free_mock_trials rows in Supabase first. Resume path (POSTing an EXISTING trial email) works correctly and produces navigation to /free-trial/{trial_id}."
+}

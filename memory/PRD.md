@@ -841,3 +841,8 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 ### Remaining backlog
 - P2: Remove graceful DB-fallbacks in guest_session_endpoints.py / wave_endpoints.py / server.py now schema is synced.
 - P3 (testing-agent suggestion): show "Coming soon" instead of 25min pill for sessions without video.
+
+## 2026-08-29 — Verified: Free Full Analyst Mock Interview (email-gated lead capture)
+- User asked to verify the flow "user gives email → free full analyst mock interview → visible in admin dashboard". Found this was ALREADY fully built (not a new feature): `FreeTrialCTA.jsx` (landing page) → `POST /api/free-trial/start` → `free_mock_trials` table (falls back to `waitlist` table if missing) → `GET /api/admin/free-trials` (admin-only) → `FreeTrialsTab.jsx` in Admin Panel.
+- No code changes made — confirmed working via curl (backend, created + read back a live trial) and testing_agent (frontend, iteration_69.json, 100% pass, 0 bugs across 7 subflows: valid email → guest player, resume-by-email, invalid-email toast, admin table visibility, stats cards, CSV export, refresh, waitlist sub-tab).
+- Minor code-review notes only (not fixed, no user-visible bug, flagged for awareness): (1) FreeTrialCTA email input has both HTML5 `required type="email"` and JS regex — could show native browser tooltip before the sonner toast for some invalid strings; (2) dedup is by (email, ip_hash, fingerprint_hash) in that order, so a 2nd NEW email from the same NAT/IP gets `device_blocked` and is routed to waitlist instead — this is the intended "one trial per device" rule, just noting for product awareness on shared-network cases (e.g. office wifi).
