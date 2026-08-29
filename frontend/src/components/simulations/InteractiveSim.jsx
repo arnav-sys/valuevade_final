@@ -9,6 +9,7 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { CheckCircle2, XCircle, GripVertical, ArrowRight, RefreshCw, Target } from 'lucide-react';
 import ModuleLab from './ModuleLab';
+import GenericRenderer from './GenericRenderer';
 
 /* =============================================================
    EXERCISE 1: CATEGORIZE — drag items onto category drop zones

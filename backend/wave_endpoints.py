@@ -3296,7 +3296,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     # backend generates signed download URLs after a claim is recorded.
     # =========================================================================
     _REWARDS_BUCKET = "rewards"
-    _REWARDS_MAX_BYTES = 25 * 1024 * 1024  # 25MB per the spec
+    _REWARDS_MAX_BYTES = 50 * 1024 * 1024  # 50MB
     _REWARDS_ALLOWED_MIME = {
         "application/pdf",
         "application/msword",
@@ -3305,6 +3305,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
         "application/zip",
         "application/x-zip-compressed",
+        "application/octet-stream",  # generic binary / zipped folder
     }
     _REWARDS_TABLE_HINT = (
         "master_rewards table is missing. Apply "

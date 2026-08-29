@@ -11,7 +11,7 @@ import DecisionMakingSim from './simulations/DecisionMakingSim';
 import BookSim from './simulations/BookSim';
 import {
   Play, FileText, HelpCircle, BarChart2, CheckCircle2, Loader2,
-  ArrowRight, Lock, AlertCircle, ChevronLeft, ChevronRight, X as XIcon,
+  ArrowRight, AlertCircle, ChevronLeft, ChevronRight, X as XIcon,
   Star,
 } from 'lucide-react';
 
@@ -257,7 +257,7 @@ function QuizPhase({ sessionId, onComplete, isDone, savedScore }) {
             const correct = userAns === qt.correct_answer_index;
             return (
               <div key={i} className={`rounded-xl p-4 border text-sm ${correct ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/30 bg-red-500/5'}`}>
-                <p className="font-semibold text-[var(--color-text)] mb-2 font-bricolage">{qt.question_text}</p>
+                <p className="font-semibold text-[var(--color-text)] mb-2 font-bricolage">{qt.question_text || qt.question}</p>
                 {(qt.options || []).map((opt, oi) => (
                   <p key={oi} className={`text-xs py-0.5 ${oi === qt.correct_answer_index ? 'text-emerald-500 font-semibold' : oi === userAns && !correct ? 'text-red-400 line-through' : 'text-[var(--color-text-muted)]'}`}>
                     {oi === qt.correct_answer_index ? '✓' : oi === userAns ? '✗' : '○'} {opt}
@@ -288,7 +288,7 @@ function QuizPhase({ sessionId, onComplete, isDone, savedScore }) {
       </div>
 
       <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 space-y-4">
-        <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage leading-snug">{q.question_text}</p>
+        <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage leading-snug">{q.question_text || q.question}</p>
         <div className="space-y-2">
           {opts.map((opt, oi) => (
             <button
@@ -317,7 +317,7 @@ function QuizPhase({ sessionId, onComplete, isDone, savedScore }) {
           </button>
         ) : (
           <button onClick={handleSubmit}
-            disabled={Object.keys(answers).length < questions.length}
+            disabled={Object.keys(answers).length === 0}
             className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 disabled:opacity-40 transition-all"
             data-testid="quiz-submit-btn">
             Submit Quiz <CheckCircle2 size={14} />
@@ -357,24 +357,48 @@ function SimPhase({ sessionId, onComplete, isDone }) {
   const { sim_type, config, title } = data;
 
   if (isDone) return (
-    <div className="rounded-2xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 p-6 text-center">
-      <CheckCircle2 size={28} className="mx-auto text-[var(--color-success)] mb-2" />
-      <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">Simulation Complete</p>
+    <div className="space-y-4" data-testid="sim-result">
+      <div className="rounded-2xl border border-[var(--color-success)]/30 bg-[var(--color-success)]/5 p-6 text-center space-y-3">
+        <CheckCircle2 size={28} className="mx-auto text-[var(--color-success)]" />
+        <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">Simulation Complete</p>
+        <p className="text-xs text-[var(--color-text-muted)]">Great work! You've completed this simulation.</p>
+      </div>
     </div>
   );
 
-  // Excel sims are complex — show teaser with enroll CTA
-  if (sim_type === 'excel') return (
-    <div className="rounded-2xl border border-[var(--color-primary)]/20 bg-[var(--color-primary)]/5 p-8 text-center space-y-4" data-testid="excel-sim-teaser">
-      <Lock size={28} className="mx-auto text-[var(--color-primary)] opacity-60" />
-      <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">{title || 'Excel Financial Modelling Simulation'}</p>
-      <p className="text-xs text-[var(--color-text-muted)]">This session includes a hands-on Excel modelling simulation. Enrol for full access.</p>
-      <button onClick={() => onComplete()}
-        className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold">
-        Skip for now <ArrowRight size={14} />
-      </button>
-    </div>
-  );
+  // Excel sims — show a guided scenario description, let guests mark complete
+  if (sim_type === 'excel') {
+    const scenario = config?.scenario || config?.description || 'Build a financial model for a company using the data provided.';
+    const hints = Array.isArray(config?.hints) ? config.hints : [];
+    return (
+      <div className="space-y-4" data-testid="excel-sim-guest">
+        <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 space-y-4">
+          <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-primary)] uppercase tracking-wider">
+            <BarChart2 size={14} /> Financial Modelling Simulation
+          </div>
+          <h3 className="text-base font-semibold text-[var(--color-text)] font-bricolage">{title || 'Excel Modelling Exercise'}</h3>
+          <p className="text-sm text-[var(--color-text-muted)] leading-relaxed">{scenario}</p>
+          {hints.length > 0 && (
+            <div className="space-y-2">
+              <p className="text-xs font-mono text-[var(--color-text-muted)] uppercase tracking-wider">Hints</p>
+              {hints.map((h, i) => (
+                <div key={i} className="flex items-start gap-2 text-sm text-[var(--color-text-muted)]">
+                  <span className="text-[var(--color-primary)] font-mono flex-shrink-0">{i + 1}.</span> {h}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className="flex justify-end">
+          <button onClick={() => onComplete()}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold hover:brightness-110 transition-all"
+            data-testid="sim-complete-btn">
+            Mark Complete <CheckCircle2 size={14} />
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Decision making or Book — render the real component
   const handleSimComplete = () => onComplete();
@@ -436,7 +460,7 @@ function PaywallCTA({ completedCount }) {
             ))}
           </ul>
           <a
-            href="/enroll"
+            href="/courses"
             className="block w-full py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold text-center hover:brightness-110 transition-all shadow-[0_0_24px_rgba(99,102,241,0.4)]"
             data-testid="paywall-enroll-btn"
           >
@@ -581,7 +605,7 @@ export default function GuestSessionPage() {
             <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage truncate">{session?.title}</p>
           </div>
           <a
-            href={`/enroll`}
+            href={`/courses`}
             className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-primary)] text-white text-xs font-semibold hover:brightness-110 transition-all"
             data-testid="header-enroll-btn"
           >
@@ -653,7 +677,7 @@ export default function GuestSessionPage() {
             Enjoying it? Get full access to all 239 sessions for ₹1,500 lifetime.
           </p>
           <a
-            href="/enroll"
+            href="/courses"
             className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-xs font-semibold hover:brightness-110 transition-all"
             data-testid="bottom-enroll-btn"
           >

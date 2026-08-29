@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import JSZip from 'jszip';
 import { supabase } from '../lib/supabase';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar';
@@ -7,7 +8,7 @@ import CurriculumTab from './admin/CurriculumTab';
 import ErrorsTab from './admin/ErrorsTab';
 import MockInterviewsTab from './admin/MockInterviewsTab';
 import FreeTrialsTab from './admin/FreeTrialsTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail } from 'lucide-react';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail, FolderOpen } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -944,7 +945,7 @@ function RewardEditorModal({ reward, triggers, onClose, onSaved }) {
 
   async function uploadFile(file) {
     if (!file) return;
-    if (file.size > 25 * 1024 * 1024) { alert('File exceeds 25MB limit.'); return; }
+    if (file.size > 50 * 1024 * 1024) { alert('File exceeds 50 MB limit.'); return; }
     setUploading(true);
     try {
       const fd = new FormData();
@@ -966,6 +967,23 @@ function RewardEditorModal({ reward, triggers, onClose, onSaved }) {
         resource_size_bytes: json.resource_size_bytes,
       }));
     } catch (e) { alert(`Upload failed: ${e.message}`); }
+    finally { setUploading(false); }
+  }
+
+  async function uploadFolder(fileList) {
+    if (!fileList || fileList.length === 0) return;
+    setUploading(true);
+    try {
+      const zip = new JSZip();
+      for (const file of fileList) {
+        zip.file(file.webkitRelativePath || file.name, file);
+      }
+      const folderName = fileList[0].webkitRelativePath?.split('/')[0] || 'folder';
+      const zipBlob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE', compressionOptions: { level: 6 } });
+      if (zipBlob.size > 50 * 1024 * 1024) { alert('Zipped folder exceeds 50 MB limit.'); return; }
+      const zipFile = new File([zipBlob], `${folderName}.zip`, { type: 'application/zip' });
+      await uploadFile(zipFile);
+    } catch (e) { alert(`Folder zip failed: ${e.message}`); }
     finally { setUploading(false); }
   }
 
@@ -1079,20 +1097,51 @@ function RewardEditorModal({ reward, triggers, onClose, onSaved }) {
             </div>
 
             <div>
-              <label className="block text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1.5">Resource file (≤25MB)</label>
-              <div className="flex items-center gap-3">
-                <input
-                  type="file"
-                  onChange={(e) => uploadFile(e.target.files[0])}
-                  accept=".pdf,.docx,.doc,.xlsx,.xls,.zip,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip"
-                  className="text-xs text-[var(--color-text-muted)]"
-                  data-testid="admin-reward-file-input"
-                />
-                {uploading && <Loader2 size={16} className="animate-spin text-[var(--color-primary)]" />}
+              <label className="block text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1.5">
+                Resource file or folder (≤50 MB)
+              </label>
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Single file upload */}
+                <label
+                  className="inline-flex items-center gap-1.5 cursor-pointer px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
+                  data-testid="admin-reward-file-label"
+                >
+                  <Upload size={13} /> Upload File
+                  <input
+                    type="file"
+                    className="sr-only"
+                    onChange={(e) => uploadFile(e.target.files?.[0])}
+                    accept=".pdf,.docx,.doc,.xlsx,.xls,.zip,.pptx,.ppt,.txt,.csv,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/zip"
+                    data-testid="admin-reward-file-input"
+                  />
+                </label>
+
+                {/* Folder upload — browsers zip all files inside */}
+                <label
+                  className="inline-flex items-center gap-1.5 cursor-pointer px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text-muted)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] transition-colors"
+                  data-testid="admin-reward-folder-label"
+                >
+                  <FolderOpen size={13} /> Upload Folder
+                  <input
+                    type="file"
+                    className="sr-only"
+                    webkitdirectory=""
+                    mozdirectory=""
+                    multiple
+                    onChange={(e) => uploadFolder(e.target.files)}
+                    data-testid="admin-reward-folder-input"
+                  />
+                </label>
+
+                {uploading && (
+                  <span className="flex items-center gap-1.5 text-xs text-[var(--color-primary)]">
+                    <Loader2 size={14} className="animate-spin" /> Uploading…
+                  </span>
+                )}
               </div>
               {form.resource_file_name && !uploading && (
                 <div className="mt-2 text-xs text-[var(--color-success)] flex items-center gap-1.5" data-testid="admin-reward-file-status">
-                  <Check size={14} /> {form.resource_file_name} · {(form.resource_size_bytes / 1024).toFixed(0)} KB
+                  <Check size={14} /> {form.resource_file_name} · {form.resource_size_bytes >= 1024 * 1024 ? `${(form.resource_size_bytes / (1024 * 1024)).toFixed(1)} MB` : `${(form.resource_size_bytes / 1024).toFixed(0)} KB`}
                 </div>
               )}
             </div>
