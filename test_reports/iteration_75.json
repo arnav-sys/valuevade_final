@@ -1,0 +1,25 @@
+{
+  "summary": "Frontend-only signup flow re-enablement testing. All 8 test scenarios PASSED: (1) /login page shows new 'New here? Create an account' text with working link to /signup (old 'Contact your admin for an invite' text is gone); (2) mismatched-password validation error renders under signup-confirm-password-error; (3) short-password (<8 chars) validation error renders under signup-password-error; (4) successful signup with fresh email created auth user, auto-logged in without email confirmation, redirected to /courses, and header showed authenticated state; (5) duplicate-email attempt using freshly-created email surfaced Supabase 'User already registered' error via signup-api-error and did NOT navigate away (422 in network); (6) signup-login-link -> /login navigation works; (7) signup-back-home link navigates to /; (8) regression: existing testagent2026@gmail.com login still works and redirects to /courses (or /dashboard). Note: original spec asked for step-4 duplicate check with info@valuevade.com while authed, but PublicOnlyRoute correctly redirected the authed user away from /signup — covered same duplicate-email guarantee by signing out and retrying with the just-created email, which returned the exact expected Supabase error.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "CLEAN-UP: Delete leftover test auth user (email signuptest1788025245@example.com) and its profiles row from Supabase to avoid clutter. It was created by the successful signup test in this iteration."
+  ],
+  "critical_code_review_comments": [
+    "SignupPage.jsx surfaces raw Supabase error messages (e.g. 'User already registered') directly to end-users. Consider mapping to friendlier copy, but non-blocking.",
+    "No client-side rate-limiting or captcha on public /signup endpoint — relies solely on Supabase Auth defaults. Acceptable for MVP but worth noting for abuse risk."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A", "frontend": "100%"},
+  "test_credentials": "Existing student testagent2026@gmail.com / TestPass123! confirmed working. Newly-created test user: signuptest1788025245@example.com / TestPass1234! (pending cleanup).",
+  "seed_data_creation": "Created one Supabase auth user + auto-triggered profiles row: email=signuptest1788025245@example.com, name='SignupTester QA'. Needs deletion via Supabase admin.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Signup flow at /signup is fully functional and wired to Supabase (email confirmation OFF, profiles row auto-created via DB trigger). All data-testids present and validated: signup-card, signup-fullname-input, signup-email-input, signup-password-input, signup-confirm-password-input, signup-submit-button, signup-api-error, signup-password-error, signup-confirm-password-error, signup-login-link, signup-back-home. LoginPage now has login-signup-hint and login-signup-link. Do not re-test unless SignupPage.jsx or LoginPage.jsx bottom-hint block changes.",
+  "rca of the issue": "N/A — no bugs found."
+}

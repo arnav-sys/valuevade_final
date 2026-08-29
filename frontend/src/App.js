@@ -182,10 +182,8 @@ function App() {
                   <Route path="/_dev/sim/:simId" element={<DevSimPreview />} />
                   <Route path="/_dev/sim/session/:sessionId" element={<DevSimPreview />} />
                   <Route path="/course-complete" element={<ProtectedRoute><CourseCompletePage /></ProtectedRoute>} />
-                  {/* Signup UI removed — existing users can still log in.
-                      Any old /signup, /signuproute1 links land on /login. */}
-                  <Route path="/signup" element={<Navigate to="/login" replace />} />
-                  <Route path="/signuproute1" element={<Navigate to="/login" replace />} />
+                  <Route path="/signup" element={<PublicOnlyRoute><SignupPage /></PublicOnlyRoute>} />
+                  <Route path="/signuproute1" element={<Navigate to="/signup" replace />} />
                   <Route path="/login" element={<PublicOnlyRoute><LoginPage /></PublicOnlyRoute>} />
                   <Route path="/forgot-password" element={<PublicOnlyRoute><ForgotPasswordPage /></PublicOnlyRoute>} />
                   <Route path="/reset-password" element={<ResetPasswordPage />} />

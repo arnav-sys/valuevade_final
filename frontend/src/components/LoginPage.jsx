@@ -151,7 +151,8 @@ export default function LoginPage() {
           </form>
 
           <p className="mt-6 text-center text-sm text-[var(--color-text-muted)] font-bricolage" data-testid="login-signup-hint">
-            New here? Contact your admin for an invite.
+            New here?{' '}
+            <Link to="/signup" className="text-[var(--color-primary)] hover:underline font-medium" data-testid="login-signup-link">Create an account</Link>
           </p>
         </div>
       </div>

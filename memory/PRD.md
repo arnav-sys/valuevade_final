@@ -875,6 +875,13 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - Frontend does NOT need a `REACT_APP_RAZORPAY_KEY_ID` env var — the existing architecture returns `key_id` directly in the create-order API response (single source of truth on the backend), which is cleaner than a separate frontend copy; did not add one.
 - Test user's payment status was temporarily flipped to unpaid for the live test, then restored to paid=true afterward.
 
+## 2026-08-29 — Signup screen re-enabled
+- User asked to "show and implement signup screen." Found a fully-built SignupPage.jsx (standard Supabase email/password signUp, matches AuthContext.jsx's existing pattern) that had been previously disabled: `/signup` redirected to `/login`, and LoginPage showed "Contact your admin for an invite" instead of a link.
+- Confirmed via Supabase admin API: email confirmation is OFF for this project (signup returns an immediate session) and a `profiles` row auto-creates via an existing DB trigger — so no new backend/DB work was needed, only re-enabling the route + adding the link.
+- Change: `/signup` route now renders `SignupPage` (wrapped in `PublicOnlyRoute`, same as `/login`); `/signuproute1` now redirects to `/signup` instead of `/login`; LoginPage's bottom hint is now "New here? Create an account" linking to `/signup`.
+- Verified live (screenshot + curl): fresh signup → auto-logged-in → redirected to `/courses` → `profiles` row auto-created correctly. Tested via testing_agent iteration_75.json — 100% pass (8/8 scenarios: link visibility, validation errors, successful signup, duplicate-email error, login-page regression, back/login links). Test account cleaned up afterward.
+- Note (not fixed, low priority per testing agent): SignupPage surfaces raw Supabase error text (e.g. "User already registered") — could be friendlier copy; no rate-limiting/captcha on the public signup endpoint beyond Supabase defaults.
+
 ## 2026-08-29 — Verified: Study Planner already uses real video duration (not static 25min)
 - User asked to confirm the Study Planner ("deadline" / "hours per day" / "hours per week" wizard modes) computes load using ACTUAL video duration and only falls back to 25min per session when no video exists — not a static 25min for every session like the old bug.
 - Checked `_fetch_plan_inventory()` + `_effective_mins()` in server.py (~line 2632): formula is `effective_minutes = round(video_duration_minutes) + 10` when a video duration exists, else `15 + 10 = 25` fallback. This is the SAME formula as `frontend/src/utils/sessionTime.js` (`effectiveMinutes()`) used on the course page, and it reads live `video_duration_minutes` from `master_sessions` — which is now populated for 59 videos via the earlier backfill script.
