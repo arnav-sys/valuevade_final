@@ -2585,6 +2585,77 @@ class StudyPlanInput(BaseModel):
     non_study_weekdays: List[int] = []         # 0=Sun .. 6=Sat
 
 
+def _session_effective_minutes(video_duration_minutes) -> int:
+    """Real video length (rounded) + 10 min fixed for quiz+sim, or a 15+10=25
+    default when no video exists yet. Mirrors frontend `effectiveMinutes()`
+    in utils/sessionTime.js so planner load always matches the course page."""
+    if video_duration_minutes is not None:
+        try:
+            vd = float(video_duration_minutes)
+            video_part = max(1, round(vd)) if vd > 0 else 15
+        except (TypeError, ValueError):
+            video_part = 15
+    else:
+        video_part = 15
+    return video_part + 10
+
+
+def _resolve_plan_day_items(rows: list) -> list:
+    """Batch-resolve session/project titles + individual effective minutes
+    for a list of `user_study_plan_days` rows (each with
+    required_session_codes/required_project_codes) so charts can show a
+    per-session tooltip. Returns a list of `items` arrays, same order/
+    length as `rows` — one item per row: [{kind, id, title, minutes}, ...]."""
+    _uuid_re = _re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
+    all_sess_ids, all_proj_ids = set(), set()
+    for r in rows:
+        all_sess_ids.update(x for x in (r.get("required_session_codes") or []) if x and _uuid_re.match(x))
+        all_proj_ids.update(x for x in (r.get("required_project_codes") or []) if x and _uuid_re.match(x))
+    sess_map, proj_map = {}, {}
+    try:
+        if all_sess_ids:
+            # `required_session_codes` stores `user_sessions.id` (the per-user copy,
+            # not the master template) — resolve title from user_sessions, then
+            # duration from the linked master_sessions row.
+            usrows = _supabase_get(
+                f"user_sessions?id=in.({','.join(all_sess_ids)})&select=id,title,master_session_id"
+            ) or []
+            master_ids = {u["master_session_id"] for u in usrows if u.get("master_session_id")}
+            dur_by_master_id = {}
+            if master_ids:
+                mrows = _supabase_get(
+                    f"master_sessions?id=in.({','.join(master_ids)})&select=id,video_duration_minutes"
+                ) or []
+                dur_by_master_id = {m["id"]: m.get("video_duration_minutes") for m in mrows}
+            sess_map = {
+                u["id"]: {"title": u.get("title") or "Session",
+                          "minutes": _session_effective_minutes(dur_by_master_id.get(u.get("master_session_id")))}
+                for u in usrows
+            }
+        if all_proj_ids:
+            prows = _supabase_get(
+                f"master_module_projects?id=in.({','.join(all_proj_ids)})&select=id,title,estimated_hours"
+            ) or []
+            proj_map = {r["id"]: {"title": r.get("title") or "Module project",
+                                   "minutes": int(round((r.get("estimated_hours") or 1.5) * 60))}
+                        for r in prows}
+    except Exception as exc:
+        logger.warning(f"[plan-summary] day-items title resolve failed: {exc}")
+    out = []
+    for r in rows:
+        row_items = []
+        for sid in (r.get("required_session_codes") or []):
+            m = sess_map.get(sid)
+            if m:
+                row_items.append({"kind": "session", "id": sid, "title": m["title"], "minutes": m["minutes"]})
+        for pid in (r.get("required_project_codes") or []):
+            m = proj_map.get(pid)
+            if m:
+                row_items.append({"kind": "project", "id": pid, "title": m["title"], "minutes": m["minutes"]})
+        out.append(row_items)
+    return out
+
+
 def _fetch_plan_inventory(user_id: str, enrollment_id: str) -> dict:
     """Pulls the user's customized session list + module projects for an
     enrollment, ordered canonically (module.order_index, then
@@ -2646,14 +2717,7 @@ def _fetch_plan_inventory(user_id: str, enrollment_id: str) -> dict:
                 f"master_sessions?id=in.({','.join(master_session_ids)})"
                 f"&select=id,estimated_minutes"
             ) or []
-        def _effective_mins(r: dict) -> int:
-            vd = r.get("video_duration_minutes")
-            if vd is not None:
-                video_part = max(1, round(float(vd))) if float(vd) > 0 else 15
-            else:
-                video_part = 15
-            return video_part + 10
-        master_session_map = {r["id"]: _effective_mins(r) for r in master_session_rows}
+        master_session_map = {r["id"]: _session_effective_minutes(r.get("video_duration_minutes")) for r in master_session_rows}
 
     # (4) master_module_projects for the modules involved.
     projects_by_module: dict = {}
@@ -2747,15 +2811,22 @@ def generate_study_plan(
             "required_minutes": 0,
             "required_session_codes": [],
             "required_project_codes": [],
+            "items": [],
             "status": "rest",
         })
 
-    def push_active_day(d: _date, mins: int, ses: list, projs: list):
+    def push_active_day(d: _date, mins: int, day_items: list):
         days.append({
             "day_date": d.isoformat(),
             "required_minutes": mins,
-            "required_session_codes": ses,
-            "required_project_codes": projs,
+            "required_session_codes": [it["id"] for it in day_items if it["kind"] == "session"],
+            "required_project_codes": [it["id"] for it in day_items if it["kind"] == "project"],
+            "items": [
+                {"kind": it["kind"], "id": it["id"],
+                 "title": it.get("title") or ("Session" if it["kind"] == "session" else "Module project"),
+                 "minutes": it["minutes"]}
+                for it in day_items
+            ],
             "status": "upcoming",
         })
 
@@ -2792,21 +2863,18 @@ def generate_study_plan(
         d = start_date
         while d <= deadline_d:
             if _is_study_day(d, non_study_weekdays):
-                day_mins, day_ses, day_proj = 0, [], []
+                day_mins, day_items = 0, []
                 # Pack atomically until we exceed per_day_target or item is huge.
                 while it_idx < len(items):
                     it = items[it_idx]
                     if day_mins == 0 or day_mins + it["minutes"] <= per_day_target:
-                        if it["kind"] == "session":
-                            day_ses.append(it["id"])
-                        else:
-                            day_proj.append(it["id"])
+                        day_items.append(it)
                         day_mins += it["minutes"]
                         it_idx += 1
                     else:
                         break
                 if day_mins > 0:
-                    push_active_day(d, day_mins, day_ses, day_proj)
+                    push_active_day(d, day_mins, day_items)
                 else:
                     push_rest_day(d)
             else:
@@ -2831,20 +2899,17 @@ def generate_study_plan(
         days_walked = 0
         while it_idx < len(items) and days_walked < max_days:
             if _is_study_day(d, non_study_weekdays):
-                day_mins, day_ses, day_proj = 0, [], []
+                day_mins, day_items = 0, []
                 while it_idx < len(items):
                     it = items[it_idx]
                     if day_mins == 0 or day_mins + it["minutes"] <= per_day_target:
-                        if it["kind"] == "session":
-                            day_ses.append(it["id"])
-                        else:
-                            day_proj.append(it["id"])
+                        day_items.append(it)
                         day_mins += it["minutes"]
                         it_idx += 1
                     else:
                         break
                 if day_mins > 0:
-                    push_active_day(d, day_mins, day_ses, day_proj)
+                    push_active_day(d, day_mins, day_items)
                 else:
                     push_rest_day(d)
             else:
@@ -2875,20 +2940,17 @@ def generate_study_plan(
         days_walked = 0
         while it_idx < len(items) and days_walked < max_days:
             if _is_study_day(d, non_study_weekdays):
-                day_mins, day_ses, day_proj = 0, [], []
+                day_mins, day_items = 0, []
                 while it_idx < len(items):
                     it = items[it_idx]
                     if day_mins == 0 or day_mins + it["minutes"] <= per_day_target:
-                        if it["kind"] == "session":
-                            day_ses.append(it["id"])
-                        else:
-                            day_proj.append(it["id"])
+                        day_items.append(it)
                         day_mins += it["minutes"]
                         it_idx += 1
                     else:
                         break
                 if day_mins > 0:
-                    push_active_day(d, day_mins, day_ses, day_proj)
+                    push_active_day(d, day_mins, day_items)
                 else:
                     push_rest_day(d)
             else:
@@ -3378,18 +3440,22 @@ async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_us
         f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
         f"&day_date=lte.{today}"
         f"&order=day_date.asc"
-        f"&select=day_date,required_minutes,actual_minutes,status"
+        f"&select=day_date,required_minutes,actual_minutes,status,"
+        f"required_session_codes,required_project_codes"
     ) or []
+    day_items_list = _resolve_plan_day_items(all_rows)
     cum_required = 0
     cum_actual = 0
     days_so_far = []
-    for r in all_rows:
+    for r, day_items in zip(all_rows, day_items_list):
         cum_required += int(r.get("required_minutes") or 0)
         cum_actual   += int(r.get("actual_minutes") or 0)
         days_so_far.append({
             "day_date": r["day_date"],
             "required_minutes_cum": cum_required,
             "actual_minutes_cum":   cum_actual,
+            "required_minutes": int(r.get("required_minutes") or 0),
+            "items": day_items,
         })
     is_behind_percent = 0.0
     if cum_required > 0 and cum_actual < cum_required:
@@ -3406,50 +3472,15 @@ async def study_plan_dashboard_summary(supa_user: dict = Depends(get_supabase_us
         f"&select=day_date,required_minutes,required_session_codes,required_project_codes,status"
     ) or []
     if upcoming_rows:
-        # Collect all session + project codes across upcoming days so we batch-resolve titles.
-        all_sess_codes: list[str] = []
-        all_proj_codes: list[str] = []
-        for r in upcoming_rows:
-            all_sess_codes.extend(r.get("required_session_codes") or [])
-            all_proj_codes.extend(r.get("required_project_codes") or [])
-        sess_title_by_id: dict[str, str] = {}
-        proj_title_by_id: dict[str, str] = {}
-        # Only attempt to resolve if codes look like UUIDs — older legacy plans
-        # may have synthetic placeholder codes that would cause a PG cast error.
-        _uuid_re = _re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
-        try:
-            sess_uuid_ids = [s for s in {x for x in all_sess_codes if x} if _uuid_re.match(s)]
-            if sess_uuid_ids:
-                ids_csv = ",".join(sess_uuid_ids)
-                srows = _supabase_get(
-                    f"master_sessions?id=in.({ids_csv})&select=id,title&limit={len(sess_uuid_ids) + 5}"
-                ) or []
-                sess_title_by_id = {row["id"]: row.get("title") or "" for row in srows}
-            proj_uuid_ids = [s for s in {x for x in all_proj_codes if x} if _uuid_re.match(s)]
-            if proj_uuid_ids:
-                ids_csv = ",".join(proj_uuid_ids)
-                prows = _supabase_get(
-                    f"master_module_projects?id=in.({ids_csv})&select=id,title&limit={len(proj_uuid_ids) + 5}"
-                ) or []
-                proj_title_by_id = {row["id"]: row.get("title") or "" for row in prows}
-        except Exception as _e:
-            logger.warning(f"[plan-summary] upcoming title resolve failed: {_e}")
-        for r in upcoming_rows:
-            sess_ids = r.get("required_session_codes") or []
-            proj_ids = r.get("required_project_codes") or []
-            first_title = ""
-            first_kind = "session"
-            if sess_ids:
-                first_title = sess_title_by_id.get(sess_ids[0], "") or "Session"
-            elif proj_ids:
-                first_title = proj_title_by_id.get(proj_ids[0], "") or "Module project"
-                first_kind = "project"
-            extra_count = len(sess_ids) + len(proj_ids) - 1
+        upcoming_items_list = _resolve_plan_day_items(upcoming_rows)
+        for r, day_items in zip(upcoming_rows, upcoming_items_list):
+            first = day_items[0] if day_items else None
+            extra_count = len(day_items) - 1
             upcoming.append({
                 "day_date": r["day_date"],
                 "required_minutes": int(r.get("required_minutes") or 0),
-                "summary_title": first_title or "Study block",
-                "summary_kind": first_kind,
+                "summary_title": (first["title"] if first else "Study block"),
+                "summary_kind": (first["kind"] if first else "session"),
                 "extra_count": max(0, extra_count),
             })
 

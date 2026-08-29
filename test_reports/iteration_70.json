@@ -1,0 +1,33 @@
+{
+  "summary": "Verified 'Plan vs Actual Chart Polish' feature for Study Planner: (1) Study Plan Wizard Step-3 'Next 14 days' bar tooltip shows per-day total + per-session title & varied minutes (34m/15m/16m — not static) on hover, and is absent on rest bars; (2) Dashboard PlanTodayCard 'Upcoming this week' now shows REAL session/project titles (regression bug fix verified — no more generic 'Session' label); (3) PlanTrendChart renders on committed plan and its custom PlanTooltip shows date + Planned/Actual hours on hover. Backend endpoints (POST /preview, POST /commit, GET /dashboard-summary, DELETE /active) all return 200 with correct shapes.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": ["/app/test_reports/iteration_70.json"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "PlanTrendChart empty-state condition ('Trend chart starts tomorrow') was NOT hit in this test even on day 1 — the chart rendered a single data point instead. The review-request note said this empty state was expected on day 1; if intended, verify the threshold logic in PlanTrendChart matches the product spec (should show empty when history <= 1 point).",
+    "Trend tooltip's 'That day's sessions' subsection could not be visually verified because day 1 was a rest day (no items). Would need a backdated day with items or a second-day-after commit to visually verify the per-item breakdown on the LineChart. Backend was verified separately to return items in cumulative.days_so_far[].items with real titles+minutes."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "testagent2026@gmail.com / TestPass123! (enrollment ab43a64a-70bc-473f-b533-fb958267a739). Active plan created & left in place for follow-up testing (plan_id 5f177d1e-138a-40e3-b5d4-5d7826bca003, hours_per_day=2.0, non_study_weekdays=[0,6]). Can be abandoned via DELETE /api/study-plan/active if needed.",
+  "seed_data_creation": "Committed a test study plan for testagent2026 (see test_credentials). This is idempotent behavior — main agent can abandon via DELETE /api/study-plan/active endpoint anytime.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Wizard bar tooltips use CSS group-hover (opacity-0 -> group-hover:opacity-100), so tooltip DOM element exists but is invisible until hovered — use element.hover() and check computed opacity. Backend preview response uses `target_mode`, `target_hours_per_day`, `non_study_weekdays` (NOT `mode`/`hours_per_day`/`rest_days`). PlanTrendChart tooltip is a custom PlanTooltip inside recharts LineChart. To fully verify 'That day's sessions' section of the trend tooltip, the plan must have at least one non-rest day already in days_so_far (day 1 of a fresh plan on a weekend won't have items).",
+  "verification_evidence": {
+    "wizard_bar_tooltip": "Hover bar index=2 -> tooltip opacity 1, text '110 MIN TOTAL / What Is Finance, Really? 34m / Meet the Big Three — The Financial Statements 15m / The Balance Sheet — What a Company Owns and Owes 15m / The Income Statement — The Story of Profit 15m / The Cash Flow Statement — Why Profit Isn\\'t Cash 15m / The Rules of the Game — Accounting Principles & Ind AS 16m'. Minutes are varied: {34, 15, 16}. Rest bars (indices 0,1,7,8) had NO tooltip element in DOM.",
+    "upcoming_rows_regression_fix": "5 upcoming rows all show real descriptive titles: 'What Is Finance, Really?', 'Economics for Analysts — The Forces Behind the Numbers', 'Decode a Company\\'s DNA', 'The Primary Market — How Companies Raise Money', 'Trace a Share\\'s Journey' with real minutes (110m, 15m, 360m, 90m, 360m). Zero 'Session' fallback labels observed.",
+    "plan_trend_chart_tooltip": "Chart rendered with 1 data point (day 1 = rest day). Hover on canvas triggers plan-trend-tooltip showing '29 AUG / Planned: 0 hr / Actual: 0 hr'. Per-item breakdown could not be verified visually because day 1 is a rest day (items=[]).",
+    "backend_endpoints": {
+      "POST /api/study-plan/preview": "200 — returns 52 days, each with items[] having varied minutes (34/15/360m) and real titles",
+      "POST /api/study-plan/commit": "200 — returns plan_id",
+      "GET /api/study-plan/dashboard-summary": "200 — active_plan populated, today.status=rest, upcoming[].summary_title has real titles, cumulative.days_so_far[].items structure present",
+      "DELETE /api/study-plan/active": "200 — {ok:true, abandoned_count:1}"
+    }
+  }
+}

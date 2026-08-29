@@ -397,12 +397,31 @@ export default function StudyPlanWizard({ open, onClose, enrollmentId, onCommit 
                         const h = d.required_minutes > 0 ? Math.max(8, (d.required_minutes / max14) * 92) : 6;
                         const isRest = d.status === 'rest';
                         const dt = new Date(d.day_date);
+                        const items = d.items || [];
                         return (
-                          <div key={i} className="flex-1 flex flex-col items-center gap-1.5 min-w-0">
+                          <div key={i} className="flex-1 flex flex-col items-center gap-1.5 min-w-0 group relative">
+                            {!isRest && items.length > 0 && (
+                              <div
+                                className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 z-20 w-44 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-xl px-2.5 py-2 opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity"
+                                data-testid={`study-plan-bar-tooltip-${i}`}
+                              >
+                                <div className="text-[9px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mb-1.5">
+                                  {d.required_minutes} min total
+                                </div>
+                                <ul className="space-y-1 max-h-32 overflow-y-auto">
+                                  {items.map((it, ii) => (
+                                    <li key={ii} className="flex items-center justify-between gap-2 text-[10px] font-bricolage text-[var(--color-text)]">
+                                      <span className="truncate">{it.title}</span>
+                                      <span className="shrink-0 text-[var(--color-text-muted)] font-mono">{it.minutes}m</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
                             <div
                               className={`w-full rounded-t-md ${isRest ? 'bg-[var(--color-border)]/60' : 'bg-gradient-to-t from-[var(--color-primary)]/60 to-[var(--color-primary)]'}`}
                               style={{ height: `${h}px` }}
-                              title={isRest ? 'Rest' : `${d.required_minutes} min`}
+                              title={isRest ? 'Rest' : undefined}
                             />
                             <div className="text-[9px] font-mono text-[var(--color-text-faint)] truncate w-full text-center">{WEEKDAY_LABELS[(dt.getDay()) % 7]}</div>
                           </div>

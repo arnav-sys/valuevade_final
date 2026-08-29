@@ -13,6 +13,46 @@ function fmtDay(iso) {
   catch { return iso; }
 }
 
+function PlanTooltip({ active, payload, label }) {
+  if (!active || !payload || !payload.length) return null;
+  const row = payload[0]?.payload || {};
+  const items = row.items || [];
+  return (
+    <div
+      className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-xl px-3 py-2.5"
+      style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 12, maxWidth: 220 }}
+      data-testid="plan-trend-tooltip"
+    >
+      <div className="text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mb-1">
+        {fmtDay(label)}
+      </div>
+      {payload.map((p) => (
+        <div key={p.dataKey} className="font-semibold" style={{ color: p.color }}>
+          {p.name}: {p.value} hr
+        </div>
+      ))}
+      {items.length > 0 && (
+        <div className="mt-1.5 pt-1.5 border-t border-[var(--color-border)]">
+          <div className="text-[9px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mb-1">
+            That day's sessions ({row.dayMinutes}m)
+          </div>
+          <ul className="space-y-0.5">
+            {items.slice(0, 6).map((it, i) => (
+              <li key={i} className="flex items-center justify-between gap-2 text-[10px] text-[var(--color-text)]">
+                <span className="truncate">{it.title}</span>
+                <span className="shrink-0 text-[var(--color-text-muted)] font-mono">{it.minutes}m</span>
+              </li>
+            ))}
+          </ul>
+          {items.length > 6 && (
+            <div className="text-[9px] text-[var(--color-text-faint)] mt-0.5">+{items.length - 6} more</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function PlanTrendChart({ data }) {
   const series = useMemo(() => {
     const rows = data?.cumulative?.days_so_far || [];
@@ -20,6 +60,8 @@ export default function PlanTrendChart({ data }) {
       day: r.day_date,
       planned: Math.round((r.required_minutes_cum || 0) / 60 * 10) / 10,
       actual:  Math.round((r.actual_minutes_cum   || 0) / 60 * 10) / 10,
+      dayMinutes: r.required_minutes || 0,
+      items: r.items || [],
     }));
   }, [data]);
 
@@ -87,15 +129,8 @@ export default function PlanTrendChart({ data }) {
               width={36}
             />
             <Tooltip
-              contentStyle={{
-                background: 'var(--color-bg-card)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 8,
-                fontSize: 12,
-                fontFamily: 'Bricolage Grotesque, sans-serif',
-              }}
-              labelFormatter={fmtDay}
-              formatter={(v, name) => [`${v} hr`, name]}
+              content={<PlanTooltip />}
+              wrapperStyle={{ outline: 'none' }}
             />
             <Legend
               verticalAlign="top"
