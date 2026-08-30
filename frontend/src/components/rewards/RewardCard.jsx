@@ -213,7 +213,7 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
             </label>
             <input
               id={`${testidPrefix}-post-url-input`}
-              type="url"
+              type="text"
               inputMode="url"
               autoComplete="off"
               spellCheck={false}
@@ -224,7 +224,8 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
                 if (urlError) setUrlError('');
               }}
               disabled={!shared || claiming}
-              className={`w-full px-3 py-2.5 rounded-xl bg-[var(--color-surface)]/80 border font-bricolage text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-faint)] focus:outline-none focus:ring-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all ${
+              style={{ backgroundColor: 'var(--color-surface)', color: 'var(--color-text)' }}
+              className={`w-full px-3 py-2.5 rounded-xl border font-bricolage text-sm placeholder:text-[var(--color-text-faint)] focus:outline-none focus:ring-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all ${
                 urlError
                   ? 'border-[var(--color-danger)]/60 focus:ring-[var(--color-danger)]/40'
                   : urlLooksValid

@@ -3635,12 +3635,20 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         # Server-side eligibility check (never trust the FE).
         eligible = False
         if reward["trigger_type"] == "module_complete":
-            done = _supabase_get(
-                f"user_modules?user_id=eq.{_urlparse.quote(user_id)}"
-                f"&master_module_id=eq.{_urlparse.quote(reward['trigger_ref_id'])}"
-                "&is_completed=eq.true&select=id&limit=1"
+            # user_modules has no user_id column — resolve via
+            # user_enrollments first (same bug/fix as GET /rewards/eligible).
+            my_enrs = _supabase_get(
+                f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}&select=id"
             ) or []
-            eligible = bool(done)
+            my_enr_ids = [r["id"] for r in my_enrs]
+            if my_enr_ids:
+                enr_in = ",".join([f"\"{i}\"" for i in my_enr_ids])
+                done = _supabase_get(
+                    f"user_modules?enrollment_id=in.({enr_in})"
+                    f"&master_module_id=eq.{_urlparse.quote(reward['trigger_ref_id'])}"
+                    "&is_completed=eq.true&select=id&limit=1"
+                ) or []
+                eligible = bool(done)
         elif reward["trigger_type"] == "capstone_complete":
             done = _supabase_get(
                 f"user_capstone_projects?master_capstone_id=eq.{_urlparse.quote(reward['trigger_ref_id'])}"

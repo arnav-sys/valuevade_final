@@ -192,6 +192,41 @@ Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog item
 - **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
 
 
+## Aug 30 2026 (5) — LinkedIn URL input white-on-white bug + claim endpoint eligibility bug + verification explainer
+
+**White-on-white input bug (P0)**: `RewardCard.jsx`'s "Paste your LinkedIn
+post URL" field used `type="url"` — Chrome applies a native white field
+background for `type="url"` inputs in some states that our
+`bg-[var(--color-surface)]/80` Tailwind class wasn't overriding, leaving
+white text invisible on a white box. Fixed by switching to `type="text"`
+(kept `inputMode="url"` for mobile keyboards) and dropping the `/80` opacity
+modifier to match the exact working pattern already used on `LoginPage.jsx`
+inputs (`bg-[var(--color-surface)]`, no modifier). Also added a global
+`:-webkit-autofill` CSS override in `index.css` as defense-in-depth against
+the classic dark-theme autofill white-box bug generally, in case any other
+input hits it in the future.
+
+**Second occurrence of the `user_modules.user_id` bug, in the CLAIM path**:
+While investigating, found `POST /api/rewards/claim`'s server-side
+eligibility re-check had the EXACT SAME bug fixed earlier in
+`GET /rewards/eligible` (querying `user_modules?user_id=eq...`, a column
+that doesn't exist) — meaning even after the Dashboard correctly showed a
+reward as eligible, clicking "unlock" would have 403'd. Fixed with the same
+enrollment-id-resolution pattern.
+
+**Verification explainer (answered, no code change)**: Confirmed via a real
+curl test that `_verify_linkedin_post_content()` DOES fetch the pasted URL
+server-side with a bot User-Agent and checks the page body for
+Valuevade-related keywords/hashtags — but LinkedIn's public OG page is often
+unreachable to scrapers (blocked/redirected), which happened in my test even
+with an unrelated Microsoft LinkedIn post URL. Per the existing documented
+design, an "unreachable" result still ALLOWS the claim through but sets
+`linkedin_post_verified: false` so an admin can spot-check later (visible via
+`GET /api/admin/rewards/{id}/claims`) rather than hard-blocking real students
+who get caught behind LinkedIn's login wall. This is a deliberate
+trust-but-verify tradeoff, not a bug — cleaned up the test claim row created
+during verification (admin account `info@valuevade.com` is unclaimed again).
+
 ## Aug 30 2026 (4) — Reward unlock nudge (one-time toast + badge)
 
 Added a one-time toast ("New reward unlocked: {title}") + a pulsing "New"

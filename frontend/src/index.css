@@ -156,6 +156,20 @@
   h1, h2, h3 {
     font-family: 'Clash Display', sans-serif;
   }
+  /* Browser autofill (esp. Chrome) forces its own white field background +
+     ignores author text-color, which showed as an invisible white-on-white
+     input in dark theme. Force it back to the theme colors. */
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active,
+  textarea:-webkit-autofill {
+    -webkit-text-fill-color: var(--color-text) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--color-surface-hover) inset !important;
+    box-shadow: 0 0 0 1000px var(--color-surface-hover) inset !important;
+    caret-color: var(--color-text);
+    transition: background-color 5000s ease-in-out 0s;
+  }
 }
 
 @layer base {
