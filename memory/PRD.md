@@ -192,6 +192,16 @@ Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog item
 - **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
 
 
+## Aug 30 2026 (4) — Reward unlock nudge (one-time toast + badge)
+
+Added a one-time toast ("New reward unlocked: {title}") + a pulsing "New"
+badge next to the "Your Rewards" Dashboard heading, firing the first time a
+student's newly-eligible reward is detected. Dedup is per-user via
+`localStorage` (`vv_reward_seen_<userId>_<rewardId>`), matching the existing
+`NearMissBanner.jsx` "seen once" convention already used elsewhere in the
+app — confirmed via manual reload test that it fires once and never repeats
+after that, while the reward card itself remains visible on every visit.
+
 ## Aug 30 2026 (3) — Rewards not showing bug fix + persistent Dashboard rewards section
 
 **Root cause**: `GET /api/rewards/eligible` in `wave_endpoints.py` queried
