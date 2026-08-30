@@ -192,6 +192,36 @@ Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog item
 - **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
 
 
+## Aug 30 2026 (3) — Rewards not showing bug fix + persistent Dashboard rewards section
+
+**Root cause**: `GET /api/rewards/eligible` in `wave_endpoints.py` queried
+`user_modules?user_id=eq...` but `user_modules` has NO `user_id` column (only
+`enrollment_id` -> `user_enrollments.user_id`) — every call 42703'd, the
+frontend's `RewardCard` silently swallowed the error (`if (!res.ok) return`),
+so a completed module's reward never appeared anywhere. Fixed the query to
+resolve the user's `user_enrollments` ids first, then filter `user_modules`
+by `enrollment_id IN (...)`.
+
+**Also fixed a real UX gap**: `RewardCard` only ever rendered on the
+one-time `ModuleProjectCompletePage`/`CapstoneCompletePage` celebration
+screens — a student who completed a module before this bug was fixed (or
+before an admin configured that module's reward) had no way to ever see it
+again. Added `MyRewardsSection.jsx` — a persistent "Your Rewards" block on
+the Dashboard (right after Module Constellation) that lists every
+currently-eligible reward via the same `/api/rewards/eligible` API. Uses
+`useAuth()`'s already-resolved `session.access_token` rather than calling
+`supabase.auth.getSession()` again (that pattern appeared to hang/be much
+slower in this specific render context during dev debugging).
+
+**Testing**: `iteration_81.json` — 17/17 backend pytest pass including a new
+regression test (`test_admin_module1_reward_eligible_bugfix`) that pins the
+exact bug. Frontend confirmed the section + RewardCard render correctly for
+info@valuevade.com (Portfolio Templates reward, module 1). Admin's reward is
+still unclaimed (left intact, not mutated during testing). Code review flagged
+3 non-blocking nits — added a `console.warn` on fetch failure so a future
+regression surfaces faster; UUID-injection and file-size (`wave_endpoints.py`
+3987 lines) nits deferred to backlog.
+
 ## Aug 30 2026 (2) — Inline PPT viewer (no download) + AI-Customize payment bypass fix
 
 **PPT/PPTX inline viewer, no download (P0)**: Installed LibreOffice

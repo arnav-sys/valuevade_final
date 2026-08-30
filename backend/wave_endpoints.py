@@ -3456,14 +3456,24 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
         completed_module_master_ids = set()
         if module_ref_ids:
-            in_clause = ",".join([f"\"{i}\"" for i in module_ref_ids])
-            done = _supabase_get(
-                f"user_modules?user_id=eq.{_urlparse.quote(user_id)}"
-                f"&is_completed=eq.true"
-                f"&master_module_id=in.({in_clause})"
-                "&select=master_module_id&limit=500"
+            # user_modules has no user_id column — it's scoped via
+            # enrollment_id -> user_enrollments.user_id. Querying
+            # user_modules?user_id=... directly 42703's (this WAS the bug:
+            # the endpoint silently 500'd, so the FE never showed any reward).
+            my_enrs = _supabase_get(
+                f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}&select=id"
             ) or []
-            completed_module_master_ids = {r["master_module_id"] for r in done}
+            my_enr_ids = [r["id"] for r in my_enrs]
+            if my_enr_ids:
+                enr_in = ",".join([f"\"{i}\"" for i in my_enr_ids])
+                in_clause = ",".join([f"\"{i}\"" for i in module_ref_ids])
+                done = _supabase_get(
+                    f"user_modules?enrollment_id=in.({enr_in})"
+                    f"&is_completed=eq.true"
+                    f"&master_module_id=in.({in_clause})"
+                    "&select=master_module_id&limit=500"
+                ) or []
+                completed_module_master_ids = {r["master_module_id"] for r in done}
 
         completed_capstone_master_ids = set()
         if capstone_ref_ids:

@@ -21,7 +21,9 @@ SUPABASE_URL = "https://yuadeybycbfqlkdpxbkv.supabase.co"
 SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1YWRleWJ5Y2JmcWxrZHB4Ymt2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU5MTIwNDMsImV4cCI6MjA5MTQ4ODA0M30.0skD-qqK_BEpNJbgKNzxAa81zV_qE_WiHLMs233OqpA"
 
 ADMIN_EMAIL = "info@valuevade.com"
-ADMIN_PASS = "aa1aa2sam3"
+ADMIN_PASS = "VV-Admin#2026-Sec"
+
+MODULE_1_MASTER_ID = "7cc30595-36fb-4c8d-b736-e787e40f8c36"
 USER_EMAIL = "testagent2026@gmail.com"
 USER_PASS = "TestPass123!"
 
@@ -67,6 +69,31 @@ class TestRewardsEligible:
         # Either table_ready=True with list, or table_ready=False with hint
         if data.get("table_ready") is False:
             assert "hint" in data and "master_rewards" in data["hint"]
+
+    def test_admin_module1_reward_eligible_bugfix(self, admin_headers):
+        """Regression test for the 42703 bug: admin has module 1 completed,
+        so the reward with trigger_ref_id=<module1 id> must return eligible=true.
+        Previously this endpoint 500'd because it queried
+        user_modules?user_id=... which doesn't exist."""
+        r = requests.get(f"{BASE_URL}/api/rewards/eligible", headers=admin_headers, timeout=30)
+        assert r.status_code == 200, f"expected 200 (bug: was 500 with 42703), got {r.status_code}: {r.text[:300]}"
+        data = r.json()
+        assert data.get("table_ready") is not False, "master_rewards table should be ready"
+        rewards = data.get("rewards") or []
+        assert len(rewards) > 0, "expected at least one active reward configured"
+        module1_reward = next(
+            (r for r in rewards if r.get("trigger_ref_id") == MODULE_1_MASTER_ID),
+            None,
+        )
+        assert module1_reward is not None, (
+            f"expected a reward with trigger_ref_id={MODULE_1_MASTER_ID}; "
+            f"got triggers: {[r.get('trigger_ref_id') for r in rewards]}"
+        )
+        assert module1_reward.get("eligible") is True, (
+            f"Admin has module 1 completed but reward is not eligible: {module1_reward}"
+        )
+        # storage path must not leak
+        assert "resource_file_path" not in module1_reward
 
 
 # ---------------------------------------------------------------------------
@@ -204,11 +231,11 @@ class TestRewardsClaim:
         r = requests.post(
             f"{BASE_URL}/api/rewards/claim",
             headers=user_headers,
-            json={"reward_id": "00000000-0000-0000-0000-000000000000"},
+            json={"reward_id": "00000000-0000-0000-0000-000000000000", "linkedin_post_url": "https://www.linkedin.com/posts/testuser-activity-1234567890-abcd"},
             timeout=20,
         )
-        # Acceptable: 404 (not found), 403 (not eligible), or 503 (migration missing)
-        assert r.status_code in (403, 404, 503), f"got {r.status_code}: {r.text[:250]}"
+        # Acceptable: 404 (not found), 403 (not eligible), 400 (URL rejected), or 503 (migration missing)
+        assert r.status_code in (400, 403, 404, 503), f"got {r.status_code}: {r.text[:250]}"
 
 
 # ---------------------------------------------------------------------------

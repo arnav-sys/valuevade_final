@@ -28,6 +28,7 @@ import StudyPlanWizard from './study-planner/StudyPlanWizard';
 import PlanTodayCard from './study-planner/PlanTodayCard';
 import PlanTrendChart from './study-planner/PlanTrendChart';
 import PlanResetModal from './study-planner/PlanResetModal';
+import MyRewardsSection from './rewards/MyRewardsSection';
 import { getActiveStudyPlan, getStudyPlanDashboardSummary } from '../utils/studyPlanner';
 
 // Feb 2026 — session-level interview phase disabled. Kept in the map so
@@ -793,6 +794,9 @@ export default function DashboardPage() {
               <section className="mt-6">
                 <ModuleConstellationMap />
               </section>
+
+              {/* Your Rewards — persistent surface (see MyRewardsSection for why) */}
+              <MyRewardsSection />
 
               {/* Stats */}
               <section>
