@@ -24,6 +24,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import PublicOnlyRoute from "@/components/PublicOnlyRoute";
 import EnrollmentGuard from "@/components/EnrollmentGuard";
 import SessionPhaseGuard from "@/components/SessionPhaseGuard";
+import CustomizePaymentGate from "@/components/payments/CustomizePaymentGate";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import BugReportButton from "@/components/BugReportButton";
 import RouteLoader from "@/components/RouteLoader";
@@ -207,9 +208,9 @@ function App() {
                       app_settings.ai_customization_mode). Available as an
                       optional flow when mode = 'optional', mandatory when
                       mode = 'mandatory'. */}
-                  <Route path="/course/:courseId/customize" element={<ProtectedRoute><CustomizePage /></ProtectedRoute>} />
-                  <Route path="/course/:courseId/preview" element={<ProtectedRoute><PreviewPage /></ProtectedRoute>} />
-                  <Route path="/course/:courseId/confirm" element={<ProtectedRoute><ConfirmPage /></ProtectedRoute>} />
+                  <Route path="/course/:courseId/customize" element={<ProtectedRoute><CustomizePaymentGate><CustomizePage /></CustomizePaymentGate></ProtectedRoute>} />
+                  <Route path="/course/:courseId/preview" element={<ProtectedRoute><CustomizePaymentGate><PreviewPage /></CustomizePaymentGate></ProtectedRoute>} />
+                  <Route path="/course/:courseId/confirm" element={<ProtectedRoute><CustomizePaymentGate><ConfirmPage /></CustomizePaymentGate></ProtectedRoute>} />
                   <Route path="/course/:courseId/loading" element={<ProtectedRoute><LoadingPage /></ProtectedRoute>} />
                   <Route path="/course/:courseId/enrolled" element={<ProtectedRoute><EnrolledPage /></ProtectedRoute>} />
 

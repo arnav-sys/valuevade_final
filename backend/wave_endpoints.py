@@ -32,7 +32,7 @@ _supabase_patch = None
 _supabase_delete = None
 _get_supabase_user = None
 _EMERGENT_LLM_KEY = None
-ADMIN_ALLOWED_EMAILS = {"info@valuevade.com"}
+ADMIN_ALLOWED_EMAILS = {"info@valuevade.com", "admin@valuevade.com"}
 
 
 class _AdminCreateUserBody(BaseModel):
@@ -2242,6 +2242,32 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     _NOTES_BUCKET = "session-notes"
     _MAX_NOTES_FILE_BYTES = 50 * 1024 * 1024  # 50 MB
 
+    def _convert_pptx_to_pdf(blob: bytes) -> Optional[bytes]:
+        """Headless LibreOffice conversion so PPT/PPTX renders inline as a
+        PDF in the browser instead of forcing a download. Returns None
+        (caller falls back to storing the raw pptx) on any failure."""
+        import subprocess
+        import tempfile
+        try:
+            with tempfile.TemporaryDirectory() as tmpdir:
+                src_path = os.path.join(tmpdir, "notes.pptx")
+                with open(src_path, "wb") as f:
+                    f.write(blob)
+                result = subprocess.run(
+                    ["soffice", "--headless", "--norestore", "--convert-to", "pdf",
+                     "--outdir", tmpdir, src_path],
+                    capture_output=True, timeout=90,
+                )
+                pdf_path = os.path.join(tmpdir, "notes.pdf")
+                if result.returncode != 0 or not os.path.exists(pdf_path):
+                    logger.warning("[notes-file] pptx->pdf conversion failed: %s", result.stderr[:500])
+                    return None
+                with open(pdf_path, "rb") as f:
+                    return f.read()
+        except Exception as e:
+            logger.warning("[notes-file] pptx->pdf conversion exception: %s", e)
+            return None
+
     def _notes_file_public_url(key: str) -> str:
         return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_NOTES_BUCKET}/{key}"
 
@@ -2302,12 +2328,28 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 detail=f"File too large ({len(blob) / 1048576:.1f} MB). Max 50 MB.",
             )
 
+        # Convert PPT/PPTX to PDF so it renders inline in-browser (no
+        # download-only fallback) — students get an actual slide viewer.
+        # display_name keeps the ORIGINAL filename/extension for the UI badge;
+        # storage_ext/content_type/blob switch to the converted PDF on success.
+        display_name = file.filename or f"notes.{ext}"
+        storage_ext = ext
+        if ext in ("pptx", "ppt"):
+            # Blocking subprocess (LibreOffice) — offload so it doesn't
+            # stall the event loop for other requests during the ~90s
+            # worst-case cold start.
+            converted = await asyncio.to_thread(_convert_pptx_to_pdf, blob)
+            if converted:
+                blob = converted
+                storage_ext = "pdf"
+            # else: fall back to storing the raw pptx (old download-only UX)
+
         # Ensure the bucket exists (idempotent).
         _ensure_notes_bucket()
 
         # Build a deterministic key so re-uploads overwrite cleanly.
-        key = f"{session_id}/notes.{ext}"
-        content_type = "application/pdf" if ext == "pdf" else "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        key = f"{session_id}/notes.{storage_ext}"
+        content_type = "application/pdf" if storage_ext == "pdf" else "application/vnd.openxmlformats-officedocument.presentationml.presentation"
 
         import urllib.request as _ur
         upload_req = _ur.Request(
@@ -2329,14 +2371,13 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
 
         public_url = _notes_file_public_url(key)
-        display_name = file.filename or f"notes.{ext}"
 
         # Upsert a pdf_document card for this session (order_index=0 so it floats to top).
         existing = _supabase_get(
             f"master_notes_cards?session_id=eq.{_urlparse.quote(session_id)}"
             "&card_type=eq.pdf_document&select=id&limit=1"
         ) or []
-        card_content = _json.dumps({"file_url": public_url, "file_name": display_name, "file_type": ext})
+        card_content = _json.dumps({"file_url": public_url, "file_name": display_name, "file_type": storage_ext})
         if existing:
             _supabase_patch(
                 f"master_notes_cards?id=eq.{_urlparse.quote(existing[0]['id'])}",
@@ -2353,7 +2394,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             if isinstance(row, list): row = row[0] if row else {}
             card_id = (row or {}).get("id")
 
-        return {"ok": True, "file_url": public_url, "file_name": display_name, "file_type": ext, "card_id": card_id}
+        return {"ok": True, "file_url": public_url, "file_name": display_name, "file_type": storage_ext, "card_id": card_id}
 
     @api_router.delete("/admin/sessions/{session_id}/notes-file")
     async def admin_delete_notes_file(session_id: str, user=Depends(_get_supabase_user)):

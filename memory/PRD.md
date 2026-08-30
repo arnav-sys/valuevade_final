@@ -192,6 +192,45 @@ Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog item
 - **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
 
 
+## Aug 30 2026 (2) — Inline PPT viewer (no download) + AI-Customize payment bypass fix
+
+**PPT/PPTX inline viewer, no download (P0)**: Installed LibreOffice
+(`libreoffice-impress`, `soffice` binary) in the container. `admin_upload_notes_file`
+in `wave_endpoints.py` now converts any uploaded `.ppt`/`.pptx` to a real PDF
+server-side (`_convert_pptx_to_pdf()`, offloaded via `asyncio.to_thread` so the
+~90s LibreOffice cold-start doesn't block the event loop) before storing it —
+falls back to the raw pptx only if conversion fails. `NotesPage.jsx`'s
+`DocumentViewer` now renders that PDF fully inline via iframe
+(`#toolbar=0&navpanes=0` hides Chrome's built-in PDF download icon) and no
+longer has ANY download button/logic (`handleDownload`, `document-download-btn`,
+`document-download-cta` all removed). Backfilled the one pre-existing PPTX
+notes card (session `e563d171-...`, "Balance Sheet - Valuevade.pptx") to the
+new converted-PDF format via a one-off migration script. Admin's own
+"View" link in `NotesEditor.jsx` is untouched (admin-only convenience).
+
+**"Customise with AI" payment bypass (P0 bug)**: Previously a logged-in user
+could reach `/course/:id/customize` → `/preview` → `/confirm` and get a fully
+personalized enrollment for FREE — no payment gate existed on that flow at
+all (only `ProtectedRoute` for auth). Added `CustomizePaymentGate.jsx`
+(checks `GET /api/payments/eligibility`, no `session_id`) wrapping all 3
+routes in `App.js`; unpaid users hit the existing `PaywallModal` (real
+Razorpay TEST MODE) before the wizard renders; paid users pass straight
+through. Fails CLOSED on any eligibility-check error (network/500 → treated
+as unpaid, not let through) per testing-agent code review.
+
+**Side-fixes from testing_agent iteration_80 review**: `ADMIN_ALLOWED_EMAILS`
+now includes `admin@valuevade.com` alongside `info@valuevade.com` (though
+only `info@valuevade.com` is a real Supabase auth user — corrected
+`test_credentials.md` to stop pointing testers at the non-existent
+`admin@valuevade.com` Supabase login for `/admin-panel`).
+
+**Testing**: `iteration_80.json` — backend 7/7 pytest pass (pptx→pdf
+conversion, pdf regression, eligibility auth, migrated PDF reachable, admin
+auth). Frontend: paid user passes through customize/preview/confirm with no
+paywall; fresh unpaid signup blocked by PaywallModal on direct `/customize`
+URL nav. No bugs found; 2 code-review nits (blocking subprocess, fail-open
+gate) fixed post-report.
+
 ## Aug 30 2026 — Payment success polish + Resend receipt email + DB fallback cleanup
 
 **Payment Confirmation Polish (P0)**: `usePaymentFlow.jsx` now shows a full-screen

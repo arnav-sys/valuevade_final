@@ -82,8 +82,13 @@ Notes for testing agent:
 ## Test user UUID & badge engine notes (Phase 45)
 ## Admin / Mock Interview / Referrals — VERIFIED 2026-06-18
 
-- Admin account
-  - Email: `admin@valuevade.com`
+- Admin account (Supabase-backed `/admin-panel` login — NOT the same as the
+  legacy JWT `/referral` admin above, which uses a different env-based auth)
+  - Email: `info@valuevade.com` (CORRECTED Aug 30 2026 — `admin@valuevade.com`
+    does NOT exist as a Supabase auth user; testing_agent iteration_80
+    confirmed Supabase user_id `ea4121ce-6c0c-4113-af9a-5d94df5a5d54` resolves
+    to `info@valuevade.com`. `wave_endpoints.ADMIN_ALLOWED_EMAILS` now
+    whitelists both emails, but only info@valuevade.com has a real account.)
   - Password: `VV-Admin#2026-Sec`
   - Supabase user_id: `ea4121ce-6c0c-4113-af9a-5d94df5a5d54`
   - Use for `/admin-panel` access (login flow standard)

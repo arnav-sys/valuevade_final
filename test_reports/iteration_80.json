@@ -1,0 +1,38 @@
+{
+  "summary": "Iteration 80: verified PPT/PPTX -> PDF server-side conversion (LibreOffice/soffice) + inline notes viewer (no download button, iframe#toolbar=0), and the new CustomizePaymentGate on /course/:id/{customize,preview,confirm}. Backend pytest: 7/7 passed (PPTX->PDF conversion, PDF regression, eligibility endpoint auth + paid user, migrated PDF reachable, admin auth on notes-file). Frontend: paid user (testagent2026) passes through /customize, /preview, /confirm with NO paywall; freshly signed-up unpaid user is blocked by PaywallModal (data-testid=paywall-modal + paywall-pay-now visible showing 'Pay ₹1,500 Now') when directly navigating to /course/:id/customize. Existing pre-migrated PPTX PDF (session e563d171) is publicly reachable and starts with %PDF header. DocumentViewer code review confirms all download-button data-testids removed and iframe src appends #toolbar=0&navpanes=0.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {
+        "endpoint": "auth (Supabase user directory)",
+        "issue": "test_credentials.md and E1's message reference 'admin@valuevade.com / VV-Admin#2026-Sec' with user_id ea4121ce-6c0c-4113-af9a-5d94df5a5d54, but that Supabase user's actual email is 'info@valuevade.com'. Signing in with admin@valuevade.com to Supabase returns 400 invalid_credentials (user does not exist). ADMIN_ALLOWED_EMAILS whitelist now contains both, but the admin@valuevade.com Supabase auth user was never created. Tests worked by falling back to info@valuevade.com (same admin, whitelist allows it)."
+      }
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iteration80.py",
+    "/app/test_reports/pytest/iter80.xml"
+  ],
+  "action_items": [
+    "Either (a) create the admin@valuevade.com Supabase auth user with password VV-Admin#2026-Sec, or (b) update /app/memory/test_credentials.md and iteration notes to say info@valuevade.com is the actual admin login. The current mismatch is misleading to future testers and to any human trying to log into /admin-panel with the documented credentials."
+  ],
+  "critical_code_review_comments": [
+    "CustomizePaymentGate is clean and minimal (48 lines). It does not surface eligibility API errors to the user — on a 500/network error it falls through to `children` (state.data === null path) which would let an unpaid user through if the eligibility endpoint is down. Consider showing an error/retry state instead of silently allowing access on API failure.",
+    "wave_endpoints.py _convert_pptx_to_pdf uses `subprocess.run` (blocking) inside an async FastAPI endpoint (admin_upload_notes_file is async). For a 90s worst-case LibreOffice cold start, this blocks the event loop and can starve other requests. Wrap in `await asyncio.to_thread(_convert_pptx_to_pdf, blob)` or `run_in_executor`.",
+    "NotesPage DocumentViewer no longer shows an explicit 'download' affordance, but end users can still right-click the iframe or view-source the file_url (Supabase public URL). If the goal is truly to prevent download, the storage bucket should not be public — but that's outside this iteration's scope, just noting."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iteration80.py (new)"
+  ],
+  "success_rate": {"backend": "100% (7/7 pytest)", "frontend": "100% for verified assertions (paid pass-through + unpaid /customize gate); /preview and /confirm gate verified structurally via App.js code review (same wrapper)"},
+  "seed_data_creation": "Two throwaway signup users created for unpaid-gate testing: iter80x1788085421@example.com and iter80y*@example.com (both TestPass123!). Also uploaded TEST_iter80.pptx and TEST_iter80.pdf to master_session bd1c604c-016f-44d9-9f34-ca9334b053bf (M1 S1) — the pptx was successfully converted server-side to PDF and stored at session-notes/bd1c604c-.../notes.pdf.",
+  "retest_needed": false,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "PPT->PDF conversion via LibreOffice works end-to-end. If a future upload test hits a 90s timeout, that's a cold-start issue; the endpoint should be made non-blocking (see code review). The admin@valuevade.com vs info@valuevade.com credential mismatch is a documentation/setup gap, not a code bug — E1 should reconcile. Note the pptx uploaded during this iteration replaced the M1 S1 notes card content; if any future test expects specific card content on bd1c604c it may need reseeding.",
+  "rca of the issue": "N/A — no functional bugs found this iteration. The admin credential mismatch is a data/documentation issue: the Supabase user_id ea4121ce-6c0c-4113-af9a-5d94df5a5d54 in /app/memory/test_credentials.md is annotated as admin@valuevade.com but Supabase Admin API GET /auth/v1/admin/users/{id} returns email=info@valuevade.com. Root cause: at some earlier iteration the admin user was created (or renamed) as info@valuevade.com in Supabase while local backend/.env ADMIN_EMAIL was set to admin@valuevade.com. E1's fix in this round (adding admin@valuevade.com to ADMIN_ALLOWED_EMAILS) is correct in intent but incomplete — the corresponding Supabase auth account does not exist."
+}
