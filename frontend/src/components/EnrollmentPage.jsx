@@ -116,7 +116,7 @@ export default function EnrollmentPage() {
 
   // Payment must succeed before enrollDirect() ever runs — enrolling for
   // free was a bug (the "Enrol Now — ₹1,500" CTA promised payment).
-  const { startPayment, busy: paying, mockModal } = usePaymentFlow({ onSuccess: handleStart });
+  const { startPayment, busy: paying, mockModal, successOverlay } = usePaymentFlow({ onSuccess: handleStart });
   const handlePayAndStart = () => {
     setError(null);
     startPayment('upfront');
@@ -320,6 +320,7 @@ export default function EnrollmentPage() {
         </section>
       </main>
       {mockModal}
+      {successOverlay}
     </div>
   );
 }

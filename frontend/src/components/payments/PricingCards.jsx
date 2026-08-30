@@ -13,7 +13,7 @@ const API = process.env.REACT_APP_BACKEND_URL;
  */
 export default function PricingCards({ onPaid }) {
   const [data, setData] = useState(null);
-  const { startPayment, busy, mockModal } = usePaymentFlow({
+  const { startPayment, busy, mockModal, successOverlay } = usePaymentFlow({
     onSuccess: async () => {
       // refresh eligibility
       await loadEligibility();
@@ -119,6 +119,7 @@ export default function PricingCards({ onPaid }) {
         </div>
       )}
       {mockModal}
+      {successOverlay}
     </>
   );
 }

@@ -13,6 +13,19 @@ export default function SessionPaymentGate({ children }) {
   const { sessionId } = useParams();
   const [state, setState] = useState({ loading: true, data: null });
 
+  const fetchEligibility = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    try {
+      const r = await fetch(`${API}/api/payments/eligibility?session_id=${encodeURIComponent(sessionId || '')}`, {
+        headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+      });
+      const j = r.ok ? await r.json() : null;
+      setState({ loading: false, data: j });
+    } catch {
+      setState({ loading: false, data: null });
+    }
+  };
+
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -39,7 +52,13 @@ export default function SessionPaymentGate({ children }) {
   }
   const d = state.data;
   if (d && !d.session_allowed) {
-    return <PaywallModal amountInr={d.amount_inr || 1700} tierAvailable={d.pricing_tier_available || 'post_trial'} />;
+    return (
+      <PaywallModal
+        amountInr={d.amount_inr || 1700}
+        tierAvailable={d.pricing_tier_available || 'post_trial'}
+        onPaid={fetchEligibility}
+      />
+    );
   }
   return children;
 }

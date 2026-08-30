@@ -1,0 +1,65 @@
+{
+  "summary": "Reproduced the reported Notes-page blank-document + download.html bug for session 10c9e2ec-ee33-4b2c-987a-eae4b40ed8c6 (student testagent2026@gmail.com). The frontend-only fix applied by the main agent to NotesPage.jsx DocumentViewer is NOT sufficient — it fixes a code path that is never taken for this card. Root cause is upstream (data / card metadata), and the new handleDownload() still silently 'succeeds' with an empty URL, saving the SPA's own index.html as 'Document.html'.",
+  "backend_issues": {
+    "critical": [
+      {
+        "endpoint": "master_notes_cards (data-layer) for session 10c9e2ec-ee33-4b2c-987a-eae4b40ed8c6",
+        "issue": "The document card served to the Notes page has content.file_url = \"\" (empty string), content.file_type = 'pdf' (NOT 'pptx'), and content.file_name = 'Document' (NOT 'notes.pptx'). This directly contradicts the review_request assumption that the card has file_type='pptx'/file_name='notes.pptx'. Because file_type is 'pdf', DocumentViewer takes the isPdf branch and renders <iframe src=\"\">, producing a blank frame and the console error: 'An empty string (\"\") was passed to the src attribute'. Either the PPT upload flow is writing the wrong content JSON (file_type stuck at default 'pdf' and file_url never populated), or the migration/read query is dropping these fields. This is the actual origin of the reported 'blank notes page + garbage download.html' bug.",
+        "priority": "CRITICAL"
+      }
+    ],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "NotesPage.jsx > DocumentViewer > handleDownload",
+        "issue": "handleDownload does NOT guard against an empty/missing fileUrl. When c.file_url is '' (as it is for this card), fetch('') resolves to the current SPA page (200 OK, HTML body). The function happily wraps that HTML in a Blob and triggers a save as 'Document.html' — exactly the 'download.html, full plain' behavior the user reported. The fix must early-return / show an error when fileUrl is empty or not a valid absolute URL. Verified downloaded file is the Valuevade SPA index.html, 3334 bytes, starts with <!DOCTYPE html>.",
+        "selector": "[data-testid='document-download-btn']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "NotesPage.jsx > DocumentViewer (isPdf branch)",
+        "issue": "The isPdf branch renders <iframe src={fileUrl} /> without checking that fileUrl is non-empty. Result: empty src → blank iframe → 'notes page shows blank' bug persists. Should also fall back to the 'Preview not available / Download' card when fileUrl is empty, or at minimum surface the viewerError state. The <iframe onError> handler is not fired for empty-src iframes, so setViewerError(true) is never called and the friendly fallback UI never appears.",
+        "selector": "[data-testid='document-iframe']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "NotesPage.jsx > DocumentViewer (fileType detection)",
+        "issue": "isPdf is derived only from c.file_type. If the DB stores file_type='pdf' incorrectly but file_name ends in .pptx, the UI still tries to embed as PDF. Recommend falling back on the file extension of file_name (e.g. fileName.toLowerCase().endsWith('.pptx')) so the UI is resilient to bad file_type metadata — this would have masked the current data bug and shown the correct Download-only card.",
+        "selector": "[data-testid='document-viewer']",
+        "priority": "MEDIUM"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Notes page → Document download (session 10c9e2ec…) ",
+        "issue": "User-facing behavior is unchanged from the reported bug: (a) document frame is BLANK (iframe with empty src); (b) clicking Download saves 'Document.html' containing the Valuevade landing page HTML instead of the real .pptx file; (c) no error surfaced to the user. The main-agent's non-PDF branch fix is dead code for this card because isPdf=true.",
+        "affected_selectors": ["[data-testid='document-iframe']", "[data-testid='document-download-btn']"]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [
+    "PRIMARY: Investigate why the PPT card for session 10c9e2ec-ee33-4b2c-987a-eae4b40ed8c6 has content.file_url='' and content.file_type='pdf' in master_notes_cards. The admin PPT upload flow is likely not persisting file_url / file_type / file_name into the card's content JSON. Fix the upload/insert path.",
+    "Harden handleDownload() in NotesPage.jsx: if (!fileUrl) show a toast/error and return; also check response.headers.get('content-type') — if it's text/html, treat as failure and DON'T save the blob. This prevents the SPA HTML from ever being saved as 'Document.html' regardless of underlying data corruption.",
+    "Harden DocumentViewer render: if (!fileUrl) render the 'Preview not available' fallback card for BOTH PDF and non-PDF branches, so a bad card never shows a blank iframe.",
+    "Consider deriving isPdf from BOTH file_type AND file_name extension so a mis-tagged file_type does not send a .pptx down the iframe branch.",
+    "After the data fix, re-run this test — expect fileType='pptx', fileUrl to be a supabase storage URL, and the download to yield an actual .pptx (PK\\x03\\x04 zip signature)."
+  ],
+  "critical_code_review_comments": [
+    "handleDownload has no validation of fileUrl before calling fetch() — fetching '' returns the current page silently, defeating the purpose of the fix.",
+    "isPdf branch is not gated on fileUrl truthiness — empty src still renders, causing a silent blank iframe.",
+    "Frontend blindly trusts backend metadata; a defensive extension check on file_name would have prevented the reported symptom even without the data fix.",
+    "The 'download attribute is ignored cross-origin' comment/rationale in the code is correct in general, but the actual bug the user hit here is different (bad/empty file_url), and neither the old code nor the new code guards against it."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a (frontend-only run)", "frontend": "0% (bug still reproduces end-to-end for the target session)"},
+  "test_credentials": "student testagent2026@gmail.com / TestPass123! — login works fine.",
+  "seed_data_creation": "None.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Login flow works. Direct navigation to /session/{id}/notes works AFTER a normal /login → dashboard flow (auth session must exist). The 'infinite loading spinner on direct URL' the main agent saw is likely because the direct URL was hit before Supabase auth had rehydrated in the browser context; it resolves within ~3-5s once auth is present. For this bug specifically: DO NOT trust review_request's claim that the card has file_type='pptx' — actual data on prod is file_type='pdf', file_url='', file_name='Document'. Verify master_notes_cards.content for card_type='pdf_document' on this session before re-testing the UI.",
+  "rca of the issue": "1) User uploaded a PPT via Admin. 2) The upload/insert path for master_notes_cards did NOT populate content.file_url / content.file_type / content.file_name correctly — card row exists with card_type='pdf_document' but content = {file_type:'pdf', file_url:'', file_name:'Document'} (defaults). 3) DocumentViewer picks isPdf=true from content.file_type and renders <iframe src=''> → BLANK page (this is the 'blank notes page' symptom). 4) User clicks Download; handleDownload() calls fetch('') which the browser resolves to the current page URL, returning the SPA's index.html with 200 OK. 5) The function saves that HTML as a Blob with filename 'Document' + no extension coerced by browser to 'Document.html' → this is the 'download.html full plain' file the user reported. Mitigation: fix the upload path to persist file_url/file_type/file_name; add defensive guards in DocumentViewer (empty-URL check, content-type check, extension-based file type detection)."
+}

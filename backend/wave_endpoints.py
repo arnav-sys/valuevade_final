@@ -1728,19 +1728,11 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.get("/admin/curriculum/sessions")
     async def admin_curr_sessions(module_id: str, user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        try:
-            rows = _supabase_get(
-                f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
-                "&select=id,module_id,title,description,order_index,estimated_minutes,video_duration_minutes,lecture_url,is_preview_session,is_free_session"
-                "&order=order_index&limit=200"
-            ) or []
-        except HTTPException:
-            # Fallback: new columns (video_duration_minutes / flags) not yet migrated
-            rows = _supabase_get(
-                f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
-                "&select=id,module_id,title,description,order_index,estimated_minutes,lecture_url"
-                "&order=order_index&limit=200"
-            ) or []
+        rows = _supabase_get(
+            f"master_sessions?module_id=eq.{_urlparse.quote(module_id)}"
+            "&select=id,module_id,title,description,order_index,estimated_minutes,video_duration_minutes,lecture_url,is_preview_session,is_free_session"
+            "&order=order_index&limit=200"
+        ) or []
         return {"sessions": rows}
 
     # --- Admin "Courses" tab: edit course title + quick preview/free toggles ---
@@ -2186,12 +2178,9 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             new_val = bool(body[flag])
             if new_val:
                 # Count how many sessions already have this flag set
-                try:
-                    existing = _supabase_get(
-                        f"master_sessions?{flag}=eq.true&select=id&limit=3"
-                    ) or []
-                except HTTPException:
-                    existing = []  # Column doesn't exist yet — allow (migration pending)
+                existing = _supabase_get(
+                    f"master_sessions?{flag}=eq.true&select=id&limit=3"
+                ) or []
                 already_set = any(r["id"] == session_id for r in existing)
                 if not already_set and len(existing) >= 2:
                     flag_label = "Preview" if flag == "is_preview_session" else "Free Trial"

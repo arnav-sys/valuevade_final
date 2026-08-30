@@ -25,7 +25,7 @@ export default function EnrollmentChoicePage() {
     navigate('/courses', { replace: true });
   };
 
-  const { startPayment, busy: payBusy, mockModal } = usePaymentFlow({
+  const { startPayment, busy: payBusy, mockModal, successOverlay } = usePaymentFlow({
     onSuccess: goNext,
   });
 
@@ -159,6 +159,7 @@ export default function EnrollmentChoicePage() {
       )}
 
       {mockModal}
+      {successOverlay}
     </div>
   );
 }

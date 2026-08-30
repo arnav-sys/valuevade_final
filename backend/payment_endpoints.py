@@ -9,6 +9,7 @@ Wire into server.py via register_payment_endpoints(api_router, deps={...}).
 """
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import hmac
 import json as _json
@@ -181,11 +182,13 @@ def _award_paid_completion_xp(user_id: str):
         logger.info(f"[payments] paid_upgrade xp skipped: {e}")
 
 
-def _mark_paid(user_id: str, amount_inr: int, tier_code: str):
-    """Idempotently mark user as paid."""
+def _mark_paid(user_id: str, amount_inr: int, tier_code: str) -> bool:
+    """Idempotently mark user as paid. Returns True only when this call is
+    the one that actually flipped paid=false -> true (so callers can fire
+    one-shot side-effects like the receipt email)."""
     cur = _ensure_payment_status_row(user_id)
     if cur.get("paid"):
-        return
+        return False
     _supabase_patch(
         f"user_payment_status?user_id=eq.{_urlparse.quote(user_id)}",
         {
@@ -196,6 +199,79 @@ def _mark_paid(user_id: str, amount_inr: int, tier_code: str):
         },
     )
     _award_paid_completion_xp(user_id)
+    return True
+
+
+def _receipt_email_html(name: str, amount_inr: int, tier_code: str, paid_at: str) -> str:
+    tier_label = "Lifetime access (upfront)" if tier_code == "upfront" else "Lifetime access (post-trial)"
+    return f"""
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#0e0e16;color:#f4f4f8;">
+      <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8b8b9e;margin:0 0 20px;">Valuevade · Payment Receipt</p>
+      <h1 style="font-size:22px;margin:0 0 16px;color:#ffffff;">Thanks, {name} — you're in.</h1>
+      <p style="font-size:14px;line-height:1.6;color:#c9c9d6;margin:0 0 24px;">
+        Your payment was successful and your lifetime access to the Equity Research &amp;
+        Financial Modelling course is now unlocked. Here's your receipt:
+      </p>
+      <table style="width:100%;border-collapse:collapse;margin-bottom:24px;">
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #2a2a3a;font-size:13px;color:#8b8b9e;">Plan</td>
+          <td style="padding:10px 0;border-bottom:1px solid #2a2a3a;font-size:13px;text-align:right;color:#ffffff;">{tier_label}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0;border-bottom:1px solid #2a2a3a;font-size:13px;color:#8b8b9e;">Amount paid</td>
+          <td style="padding:10px 0;border-bottom:1px solid #2a2a3a;font-size:13px;text-align:right;color:#ffffff;">₹{amount_inr:,}</td>
+        </tr>
+        <tr>
+          <td style="padding:10px 0;font-size:13px;color:#8b8b9e;">Date</td>
+          <td style="padding:10px 0;font-size:13px;text-align:right;color:#ffffff;">{paid_at}</td>
+        </tr>
+      </table>
+      <p style="font-size:13px;line-height:1.6;color:#c9c9d6;margin:0 0 8px;">
+        Head back to your dashboard to pick up where you left off. No subscription, no renewals —
+        this access is yours for life.
+      </p>
+      <p style="font-size:12px;color:#6b6b7e;margin-top:32px;">
+        Valuevade · This is an automated receipt — no reply needed.
+      </p>
+    </div>
+    """
+
+
+def _send_payment_receipt_email_sync(user_id: str, amount_inr: int, tier_code: str):
+    api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
+    if not api_key:
+        logger.info("[payments] RESEND_API_KEY not set — skipping receipt email")
+        return
+    try:
+        profs = _supabase_get(
+            f"profiles?id=eq.{_urlparse.quote(user_id)}&select=email,full_name&limit=1"
+        ) or []
+        if not profs or not profs[0].get("email"):
+            return
+        email = profs[0]["email"]
+        name = (profs[0].get("full_name") or "there").strip() or "there"
+        import resend
+        resend.api_key = api_key
+        sender = (os.environ.get("SENDER_EMAIL") or "onboarding@resend.dev").strip()
+        paid_at = datetime.now(timezone.utc).strftime("%d %b %Y, %H:%M UTC")
+        resend.Emails.send({
+            "from": f"Valuevade <{sender}>",
+            "to": [email],
+            "subject": "Your Valuevade payment receipt — lifetime access unlocked",
+            "html": _receipt_email_html(name, amount_inr, tier_code, paid_at),
+        })
+        logger.info(f"[payments] receipt email sent to {email}")
+    except Exception as e:
+        logger.warning(f"[payments] receipt email failed for user {user_id}: {e}")
+
+
+async def _send_payment_receipt_email(user_id: str, amount_inr: int, tier_code: str):
+    """Non-blocking (thread-offloaded) receipt email. Failures never affect
+    the payment flow — this is a best-effort notification only."""
+    try:
+        await asyncio.to_thread(_send_payment_receipt_email_sync, user_id, amount_inr, tier_code)
+    except Exception as e:
+        logger.warning(f"[payments] receipt email dispatch failed for user {user_id}: {e}")
 
 
 # ===========================================================================
@@ -393,7 +469,9 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
             )
         except Exception:
             pass
-        _mark_paid(user["id"], order["amount_inr"], order["pricing_tier"])
+        just_paid = _mark_paid(user["id"], order["amount_inr"], order["pricing_tier"])
+        if just_paid:
+            await _send_payment_receipt_email(user["id"], order["amount_inr"], order["pricing_tier"])
         return {"ok": True, "paid": True}
 
     # ---------------- MOCK SUCCESS (mock mode only) ----------------
@@ -433,7 +511,9 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
             f"razorpay_orders?id=eq.{_urlparse.quote(order['id'])}",
             {"status": "paid", "updated_at": datetime.now(timezone.utc).isoformat()},
         )
-        _mark_paid(user["id"], order["amount_inr"], order["pricing_tier"])
+        just_paid = _mark_paid(user["id"], order["amount_inr"], order["pricing_tier"])
+        if just_paid:
+            await _send_payment_receipt_email(user["id"], order["amount_inr"], order["pricing_tier"])
         return {"ok": True, "paid": True, "razorpay_payment_id": mock_payment_id}
 
     # ---------------- WEBHOOK (no auth, signature-verified) ----------------
@@ -493,7 +573,9 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
                 f"razorpay_orders?id=eq.{_urlparse.quote(order['id'])}",
                 {"status": "paid", "updated_at": datetime.now(timezone.utc).isoformat()},
             )
-            _mark_paid(order["user_id"], order["amount_inr"], order["pricing_tier"])
+            just_paid = _mark_paid(order["user_id"], order["amount_inr"], order["pricing_tier"])
+            if just_paid:
+                await _send_payment_receipt_email(order["user_id"], order["amount_inr"], order["pricing_tier"])
             return {"ok": True, "handled": "payment.captured"}
         elif evt_type == "payment.failed":
             _supabase_patch(

@@ -1,4 +1,16 @@
-# 2026-07-30 — Mock Interview only test account (fresh seed)
+## Fresh signup test user (Aug 30 2026 — payment flow manual check)
+- Email: vvtest673479@example.com
+- Password: TestPass123!
+- Name: Payment Tester
+- State: freshly signed up, NOT paid — useful for testing the first-time
+  payment flow / success overlay. Razorpay is real TEST MODE
+  (rzp_test_TVeabM7YAvLTQs) — checkout requires the actual Razorpay iframe
+  contact-details + card step (card 4111 1111 1111 1111, any future
+  expiry/CVV); automating this iframe in headless Playwright proved flaky
+  (contact-details mobile-number validation didn't clear despite a valid
+  10-digit number) — recommend a manual click-through if full E2E proof is
+  needed.
+
 
 Account: **mocktest@valuevade.test** / **MockTest2026!**
 

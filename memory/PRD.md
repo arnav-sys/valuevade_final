@@ -192,6 +192,59 @@ Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog item
 - **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
 
 
+## Aug 30 2026 — Payment success polish + Resend receipt email + DB fallback cleanup
+
+**Payment Confirmation Polish (P0)**: `usePaymentFlow.jsx` now shows a full-screen
+"Payment successful!" overlay (`data-testid=payment-success-overlay` /
+`payment-success-title`, ~1.7s, checkmark + ping animation) BEFORE handing off to
+`onSuccess()` (enrollment write / eligibility re-fetch), instead of firing
+`onSuccess` immediately. `PaywallModal.jsx` no longer calls
+`window.location.reload()` on payment success — it now accepts an `onPaid` prop;
+`SessionPaymentGate.jsx` extracted its eligibility-fetch into a reusable
+`fetchEligibility()` and passes it as `onPaid` so the gate re-checks
+`/api/payments/eligibility` and swaps to the unlocked content with no hard
+reload. `EnrollmentPage.jsx`, `EnrollmentChoicePage.jsx`, `PricingCards.jsx` all
+render `{successOverlay}` now. Verified: grep for `window.location.reload` /
+`location.reload` across `components/payments/`, `EnrollmentPage.jsx`,
+`enrollDirect.js` returns zero hits.
+
+**Enrollment Receipt Email via Resend (P0)**: `payment_endpoints.py` — `_mark_paid()`
+now returns `bool` (True only on the actual `paid:false→true` transition, so the
+email fires exactly once per user). New `_send_payment_receipt_email_sync()` /
+`_send_payment_receipt_email()` (thread-offloaded via `asyncio.to_thread`, called
+with `await` from `/payments/verify`, `/payments/mock-success`, and the webhook's
+`payment.captured` branch). Gated on `RESEND_API_KEY` env var — if blank, logs
+"RESEND_API_KEY not set — skipping receipt email" and returns without importing
+the `resend` package (never blocks/slows the payment response). Sender defaults
+to `onboarding@resend.dev` via `SENDER_EMAIL` env var. **RESEND_API_KEY is
+currently BLANK — no real emails are sent yet.** To enable: get a key from
+https://resend.com (Dashboard → API Keys) and set `RESEND_API_KEY` in
+`backend/.env`, then `sudo supervisorctl restart backend`. For a custom sender
+domain (e.g. receipts@valuevade.com), verify the domain in Resend first and set
+`SENDER_EMAIL` accordingly — until then Resend's test sender only delivers to
+the account owner's own inbox.
+
+**DB Fallback Cleanup (P1 — done)**: Removed the try/except migration-era
+fallback branches in `wave_endpoints.py` (`admin_curr_sessions`,
+`admin_session_flags`) and `guest_session_endpoints.py` (`_get_free_session`,
+`_check_free`, `list_preview_sessions`, `list_free_sessions`,
+`guest_session_quiz`, `guest_session_simulation`) for
+`video_duration_minutes` / `is_preview_session` / `is_free_session` — these
+columns are guaranteed present now. `admin_migration_status` diagnostic
+endpoint left in place (unused by frontend, harmless).
+
+**Testing**: `iteration_79.json` — 6/6 executed backend pytest pass (payment
+eligibility, verify fast-fail, mock-success 404-in-real-mode, preview/free
+sessions, guest session+notes+quiz+sim flow); 3 admin-scoped tests skipped
+(ADMIN_ALLOWED_EMAILS in wave_endpoints.py is `{'info@valuevade.com'}`, not
+`admin@valuevade.com` from test_credentials.md — pre-existing, unrelated to
+this session's changes). Frontend: overlay wiring + zero-reload guarantee
+verified via code inspection (real Razorpay TEST-mode iframe automation was
+attempted manually post-testing-agent but the 3rd-party contact-details step
+proved flaky/unreliable in headless Playwright — signature-mismatch/backend
+paid-flip logic itself is untouched by this session's changes and was not
+modified, only the email side-effect after it).
+
 ## Aug 25 2026 — Post-rebuild trims + dedicated Free Mock page
 
 Follow-up work after the 4-prompt SEO/GEO rebuild:

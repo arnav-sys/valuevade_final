@@ -27,6 +27,18 @@ async function authedFetch(path, opts = {}) {
 export function usePaymentFlow({ onSuccess } = {}) {
   const [busy, setBusy] = useState(false);
   const [mockOrder, setMockOrder] = useState(null); // {order_id, amount_inr}
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  // Shows the success screen for a moment before handing off to onSuccess
+  // (enrollment write / navigation) — avoids the jarring feel of a hard
+  // page reload right after payment.
+  const celebrateThenContinue = () => {
+    setShowSuccess(true);
+    setTimeout(() => {
+      setShowSuccess(false);
+      onSuccess?.();
+    }, 1700);
+  };
 
   const startPayment = async (pricing_tier) => {
     if (busy) return;
@@ -68,8 +80,7 @@ export function usePaymentFlow({ onSuccess } = {}) {
             }),
           });
           if (v.ok) {
-            toast.success('Payment successful! Unlocking course…');
-            onSuccess?.();
+            celebrateThenContinue();
           } else toast.error('Payment verification failed.');
         },
         modal: {
@@ -93,9 +104,8 @@ export function usePaymentFlow({ onSuccess } = {}) {
         body: JSON.stringify({ order_id: mockOrder.order_id }),
       });
       if (r.ok) {
-        toast.success('Mock payment captured! Course unlocked.');
         setMockOrder(null);
-        onSuccess?.();
+        celebrateThenContinue();
       } else {
         toast.error('Mock payment failed.');
       }
@@ -108,6 +118,26 @@ export function usePaymentFlow({ onSuccess } = {}) {
     setMockOrder(null);
     toast.info('Mock payment cancelled.');
   };
+
+  const successOverlay = showSuccess ? (
+    <div
+      data-testid="payment-success-overlay"
+      className="fixed inset-0 z-[110] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200"
+    >
+      <div className="flex flex-col items-center text-center">
+        <div className="relative w-20 h-20 mb-6">
+          <div className="absolute inset-0 rounded-full bg-[var(--color-primary)]/20 animate-ping" />
+          <div className="absolute inset-0 rounded-full bg-[var(--color-primary)] flex items-center justify-center scale-100 animate-in zoom-in duration-500">
+            <CheckCircle2 className="w-10 h-10 text-white" />
+          </div>
+        </div>
+        <h2 className="text-2xl font-bold text-white font-bricolage mb-1" data-testid="payment-success-title">
+          Payment successful!
+        </h2>
+        <p className="text-sm text-white/70 font-bricolage">Unlocking your course…</p>
+      </div>
+    </div>
+  ) : null;
 
   const mockModal = mockOrder ? (
     <div
@@ -154,5 +184,5 @@ export function usePaymentFlow({ onSuccess } = {}) {
     </div>
   ) : null;
 
-  return { startPayment, busy, mockModal };
+  return { startPayment, busy, mockModal, successOverlay };
 }

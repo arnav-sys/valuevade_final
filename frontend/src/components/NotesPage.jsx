@@ -11,6 +11,7 @@ import SessionVideoPlayer from './notes/SessionVideoPlayer';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { toast } from 'sonner';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
 import { isInterviewUserModule } from '../utils/interviewSim';
 import { isExamUserModule } from '../utils/examModule';
@@ -1540,18 +1541,53 @@ const CARD_THEME_DELETED_SEE_NOTES_FOLDER = null; // moved to /notes/constants.j
 function DocumentViewer({ card, onComplete, completing, isReview }) {
   const [fullscreen, setFullscreen] = useState(false);
   const [viewerError, setViewerError] = useState(false);
-  const c = card?.content || {};
+  const [downloading, setDownloading] = useState(false);
+  // content sometimes arrives as a JSON string (not a parsed object) from
+  // Supabase — this silently produced empty file_url/file_type/file_name
+  // (the exact "blank notes + download.html" bug), so always parse it.
+  let c = card?.content || {};
+  if (typeof c === 'string') {
+    try { c = JSON.parse(c); } catch { c = {}; }
+  }
   const fileUrl = c.file_url || '';
   const fileName = c.file_name || 'Document';
-  const fileType = (c.file_type || 'pdf').toLowerCase();
-  const isPdf = fileType === 'pdf';
-
-  // Viewer URL: direct for PDF, Office Online for PPTX
-  const viewerSrc = isPdf
-    ? fileUrl
-    : `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`;
+  const fileNameLower = fileName.toLowerCase();
+  // Defensive: don't fully trust file_type — a file_name ending in
+  // .pptx/.ppt should never be routed to the PDF iframe branch.
+  const isPpt = fileNameLower.endsWith('.pptx') || fileNameLower.endsWith('.ppt');
+  const fileType = isPpt ? 'pptx' : (c.file_type || 'pdf').toLowerCase();
+  const isPdf = fileType === 'pdf' && !isPpt;
+  const hasFile = !!fileUrl;
 
   const handleViewerError = () => setViewerError(true);
+
+  // Cross-origin links ignore the `download` attribute — browsers just
+  // navigate/open them instead of saving, which is what caused a blank
+  // "download.html" page. Fetching as a blob and saving THAT forces a
+  // real, reliable file download regardless of origin.
+  const handleDownload = async () => {
+    if (downloading) return;
+    if (!hasFile) { toast.error('No file was found for this document.'); return; }
+    setDownloading(true);
+    try {
+      const res = await fetch(fileUrl);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+    } catch (e) {
+      toast.error('Download failed — opening the file in a new tab instead.');
+      window.open(fileUrl, '_blank', 'noopener,noreferrer');
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   return (
     <div className="w-full" data-testid="document-viewer">
@@ -1570,57 +1606,91 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
           </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <a
-            href={fileUrl}
-            download={fileName}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-text-muted)] border border-[var(--color-border)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] transition-all"
+          <button
+            onClick={handleDownload}
+            disabled={downloading || !hasFile}
+            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-text-muted)] border border-[var(--color-border)] hover:bg-[var(--color-surface)] hover:text-[var(--color-text)] transition-all disabled:opacity-60"
             data-testid="document-download-btn"
           >
-            <ArrowRight size={11} className="rotate-90" /> Download
-          </a>
-          <button
-            onClick={() => setFullscreen(!fullscreen)}
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-primary)] border border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/10 transition-all"
-            data-testid="document-fullscreen-btn"
-          >
-            {fullscreen ? 'Collapse' : 'Expand'}
+            {downloading ? <Loader2 size={11} className="animate-spin" /> : <ArrowRight size={11} className="rotate-90" />}
+            {downloading ? 'Downloading…' : 'Download'}
           </button>
+          {isPdf && (
+            <button
+              onClick={() => setFullscreen(!fullscreen)}
+              className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-primary)] border border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/10 transition-all"
+              data-testid="document-fullscreen-btn"
+            >
+              {fullscreen ? 'Collapse' : 'Expand'}
+            </button>
+          )}
         </div>
       </div>
 
-      {/* Document frame */}
-      <div
-        className={`relative rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_40px_rgba(0,0,0,0.18)] transition-all duration-300 ${fullscreen ? 'h-[85vh]' : 'h-[72vh] min-h-[500px]'}`}
-        data-testid="document-frame"
-      >
-        {viewerError ? (
-          <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
-            <AlertCircle size={32} className="text-[var(--color-text-muted)]" />
-            <p className="text-sm text-[var(--color-text)] font-bricolage">Document preview unavailable</p>
-            <p className="text-xs text-[var(--color-text-muted)]">Your browser may be blocking the inline viewer.</p>
-            <a
-              href={fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold"
-              data-testid="document-open-external"
-            >
-              Open in New Tab <ArrowRight size={14} />
-            </a>
+      {/* Document frame — PDFs render natively in-browser; PowerPoint files
+          cannot (and the old Microsoft Office Online iframe embed was
+          unreliable from preview domains, often rendering blank with no
+          error signal) so we show a clear "download to view" card instead. */}
+      {isPdf && hasFile ? (
+        <div
+          className={`relative rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_40px_rgba(0,0,0,0.18)] transition-all duration-300 ${fullscreen ? 'h-[85vh]' : 'h-[72vh] min-h-[500px]'}`}
+          data-testid="document-frame"
+        >
+          {viewerError ? (
+            <div className="flex flex-col items-center justify-center h-full gap-4 p-8 text-center">
+              <AlertCircle size={32} className="text-[var(--color-text-muted)]" />
+              <p className="text-sm text-[var(--color-text)] font-bricolage">Document preview unavailable</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Your browser may be blocking the inline viewer.</p>
+              <a
+                href={fileUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold"
+                data-testid="document-open-external"
+              >
+                Open in New Tab <ArrowRight size={14} />
+              </a>
+            </div>
+          ) : (
+            <iframe
+              src={fileUrl}
+              title={fileName}
+              className="w-full h-full border-0"
+              allow="fullscreen"
+              onError={handleViewerError}
+              data-testid="document-iframe"
+            />
+          )}
+        </div>
+      ) : (
+        <div
+          className="rounded-2xl border border-dashed border-[var(--color-border)] bg-[var(--color-surface)] p-10 flex flex-col items-center justify-center gap-4 text-center min-h-[280px]"
+          data-testid="document-frame"
+        >
+          <div className="w-14 h-14 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
+            {hasFile ? <FileText size={26} className="text-[var(--color-primary)]" /> : <AlertCircle size={26} className="text-[var(--color-text-muted)]" />}
           </div>
-        ) : (
-          <iframe
-            src={viewerSrc}
-            title={fileName}
-            className="w-full h-full border-0"
-            allow="fullscreen"
-            onError={handleViewerError}
-            data-testid="document-iframe"
-          />
-        )}
-      </div>
+          <div>
+            <p className="text-sm font-semibold text-[var(--color-text)] font-bricolage">
+              {hasFile ? 'Preview not available for PowerPoint files' : 'This document could not be loaded'}
+            </p>
+            <p className="text-xs text-[var(--color-text-muted)] mt-1 max-w-sm">
+              {hasFile ? 'Download it to view in PowerPoint, Keynote, or Google Slides.' : 'The file link is missing. Please ask your admin to re-upload it.'}
+            </p>
+          </div>
+          {hasFile && (
+            <button
+              onClick={handleDownload}
+              disabled={downloading}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold hover:brightness-110 transition-all disabled:opacity-60"
+              data-testid="document-download-cta"
+            >
+              {downloading ? <Loader2 size={14} className="animate-spin" /> : <ArrowRight size={14} className="rotate-90" />}
+              {downloading ? 'Downloading…' : `Download ${fileName}`}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Complete notes action */}
       <div className="mt-5 flex items-center justify-between gap-4 px-1">
