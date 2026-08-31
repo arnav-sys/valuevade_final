@@ -5108,6 +5108,7 @@ try:
         "supabase_delete": _supabase_delete,
         "get_supabase_user": get_supabase_user,
         "emergent_llm_key": EMERGENT_LLM_KEY,
+        "bump_pari_cost": _bump_pari_cost,   # for exact interview LLM cost tracking
     })
     from free_trial_endpoints import register_free_trial_endpoints
     register_free_trial_endpoints(api_router, {

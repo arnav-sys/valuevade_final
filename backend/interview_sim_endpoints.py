@@ -35,6 +35,31 @@ _get_supabase_user = None
 _EMERGENT_LLM_KEY = None
 ADMIN_ALLOWED_EMAILS = {"info@valuevade.com"}
 
+# ── LLM cost tracking ────────────────────────────────────────────────────────
+# Buffer: attempt_id → accumulated INR cost (flushed to profiles at milestones)
+_iv_cost_buf: dict[str, float] = {}
+_bump_iv_cost_fn = None          # injected via register()
+
+_INR_PER_IN_IV  = (1.0 / 1_000_000.0) * 85.0   # ≈ Claude Haiku input rate
+_INR_PER_OUT_IV = (5.0 / 1_000_000.0) * 85.0   # ≈ Claude Haiku output rate
+
+
+def _iv_tok(text: str) -> int:
+    """Approximate token count from text length (same formula as server.py)."""
+    return max(1, len(text) // 4)
+
+
+def _flush_iv_cost(att_id: str, user_id: str) -> None:
+    """Write accumulated interview LLM spend for this attempt to profiles."""
+    if not att_id or not user_id or not _bump_iv_cost_fn:
+        return
+    cost = _iv_cost_buf.pop(att_id, 0.0)
+    if cost > 0.0:
+        try:
+            _bump_iv_cost_fn(user_id, round(cost, 6))
+        except Exception as e:
+            logger.warning("[interview-sim] cost flush failed: %s", e)
+
 
 def _ensure_admin(user: dict):
     email = (user.get("email") or "").strip().lower()
@@ -54,7 +79,8 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
 
 
-async def _llm(system: str, text: str, tag: str, model=HAIKU, max_tokens: int = 900) -> str:
+async def _llm(system: str, text: str, tag: str, model=HAIKU, max_tokens: int = 900,
+               _att_id: str = "") -> str:
     if not _EMERGENT_LLM_KEY:
         return ""
     from emergentintegrations.llm.chat import LlmChat, UserMessage
@@ -65,7 +91,13 @@ async def _llm(system: str, text: str, tag: str, model=HAIKU, max_tokens: int = 
     )
     try:
         resp = await chat.send_message(UserMessage(text=text))
-        return (resp or "").strip()
+        text_out = (resp or "").strip()
+        if _att_id:
+            in_tok  = _iv_tok(system + text)
+            out_tok = _iv_tok(text_out)
+            cost = in_tok * _INR_PER_IN_IV + out_tok * _INR_PER_OUT_IV
+            _iv_cost_buf[_att_id] = _iv_cost_buf.get(_att_id, 0.0) + cost
+        return text_out
     except Exception as e:
         logger.warning(f"[interview-sim] LLM failed [{tag}]: {e}")
         return ""
@@ -267,6 +299,7 @@ async def _generate_aptitude(sim: dict, attempt_id: str) -> list[dict]:
         APTITUDE_GEN_PROMPT.format(n=n, firm=sim["firm_name"]),
         f"ivs-{attempt_id}-apt-gen",
         max_tokens=3500,
+        _att_id=attempt_id,
     )
     qs = _parse_json(raw, None)
     valid = []
@@ -375,6 +408,7 @@ async def _score_round(sim: dict, attempt_id: str, stage: str, turns: list[dict]
                                   transcript=_transcript(turns)[:7000]),
         f"ivs-{attempt_id}-{stage}-score",
         max_tokens=1200,
+        _att_id=attempt_id,
     )
     data = _parse_json(raw, {})
     score = max(0.0, min(100.0, float(data.get("score", 60) or 60)))
@@ -437,6 +471,7 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
         f"ivs-{att['id']}-final",
         model=SONNET,
         max_tokens=1800,
+        _att_id=att["id"],
     )
     data = _parse_json(raw, {})
     letter_md = data.get("letter_md") or (
@@ -474,6 +509,8 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
         module_completed = _maybe_complete_module(att["user_id"])
     except Exception as e:
         logger.warning(f"[interview-sim] module flip failed: {e}")
+    # Flush all LLM costs accumulated for this attempt to the user's profile
+    _flush_iv_cost(att["id"], att["user_id"])
     return {"decision": sd["decision"], "module_completed": module_completed}
 
 
@@ -481,13 +518,14 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
 # Router
 # ---------------------------------------------------------------------------
 def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
-    global _supabase_get, _supabase_post, _supabase_patch, _supabase_delete, _get_supabase_user, _EMERGENT_LLM_KEY
+    global _supabase_get, _supabase_post, _supabase_patch, _supabase_delete, _get_supabase_user, _EMERGENT_LLM_KEY, _bump_iv_cost_fn
     _supabase_get = deps["supabase_get"]
     _supabase_post = deps["supabase_post"]
     _supabase_patch = deps["supabase_patch"]
     _supabase_delete = deps.get("supabase_delete")
     _get_supabase_user = deps["get_supabase_user"]
-    _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
+    _EMERGENT_LLM_KEY  = deps.get("emergent_llm_key")
+    _bump_iv_cost_fn   = deps.get("bump_pari_cost")  # reuses same profiles column
 
     # ------------------------------------------------------------------ hub
     @api_router.get("/interview-sim/overview")
@@ -606,6 +644,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             ),
             f"ivs-{attempt_id}-application",
             max_tokens=900,
+            _att_id=attempt_id,
         )
         data = _parse_json(raw, {})
         score = max(0.0, min(100.0, float(data.get("score", 65) or 65)))
@@ -740,6 +779,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             "Write 90-130 words of markdown feedback: their strongest area, their weakest area with ONE concrete practice tip, and one line on pacing for timed tests.",
             f"ivs-{attempt_id}-apt-fb",
             max_tokens=500,
+            _att_id=attempt_id,
         )
         apt.update({
             "answers": answers,
@@ -757,6 +797,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         # Always advance — no early termination. The final selection decision
         # is revealed only at the end (in _finalize_attempt).
         _patch_attempt(attempt_id, {"stage_data": sd, "current_stage": "behavioural"})
+        _flush_iv_cost(attempt_id, user["id"])   # flush aptitude-stage LLM spend
         return {"ok": True, "aptitude": apt, "passed": passed, "next_stage": "behavioural"}
 
     # ------------------------------------------------------ interview rounds
@@ -792,6 +833,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             "(no personal names), then ask your FIRST question. Keep both together in one message.",
             f"ivs-{attempt_id}-{stage}-q1",
             max_tokens=400,
+            _att_id=attempt_id,
         ) or ("Welcome — let's begin. Tell me about a time you worked under real pressure. Walk me through it using the STAR structure."
               if stage == "behavioural" else
               "Welcome — let's get into technicals. Walk me through how you would build a DCF for an Indian consumer company.")
@@ -842,11 +884,13 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             "Continue the interview with ONE next question or follow-up.",
             f"ivs-{attempt_id}-{stage}-q{answered + 1}",
             max_tokens=400,
+            _att_id=attempt_id,
         ) or "Interesting. Can you make that concrete — give me a specific example with numbers?"
         turns.append({"role": "interviewer", "content": next_q, "at": _now_iso()})
         st["turns"] = turns
         sd[stage] = st
         _patch_attempt(attempt_id, {"stage_data": sd})
+        _flush_iv_cost(attempt_id, user["id"])   # flush per-turn spend immediately
         return {"round_complete": False, "next_question": next_q,
                 "answered": answered, "num_questions": n_questions}
 
@@ -877,6 +921,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             ),
             f"ivs-{attempt_id}-case",
             max_tokens=1000,
+            _att_id=attempt_id,
         )
         data = _parse_json(raw, {})
         written = max(0.0, min(100.0, float(data.get("written_score", 60) or 60)))

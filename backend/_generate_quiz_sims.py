@@ -376,7 +376,6 @@ async def generate_quiz(session_id: str, title: str, module_title: str) -> list:
             "explanation": q.get("explanation", ""),
             "difficulty": q.get("difficulty", "medium"),
             "order_index": i + 1,
-            "source": "ai_generated_gemini_flash",
         })
     return rows
 
@@ -413,12 +412,35 @@ async def generate_sim(session_id: str, title: str, module_title: str, module_nu
     parsed = json.loads(clean_json(raw))
     config = parsed.get("config", parsed)
     config["generated_at"] = datetime.now(timezone.utc).isoformat()
+
+    # Extract top-level DB columns from config
+    if sim_type == "decision_making":
+        scenario_text    = config.get("scenario_context", "")
+        objectives_list  = [config.get("learning_objective", title)]
+        instructions_txt = (
+            "Walk through each decision point and pick the option that best reflects "
+            "your analytical judgement. Your choices accumulate scores. At the end "
+            "you will receive a performance summary with feedback."
+        )
+    else:  # document / excel
+        doc = config.get("document_data", {})
+        scenario_text    = doc.get("context_note") or config.get("learning_objective", title)
+        objectives_list  = [config.get("learning_objective", title)]
+        instructions_txt = (
+            "Read the document carefully, then answer each analytical task. "
+            "For number tasks enter a value; for text tasks summarise your reasoning. "
+            "Hints are available if you get stuck."
+        )
+
     return {
-        "session_id": session_id,
-        "sim_type": sim_type,
-        "title": parsed.get("title", title[:80]),
-        "difficulty": parsed.get("difficulty", "medium"),
-        "config": config,
+        "session_id":   session_id,
+        "sim_type":     sim_type,
+        "title":        parsed.get("title", title[:80]),
+        "difficulty":   parsed.get("difficulty", "medium"),
+        "scenario":     scenario_text[:500],
+        "instructions": instructions_txt[:500],
+        "objectives":   objectives_list,
+        "config":       config,
     }
 
 

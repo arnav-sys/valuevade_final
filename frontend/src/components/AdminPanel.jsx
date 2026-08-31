@@ -302,15 +302,15 @@ function UsersTab({ onSelect }) {
         <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
           <div className="flex items-center gap-1.5 mb-1">
             <Zap size={12} className="text-amber-400" />
-            <p className="text-[11px] text-amber-400 font-medium uppercase tracking-wide">Total est. LLM cost</p>
+            <p className="text-[11px] text-amber-400 font-medium uppercase tracking-wide">Total LLM cost</p>
           </div>
           <p className="text-2xl font-bold text-amber-400 font-mono" data-testid="llm-total-cost">₹{totalEstCost.toFixed(2)}</p>
-          <p className="text-[10px] text-amber-400/60 mt-0.5">tracked + estimated</p>
+          <p className="text-[10px] text-amber-400/60 mt-0.5">Pari + interviews (exact)</p>
         </div>
         <div className="rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] px-4 py-3">
           <div className="flex items-center gap-1.5 mb-1">
             <Bot size={12} className="text-[var(--color-primary)]" />
-            <p className="text-[11px] text-[var(--color-text-muted)] uppercase tracking-wide">Pari AI (tracked)</p>
+            <p className="text-[11px] text-[var(--color-text-muted)] uppercase tracking-wide">Pari AI spend</p>
           </div>
           <p className="text-2xl font-bold text-[var(--color-text)] font-mono">₹{totalPariCost.toFixed(2)}</p>
           <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">chatbot + plan gen</p>
@@ -321,7 +321,7 @@ function UsersTab({ onSelect }) {
             <p className="text-[11px] text-[var(--color-text-muted)] uppercase tracking-wide">Mock interviews</p>
           </div>
           <p className="text-2xl font-bold text-[var(--color-text)]">{totalInterviews}</p>
-          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">~₹3.40 est. each</p>
+          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">cost tracked exactly now</p>
         </div>
         <div className="rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] px-4 py-3">
           <div className="flex items-center gap-1.5 mb-1">
@@ -384,7 +384,7 @@ function UsersTab({ onSelect }) {
                               <span className="font-mono text-[var(--color-text)]">₹{pariCost.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
-                              <span className="text-[var(--color-text-muted)]">Interviews ({intv}×~₹3.40)</span>
+                              <span className="text-[var(--color-text-muted)]">Interviews ({intv}×)</span>
                               <span className="font-mono text-[var(--color-text)]">₹{intvCost.toFixed(2)}</span>
                             </div>
                             <div className="flex justify-between">
@@ -396,7 +396,7 @@ function UsersTab({ onSelect }) {
                             <span className="text-[var(--color-text-muted)]">Est. total</span>
                             <span className="font-mono text-amber-400">₹{estTotal.toFixed(2)}</span>
                           </div>
-                          <p className="mt-1.5 text-[9px] text-[var(--color-text-muted)] italic">Pari cost is exact. Interview cost is ~₹3.40/attempt estimate.</p>
+                          <p className="mt-1.5 text-[9px] text-[var(--color-text-muted)] italic">Interview costs are tracked exactly from each LLM call.</p>
                         </div>
                       </div>
                     </div>
