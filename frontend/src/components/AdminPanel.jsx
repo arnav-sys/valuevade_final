@@ -9,7 +9,7 @@ import CoursesTab from './admin/CoursesTab';
 import ErrorsTab from './admin/ErrorsTab';
 import MockInterviewsTab from './admin/MockInterviewsTab';
 import FreeTrialsTab from './admin/FreeTrialsTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail, FolderOpen } from 'lucide-react';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail, FolderOpen, Bot, Zap, TrendingUp } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -245,7 +245,7 @@ function UsersTab({ onSelect }) {
   const [err, setErr] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
-  const [confirmDelete, setConfirmDelete] = useState(null); // user object
+  const [confirmDelete, setConfirmDelete] = useState(null);
   const reload = () => authFetch('/api/admin/users').then(setData).catch(e => setErr(e.message));
   useEffect(() => { reload(); }, []);
 
@@ -264,12 +264,21 @@ function UsersTab({ onSelect }) {
 
   if (err) return <div className="text-red-500 p-4">{err}</div>;
   if (!data) return <div className="p-4 text-[var(--color-text-muted)]">Loading…</div>;
+
   const filtered = data.users.filter(u => {
     const q = search.toLowerCase();
     return !q || (u.full_name || '').toLowerCase().includes(q) || (u.email || '').toLowerCase().includes(q);
   });
+
+  // LLM cost summary across all visible users
+  const totalPariCost    = filtered.reduce((s, u) => s + (u.llm_pari_cost_inr || 0), 0);
+  const totalEstCost     = filtered.reduce((s, u) => s + (u.llm_est_total_inr || 0), 0);
+  const totalInterviews  = filtered.reduce((s, u) => s + (u.llm_interview_attempts || 0), 0);
+  const totalCustom      = filtered.reduce((s, u) => s + (u.llm_customize_gens || 0), 0);
+
   return (
     <div>
+      {/* Header row */}
       <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
         <div className="flex items-center gap-3">
           <span className="px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-sm font-medium" data-testid="users-total">
@@ -287,39 +296,130 @@ function UsersTab({ onSelect }) {
           data-testid="users-search"
           className="w-72 px-3 py-2 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] text-sm" />
       </div>
+
+      {/* LLM cost summary cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5" data-testid="llm-cost-summary">
+        <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-4 py-3">
+          <div className="flex items-center gap-1.5 mb-1">
+            <Zap size={12} className="text-amber-400" />
+            <p className="text-[11px] text-amber-400 font-medium uppercase tracking-wide">Total est. LLM cost</p>
+          </div>
+          <p className="text-2xl font-bold text-amber-400 font-mono" data-testid="llm-total-cost">₹{totalEstCost.toFixed(2)}</p>
+          <p className="text-[10px] text-amber-400/60 mt-0.5">tracked + estimated</p>
+        </div>
+        <div className="rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] px-4 py-3">
+          <div className="flex items-center gap-1.5 mb-1">
+            <Bot size={12} className="text-[var(--color-primary)]" />
+            <p className="text-[11px] text-[var(--color-text-muted)] uppercase tracking-wide">Pari AI (tracked)</p>
+          </div>
+          <p className="text-2xl font-bold text-[var(--color-text)] font-mono">₹{totalPariCost.toFixed(2)}</p>
+          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">chatbot + plan gen</p>
+        </div>
+        <div className="rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] px-4 py-3">
+          <div className="flex items-center gap-1.5 mb-1">
+            <TrendingUp size={12} className="text-green-400" />
+            <p className="text-[11px] text-[var(--color-text-muted)] uppercase tracking-wide">Mock interviews</p>
+          </div>
+          <p className="text-2xl font-bold text-[var(--color-text)]">{totalInterviews}</p>
+          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">~₹3.40 est. each</p>
+        </div>
+        <div className="rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] px-4 py-3">
+          <div className="flex items-center gap-1.5 mb-1">
+            <Sparkles size={12} className="text-purple-400" />
+            <p className="text-[11px] text-[var(--color-text-muted)] uppercase tracking-wide">Plan customizations</p>
+          </div>
+          <p className="text-2xl font-bold text-[var(--color-text)]">{totalCustom}</p>
+          <p className="text-[10px] text-[var(--color-text-muted)] mt-0.5">included in Pari cost</p>
+        </div>
+      </div>
+
+      {/* Users table */}
       <div className="overflow-x-auto rounded-xl border border-[var(--color-border)]" data-testid="users-table">
         <table className="w-full text-sm">
           <thead className="bg-[var(--color-bg-card)] text-left text-[var(--color-text-muted)]">
             <tr>
-              <th className="p-3">Name</th><th className="p-3">Email</th><th className="p-3">Country</th>
-              <th className="p-3">Enrolled</th><th className="p-3">Last Active</th><th className="p-3">Active Plan</th><th className="p-3"></th>
+              <th className="p-3 whitespace-nowrap">Name</th>
+              <th className="p-3 whitespace-nowrap">Email</th>
+              <th className="p-3 whitespace-nowrap">Country</th>
+              <th className="p-3 whitespace-nowrap">Enrolled</th>
+              <th className="p-3 whitespace-nowrap">Last Active</th>
+              <th className="p-3 whitespace-nowrap">Plan</th>
+              <th className="p-3 whitespace-nowrap">
+                <span className="flex items-center gap-1"><Zap size={11} className="text-amber-400" />LLM Cost</span>
+              </th>
+              <th className="p-3"></th>
             </tr>
           </thead>
           <tbody>
-            {filtered.map((u) => (
-              <tr key={u.user_id} className="border-t border-[var(--color-border)]">
-                <td className="p-3 font-medium">{u.full_name || '—'}</td>
-                <td className="p-3">{u.email || '—'}</td>
-                <td className="p-3">{u.country_code || '—'}</td>
-                <td className="p-3">{u.enrolled ? fmt(u.enrollment_at) : '—'}</td>
-                <td className="p-3">{fmt(u.last_active)}</td>
-                <td className="p-3">{u.active_plan ? <span className="text-green-500">●</span> : <span className="text-[var(--color-text-muted)]">○</span>}</td>
-                <td className="p-3 flex items-center gap-2">
-                  <button data-testid={`view-progress-${u.user_id}`} onClick={() => onSelect(u)} className="text-[var(--color-primary)] hover:underline">View →</button>
-                  <button
-                    data-testid={`delete-user-${u.user_id}`}
-                    onClick={() => setConfirmDelete(u)}
-                    className="p-1.5 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors"
-                    title="Delete user"
-                  >
-                    <Trash2 size={13} />
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {filtered.map((u) => {
+              const estTotal = u.llm_est_total_inr || 0;
+              const pariCost = u.llm_pari_cost_inr || 0;
+              const intv     = u.llm_interview_attempts || 0;
+              const intvCost = u.llm_est_interview_inr || 0;
+              const custom   = u.llm_customize_gens || 0;
+              return (
+                <tr key={u.user_id} className="border-t border-[var(--color-border)] hover:bg-white/[0.02] transition-colors">
+                  <td className="p-3 font-medium whitespace-nowrap">{u.full_name || '—'}</td>
+                  <td className="p-3 whitespace-nowrap">{u.email || '—'}</td>
+                  <td className="p-3 whitespace-nowrap">{u.country_code || '—'}</td>
+                  <td className="p-3 whitespace-nowrap">{u.enrolled ? fmt(u.enrollment_at) : '—'}</td>
+                  <td className="p-3 whitespace-nowrap">{fmt(u.last_active)}</td>
+                  <td className="p-3">{u.active_plan ? <span className="text-green-500">●</span> : <span className="text-[var(--color-text-muted)]">○</span>}</td>
+
+                  {/* LLM Cost cell with hover breakdown */}
+                  <td className="p-3 whitespace-nowrap" data-testid={`llm-cost-${u.user_id}`}>
+                    <div className="relative group">
+                      <span className={`font-mono text-xs font-semibold cursor-help ${estTotal > 50 ? 'text-red-400' : estTotal > 10 ? 'text-amber-400' : 'text-[var(--color-text-muted)]'}`}>
+                        ₹{estTotal.toFixed(2)}
+                      </span>
+                      {/* Hover breakdown tooltip */}
+                      <div className="pointer-events-none absolute bottom-full left-0 mb-2 w-56 hidden group-hover:block z-20 shadow-2xl">
+                        <div className="rounded-xl bg-[var(--color-bg-card)] border border-[var(--color-border)] p-3 text-xs">
+                          <p className="font-semibold text-[var(--color-text)] mb-2 flex items-center gap-1.5">
+                            <Zap size={11} className="text-amber-400" /> LLM cost breakdown
+                          </p>
+                          <div className="space-y-1.5">
+                            <div className="flex justify-between">
+                              <span className="text-[var(--color-text-muted)]">Pari AI + plan gen</span>
+                              <span className="font-mono text-[var(--color-text)]">₹{pariCost.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-[var(--color-text-muted)]">Interviews ({intv}×~₹3.40)</span>
+                              <span className="font-mono text-[var(--color-text)]">₹{intvCost.toFixed(2)}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-[var(--color-text-muted)]">Plan customizations</span>
+                              <span className="text-[var(--color-text)]">{custom}×</span>
+                            </div>
+                          </div>
+                          <div className="border-t border-[var(--color-border)] mt-2 pt-2 flex justify-between font-semibold">
+                            <span className="text-[var(--color-text-muted)]">Est. total</span>
+                            <span className="font-mono text-amber-400">₹{estTotal.toFixed(2)}</span>
+                          </div>
+                          <p className="mt-1.5 text-[9px] text-[var(--color-text-muted)] italic">Pari cost is exact. Interview cost is ~₹3.40/attempt estimate.</p>
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+
+                  <td className="p-3 flex items-center gap-2 whitespace-nowrap">
+                    <button data-testid={`view-progress-${u.user_id}`} onClick={() => onSelect(u)} className="text-[var(--color-primary)] hover:underline text-xs">View →</button>
+                    <button
+                      data-testid={`delete-user-${u.user_id}`}
+                      onClick={() => setConfirmDelete(u)}
+                      className="p-1.5 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors"
+                      title="Delete user"
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
+
       {showCreate && (
         <CreateUserModal
           onClose={() => setShowCreate(false)}

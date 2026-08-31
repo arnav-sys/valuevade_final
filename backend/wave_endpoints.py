@@ -1019,7 +1019,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     async def admin_users(user=Depends(_get_supabase_user)):
         _ensure_admin(user)
         profiles = _supabase_get(
-            "profiles?select=id,full_name,email,country_code,created_at&order=created_at.desc&limit=2000"
+            "profiles?select=id,full_name,email,country_code,created_at,"
+            "pari_total_cost_inr,customize_generations_count&order=created_at.desc&limit=2000"
         ) or []
         enrollments = _supabase_get(
             "user_enrollments?select=user_id,status,title,master_path_id,enrolled_at&order=enrolled_at.desc&limit=5000"
@@ -1030,6 +1031,26 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         activity = _supabase_get(
             "user_daily_activity?select=user_id,activity_date&order=activity_date.desc&limit=10000"
         ) or []
+        # Interview attempt counts per user (for LLM cost estimation)
+        interview_rows = []
+        try:
+            interview_rows = _supabase_get(
+                "user_interview_attempts?select=user_id&limit=10000"
+            ) or []
+        except Exception:
+            pass
+        interview_count_by_user: dict = {}
+        for row in interview_rows:
+            uid = row.get("user_id")
+            if uid:
+                interview_count_by_user[uid] = interview_count_by_user.get(uid, 0) + 1
+
+        # Per-interview estimated LLM cost (Claude Haiku-heavy + occasional Sonnet)
+        # ~15,000 input tokens + 5,000 output tokens per full attempt at server.py rates
+        _INR_PER_INPUT  = (1.0 / 1_000_000.0) * 85.0
+        _INR_PER_OUTPUT = (5.0 / 1_000_000.0) * 85.0
+        _EST_INTERVIEW_INR = round(15_000 * _INR_PER_INPUT + 5_000 * _INR_PER_OUTPUT, 2)  # ~₹3.40
+
         active_plan_ids = {p["user_id"] for p in plans}
         last_active_by = {}
         for a in activity:
@@ -1044,6 +1065,10 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         for p in profiles:
             uid = p["id"]
             e = enrollment_by_user.get(uid)
+            pari_cost  = round(float(p.get("pari_total_cost_inr") or 0), 2)
+            custom_gen = int(p.get("customize_generations_count") or 0)
+            intv_count = interview_count_by_user.get(uid, 0)
+            est_total  = round(pari_cost + intv_count * _EST_INTERVIEW_INR, 2)
             out.append({
                 "user_id": uid,
                 "full_name": p.get("full_name") or "",
@@ -1056,6 +1081,12 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "course_title": e.get("title") if e else None,
                 "last_active": last_active_by.get(uid),
                 "active_plan": uid in active_plan_ids,
+                # LLM cost fields
+                "llm_pari_cost_inr": pari_cost,
+                "llm_customize_gens": custom_gen,
+                "llm_interview_attempts": intv_count,
+                "llm_est_interview_inr": round(intv_count * _EST_INTERVIEW_INR, 2),
+                "llm_est_total_inr": est_total,
             })
         return {"total": len(out), "users": out}
 
