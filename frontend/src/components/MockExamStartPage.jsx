@@ -5,7 +5,6 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
 import {
   ArrowLeft, ArrowRight, ClipboardList, Clock, Target, AlertCircle,
@@ -26,7 +25,7 @@ async function authedGet(path, accessToken) {
 export default function MockExamStartPage() {
   const { moduleId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { session } = useAuth();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,11 +36,10 @@ export default function MockExamStartPage() {
   useEffect(() => {
     let mounted = true;
     async function load() {
-      if (!user?.id) { if (mounted) setLoading(false); return; }
+      if (!session?.access_token) { if (mounted) setLoading(false); return; }
       setLoading(true); setError(null);
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        const tok = session?.access_token;
+        const tok = session.access_token;
         const [examData, attData] = await Promise.all([
           authedGet(`/api/mock-exams/${moduleId}`, tok),
           authedGet(`/api/mock-exams/${moduleId}/my-attempts`, tok),
@@ -57,12 +55,11 @@ export default function MockExamStartPage() {
     }
     load();
     return () => { mounted = false; };
-  }, [moduleId, user?.id]);
+  }, [moduleId, session?.access_token]);
 
   const startExam = async () => {
     setStarting(true);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
       const r = await fetch(`${API}/api/mock-exams/${moduleId}/start`, {
         method: 'POST',
         headers: {

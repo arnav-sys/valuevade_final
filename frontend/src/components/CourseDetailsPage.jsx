@@ -665,7 +665,7 @@ export default function CourseDetailsPage() {
                 </div>
                 <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-w-3xl">
                   <video
-                    src="https://customer-assets.emergentagent.com/job_excel-rebuild/artifacts/d5e8lw4b_valuevade-reel-16x9.mp4"
+                    src="https://customer-assets-jt897jd0.emergentagent.net/job_50673497-8da2-4d34-a6b4-688f6c716e6f/artifacts/tnoi7437_WhatsApp%20Video%202026-08-28%20at%209.48.34%20PM.mp4"
                     controls
                     preload="metadata"
                     playsInline

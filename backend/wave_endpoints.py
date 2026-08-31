@@ -1275,6 +1275,121 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             "modules_total": len(modules_out),
         }
 
+    @api_router.delete("/admin/users/{user_id}")
+    async def admin_delete_user(user_id: str, user=Depends(_get_supabase_user)):
+        """Hard-delete a user: wipes all their rows from every user_* table
+        then removes the Supabase Auth account. Irreversible."""
+        _ensure_admin(user)
+        if not _SUPABASE_SR:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+
+        import urllib.request as _ur
+        uid_q = _urlparse.quote(user_id)
+
+        # --- Step 0: fetch IDs needed for cascade deletes -----------------
+        enrollments = []
+        plans = []
+        try:
+            enrollments = _supabase_get(
+                f"user_enrollments?user_id=eq.{uid_q}&select=id&limit=200"
+            ) or []
+        except Exception as e:
+            logger.warning("[delete-user] fetch enrollments: %s", e)
+        try:
+            plans = _supabase_get(
+                f"user_study_plans?user_id=eq.{uid_q}&select=id&limit=100"
+            ) or []
+        except Exception as e:
+            logger.warning("[delete-user] fetch plans: %s", e)
+
+        enr_ids_str = ",".join(_urlparse.quote(e["id"]) for e in enrollments) if enrollments else None
+        plan_ids_str = ",".join(_urlparse.quote(p["id"]) for p in plans) if plans else None
+
+        # Fetch user_module ids for session cascade
+        user_mod_ids_str = None
+        if enr_ids_str:
+            try:
+                mods = _supabase_get(
+                    f"user_modules?enrollment_id=in.({enr_ids_str})&select=id&limit=1000"
+                ) or []
+                if mods:
+                    user_mod_ids_str = ",".join(_urlparse.quote(m["id"]) for m in mods)
+            except Exception as e:
+                logger.warning("[delete-user] fetch user_modules: %s", e)
+
+        # --- Step 1: leaf / child tables ----------------------------------
+        leaf_deletes = [
+            # table, filter
+            ("user_study_plan_days", f"plan_id=in.({plan_ids_str})" if plan_ids_str else None),
+            ("user_sessions", f"user_module_id=in.({user_mod_ids_str})" if user_mod_ids_str else None),
+            ("user_mock_exam_attempts", f"user_id=eq.{uid_q}"),
+            ("user_mock_interview_scores", f"user_id=eq.{uid_q}"),
+            ("user_mock_interviews", f"user_id=eq.{uid_q}"),
+            ("user_interview_attempts", f"user_id=eq.{uid_q}"),
+            ("user_reward_claims", f"user_id=eq.{uid_q}"),
+            ("user_capstone_projects", f"user_id=eq.{uid_q}"),
+            ("user_simulation_workbooks", f"user_id=eq.{uid_q}"),
+            ("user_revision_sheets", f"user_id=eq.{uid_q}"),
+            ("user_doubt_sessions", f"user_id=eq.{uid_q}"),
+            ("user_session_doubts", f"user_id=eq.{uid_q}"),
+            ("user_daily_challenges", f"user_id=eq.{uid_q}"),
+            ("user_milestones", f"user_id=eq.{uid_q}"),
+            ("user_badges", f"user_id=eq.{uid_q}"),
+            ("user_xp_events", f"user_id=eq.{uid_q}"),
+            ("user_streak_events", f"user_id=eq.{uid_q}"),
+            ("user_daily_activity", f"user_id=eq.{uid_q}"),
+            ("user_plan_adherence", f"user_id=eq.{uid_q}"),
+            ("user_stats", f"user_id=eq.{uid_q}"),
+            ("user_payment_status", f"user_id=eq.{uid_q}"),
+        ]
+        for tbl, flt in leaf_deletes:
+            if flt is None:
+                continue
+            try:
+                _supabase_delete(f"{tbl}?{flt}")
+            except Exception as e:
+                logger.warning("[delete-user] %s: %s", tbl, e)
+
+        # --- Step 2: parent tables -----------------------------------------
+        parent_deletes = [
+            ("user_modules", f"enrollment_id=in.({enr_ids_str})" if enr_ids_str else None),
+            ("user_study_plans", f"user_id=eq.{uid_q}"),
+            ("user_enrollments", f"user_id=eq.{uid_q}"),
+            ("profiles", f"id=eq.{uid_q}"),
+        ]
+        for tbl, flt in parent_deletes:
+            if flt is None:
+                continue
+            try:
+                _supabase_delete(f"{tbl}?{flt}")
+            except Exception as e:
+                logger.warning("[delete-user] %s: %s", tbl, e)
+
+        # --- Step 3: delete Supabase Auth user ----------------------------
+        auth_delete_url = f"{_SUPABASE_REST_URL}/auth/v1/admin/users/{user_id}"
+        req = _ur.Request(
+            auth_delete_url, method="DELETE",
+            headers={
+                "apikey": _SUPABASE_SR,
+                "Authorization": f"Bearer {_SUPABASE_SR}",
+            },
+        )
+        try:
+            with _ur.urlopen(req, timeout=15):
+                pass
+        except urllib.error.HTTPError as e:
+            body_err = e.read().decode("utf-8", errors="replace")
+            if e.code == 404:
+                pass  # already gone — treat as success
+            else:
+                logger.error("[delete-user] auth delete failed: %s %s", e.code, body_err[:200])
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Data deleted but Supabase auth delete failed: {body_err[:200]}"
+                )
+
+        return {"deleted": True, "user_id": user_id}
+
     # ---------------- ADMIN · SESSION VIDEOS ----------------
     _SUPABASE_REST_URL = (
         os.environ.get("REACT_APP_SUPABASE_URL")

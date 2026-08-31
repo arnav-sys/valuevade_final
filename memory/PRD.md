@@ -1093,3 +1093,20 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 - User asked to confirm the Study Planner ("deadline" / "hours per day" / "hours per week" wizard modes) computes load using ACTUAL video duration and only falls back to 25min per session when no video exists — not a static 25min for every session like the old bug.
 - Checked `_fetch_plan_inventory()` + `_effective_mins()` in server.py (~line 2632): formula is `effective_minutes = round(video_duration_minutes) + 10` when a video duration exists, else `15 + 10 = 25` fallback. This is the SAME formula as `frontend/src/utils/sessionTime.js` (`effectiveMinutes()`) used on the course page, and it reads live `video_duration_minutes` from `master_sessions` — which is now populated for 59 videos via the earlier backfill script.
 - Confirmed live via curl: called `POST /api/study-plan/preview` for testagent2026's active enrollment (154 sessions + 13 projects) → `total_load_minutes=7990`, average ≈47.8 min/item — NOT a flat 25 min/item, confirming real durations are already flowing through the planner. No code change was needed; this was already correct (inherited the video-duration fix from the earlier backfill work).
+
+## Feb 2026 (current) — NISM Mock Exam seeding + Video replacement + Delete User + Reward LinkedIn Message
+
+### Completed
+1. **NISM Mock Exam Questions Seeded**: 100 questions from `mock-exam.md` inserted into `master_mock_exam_questions` table in DB.
+2. **Course Details intro video replaced**: The YouTube iframe was replaced with the user-uploaded MP4 via Emergent Object Storage URL in `CourseDetailsPage.jsx`.
+3. **DB safety fallbacks removed**: Old Python-level try/except fallbacks cleaned up from `wave_endpoints.py` and `guest_session_endpoints.py`.
+4. **Delete User (Admin Panel)**: `DELETE /api/admin/users/{user_id}` endpoint added in `wave_endpoints.py`. Full hard delete — removes all rows from 20+ user_* tables (sessions, modules, enrollments, study plans, reward claims, mock exam attempts, badges, xp events, etc.) then deletes the Supabase Auth account via the Admin API. Frontend: red Trash2 icon added next to each user row in the Admin Panel → Enrolled Users tab. Clicking opens a confirmation modal showing the user's email, irreversible-deletion warning, Cancel and "Delete permanently" buttons.
+5. **Reward LinkedIn Message** (verified end-to-end): The `linkedin_message` field was already fully implemented in both the editor modal and the PATCH backend endpoint. Verified that editing the LinkedIn post text and saving persists correctly to the DB and is re-loaded when re-opening the reward editor.
+- Tested via testing_agent iteration_84.json — 100% pass (5 backend + 5 frontend).
+
+### P1 Upcoming
+- Admin Claims Review: unverified LinkedIn share claims list in admin panel.
+- Welcome Email: Resend email to new signups nudging toward first free session.
+
+### P2 Future
+- Exam Analytics: Admin breakdown of student exam attempts, scores, hardest questions.

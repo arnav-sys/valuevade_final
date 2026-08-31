@@ -13,7 +13,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
 import Sidebar from './Sidebar';
 import {
   Clock, AlertCircle, ChevronLeft, ChevronRight, Flag, Send, Loader2,
@@ -49,7 +48,7 @@ export default function MockExamPage() {
   const { moduleId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, session } = useAuth();
 
   const attemptId = location.state?.attempt_id;
 
@@ -71,12 +70,11 @@ export default function MockExamPage() {
   useEffect(() => {
     let mounted = true;
     async function load() {
-      if (!user?.id) { setLoading(false); return; }
-      if (!attemptId) { navigate(`/module/${moduleId}/mock-exam/start`, { replace: true }); return; }
+      if (!session?.access_token) { setLoading(false); return; }
+      if (!attemptId) { setLoading(false); navigate(`/module/${moduleId}/mock-exam/start`, { replace: true }); return; }
       setLoading(true); setError(null);
       try {
-        const { data: { session } } = await supabase.auth.getSession();
-        const data = await authedGet(`/api/mock-exams/${moduleId}`, session?.access_token);
+        const data = await authedGet(`/api/mock-exams/${moduleId}`, session.access_token);
         if (!mounted) return;
         setExam(data.exam);
         setQuestions(data.questions || []);
@@ -89,7 +87,7 @@ export default function MockExamPage() {
     }
     load();
     return () => { mounted = false; };
-  }, [moduleId, user?.id, attemptId, navigate]);
+  }, [moduleId, session?.access_token, attemptId, navigate]);
 
   // Submit handler (used both manually and by auto-submit)
   const submitExam = useCallback(async (isAuto = false) => {
@@ -99,7 +97,6 @@ export default function MockExamPage() {
     clearInterval(timerRef.current);
     const elapsed = Math.round((Date.now() - startTimeRef.current) / 1000);
     try {
-      const { data: { session } } = await supabase.auth.getSession();
       const answersArr = questions.map((_, i) => answers[i] ?? -1);
       const result = await authedPost(`/api/mock-exams/${moduleId}/submit`, session?.access_token, {
         attempt_id: attemptId,
@@ -112,7 +109,7 @@ export default function MockExamPage() {
       submittingRef.current = false;
       setSubmitting(false);
     }
-  }, [questions, answers, moduleId, attemptId, exam, navigate]);
+  }, [questions, answers, moduleId, attemptId, exam, navigate, session?.access_token]);
 
   // Countdown timer
   useEffect(() => {

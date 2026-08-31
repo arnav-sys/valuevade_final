@@ -244,8 +244,24 @@ function UsersTab({ onSelect }) {
   const [search, setSearch] = useState('');
   const [err, setErr] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(null); // user object
   const reload = () => authFetch('/api/admin/users').then(setData).catch(e => setErr(e.message));
   useEffect(() => { reload(); }, []);
+
+  const handleDeleteUser = async (u) => {
+    setDeletingId(u.user_id);
+    try {
+      await authFetchJson(`/api/admin/users/${u.user_id}`, { method: 'DELETE' });
+      setConfirmDelete(null);
+      reload();
+    } catch (e) {
+      alert(`Delete failed: ${e.message}`);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   if (err) return <div className="text-red-500 p-4">{err}</div>;
   if (!data) return <div className="p-4 text-[var(--color-text-muted)]">Loading…</div>;
   const filtered = data.users.filter(u => {
@@ -288,7 +304,17 @@ function UsersTab({ onSelect }) {
                 <td className="p-3">{u.enrolled ? fmt(u.enrollment_at) : '—'}</td>
                 <td className="p-3">{fmt(u.last_active)}</td>
                 <td className="p-3">{u.active_plan ? <span className="text-green-500">●</span> : <span className="text-[var(--color-text-muted)]">○</span>}</td>
-                <td className="p-3"><button data-testid={`view-progress-${u.user_id}`} onClick={() => onSelect(u)} className="text-[var(--color-primary)] hover:underline">View →</button></td>
+                <td className="p-3 flex items-center gap-2">
+                  <button data-testid={`view-progress-${u.user_id}`} onClick={() => onSelect(u)} className="text-[var(--color-primary)] hover:underline">View →</button>
+                  <button
+                    data-testid={`delete-user-${u.user_id}`}
+                    onClick={() => setConfirmDelete(u)}
+                    className="p-1.5 rounded-lg border border-red-500/40 text-red-400 hover:bg-red-500/10 transition-colors"
+                    title="Delete user"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -299,6 +325,46 @@ function UsersTab({ onSelect }) {
           onClose={() => setShowCreate(false)}
           onCreated={() => { setShowCreate(false); reload(); }}
         />
+      )}
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          data-testid="delete-user-modal"
+          onClick={() => !deletingId && setConfirmDelete(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl bg-[var(--color-bg-card)] border border-red-500/30 p-6 shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-red-500/10 text-red-400"><Trash2 size={20} /></div>
+              <div>
+                <h3 className="text-base font-semibold text-[var(--color-text)]">Delete user?</h3>
+                <p className="text-sm text-[var(--color-text-muted)] mt-1">
+                  This will permanently remove <strong className="text-[var(--color-text)]">{confirmDelete.email}</strong> and all their data — enrollments, progress, exam attempts, payments and reward claims. This cannot be undone.
+                </p>
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setConfirmDelete(null)}
+                disabled={!!deletingId}
+                data-testid="delete-user-cancel"
+                className="px-4 py-2 rounded-lg border border-[var(--color-border)] text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleDeleteUser(confirmDelete)}
+                disabled={!!deletingId}
+                data-testid="delete-user-confirm"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-semibold transition-colors disabled:opacity-50"
+              >
+                {deletingId ? <><Loader2 size={14} className="animate-spin" /> Deleting…</> : <><Trash2 size={14} /> Delete permanently</>}
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
