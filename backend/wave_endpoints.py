@@ -3521,7 +3521,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     # (also `linkedin.com/...` without `www.`)
     _LINKEDIN_POST_RE = _re.compile(
         r"^https?://(?:[a-z]{2,3}\.)?(?:www\.)?linkedin\.com/"
-        r"(?:posts/|feed/update/|pulse/|embed/feed/update/)[^\s]+$",
+        r"(?:posts/|feed/update/|pulse/|embed/feed/update/)[^\s]+$"
+        r"|^https?://(?:www\.)?lnkd\.in/[^\s]+$",
         _re.IGNORECASE,
     )
 

@@ -6,9 +6,10 @@ import { toast } from 'sonner';
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
 // Must match backend regex in wave_endpoints.py (_LINKEDIN_POST_RE).
-// Accepts /posts/, /feed/update/, /pulse/, /embed/feed/update/ on linkedin.com.
+// Accepts /posts/, /feed/update/, /pulse/, /embed/feed/update/ on linkedin.com,
+// plus LinkedIn's own shortened lnkd.in share links.
 const LINKEDIN_POST_RE =
-  /^https?:\/\/(?:[a-z]{2,3}\.)?(?:www\.)?linkedin\.com\/(?:posts\/|feed\/update\/|pulse\/|embed\/feed\/update\/)[^\s]+$/i;
+  /^https?:\/\/(?:[a-z]{2,3}\.)?(?:www\.)?linkedin\.com\/(?:posts\/|feed\/update\/|pulse\/|embed\/feed\/update\/)[^\s]+$|^https?:\/\/(?:www\.)?lnkd\.in\/[^\s]+$/i;
 
 /**
  * RewardCard — shown on ModuleProjectCompletePage + CapstoneCompletePage
