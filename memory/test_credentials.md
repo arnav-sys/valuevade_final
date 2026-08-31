@@ -1,3 +1,15 @@
+## NISM Module Test Account (Aug 31 2026)
+- Email: nism.tester@valuevade.com
+- Password: NismTest#2026
+- Name: NISM Tester
+- State: Modules 1–15 (all sessions + module projects) marked complete,
+  payment status paid=true (upfront). Module 16 "NISM Series XV — Research
+  Analyst Certification" is unlocked and untouched — "Continue Learning"
+  goes straight to it, so you can test its 15 sessions + the mock exam
+  (module_id 5a6dd7bb-7b0a-42c6-9316-d5c7f27e1b8a, exam_id
+  341cf8eb-d882-4989-b709-a2d4322c4bc4) without doing the rest of the course.
+  Modules 17–22 remain locked (normal sequential unlock).
+
 ## Fresh signup test user (Aug 30 2026 — payment flow manual check)
 - Email: vvtest673479@example.com
 - Password: TestPass123!
