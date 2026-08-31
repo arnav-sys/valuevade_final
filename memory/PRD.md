@@ -192,6 +192,25 @@ Follow-up to the 4-prompt SEO/GEO rebuild, closing out the P0/P1/P2 backlog item
 - **P2 — ALL-CAPS module titles normalized in Supabase `master_modules`**: One-off idempotent migration script `/app/backend/_normalize_module_titles.py` PATCHes 7 modules (M3, M7, M8, M9, M10, M11, M20) from ALL-CAPS to Title Case, matching the casing convention of the other 14 modules. Script only updates rows whose current title exactly matches the old ALL-CAPS value, so re-running is safe. Verified in Supabase + on the live syllabus screenshot.
 
 
+## Aug 31 2026 (2) — Resend domain verified, receipts now live for all students
+
+User verified `valuevade.com` on Resend (added DNS records) and connected
+Supabase Auth's SMTP to Resend as well. Confirmed via direct test sends that
+`noreply@`, `receipts@`, and `hello@valuevade.com` are all now valid senders
+(previously sandbox-restricted to only `info@valuevade.com`). Updated
+`backend/.env` `SENDER_EMAIL` from `onboarding@resend.dev` to
+`receipts@valuevade.com`. Sent a real end-to-end test through the actual
+`_receipt_email_html()` production template — delivered successfully.
+Payment receipt emails (wired up earlier this session in
+`payment_endpoints.py`, gated on `RESEND_API_KEY`) are now fully live for
+any real paying student, not just the Resend account owner.
+
+Also triggered a Supabase `auth/v1/recover` (password reset) call to
+smoke-test the user's new Supabase→Resend SMTP connection — got a 200 OK,
+but Supabase's recover endpoint always returns 200 regardless of actual
+delivery success (anti-enumeration design), so this does NOT conclusively
+prove the auth email arrived — user should check their inbox to confirm.
+
 ## Aug 31 2026 — LinkedIn shortened lnkd.in URL rejected by validation regex
 
 **Bug**: A student who copied LinkedIn's own shortened share link
