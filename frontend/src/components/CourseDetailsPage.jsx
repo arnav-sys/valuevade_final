@@ -654,28 +654,6 @@ export default function CourseDetailsPage() {
                 </ul>
               </section>
 
-              {/* Intro reel — premium video preview of the programme.
-                  Placed AFTER 'What You'll Learn' so users have context before pressing play. */}
-              <section className="mb-12" data-testid="detail-intro-video-section">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-6 h-6 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
-                    <PlayCircle size={12} className="text-[var(--color-primary)]" />
-                  </div>
-                  <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Watch the intro</p>
-                </div>
-                <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] bg-black shadow-[0_20px_60px_rgba(0,0,0,0.35)] max-w-3xl">
-                  <video
-                    src="https://customer-assets-jt897jd0.emergentagent.net/job_50673497-8da2-4d34-a6b4-688f6c716e6f/artifacts/tnoi7437_WhatsApp%20Video%202026-08-28%20at%209.48.34%20PM.mp4"
-                    controls
-                    preload="metadata"
-                    playsInline
-                    className="w-full h-auto aspect-video bg-black"
-                    data-testid="detail-intro-video"
-                  >
-                    <track kind="captions" />
-                  </video>
-                </div>
-              </section>
 
               {/* Full syllabus — module by module (Prompt 3 task 6).
                   Data-driven from master_modules; capstones appended below
