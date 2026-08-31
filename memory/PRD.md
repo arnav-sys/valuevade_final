@@ -1110,3 +1110,36 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 
 ### P2 Future
 - Exam Analytics: Admin breakdown of student exam attempts, scores, hardest questions.
+
+## Feb 2026 — Security Audit Fixes
+
+### Audit Result: FAIL → FIXED (all P1/P2/P3 resolved)
+
+| ID | Severity | Issue | Fix |
+|----|----------|-------|-----|
+| SEC-001 | P1 | Webhook accepted unsigned events (RAZORPAY_WEBHOOK_SECRET unset) | Hard 503 reject if secret unset; const-time HMAC verify |
+| SEC-002 | P1 | Trial provision self-granted paid access to any user | Ownership check: trial must exist in DB AND email must match caller |
+| SEC-003 | P2 | /health/* endpoints exposed XP/streaks/badges without auth | Added `get_supabase_user` Depends + `_caller_may_read_user()` guard |
+| SEC-004 | P2 | Guest interview/TTS had no rate limit — LLM key abuse | 40-call-per-trial-id rate limit in `_check_guest_rate_limit()` |
+| P3-a | P3 | Trial PATCH endpoint unauthenticated | Ownership check added (trial must exist) |
+| P3-b | P3 | Admin allowlist had stale `admin@valuevade.com` | Removed; only `info@valuevade.com` now |
+| P3-c | P3 | Legacy /admin/login used string == (timing attack) + no rate limit | `hmac.compare_digest` + 10-attempt/5min IP rate limit |
+| P3-d | P3 | CORS `*` | Pinned to `https://mock-exam-mvp.preview.emergentagent.com` |
+| P3-e | P3 | `_iv_cost_buf` dict unbounded | Evicts oldest entries when > 500 keys |
+
+### Remaining minor notes
+- SEC-002: Supabase raw UUID parse error leaks DB type when trial_id is non-UUID format (minor info disclosure, low risk)
+- RAZORPAY_WEBHOOK_SECRET: Must be set in backend/.env from Razorpay Dashboard → Webhooks for live payments to complete
+
+## Feb 2026 — Code Review Fixes (post Security Audit)
+
+### Code Review Verdict: READY WITH FIXES → FIXED
+
+| ID | Severity | Issue | Fix Applied |
+|----|----------|-------|------------|
+| CR-001 | MEDIUM | Trial PATCH ownership check was a no-op — body email never validated against DB row | Requires caller email to match trial record; 403 on mismatch |
+| CR-002 | MEDIUM | Blind SSRF in LinkedIn reward verification via lnkd.in redirects | Custom SafeRH redirect handler validates every redirect stays on linkedin.com/lnkd.in only |
+| CR-003 | LOW | Guest LLM rate limit was per trial_id only — rotating IDs gave fresh 40-call budget | Added IP-hash counter (120-call cap); all 6 LLM endpoints pass hashed IP to rate limiter |
+| CR-004 | LOW | Interview final-report used Haiku INR rates for Sonnet call — undercounted admin LLM spend | Added Sonnet pricing constants; _llm() accepts _cost_in/_cost_out overrides |
+| CR-005 | LOW | admin_delete_user left razorpay_orders + razorpay_payments rows orphaned | Both tables added to leaf_deletes in the cascade sequence |
+| CR-006 | LOW | CORS_ORIGINS defaulted silently to * | Added logger.warning() when env var is unset |

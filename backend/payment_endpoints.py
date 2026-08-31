@@ -523,12 +523,17 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
         signature = request.headers.get("x-razorpay-signature", "")
         secret = (os.environ.get("RAZORPAY_WEBHOOK_SECRET") or "").strip()
         if not secret:
-            # In mock mode we accept anything (for testing) but still log.
-            logger.info("[payments] webhook hit while RAZORPAY_WEBHOOK_SECRET unset")
-        else:
-            expected = hmac.new(secret.encode("utf-8"), body, hashlib.sha256).hexdigest()
-            if not hmac.compare_digest(expected, signature):
-                raise HTTPException(status_code=400, detail="bad signature")
+            # Hard reject — never process unsigned webhook events in production.
+            # Set RAZORPAY_WEBHOOK_SECRET in backend/.env (Razorpay Dashboard → Webhooks).
+            logger.critical(
+                "[payments] RAZORPAY_WEBHOOK_SECRET is unset — rejecting webhook to prevent "
+                "unauthenticated payment confirmation. Set the secret to enable webhooks."
+            )
+            raise HTTPException(status_code=503, detail="Webhook not configured on this server")
+        expected = hmac.new(secret.encode("utf-8"), body, hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(expected, signature):
+            logger.warning("[payments] webhook signature mismatch — rejected")
+            raise HTTPException(status_code=400, detail="bad signature")
         try:
             evt = _json.loads(body.decode("utf-8"))
         except Exception:

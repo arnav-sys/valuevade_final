@@ -32,7 +32,7 @@ _supabase_patch = None
 _supabase_delete = None
 _get_supabase_user = None
 _EMERGENT_LLM_KEY = None
-ADMIN_ALLOWED_EMAILS = {"info@valuevade.com", "admin@valuevade.com"}
+ADMIN_ALLOWED_EMAILS = {"info@valuevade.com"}
 
 
 class _AdminCreateUserBody(BaseModel):
@@ -1372,6 +1372,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             ("user_plan_adherence", f"user_id=eq.{uid_q}"),
             ("user_stats", f"user_id=eq.{uid_q}"),
             ("user_payment_status", f"user_id=eq.{uid_q}"),
+            ("razorpay_payments", f"user_id=eq.{uid_q}"),
+            ("razorpay_orders", f"user_id=eq.{uid_q}"),
         ]
         for tbl, flt in leaf_deletes:
             if flt is None:
@@ -3719,9 +3721,39 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         "facebookexternalhit/1.1"
     )
 
+    # Hosts considered "trusted" for both initial URL and redirect destinations.
+    # Anything outside this set is blocked to prevent SSRF via lnkd.in redirects.
+    _LINKEDIN_SAFE_HOSTS = frozenset(
+        {"linkedin.com", "www.linkedin.com", "lnkd.in", "www.lnkd.in"}
+    )
+
+    def _is_safe_redirect_host(host: str) -> bool:
+        """Return True only if the hostname is a known-safe LinkedIn domain."""
+        h = (host or "").lower().split(":")[0]
+        return h in _LINKEDIN_SAFE_HOSTS
+
     def _verify_linkedin_post_content(url: str, expected_keywords: list) -> dict:
+        import urllib.request as _ureq
+        import urllib.parse as _upl
         try:
-            import urllib.request as _ureq
+            # Validate the initial URL host before connecting.
+            initial_host = (_upl.urlparse(url).hostname or "").lower()
+            if not _is_safe_redirect_host(initial_host):
+                logger.warning("[rewards] blocked unsafe initial host: %s", url[:100])
+                return {"verified": False, "reason": "unreachable"}
+
+            # Custom redirect handler: only follow redirects that stay on
+            # known LinkedIn domains to prevent SSRF via lnkd.in shortlinks.
+            class _SafeRH(_ureq.HTTPRedirectHandler):
+                def redirect_request(self, req, fp, code, msg, headers, newurl):
+                    dest_host = (_upl.urlparse(newurl).hostname or "").lower()
+                    if not _is_safe_redirect_host(dest_host):
+                        raise ValueError(
+                            f"[rewards] blocked redirect to unsafe host: {newurl[:100]}"
+                        )
+                    return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+            opener = _ureq.build_opener(_SafeRH())
             req = _ureq.Request(
                 url,
                 headers={
@@ -3730,7 +3762,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                     "Accept-Language": "en-US,en;q=0.9",
                 },
             )
-            with _ureq.urlopen(req, timeout=6) as resp:
+            with opener.open(req, timeout=6) as resp:
                 # LinkedIn public posts serve the OG bundle to bots (~30-80KB).
                 # Guard against a runaway response.
                 raw = resp.read(300_000)

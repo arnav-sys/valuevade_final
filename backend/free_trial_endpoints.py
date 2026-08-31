@@ -191,6 +191,23 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
         account so the interview hub is unlocked: (a) M20-only user_modules,
         (b) all M20 sessions marked complete, (c) paid status."""
         uid = user["id"]
+
+        # ── Ownership check: the trial_id MUST exist and belong to this caller ──
+        trial_rows = _sb_get(
+            f"free_mock_trials?id=eq.{_urlparse.quote(trial_id)}&select=id,email,status&limit=1"
+        ) or []
+        if not trial_rows:
+            raise HTTPException(status_code=404, detail="Trial not found")
+        trial = trial_rows[0]
+        caller_email = (user.get("email") or "").lower().strip()
+        trial_email  = (trial.get("email") or "").lower().strip()
+        if caller_email != trial_email:
+            logger.warning(
+                "[free-trial] provision denied: caller=%s trial_email=%s trial_id=%s",
+                caller_email, trial_email, trial_id,
+            )
+            raise HTTPException(status_code=403, detail="Trial does not belong to this account")
+
         M20 = "755956dd-51e8-47b9-8e22-fbbed253127a"
 
         # payment_status → paid (best-effort)
@@ -256,11 +273,32 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
         return {"ok": True, "enrollment_id": enr_id, "user_module_id": um_id}
 
     @api_router.patch("/free-trial/{trial_id}")
-    async def free_trial_update(trial_id: str, body: dict):
-        """Guest endpoint: update trial state (called from the trial player)."""
+    async def free_trial_update(trial_id: str, body: dict, request: Request):
+        """Guest endpoint: update trial state (called from the trial player).
+        Ownership is verified by requiring the caller to provide their email
+        (recorded at trial creation) in the request body.
+        """
         b = body or {}
+
+        # Fetch the trial row
+        trial_rows = _sb_get(
+            f"free_mock_trials?id=eq.{_urlparse.quote(trial_id)}&select=id,email,status&limit=1"
+        ) or []
+        if not trial_rows:
+            raise HTTPException(status_code=404, detail="Trial not found")
+
+        # Ownership check: caller must supply the email used to start the trial.
+        caller_email = (b.get("email") or "").strip().lower()
+        stored_email = (trial_rows[0].get("email") or "").strip().lower()
+        if not caller_email or caller_email != stored_email:
+            raise HTTPException(
+                status_code=403,
+                detail="Trial ownership verification failed. Provide the email used to start this trial.",
+            )
+
         patch: dict = {}
-        for k in ("status", "verdict", "final_score", "stage_data", "attempt_id"):
+        allowed_keys = {"status", "verdict", "final_score", "stage_data", "attempt_id"}
+        for k in allowed_keys:
             if k in b:
                 patch[k] = b[k]
         if b.get("status") == "completed":

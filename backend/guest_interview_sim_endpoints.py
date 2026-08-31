@@ -76,6 +76,54 @@ def _valid_trial_id(trial_id: str) -> bool:
     return bool(_re.fullmatch(r"[A-Za-z0-9@._+\-]{3,200}", trial_id))
 
 
+# Per-trial-id LLM call counter: {trial_id: call_count}
+# Resets on process restart; prevents bot-looping a single trial_id.
+_TRIAL_LLM_CALL_COUNT: dict = {}
+_TRIAL_LLM_CALL_LIMIT = 40   # max LLM calls per trial_id per server lifetime
+
+# Per-IP-hash LLM call counter: {ip_hash: call_count}
+# Prevents rotating trial IDs from bypassing the per-trial cap.
+_IP_LLM_CALL_COUNT: dict = {}
+_IP_LLM_CALL_LIMIT = 120   # max LLM calls per unique IP per server lifetime
+
+
+def _client_ip_hash(request: Request) -> str:
+    """Return a short sha256 hash of the caller's IP address."""
+    xff = (request.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+    ip = xff or (request.client.host if request.client else "") or ""
+    return _hashlib.sha256(ip.encode()).hexdigest()[:16] if ip else ""
+
+
+def _check_guest_rate_limit(trial_id: str, ip_hash: str = "") -> None:
+    """Raise 429 if this trial_id OR originating IP has exceeded the LLM call cap."""
+    # Check per-trial cap
+    count = _TRIAL_LLM_CALL_COUNT.get(trial_id, 0)
+    if count >= _TRIAL_LLM_CALL_LIMIT:
+        raise HTTPException(
+            status_code=429,
+            detail="Trial LLM usage limit reached. Please register for full access.",
+        )
+    # Check per-IP cap (non-empty ip_hash only)
+    if ip_hash:
+        ip_count = _IP_LLM_CALL_COUNT.get(ip_hash, 0)
+        if ip_count >= _IP_LLM_CALL_LIMIT:
+            raise HTTPException(
+                status_code=429,
+                detail="Trial LLM usage limit reached. Please register for full access.",
+            )
+        _IP_LLM_CALL_COUNT[ip_hash] = ip_count + 1
+    _TRIAL_LLM_CALL_COUNT[trial_id] = count + 1
+    # Safety caps: trim dicts when they grow too large
+    if len(_TRIAL_LLM_CALL_COUNT) > 2000:
+        oldest = list(_TRIAL_LLM_CALL_COUNT.keys())[:500]
+        for k in oldest:
+            _TRIAL_LLM_CALL_COUNT.pop(k, None)
+    if len(_IP_LLM_CALL_COUNT) > 1000:
+        oldest = list(_IP_LLM_CALL_COUNT.keys())[:300]
+        for k in oldest:
+            _IP_LLM_CALL_COUNT.pop(k, None)
+
+
 def _get_jpm_sim() -> dict:
     rows = _sb_get(
         f"master_interview_sims?firm_slug=eq.{FREE_TRIAL_SLUG}&is_active=eq.true&select=*&limit=1"
@@ -127,9 +175,10 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
 
     # ---------------------------------------------------------- application
     @api_router.post("/guest-sim/{trial_id}/application")
-    async def guest_application(trial_id: str, body: dict):
+    async def guest_application(trial_id: str, body: dict, request: Request):
         if not _valid_trial_id(trial_id):
             raise HTTPException(status_code=400, detail="invalid trial id")
+        _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         sim = _get_jpm_sim()
         responses = (body or {}).get("responses") or {}
         required = ["why_firm", "why_er", "achievement"]
@@ -218,9 +267,10 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         }
 
     @api_router.post("/guest-sim/{trial_id}/aptitude/submit")
-    async def guest_aptitude_submit(trial_id: str, body: dict):
+    async def guest_aptitude_submit(trial_id: str, body: dict, request: Request):
         if not _valid_trial_id(trial_id):
             raise HTTPException(status_code=400, detail="invalid trial id")
+        _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         entry = _APT_CACHE.get(trial_id)
         if not entry or not entry.get("questions"):
             raise HTTPException(status_code=409, detail="test not started or expired — please restart")
@@ -293,9 +343,10 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         )
 
     @api_router.post("/guest-sim/{trial_id}/interview/begin")
-    async def guest_interview_begin(trial_id: str, body: dict):
+    async def guest_interview_begin(trial_id: str, body: dict, request: Request):
         if not _valid_trial_id(trial_id):
             raise HTTPException(status_code=400, detail="invalid trial id")
+        _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         stage = (body or {}).get("stage")
         if stage not in ("behavioural", "technical"):
             raise HTTPException(status_code=400, detail="stage must be behavioural or technical")
@@ -313,9 +364,10 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         return {"turns": [{"role": "interviewer", "content": first, "at": _now()}], "num_questions": num_q}
 
     @api_router.post("/guest-sim/{trial_id}/interview/answer")
-    async def guest_interview_answer(trial_id: str, body: dict):
+    async def guest_interview_answer(trial_id: str, body: dict, request: Request):
         if not _valid_trial_id(trial_id):
             raise HTTPException(status_code=400, detail="invalid trial id")
+        _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         b = body or {}
         stage = b.get("stage")
         if stage not in ("behavioural", "technical"):
@@ -379,9 +431,10 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
 
     # ------------------------------------------------------------ case study
     @api_router.post("/guest-sim/{trial_id}/case/submit")
-    async def guest_case_submit(trial_id: str, body: dict):
+    async def guest_case_submit(trial_id: str, body: dict, request: Request):
         if not _valid_trial_id(trial_id):
             raise HTTPException(status_code=400, detail="invalid trial id")
+        _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         b = body or {}
         sim = _get_jpm_sim()
         recommendation = str(b.get("recommendation") or "").strip()
@@ -489,9 +542,10 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
 
     # -------------------------------------------------------------------- TTS
     @api_router.post("/guest-sim/{trial_id}/tts")
-    async def guest_tts(trial_id: str, body: dict):
+    async def guest_tts(trial_id: str, body: dict, request: Request):
         if not _valid_trial_id(trial_id):
             raise HTTPException(status_code=400, detail="invalid trial id")
+        _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         text = str((body or {}).get("text") or "").strip()
         if not text:
             raise HTTPException(status_code=400, detail="text is required")

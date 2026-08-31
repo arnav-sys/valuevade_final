@@ -43,6 +43,10 @@ _bump_iv_cost_fn = None          # injected via register()
 _INR_PER_IN_IV  = (1.0 / 1_000_000.0) * 85.0   # ≈ Claude Haiku input rate
 _INR_PER_OUT_IV = (5.0 / 1_000_000.0) * 85.0   # ≈ Claude Haiku output rate
 
+# Sonnet is ~3× more expensive — used only for the final decision report.
+_INR_PER_IN_SONNET  = (3.0 / 1_000_000.0) * 85.0   # ≈ Claude Sonnet input rate
+_INR_PER_OUT_SONNET = (15.0 / 1_000_000.0) * 85.0  # ≈ Claude Sonnet output rate
+
 
 def _iv_tok(text: str) -> int:
     """Approximate token count from text length (same formula as server.py)."""
@@ -59,6 +63,11 @@ def _flush_iv_cost(att_id: str, user_id: str) -> None:
             _bump_iv_cost_fn(user_id, round(cost, 6))
         except Exception as e:
             logger.warning("[interview-sim] cost flush failed: %s", e)
+    # Safety cap: evict oldest entries if buffer grows unexpectedly large
+    if len(_iv_cost_buf) > 500:
+        oldest = list(_iv_cost_buf.keys())[:200]
+        for k in oldest:
+            _iv_cost_buf.pop(k, None)
 
 
 def _ensure_admin(user: dict):
@@ -80,7 +89,8 @@ def _now_iso() -> str:
 
 
 async def _llm(system: str, text: str, tag: str, model=HAIKU, max_tokens: int = 900,
-               _att_id: str = "") -> str:
+               _att_id: str = "",
+               _cost_in: float = 0.0, _cost_out: float = 0.0) -> str:
     if not _EMERGENT_LLM_KEY:
         return ""
     from emergentintegrations.llm.chat import LlmChat, UserMessage
@@ -95,7 +105,10 @@ async def _llm(system: str, text: str, tag: str, model=HAIKU, max_tokens: int = 
         if _att_id:
             in_tok  = _iv_tok(system + text)
             out_tok = _iv_tok(text_out)
-            cost = in_tok * _INR_PER_IN_IV + out_tok * _INR_PER_OUT_IV
+            # Use caller-supplied rates if provided; fall back to Haiku defaults.
+            rate_in  = _cost_in  if _cost_in  > 0 else _INR_PER_IN_IV
+            rate_out = _cost_out if _cost_out > 0 else _INR_PER_OUT_IV
+            cost = in_tok * rate_in + out_tok * rate_out
             _iv_cost_buf[_att_id] = _iv_cost_buf.get(_att_id, 0.0) + cost
         return text_out
     except Exception as e:
@@ -472,6 +485,8 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
         model=SONNET,
         max_tokens=1800,
         _att_id=att["id"],
+        _cost_in=_INR_PER_IN_SONNET,
+        _cost_out=_INR_PER_OUT_SONNET,
     )
     data = _parse_json(raw, {})
     letter_md = data.get("letter_md") or (

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Header
+from fastapi import FastAPI, APIRouter, HTTPException, Depends, UploadFile, File, Form, Header, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
@@ -12,9 +12,14 @@ import uuid
 import re
 import string
 import hashlib
+import hmac
+import time
 import jwt
 from datetime import datetime, timezone, timedelta
 import random
+
+# In-memory brute-force guard for legacy /admin/login
+_login_attempts: dict[str, list] = {}
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -246,6 +251,20 @@ def get_supabase_user(authorization: Optional[str] = Header(None)) -> dict:
     return user
 
 
+# Admin emails that may query any user's diagnostic data
+_ADMIN_EMAILS_SERVER: frozenset = frozenset(filter(None, [
+    (os.environ.get("ADMIN_EMAIL") or "").lower(),
+    "info@valuevade.com",
+]))
+
+
+def _caller_may_read_user(caller: dict, target_user_id: str) -> bool:
+    """True if caller is an admin OR is querying their own user_id."""
+    if caller.get("id") == target_user_id:
+        return True
+    return (caller.get("email") or "").lower() in _ADMIN_EMAILS_SERVER
+
+
 # ──────────────────────────────────────────────────────────────────────
 # Per-user LLM limits (Feb 2026)
 #
@@ -362,7 +381,9 @@ async def pari_status(supa_user: dict = Depends(get_supabase_user)):
 
 
 @api_router.get("/health/xp")
-async def health_xp(user_id: str):
+async def health_xp(user_id: str, caller: dict = Depends(get_supabase_user)):
+    if not _caller_may_read_user(caller, user_id):
+        raise HTTPException(status_code=403, detail="Cannot read another user's data")
     """Return the XP state for the given user_id and report whether the
     derived numbers (level, summed ledger XP) match user_stats."""
     try:
@@ -418,7 +439,9 @@ def _ledger_breakdown(events):
 
 
 @api_router.get("/health/streak")
-async def health_streak(user_id: str):
+async def health_streak(user_id: str, caller: dict = Depends(get_supabase_user)):
+    if not _caller_may_read_user(caller, user_id):
+        raise HTTPException(status_code=403, detail="Cannot read another user's data")
     """Return the streak state for the given user_id and the last 5 streak events.
     Read-only; uses service-role to bypass RLS so the tester can verify state."""
     try:
@@ -451,7 +474,9 @@ async def health_streak(user_id: str):
 
 
 @api_router.get("/health/badges")
-async def health_badges(user_id: str):
+async def health_badges(user_id: str, caller: dict = Depends(get_supabase_user)):
+    if not _caller_may_read_user(caller, user_id):
+        raise HTTPException(status_code=403, detail="Cannot read another user's data")
     """Return badge engine state for the given user_id.
     Includes: total master badges, unlocked count by rarity/category, near-miss
     candidates (progress >= 50%), p3_catchup_done flag, and the 10 most-recently
@@ -529,7 +554,9 @@ async def health_badges(user_id: str):
 
 
 @api_router.get("/health/challenges")
-async def health_challenges(user_id: str):
+async def health_challenges(user_id: str, caller: dict = Depends(get_supabase_user)):
+    if not _caller_may_read_user(caller, user_id):
+        raise HTTPException(status_code=403, detail="Cannot read another user's data")
     """Return today's daily-challenge state for the given user_id (Asia/Kolkata
     date), plus the all-time count of IST days where all 3 challenges were
     completed (daily_champion_streak). Read-only via service-role."""
@@ -629,7 +656,9 @@ async def health_challenges(user_id: str):
 
 
 @api_router.get("/health/journey")
-async def health_journey(user_id: str):
+async def health_journey(user_id: str, caller: dict = Depends(get_supabase_user)):
+    if not _caller_may_read_user(caller, user_id):
+        raise HTTPException(status_code=403, detail="Cannot read another user's data")
     """Return the user's full learning-journey snapshot for the
     ModuleConstellationMap + ActivityHeatmap + next-milestone widgets.
     Service-role-backed read."""
@@ -1264,7 +1293,9 @@ async def doubts_end(req: DoubtsEndReq, supa_user: dict = Depends(get_supabase_u
 
 
 @api_router.get("/health/doubts")
-async def health_doubts(user_id: str):
+async def health_doubts(user_id: str, caller: dict = Depends(get_supabase_user)):
+    if not _caller_may_read_user(caller, user_id):
+        raise HTTPException(status_code=403, detail="Cannot read another user's data")
     """Service-role read of the doubts state for a given user_id + aggregate
     cost counters. Used by ops + the QA tester."""
     try:
@@ -3988,8 +4019,19 @@ async def study_plan_rebalance(
 
 
 @api_router.post("/admin/login")
-async def admin_login(creds: AdminLogin):
-    if creds.email == ADMIN_EMAIL and creds.password == ADMIN_PASSWORD:
+async def admin_login(creds: AdminLogin, request: Request):
+    client_ip = request.client.host if request.client else "unknown"
+    # Simple in-memory brute-force guard (resets on process restart; good enough for legacy endpoint)
+    _key = f"admin_login:{client_ip}"
+    now = time.time()
+    _login_attempts[_key] = [t for t in _login_attempts.get(_key, []) if now - t < 300]
+    if len(_login_attempts.get(_key, [])) >= 10:
+        raise HTTPException(status_code=429, detail="Too many login attempts — try again later")
+    _login_attempts.setdefault(_key, []).append(now)
+    email_ok    = hmac.compare_digest((creds.email or ""), (ADMIN_EMAIL or ""))
+    password_ok = hmac.compare_digest((creds.password or ""), (ADMIN_PASSWORD or ""))
+    if email_ok and password_ok:
+        _login_attempts.pop(_key, None)   # reset on success
         token = create_token(creds.email)
         return {"token": token}
     raise HTTPException(status_code=401, detail="Invalid credentials")
@@ -5165,6 +5207,12 @@ app.include_router(api_router)
 _cors_origins_env = (os.environ.get('CORS_ORIGINS') or '*').strip()
 _cors_origins = [o.strip() for o in _cors_origins_env.split(',') if o.strip()] or ['*']
 _cors_allow_credentials = '*' not in _cors_origins
+if '*' in _cors_origins:
+    import logging as _cors_log
+    _cors_log.getLogger(__name__).warning(
+        "CORS_ORIGINS not set — defaulting to '*' (allow all origins). "
+        "Set CORS_ORIGINS in backend/.env for production."
+    )
 
 app.add_middleware(
     CORSMiddleware,
