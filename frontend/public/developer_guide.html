@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Valuevade — Developer Guide & Codebase Documentation</title>
+<style>
+  /* ─── Base ─────────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink:       #0f172a;
+    --ink-soft:  #475569;
+    --ink-faint: #94a3b8;
+    --bg:        #ffffff;
+    --bg-alt:    #f8fafc;
+    --border:    #e2e8f0;
+    --accent:    #1d4ed8;
+    --accent2:   #7c3aed;
+    --green:     #16a34a;
+    --red:       #dc2626;
+    --amber:     #d97706;
+    --tag-bg:    #eff6ff;
+    --tag-fg:    #1d4ed8;
+    --code-bg:   #1e293b;
+    --code-fg:   #e2e8f0;
+  }
+  html { font-size: 14px; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    color: var(--ink);
+    background: var(--bg);
+    line-height: 1.75;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 48px 40px;
+  }
+
+  /* ─── Typography ────────────────────────────────────────────── */
+  h1 { font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 0.25em; line-height: 1.2; }
+  h2 {
+    font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em;
+    margin: 3rem 0 0.75rem; padding-bottom: 0.4rem;
+    border-bottom: 2.5px solid var(--ink);
+  }
+  h3 {
+    font-size: 1.15rem; font-weight: 700; margin: 2rem 0 0.4rem;
+    color: var(--accent);
+  }
+  h4 {
+    font-size: 0.95rem; font-weight: 700; margin: 1.5rem 0 0.25rem;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft);
+  }
+  p { margin-bottom: 0.9rem; }
+  a { color: var(--accent); text-decoration: underline; }
+  strong { font-weight: 700; }
+  em { font-style: italic; }
+
+  /* ─── Code ──────────────────────────────────────────────────── */
+  code {
+    font-family: 'Menlo', 'Consolas', 'Courier New', monospace;
+    font-size: 0.82em;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.05em 0.35em;
+    color: var(--accent2);
+  }
+  pre {
+    font-family: 'Menlo', 'Consolas', 'Courier New', monospace;
+    font-size: 0.82em;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border-radius: 6px;
+    padding: 1.1em 1.4em;
+    overflow-x: auto;
+    margin: 1em 0 1.4em;
+    line-height: 1.6;
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; font-size: 1em; }
+
+  /* ─── Tables ─────────────────────────────────────────────────── */
+  table {
+    width: 100%; border-collapse: collapse; margin: 1em 0 1.6em;
+    font-family: 'Menlo', 'Consolas', monospace; font-size: 0.82em;
+  }
+  th {
+    background: var(--ink); color: #fff;
+    padding: 0.55em 0.8em; text-align: left;
+    font-weight: 600; letter-spacing: 0.04em;
+  }
+  td { padding: 0.45em 0.8em; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:nth-child(even) td { background: var(--bg-alt); }
+  td code { background: none; border: none; padding: 0; font-size: 1em; color: var(--accent2); }
+
+  /* ─── Callouts ───────────────────────────────────────────────── */
+  .note, .warn, .tip, .danger {
+    border-left: 4px solid;
+    padding: 0.75em 1em;
+    margin: 1em 0 1.4em;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.9em;
+  }
+  .note   { border-color: var(--accent);  background: #eff6ff; }
+  .tip    { border-color: var(--green);   background: #f0fdf4; }
+  .warn   { border-color: var(--amber);   background: #fffbeb; }
+  .danger { border-color: var(--red);     background: #fef2f2; }
+  .note strong, .tip strong, .warn strong, .danger strong { display: block; margin-bottom: 0.2em; }
+
+  /* ─── Badges ─────────────────────────────────────────────────── */
+  .badge {
+    display: inline-block; padding: 0.15em 0.5em;
+    border-radius: 999px; font-size: 0.72em; font-weight: 700;
+    font-family: 'Menlo', monospace; letter-spacing: 0.04em;
+    margin-right: 0.3em; vertical-align: middle;
+  }
+  .badge-blue   { background: #dbeafe; color: #1d4ed8; }
+  .badge-green  { background: #dcfce7; color: #16a34a; }
+  .badge-purple { background: #ede9fe; color: #7c3aed; }
+  .badge-amber  { background: #fef3c7; color: #b45309; }
+  .badge-red    { background: #fee2e2; color: #dc2626; }
+  .badge-gray   { background: #f1f5f9; color: #475569; }
+
+  /* ─── Cover page ─────────────────────────────────────────────── */
+  .cover {
+    border: 2.5px solid var(--ink);
+    padding: 3rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+  }
+  .cover::before {
+    content: '§ // VALUEVADE · DEVELOPER GUIDE · 2026';
+    display: block;
+    font-family: 'Menlo', monospace;
+    font-size: 0.68em;
+    letter-spacing: 0.15em;
+    color: var(--ink-faint);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+  }
+  .cover h1 { font-size: 2.8rem; }
+  .cover .subtitle { font-size: 1.05rem; color: var(--ink-soft); margin-top: 0.5em; }
+  .cover .meta {
+    margin-top: 2rem; display: flex; gap: 2rem;
+    font-family: 'Menlo', monospace; font-size: 0.78em; color: var(--ink-faint);
+    flex-wrap: wrap;
+  }
+  .cover .meta span::before { content: '▸ '; }
+
+  /* ─── TOC ────────────────────────────────────────────────────── */
+  .toc { background: var(--bg-alt); border: 1px solid var(--border); padding: 1.5rem 2rem; margin-bottom: 3rem; }
+  .toc h2 { font-size: 1.1rem; border: none; margin-top: 0; margin-bottom: 1rem; color: var(--ink); }
+  .toc ol { padding-left: 1.5rem; }
+  .toc li { margin-bottom: 0.3rem; font-size: 0.9rem; }
+  .toc a { color: var(--ink); text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .sub { padding-left: 1.5rem; list-style-type: lower-alpha; }
+
+  /* ─── Flow diagram (ASCII-style) ────────────────────────────── */
+  .flow {
+    background: var(--code-bg); color: var(--code-fg);
+    font-family: 'Menlo', monospace; font-size: 0.82em;
+    padding: 1.2em 1.5em; border-radius: 6px; margin: 1em 0 1.4em;
+    white-space: pre; overflow-x: auto; line-height: 1.65;
+  }
+
+  /* ─── Section divider ───────────────────────────────────────── */
+  hr { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+  /* ─── Page break hint ───────────────────────────────────────── */
+  .page-break { break-before: page; }
+
+  /* ─── Print ──────────────────────────────────────────────────── */
+  @media print {
+    body { padding: 20mm 22mm; font-size: 11pt; max-width: 100%; }
+    h1 { font-size: 22pt; }
+    h2 { font-size: 15pt; page-break-after: avoid; }
+    h3 { font-size: 12pt; page-break-after: avoid; }
+    h4 { font-size: 10pt; }
+    pre, table, .flow { page-break-inside: avoid; }
+    .cover { page-break-after: always; }
+    .toc   { page-break-after: always; }
+    a { color: inherit; text-decoration: none; }
+    .note, .tip, .warn, .danger { border-width: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ COVER -->
+<div class="cover">
+  <h1>Valuevade Developer Guide</h1>
+  <p class="subtitle">Complete codebase documentation for the Valuevade educational finance platform —<br>written for junior developers joining the project.</p>
+  <div class="meta">
+    <span>Version: MVP 2.0</span>
+    <span>Date: February 2026</span>
+    <span>Stack: React 19 · FastAPI · Supabase · Razorpay · Emergent LLM</span>
+    <span>Lines of code: ~18,000+</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ TOC -->
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ol>
+    <li><a href="#s1">Project Overview & Purpose</a></li>
+    <li><a href="#s2">Architecture at a Glance</a></li>
+    <li><a href="#s3">Repository Structure</a></li>
+    <li><a href="#s4">Backend — FastAPI</a>
+      <ol class="sub">
+        <li><a href="#s4a">server.py — Main app & core routes</a></li>
+        <li><a href="#s4b">wave_endpoints.py — Curriculum, Admin, Rewards</a></li>
+        <li><a href="#s4c">payment_endpoints.py — Razorpay</a></li>
+        <li><a href="#s4d">interview_sim_endpoints.py — AI Mock Interviews</a></li>
+        <li><a href="#s4e">guest_interview_sim_endpoints.py — Free Trial</a></li>
+        <li><a href="#s4f">guest_session_endpoints.py — Preview Sessions</a></li>
+        <li><a href="#s4g">free_trial_endpoints.py — Trial Gate</a></li>
+      </ol>
+    </li>
+    <li><a href="#s5">Frontend — React</a>
+      <ol class="sub">
+        <li><a href="#s5a">Routing (App.js)</a></li>
+        <li><a href="#s5b">Contexts (Global State)</a></li>
+        <li><a href="#s5c">Pages & Components</a></li>
+        <li><a href="#s5d">Utilities & Hooks</a></li>
+      </ol>
+    </li>
+    <li><a href="#s6">Database Schema</a></li>
+    <li><a href="#s7">Authentication</a></li>
+    <li><a href="#s8">Payment Flow</a></li>
+    <li><a href="#s9">AI Features</a></li>
+    <li><a href="#s10">Gamification System</a></li>
+    <li><a href="#s11">Admin Panel</a></li>
+    <li><a href="#s12">Security Model</a></li>
+    <li><a href="#s13">Environment Variables</a></li>
+    <li><a href="#s14">Local Development Setup</a></li>
+    <li><a href="#s15">Key User Journeys</a></li>
+    <li><a href="#s16">Third-Party Integrations</a></li>
+    <li><a href="#s17">Testing</a></li>
+    <li><a href="#s18">Common Patterns & Conventions</a></li>
+  </ol>
+</div>
+
+<!-- ═══════════════════════════════════════════ 1. PROJECT OVERVIEW -->
+<h2 id="s1">1. Project Overview &amp; Purpose</h2>
+
+<p>
+  <strong>Valuevade</strong> is an <em>Indian finance education platform</em> targeting equity-research and financial-modelling careers. It was built to close the gap between what Indian colleges teach (exams) and what finance employers actually need (financial modelling, valuation, research, and interview skills).
+</p>
+
+<h3>What the platform offers</h3>
+<table>
+  <tr><th>Feature</th><th>What it does</th></tr>
+  <tr><td>Course Curriculum</td><td>21 modules · 239 sessions · video + notes + quiz + simulation per session</td></tr>
+  <tr><td>AI Mock Interview Sim</td><td>5-round interview with J.P. Morgan, Goldman, Motilal etc. powered by Claude Haiku/Sonnet</td></tr>
+  <tr><td>NISM Mock Exam</td><td>Timed MCQ certification exam (Series XV — Research Analyst), with score ring + per-question review</td></tr>
+  <tr><td>Pari (AI Tutor)</td><td>In-context doubt chat (Claude Haiku) — paused during graded surfaces, daily quota cap</td></tr>
+  <tr><td>Gamified Rewards</td><td>XP, streaks, badges, milestones, daily challenges, module constellation map</td></tr>
+  <tr><td>LinkedIn Rewards</td><td>Share a milestone on LinkedIn → unlock a free resource (resume template, IB toolkit, etc.)</td></tr>
+  <tr><td>Free Trial</td><td>Unauthenticated 5-round J.P. Morgan mock interview at <code>/free-trial/:trialId</code></td></tr>
+  <tr><td>Study Planner</td><td>3-mode planner (deadline / hours-per-day / hours-per-week) with trend chart + rebalance</td></tr>
+  <tr><td>Portfolio Page</td><td>Public shareable portfolio at <code>/p/:slug</code> with badges, skills, heatmap</td></tr>
+  <tr><td>Admin Panel</td><td>Full CRUD for curriculum, videos, quizzes, simulations, rewards, users, payments, errors</td></tr>
+</table>
+
+<h3>Business model</h3>
+<p>One-time lifetime enrolment at <strong>₹999</strong> (Razorpay TEST MODE). Students get access to all 21 modules after payment. There is no subscription.</p>
+
+<!-- ═══════════════════════════════════════════ 2. ARCHITECTURE -->
+<h2 id="s2">2. Architecture at a Glance</h2>
+
+<div class="flow">
+                        ┌──────────────────────────────────────┐
+                        │           BROWSER (React 19)         │
+                        │  CRA + Tailwind + shadcn/ui          │
+                        │  port 3000                           │
+                        └──────────────┬───────────────────────┘
+                                       │ HTTP (all routes prefixed /api)
+                                       │ REACT_APP_BACKEND_URL
+                        ┌──────────────▼───────────────────────┐
+                        │           BACKEND (FastAPI)           │
+                        │  uvicorn · port 8001                  │
+                        │  server.py + 6 endpoint modules       │
+                        └──┬──────────┬───────────┬────────────┘
+                           │          │           │
+               ┌───────────▼──┐  ┌────▼────┐  ┌──▼──────────────────┐
+               │  Supabase     │  │Razorpay │  │ Emergent LLM Key     │
+               │  Postgres +   │  │Payments │  │ Claude Haiku/Sonnet  │
+               │  Auth +       │  │(TEST)   │  │ Gemini 3 Flash       │
+               │  Storage      │  └─────────┘  │ OpenAI TTS/Whisper   │
+               └───────────────┘               └──────────────────────┘
+                        │
+               ┌────────▼──────────┐
+               │   Resend          │
+               │   (Email)         │
+               └───────────────────┘
+</div>
+
+<h3>Request routing</h3>
+<p>The platform runs behind a Kubernetes ingress proxy. Any URL containing <code>/api</code> is forwarded to the FastAPI backend on port 8001. All other URLs go to the React frontend on port 3000. This means every backend endpoint <strong>must</strong> be prefixed with <code>/api</code>.</p>
+
+<div class="note">
+  <strong>Key rule for new developers</strong>
+  Never call <code>localhost:8001</code> from the frontend. Always use <code>process.env.REACT_APP_BACKEND_URL</code> (e.g. <code>https://mock-exam-mvp.preview.emergentagent.com</code>). The proxy handles the internal forwarding.
+</div>
+
+<h3>Module registration pattern</h3>
+<p>The backend is split into 6 endpoint modules, all registered into a single <code>APIRouter</code> in <code>server.py</code>. Each module exports a <code>register_*(api_router, deps)</code> function. The <code>deps</code> dict injects shared helpers (Supabase getter, auth dependency, LLM key, etc.) so modules don't need to re-import from <code>server.py</code>.</p>
+
+<pre><code># server.py (simplified)
+from wave_endpoints import register_wave_endpoints
+register_wave_endpoints(api_router, {
+    "supabase_get":  _supabase_get,
+    "supabase_post": _supabase_post,
+    "get_supabase_user": _get_supabase_user,
+    "ensure_admin":  _ensure_admin,
+    ...
+})</code></pre>
+
+<!-- ═══════════════════════════════════════════ 3. REPO STRUCTURE -->
+<h2 id="s3">3. Repository Structure</h2>
+
+<pre><code>/app/
+├── backend/
+│   ├── server.py                    ← Main FastAPI app, core routes (5 000+ lines)
+│   ├── wave_endpoints.py            ← Curriculum, admin CRUD, rewards (4 000+ lines)
+│   ├── payment_endpoints.py         ← Razorpay checkout + webhook
+│   ├── interview_sim_endpoints.py   ← AI 5-round mock interview
+│   ├── guest_interview_sim_endpoints.py  ← Same but for free-trial (no auth)
+│   ├── guest_session_endpoints.py   ← Preview & free sessions (no auth)
+│   ├── free_trial_endpoints.py      ← Trial gate: start, provision, update
+│   ├── _generate_quiz_sims.py       ← One-off: bulk AI generation script
+│   ├── _normalize_module_titles.py  ← One-off: fix ALL-CAPS module titles
+│   ├── requirements.txt
+│   ├── .env                         ← Secrets (never commit this)
+│   └── tests/                       ← pytest test files
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.js                   ← All React Router routes
+│   │   ├── index.js                 ← Entry point, wraps with providers
+│   │   ├── components/              ← All page and feature components
+│   │   │   ├── admin/               ← Admin-only sub-components
+│   │   │   ├── gamification/        ← XP bar, badges, streaks, overlays
+│   │   │   ├── interview-sim/       ← 5-round mock interview UI
+│   │   │   ├── payments/            ← Razorpay checkout, gates
+│   │   │   ├── rewards/             ← LinkedIn share → reward card
+│   │   │   ├── simulations/         ← Excel (Univer), Decision, Book sims
+│   │   │   ├── study-planner/       ← Plan wizard, today card, trend chart
+│   │   │   ├── tutor/               ← Pari (AI tutor) widget + sessions
+│   │   │   ├── notes/               ← Video player, markdown card
+│   │   │   ├── mock-interview/      ← Simple MCQ mock interview (older)
+│   │   │   └── ui/                  ← shadcn/ui primitives
+│   │   ├── contexts/                ← React context providers
+│   │   ├── hooks/                   ← Custom React hooks
+│   │   ├── lib/                     ← supabase.js, enrollDirect.js, utils
+│   │   ├── utils/                   ← Shared pure helpers (XP, progress, etc.)
+│   │   └── data/                    ← Static data & simulation JSON samples
+│   ├── public/
+│   │   ├── tutor/                   ← Pari PNG avatar images (12 poses)
+│   │   └── sounds/                  ← level_up.wav, etc.
+│   ├── package.json
+│   └── .env                         ← REACT_APP_BACKEND_URL, Supabase public keys
+│
+├── scripts/
+│   └── migrations/                  ← SQL files to run in Supabase Studio
+│
+├── memory/
+│   ├── PRD.md                       ← Living product requirements document
+│   └── test_credentials.md          ← Test account emails/passwords
+│
+└── docs/
+    └── developer_guide.html         ← This file</code></pre>
+
+<!-- ═══════════════════════════════════════════ 4. BACKEND -->
+<h2 id="s4">4. Backend — FastAPI</h2>
+
+<p>The backend is a single <strong>FastAPI</strong> application using <strong>uvicorn</strong> as the ASGI server. It talks to <strong>Supabase PostgreSQL</strong> via direct HTTP (PostgREST REST API) rather than a SQL driver — this avoids connection pooling complexity and works well with Supabase's built-in Row Level Security.</p>
+
+<h3>Supabase client pattern</h3>
+<p>All database reads/writes go through two thin wrappers defined in <code>server.py</code>:</p>
+
+<pre><code>def _supabase_get(path: str) -> list | dict:
+    """HTTP GET to PostgREST. path is the table + filter, e.g.
+       'profiles?id=eq.{uid}&select=*&limit=1'
+    """
+
+def _supabase_post(table: str, row: dict, prefer="return=representation"):
+    """HTTP POST (INSERT). Returns the inserted row(s)."""
+
+def _supabase_patch(path: str, patch: dict):
+    """HTTP PATCH (UPDATE). path includes table + filter."""
+
+def _supabase_delete(path: str):
+    """HTTP DELETE. path includes table + filter."""</code></pre>
+
+<p>All calls use the <code>SUPABASE_SERVICE_ROLE_KEY</code> which bypasses Row Level Security — the application layer is responsible for enforcing access rules.</p>
+
+<hr />
+
+<h3 id="s4a">4a. server.py — Main App &amp; Core Routes</h3>
+<p><span class="badge badge-amber">5 228 lines</span> This is the largest file. It contains:</p>
+
+<h4>Startup & middleware</h4>
+<table>
+  <tr><th>What</th><th>Where / detail</th></tr>
+  <tr><td>FastAPI app creation</td><td>Line 1 — <code>app = FastAPI()</code></td></tr>
+  <tr><td>CORS middleware</td><td>Bottom of file — reads <code>CORS_ORIGINS</code> env var. Defaults to <code>*</code> with <code>allow_credentials=False</code>. Production sets <code>CORS_ORIGINS=https://mock-exam-mvp.preview.emergentagent.com</code></td></tr>
+  <tr><td>Rate limiting</td><td>In-memory <code>_RATE_LIMIT</code> dict keyed by IP hash. Admin login: 10 attempts / 5 min. Guest LLM: per-IP 120-call cap.</td></tr>
+  <tr><td>Module registration</td><td>Lines 5 131–5 199 — all 6 endpoint modules are registered here.</td></tr>
+</table>
+
+<h4>Authentication helpers</h4>
+<pre><code># How every protected endpoint is authenticated:
+
+security = HTTPBearer()
+
+async def _get_supabase_user(creds: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    1. Reads Bearer token from Authorization header.
+    2. Calls Supabase GET /auth/v1/user with that token.
+    3. Returns the user dict (id, email, user_metadata, etc.)
+    4. Raises HTTP 401 if token is missing or invalid.
+    """
+
+def _ensure_admin(user: dict):
+    """Raises HTTP 403 if user.email not in ADMIN_ALLOWED_EMAILS."""</code></pre>
+
+<h4>Key route groups in server.py</h4>
+<table>
+  <tr><th>Route prefix</th><th>Purpose</th></tr>
+  <tr><td><code>GET /api/</code></td><td>Health check, returns <code>{"message":"Valuevade API"}</code></td></tr>
+  <tr><td><code>GET /api/health</code></td><td>K8s liveness probe (auth required)</td></tr>
+  <tr><td><code>GET /api/pari/status</code></td><td>Returns Pari LLM cost used vs. limit, and AI-customize generation count</td></tr>
+  <tr><td><code>POST /api/doubts/start</code></td><td>Open a Pari chat session (3 turns, 1 500 tokens / session)</td></tr>
+  <tr><td><code>POST /api/doubts/ask</code></td><td>Send a message to Pari. Returns answer + is_off_topic flag</td></tr>
+  <tr><td><code>GET/POST /api/doubts/sessions/*</code></td><td>Session-level doubt flagging, redo (half-XP), extended 15-turn chat</td></tr>
+  <tr><td><code>GET/POST /api/portfolio/*</code></td><td>Student portfolio aggregation and public share toggle</td></tr>
+  <tr><td><code>POST /api/simulations/workbook/*</code></td><td>Save / load Univer Excel spreadsheet state per user per session</td></tr>
+  <tr><td><code>POST /api/revision/generate</code></td><td>AI-generated quick revision sheet for a completed session</td></tr>
+  <tr><td><code>GET /api/health/xp|streak|badges|challenges|journey</code></td><td>Gamification diagnostic endpoints (authenticated)</td></tr>
+  <tr><td><code>POST /api/study-plan/*</code></td><td>Preview, commit, active, days-range, session-completed, rebalance, dashboard-summary</td></tr>
+  <tr><td><code>GET/POST /api/me/*</code></td><td>Pari welcome modal state, country code</td></tr>
+  <tr><td><code>POST /api/customize/generate</code></td><td>AI-personalized course path generation (max 4 lifetime, auth required)</td></tr>
+</table>
+
+<h4>LLM cost tracking</h4>
+<p>Every LLM call goes through <code>_bump_pari_cost(user_id, inr_amount)</code> which writes to <code>profiles.pari_total_cost_inr</code> via a Supabase RPC. Token count is estimated as <code>len(text) / 4</code>. Claude Haiku pricing: ₹0.085 per 1K input tokens, ₹0.425 per 1K output tokens.</p>
+
+<pre><code># Cost constants (server.py)
+_INR_PER_IN  = (1.0 / 1_000_000) * 85   # Haiku input  ~$1/M tokens × ₹85
+_INR_PER_OUT = (5.0 / 1_000_000) * 85   # Haiku output ~$5/M tokens × ₹85
+
+# When pari_total_cost_inr >= 500 the Pari endpoints return HTTP 402
+# with detail.reason = 'pari_cost_limit_reached'</code></pre>
+
+<hr />
+
+<h3 id="s4b">4b. wave_endpoints.py — Curriculum, Admin, Rewards</h3>
+<p><span class="badge badge-amber">4 100+ lines</span> The largest endpoint file. Grouped into these domains:</p>
+
+<h4>Curriculum (public read)</h4>
+<table>
+  <tr><th>Endpoint</th><th>What it returns</th></tr>
+  <tr><td><code>GET /api/admin/curriculum/modules</code></td><td>All modules with session counts and flags</td></tr>
+  <tr><td><code>GET /api/admin/curriculum/sessions</code></td><td>Flat list of all sessions across all modules</td></tr>
+  <tr><td><code>GET /api/admin/curriculum/export</code></td><td>Full JSON export for backup</td></tr>
+</table>
+
+<h4>Admin — Users</h4>
+<table>
+  <tr><th>Endpoint</th><th>What it does</th></tr>
+  <tr><td><code>GET /api/admin/users</code></td><td>Returns all users with LLM cost, mock interview count, payment status</td></tr>
+  <tr><td><code>POST /api/admin/users/create</code></td><td>Creates a Supabase auth user + profile + enrollment</td></tr>
+  <tr><td><code>DELETE /api/admin/users/{user_id}</code></td><td>Hard-delete: cascades through 20+ user_* tables then calls Supabase auth delete</td></tr>
+</table>
+
+<h4>Admin — Curriculum CRUD</h4>
+<table>
+  <tr><th>Endpoint</th><th>What it does</th></tr>
+  <tr><td><code>POST /api/admin/modules</code></td><td>Create a new module</td></tr>
+  <tr><td><code>PATCH /api/admin/modules/{module_id}</code></td><td>Rename, reorder, toggle exam-module flag</td></tr>
+  <tr><td><code>DELETE /api/admin/modules/{module_id}</code></td><td>Delete module + cascades to sessions, notes, quizzes, sims</td></tr>
+  <tr><td><code>POST /api/admin/sessions</code></td><td>Add a session to a module</td></tr>
+  <tr><td><code>PATCH /api/admin/sessions/{session_id}</code></td><td>Edit title, description, order, free/preview flags</td></tr>
+  <tr><td><code>DELETE /api/admin/sessions/{session_id}</code></td><td>Remove a session</td></tr>
+</table>
+
+<h4>Admin — Content CRUD</h4>
+<table>
+  <tr><th>Endpoint</th><th>Content type</th></tr>
+  <tr><td><code>GET/POST/PATCH/DELETE /api/admin/notes-cards</code></td><td>Flashcard notes per session</td></tr>
+  <tr><td><code>GET/POST/PATCH/DELETE /api/admin/quiz-items</code></td><td>Quiz questions per session (MCQ)</td></tr>
+  <tr><td><code>POST/DELETE /api/admin/sessions/{id}/notes-file</code></td><td>PDF/PPT upload → auto-converts PPTX to PDF via LibreOffice</td></tr>
+  <tr><td><code>GET/POST/PATCH/DELETE /api/admin/mock-exams</code></td><td>NISM mock exam config + questions for a module</td></tr>
+  <tr><td><code>POST /api/admin/mock-exams/{exam_id}/questions/csv</code></td><td>Bulk import exam questions from CSV</td></tr>
+</table>
+
+<h4>Rewards engine</h4>
+<p>Students earn a reward (resume template, IB toolkit, etc.) after completing a module or capstone by sharing a LinkedIn post. The flow:</p>
+<div class="flow">
+Admin creates reward → links it to module_complete or capstone_complete trigger
+                              ↓
+Student completes trigger condition
+                              ↓
+GET /api/rewards/eligible  ← checks user_modules completion
+                              ↓
+Student pastes LinkedIn URL  → POST /api/rewards/claim
+                              ↓
+_verify_linkedin_post_content() fetches URL with bot UA
+  └─ If verified=true  → mark claim linkedin_post_verified=true
+  └─ If unreachable    → allow claim, mark verified=false (admin reviews)
+  └─ If SSRF redirect  → block (SafeRH handler)
+                              ↓
+GET /api/rewards/{id}/download  ← issues signed Supabase Storage URL</div>
+
+<hr />
+
+<h3 id="s4c">4c. payment_endpoints.py — Razorpay</h3>
+
+<h4>Flow</h4>
+<div class="flow">
+1. POST /api/payments/create-order   ← frontend initiates checkout
+        Razorpay.createOrder({amount: 99900})  // ₹999 in paise
+        stores row in razorpay_orders table
+                  ↓
+2. Razorpay iframe opens in browser
+   User enters card/UPI details
+                  ↓
+3. POST /api/payments/verify         ← frontend sends payment_id + order_id + signature
+        HMAC-SHA256 verify: order_id|payment_id signed with RAZORPAY_KEY_SECRET
+        If valid → _mark_paid(user_id) → sets user_payment_status.paid=true
+                  ↓
+4. POST /api/payments/webhook        ← Razorpay server-to-server (backup)
+        HMAC-SHA256 verify with RAZORPAY_WEBHOOK_SECRET (must be set in .env)
+        Handles payment.captured event → also calls _mark_paid()
+                  ↓
+5. Receipt email via Resend (gated on RESEND_API_KEY)</div>
+
+<h4>Key endpoints</h4>
+<table>
+  <tr><th>Endpoint</th><th>Purpose</th></tr>
+  <tr><td><code>GET /api/payments/eligibility</code></td><td>Returns <code>{paid: bool, pricing_tier}</code> for the current user</td></tr>
+  <tr><td><code>POST /api/payments/create-order</code></td><td>Creates Razorpay order, stores in DB</td></tr>
+  <tr><td><code>POST /api/payments/verify</code></td><td>Verifies payment signature, marks user as paid</td></tr>
+  <tr><td><code>POST /api/payments/webhook</code></td><td>Server-to-server webhook from Razorpay</td></tr>
+  <tr><td><code>POST /api/payments/mock-success</code></td><td>TEST MODE only — simulates a successful payment without Razorpay</td></tr>
+  <tr><td><code>GET /api/admin/payments/overview</code></td><td>Dashboard stats: total revenue, today's revenue, paid user count</td></tr>
+</table>
+
+<div class="warn">
+  <strong>Razorpay is in TEST MODE.</strong> Real money is not charged. Use card <code>4111 1111 1111 1111</code> with any future expiry and any CVV. The <code>RAZORPAY_WEBHOOK_SECRET</code> in <code>.env</code> must be set for the webhook to work — if blank, all webhook requests are rejected with HTTP 503.
+</div>
+
+<hr />
+
+<h3 id="s4d">4d. interview_sim_endpoints.py — AI Mock Interviews</h3>
+
+<p>The full 5-round interview simulator for <em>paid/enrolled students</em>. Uses Claude Haiku for most rounds, Claude Sonnet for the final decision report (more expensive, more nuanced output).</p>
+
+<h4>5 rounds</h4>
+<table>
+  <tr><th>Stage</th><th>What happens</th><th>LLM</th></tr>
+  <tr><td>1. Application</td><td>Student writes why_firm, why_er, achievement. Haiku gives written feedback.</td><td>Haiku</td></tr>
+  <tr><td>2. Aptitude</td><td>5 MCQ questions generated from the firm's case workbook. Auto-graded.</td><td>Haiku</td></tr>
+  <tr><td>3. Behavioural</td><td>Live multi-turn conversation. Haiku plays the interviewer.</td><td>Haiku</td></tr>
+  <tr><td>4. Technical</td><td>Live multi-turn on DCF, valuations, Indian markets.</td><td>Haiku</td></tr>
+  <tr><td>5. Case Study + Decision</td><td>Student submits investment recommendation + Univer Excel workbook. Haiku grades. Sonnet writes the full report + offer/rejection letter.</td><td>Haiku + Sonnet</td></tr>
+</table>
+
+<h4>Cost tracking</h4>
+<pre><code># interview_sim_endpoints.py
+
+# Each _llm() call accumulates cost in an in-memory buffer:
+_iv_cost_buf: dict[str, float] = {}  # {attempt_id: total_inr}
+
+# On key milestones (application complete, decision reached),
+# _flush_iv_cost(attempt_id, user_id) is called to write to DB:
+_bump_iv_cost_fn(user_id, round(cost, 6))  # → profiles.pari_total_cost_inr
+
+# Sonnet (final report) uses different rates than Haiku:
+_INR_PER_IN_SONNET  = (3.0 / 1_000_000) * 85   # ~$3/M input tokens
+_INR_PER_OUT_SONNET = (15.0 / 1_000_000) * 85  # ~$15/M output tokens</code></pre>
+
+<h4>Key endpoints</h4>
+<table>
+  <tr><th>Endpoint</th><th>Purpose</th></tr>
+  <tr><td><code>GET /api/interview-sim/overview</code></td><td>Returns all available interview sims + user's attempt history</td></tr>
+  <tr><td><code>POST /api/interview-sim/start</code></td><td>Creates a new attempt (max 2 per sim)</td></tr>
+  <tr><td><code>POST /api/interview-sim/attempt/{id}/application</code></td><td>Submit written application round</td></tr>
+  <tr><td><code>POST /api/interview-sim/attempt/{id}/aptitude/start</code></td><td>Generate aptitude MCQ questions</td></tr>
+  <tr><td><code>POST /api/interview-sim/attempt/{id}/aptitude/submit</code></td><td>Submit answers, get score</td></tr>
+  <tr><td><code>POST /api/interview-sim/attempt/{id}/interview/begin</code></td><td>Start behavioural or technical round</td></tr>
+  <tr><td><code>POST /api/interview-sim/attempt/{id}/interview/answer</code></td><td>Submit one turn in the live interview conversation</td></tr>
+  <tr><td><code>POST /api/interview-sim/attempt/{id}/case/submit</code></td><td>Submit investment recommendation + Excel score → generates final report</td></tr>
+  <tr><td><code>POST /api/interview-sim/tts</code></td><td>OpenAI TTS: converts interviewer text to audio (base64 MP3)</td></tr>
+</table>
+
+<hr />
+
+<h3 id="s4e">4e. guest_interview_sim_endpoints.py — Free Trial</h3>
+
+<p>Identical 5-round flow but for <strong>anonymous (no-auth) users</strong>. No database writes — all state lives in the browser's <code>localStorage</code>. Rate limited:</p>
+<ul>
+  <li><strong>Per trial-id</strong>: 40 LLM calls max (prevents a single trial from burning the key)</li>
+  <li><strong>Per IP</strong>: 120 LLM calls max (prevents rotating trial IDs to bypass per-trial cap)</li>
+</ul>
+
+<div class="note">
+  <strong>Stateless by design.</strong> The backend doesn't store conversation state — the frontend sends the full <code>stage_data</code> (all previous turns) with every request. This means a backend restart during a trial is safe — the user just needs to re-send their last turn.
+</div>
+
+<hr />
+
+<h3 id="s4f">4f. guest_session_endpoints.py — Preview Sessions</h3>
+
+<p>Allows unauthenticated visitors to access <strong>free sessions</strong> (admin-marked) at <code>/try-free/:sessionId</code>. No account required. Progress is stored in localStorage. After completing both free sessions, a paywall CTA appears.</p>
+
+<table>
+  <tr><th>Endpoint</th><th>Purpose</th></tr>
+  <tr><td><code>GET /api/preview-sessions</code></td><td>List admin-marked preview sessions (max 2)</td></tr>
+  <tr><td><code>GET /api/free-sessions</code></td><td>List admin-marked free sessions (max 2)</td></tr>
+  <tr><td><code>GET /api/free-session/{id}</code></td><td>Full session data (video, notes cards, quiz questions, simulation)</td></tr>
+  <tr><td><code>GET /api/free-session/{id}/notes</code></td><td>Notes cards only</td></tr>
+  <tr><td><code>GET /api/free-session/{id}/quiz</code></td><td>Quiz questions (answers hidden)</td></tr>
+  <tr><td><code>GET /api/free-session/{id}/simulation</code></td><td>Simulation data</td></tr>
+</table>
+
+<hr />
+
+<h3 id="s4g">4g. free_trial_endpoints.py — Trial Gate</h3>
+
+<p>Handles the email-capture → trial provisioning flow for the landing page free mock interview.</p>
+
+<table>
+  <tr><th>Endpoint</th><th>Purpose</th></tr>
+  <tr><td><code>POST /api/free-trial/start</code></td><td>Creates a <code>free_mock_trials</code> row keyed by email, IP hash, and browser fingerprint. Deduplicates: same email → resume trial. Same device, new email → waitlist them.</td></tr>
+  <tr><td><code>POST /api/free-trial/{trial_id}/provision</code></td><td>After the trial, if the user signs up, this promotes them to a paid trial account (sets pricing_tier='trial'). Requires the user's Supabase JWT.</td></tr>
+  <tr><td><code>PATCH /api/free-trial/{trial_id}</code></td><td>Updates trial stage_data, status, verdict. <strong>Requires body.email to match the trial's stored email (ownership check).</strong></td></tr>
+  <tr><td><code>GET /api/admin/free-trials</code></td><td>Admin view of all trials + waitlist entries</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 5. FRONTEND -->
+<h2 id="s5" class="page-break">5. Frontend — React</h2>
+
+<p>Built with <strong>React 19</strong> (Create React App), <strong>Tailwind CSS</strong>, <strong>shadcn/ui</strong> component library, and <strong>React Router v7</strong>. All API calls use the native <code>fetch</code> API — no Axios.</p>
+
+<hr />
+
+<h3 id="s5a">5a. Routing (App.js)</h3>
+
+<p>All routes live in <code>/app/frontend/src/App.js</code>. Route groups:</p>
+
+<h4>Public routes (no auth needed)</h4>
+<table>
+  <tr><th>Path</th><th>Component</th><th>What it shows</th></tr>
+  <tr><td><code>/</code></td><td>LandingPage</td><td>Bloomberg-terminal style marketing landing page</td></tr>
+  <tr><td><code>/courses</code></td><td>CoursesPage</td><td>Course catalog</td></tr>
+  <tr><td><code>/course/:courseId</code></td><td>CourseDetailsPage</td><td>Full syllabus, outcomes, comparison table</td></tr>
+  <tr><td><code>/free-mock-interview</code></td><td>FreeMockInterviewPage</td><td>Marketing page for free trial interview</td></tr>
+  <tr><td><code>/free-trial/:trialId</code></td><td>FreeTrialPlayerPage</td><td>Guest 5-round interview player (no login)</td></tr>
+  <tr><td><code>/try-free/:sessionId</code></td><td>GuestSessionPage</td><td>Free preview session (video + notes + quiz + sim)</td></tr>
+  <tr><td><code>/p/:slug</code></td><td>PublicPortfolioPage</td><td>Public portfolio for a student (share link)</td></tr>
+  <tr><td><code>/login</code></td><td>LoginPage</td><td>Supabase email/password login</td></tr>
+  <tr><td><code>/signup</code></td><td>SignupPage</td><td>Supabase registration</td></tr>
+  <tr><td><code>/forgot-password</code></td><td>ForgotPasswordPage</td><td>Sends Supabase password-reset email</td></tr>
+  <tr><td><code>/privacy</code>, <code>/terms</code>, <code>/refund-policy</code></td><td>Legal pages</td><td>DRAFT legal pages</td></tr>
+</table>
+
+<h4>Protected routes (require Supabase session)</h4>
+<table>
+  <tr><th>Path</th><th>Component</th><th>What it shows</th></tr>
+  <tr><td><code>/dashboard</code></td><td>DashboardPage</td><td>Learning dashboard: modules, study plan, XP, streaks, daily challenges</td></tr>
+  <tr><td><code>/session/:id/notes</code></td><td>NotesPage</td><td>Video player + flashcard notes for a session</td></tr>
+  <tr><td><code>/session/:id/quiz</code></td><td>QuizPage</td><td>MCQ quiz for a session</td></tr>
+  <tr><td><code>/session/:id/simulation</code></td><td>SimulationPage</td><td>Excel / Decision-Making / Book simulation</td></tr>
+  <tr><td><code>/session/:id/complete</code></td><td>SessionCompletePage</td><td>XP gain, milestone, summary card</td></tr>
+  <tr><td><code>/module/:id/mock-exam</code></td><td>MockExamPage</td><td>NISM timed MCQ exam</td></tr>
+  <tr><td><code>/module/:id/mock-exam/result</code></td><td>MockExamResultPage</td><td>Score ring, pass/fail, per-question review</td></tr>
+  <tr><td><code>/interview-sims</code></td><td>InterviewSimHub</td><td>Firm selection hub for 5-round mock interview</td></tr>
+  <tr><td><code>/interview-sim/:attemptId</code></td><td>InterviewSimPlayer</td><td>Live 5-round interview player (paid users)</td></tr>
+  <tr><td><code>/capstones</code></td><td>CapstonesListPage</td><td>3 capstone projects (locked until all modules done)</td></tr>
+  <tr><td><code>/portfolio</code></td><td>PortfolioPage</td><td>Student portfolio with skills, badges, heatmap, share toggle</td></tr>
+  <tr><td><code>/profile</code></td><td>ProfilePage</td><td>Account settings, stats, plan adherence</td></tr>
+  <tr><td><code>/admin-panel</code></td><td>AdminPanel</td><td>Full admin dashboard (admin email only)</td></tr>
+</table>
+
+<h4>Route guards</h4>
+<pre><code>// ProtectedRoute — redirects to /login if no Supabase session
+&lt;ProtectedRoute&gt;
+  &lt;DashboardPage /&gt;
+&lt;/ProtectedRoute&gt;
+
+// PublicOnlyRoute — redirects to /dashboard if already logged in
+// (used for /login and /signup so logged-in users don't see auth pages)
+&lt;PublicOnlyRoute&gt;
+  &lt;LoginPage /&gt;
+&lt;/PublicOnlyRoute&gt;
+
+// Learning — wraps ProtectedRoute + SessionReconnectBanner (re-auth banner)
+// Used for all learning-flow routes
+&lt;Learning&gt;
+  &lt;DashboardPage /&gt;
+&lt;/Learning&gt;
+
+// SessionPhase — wraps Learning + SessionPhaseGuard
+// (blocks access to quiz before notes are done, etc.)
+&lt;SessionPhase phase="quiz"&gt;
+  &lt;QuizPage /&gt;
+&lt;/SessionPhase&gt;</code></pre>
+
+<hr />
+
+<h3 id="s5b">5b. Contexts (Global State)</h3>
+
+<p>React Contexts wrap the entire app via providers chained in <code>index.js</code>. Each context reads/writes to Supabase and exposes state + actions to its subtree.</p>
+
+<table>
+  <tr><th>Context</th><th>File</th><th>What it manages</th></tr>
+  <tr><td>AuthContext</td><td>AuthContext.jsx</td><td>Supabase session, user object, login/logout/signup helpers. <strong>Most important context</strong> — everything else depends on it.</td></tr>
+  <tr><td>XPContext</td><td>XPContext.jsx</td><td>Current XP total, level, recent gains. Subscribes to Supabase realtime on <code>user_stats</code>.</td></tr>
+  <tr><td>StreakContext</td><td>StreakContext.jsx</td><td>Current streak days, last active date. Fires streak-milestone overlay.</td></tr>
+  <tr><td>BadgeContext</td><td>BadgeContext.jsx</td><td>Unlocked badges, overlay queue. Subscribes to realtime on <code>user_badges</code>.</td></tr>
+  <tr><td>MilestonesContext</td><td>MilestonesContext.jsx</td><td>Module/count milestone queue. Fires the celebration overlay.</td></tr>
+  <tr><td>DailyChallengesContext</td><td>DailyChallengesContext.jsx</td><td>Today's 3 daily challenges and completion state.</td></tr>
+  <tr><td>DoubtsLauncherContext</td><td>DoubtsLauncherContext.jsx</td><td>Controls the Pari chat widget. Fetches pari/status on mount. Blocks Pari on quiz/sim/interview routes.</td></tr>
+  <tr><td>SoundContext</td><td>SoundContext.jsx</td><td>Plays <code>level_up.wav</code> etc. Respects <code>prefers-reduced-motion</code>.</td></tr>
+  <tr><td>ThemeContext</td><td>ThemeContext.jsx</td><td>Dark/light toggle, persisted to localStorage.</td></tr>
+</table>
+
+<h4>How to use a context in a component</h4>
+<pre><code>import { useAuth } from '../contexts/AuthContext';
+
+function MyComponent() {
+  const { user, session } = useAuth();
+  // session.access_token is the Supabase JWT for API calls
+  // user.id is the Supabase user UUID
+
+  const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/some-endpoint`, {
+    headers: { Authorization: `Bearer ${session.access_token}` }
+  });
+}</code></pre>
+
+<hr />
+
+<h3 id="s5c">5c. Pages &amp; Components</h3>
+
+<h4>Learning flow — session phases</h4>
+<p>Every session has 3 phases that must be completed in order:</p>
+<div class="flow">
+/session/:id/start   ←  intro + phase overview
+       ↓
+/session/:id/notes   ←  video player + flashcard notes (NotesPage)
+       ↓
+/session/:id/notes/complete  ←  confirmation
+       ↓
+/session/:id/quiz/start      ←  quiz rules
+       ↓
+/session/:id/quiz            ←  MCQ quiz (QuizPage)
+       ↓
+/session/:id/quiz/complete   ←  score + feedback
+       ↓
+/session/:id/simulation/start  ← simulation rules
+       ↓
+/session/:id/simulation       ← Excel / Decision / Book sim (SimulationPage)
+       ↓
+/session/:id/complete         ← XP gain, milestone overlay, summary card</div>
+
+<p><code>SessionPhaseGuard.jsx</code> enforces this order — if you navigate to <code>/quiz</code> before completing notes, it redirects you back to <code>/notes</code>.</p>
+
+<h4>Simulation types</h4>
+<table>
+  <tr><th>sim_type in DB</th><th>Component</th><th>What the student does</th></tr>
+  <tr><td><code>excel</code></td><td>UniverSpreadsheet (via ExcelSim)</td><td>Real-Excel experience: formulas, drag-fill, multi-sheet, pivot. Auto-grader checks expected cell values.</td></tr>
+  <tr><td><code>decision_making</code></td><td>DecisionMakingSim</td><td>Branching scenario: read a scenario, make 3–5 decision points, get a score.</td></tr>
+  <tr><td><code>document</code> (book)</td><td>BookSim or DocumentSim</td><td>Chaptered read-through with MCQ checkpoints. If <code>config.format === 'book'</code> → BookSim; else DocumentSim.</td></tr>
+</table>
+
+<h4>Key standalone pages</h4>
+<table>
+  <tr><th>Page</th><th>Component</th><th>Notable detail</th></tr>
+  <tr><td>Dashboard</td><td>DashboardPage.jsx</td><td>Shows: Continue Learning card, study plan today/trend, daily challenges, module constellation, rewards section. Auto-opens study planner wizard on first enroll via <code>?setup_plan=1</code>.</td></tr>
+  <tr><td>Notes</td><td>NotesPage.jsx</td><td>Left: SessionVideoPlayer (Supabase signed URL or external URL). Right: MarkdownCard flashcard notes. Scrolls through cards, marks notes_completed.</td></tr>
+  <tr><td>Quiz</td><td>QuizPage.jsx</td><td>Fetches questions from <code>/api/admin/quiz-items?session_id=eq.{id}</code>. Randomises options. On submit: awards XP, calls milestone check.</td></tr>
+  <tr><td>Mock Exam</td><td>MockExamPage.jsx</td><td>Countdown timer (red < 10 min). Question navigator pills (green=answered, amber=flagged). Auto-submits on timeout.</td></tr>
+  <tr><td>Admin Panel</td><td>AdminPanel.jsx</td><td>2 500-line mega-component. Renders tabs: Users, Curriculum, Videos, Quizzes, Sims, Rewards, Payments, Free Trials, Errors, Mock Interviews.</td></tr>
+</table>
+
+<hr />
+
+<h3 id="s5d">5d. Utilities &amp; Hooks</h3>
+
+<table>
+  <tr><th>File</th><th>Exports</th><th>What it does</th></tr>
+  <tr><td><code>utils/sessionPhases.js</code></td><td><code>SESSION_PHASE_ORDER</code>, <code>SESSION_INTERVIEW_ENABLED</code></td><td>Single source of truth for which phases exist. Set <code>SESSION_INTERVIEW_ENABLED=false</code> to skip the interview phase globally (cost-reduction feature flag).</td></tr>
+  <tr><td><code>utils/progress.js</code></td><td><code>allDone()</code>, <code>getNextPhaseRoute()</code></td><td>Checks if all 3 phases are complete. Routes to next phase or to /complete.</td></tr>
+  <tr><td><code>utils/sessionTime.js</code></td><td><code>effectiveMinutes()</code>, <code>formatDuration()</code></td><td>Effective session minutes = round(video_duration_minutes || 15) + 10. Used by study planner.</td></tr>
+  <tr><td><code>utils/xp.js</code></td><td>XP constants</td><td>Points per quiz, notes, sim, streak bonus, etc.</td></tr>
+  <tr><td><code>utils/razorpay.js</code></td><td><code>loadRazorpay()</code></td><td>Dynamically loads the Razorpay script and returns the Razorpay constructor.</td></tr>
+  <tr><td><code>utils/interviewSim.js</code></td><td><code>getInterviewSimModuleIds()</code></td><td>Returns master_module IDs that contain the interview sim (Module 20).</td></tr>
+  <tr><td><code>utils/examModule.js</code></td><td><code>isExamMasterModule()</code></td><td>Returns true for Module 16 (NISM exam). Exam modules show notes-only sessions.</td></tr>
+  <tr><td><code>utils/studyPlanner.js</code></td><td>Planner helpers</td><td>Formats plan status, computes schedule metrics.</td></tr>
+  <tr><td><code>lib/supabase.js</code></td><td><code>supabase</code></td><td>Initialised <code>@supabase/supabase-js</code> client. Uses <code>REACT_APP_SUPABASE_URL</code> + <code>REACT_APP_SUPABASE_ANON_KEY</code>.</td></tr>
+  <tr><td><code>lib/enrollDirect.js</code></td><td><code>enrollDirect()</code></td><td>Creates <code>user_enrollments</code> + <code>user_modules</code> rows for the student. Called after payment success.</td></tr>
+  <tr><td><code>hooks/useIsPariBlocked.js</code></td><td><code>useIsPariBlocked()</code></td><td>Returns true when current route is a graded surface (quiz, sim, interview, mock-exam). Used to hide Pari widget.</td></tr>
+  <tr><td><code>components/interview-sim/simApi.js</code></td><td><code>buildAuthSimApi()</code>, <code>buildGuestSimApi()</code></td><td>Factory functions that return API endpoint objects. The interview player is agnostic about whether it's in auth mode or guest mode — it just calls <code>simApi.endpoints.application()</code> etc.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 6. DATABASE -->
+<h2 id="s6" class="page-break">6. Database Schema</h2>
+
+<p>All data lives in <strong>Supabase PostgreSQL</strong>. There is no local MongoDB used for product data (the <code>MONGO_URL</code> in <code>.env</code> is a legacy leftover from the initial scaffold and is unused).</p>
+
+<h4>Master (course content) tables</h4>
+<table>
+  <tr><th>Table</th><th>Key columns</th><th>Purpose</th></tr>
+  <tr><td><code>master_modules</code></td><td>id, title, module_number, order_index, is_exam_module</td><td>The 21 course modules</td></tr>
+  <tr><td><code>master_sessions</code></td><td>id, module_id, title, order_index, video_url, video_duration_minutes, is_preview_session, is_free_session</td><td>The 239 sessions</td></tr>
+  <tr><td><code>master_notes_cards</code></td><td>id, session_id, card_type, content, order_index</td><td>Flashcard notes per session</td></tr>
+  <tr><td><code>master_quiz_questions</code></td><td>id, session_id, question, options (jsonb), correct_answer_index, explanation, difficulty</td><td>MCQ quiz questions</td></tr>
+  <tr><td><code>master_simulations</code></td><td>id, session_id, sim_type, title, scenario, config (jsonb)</td><td>Simulation config. sim_type: excel / decision_making / document</td></tr>
+  <tr><td><code>master_mock_exams</code></td><td>id, module_id, title, time_limit_minutes, pass_percentage</td><td>NISM mock exam per module</td></tr>
+  <tr><td><code>master_mock_exam_questions</code></td><td>id, exam_id, question, options, correct_index, explanation, difficulty, topic_tag</td><td>Exam MCQ questions</td></tr>
+  <tr><td><code>master_capstone_projects</code></td><td>id, title, description, order_index</td><td>3 final capstone projects</td></tr>
+  <tr><td><code>master_rewards</code></td><td>id, title, trigger_type, trigger_ref_id, resource_file_path, linkedin_message, is_active</td><td>LinkedIn share rewards</td></tr>
+  <tr><td><code>master_interview_sims</code></td><td>id, firm_slug, firm_name, role_title, process (jsonb), case_workbook (jsonb)</td><td>Interview sim configs (JPM, GS, MS, Motilal, Kotak)</td></tr>
+</table>
+
+<h4>User (progress/state) tables</h4>
+<table>
+  <tr><th>Table</th><th>Key columns</th><th>Purpose</th></tr>
+  <tr><td><code>profiles</code></td><td>id (= auth.users.id), full_name, pari_total_cost_inr, customize_generations_count, pari_welcomed_at</td><td>One row per user. <code>id</code> is the Supabase user UUID.</td></tr>
+  <tr><td><code>user_enrollments</code></td><td>id, user_id, course_id, enrolled_at</td><td>One row when user pays / starts trial</td></tr>
+  <tr><td><code>user_modules</code></td><td>id, enrollment_id, master_module_id, is_completed, completed_at</td><td>One row per (enrollment × module)</td></tr>
+  <tr><td><code>user_sessions</code></td><td>id, user_module_id, master_session_id, notes_completed, quiz_completed, simulation_completed, is_completed, quiz_score</td><td>Session progress per user. is_completed = all 3 phases done</td></tr>
+  <tr><td><code>user_payment_status</code></td><td>user_id, paid, pricing_tier (upfront / trial), paid_at</td><td>Payment state. This is what gates content access.</td></tr>
+  <tr><td><code>razorpay_orders</code></td><td>id, user_id, razorpay_order_id, amount, status</td><td>One row per Razorpay order created</td></tr>
+  <tr><td><code>razorpay_payments</code></td><td>id, user_id, razorpay_payment_id, razorpay_order_id</td><td>One row per captured payment</td></tr>
+  <tr><td><code>user_stats</code></td><td>user_id, total_xp, level, sessions_completed, modules_completed</td><td>Aggregated gamification stats. Updated by DB triggers.</td></tr>
+  <tr><td><code>user_badges</code></td><td>user_id, badge_id, is_unlocked, earned_at, progress_current</td><td>Badge state per user. Realtime subscription fires overlay.</td></tr>
+  <tr><td><code>user_streaks</code></td><td>user_id, current_streak, longest_streak, last_active_date</td><td>Login streak</td></tr>
+  <tr><td><code>user_daily_challenges</code></td><td>user_id, challenge_code, ist_date, completed_at</td><td>Today's 3 challenges per user</td></tr>
+  <tr><td><code>user_interview_attempts</code></td><td>id, user_id, sim_id, stage_data (jsonb), verdict, final_score</td><td>Full interview attempt state</td></tr>
+  <tr><td><code>user_reward_claims</code></td><td>user_id, reward_id, linkedin_post_url, linkedin_post_verified, claimed_at</td><td>Which rewards the user has claimed</td></tr>
+  <tr><td><code>user_study_plans</code></td><td>id, user_id, enrollment_id, target_mode, plan_end_date, status</td><td>Active study plan metadata</td></tr>
+  <tr><td><code>user_study_plan_days</code></td><td>plan_id, user_id, plan_date, required_session_ids, is_completed</td><td>Day-by-day schedule. One row per study day.</td></tr>
+  <tr><td><code>free_mock_trials</code></td><td>id, email, firm_slug, ip_hash, fingerprint_hash, status, verdict, final_score, stage_data (jsonb)</td><td>Guest free trial sessions</td></tr>
+</table>
+
+<h4>Gamification tables</h4>
+<table>
+  <tr><th>Table</th><th>Purpose</th></tr>
+  <tr><td><code>master_badges</code></td><td>Badge definitions (code, title, rarity, category, display_order)</td></tr>
+  <tr><td><code>user_xp_events</code></td><td>Every XP-earning event. DB trigger rolls up to user_stats.total_xp.</td></tr>
+  <tr><td><code>user_milestones</code></td><td>Which module/count milestones the user has earned (unique per user × code)</td></tr>
+  <tr><td><code>user_daily_activity</code></td><td>Per-day activity counts. Powers the 90-day heatmap.</td></tr>
+  <tr><td><code>doubt_qa_cache</code></td><td>Cached Pari answers keyed by semantic fingerprint. Reduces LLM calls.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 7. AUTH -->
+<h2 id="s7">7. Authentication</h2>
+
+<p>The app uses <strong>Supabase Auth</strong> — email/password only. There is no Google/social login. Auth lives entirely in the Supabase cloud; the backend never stores passwords.</p>
+
+<h4>Frontend auth flow</h4>
+<div class="flow">
+1. User submits login form → supabase.auth.signInWithPassword({email, password})
+2. Supabase returns { session: { access_token, refresh_token }, user }
+3. AuthContext stores session in state. supabase client auto-persists to localStorage.
+4. On any API call: Authorization: Bearer {session.access_token}
+5. Token refreshes automatically via supabase.auth.onAuthStateChange()
+6. On logout: supabase.auth.signOut() → clears localStorage</div>
+
+<h4>Backend auth flow</h4>
+<div class="flow">
+1. Request arrives with Authorization: Bearer {jwt}
+2. _get_supabase_user() calls GET /auth/v1/user with that token
+3. Supabase validates the JWT and returns the user object
+4. If token expired/invalid → Supabase returns 401 → we raise HTTP 401
+5. user dict is passed to the route handler</div>
+
+<h4>Admin auth</h4>
+<p>The admin panel at <code>/admin-panel</code> is a <code>ProtectedRoute</code> — any Supabase user can load the page, but every admin API call (e.g. <code>GET /api/admin/users</code>) calls <code>_ensure_admin(user)</code> which checks that <code>user.email in ADMIN_ALLOWED_EMAILS</code>. The only admin email is <code>info@valuevade.com</code>.</p>
+
+<p>There is also a legacy <strong>JWT-based admin</strong> at <code>/referral</code> (the old waitlist admin). It uses <code>ADMIN_EMAIL</code>, <code>ADMIN_PASSWORD</code>, <code>ADMIN_SECRET</code> from <code>backend/.env</code> and is separate from the Supabase admin.</p>
+
+<div class="tip">
+  <strong>Test accounts (do not share publicly)</strong><br/>
+  Admin (Supabase): <code>info@valuevade.com</code> / <code>VV-Admin#2026-Sec</code><br/>
+  Regular user: <code>testagent2026@gmail.com</code> / <code>TestPass123!</code><br/>
+  NISM tester: <code>nism.tester@valuevade.com</code> / <code>NismTest#2026</code>
+</div>
+
+<!-- ═══════════════════════════════════════════ 8. PAYMENT -->
+<h2 id="s8">8. Payment Flow</h2>
+
+<p>Payments use <strong>Razorpay</strong> in TEST MODE (key <code>rzp_test_TVeabM7YAvLTQs</code>). The price is ₹999 (99 900 paise).</p>
+
+<div class="flow">
+Browser                    Backend                  Razorpay Cloud
+   │                          │                          │
+   │  1. GET /api/payments/eligibility                   │
+   │◄─────────────────────────┤                          │
+   │  {paid: false}           │                          │
+   │                          │                          │
+   │  2. POST /api/payments/create-order                 │
+   │─────────────────────────►│                          │
+   │                          │  POST /orders ──────────►│
+   │                          │◄────────────────────────-│
+   │                          │  {id: order_123}         │
+   │◄─────────────────────────│                          │
+   │  {razorpay_order_id}     │                          │
+   │                          │                          │
+   │  3. Razorpay iframe opens (browser-side JS)         │
+   │  User enters card details                           │
+   │─────────────────────────────────────────────────────►
+   │◄─────────────────────────────────────────────────────
+   │  {razorpay_payment_id, razorpay_signature}          │
+   │                          │                          │
+   │  4. POST /api/payments/verify                       │
+   │─────────────────────────►│                          │
+   │                          │  HMAC verify signature   │
+   │                          │  _mark_paid(user_id)     │
+   │                          │  Send receipt email      │
+   │◄─────────────────────────│                          │
+   │  {success: true}         │                          │
+   │                          │                          │
+   │  (Also: Razorpay server sends webhook to /payments/webhook)
+</div>
+
+<h4>Payment gate components</h4>
+<table>
+  <tr><th>Component</th><th>Where it's used</th><th>What it does</th></tr>
+  <tr><td>EnrollmentGate</td><td>Wraps dashboard/learning routes</td><td>If user is not paid, shows PaywallModal before allowing access</td></tr>
+  <tr><td>SessionPaymentGate</td><td>Wraps session routes</td><td>Re-checks <code>/api/payments/eligibility</code> before each session</td></tr>
+  <tr><td>CustomizePaymentGate</td><td>Wraps /customize, /preview, /confirm</td><td>Prevents unpaid users from getting a custom learning path for free</td></tr>
+  <tr><td>PaywallModal</td><td>Rendered by the gates</td><td>Shows pricing, opens Razorpay checkout, shows success overlay on completion</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 9. AI FEATURES -->
+<h2 id="s9" class="page-break">9. AI Features</h2>
+
+<p>All AI calls use the <strong>Emergent Universal LLM Key</strong> via the <code>emergentintegrations</code> Python library. This single key works for Claude (Anthropic), Gemini (Google), and GPT (OpenAI) without separate API keys.</p>
+
+<h3>Pari (AI Tutor Chatbot)</h3>
+<table>
+  <tr><th>Aspect</th><th>Detail</th></tr>
+  <tr><td>Model</td><td>Claude Haiku (fast, cheap)</td></tr>
+  <tr><td>Entry points</td><td>Quick chat (3 turns / session · 5 sessions / day) and Extended chat (15 turns / session · 3 sessions / day — activated from My Doubts page)</td></tr>
+  <tr><td>Context</td><td>Pari knows which module, phase (notes/quiz/sim), and optionally the specific quiz question the student got wrong</td></tr>
+  <tr><td>Off-topic detection</td><td>A separate classification call checks if the question is finance-related. 2 off-topic messages → session ends.</td></tr>
+  <tr><td>Budget cap</td><td><code>profiles.pari_total_cost_inr &gt;= 500</code> → HTTP 402 (Pari disabled for that user). Admin can see cost in the Users tab.</td></tr>
+  <tr><td>Cache</td><td>Identical questions (semantic hash) return cached answers without an LLM call. Stored in <code>doubt_qa_cache</code> table.</td></tr>
+  <tr><td>UI</td><td>Floating pill/button + modal. Avatar has 12 PNG poses (pari_thinking.png, pari_explaining.png, etc.) that animate based on state.</td></tr>
+</table>
+
+<h3>Mock Interview Simulator</h3>
+<p>See Section 4d for the full breakdown. The simulator reuses the same prompts and stage logic for both paid users (<code>interview_sim_endpoints.py</code>) and the free trial (<code>guest_interview_sim_endpoints.py</code>).</p>
+
+<h3>AI Course Customization</h3>
+<p>At <code>/course/:courseId/customize</code>, students answer questions about their background and goals. The backend calls <code>POST /api/customize/generate</code> which uses Claude Sonnet to produce a personalised learning path suggestion. Capped at 4 generations per user (tracked in <code>profiles.customize_generations_count</code>).</p>
+
+<h3>Quick Revision Sheet</h3>
+<p>After completing a session, students can request a Pari-generated revision sheet: a 1-page markdown summary of the session's key concepts. Stored in <code>user_revision_sheets</code>. Generated once, cached forever for that user + session.</p>
+
+<!-- ═══════════════════════════════════════════ 10. GAMIFICATION -->
+<h2 id="s10">10. Gamification System</h2>
+
+<p>The gamification layer is built entirely on top of Supabase. The backend fires events; Supabase triggers do the heavy lifting; the frontend subscribes to realtime changes and fires visual feedback.</p>
+
+<div class="flow">
+                    Student completes a session phase
+                              ↓
+              Backend calls: award_xp(user_id, amount, reason)
+                              ↓
+         Supabase RPC inserts into user_xp_events
+                              ↓
+            DB trigger rolls up to user_stats.total_xp
+                              ↓
+         DB trigger checks for level-up → fires level_up event
+                              ↓
+              Realtime subscription in XPContext fires
+                              ↓
+              LevelUpOverlay animates in the browser</div>
+
+<h4>XP earning events</h4>
+<table>
+  <tr><th>Event</th><th>XP earned</th></tr>
+  <tr><td>notes_completed</td><td>+10</td></tr>
+  <tr><td>quiz_correct</td><td>+5 per correct answer</td></tr>
+  <tr><td>quiz_perfect</td><td>+50 bonus (100% score)</td></tr>
+  <tr><td>simulation_completed</td><td>+30</td></tr>
+  <tr><td>session_completed</td><td>+20</td></tr>
+  <tr><td>streak_day</td><td>+15</td></tr>
+  <tr><td>daily_challenge_completed</td><td>+10–+25</td></tr>
+  <tr><td>plan_daily_target</td><td>+25</td></tr>
+  <tr><td>daily_news_read</td><td>+30</td></tr>
+</table>
+
+<h4>Overlays and celebrations</h4>
+<table>
+  <tr><th>Overlay</th><th>Component</th><th>When it fires</th></tr>
+  <tr><td>XP gain particle</td><td>XPGainParticle.jsx</td><td>Every XP event</td></tr>
+  <tr><td>Level up</td><td>LevelUpOverlay.jsx</td><td>When level increases</td></tr>
+  <tr><td>Badge unlock</td><td>BadgeUnlockOverlay.jsx</td><td>When a new badge is earned (Supabase realtime)</td></tr>
+  <tr><td>Milestone celebration</td><td>MilestoneCelebrationOverlay.jsx</td><td>On completing a module or hitting 3/7/12/25/50/100 sessions</td></tr>
+  <tr><td>Daily Champion</td><td>DailyChampionOverlay.jsx</td><td>Completing all 3 daily challenges (gives +75 XP bonus)</td></tr>
+  <tr><td>Streak milestone</td><td>StreakMilestoneOverlay.jsx</td><td>Hitting 7-day, 30-day streak</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 11. ADMIN PANEL -->
+<h2 id="s11">11. Admin Panel</h2>
+
+<p>Accessible at <code>/admin-panel</code> (requires <code>info@valuevade.com</code> login). Built as a single large <code>AdminPanel.jsx</code> with tabs:</p>
+
+<table>
+  <tr><th>Tab</th><th>What admin can do</th></tr>
+  <tr><td>Users</td><td>View all users with LLM cost, mock interview count, payment status. Create new users. Hard-delete users (cascades all their data). Filter by paid/trial.</td></tr>
+  <tr><td>Curriculum</td><td>Create/rename/reorder/delete modules. Create/rename/reorder/delete sessions. Toggle free/preview flags per session. Mark a module as exam-only.</td></tr>
+  <tr><td>Videos</td><td>Upload video files (up to 5 GB via chunked upload). Or paste an external URL (YouTube/Vimeo/BunnyCDN).</td></tr>
+  <tr><td>Notes</td><td>Create/edit/delete/reorder flashcard notes cards per session. Upload PDF or PPT/PPTX files (PPT auto-converts to PDF via LibreOffice).</td></tr>
+  <tr><td>Quizzes</td><td>Add/edit/delete MCQ questions per session.</td></tr>
+  <tr><td>Simulations</td><td>View auto-generated simulations. Edit titles and configs.</td></tr>
+  <tr><td>Mock Exams</td><td>Create exam config per module (time limit, pass %). Add/edit/delete questions. Bulk import via CSV paste.</td></tr>
+  <tr><td>Mock Interviews</td><td>Create/edit/delete interview sim configs (firm name, role, process structure, case workbook).</td></tr>
+  <tr><td>Rewards</td><td>Create/edit rewards linked to module or capstone completion. Upload resource files (PDF/DOCX/ZIP up to 25 MB). View LinkedIn share claims (including unverified ones).</td></tr>
+  <tr><td>Free Trials</td><td>View all trial entries with email, status, verdict, IP hash.</td></tr>
+  <tr><td>Payments</td><td>Overview stats (total revenue, paid users). Recent payment list. CSV export.</td></tr>
+  <tr><td>Errors</td><td>Client-side error reports submitted by users. Triage: open → resolved.</td></tr>
+  <tr><td>FAQs</td><td>Manage FAQ entries shown on the landing page and course details page.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 12. SECURITY -->
+<h2 id="s12">12. Security Model</h2>
+
+<h4>Authentication enforced everywhere</h4>
+<ul>
+  <li>All non-public backend routes use <code>Depends(_get_supabase_user)</code> to verify the Supabase JWT.</li>
+  <li>All admin routes additionally call <code>_ensure_admin(user)</code>.</li>
+  <li>Guest endpoints (free trial / preview sessions) have no auth but are rate-limited.</li>
+</ul>
+
+<h4>Razorpay webhook security</h4>
+<p>The webhook at <code>POST /api/payments/webhook</code> verifies every request using HMAC-SHA256 with <code>RAZORPAY_WEBHOOK_SECRET</code>. If the secret is not set in <code>.env</code>, the endpoint returns HTTP 503 (<em>hard reject</em>). This prevents payment forgery.</p>
+
+<h4>Trial ownership</h4>
+<p>The <code>PATCH /api/free-trial/{id}</code> endpoint requires the caller to provide the <code>email</code> used to start the trial. Mismatched email → HTTP 403. This prevents one user from corrupting another user's trial results.</p>
+
+<h4>SSRF protection (LinkedIn rewards)</h4>
+<p>When verifying a LinkedIn share URL, the <code>_SafeRH</code> custom redirect handler only allows HTTP redirects to <code>linkedin.com</code> or <code>lnkd.in</code>. Any redirect to another host (including internal IP addresses) is blocked before a socket is opened.</p>
+
+<h4>Rate limits</h4>
+<table>
+  <tr><th>Surface</th><th>Limit</th><th>Scope</th></tr>
+  <tr><td>Guest LLM (free trial)</td><td>40 calls per trial-id</td><td>In-memory per-process</td></tr>
+  <tr><td>Guest LLM (free trial)</td><td>120 calls per IP hash</td><td>In-memory per-process</td></tr>
+  <tr><td>Admin login (legacy /referral)</td><td>10 attempts / 5 minutes</td><td>In-memory per-IP</td></tr>
+  <tr><td>Pari chatbot</td><td>₹500 lifetime per user</td><td>DB: profiles.pari_total_cost_inr</td></tr>
+  <tr><td>AI Customize</td><td>4 generations lifetime per user</td><td>DB: profiles.customize_generations_count</td></tr>
+</table>
+
+<h4>CORS</h4>
+<p>Pinned to <code>https://mock-exam-mvp.preview.emergentagent.com</code> via <code>CORS_ORIGINS</code> in <code>backend/.env</code>. A startup warning is logged if <code>CORS_ORIGINS</code> is not set (falls back to <code>*</code> with credentials disabled).</p>
+
+<!-- ═══════════════════════════════════════════ 13. ENV VARS -->
+<h2 id="s13">13. Environment Variables</h2>
+
+<h4>backend/.env</h4>
+<table>
+  <tr><th>Variable</th><th>Required?</th><th>What it's for</th></tr>
+  <tr><td><code>MONGO_URL</code></td><td>Legacy (unused)</td><td>Left from initial scaffold. Not used for product data.</td></tr>
+  <tr><td><code>DB_NAME</code></td><td>Legacy (unused)</td><td>Same as above.</td></tr>
+  <tr><td><code>REACT_APP_SUPABASE_URL</code></td><td><strong>Required</strong></td><td>Supabase project URL (e.g. <code>https://abc.supabase.co</code>)</td></tr>
+  <tr><td><code>SUPABASE_SERVICE_ROLE_KEY</code></td><td><strong>Required</strong></td><td>Service role JWT — bypasses RLS. Never expose to the browser.</td></tr>
+  <tr><td><code>EMERGENT_LLM_KEY</code></td><td><strong>Required</strong></td><td>Universal LLM key for Claude/Gemini/GPT calls. Obtain from Emergent Dashboard → Profile → Universal Key.</td></tr>
+  <tr><td><code>RAZORPAY_KEY_ID</code></td><td>Required for payments</td><td>Razorpay publishable key (starts with <code>rzp_test_</code>)</td></tr>
+  <tr><td><code>RAZORPAY_KEY_SECRET</code></td><td>Required for payments</td><td>Razorpay secret key (payment signature verification)</td></tr>
+  <tr><td><code>RAZORPAY_WEBHOOK_SECRET</code></td><td>Required for webhook</td><td>Set in Razorpay Dashboard → Webhooks. If blank, webhook endpoint returns 503.</td></tr>
+  <tr><td><code>RESEND_API_KEY</code></td><td>Optional</td><td>If blank, receipt emails are silently skipped. Get from resend.com.</td></tr>
+  <tr><td><code>SENDER_EMAIL</code></td><td>Optional</td><td>From address for receipt emails. Default: <code>receipts@valuevade.com</code></td></tr>
+  <tr><td><code>CORS_ORIGINS</code></td><td>Recommended</td><td>Comma-separated allowed origins. Default: <code>*</code> (logs a warning).</td></tr>
+  <tr><td><code>ADMIN_EMAIL</code></td><td>Legacy admin only</td><td>Login email for the legacy <code>/referral</code> admin panel</td></tr>
+  <tr><td><code>ADMIN_PASSWORD</code></td><td>Legacy admin only</td><td>Login password for the legacy admin panel</td></tr>
+  <tr><td><code>ADMIN_SECRET</code></td><td>Legacy admin only</td><td>JWT signing secret for legacy admin tokens</td></tr>
+</table>
+
+<h4>frontend/.env</h4>
+<table>
+  <tr><th>Variable</th><th>Required?</th><th>What it's for</th></tr>
+  <tr><td><code>REACT_APP_BACKEND_URL</code></td><td><strong>Required</strong></td><td>The external base URL of the API (e.g. <code>https://mock-exam-mvp.preview.emergentagent.com</code>). All <code>fetch()</code> calls use this.</td></tr>
+  <tr><td><code>REACT_APP_SUPABASE_URL</code></td><td><strong>Required</strong></td><td>Supabase project URL (same as backend)</td></tr>
+  <tr><td><code>REACT_APP_SUPABASE_ANON_KEY</code></td><td><strong>Required</strong></td><td>Supabase anon/public key. Safe to expose in the browser — Supabase RLS enforces access.</td></tr>
+</table>
+
+<div class="danger">
+  <strong>Never commit .env files.</strong> They contain secrets. The <code>.gitignore</code> excludes them. If you accidentally push secrets, rotate all keys immediately.
+</div>
+
+<!-- ═══════════════════════════════════════════ 14. DEV SETUP -->
+<h2 id="s14">14. Local Development Setup</h2>
+
+<h4>Prerequisites</h4>
+<ul>
+  <li>Python 3.11+</li>
+  <li>Node.js 18+ and yarn</li>
+  <li>Access to the Supabase project (ask the admin for the keys)</li>
+</ul>
+
+<h4>Backend</h4>
+<pre><code>cd /app/backend
+
+# Install dependencies
+pip install -r requirements.txt
+pip install emergentintegrations --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/
+
+# Copy .env (ask admin for values)
+cp .env.example .env
+# Fill in: REACT_APP_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, EMERGENT_LLM_KEY, etc.
+
+# Start backend (supervisor manages this in production)
+uvicorn server:app --host 0.0.0.0 --port 8001 --reload</code></pre>
+
+<h4>Frontend</h4>
+<pre><code>cd /app/frontend
+
+# Install dependencies
+yarn install
+
+# Copy .env
+cp .env.example .env
+# Fill in: REACT_APP_BACKEND_URL, REACT_APP_SUPABASE_URL, REACT_APP_SUPABASE_ANON_KEY
+
+# Start frontend
+yarn start</code></pre>
+
+<h4>Supervisor (production)</h4>
+<pre><code># The production environment uses supervisord to keep both services running
+sudo supervisorctl status             # Check if running
+sudo supervisorctl restart backend    # Restart backend (needed after .env changes)
+sudo supervisorctl restart frontend   # Restart frontend (needed after .env changes)
+
+# View logs
+tail -f /var/log/supervisor/backend.err.log
+tail -f /var/log/supervisor/frontend.err.log</code></pre>
+
+<h4>Database migrations</h4>
+<p>SQL migrations are in <code>/app/scripts/migrations/</code>. They must be run manually in <strong>Supabase Studio → SQL Editor</strong>. The migrations are numbered (e.g. <code>0043_mock_exams.sql</code>). Run them in order when setting up a fresh project.</p>
+
+<!-- ═══════════════════════════════════════════ 15. USER JOURNEYS -->
+<h2 id="s15" class="page-break">15. Key User Journeys</h2>
+
+<h3>Journey 1: New student enrolling and starting</h3>
+<div class="flow">
+1. Visit / (landing page)
+   ↓
+2. Click "Start Free Session" → /try-free/:sessionId (no login needed)
+   ↓
+3. Complete a free preview session (notes → quiz → sim)
+   ↓
+4. Click enroll CTA → /signup → create Supabase account
+   ↓
+5. /start → EnrollmentChoicePage → choose course
+   ↓
+6. PaywallModal opens → Razorpay checkout → pay ₹999
+   ↓
+7. /api/payments/verify → _mark_paid() → user_payment_status.paid=true
+   ↓
+8. enrollDirect() creates user_enrollments + user_modules rows
+   ↓
+9. StudyPlanWizard opens automatically (from ?setup_plan=1 on /dashboard)
+   ↓
+10. /dashboard → Continue Learning → /session/:id/start</div>
+
+<h3>Journey 2: Student completing a session</h3>
+<div class="flow">
+/session/:id/notes
+  → video plays (SessionVideoPlayer)
+  → student clicks through flashcard notes
+  → marks notes_completed=true via PATCH user_sessions
+  ↓
+/session/:id/notes/complete → /session/:id/quiz/start
+  ↓
+/session/:id/quiz
+  → answers MCQ questions
+  → POST /api/quiz/submit → award_xp()
+  ↓
+/session/:id/quiz/complete → /session/:id/simulation/start
+  ↓
+/session/:id/simulation
+  → opens Excel/Decision/Book sim
+  → submits answers
+  → simulation_completed=true
+  ↓
+/session/:id/complete
+  → MilestoneCelebrationOverlay fires (if applicable)
+  → study plan session-completed hook fires
+  → SessionCompleteSummaryCard shown</div>
+
+<h3>Journey 3: Free trial mock interview</h3>
+<div class="flow">
+Landing page FreeTrialCTA → user enters email
+  ↓
+POST /api/free-trial/start → creates free_mock_trials row → returns trial_id
+  ↓
+/free-trial/:trialId → GuestInterviewPlayer loads
+  localStorage['guest-sim:{trialId}'] = {} (starts empty)
+  ↓
+Stage 1: Application (POST /api/guest-sim/:id/application)
+Stage 2: Aptitude MCQ (POST /api/guest-sim/:id/aptitude/start, /submit)
+Stage 3: Behavioural (POST /api/guest-sim/:id/interview/begin + /answer × N)
+Stage 4: Technical   (POST /api/guest-sim/:id/interview/begin + /answer × N)
+Stage 5: Case Study  (POST /api/guest-sim/:id/case/submit → Sonnet final report)
+  ↓
+DecisionStage shows offer/rejection letter
+  ↓
+CTA: "Sign up for full access" → /signup</div>
+
+<!-- ═══════════════════════════════════════════ 16. INTEGRATIONS -->
+<h2 id="s16">16. Third-Party Integrations</h2>
+
+<table>
+  <tr><th>Service</th><th>Used for</th><th>Key file(s)</th><th>Notes</th></tr>
+  <tr><td><strong>Supabase</strong></td><td>PostgreSQL database, Auth (JWT), Storage (videos, PDFs, rewards files)</td><td>server.py, wave_endpoints.py, lib/supabase.js</td><td>Service role key used on backend. Anon key used on frontend.</td></tr>
+  <tr><td><strong>Razorpay</strong></td><td>Payment checkout (TEST MODE)</td><td>payment_endpoints.py, utils/razorpay.js, payments/usePaymentFlow.jsx</td><td>₹999 price. RAZORPAY_WEBHOOK_SECRET must be set for webhooks.</td></tr>
+  <tr><td><strong>Resend</strong></td><td>Transactional emails (payment receipts)</td><td>payment_endpoints.py</td><td>Gated on RESEND_API_KEY. Sender: receipts@valuevade.com</td></tr>
+  <tr><td><strong>Emergent LLM Key</strong></td><td>All AI features (Pari, interview sim, revision sheets, customization)</td><td>server.py, interview_sim_endpoints.py, guest_interview_sim_endpoints.py</td><td>Universal key: works for Claude, Gemini, GPT. Get from Emergent Dashboard → Profile → Universal Key.</td></tr>
+  <tr><td><strong>Claude Haiku</strong></td><td>Pari doubt chat, interview rounds 1–4, aptitude generation</td><td>via emergentintegrations</td><td>~$1/M input, ~$5/M output. Cheap and fast.</td></tr>
+  <tr><td><strong>Claude Sonnet</strong></td><td>Interview final decision report, AI course customization</td><td>via emergentintegrations</td><td>~$3/M input, ~$15/M output. Higher quality for critical outputs.</td></tr>
+  <tr><td><strong>OpenAI TTS</strong></td><td>Interviewer voice synthesis in mock interview</td><td>interview_sim_endpoints.py, guest_interview_sim_endpoints.py</td><td>Uses Emergent LLM key. Voices: alloy, nova, echo, etc.</td></tr>
+  <tr><td><strong>Univer</strong></td><td>Real-Excel spreadsheet experience in Excel simulations</td><td>simulations/UniverSpreadsheet.jsx</td><td>v0.25.1. Ribbon toolbar, 500+ functions, drag-fill, multi-sheet.</td></tr>
+  <tr><td><strong>LibreOffice</strong></td><td>Server-side PPT → PDF conversion</td><td>wave_endpoints.py (_convert_pptx_to_pdf)</td><td>Installed on the server. Runs in a subprocess via asyncio.to_thread.</td></tr>
+</table>
+
+<!-- ═══════════════════════════════════════════ 17. TESTING -->
+<h2 id="s17">17. Testing</h2>
+
+<p>Tests are in <code>/app/backend/tests/</code> and run with <code>pytest</code>. There are no frontend unit tests (the app relies on E2E testing via Playwright).</p>
+
+<h4>Running backend tests</h4>
+<pre><code>cd /app/backend
+pytest tests/ -v             # Run all tests
+pytest tests/test_rewards.py -v   # Run a specific file</code></pre>
+
+<h4>Test files and what they cover</h4>
+<table>
+  <tr><th>File</th><th>What it tests</th></tr>
+  <tr><td>test_rewards.py</td><td>Reward eligibility, claim flow, LinkedIn verification, admin CRUD, upload, graceful degradation</td></tr>
+  <tr><td>test_free_trial.py</td><td>Trial start, dedup, provision flow</td></tr>
+  <tr><td>test_mock_exam_flow.py</td><td>Admin exam CRUD, CSV import, student start/submit/attempts</td></tr>
+  <tr><td>test_interview_sim.py</td><td>Full 5-round interview flow (application → decision)</td></tr>
+  <tr><td>test_payment_polish_iter79.py</td><td>Payment eligibility auth, verify fast-fail, mock-success</td></tr>
+  <tr><td>test_delete_user_and_linkedin.py</td><td>Admin delete user cascade + LinkedIn URL validation</td></tr>
+  <tr><td>test_llm_limits_and_pari.py</td><td>Pari cost cap, customize generation cap</td></tr>
+  <tr><td>test_guest_sim.py</td><td>Guest interview endpoints (stateless, rate-limited)</td></tr>
+</table>
+
+<h4>E2E testing with Playwright</h4>
+<p>The test infrastructure includes a Playwright-based testing agent that runs browser automation. Test credentials and user states are documented in <code>/app/memory/test_credentials.md</code>. Test reports are stored as JSON in <code>/app/test_reports/iteration_N.json</code>.</p>
+
+<div class="tip">
+  <strong>Before testing any auth-dependent flow:</strong> read <code>/app/memory/test_credentials.md</code> for the current email/password of each test account. These are kept up-to-date after every session.
+</div>
+
+<!-- ═══════════════════════════════════════════ 18. PATTERNS -->
+<h2 id="s18">18. Common Patterns &amp; Conventions</h2>
+
+<h3>How to add a new API endpoint</h3>
+<pre><code># 1. Decide which module it belongs to:
+#    - Core/Pari/Gamification/Portfolio → server.py
+#    - Curriculum/Admin/Rewards         → wave_endpoints.py
+#    - Payments                         → payment_endpoints.py
+#    - Interview sim                    → interview_sim_endpoints.py
+
+# 2. Inside the register_*() function, define the route:
+@api_router.get("/my-new-endpoint")
+async def my_endpoint(user=Depends(_get_supabase_user)):
+    # Always validate auth first
+    data = _supabase_get("some_table?user_id=eq." + _urlparse.quote(user["id"]))
+    return {"result": data}
+
+# 3. All routes MUST be inside register_*() — not at module level.
+#    (So the api_router is available as a closure variable.)
+
+# 4. Always prefix with /api when calling from the frontend:
+#    fetch(`${REACT_APP_BACKEND_URL}/api/my-new-endpoint`, ...)</code></pre>
+
+<h3>How to add a new frontend page</h3>
+<pre><code># 1. Create the component:
+//  /app/frontend/src/components/MyNewPage.jsx
+export default function MyNewPage() {
+  const { session } = useAuth();
+  // ...
+}
+
+# 2. Add to App.js:
+import MyNewPage from './components/MyNewPage';
+// Inside &lt;Routes&gt;:
+&lt;Route path="/my-new-page" element={&lt;ProtectedRoute&gt;&lt;MyNewPage /&gt;&lt;/ProtectedRoute&gt;} /&gt;
+
+# 3. Add a link in Sidebar.jsx if it's a learning-flow page.
+
+# 4. Add data-testid attributes to all interactive elements:
+&lt;button data-testid="my-new-page-submit-btn"&gt;Submit&lt;/button&gt;</code></pre>
+
+<h3>How to make an authenticated API call from the frontend</h3>
+<pre><code>import { useAuth } from '../contexts/AuthContext';
+
+function MyComponent() {
+  const { session } = useAuth();
+  const API = process.env.REACT_APP_BACKEND_URL;
+
+  const fetchData = async () => {
+    const res = await fetch(`${API}/api/some-endpoint`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+    });
+    if (!res.ok) throw new Error(await res.text());
+    return res.json();
+  };
+}</code></pre>
+
+<h3>How to write to the DB from the backend</h3>
+<pre><code># Always use the helpers, never raw HTTP calls:
+
+# Read
+rows = _supabase_get("profiles?id=eq.abc123&select=*&limit=1")
+user = rows[0] if rows else None
+
+# Write (insert)
+new_row = _supabase_post("user_sessions", {
+    "user_module_id": uid,
+    "master_session_id": sid,
+    "notes_completed": False,
+})
+
+# Update (patch)
+_supabase_patch(f"user_sessions?id=eq.{session_id}", {
+    "notes_completed": True,
+    "is_completed": True,
+})
+
+# Delete
+_supabase_delete(f"user_reward_claims?user_id=eq.{uid}&reward_id=eq.{rid}")</code></pre>
+
+<h3>Naming conventions</h3>
+<table>
+  <tr><th>What</th><th>Convention</th><th>Example</th></tr>
+  <tr><td>Backend functions</td><td>snake_case with _ prefix for privates</td><td><code>_get_supabase_user()</code>, <code>register_wave_endpoints()</code></td></tr>
+  <tr><td>Backend routes</td><td>kebab-case URL, snake_case function</td><td><code>/api/mock-exams/{id}</code>, <code>async def get_mock_exam</code></td></tr>
+  <tr><td>Frontend components</td><td>PascalCase files + functions</td><td><code>MockExamPage.jsx</code>, <code>export default function MockExamPage()</code></td></tr>
+  <tr><td>Frontend utilities</td><td>camelCase files + functions</td><td><code>sessionTime.js</code>, <code>effectiveMinutes()</code></td></tr>
+  <tr><td>Frontend contexts</td><td>XxxContext.jsx + useXxx() hook</td><td><code>AuthContext.jsx</code>, <code>useAuth()</code></td></tr>
+  <tr><td>Env vars</td><td>UPPER_SNAKE_CASE</td><td><code>REACT_APP_BACKEND_URL</code></td></tr>
+  <tr><td>data-testid</td><td>kebab-case describing function</td><td><code>data-testid="quiz-submit-btn"</code></td></tr>
+  <tr><td>Supabase table names</td><td>snake_case, plural</td><td><code>master_sessions</code>, <code>user_badges</code></td></tr>
+</table>
+
+<h3>Important "gotchas" for junior developers</h3>
+
+<div class="warn">
+  <strong>1. The mongo URL in .env is unused.</strong> All data is in Supabase. <code>MONGO_URL</code> and <code>DB_NAME</code> are legacy leftovers. Ignore them.
+</div>
+
+<div class="warn">
+  <strong>2. session.interview_completed is not used.</strong> The interview phase was disabled (cost reduction). The <code>allDone()</code> function only checks notes + quiz + simulation. Do not add logic that depends on <code>interview_completed</code>.
+</div>
+
+<div class="warn">
+  <strong>3. Don't use npm — use yarn.</strong> The frontend uses yarn for package management. Running <code>npm install</code> will create a conflicting <code>package-lock.json</code> and can break the build.
+</div>
+
+<div class="warn">
+  <strong>4. Supabase ObjectIds vs UUIDs.</strong> All IDs are UUID v4 strings. Never pass them as integers. Always URL-encode them before including in PostgREST filter strings (use <code>urllib.parse.quote(id)</code>).
+</div>
+
+<div class="warn">
+  <strong>5. Hot reload on code, but supervisor restart on .env.</strong> Changing Python or JSX files triggers automatic hot-reload. Changing <code>.env</code> files or installing new packages requires <code>sudo supervisorctl restart backend</code> (or <code>frontend</code>).
+</div>
+
+<div class="tip">
+  <strong>Where to look when something breaks:</strong><br/>
+  Backend crash: <code>tail -n 100 /var/log/supervisor/backend.err.log</code><br/>
+  Frontend crash: check the browser console (F12)<br/>
+  Supabase query failing: add <code>print()</code> in the backend and re-run the request<br/>
+  Auth issue: verify the Bearer token hasn't expired by calling <code>GET /api/health</code> with it
+</div>
+
+<hr />
+
+<div style="margin-top: 4rem; text-align: center; font-family: 'Menlo', monospace; font-size: 0.75em; color: #94a3b8;">
+  § ∞ // VALUEVADE · DEVELOPER GUIDE · 2026 · INTERNAL USE ONLY
+  <br/>
+  For questions, check /app/memory/PRD.md or ask the senior developer.
+</div>
+
+</body>
+</html>
