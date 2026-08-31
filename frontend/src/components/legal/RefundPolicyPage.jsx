@@ -7,7 +7,7 @@ import { ArrowLeft } from 'lucide-react';
  * Refund & Cancellation Policy — DRAFT (Prompt-4 of the Aug-2026 SEO/GEO
  * rebuild). Since Prompt 4 shipped without the two "ready-made" refund
  * options referenced in its slot notes, this draft picks a widely-used
- * software-course model that fits the ₹1,500 / free-first-session product:
+ * software-course model that fits the ₹999 / free-first-session product:
  *   - Free first session doubles as the "try before you buy" window.
  *   - After paid access is granted, no refund by default (you already tried
  *     the product).
@@ -24,7 +24,7 @@ export default function RefundPolicyPage() {
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--color-text)]">
       <Helmet>
         <title>Refund & Cancellation Policy | Valuevade</title>
-        <meta name="description" content="Valuevade's refund and cancellation policy for the ₹1,500 lifetime Equity Research Analyst Program." />
+        <meta name="description" content="Valuevade's refund and cancellation policy for the ₹999 lifetime Equity Research Analyst Program." />
         <link rel="canonical" href="https://valuevade.com/refund-policy" />
       </Helmet>
       <main className="max-w-3xl mx-auto px-6 py-14 sm:py-20">
@@ -43,7 +43,7 @@ export default function RefundPolicyPage() {
         <div className="prose prose-invert max-w-none space-y-6 text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed" data-testid="legal-body">
           <p>
             Valuevade sells the Equity Research Analyst Program as a one-time
-            ₹1,500 lifetime licence. This policy explains when refunds are and
+            ₹999 lifetime licence. This policy explains when refunds are and
             aren&apos;t available.
           </p>
 
@@ -52,7 +52,7 @@ export default function RefundPolicyPage() {
             Every visitor gets one full session — notes, quiz, mock interview
             and simulation — free of charge, no card required. This exists so
             you can judge the quality of the product before committing to the
-            ₹1,500 payment. Please use it.
+            ₹999 payment. Please use it.
           </p>
 
           <h2 className="font-clash text-xl font-semibold text-[var(--color-text)] mt-8 mb-2">Refunds after paid access</h2>

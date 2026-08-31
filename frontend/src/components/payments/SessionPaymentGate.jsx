@@ -54,7 +54,7 @@ export default function SessionPaymentGate({ children }) {
   if (d && !d.session_allowed) {
     return (
       <PaywallModal
-        amountInr={d.amount_inr || 1700}
+        amountInr={d.amount_inr || 999}
         tierAvailable={d.pricing_tier_available || 'post_trial'}
         onPaid={fetchEligibility}
       />

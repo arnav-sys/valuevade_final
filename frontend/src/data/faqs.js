@@ -12,14 +12,14 @@ export const FAQS = [
     id: 'course-what-is-valuevade',
     category: 'Course',
     question: 'What is Valuevade?',
-    answer: "Valuevade is an AI-personalised equity research and financial modelling course for Indian finance students and early-career switchers. The Equity Research Analyst Program includes 21 modules, 239 hands-on sessions and 3 capstone projects, with a personalised AI roadmap, a 24/7 AI tutor (Pari), AI mock interviews, NISM Series XV certification preparation, and a downloadable Certificate of Completion. It's fully self-paced online, built on Indian companies and Ind AS conventions, and costs ₹1,500 one-time for lifetime access.",
+    answer: "Valuevade is an AI-personalised equity research and financial modelling course for Indian finance students and early-career switchers. The Equity Research Analyst Program includes 21 modules, 239 hands-on sessions and 3 capstone projects, with a personalised AI roadmap, a 24/7 AI tutor (Pari), AI mock interviews, NISM Series XV certification preparation, and a downloadable Certificate of Completion. It's fully self-paced online, built on Indian companies and Ind AS conventions, and costs ₹999 one-time for lifetime access.",
     tags: ['what', 'about', 'platform', 'valuevade', 'introduction'],
   },
   {
     id: 'pricing-cost',
     category: 'Pricing',
     question: 'How much does the Valuevade course cost?',
-    answer: "The Equity Research Analyst Program costs ₹1,500 as a one-time payment for lifetime access. That includes all 21 modules, 239 sessions and simulations, the three capstone projects, Pari (the 24/7 AI tutor), AI mock interviews, NISM Series XV certification prep, and your Certificate of Completion. There is no subscription, no post-trial price change, and no extra charge for the certificate. You can try your first full session — notes, quiz, interview and simulation — free before paying, with no card required.",
+    answer: "The Equity Research Analyst Program costs ₹999 as a one-time payment for lifetime access. That includes all 21 modules, 239 sessions and simulations, the three capstone projects, Pari (the 24/7 AI tutor), AI mock interviews, NISM Series XV certification prep, and your Certificate of Completion. There is no subscription, no post-trial price change, and no extra charge for the certificate. You can try your first full session — notes, quiz, interview and simulation — free before paying, with no card required.",
     tags: ['price', 'cost', 'fee', 'pricing', 'rupees', 'inr', 'how much', 'subscription'],
   },
   {
@@ -33,7 +33,7 @@ export const FAQS = [
     id: 'pricing-vs-competitors',
     category: 'Pricing',
     question: 'How is Valuevade so much cheaper than other equity research courses in India?',
-    answer: "Because it's software, not batches. Traditional programs price in live faculty hours, physical classrooms and sales teams — typically ₹25,000 to ₹1,20,000. Valuevade delivers the same skill set through recorded expert lectures, auto-graded simulations and an AI tutor, built by a solo founder with no campus and no sales floor. Lower cost structure, lower price — ₹1,500 lifetime. The free first session exists so you can judge the quality before paying anything.",
+    answer: "Because it's software, not batches. Traditional programs price in live faculty hours, physical classrooms and sales teams — typically ₹25,000 to ₹1,20,000. Valuevade delivers the same skill set through recorded expert lectures, auto-graded simulations and an AI tutor, built by a solo founder with no campus and no sales floor. Lower cost structure, lower price — ₹999 lifetime. The free first session exists so you can judge the quality before paying anything.",
     tags: ['cheap', 'price comparison', 'affordable', 'why cheap', 'cost'],
   },
   {

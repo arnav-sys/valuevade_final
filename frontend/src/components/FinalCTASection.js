@@ -45,7 +45,7 @@ export default function FinalCTASection() {
         <div className="flex items-center gap-3 mb-10 lg:mb-12">
           <span className="lv-chapter">§11 // ENROL</span>
           <span className="h-px flex-1 max-w-32 bg-[var(--color-border)]" aria-hidden="true" />
-          <span className="lv-chapter">₹1,500 · LIFETIME · NO CARD REQUIRED</span>
+          <span className="lv-chapter">₹999 · LIFETIME · NO CARD REQUIRED</span>
         </div>
 
         <div
@@ -88,7 +88,7 @@ export default function FinalCTASection() {
               className="lv-cta"
               data-testid="final-cta-button"
             >
-              Start The Program · ₹1,500 Lifetime
+              Start The Program · ₹999 Lifetime
               <ArrowRight size={14} strokeWidth={2.5} />
             </Link>
             <p className="font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-muted)]" data-testid="final-cta-trust">
@@ -99,7 +99,7 @@ export default function FinalCTASection() {
           {/* Data-bar footer */}
           <div className="mt-10 pt-6 border-t border-[var(--color-border)] grid grid-cols-2 sm:grid-cols-4 gap-4">
             {[
-              ['PRICE', '₹1,500'],
+              ['PRICE', '₹999'],
               ['ACCESS', 'LIFETIME'],
               ['MODULES', '21'],
               ['SESSIONS', '239'],

@@ -115,7 +115,7 @@ export default function EnrollmentPage() {
   };
 
   // Payment must succeed before enrollDirect() ever runs — enrolling for
-  // free was a bug (the "Enrol Now — ₹1,500" CTA promised payment).
+  // free was a bug (the "Enrol Now — ₹999" CTA promised payment).
   const { startPayment, busy: paying, mockModal, successOverlay } = usePaymentFlow({ onSuccess: handleStart });
   const handlePayAndStart = () => {
     setError(null);
@@ -279,11 +279,11 @@ export default function EnrollmentPage() {
                   data-testid="enrollment-start-button"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm sm:text-base font-semibold font-bricolage hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                 >
-                  {paying ? 'Opening payment…' : 'Pay ₹1,500 & Start My Journey'} <ArrowRight size={16} />
+                  {paying ? 'Opening payment…' : 'Pay ₹999 & Start My Journey'} <ArrowRight size={16} />
                 </button>
               </BreathingGlow>
               <p className="mt-4 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-fineprint">
-                ₹1,500 lifetime access · one-time payment via Razorpay · full standard curriculum
+                ₹999 lifetime access · one-time payment via Razorpay · full standard curriculum
               </p>
             </>
           )}

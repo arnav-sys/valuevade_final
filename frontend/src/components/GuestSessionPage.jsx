@@ -447,7 +447,7 @@ function PaywallCTA({ completedCount, courseId }) {
         {/* Price card */}
         <div className="rounded-2xl border border-[var(--color-primary)]/30 bg-gradient-to-br from-[var(--color-primary)]/10 to-transparent p-6 space-y-4">
           <div>
-            <p className="text-4xl font-bold text-[var(--color-text)] font-bricolage">₹1,500</p>
+            <p className="text-4xl font-bold text-[var(--color-text)] font-bricolage">₹999</p>
             <p className="text-xs text-[var(--color-text-muted)] font-mono mt-1">One-time · Lifetime access · No EMI required</p>
           </div>
           <ul className="text-sm text-left space-y-2 text-[var(--color-text-muted)] font-bricolage">
@@ -462,7 +462,7 @@ function PaywallCTA({ completedCount, courseId }) {
             className="block w-full py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold text-center hover:brightness-110 transition-all shadow-[0_0_24px_rgba(99,102,241,0.4)]"
             data-testid="paywall-enroll-btn"
           >
-            Enrol Now — ₹1,500 <ArrowRight size={14} className="inline ml-1" />
+            Enrol Now — ₹999 <ArrowRight size={14} className="inline ml-1" />
           </a>
           <p className="text-xs text-[var(--color-text-faint)] font-mono">30-day money-back guarantee</p>
         </div>
@@ -682,7 +682,7 @@ export default function GuestSessionPage() {
       <div className="border-t border-[var(--color-border)] bg-[var(--color-surface)] mt-12 py-4">
         <div className="max-w-3xl mx-auto px-4 flex items-center justify-between gap-4">
           <p className="text-xs text-[var(--color-text-muted)] font-bricolage">
-            Enjoying it? Get full access to all 239 sessions for ₹1,500 lifetime.
+            Enjoying it? Get full access to all 239 sessions for ₹999 lifetime.
           </p>
           <a
             href="/courses"

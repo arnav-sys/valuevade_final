@@ -10,8 +10,8 @@ const API = process.env.REACT_APP_BACKEND_URL;
 
 /**
  * First stop after signup. Forces every new user to choose:
- *   (a) Pay ₹1,500 upfront (mock or real Razorpay)
- *   (b) Try free — 1 session free, then ₹1,700 after.
+ *   (a) Pay ₹999 upfront (mock or real Razorpay)
+ *   (b) Try free — 1 session free, then ₹999 after.
  * Both paths land at /courses to pick a course and customise.
  */
 export default function EnrollmentChoicePage() {
@@ -74,16 +74,16 @@ export default function EnrollmentChoicePage() {
         {/* Pay Upfront */}
         <div className="relative rounded-2xl p-6 border bg-[var(--color-bg-card)] border-[var(--color-primary)] shadow-lg shadow-[var(--color-primary)]/10" data-testid="choice-upfront-card">
           <span className="absolute -top-2 right-4 px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-[var(--color-primary)] text-white">
-            Save ₹200
+            Limited offer
           </span>
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" /> Pay ₹1,500 — Start Now
+            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" /> Pay ₹999 — Start Now
           </h3>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">
-            Lock in lifetime access at the cheaper rate.
+            Lock in lifetime access at the best rate.
           </p>
           <div className="mb-5">
-            <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">{fmtINR(1500)}</span>
+            <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">{fmtINR(999)}</span>
             <span className="text-sm text-[var(--color-text-muted)] ml-1">one-time</span>
           </div>
           <ul className="space-y-2 mb-6">
@@ -100,7 +100,7 @@ export default function EnrollmentChoicePage() {
             className="w-full px-4 py-3 rounded-xl bg-[var(--color-primary)] text-white font-semibold hover:opacity-90 disabled:opacity-50 inline-flex items-center justify-center gap-2"
           >
             {payBusy && <Loader2 className="w-4 h-4 animate-spin" />}
-            Pay ₹1,500 Now
+            Pay ₹999 Now
           </button>
         </div>
 
@@ -109,7 +109,7 @@ export default function EnrollmentChoicePage() {
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1">
             Free Trial — 1 Session Free
           </h3>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">Then ₹1,700 after.</p>
+          <p className="text-sm text-[var(--color-text-muted)] mb-4">Then ₹999 after.</p>
           <div className="mb-5">
             <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">Free</span>
             <span className="text-sm text-[var(--color-text-muted)] ml-2">to start</span>
@@ -125,7 +125,7 @@ export default function EnrollmentChoicePage() {
               <Check className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" /> Upgrade anytime to unlock the rest
             </li>
             <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)] italic">
-              Sessions 2+ require ₹1,700 lifetime upgrade
+              Sessions 2+ require ₹999 lifetime upgrade
             </li>
           </ul>
           <button
@@ -151,10 +151,9 @@ export default function EnrollmentChoicePage() {
       </button>
       {showWhy && (
         <div className="mt-3 max-w-2xl text-sm text-[var(--color-text-muted)] text-center" data-testid="choice-explain-body">
-          Both options unlock the exact same course content for life. Paying upfront saves you ₹200
-          (₹1,500 vs ₹1,700) — that&apos;s the discount we give for skipping the trial. The free
-          trial includes session 1 fully (notes + quiz + AI interview + simulation). If you upgrade
-          later, the price is ₹1,700.
+          Both options unlock the exact same course content for life. Paying upfront costs just ₹999
+          one-time. The free trial includes session 1 fully (notes + quiz + AI interview + simulation).
+          If you upgrade later, the price is still ₹999.
         </div>
       )}
 

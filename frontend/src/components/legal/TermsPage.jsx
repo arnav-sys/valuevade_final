@@ -5,7 +5,7 @@ import { ArrowLeft } from 'lucide-react';
 
 /**
  * Terms of Service — DRAFT (Prompt-4 of the Aug-2026 SEO/GEO rebuild).
- * Covers: service description, ₹1,500 one-time personal-use lifetime licence,
+ * Covers: service description, ₹999 one-time personal-use lifetime licence,
  * account rules, no job guarantees, IP of course content, limitation of
  * liability, governing law India. Requires founder + counsel review.
  */
@@ -14,7 +14,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--color-text)]">
       <Helmet>
         <title>Terms of Service | Valuevade</title>
-        <meta name="description" content="Terms of Service for Valuevade — ₹1,500 one-time lifetime access licence, account rules, IP, and disclaimers." />
+        <meta name="description" content="Terms of Service for Valuevade — ₹999 one-time lifetime access licence, account rules, IP, and disclaimers." />
         <link rel="canonical" href="https://valuevade.com/terms" />
       </Helmet>
       <main className="max-w-3xl mx-auto px-6 py-14 sm:py-20">
@@ -46,12 +46,12 @@ export default function TermsPage() {
             Indian companies, 3 capstone projects, an AI tutor (Pari), AI mock interviews,
             NISM Series XV certification preparation, and a downloadable
             Certificate of Completion. The first session is free; the full programme
-            costs ₹1,500 as a one-time payment.
+            costs ₹999 as a one-time payment.
           </p>
 
           <h2 className="font-clash text-xl font-semibold text-[var(--color-text)] mt-8 mb-2">Your licence</h2>
           <p>
-            When you complete a ₹1,500 one-time payment, we grant you a
+            When you complete a ₹999 one-time payment, we grant you a
             <strong> non-exclusive, non-transferable, personal-use licence</strong> to
             access all included course content for the operational lifetime of the
             Valuevade platform (&quot;lifetime access&quot;). The licence does not include
@@ -95,7 +95,7 @@ export default function TermsPage() {
             To the maximum extent permitted by law, Valuevade&apos;s aggregate liability
             arising out of or relating to the Service is limited to the amount you paid
             us for the Service in the twelve months preceding the claim (i.e. up to
-            ₹1,500 for a one-time-payment user). Valuevade is not liable for indirect,
+            ₹999 for a one-time-payment user). Valuevade is not liable for indirect,
             incidental, or consequential damages including but not limited to lost
             profits, lost employment opportunities, or lost data.
           </p>

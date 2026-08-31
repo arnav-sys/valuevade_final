@@ -7,7 +7,7 @@ import { Check, Sparkles, Lock, Loader2 } from 'lucide-react';
 const API = process.env.REACT_APP_BACKEND_URL;
 
 /**
- * Pricing cards — 1500 (upfront) + 1700 (post-trial) — driven by
+ * Pricing cards — 999 (upfront) + 999 (post-trial) — driven by
  * /api/payments/eligibility. Server decides which tier is available;
  * the FE just renders cleanly.
  */
@@ -66,14 +66,14 @@ export default function PricingCards({ onPaid }) {
           <PricingCard
             tier="upfront"
             highlight
-            badge="Save ₹200 — limited"
+            badge="Limited offer"
             title="Pay Upfront"
-            price={1500}
-            sub="Lock in before sampling session 1"
+            price={999}
+            sub="Lock in lifetime access now"
             benefits={benefits}
             onPay={() => startPayment('upfront')}
             disabled={busy}
-            ctaLabel="Pay ₹1,500 Now"
+            ctaLabel="Pay ₹999 Now"
             testid="pricing-upfront-card"
           />
         )}
@@ -83,12 +83,12 @@ export default function PricingCards({ onPaid }) {
             highlight
             badge="Unlock all sessions"
             title="Continue After Trial"
-            price={1700}
+            price={999}
             sub="One-time payment, lifetime access"
             benefits={benefits}
             onPay={() => startPayment('post_trial')}
             disabled={busy}
-            ctaLabel="Pay ₹1,700 Now"
+            ctaLabel="Pay ₹999 Now"
             testid="pricing-post-trial-card"
           />
         )}
@@ -98,7 +98,7 @@ export default function PricingCards({ onPaid }) {
             title="Try Free First"
             price={0}
             priceLabel="Free"
-            sub="Then ₹1,700 after session 1"
+            sub="Then ₹999 after session 1"
             benefits={[
               'Full session #1 — notes + quiz + interview + simulation',
               'No card required',

@@ -66,17 +66,17 @@ export default function LandingPage() {
     >
       <Helmet>
         <title>Equity Research & Financial Modelling Course — Valuevade</title>
-        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series XV prep, certificate — ₹1,500 lifetime." />
+        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series XV prep, certificate — ₹999 lifetime." />
         <link rel="canonical" href="https://valuevade.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/" />
         <meta property="og:title" content="Equity Research & Financial Modelling Course — Valuevade" />
-        <meta property="og:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹1,500 lifetime." />
+        <meta property="og:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Equity Research & Financial Modelling Course — Valuevade" />
-        <meta name="twitter:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹1,500 lifetime." />
+        <meta name="twitter:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹999 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         <script type="application/ld+json">{JSON.stringify(homeOrgJsonLd)}</script>
       </Helmet>
@@ -128,7 +128,7 @@ export default function LandingPage() {
         >
           <div className="bg-[var(--bg-primary)]/95 backdrop-blur-xl border-t border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
             <p className="text-[var(--color-text-muted)] text-sm font-bricolage flex-1">
-              ₹1,500 lifetime · Free first session
+              ₹999 lifetime · Free first session
             </p>
             <Link
               to="/signup"

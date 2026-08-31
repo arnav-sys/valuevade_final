@@ -48,7 +48,7 @@ export function buildCourseJsonLd(courseUrl) {
     },
     offers: {
       '@type': 'Offer',
-      price: '1500',
+      price: '999',
       priceCurrency: 'INR',
       availability: 'https://schema.org/InStock',
       category: 'Paid',

@@ -571,7 +571,7 @@ function PricingSection() {
         </div>
         <div className="lv-card p-7" data-testid="landing-price-trial">
           <h3 className="text-white font-bold text-xl tracking-tight mb-1">Try Free First</h3>
-          <p className="text-white/55 text-sm mb-5">Session 1 fully free, then ₹1,700.</p>
+          <p className="text-white/55 text-sm mb-5">Session 1 fully free, then ₹999.</p>
           <div className="mb-6">
             <span className="text-5xl font-bold text-white tracking-tight font-bricolage">Free</span>
             <span className="text-sm text-white/55 ml-2">to start</span>
@@ -580,7 +580,7 @@ function PricingSection() {
             <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> Full session #1 — notes, quiz, AI interview, simulation</li>
             <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> No card required</li>
             <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> Upgrade anytime to unlock the rest</li>
-            <li className="flex items-start gap-2 text-sm text-white/55 italic">Sessions 2+ require ₹1,700 lifetime upgrade</li>
+            <li className="flex items-start gap-2 text-sm text-white/55 italic">Sessions 2+ require ₹999 lifetime upgrade</li>
           </ul>
           <Link to="/start" className="lv-btn lv-btn-ghost w-full justify-center">
             Start Free Session <ArrowRight className="w-4 h-4" />

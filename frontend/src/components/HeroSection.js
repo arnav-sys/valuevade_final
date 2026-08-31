@@ -201,7 +201,7 @@ export default function HeroSection() {
               finance students and early-career switchers. The Equity Research Analyst Program covers 21
               modules and 239 hands-on sessions built on real Indian companies and Ind AS conventions,
               prepares you for the NISM Series XV exam, and ends with three portfolio-grade capstone
-              projects. Lifetime access is a one-time ₹1,500 — no subscription, and your first session is
+              projects. Lifetime access is a one-time ₹999 — no subscription, and your first session is
               free.
             </motion.p>
 
@@ -236,7 +236,7 @@ export default function HeroSection() {
             >
               NISM SERIES XV PREP
               <span className="mx-2.5 opacity-40">|</span>
-              ONE-TIME ₹1,500
+              ONE-TIME ₹999
               <span className="mx-2.5 opacity-40">|</span>
               LIFETIME ACCESS
             </motion.p>

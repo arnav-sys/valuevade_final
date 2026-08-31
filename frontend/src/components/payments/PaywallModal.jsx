@@ -7,7 +7,7 @@ import { fmtINR } from '../../utils/razorpay';
  * Full-screen paywall — fired when user tries to access a non-free session
  * while user_payment_status.paid is false.
  */
-export default function PaywallModal({ amountInr = 1700, tierAvailable = 'post_trial', onPaid }) {
+export default function PaywallModal({ amountInr = 999, tierAvailable = 'post_trial', onPaid }) {
   const navigate = useNavigate();
   const { startPayment, busy, mockModal, successOverlay } = usePaymentFlow({
     onSuccess: onPaid || (() => navigate('/dashboard', { replace: true })),

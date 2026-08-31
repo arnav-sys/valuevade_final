@@ -7,7 +7,7 @@ const API = process.env.REACT_APP_BACKEND_URL;
 // Gate for the AI-customisation wizard (/course/:id/customize|preview|confirm).
 // Blocks entry with the paywall until the student has paid — previously
 // this flow let a student build + confirm a fully customised enrollment for
-// free, bypassing the ₹1,500 payment entirely.
+// free, bypassing the ₹999 payment entirely.
 export default function CustomizePaymentGate({ children }) {
   const [state, setState] = useState({ loading: true, data: null });
 
@@ -40,7 +40,7 @@ export default function CustomizePaymentGate({ children }) {
   if (!d || !d.paid) {
     return (
       <PaywallModal
-        amountInr={d?.amount_inr || 1500}
+        amountInr={d?.amount_inr || 999}
         tierAvailable={d?.pricing_tier_available || 'upfront'}
         onPaid={fetchEligibility}
       />
