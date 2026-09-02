@@ -138,7 +138,7 @@ function HeroSection() {
             variants={fadeUp} initial="hidden" animate="visible" custom={4}
             className="text-xs text-white/45"
           >
-            ₹1,500 lifetime · No subscription · NISM + CFI certifications included
+            ₹999 lifetime · No subscription · NISM + CFI certifications included
           </motion.p>
         </div>
 
@@ -297,7 +297,7 @@ function FeatureGrid() {
 function ComparisonTable() {
   const cols = ['Valuevade', 'WallStreet School', 'IFMC Institute', 'Coursera Finance', 'Upgrad/Imarticus'];
   const rows = [
-    ['Price',                          { vv: '₹1,500 lifetime', vals: ['₹50k-80k','₹25k-40k','₹4k-15k/yr','₹50k-2L'] }],
+    ['Price',                          { vv: '₹999 lifetime', vals: ['₹50k-80k','₹25k-40k','₹4k-15k/yr','₹50k-2L'] }],
     ['Duration',                       { vv: '4-12 weeks self-paced', vals: ['3-6 months','3-4 months','6-12 months','6-18 months'] }],
     ['AI personalised path',           { vv: 'yes', vals: ['no','no','no','no'] }],
     ['Live AI tutor (24/7)',           { vv: 'yes', vals: ['no','no','no','no'] }],
@@ -496,7 +496,7 @@ function SocialProof() {
     { name: 'Ananya R.',  role: 'Aspiring Equity Analyst',    initials: 'AR', color: '#f5b800', quote: 'The Reliance DCF sim was the most "real" thing I\u2019ve built in any course. I shipped a working model in 90 minutes.' },
     { name: 'Karthik N.', role: 'CFA Level II Candidate',     initials: 'KN', color: '#818cf8', quote: 'Pari caught a conceptual gap in my WACC computation that my prep book never even hinted at.' },
     { name: 'Riya S.',    role: 'BCom 3rd year · Mumbai',     initials: 'RS', color: '#4ade80', quote: 'I never thought I\u2019d enjoy ratio analysis. The mock interview round at the end is unreasonably good.' },
-    { name: 'Aditya P.',  role: 'IB intern transition',       initials: 'AP', color: '#f87171', quote: 'For ₹1,500, this is a steal. The certification + portfolio combo is the actual moat.' },
+    { name: 'Aditya P.',  role: 'IB intern transition',       initials: 'AP', color: '#f87171', quote: 'For ₹999, this is a steal. The certification + portfolio combo is the actual moat.' },
   ];
   return (
     <SectionFadeIn className="relative max-w-7xl mx-auto px-6 py-24" id="testimonials" label="Beta tester quotes">
@@ -557,7 +557,7 @@ function PricingSection() {
           <h3 className="text-white font-bold text-xl tracking-tight mb-1 flex items-center gap-2"><Sparkles className="w-4 h-4 text-[#f5b800]" /> Pay Upfront</h3>
           <p className="text-white/55 text-sm mb-5">Locked in before sampling.</p>
           <div className="mb-6">
-            <span className="text-5xl font-bold text-white tracking-tight font-bricolage">₹1,500</span>
+            <span className="text-5xl font-bold text-white tracking-tight font-bricolage">₹999</span>
             <span className="text-sm text-white/55 ml-2">one-time</span>
           </div>
           <ul className="space-y-2.5 mb-7">
@@ -566,7 +566,7 @@ function PricingSection() {
             ))}
           </ul>
           <Link to="/start" className="lv-btn lv-btn-gold w-full justify-center">
-            Pay ₹1,500 — Lock In <ArrowRight className="w-4 h-4" />
+            Pay ₹999 — Lock In <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
         <div className="lv-card p-7" data-testid="landing-price-trial">
@@ -588,7 +588,7 @@ function PricingSection() {
         </div>
       </div>
       <p className="text-center text-xs text-white/45 mt-8">
-        WallStreet School: ₹50,000 · Imarticus: ₹1,20,000 · <span className="text-[#f5b800] font-semibold">Valuevade: ₹1,500</span>
+        WallStreet School: ₹50,000 · Imarticus: ₹1,20,000 · <span className="text-[#f5b800] font-semibold">Valuevade: ₹999</span>
       </p>
     </SectionFadeIn>
   );
@@ -608,7 +608,7 @@ function FAQ() {
     { q: 'Refund policy?',
       a: 'Full refund within 7 days, no questions asked. After 7 days we don\u2019t refund — but you get lifetime access regardless, so there\u2019s no real downside.' },
     { q: 'Why is it so cheap?',
-      a: 'Two reasons. (1) AI infrastructure scales better than human instructors, so we don\u2019t need to charge ₹50k to break even. (2) We\u2019re explicitly trying to undercut the offline-coaching cartel that\u2019s been gatekeeping finance careers in India. ₹1,500 is the price of a textbook, not a course.' },
+      a: 'Two reasons. (1) AI infrastructure scales better than human instructors, so we don\u2019t need to charge ₹50k to break even. (2) We\u2019re explicitly trying to undercut the offline-coaching cartel that\u2019s been gatekeeping finance careers in India. ₹999 is the price of a textbook, not a course.' },
     { q: 'Who teaches the course?',
       a: 'The curriculum was authored by a team with backgrounds at top equity-research desks in Mumbai. Day-to-day, your "teacher" is Pari — the AI tutor — who can answer at any depth, any hour, in any language.' },
     { q: 'How long does it actually take?',
@@ -660,7 +660,7 @@ function FinalCTA() {
           <Link to="/start" className="lv-btn lv-btn-gold inline-flex" style={{ padding: '16px 28px', fontSize: 16 }} data-testid="final-cta">
             Start Free Trial <ArrowRight className="w-5 h-5" />
           </Link>
-          <p className="text-white/55 text-xs mt-4">₹1,500 lifetime · 7-day refund · No subscription</p>
+          <p className="text-white/55 text-xs mt-4">₹999 lifetime · 7-day refund · No subscription</p>
         </div>
       </div>
     </SectionFadeIn>
@@ -721,22 +721,22 @@ export default function LandingPageV2() {
     <div className="lv-root min-h-screen" data-testid="landing-page-v2">
       <Helmet>
         <html lang="en" />
-        <title>Valuevade — Land your equity research job with AI · ₹1,500 lifetime course</title>
-        <meta name="description" content="India's first AI-personalised finance career program. CFA/FRM prep, real-Indian-market simulations, 24/7 AI tutor, mock interviews, NISM + CFI certifications. ₹1,500 lifetime." />
+        <title>Valuevade — Land your equity research job with AI · ₹999 lifetime course</title>
+        <meta name="description" content="India's first AI-personalised finance career program. CFA/FRM prep, real-Indian-market simulations, 24/7 AI tutor, mock interviews, NISM + CFI certifications. ₹999 lifetime." />
         <meta name="keywords" content="equity research course India, CFA FRM prep, AI finance tutor, NISM certification, finance career India, equity analyst training, financial modeling course, AI for finance students" />
         <link rel="canonical" href="https://valuevade.com/" />
         <meta name="theme-color" content="#06092e" />
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/" />
-        <meta property="og:title" content="Valuevade — Land your equity research job with AI · ₹1,500 lifetime" />
-        <meta property="og:description" content="AI-personalised finance career program. CFA/FRM prep, real-Indian-market sims, NISM + CFI certs. ₹1,500 lifetime." />
+        <meta property="og:title" content="Valuevade — Land your equity research job with AI · ₹999 lifetime" />
+        <meta property="og:description" content="AI-personalised finance career program. CFA/FRM prep, real-Indian-market sims, NISM + CFI certs. ₹999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Valuevade — AI-personalised finance career platform" />
-        <meta name="twitter:description" content="₹1,500 lifetime · CFA/FRM prep · AI tutor · NISM + CFI certifications · Mock interviews · 68 finance simulations." />
+        <meta name="twitter:description" content="₹999 lifetime · CFA/FRM prep · AI tutor · NISM + CFI certifications · Mock interviews · 68 finance simulations." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         {/* Structured data */}
         <script type="application/ld+json">{JSON.stringify(courseJsonLd)}</script>
