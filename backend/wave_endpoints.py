@@ -1025,6 +1025,10 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         enrollments = _supabase_get(
             "user_enrollments?select=user_id,status,title,master_path_id,enrolled_at&order=enrolled_at.desc&limit=5000"
         ) or []
+        payment_rows = _supabase_get(
+            "user_payment_status?select=user_id,paid,pricing_tier,paid_at&limit=5000"
+        ) or []
+        payment_by_user = {r["user_id"]: r for r in payment_rows}
         plans = _supabase_get(
             "user_study_plans?status=eq.active&select=user_id&limit=5000"
         ) or []
@@ -1065,6 +1069,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         for p in profiles:
             uid = p["id"]
             e = enrollment_by_user.get(uid)
+            pay = payment_by_user.get(uid)
             pari_cost  = round(float(p.get("pari_total_cost_inr") or 0), 2)
             custom_gen = int(p.get("customize_generations_count") or 0)
             intv_count = interview_count_by_user.get(uid, 0)
@@ -1081,6 +1086,10 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "course_title": e.get("title") if e else None,
                 "last_active": last_active_by.get(uid),
                 "active_plan": uid in active_plan_ids,
+                # Payment status
+                "paid": bool(pay and pay.get("paid")),
+                "pricing_tier": (pay or {}).get("pricing_tier") or "",
+                "paid_at": (pay or {}).get("paid_at"),
                 # LLM cost fields
                 "llm_pari_cost_inr": pari_cost,
                 "llm_customize_gens": custom_gen,
@@ -1423,7 +1432,74 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
         return {"deleted": True, "user_id": user_id}
 
-    # ---------------- ADMIN · SESSION VIDEOS ----------------
+    @api_router.post("/admin/users/{user_id}/enroll-and-pay")
+    async def admin_enroll_and_pay(user_id: str, user=Depends(_get_supabase_user)):
+        """Admin action: enroll user in the Equity Research path (if not already)
+        AND mark them as paid (pricing_tier='upfront', amount ₹999). Idempotent."""
+        _ensure_admin(user)
+        uid_q = _urlparse.quote(user_id)
+
+        # Verify the target user exists in profiles
+        profiles = _supabase_get(
+            f"profiles?id=eq.{uid_q}&select=id,full_name,email&limit=1"
+        ) or []
+        if not profiles:
+            raise HTTPException(status_code=404, detail="User not found")
+
+        results = {}
+
+        # 1. Enrollment — idempotent via _seed_default_enrollment
+        try:
+            enrollment_id = _seed_default_enrollment(user_id)
+            results["enrolled"] = bool(enrollment_id)
+            results["enrollment_id"] = enrollment_id
+        except Exception as e:
+            logger.warning("[admin-enroll-pay] enrollment failed for %s: %s", user_id, e)
+            results["enrolled"] = False
+            results["enrollment_error"] = str(e)
+
+        # 2. Payment status — upsert user_payment_status row
+        try:
+            existing_pay = _supabase_get(
+                f"user_payment_status?user_id=eq.{uid_q}&select=paid,pricing_tier&limit=1"
+            ) or []
+            already_paid = bool(existing_pay and existing_pay[0].get("paid"))
+            if not already_paid:
+                from datetime import datetime, timezone as _tz
+                if existing_pay:
+                    _supabase_patch(
+                        f"user_payment_status?user_id=eq.{uid_q}",
+                        {
+                            "paid": True,
+                            "paid_amount_inr": 999,
+                            "paid_at": datetime.now(_tz.utc).isoformat(),
+                            "pricing_tier": "upfront",
+                        },
+                    )
+                else:
+                    _supabase_post(
+                        "user_payment_status",
+                        {
+                            "user_id": user_id,
+                            "paid": True,
+                            "paid_amount_inr": 999,
+                            "paid_at": datetime.now(_tz.utc).isoformat(),
+                            "pricing_tier": "upfront",
+                        },
+                    )
+                results["paid"] = True
+                results["was_already_paid"] = False
+            else:
+                results["paid"] = True
+                results["was_already_paid"] = True
+        except Exception as e:
+            logger.warning("[admin-enroll-pay] payment failed for %s: %s", user_id, e)
+            results["paid"] = False
+            results["payment_error"] = str(e)
+
+        return {"user_id": user_id, **results}
+
+
     _SUPABASE_REST_URL = (
         os.environ.get("REACT_APP_SUPABASE_URL")
         or "https://yuadeybycbfqlkdpxbkv.supabase.co"

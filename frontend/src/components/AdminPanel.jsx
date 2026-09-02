@@ -9,7 +9,7 @@ import CoursesTab from './admin/CoursesTab';
 import ErrorsTab from './admin/ErrorsTab';
 import MockInterviewsTab from './admin/MockInterviewsTab';
 import FreeTrialsTab from './admin/FreeTrialsTab';
-import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail, FolderOpen, Bot, Zap, TrendingUp } from 'lucide-react';
+import { Search, Users, ListChecks, BookOpen, RefreshCw, Lock, CreditCard, Check, X as XIcon, Video, Upload, Trash2, Play, Loader2, GraduationCap, AlertTriangle, Link2, HelpCircle, Plus, Pencil, Sparkles, MessageSquareWarning, Gift, Download, Building2, Mail, FolderOpen, Bot, Zap, TrendingUp, CheckCircle2 } from 'lucide-react';
 
 const ADMIN_EMAIL = 'info@valuevade.com';
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -246,6 +246,8 @@ function UsersTab({ onSelect }) {
   const [showCreate, setShowCreate] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
+  const [confirmEnroll, setConfirmEnroll] = useState(null);   // user to enroll+pay
+  const [enrollingId, setEnrollingId] = useState(null);
   const reload = () => authFetch('/api/admin/users').then(setData).catch(e => setErr(e.message));
   useEffect(() => { reload(); }, []);
 
@@ -259,6 +261,19 @@ function UsersTab({ onSelect }) {
       alert(`Delete failed: ${e.message}`);
     } finally {
       setDeletingId(null);
+    }
+  };
+
+  const handleEnrollAndPay = async (u) => {
+    setEnrollingId(u.user_id);
+    try {
+      await authFetchJson(`/api/admin/users/${u.user_id}/enroll-and-pay`, { method: 'POST' });
+      setConfirmEnroll(null);
+      reload();
+    } catch (e) {
+      alert(`Enroll & Pay failed: ${e.message}`);
+    } finally {
+      setEnrollingId(null);
     }
   };
 
@@ -342,6 +357,7 @@ function UsersTab({ onSelect }) {
               <th className="p-3 whitespace-nowrap">Email</th>
               <th className="p-3 whitespace-nowrap">Country</th>
               <th className="p-3 whitespace-nowrap">Enrolled</th>
+              <th className="p-3 whitespace-nowrap">Payment</th>
               <th className="p-3 whitespace-nowrap">Last Active</th>
               <th className="p-3 whitespace-nowrap">Plan</th>
               <th className="p-3 whitespace-nowrap">
@@ -363,6 +379,19 @@ function UsersTab({ onSelect }) {
                   <td className="p-3 whitespace-nowrap">{u.email || '—'}</td>
                   <td className="p-3 whitespace-nowrap">{u.country_code || '—'}</td>
                   <td className="p-3 whitespace-nowrap">{u.enrolled ? fmt(u.enrollment_at) : '—'}</td>
+
+                  {/* Payment status cell */}
+                  <td className="p-3 whitespace-nowrap">
+                    {u.paid
+                      ? <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-green-500/15 text-green-400 border border-green-500/20" data-testid={`paid-badge-${u.user_id}`}>
+                          <CheckCircle2 size={10} /> Paid
+                        </span>
+                      : <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[var(--color-bg-card)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
+                          Unpaid
+                        </span>
+                    }
+                  </td>
+
                   <td className="p-3 whitespace-nowrap">{fmt(u.last_active)}</td>
                   <td className="p-3">{u.active_plan ? <span className="text-green-500">●</span> : <span className="text-[var(--color-text-muted)]">○</span>}</td>
 
@@ -404,6 +433,20 @@ function UsersTab({ onSelect }) {
 
                   <td className="p-3 flex items-center gap-2 whitespace-nowrap">
                     <button data-testid={`view-progress-${u.user_id}`} onClick={() => onSelect(u)} className="text-[var(--color-primary)] hover:underline text-xs">View →</button>
+
+                    {/* Enroll & Pay button — shown only when not both enrolled+paid */}
+                    {(!u.enrolled || !u.paid) && (
+                      <button
+                        data-testid={`enroll-pay-${u.user_id}`}
+                        onClick={() => setConfirmEnroll(u)}
+                        className="inline-flex items-center gap-1 px-2 py-1 rounded-lg border border-green-500/40 text-green-400 hover:bg-green-500/10 transition-colors text-xs font-medium"
+                        title="Enroll in course and mark as paid"
+                      >
+                        <CheckCircle2 size={11} />
+                        {!u.enrolled && !u.paid ? 'Enroll & Pay' : !u.enrolled ? 'Enroll' : 'Mark Paid'}
+                      </button>
+                    )}
+
                     <button
                       data-testid={`delete-user-${u.user_id}`}
                       onClick={() => setConfirmDelete(u)}
@@ -426,6 +469,61 @@ function UsersTab({ onSelect }) {
           onCreated={() => { setShowCreate(false); reload(); }}
         />
       )}
+
+      {/* ── Enroll & Pay confirmation modal ── */}
+      {confirmEnroll && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          data-testid="enroll-pay-modal"
+          onClick={() => !enrollingId && setConfirmEnroll(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-2xl bg-[var(--color-bg-card)] border border-green-500/30 p-6 shadow-2xl"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-3 mb-4">
+              <div className="p-2 rounded-lg bg-green-500/10 text-green-400">
+                <CheckCircle2 size={20} />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-[var(--color-text)]">Enroll &amp; Mark Paid?</h3>
+                <p className="text-sm text-[var(--color-text-muted)] mt-1">
+                  This will{!confirmEnroll.enrolled ? ' enroll' : ''}{!confirmEnroll.enrolled && !confirmEnroll.paid ? ' and' : ''}{!confirmEnroll.paid ? ' mark as paid (₹999)' : ''} <strong className="text-[var(--color-text)]">{confirmEnroll.email}</strong> in the Equity Research Analyst course.
+                </p>
+                <div className="mt-3 flex flex-col gap-1.5">
+                  <div className={`flex items-center gap-2 text-xs ${confirmEnroll.enrolled ? 'text-green-400' : 'text-[var(--color-text-muted)]'}`}>
+                    <CheckCircle2 size={11} className={confirmEnroll.enrolled ? 'text-green-400' : 'text-[var(--color-border)]'} />
+                    Course enrollment {confirmEnroll.enrolled ? '(already enrolled — will skip)' : '(will be created)'}
+                  </div>
+                  <div className={`flex items-center gap-2 text-xs ${confirmEnroll.paid ? 'text-green-400' : 'text-[var(--color-text-muted)]'}`}>
+                    <CheckCircle2 size={11} className={confirmEnroll.paid ? 'text-green-400' : 'text-[var(--color-border)]'} />
+                    Payment status ₹999 upfront {confirmEnroll.paid ? '(already paid — will skip)' : '(will be set)'}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setConfirmEnroll(null)}
+                disabled={!!enrollingId}
+                data-testid="enroll-pay-cancel"
+                className="px-4 py-2 rounded-lg border border-[var(--color-border)] text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleEnrollAndPay(confirmEnroll)}
+                disabled={!!enrollingId}
+                data-testid="enroll-pay-confirm"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-semibold transition-colors disabled:opacity-50"
+              >
+                {enrollingId ? <><Loader2 size={14} className="animate-spin" /> Processing…</> : <><CheckCircle2 size={14} /> Confirm</>}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {confirmDelete && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm"
