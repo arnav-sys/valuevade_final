@@ -146,7 +146,7 @@ export default function XPBar({ variant = 'default', className = '' }) {
           style={{
             width: `${animPct}%`,
             background: `linear-gradient(90deg, ${levelColor}, var(--color-accent-purple), var(--color-accent-pink))`,
-            boxShadow: `0 0 16px ${levelColor}55`,
+            boxShadow: `0 0 6px ${levelColor}33`,
           }}
         />
       </div>

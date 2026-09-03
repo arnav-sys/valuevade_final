@@ -115,7 +115,7 @@ function BadgeTile({ badge }) {
       }`}
       style={{
         borderColor: badge.is_unlocked ? rc.ring + '55' : 'var(--color-border)',
-        boxShadow: badge.is_unlocked ? `0 0 18px ${rc.glow}` : 'none',
+        boxShadow: badge.is_unlocked ? `0 0 8px ${rc.glow}60` : 'none',
       }}
       data-testid={`badge-tile-${badge.code}`}
       data-unlocked={badge.is_unlocked ? 'true' : 'false'}

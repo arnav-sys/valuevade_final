@@ -77,7 +77,7 @@ export default function LevelUpOverlay() {
         className="relative w-full max-w-md glass-card rounded-3xl p-7 sm:p-10 text-center border-2"
         style={{
           borderColor: `${levelColor}55`,
-          boxShadow: `0 0 60px ${levelColor}66, 0 0 160px ${levelColor}33`,
+          boxShadow: `0 0 20px ${levelColor}33`,
           animation: reduce ? 'vvLvlFadeIn 0.4s ease-out' : 'vvLvlPop 0.6s cubic-bezier(.2,.8,.3,1.2)',
         }}
       >
@@ -86,7 +86,7 @@ export default function LevelUpOverlay() {
         </div>
         <h1
           className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-3"
-          style={{ textShadow: `0 0 40px ${levelColor}44` }}
+          style={{ textShadow: `0 0 12px ${levelColor}30` }}
         >
           LEVEL UP!
         </h1>

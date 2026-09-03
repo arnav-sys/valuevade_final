@@ -203,7 +203,7 @@ export default function EnrollmentPage() {
         <section className="mb-12" data-testid="enrollment-capstones">
           <h2 className="font-clash text-2xl font-bold text-[var(--color-text)] mb-2">What you'll build</h2>
           <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-6">Three portfolio-grade capstone projects — the artifacts you'll show recruiters.</p>
-          <CapstoneProjectsGrid />
+          <CapstoneProjectsGrid pathId={courseId} />
         </section>
 
         {/* Module outline (collapsed by default) */}

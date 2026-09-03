@@ -89,7 +89,7 @@ export default function DailyChampionOverlay() {
         @keyframes dc-backdrop-in { from { opacity: 0 } to { opacity: 1 } }
         @keyframes dc-card-in { from { opacity: 0; transform: scale(.92) } to { opacity: 1; transform: scale(1) } }
         @keyframes dc-trophy-spin { 0% { transform: rotate(-12deg) scale(.85) } 60% { transform: rotate(8deg) scale(1.08) } 100% { transform: rotate(0deg) scale(1) } }
-        @keyframes dc-glow { 0%,100% { box-shadow: 0 0 60px rgba(251,191,36,.4), 0 0 120px rgba(245,158,11,.25) } 50% { box-shadow: 0 0 80px rgba(251,191,36,.65), 0 0 160px rgba(245,158,11,.4) } }
+        @keyframes dc-glow { 0%,100% { box-shadow: 0 0 12px rgba(251,191,36,.25) } 50% { box-shadow: 0 0 20px rgba(251,191,36,.40) } }
         .daily-champion-backdrop {
           background: radial-gradient(ellipse at center, rgba(120,53,15,.55) 0%, rgba(0,0,0,.85) 70%);
           backdrop-filter: blur(8px);

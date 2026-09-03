@@ -107,7 +107,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
               <Lock size={16} className="text-[var(--color-text-faint)]" />
             </div>
           ) : isActive ? (
-            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 flex items-center justify-center animate-pulse">
+            <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 flex items-center justify-center">
               <PlayCircle size={18} className="text-[var(--color-primary)]" />
             </div>
           ) : (

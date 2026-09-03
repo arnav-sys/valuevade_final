@@ -75,7 +75,7 @@ export default function BadgeUnlockOverlay() {
         className="relative w-full max-w-md glass-card rounded-3xl p-7 sm:p-9 text-center border-2"
         style={{
           borderColor: rc.ring + '55',
-          boxShadow: `0 0 60px ${rc.glow}, 0 0 160px ${rc.glow}40`,
+          boxShadow: `0 0 20px ${rc.glow}40`,
           animation: reduce ? 'vvBadgeFade 0.4s ease-out' : 'vvBadgePop 0.55s cubic-bezier(.2,.8,.3,1.2)',
         }}
       >
@@ -86,7 +86,7 @@ export default function BadgeUnlockOverlay() {
           className="w-24 h-24 mx-auto rounded-3xl flex items-center justify-center mb-5 text-white shadow-[0_10px_40px_rgba(0,0,0,0.25)]"
           style={{
             background: `linear-gradient(135deg, ${rc.ring}, var(--color-accent-purple))`,
-            boxShadow: `0 0 50px ${rc.glow}`,
+            boxShadow: `0 0 14px ${rc.glow}60`,
           }}
           data-testid="badge-unlock-icon"
         >

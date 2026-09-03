@@ -68,7 +68,7 @@ export default function StreakCounter({ className = '' }) {
               <span
                 className="absolute inset-[-8px] rounded-full"
                 style={{
-                  background: `radial-gradient(circle, ${tierColor}66, transparent 70%)`,
+                  background: `radial-gradient(circle, ${tierColor}33, transparent 70%)`,
                   animation: 'vvStreakAura 3.2s ease-in-out infinite',
                 }}
               />

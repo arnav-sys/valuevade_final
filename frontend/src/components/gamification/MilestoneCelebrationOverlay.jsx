@@ -102,7 +102,7 @@ export default function MilestoneCelebrationOverlay() {
         className="relative w-full max-w-md glass-card rounded-3xl p-7 sm:p-10 text-center border-2"
         style={{
           borderColor: `${theme.color}55`,
-          boxShadow: `0 0 60px ${theme.glow}, 0 0 160px ${theme.color}33`,
+          boxShadow: `0 0 18px ${theme.glow}66`,
           animation: reduce ? 'vvLvlFadeIn 0.4s ease-out' : 'vvLvlPop 0.6s cubic-bezier(.2,.8,.3,1.2)',
         }}
       >
@@ -148,7 +148,7 @@ export default function MilestoneCelebrationOverlay() {
           className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all"
           style={{
             background: `linear-gradient(90deg, ${theme.color}, var(--color-accent-purple))`,
-            boxShadow: `0 0 24px ${theme.color}50`,
+            boxShadow: `0 0 12px ${theme.color}40`,
           }}
           data-testid="milestone-continue"
         >
