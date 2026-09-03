@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
 import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
+
+const API = process.env.REACT_APP_BACKEND_URL;
 
 export default function SignupPage() {
   const { signUp } = useAuth();
@@ -40,6 +43,16 @@ export default function SignupPage() {
       setApiError(error.message);
       return;
     }
+    // Fire welcome email best-effort (don't block navigation on failure).
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session?.access_token) {
+        fetch(`${API}/api/me/send-welcome-email`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${session.access_token}` },
+        }).catch(() => {});
+      }
+    } catch (_) {}
     navigate('/courses');
   };
 

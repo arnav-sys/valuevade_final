@@ -1396,6 +1396,66 @@ async def update_country(req: CountryUpdateReq, supa_user: dict = Depends(get_su
     return {"ok": True, "country_code": code}
 
 
+@api_router.post("/me/send-welcome-email")
+async def send_welcome_email(supa_user: dict = Depends(get_supabase_user)):
+    """Send a one-time welcome email to a newly signed-up user via Resend.
+    Best-effort: if RESEND_API_KEY is unset the call is a no-op (no error).
+    Called once from SignupPage.jsx immediately after successful signUp.
+    Idempotent — if called again for the same user it just resends (acceptable
+    since the frontend only fires it once per session)."""
+    user_id = supa_user.get("id")
+    api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
+    if not api_key:
+        logger.info("[auth] RESEND_API_KEY not set — skipping welcome email")
+        return {"ok": True, "skipped": True}
+    try:
+        profs = _supabase_get(
+            f"profiles?id=eq.{_urlparse.quote(user_id)}&select=email,full_name&limit=1"
+        ) or []
+        if not profs or not profs[0].get("email"):
+            return {"ok": True, "skipped": True}
+        email = profs[0]["email"]
+        first_name = (profs[0].get("full_name") or "").split()[0] or "there"
+        import resend as _resend
+        _resend.api_key = api_key
+        sender = (os.environ.get("SENDER_EMAIL") or "onboarding@resend.dev").strip()
+        frontend_url = (os.environ.get("FRONTEND_URL") or "https://valuevade.com").rstrip("/")
+        free_session_url = f"{frontend_url}/courses"
+        _resend.Emails.send({
+            "from": f"Valuevade <{sender}>",
+            "to": [email],
+            "subject": "You're in — your first session is free",
+            "html": _welcome_email_html(first_name, free_session_url),
+        })
+        logger.info(f"[auth] welcome email sent to {email}")
+        return {"ok": True}
+    except Exception as e:
+        logger.warning(f"[auth] welcome email failed for user {user_id}: {e}")
+        return {"ok": True, "skipped": True}
+
+
+def _welcome_email_html(first_name: str, courses_url: str) -> str:
+    return f"""
+    <div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#0e0e16;color:#f4f4f8;">
+      <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8b8b9e;margin:0 0 20px;">Valuevade · Welcome</p>
+      <h1 style="font-size:22px;margin:0 0 12px;color:#ffffff;">Hey {first_name} — welcome.</h1>
+      <p style="font-size:15px;line-height:1.7;color:#c9c9d6;margin:0 0 24px;">
+        Your account is live. Your first session is completely free — no card, no commitment.
+        Just open it and see if the course is right for you.
+      </p>
+      <a href="{courses_url}" style="display:inline-block;background:#246bfd;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:0.5px;padding:14px 28px;border-radius:4px;">
+        Start your free session &rarr;
+      </a>
+      <p style="font-size:13px;line-height:1.6;color:#8b8b9e;margin:28px 0 0;">
+        The course covers equity research, financial modelling, and valuation — built specifically for
+        Indian finance students. ₹999 lifetime access after the free trial.
+      </p>
+      <p style="font-size:12px;color:#6b6b7e;margin-top:32px;">
+        Valuevade · If you did not sign up, you can safely ignore this email.
+      </p>
+    </div>
+    """
+
 
 # Daily Finance News feature removed (2026-07-10) — endpoints /api/news/today
 # and /api/news/mark_read no longer exist. See DashboardPage.jsx for FE cleanup.

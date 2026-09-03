@@ -4140,6 +4140,75 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             c["user_name"] = p.get("full_name")
         return {"table_ready": True, "claims": claims}
 
+    @api_router.get("/admin/linkedin-claims")
+    async def admin_all_linkedin_claims(
+        verified: Optional[str] = None,
+        user=Depends(_get_supabase_user),
+    ):
+        """Return ALL LinkedIn share claims across all rewards.
+        Query param `verified=false` filters to unverified-only (default: all).
+        Used by the LinkedIn Claims admin tab."""
+        _ensure_admin(user)
+        try:
+            qs = (
+                "user_reward_claims?select=id,reward_id,user_id,linkedin_post_url,"
+                "linkedin_post_verified,shared_at,claimed_at"
+                "&order=claimed_at.desc&limit=500"
+            )
+            if verified == "false":
+                qs += "&linkedin_post_verified=eq.false"
+            claims = _supabase_get(qs) or []
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                return {"table_ready": False, "hint": _REWARDS_TABLE_HINT, "claims": []}
+            raise
+        # Enrich with user name/email and reward title in one pass.
+        user_ids = list({c["user_id"] for c in claims if c.get("user_id")})
+        reward_ids = list({c["reward_id"] for c in claims if c.get("reward_id")})
+        profile_map, reward_map = {}, {}
+        if user_ids:
+            in_u = ",".join([f'"{i}"' for i in user_ids])
+            profs = _supabase_get(f"profiles?id=in.({in_u})&select=id,email,full_name") or []
+            profile_map = {p["id"]: p for p in profs}
+        if reward_ids:
+            in_r = ",".join([f'"{i}"' for i in reward_ids])
+            rwds = _supabase_get(f"master_rewards?id=in.({in_r})&select=id,title") or []
+            reward_map = {r["id"]: r for r in rwds}
+        for c in claims:
+            p = profile_map.get(c.get("user_id")) or {}
+            r = reward_map.get(c.get("reward_id")) or {}
+            c["user_email"] = p.get("email")
+            c["user_name"] = p.get("full_name")
+            c["reward_title"] = r.get("title")
+        return {"table_ready": True, "claims": claims}
+
+    @api_router.patch("/admin/linkedin-claims/{claim_id}")
+    async def admin_update_linkedin_claim(
+        claim_id: str, body: dict, user=Depends(_get_supabase_user)
+    ):
+        """Manually verify or reject a LinkedIn claim.
+        Body: { "action": "verify" | "reject" }
+        verify → sets linkedin_post_verified=true
+        reject → deletes the claim row (user loses access to the reward download)"""
+        _ensure_admin(user)
+        action = (body.get("action") or "").strip()
+        if action not in ("verify", "reject"):
+            raise HTTPException(status_code=400, detail="action must be 'verify' or 'reject'")
+        try:
+            if action == "verify":
+                _supabase_patch(
+                    f"user_reward_claims?id=eq.{_urlparse.quote(claim_id)}",
+                    {"linkedin_post_verified": True},
+                )
+                return {"ok": True, "action": "verified", "claim_id": claim_id}
+            else:
+                _supabase_delete(f"user_reward_claims?id=eq.{_urlparse.quote(claim_id)}")
+                return {"ok": True, "action": "rejected", "claim_id": claim_id}
+        except HTTPException as e:
+            if _is_rewards_missing(e):
+                raise HTTPException(status_code=503, detail=_REWARDS_TABLE_HINT)
+            raise
+
     @api_router.patch("/admin/rewards/{reward_id}")
     async def admin_rewards_update(reward_id: str, body: dict, user=Depends(_get_supabase_user)):
         _ensure_admin(user)

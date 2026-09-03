@@ -1143,3 +1143,40 @@ Admin can now fully manage the 5 firm interview simulations (`master_interview_s
 | CR-004 | LOW | Interview final-report used Haiku INR rates for Sonnet call — undercounted admin LLM spend | Added Sonnet pricing constants; _llm() accepts _cost_in/_cost_out overrides |
 | CR-005 | LOW | admin_delete_user left razorpay_orders + razorpay_payments rows orphaned | Both tables added to leaf_deletes in the cascade sequence |
 | CR-006 | LOW | CORS_ORIGINS defaulted silently to * | Added logger.warning() when env var is unset |
+
+## Sep 2026 — LinkedIn Claims Tab + Welcome Email + UI De-vibe + Major Refactoring
+
+### Features Added
+
+1. **Starfield Removal (De-vibe Completion)**
+   - `CoursesPage.jsx` + `CourseDetailsPage.jsx`: Removed `CinematicBackground` (Three.js particle field) lazy import and usage. Clean dark backgrounds remain.
+   - `lazy`, `Suspense` imports removed from both files (no longer needed).
+
+2. **Welcome Email on Signup** (`server.py` + `SignupPage.jsx`)
+   - `POST /api/me/send-welcome-email` — Auth-required. Sends short punchy HTML email via Resend on first signup.
+   - `SignupPage.jsx` fires this endpoint fire-and-forget after successful `supabase.auth.signUp()`.
+   - Best-effort: if RESEND_API_KEY is not configured, returns `{ok:true, skipped:true}` silently.
+   - Email content: `"Hey [Name] — your first session is free, start here →"` with dark Bloomberg-terminal HTML template.
+
+3. **LinkedIn Claims Tab (Admin Panel)**
+   - `GET /api/admin/linkedin-claims` — Lists all LinkedIn reward claims; `?verified=false` for unverified-only.
+   - `PATCH /api/admin/linkedin-claims/{claim_id}` — Body `{action: "verify"|"reject"}`. Verify sets `linkedin_post_verified=true`; Reject deletes the claim row.
+   - `admin/LinkedInClaimsTab.jsx` — New standalone admin tab between Rewards and Errors tabs. Shows claimant name, email, reward title, LinkedIn URL, date, Verify/Reject buttons. Filter toggle between all/unverified-only. Graceful migration-not-ready banner.
+
+4. **AdminPanel.jsx Refactoring** (2656 → 137 lines)
+   - Extracted all 8 inline tab components to separate files in `/admin/`:
+     - `WaitlistTab.jsx` (CSV import, email search)
+     - `UsersTab.jsx` (user management, CreateUserModal, ProgressModal — exported named)
+     - `PaymentsTab.jsx` (stats, paid users table, recent transactions)
+     - `RewardsTab.jsx` (reward CRUD, file/folder upload, RewardEditorModal)
+     - `SessionVideosTab.jsx` (chunked TUS video upload, VideoPreviewModal)
+     - `FaqsTab.jsx` (FAQ CRUD, FaqEditModal)
+     - `CustomizationTab.jsx` (AI flow mode toggle, question CRUD, CustomizationEditModal)
+     - `SessionFeedbackTab.jsx` (resolve/reopen/delete feedback rows)
+   - `adminUtils.js` — Shared utilities: `authFetch`, `authPost`, `authFetchJson`, `fmt`, `fmtINR`, `generatePassword`, `Stat` component.
+   - `AdminPanel.jsx` now only 137 lines: imports + AdminTabs component + AdminPanel default export.
+
+### Backlog / Future
+- **server.py refactoring**: Study-plan (~750 lines) and doubts (~1660 lines) route groups identified for extraction into `study_plan_endpoints.py` and `doubts_endpoints.py` (following wave_endpoints.py injection pattern). Deferred due to complexity and risk.
+- **Exam Analytics**: Admin view of mock exam attempt breakdowns, average scores, hardest questions. (P2)
+

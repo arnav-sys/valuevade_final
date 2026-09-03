@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
@@ -11,8 +11,7 @@ import {
   MagneticCard, LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
 } from './cinematic/primitives';
 
-// Lazy three.js bg so the cards paint first.
-const CinematicBackground = lazy(() => import('./CinematicBackground'));
+
 
 function CourseCardSkeleton() {
   return (
@@ -245,15 +244,7 @@ export default function CoursesPage() {
         <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹999 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
       </Helmet>
-      {/* Cinematic Three.js bg — only renders meaningfully in dark mode; in
-          light mode the ambient orbs already carry the cream aesthetic. */}
-      {theme === 'dark' && (
-        <Suspense fallback={null}>
-          <div className="fixed inset-0 z-0 pointer-events-none" data-testid="courses-cinematic-bg-wrap">
-            <CinematicBackground density="sparse" />
-          </div>
-        </Suspense>
-      )}
+
       {/* Ambient orbs */}
       <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[-15%] right-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.04] blur-[120px] pointer-events-none" />
@@ -302,51 +293,21 @@ export default function CoursesPage() {
 
       {/* Main */}
       <main className="max-w-5xl mx-auto px-6 py-12 sm:py-16 relative z-10">
-        {/* Cinematic hero — letter-stagger headline + halo dots ring */}
-        <div className="text-center mb-14 sm:mb-16 relative" data-testid="courses-hero">
-          {/* Slow-rotating ring of constellation dots behind the title */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[460px] h-[460px] sm:w-[560px] sm:h-[560px] opacity-50"
-            style={{ animation: 'courses-halo-rotate 38s linear infinite' }}
-          >
-            <svg viewBox="0 0 200 200" className="w-full h-full">
-              {Array.from({ length: 22 }).map((_, i) => {
-                const a = (i / 22) * Math.PI * 2;
-                const r = 88;
-                const cx = 100 + Math.cos(a) * r;
-                const cy = 100 + Math.sin(a) * r;
-                const sz = 0.9 + (i % 3) * 0.4;
-                return <circle key={i} cx={cx} cy={cy} r={sz} fill="#a78bfa" opacity={0.55} />;
-              })}
-              {/* Thin ring */}
-              <circle cx="100" cy="100" r="88" fill="none" stroke="#8b5cf6" strokeOpacity="0.18" strokeWidth="0.4" strokeDasharray="1 4" />
-            </svg>
-          </div>
+        {/* Hero */}
+        <div className="text-center mb-14 sm:mb-16" data-testid="courses-hero">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/15 text-[var(--color-accent-purple)] text-xs font-mono mb-5 relative"
+            transition={{ duration: 0.5 }}
           >
-            <Sparkles size={14} /> AI-Powered Learning
+            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[var(--color-text-muted)] mb-4">Finance Education</p>
+            <h1 className="font-clash text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--color-text)] mb-4 tracking-tight" data-testid="courses-heading">
+              Choose Your Career Path
+            </h1>
+            <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto" data-testid="courses-subtitle">
+              Structured finance programs built for Indian students entering equity research and investment analysis.
+            </p>
           </motion.div>
-          <div className="relative">
-            <LetterStaggerHeadline
-              text="Choose Your Career Path"
-              className="font-clash text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--color-text)] mb-4 tracking-tight"
-              testid="courses-heading"
-            />
-          </div>
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
-            className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-lg mx-auto relative"
-            data-testid="courses-subtitle"
-          >
-            AI-personalized learning paths built for finance careers
-          </motion.p>
         </div>
 
         {/* Loading state */}

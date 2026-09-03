@@ -1,4 +1,4 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
@@ -17,8 +17,7 @@ import {
   LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
 } from './cinematic/primitives';
 
-// Lazy-loaded so the module list paints first (Three.js is ~120KB gzipped).
-const CinematicBackground = lazy(() => import('./CinematicBackground'));
+
 import { supabase as supabaseClient } from '../lib/supabase';
 import { useEffect as useEffectSP, useState as useStateSP } from 'react';
 import { Users as UsersIcon, Target as TargetIcon } from 'lucide-react';
@@ -390,15 +389,7 @@ export default function CourseDetailsPage() {
       </Helmet>
       {/* Scroll progress — thin violet bar at top of viewport, premium signal */}
       <ScrollProgressBar />
-      {/* Cinematic Three.js bg — denser than /courses since this is a deeper
-          page. Dark mode only; light mode keeps its cream ambient orbs. */}
-      {theme === 'dark' && (
-        <Suspense fallback={null}>
-          <div className="fixed inset-0 z-0 pointer-events-none" data-testid="detail-cinematic-bg-wrap">
-            <CinematicBackground density="medium" />
-          </div>
-        </Suspense>
-      )}
+
       {/* Ambient orbs */}
       <div className="absolute top-[-8%] right-[-5%] w-[500px] h-[500px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.04] blur-[120px] pointer-events-none" />
       <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)] opacity-[0.05] blur-[100px] pointer-events-none" />
