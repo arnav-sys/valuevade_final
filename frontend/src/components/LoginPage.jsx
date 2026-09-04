@@ -1,12 +1,22 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { Eye, EyeOff, ArrowLeft, Loader2 } from 'lucide-react';
 
+// Pages we never redirect back to (they're auth/public pages).
+const NO_REDIRECT_BACK = ['/login', '/signup', '/forgot-password', '/'];
+
 export default function LoginPage() {
   const { signIn } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // If ProtectedRoute sent us here, it stored the intended URL in location.state.from
+  const intendedUrl = location.state?.from;
+  const redirectAfterLogin = intendedUrl && !NO_REDIRECT_BACK.includes(intendedUrl)
+    ? intendedUrl
+    : null;
 
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
@@ -35,6 +45,12 @@ export default function LoginPage() {
 
     if (error) {
       setApiError(error.message);
+      return;
+    }
+
+    // If user was sent here from a protected page, go back there.
+    if (redirectAfterLogin) {
+      navigate(redirectAfterLogin, { replace: true });
       return;
     }
 

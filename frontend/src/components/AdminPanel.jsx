@@ -68,7 +68,7 @@ function AdminTabs({ tab, setTab }) {
 }
 
 export default function AdminPanel() {
-  const { user, profile } = useAuth();
+  const { user, profile, loading } = useAuth();
   const [params, setParams] = useSearchParams();
   const [tab, setTab] = useState(params.get('tab') || 'waitlist');
   const [selected, setSelected] = useState(null);
@@ -78,6 +78,8 @@ export default function AdminPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
 
+  // Auth state is async — wait for it before deciding to redirect.
+  if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
   const email = (user?.email || profile?.email || '').toLowerCase();
   if (email !== ADMIN_EMAIL) {
