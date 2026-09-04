@@ -11,6 +11,8 @@ import {
   MagneticCard, LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
 } from './cinematic/primitives';
 
+const API = process.env.REACT_APP_BACKEND_URL;
+
 
 
 function CourseCardSkeleton() {
@@ -165,52 +167,26 @@ export default function CoursesPage() {
   const fetchData = async () => {
     setLoading(true);
     setError(null);
-    // Wrap each query with a hard timeout so a single hanging fetch can never
-    // strand the page on a skeleton. Uses Promise.allSettled so a failure on
-    // secondary counts (modules/sessions/enrollments) does NOT block the
-    // primary catalog (master_paths) from rendering.
-    const withTimeout = (p, ms, fallback) =>
-      Promise.race([
-        Promise.resolve(p),
-        new Promise((resolve) => setTimeout(() => resolve(fallback), ms)),
-      ]);
-
     try {
-      const [pathsRes, enrollRes, modulesRes, sessionsRes] = await Promise.allSettled([
-        withTimeout(supabase.from('master_paths').select('*').eq('is_active', true), 10000, { data: null, error: { message: 'timeout' } }),
-        user?.id
-          ? withTimeout(supabase.from('user_enrollments').select('id, master_path_id, status').eq('user_id', user.id), 10000, { data: [] })
-          : Promise.resolve({ data: [] }),
-        withTimeout(supabase.from('master_modules').select('id, path_id'), 10000, { data: [] }),
-        withTimeout(supabase.from('master_sessions').select('id, module_id'), 10000, { data: [] }),
-      ]);
+      // Fetch catalog from backend (server-side Supabase — faster and avoids
+      // browser-to-Supabase timeouts on free-tier or cold-start scenarios).
+      const catalogRes = await fetch(`${API}/api/courses/catalog`);
+      if (!catalogRes.ok) throw new Error(`Catalog fetch failed (${catalogRes.status})`);
+      const catalog = await catalogRes.json();
 
-      // Unwrap allSettled result → the inner Supabase response object
-      const paths = pathsRes.status === 'fulfilled' ? pathsRes.value : { data: null, error: { message: 'catalog fetch failed' } };
-      const enroll = enrollRes.status === 'fulfilled' ? enrollRes.value : { data: [] };
-      const modules = modulesRes.status === 'fulfilled' ? modulesRes.value : { data: [] };
-      const sessions = sessionsRes.status === 'fulfilled' ? sessionsRes.value : { data: [] };
+      setCourses(catalog.paths || []);
+      setModuleCounts(catalog.module_counts || {});
+      setSessionCounts(catalog.session_counts || {});
 
-      // Primary requirement: the catalog itself. Only THIS is fatal.
-      if (paths.error || !paths.data) {
-        throw new Error(paths.error?.message || 'Failed to load courses');
+      // Enrollment is user-specific — still fetched from Supabase but only
+      // when a user is logged in.
+      if (user?.id) {
+        const { data: enrollData } = await supabase
+          .from('user_enrollments')
+          .select('id, master_path_id, status')
+          .eq('user_id', user.id);
+        setEnrollments(enrollData || []);
       }
-      setCourses(paths.data);
-      setEnrollments(enroll.data || []);
-
-      const mods = modules.data || [];
-      const mCounts = {};
-      mods.forEach((m) => { mCounts[m.path_id] = (mCounts[m.path_id] || 0) + 1; });
-      setModuleCounts(mCounts);
-
-      const moduleToPath = {};
-      mods.forEach((m) => { moduleToPath[m.id] = m.path_id; });
-      const sCounts = {};
-      (sessions.data || []).forEach((s) => {
-        const pathId = moduleToPath[s.module_id];
-        if (pathId) sCounts[pathId] = (sCounts[pathId] || 0) + 1;
-      });
-      setSessionCounts(sCounts);
     } catch (err) {
       setError(err.message || 'Failed to load courses');
     } finally {

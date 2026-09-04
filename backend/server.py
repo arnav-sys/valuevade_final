@@ -1461,6 +1461,33 @@ def _welcome_email_html(first_name: str, courses_url: str) -> str:
 # and /api/news/mark_read no longer exist. See DashboardPage.jsx for FE cleanup.
 
 
+# ── Course Catalog ────────────────────────────────────────────────────────────
+@api_router.get("/courses/catalog")
+async def get_courses_catalog():
+    """Public endpoint — returns master_paths + module/session counts in one
+    fast server-side call so CoursesPage.jsx never needs to hit Supabase directly.
+    No auth required (catalog is public)."""
+    paths = _supabase_get("master_paths?is_active=eq.true&order=created_at") or []
+    modules = _supabase_get("master_modules?select=id,path_id") or []
+    sessions = _supabase_get("master_sessions?select=id,module_id") or []
+
+    module_to_path = {m["id"]: m["path_id"] for m in modules}
+    mod_counts: dict = {}
+    ses_counts: dict = {}
+    for m in modules:
+        mod_counts[m["path_id"]] = mod_counts.get(m["path_id"], 0) + 1
+    for s in sessions:
+        pid = module_to_path.get(s["module_id"])
+        if pid:
+            ses_counts[pid] = ses_counts.get(pid, 0) + 1
+
+    return {
+        "paths": paths,
+        "module_counts": mod_counts,
+        "session_counts": ses_counts,
+    }
+
+
 
 
 # =============================================================================
