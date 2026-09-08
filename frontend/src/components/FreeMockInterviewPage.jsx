@@ -222,7 +222,7 @@ export default function FreeMockInterviewPage() {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all"
                 data-testid="free-mock-see-course-btn"
               >
-                See the full course · ₹999 lifetime <ArrowRight size={15} />
+                See the full course · ₹4999 lifetime <ArrowRight size={15} />
               </Link>
             </div>
           </div>

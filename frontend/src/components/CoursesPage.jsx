@@ -207,17 +207,17 @@ export default function CoursesPage() {
         {/* Prompt-2/3 will replace the copy; here we only fix the per-route
             head so /courses no longer canonicalizes to the homepage. */}
         <title>Finance Courses — Equity Research Analyst Program | Valuevade</title>
-        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹999 lifetime." />
+        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹4999 lifetime." />
         <link rel="canonical" href="https://valuevade.com/courses" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/courses" />
         <meta property="og:title" content="Finance Courses — Equity Research Analyst Program | Valuevade" />
-        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹999 lifetime." />
+        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹4999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Finance Courses — Equity Research Analyst Program | Valuevade" />
-        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹999 lifetime." />
+        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹4999 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
       </Helmet>
 

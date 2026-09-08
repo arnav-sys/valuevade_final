@@ -163,8 +163,8 @@ def _lazy_free_session_used(user_id: str, status_row: dict) -> dict:
 def _pricing_for_user(status_row: dict) -> tuple[str, int]:
     """Returns (tier_code, amount_inr) for what's available to this user now."""
     if status_row.get("free_session_used"):
-        return ("post_trial", 999)
-    return ("upfront", 999)
+        return ("post_trial", 4999)
+    return ("upfront", 4999)
 
 
 def _award_paid_completion_xp(user_id: str):

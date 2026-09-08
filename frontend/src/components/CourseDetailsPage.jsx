@@ -169,13 +169,13 @@ const COURSE_DETAILS_FAQS = [
   { q: 'Will this course get me a finance job?',
     a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series XV preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
   { q: 'Is Valuevade worth it?',
-    a: "For ₹999 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
+    a: "For ₹4999 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
   { q: 'How is Valuevade different from WallStreet School?',
-    a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹999. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
+    a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹4999. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
   { q: 'How is Valuevade different from Imarticus or Upgrad?',
-    a: "Imarticus and Upgrad offer longer university-style finance programs, often with placement-assistance structures and cohort schedules. Valuevade is a focused equity-research skill program: shorter (about 2 months at an hour a day), self-paced, simulation-first, and ₹999 lifetime. If you want a long credentialed program with placement services, they're built for that; if you want the specific analyst skill set and portfolio, fast and affordable, that's what Valuevade is for." },
+    a: "Imarticus and Upgrad offer longer university-style finance programs, often with placement-assistance structures and cohort schedules. Valuevade is a focused equity-research skill program: shorter (about 2 months at an hour a day), self-paced, simulation-first, and ₹4999 lifetime. If you want a long credentialed program with placement services, they're built for that; if you want the specific analyst skill set and portfolio, fast and affordable, that's what Valuevade is for." },
   { q: 'How is Valuevade different from Valuation School?',
-    a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software — auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹999 lifetime. Pick the format that matches how you actually study." },
+    a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software — auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹4999 lifetime. Pick the format that matches how you actually study." },
   { q: 'How do I become an equity research analyst in India?',
     a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA — not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series XV is the SEBI-established research-analyst certification; CFA helps for buy-side), and — increasingly the differentiator — a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
 ];
@@ -361,17 +361,17 @@ export default function CourseDetailsPage() {
       <VideoPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
       <Helmet>
         <title>Equity Research Analyst Course — Syllabus & Fees | Valuevade</title>
-        <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹999 lifetime access." />
+        <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <link rel="canonical" href={`https://valuevade.com/course/${courseId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://valuevade.com/course/${courseId}`} />
         <meta property="og:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
-        <meta property="og:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹999 lifetime access." />
+        <meta property="og:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
-        <meta name="twitter:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹999 lifetime access." />
+        <meta name="twitter:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         {/* JSON-LD (Prompt 4): Course + BreadcrumbList + FAQPage.
             NO aggregateRating, NO Review markup. FAQPage is generated from
@@ -528,7 +528,7 @@ export default function CourseDetailsPage() {
                   accounting under Ind AS, financial statement and ratio analysis, three-statement
                   financial modelling, and valuation by DCF, comparable companies and SOTP — then
                   finish with three portfolio capstones: an initiating-coverage report, a sector
-                  coverage note, and a working AI research copilot. Lifetime access costs ₹999
+                  coverage note, and a working AI research copilot. Lifetime access costs ₹4999
                   one-time, and your first session is free.
                 </motion.p>
                 <motion.p
@@ -587,7 +587,7 @@ export default function CourseDetailsPage() {
                           className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                           data-testid="detail-customize-enroll"
                         >
-                          Enrol Now — ₹999 <ArrowRight size={16} />
+                          Enrol Now — ₹4999 <ArrowRight size={16} />
                         </button>
                       </BreathingGlow>
                       {freeSessions.length > 0 && (
@@ -601,7 +601,7 @@ export default function CourseDetailsPage() {
                       )}
                     </div>
                     <p className="mt-3 text-[11px] font-mono uppercase tracking-[0.14em] text-[var(--color-text-faint)]" data-testid="detail-hero-trust">
-                      ₹999 lifetime · No subscription
+                      ₹4999 lifetime · No subscription
                     </p>
                   </>
                 )}
@@ -1078,7 +1078,7 @@ export default function CourseDetailsPage() {
                     ['Mock interviews', 'AI, multi-round, scored feedback', 'Interview-prep sessions', 'Placement-assist mocks', 'Not typically included', 'Interview prep + placement support'],
                     ['NISM Series XV prep', 'Included, mapped to syllabus', 'Not focused on NISM XV', 'Offered as a separate course', 'Not covered', 'Covered in select tracks'],
                     ['24/7 AI tutor', 'Included (Pari, context-aware)', 'Not offered', 'Not offered', 'Not offered', 'Not offered'],
-                    ['Price', '₹999 one-time', '₹45,000+', '₹10,000 – ₹35,000+', '₹4,000 – ₹7,000 / month', '₹1,00,000+'],
+                    ['Price', '₹4999 one-time', '₹45,000+', '₹10,000 – ₹35,000+', '₹4,000 – ₹7,000 / month', '₹1,00,000+'],
                     ['Access', 'Lifetime', 'Cohort duration', 'Course duration', 'Subscription-based', 'Cohort / program duration'],
                   ].map(([feat, vv, wss, ifmc, coursera, imarticus], i) => (
                     <tr key={i} data-testid={`compare-row-${i}`}>

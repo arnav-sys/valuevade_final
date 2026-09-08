@@ -10,8 +10,8 @@ const API = process.env.REACT_APP_BACKEND_URL;
 
 /**
  * First stop after signup. Forces every new user to choose:
- *   (a) Pay ₹999 upfront (mock or real Razorpay)
- *   (b) Try free — 1 session free, then ₹999 after.
+ *   (a) Pay ₹4999 upfront (mock or real Razorpay)
+ *   (b) Try free — 1 session free, then ₹4999 after.
  * Both paths land at /courses to pick a course and customise.
  */
 export default function EnrollmentChoicePage() {
@@ -77,7 +77,7 @@ export default function EnrollmentChoicePage() {
             Limited offer
           </span>
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" /> Pay ₹999 — Start Now
+            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" /> Pay ₹4999 — Start Now
           </h3>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">
             Lock in lifetime access at the best rate.
@@ -100,7 +100,7 @@ export default function EnrollmentChoicePage() {
             className="w-full px-4 py-3 rounded-xl bg-[var(--color-primary)] text-white font-semibold hover:opacity-90 disabled:opacity-50 inline-flex items-center justify-center gap-2"
           >
             {payBusy && <Loader2 className="w-4 h-4 animate-spin" />}
-            Pay ₹999 Now
+            Pay ₹4999 Now
           </button>
         </div>
 
@@ -109,7 +109,7 @@ export default function EnrollmentChoicePage() {
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1">
             Free Trial — 1 Session Free
           </h3>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">Then ₹999 after.</p>
+          <p className="text-sm text-[var(--color-text-muted)] mb-4">Then ₹4999 after.</p>
           <div className="mb-5">
             <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">Free</span>
             <span className="text-sm text-[var(--color-text-muted)] ml-2">to start</span>
@@ -125,7 +125,7 @@ export default function EnrollmentChoicePage() {
               <Check className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" /> Upgrade anytime to unlock the rest
             </li>
             <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)] italic">
-              Sessions 2+ require ₹999 lifetime upgrade
+              Sessions 2+ require ₹4999 lifetime upgrade
             </li>
           </ul>
           <button
@@ -151,9 +151,9 @@ export default function EnrollmentChoicePage() {
       </button>
       {showWhy && (
         <div className="mt-3 max-w-2xl text-sm text-[var(--color-text-muted)] text-center" data-testid="choice-explain-body">
-          Both options unlock the exact same course content for life. Paying upfront costs just ₹999
+          Both options unlock the exact same course content for life. Paying upfront costs just ₹4999
           one-time. The free trial includes session 1 fully (notes + quiz + AI interview + simulation).
-          If you upgrade later, the price is still ₹999.
+          If you upgrade later, the price is still ₹4999.
         </div>
       )}
 

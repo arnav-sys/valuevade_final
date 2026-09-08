@@ -14,7 +14,7 @@ const ROWS = [
   { label: 'AI personalised path',             vv: true, v: [false, false, false, false] },
   { label: 'Live AI tutor (24/7)',             vv: true, v: [false, false, false, false] },
   { label: 'AI-proofing curriculum',           vv: true, v: [false, false, false, false] },
-  { label: 'Price',                            vv: '₹999 lifetime, one-time',   v: ['₹50k–80k', '₹25k–40k', '₹4k–15k/yr', '₹50k–2L'] },
+  { label: 'Price',                            vv: '₹4999 lifetime, one-time',   v: ['₹50k–80k', '₹25k–40k', '₹4k–15k/yr', '₹50k–2L'] },
   { label: 'Duration',                         vv: 'Lifetime access · ~2 months at 1 hr/day', v: ['3–6 months', '3–4 months', '6–12 months', '6–18 months'] },
   { label: 'AI mock interviews + feedback',    vv: true, v: ['manual', 'manual', false, 'manual'] },
   { label: 'Simulations',                      vv: '239, auto-graded, Indian companies', v: ['partial', 'partial', false, 'partial'] },
@@ -164,7 +164,7 @@ export default function ComparisonSection() {
             </h3>
             <p className="text-[var(--color-text-muted)] font-bricolage text-[13.5px] mt-2 leading-relaxed">
               WallStreet School ₹50,000 · Imarticus ₹1,20,000 · Valuevade{' '}
-              <strong className="text-[var(--color-text)] font-semibold">₹999 lifetime.</strong>
+              <strong className="text-[var(--color-text)] font-semibold">₹4999 lifetime.</strong>
             </p>
           </div>
           <div className="flex items-center gap-5 shrink-0">
@@ -175,7 +175,7 @@ export default function ComparisonSection() {
             <div className="w-px h-10 bg-[var(--color-border)]" aria-hidden="true" />
             <div className="text-right">
               <div className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-primary)]">VALUEVADE</div>
-              <div className="font-jetbrains text-3xl text-[var(--color-text)] font-bold mt-1">₹999</div>
+              <div className="font-jetbrains text-3xl text-[var(--color-text)] font-bold mt-1">₹4999</div>
             </div>
           </div>
         </div>

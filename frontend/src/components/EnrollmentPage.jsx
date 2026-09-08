@@ -279,11 +279,11 @@ export default function EnrollmentPage() {
                   data-testid="enrollment-start-button"
                   className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm sm:text-base font-semibold font-bricolage hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                 >
-                  {paying ? 'Opening payment…' : 'Pay ₹999 & Start My Journey'} <ArrowRight size={16} />
+                  {paying ? 'Opening payment…' : 'Pay ₹4999 & Start My Journey'} <ArrowRight size={16} />
                 </button>
               </BreathingGlow>
               <p className="mt-4 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-fineprint">
-                ₹999 lifetime access · one-time payment via Razorpay · full standard curriculum
+                ₹4999 lifetime access · one-time payment via Razorpay · full standard curriculum
               </p>
             </>
           )}
