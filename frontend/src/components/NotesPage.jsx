@@ -1552,16 +1552,16 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
   const fileNameLower = fileName.toLowerCase();
   const isDisplayPpt = fileNameLower.endsWith('.pptx') || fileNameLower.endsWith('.ppt');
   const fileType = (c.file_type || 'pdf').toLowerCase();
-  // PPT/PPTX is converted server-side to a PDF at upload time so it renders
-  // inline here — file_type will be 'pdf' even when the original was a
-  // .pptx (fileName keeps the original name for the badge/title). Only the
-  // rare case where server-side conversion failed still has file_type
-  // pptx/ppt, and there's genuinely nothing we can render inline for that.
   const isPdf = fileType === 'pdf';
+  // PPTX/PPT that wasn't converted server-side — render via Office Online Viewer
+  // so students see slides inline instead of the "still being processed" error.
+  const isOffice = !isPdf && (fileType === 'pptx' || fileType === 'ppt' || isDisplayPpt);
   const hasFile = !!fileUrl;
-  // #toolbar=0 hides Chrome's built-in PDF viewer download/print icons —
-  // students view notes in-page only, no download affordance offered.
-  const viewerSrc = hasFile ? `${fileUrl}#toolbar=0&navpanes=0` : '';
+  // #toolbar=0 hides Chrome's built-in PDF viewer download/print icons.
+  const viewerSrc = hasFile && isPdf ? `${fileUrl}#toolbar=0&navpanes=0` : '';
+  const officeViewerSrc = hasFile && isOffice
+    ? `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`
+    : '';
 
   const handleViewerError = () => setViewerError(true);
 
@@ -1581,7 +1581,7 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
             <span className="text-[10px] text-[var(--color-text-muted)] font-mono">Session document</span>
           </div>
         </div>
-        {isPdf && (
+        {(isPdf || isOffice) && (
           <button
             onClick={() => setFullscreen(!fullscreen)}
             className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-medium text-[var(--color-primary)] border border-[var(--color-primary)]/30 hover:bg-[var(--color-primary)]/10 transition-all flex-shrink-0"
@@ -1593,7 +1593,7 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
       </div>
 
       {/* Document frame — rendered fully in-page, no download affordance. */}
-      {isPdf && hasFile ? (
+      {(isPdf || isOffice) && hasFile ? (
         <div
           className={`relative rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_40px_rgba(0,0,0,0.18)] transition-all duration-300 ${fullscreen ? 'h-[85vh]' : 'h-[72vh] min-h-[500px]'}`}
           data-testid="document-frame"
@@ -1606,7 +1606,7 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
             </div>
           ) : (
             <iframe
-              src={viewerSrc}
+              src={isPdf ? viewerSrc : officeViewerSrc}
               title={fileName}
               className="w-full h-full border-0"
               onError={handleViewerError}
