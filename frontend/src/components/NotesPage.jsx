@@ -1558,7 +1558,11 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
   const isOffice = !isPdf && (fileType === 'pptx' || fileType === 'ppt' || isDisplayPpt);
   const hasFile = !!fileUrl;
   // #toolbar=0 hides Chrome's built-in PDF viewer download/print icons.
-  const viewerSrc = hasFile && isPdf ? `${fileUrl}#toolbar=0&navpanes=0` : '';
+  // Use Google Docs Viewer so mobile browsers render the PDF inline (iframes
+  // with raw PDF URLs trigger a navigation-away on iOS/Android Safari/Chrome).
+  const viewerSrc = hasFile && isPdf
+    ? `https://docs.google.com/viewer?url=${encodeURIComponent(fileUrl)}&embedded=true`
+    : '';
   const officeViewerSrc = hasFile && isOffice
     ? `https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`
     : '';
