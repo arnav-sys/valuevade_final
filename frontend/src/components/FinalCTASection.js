@@ -60,7 +60,7 @@ export default function FinalCTASection() {
           </div>
 
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] mb-6 ${
+            className={`font-clash text-4xl sm:text-5xl lg:text-[60px] text-[var(--color-text)] mb-6 ${
               isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
             }`}
             style={{ animationDelay: '0.12s', lineHeight: 1.06, letterSpacing: '-0.02em' }}

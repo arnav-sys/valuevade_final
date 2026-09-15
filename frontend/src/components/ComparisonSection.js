@@ -66,7 +66,7 @@ export default function ComparisonSection() {
             SIDE-BY-SIDE
           </p>
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+            className={`font-clash text-4xl sm:text-5xl lg:text-[60px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
           >
             Why pay{' '}

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer, CalendarRange, Compass } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
@@ -126,7 +125,6 @@ const features = [
 
 export default function FeaturesSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
-  const [hoveredIdx, setHoveredIdx] = useState(null);
 
   return (
     <section
@@ -150,7 +148,7 @@ export default function FeaturesSection() {
             THE PLATFORM
           </p>
           <h2
-            className={`font-clash text-3xl sm:text-4xl lg:text-[52px] text-[var(--color-text)] ${
+            className={`font-clash text-4xl sm:text-5xl lg:text-[60px] text-[var(--color-text)] ${
               isVisible ? 'animate-fade-up visible' : 'animate-fade-up'
             }`}
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
@@ -167,20 +165,13 @@ export default function FeaturesSection() {
         <div className="grid grid-cols-12 gap-3 lg:gap-4">
           {features.map((feature, i) => {
             const Icon = feature.icon;
-            const isHover = hoveredIdx === i;
             return (
               <article
                 key={feature.title}
-                onMouseEnter={() => setHoveredIdx(i)}
-                onMouseLeave={() => setHoveredIdx(null)}
-                className={`${feature.span} lv-panel ${
+                className={`${feature.span} lv-panel lv-feature-card-hover ${
                   feature.size === 'large' ? 'p-7' : feature.size === 'medium' ? 'p-5' : 'p-4'
-                } ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'} transition-transform duration-300`}
-                style={{
-                  animationDelay: `${0.1 + i * 0.04}s`,
-                  transform: isHover ? 'translateY(-2px)' : 'none',
-                  willChange: 'transform',
-                }}
+                } ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
+                style={{ animationDelay: `${0.1 + i * 0.04}s` }}
                 data-testid={`feature-card-${i}`}
               >
                 {/* Mono prefix rail */}

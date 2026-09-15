@@ -28,10 +28,11 @@ body.landing-active.landing-light {
   --bg-secondary:         #0b0b14;
   --color-surface:        rgba(255,255,255,0.04);
   --color-border:         rgba(167, 139, 250, 0.14);
-  --color-text:           #ffffff;
-  --color-text-secondary: rgba(255,255,255,0.86);
-  --color-text-muted:     rgba(255,255,255,0.62);
-  --color-text-faint:     rgba(255,255,255,0.40);
+  /* Tinted neutrals — avoid pure #fff/#000 (AI-slop tell) */
+  --color-text:           #ece8f2;    /* warm-cool cream, not pure white */
+  --color-text-secondary: rgba(236,232,242,0.88);
+  --color-text-muted:     rgba(236,232,242,0.60);
+  --color-text-faint:     rgba(236,232,242,0.38);
   --color-primary:        #a78bfa;   /* violet */
   --color-accent-purple:  #8b5cf6;
   --color-accent-pink:    #c4b5fd;
@@ -46,7 +47,20 @@ body.landing-active.landing-light {
   min-height: 100vh;
 }
 
-.landing-dark h1, .landing-dark h2, .landing-dark h3,
+/* Typography guardrail: display serif for h1/h2, sans for h3 and below.
+ * Fraunces (already loaded as accent) becomes the primary display face.
+ * Include h1.font-clash / h2.font-clash to win over the .font-clash rule below. */
+.landing-dark h1,
+.landing-dark h1.font-clash,
+.landing-dark h2,
+.landing-dark h2.font-clash {
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-optical-sizing: auto;
+  font-style: normal;
+  letter-spacing: -0.025em;
+}
+.landing-dark h3,
+.landing-dark h4,
 .landing-dark .font-clash {
   font-family: 'Space Grotesk', 'Inter', sans-serif !important;
   letter-spacing: -0.02em;
@@ -59,14 +73,12 @@ body.landing-active.landing-light {
   border: 1px solid rgba(167,139,250,0.14) !important;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
-  transition: transform 320ms cubic-bezier(.22,1,.36,1),
-              border-color 320ms ease, box-shadow 320ms ease;
+  /* Guardrail: no lift translateY, no glow box-shadow.
+     Human micro-interaction: border-color shift only. */
+  transition: border-color 300ms ease;
 }
 .landing-dark .glass-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(167,139,250,0.45) !important;
-  box-shadow: 0 24px 60px -20px rgba(139,92,246,0.35),
-              0 0 0 1px rgba(167,139,250,0.18) inset;
+  border-color: rgba(167,139,250,0.42) !important;
 }
 
 /* Sections — ensure no white bleed through anywhere */
@@ -95,16 +107,11 @@ body.landing-active.landing-light {
   border-bottom-color: rgba(167,139,250,0.14) !important;
 }
 
-/* CTA breathing pulse */
-@keyframes lv-pulse {
-  0%,100% { box-shadow: 0 0 0 0 rgba(167,139,250,0.45), 0 8px 24px -8px rgba(139,92,246,0.55); }
-  50%     { box-shadow: 0 0 0 14px rgba(167,139,250,0.0),  0 16px 36px -12px rgba(139,92,246,0.75); }
-}
+/* CTA — Guardrail: no gradient, no glow pulse.
+   Solid primary colour only. */
 .landing-dark .hero-cta-primary {
-  background: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%) !important;
-  animation: lv-pulse 3.4s ease-in-out infinite;
+  background: var(--color-primary) !important;
 }
-.landing-dark .hero-cta-primary:hover { animation-play-state: paused; }
 
 /* Section labels */
 .landing-dark .section-label {
@@ -212,13 +219,13 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   opacity: 0.55;
 }
 
-/* LIVE indicator dot — restrained pulse */
+/* LIVE indicator dot — restrained pulse.
+   Guardrail: no box-shadow glow. Opacity-only pulse. */
 .lv-live-dot {
   width: 6px;
   height: 6px;
   border-radius: 999px;
   background: var(--color-accent-pink);
-  box-shadow: 0 0 6px rgba(255,106,193,0.6);
   animation: lv-live-pulse 1.6s ease-in-out infinite;
 }
 @keyframes lv-live-pulse {
@@ -240,18 +247,14 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 }
 .lv-ticker-wrap:hover .lv-ticker-track { animation-play-state: paused; }
 
-/* Sparkline gentle drift — path dash animation */
+/* Sparkline draw animation — functional (reveals the line). No decorative drift. */
 .lv-sparkline-path {
   stroke-dasharray: 240;
   stroke-dashoffset: 240;
-  animation: lv-spark-draw 3.2s ease-out 0.4s forwards, lv-spark-drift 6s ease-in-out 3.6s infinite;
+  animation: lv-spark-draw 3.2s ease-out 0.4s forwards;
 }
 @keyframes lv-spark-draw {
   to { stroke-dashoffset: 0; }
-}
-@keyframes lv-spark-drift {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
 }
 
 /* Section chapter label — mono uppercase, faint */
@@ -263,7 +266,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: var(--color-text-faint);
 }
 
-/* Sharp editorial CTA button */
+/* Sharp editorial CTA button — Guardrail: no glow box-shadow on hover */
 .lv-cta {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 12px;
@@ -278,13 +281,11 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: background-color 220ms ease, transform 220ms ease, box-shadow 220ms ease;
-  box-shadow: 0 0 0 0 rgba(36,107,253,0);
+  transition: background-color 220ms ease, border-color 220ms ease;
 }
 .lv-cta:hover {
   background: var(--color-primary);
-  transform: translateY(-1px);
-  box-shadow: 0 10px 24px -12px color-mix(in oklab, var(--color-primary) 60%, transparent);
+  border-color: var(--color-primary);
 }
 .lv-cta-ghost {
   border: 1px solid var(--color-border);
@@ -344,9 +345,18 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: var(--color-text-muted);
 }
 
+/* Feature cards — Guardrail: hover = border-accent shift, no translateY lift */
+.lv-feature-card-hover {
+  transition: border-color 260ms ease;
+}
+.lv-feature-card-hover:hover {
+  border-color: rgba(167,139,250,0.45) !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lv-ticker-track, .lv-live-dot, .lv-sparkline-path { animation: none !important; }
 }
+
 
 /* ============================================================
  * Light-mode tuning for the editorial terminal language.
@@ -397,22 +407,19 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 .landing-light .lv-statusbar .up   { color: #16a34a; }
 .landing-light .lv-statusbar .down { color: #dc2626; }
 
-/* CTA — force a punchy dark-blue on cream (color-mix produced a
- * washed-out light-blue when computed against the light --color-primary) */
+/* CTA — force a punchy dark-blue on cream */
 .landing-light .lv-cta {
   background: #1e56d4;
   border-color: #1e56d4;
 }
 .landing-light .lv-cta:hover {
   background: #246BFD;
-  box-shadow: 0 10px 24px -12px rgba(36,107,253,0.35);
+  border-color: #246BFD;
 }
 
-/* LIVE dot — deeper rose in light mode (the dark-mode lavender-pink
- * disappears on cream) */
+/* LIVE dot — deeper rose in light mode, no glow */
 .landing-light .lv-live-dot {
   background: #E53E5C;
-  box-shadow: 0 0 6px rgba(229,62,92,0.45);
 }
 
 /* Progress readout labels & small mono spans — tighten default gray */
@@ -463,4 +470,3 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 }
 .landing-light .lv-trial-input::placeholder { color: rgba(26,26,46,0.38); }
 .landing-light .lv-trial-input:focus { border-color: #246BFD; }
-

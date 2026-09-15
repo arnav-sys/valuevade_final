@@ -106,9 +106,9 @@ export default function HeroSection() {
         {/* Full-width H1 — occupies the entire container so the headline
             gets the visual weight it deserves (Feb 2026 tweak). */}
         <h1
-          className="font-clash text-[var(--color-text)] text-center"
+          className="text-[var(--color-text)]"
           style={{
-            fontSize: 'clamp(38px, 6vw, 92px)',
+            fontSize: 'clamp(48px, 7vw, 96px)',
             lineHeight: 1.02,
             letterSpacing: '-0.028em',
             marginBottom: '40px',
@@ -169,14 +169,14 @@ export default function HeroSection() {
 
         {/* Below-H1 12-col grid — left content stack + right-aligned terminal panel */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 lg:items-start flex-1">
-          {/* LEFT — 7 cols content stack (starts under H1 on lg) */}
-          <div className="lg:col-span-7 text-center lg:text-left">
+          {/* LEFT — 7 cols content stack */}
+          <div className="lg:col-span-7 text-left">
             {/* Hairline + subhead */}
             <motion.div
               initial={{ opacity: 0, scaleX: 0 }}
               animate={{ opacity: 1, scaleX: 1 }}
               transition={{ delay: 0.6, duration: 0.55 }}
-              className="h-px w-24 origin-center lg:origin-left mx-auto lg:mx-0 mb-6 bg-[var(--color-primary)]/60"
+              className="h-px w-24 origin-left mb-6 bg-[var(--color-primary)]/60"
               aria-hidden="true"
             />
 
@@ -194,7 +194,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.78, duration: 0.5 }}
-              className="text-[15px] lg:text-base text-[var(--color-text-muted)] max-w-xl mx-auto lg:mx-0 mb-8 font-bricolage leading-relaxed"
+              className="text-[15px] lg:text-base text-[var(--color-text-muted)] max-w-xl mb-8 font-bricolage leading-relaxed"
               data-testid="hero-paragraph"
             >
               Valuevade is an AI-personalised equity research and financial modelling course for Indian
@@ -209,7 +209,7 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.86, duration: 0.5 }}
-              className="flex flex-col sm:flex-row items-center lg:items-center justify-center lg:justify-start gap-4 mb-7"
+              className="flex flex-col sm:flex-row items-start gap-4 mb-7"
             >
               <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
                 Start Free Session
@@ -339,7 +339,7 @@ export default function HeroSection() {
                 </div>
                 <div className="h-1.5 bg-[var(--color-surface)] overflow-hidden" style={{ borderRadius: 1 }}>
                   <div
-                    className="h-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)]"
+                    className="h-full bg-[var(--color-primary)]"
                     style={{ width: `${ROADMAP.progress}%` }}
                   />
                 </div>
