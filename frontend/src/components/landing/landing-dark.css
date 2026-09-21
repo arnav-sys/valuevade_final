@@ -360,6 +360,27 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   .lv-ticker-track, .lv-live-dot, .lv-sparkline-path { animation: none !important; }
 }
 
+/* Central platform hub — concentric pulse rings (original graphic) */
+.lv-hub-ring {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--color-primary) 40%, transparent);
+  animation: lv-hub-pulse 3.9s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes lv-hub-pulse {
+  0%   { transform: scale(0.42); opacity: 0.9; }
+  70%  { opacity: 0.12; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lv-hub-ring { animation: none; opacity: 0.18; }
+}
+
 
 /* ============================================================
  * Light-mode tuning for the editorial terminal language.
