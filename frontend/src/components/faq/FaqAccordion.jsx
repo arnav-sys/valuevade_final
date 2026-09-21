@@ -71,12 +71,12 @@ export default function FaqAccordion() {
             type="button"
             onClick={() => { setActiveCat(cat); setOpenId(null); }}
             data-testid={`faq-cat-${cat.toLowerCase()}`}
-            className={`px-3 py-1.5 font-jetbrains text-[10.5px] uppercase tracking-[0.16em] border transition-colors ${
+            className={`px-4 py-1.5 rounded-full text-[12.5px] font-medium border transition-colors ${
               activeCat === cat
                 ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
                 : 'bg-transparent text-[var(--color-text-muted)] border-[var(--color-border)] hover:text-[var(--color-text)] hover:border-[var(--color-primary)]'
             }`}
-            style={{ borderRadius: 2 }}
+            style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}
           >
             {cat}
           </button>
@@ -97,8 +97,8 @@ export default function FaqAccordion() {
                 data-testid={`faq-toggle-${faq.id}`}
               >
                 <div className="flex items-baseline gap-4 min-w-0">
-                  <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)] shrink-0">
-                    Q{String(idx + 1).padStart(2, '0')}
+                  <span className="text-[13px] font-bold text-[var(--color-primary)] shrink-0" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>
+                    {String(idx + 1).padStart(2, '0')}
                   </span>
                   <span className="font-bricolage text-[var(--color-text)] text-[14.5px] font-medium">
                     {faq.question}
@@ -135,9 +135,9 @@ export default function FaqAccordion() {
         </p>
       )}
 
-      <p className="mt-10 font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-faint)]">
-        STILL STUCK? OPEN THE{' '}
-        <span className="text-[var(--color-primary)]">HELP</span> BUBBLE · CTRL-K
+      <p className="mt-10 text-[13.5px] font-bricolage text-[var(--color-text-muted)]">
+        Still stuck? Open the{' '}
+        <span className="text-[var(--color-primary)] font-semibold">Help</span> bubble anytime and Pari will answer in context.
       </p>
     </section>
   );

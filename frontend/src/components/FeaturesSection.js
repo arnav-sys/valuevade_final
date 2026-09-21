@@ -174,21 +174,27 @@ export default function FeaturesSection() {
                 style={{ animationDelay: `${0.1 + i * 0.04}s` }}
                 data-testid={`feature-card-${i}`}
               >
-                {/* Mono prefix rail */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="font-jetbrains text-[10.5px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
-                    {feature.idx} · {feature.tag}
-                  </span>
+                {/* Icon + tag */}
+                <div className="flex items-center gap-3 mb-4">
                   {Icon && (
                     <span
-                      className={`inline-flex items-center justify-center border border-[var(--color-border)] ${
-                        feature.size === 'small' ? 'w-7 h-7' : 'w-9 h-9'
+                      className={`inline-flex items-center justify-center rounded-xl ${
+                        feature.size === 'small' ? 'w-9 h-9' : 'w-11 h-11'
                       }`}
-                      style={{ borderRadius: 2 }}
+                      style={{
+                        background: 'color-mix(in oklab, var(--color-primary) 14%, transparent)',
+                        border: '1px solid color-mix(in oklab, var(--color-primary) 30%, transparent)',
+                      }}
                     >
-                      <Icon size={feature.size === 'small' ? 14 : 16} style={{ color: feature.accent }} />
+                      <Icon size={feature.size === 'small' ? 16 : 20} style={{ color: 'var(--color-primary)' }} />
                     </span>
                   )}
+                  <span
+                    className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-faint)] font-semibold"
+                    style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}
+                  >
+                    {feature.tag}
+                  </span>
                 </div>
 
                 <h3
@@ -206,21 +212,6 @@ export default function FeaturesSection() {
                 >
                   {feature.body}
                 </p>
-
-                {/* Hairline data footer — feature.large only for editorial weight */}
-                {feature.size === 'large' && (
-                  <div className="mt-6 pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
-                    <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
-                      MODULE · CORE
-                    </span>
-                    <span
-                      className="font-jetbrains text-[10px] uppercase tracking-[0.2em]"
-                      style={{ color: feature.accent }}
-                    >
-                      SHIPPED · IN PLATFORM
-                    </span>
-                  </div>
-                )}
               </article>
             );
           })}

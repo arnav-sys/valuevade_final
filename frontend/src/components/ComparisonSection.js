@@ -27,16 +27,15 @@ const Cell = ({ value, vv }) => {
   if (value === true) {
     return (
       <span className="inline-flex items-center gap-1.5">
-        <Check size={13} strokeWidth={2.5} className={vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'} aria-hidden="true" />
-        <span className={`font-jetbrains text-[10px] uppercase tracking-[0.16em] ${vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>YES</span>
+        <Check size={16} strokeWidth={2.5} className={vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'} aria-hidden="true" />
+        <span className={`text-[12px] font-medium ${vv ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>Yes</span>
       </span>
     );
   }
   if (value === false) {
     return (
-      <span className="inline-flex items-center gap-1.5">
-        <Minus size={12} strokeWidth={2.5} className="text-[var(--color-text-faint)]" aria-hidden="true" />
-        <span className="font-jetbrains text-[10px] uppercase tracking-[0.16em] text-[var(--color-text-faint)]">NO</span>
+      <span className="inline-flex items-center gap-1.5 text-[var(--color-text-faint)]">
+        <Minus size={14} strokeWidth={2.5} aria-hidden="true" />
       </span>
     );
   }
@@ -93,13 +92,13 @@ export default function ComparisonSection() {
             <table className="w-full min-w-[820px]" data-testid="comparison-table">
               <thead>
                 <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]/60">
-                  <th className="px-5 py-3 text-left font-jetbrains text-[10.5px] uppercase tracking-[0.18em] text-[var(--color-text-faint)]">
+                  <th className="px-5 py-3 text-left text-[11px] uppercase tracking-[0.14em] font-semibold text-[var(--color-text-faint)]">
                     Feature
                   </th>
                   {COMPETITORS.map((c, i) => (
                     <th
                       key={c}
-                      className={`px-4 py-3 text-left font-jetbrains text-[10.5px] uppercase tracking-[0.18em] ${
+                      className={`px-4 py-3 text-left text-[11px] uppercase tracking-[0.14em] font-semibold ${
                         i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'
                       }`}
                       style={i === 0 ? {
@@ -137,15 +136,6 @@ export default function ComparisonSection() {
               </tbody>
             </table>
           </div>
-          {/* Datagrid footer with source line */}
-          <div className="px-5 py-2.5 border-t border-[var(--color-border)] flex items-center justify-between bg-[var(--bg-primary)]/40">
-            <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
-              SRC · PUBLIC LISTINGS · REVIEWED Q1 2026
-            </span>
-            <span className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">
-              10 ROWS · 5 COLS
-            </span>
-          </div>
         </div>
 
         {/* Pricing wedge — editorial panel */}
@@ -169,13 +159,13 @@ export default function ComparisonSection() {
           </div>
           <div className="flex items-center gap-5 shrink-0">
             <div className="text-right">
-              <div className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-text-faint)]">THEIRS</div>
-              <div className="font-jetbrains text-2xl text-[var(--color-text-muted)] line-through mt-1">₹50k+</div>
+              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-text-faint)] font-semibold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>Theirs</div>
+              <div className="text-2xl text-[var(--color-text-muted)] line-through mt-1 font-bold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>₹50k+</div>
             </div>
             <div className="w-px h-10 bg-[var(--color-border)]" aria-hidden="true" />
             <div className="text-right">
-              <div className="font-jetbrains text-[10px] uppercase tracking-[0.2em] text-[var(--color-primary)]">VALUEVADE</div>
-              <div className="font-jetbrains text-3xl text-[var(--color-text)] font-bold mt-1">₹4999</div>
+              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-primary)] font-semibold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>Valuevade</div>
+              <div className="text-3xl text-[var(--color-text)] font-bold mt-1" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>₹4999</div>
             </div>
           </div>
         </div>

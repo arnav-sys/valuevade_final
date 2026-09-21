@@ -5,6 +5,7 @@ import { X, ArrowRight } from 'lucide-react';
 import CustomCursor from '@/components/CustomCursor';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
+import SocialProofStrip from '@/components/SocialProofStrip';
 import ProblemSection from '@/components/ProblemSection';
 import FeaturesSection from '@/components/FeaturesSection';
 import ComparisonSection from '@/components/ComparisonSection';
@@ -105,6 +106,7 @@ export default function LandingPage() {
 
       <main className="relative z-10">
         <HeroSection />
+        <SocialProofStrip />
         <ProblemSection />
         <FeaturesSection />
         <WhatYoullLearnSection />

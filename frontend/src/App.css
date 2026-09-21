@@ -196,7 +196,7 @@ body.custom-cursor * {
 
 /* ========== GRADIENT TEXT ========== */
 .logo-gradient {
-  background: linear-gradient(135deg, #246BFD, #6A5CFF, #FF6AC1);
+  background: linear-gradient(135deg, #246BFD, #7CA8FF);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -324,7 +324,7 @@ body.custom-cursor * {
   font-size: 0.75rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: #6A5CFF;
+  color: #246BFD;
   margin-bottom: 1rem;
 }
 
