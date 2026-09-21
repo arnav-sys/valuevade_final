@@ -28,7 +28,7 @@ export default function SocialProofStrip() {
             BUILT ON REAL MARKETS
           </p>
           <p className="font-bricolage text-[var(--color-text-muted)] text-[15px] lg:text-base mb-8 max-w-2xl mx-auto">
-            You practise on the Indian companies you&rsquo;ll actually cover as an analyst &mdash;
+            You practise on the Indian companies you&rsquo;ll actually cover as an analyst:
             Ind AS statements, SEBI filings and NSE/BSE data.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 lg:gap-x-12" data-testid="social-proof-companies">

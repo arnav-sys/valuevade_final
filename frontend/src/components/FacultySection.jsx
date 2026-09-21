@@ -48,7 +48,7 @@ export default function FacultySection() {
           </h2>
           <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
           <p className="mt-6 text-[14.5px] font-bricolage text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
-            Not full-time content creators &mdash; practitioners who build models, run coverage and hire analysts.
+            Not full-time content creators. Practitioners who build models, run coverage and hire analysts.
           </p>
         </div>
 

@@ -1,0 +1,40 @@
+{
+  "summary": "Regression testing after new HeroSection + em-dash text sweep. Hero renders perfectly (all 7 data-testids present, canvas visible, no horizontal overflow at 1920 and 390). All 3 hero CTAs route correctly (/signup, /course/..., /login). All 16 sections render, no console/page errors. Theme toggle works both ways. Admin panel loads all 19 tabs. Student dashboard renders. Backend: 6/6 regression tests pass — no import errors, catalog/faculty/testimonials/eligibility/faqs endpoints healthy. TWO leftover em-dash issues found (see below).",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "/api/courses/catalog", "issue": "Response body still contains 6 em dashes in Supabase-sourced course/role descriptions (e.g. 'equity research workflow — from reading...', 'Brokerage / Sell-Side'). The file-based sweep script does not touch DB rows; these render on /courses page."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "SocialProofStrip.jsx (line 31) and FacultySection.jsx", "issue": "Contain HTML entity `&mdash;` which the sweep script did not handle (it only targets the literal — char). This renders 15 visible em dashes on the landing page in prose text such as 'as an analyst — Ind AS statements', 'content creators — practitioners', 'first full session — notes, quiz, ...', 'and simulation — free before paying', 'starts from zero — what finance actually is'.", "selector": "landing hero + social proof + faculty sections", "priority": "MEDIUM"},
+      {"component": "/courses page", "issue": "1 em dash visible ('ch workflow — from readin') from DB-sourced course description.", "selector": "/courses", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_text_sweep_regression.py",
+    "/app/test_reports/pytest/text_sweep_iter87.xml"
+  ],
+  "action_items": [
+    "Update /app/scripts/strip_em_dashes.py to also replace `&mdash;` and `&#8212;` HTML entities (currently only literal — char is handled). Then re-run on frontend/src, at minimum on SocialProofStrip.jsx and FacultySection.jsx.",
+    "Decide whether Supabase course_paths/roles rows should also be sanitised (would need a one-off SQL update). If yes, run a DB sweep script; if no, leave as-is (out of file-sweep scope).",
+    "Remaining literal '—' inside frontend/src (36 files, 1-3 per file) are single-char empty-state placeholders (e.g. `return '—'` for missing scores) or code-only occurrences (comments, regex char classes). These are intentional UI convention, not prose — no action needed."
+  ],
+  "critical_code_review_comments": [
+    "strip_em_dashes.py has a gap: it does not decode/replace HTML entities like `&mdash;` and `&#8212;` even though these render as em dashes in browsers. Consider adding an entity pass or a JSX-aware second pass.",
+    "convert() collapses ', ,' → ',' as its last rule, so if the same string is swept twice you can get punctuation drift — safe for now but worth noting for future re-runs."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_text_sweep_regression.py (new)"
+  ],
+  "success_rate": {"backend": "100% (6/6)", "frontend": "95% (hero + navigation + admin + dashboard all OK; em-dash sweep incomplete on 2 files)"},
+  "test_credentials": "Admin: info@valuevade.com / VV-Admin#2026-Sec. Student: nism.tester@valuevade.com / NismTest#2026. Both work.",
+  "seed_data_creation": "",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Hero, landing sections, CTAs, theme toggle, admin panel, student dashboard, and 4 backend regression endpoints all verified in iter 87. Only outstanding items are the `&mdash;`-HTML-entity leftovers in SocialProofStrip.jsx / FacultySection.jsx and DB-sourced em dashes in course catalog descriptions. No JS/console errors observed on landing, /login, /signup, /courses, /admin-panel, or /dashboard.",
+  "rca of the issue": "strip_em_dashes.py operates on raw file text and only checks for the literal em-dash character (U+2014). It does not match HTML entity encodings (&mdash;, &#8212;). Files that use JSX entity form (SocialProofStrip.jsx, FacultySection.jsx) were therefore untouched, and the em dashes still render in the browser. Mitigation: add `text = text.replace('&mdash;', ', ').replace('&#8212;', ', ')` before the regex passes, or run a follow-up JSX-aware pass. Also, DB rows in Supabase course_paths/roles carry em dashes that a file sweep cannot reach — needs a SQL migration if desired."
+}

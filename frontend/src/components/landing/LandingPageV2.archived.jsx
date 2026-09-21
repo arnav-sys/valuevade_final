@@ -111,7 +111,7 @@ function HeroSection() {
             variants={fadeUp} initial="hidden" animate="visible" custom={1}
             className="lv-h1 text-white mb-6" data-testid="hero-h1"
           >
-            Land your first equity-research job in 12&nbsp;weeks &mdash;{' '}
+            Land your first equity-research job in 12&nbsp;weeks ,{' '}
             <span style={{ background: 'linear-gradient(135deg,#ffd768,#f5b800)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
               built by AI, certified for credibility.
             </span>
