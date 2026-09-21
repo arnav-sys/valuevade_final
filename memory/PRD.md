@@ -40,12 +40,32 @@ also Tailwind's default `font-mono`). No Inter/Roboto/Space Grotesk/Arial anywhe
 Both changes verified by `testing_agent`: iteration_90.json (~98%, 1 minor font-mono issue,
 fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 
+- **Sept 2026 (reversal)**: User asked to revert `/courses` mini-mockups back to real
+  photos, and swap the landing hero's coded mockups for real photos too. Implemented:
+  - `HeroProductShowcase.jsx` tabs now render real Unsplash/Pexels photos (interview,
+    Excel modelling, document review) in the same browser-chrome window, with an
+    `onError` fallback to the first tab's image if a CDN photo fails to load.
+  - `/courses` cards render `course.image_url || FALLBACK_IMAGE_BY_CATEGORY[...] ||
+    DEFAULT_FALLBACK_IMAGE`, also with an `onError` fallback. Removed hardcoded
+    `MOCK_COURSES` array; "Coming Soon" cards are now data-driven via `is_coming_soon`.
+  - New admin capability: Admin > Courses tab has a per-course photo upload button
+    (`POST /api/admin/courses/{id}/photo`, uploads to Supabase storage bucket
+    `session-videos`, patches `master_paths.image_url`).
+  - New migration `/app/scripts/migrations/0046_courses_media.sql` (P0, PENDING user
+    action) adds `image_url`/`category`/`is_coming_soon` to `master_paths` and seeds the
+    5 "Coming Soon" placeholder rows so they become real, admin-editable DB records.
+    Until run, admin photo upload cleanly 503s with a migration hint (verified, not a bug).
+  Verified by testing_agent: iteration_92.json (100% pass, both backend + frontend).
+
 ## Prioritized backlog
 
 ### P0
-- **Execute pending Supabase SQL migrations**: user must manually run `0044_faculty.sql`
-  and `0045_testimonials.sql` in the Supabase SQL editor to activate Admin Panel saving for
-  Instructors/Testimonials (`GET/POST /api/admin/faculty`). STILL PENDING user action.
+- **Execute pending Supabase SQL migrations** (3 pending now):
+  1. `0044_faculty.sql` — Faculty/Instructors admin panel
+  2. `0045_testimonials.sql` — Testimonials admin panel
+  3. `0046_courses_media.sql` — Course cover photos + "Coming Soon" placeholder rows
+     (needed for admin course photo uploads to work, and for the 5 placeholder
+     courses to reappear on `/courses`)
 
 ### P1
 - Further `server.py` refactor: extract `portfolio`, `revision`, `milestones` routes into

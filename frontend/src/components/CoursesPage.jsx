@@ -76,6 +76,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
           alt={course.title}
           className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isMock ? 'grayscale-[35%]' : ''}`}
           data-testid={`course-card-image-${course.id}`}
+          onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = DEFAULT_FALLBACK_IMAGE; }}
         />
         <div className="absolute top-3 left-3">
           <DifficultyBadge level={course.difficulty} />

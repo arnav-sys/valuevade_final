@@ -1,0 +1,28 @@
+{
+  "summary": "Iteration 92 — Verified reversion to real photos on /courses + landing hero product-stage, plus new admin photo-upload feature. Landing hero shows real Unsplash/Pexels photos on all 3 tabs (interview/model/document) with fade transition; tab clicks pause auto-rotate correctly. /courses shows 1 real Equity Research Analyst card with a real photo thumbnail (Unsplash category fallback since image_url column is still pending migration), pagination shows '1', stats strip + closing CTA render cleanly. Admin > Courses tab shows the 64x64 thumbnail button, hidden file input, and Preview & Free Sessions button per row; photo upload triggers a clean 503 with an easy-to-read migration hint (exactly the expected behavior). Backend GET /api/admin/courses correctly falls back to id/title/description select and returns media_ready=false + hint field without a 500.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": [
+    "/app/backend/tests/test_iter92_courses_media.py",
+    "/app/test_reports/pytest/iter92.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "wave_endpoints.py is 4600+ lines — consider splitting into per-feature modules for maintainability (not new to this iteration).",
+    "HeroProductShowcase uses external image CDNs (Unsplash/Pexels) directly — a network hiccup can cause a brief blank photo on the first tab paint (observed once during testing). Consider self-hosting or adding an onError fallback per image."
+  ],
+  "updated_files": ["/app/backend/tests/test_iter92_courses_media.py"],
+  "success_rate": {"backend": "100% (4/4)", "frontend": "100%"},
+  "test_credentials": "admin: info@valuevade.com / VV-Admin#2026-Sec (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Migration 0046_courses_media.sql is still pending. Once run in Supabase, the 5 'Coming Soon' seeded course rows should appear on /courses, and admin photo uploads should succeed (200 + public URL). At that point, retest: (a) /courses shows 6 total cards with 1 Live + 5 Coming Soon, (b) admin photo upload succeeds and the returned image_url renders on both admin thumbnail and /courses card.",
+  "verified_behavior": {
+    "landing_hero_photos": "All 3 tabs render real photos (Unsplash/Pexels) with fade transitions; auto-rotate pauses after manual tab click.",
+    "no_horizontal_overflow": "Confirmed at 1920 and 390 viewports.",
+    "courses_page": "1 real card visible, pagination shows '1', stats + closing CTA render.",
+    "admin_courses_tab": "Thumbnail button, hidden file input (course-photo-input-<id>), title edit, and Preview & Free Sessions button all present and functional. Photo upload returns clean 503 alert: 'Photo upload failed: The master_paths.image_url/category/is_coming_soon columns aren\\'t present yet. Run /app/scripts/migrations/0046_courses_media.sql in the Supabase SQL editor.'",
+    "GET_admin_courses": "Returns 200 with graceful fallback (media_ready=false + hint) — no 500."
+  }
+}

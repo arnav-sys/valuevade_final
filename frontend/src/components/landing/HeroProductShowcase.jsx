@@ -79,7 +79,13 @@ export default function HeroProductShowcase() {
               transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
               className="h-full"
             >
-              <img src={current.image} alt={current.alt} className="vv-app__photo" data-testid={`hero-showcase-photo-${active}`} />
+              <img
+                src={current.image}
+                alt={current.alt}
+                className="vv-app__photo"
+                data-testid={`hero-showcase-photo-${active}`}
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = TABS[0].image; }}
+              />
             </motion.div>
           </AnimatePresence>
         </div>
