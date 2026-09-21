@@ -14,7 +14,7 @@ import requests
 import pytest
 
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/") or \
-    "https://mock-exam-mvp.preview.emergentagent.com"
+    "https://fintech-mvp-38.preview.emergentagent.com"
 
 # Supabase auth (student) — using known test account (paid=true).
 SUPABASE_URL = os.environ.get("SUPABASE_URL") or "https://xzevqolrctzlywtvbsyd.supabase.co"
@@ -224,7 +224,7 @@ class TestAdminRegression:
         )
         # We need a real module_id — hit admin curriculum with a fake id and expect 200 + empty
         r = requests.get(
-            f"{BASE_URL}/api/admin/curriculum/sessions?module_id=00000000-0000-0000-0000-000000000000",
+            f"{BASE_URL}/api/admin/curriculum/sessions?module_id=fintech-mvp-38",
             headers={"Authorization": f"Bearer {admin_token}"},
             timeout=15,
         )

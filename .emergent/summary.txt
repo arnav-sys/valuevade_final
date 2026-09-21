@@ -1,122 +1,120 @@
-<analysis>**original_problem_statement**: 
-Continuing the MVP 2.0 build and bug-fixing phase. Original requests included seeding a QA user, fixing Waitlist ephemeral data loss, dropping the referral system, fixing broken video uploads, implementing an FAQ chatbot & accordion, restoring AI Customisation, fixing Pari chat delays/session consumption, adding session feedback, fixing missing capstone tasks, adding full curriculum download, and finally resolving an infinite loading bug on enrollment pages. 
+<analysis>**original_problem_statement**: Continuing MVP 2.0 build. The core focus is a full-stack educational platform for Indian finance students with a cinematic Bloomberg-terminal aesthetic, encompassing courses, AI mock interviews, PDF notes, timed Mock Exam certification, Gamified Rewards, and Admin Panel management. PRODUCT REQUIREMENTS: Implement Welcome Email via Resend, Refactor , add a standalone LinkedIn Claims Admin Tab, Fix timeout issues on Courses page, Fix redirect loops on login, globally update pricing to ₹4999, refactor , fix Notes viewer for PPTX and mobile PDFs, and enforce strict human-crafted/editorial UI design guardrails (no AI slop, no glow, serif fonts, left-aligned hero).
 
-**User's preferred language**: English (INSTRUCT next agent to respond in English only)
+**User's preferred language**: English (INSTRUCT next agent to respond in the user's preferred language only)
 
-**what currently exists?** 
-A full-stack equity research course platform (Valuevade) using React, FastAPI, MongoDB, and Supabase. The platform features 22 modules, 246 sessions, interactive simulations (built with HyperFormula), an AI Tutor (Pari), TUS resumable video uploads, a customisation wizard, mock interviews, PDF certificate generation, waitlist, and admin dashboard.
+**what currently exists?**: A full-stack React + FastAPI platform backed by Supabase. It features secure Razorpay checkout (Test Mode), AI-driven mock interviews using Emergent LLM Key, gamified rewards, and a comprehensive Admin Dashboard. The backend has been partially refactored to extract specific route modules from . The UI strictly adheres to a professional, asymmetrical, editorial aesthetic (Fraunces serif headers, tinted neutrals, no generic glowing drop-shadows or gradients). The notes feature supports inline viewing of PDFs via Google Docs Viewer and PPTX via Microsoft Office Online Viewer.
 
-**Last working item**:
-- **Last item agent was working**: Fixing an infinite loading bug on the  and . The agent replaced  queries with defensive, independent query fetching using a 5-second  timeout to prevent the UI from hanging on Supabase network hiccups. 
-- **Status**: COMPLETED
-- **Agent Testing Done**: Y
-- **Which testing method agent to use?**: testing_agent (Iteration 32)
-- **User Testing Done**: N
+**Last working item**: 
+    - Last item agent was working: Enforcing strict design and code guardrails on the frontend to remove the AI slop aesthetic (left-aligning typography, enforcing serif headers, removing gradients/glows/card lifts, tinting neutrals).
+    - Status: COMPLETED
+    - Agent Testing Done: Y (Verified via screenshot tool)
+    - Which testing method agent to use? NA
+    - User Testing Done: N
 
-**All Pending/In progress Issue list**:
-*No explicit bugs are currently pending. The system is stable based on the latest test reports.*
+**All Pending/In progress Issue list**: 
+  - None.
 
-**In progress Task List**:
-*None.*
+**In progress Task List**: 
+  - None.
 
-**Upcoming and Future Tasks**:
-- **Task 1 (P1)**: Sweep the codebase to apply the defensive  timeout data-fetching pattern to other data-heavy pages (Dashboard, Capstones list, Portfolio) to preemptively fix stuck on loading UI bugs.
-- **Task 2 (P2)**: Add drag-and-drop ordering (e.g., using ) for Admin FAQ and AI Customisation questions tabs to make reordering easier.
-- **Task 3 (P2)**: Add a Share on LinkedIn button on the Course Complete screen that pre-fills a post with the certificate image.
-- **Task 4 (P2)**: Add a real-time LLM Spend per user view in the admin panel to track token consumption.
-- **Task 5 (P2)**: Add a notification badge in the Admin sidebar showing the count of open session feedback reports.
+**Upcoming and Future Tasks**
+    Upcoming Tasks:
+    - Task 1: Further  Refactoring (P1)
+       - Extract , , and  routes into their own modules to reduce  size below 2000 lines.
+    - Task 2: Study Reminder Email (P1)
+       - Send a Resend nudge when a student misses their planned study day to keep streaks alive.
+    Future Tasks:
+    - Task 3: Exam Analytics (P2)
+       - Show admins student exam attempt breakdowns, average scores, and hardest questions.
 
-**Completed work in this session**:
-- Seeded QA user and added confetti animation to Course Complete page (DONE).
-- Migrated Waitlist from ephemeral MongoDB to persistent Supabase () (DONE).
-- Removed the user referral system entirely () (DONE).
-- Fixed module cascade-delete foreign key bug in the admin panel (DONE).
-- Fixed a broken TUS video upload issue (added >100KB file size validation) (DONE).
-- Built Landing Page FAQ Accordion & Claude-powered FAQ Chatbot () (DONE).
-- Restored AI Customisation with admin toggle & question CRUD () (DONE).
-- Fixed Pari chatbot 2s opening delay and unwanted session consumption via lazy-provisioning (DONE).
-- Built Session Feedback widget and Admin panel viewer () (DONE).
-- Fixed missing Capstone tasks by building a  JSONB parser (DONE).
-- Built Download Full Curriculum (MD/CSV/JSON) feature in Admin View Course (DONE).
-- Fixed infinite loading bug on Enrollment/Customize pages (DONE).
+**Completed work in this session**
+- Global pricing update: Changed from ₹999 to ₹4999 across frontend UI and backend payment logic. (DONE)
+- Backend Refactoring: Extracted  and  routes from  into  and . Fixed subsequent Pydantic model and dependency import errors. (DONE)
+- Bug Fix (Notes Viewer - PPTX): Fixed still being processed error by embedding Microsoft Office Online Viewer for PPTX/PPT files in . (DONE)
+- Bug Fix (Notes Viewer - Mobile PDF): Fixed an issue where mobile browsers downloaded PDFs instead of viewing them inline by routing PDF URLs through Google Docs Viewer in . (DONE)
+- Design Guardrails Enforcement: Removed glow effects, gradients, and animated SVG decor; implemented Fraunces serif font for H1/H2 overriding default sans-serif; left-aligned hero sections; added tinted neutrals in  and landing page components. (DONE)
 
-**Earlier issues found/mentioned but not fixed**:
-None.
+**Earlier issues found/mentioned but not fixed**
+  - None.
 
-**Known issue recurrence from previous fork**:
-- Recurrence count: 0
-- Status: RESOLVED
+**Known issue recurrence from previous fork**
+  - Issue recurrence in previous fork: None
+  - Recurrence count: 0
+  - Status: RESOLVED
 
-**Code Architecture**:
+**Code Architecture**
+/app/
+├── backend/
+│   ├── server.py (Main entry, Auth, Courses Catalog, Welcome Email)
+│   ├── wave_endpoints.py
+│   ├── payment_endpoints.py
+│   ├── doubt_endpoints.py (Newly extracted)
+│   ├── study_plan_endpoints.py (Newly extracted)
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── NotesPage.jsx (Document rendering logic)
+│   │   │   ├── HeroSection.js
+│   │   │   ├── FeaturesSection.js
+│   │   │   ├── landing/landing-dark.css
 
+**Key Technical Concepts**
+React, FastAPI, Supabase (Auth, Postgres), Razorpay Checkout, Resend Email API, React Router DOM, Emergent LLM Key, Microsoft Office Online Viewer / Google Docs Viewer (for document iframe rendering).
 
-**Key Technical Concepts**:
-React (Frontend), FastAPI (Backend), MongoDB (Local ephemeral state), Supabase (Primary persistent DB, Storage, RLS), HyperFormula (Simulations), TUS Protocol (Video uploads).
+**key DB schema**
+  - : {user_id, paid, paid_amount_inr, paid_at, pricing_tier}
+  - : {user_id, path_id, status}
 
-**key DB schema**:
-- : {id, user_id, course_id, status}
-- : {id, email, position, ...} (Migrated to Supabase)
-- : {id, category, question, answer, order_index, is_published}
-- : {key, value_json, updated_at}
-- : {id, user_id, session_id, category, message, resolved}
-- : {id, title, phases (JSONB array/markdown)}
+**changes in tech stack**
+  - None
 
-**changes in tech stack**:
-- Completely removed the user referral infrastructure.
-- Introduced  for dynamic feature flagging (AI customization mode toggle).
+**All files of reference** 
+  -  &  (Created this session)
+  -  (Refactored heavily)
+  -  (Updated for inline PDF/PPTX viewing)
+  - , ,  (Updated for strict UI guardrails)
 
-**All files of reference**:
-- : Extensively refactored (added FAQ, Customisation, Session Feedback, and Download Curriculum tabs; removed Referral/Payouts tabs).
--  & : Added numerous endpoints (waitlist Supabase proxy, FAQ CRUD, App Settings, Session Feedback, Curriculum Export).
-- : Refactored to lazy-load Pari chat sessions to prevent quota drains.
--  & : Updated with defensive  timeout fetching.
--  to : New Supabase migrations generated in this session.
+**Areas that need refactoring**: 
+  -  is still relatively large and needs further extraction (, , ).
 
-**Areas that need refactoring**:
-- Heavy data-fetching components (Dashboard, Capstones list, Portfolio) still use standard  logic and should be refactored to use the new defensive  pattern introduced in .
+**key api endpoints**
+  - 
+  -  (Routed via )
+  -  (Routed via )
 
-**key api endpoints**:
-- : Downloads the entire module/session/project curriculum.
--  & : Proxies Supabase waitlist persistence.
-- : Handles AI tutor session provisioning (now lazy-loaded).
+**Critical Info for New Agent** 
+  - **Design Rules (STRICT)**: Strict UI guardrails are in place. Do NOT use generic gradients, glowing drop-shadows, center-aligned body text, or single sans-serif typography on headers. Force Fraunces serif for headers, left-align paragraphs, and use tinted neutrals. DO NOT introduce standard AI slop aesthetics.
+  - **Document Viewer**: PDF and PPTX viewing on the frontend relies on Google Docs Viewer and Microsoft Office Online Viewer respectively (). Do not revert to raw Supabase URLs for the iframe , as they break mobile viewing and PPTX rendering.
 
-**Critical Info for New Agent**:
-- **SQL Migrations Live/Preview Mismatch**: Migrations  through  have been generated. The backend code has been written with *graceful degradation* (e.g., returning  if a table doesn't exist) so the app works before the user manually runs the SQL in Supabase Studio. **Do NOT assume these tables instantly exist in Production unless verified**.
-- **Supabase vs Mongo**: MongoDB is strictly ephemeral in production due to container redeploys. All persistent data MUST be routed to Supabase (this was the root cause of the Waitlist bug fixed in this session).
-- **TUS Uploads / Supabase**: Supabase Storage RLS blocked direct TUS uploads from the frontend. The current working solution proxies file chunks through the FastAPI backend using  credentials. Do not revert this.
+**documents and test reports created in this job** 
+  -  (Updated)
+  - 
 
-**documents and test reports created in this job**:
--  (Updated repeatedly with changelog)
--  to 
-- 
+**Last 10 User Messages and any pending HUMAN messages** 
+ 1. do last working item and upcoming tasks (DONE)
+ 2. when user is viewing notes nothing is showing. fix it notes are uploaded but there is problem in showing them... (DONE - fixed PPTX viewing via MS Office Viewer)
+ 3. in phone in notes it is showing me this. fix it and make sure it never occurs again... (DONE - fixed PDF mobile viewing via Google Docs viewer)
+ 4. when user is watching video is there option to see video in 1.25x 1.5x or 2.0x... (DONE - verified features already exist)
+ 5. To strip that machine-generated feel and make your site look custom and human-crafted, enforce these strict, hard design and code guardrails... (DONE)
 
-**Last 10 User Messages and any pending HUMAN messages**:
-1. when I click on pari chat icon it opens two seconds later... (Fixed)
-2. even when I click on pari icon and even when I did not chat it reduces turns left. (Fixed)
-3. in each session video notes add a feedback form... (Fixed)
-4. the capstone project tasks are missing (Fixed)
-5. Redeploy this job using the deployer agent. (Executed)
-6. give an option in admin panel view course to download full course curriculum... (Fixed)
-7. what is maximum per user cost of llm (Answered)
-8. what is the cost of deploying this app with average daily users of 1000 (Answered)
-9. in what you will build it is just showing loading and not projects when I click enroll... fix it (Fixed)
+**Project Health Check:**
+Working. Backend routes successfully decoupled, pricing updated, document viewers fixed, and design guardrails strictly enforced.
 
-**Project Health Check**:
-Healthy.
+**3rd Party Integrations** 
+	 •	Supabase (Storage, Auth, Postgres) — requires User API Key
+	 •	Razorpay (Payments) — requires User API Key (Test Mode)
+	 •	Resend (Email) — requires User API Key
+	 •	Emergent LLM Key (Gemini, Claude, OpenAI TTS) — uses Emergent LLM Key
+	 •	Emergent Object Storage — Emergent managed
 
-**3rd Party Integrations**:
-- Supabase (Storage, Auth, Postgres) — Requires Environment Keys
-- Razorpay (Payments) — Requires Environment Keys
-- Emergent LLM Key (used for Claude Sonnet 4.5 via Pari Chatbot and AI Customisation) — Uses Emergent LLM Key
+**Testing status**
+  - Testing agent used after significant changes: YES
+  - Troubleshoot agent used after agent stuck in loop: NO
+  - Test files created: None
+  - Known regressions: None
 
-**Testing status**:
-- Testing agent used after significant changes: YES (Iterations 26, 27, 28, 29, 30, 31, 32)
-- Troubleshoot agent used after agent stuck in loop: NO
-- Test files created:  through 
-- Known regressions: None
+**Credentials to test flow:**
+Admin accounts and test users can be found in  (Admin: ).
 
-**Credentials to test flow**:
-Stored in .
-
-**What agent forgot to execute**:
-Nothing. All requested tasks, UI bug fixes, and feature additions were completed and tested. Ensure you read the  section to propose standardizing the timeout-fetching behavior on other pages.</analysis>
+**What agent forgot to execute**
+Nothing overlooked.</analysis>

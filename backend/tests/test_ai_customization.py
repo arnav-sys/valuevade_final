@@ -12,7 +12,7 @@ import os
 import pytest
 import requests
 
-BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://mock-exam-mvp.preview.emergentagent.com").rstrip("/")
+BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "https://fintech-mvp-38.preview.emergentagent.com").rstrip("/")
 SUPABASE_URL = "https://yuadeybycbfqlkdpxbkv.supabase.co"
 SUPABASE_ANON = (
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9."

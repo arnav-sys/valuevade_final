@@ -300,7 +300,7 @@
 
 <div class="note">
   <strong>Key rule for new developers</strong>
-  Never call <code>localhost:8001</code> from the frontend. Always use <code>process.env.REACT_APP_BACKEND_URL</code> (e.g. <code>https://mock-exam-mvp.preview.emergentagent.com</code>). The proxy handles the internal forwarding.
+  Never call <code>localhost:8001</code> from the frontend. Always use <code>process.env.REACT_APP_BACKEND_URL</code> (e.g. <code>https://fintech-mvp-38.preview.emergentagent.com</code>). The proxy handles the internal forwarding.
 </div>
 
 <h3>Module registration pattern</h3>
@@ -404,7 +404,7 @@ def _supabase_delete(path: str):
 <table>
   <tr><th>What</th><th>Where / detail</th></tr>
   <tr><td>FastAPI app creation</td><td>Line 1 — <code>app = FastAPI()</code></td></tr>
-  <tr><td>CORS middleware</td><td>Bottom of file — reads <code>CORS_ORIGINS</code> env var. Defaults to <code>*</code> with <code>allow_credentials=False</code>. Production sets <code>CORS_ORIGINS=https://mock-exam-mvp.preview.emergentagent.com</code></td></tr>
+  <tr><td>CORS middleware</td><td>Bottom of file — reads <code>CORS_ORIGINS</code> env var. Defaults to <code>*</code> with <code>allow_credentials=False</code>. Production sets <code>CORS_ORIGINS=https://fintech-mvp-38.preview.emergentagent.com</code></td></tr>
   <tr><td>Rate limiting</td><td>In-memory <code>_RATE_LIMIT</code> dict keyed by IP hash. Admin login: 10 attempts / 5 min. Guest LLM: per-IP 120-call cap.</td></tr>
   <tr><td>Module registration</td><td>Lines 5 131–5 199 — all 6 endpoint modules are registered here.</td></tr>
 </table>
@@ -1059,7 +1059,7 @@ Browser                    Backend                  Razorpay Cloud
 </table>
 
 <h4>CORS</h4>
-<p>Pinned to <code>https://mock-exam-mvp.preview.emergentagent.com</code> via <code>CORS_ORIGINS</code> in <code>backend/.env</code>. A startup warning is logged if <code>CORS_ORIGINS</code> is not set (falls back to <code>*</code> with credentials disabled).</p>
+<p>Pinned to <code>https://fintech-mvp-38.preview.emergentagent.com</code> via <code>CORS_ORIGINS</code> in <code>backend/.env</code>. A startup warning is logged if <code>CORS_ORIGINS</code> is not set (falls back to <code>*</code> with credentials disabled).</p>
 
 <!-- ═══════════════════════════════════════════ 13. ENV VARS -->
 <h2 id="s13">13. Environment Variables</h2>
@@ -1086,7 +1086,7 @@ Browser                    Backend                  Razorpay Cloud
 <h4>frontend/.env</h4>
 <table>
   <tr><th>Variable</th><th>Required?</th><th>What it's for</th></tr>
-  <tr><td><code>REACT_APP_BACKEND_URL</code></td><td><strong>Required</strong></td><td>The external base URL of the API (e.g. <code>https://mock-exam-mvp.preview.emergentagent.com</code>). All <code>fetch()</code> calls use this.</td></tr>
+  <tr><td><code>REACT_APP_BACKEND_URL</code></td><td><strong>Required</strong></td><td>The external base URL of the API (e.g. <code>https://fintech-mvp-38.preview.emergentagent.com</code>). All <code>fetch()</code> calls use this.</td></tr>
   <tr><td><code>REACT_APP_SUPABASE_URL</code></td><td><strong>Required</strong></td><td>Supabase project URL (same as backend)</td></tr>
   <tr><td><code>REACT_APP_SUPABASE_ANON_KEY</code></td><td><strong>Required</strong></td><td>Supabase anon/public key. Safe to expose in the browser — Supabase RLS enforces access.</td></tr>
 </table>

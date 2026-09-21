@@ -14,7 +14,7 @@ import requests
 
 BASE_URL = os.environ.get(
     "REACT_APP_BACKEND_URL",
-    "https://mock-exam-mvp.preview.emergentagent.com",
+    "https://fintech-mvp-38.preview.emergentagent.com",
 ).rstrip("/")
 
 SUPABASE_URL = "https://yuadeybycbfqlkdpxbkv.supabase.co"

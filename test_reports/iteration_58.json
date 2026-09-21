@@ -8,7 +8,7 @@
   },
   "test_report_links": [],
   "action_items": [
-    "IMPORTANT (config, cannot verify from code): Confirm Supabase Auth → URL Configuration → 'Redirect URLs' allow-list includes BOTH https://mock-exam-mvp.preview.emergentagent.com/reset-password AND https://valuevade.com/reset-password so the emailed recovery link actually lands on the right page. This must be done in the Supabase dashboard.",
+    "IMPORTANT (config, cannot verify from code): Confirm Supabase Auth → URL Configuration → 'Redirect URLs' allow-list includes BOTH https://fintech-mvp-38.preview.emergentagent.com/reset-password AND https://valuevade.com/reset-password so the emailed recovery link actually lands on the right page. This must be done in the Supabase dashboard.",
     "The full happy-path (email link → PASSWORD_RECOVERY session → new password → login) requires actually reading the info@valuevade.com inbox and was NOT executed to avoid changing production credentials. Recommend a manual round-trip once redirect URLs are confirmed in the Supabase dashboard.",
     "Minor UX consideration (not a bug): on /reset-password direct-visit, the 'verifying' spinner shows for ~2.5s before falling back — acceptable, but if you want faster feedback, consider also inspecting URL hash for absence of 'access_token' / 'type=recovery' to short-circuit the wait."
   ],

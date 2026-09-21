@@ -9,7 +9,7 @@
   "verified_flow": {
     "step_1_login": "PASS — logged in as testagent2026@gmail.com, redirected to /dashboard",
     "step_2_direct_session_nav": "PASS — page.goto('/session/10c9e2ec.../start') successfully hit SessionPaymentGate. Spinner (data-testid=payment-gate-loading) shown briefly (~5s) while eligibility resolved; then paywall rendered. No infinite spinner.",
-    "step_3_eligibility_api": "PASS — GET /api/payments/eligibility?session_id=10c9e2ec-ee33-4b2c-987a-eae4b40ed8c6 -> 200 {paid:false, is_free_session:false, session_allowed:false, pricing_tier_available:'upfront', amount_inr:1500, mock_mode:false, key_id:'rzp_test_TVeabM7YAvLTQs'}",
+    "step_3_eligibility_api": "PASS — GET /api/payments/eligibility?session_id=fintech-mvp-38 -> 200 {paid:false, is_free_session:false, session_allowed:false, pricing_tier_available:'upfront', amount_inr:1500, mock_mode:false, key_id:'rzp_test_TVeabM7YAvLTQs'}",
     "step_4_paywall_modal": "PASS — data-testid=paywall-modal visible with heading 'Trial complete. Upgrade to continue.', amount '₹1,500', and data-testid=paywall-pay-now button labelled 'Pay ₹1,500 Now'",
     "step_5_create_order": "PASS — POST /api/payments/create-order -> 200 {razorpay_order_id:'order_TVejTf3LM6YnKu', amount_inr:1500, amount_paise:150000, key_id:'rzp_test_TVeabM7YAvLTQs', mock_mode:false}. REAL Razorpay order (order_TVejTf3LM6YnKu format).",
     "step_6_razorpay_iframe": "PASS — After clicking Pay Now, a REAL Razorpay checkout iframe opened at https://api.razorpay.com/v1/checkout/public?traffic_env=production&... with the 'Test Mode' banner in the top-right corner and 'Secured By Razorpay' footer. Iframe rendered correctly (screenshot captured showing Razorpay branded loading state).",
