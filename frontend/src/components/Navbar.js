@@ -43,14 +43,20 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
   return (
     <header
       data-testid="navbar"
-      className={`fixed top-0 w-full z-50 transition-[background-color,backdrop-filter,border-color] duration-300 ${
-        scrolled
-          ? 'bg-[var(--bg-primary)]/85 backdrop-blur-xl border-b border-[var(--color-border)]'
-          : 'bg-[var(--bg-primary)]/40 backdrop-blur-md border-b border-transparent'
+      className={`fixed top-0 w-full z-50 transition-[background-color,backdrop-filter,border-color] duration-300 backdrop-blur-md border-b ${
+        scrolled ? 'lv-nav-scrolled bg-[var(--bg-primary)]/85 border-[var(--color-border)]' : 'bg-[var(--bg-primary)]/40 border-transparent'
       }`}
     >
+      {isLandingScoped && (
+        <div className={`lv-masthead hidden md:block transition-[max-height,opacity] duration-300 overflow-hidden ${scrolled ? 'max-h-0 opacity-0' : 'max-h-8 opacity-100'}`} data-testid="nav-masthead">
+          <div className="max-w-[1400px] mx-auto px-6 lg:px-10 h-7 flex items-center justify-between">
+            <span>Valuevade · Your AI finance mentor</span>
+            <span>₹4999 lifetime · Free first session</span>
+          </div>
+        </div>
+      )}
       {/* Main nav row */}
-      <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <nav className="max-w-[1400px] mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
         <button
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2"
@@ -127,7 +133,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
               <Link
                 to="/login"
                 className="lv-cta"
-                style={{ padding: '9px 16px', fontSize: '11px' }}
+                style={{ padding: '9px 16px', fontSize: '13px' }}
                 data-testid="nav-signup-link"
               >
                 Sign Up <ArrowRight size={12} strokeWidth={2.5} />

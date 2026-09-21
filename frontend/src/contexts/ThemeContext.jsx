@@ -27,9 +27,9 @@ import { createContext, useContext, useState, useEffect } from 'react';
 
 const STORAGE_KEY     = 'valuevade_theme';
 const VERSION_KEY     = 'valuevade_theme_version';
-const THEME_VERSION   = 'v3';
+const THEME_VERSION   = 'v4';
 const LEGACY_KEYS     = ['vv-theme', 'valuevade_landing_theme'];
-const DEFAULT_THEME   = 'dark';
+const DEFAULT_THEME   = 'light';
 
 /* Migration, synchronous, runs once on first script load. */
 if (typeof window !== 'undefined') {
@@ -37,16 +37,8 @@ if (typeof window !== 'undefined') {
     const ls = window.localStorage;
     const stamped = ls.getItem(VERSION_KEY);
     if (stamped !== THEME_VERSION) {
-      // Resolve a sensible value to migrate forward.
-      let resolved = ls.getItem(STORAGE_KEY);
-      if (resolved !== 'dark' && resolved !== 'light') {
-        for (const key of LEGACY_KEYS) {
-          const v = ls.getItem(key);
-          if (v === 'dark' || v === 'light') { resolved = v; break; }
-        }
-      }
-      if (resolved !== 'dark' && resolved !== 'light') resolved = DEFAULT_THEME;
-      ls.setItem(STORAGE_KEY, resolved);
+      // v4 (Jun 2026 editorial relaunch): everyone lands on the paper theme once.
+      ls.setItem(STORAGE_KEY, DEFAULT_THEME);
       // Sweep legacy keys so devtools shows only the canonical one.
       LEGACY_KEYS.forEach((k) => ls.removeItem(k));
       ls.setItem(VERSION_KEY, THEME_VERSION);
@@ -58,7 +50,7 @@ function readInitialTheme() {
   if (typeof window === 'undefined') return DEFAULT_THEME;
   try {
     const v = window.localStorage.getItem(STORAGE_KEY);
-    return v === 'light' ? 'light' : 'dark';
+    return v === 'dark' ? 'dark' : 'light';
   } catch { return DEFAULT_THEME; }
 }
 
@@ -74,7 +66,7 @@ export function ThemeProvider({ children }) {
     try { window.localStorage.setItem(STORAGE_KEY, theme); } catch { /* ignore */ }
     // iOS Safari address-bar tint
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0F1C' : '#F6F8F7');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F141C' : '#FBF9F5');
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));

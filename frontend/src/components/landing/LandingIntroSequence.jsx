@@ -27,8 +27,15 @@ function shouldSkip() {
   return !!(mq && mq.matches);
 }
 
+function isDark() {
+  try { return window.localStorage.getItem('valuevade_theme') === 'dark'; } catch { return false; }
+}
+
 export default function LandingIntroSequence() {
   const [phase, setPhase] = useState(() => (shouldSkip() ? 'done' : 'in'));
+  const dark = isDark();
+  const paper = dark ? '#0F141C' : '#FBF9F5';
+  const ink = dark ? '#F2EFE8' : '#141414';
 
   useEffect(() => {
     if (phase === 'done') return undefined;
@@ -48,7 +55,7 @@ export default function LandingIntroSequence() {
       aria-hidden="true"
       style={{
         position: 'fixed', inset: 0, zIndex: 200,
-        background: '#0A0F1C',
+        background: paper,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         pointerEvents: 'none',
         opacity: phase === 'out' ? 0 : 1,
@@ -60,7 +67,7 @@ export default function LandingIntroSequence() {
         style={{
           position: 'absolute', inset: 0,
           background:
-            'radial-gradient(40% 30% at 50% 50%, rgba(36,107,253,0.28), transparent 70%)',
+            'radial-gradient(40% 30% at 50% 50%, rgba(36,107,253,0.14), transparent 70%)',
           opacity: phase === 'out' ? 0 : 1,
           transition: 'opacity 480ms ease-out',
         }}
@@ -68,14 +75,14 @@ export default function LandingIntroSequence() {
       <div
         className="intro-wordmark"
         style={{
-          fontFamily: '"Clash Display", "Space Grotesk", system-ui, sans-serif',
+          fontFamily: '"Fraunces", Georgia, serif',
+          fontVariationSettings: '"opsz" 144, "SOFT" 20, "WONK" 1',
           fontSize: 'clamp(48px, 10vw, 128px)',
-          fontWeight: 700,
-          letterSpacing: '0.05em',
-          color: '#ffffff',
+          fontWeight: 600,
+          letterSpacing: '-0.02em',
+          color: ink,
           display: 'flex',
-          gap: '0.04em',
-          textShadow: '0 0 38px rgba(36,107,253,0.45)',
+          gap: '0.02em',
         }}
       >
         {LETTERS.map((ch, i) => (

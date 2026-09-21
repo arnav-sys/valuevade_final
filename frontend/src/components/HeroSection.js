@@ -1,21 +1,20 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import CandlestickParticleField from '@/components/landing/CandlestickParticleField';
+import MarketDeskPanel from '@/components/landing/MarketDeskPanel';
 import { useTheme } from '@/contexts/ThemeContext';
 
-/* Hero, Sep 2026: minimal near-black canvas, a particle candlestick chart as
- * the centre visual, vertical brand rail on the left, and the tagline carried
- * as the headline on the right. */
+/* Hero, Jun 2026 editorial-finance rebuild: paper canvas, masthead line,
+ * serif headline on the left, live market desk on the right, stat ledger
+ * running the full width beneath. */
 
-// Scattered around the particle chart on desktop, compact row on mobile.
-const MARKERS = [
-  { n: '21', l: 'Modules', top: '14%', left: '31%' },
-  { n: '239', l: 'Sessions', top: '27%', left: '7%' },
-  { n: '42h', l: 'Lectures', top: '70%', left: '7%' },
-  { n: '3', l: 'Capstones', top: '80%', left: '27%' },
-  { n: 'XV', l: 'NISM prep', top: '86%', left: '46%' },
-  { n: '₹4999', l: 'Lifetime', top: '70%', left: '44%' },
+const STATS = [
+  { n: '21', l: 'Modules' },
+  { n: '239', l: 'Sessions' },
+  { n: '42h', l: 'Lectures' },
+  { n: '3', l: 'Capstones' },
+  { n: 'XV', l: 'NISM prep' },
+  { n: '₹4999', l: 'Lifetime' },
 ];
 
 export default function HeroSection() {
@@ -24,159 +23,49 @@ export default function HeroSection() {
   const light = theme === 'light';
 
   const rise = (delay = 0) => ({
-    initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 },
+    initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 },
     animate: { opacity: 1, y: 0 },
     transition: { delay, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   });
 
+  const today = new Date().toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen overflow-hidden"
-      style={{ background: light ? 'var(--bg-primary)' : '#05070F' }}
-      data-testid="hero-section"
-    >
-      {/* particle candlestick field */}
-      <div className="absolute inset-0 lg:right-[34%] pointer-events-none" aria-hidden="true">
-        <CandlestickParticleField
-          accent={light ? '#1B4FD8' : '#246BFD'}
-          light={light}
-          className="w-full h-full"
-          style={{ opacity: 0.9 }}
-        />
-      </div>
+    <section id="hero" className="relative overflow-hidden" data-testid="hero-section">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-28 lg:pt-32 pb-14 lg:pb-20">
+        {/* masthead line */}
+        <motion.div {...rise(0.05)} className="lv-rule-double pt-3 flex items-center justify-between gap-4 lv-folio" data-testid="hero-masthead">
+          <span className="truncate">Equity research &amp; financial modelling</span>
+          <span className="hidden sm:inline">{today}</span>
+          <span className="hidden md:inline">NSE · BSE · Ind AS</span>
+        </motion.div>
 
-      {/* vignette so type stays legible over the field */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        aria-hidden="true"
-        style={{
-          background: light
-            ? 'linear-gradient(90deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 14%, rgba(255,255,255,0) 52%, rgba(255,255,255,0.92) 74%)'
-            : 'linear-gradient(90deg, rgba(5,7,15,0.7) 0%, rgba(5,7,15,0) 14%, rgba(5,7,15,0) 52%, rgba(5,7,15,0.94) 74%)',
-        }}
-      />
-
-      {/* vertical brand rail */}
-      <div
-        className="hidden lg:flex absolute left-3 bottom-10 z-20 select-none items-end"
-        aria-hidden="true"
-        data-testid="hero-brand-rail"
-      >
-        <span
-          style={{
-            writingMode: 'vertical-rl',
-            transform: 'rotate(180deg)',
-            fontFamily: '"Space Grotesk", Inter, sans-serif',
-            fontSize: 'clamp(30px, 3.4vw, 56px)',
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-            color: 'var(--color-text)',
-            opacity: 0.9,
-          }}
-        >
-          Valuevade
-        </span>
-      </div>
-
-      {/* eyebrow floating over the field */}
-      <motion.p
-        {...rise(0.15)}
-        className="hidden lg:block absolute z-20 text-[11.5px] uppercase leading-[1.9]"
-        style={{
-          top: '20%',
-          left: '13%',
-          letterSpacing: '0.2em',
-          color: 'var(--color-primary)',
-          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-        }}
-        data-testid="hero-chapter"
-      >
-        Equity research, financial modelling,
-        <br />
-        taught the way analysts actually work
-      </motion.p>
-
-      {/* scattered markers */}
-      <div className="hidden lg:block absolute inset-0 z-10 pointer-events-none" data-testid="hero-markers">
-        {MARKERS.map((m, i) => (
-          <motion.div
-            key={m.l}
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 + i * 0.09, duration: 0.8 }}
-            className="absolute text-center"
-            style={{ top: m.top, left: m.left }}
-            data-testid={`hero-marker-${m.l.toLowerCase().replace(/\s/g, '-')}`}
-          >
-            <div
-              className="text-[15px]"
-              style={{
-                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-                color: 'var(--color-text-secondary)',
-              }}
-            >
-              {m.n}
-            </div>
-            <div
-              className="text-[9.5px] uppercase mt-0.5"
-              style={{ letterSpacing: '0.18em', color: 'var(--color-text-faint)' }}
-            >
-              {m.l}
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      {/* right column */}
-      <div className="relative z-20 min-h-screen flex items-center">
-        <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-12 pt-32 pb-20 lg:pt-24">
-          <div className="lg:ml-auto lg:w-[46%] lg:max-w-[680px]">
-            <motion.p
-              {...rise(0.2)}
-              className="mb-5 text-[11px] uppercase"
-              style={{
-                letterSpacing: '0.24em',
-                color: 'var(--color-text-faint)',
-                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
-              }}
-              data-testid="hero-eyebrow"
-            >
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center pt-12 lg:pt-16 pb-14 lg:pb-20">
+          {/* copy */}
+          <div className="lg:col-span-7">
+            <motion.p {...rise(0.15)} className="lv-chapter mb-6" data-testid="hero-eyebrow">
               Your AI finance mentor
             </motion.p>
 
             <motion.h1
-              {...rise(0.28)}
+              {...rise(0.25)}
               className="text-[var(--color-text)]"
               style={{
-                fontFamily: '"Space Grotesk", Inter, sans-serif',
-                fontSize: 'clamp(40px, 5.4vw, 82px)',
-                fontWeight: 500,
+                fontSize: 'clamp(42px, 6vw, 92px)',
                 lineHeight: 0.98,
-                letterSpacing: '-0.035em',
+                letterSpacing: '-0.03em',
+                fontWeight: 600,
               }}
               data-testid="hero-h1"
             >
-              A new way of mastering{' '}
-              <span style={{ fontWeight: 700 }}>finance</span>
-              <br className="hidden sm:block" /> in the{' '}
-              <span
-                style={{
-                  fontFamily: '"Fraunces", Georgia, serif',
-                  fontStyle: 'italic',
-                  fontWeight: 500,
-                  color: 'var(--color-primary)',
-                  letterSpacing: '-0.01em',
-                }}
-              >
-                age of AI
-              </span>
+              A new way of mastering finance in the{' '}
+              <span className="lv-italic">age of AI</span>
             </motion.h1>
 
             <motion.p
-              {...rise(0.42)}
-              className="mt-8 text-[14.5px] leading-relaxed max-w-md"
-              style={{ color: 'var(--color-text-muted)' }}
+              {...rise(0.4)}
+              className="lv-dropcap mt-9 text-[15.5px] leading-[1.7] max-w-[560px]"
+              style={{ color: 'var(--color-text-secondary)' }}
               data-testid="hero-paragraph"
             >
               Tell Valuevade where you are and where you want to land. You get an AI-personalised
@@ -185,7 +74,7 @@ export default function HeroSection() {
               ₹4999 for lifetime access, and your first session is free.
             </motion.p>
 
-            <motion.div {...rise(0.52)} className="mt-9 flex flex-col sm:flex-row items-start gap-4">
+            <motion.div {...rise(0.52)} className="mt-9 flex flex-col sm:flex-row items-start gap-3">
               <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
                 Start Free Session
                 <ArrowRight size={16} strokeWidth={2.5} />
@@ -200,46 +89,34 @@ export default function HeroSection() {
               </Link>
             </motion.div>
 
-            <motion.p
-              {...rise(0.62)}
-              className="mt-7 text-[13px]"
-              style={{ color: 'var(--color-text-faint)' }}
-            >
+            <motion.p {...rise(0.62)} className="mt-6 text-[13px]" style={{ color: 'var(--color-text-faint)' }}>
               Already enrolled?{' '}
-              <Link
-                to="/login"
-                className="text-[var(--color-primary)] hover:underline font-semibold"
-                data-testid="hero-signup-link"
-              >
+              <Link to="/login" className="font-semibold hover:underline" style={{ color: 'var(--color-text)' }} data-testid="hero-signup-link">
                 Log in &rarr;
               </Link>
             </motion.p>
-
-            {/* mobile marker row */}
-            <motion.div
-              {...rise(0.7)}
-              className="lg:hidden mt-10 grid grid-cols-3 gap-y-6 border-t border-[var(--color-border)] pt-6"
-              data-testid="hero-markers-mobile"
-            >
-              {MARKERS.map((m) => (
-                <div key={m.l}>
-                  <div
-                    className="text-[17px] text-[var(--color-text)]"
-                    style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}
-                  >
-                    {m.n}
-                  </div>
-                  <div
-                    className="text-[9.5px] uppercase mt-0.5"
-                    style={{ letterSpacing: '0.16em', color: 'var(--color-text-faint)' }}
-                  >
-                    {m.l}
-                  </div>
-                </div>
-              ))}
-            </motion.div>
           </div>
+
+          {/* market desk */}
+          <motion.div
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="lg:col-span-5 lg:pl-4 pr-3"
+          >
+            <MarketDeskPanel light={light} />
+          </motion.div>
         </div>
+
+        {/* stat ledger */}
+        <motion.div {...rise(0.7)} className="lv-ledger" data-testid="hero-markers">
+          {STATS.map((s) => (
+            <div key={s.l} data-testid={`hero-marker-${s.l.toLowerCase().replace(/\s/g, '-')}`}>
+              <div className="lv-ledger__n">{s.n}</div>
+              <div className="lv-folio mt-2">{s.l}</div>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

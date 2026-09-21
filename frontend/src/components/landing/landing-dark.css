@@ -1,309 +1,213 @@
-/* === Landing — Cinematic Dark theme overlay =============================
- * Scoped under `.landing-dark` so it ONLY repaints the public landing
- * surface. Auth-gated routes, dashboard, admin etc. remain untouched.
- * Strategy: override the CSS variables the existing section components
- * already consume (--bg-primary, --color-text, etc.) inside this scope.
+/* === Landing — Editorial Finance (paper + ink + Valuevade blue) ==========
+ * Scoped under `.landing-light` (default, warm paper) and `.landing-dark`
+ * (ink-navy companion). Only the public landing is repainted; the app keeps
+ * its own palette. Components read the shared tokens below.
  * ======================================================================= */
 
-/* Root html/body dark when the landing page is the active route.
- * The .landing-active class is toggled by LandingPage on mount/unmount,
- * so dashboard / admin / auth routes are never affected.
- * .landing-light flips html/body back to the original light palette so
- * the cinematic light-mode hero blends with overscroll bounce on iOS. */
 html.landing-active,
 body.landing-active {
-  background-color: #0A0F1C !important;
-  color: rgba(244, 247, 251, 0.86);
+  background-color: #FBF9F5 !important;
+  color: #141414;
   transition: background-color 250ms ease, color 250ms ease;
 }
-html.landing-active.landing-light,
-body.landing-active.landing-light {
-  background-color: #F6F8F7 !important;
-  color: #0C1A2A;
+html.landing-active:not(.landing-light),
+body.landing-active:not(.landing-light) {
+  background-color: #0F141C !important;
+  color: rgba(242, 239, 232, 0.88);
 }
 
+/* ---------- tokens ---------- */
+.landing-light {
+  --bg-primary:           #FBF9F5;
+  --bg-secondary:         #F3EFE6;
+  --bg-tertiary:          #ECE7DB;
+  --color-surface:        #FFFFFF;
+  --color-bg-card:        #FFFFFF;
+  --color-bg-card-hover:  #F7F4ED;
+  --color-border:         rgba(20, 20, 20, 0.13);
+  --color-text:           #141414;
+  --color-text-secondary: #2E2D2B;
+  --color-text-muted:     #5C5A56;
+  --color-text-faint:     #8A877F;
+  --color-primary:        #246BFD;
+  --color-accent-purple:  #246BFD;
+  --color-accent-pink:    #1A52C8;
+  --lv-ink:               #141414;
+  --lv-ink-soft:          rgba(20, 20, 20, 0.72);
+  --lv-green:             #0F9960;
+  --lv-red:               #DB3737;
+  --lv-accent-soft:       rgba(36, 107, 253, 0.08);
+  --lv-shadow:            0 24px 60px -34px rgba(20, 20, 20, 0.35);
+  background: var(--bg-primary);
+  color: var(--color-text);
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  position: relative;
+  min-height: 100vh;
+}
 .landing-dark {
-  /* Palette — deep finance navy with a single mint-emerald accent
-     (QuintEdge-inspired editorial language, no violet / no glow). */
-  --bg-primary:           #0A0F1C;
-  --bg-secondary:         #0D1526;
-  --color-surface:        rgba(255,255,255,0.035);
-  --color-border:         rgba(255, 255, 255, 0.10);
-  /* Cool tinted neutrals — avoid pure #fff (AI-slop tell) */
-  --color-text:           #F4F7FB;
-  --color-text-secondary: rgba(244,247,251,0.88);
-  --color-text-muted:     rgba(244,247,251,0.62);
-  --color-text-faint:     rgba(244,247,251,0.42);
-  --color-primary:        #246BFD;   /* mint-emerald */
-  --color-accent-purple:  #246BFD;   /* fold accents into the single mint */
-  --color-accent-pink:    #7CA8FF;   /* lighter mint for secondary accents */
-
-  background:
-    radial-gradient(70% 55% at 50% -12%, rgba(36,107,253,0.10), transparent 62%),
-    radial-gradient(45% 35% at 88% 112%, rgba(94,234,212,0.06), transparent 60%),
-    var(--bg-primary);
+  --bg-primary:           #0F141C;
+  --bg-secondary:         #141A24;
+  --bg-tertiary:          #1A212D;
+  --color-surface:        #151C27;
+  --color-bg-card:        #151C27;
+  --color-bg-card-hover:  #1A2230;
+  --color-border:         rgba(242, 239, 232, 0.13);
+  --color-text:           #F2EFE8;
+  --color-text-secondary: rgba(242, 239, 232, 0.86);
+  --color-text-muted:     rgba(242, 239, 232, 0.64);
+  --color-text-faint:     rgba(242, 239, 232, 0.44);
+  --color-primary:        #4C86FF;
+  --color-accent-purple:  #4C86FF;
+  --color-accent-pink:    #7CA8FF;
+  --lv-ink:               #F2EFE8;
+  --lv-ink-soft:          rgba(242, 239, 232, 0.72);
+  --lv-green:             #26D07C;
+  --lv-red:               #F85149;
+  --lv-accent-soft:       rgba(76, 134, 255, 0.14);
+  --lv-shadow:            0 24px 60px -30px rgba(0, 0, 0, 0.7);
+  background: var(--bg-primary);
   color: var(--color-text);
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
   position: relative;
   min-height: 100vh;
 }
 
-/* Typography guardrail: display serif for h1/h2, sans for h3 and below.
- * Fraunces (already loaded as accent) becomes the primary display face.
- * Include h1.font-clash / h2.font-clash to win over the .font-clash rule below. */
-/* QuintEdge-style hierarchy: bold geometric sans headlines with an
-   italic-serif accent word (the accent spans set Fraunces inline). */
-.landing-dark h1,
-.landing-dark h1.font-clash,
-.landing-dark h2,
-.landing-dark h2.font-clash,
-.landing-dark h3,
-.landing-dark h4,
-.landing-dark .font-clash {
-  font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-}
-.landing-dark .font-bricolage { font-family: 'Inter', sans-serif; }
-
-/* Glass cards in the dark palette */
-.landing-dark .glass-card {
-  background: rgba(255,255,255,0.025) !important;
-  border: 1px solid rgba(36,107,253,0.16) !important;
-  backdrop-filter: blur(22px);
-  -webkit-backdrop-filter: blur(22px);
-  /* Guardrail: no lift translateY, no glow box-shadow.
-     Human micro-interaction: border-color shift only. */
-  transition: border-color 300ms ease;
-}
-.landing-dark .glass-card:hover {
-  border-color: rgba(36,107,253,0.45) !important;
-}
-
-/* Sections — ensure no white bleed through anywhere */
-.landing-dark section,
-.landing-dark footer,
-.landing-dark header {
-  background: transparent !important;
-}
-
-/* Subtle horizontal divider between every section */
-.landing-dark section + section { position: relative; }
-.landing-dark section + section::before {
+/* paper grain */
+.landing-light::before,
+.landing-dark::before {
   content: '';
-  position: absolute; top: 0; left: 10%; right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(36,107,253,0.22), transparent);
-}
-
-/* Navbar — when scrolled */
-.landing-dark header[data-testid="navbar"] {
-  background: transparent !important;
-}
-.landing-dark header[data-testid="navbar"].bg-\[var\(--bg-primary\)\]\/80,
-.landing-dark header[data-testid="navbar"][class*="backdrop-blur"] {
-  background: rgba(10,15,28,0.78) !important;
-  border-bottom-color: rgba(36,107,253,0.16) !important;
-}
-
-/* Wordmark — clean cool-white on the navy landing (readable at small size) */
-.landing-dark .logo-gradient {
-  background: none !important;
-  -webkit-background-clip: initial;
-  background-clip: initial;
-  -webkit-text-fill-color: currentColor;
-  color: var(--color-text) !important;
-}
-
-/* CTA — Guardrail: no gradient, no glow pulse.
-   Solid primary colour only. */
-.landing-dark .hero-cta-primary {
-  background: var(--color-primary) !important;
-}
-
-/* Section labels */
-.landing-dark .section-label {
-  color: var(--color-accent-purple) !important;
-}
-
-/* Comparison table — preserve gold-tint Valuevade column behaviour but in violet */
-.landing-dark table { color: var(--color-text); }
-.landing-dark tr:nth-child(even) td:not(.lv-comp-col-vv) {
-  background: rgba(255,255,255,0.015);
-}
-
-/* Logo gradient stays — keep its existing rainbow */
-
-/* Three.js canvas container */
-.landing-three-bg {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+  opacity: 0.32;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
-.landing-three-bg canvas {
-  display: block;
-  width: 100% !important;
-  height: 100% !important;
+.landing-dark::before { opacity: 0.22; }
+
+/* ---------- typography ---------- */
+.landing-light h1, .landing-light h2, .landing-light h3,
+.landing-dark h1, .landing-dark h2, .landing-dark h3,
+.landing-light h1.font-clash, .landing-light h2.font-clash,
+.landing-dark h1.font-clash, .landing-dark h2.font-clash,
+.landing-light .font-clash, .landing-dark .font-clash,
+.lv-serif {
+  font-family: 'Fraunces', Georgia, 'Times New Roman', serif !important;
+  font-weight: 600;
+  letter-spacing: -0.022em;
+  font-variation-settings: 'opsz' 144, 'SOFT' 20, 'WONK' 1;
 }
-
-/* Pull the hero content above the 3D canvas. Only target the content
- * column itself — the older rule (`#hero > div`) accidentally promoted
- * every `.star-particle` / `.orbital` / `.animate-blob` from `absolute`
- * (their App.css default) to `relative`, turning them into flex items
- * and squeezing the hero content to ~930px shifted right.            */
-.landing-dark #hero > div.max-w-7xl { position: relative; z-index: 2; }
-.landing-dark #hero > svg,
-.landing-dark #hero .orbital,
-.landing-dark #hero .star-particle,
-.landing-dark #hero [class*="animate-blob"] { opacity: 0.0; }
-
-/* Hero base */
-.landing-dark #hero { background: transparent !important; }
-
-/* SAME fix for light mode: without this, the hero section paints its
- * `bg-[var(--bg-primary)]` cream FILL on top of the three.js canvas
- * (the canvas sits at z=0 behind `<main z=10>`), hiding every particle.
- * The body bg (`html.landing-active.landing-light`) still supplies the
- * cream colour below the canvas, so transparency here is safe. */
-html.landing-active.landing-light #hero,
-body.landing-active.landing-light #hero { background: transparent !important; }
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .landing-dark .hero-cta-primary { animation: none; }
+.landing-light h3, .landing-dark h3 { font-weight: 500; letter-spacing: -0.015em; }
+.landing-light h4, .landing-dark h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
-
-
-/* ============================================================
- * Bloomberg-terminal / editorial finance visual language
- * Applies to nav, hero and ProblemSection (above-the-fold).
- * ============================================================ */
-
-/* Terminal dot-matrix background — subtle, ~6% opacity, threads sections */
-.lv-terminal-grid {
-  background-image:
-    radial-gradient(rgba(255,255,255,0.10) 1px, transparent 1px),
-    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-  background-size: 32px 32px, 8px 8px;
-  background-position: 0 0, 0 0;
+.landing-light .font-bricolage, .landing-dark .font-bricolage { font-family: 'Inter', sans-serif; }
+.lv-mono, .lv-folio {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
 }
-.landing-light .lv-terminal-grid {
-  background-image:
-    radial-gradient(rgba(0,0,0,0.12) 1px, transparent 1px),
-    radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
+.lv-folio {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-faint);
+}
+.lv-italic {
+  font-family: 'Fraunces', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  color: var(--color-primary);
+  font-variation-settings: 'opsz' 144, 'SOFT' 40, 'WONK' 1;
+}
+.lv-dropcap::first-letter {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  float: left;
+  font-size: 3.6em;
+  line-height: 0.78;
+  padding: 0.08em 0.14em 0 0;
+  color: var(--color-primary);
 }
 
-/* CRT scanline overlay — removed for a cleaner, human editorial feel */
-.lv-crt-scan {
-  display: none;
+/* ---------- rules & frames ---------- */
+.lv-rule { height: 1px; background: var(--color-border); }
+.lv-rule-double { border-top: 3px double var(--lv-ink); }
+.lv-rule-ink { height: 2px; background: var(--lv-ink); }
+.lv-frame {
+  background: var(--color-bg-card);
+  border: 1px solid var(--lv-ink);
+  box-shadow: 10px 10px 0 0 var(--color-primary);
 }
-
-/* Soft editorial card — rounded, calm border, no terminal corner-ticks */
-.lv-panel {
-  background: color-mix(in oklab, var(--color-surface) 92%, transparent);
+.lv-hairgrid {
+  display: grid;
+  gap: 1px;
+  background: var(--color-border);
   border: 1px solid var(--color-border);
-  border-radius: 16px;
-  position: relative;
 }
+.lv-hairgrid > * { background: var(--bg-primary); }
 
-/* LIVE indicator dot — restrained pulse.
-   Guardrail: no box-shadow glow. Opacity-only pulse. */
-.lv-live-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  background: var(--color-accent-pink);
-  animation: lv-live-pulse 1.6s ease-in-out infinite;
-}
-@keyframes lv-live-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.35; transform: scale(0.75); }
-}
-
-/* Ticker marquee — slow, restrained horizontal drift */
-.lv-ticker-track {
-  display: inline-flex;
-  gap: 2.5rem;
-  padding-right: 2.5rem;
-  animation: lv-ticker-scroll 60s linear infinite;
-  will-change: transform;
-}
-@keyframes lv-ticker-scroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-.lv-ticker-wrap:hover .lv-ticker-track { animation-play-state: paused; }
-
-/* Sparkline draw animation — functional (reveals the line). No decorative drift. */
-.lv-sparkline-path {
-  stroke-dasharray: 240;
-  stroke-dashoffset: 240;
-  animation: lv-spark-draw 3.2s ease-out 0.4s forwards;
-}
-@keyframes lv-spark-draw {
-  to { stroke-dashoffset: 0; }
-}
-
-/* Section eyebrow — QuintEdge style: mint caps with a short leading rule */
+/* ---------- eyebrow ---------- */
 .lv-chapter {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 12px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--color-primary);
 }
 .lv-chapter::before {
   content: '';
-  width: 22px;
-  height: 2px;
-  border-radius: 2px;
-  background: var(--color-primary);
-  opacity: 0.9;
+  width: 18px;
+  height: 1px;
+  background: var(--lv-ink);
+  opacity: 0.8;
 }
 
-/* Pill CTA — QuintEdge mint fill with dark-navy label, clean sans */
+/* ---------- buttons ---------- */
 .lv-cta {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
   text-transform: none;
-  padding: 14px 26px;
-  border-radius: 999px;
+  padding: 14px 22px;
+  border-radius: 4px;
   border: 1px solid var(--color-primary);
   background: var(--color-primary);
   color: #FFFFFF;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: background-color 220ms ease, border-color 220ms ease, transform 220ms ease;
+  transition: background-color 220ms ease, border-color 220ms ease, color 220ms ease, transform 220ms ease;
 }
 .lv-cta:hover {
-  background: #4C86FF;
-  border-color: #4C86FF;
+  background: var(--lv-ink);
+  border-color: var(--lv-ink);
+  color: var(--bg-primary);
   transform: translateY(-1px);
 }
 .lv-cta-ghost {
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--lv-ink);
   background: transparent;
-  color: var(--color-text);
+  color: var(--lv-ink);
 }
 .lv-cta-ghost:hover {
   border-color: var(--color-primary);
-  background: color-mix(in oklab, var(--color-primary) 10%, transparent);
-  color: var(--color-text);
+  background: var(--lv-accent-soft);
+  color: var(--color-primary);
 }
+.hero-cta-primary { background: var(--color-primary) !important; }
 
-/* Text link — clean sans, mint underline reveal */
+/* ---------- nav ---------- */
 .lv-nav-link {
   position: relative;
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 15px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: 0;
   text-transform: none;
@@ -315,7 +219,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   position: absolute;
   left: 0; right: 0; bottom: -6px;
   height: 1px;
-  background: var(--color-primary);
+  background: var(--lv-ink);
   transform: scaleX(0);
   transform-origin: left center;
   transition: transform 240ms ease;
@@ -323,23 +227,106 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 .lv-nav-link:hover { color: var(--color-text); }
 .lv-nav-link:hover::after { transform: scaleX(1); }
 
-/* Status bar row — top of navbar */
-.lv-statusbar {
+.lv-masthead {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 10.5px;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-text-faint);
   border-bottom: 1px solid var(--color-border);
-  background: color-mix(in oklab, var(--bg-primary) 85%, black);
 }
-.landing-light .lv-statusbar {
-  background: color-mix(in oklab, var(--bg-primary) 92%, black);
+.landing-light header[data-testid="navbar"],
+.landing-dark header[data-testid="navbar"] {
+  background: color-mix(in oklab, var(--bg-primary) 55%, transparent) !important;
+  border-bottom-color: transparent !important;
 }
-.lv-statusbar .up { color: #22c55e; }
-.lv-statusbar .down { color: #ef4444; }
+.landing-light header[data-testid="navbar"].lv-nav-scrolled,
+.landing-dark header[data-testid="navbar"].lv-nav-scrolled {
+  background: color-mix(in oklab, var(--bg-primary) 94%, transparent) !important;
+  border-bottom-color: var(--color-border) !important;
+}
+.landing-light .logo-gradient, .landing-dark .logo-gradient {
+  background: none !important;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+  color: var(--color-text) !important;
+  font-family: 'Fraunces', Georgia, serif !important;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
 
-/* Numeric roadmap progress readout */
+/* ---------- surfaces ---------- */
+.lv-panel {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  position: relative;
+  transition: border-color 260ms ease, box-shadow 260ms ease;
+}
+.lv-panel:hover { border-color: var(--lv-ink-soft); }
+.landing-light .glass-card, .landing-dark .glass-card {
+  background: var(--color-bg-card) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 6px !important;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transition: border-color 260ms ease;
+}
+.landing-light .glass-card:hover, .landing-dark .glass-card:hover { border-color: var(--lv-ink-soft) !important; }
+.landing-light section, .landing-light footer, .landing-light header,
+.landing-dark section, .landing-dark footer, .landing-dark header { background: transparent !important; }
+.landing-light section + section, .landing-dark section + section { position: relative; }
+.landing-light section + section::before, .landing-dark section + section::before {
+  content: '';
+  position: absolute; top: 0; left: 6%; right: 6%;
+  height: 1px;
+  background: var(--color-border);
+}
+.landing-light #hero, .landing-dark #hero { background: transparent !important; }
+.lv-terminal-grid { display: none; }
+.lv-crt-scan { display: none; }
+.landing-light .section-label, .landing-dark .section-label { color: var(--color-primary) !important; }
+.landing-light table, .landing-dark table { color: var(--color-text); }
+.landing-light tr:nth-child(even) td:not(.lv-comp-col-vv),
+.landing-dark tr:nth-child(even) td:not(.lv-comp-col-vv) { background: var(--bg-secondary); }
+.landing-light [data-testid="problem-transition-line"],
+.landing-light [data-testid="ai-proof-emotional-line"],
+.landing-dark [data-testid="problem-transition-line"],
+.landing-dark [data-testid="ai-proof-emotional-line"] { color: var(--color-primary); }
+.landing-light .text-\[var\(--color-text-faint\)\] { color: var(--color-text-faint) !important; }
+
+/* ---------- small animated bits ---------- */
+.lv-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--lv-green);
+  animation: lv-live-pulse 1.6s ease-in-out infinite;
+}
+@keyframes lv-live-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.75); }
+}
+.lv-ticker-wrap { overflow: hidden; }
+.lv-ticker-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  animation: lv-ticker-scroll 42s linear infinite;
+  will-change: transform;
+}
+@keyframes lv-ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.lv-ticker-wrap:hover .lv-ticker-track { animation-play-state: paused; }
+.lv-sparkline-path {
+  stroke-dasharray: 240;
+  stroke-dashoffset: 240;
+  animation: lv-spark-draw 3.2s ease-out 0.4s forwards;
+}
+@keyframes lv-spark-draw { to { stroke-dashoffset: 0; } }
 .lv-progress-readout {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 10.5px;
@@ -347,270 +334,252 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
-
-/* Feature cards — Guardrail: hover = border-accent shift, no translateY lift */
-.lv-feature-card-hover {
-  transition: border-color 260ms ease;
-}
-.lv-feature-card-hover:hover {
-  border-color: rgba(36,107,253,0.45) !important;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lv-ticker-track, .lv-live-dot, .lv-sparkline-path { animation: none !important; }
-}
-
-/* Central platform hub — concentric pulse rings (original graphic) */
-.lv-hub-ring {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 100%;
-  height: 100%;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--color-primary) 40%, transparent);
-  animation: lv-hub-pulse 3.9s ease-out infinite;
-  pointer-events: none;
-}
-@keyframes lv-hub-pulse {
-  0%   { transform: scale(0.42); opacity: 0.9; }
-  70%  { opacity: 0.12; }
-  100% { transform: scale(1); opacity: 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .lv-hub-ring { animation: none; opacity: 0.18; }
-}
-
-/* Feature-node icon hover lift */
-.lv-feature-node { transition: transform 240ms ease, background-color 240ms ease; }
-.lv-feature-node:hover { transform: translateY(-2px); }
-
-/* Central hub logo — gentle float */
-.lv-hub-logo { animation: lv-hub-float 5s ease-in-out infinite; }
-@keyframes lv-hub-float {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-6px); }
-}
-
-/* Roadmap — traveling pulse + active node ping */
-.lv-road-pulse { box-shadow: 0 0 0 6px rgba(36,107,253,0.18); }
+.lv-feature-card-hover { transition: border-color 260ms ease; }
+.lv-feature-card-hover:hover { border-color: var(--lv-ink-soft) !important; }
+.lv-road-pulse { box-shadow: 0 0 0 6px var(--lv-accent-soft); }
 .lv-road-node-on { animation: lv-node-pop 500ms cubic-bezier(0.22,1,0.36,1); }
 @keyframes lv-node-pop {
   0%   { transform: scale(0.82); }
   60%  { transform: scale(1.08); }
   100% { transform: scale(1); }
 }
-@media (prefers-reduced-motion: reduce) {
-  .lv-hub-logo, .lv-road-node-on { animation: none; }
-}
-
-
-/* ============================================================
- * Light-mode tuning for the editorial terminal language.
- * Reruns the exact tokens above but with tighter contrast for
- * the cream-pink light palette so nothing washes out.
- * ============================================================ */
-
-/* Dot-matrix grid — softer in light mode so it doesn't feel gritty */
-.landing-light .lv-terminal-grid {
-  background-image:
-    radial-gradient(rgba(20,20,40,0.08) 1px, transparent 1px),
-    radial-gradient(rgba(20,20,40,0.035) 1px, transparent 1px) !important;
-  background-size: 32px 32px, 8px 8px !important;
-}
-
-/* CRT scanline is a dark-mode-only signature — remove on cream */
-.landing-light .lv-crt-scan { display: none; }
-
-/* Panels — more opaque white so the terminal frame reads as a card */
-.landing-light .lv-panel {
-  background: rgba(255,255,255,0.78);
-  border: 1px solid rgba(26,26,46,0.10);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-.landing-light .lv-panel::before {
-  opacity: 0.75;
-}
-
-/* Chapter rail — slightly darker on cream so it stays readable */
-.landing-light .lv-chapter {
-  color: rgba(26,26,46,0.55);
-}
-
-/* Nav links — dark navy on cream */
-.landing-light .lv-nav-link {
-  color: rgba(26,26,46,0.68);
-}
-.landing-light .lv-nav-link:hover { color: #1A1A2E; }
-.landing-light .lv-nav-link::after { background: #1E56D4; }
-
-/* Status bar — white-tinted so it doesn't muddy the cream */
-.landing-light .lv-statusbar {
-  background: rgba(255,255,255,0.82) !important;
-  border-bottom: 1px solid rgba(26,26,46,0.08);
-  color: rgba(26,26,46,0.62);
-}
-.landing-light .lv-statusbar .up   { color: #16a34a; }
-.landing-light .lv-statusbar .down { color: #dc2626; }
-
-/* CTA — force a punchy dark-blue on cream */
-.landing-light .lv-cta {
-  background: #1E56D4;
-  border-color: #1E56D4;
-}
-.landing-light .lv-cta:hover {
-  background: #1E56D4;
-  border-color: #1E56D4;
-}
-
-/* LIVE dot — deeper rose in light mode, no glow */
-.landing-light .lv-live-dot {
-  background: #E53E5C;
-}
-
-/* Progress readout labels & small mono spans — tighten default gray */
-.landing-light .lv-progress-readout {
-  color: rgba(26,26,46,0.62);
-}
-
-/* Emotional italic pink lines wash out on cream — bump to a darker rose */
-.landing-light [data-testid="problem-transition-line"],
-.landing-light [data-testid="ai-proof-emotional-line"] {
-  color: #1E56D4;
-}
-
-/* Hero ticker up/down colour tuning */
-.landing-light [data-testid="hero-ticker"] .text-\[\#22c55e\] { color: #16a34a !important; }
-.landing-light [data-testid="hero-ticker"] .text-\[\#ef4444\] { color: #dc2626 !important; }
-
-/* Feature card FT-NN prefix / footer meta text — tighten on cream */
-.landing-light [data-testid^="feature-card-"] .font-jetbrains,
-.landing-light [data-testid^="step-"] .font-jetbrains,
-.landing-light [data-testid="stats-bar"] .font-jetbrains,
-.landing-light [data-testid="hero-roadmap-card"] .font-jetbrains,
-.landing-light [data-testid="hero-trust-strip"],
-.landing-light [data-testid="hero-chapter"] {
-  color: rgba(26,26,46,0.62);
-}
-
-/* Ensure faint faint text stays readable on cream */
-.landing-light .text-\[var\(--color-text-faint\)\] {
-  color: rgba(26,26,46,0.48) !important;
-}
-
-
-/* Free-trial email input — explicit contrast in both palettes so the
- * placeholder + typed text never camouflages with the surrounding panel. */
 .lv-trial-input {
-  background: rgba(255,255,255,0.05);
-  border-color: rgba(255,255,255,0.18);
-  color: #ffffff;
+  background: var(--color-bg-card);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
-.lv-trial-input::placeholder { color: rgba(255,255,255,0.42); }
+.lv-trial-input::placeholder { color: var(--color-text-faint); }
 .lv-trial-input:focus { border-color: var(--color-primary); }
 
-.landing-light .lv-trial-input {
-  background: #ffffff;
-  border-color: rgba(26,26,46,0.18);
-  color: #1A1A2E;
-}
-.landing-light .lv-trial-input::placeholder { color: rgba(26,26,46,0.38); }
-.landing-light .lv-trial-input:focus { border-color: #1E56D4; }
-
-
-/* ---- Dossier cards (Features "one platform" wall, Sep 2026) ----
- * Clipped top-right corner, hairline frame drawn by the 1px outer layer,
- * blue spine that grows on hover. Themed entirely off the design tokens. */
-.lv-dossier {
-  --cut: 20px;
+/* ---------- hero: market desk ---------- */
+.lv-desk {
+  background: var(--color-bg-card);
+  border: 1px solid var(--lv-ink);
+  box-shadow: 12px 12px 0 0 var(--color-primary), var(--lv-shadow);
   position: relative;
-  padding: 1px;
-  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
-  background: linear-gradient(140deg,
-    color-mix(in oklab, var(--color-primary) 34%, transparent) 0%,
-    var(--color-border) 42%,
-    var(--color-border) 100%);
-  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform;
 }
-.lv-dossier__inner {
-  position: relative;
-  height: 100%;
-  padding: 20px 20px 20px 26px;
-  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, 0 100%);
-  background:
-    linear-gradient(160deg, color-mix(in oklab, var(--color-primary) 6%, transparent) 0%, transparent 46%),
-    var(--bg-secondary);
-  transition: background-color 320ms ease;
+.lv-desk__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 18px 10px;
+  border-bottom: 1px solid var(--color-border);
 }
-.lv-dossier__spine {
-  position: absolute;
-  left: 0;
-  top: 14px;
-  bottom: 14px;
-  width: 2px;
-  border-radius: 2px;
-  background: color-mix(in oklab, var(--color-primary) 40%, transparent);
-  transform: scaleY(0.45);
-  transform-origin: top;
-  transition: transform 340ms cubic-bezier(0.22, 1, 0.36, 1), background-color 340ms ease;
-}
-.lv-dossier__num {
-  position: absolute;
-  right: 18px;
-  bottom: 14px;
+.lv-desk__tab {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 30px;
-  line-height: 1;
-  letter-spacing: -0.04em;
-  color: transparent;
-  -webkit-text-stroke: 1px color-mix(in oklab, var(--color-text) 18%, transparent);
-  transition: -webkit-text-stroke-color 320ms ease, color 320ms ease;
-  pointer-events: none;
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  padding: 3px 7px;
+  color: var(--color-text-faint);
+  border: 1px solid transparent;
 }
-.lv-dossier__icon {
+.lv-desk__tab--on {
+  color: var(--color-text);
+  border-color: var(--color-border);
+  background: var(--bg-secondary);
+}
+.lv-desk__chip {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11.5px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  color: #fff;
+}
+.lv-desk__foot {
+  border-top: 1px solid var(--color-border);
+  padding: 14px 18px 16px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+}
+@media (max-width: 420px) { .lv-desk__foot { grid-template-columns: 1fr; } }
+.lv-dcf-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 5px 0;
+  border-bottom: 1px dashed var(--color-border);
+  font-size: 12px;
+}
+.lv-dcf-row:last-child { border-bottom: 0; }
+.lv-dcf-row span:first-child { color: var(--color-text-muted); }
+.lv-dcf-row span:last-child {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+.lv-sens {
+  display: grid;
+  grid-template-columns: auto repeat(3, minmax(52px, 1fr));
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+.lv-sens > * {
+  background: var(--color-bg-card);
+  padding: 6px 8px;
+  text-align: right;
+  color: var(--color-text-secondary);
+}
+.lv-sens__h { color: var(--color-text-faint); font-size: 10px; letter-spacing: 0.06em; }
+.lv-sens__c { cursor: crosshair; transition: background-color 160ms ease, color 160ms ease; }
+.lv-sens__c:hover, .lv-sens__c--on { background: var(--color-primary); color: #fff; }
+
+/* hero stat ledger */
+.lv-ledger {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 3px double var(--lv-ink);
+  border-bottom: 1px solid var(--color-border);
+}
+@media (min-width: 1024px) { .lv-ledger { grid-template-columns: repeat(6, 1fr); } }
+.lv-ledger > div {
+  padding: 18px 16px 16px;
+  border-right: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+.lv-ledger > div:nth-child(3n) { border-right: 0; }
+.lv-ledger > div:nth-child(n+4) { border-bottom: 0; }
+@media (min-width: 1024px) {
+  .lv-ledger > div { border-bottom: 0; }
+  .lv-ledger > div:nth-child(3n) { border-right: 1px solid var(--color-border); }
+  .lv-ledger > div:last-child { border-right: 0; }
+}
+.lv-ledger__n {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(26px, 2.2vw, 34px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- social proof ---------- */
+.lv-wordmark {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: clamp(22px, 2.4vw, 34px);
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  padding: 0 28px;
   display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  white-space: nowrap;
+}
+.lv-wordmark small {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--color-primary);
+}
+.lv-wordmark::after {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 999px;
+  background: var(--lv-ink);
+  margin-left: 28px;
+  align-self: center;
+  opacity: 0.5;
+}
+.lv-column + .lv-column { border-top: 1px solid var(--color-border); }
+@media (min-width: 640px) {
+  .lv-column + .lv-column { border-top: 0; border-left: 1px solid var(--color-border); }
+}
+
+/* ---------- faculty ---------- */
+.lv-portrait {
+  aspect-ratio: 4 / 5;
+  background: var(--bg-secondary);
+  border: 1px solid var(--lv-ink);
+  box-shadow: 10px 10px 0 0 var(--color-primary);
+  overflow: hidden;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  margin-bottom: 14px;
-  border-radius: 10px;
-  color: var(--color-primary);
-  background: color-mix(in oklab, var(--color-primary) 14%, transparent);
-  border: 1px solid color-mix(in oklab, var(--color-primary) 26%, transparent);
-  transition: background-color 320ms ease, transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 320ms ease;
 }
-.lv-dossier__title {
-  font-family: 'Space Grotesk', Inter, sans-serif;
-  font-size: 15.5px;
-  font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.2;
-  color: var(--color-text);
-  margin-bottom: 6px;
-  padding-right: 34px;
+.lv-portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(0.15) contrast(1.04); }
+article:hover .lv-portrait { transform: translate(-3px, -3px); box-shadow: 13px 13px 0 0 var(--color-primary); }
+
+/* ---------- gaps ledger ---------- */
+.lv-gap {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: 0 16px;
+  padding: 22px 14px 22px 0;
+  border-top: 1px solid var(--color-border);
+  position: relative;
+  transition: background-color 220ms ease;
 }
-.lv-dossier__copy {
-  font-size: 12.8px;
-  line-height: 1.55;
-  color: var(--color-text-muted);
-  padding-right: 42px;
+@media (min-width: 1024px) {
+  .lv-gap { grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1.25fr); gap: 0 28px; padding: 24px 18px 24px 0; }
 }
-.lv-dossier:hover { transform: translateY(-5px); }
-.lv-dossier:hover .lv-dossier__spine {
-  transform: scaleY(1);
+.lv-gap:last-child { border-bottom: 1px solid var(--color-border); }
+.lv-gap::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
   background: var(--color-primary);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
-.lv-dossier:hover .lv-dossier__icon {
-  background: color-mix(in oklab, var(--color-primary) 24%, transparent);
-  transform: translateY(-1px);
+.lv-gap:hover { background: var(--bg-secondary); }
+.lv-gap:hover::before { transform: scaleY(1); }
+.lv-gap__idx {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--color-primary);
+  padding-left: 14px;
+  font-variant-numeric: tabular-nums;
 }
-.lv-dossier:hover .lv-dossier__num {
-  -webkit-text-stroke-color: color-mix(in oklab, var(--color-primary) 62%, transparent);
+.lv-gap__pts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
 }
+.lv-gap__pts span + span::before { content: '/'; margin: 0 8px; color: var(--color-text-faint); }
+
+/* ---------- features quote-board ---------- */
+.lv-unit {
+  position: relative;
+  padding: 20px 18px 18px;
+  min-height: 168px;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 220ms ease;
+}
+.lv-unit:hover { background: var(--lv-accent-soft); }
+.lv-unit__top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: auto; }
+.lv-unit__icon { color: var(--color-text-muted); transition: color 220ms ease, transform 220ms ease; }
+.lv-unit:hover .lv-unit__icon { color: var(--color-primary); transform: translateY(-2px); }
+.lv-unit__title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--color-text);
+  margin-top: 22px;
+  margin-bottom: 6px;
+}
+.lv-unit__copy { font-size: 12.8px; line-height: 1.5; color: var(--color-text-muted); }
+.lv-unit--cta { background: var(--lv-ink) !important; color: var(--bg-primary); justify-content: flex-end; }
+
 @media (prefers-reduced-motion: reduce) {
-  .lv-dossier, .lv-dossier__spine, .lv-dossier__icon { transition: none; }
-  .lv-dossier:hover { transform: none; }
+  .lv-ticker-track, .lv-live-dot, .lv-sparkline-path, .lv-road-node-on { animation: none !important; }
+  .lv-portrait, .lv-gap::before, .lv-unit__icon, .lv-cta { transition: none; }
 }

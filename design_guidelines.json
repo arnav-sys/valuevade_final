@@ -1,47 +1,196 @@
 {
-  "direction": "Editorial finance — navy + mint-emerald (QuintEdge-inspired design language, Jun 2026). Warm, human, confident. No violet, no terminal gimmicks (no CRT scanlines, dot-matrix grid, mono ticker, corner-tick panels, sharp 2px corners).",
-  "scope": "Public landing page only (.landing-dark). Auth-gated app retains the violet dark palette.",
-  "theme": "dark",
+  "project_name": "Valuevade Landing Page Redesign",
+  "archetype": "Editorial Finance (Financial Times / Bloomberg Magazine aesthetic)",
+  "emotional_tone": "Authoritative, Prestigious, Intellectually Rigorous, Finance-Native, Modern Editorial",
+  "target_audience": "Indian finance students, equity research aspirants, financial modeling enthusiasts",
+  "file_type": "js",
+  "theme_system": {
+    "default_mode": "light",
+    "supported_modes": ["light", "dark"],
+    "palette_light": {
+      "background_primary": "#FBF9F5",
+      "background_secondary": "#F3EFE6",
+      "surface_card": "#FFFFFF",
+      "surface_card_alt": "#F5F2EB",
+      "text_primary": "#141414",
+      "text_secondary": "#4A4947",
+      "text_muted": "#7A7874",
+      "border_hairline": "rgba(20, 20, 20, 0.12)",
+      "border_solid": "#E2DDD3",
+      "accent_primary": "#246BFD",
+      "accent_hover": "#1A52C8",
+      "accent_soft": "rgba(36, 107, 253, 0.08)",
+      "finance_green": "#0F9960",
+      "finance_red": "#DB3737",
+      "finance_gold": "#D97706"
+    },
+    "palette_dark": {
+      "background_primary": "#0D1117",
+      "background_secondary": "#161B22",
+      "surface_card": "#1C2128",
+      "surface_card_alt": "#22272E",
+      "text_primary": "#F0F6FC",
+      "text_secondary": "#8B949E",
+      "text_muted": "#6E7681",
+      "border_hairline": "rgba(240, 246, 252, 0.12)",
+      "border_solid": "#30363D",
+      "accent_primary": "#3B82F6",
+      "accent_hover": "#2563EB",
+      "accent_soft": "rgba(59, 130, 246, 0.15)",
+      "finance_green": "#26D07C",
+      "finance_red": "#F85149",
+      "finance_gold": "#F59E0B"
+    }
+  },
   "typography": {
-    "headings": "Space Grotesk (bold geometric sans, 700, tight -0.03em tracking, clamped magazine scale)",
-    "accents": "Fraunces (italic serif, tinted mint) for the punchline word only, e.g. 'Financial'",
-    "body": "Inter / Bricolage Grotesque (clean, readable, left/centered)",
-    "eyebrow": "Space Grotesk uppercase caps, 0.16em tracking, mint, with a short leading rule (::before)"
+    "heading_font": "'Fraunces', 'Playfair Display', Georgia, serif",
+    "body_font": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+    "mono_font": "'JetBrains Mono', 'Space Mono', monospace",
+    "sans_accent_font": "'Bricolage Grotesque', 'Space Grotesk', sans-serif",
+    "scale": {
+      "display_hero": "text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.08] tracking-tight",
+      "h1": "text-3xl sm:text-4xl lg:text-5xl font-semibold leading-[1.12] tracking-tight",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-semibold leading-[1.15] tracking-tight",
+      "h3": "text-xl sm:text-2xl font-medium leading-[1.2]",
+      "h4": "text-lg sm:text-xl font-medium leading-[1.3]",
+      "body_lg": "text-base sm:text-lg leading-[1.65]",
+      "body_base": "text-sm sm:text-base leading-[1.6]",
+      "eyebrow": "text-xs uppercase font-mono tracking-[0.2em] font-semibold",
+      "ticker": "font-mono text-xs sm:text-sm tracking-tight"
+    },
+    "editorial_features": {
+      "drop_cap": "first-letter:text-5xl first-letter:font-serif first-letter:font-bold first-letter:float-left first-letter:mr-3 first-letter:leading-none first-letter:text-[#246BFD]",
+      "folio_number": "font-mono text-xs text-muted font-bold tracking-widest",
+      "pull_quote": "font-serif italic text-xl sm:text-2xl border-l-2 border-[#246BFD] pl-6 my-6 text-primary",
+      "column_rule": "border-r border-border-hairline pr-8"
+    }
   },
-  "colors": {
-    "background": "#0A0F1C (deep navy) via var(--bg-primary)",
-    "surface": "var(--color-surface) rgba(255,255,255,0.035)",
-    "border": "var(--color-border) rgba(255,255,255,0.10)",
-    "text": "#F4F7FB cool white (var(--color-text))",
-    "text_muted": "var(--color-text-muted)",
-    "primary": "#12E29A mint-emerald (var(--color-primary)); all accents folded into this single mint",
-    "accent_secondary": "#5EEAD4 lighter mint (var(--color-accent-pink))",
-    "light_mode_primary": "#0BA47A (deeper emerald for contrast on cream)"
+  "hero_visual": {
+    "concept": "Finance-Native Live Market Chart & DCF Financial Model Dashboard",
+    "components": [
+      {
+        "name": "Live Market Candlestick & Volume Chart",
+        "description": "Canvas/SVG-rendered interactive candlestick & line chart showing live price movements, 50-day moving average curve, volume bars, MACD indicator line, and real-time live ticker updating every 2 seconds.",
+        "tickers": [
+          {"symbol": "RELIANCE.NS", "price": "₹2,845.50", "change": "+1.85%", "positive": true},
+          {"symbol": "HDFCBANK.NS", "price": "₹1,672.30", "change": "+0.92%", "positive": true},
+          {"symbol": "TCS.NS", "price": "₹4,120.00", "change": "-0.45%", "positive": false},
+          {"symbol": "INFY.NS", "price": "₹1,780.10", "change": "+2.10%", "positive": true}
+        ]
+      },
+      {
+        "name": "DCF Valuation & Sensitivity Matrix Overlay",
+        "description": "Interactive DCF modeling card with live inputs for WACC (10.5%), Terminal Growth (3.5%), Implied Enterprise Value (₹1,42,500 Cr), target price calculation (₹3,210), and sensitivity table matrix highlight.",
+        "interaction": "Hovering over DCF cells updates intrinsic value forecast calculation live with smooth framer-motion transitions."
+      }
+    ]
   },
-  "components": {
-    "buttons": "Pill (.lv-cta): mint fill with dark-navy label (#06231A), clean sans; ghost variant = transparent + mint hover border. border-radius 999px.",
-    "cards": ".lv-panel — soft 16px rounded, calm 1px border, no corner-ticks, hover = border-color shift only (no lift/glow).",
-    "hero": "Centered: mint eyebrow -> bold sans H1 with italic-serif mint accent word -> bold subhead -> muted paragraph -> two pill CTAs -> trust line -> full-width STAT BAND (mint numbers + muted caps labels, drawn only from existing copy facts).",
-    "navbar": "Clean sans links, mint 'Free Mock' + mint dot (no glow), pill sign-up. No terminal market status bar.",
-    "stat_band": "grid 2/3/6 cols, mint bold numbers (Space Grotesk), uppercase muted labels."
-  },
-  "motion": "Restraint: staggered word fade-in on the H1, gentle CTA lift on hover (transform translateY -1px), sparkline draw. No blobs, no parallax, no blinking cursor.",
-  "accessibility": {
-    "contrast": "High contrast on navy. Mint pills always use dark-navy labels, never white.",
-    "data_testid": "Preserve all existing data-testid attributes. Every interactive element MUST have one."
-  },
-  "key_files": [
-    "/app/frontend/src/components/landing/landing-dark.css",
-    "/app/frontend/src/components/HeroSection.js",
-    "/app/frontend/src/components/Navbar.js",
-    "/app/frontend/src/components/LandingIntroSequence.jsx"
+  "sections": [
+    {
+      "id": "navbar",
+      "name": "Editorial Navigation Bar",
+      "layout": "Sticky glassmorphism header with top ticker bar for market stats, logo, clear desktop nav links, dark/light toggle, and action CTAs.",
+      "data_testids": [
+        "landing-navbar",
+        "nav-courses-link",
+        "nav-free-mock-link",
+        "nav-features-link",
+        "nav-how-it-works-link",
+        "nav-ai-proof-link",
+        "nav-roadmap-link",
+        "theme-toggle-button",
+        "nav-login-button",
+        "nav-signup-button"
+      ]
+    },
+    {
+      "id": "hero",
+      "name": "Hero Section",
+      "layout": "Asymmetric 12-column split layout. Left 7 cols: Eyebrow + Serif Headline + Course specs badge grid + Primary CTAs. Right 5 cols: Finance-native Animated Candlestick Chart + DCF Model component.",
+      "data_testids": [
+        "hero-section",
+        "hero-eyebrow",
+        "hero-headline",
+        "hero-paragraph",
+        "start-free-session-button",
+        "curriculum-button",
+        "already-enrolled-login-link",
+        "hero-stat-modules",
+        "hero-stat-sessions",
+        "hero-stat-hours",
+        "hero-stat-capstones",
+        "hero-stat-nism",
+        "hero-stat-price",
+        "hero-market-visual-card"
+      ]
+    },
+    {
+      "id": "social_proof",
+      "name": "Built On Real Markets (Social Proof Strip)",
+      "layout": "Editorial newspaper ticker strip featuring 6 major Indian market wordmarks (RELIANCE, HDFC BANK, INFOSYS, TCS, TATA STEEL, ICICI BANK) and 3 career role dossier cards (Equity Research, Investment Banking, Asset Management).",
+      "data_testids": [
+        "social-proof-strip",
+        "company-wordmarks-container",
+        "role-card-equity-research",
+        "role-card-investment-banking",
+        "role-card-asset-management"
+      ]
+    },
+    {
+      "id": "faculty",
+      "name": "Your Instructors (Faculty Section)",
+      "layout": "3-column editorial profile grid with refined typography, initial avatars / professional portraits, credentials badge, and detailed bio blocks.",
+      "data_testids": [
+        "faculty-section",
+        "faculty-heading",
+        "instructor-card-0",
+        "instructor-card-1",
+        "instructor-card-2"
+      ]
+    },
+    {
+      "id": "gaps_problem",
+      "name": "The Gap No One Talks About (Problem Section)",
+      "layout": "2x4 asymmetric grid of gap dossier cards with mono index numbers (01 to 08), tags, icons, title, 3 key bullet points, and analytical body text.",
+      "data_testids": [
+        "problem-gaps-section",
+        "gap-card-1",
+        "gap-card-2",
+        "gap-card-3",
+        "gap-card-4",
+        "gap-card-5",
+        "gap-card-6",
+        "gap-card-7",
+        "gap-card-8"
+      ]
+    },
+    {
+      "id": "features",
+      "name": "The Platform (14 Units Features Section)",
+      "layout": "High-density editorial Bento grid showcasing 14 feature units with icon badges, concise headers, and crisp description summaries.",
+      "data_testids": [
+        "features-section",
+        "feature-unit-card",
+        "features-cta-button"
+      ]
+    }
   ],
-  "guardrails": [
-    "DO NOT change landing copy — restyle only.",
-    "DO NOT reintroduce violet tokens or terminal gimmicks on the landing.",
-    "DO NOT use white text on mint fills — use dark navy (#06231A).",
-    "Headlines = bold sans; only the single punchline word is italic serif mint.",
-    "Output landing in .js files, not .tsx.",
-    "Intro sequence supports ?nointro=1 to skip (used for QA screenshots)."
+  "motion_and_interactions": {
+    "scroll_behavior": "Smooth inertia scrolling",
+    "framer_motion_defaults": {
+      "initial": { "opacity": 0, "y": 20 },
+      "animate": { "opacity": 1, "y": 0 },
+      "transition": { "duration": 0.5, "ease": [0.16, 1, 0.3, 1] }
+    },
+    "hover_states": "Elevate card with shadow-md, subtle transform -translate-y-1, border color accent change",
+    "prefers_reduced_motion": "Disable canvas animations and translate transforms when prefers-reduced-motion: reduce is true"
+  },
+  "instructions_to_main_agent": [
+    "Do NOT change any existing content or copy. Only restyle and re-layout the elements.",
+    "Preserve all existing data-testid attributes across all components.",
+    "Follow the light editorial finance theme as default with warm paper background (#FBF9F5) and serif headlines, and support dark mode seamlessly.",
+    "Ensure the hero section includes the live animated candlestick market chart and DCF model visual.",
+    "Ensure zero transparent backgrounds on sticky headers or overlays to avoid text collision.",
+    "Use framer-motion for micro-interactions and smooth section reveals."
   ]
 }

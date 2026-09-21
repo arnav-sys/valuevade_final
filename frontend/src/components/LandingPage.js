@@ -62,7 +62,7 @@ export default function LandingPage() {
 
   return (
     <div
-      className={`${landingTheme === 'dark' ? 'landing-dark' : 'landing-light'} bg-[var(--bg-primary)] min-h-screen relative`}
+      className={`${landingTheme === 'dark' ? 'landing-dark' : 'landing-light'} min-h-screen relative`}
       data-testid="landing-page"
       data-landing-theme={landingTheme}
       style={{ transition: 'background-color 250ms ease, color 250ms ease' }}
@@ -132,13 +132,14 @@ export default function LandingPage() {
           className="fixed bottom-0 left-0 right-0 z-40 lg:hidden mobile-sticky-bar"
           data-testid="mobile-sticky-bar"
         >
-          <div className="bg-[var(--bg-primary)]/95 backdrop-blur-xl border-t border-[var(--color-border)] px-4 py-3 flex items-center justify-between">
-            <p className="text-[var(--color-text-muted)] text-sm font-bricolage flex-1">
+          <div className="bg-[var(--bg-primary)]/95 backdrop-blur-xl border-t border-[var(--lv-ink)] px-4 py-3 flex items-center justify-between">
+            <p className="text-[var(--color-text-muted)] text-sm lv-mono flex-1" style={{ fontSize: 12 }}>
               ₹4999 lifetime · Free first session
             </p>
             <Link
               to="/signup"
-              className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full flex items-center gap-1.5"
+              className="lv-cta flex items-center gap-1.5"
+              style={{ padding: '9px 14px', fontSize: 13 }}
               data-testid="mobile-bar-cta"
             >
               Start free <ArrowRight size={14} />
