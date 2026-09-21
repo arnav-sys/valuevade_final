@@ -8,51 +8,20 @@ import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle,
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import { AnimatedStat, BreathingGlow } from './cinematic/primitives';
-import { MiniInterview, MiniExcel, MiniDoc } from './landing/mocks/MiniMocks';
-import '@/components/landing/hero-showcase.css';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
-// Placeholder programs, clearly marked "Coming Soon" (no fabricated hours/
-// ratings/students; only the real course shows real stats). Thumbnails use
-// the same real HTML/CSS mockups from the landing hero, not stock photos.
-const MOCK_COURSES = [
-  {
-    id: 'mock-ib',
-    title: 'Investment Banking Fundamentals',
-    category: 'Investment Banking',
-    difficulty: 'intermediate',
-    Mock: MiniExcel,
-  },
-  {
-    id: 'mock-pe',
-    title: 'Private Equity & Deal Structuring',
-    category: 'Private Equity',
-    difficulty: 'advanced',
-    Mock: MiniDoc,
-  },
-  {
-    id: 'mock-fm',
-    title: 'Financial Modelling in Excel',
-    category: 'Financial Modelling',
-    difficulty: 'beginner',
-    Mock: MiniExcel,
-  },
-  {
-    id: 'mock-pm',
-    title: 'Portfolio Management Essentials',
-    category: 'Portfolio Management',
-    difficulty: 'intermediate',
-    Mock: MiniInterview,
-  },
-  {
-    id: 'mock-wm',
-    title: 'Wealth Management for Advisors',
-    category: 'Wealth Management',
-    difficulty: 'beginner',
-    Mock: MiniDoc,
-  },
-];
+// Fallback cover photos, used until an admin uploads a real one from the
+// Admin > Courses tab (course.image_url wins whenever it's set).
+const FALLBACK_IMAGE_BY_CATEGORY = {
+  'Equity Research': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=80',
+  'Investment Banking': 'https://images.unsplash.com/photo-1707077865701-2854996afc4f?crop=entropy&cs=srgb&fm=jpg&q=80',
+  'Private Equity': 'https://images.pexels.com/photos/7414111/pexels-photo-7414111.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'Financial Modelling': 'https://images.pexels.com/photos/6694560/pexels-photo-6694560.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'Portfolio Management': 'https://images.pexels.com/photos/16594725/pexels-photo-16594725.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'Wealth Management': 'https://images.pexels.com/photos/36765719/pexels-photo-36765719.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+};
+const DEFAULT_FALLBACK_IMAGE = FALLBACK_IMAGE_BY_CATEGORY['Equity Research'];
 
 function CourseCardSkeleton() {
   return (
@@ -88,7 +57,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
   const navigate = useNavigate();
   const isEnrolled = enrollment?.status === 'active';
   const isCompleted = enrollment?.status === 'completed';
-  const MockPreview = course.Mock || MiniInterview;
+  const photo = course.image_url || FALLBACK_IMAGE_BY_CATEGORY[course.category] || DEFAULT_FALLBACK_IMAGE;
 
   const handleCTA = () => {
     if (isMock || isCompleted) return;
@@ -100,9 +69,14 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
       className="rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(36,107,253,0.14)] group"
       data-testid={`course-card-${course.id}`}
     >
-      {/* Live mock preview (same real HTML/CSS mockups as the hero) */}
-      <div className={`relative h-44 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02] ${isMock ? 'opacity-80 grayscale-[15%]' : ''}`} data-testid={`course-card-preview-${course.id}`}>
-        <MockPreview />
+      {/* Cover photo (admin-editable from Admin > Courses tab) */}
+      <div className="relative h-44 overflow-hidden" data-testid={`course-card-preview-${course.id}`}>
+        <img
+          src={photo}
+          alt={course.title}
+          className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isMock ? 'grayscale-[35%]' : ''}`}
+          data-testid={`course-card-image-${course.id}`}
+        />
         <div className="absolute top-3 left-3">
           <DifficultyBadge level={course.difficulty} />
         </div>
@@ -336,22 +310,12 @@ export default function CoursesPage() {
                   transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <CourseCard
-                    course={{ ...course, Mock: MiniInterview, category: 'Equity Research' }}
+                    course={{ ...course, category: course.category || 'Equity Research' }}
                     enrollment={getEnrollment(course.id)}
                     moduleCount={moduleCounts[course.id] || 0}
                     sessionCount={sessionCounts[course.id] || 0}
+                    isMock={!!course.is_coming_soon}
                   />
-                </motion.div>
-              ))}
-              {MOCK_COURSES.map((course, i) => (
-                <motion.div
-                  key={course.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.25 }}
-                  transition={{ duration: 0.5, delay: (courses.length + i) * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <CourseCard course={course} isMock />
                 </motion.div>
               ))}
             </div>

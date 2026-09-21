@@ -95,6 +95,7 @@ class _AdminModuleBody(BaseModel):
 
 class _AdminCourseBody(BaseModel):
     title: Optional[str] = None
+    image_url: Optional[str] = None
 
 
 class _AdminSessionBody(BaseModel):
@@ -2175,20 +2176,97 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         return {"sessions": rows}
 
     # --- Admin "Courses" tab: edit course title + quick preview/free toggles ---
+    def _column_missing(exc: HTTPException) -> bool:
+        try:
+            detail = str(exc.detail or "")
+        except Exception:
+            return False
+        return "PGRST204" in detail or "does not exist" in detail.lower()
+
+    _COURSES_MEDIA_HINT = (
+        "The `master_paths.image_url`/`category`/`is_coming_soon` columns aren't present "
+        "yet. Run `/app/scripts/migrations/0046_courses_media.sql` in the Supabase SQL editor."
+    )
+
     @api_router.get("/admin/courses")
     async def admin_list_courses(user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        rows = _supabase_get("master_paths?select=id,title,description&order=created_at") or []
-        return {"courses": rows}
+        try:
+            rows = _supabase_get(
+                "master_paths?select=id,title,description,image_url,category,is_coming_soon"
+                "&order=created_at"
+            ) or []
+            return {"courses": rows, "media_ready": True}
+        except HTTPException as e:
+            if _column_missing(e):
+                rows = _supabase_get("master_paths?select=id,title,description&order=created_at") or []
+                return {"courses": rows, "media_ready": False, "hint": _COURSES_MEDIA_HINT}
+            raise
 
     @api_router.patch("/admin/courses/{path_id}")
     async def admin_update_course(path_id: str, body: _AdminCourseBody, user=Depends(_get_supabase_user)):
         _ensure_admin(user)
-        title = (body.title or "").strip()
-        if not title:
-            raise HTTPException(status_code=400, detail="Title cannot be empty.")
-        _supabase_patch(f"master_paths?id=eq.{_urlparse.quote(path_id)}", {"title": title})
+        patch: dict = {}
+        if body.title is not None:
+            title = body.title.strip()
+            if not title:
+                raise HTTPException(status_code=400, detail="Title cannot be empty.")
+            patch["title"] = title
+        if body.image_url is not None:
+            patch["image_url"] = body.image_url.strip()
+        if not patch:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+        try:
+            _supabase_patch(f"master_paths?id=eq.{_urlparse.quote(path_id)}", patch)
+        except HTTPException as e:
+            if _column_missing(e):
+                raise HTTPException(status_code=503, detail=_COURSES_MEDIA_HINT)
+            raise
         return {"ok": True}
+
+    @api_router.post("/admin/courses/{path_id}/photo")
+    async def admin_course_photo(path_id: str, file: UploadFile = File(...), user=Depends(_get_supabase_user)):
+        """Uploads a course cover photo to the public Supabase storage bucket,
+        saves it on the master_paths row, and returns its public URL."""
+        _ensure_admin(user)
+        sr = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        if not sr:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        ext_by_ct = {"image/jpeg": "jpg", "image/jpg": "jpg", "image/png": "png", "image/webp": "webp"}
+        ct = (file.content_type or "").lower()
+        if ct not in ext_by_ct:
+            raise HTTPException(status_code=400, detail=f"Unsupported image type {file.content_type!r}, jpg/png/webp only.")
+        blob = await file.read()
+        if len(blob) > 5 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail=f"Image too large ({len(blob)/1048576:.1f} MB). Max 5 MB.")
+        if len(blob) < 200:
+            raise HTTPException(status_code=400, detail="Image is empty or too small.")
+        rest = (os.environ.get("REACT_APP_SUPABASE_URL") or "https://yuadeybycbfqlkdpxbkv.supabase.co").rstrip("/")
+        bucket = "session-videos"
+        key = f"courses/{int(datetime.now(timezone.utc).timestamp())}-{os.urandom(4).hex()}.{ext_by_ct[ct]}"
+        import urllib.request
+        req = urllib.request.Request(
+            f"{rest}/storage/v1/object/{bucket}/{key}",
+            data=blob, method="POST",
+            headers={
+                "apikey": sr, "Authorization": f"Bearer {sr}",
+                "Content-Type": ct, "x-upsert": "true",
+                "cache-control": "public, max-age=31536000, immutable",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                resp.read()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+        image_url = f"{rest}/storage/v1/object/public/{bucket}/{key}"
+        try:
+            _supabase_patch(f"master_paths?id=eq.{_urlparse.quote(path_id)}", {"image_url": image_url})
+        except HTTPException as e:
+            if _column_missing(e):
+                raise HTTPException(status_code=503, detail=_COURSES_MEDIA_HINT)
+            raise
+        return {"ok": True, "image_url": image_url}
 
     @api_router.get("/admin/courses/{path_id}/preview-sessions")
     async def admin_course_preview_sessions(path_id: str, user=Depends(_get_supabase_user)):

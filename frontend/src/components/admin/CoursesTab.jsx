@@ -3,9 +3,9 @@
  * every session in that course to toggle Preview / Free Trial (max 2 each)
  * without digging through the full module tree in the Curriculum tab.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Pencil, Check, X as XIcon, Eye, Unlock, Loader2, FolderOpen, PlayCircle } from 'lucide-react';
+import { Pencil, Check, X as XIcon, Eye, Unlock, Loader2, FolderOpen, PlayCircle, ImagePlus, ImageOff } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -18,6 +18,21 @@ async function req(path, method = 'GET', body = null) {
       Authorization: `Bearer ${session?.access_token || ''}`,
     },
     body: body ? JSON.stringify(body) : undefined,
+  });
+  const text = await r.text();
+  let j = null; try { j = text ? JSON.parse(text) : null; } catch {}
+  if (!r.ok) throw new Error((j && (j.detail || j.message)) || text || `${r.status}`);
+  return j;
+}
+
+async function uploadPhoto(courseId, file) {
+  const { data: { session } } = await supabase.auth.getSession();
+  const form = new FormData();
+  form.append('file', file);
+  const r = await fetch(`${API}/api/admin/courses/${courseId}/photo`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+    body: form,
   });
   const text = await r.text();
   let j = null; try { j = text ? JSON.parse(text) : null; } catch {}
@@ -129,6 +144,8 @@ export default function CoursesTab() {
   const [draftTitle, setDraftTitle] = useState('');
   const [saving, setSaving] = useState(false);
   const [modalCourse, setModalCourse] = useState(null);
+  const [uploadingId, setUploadingId] = useState(null);
+  const fileInputs = useRef({});
 
   const load = async () => {
     try {
@@ -156,18 +173,61 @@ export default function CoursesTab() {
     finally { setSaving(false); }
   };
 
+  const pickPhoto = (courseId) => fileInputs.current[courseId]?.click();
+
+  const onPhotoChosen = async (course, file) => {
+    if (!file) return;
+    setUploadingId(course.id);
+    try {
+      const j = await uploadPhoto(course.id, file);
+      setCourses((prev) => prev.map((x) => x.id === course.id ? { ...x, image_url: j.image_url } : x));
+    } catch (e) { alert(`Photo upload failed: ${e.message}`); }
+    finally { setUploadingId(null); }
+  };
+
   if (loading) return <div className="flex items-center justify-center py-16"><Loader2 className="animate-spin" size={24} /></div>;
   if (err) return <p className="text-sm text-red-400 p-4">{err}</p>;
 
   return (
     <div data-testid="courses-tab" className="space-y-4">
-      <p className="text-sm text-[var(--color-text-muted)]">Edit course titles and manage which sessions are marked Preview or Free Trial.</p>
+      <p className="text-sm text-[var(--color-text-muted)]">Edit course titles, cover photos, and manage which sessions are marked Preview or Free Trial.</p>
       {courses.map((c) => (
         <div
           key={c.id}
           className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 flex items-center gap-4"
           data-testid={`course-card-${c.id}`}
         >
+          <input
+            ref={(el) => { fileInputs.current[c.id] = el; }}
+            type="file"
+            accept="image/jpeg,image/jpg,image/png,image/webp"
+            className="hidden"
+            data-testid={`course-photo-input-${c.id}`}
+            onChange={(e) => onPhotoChosen(c, e.target.files?.[0])}
+          />
+          <button
+            onClick={() => pickPhoto(c.id)}
+            disabled={uploadingId === c.id}
+            title="Upload cover photo"
+            data-testid={`course-photo-upload-${c.id}`}
+            className="relative w-16 h-16 rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg)] flex items-center justify-center flex-shrink-0 group"
+          >
+            {uploadingId === c.id ? (
+              <Loader2 className="animate-spin text-[var(--color-primary)]" size={18} />
+            ) : c.image_url ? (
+              <>
+                <img src={c.image_url} alt={c.title} className="w-full h-full object-cover" />
+                <span className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <ImagePlus size={16} className="text-white" />
+                </span>
+              </>
+            ) : (
+              <span className="flex flex-col items-center gap-0.5 text-[var(--color-text-faint)]">
+                <ImageOff size={16} />
+                <span className="text-[8px]">Add photo</span>
+              </span>
+            )}
+          </button>
           <FolderOpen size={20} className="text-[var(--color-primary)] flex-shrink-0" />
           <div className="flex-1 min-w-0">
             {editingId === c.id ? (
@@ -192,21 +252,27 @@ export default function CoursesTab() {
             ) : (
               <div className="flex items-center gap-2">
                 <p className="text-sm font-semibold text-[var(--color-text)] truncate" data-testid={`course-title-${c.id}`}>{c.title}</p>
+                {c.is_coming_soon && (
+                  <span className="text-[9px] font-mono uppercase px-1.5 py-0.5 rounded bg-[var(--color-accent-purple)]/15 text-[var(--color-accent-purple)] flex-shrink-0">Coming Soon</span>
+                )}
                 <button onClick={() => startEdit(c)} data-testid={`course-title-edit-${c.id}`}
                   className="text-[var(--color-text-muted)] hover:text-[var(--color-primary)]">
                   <Pencil size={13} />
                 </button>
               </div>
             )}
+            {c.category && <p className="text-[10px] text-[var(--color-primary)] font-mono uppercase tracking-wide mt-0.5">{c.category}</p>}
             {c.description && <p className="text-xs text-[var(--color-text-faint)] truncate mt-0.5">{c.description}</p>}
           </div>
-          <button
-            onClick={() => setModalCourse(c)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-colors flex-shrink-0"
-            data-testid={`course-manage-sessions-${c.id}`}
-          >
-            <PlayCircle size={13} /> Preview & Free Sessions
-          </button>
+          {!c.is_coming_soon && (
+            <button
+              onClick={() => setModalCourse(c)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-colors flex-shrink-0"
+              data-testid={`course-manage-sessions-${c.id}`}
+            >
+              <PlayCircle size={13} /> Preview & Free Sessions
+            </button>
+          )}
         </div>
       ))}
       {modalCourse && <PreviewSessionsModal course={modalCourse} onClose={() => setModalCourse(null)} />}
