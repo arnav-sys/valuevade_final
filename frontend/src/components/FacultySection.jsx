@@ -50,15 +50,23 @@ export default function FacultySection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14">
+        <div
+          className={
+            faculty.length === 1
+              ? 'grid grid-cols-1 max-w-sm mx-auto'
+              : faculty.length === 2
+              ? 'grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-14 max-w-3xl mx-auto justify-center'
+              : 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-14'
+          }
+        >
           {faculty.map((f, i) => (
             <article
               key={f.id}
-              className={`${fade} ${i % 3 === 1 ? 'lg:mt-14' : ''}`}
+              className={`${fade} ${faculty.length >= 3 && i % 3 === 1 ? 'lg:mt-14' : ''}`}
               style={{ animationDelay: `${0.15 + i * 0.08}s` }}
               data-testid={`faculty-card-${i}`}
             >
-              <div className="lv-portrait mr-3">
+              <div className="lv-portrait mx-auto sm:mx-0 mr-3">
                 {f.photo_url
                   ? <img src={f.photo_url} alt={f.name} />
                   : <span className="lv-serif" style={{ fontSize: 'clamp(64px, 7vw, 96px)', color: 'var(--color-text-faint)', lineHeight: 1 }}>{initials(f.name)}</span>}
