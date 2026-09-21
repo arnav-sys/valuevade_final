@@ -245,6 +245,26 @@ body.landing-active:not(.landing-light) {
   background: color-mix(in oklab, var(--bg-primary) 94%, transparent) !important;
   border-bottom-color: var(--color-border) !important;
 }
+/* Navbar sits translucent over the new dark hero band at the very top of
+   the page (before scroll), so force light text there for contrast. Must
+   out-specificity the `.landing-light header[data-testid="navbar"]` rule. */
+.landing-light header[data-testid="navbar"].nav-on-dark-hero,
+.landing-dark header[data-testid="navbar"].nav-on-dark-hero {
+  background: rgba(10, 15, 24, 0.38) !important;
+  border-bottom-color: transparent !important;
+}
+.nav-on-dark-hero .lv-nav-link { color: rgba(255, 255, 255, 0.72); }
+.nav-on-dark-hero .lv-nav-link:hover { color: #fff; }
+.nav-on-dark-hero .lv-nav-link::after { background: #fff; }
+.nav-on-dark-hero .lv-masthead { color: rgba(255, 255, 255, 0.55); border-bottom-color: rgba(255, 255, 255, 0.12); }
+.nav-on-dark-hero .logo-gradient,
+.landing-light header[data-testid="navbar"].nav-on-dark-hero .logo-gradient,
+.landing-dark header[data-testid="navbar"].nav-on-dark-hero .logo-gradient { color: #fff !important; }
+.nav-on-dark-hero svg { color: #fff; }
+.nav-on-dark-hero [data-testid="theme-toggle"] { color: rgba(255, 255, 255, 0.75); }
+.nav-on-dark-hero [data-testid="nav-hamburger"] { color: #fff; }
+.nav-on-dark-hero [data-testid="nav-user-name"] { color: rgba(255, 255, 255, 0.65); }
+
 .landing-light .logo-gradient, .landing-dark .logo-gradient {
   background: none !important;
   -webkit-background-clip: initial;

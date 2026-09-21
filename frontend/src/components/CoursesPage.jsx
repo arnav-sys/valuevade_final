@@ -8,50 +8,51 @@ import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle,
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import { AnimatedStat, BreathingGlow } from './cinematic/primitives';
+import { MiniInterview, MiniExcel, MiniDoc } from './landing/mocks/MiniMocks';
+import '@/components/landing/hero-showcase.css';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
 // Placeholder programs, clearly marked "Coming Soon" (no fabricated hours/
-// ratings/students; only the real course shows real stats)
+// ratings/students; only the real course shows real stats). Thumbnails use
+// the same real HTML/CSS mockups from the landing hero, not stock photos.
 const MOCK_COURSES = [
   {
     id: 'mock-ib',
     title: 'Investment Banking Fundamentals',
     category: 'Investment Banking',
     difficulty: 'intermediate',
-    image: 'https://images.unsplash.com/photo-1707077865701-2854996afc4f?crop=entropy&cs=srgb&fm=jpg&q=80',
+    Mock: MiniExcel,
   },
   {
     id: 'mock-pe',
     title: 'Private Equity & Deal Structuring',
     category: 'Private Equity',
     difficulty: 'advanced',
-    image: 'https://images.pexels.com/photos/7414111/pexels-photo-7414111.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    Mock: MiniDoc,
   },
   {
     id: 'mock-fm',
     title: 'Financial Modelling in Excel',
     category: 'Financial Modelling',
     difficulty: 'beginner',
-    image: 'https://images.pexels.com/photos/6694560/pexels-photo-6694560.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    Mock: MiniExcel,
   },
   {
     id: 'mock-pm',
     title: 'Portfolio Management Essentials',
     category: 'Portfolio Management',
     difficulty: 'intermediate',
-    image: 'https://images.pexels.com/photos/16594725/pexels-photo-16594725.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    Mock: MiniInterview,
   },
   {
     id: 'mock-wm',
     title: 'Wealth Management for Advisors',
     category: 'Wealth Management',
     difficulty: 'beginner',
-    image: 'https://images.pexels.com/photos/36765719/pexels-photo-36765719.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+    Mock: MiniDoc,
   },
 ];
-
-const REAL_COURSE_IMAGE = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=80';
 
 function CourseCardSkeleton() {
   return (
@@ -77,7 +78,7 @@ function DifficultyBadge({ level }) {
   const key = level?.toLowerCase() || 'beginner';
   const cls = DIFFICULTY_STYLES[key] || DIFFICULTY_STYLES.beginner;
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase tracking-wide shadow-sm ${cls}`} data-testid="difficulty-badge">
+    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase tracking-wide shadow-sm whitespace-nowrap ${cls}`} data-testid="difficulty-badge">
       {key.charAt(0).toUpperCase() + key.slice(1)}
     </span>
   );
@@ -87,6 +88,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
   const navigate = useNavigate();
   const isEnrolled = enrollment?.status === 'active';
   const isCompleted = enrollment?.status === 'completed';
+  const MockPreview = course.Mock || MiniInterview;
 
   const handleCTA = () => {
     if (isMock || isCompleted) return;
@@ -98,14 +100,9 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
       className="rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(36,107,253,0.14)] group"
       data-testid={`course-card-${course.id}`}
     >
-      {/* Image */}
-      <div className="relative h-44 overflow-hidden">
-        <img
-          src={course.image || REAL_COURSE_IMAGE}
-          alt={course.title}
-          className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isMock ? 'grayscale-[35%]' : ''}`}
-          data-testid={`course-card-image-${course.id}`}
-        />
+      {/* Live mock preview (same real HTML/CSS mockups as the hero) */}
+      <div className={`relative h-44 overflow-hidden transition-transform duration-500 group-hover:scale-[1.02] ${isMock ? 'opacity-80 grayscale-[15%]' : ''}`} data-testid={`course-card-preview-${course.id}`}>
+        <MockPreview />
         <div className="absolute top-3 left-3">
           <DifficultyBadge level={course.difficulty} />
         </div>
@@ -142,7 +139,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
             Launching soon &mdash; join the waitlist from your dashboard.
           </p>
         ) : (
-          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[var(--color-text-muted)] mb-4" data-testid={`course-card-meta-${course.id}`}>
+          <div className="flex flex-wrap items-center gap-4 text-xs font-jetbrains text-[var(--color-text-muted)] mb-4" data-testid={`course-card-meta-${course.id}`}>
             {course.estimated_hours && (
               <span className="inline-flex items-center gap-1.5"><Clock size={13} /> {course.estimated_hours} hrs</span>
             )}
@@ -153,7 +150,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
 
         {/* Footer */}
         <div className="pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
-          <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--color-text-faint)]" data-testid={`course-card-category-${course.id}`}>
+          <span className="text-[10px] font-jetbrains uppercase tracking-[0.16em] text-[var(--color-text-faint)]" data-testid={`course-card-category-${course.id}`}>
             {course.category || 'Equity Research'}
           </span>
           {isMock ? (
@@ -280,7 +277,7 @@ export default function CoursesPage() {
           transition={{ duration: 0.5 }}
           className="relative z-10 text-center px-6 pt-16 sm:pt-20 pb-28 sm:pb-32"
         >
-          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/70 mb-4">Finance Education</p>
+          <p className="text-[10px] font-jetbrains uppercase tracking-[0.25em] text-white/70 mb-4">Finance Education</p>
           <h1 className="font-clash text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4 tracking-tight" data-testid="courses-heading">
             Online Courses
           </h1>
@@ -339,7 +336,7 @@ export default function CoursesPage() {
                   transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <CourseCard
-                    course={{ ...course, image: REAL_COURSE_IMAGE, category: 'Equity Research' }}
+                    course={{ ...course, Mock: MiniInterview, category: 'Equity Research' }}
                     enrollment={getEnrollment(course.id)}
                     moduleCount={moduleCounts[course.id] || 0}
                     sessionCount={sessionCounts[course.id] || 0}
@@ -414,7 +411,7 @@ export default function CoursesPage() {
             <div className="relative rounded-3xl border border-[var(--color-primary)]/25 bg-gradient-to-br from-[var(--color-primary)]/[0.08] via-transparent to-[var(--color-accent-purple)]/[0.06] backdrop-blur-xl px-6 sm:px-10 py-10 sm:py-14 text-center overflow-hidden">
               <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[var(--color-primary)] opacity-[0.10] blur-[100px] pointer-events-none" />
               <div className="relative">
-                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-primary)] mb-3">
+                <div className="text-[10px] font-jetbrains uppercase tracking-[0.18em] text-[var(--color-primary)] mb-3">
                   <Trophy size={12} className="inline -translate-y-0.5 mr-1" /> Career Outcomes
                 </div>
                 <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto mb-7">

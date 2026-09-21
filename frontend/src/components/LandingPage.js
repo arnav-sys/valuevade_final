@@ -89,6 +89,7 @@ export default function LandingPage() {
       <Navbar
         landingTheme={landingTheme}
         onToggleLandingTheme={toggleLandingTheme}
+        navOnDark
       />
 
       {/* Cinematic Three.js background, retired from the above-the-fold

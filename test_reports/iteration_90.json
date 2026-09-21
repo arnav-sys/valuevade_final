@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only visual/UX verification of the redesigned /courses page (logged-out). Hero, sticky header, breadcrumb, responsive 3/2/1 col grid with 1 real course + 5 mock 'Coming Soon' cards, disabled pagination, stats strip, closing CTA (smooth-scroll), theme toggle, and no horizontal overflow at 1920 or 390 all verified. Mock card CTA is inert (URL unchanged on click). Fonts: heading = Newsreader (font-clash) OK, subtitle = Instrument Sans (font-bricolage) OK, meta row uses Tailwind's default font-mono stack rather than 'Spline Sans Mono' (minor).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/courses course-card meta row", "issues": ["Computed font-family on '[data-testid^=course-card-meta-]' is 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, ...' (Tailwind default) instead of 'Spline Sans Mono'. Tailwind's built-in 'font-mono' utility is not overridden to Spline Sans Mono in tailwind.config.js (the Spline Sans Mono family is registered under the 'jetbrains' key). If the task requires Spline Sans Mono in meta rows, either extend fontFamily.mono in tailwind.config.js or swap the class to 'font-jetbrains'."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "OPTIONAL/MINOR: Map Tailwind's 'font-mono' to 'Spline Sans Mono' in tailwind.config.js (currently mapped only to 'jetbrains' key), or change the meta row to use 'font-jetbrains' class so it renders in Spline Sans Mono as intended."
+  ],
+  "critical_code_review_comments": [
+    "CoursesPage.jsx is 443 lines and mixes 3 concerns (header, hero, grid). Not urgent, but if it grows further consider splitting Header, Hero, CourseCard, ClosingCTA into separate files.",
+    "MOCK_COURSES ids ('mock-*') are safe because handleCTA short-circuits when isMock=true and no fetch is keyed off them; good.",
+    "Pagination buttons are correctly disabled via the disabled attribute and cursor-not-allowed; clicks are no-ops as expected."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "~98%"},
+  "test_credentials": "Not needed (logged-out flow only was tested; enrolled/completed CTA states not exercised because no verified test student credential with an active enrollment was provided).",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Logged-in enrollment scenarios (Continue button for active enrollment, green 'Completed' state) were NOT covered — would need a Supabase test user with a user_enrollments row for the real course (id 5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c). Everything else on /courses passes. Console: no errors, only React DevTools info log. document.documentElement.scrollWidth == clientWidth at both 1920 and 390 viewports.",
+  "rca of the issue": "N/A — no functional bugs found. Only a minor font-mono mapping observation (design nit)."
+}

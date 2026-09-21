@@ -17,7 +17,7 @@ const navLinks = [
   { label: 'Roadmap', id: 'features' },
 ];
 
-export default function Navbar({ landingTheme, onToggleLandingTheme }) {
+export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }) {
   const { user, profile, loading, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const [scrolled, setScrolled] = useState(false);
@@ -45,7 +45,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
       data-testid="navbar"
       className={`fixed top-0 w-full z-50 transition-[background-color,backdrop-filter,border-color] duration-300 backdrop-blur-md border-b ${
         scrolled ? 'lv-nav-scrolled bg-[var(--bg-primary)]/85 border-[var(--color-border)]' : 'bg-[var(--bg-primary)]/40 border-transparent'
-      }`}
+      }${navOnDark && !scrolled ? ' nav-on-dark-hero' : ''}`}
     >
       {isLandingScoped && (
         <div className={`lv-masthead hidden md:block transition-[max-height,opacity] duration-300 overflow-hidden ${scrolled ? 'max-h-0 opacity-0' : 'max-h-8 opacity-100'}`} data-testid="nav-masthead">

@@ -8,6 +8,7 @@ module.exports = {
         clash: ['"Newsreader"', 'Georgia', 'serif'],
         bricolage: ['"Instrument Sans"', 'sans-serif'],
         jetbrains: ['"Spline Sans Mono"', 'monospace'],
+        mono: ['"Spline Sans Mono"', 'ui-monospace', 'monospace'],
       },
       colors: {
         navy: '#02073D',
