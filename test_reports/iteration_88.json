@@ -1,0 +1,20 @@
+{
+  "summary": "Frontend-only redesign verification of Valuevade landing page. All 12 requested checks pass: light theme default, no console/page errors, no horizontal overflow at 1920x1080 & 390x844, hero masthead + all data-testids present with correct copy, CTAs correctly linked (/signup, /login, /course/...), 6 hero stat markers present, market chart canvas rendered non-zero (496x250), live price animates (\u20b92,621.88 -> \u20b92,621.04 in 3s), DCF hover on hero-dcf-cell-0-2 => \u20b94,535 and hero-dcf-cell-2-0 => \u20b92,471 as expected, navbar hides after scroll>50px with lv-nav-scrolled class applied, theme toggle switches to dark (data-landing-theme=dark, body bg rgb(26,30,38)) and persists to localStorage valuevade_theme, social proof strip lists all 6 companies (RELIANCE, HDFC BANK, INFOSYS, TCS, TATA STEEL, ICICI BANK) with 3 role columns, faculty section renders 3 cards (fallback), problem section has 8 ledger rows + transition line, features section has all 14 nodes + CTA linking to /signup, mobile 390x844 shows hamburger menu with mobile-nav-* links + mobile-sticky-bar + mobile-bar-cta and hero market card stays within viewport (right=382<390), intro sequence appears then unmounts within 3.5s without ?nointro=1.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Mobile nav overlay", "issues": ["Duplicate data-testid 'mobile-nav-features' found (2 elements). One appears to be the actual Features nav link and another appears to be a duplicate under a different section. May cause test ambiguity though functionality works. Consider renaming one (e.g., mobile-nav-features-bottom)."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": ["Optional: dedupe duplicate data-testid 'mobile-nav-features' in mobile navigation overlay."],
+  "critical_code_review_comments": ["Landing page redesign is solid across desktop and mobile viewports. No console errors, no page errors, no overflow. Live chart uses canvas efficiently. Theme persistence works (localStorage key valuevade_theme, version applied)."],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Landing page redesign fully verified. Use ?nointro=1 to bypass intro. Preview URL from REACT_APP_BACKEND_URL. Only nit: duplicate data-testid mobile-nav-features in mobile overlay."
+}
