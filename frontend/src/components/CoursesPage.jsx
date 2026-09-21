@@ -78,7 +78,7 @@ function DifficultyBadge({ level }) {
   const key = level?.toLowerCase() || 'beginner';
   const cls = DIFFICULTY_STYLES[key] || DIFFICULTY_STYLES.beginner;
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase tracking-wide shadow-sm whitespace-nowrap ${cls}`} data-testid="difficulty-badge">
+    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase shadow-sm whitespace-nowrap tracking-normal ${cls}`} data-testid="difficulty-badge">
       {key.charAt(0).toUpperCase() + key.slice(1)}
     </span>
   );

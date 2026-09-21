@@ -1,0 +1,46 @@
+{
+  "summary": "Frontend visual verification of two approved UI changes: (1) landing hero dark navy band with white bold heading + twinkle particles + blue radial glow (no purple), and (2) /courses cards using live mini-mockups (interview/excel/doc) instead of stock photos. Also re-verified tailwind font-mono → 'Spline Sans Mono' fix from iteration_90. Backend testing skipped per request.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "CoursesPage > difficulty-badge (Advanced)",
+        "issue": "Visual: the 'ADVANCED' pink difficulty badge on the 'Private Equity & Deal Structuring' card renders with a noticeable inter-glyph gap that reads visually as 'AD VANCED', even though DOM textContent is single-word 'Advanced' and height=23px (single line, whitespace:nowrap, letter-spacing:0.25px). Root cause appears to be a font-kerning/rendering quirk with the applied font ('Instrument Sans' resolved from `font-bricolage` class at 10px + tracking-wide + text-transform:uppercase). Not a wrap, not a layout collision, purely a font-rendering artifact but user-visible. All other badges (BEGINNER, INTERMEDIATE, BEGINNER TO INTERMEDIATE) render clean.",
+        "selector": "[data-testid='difficulty-badge']:has-text('Advanced')",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verifications_passed": [
+    "Landing / loads with 0 console errors, 0 pageerrors at both 1920x1080 and 390x844",
+    "No horizontal overflow at 1920 (sw=cw=1920) or 390 (sw=cw=390)",
+    "Hero .hero-on-dark band present with dark radial-gradient (rgb(35,48,74) → rgb(20,27,39) → rgb(10,15,22)) — dark navy confirmed, NO purple/violet colors detected in band (purple color scan returned [])",
+    "H1 renders 'A new way of mastering\\nfinance in the age of AI' in rgb(255,255,255) white with font-weight 600 (bold)",
+    "46 .hero-particle twinkle dots rendered in the band (matches spec of ~46)",
+    "Blue accent color (#246BFD family) used on 'age of AI' italic and CTA — no purple",
+    "Navbar at scrollY=0 has class 'nav-on-dark-hero' and light nav links (rgba(255,255,255,0.72)) — dark-hero override IS applied and specificity works correctly (bug flagged in review as previously fixed remains fixed)",
+    "Navbar after scroll>50px switches to 'lv-nav-scrolled' with opaque light bg — original behavior preserved",
+    "Primary CTA 'Start Free Session' → /signup, Secondary 'See the full curriculum' → /course/<id> — both correctly linked and visible on dark band",
+    "Product showcase tabs (AI MOCK INTERVIEW / EXCEL MODELLING / DOCUMENT SIMULATION) present below hero band",
+    "/courses: all 6 real+mock course cards render with vvm-mini components (no <img> thumbnails). Assignments verified: Equity Research Analyst→interview, Portfolio Management Essentials→interview, Investment Banking Fundamentals→excel, Financial Modelling in Excel→excel, Private Equity & Deal Structuring→doc, Wealth Management for Advisors→doc — matches spec exactly",
+    "Difficulty badge (top-left) and status badge (top-right) sit above mini-mockup header without collision on all cards",
+    "font-mono class now correctly resolves to 'Spline Sans Mono', ui-monospace, monospace (previous iteration_90 minor issue FIXED). Meta rows '60 hrs', '20 modules', '215 sessions' and category label 'EQUITY RESEARCH' all compute to 'Spline Sans Mono'"
+  ],
+  "test_report_links": [],
+  "action_items": [
+    "OPTIONAL/LOW: If the visual gap in the 'ADVANCED' difficulty badge is deemed noticeable, consider either (a) removing tracking-wide, (b) reducing letter-spacing to 0, or (c) switching the badge font from font-bricolage (which is falling back to 'Instrument Sans') to a font with better uppercase kerning like Spline Sans. All other difficulty labels render fine."
+  ],
+  "critical_code_review_comments": [
+    "Nav-on-dark-hero override css correctly wins specificity over landing-light/landing-dark navbar rules — bug flagged in review as previously fixed IS actually fixed.",
+    "`font-bricolage` Tailwind class does not appear to map to Bricolage Grotesque in the loaded stack — computedStyle resolves to 'Instrument Sans'. Not affecting functionality but worth noting if Bricolage was intended for badges.",
+    "Hero band uses hardcoded dark styling via `.hero-on-dark` regardless of light/dark toggle — intentional per spec."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "~99%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Both approved UI changes verified working. Hero dark band + white bold heading + 46 particles + blue glow (no purple) confirmed. All /courses cards swap photos for MiniInterview/MiniExcel/MiniDoc mockups correctly. Only observation is a minor visual kerning quirk on the pink 'ADVANCED' difficulty badge that visually reads 'AD VANCED' due to font kerning (not a wrap/layout bug). Tailwind font-mono → Spline Sans Mono fix from iteration_90 confirmed working."
+}
