@@ -16,6 +16,8 @@ import LinkedInClaimsTab from './admin/LinkedInClaimsTab';
 import RewardsTab from './admin/RewardsTab';
 import SessionVideosTab from './admin/SessionVideosTab';
 import FaqsTab from './admin/FaqsTab';
+import FacultyTab from './admin/FacultyTab';
+import TestimonialsTab from './admin/TestimonialsTab';
 import CustomizationTab from './admin/CustomizationTab';
 import SessionFeedbackTab from './admin/SessionFeedbackTab';
 
@@ -43,6 +45,8 @@ function AdminTabs({ tab, setTab }) {
     { k: 'customization', label: 'AI Customisation',  icon: Sparkles },
     { k: 'feedback',      label: 'Session Feedback',  icon: MessageSquareWarning },
     { k: 'faqs',          label: 'FAQs',               icon: HelpCircle },
+    { k: 'faculty',       label: 'Faculty',            icon: GraduationCap },
+    { k: 'testimonials',  label: 'Testimonials',       icon: MessageSquareWarning },
     { k: 'rewards',       label: 'Rewards',            icon: Gift },
     { k: 'claims',        label: 'LinkedIn Claims',    icon: Link2 },
     { k: 'errors',        label: 'Errors',             icon: AlertTriangle },
@@ -121,6 +125,8 @@ export default function AdminPanel() {
           {tab === 'payments'      && <PaymentsTab />}
           {tab === 'videos'        && <SessionVideosTab />}
           {tab === 'faqs'          && <FaqsTab />}
+          {tab === 'faculty'       && <FacultyTab />}
+          {tab === 'testimonials'  && <TestimonialsTab />}
           {tab === 'customization' && <CustomizationTab />}
           {tab === 'feedback'      && <SessionFeedbackTab />}
           {tab === 'curriculum'    && <CurriculumTab />}

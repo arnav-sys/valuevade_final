@@ -874,6 +874,221 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             raise HTTPException(status_code=404, detail="FAQ not found")
         return {"ok": True}
 
+    # ---- Faculty (public read + admin CRUD + photo upload) -------------
+    def _table_missing(exc: HTTPException, table: str) -> bool:
+        try:
+            detail = str(exc.detail or "")
+        except Exception:
+            return False
+        return "PGRST205" in detail or f"Could not find the table 'public.{table}'" in detail
+
+    _FACULTY_HINT = (
+        "The `faculty` table isn't present in Supabase yet. Run "
+        "`/app/scripts/migrations/0044_faculty.sql` in the Supabase SQL editor."
+    )
+    _TESTI_HINT = (
+        "The `testimonials` table isn't present in Supabase yet. Run "
+        "`/app/scripts/migrations/0045_testimonials.sql` in the Supabase SQL editor."
+    )
+
+    @api_router.get("/faculty")
+    async def public_faculty():
+        try:
+            rows = _supabase_get(
+                "faculty?select=id,name,title,bio,photo_url,order_index"
+                "&is_published=eq.true&order=order_index.asc&limit=100"
+            ) or []
+            return {"faculty": rows}
+        except HTTPException as e:
+            if _table_missing(e, "faculty"):
+                return {"faculty": [], "table_ready": False}
+            raise
+
+    @api_router.get("/admin/faculty")
+    async def admin_faculty_list(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            rows = _supabase_get(
+                "faculty?select=id,name,title,bio,photo_url,order_index,is_published,updated_at"
+                "&order=order_index.asc&limit=200"
+            ) or []
+            return {"total": len(rows), "faculty": rows, "table_ready": True}
+        except HTTPException as e:
+            if _table_missing(e, "faculty"):
+                return {"total": 0, "faculty": [], "table_ready": False, "hint": _FACULTY_HINT}
+            raise
+
+    @api_router.post("/admin/faculty")
+    async def admin_faculty_create(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        name = (body.get("name") or "").strip()
+        if not name:
+            raise HTTPException(status_code=400, detail="name is required")
+        try:
+            row = _supabase_post("faculty", {
+                "name": name,
+                "title": (body.get("title") or "").strip(),
+                "bio": (body.get("bio") or "").strip(),
+                "photo_url": (body.get("photo_url") or "").strip(),
+                "order_index": int(body.get("order_index") or 100),
+                "is_published": bool(body.get("is_published", True)),
+            }, prefer="return=representation")
+        except HTTPException as e:
+            if _table_missing(e, "faculty"):
+                raise HTTPException(status_code=503, detail=_FACULTY_HINT)
+            raise
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"faculty": row}
+
+    @api_router.patch("/admin/faculty/{fid}")
+    async def admin_faculty_update(fid: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        allowed = {"name", "title", "bio", "photo_url", "order_index", "is_published"}
+        patch = {k: v for k, v in body.items() if k in allowed and v is not None}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+        patch["updated_at"] = datetime.now(timezone.utc).isoformat()
+        try:
+            _supabase_patch(f"faculty?id=eq.{_urlparse.quote(fid)}", patch)
+            rows = _supabase_get(f"faculty?id=eq.{_urlparse.quote(fid)}&select=*&limit=1") or []
+        except HTTPException as e:
+            if _table_missing(e, "faculty"):
+                raise HTTPException(status_code=503, detail=_FACULTY_HINT)
+            raise
+        return {"faculty": rows[0] if rows else None}
+
+    @api_router.delete("/admin/faculty/{fid}")
+    async def admin_faculty_delete(fid: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            deleted = _supabase_delete(f"faculty?id=eq.{_urlparse.quote(fid)}") or []
+        except HTTPException as e:
+            if _table_missing(e, "faculty"):
+                raise HTTPException(status_code=503, detail=_FACULTY_HINT)
+            raise
+        if not deleted:
+            raise HTTPException(status_code=404, detail="Faculty not found")
+        return {"ok": True}
+
+    @api_router.post("/admin/faculty/photo")
+    async def admin_faculty_photo(file: UploadFile = File(...), user=Depends(_get_supabase_user)):
+        """Uploads a faculty photo to the public Supabase storage bucket and
+        returns its public URL (stored on the faculty row as photo_url)."""
+        _ensure_admin(user)
+        sr = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        if not sr:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        ext_by_ct = {"image/jpeg": "jpg", "image/jpg": "jpg", "image/png": "png", "image/webp": "webp"}
+        ct = (file.content_type or "").lower()
+        if ct not in ext_by_ct:
+            raise HTTPException(status_code=400, detail=f"Unsupported image type {file.content_type!r} — jpg/png/webp only.")
+        blob = await file.read()
+        if len(blob) > 5 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail=f"Image too large ({len(blob)/1048576:.1f} MB). Max 5 MB.")
+        if len(blob) < 200:
+            raise HTTPException(status_code=400, detail="Image is empty or too small.")
+        rest = (os.environ.get("REACT_APP_SUPABASE_URL") or "https://yuadeybycbfqlkdpxbkv.supabase.co").rstrip("/")
+        bucket = "session-videos"
+        key = f"faculty/{int(datetime.now(timezone.utc).timestamp())}-{os.urandom(4).hex()}.{ext_by_ct[ct]}"
+        import urllib.request
+        req = urllib.request.Request(
+            f"{rest}/storage/v1/object/{bucket}/{key}",
+            data=blob, method="POST",
+            headers={
+                "apikey": sr, "Authorization": f"Bearer {sr}",
+                "Content-Type": ct, "x-upsert": "true",
+                "cache-control": "public, max-age=31536000, immutable",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                resp.read()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+        return {"ok": True, "photo_url": f"{rest}/storage/v1/object/public/{bucket}/{key}"}
+
+    # ---- Testimonials (public read + admin CRUD) -----------------------
+    @api_router.get("/testimonials")
+    async def public_testimonials():
+        try:
+            rows = _supabase_get(
+                "testimonials?select=id,name,role,quote,order_index"
+                "&is_published=eq.true&order=order_index.asc&limit=200"
+            ) or []
+            return {"testimonials": rows}
+        except HTTPException as e:
+            if _table_missing(e, "testimonials"):
+                return {"testimonials": [], "table_ready": False}
+            raise
+
+    @api_router.get("/admin/testimonials")
+    async def admin_testimonials_list(user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            rows = _supabase_get(
+                "testimonials?select=id,name,role,quote,order_index,is_published,updated_at"
+                "&order=order_index.asc&limit=500"
+            ) or []
+            return {"total": len(rows), "testimonials": rows, "table_ready": True}
+        except HTTPException as e:
+            if _table_missing(e, "testimonials"):
+                return {"total": 0, "testimonials": [], "table_ready": False, "hint": _TESTI_HINT}
+            raise
+
+    @api_router.post("/admin/testimonials")
+    async def admin_testimonials_create(body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        name = (body.get("name") or "").strip()
+        quote = (body.get("quote") or "").strip()
+        if not name or not quote:
+            raise HTTPException(status_code=400, detail="name and quote are required")
+        try:
+            row = _supabase_post("testimonials", {
+                "name": name,
+                "role": (body.get("role") or "").strip(),
+                "quote": quote,
+                "order_index": int(body.get("order_index") or 100),
+                "is_published": bool(body.get("is_published", True)),
+            }, prefer="return=representation")
+        except HTTPException as e:
+            if _table_missing(e, "testimonials"):
+                raise HTTPException(status_code=503, detail=_TESTI_HINT)
+            raise
+        if isinstance(row, list):
+            row = row[0] if row else None
+        return {"testimonial": row}
+
+    @api_router.patch("/admin/testimonials/{tid}")
+    async def admin_testimonials_update(tid: str, body: dict, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        allowed = {"name", "role", "quote", "order_index", "is_published"}
+        patch = {k: v for k, v in body.items() if k in allowed and v is not None}
+        if not patch:
+            raise HTTPException(status_code=400, detail="No valid fields to update")
+        patch["updated_at"] = datetime.now(timezone.utc).isoformat()
+        try:
+            _supabase_patch(f"testimonials?id=eq.{_urlparse.quote(tid)}", patch)
+            rows = _supabase_get(f"testimonials?id=eq.{_urlparse.quote(tid)}&select=*&limit=1") or []
+        except HTTPException as e:
+            if _table_missing(e, "testimonials"):
+                raise HTTPException(status_code=503, detail=_TESTI_HINT)
+            raise
+        return {"testimonial": rows[0] if rows else None}
+
+    @api_router.delete("/admin/testimonials/{tid}")
+    async def admin_testimonials_delete(tid: str, user=Depends(_get_supabase_user)):
+        _ensure_admin(user)
+        try:
+            deleted = _supabase_delete(f"testimonials?id=eq.{_urlparse.quote(tid)}") or []
+        except HTTPException as e:
+            if _table_missing(e, "testimonials"):
+                raise HTTPException(status_code=503, detail=_TESTI_HINT)
+            raise
+        if not deleted:
+            raise HTTPException(status_code=404, detail="Testimonial not found")
+        return {"ok": True}
+
     @api_router.get("/admin/waitlist")
     async def admin_waitlist(user=Depends(_get_supabase_user)):
         """Read all waitlist signups from Supabase (persistent). Was Mongo

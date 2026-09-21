@@ -16,6 +16,7 @@ import FinalCTASection from '@/components/FinalCTASection';
 import FreeTrialCTA from '@/components/FreeTrialCTA';
 import WhatYoullLearnSection from '@/components/WhatYoullLearnSection';
 import WhoBuiltThisSection from '@/components/WhoBuiltThisSection';
+import FacultySection from '@/components/FacultySection';
 import Footer from '@/components/Footer';
 import FaqAccordion from '@/components/faq/FaqAccordion';
 import FaqChatbot from '@/components/faq/FaqChatbot';
@@ -111,11 +112,12 @@ export default function LandingPage() {
         <FeaturesSection />
         <WhatYoullLearnSection />
         <WhoBuiltThisSection />
+        <FacultySection />
         <ComparisonSection />
+        <TestimonialsSection />
         <HowItWorksSection />
         <AIProofSection />
         <FreeTrialCTA />
-        <TestimonialsSection />
         <FaqAccordion />
         <FinalCTASection />
       </main>

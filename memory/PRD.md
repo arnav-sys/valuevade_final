@@ -1,5 +1,12 @@
 # Valuevade — Product Requirements Document
 
+## Faculty + Testimonial Wall + Gaps (Jun 2026)
+- **Faculty section** (`FacultySection.jsx`) on the landing (after WhoBuiltThis, before pricing) — admin-managed via new **Faculty** admin tab (`admin/FacultyTab.jsx`) with **photo upload** (stored in the public `session-videos` Supabase bucket under `faculty/`). Public read `GET /api/faculty`; admin CRUD `/api/admin/faculty` (+ `/photo`).
+- **Testimonial Wall** — `TestimonialsSection.js` rebuilt into a scrollable masonry proof wall placed right after the pricing/Comparison section; admin-managed via new **Testimonials** admin tab (name + role + quote). Public read `GET /api/testimonials`; admin CRUD `/api/admin/testimonials`.
+- **Durability:** both use Supabase tables. **Run `0044_faculty.sql` and `0045_testimonials.sql` in the Supabase SQL editor** to provision + seed them. Until then, endpoints degrade gracefully (`table_ready:false`), the landing shows seeded fallback content, and admin tabs show a "run migration" banner.
+- **Gaps section** (`ProblemSection.js`) redesigned: removed the sticky-scroll/3D treatment for a clean 8-card grid on navy with blue accents. Added 5 gaps: no certification+real projects, no AI mock-interview practice, no practical hands-on learning, no resume/LinkedIn/soft-skill prep, generic non-personalised courses.
+- Backend endpoints live in `wave_endpoints.py` (mirrors the FAQ pattern; admin verified via `_ensure_admin`).
+
 ## Landing Design Direction (Jun 2026 — CURRENT)
 Landing + full app redesigned to an editorial finance aesthetic: deep **navy** canvas (#0A0F1C) with the **Valuevade logo blue** accent (#246BFD), **bold geometric-sans** headlines (Space Grotesk) + **italic-serif** accent words (Fraunces, blue), **pill** CTAs, section eyebrows (blue caps + leading rule). Terminal/AI gimmicks (CRT scanlines, dot grid, mono ticker, corner-ticks, mono FT-/Q0x/YES-NO rails, sharp 2px corners) stripped for a warm, human feel.
 - **App theme match:** the auth-gated `.dark` palette in `index.css` was retimed from violet → navy + logo-blue so dashboard/courses/auth match the landing seamlessly (verified on the login/auth screen).
