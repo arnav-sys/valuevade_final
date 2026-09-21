@@ -15,6 +15,7 @@ import TestimonialsSection from '@/components/TestimonialsSection';
 import FinalCTASection from '@/components/FinalCTASection';
 import FreeTrialCTA from '@/components/FreeTrialCTA';
 import WhatYoullLearnSection from '@/components/WhatYoullLearnSection';
+import PracticalSkillsSection from '@/components/PracticalSkillsSection';
 import WhoBuiltThisSection from '@/components/WhoBuiltThisSection';
 import FacultySection from '@/components/FacultySection';
 import Footer from '@/components/Footer';
@@ -112,6 +113,7 @@ export default function LandingPage() {
         <ProblemSection />
         <FeaturesSection />
         <WhatYoullLearnSection />
+        <PracticalSkillsSection />
         <WhoBuiltThisSection />
         <ComparisonSection />
         <TestimonialsSection />
