@@ -4,153 +4,174 @@ import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { supabase } from '../lib/supabase';
-import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle, RefreshCw, Sun, Moon, Sparkles, Award, Trophy, GraduationCap } from 'lucide-react';
+import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle, RefreshCw, Sun, Moon, Award, Trophy, ChevronLeft, ChevronRight, Lock, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
-import {
-  MagneticCard, LetterStaggerHeadline, AnimatedStat, BreathingGlow, ScrollProgressBar,
-} from './cinematic/primitives';
+import { AnimatedStat, BreathingGlow } from './cinematic/primitives';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
+// Placeholder programs, clearly marked "Coming Soon" (no fabricated hours/
+// ratings/students; only the real course shows real stats)
+const MOCK_COURSES = [
+  {
+    id: 'mock-ib',
+    title: 'Investment Banking Fundamentals',
+    category: 'Investment Banking',
+    difficulty: 'intermediate',
+    image: 'https://images.unsplash.com/photo-1707077865701-2854996afc4f?crop=entropy&cs=srgb&fm=jpg&q=80',
+  },
+  {
+    id: 'mock-pe',
+    title: 'Private Equity & Deal Structuring',
+    category: 'Private Equity',
+    difficulty: 'advanced',
+    image: 'https://images.pexels.com/photos/7414111/pexels-photo-7414111.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  },
+  {
+    id: 'mock-fm',
+    title: 'Financial Modelling in Excel',
+    category: 'Financial Modelling',
+    difficulty: 'beginner',
+    image: 'https://images.pexels.com/photos/6694560/pexels-photo-6694560.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  },
+  {
+    id: 'mock-pm',
+    title: 'Portfolio Management Essentials',
+    category: 'Portfolio Management',
+    difficulty: 'intermediate',
+    image: 'https://images.pexels.com/photos/16594725/pexels-photo-16594725.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  },
+  {
+    id: 'mock-wm',
+    title: 'Wealth Management for Advisors',
+    category: 'Wealth Management',
+    difficulty: 'beginner',
+    image: 'https://images.pexels.com/photos/36765719/pexels-photo-36765719.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  },
+];
 
+const REAL_COURSE_IMAGE = 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=80';
 
 function CourseCardSkeleton() {
   return (
-    <div className="glass-card rounded-2xl p-6 sm:p-8 animate-pulse" data-testid="course-card-skeleton">
-      <Skeleton className="h-5 w-24 mb-4 bg-[var(--color-surface)]" />
-      <Skeleton className="h-8 w-3/4 mb-3 bg-[var(--color-surface)]" />
-      <Skeleton className="h-4 w-full mb-2 bg-[var(--color-surface)]" />
-      <Skeleton className="h-4 w-full mb-2 bg-[var(--color-surface)]" />
-      <Skeleton className="h-4 w-2/3 mb-6 bg-[var(--color-surface)]" />
-      <div className="flex gap-4 mb-6">
-        <Skeleton className="h-4 w-20 bg-[var(--color-surface)]" />
-        <Skeleton className="h-4 w-20 bg-[var(--color-surface)]" />
-        <Skeleton className="h-4 w-20 bg-[var(--color-surface)]" />
-        <Skeleton className="h-6 w-16 rounded-full bg-[var(--color-surface)]" />
+    <div className="rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] animate-pulse" data-testid="course-card-skeleton">
+      <Skeleton className="h-44 w-full bg-[var(--color-border)] rounded-none" />
+      <div className="p-5">
+        <Skeleton className="h-4 w-20 mb-3 bg-[var(--color-border)]" />
+        <Skeleton className="h-6 w-full mb-3 bg-[var(--color-border)]" />
+        <Skeleton className="h-4 w-2/3 mb-4 bg-[var(--color-border)]" />
+        <Skeleton className="h-4 w-full bg-[var(--color-border)]" />
       </div>
-      <Skeleton className="h-12 w-full rounded-xl bg-[var(--color-surface)]" />
     </div>
   );
 }
 
+const DIFFICULTY_STYLES = {
+  beginner: 'bg-[var(--color-success)] text-white',
+  intermediate: 'bg-[var(--color-primary)] text-white',
+  advanced: 'bg-[var(--color-accent-pink)] text-white',
+};
+
 function DifficultyBadge({ level }) {
-  const config = {
-    beginner: { label: 'Beginner', cls: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
-    intermediate: { label: 'Intermediate', cls: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
-    advanced: { label: 'Advanced', cls: 'bg-rose-500/10 text-rose-600 border-rose-500/20' },
-  };
-  const c = config[level?.toLowerCase()] || config.beginner;
+  const key = level?.toLowerCase() || 'beginner';
+  const cls = DIFFICULTY_STYLES[key] || DIFFICULTY_STYLES.beginner;
   return (
-    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-mono border ${c.cls}`} data-testid="difficulty-badge">
-      {c.label}
+    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase tracking-wide shadow-sm ${cls}`} data-testid="difficulty-badge">
+      {key.charAt(0).toUpperCase() + key.slice(1)}
     </span>
   );
 }
 
-function CourseCard({ course, enrollment, moduleCount, sessionCount }) {
+function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
   const navigate = useNavigate();
-  const desc = course.description || '';
-  const [expanded, setExpanded] = useState(false);
-  const truncated = desc.length > 180;
-
   const isEnrolled = enrollment?.status === 'active';
   const isCompleted = enrollment?.status === 'completed';
 
   const handleCTA = () => {
-    if (isCompleted) return;
+    if (isMock || isCompleted) return;
     if (isEnrolled) { navigate('/dashboard'); } else { navigate(`/course/${course.id}`); }
   };
 
   return (
-    <MagneticCard
-      className="glass-card rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--color-accent-purple)]/30 hover:shadow-[0_8px_40px_var(--glass-hover-shadow)] group relative"
-      testid={`course-card-${course.id}`}
+    <div
+      className="rounded-2xl overflow-hidden bg-[var(--color-surface)] border border-[var(--color-border)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_16px_40px_rgba(36,107,253,0.14)] group"
+      data-testid={`course-card-${course.id}`}
     >
-      {/* Diagonal sheen (very slow loop), premium signal on any active course. */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-        <div
-          aria-hidden="true"
-          className="course-card-sheen"
+      {/* Image */}
+      <div className="relative h-44 overflow-hidden">
+        <img
+          src={course.image || REAL_COURSE_IMAGE}
+          alt={course.title}
+          className={`w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isMock ? 'grayscale-[35%]' : ''}`}
+          data-testid={`course-card-image-${course.id}`}
         />
-      </div>
-      {/* Gradient accent bar at top */}
-      <div className="h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent-purple)] to-[var(--color-accent-pink)]" />
-
-      <div className="p-6 sm:p-8">
-        {/* Header with icon */}
-        <div className="flex items-start justify-between gap-3 mb-4">
-          <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[var(--color-primary)]/15 to-[var(--color-accent-purple)]/15 border border-[var(--color-primary)]/20 flex items-center justify-center shrink-0">
-              <Sparkles size={22} className="text-[var(--color-primary)]" />
-            </div>
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-accent-purple)] mb-1 block" data-testid="course-card-label">
-                Career Path
-              </span>
-              <h3 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)]" data-testid="course-card-title">
-                {course.title}
-              </h3>
-            </div>
-          </div>
-          {isCompleted && (
-            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-[var(--color-success)]/10 text-[var(--color-success)] border border-[var(--color-success)]/20 shrink-0" data-testid="course-completed-badge">
-              <CheckCircle2 size={14} /> Completed
+        <div className="absolute top-3 left-3">
+          <DifficultyBadge level={course.difficulty} />
+        </div>
+        <div className="absolute top-3 right-3">
+          {isMock ? (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase tracking-wide bg-[var(--color-accent-purple)] text-white shadow-sm" data-testid={`course-card-status-${course.id}`}>
+              <Lock size={10} /> Coming Soon
+            </span>
+          ) : (
+            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase tracking-wide bg-white text-[var(--color-primary)] shadow-sm" data-testid={`course-card-status-${course.id}`}>
+              <Sparkles size={10} /> Live Now
             </span>
           )}
         </div>
+      </div>
 
-        {/* Description */}
-        <div className="mb-5">
-          <p className={`text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed ${!expanded && truncated ? 'line-clamp-3' : ''}`} data-testid="course-card-description">
-            {desc}
+      <div className="p-5 sm:p-6">
+        {/* Price / status row */}
+        <div className="flex items-center justify-between mb-3">
+          <span className="font-clash text-lg font-semibold text-[var(--color-primary)]" data-testid={`course-card-price-${course.id}`}>
+            {isMock ? 'Coming Soon' : '\u20b94,999'}
+          </span>
+          {!isMock && <span className="text-[11px] font-bricolage text-[var(--color-text-faint)]">Lifetime access</span>}
+        </div>
+
+        {/* Title */}
+        <h3 className="font-clash text-lg sm:text-xl font-semibold text-[var(--color-text)] mb-3 leading-snug line-clamp-2" data-testid="course-card-title">
+          {course.title}
+        </h3>
+
+        {/* Meta row */}
+        {isMock ? (
+          <p className="text-xs font-bricolage italic text-[var(--color-text-faint)] mb-4" data-testid={`course-card-meta-${course.id}`}>
+            Launching soon &mdash; join the waitlist from your dashboard.
           </p>
-          {truncated && (
-            <button onClick={() => setExpanded(!expanded)} className="text-xs text-[var(--color-primary)] hover:underline mt-1.5 font-bricolage font-medium" data-testid="course-read-more">
-              {expanded ? 'Show less' : 'Read more'}
+        ) : (
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[var(--color-text-muted)] mb-4" data-testid={`course-card-meta-${course.id}`}>
+            {course.estimated_hours && (
+              <span className="inline-flex items-center gap-1.5"><Clock size={13} /> {course.estimated_hours} hrs</span>
+            )}
+            <span className="inline-flex items-center gap-1.5"><Layers size={13} /> {moduleCount} modules</span>
+            <span className="inline-flex items-center gap-1.5"><BookOpen size={13} /> {sessionCount} sessions</span>
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="pt-4 border-t border-[var(--color-border)] flex items-center justify-between">
+          <span className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--color-text-faint)]" data-testid={`course-card-category-${course.id}`}>
+            {course.category || 'Equity Research'}
+          </span>
+          {isMock ? (
+            <button disabled className="inline-flex items-center gap-1 text-xs font-bricolage font-semibold text-[var(--color-text-faint)] cursor-not-allowed" data-testid={`course-card-cta-${course.id}`}>
+              Notify Me
+            </button>
+          ) : isCompleted ? (
+            <span className="inline-flex items-center gap-1.5 text-xs font-bricolage font-semibold text-[var(--color-success)]" data-testid={`course-card-cta-${course.id}`}>
+              <CheckCircle2 size={14} /> Completed
+            </span>
+          ) : (
+            <button onClick={handleCTA} className="inline-flex items-center gap-1 text-xs font-bricolage font-semibold text-[var(--color-primary)] hover:gap-2 transition-all" data-testid={`course-card-cta-${course.id}`}>
+              {isEnrolled ? 'Continue' : 'View Details'} <ArrowRight size={14} />
             </button>
           )}
         </div>
-
-        {/* Stats row with pill design */}
-        <div className="flex flex-wrap items-center gap-2 mb-6" data-testid="course-stats-row">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-[var(--color-primary)]/8 text-[var(--color-primary)] border border-[var(--color-primary)]/10">
-            <Layers size={13} /> {moduleCount} module{moduleCount !== 1 ? 's' : ''}
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-[var(--color-accent-purple)]/8 text-[var(--color-accent-purple)] border border-[var(--color-accent-purple)]/10">
-            <BookOpen size={13} /> {sessionCount} session{sessionCount !== 1 ? 's' : ''}
-          </span>
-          {course.estimated_hours && (
-            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-[var(--color-accent-pink)]/8 text-[var(--color-accent-pink)] border border-[var(--color-accent-pink)]/10">
-              <Clock size={13} /> {course.estimated_hours}h
-            </span>
-          )}
-          <DifficultyBadge level={course.difficulty} />
-        </div>
-
-        {/* CTA */}
-        <button
-          onClick={handleCTA}
-          disabled={isCompleted}
-          className={`w-full py-3.5 rounded-xl font-semibold font-bricolage text-sm flex items-center justify-center gap-2 transition-all ${
-            isCompleted
-              ? 'bg-[var(--color-success)]/10 text-[var(--color-success)] cursor-default border border-[var(--color-success)]/20'
-              : isEnrolled
-              ? 'bg-[var(--color-accent-purple)] text-white hover:shadow-[0_0_24px_rgba(106,92,255,0.4)]'
-              : 'bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110'
-          }`}
-          data-testid="course-cta-button"
-        >
-          {isCompleted ? (
-            <><CheckCircle2 size={16} /> Completed</>
-          ) : isEnrolled ? (
-            <>Continue Learning <ArrowRight size={16} /></>
-          ) : (
-            <>View Details <ArrowRight size={16} /></>
-          )}
-        </button>
       </div>
-    </MagneticCard>
+    </div>
   );
 }
 
@@ -168,8 +189,6 @@ export default function CoursesPage() {
     setLoading(true);
     setError(null);
     try {
-      // Fetch catalog from backend (server-side Supabase, faster and avoids
-      // browser-to-Supabase timeouts on free-tier or cold-start scenarios).
       const catalogRes = await fetch(`${API}/api/courses/catalog`);
       if (!catalogRes.ok) throw new Error(`Catalog fetch failed (${catalogRes.status})`);
       const catalog = await catalogRes.json();
@@ -178,8 +197,6 @@ export default function CoursesPage() {
       setModuleCounts(catalog.module_counts || {});
       setSessionCounts(catalog.session_counts || {});
 
-      // Enrollment is user-specific, still fetched from Supabase but only
-      // when a user is logged in.
       if (user?.id) {
         const { data: enrollData } = await supabase
           .from('user_enrollments')
@@ -202,28 +219,22 @@ export default function CoursesPage() {
   const getEnrollment = (courseId) => enrollments.find((e) => e.master_path_id === courseId);
 
   return (
-    <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
+    <div className="min-h-screen bg-[var(--bg-primary)]">
       <Helmet>
-        {/* Prompt-2/3 will replace the copy; here we only fix the per-route
-            head so /courses no longer canonicalizes to the homepage. */}
         <title>Finance Courses, Equity Research Analyst Program | Valuevade</title>
-        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, ₹4999 lifetime." />
+        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, \u20b94999 lifetime." />
         <link rel="canonical" href="https://valuevade.com/courses" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/courses" />
         <meta property="og:title" content="Finance Courses, Equity Research Analyst Program | Valuevade" />
-        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, ₹4999 lifetime." />
+        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, \u20b94999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Finance Courses, Equity Research Analyst Program | Valuevade" />
-        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, ₹4999 lifetime." />
+        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, \u20b94999 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
       </Helmet>
-
-      {/* Ambient orbs */}
-      <div className="absolute top-[-10%] left-[20%] w-[600px] h-[600px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[-15%] right-[10%] w-[400px] h-[400px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.04] blur-[120px] pointer-events-none" />
 
       {/* Header */}
       <header className="sticky top-0 z-50 bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--color-border)]" data-testid="courses-header">
@@ -243,11 +254,7 @@ export default function CoursesPage() {
                     {profile.full_name}
                   </span>
                 )}
-                <Link
-                  to="/dashboard"
-                  className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage hidden sm:inline-block"
-                  data-testid="courses-dashboard-link"
-                >
+                <Link to="/dashboard" className="px-4 py-2 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text)] transition-colors font-bricolage hidden sm:inline-block" data-testid="courses-dashboard-link">
                   Dashboard
                 </Link>
                 <button onClick={signOut} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage" data-testid="courses-signout-button">
@@ -255,11 +262,7 @@ export default function CoursesPage() {
                 </button>
               </>
             ) : (
-              <Link
-                to="/login"
-                className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage"
-                data-testid="courses-login-cta"
-              >
+              <Link to="/login" className="px-5 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] transition-all font-bricolage" data-testid="courses-login-cta">
                 Log In
               </Link>
             )}
@@ -267,28 +270,43 @@ export default function CoursesPage() {
         </div>
       </header>
 
+      {/* Wavy gradient hero */}
+      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(120deg, var(--color-primary), var(--color-accent-purple))' }} data-testid="courses-hero">
+        <div className="absolute top-[-20%] right-[-5%] w-[420px] h-[420px] rounded-full bg-white opacity-[0.06] blur-[100px] pointer-events-none" />
+        <div className="absolute bottom-[10%] left-[5%] w-[300px] h-[300px] rounded-full bg-white opacity-[0.05] blur-[90px] pointer-events-none" />
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative z-10 text-center px-6 pt-16 sm:pt-20 pb-28 sm:pb-32"
+        >
+          <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-white/70 mb-4">Finance Education</p>
+          <h1 className="font-clash text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4 tracking-tight" data-testid="courses-heading">
+            Online Courses
+          </h1>
+          <div className="flex items-center justify-center gap-2 text-sm font-bricolage text-white/75" data-testid="courses-breadcrumb">
+            <Link to="/" className="hover:text-white transition-colors">Home</Link>
+            <span>/</span>
+            <span className="text-white">Courses</span>
+          </div>
+        </motion.div>
+
+        {/* wave */}
+        <svg viewBox="0 0 1440 110" preserveAspectRatio="none" className="absolute bottom-0 left-0 w-full h-14 sm:h-20" aria-hidden="true">
+          <path style={{ fill: 'var(--bg-primary)' }} d="M0,60 C240,110 480,0 720,30 C960,60 1200,110 1440,40 L1440,110 L0,110 Z" />
+        </svg>
+      </div>
+
       {/* Main */}
-      <main className="max-w-5xl mx-auto px-6 py-12 sm:py-16 relative z-10">
-        {/* Hero */}
-        <div className="text-center mb-14 sm:mb-16" data-testid="courses-hero">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <p className="text-[10px] font-mono uppercase tracking-[0.25em] text-[var(--color-text-muted)] mb-4">Finance Education</p>
-            <h1 className="font-clash text-4xl sm:text-5xl lg:text-6xl font-bold text-[var(--color-text)] mb-4 tracking-tight" data-testid="courses-heading">
-              Choose Your Career Path
-            </h1>
-            <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto" data-testid="courses-subtitle">
-              Structured finance programs built for Indian students entering equity research and investment analysis.
-            </p>
-          </motion.div>
-        </div>
+      <main className="max-w-6xl mx-auto px-6 pt-10 sm:pt-14 pb-16 relative z-10">
+        <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-xl mx-auto text-center mb-10" data-testid="courses-subtitle">
+          Structured finance programs built for Indian students entering equity research and investment analysis.
+        </p>
 
         {/* Loading state */}
         {loading && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" data-testid="courses-loading">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="courses-loading">
+            <CourseCardSkeleton />
             <CourseCardSkeleton />
             <CourseCardSkeleton />
           </div>
@@ -308,32 +326,56 @@ export default function CoursesPage() {
           </div>
         )}
 
-        {/* Course grid */}
-        {!loading && !error && courses.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-7" data-testid="courses-grid" style={{ perspective: '1200px' }}>
-            {courses.map((course, i) => (
-              <motion.div
-                key={course.id}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.25 }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <CourseCard
-                  course={course}
-                  enrollment={getEnrollment(course.id)}
-                  moduleCount={moduleCounts[course.id] || 0}
-                  sessionCount={sessionCounts[course.id] || 0}
-                />
-              </motion.div>
-            ))}
-          </div>
+        {/* Course grid: real course(s) first, then coming-soon placeholders */}
+        {!loading && !error && (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" data-testid="courses-grid">
+              {courses.map((course, i) => (
+                <motion.div
+                  key={course.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <CourseCard
+                    course={{ ...course, image: REAL_COURSE_IMAGE, category: 'Equity Research' }}
+                    enrollment={getEnrollment(course.id)}
+                    moduleCount={moduleCounts[course.id] || 0}
+                    sessionCount={sessionCounts[course.id] || 0}
+                  />
+                </motion.div>
+              ))}
+              {MOCK_COURSES.map((course, i) => (
+                <motion.div
+                  key={course.id}
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.25 }}
+                  transition={{ duration: 0.5, delay: (courses.length + i) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <CourseCard course={course} isMock />
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Decorative pagination, matches the layout reference; only one
+                real page of programs exists today so prev/next stay disabled */}
+            <div className="flex items-center justify-center gap-2 mt-12" data-testid="courses-pagination">
+              <button disabled className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--color-text-faint)] border border-[var(--color-border)] cursor-not-allowed" data-testid="courses-pagination-prev">
+                <ChevronLeft size={16} />
+              </button>
+              <span className="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bricolage font-semibold text-white bg-[var(--color-primary)]" data-testid="courses-pagination-active">
+                1
+              </span>
+              <button disabled className="w-9 h-9 rounded-full flex items-center justify-center text-[var(--color-text-faint)] border border-[var(--color-border)] cursor-not-allowed" data-testid="courses-pagination-next">
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          </>
         )}
 
-        {/* Stats strip, real DB-derived values. Fallbacks reflect the
-            canonical curriculum (21 modules · 239 sessions · 3 capstones).
-            The "Practice Questions" counter was a made-up 260 with no data
-            source, so it's REMOVED per Prompt-1 rule ("no truthful value → remove"). */}
+        {/* Stats strip, real DB-derived values */}
         {!loading && !error && courses.length > 0 && (
           <section className="mt-16 sm:mt-20" data-testid="courses-stats-strip">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
@@ -359,10 +401,7 @@ export default function CoursesPage() {
           </section>
         )}
 
-        {/* Closing CTA band, Prompt-3 removed the duplicate "Choose Your
-            Career Path" H2 that was echoing the hero title. The band now
-            leads with the "Career Outcomes" eyebrow and a fresh sub-headline
-            focused on the CTA action. */}
+        {/* Closing CTA band */}
         {!loading && !error && courses.length > 0 && (
           <motion.section
             initial={{ opacity: 0, y: 28 }}
@@ -372,10 +411,10 @@ export default function CoursesPage() {
             className="mt-16 sm:mt-20 mb-4 relative"
             data-testid="courses-closing-cta"
           >
-            <div className="relative rounded-3xl border border-[var(--color-accent-purple)]/25 bg-gradient-to-br from-[var(--color-accent-purple)]/[0.08] via-transparent to-[var(--color-primary)]/[0.06] backdrop-blur-xl px-6 sm:px-10 py-10 sm:py-14 text-center overflow-hidden">
-              <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.10] blur-[100px] pointer-events-none" />
+            <div className="relative rounded-3xl border border-[var(--color-primary)]/25 bg-gradient-to-br from-[var(--color-primary)]/[0.08] via-transparent to-[var(--color-accent-purple)]/[0.06] backdrop-blur-xl px-6 sm:px-10 py-10 sm:py-14 text-center overflow-hidden">
+              <div aria-hidden="true" className="absolute -top-32 left-1/2 -translate-x-1/2 w-[420px] h-[420px] rounded-full bg-[var(--color-primary)] opacity-[0.10] blur-[100px] pointer-events-none" />
               <div className="relative">
-                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-accent-purple)] mb-3">
+                <div className="text-[10px] font-mono uppercase tracking-[0.18em] text-[var(--color-primary)] mb-3">
                   <Trophy size={12} className="inline -translate-y-0.5 mr-1" /> Career Outcomes
                 </div>
                 <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto mb-7">
@@ -387,51 +426,17 @@ export default function CoursesPage() {
                       const grid = document.querySelector('[data-testid="courses-grid"]');
                       if (grid) grid.scrollIntoView({ behavior: 'smooth', block: 'start' });
                     }}
-                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
+                    className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(36,107,253,0.45)]"
                     data-testid="courses-closing-cta-button"
                   >
-                    <Sparkles size={16} /> View Details <ArrowRight size={16} />
+                    View Details <ArrowRight size={16} />
                   </button>
                 </BreathingGlow>
               </div>
             </div>
           </motion.section>
         )}
-
-        {/* Coming soon */}
-        {!loading && !error && (
-          <div className="mt-12 text-center" data-testid="courses-coming-soon">
-            <div className="glass-card rounded-2xl px-8 py-6 inline-flex flex-col sm:flex-row items-center gap-4">
-              <div className="w-2.5 h-2.5 rounded-full bg-[var(--color-success)] animate-pulse shrink-0" />
-              <p className="text-sm text-[var(--color-text-muted)] font-bricolage">
-                More career paths coming soon. We're building <span className="text-[var(--color-text)] font-medium">Investment Banking</span>, <span className="text-[var(--color-text)] font-medium">Private Equity</span>, and more.
-              </p>
-            </div>
-          </div>
-        )}
       </main>
-      <style>{`
-        @keyframes courses-halo-rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        .course-card-sheen {
-          position: absolute;
-          top: 0; left: -60%;
-          width: 50%; height: 100%;
-          background: linear-gradient(110deg, transparent 0%, rgba(196,181,253,0.10) 45%, rgba(255,255,255,0.18) 50%, rgba(196,181,253,0.10) 55%, transparent 100%);
-          transform: skewX(-18deg);
-          animation: course-card-sheen-anim 6.5s ease-in-out infinite;
-          pointer-events: none;
-        }
-        @keyframes course-card-sheen-anim {
-          0%   { left: -60%; opacity: 0; }
-          18%  { opacity: 0.85; }
-          55%  { left: 110%; opacity: 0.85; }
-          70%  { left: 110%; opacity: 0; }
-          100% { left: -60%; opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .course-card-sheen { animation: none; opacity: 0; }
-        }
-      `}</style>
     </div>
   );
 }
