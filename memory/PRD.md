@@ -7,6 +7,9 @@
 - **Gaps section** (`ProblemSection.js`) redesigned: removed the sticky-scroll/3D treatment for a clean 8-card grid on navy with blue accents. Added 5 gaps: no certification+real projects, no AI mock-interview practice, no practical hands-on learning, no resume/LinkedIn/soft-skill prep, generic non-personalised courses.
 - Backend endpoints live in `wave_endpoints.py` (mirrors the FAQ pattern; admin verified via `_ensure_admin`).
 
+## Orbit Feature Layout Enlarged (Sep 2026)
+- `FeaturesSection.js` orbit re-scaled per user request ("scatter equally, cover full page, elements bigger"): `SIZE` 720→1040, `R` 300→450, node width 116→150, icon boxes 48px→64px (rounded-2xl), icon size 19→26, label 12px→14.5px, hub 176px→224px. Orbit now positioned via percentages inside a `maxWidth: 96vw` wrapper (was capped at `max-w-7xl`) so it spans near full desktop width. Header stayed in `max-w-7xl`; orbit + mobile grid fallback moved to their own full-width wrappers. Verified via screenshot at 1920x800 (all 14 nodes evenly spaced, no overlap) — mobile grid fallback unaffected.
+
 ## Landing Design Direction (Jun 2026 — CURRENT)
 Landing + full app redesigned to an editorial finance aesthetic: deep **navy** canvas (#0A0F1C) with the **Valuevade logo blue** accent (#246BFD), **bold geometric-sans** headlines (Space Grotesk) + **italic-serif** accent words (Fraunces, blue), **pill** CTAs, section eyebrows (blue caps + leading rule). Terminal/AI gimmicks (CRT scanlines, dot grid, mono ticker, corner-ticks, mono FT-/Q0x/YES-NO rails, sharp 2px corners) stripped for a warm, human feel.
 - **App theme match:** the auth-gated `.dark` palette in `index.css` was retimed from violet → navy + logo-blue so dashboard/courses/auth match the landing seamlessly (verified on the login/auth screen).
