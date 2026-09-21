@@ -156,6 +156,9 @@
   h1, h2, h3 {
     font-family: 'Newsreader', Georgia, serif;
   }
+  code, pre, kbd, samp {
+    font-family: var(--font-mono);
+  }
   /* Browser autofill (esp. Chrome) forces its own white field background +
      ignores author text-color, which showed as an invisible white-on-white
      input in dark theme. Force it back to the theme colors. */

@@ -1,0 +1,23 @@
+{
+  "summary": "Frontend-only verification of new centered editorial hero + global font swap. All requested checks pass. Landing (/) renders new hero (masthead, eyebrow, h1, paragraph, CTAs, log-in link, stat ledger). HeroProductShowcase renders inside a dark stage with browser-chrome window. Tabs interview/model/document switch the mock (mock-interview-ui / excel-model-ui / doc-sim-ui) and the URL pill text (valuevade.com/interview/live -> /session/dcf-build -> /simulation/annual-report). Auto-rotation confirmed: interview auto-switched to model within 7.5s. After a manual click, no further auto-rotation observed for 8s. No horizontal overflow: documentElement.scrollWidth = 1920 at 1920x1080 and 390 at 390x844 (any child elements exceeding 390 are the intentional lv-ticker-track marquee children as noted). CTAs: hero-primary-cta -> /signup, hero-secondary-cta -> /course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c, hero-signup-link -> /login. Global font swap verified: body = Instrument Sans, h1/h2/h3 = Newsreader on /, /login, /signup, and /dashboard (after logging in as testagent2026@gmail.com). No Inter / Space Grotesk / Bricolage / Clash Display / Fraunces / JetBrains Mono strings observed as active font-family. No console errors captured during traversal.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Dashboard (generic code/pre elements)", "issues": ["Elements without an explicit var(--font-mono) / .lv-folio class fall back to ui-monospace instead of Spline Sans Mono. This is acceptable per current CSS (mono is applied only where explicitly used) but worth noting if the intent is a truly site-wide mono swap for <code>/<pre> tags."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "HeroProductShowcase auto-rotate correctly stops on manual tab click via setAuto(false) — verified live.",
+    "Fonts loaded via a single Google Fonts <link> in public/index.html (Instrument Sans + Newsreader + Spline Sans Mono). Body and h1/h2/h3 rules in index.css cascade globally — no per-page overrides observed."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (skipped)", "frontend": "100%"},
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Hero redesign + global font swap verified across /, /login, /signup, /dashboard. Test user testagent2026@gmail.com / TestPass123! from /app/memory/test_credentials.md was used to reach dashboard. Auto-rotate interval is 6.5s. Any element visually exceeding 390px width on mobile hero must be under lv-ticker-track / lv-wordmark or hidden by overflow-hidden parent — this was the case."
+}
