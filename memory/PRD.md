@@ -56,6 +56,11 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
     5 "Coming Soon" placeholder rows so they become real, admin-editable DB records.
     Until run, admin photo upload cleanly 503s with a migration hint (verified, not a bug).
   Verified by testing_agent: iteration_92.json (100% pass, both backend + frontend).
+- **Sept 2026 (re-reversal)**: User then asked the landing hero specifically to go back
+  to the coded HTML/CSS mockups instead of photos. `HeroProductShowcase.jsx` reverted to
+  render `MockInterviewUI`/`ExcelModelUI`/`DocSimUI` again inside the same browser-chrome
+  window/tab-switcher (self-tested via screenshot, no overflow at 1920px). `/courses`
+  photos + admin upload from the previous item were NOT reverted, that change stands.
 
 ## Prioritized backlog
 

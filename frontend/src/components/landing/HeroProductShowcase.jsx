@@ -1,33 +1,15 @@
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Mic, Table2, FileSearch } from 'lucide-react';
+import MockInterviewUI from '@/components/landing/mocks/MockInterviewUI';
+import ExcelModelUI from '@/components/landing/mocks/ExcelModelUI';
+import DocSimUI from '@/components/landing/mocks/DocSimUI';
 import '@/components/landing/hero-showcase.css';
 
 const TABS = [
-  {
-    id: 'interview',
-    label: 'AI mock interview',
-    icon: Mic,
-    url: 'valuevade.com/interview/live',
-    image: 'https://images.unsplash.com/photo-1616587226960-4a03badbe8bf?crop=entropy&cs=srgb&fm=jpg&q=80',
-    alt: 'Student on a live AI-run mock interview video call',
-  },
-  {
-    id: 'model',
-    label: 'Excel modelling',
-    icon: Table2,
-    url: 'valuevade.com/session/dcf-build',
-    image: 'https://images.unsplash.com/photo-1783115259399-3a5a3e0e4592?crop=entropy&cs=srgb&fm=jpg&q=80',
-    alt: 'Building a DCF financial model in an Excel spreadsheet',
-  },
-  {
-    id: 'document',
-    label: 'Document simulation',
-    icon: FileSearch,
-    url: 'valuevade.com/simulation/annual-report',
-    image: 'https://images.pexels.com/photos/7821674/pexels-photo-7821674.jpeg?auto=compress&cs=tinysrgb&h=800&w=1200',
-    alt: 'Analysing an annual report with a magnifying glass',
-  },
+  { id: 'interview', label: 'AI mock interview', icon: Mic, url: 'valuevade.com/interview/live', Mock: MockInterviewUI },
+  { id: 'model', label: 'Excel modelling', icon: Table2, url: 'valuevade.com/session/dcf-build', Mock: ExcelModelUI },
+  { id: 'document', label: 'Document simulation', icon: FileSearch, url: 'valuevade.com/simulation/annual-report', Mock: DocSimUI },
 ];
 
 export default function HeroProductShowcase() {
@@ -44,6 +26,7 @@ export default function HeroProductShowcase() {
   }, [auto]);
 
   const current = TABS.find((t) => t.id === active) || TABS[0];
+  const Mock = current.Mock;
 
   return (
     <div className="vv-stage" data-testid="hero-showcase">
@@ -79,13 +62,7 @@ export default function HeroProductShowcase() {
               transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
               className="h-full"
             >
-              <img
-                src={current.image}
-                alt={current.alt}
-                className="vv-app__photo"
-                data-testid={`hero-showcase-photo-${active}`}
-                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = TABS[0].image; }}
-              />
+              <Mock />
             </motion.div>
           </AnimatePresence>
         </div>
