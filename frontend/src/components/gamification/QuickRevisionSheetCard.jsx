@@ -5,7 +5,7 @@ import { supabase } from '../../lib/supabase';
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
 /**
- * Phase A — Quick Revision Sheet card.
+ * Phase A, Quick Revision Sheet card.
  *
  * Renders below the XP/badge/streak summary on the session-complete screen.
  * On mount calls POST /api/revision/generate (cache-aware on the backend) and
@@ -139,7 +139,7 @@ export default function QuickRevisionSheetCard({ sessionId, moduleId }) {
       await navigator.clipboard.writeText(contentMd);
       setCopied(true);
       setTimeout(() => setCopied(false), 1600);
-    } catch { /* fail silently — the button is a nice-to-have */ }
+    } catch { /* fail silently, the button is a nice-to-have */ }
   }, [contentMd]);
 
   const rendered = useMemo(() => renderMarkdown(contentMd), [contentMd]);

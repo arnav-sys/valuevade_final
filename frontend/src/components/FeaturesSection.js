@@ -1,14 +1,14 @@
 import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer, CalendarRange, Compass } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-/* "One platform" section (redesigned Jun 2026) — all 14 units orbit the central
+/* "One platform" section (redesigned Jun 2026), all 14 units orbit the central
  * Valuevade logo hub in a full ring (desktop). Falls back to a compact 2-col
  * grid on smaller screens. Hub is an original CSS/SVG graphic. */
 
 const features = [
   { icon: Compass, title: 'Personalised AI Roadmap', short: 'Maps your exact gap and sequences your path.' },
-  { icon: BookOpen, title: 'Interactive Notes', short: 'Clickable, visual, first-principles — no PDF dumps.' },
-  { icon: Sparkles, title: 'Pari — AI Tutor', short: 'In-context help on any note, quiz or simulation.' },
+  { icon: BookOpen, title: 'Interactive Notes', short: 'Clickable, visual, first-principles, no PDF dumps.' },
+  { icon: Sparkles, title: 'Pari, AI Tutor', short: 'In-context help on any note, quiz or simulation.' },
   { icon: Briefcase, title: '239 Hands-on Sessions', short: 'Concept + auto-graded simulation, every session.' },
   { icon: Mic, title: 'AI Mock Interviews', short: '3 rounds, voice or text, real verdict + feedback.' },
   { icon: CalendarRange, title: 'Study Planner', short: 'Auto-schedules sessions around your timetable.' },
@@ -68,12 +68,12 @@ export default function FeaturesSection() {
             entire finance career journey.
           </h2>
           <p className="mt-6 text-[14.5px] font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-            All fourteen units revolve around one place — personalised to you, from first note to first offer.
+            All fourteen units revolve around one place, personalised to you, from first note to first offer.
           </p>
         </div>
       </div>
 
-      {/* Orbit (desktop) — full-bleed so the ring spans the page */}
+      {/* Orbit (desktop), full-bleed so the ring spans the page */}
       <div className="hidden lg:flex justify-center w-full px-6">
         <div className="relative" style={{ width: SIZE, maxWidth: '96vw', aspectRatio: '1 / 1' }} data-testid="platform-orbit">
           {/* Spokes */}

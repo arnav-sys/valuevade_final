@@ -14,7 +14,7 @@ def _email():
 def test_start_valid_email_returns_ok_with_trial_id():
     # Backend enforces "one per device" by IP+fingerprint hash. If this IP
     # has already been used (previous test run), a 409 is the correct
-    # response — we just verify the endpoint responds with a 2xx OR 409
+    # response, we just verify the endpoint responds with a 2xx OR 409
     # and never 5xx. A fresh device/IP should return 200 with trial_id.
     r = requests.post(f"{BASE_URL}/api/free-trial/start",
                       json={"email": _email(), "fingerprint": f"fp_{int(time.time()*1000)}"})

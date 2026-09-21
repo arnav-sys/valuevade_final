@@ -1,5 +1,5 @@
 // Card-type theme map + bucket helpers extracted from NotesPage.jsx (Step 3, P2).
-// Pure constants and a small helper — zero behavior change.
+// Pure constants and a small helper, zero behavior change.
 
 export const CARD_THEME = {
   hook:        { label: 'Hook',         accent: '#FF6AC1', icon: '🎣' },

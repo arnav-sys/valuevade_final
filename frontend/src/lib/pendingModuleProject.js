@@ -1,5 +1,5 @@
 /**
- * Retro-lock helper — finds the earliest pending Module Project for a user,
+ * Retro-lock helper, finds the earliest pending Module Project for a user,
  * and lazy-backfills any missing user_module_projects rows for modules the
  * user already finished before the project gate existed.
  *
@@ -7,7 +7,7 @@
  * user_module_projects.is_completed=false AND a master_module_projects row
  * exists for its master_module_id.
  *
- * Idempotent and best-effort. Never throws — returns null on any error.
+ * Idempotent and best-effort. Never throws, returns null on any error.
  */
 import { supabase } from './supabase';
 

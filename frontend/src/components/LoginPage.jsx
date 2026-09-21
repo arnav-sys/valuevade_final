@@ -54,7 +54,7 @@ export default function LoginPage() {
       return;
     }
 
-    // Check if user has an active enrollment — default to /courses on any failure
+    // Check if user has an active enrollment, default to /courses on any failure
     const userId = data?.user?.id;
     if (userId) {
       try {
@@ -69,7 +69,7 @@ export default function LoginPage() {
           return;
         }
       } catch {
-        // Enrollment check failed — proceed to courses
+        // Enrollment check failed, proceed to courses
       }
     }
     navigate('/courses');

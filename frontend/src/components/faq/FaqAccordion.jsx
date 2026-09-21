@@ -1,5 +1,5 @@
 /**
- * FaqAccordion — editorial finance / Bloomberg-terminal treatment (Feb 2026).
+ * FaqAccordion, editorial finance / Bloomberg-terminal treatment (Feb 2026).
  * Content copy, categories, and dynamic loading behaviour verbatim.
  */
 import { useState, useMemo } from 'react';
@@ -63,7 +63,7 @@ export default function FaqAccordion() {
         </p>
       </div>
 
-      {/* Category filter — mono terminal chips */}
+      {/* Category filter, mono terminal chips */}
       <div className="flex flex-wrap gap-2 mb-8" data-testid="faq-category-filter">
         {['All', ...catsFromData].map((cat) => (
           <button
@@ -83,7 +83,7 @@ export default function FaqAccordion() {
         ))}
       </div>
 
-      {/* Accordion — datagrid-styled rows */}
+      {/* Accordion, datagrid-styled rows */}
       <div className="lv-panel divide-y divide-[var(--color-border)]" data-testid="faq-list">
         {visible.map((faq, idx) => {
           const isOpen = openId === faq.id;

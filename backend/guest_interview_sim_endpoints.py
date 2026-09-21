@@ -146,7 +146,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
     # Local LLM helper (mirrors interview_sim_endpoints._llm so we don't rely
-    # on its module-level global being set — it may not be if that module
+    # on its module-level global being set, it may not be if that module
     # is registered under a fallback path).
     async def _llm_call(system: str, text: str, tag: str, model=("anthropic", "claude-haiku-4-5-20251001"), max_tokens: int = 900) -> str:
         if not _EMERGENT_LLM_KEY:
@@ -273,7 +273,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         _check_guest_rate_limit(trial_id, _client_ip_hash(request))
         entry = _APT_CACHE.get(trial_id)
         if not entry or not entry.get("questions"):
-            raise HTTPException(status_code=409, detail="test not started or expired — please restart")
+            raise HTTPException(status_code=409, detail="test not started or expired, please restart")
         questions = entry["questions"]
         answers = (body or {}).get("answers")
         if not isinstance(answers, list):
@@ -310,7 +310,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         fb = await _llm_call(
             "You are an assessment coach. Be specific and concise.",
             f"A candidate scored {pct}% ({correct}/{len(questions)}) on {sim['firm_name']}'s online aptitude test "
-            f"(reference cutoff {pass_pct}%). Topic breakdown — {topic_lines}. "
+            f"(reference cutoff {pass_pct}%). Topic breakdown, {topic_lines}. "
             "They are advancing to the interview rounds regardless of this score. "
             "Write 90-130 words of markdown feedback: strongest area, weakest area with ONE tip, one line on pacing.",
             f"gs-{trial_id}-apt-fb",
@@ -327,7 +327,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
             "feedback_md": fb or f"You scored {pct}% against a {pass_pct}% reference cutoff.",
             "completed_at": _now(),
         }
-        # Clear the cache — no re-submits.
+        # Clear the cache, no re-submits.
         _APT_CACHE.pop(trial_id, None)
         return {"ok": True, "aptitude": apt, "passed": passed, "next_stage": "behavioural"}
 
@@ -357,9 +357,9 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
             "(no personal names), then ask your FIRST question. Keep both together in one message.",
             f"gs-{trial_id}-{stage}-q1",
             max_tokens=400,
-        ) or ("Welcome — let's begin. Tell me about a time you worked under real pressure. Walk me through it using the STAR structure."
+        ) or ("Welcome, let's begin. Tell me about a time you worked under real pressure. Walk me through it using the STAR structure."
               if stage == "behavioural" else
-              "Welcome — let's get into technicals. Walk me through how you would build a DCF for an Indian consumer company.")
+              "Welcome, let's get into technicals. Walk me through how you would build a DCF for an Indian consumer company.")
         num_q = int(((sim.get("process") or {}).get(stage) or {}).get("num_questions") or 5)
         return {"turns": [{"role": "interviewer", "content": first, "at": _now()}], "num_questions": num_q}
 
@@ -391,7 +391,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         answered = sum(1 for t in turns if t.get("role") == "candidate")
 
         if answered >= n_questions:
-            closing = "Thank you — that wraps up this round. The team will review your responses."
+            closing = "Thank you, that wraps up this round. The team will review your responses."
             turns.append({"role": "interviewer", "content": closing, "at": _now()})
             # Score
             raw = await _llm_call(
@@ -424,7 +424,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
             "Continue the interview with ONE next question or follow-up.",
             f"gs-{trial_id}-{stage}-q{answered + 1}",
             max_tokens=400,
-        ) or "Interesting. Can you make that concrete — give me a specific example with numbers?"
+        ) or "Interesting. Can you make that concrete, give me a specific example with numbers?"
         turns.append({"role": "interviewer", "content": next_q, "at": _now()})
         return {"round_complete": False, "next_question": next_q,
                 "turns": turns, "answered": answered, "num_questions": n_questions}
@@ -441,7 +441,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         excel = b.get("excel_score") or {}
         stage_data = b.get("stage_data") or {}
         if len(recommendation) < 120:
-            raise HTTPException(status_code=400, detail="recommendation too short — write at least ~150 words")
+            raise HTTPException(status_code=400, detail="recommendation too short, write at least ~150 words")
         if len(recommendation) > 6000:
             raise HTTPException(status_code=400, detail="recommendation too long")
         try:
@@ -471,7 +471,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
             "completed_at": _now(),
         }
 
-        # Finalize — compute verdict + Sonnet report using full stage_data
+        # Finalize, compute verdict + Sonnet report using full stage_data
         sd = dict(stage_data)
         sd["case_study"] = case_result
         scores = {
@@ -497,7 +497,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
                     excerpts.append(f"({st}) {t['content'][:220]}")
         excerpts.append(f"(case recommendation) {recommendation[:400]}")
         if (sd.get("application") or {}).get("responses"):
-            excerpts.insert(0, f"(application — why firm) {sd['application']['responses'].get('why_firm', '')[:200]}")
+            excerpts.insert(0, f"(application, why firm) {sd['application']['responses'].get('why_firm', '')[:200]}")
 
         letter_kind = "offer" if verdict == "offer" else "rejection"
         letter_extra = (f", mentioning the compensation band {sim.get('salary_band')}"
@@ -517,7 +517,7 @@ def register_guest_interview_sim_endpoints(api_router: APIRouter, deps: Dict[str
         )
         d2 = _parse_json(raw2, {})
         letter_md = d2.get("letter_md") or (
-            f"**{sim['firm_name']} — Talent Acquisition**\n\nDear Candidate,\n\n"
+            f"**{sim['firm_name']}, Talent Acquisition**\n\nDear Candidate,\n\n"
             + ("We are delighted to extend you an offer for the role of "
                f"{sim['role_title']} ({sim.get('salary_band')}). Congratulations!"
                if verdict == "offer" else

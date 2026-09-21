@@ -8,7 +8,7 @@ Covers:
 - Admin single-question CRUD
 - Student flow: GET exam (correct_answer_index hidden), start attempt, submit
 - Security: non-admin gets 403 on admin endpoints; foreign attempt_id => 403
-- Module 16 = 'NISM Series XV — Research Analyst Certification',
+- Module 16 = 'NISM Series XV, Research Analyst Certification',
   master_module id 5a6dd7bb-7b0a-42c6-9316-d5c7f27e1b8a, is_exam_module=true
 """
 import os
@@ -81,7 +81,7 @@ def module_exam(admin_h):
             f"{BASE_URL}/api/admin/mock-exams/{MODULE_16_MASTER_ID}",
             headers=admin_h,
             json={
-                "title": "NISM Series XV — Research Analyst Mock Exam",
+                "title": "NISM Series XV, Research Analyst Mock Exam",
                 "description": "Auto-created by test suite",
                 "time_limit_minutes": 120,
                 "pass_percentage": 60,
@@ -105,7 +105,7 @@ def test_admin_patch_exam_settings(admin_h, module_exam):
         f"{BASE_URL}/api/admin/mock-exams/{exam_id}",
         headers=admin_h,
         json={"time_limit_minutes": 90, "pass_percentage": 60,
-              "title": "NISM Series XV — Research Analyst Mock Exam"},
+              "title": "NISM Series XV, Research Analyst Mock Exam"},
         timeout=30,
     )
     assert r.status_code == 200, f"{r.status_code} {r.text[:300]}"

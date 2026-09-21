@@ -1,4 +1,4 @@
-// Phase D1 — Study Planner API client.
+// Phase D1, Study Planner API client.
 //
 // Backend endpoints all auth-gated via Supabase Bearer.
 
@@ -47,7 +47,7 @@ export function abandonActiveStudyPlan() {
   return call('DELETE', '/api/study-plan/active');
 }
 
-// Phase D2 — tracking + summary + rebalance
+// Phase D2, tracking + summary + rebalance
 export function reportSessionCompleted({ session_id, minutes_spent }) {
   return call('POST', '/api/study-plan/session-completed', { session_id, minutes_spent });
 }

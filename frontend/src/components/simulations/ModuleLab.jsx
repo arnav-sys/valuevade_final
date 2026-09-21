@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 
 /* =============================================================
-   FORMULA REGISTRY — TVM math keyed by module id
+   FORMULA REGISTRY, TVM math keyed by module id
    ============================================================= */
 
 const POW = (b, e) => Math.pow(b, e);
@@ -104,7 +104,7 @@ function buildDefaults(module) {
 }
 
 /* =============================================================
-   SLIDER INTERACTIVE — sliders + computed outputs card
+   SLIDER INTERACTIVE, sliders + computed outputs card
    ============================================================= */
 function SliderModule({ module, onExplored }) {
   const defaults = useMemo(() => buildDefaults(module), [module]);
@@ -130,7 +130,7 @@ function SliderModule({ module, onExplored }) {
       <div className="glass-card rounded-2xl p-5 sm:p-6">
         <div className="flex items-center gap-2 mb-4">
           <Sliders size={14} className="text-[var(--color-primary)]" />
-          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Inputs — drag to explore</span>
+          <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">Inputs, drag to explore</span>
         </div>
         <div className="space-y-4">
           {(module.inputs || []).map((key) => {
@@ -207,7 +207,7 @@ function SliderModule({ module, onExplored }) {
 }
 
 /* =============================================================
-   SENSITIVITY MATRIX — Gordon growth PV grid (5x5)
+   SENSITIVITY MATRIX, Gordon growth PV grid (5x5)
    ============================================================= */
 function SensitivityModule({ module, onExplored }) {
   const defaults = useMemo(() => buildDefaults(module), [module]);
@@ -320,7 +320,7 @@ function SensitivityModule({ module, onExplored }) {
 }
 
 /* =============================================================
-   SCENARIO REGISTRY — resolve string IDs to full scenario data
+   SCENARIO REGISTRY, resolve string IDs to full scenario data
    (Seed data sometimes stores scenarios as IDs only.)
    ============================================================= */
 
@@ -335,21 +335,21 @@ const SCENARIO_REGISTRY = {
         label: 'Take ₹5,00,000 today',
         is_correct: true,
         rationale:
-          '✓ Correct. At 10% compounded annually, ₹5L grows to ₹10.72L in 8 years — more than the ₹10L offered. The PV of ₹10L in 8 years at 10% is only ₹4.67L. Take the money today and compound it yourself.',
+          '✓ Correct. At 10% compounded annually, ₹5L grows to ₹10.72L in 8 years, more than the ₹10L offered. The PV of ₹10L in 8 years at 10% is only ₹4.67L. Take the money today and compound it yourself.',
       },
       {
         id: 'wait_eight_years',
         label: 'Take ₹10,00,000 in 8 years',
         is_correct: false,
         rationale:
-          '✗ You\'re giving up time value. At 10%, ₹5L today compounds to ₹10.72L in 8 years — ₹72K more than the deferred offer. Rule of 72 tells you money doubles in ~7.2 yrs at 10%.',
+          '✗ You\'re giving up time value. At 10%, ₹5L today compounds to ₹10.72L in 8 years, ₹72K more than the deferred offer. Rule of 72 tells you money doubles in ~7.2 yrs at 10%.',
       },
       {
         id: 'not_enough_info',
         label: "I don't have enough info to decide",
         is_correct: false,
         rationale:
-          '✗ You have everything: two cashflows, an expected rate (10%), and a tenor (8 yrs). Compute FV(₹5L, 10%, 8) or PV(₹10L, 10%, 8) — either comparison proves the choice.',
+          '✗ You have everything: two cashflows, an expected rate (10%), and a tenor (8 yrs). Compute FV(₹5L, 10%, 8) or PV(₹10L, 10%, 8), either comparison proves the choice.',
       },
     ],
   },
@@ -361,24 +361,24 @@ const SCENARIO_REGISTRY = {
     options: [
       {
         id: 'buy_now',
-        label: 'Yes — buy at ₹1,020',
+        label: 'Yes, buy at ₹1,020',
         is_correct: false,
         rationale:
           '✗ Overpaying. At 8% yield, the intrinsic value ≈ ₹960 (coupon 7% < market yield 8% → discount bond). ₹1,020 is above BOTH intrinsic AND face value. You\'d be paying ₹60 extra for a bond the market prices lower.',
       },
       {
         id: 'pass',
-        label: 'Pass — asking price is above intrinsic',
+        label: 'Pass, asking price is above intrinsic',
         is_correct: true,
         rationale:
-          '✓ Correct. Coupon (7%) < market yield (8%) means this is a discount bond — intrinsic ≈ ₹960. A ₹1,020 ask represents a 6%+ premium over fair value. Unless you have private info justifying a lower required yield, walk.',
+          '✓ Correct. Coupon (7%) < market yield (8%) means this is a discount bond, intrinsic ≈ ₹960. A ₹1,020 ask represents a 6%+ premium over fair value. Unless you have private info justifying a lower required yield, walk.',
       },
       {
         id: 'buy_if_yield_drops',
         label: 'Buy only if market yield drops to 7%',
         is_correct: false,
         rationale:
-          '✗ Even if yield dropped to 7%, the bond would trade at par (₹1,000) — still below the ₹1,020 ask. You\'d need yields to fall below ~6.5% for this price to be defensible.',
+          '✗ Even if yield dropped to 7%, the bond would trade at par (₹1,000), still below the ₹1,020 ask. You\'d need yields to fall below ~6.5% for this price to be defensible.',
       },
     ],
   },
@@ -400,11 +400,11 @@ const SCENARIO_REGISTRY = {
         label: 'Analyst B (14% WACC)',
         is_correct: false,
         rationale:
-          '✗ 14% is a mid-risk TECH multiple — too high for a stable FMCG. At 14%, TV = ₹120 / (0.14 − 0.03) = ₹1,091 cr, materially understating value. You\'d walk away from a fair deal.',
+          '✗ 14% is a mid-risk TECH multiple, too high for a stable FMCG. At 14%, TV = ₹120 / (0.14 − 0.03) = ₹1,091 cr, materially understating value. You\'d walk away from a fair deal.',
       },
       {
         id: 'context_dependent',
-        label: 'Neither — WACC must be built bottom-up from the business',
+        label: 'Neither, WACC must be built bottom-up from the business',
         is_correct: true,
         rationale:
           '✓ Correct. A defensible WACC = weighted(cost of equity via CAPM, after-tax cost of debt). It depends on the RISK-FREE rate, equity risk premium, the company\'s beta, and its actual capital structure. Without those, any number is a guess.',
@@ -420,7 +420,7 @@ function resolveScenario(raw) {
 }
 
 /* =============================================================
-   DECISION SCENARIOS — simple scenario walker
+   DECISION SCENARIOS, simple scenario walker
    ============================================================= */
 function DecisionModuleInner({ module, onExplored }) {
   const rawScenarios = module.scenarios || [];
@@ -535,7 +535,7 @@ function DecisionModuleInner({ module, onExplored }) {
 }
 
 /* =============================================================
-   GENERIC MODULE — graceful renderer for any unknown module type.
+   GENERIC MODULE, graceful renderer for any unknown module type.
    Shows the description + any rich fields (arrays, objects) as
    readable cards, plus a "Mark as Explored" button.
    ============================================================= */
@@ -683,11 +683,11 @@ function GenericModule({ module, onExplored }) {
         </div>
       )}
 
-      {/* Extra fields — arrays render as lists, objects as key/value, scalars as cards */}
+      {/* Extra fields, arrays render as lists, objects as key/value, scalars as cards */}
       {extraEntries.map(([k, v]) => {
         if (v == null || v === '' || v === false) return null;
 
-        // Arrays — render as numbered cards with rich content
+        // Arrays, render as numbered cards with rich content
         if (Array.isArray(v) && v.length > 0) {
           return (
             <div key={k} className="glass-card rounded-2xl p-5" data-testid={`module-field-${k}`}>
@@ -703,7 +703,7 @@ function GenericModule({ module, onExplored }) {
           );
         }
 
-        // Plain object — render as key/value
+        // Plain object, render as key/value
         if (typeof v === 'object') {
           return (
             <div key={k} className="glass-card rounded-2xl p-5" data-testid={`module-field-${k}`}>
@@ -753,7 +753,7 @@ function GenericModule({ module, onExplored }) {
 }
 
 /* =============================================================
-   MODULE LAB — tabbed container over config.modules
+   MODULE LAB, tabbed container over config.modules
    ============================================================= */
 export default function ModuleLab({ config, onComplete }) {
   const modules = config?.modules || [];
@@ -843,7 +843,7 @@ export default function ModuleLab({ config, onComplete }) {
         {m.type === 'decision_making' && (
           <DecisionModuleInner module={m} onExplored={() => markExplored(activeIdx)} />
         )}
-        {/* Generic fallback — handles any unknown module type
+        {/* Generic fallback, handles any unknown module type
             (interactive_three_panel, fill_in_the_blank_interactive,
              build_from_scratch_interactive, error_detection_interactive, etc.)
             and slider_interactive modules without a known formula. */}

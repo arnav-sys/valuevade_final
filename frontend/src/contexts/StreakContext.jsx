@@ -41,7 +41,7 @@ export function StreakProvider({ children }) {
     // conditions in the bootstrap path. Order by total_xp DESC + limit(1) so
     // we always read the canonical row (highest XP wins) instead of erroring
     // out of `.maybeSingle()` when duplicates exist. Targeted hardening for
-    // the Gap-3 shame-card persistence — the underlying dedup of user_stats
+    // the Gap-3 shame-card persistence, the underlying dedup of user_stats
     // is a pre-existing concern outside this iteration's scope.
     const { data, error } = await supabase
       .from('user_stats')
@@ -82,7 +82,7 @@ export function StreakProvider({ children }) {
       // Persistent shame-card gate. If the most recent streak break has not
       // yet been acknowledged (shame_card_seen_at IS NULL OR
       // last_streak_break_at > shame_card_seen_at), surface the shame card
-      // automatically — even on a fresh page load. This guarantees the
+      // automatically, even on a fresh page load. This guarantees the
       // modal is reload-resistant: if the user reloads mid-modal without
       // dismissing, it shows again. It only goes away after they actually
       // click Rebuild / Use Freeze / X (which writes shame_card_seen_at).

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-/* Testimonial Wall — a scrollable proof wall of student reviews, pulled from
+/* Testimonial Wall, a scrollable proof wall of student reviews, pulled from
  * /api/testimonials (admin-managed). Falls back to a static set when the
  * Supabase table isn't provisioned yet. Placed near pricing to lift conversion. */
 
@@ -13,7 +13,7 @@ const FALLBACK = [
   { id: 't3', name: 'Tanvi R.', role: 'B.Com Final Year, Pune', quote: 'I wasted 6 months on random YouTube courses. Valuevade gave me a clear path in 10 minutes.' },
   { id: 't4', name: 'Karthik V.', role: 'Aspiring Risk Analyst, Bengaluru', quote: 'The AI mock interview grilled me harder than my real interview did. By the time I sat in the actual room, nothing surprised me.' },
   { id: 't5', name: 'Ananya D.', role: 'Non-finance grad, Hyderabad', quote: 'I came from a non-finance background and still built a full DCF on Reliance. The capstone is now the best thing on my resume.' },
-  { id: 't6', name: 'Rahul B.', role: 'CA Inter, Jaipur', quote: 'Practising on Ind AS statements and SEBI filings made the difference — my modelling finally looked like real deal work.' },
+  { id: 't6', name: 'Rahul B.', role: 'CA Inter, Jaipur', quote: 'Practising on Ind AS statements and SEBI filings made the difference, my modelling finally looked like real deal work.' },
 ];
 
 const initials = (name) => name.split(' ').map((w) => w[0]).slice(0, 2).join('').toUpperCase();

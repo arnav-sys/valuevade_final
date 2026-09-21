@@ -1,7 +1,7 @@
 /**
  * Dev-only preview route for rendering any Simulation config directly by sim id.
  * Route: /_dev/sim/:simId  (or /_dev/sim/session/:sessionId to look up by session)
- * Public — no auth or phase gating. Used for QA smoke tests.
+ * Public, no auth or phase gating. Used for QA smoke tests.
  */
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';

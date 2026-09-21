@@ -1,4 +1,4 @@
-// FinalCTAConvergence — particles scattered across the canvas converge
+// FinalCTAConvergence, particles scattered across the canvas converge
 // toward a single anchor point (the CTA button center) when the section
 // enters the viewport. After convergence, particles orbit gently around
 // the anchor + slowly disperse and re-converge on a 6s loop, giving the
@@ -11,7 +11,7 @@
 //     pulse so the "wave" of convergence repeats.
 //   • Anchor is the centre-bottom of the canvas (where the CTA button sits).
 //   • Click ripple is handled by the existing CustomCursor component on
-//     the landing — no extra wiring needed for the burst-on-click effect.
+//     the landing, no extra wiring needed for the burst-on-click effect.
 
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
@@ -50,7 +50,7 @@ export default function FinalCTAConvergence({ mobile = false }) {
       camera.position.set(0, 0, 8);
 
       const COUNT = mobile ? 160 : 280;
-      // Anchor in world space — slightly below centre so it sits behind/under
+      // Anchor in world space, slightly below centre so it sits behind/under
       // the CTA button location.
       const anchor = new THREE.Vector3(0, -0.6, 0);
       const positions = new Float32Array(COUNT * 3);

@@ -1,5 +1,5 @@
 /**
- * GuestSessionPage — full session experience for anonymous visitors.
+ * GuestSessionPage, full session experience for anonymous visitors.
  * Route: /try-free/:sessionId
  *
  * No account needed. Progress stored in localStorage only.
@@ -367,12 +367,12 @@ function SimPhase({ sessionId, onComplete, isDone, onAdvance }) {
 
   const { sim_type, config, title } = data;
 
-  // Render the real simulation component — mirrors the authenticated
+  // Render the real simulation component, mirrors the authenticated
   // SimulationPage.jsx mapping exactly so guests get the actual interactive
   // simulation (not just a text summary), for every sim_type. Once done, we
   // keep this component MOUNTED (instead of swapping to a generic card) so
   // the per-task feedback / correct-solution reveal the user just saw stays
-  // visible — a "Simulation Complete" banner is layered above it instead.
+  // visible, a "Simulation Complete" banner is layered above it instead.
   const handleSimComplete = (extra) => onComplete(extra);
 
   return (
@@ -462,7 +462,7 @@ function PaywallCTA({ completedCount, courseId }) {
             className="block w-full py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-blue-500 text-white text-sm font-bricolage font-semibold text-center hover:brightness-110 transition-all shadow-[0_0_24px_rgba(99,102,241,0.4)]"
             data-testid="paywall-enroll-btn"
           >
-            Enrol Now — ₹4999 <ArrowRight size={14} className="inline ml-1" />
+            Enrol Now, ₹4999 <ArrowRight size={14} className="inline ml-1" />
           </a>
           <p className="text-xs text-[var(--color-text-faint)] font-mono">30-day money-back guarantee</p>
         </div>
@@ -505,7 +505,7 @@ export default function GuestSessionPage() {
         else if (!prog.notesComplete) setPhase('notes');
         else if (!prog.quizComplete) setPhase('quiz');
         else if (!prog.simComplete) setPhase('sim');
-        else setPhase('video'); // all done — revisit
+        else setPhase('video'); // all done, revisit
         setLoading(false);
       })
       .catch((e) => { setError(e.message); setLoading(false); });
@@ -534,7 +534,7 @@ export default function GuestSessionPage() {
   // Advance to the next phase/session. For video & notes this fires right
   // after marking complete (no results to review). For quiz & sim, the
   // phase component shows its results/completion screen first and calls
-  // this itself via an explicit "Continue" button — so the score/feedback
+  // this itself via an explicit "Continue" button, so the score/feedback
   // is never skipped past.
   const advancePhase = (phaseKey) => {
     const order = ['video', 'notes', 'quiz', 'sim'];
@@ -542,7 +542,7 @@ export default function GuestSessionPage() {
     if (nextIdx < order.length) {
       setPhase(order[nextIdx]);
     } else {
-      // All phases done — mark session complete
+      // All phases done, mark session complete
       markSessionDone(sessionId);
       const done = getDoneList();
       const nextFreeSession = freeSessions.find((s) => !done.includes(s.id) && s.id !== sessionId);
@@ -561,7 +561,7 @@ export default function GuestSessionPage() {
     if (phaseKey === 'video') updates.videoWatched = true;
     updateProgress(updates);
 
-    // Video & notes have no results screen to review — advance immediately.
+    // Video & notes have no results screen to review, advance immediately.
     if (phaseKey === 'video' || phaseKey === 'notes') {
       advancePhase(phaseKey);
     }

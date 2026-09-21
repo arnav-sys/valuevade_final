@@ -5,7 +5,7 @@ import { useDoubtsLauncher } from '../../contexts/DoubtsLauncherContext';
 import DoubtsSession from './DoubtsSession';
 
 // Lightweight trigger that opens the DoubtsSession modal. Designed for any
-// learning surface — pass the phase + module + course session id and we'll
+// learning surface, pass the phase + module + course session id and we'll
 // hand them off to the backend.
 //
 // Props
@@ -26,7 +26,7 @@ export default function AskPariButton({
   autoPrompt = false,
   autoPromptCopy = null,
   className = '',
-  // Batch 3 (Item 2) — pass a callback that returns the focus object at
+  // Batch 3 (Item 2), pass a callback that returns the focus object at
   // click-time (so we always capture the latest visible card/heading).
   getCurrentFocus = null,
 }) {
@@ -86,7 +86,7 @@ export default function AskPariButton({
         </button>
       )}
 
-      {/* Auto-prompt banner — only when autoPrompt prop was true (low-score surfaces) */}
+      {/* Auto-prompt banner, only when autoPrompt prop was true (low-score surfaces) */}
       {promptShown && !open && (
         <div
           className="fixed bottom-24 right-4 z-30 max-w-xs rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-xl p-3"

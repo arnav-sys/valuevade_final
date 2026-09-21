@@ -1,11 +1,11 @@
-// ProblemAssemblyScene — bespoke Three.js visualization for the Problem
+// ProblemAssemblyScene, bespoke Three.js visualization for the Problem
 // section. Behind the existing copy, a chaotic field of 24 "broken chart
 // fragments" sits scattered + tilted. As the user scrolls through the
 // sticky-locked container, the fragments lerp to their target positions
 // along a clean, smooth line chart formed by connecting them as a polyline.
 //
 // Inputs:
-//   • progress — number in [0, 1]; 0 = full chaos, 1 = full assembly.
+//   • progress, number in [0, 1]; 0 = full chaos, 1 = full assembly.
 //
 // Implementation details:
 //   • Each "fragment" is a small flat quad (PlaneGeometry) with violet
@@ -65,7 +65,7 @@ export default function ProblemAssemblyScene({ progress = 0 }) {
       for (let i = 0; i < FRAG_COUNT; i++) {
         const t = i / (FRAG_COUNT - 1);
         const x = -5 + t * 10;
-        // Curve: rising slope + gentle sinusoidal noise — reads as a "growth
+        // Curve: rising slope + gentle sinusoidal noise, reads as a "growth
         // line", which thematically lands the section.
         const y = -1.4 + t * 2.4 + Math.sin(t * Math.PI * 3) * 0.32;
         targets.push({ x, y, z: 0 });
@@ -94,7 +94,7 @@ export default function ProblemAssemblyScene({ progress = 0 }) {
         scene.add(m);
         fragments.push({ mesh: m, geom, mat });
       }
-      // Assembled polyline — bright violet, fades in past progress 0.4.
+      // Assembled polyline, bright violet, fades in past progress 0.4.
       const linePts = new Float32Array(FRAG_COUNT * 3);
       lineGeom = new THREE.BufferGeometry();
       lineGeom.setAttribute('position', new THREE.BufferAttribute(linePts, 3));
@@ -134,7 +134,7 @@ export default function ProblemAssemblyScene({ progress = 0 }) {
             c.z + (tg.z - c.z) * p
           );
           f.rotation.set(c.rx * (1 - p), c.ry * (1 - p), c.rz * (1 - p));
-          // Quad scale grows along x as it locks in — reads as "snapping
+          // Quad scale grows along x as it locks in, reads as "snapping
           // into a chart bar".
           f.scale.x = 0.55 + 0.55 * p;
           fragments[i].mat.opacity = 0.55 + 0.40 * p;

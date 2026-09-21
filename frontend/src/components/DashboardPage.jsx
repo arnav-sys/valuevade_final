@@ -31,7 +31,7 @@ import PlanResetModal from './study-planner/PlanResetModal';
 import MyRewardsSection from './rewards/MyRewardsSection';
 import { getActiveStudyPlan, getStudyPlanDashboardSummary } from '../utils/studyPlanner';
 
-// Feb 2026 — session-level interview phase disabled. Kept in the map so
+// Feb 2026, session-level interview phase disabled. Kept in the map so
 // legacy user_sessions rows with interview_completed=true still render
 // gracefully, but the phase is filtered out of the visible sequence by
 // SESSION_PHASE_ORDER in utils/sessionPhases.js.
@@ -167,7 +167,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
             </button>
           )}
 
-          {/* Session list — shown for the active module by default and for any
+          {/* Session list, shown for the active module by default and for any
               completed module the user has expanded via the header click. */}
           {showSessionList && (
             <div className="mt-4 space-y-1.5" data-testid={`module-sessions-${module.order_index}`}>
@@ -252,7 +252,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
                   : 'text-[var(--color-text-faint)]'
               } />
               <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-text)] transition-colors">
-                Final round — Interview simulations: {interviewGate.done}/{interviewGate.total || 5}
+                Final round, Interview simulations: {interviewGate.done}/{interviewGate.total || 5}
                 {sessionsAllDone ? ' · Enter →' : ' · Unlocks after all videos'}
               </span>
             </Link>
@@ -274,7 +274,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
                   : 'text-[var(--color-text-faint)]'
               } />
               <span className="text-[var(--color-text-muted)] group-hover:text-[var(--color-text)] transition-colors">
-                NISM Mock Exam — 100 questions, 120 min
+                NISM Mock Exam, 100 questions, 120 min
                 {sessionsAllDone ? ' · Take exam →' : ' · Unlocks after all sessions'}
               </span>
             </Link>
@@ -311,8 +311,8 @@ export default function DashboardPage() {
   const [moduleProjects, setModuleProjects] = useState([]);
   const [capstone, setCapstone] = useState(null);
 
-  // Phase D1 — Study plan presence detection + wizard control.
-  // Phase D2 — Dashboard summary (today + cumulative trend + adherence).
+  // Phase D1, Study plan presence detection + wizard control.
+  // Phase D2, Dashboard summary (today + cumulative trend + adherence).
   const [activePlan, setActivePlan] = useState(undefined);   // undefined = loading, null = none, {} = present
   const [planWizardOpen, setPlanWizardOpen] = useState(false);
   const [planSummary, setPlanSummary] = useState(null);
@@ -321,7 +321,7 @@ export default function DashboardPage() {
 
   // Retro-lock: earliest pending Module Project for this user (or null).
   const [pendingProject, setPendingProject] = useState(null);
-  // M20 interview module — which master modules are interview modules and
+  // M20 interview module, which master modules are interview modules and
   // how many of the 5 simulations this user has completed.
   const [interviewInfo, setInterviewInfo] = useState({ masterIds: new Set(), gate: { done: 0, total: 0, allDone: false } });
   useEffect(() => {
@@ -337,7 +337,7 @@ export default function DashboardPage() {
     return () => { alive = false; };
   }, [user?.id]);
 
-  // Exam modules (e.g. Module 16 — NISM Series XV) — detect once and cache.
+  // Exam modules (e.g. Module 16, NISM Series XV), detect once and cache.
   const [examInfo, setExamInfo] = useState({ masterIds: new Set() });
   useEffect(() => {
     if (!user?.id) return;
@@ -382,7 +382,7 @@ export default function DashboardPage() {
     return () => { alive = false; };
   }, [user?.id]);
 
-  // Phase D2 — pull the rich summary whenever an active plan exists.
+  // Phase D2, pull the rich summary whenever an active plan exists.
   useEffect(() => {
     if (!user?.id) return;
     if (activePlan === undefined) return;   // still loading the lighter /active
@@ -391,7 +391,7 @@ export default function DashboardPage() {
   }, [user?.id, activePlan, loadPlanSummary]);
 
   // Auto-open the wizard when arriving from /enrolled?setup_plan=1 (post-
-  // enrollment hook). One-shot — strip the param after opening so a refresh
+  // enrollment hook). One-shot, strip the param after opening so a refresh
   // doesn't re-trigger.
   useEffect(() => {
     if (!user?.id || !enrollment?.id) return;
@@ -403,7 +403,7 @@ export default function DashboardPage() {
         url.searchParams.delete('setup_plan');
         window.history.replaceState({}, '', url.toString());
       }
-    } catch { /* SSR / sandboxed iframe — skip */ }
+    } catch { /* SSR / sandboxed iframe, skip */ }
   }, [user?.id, enrollment?.id, activePlan]);
   const refreshXP = () => { /* XPRoot auto-refreshes via Realtime; no-op placeholder */ };
 
@@ -428,7 +428,7 @@ export default function DashboardPage() {
       }
       setEnrollment(enr);
 
-      // 2-4. Modules + stats + capstone all depend only on enr.id — fetch in parallel.
+      // 2-4. Modules + stats + capstone all depend only on enr.id, fetch in parallel.
       const [modsRes, statsRes, capstoneRes] = await Promise.all([
         supabase
           .from('user_modules')
@@ -455,7 +455,7 @@ export default function DashboardPage() {
 
       const moduleIds = moduleList.map((m) => m.id);
 
-      // 5-6. Sessions + module-projects need module ids — last parallel batch.
+      // 5-6. Sessions + module-projects need module ids, last parallel batch.
       const [sessionsRes, projectsRes] = await Promise.all([
         moduleIds.length
           ? supabase
@@ -489,7 +489,7 @@ export default function DashboardPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
-  // Streak is derived from user_sessions.completed_at — not stored — so it
+  // Streak is derived from user_sessions.completed_at, not stored, so it
   // can never get out of sync with session history or be reset by accident.
   const streakDays = useMemo(() => {
     const dates = (sessions || [])
@@ -545,7 +545,7 @@ export default function DashboardPage() {
         currentSession = incomplete;
         break;
       }
-      // All sessions in this module are complete — but interview modules
+      // All sessions in this module are complete, but interview modules
       // (M20) also require all 5 interview simulations before moving on.
       if (
         ms.length > 0 &&
@@ -557,7 +557,7 @@ export default function DashboardPage() {
         currentSession = null;
         break;
       }
-      // All sessions done in an exam module (e.g. Module 16 NISM) — prompt
+      // All sessions done in an exam module (e.g. Module 16 NISM), prompt
       // the student to take the mock exam before continuing.
       if (
         ms.length > 0 &&
@@ -568,7 +568,7 @@ export default function DashboardPage() {
         currentSession = null;
         break;
       }
-      // All sessions in this module are complete — but if its project is still
+      // All sessions in this module are complete, but if its project is still
       // pending, the user should finish that BEFORE jumping to the next module.
       const project = projectMap[m.id];
       if (ms.length > 0 && project && !project.is_completed) {
@@ -680,7 +680,7 @@ export default function DashboardPage() {
                     <div className="min-w-0">
                       <p className="text-[10px] uppercase font-mono tracking-wider text-[var(--color-accent-purple)]">Pending Module Project</p>
                       <p className="text-sm font-bricolage font-semibold text-[var(--color-text)] mt-0.5">
-                        Module {pendingProject.module_number} —{' '}
+                        Module {pendingProject.module_number}:{' '}
                         {pendingProject.master_project_title || pendingProject.module_title}
                       </p>
                       <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
@@ -699,7 +699,7 @@ export default function DashboardPage() {
                 </div>
               )}
 
-              {/* Sequential P2 / Step 5 — Drift Recovery Banner. Slim, soft
+              {/* Sequential P2 / Step 5, Drift Recovery Banner. Slim, soft
                   one-line nudge if the user's last-7d XP dropped ≥70% vs the
                   prior 7d AND they were meaningfully active before. Renders
                   null when not eligible. Never blocks layout. */}
@@ -716,9 +716,9 @@ export default function DashboardPage() {
                   </p>
                 </div>
 
-                {/* Today's Finance News — feature removed (2026-07-10). */}
+                {/* Today's Finance News, feature removed (2026-07-10). */}
 
-                {/* Phase D1 — Set-up plan CTA (only when no active plan) */}
+                {/* Phase D1, Set-up plan CTA (only when no active plan) */}
                 {activePlan === null && (
                   <button
                     onClick={() => setPlanWizardOpen(true)}
@@ -734,7 +734,7 @@ export default function DashboardPage() {
                           Set up your study plan
                         </div>
                         <p className="text-xs sm:text-sm font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                          Pick a deadline or pace — we'll spread your sessions and projects across the calendar so you never wonder "am I on track?" again.
+                          Pick a deadline or pace, we'll spread your sessions and projects across the calendar so you never wonder "am I on track?" again.
                         </p>
                       </div>
                       <ArrowRight size={18} className="text-[var(--color-primary)] shrink-0 mt-2" />
@@ -742,7 +742,7 @@ export default function DashboardPage() {
                   </button>
                 )}
 
-                {/* Phase D2 — Today card + Trend chart (only when active plan) */}
+                {/* Phase D2, Today card + Trend chart (only when active plan) */}
                 {activePlan && (
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6" data-testid="dashboard-plan-cards">
                     <PlanTodayCard
@@ -766,7 +766,7 @@ export default function DashboardPage() {
                 />
               </section>
 
-              {/* XP bar — the eye-grabber */}
+              {/* XP bar, the eye-grabber */}
               <section>
                 <div className="flex items-start gap-3">
                   <div className="flex-1 min-w-0">
@@ -795,7 +795,7 @@ export default function DashboardPage() {
                 <ModuleConstellationMap />
               </section>
 
-              {/* Your Rewards — persistent surface (see MyRewardsSection for why) */}
+              {/* Your Rewards, persistent surface (see MyRewardsSection for why) */}
               <MyRewardsSection />
 
               {/* Stats */}
@@ -887,7 +887,7 @@ export default function DashboardPage() {
                     );
                   })}
 
-                  {/* Capstones preview — links to the dedicated /capstones page. */}
+                  {/* Capstones preview, links to the dedicated /capstones page. */}
                   <button
                     type="button"
                     onClick={() => navigate('/capstones')}
@@ -933,9 +933,9 @@ export default function DashboardPage() {
           />
         );
       })()}
-      {/* P54 P2: "Ask Pari" pill removed — the avatar itself is now the entry point. */}
+      {/* P54 P2: "Ask Pari" pill removed, the avatar itself is now the entry point. */}
       <PariWelcomeModal />
-      {/* Phase D1 — Study plan wizard. Mounted at dashboard root so the
+      {/* Phase D1, Study plan wizard. Mounted at dashboard root so the
           CTA card can open it. enrollment may briefly be null while the
           first fetch is in-flight; we render the wizard component but
           gate `open` on enrollment.id so it never opens without a target. */}
@@ -949,7 +949,7 @@ export default function DashboardPage() {
             getActiveStudyPlan().then(({ ok, data }) => {
               setActivePlan(ok ? data : null);
             });
-            // Phase D2 — refresh summary so the today card + chart re-render.
+            // Phase D2, refresh summary so the today card + chart re-render.
             loadPlanSummary();
           }}
         />
@@ -985,7 +985,7 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
           You finished every module.
         </h2>
         <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5 max-w-md">
-          Bring it all together. Your capstone project is the final mile — apply everything you've learned to a real-world scenario.
+          Bring it all together. Your capstone project is the final mile, apply everything you've learned to a real-world scenario.
         </p>
         <button
           onClick={() => onNavigate('/capstone/start')}
@@ -998,7 +998,7 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
     );
   }
 
-  // State 2a: interview module (M20) — videos done, simulations pending
+  // State 2a: interview module (M20), videos done, simulations pending
   if (currentModule && !currentSession && interviewInfo?.masterIds?.has(currentModule.master_module_id)) {
     const gate = interviewInfo.gate || { done: 0, total: 5 };
     return (
@@ -1007,14 +1007,14 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
         data-testid="continue-learning-interview"
       >
         <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-accent-purple)] mb-3">
-          <Briefcase size={14} /> FINAL ROUND — INTERVIEW SIMULATIONS
+          <Briefcase size={14} /> FINAL ROUND, INTERVIEW SIMULATIONS
         </div>
         <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-1">
           Face 5 real hiring processes
         </h2>
         <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-5 max-w-lg">
           You've finished the Module 20 lectures. Now run the full gauntlet at J.P. Morgan, Morgan Stanley,
-          Goldman Sachs, Motilal Oswal and Kotak — application to offer letter. {gate.done}/{gate.total || 5} completed.
+          Goldman Sachs, Motilal Oswal and Kotak, application to offer letter. {gate.done}/{gate.total || 5} completed.
         </p>
         <button
           onClick={() => onNavigate('/interview-sims')}
@@ -1027,7 +1027,7 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
     );
   }
 
-  // State 2b: exam module (e.g. Module 16 NISM) — sessions done, take mock exam
+  // State 2b: exam module (e.g. Module 16 NISM), sessions done, take mock exam
   if (currentModule && !currentSession && isExamModule) {
     return (
       <div
@@ -1044,7 +1044,7 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
           You've completed all sessions in {/^\s*module\b/i.test(currentModule.title || '')
             ? currentModule.title
             : `Module ${currentModule.module_number ?? currentModule.order_index}: ${currentModule.title}`}.
-          Test your knowledge — 100 questions, 120 minutes, 60% to pass.
+          Test your knowledge, 100 questions, 120 minutes, 60% to pass.
         </p>
         <button
           onClick={() => onNavigate(`/module/${currentModule.id}/mock-exam/start`)}

@@ -22,7 +22,7 @@ export default function CaseStage({ attempt, sim, onAdvance, simApi }) {
     try {
       const r = await api.fetch(api.endpoints.caseSubmit, {
         method: 'POST',
-        // Guest mode is stateless — pass the full stage_data so the server
+        // Guest mode is stateless, pass the full stage_data so the server
         // can compute the final verdict. Auth mode ignores stage_data (it
         // reads from the attempt row instead).
         body: JSON.stringify({
@@ -80,7 +80,7 @@ export default function CaseStage({ attempt, sim, onAdvance, simApi }) {
         <SimpleMarkdown text={caseCfg.brief_md} />
       </div>
 
-      {/* Step 1 — Excel model */}
+      {/* Step 1, Excel model */}
       <div className="glass-card rounded-2xl p-4 sm:p-5">
         <p className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
           Step 1 · Build the model, then hit "Submit &amp; grade" inside the sheet
@@ -104,7 +104,7 @@ export default function CaseStage({ attempt, sim, onAdvance, simApi }) {
         )}
       </div>
 
-      {/* Step 2 — Written recommendation */}
+      {/* Step 2, Written recommendation */}
       <div className="glass-card rounded-2xl p-5 sm:p-6">
         <p className="text-xs font-mono uppercase tracking-wider text-[var(--color-text-muted)] mb-3">
           Step 2 · Your investment recommendation (150-300 words)

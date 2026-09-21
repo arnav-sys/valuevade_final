@@ -5,10 +5,10 @@ import { buildAuthSimApi } from './simApi';
 import { toast } from 'sonner';
 
 const FIELDS = [
-  { key: 'why_firm', label: 'Why do you want to join this firm?', ph: 'Be specific — their research franchise, coverage style, culture…', required: true },
+  { key: 'why_firm', label: 'Why do you want to join this firm?', ph: 'Be specific, their research franchise, coverage style, culture…', required: true },
   { key: 'why_er', label: 'Why equity research as a career?', ph: 'What draws you to the analyst seat? Show genuine motivation.', required: true },
-  { key: 'achievement', label: 'Your proudest achievement (quantify it)', ph: 'A project, competition, model you built — with numbers and outcomes.', required: true },
-  { key: 'cover_note', label: 'Short cover note (optional)', ph: 'Anything else the recruiter should know — 2-3 lines.', required: false },
+  { key: 'achievement', label: 'Your proudest achievement (quantify it)', ph: 'A project, competition, model you built, with numbers and outcomes.', required: true },
+  { key: 'cover_note', label: 'Short cover note (optional)', ph: 'Anything else the recruiter should know, 2-3 lines.', required: false },
 ];
 
 export default function ApplicationStage({ attempt, sim, onAdvance, simApi }) {

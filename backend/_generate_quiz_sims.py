@@ -1,5 +1,5 @@
 """
-Bulk Quiz + Simulation Generator — Gemini 3 Flash
+Bulk Quiz + Simulation Generator, Gemini 3 Flash
 ==================================================
 • Generates 5 MCQ quiz questions for every eligible session that lacks them.
 • Generates a simulation for every eligible session that lacks one.
@@ -43,7 +43,7 @@ def spost(table, rows):
 
 
 def sdel(table_filter):
-    """DELETE rows — table_filter like 'master_quiz_questions?session_id=eq.xxx'"""
+    """DELETE rows, table_filter like 'master_quiz_questions?session_id=eq.xxx'"""
     url = f"{SUPABASE_URL}/rest/v1/{table_filter}"
     headers = {**_HDR_SR, "Prefer": "return=minimal"}
     req = urllib.request.Request(url, headers=headers, method="DELETE")
@@ -92,7 +92,7 @@ Session title: "{title}"
 Module: "{module_title}"
 
 Generate exactly 5 multiple-choice quiz questions that test PRACTICAL understanding, not just definitions.
-Questions should feel like a real analyst exam — mix conceptual, numerical-reasoning, and application questions.
+Questions should feel like a real analyst exam, mix conceptual, numerical-reasoning, and application questions.
 Use Indian context (Nifty, NSE, BSE, Indian companies, SEBI, RBI, INR) where relevant.
 
 Return ONLY a JSON array. No markdown, no commentary. Schema:
@@ -245,7 +245,7 @@ Return ONLY a JSON object. No markdown, no commentary. Schema:
       }},
       {{
         "id": "t2",
-        "question": "Interpret a ratio or trend — requires text reasoning",
+        "question": "Interpret a ratio or trend, requires text reasoning",
         "answer_type": "text",
         "expected_keywords": ["keyword1", "keyword2", "keyword3"],
         "explanation": "What a strong answer includes"
@@ -270,7 +270,7 @@ Return ONLY a JSON object. No markdown, no commentary. Schema:
 }}
 
 Make the document_data rows realistic for the session topic. Replace the sample rows with topic-appropriate data.
-For "how to use screener.in" — use screener-style data (filters, ratios, stock list)."""
+For "how to use screener.in", use screener-style data (filters, ratios, stock list)."""
 
 
 EXCEL_SIM_PROMPT = """You are building an interactive Excel simulation for Valuevade, an Indian equity-research online course.
@@ -350,7 +350,7 @@ Return ONLY a JSON object. No markdown, no commentary. Schema:
 
 IMPORTANT: Replace the sample data with content specific to "{title}". 
 The workbook should reflect the formatting concepts taught in this specific session.
-Keep the spreadsheet simple — 1-2 tasks maximum, with 2-3 expected_answers."""
+Keep the spreadsheet simple, 1-2 tasks maximum, with 2-3 expected_answers."""
 
 
 # ── Main logic ────────────────────────────────────────────────────────────────
@@ -384,7 +384,7 @@ def _detect_sim_type(title: str, module_num: int) -> str:
     """Auto-detect simulation type from session title and module number."""
     title_lower = title.lower()
     if module_num == 3:
-        # Excel module — use excel sim for formatting sessions
+        # Excel module, use excel sim for formatting sessions
         if any(kw in title_lower for kw in ["format", "colour", "color", "layout", "number"]):
             return "excel"
         return "document"
@@ -446,7 +446,7 @@ async def generate_sim(session_id: str, title: str, module_title: str, module_nu
 
 async def main():
     print("=" * 65)
-    print("VALUEVADE — Quiz & Simulation Bulk Generator")
+    print("VALUEVADE, Quiz & Simulation Bulk Generator")
     print(f"Started: {datetime.now(timezone.utc).isoformat()}")
     print("=" * 65)
 
@@ -535,7 +535,7 @@ async def main():
         try:
             row = await generate_sim(s["id"], s["title"], mod_title, mod_num or 0)
             spost("master_simulations", row)
-            print(f"✓ {row['sim_type']} sim — '{row['title'][:40]}'")
+            print(f"✓ {row['sim_type']} sim, '{row['title'][:40]}'")
             sim_ok += 1
         except Exception as e:
             print(f"✗ FAILED: {e}")
@@ -545,7 +545,7 @@ async def main():
 
     # ── Summary ───────────────────────────────────────────────────────
     print("\n" + "=" * 65)
-    print(f"DONE — {datetime.now(timezone.utc).isoformat()}")
+    print(f"DONE, {datetime.now(timezone.utc).isoformat()}")
     print(f"  Quiz:       {quiz_ok} ok, {quiz_fail} failed")
     print(f"  Simulation: {sim_ok} ok, {sim_fail} failed")
     print("=" * 65)

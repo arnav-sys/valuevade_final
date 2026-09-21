@@ -82,7 +82,7 @@ export default function AdminPanel() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tab]);
 
-  // Auth state is async — wait for it before deciding to redirect.
+  // Auth state is async, wait for it before deciding to redirect.
   if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
   const email = (user?.email || profile?.email || '').toLowerCase();

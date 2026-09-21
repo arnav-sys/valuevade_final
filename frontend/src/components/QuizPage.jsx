@@ -94,7 +94,7 @@ export default function QuizPage() {
   const isReview = !!session?.quiz_completed;
   const progress = total ? ((idx + (submitted || isReview ? 1 : 0)) / total) * 100 : 0;
   // In review mode each question is shown with the correct answer revealed
-  // and explanation visible — no scoring, no DB writes.
+  // and explanation visible, no scoring, no DB writes.
   const reviewSubmitted = isReview ? true : submitted;
   const reviewSelected = isReview ? correctIndex : selected;
 
@@ -260,8 +260,8 @@ export default function QuizPage() {
             <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
               {reviewSubmitted
                 ? (reviewSelected === correctIndex
-                    ? "Spot on — that's exactly right."
-                    : "Not quite — let's review the right answer.")
+                    ? "Spot on, that's exactly right."
+                    : "Not quite, let's review the right answer.")
                 : "Take your time. Pick the option that fits best."}
             </div>
           </div>
@@ -404,7 +404,7 @@ export default function QuizPage() {
         </div>
       </main>
 
-      {/* Tutor — pose flips between asking → encouraging/listening per submission state */}
+      {/* Tutor, pose flips between asking → encouraging/listening per submission state */}
       {(() => {
         const phase = !reviewSubmitted
           ? 'quiz_intro'

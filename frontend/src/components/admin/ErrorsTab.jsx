@@ -268,7 +268,7 @@ export default function ErrorsTab() {
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={3}
-                  placeholder="Optional — describe the fix or why it's silenced"
+                  placeholder="Optional, describe the fix or why it's silenced"
                   data-testid="error-drawer-notes"
                   className="w-full mt-1 text-xs px-2 py-1.5 rounded border border-[var(--color-border)] bg-[var(--color-bg)] resize-y"
                 />

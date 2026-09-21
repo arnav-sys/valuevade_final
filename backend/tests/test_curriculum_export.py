@@ -1,5 +1,5 @@
 """
-Backend tests — GET /api/admin/curriculum/export (Phase F, Jan 2026)
+Backend tests, GET /api/admin/curriculum/export (Phase F, Jan 2026)
 
 Verifies:
     * 401/403 without admin auth

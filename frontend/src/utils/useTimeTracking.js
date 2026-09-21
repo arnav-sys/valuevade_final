@@ -5,7 +5,7 @@ import { supabase } from '../lib/supabase';
 /**
  * Tracks active learning time on a page and persists it to user_stats.
  *
- * Pass the authenticated userId — the hook resolves the user's active
+ * Pass the authenticated userId, the hook resolves the user's active
  * enrollment internally (cached for the page's lifetime), so individual
  * pages don't need to plumb enrollment_id through their data fetches.
  *

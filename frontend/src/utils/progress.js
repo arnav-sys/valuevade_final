@@ -10,7 +10,7 @@ import { isExamMasterModule } from './examModule';
  * Pages call this from their phase-complete handler AFTER the awardXP loop
  * fires. The update_daily_challenge_progress RPC is idempotent per
  * (user_id, challenge_id, today_ist) and won't pay XP twice for the same
- * challenge — completed rows short-circuit at the SQL layer.
+ * challenge, completed rows short-circuit at the SQL layer.
  *
  * Mapping is centralised here so each completion page only needs the user_id,
  * the phase tag, and any meta it already has on hand.
@@ -66,7 +66,7 @@ export async function updateDailyChallengesForPhase(userId, phase, meta = {}) {
  * to loop through `xp_intents` and call `xp.awardXP(intent)` for each so
  * that toasts / sounds / level-up overlay fire in the UI layer.
  *
- * markPhaseComplete itself never calls the award_xp RPC directly — it just
+ * markPhaseComplete itself never calls the award_xp RPC directly, it just
  * tells callers what should be awarded. This keeps the centralised rule
  * logic here while letting the UI layer own all dopamine feedback.
  */
@@ -129,7 +129,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null, 
 
     // 2) Did this update just flip the session to "all phases done"?
     //
-    // Feb 2026 — session-level interview phase disabled for cost reasons.
+    // Feb 2026, session-level interview phase disabled for cost reasons.
     // `interview_completed` is no longer required for `allDone`. Existing
     // rows with interview_completed=true are ignored (still counted as
     // complete either way). See utils/sessionPhases.js flag.
@@ -153,13 +153,13 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null, 
         await checkModuleCompletion(completed.user_module_id);
       }
     }
-    // 3) XP intents — emitted on actual state transitions OR redo replays.
+    // 3) XP intents, emitted on actual state transitions OR redo replays.
     //
     // Default gate: `!phaseWasAlreadyComplete` (captured from the SELECT
     // above before the UPDATE flips the boolean). If a user re-takes a quiz
     // on a session whose `quiz_completed` is already true, xp_intents is
     // [] and the QuizCompletePage's awardXP loop is a no-op. This is by
-    // design — retakes don't pay XP.
+    // design, retakes don't pay XP.
     //
     // Phase B exception: when the user is in a redo flow (started via
     // /api/doubts/sessions/:id/redo), we DO emit xp_intents even though
@@ -224,7 +224,7 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null, 
         amount: redo ? halve(50) : 50,
         reason: XP_REASONS.session_complete,
         source_id: userSessionId,
-        // session_complete doesn't add minutes — quiz/simulation already did.
+        // session_complete doesn't add minutes, quiz/simulation already did.
         meta: { minutes: 0, ...redoMeta },
       });
     }
@@ -276,7 +276,7 @@ export async function checkModuleCompletion(userModuleId) {
           }
         }
         // Exam modules (e.g. Module 16 NISM) complete only when the student
-        // passes the mock exam — the backend handles that flip. We skip the
+        // passes the mock exam, the backend handles that flip. We skip the
         // auto-complete here so sessions finishing notes-only don't prematurely
         // unlock the next module.
         if (um?.master_module_id && (await isExamMasterModule(um.master_module_id))) {
@@ -348,7 +348,7 @@ export async function checkCapstoneUnlock(enrollmentId) {
 
 /**
  * Update user_stats row after activity. Adds minutes spent and bumps the
- * last_activity_date to today. Streak is NOT stored (no column for it) — it
+ * last_activity_date to today. Streak is NOT stored (no column for it), it
  * is computed at read time from user_sessions completion history, which is
  * immutable and therefore can never get out of sync or reset accidentally.
  *
@@ -470,7 +470,7 @@ export function getNextPhase(session) {
  * After completing a phase, figure out the next UNFINISHED phase that
  * comes AFTER the just-completed one. This prevents routing back to a
  * skipped earlier phase (e.g. if quiz is done but notes is somehow still
- * false, we should still go forward to interview — not loop back to notes).
+ * false, we should still go forward to interview, not loop back to notes).
  */
 function getNextForwardPhase(session, justCompleted) {
   if (!session) return null;

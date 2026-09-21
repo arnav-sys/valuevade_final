@@ -10,7 +10,7 @@ import {
 
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
-// Batch 2 (Item 2) — Built-in finance market list (no external lib).
+// Batch 2 (Item 2), Built-in finance market list (no external lib).
 // Keep ~20 of the most common finance markets + Other.
 const COUNTRY_OPTIONS = [
   { code: 'IN', name: 'India' },
@@ -217,7 +217,7 @@ export default function CustomizePage() {
   const [answers, setAnswers] = useState({});
   const [freeText, setFreeText] = useState('');
   const [currentStep, setCurrentStep] = useState(0);
-  // Feb 2026 — surface the personalised-path generation count. Once it hits
+  // Feb 2026, surface the personalised-path generation count. Once it hits
   // 4, the backend rejects further calls to /customize/generate.
   const [genStatus, setGenStatus] = useState(null); // {generations_used, generations_limit, generations_remaining, exhausted}
   useEffect(() => {
@@ -240,7 +240,7 @@ export default function CustomizePage() {
     return () => { cancelled = true; };
   }, []);
 
-  // Batch 2 (Item 2) — country picker step at the start.
+  // Batch 2 (Item 2), country picker step at the start.
   // Skipped entirely if profile.country_code is already set on first mount.
   const [showCountryStep, setShowCountryStep] = useState(false);
   const [countryCode, setCountryCode] = useState('');
@@ -273,10 +273,10 @@ export default function CustomizePage() {
     }
   };
 
-  // Fetch data — each query runs independently so one failure doesn't
+  // Fetch data, each query runs independently so one failure doesn't
   // block the whole page loading. Also enforces a 15s hard timeout so
   // the loading skeleton can never stick forever (previously if any query
-  // hung, the entire page did too — that was the "stuck on loading, no
+  // hung, the entire page did too, that was the "stuck on loading, no
   // projects" bug users reported).
   const fetchData = async () => {
     setLoading(true);
@@ -287,7 +287,7 @@ export default function CustomizePage() {
       new Promise((_, rej) => setTimeout(() => rej(new Error(`${label} timed out`)), TIMEOUT_MS)),
     ]);
     try {
-      // Run all 3 in parallel but SETTLE (not race) — we handle each result.
+      // Run all 3 in parallel but SETTLE (not race), we handle each result.
       const [qRes, mRes, pRes] = await Promise.allSettled([
         withTimeout(
           supabase.from('master_customization_questions')
@@ -514,7 +514,7 @@ export default function CustomizePage() {
               </div>
             </div>
 
-            {/* Country Step (Batch 2 Item 2) — Only shown on first customize. */}
+            {/* Country Step (Batch 2 Item 2), Only shown on first customize. */}
             {isCountryStep && (
               <div className="glass-card rounded-2xl p-6 sm:p-8" data-testid="customize-country-step">
                 <div className="flex items-center gap-3 mb-2">
@@ -534,7 +534,7 @@ export default function CustomizePage() {
                   className="w-full px-4 py-3 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] font-bricolage text-base outline-none transition-all focus:border-[var(--color-primary)] focus:shadow-[0_0_0_3px_rgba(36,107,253,0.1)]"
                   data-testid="customize-country-select"
                 >
-                  <option value="">— Pick your country —</option>
+                  <option value="">Pick your country</option>
                   {COUNTRY_OPTIONS.map((c) => (
                     <option key={c.code} value={c.code} data-testid={`country-opt-${c.code}`}>
                       {c.name}
@@ -624,7 +624,7 @@ export default function CustomizePage() {
               </button>
             </div>
 
-            {/* Feb 2026 — regeneration allowance counter on the final step. */}
+            {/* Feb 2026, regeneration allowance counter on the final step. */}
             {isLastStep && genStatus && (
               <div className="mt-4 text-right" data-testid="customize-generation-counter">
                 {genStatus.exhausted ? (

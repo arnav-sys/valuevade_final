@@ -1,5 +1,5 @@
 /**
- * Phase C — Capstones editor for the Admin Curriculum tab.
+ * Phase C, Capstones editor for the Admin Curriculum tab.
  * Lists CAP-01/02/03 in a left rail; right pane is the inline form.
  */
 import { useEffect, useState, useCallback } from 'react';
@@ -96,7 +96,7 @@ export default function CapstonesEditor() {
 
   return (
     <div className="flex gap-4 h-[calc(100vh-280px)] min-h-[500px]" data-testid="capstones-editor">
-      {/* Left rail — capstone list */}
+      {/* Left rail, capstone list */}
       <div className="w-64 flex-shrink-0 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         <div className="px-4 py-3 border-b border-[var(--color-border)]">
           <span className="text-sm font-semibold text-[var(--color-text)]">Capstones ({caps.length})</span>
@@ -122,7 +122,7 @@ export default function CapstonesEditor() {
         </ul>
       </div>
 
-      {/* Right — editor form */}
+      {/* Right, editor form */}
       <div className="flex-1 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         {sel && draft ? (
           <>
@@ -196,7 +196,7 @@ export default function CapstonesEditor() {
               </div>
               <div>
                 <label className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] tracking-wider">
-                  Advanced: phases (JSON — includes meta, tasks_raw, learning_outcomes, required_structure)
+                  Advanced: phases (JSON, includes meta, tasks_raw, learning_outcomes, required_structure)
                 </label>
                 <textarea
                   value={phasesText}

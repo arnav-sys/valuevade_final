@@ -45,7 +45,7 @@ async function fetchEnrollmentStatus() {
 
 /**
  * Top-level gate: forces every authenticated user to /start until they've
- * picked free vs paid. Idempotent — does not write anything to DB on its own.
+ * picked free vs paid. Idempotent, does not write anything to DB on its own.
  * Disabled for public + payment-callback routes.
  */
 export default function EnrollmentGate({ children }) {
@@ -58,7 +58,7 @@ export default function EnrollmentGate({ children }) {
     if (authLoading) return;
     // Unauthed users: gate does nothing, individual route guards (PublicOnlyRoute etc.) handle it.
     if (!user?.id) { setState({ checked: true, target: null }); return; }
-    // Public / allow-listed routes — never redirect away.
+    // Public / allow-listed routes, never redirect away.
     if (isAllowlisted(location.pathname)) { setState({ checked: true, target: null }); return; }
     (async () => {
       const data = await fetchEnrollmentStatus();

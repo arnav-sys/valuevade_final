@@ -4,7 +4,7 @@ import {
   BookOpen, Target as TargetIcon,
 } from 'lucide-react';
 
-// Phase D2 — Today vs Plan card.
+// Phase D2, Today vs Plan card.
 //
 // Compact dashboard card. Reads from /api/study-plan/dashboard-summary
 // (the parent owns the fetch; this is a pure presentation component).
@@ -63,7 +63,7 @@ export default function PlanTodayCard({ data, loading, onOpenRebalance, onOpenWi
   }
 
   if (!data?.active_plan) {
-    // Empty state — caller's CTA card handles the "set up plan" surface.
+    // Empty state, caller's CTA card handles the "set up plan" surface.
     return null;
   }
 
@@ -116,7 +116,7 @@ export default function PlanTodayCard({ data, loading, onOpenRebalance, onOpenWi
 
       {today?.status === 'rest' ? (
         <p className="text-sm font-bricolage text-[var(--color-text-muted)]">
-          No required work today. Recharge — your streak holds.
+          No required work today. Recharge, your streak holds.
         </p>
       ) : (
         <div className="space-y-3">
@@ -163,7 +163,7 @@ export default function PlanTodayCard({ data, loading, onOpenRebalance, onOpenWi
         </div>
       )}
 
-      {/* B5 — Upcoming this week mini-list (≤5 rows, lightweight) */}
+      {/* B5, Upcoming this week mini-list (≤5 rows, lightweight) */}
       {upcoming.length > 0 && (
         <div className="mt-5 pt-4 border-t border-[var(--color-border)]" data-testid="plan-upcoming">
           <div className="flex items-center justify-between mb-2.5">

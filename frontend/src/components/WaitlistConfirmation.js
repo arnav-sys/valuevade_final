@@ -120,7 +120,7 @@ export default function WaitlistConfirmation({ data }) {
         </p>
 
         <p className="text-white/50 font-bricolage text-sm mb-6">
-          We'll reach out before launch with your personalised early access link. In the meantime — follow us on Instagram for daily finance career content.
+          We'll reach out before launch with your personalised early access link. In the meantime, follow us on Instagram for daily finance career content.
         </p>
 
         <div

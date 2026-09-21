@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Unit tests for the customise plan validator (`_validate_and_normalize_plan`).
-Runs entirely offline — no LLM calls needed. Verifies that, given a mock
+Runs entirely offline, no LLM calls needed. Verifies that, given a mock
 Claude plan (often deliberately incomplete or wrong), the validator produces
 the deterministically correct final plan.
 

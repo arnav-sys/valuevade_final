@@ -1,5 +1,5 @@
 """
-Backend tests — Admin direct-to-Supabase video upload architecture.
+Backend tests, Admin direct-to-Supabase video upload architecture.
 Covers:
   POST /api/admin/sessions/{sid}/video-signed-url  (admin only, 401/403/200)
   PUT  <supabase signed_url>                       (>2MB direct upload)
@@ -203,7 +203,7 @@ class TestEndToEndDirectUpload:
                     assert s.get("lecture_url") == public_url
         assert found, "test session not found in listing"
 
-        # 5) Accept external (non-bucket) URLs — this was previously rejected but
+        # 5) Accept external (non-bucket) URLs, this was previously rejected but
         # is now allowed so admins can attach large videos hosted on YouTube/Vimeo/
         # Cloudflare Stream/Mux/BunnyCDN when the file exceeds the Supabase Storage cap.
         r = requests.post(
@@ -214,7 +214,7 @@ class TestEndToEndDirectUpload:
         )
         assert r.status_code == 200, f"expected 200 got {r.status_code}"
 
-        # 6) Cleanup — delete the video (nulls master_sessions.lecture_url)
+        # 6) Cleanup, delete the video (nulls master_sessions.lecture_url)
         r = requests.delete(
             f"{BASE_URL}/api/admin/sessions/{sid}/video",
             headers={"Authorization": f"Bearer {admin_token}"},

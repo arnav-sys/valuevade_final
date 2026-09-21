@@ -4,7 +4,7 @@ import { usePaymentFlow } from './usePaymentFlow';
 import { fmtINR } from '../../utils/razorpay';
 
 /**
- * Full-screen paywall — fired when user tries to access a non-free session
+ * Full-screen paywall, fired when user tries to access a non-free session
  * while user_payment_status.paid is false.
  */
 export default function PaywallModal({ amountInr = 999, tierAvailable = 'post_trial', onPaid }) {
@@ -36,7 +36,7 @@ export default function PaywallModal({ amountInr = 999, tierAvailable = 'post_tr
         </h2>
         <p className="text-sm text-[var(--color-text-muted)] mb-5">
           You&apos;ve finished session 1. Upgrade now to unlock every module, simulation, mock-interview
-          round, and the AI tutor — lifetime access, one-time payment.
+          round, and the AI tutor, lifetime access, one-time payment.
         </p>
 
         <div className="rounded-xl p-4 bg-[var(--color-bg-card-hover)] border border-[var(--color-border)] mb-5">

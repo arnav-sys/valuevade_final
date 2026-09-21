@@ -35,7 +35,7 @@ export default function LevelUpOverlay() {
     playSound('level_up');
 
     if (!reducedMotion()) {
-      // Confetti burst — from both lower corners
+      // Confetti burst, from both lower corners
       try {
         const defaults = { startVelocity: 35, spread: 90, ticks: 90, zIndex: 100, scalar: 1.0 };
         confetti({ ...defaults, particleCount: 80, origin: { x: 0.15, y: 0.7 }, angle: 60, colors: ['#246BFD', '#6A5CFF', '#FF6AC1', '#F59E0B', '#10B981'] });

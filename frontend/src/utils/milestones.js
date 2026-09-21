@@ -1,4 +1,4 @@
-// Phase C — Milestone Achievement Cards
+// Phase C, Milestone Achievement Cards
 //
 // API client for the 3 milestone endpoints. All require a Supabase Bearer
 // token. The MilestonesContext consumes these and the

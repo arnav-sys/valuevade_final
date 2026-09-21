@@ -12,7 +12,7 @@ Covers:
 Migration 0036 has NOT been applied on the test project, so the 429 / 402
 enforcement branches cannot be exercised end-to-end without service-role SQL
 access. The code is designed to degrade gracefully in that case
-(counters == 0, caps let requests through) — this suite verifies the
+(counters == 0, caps let requests through), this suite verifies the
 graceful path returns HTTP 200 with default zero counters.
 """
 import os

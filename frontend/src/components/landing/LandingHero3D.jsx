@@ -41,15 +41,15 @@ const PALETTES = {
   light: {
     bg:           '#F2E6EE',
     /* Deep indigo ink dots on cream. We render on an OPAQUE cream canvas
-     * with NormalBlending — simple, reliable, every dot reads as solid
+     * with NormalBlending, simple, reliable, every dot reads as solid
      * indigo (≈ rgb(15, 29, 82) on rgb(242, 230, 238) cream). */
     particle:     '#0f1d52',
     particleOp:   0.92,
-    /* With sizeAttenuation:false this is in pixels — 2.6px per dot reads
+    /* With sizeAttenuation:false this is in pixels, 2.6px per dot reads
      * unmistakably on cream regardless of camera distance. */
     particleSize: 2.6,
     blending:     THREE.NormalBlending,
-    /* Darker indigo grid, much higher opacity — reads as a faint blueprint
+    /* Darker indigo grid, much higher opacity, reads as a faint blueprint
      * floor that recedes into the fog. */
     gridA:        '#1e2d6b',
     gridB:        '#2a3a8a',
@@ -150,7 +150,7 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       onContextLost = (e) => {
         e.preventDefault();
         // eslint-disable-next-line no-console
-        console.warn('[LandingHero3D] WebGL context lost — falling back to static.');
+        console.warn('[LandingHero3D] WebGL context lost, falling back to static.');
         setUseStaticFallback(true);
       };
       renderer.domElement.addEventListener('webglcontextlost', onContextLost, false);
@@ -205,7 +205,7 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       root.add(points);
       root.add(grid);
 
-      /* Cinematic focal element — DARK MODE ONLY. A cluster of 22 violet
+      /* Cinematic focal element, DARK MODE ONLY. A cluster of 22 violet
          "module star" nodes connected by faint lines. Position is a noisy
          sphere of radius ~1.8 (slight Z bias so the cluster reads volumetric
          instead of flat). Each node twinkles via a per-node phase offset on
@@ -240,7 +240,7 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
           focal.add(mesh);
           focalNodes.push({ mesh, geom: nodeGeom, mat: nodeMat, phase: Math.random() * Math.PI * 2 });
         }
-        // Connect each node to its 2-3 nearest neighbours — produces a
+        // Connect each node to its 2-3 nearest neighbours, produces a
         // proximity graph that reads like a curriculum dependency map.
         const linePositions = [];
         for (let i = 0; i < nodeCount; i++) {
@@ -320,7 +320,7 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
           renderer.render(scene, camera);
         } catch (err) {
           // eslint-disable-next-line no-console
-          console.warn('[LandingHero3D] render loop failed — falling back.', err);
+          console.warn('[LandingHero3D] render loop failed, falling back.', err);
           running = false;
           cancelAnimationFrame(raf);
           setUseStaticFallback(true);
@@ -329,7 +329,7 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
       loop();
     } catch (err) {
       // eslint-disable-next-line no-console
-      console.warn('[LandingHero3D] init failed — falling back to static.', err);
+      console.warn('[LandingHero3D] init failed, falling back to static.', err);
       setUseStaticFallback(true);
       return;
     }
@@ -354,7 +354,7 @@ export default function LandingHero3D({ mobile = false, theme = 'dark' }) {
         gridMats.forEach((m) => m && m.dispose());
         if (grid && grid.geometry) grid.geometry.dispose();
       } catch {
-        /* swallow cleanup errors — already unmounting */
+        /* swallow cleanup errors, already unmounting */
       }
     };
   }, [mobile, useStaticFallback, theme]);

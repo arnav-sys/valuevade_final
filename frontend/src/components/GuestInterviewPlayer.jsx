@@ -86,7 +86,7 @@ export default function GuestInterviewPlayer() {
   );
 
   const advanceToNext = useCallback(() => {
-    // Called by stage components' "Continue" buttons — for guest mode we just
+    // Called by stage components' "Continue" buttons, for guest mode we just
     // trigger a re-render; the state was already advanced in onStageComplete.
     setState((p) => ({ ...p }));
   }, []);

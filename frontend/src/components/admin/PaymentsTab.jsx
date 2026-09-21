@@ -44,7 +44,7 @@ export default function PaymentsTab() {
     <div data-testid="admin-payments-tab">
       {data.mock_mode && (
         <div className="mb-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] text-xs text-[var(--color-text-muted)]">
-          <Lock className="w-3.5 h-3.5" /> Razorpay running in mock mode — transactions are simulated until live keys are configured.
+          <Lock className="w-3.5 h-3.5" /> Razorpay running in mock mode, transactions are simulated until live keys are configured.
         </div>
       )}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6" data-testid="payments-stats">

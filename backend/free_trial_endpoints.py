@@ -1,7 +1,7 @@
-"""Free landing-page mock interview trial — one attempt per email + browser.
+"""Free landing-page mock interview trial, one attempt per email + browser.
 
 Register via `register_free_trial_endpoints(api_router, deps)`. Reuses the
-existing interview_sim endpoints for the actual gameplay — this module only
+existing interview_sim endpoints for the actual gameplay, this module only
 gates access (email lookup + fingerprint/IP guard) and provides admin views.
 """
 from __future__ import annotations
@@ -86,7 +86,7 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
                 first_name = f"[TABLE-MISSING] {local}"[:60]
             else:
                 first_name = local[:60]
-            # `waitlist.position` is NOT NULL — compute next position.
+            # `waitlist.position` is NOT NULL, compute next position.
             try:
                 head = _sb_get("waitlist?select=position&order=position.desc&limit=1") or []
                 next_pos = int(((head or [{}])[0] or {}).get("position") or 0) + 1
@@ -117,7 +117,7 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
         fp_hash = _hash(fingerprint) if fingerprint else ""
         ua = (request.headers.get("user-agent") or "")[:400]
 
-        # Uniqueness check (best-effort — soft-fails when the table is missing).
+        # Uniqueness check (best-effort, soft-fails when the table is missing).
         # If email matches → resume the existing trial.
         # If ip_hash / fingerprint_hash matches but email is BRAND NEW
         # → still capture the lead to `waitlist` (so admins can see it in
@@ -145,14 +145,14 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
                         "attempt_id": existing.get("attempt_id"),
                         "status": existing.get("status"),
                     }
-                # Device/fingerprint dedup hit with a NEW email —
+                # Device/fingerprint dedup hit with a NEW email,
                 # capture to waitlist before rejecting so no lead is dropped.
                 wl = _add_to_waitlist(email, f"free-trial-device-blocked:{ref}")
                 return {
                     "ok": False, "waitlisted": True, "device_blocked": True,
                     "trial_id": (wl or {}).get("id") or email,
                     "status": "device_blocked",
-                    "message": "Free trial already used on this device. We've added your email — we'll ping you when you can try it on another device or sign up for full access.",
+                    "message": "Free trial already used on this device. We've added your email, we'll ping you when you can try it on another device or sign up for full access.",
                 }
 
         row = {
@@ -182,7 +182,7 @@ def register_free_trial_endpoints(api_router: APIRouter, deps: Dict[str, Any]) -
             "trial_id": (wl or {}).get("id") or email,
             "attempt_id": None, "status": "waitlisted",
             "fallback": True,
-            "message": "Added to waitlist — we'll email you when your free simulation is ready.",
+            "message": "Added to waitlist, we'll email you when your free simulation is ready.",
         }
 
     @api_router.post("/free-trial/{trial_id}/provision")

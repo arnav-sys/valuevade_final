@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 
 /**
- * Enrollment gating is temporarily disabled per product decision — payment /
+ * Enrollment gating is temporarily disabled per product decision, payment /
  * paywall / customization flows were removed and every authenticated user is
  * treated as enrolled by default. This component is now a pass-through so
  * /dashboard and other Learning routes render instantly with no "Checking

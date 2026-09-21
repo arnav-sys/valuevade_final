@@ -179,7 +179,7 @@ export default function ActivityHeatmap() {
                   const cell = week[dayIdx];
                   if (!cell) return <div key={`c-${ci}-${dayIdx}`} className="w-3 h-3" />;
                   const tier = tierFor(cell.xp_earned);
-                  const label = `${fmtTooltipDate(cell.iso)} IST — ${cell.xp_earned || 0} XP, ${cell.sessions_completed || 0} sessions, ${cell.minutes_spent || 0} min`;
+                  const label = `${fmtTooltipDate(cell.iso)} IST, ${cell.xp_earned || 0} XP, ${cell.sessions_completed || 0} sessions, ${cell.minutes_spent || 0} min`;
                   return (
                     <button
                       key={cell.iso}

@@ -161,7 +161,7 @@ export default function PublicPortfolioPage() {
                 style={{ borderColor: `${data.level_color_hex || '#246BFD'}55`, color: data.level_color_hex || 'var(--color-primary)' }}
                 data-testid="public-level"
               >
-                <Star size={11} /> Level {data.current_level} — {data.level_name || 'Analyst'}
+                <Star size={11} /> Level {data.current_level}, {data.level_name || 'Analyst'}
               </span>
               {data.current_streak_days > 0 && (
                 <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 px-2.5 py-1 text-xs font-semibold">
@@ -285,7 +285,7 @@ export default function PublicPortfolioPage() {
         {/* Footer */}
         <footer className="pt-6 border-t border-[var(--glass-border)] text-center" data-testid="public-footer">
           <Link to="/" className="font-bricolage text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)]">
-            Powered by <span className="text-[var(--color-primary)] font-bold">Valuevade</span> — Train your finance career
+            Powered by <span className="text-[var(--color-primary)] font-bold">Valuevade</span>, Train your finance career
           </Link>
         </footer>
       </div>

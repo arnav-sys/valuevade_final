@@ -1,8 +1,8 @@
-// Phase B — Session doubts API client.
+// Phase B, Session doubts API client.
 //
 // All endpoints require a Supabase Bearer token. The legacy quick-chat
 // endpoints (/api/doubts/start|ask|end) are intentionally NOT exposed
-// here — keep those in DoubtsLauncherContext / DoubtsSession.jsx so
+// here, keep those in DoubtsLauncherContext / DoubtsSession.jsx so
 // quick chat (3 turns / 1500 tokens / 5 sessions per day) stays
 // untouched.
 
@@ -30,7 +30,7 @@ async function call(method, path, body = null) {
   return { ok: res.ok, status: res.status, data };
 }
 
-/** Flag a session as confusing/difficult. Idempotent — re-flagging just
+/** Flag a session as confusing/difficult. Idempotent, re-flagging just
  *  updates the reason. */
 export function markSessionDoubt({ session_id, reason }) {
   return call('POST', '/api/doubts/sessions/mark', { session_id, reason });

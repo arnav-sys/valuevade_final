@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 /**
  * Surfaced when update_streak_on_activity reports was_broken=true (no auto
- * freeze applied).  Loss aversion explicit — dollar value, not just days.
+ * freeze applied).  Loss aversion explicit, dollar value, not just days.
  */
 export default function ShameCard() {
   const { pendingShame, clearShame, consumeFreeze, freezeTokens } = useStreak();
@@ -68,7 +68,7 @@ export default function ShameCard() {
           of daily-login bonus gone.
         </p>
         <p className="text-xs font-bricolage text-[var(--color-text-faint)] mb-5">
-          Tip: Earn a freeze every 10 days. They auto-spend by default — you can also use one now to restore today.
+          Tip: Earn a freeze every 10 days. They auto-spend by default, you can also use one now to restore today.
         </p>
 
         {canFreeze && (

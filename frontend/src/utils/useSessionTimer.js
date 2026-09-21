@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 /**
- * Batch 2 — Real-time hidden session timer.
+ * Batch 2, Real-time hidden session timer.
  *
  * Accumulates wall-clock seconds for a (sessionId, phase) pair. Pauses on:
  *   - document.visibilityState === 'hidden' (tab switched / minimised)
@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *
  * On mount we restore the previous accumulator so a hard reload doesn't
  * lose state. Returned `elapsedMinutes` re-renders every 5 sec (cheap
- * enough — no DOM thrashing).
+ * enough, no DOM thrashing).
  *
  * No new npm deps. Pure React.
  */
@@ -78,13 +78,13 @@ export function getMeasuredMinutes(sessionId, phase, { fallbackMinutes = 0 } = {
  * fall back to a per-phase floor of 0 (the live phase will dominate).
  *
  * The optional `estimatedMinutes` arg caps the sum at 3× the planned time
- * — this is the silent guard against a user accidentally leaving a tab
+ *, this is the silent guard against a user accidentally leaving a tab
  * open all night and inflating their day_row.actual_minutes.
  */
 export function getMeasuredMinutesTotal(sessionId, { estimatedMinutes = 0 } = {}) {
   const phases = ['notes', 'quiz', 'simulation'];
   const sum = phases.reduce((acc, p) => acc + Math.max(0, Math.round(readSnapshot(sessionId, p).totalSeconds / 60)), 0);
-  // Per the spec: prevent zero writes — at least 1 min.
+  // Per the spec: prevent zero writes, at least 1 min.
   const floored = Math.max(1, sum);
   // Silent cap at 3× estimated when caller provides a sane estimate.
   if (estimatedMinutes > 0) {
@@ -171,7 +171,7 @@ export default function useSessionTimer(sessionId, phase, { autoStart = true } =
     }
   }, [autoStart, disabled, resume]);
 
-  // Tick loop — 1 sec accumulator, 5 sec re-render + persist.
+  // Tick loop, 1 sec accumulator, 5 sec re-render + persist.
   useEffect(() => {
     if (disabled) return;
     let rerenderAcc = 0;

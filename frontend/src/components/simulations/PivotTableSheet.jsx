@@ -1,4 +1,4 @@
-// PivotTableSheet — real Excel-style PivotTable UI built on @dnd-kit/core.
+// PivotTableSheet, real Excel-style PivotTable UI built on @dnd-kit/core.
 //
 // Props:
 //   spec: {
@@ -465,7 +465,7 @@ export default function PivotTableSheet({
 
         {/* Mobile notice */}
         <div className="lg:hidden text-[10px] font-mono text-[var(--color-text-muted)] bg-[var(--color-warning,#F59E0B)]/10 border border-[var(--color-warning,#F59E0B)]/30 rounded-lg px-2 py-1.5">
-          PivotTable best on desktop. Tap-to-select drag fallback isn't enabled — please use a larger screen.
+          PivotTable best on desktop. Tap-to-select drag fallback isn't enabled, please use a larger screen.
         </div>
 
         {/* Top: field rail + zones */}

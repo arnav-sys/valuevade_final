@@ -9,7 +9,7 @@
 //   • Text (LEFT, RIGHT, MID, LEN, FIND, SEARCH, TRIM, UPPER, LOWER, PROPER)
 //   • Date (YEAR, MONTH, DAY, DATEDIF)
 //
-// Numbers are compared with `toBeCloseTo` to 4 significant digits — Excel's
+// Numbers are compared with `toBeCloseTo` to 4 significant digits, Excel's
 // own quoted values typically have ≤ 0.01 relative drift vs our pure-JS
 // implementation due to floating-point arithmetic.
 
@@ -25,7 +25,7 @@ function buildCtx(cells, sheet = 'Sheet1') {
 
 const evalIt = (formula, cells) => evaluateFormula(formula, buildCtx(cells));
 
-describe('excelFormula — conditional aggregates', () => {
+describe('excelFormula, conditional aggregates', () => {
   // A2:A6 sector, B2:B6 mcap (₹ Cr), C2:C6 PE
   const cells = {
     A2: 'IT',     B2: 950000,  C2: 28.4,
@@ -57,7 +57,7 @@ describe('excelFormula — conditional aggregates', () => {
   });
 });
 
-describe('excelFormula — lookup family', () => {
+describe('excelFormula, lookup family', () => {
   // 4-row table: Ticker | Sector | Mcap | PE
   const cells = {
     A2: 'RELIANCE', B2: 'Energy', C2: 1850000, D2: 28,
@@ -96,10 +96,10 @@ describe('excelFormula — lookup family', () => {
   });
 });
 
-describe('excelFormula — financial', () => {
+describe('excelFormula, financial', () => {
   // ₹40L home loan, 8.5% annual = 0.7083% monthly, 240 months (20 years).
   // Excel PMT(0.085/12, 240, 4000000) ≈ -34,712.92
-  test('PMT — 20yr home loan EMI', () => {
+  test('PMT, 20yr home loan EMI', () => {
     const out = evalIt('=PMT(0.085/12, 240, 4000000)', {});
     expect(out).toBeCloseTo(-34712.92, 0);  // tolerance ₹1 of Excel
   });
@@ -107,31 +107,31 @@ describe('excelFormula — financial', () => {
     expect(evalIt('=PMT(0, 12, 1200)', {})).toBe(-100);
   });
   // FV of ₹10k/mo for 30 years at 12% annual.
-  test('FV — SIP corpus', () => {
+  test('FV, SIP corpus', () => {
     const out = evalIt('=FV(0.12/12, 360, -10000)', {});
     expect(out).toBeGreaterThan(34900000);  // ≈ ₹3.49 Cr
     expect(out).toBeLessThan(35400000);
   });
-  test('PV — present value', () => {
+  test('PV, present value', () => {
     // PV of ₹100,000 a year for 10 years at 8% ≈ -671,008.14
     const out = evalIt('=PV(0.08, 10, 100000)', {});
     expect(out).toBeCloseTo(-671008, 0);
   });
   // Excel NPV(0.1, 300, 420, 680) = 300/1.1 + 420/1.21 + 680/1.331 = 1130.73
   // Less initial outlay 1000 → 130.73. (Matches Excel's end-of-period convention.)
-  test('NPV — discounted cashflows', () => {
+  test('NPV, discounted cashflows', () => {
     const cells = { A1: 300, A2: 420, A3: 680 };
     const out = evalIt('=NPV(0.1, A1:A3) - 1000', cells);
     expect(out).toBeCloseTo(130.73, 1);
   });
-  // IRR([-1000, 300, 420, 680]) — rate r s.t. -1000 + 300/(1+r) + 420/(1+r)^2 + 680/(1+r)^3 = 0
+  // IRR([-1000, 300, 420, 680]), rate r s.t. -1000 + 300/(1+r) + 420/(1+r)^2 + 680/(1+r)^3 = 0
   // Newton-Raphson root ≈ 0.1634 (16.34%).
-  test('IRR — converges on positive root', () => {
+  test('IRR, converges on positive root', () => {
     const cells = { A1: -1000, A2: 300, A3: 420, A4: 680 };
     const out = evalIt('=IRR(A1:A4)', cells);
     expect(out).toBeCloseTo(0.1634, 2);   // Excel = 16.34%
   });
-  test('NPER — months to retire a loan at fixed EMI', () => {
+  test('NPER, months to retire a loan at fixed EMI', () => {
     // ₹40L loan, ₹35k EMI, 8.5%/12 monthly → ~228 months
     const out = evalIt('=NPER(0.085/12, -35000, 4000000)', {});
     expect(out).toBeGreaterThan(220);
@@ -139,7 +139,7 @@ describe('excelFormula — financial', () => {
   });
 });
 
-describe('excelFormula — statistical', () => {
+describe('excelFormula, statistical', () => {
   const cells = { A1: 2, A2: 4, A3: 4, A4: 4, A5: 5, A6: 5, A7: 7, A8: 9 };
   test('STDEV sample', () => {
     // Excel STDEV.S({2,4,4,4,5,5,7,9}) ≈ 2.138090
@@ -157,7 +157,7 @@ describe('excelFormula — statistical', () => {
   });
 });
 
-describe('excelFormula — text', () => {
+describe('excelFormula, text', () => {
   const cells = { A1: 'Reliance Industries', A2: '  Hello   World  ', A3: 'HDFC Bank Ltd' };
   test('LEFT', () => { expect(evalIt('=LEFT(A1,8)', cells)).toBe('Reliance'); });
   test('RIGHT', () => { expect(evalIt('=RIGHT(A1,10)', cells)).toBe('Industries'); });
@@ -173,7 +173,7 @@ describe('excelFormula — text', () => {
   test('SEARCH case-insensitive', () => { expect(evalIt('=SEARCH("BANK",A3)', cells)).toBe(6); });
 });
 
-describe('excelFormula — date', () => {
+describe('excelFormula, date', () => {
   const cells = { A1: '2025-06-15', A2: '2026-03-10' };
   test('YEAR / MONTH / DAY', () => {
     expect(evalIt('=YEAR(A1)', cells)).toBe(2025);
@@ -186,8 +186,8 @@ describe('excelFormula — date', () => {
   });
 });
 
-describe('excelFormula — extended functions (Step 5 hybrid path)', () => {
-  // SUBTOTAL — codes 1-5, 9 (and 101-105, 109 mirrors).
+describe('excelFormula, extended functions (Step 5 hybrid path)', () => {
+  // SUBTOTAL, codes 1-5, 9 (and 101-105, 109 mirrors).
   describe('SUBTOTAL', () => {
     const cells = { A1: 10, A2: 20, A3: 30, A4: 40, A5: 50 };
     test('SUBTOTAL(9) = SUM',     () => expect(evalIt('=SUBTOTAL(9, A1:A5)',   cells)).toBe(150));
@@ -203,7 +203,7 @@ describe('excelFormula — extended functions (Step 5 hybrid path)', () => {
     });
   });
 
-  // VALUE — text-to-number incl. ₹ / commas / whitespace.
+  // VALUE, text-to-number incl. ₹ / commas / whitespace.
   describe('VALUE', () => {
     test('VALUE("1234")',         () => expect(evalIt('=VALUE("1234")',          {})).toBe(1234));
     test('VALUE with rupees',     () => expect(evalIt('=VALUE("₹2,50,000")',     {})).toBe(250000));
@@ -214,7 +214,7 @@ describe('excelFormula — extended functions (Step 5 hybrid path)', () => {
     test('VALUE empty → 0',       () => expect(evalIt('=VALUE("")',              {})).toBe(0));
   });
 
-  // DATEVALUE — accepts ISO + DD/MM/YYYY + DD-MMM-YYYY.
+  // DATEVALUE, accepts ISO + DD/MM/YYYY + DD-MMM-YYYY.
   describe('DATEVALUE', () => {
     test('YEAR(DATEVALUE("31/12/2024")) = 2024 (Indian DD/MM)',
       () => expect(evalIt('=YEAR(DATEVALUE("31/12/2024"))', {})).toBe(2024));
@@ -249,7 +249,7 @@ describe('excelFormula — extended functions (Step 5 hybrid path)', () => {
     test('ISTEXT("hello") = TRUE',     () => expect(evalIt('=ISTEXT("hello")',    {})).toBe(true));
     test('ISERROR(1/0) = TRUE',        () => expect(evalIt('=ISERROR(1/0)',       {})).toBe(true));
     test('ISERROR(VALUE("bad")) = TRUE', () => expect(evalIt('=ISERROR(VALUE("bad"))', {})).toBe(true));
-    test('ISERR(NA-error) = FALSE — only ISNA matches #N/A',
+    test('ISERR(NA-error) = FALSE, only ISNA matches #N/A',
       () => expect(evalIt('=ISERR(VLOOKUP("missing",A1:B2,2,FALSE))', { A1: 'a', B1: 1, A2: 'b', B2: 2 })).toBe(false));
     test('IFERROR wraps cleanly with VALUE',
       () => expect(evalIt('=IFERROR(VALUE("x"),"fallback")', {})).toBe('fallback'));

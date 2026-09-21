@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 /**
- * Terms of Service — DRAFT (Prompt-4 of the Aug-2026 SEO/GEO rebuild).
+ * Terms of Service, DRAFT (Prompt-4 of the Aug-2026 SEO/GEO rebuild).
  * Covers: service description, ₹4999 one-time personal-use lifetime licence,
  * account rules, no job guarantees, IP of course content, limitation of
  * liability, governing law India. Requires founder + counsel review.
@@ -14,7 +14,7 @@ export default function TermsPage() {
     <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--color-text)]">
       <Helmet>
         <title>Terms of Service | Valuevade</title>
-        <meta name="description" content="Terms of Service for Valuevade — ₹4999 one-time lifetime access licence, account rules, IP, and disclaimers." />
+        <meta name="description" content="Terms of Service for Valuevade, ₹4999 one-time lifetime access licence, account rules, IP, and disclaimers." />
         <link rel="canonical" href="https://valuevade.com/terms" />
       </Helmet>
       <main className="max-w-3xl mx-auto px-6 py-14 sm:py-20">
@@ -57,7 +57,7 @@ export default function TermsPage() {
             Valuevade platform (&quot;lifetime access&quot;). The licence does not include
             the right to record, download, redistribute, resell, or use course
             content to train machine-learning models, whether commercial or otherwise.
-            One account is one licence — sharing your login with someone else is a
+            One account is one licence, sharing your login with someone else is a
             material breach and grounds for account termination without refund.
           </p>
 
@@ -81,8 +81,8 @@ export default function TermsPage() {
 
           <h2 className="font-clash text-xl font-semibold text-[var(--color-text)] mt-8 mb-2">Intellectual property</h2>
           <p>
-            All course content — video lectures, notes, quizzes, simulations, case
-            studies, model answers, code, and the platform itself — is owned by or
+            All course content, video lectures, notes, quizzes, simulations, case
+            studies, model answers, code, and the platform itself, is owned by or
             licensed to Valuevade and is protected under Indian and international
             copyright and trademark law. You retain ownership of the content you
             create (capstone reports, portfolio uploads); by submitting it to the

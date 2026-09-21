@@ -41,7 +41,7 @@ import ResetPasswordPage from "@/components/ResetPasswordPage";
 import AdminDashboard from "@/components/AdminDashboard";
 import NotFoundPage from "@/components/NotFoundPage";
 
-// Authenticated — lazy loaded for faster initial bundle
+// Authenticated, lazy loaded for faster initial bundle
 const EnrollmentPage = lazyWithRetry(() => import("@/components/EnrollmentPage"));
 const CoursesPage = lazyWithRetry(() => import("@/components/CoursesPage"));
 const CourseDetailsPage = lazyWithRetry(() => import("@/components/CourseDetailsPage"));
@@ -95,7 +95,7 @@ const FreeTrialPlayerPage = lazyWithRetry(() => import("@/components/FreeTrialPl
 const GuestSessionPage = lazyWithRetry(() => import("@/components/GuestSessionPage"));
 const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
 const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
-// Legal pages — public, DRAFT copy pending founder review (Prompt-4 rebuild).
+// Legal pages, public, DRAFT copy pending founder review (Prompt-4 rebuild).
 const PrivacyPolicyPage = lazyWithRetry(() => import("@/components/legal/PrivacyPolicyPage"));
 const TermsPage = lazyWithRetry(() => import("@/components/legal/TermsPage"));
 const RefundPolicyPage = lazyWithRetry(() => import("@/components/legal/RefundPolicyPage"));
@@ -119,7 +119,7 @@ const SessionPhase = ({ phase, children }) => (
   </Learning>
 );
 
-// Feb 2026 — session-level interview phase disabled. Any legacy URL under
+// Feb 2026, session-level interview phase disabled. Any legacy URL under
 // /session/:sessionId/interview[...] is redirected to that same session's
 // simulation-start route. Uses useParams() because a plain
 // `<Navigate to="../simulation/start" />` in a flat top-level route walks
@@ -202,7 +202,7 @@ function App() {
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
                   <Route path="/terms" element={<TermsPage />} />
                   <Route path="/refund-policy" element={<RefundPolicyPage />} />
-                  {/* Proper enrollment page — preview + confirm, no AI customization */}
+                  {/* Proper enrollment page, preview + confirm, no AI customization */}
                   <Route path="/enroll/:courseId" element={<ProtectedRoute><EnrollmentPage /></ProtectedRoute>} />
                   {/* AI customisation wizard (admin-toggleable via
                       app_settings.ai_customization_mode). Available as an
@@ -233,7 +233,7 @@ function App() {
                   <Route path="/session/:sessionId/quiz" element={<SessionPhase phase="quiz"><QuizPage /></SessionPhase>} />
                   <Route path="/session/:sessionId/quiz/complete" element={<Learning><QuizCompletePage /></Learning>} />
 
-                  {/* Feb 2026 — session-level interview phase disabled to
+                  {/* Feb 2026, session-level interview phase disabled to
                     cut per-user AI cost by ~40%. Old URLs redirect forward
                     to simulation so no bookmark 404s. Pages + components
                     are kept intact for easy re-enable. */}
@@ -262,13 +262,13 @@ function App() {
                   <Route path="/capstone/:capstoneId/tasks" element={<Learning><CapstoneTasksPage /></Learning>} />
                   <Route path="/capstone/complete" element={<Learning><CapstoneCompletePage /></Learning>} />
 
-                  {/* Wave 1 / 2 — Admin + Mock Interview */}
+                  {/* Wave 1 / 2, Admin + Mock Interview */}
                   <Route path="/admin-panel" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
                   <Route path="/mock-interview" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id" element={<Learning><MockInterviewPage /></Learning>} />
                   <Route path="/mock-interview/:id/results" element={<Learning><MockInterviewResults /></Learning>} />
 
-                  {/* Module 20 — full interview simulations */}
+                  {/* Module 20, full interview simulations */}
                   <Route path="/interview-sims" element={<Learning><InterviewSimHub /></Learning>} />
                   <Route path="/interview-sim/:attemptId" element={<Learning><InterviewSimPlayer /></Learning>} />
 

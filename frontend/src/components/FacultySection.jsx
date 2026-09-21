@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-/* Faculty section — pulls from /api/faculty (admin-managed). Falls back to a
+/* Faculty section, pulls from /api/faculty (admin-managed). Falls back to a
  * small static roster if the Supabase table isn't provisioned yet. */
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
 const FALLBACK = [
-  { id: 'f1', name: 'Aarav Mehta', title: 'Lead Faculty · Equity Research · Ex-Buy Side', bio: 'Former equity research analyst covering Indian financials and consumer. Builds every valuation module from real Ind AS filings — not textbook templates.', photo_url: '' },
+  { id: 'f1', name: 'Aarav Mehta', title: 'Lead Faculty · Equity Research · Ex-Buy Side', bio: 'Former equity research analyst covering Indian financials and consumer. Builds every valuation module from real Ind AS filings, not textbook templates.', photo_url: '' },
   { id: 'f2', name: 'Sneha Iyer', title: 'Financial Modelling · CFA Charterholder', bio: 'Spent years building 3-statement and LBO models on the sell side. Leads the modelling and DCF curriculum with a first-principles approach.', photo_url: '' },
   { id: 'f3', name: 'Rohan Kulkarni', title: 'Career & Interview Prep · Ex-IB', bio: 'Ran analyst hiring at a boutique investment bank. Designs the mock-interview rounds, resume reviews and LinkedIn outreach playbooks.', photo_url: '' },
 ];

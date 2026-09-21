@@ -3,7 +3,7 @@ import { ArrowUpRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 /**
- * Curriculum snapshot — editorial terminal treatment (Feb 2026).
+ * Curriculum snapshot, editorial terminal treatment (Feb 2026).
  * Content copy verbatim.
  */
 export default function WhatYoullLearnSection() {
@@ -34,7 +34,7 @@ export default function WhatYoullLearnSection() {
             style={{ animationDelay: '0.08s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
             data-testid="whatll-learn-heading"
           >
-            What you&apos;ll learn —{' '}
+            What you&apos;ll learn,{' '}
             <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               from zero to analyst
             </span>
@@ -49,7 +49,7 @@ export default function WhatYoullLearnSection() {
           >
             The Equity Research Analyst Program takes you from accounting and economics foundations
             through financial statement analysis, ratio and forensic analysis, three-statement financial
-            modelling, and valuation (DCF, comparable companies, SOTP) — finishing with industry
+            modelling, and valuation (DCF, comparable companies, SOTP), finishing with industry
             analysis and three capstone projects you keep as a portfolio.
           </p>
 

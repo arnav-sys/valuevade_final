@@ -69,7 +69,7 @@ function toColumnLetter(n) {
 }
 
 /* =============================================================
-   Excel Workspace — full spreadsheet with formula support
+   Excel Workspace, full spreadsheet with formula support
    ============================================================= */
 
 // Parse "E5" → {row:4, col:4} (0-indexed).
@@ -127,7 +127,7 @@ function pickSolutionDataset(config, starterDataset) {
   if (nested && Array.isArray(nested) && nested.length > 0) {
     if (Array.isArray(nested[0])) return { rows: nested, headers: null, source: 'solution.rows' };
   }
-  // 3) Per-cell answer map — overlay on starter dataset.
+  // 3) Per-cell answer map, overlay on starter dataset.
   const cellKeys = ['solution_cells', 'answer_cells', 'expected_cells', 'correct_cells'];
   for (const key of cellKeys) {
     const cells = config?.[key];
@@ -139,7 +139,7 @@ function pickSolutionDataset(config, starterDataset) {
 }
 
 /* =============================================================
-   Excel Workspace — full spreadsheet with formula support
+   Excel Workspace, full spreadsheet with formula support
    ============================================================= */
 
 export default function ExcelWorkspace({ config, title, onComplete }) {
@@ -395,13 +395,13 @@ export default function ExcelWorkspace({ config, title, onComplete }) {
           </button>
         </div>
 
-        {/* Correct solution — revealed after submit */}
+        {/* Correct solution, revealed after submit */}
         {completed && solutionDataset && (
           <div className="mt-4 space-y-3" data-testid="excel-ws-solution-block">
             <div className="flex items-center gap-2">
               <CheckCircle2 size={16} className="text-[var(--color-success)]" />
               <h4 className="font-clash text-sm font-semibold text-[var(--color-text)]">
-                Correct solution — this is what the finished model looks like
+                Correct solution, this is what the finished model looks like
               </h4>
             </div>
             <p className="text-[11px] font-mono text-[var(--color-text-muted)]">

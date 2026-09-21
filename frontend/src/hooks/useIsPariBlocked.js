@@ -1,6 +1,6 @@
 import { useLocation } from 'react-router-dom';
 
-// Feb 2026 — routes where Pari should be silent so the student stays
+// Feb 2026, routes where Pari should be silent so the student stays
 // focused on the graded activity (quiz, mock interview, simulation).
 //
 // Note we only block the *active* pages, NOT the /start or /complete

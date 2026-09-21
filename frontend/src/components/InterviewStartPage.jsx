@@ -13,7 +13,7 @@ import {
 import { Skeleton } from './ui/skeleton';
 
 const TIPS = [
-  { title: 'Be specific', body: 'Swap vague language for concrete examples — companies, numbers, frameworks you actually know.' },
+  { title: 'Be specific', body: 'Swap vague language for concrete examples, companies, numbers, frameworks you actually know.' },
   { title: 'Structure your answer', body: 'State your conclusion first, back it with 2–3 reasons, then wrap with a one-line summary.' },
   { title: 'Start with the conclusion', body: 'Interviewers skim. Give them the punchline up front, then prove it.' },
 ];
@@ -126,7 +126,7 @@ export default function InterviewStartPage() {
                 <span className="text-[var(--color-text)]">Interview</span>
               </div>
 
-              {/* P59 P1: Pari header — interviewer mode (start view) */}
+              {/* P59 P1: Pari header, interviewer mode (start view) */}
               <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-center gap-3" data-testid="interview-pari-header">
                 <AvatarPersona
                   pose="interviewer"
@@ -140,7 +140,7 @@ export default function InterviewStartPage() {
                     Your interviewer
                   </div>
                   <div className="text-xs sm:text-sm text-[var(--color-text)] font-bricolage leading-relaxed">
-                    I'm Pari — your mock interviewer for this session. I'll ask you questions one at a time; take your time on each answer.
+                    I'm Pari, your mock interviewer for this session. I'll ask you questions one at a time; take your time on each answer.
                   </div>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function InterviewStartPage() {
                 Interview Practice
               </h1>
               <p className="text-[var(--color-text-muted)] font-bricolage text-base sm:text-lg leading-relaxed mb-8">
-                Simulate a real interview with a Senior Analyst. Type your response — get
+                Simulate a real interview with a Senior Analyst. Type your response, get
                 instant feedback on what landed and what to sharpen.
               </p>
 
@@ -226,7 +226,7 @@ export default function InterviewStartPage() {
 
               <div className="flex items-center justify-between gap-4">
                 <span className="text-xs font-mono text-[var(--color-text-muted)] flex items-center gap-1.5">
-                  <Target size={13} /> No right answer — just your best shot
+                  <Target size={13} /> No right answer, just your best shot
                 </span>
                 <button
                   onClick={() => navigate(`/session/${sessionId}/interview`)}

@@ -1,4 +1,4 @@
-// Pure-function PivotTable engine — used by PivotTableSheet.jsx for live
+// Pure-function PivotTable engine, used by PivotTableSheet.jsx for live
 // recomputation and by the grader for scoring.
 //
 // Data flow:
@@ -15,7 +15,7 @@
 //     valueIds:   ['SUM(Revenue)', …]
 //   }
 //
-// gradePivotSheet — graded by 4 dimensions:
+// gradePivotSheet, graded by 4 dimensions:
 //   1. fields-in-zones      (rows/columns/values content matches expected)
 //   2. value aggregations   (SUM vs AVERAGE matches)
 //   3. specific cell values (if expected_cells provided)
@@ -141,7 +141,7 @@ export function computePivot(sourceData, state) {
     }
   }
 
-  // Row totals — aggregate across all col buckets for that row
+  // Row totals, aggregate across all col buckets for that row
   const rowTotals = {};
   for (const rk of rowKeys) {
     const rkStr = tupleKey(rk);
@@ -198,7 +198,7 @@ export function computePivot(sourceData, state) {
  *   - 20% filter set + allowed lists overlap
  *   - 20% (or 40% if no filters) expected_cells match within tolerance
  *
- * `correct` is strict — ALL of these must be true:
+ * `correct` is strict, ALL of these must be true:
  *   - same set of fields in rows  (order ignored for now)
  *   - same set of fields in cols
  *   - same set of {field, agg} in values

@@ -2,7 +2,7 @@ import { GraduationCap, ShieldCheck } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 /**
- * Who built this — editorial terminal treatment (Feb 2026).
+ * Who built this, editorial terminal treatment (Feb 2026).
  * Copy verbatim.
  */
 export default function WhoBuiltThisSection() {
@@ -33,7 +33,7 @@ export default function WhoBuiltThisSection() {
             style={{ animationDelay: '0.08s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
             data-testid="who-built-this-heading"
           >
-            Who built this — and{' '}
+            Who built this, and{' '}
             <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               why
             </span>{' '}
@@ -63,8 +63,8 @@ export default function WhoBuiltThisSection() {
               The program&apos;s 42 hours of video lectures are designed and taught by Saarthak Bhatia,
               who built the full course content end-to-end. Every module is scripted and recorded
               before release. Saarthak is a qualified Chartered Accountant (CA), US Certified
-              Management Accountant (CMA US) and ACCA (UK) — a triple-credential accounting and
-              finance stack — with close to five years of teaching experience across Grant Thornton
+              Management Accountant (CMA US) and ACCA (UK), a triple-credential accounting and
+              finance stack, with close to five years of teaching experience across Grant Thornton
               Bharat (Learning GT), FinTram Global, Zell Education and QuintEdge, and earlier at The
               Narayana Group and Byju&apos;s Learning App.
             </p>
@@ -95,7 +95,7 @@ export default function WhoBuiltThisSection() {
               </span>
             </div>
             <p className="text-[13.5px] lg:text-[14.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-              The curriculum maps to the NISM Series XV (Research Analyst) exam syllabus — so
+              The curriculum maps to the NISM Series XV (Research Analyst) exam syllabus, so
               what you learn is checked against external standards, not just our own.
             </p>
             <div className="mt-5 pt-4 border-t border-[var(--color-border)] flex items-center justify-between">

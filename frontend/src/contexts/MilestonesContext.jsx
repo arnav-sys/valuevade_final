@@ -2,15 +2,15 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { useAuth } from './AuthContext';
 import { listPendingMilestones, dismissMilestone, checkSessionMilestone } from '../utils/milestones';
 
-// Phase C — Milestone queue + dispatcher.
+// Phase C, Milestone queue + dispatcher.
 //
 // Single source of truth for the celebration overlay. Holds an array of
 // pending milestone payloads (oldest first), exposes:
-//   • `pending`        — current queue (overlay reads queue[0])
-//   • `refresh()`      — re-poll /api/milestones/pending (called after
+//   • `pending`       , current queue (overlay reads queue[0])
+//   • `refresh()`     , re-poll /api/milestones/pending (called after
 //                        check + after dismiss to surface the next one)
-//   • `dismiss(code)`  — fires the dismiss API and removes from local queue
-//   • `notifySessionCompleted(sessionId)` — POSTs /milestones/check then
+//   • `dismiss(code)` , fires the dismiss API and removes from local queue
+//   • `notifySessionCompleted(sessionId)`, POSTs /milestones/check then
 //                        refreshes the queue. Called from SessionCompletePage.
 
 const MilestonesContext = createContext({
@@ -45,12 +45,12 @@ export function MilestonesProvider({ children }) {
   const dismiss = useCallback(async (code) => {
     // Optimistic: drop locally first so the overlay closes immediately, then
     // hit the API. If the API fails the next refresh will re-surface it,
-    // which is fine — no data loss.
+    // which is fine, no data loss.
     setPending((q) => q.filter((m) => m.code !== code));
     try {
       await dismissMilestone(code);
     } catch {
-      // ignore — next refresh will reconcile
+      // ignore, next refresh will reconcile
     }
   }, []);
 
@@ -59,13 +59,13 @@ export function MilestonesProvider({ children }) {
     try {
       const { ok, data } = await checkSessionMilestone(sessionId);
       if (ok && data?.newly_granted?.length > 0) {
-        // Something was granted — refresh the pending queue so the overlay
+        // Something was granted, refresh the pending queue so the overlay
         // picks it up. The granted milestone will be the most recent
         // earned_at, so it shows last (we sort asc to honor "oldest first").
         await refresh();
       }
     } catch {
-      // ignore — milestone grant is non-blocking
+      // ignore, milestone grant is non-blocking
     }
   }, [user?.id, refresh]);
 

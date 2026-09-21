@@ -1,4 +1,4 @@
-// Batch 5 — Renderer adapter for master_simulations.config.
+// Batch 5, Renderer adapter for master_simulations.config.
 //
 // Normalises the THREE known config shapes into a single canonical
 // "workbook" object the SpreadsheetSim component consumes:
@@ -134,7 +134,7 @@ export function adaptSimToWorkbook(sim) {
     time_limit_minutes: config.time_limit_minutes || null,
   };
 
-  // ----- Shape 0 (NEW — HIGHEST priority): LLM-populated `multi_tab_excel_workbook` ----
+  // ----- Shape 0 (NEW, HIGHEST priority): LLM-populated `multi_tab_excel_workbook` ----
   // This is the canonical shape produced by `/app/scripts/populate_excel_sims.py`.
   // When present, it always wins over any other detected shape because the
   // populate pass is the only source of realistic finance data + cell-level
@@ -154,7 +154,7 @@ export function adaptSimToWorkbook(sim) {
   const mw = config.multi_tab_excel_workbook;
     if (mw && Array.isArray(mw.sheets) && mw.sheets.length > 0) {
     const sheets = mw.sheets.map((s) => {
-      // Pivot sheet — pass through kind/spec/pivot_state so SpreadsheetSim
+      // Pivot sheet, pass through kind/spec/pivot_state so SpreadsheetSim
       // can route to PivotTableSheet. No data-grid cells needed.
       if (s.kind === 'pivot') {
         return {
@@ -215,7 +215,7 @@ export function adaptSimToWorkbook(sim) {
       sheets,
       // When the LLM-populate pass couldn't produce per-cell expected_answers
       // (structural template sims like "Build the shell from scratch"),
-      // fall back to manual scoring — the workbook still renders and the
+      // fall back to manual scoring, the workbook still renders and the
       // student still gets all the editable cells, but Submit just stores
       // the work instead of trying to auto-grade.
       scoring: Object.keys(ea).length === 0
@@ -313,7 +313,7 @@ export function adaptSimToWorkbook(sim) {
       'tab_names','instructions','brief','prompt','base_date','base_value',
       'index_name','bond_yield_pct','historical_avg_pe','excel_formulas_tested',
       'expected_solutions','raw_data','data',
-      // ----- rubric / meta keys (added 2026-05-30) — never render as a sheet -----
+      // ----- rubric / meta keys (added 2026-05-30), never render as a sheet -----
       'evaluation_criteria','deliverables','expected_outputs','expected_output',
       'expected_answers','stress_tests','acid_test','tools_required','three_layers',
       'font_colour_convention','firm_context','hints','task_description',
@@ -363,7 +363,7 @@ export function adaptSimToWorkbook(sim) {
 
   // ----- Fallback: empty grid + show the brief prominently -----
   return {
-    header: { ...header, instructions: header.instructions || 'No starter data — type your analysis below.' },
+    header: { ...header, instructions: header.instructions || 'No starter data, type your analysis below.' },
     sheets: [{
       name: 'Sheet1',
       cells: { A1: { value: '', readOnly: false } },
@@ -389,7 +389,7 @@ export function scoreWorkbook(workbook) {
       if (cell.expected === undefined) return;
       const points = cell.points || 10;
       totalPoints += points;
-      // Resolve the user's value — evaluate formulas if needed.
+      // Resolve the user's value, evaluate formulas if needed.
       const raw = cell.value;
       let userVal = raw;
       if (typeof raw === 'string' && raw.startsWith('=')) {

@@ -15,7 +15,7 @@ import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
 
 const MIN_CHARS = 50;
-const MAX_CHARS = 2000; // ~300–350 words — plenty for a thorough finance answer
+const MAX_CHARS = 2000; // ~300–350 words, plenty for a thorough finance answer
 const TYPING_MS = 900;
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
@@ -185,7 +185,7 @@ export default function InterviewPage() {
     setPhase('typing');
     setAnswer('');
     setShowModelAnswer(false);
-    // In review mode, skip answering — show question + model answer immediately
+    // In review mode, skip answering, show question + model answer immediately
     if (isReview) {
       const t = setTimeout(() => setPhase('review'), TYPING_MS);
       return () => clearTimeout(t);
@@ -361,7 +361,7 @@ export default function InterviewPage() {
       </div>
 
       <main ref={scrollRef} className="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-24">
-        {/* P55: Pari header — interviewer mode */}
+        {/* P55: Pari header, interviewer mode */}
         <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-center gap-3" data-testid="interview-pari-header">
           <AvatarPersona
             pose="interviewer"
@@ -375,7 +375,7 @@ export default function InterviewPage() {
               Pari is interviewing you
             </div>
             <div className="text-xs sm:text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-              Take your time on each answer — structure it like an analyst would.
+              Take your time on each answer, structure it like an analyst would.
             </div>
           </div>
         </div>
@@ -440,7 +440,7 @@ export default function InterviewPage() {
                     value={answer}
                     onChange={(e) => setAnswer(e.target.value.slice(0, MAX_CHARS))}
                     disabled={phase === 'evaluating'}
-                    placeholder="Think through your answer. Structure it — conclusion first, then reasoning…"
+                    placeholder="Think through your answer. Structure it, conclusion first, then reasoning…"
                     rows={6}
                     maxLength={MAX_CHARS}
                     className="w-full rounded-[14px] px-4 py-3.5 bg-[var(--bg-primary)] text-[var(--color-text)] text-sm sm:text-base font-bricolage placeholder:text-[var(--color-text-faint)] resize-none focus:outline-none leading-relaxed disabled:opacity-60"
@@ -612,7 +612,7 @@ export default function InterviewPage() {
               </div>
             </div>
           )}
-          {/* Review mode block — show question + model answer with a Next/Back CTA */}
+          {/* Review mode block, show question + model answer with a Next/Back CTA */}
           {phase === 'review' && (
             <div className="mt-2 space-y-5 animate-vv-fade-up" data-testid="interview-review-block">
               {modelAnswer && (
@@ -645,7 +645,7 @@ export default function InterviewPage() {
               )}
 
               <div className="rounded-2xl px-5 py-4 bg-[var(--color-success)]/6 border border-[var(--color-success)]/25 text-sm font-bricolage text-[var(--color-text-muted)]">
-                You already completed this interview{session?.interview_score != null ? ` with an overall score of ${session.interview_score}%` : ''}. You can step through the questions and review the model answers — your previous evaluations aren&apos;t kept after completion.
+                You already completed this interview{session?.interview_score != null ? ` with an overall score of ${session.interview_score}%` : ''}. You can step through the questions and review the model answers, your previous evaluations aren&apos;t kept after completion.
               </div>
 
               <div className="flex justify-end pt-2 gap-2">

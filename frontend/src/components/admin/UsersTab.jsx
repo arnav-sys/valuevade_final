@@ -304,8 +304,8 @@ export default function UsersTab({ onSelect }) {
                 <h3 className="text-base font-semibold text-[var(--color-text)]">Enroll &amp; Mark Paid?</h3>
                 <p className="text-sm text-[var(--color-text-muted)] mt-1">This will{!confirmEnroll.enrolled ? ' enroll' : ''}{!confirmEnroll.enrolled && !confirmEnroll.paid ? ' and' : ''}{!confirmEnroll.paid ? ' mark as paid (₹4999)' : ''} <strong className="text-[var(--color-text)]">{confirmEnroll.email}</strong> in the Equity Research Analyst course.</p>
                 <div className="mt-3 flex flex-col gap-1.5">
-                  <div className={`flex items-center gap-2 text-xs ${confirmEnroll.enrolled ? 'text-green-400' : 'text-[var(--color-text-muted)]'}`}><CheckCircle2 size={11} className={confirmEnroll.enrolled ? 'text-green-400' : 'text-[var(--color-border)]'} />Course enrollment {confirmEnroll.enrolled ? '(already enrolled — will skip)' : '(will be created)'}</div>
-                  <div className={`flex items-center gap-2 text-xs ${confirmEnroll.paid ? 'text-green-400' : 'text-[var(--color-text-muted)]'}`}><CheckCircle2 size={11} className={confirmEnroll.paid ? 'text-green-400' : 'text-[var(--color-border)]'} />Payment status ₹4999 upfront {confirmEnroll.paid ? '(already paid — will skip)' : '(will be set)'}</div>
+                  <div className={`flex items-center gap-2 text-xs ${confirmEnroll.enrolled ? 'text-green-400' : 'text-[var(--color-text-muted)]'}`}><CheckCircle2 size={11} className={confirmEnroll.enrolled ? 'text-green-400' : 'text-[var(--color-border)]'} />Course enrollment {confirmEnroll.enrolled ? '(already enrolled, will skip)' : '(will be created)'}</div>
+                  <div className={`flex items-center gap-2 text-xs ${confirmEnroll.paid ? 'text-green-400' : 'text-[var(--color-text-muted)]'}`}><CheckCircle2 size={11} className={confirmEnroll.paid ? 'text-green-400' : 'text-[var(--color-border)]'} />Payment status ₹4999 upfront {confirmEnroll.paid ? '(already paid, will skip)' : '(will be set)'}</div>
                 </div>
               </div>
             </div>
@@ -326,7 +326,7 @@ export default function UsersTab({ onSelect }) {
               <div className="p-2 rounded-lg bg-red-500/10 text-red-400"><Trash2 size={20} /></div>
               <div>
                 <h3 className="text-base font-semibold text-[var(--color-text)]">Delete user?</h3>
-                <p className="text-sm text-[var(--color-text-muted)] mt-1">This will permanently remove <strong className="text-[var(--color-text)]">{confirmDelete.email}</strong> and all their data — enrollments, progress, exam attempts, payments and reward claims. This cannot be undone.</p>
+                <p className="text-sm text-[var(--color-text-muted)] mt-1">This will permanently remove <strong className="text-[var(--color-text)]">{confirmDelete.email}</strong> and all their data, enrollments, progress, exam attempts, payments and reward claims. This cannot be undone.</p>
               </div>
             </div>
             <div className="flex gap-2 justify-end">

@@ -7,7 +7,7 @@
 // Run with:
 //   cd /app/frontend && yarn test --watchAll=false --testPathPattern=validate_m3_samples
 //
-// This is the deterministic post-pass that Step 5 (bulk seed) will use —
+// This is the deterministic post-pass that Step 5 (bulk seed) will use,
 // any sim that fails this check gets routed back to the LLM for repair.
 
 import fs from 'fs';
@@ -54,10 +54,10 @@ function approxEqual(a, b, tol) {
   return false;
 }
 
-describe('M3 sample workbooks — deterministic expected_value validation', () => {
+describe('M3 sample workbooks, deterministic expected_value validation', () => {
   const samples = loadSamples();
   samples.forEach(({ file, json }) => {
-    describe(`${json.session} (${json.slot}) — ${json.session_title}`, () => {
+    describe(`${json.session} (${json.slot}), ${json.session_title}`, () => {
       const ctx = buildCtxFromWorkbook(json.multi_tab_excel_workbook);
       const ea = json.expected_answers;
       const corrections = [];
@@ -65,13 +65,13 @@ describe('M3 sample workbooks — deterministic expected_value validation', () =
       Object.entries(ea).forEach(([key, spec]) => {
         test(`${key} ← ${String(spec.formula_pattern).slice(0, 60)}`, () => {
           const got = evaluateFormula(spec.formula_pattern, ctx);
-          // Even errors should not be silent — log them.
+          // Even errors should not be silent, log them.
           if (isFormulaError(got)) {
             corrections.push({ key, formula: spec.formula_pattern,
               llm_expected: spec.expected_value, engine_returned: `#ERROR(${got.code})` });
             // Some pedagogically-broken formulas may still have a correct
             // "expected_value" (LLM saw the right answer even though its
-            // formula_pattern is buggy). Don't fail the test — just log.
+            // formula_pattern is buggy). Don't fail the test, just log.
             console.warn(`[${json.session}] ${key} formula errored: ${got.code}; keeping LLM expected_value`);
             return;
           }
@@ -80,7 +80,7 @@ describe('M3 sample workbooks — deterministic expected_value validation', () =
             corrections.push({ key, formula: spec.formula_pattern,
               llm_expected: spec.expected_value, engine_computed: got });
             console.warn(
-              `[${json.session}] ${key} drift — ` +
+              `[${json.session}] ${key} drift, ` +
               `LLM said ${JSON.stringify(spec.expected_value)} but engine computed ${JSON.stringify(got)}`
             );
           }

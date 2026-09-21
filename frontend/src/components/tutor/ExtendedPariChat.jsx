@@ -4,7 +4,7 @@ import AvatarPersona from './AvatarPersona';
 import { TUTOR_NAME } from '../../contexts/TutorContext';
 import { startExtendedChat, askExtendedChat, endExtendedChat } from '../../utils/sessionDoubts';
 
-// Phase B — Extended Pari chat panel.
+// Phase B, Extended Pari chat panel.
 //
 // Separate from DoubtsSession.jsx (quick chat). Limits:
 //   • 15 turns per session (vs 3 in quick)
@@ -12,7 +12,7 @@ import { startExtendedChat, askExtendedChat, endExtendedChat } from '../../utils
 //   • No token budget gate
 //
 // Quick chat endpoints (/api/doubts/start|ask|end) are intentionally NOT
-// shared — this component talks ONLY to /api/doubts/extended/*.
+// shared, this component talks ONLY to /api/doubts/extended/*.
 //
 // Surfaces the EXACT backend error on quota / turn-cap (no swallowing).
 
@@ -131,7 +131,7 @@ export default function ExtendedPariChat({
     try {
       const { ok, data } = await askExtendedChat({ doubt_session_id: sessionId, message: msg });
       if (!ok) {
-        const errMsg = (typeof data?.detail === 'string' ? data.detail : data?.detail?.message) || 'Pari hit a snag — please try again.';
+        const errMsg = (typeof data?.detail === 'string' ? data.detail : data?.detail?.message) || 'Pari hit a snag, please try again.';
         setMessages((m) => [...m, { role: 'assistant', content: errMsg, isError: true }]);
       } else {
         setMessages((m) => [...m, { role: 'assistant', content: data.answer, animate: true }]);
@@ -143,7 +143,7 @@ export default function ExtendedPariChat({
         }
       }
     } catch (e) {
-      setMessages((m) => [...m, { role: 'assistant', content: e?.message || 'Network error — try again.', isError: true }]);
+      setMessages((m) => [...m, { role: 'assistant', content: e?.message || 'Network error, try again.', isError: true }]);
     } finally {
       setPending(false);
     }
@@ -222,10 +222,10 @@ export default function ExtendedPariChat({
             />
             <div className="mt-3 text-xs text-[var(--color-text-muted)] text-center font-bricolage hidden sm:block">
               {sessionEnded
-                ? "Hope that helped — go redo with confidence!"
+                ? "Hope that helped, go redo with confidence!"
                 : pending
                   ? `${TUTOR_NAME} is thinking…`
-                  : `Take your time — up to 15 turns to untangle this.`}
+                  : `Take your time, up to 15 turns to untangle this.`}
             </div>
           </aside>
 
@@ -257,7 +257,7 @@ export default function ExtendedPariChat({
                   <div className="flex items-center gap-1.5 mb-1 text-[var(--color-text)] font-semibold">
                     <Sparkles size={12} /> Start with whatever felt confusing
                   </div>
-                  Ask narrowly (e.g. "Why did we use FCFE instead of FCFF here?") — {TUTOR_NAME} works through it across up to 15 turns.
+                  Ask narrowly (e.g. "Why did we use FCFE instead of FCFF here?"), {TUTOR_NAME} works through it across up to 15 turns.
                 </div>
               )}
               {messages.map((m, i) => <ChatBubble key={i} {...m} />)}
@@ -290,7 +290,7 @@ export default function ExtendedPariChat({
                     value={input}
                     onChange={(e) => setInput(e.target.value.slice(0, 1000))}
                     onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-                    placeholder={`Ask ${TUTOR_NAME} — 2 to 1000 chars`}
+                    placeholder={`Ask ${TUTOR_NAME}, 2 to 1000 chars`}
                     rows={2}
                     className="flex-1 resize-none rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm font-bricolage text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]/60"
                     disabled={pending || bootstrapping || !sessionId}

@@ -40,7 +40,7 @@ export default function LandingPage() {
   const toggleLandingTheme = toggleTheme;
 
   // Body class is applied in both modes so iOS overscroll always shows the
-  // landing palette (dark or light) — never the default app surface. The
+  // landing palette (dark or light), never the default app surface. The
   // CSS branches between dark/light using the `landing-light` companion class.
   useEffect(() => {
     const root = document.documentElement;
@@ -68,17 +68,17 @@ export default function LandingPage() {
       style={{ transition: 'background-color 250ms ease, color 250ms ease' }}
     >
       <Helmet>
-        <title>Equity Research & Financial Modelling Course — Valuevade</title>
-        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series XV prep, certificate — ₹4999 lifetime." />
+        <title>Equity Research & Financial Modelling Course | Valuevade</title>
+        <meta name="description" content="AI-personalised equity research & financial modelling course for Indian students. 239 hands-on sessions, NISM Series XV prep, certificate, ₹4999 lifetime." />
         <link rel="canonical" href="https://valuevade.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/" />
-        <meta property="og:title" content="Equity Research & Financial Modelling Course — Valuevade" />
+        <meta property="og:title" content="Equity Research & Financial Modelling Course | Valuevade" />
         <meta property="og:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹4999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Equity Research & Financial Modelling Course — Valuevade" />
+        <meta name="twitter:title" content="Equity Research & Financial Modelling Course | Valuevade" />
         <meta name="twitter:description" content="AI-personalised equity research and financial modelling course for Indian finance students. 239 hands-on sessions on real Indian companies. ₹4999 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         <script type="application/ld+json">{JSON.stringify(homeOrgJsonLd)}</script>
@@ -91,7 +91,7 @@ export default function LandingPage() {
         onToggleLandingTheme={toggleLandingTheme}
       />
 
-      {/* Cinematic Three.js background — retired from the above-the-fold
+      {/* Cinematic Three.js background, retired from the above-the-fold
           in Feb 2026 editorial redesign. HeroSection now ships its own
           restrained chart/grid backdrop. Kept lazy import in case we
           bring it back for a section further down the page. */}

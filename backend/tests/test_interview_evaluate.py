@@ -25,7 +25,7 @@ STRONG = (
     "The present value equals next year's cashflow divided by the discount rate minus growth rate, so PV = CF1 / (r - g). "
     "Plugging in the numbers: $100 divided by (10% - 3%) equals $100 / 0.07, which is about $1,428.57. "
     "Key assumption: r must exceed g, otherwise the formula breaks down and you get a negative or infinite PV. "
-    "I'd also flag sensitivity — a 1% tightening of the r-g spread materially raises valuation."
+    "I'd also flag sensitivity, a 1% tightening of the r-g spread materially raises valuation."
 )
 MID = (
     "I would discount the cashflows. Since it grows, I'd use a growing perpetuity formula. "

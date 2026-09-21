@@ -94,7 +94,7 @@ export default function InterviewSimHub() {
               Interview Simulations
             </h1>
             <p className="text-[var(--color-text-muted)] font-bricolage max-w-2xl">
-              Five real hiring processes, end to end — application, online aptitude test, HR &amp; technical
+              Five real hiring processes, end to end, application, online aptitude test, HR &amp; technical
               interviews (answer by voice), and a live case-modelling round. AI evaluates you at every step,
               exactly like a top-firm recruiting committee would.
             </p>
@@ -160,7 +160,7 @@ export default function InterviewSimHub() {
                     <div>
                       <p className="text-sm font-bricolage font-semibold text-[var(--color-text)]">
                         {data.sims_completed === data.sims_total
-                          ? 'All 5 processes complete — Module 20 finished!'
+                          ? 'All 5 processes complete, Module 20 finished!'
                           : `${data.sims_completed}/${data.sims_total} interview processes completed`}
                       </p>
                       <p className="text-xs text-[var(--color-text-muted)]">

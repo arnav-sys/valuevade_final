@@ -1,5 +1,5 @@
 /**
- * SessionReconnectBanner — subtle fixed banner shown when the Supabase
+ * SessionReconnectBanner, subtle fixed banner shown when the Supabase
  * auth token briefly lapses (e.g. during a token refresh).
  * Auto-hides once the session is restored.
  */

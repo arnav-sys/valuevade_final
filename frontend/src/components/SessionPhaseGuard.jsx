@@ -15,7 +15,7 @@ import useSessionTimer from '../utils/useSessionTimer';
  * Props:
  *   phase: 'notes' | 'quiz' | 'interview' | 'simulation'
  *
- * Feb 2026 — session interview phase is hidden. A user landing on
+ * Feb 2026, session interview phase is hidden. A user landing on
  * /session/:id/interview* is redirected onto the next enabled phase
  * (simulation) so old bookmarks / share links still route somewhere sane.
  */

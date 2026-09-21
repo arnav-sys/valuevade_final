@@ -118,7 +118,7 @@ def test_interview_answer_flow(s):
     # Begin behavioural
     r = s.post(_url("/interview/begin"), json={"stage": "behavioural"})
     turns = r.json()["turns"]
-    # Answer once — expect next question OR round_complete
+    # Answer once, expect next question OR round_complete
     r = s.post(_url("/interview/answer"), json={
         "stage": "behavioural",
         "answer": "In my last internship at an equity research shop I built a DCF for Titan and defended it in a team review.",
@@ -141,7 +141,7 @@ def test_interview_answer_requires_turns(s):
 
 # ---------- case study -----------------------------------------------------
 def test_case_submit(s):
-    rec = ("BUY recommendation — target price implies 22% upside. Key drivers: (1) premiumisation of mid-tier "
+    rec = ("BUY recommendation, target price implies 22% upside. Key drivers: (1) premiumisation of mid-tier "
            "products lifts blended margin ~180bps by FY27, (2) balance-sheet deleveraging supports a re-rating, "
            "and (3) rural distribution expansion adds ~4% volume CAGR. Risks: raw-material inflation, monsoon.")
     assert len(rec) >= 120

@@ -15,7 +15,7 @@ const VERDICT_META = {
 
 function SimpleMarkdown({ text }) {
   if (!text) return null;
-  // Minimal markdown — paragraphs + **bold**
+  // Minimal markdown, paragraphs + **bold**
   const html = text
     .split(/\n\n+/)
     .map(p => p.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>'))

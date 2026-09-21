@@ -38,7 +38,7 @@ const lazyWithRetry = (factory) =>
           // boundary in the brief instant before the page actually reloads.
           return new Promise(() => {});
         }
-        // Second failure within the same session — clear the flag for next session and bubble.
+        // Second failure within the same session, clear the flag for next session and bubble.
         window.sessionStorage.removeItem(RELOAD_FLAG);
       }
       throw err;

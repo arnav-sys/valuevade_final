@@ -4,7 +4,7 @@ const API = process.env.REACT_APP_BACKEND_URL;
 
 /**
  * Get a fresh Supabase access token. During long interview rounds a user
- * may spend several minutes on one screen — long enough for the cached
+ * may spend several minutes on one screen, long enough for the cached
  * JWT to expire. If the current session token is within 60 s of expiring
  * (or already expired) we force a refresh before returning.
  */
@@ -17,7 +17,7 @@ async function getFreshAccessToken() {
     try {
       const { data: refreshed } = await supabase.auth.refreshSession();
       if (refreshed?.session?.access_token) return refreshed.session.access_token;
-    } catch { /* fall through and return stale token — server will 401 and caller can retry */ }
+    } catch { /* fall through and return stale token, server will 401 and caller can retry */ }
   }
   return session.access_token;
 }
@@ -48,7 +48,7 @@ export async function interviewSimFetch(path, opts = {}) {
         token = refreshed.session.access_token;
         r = await doFetch(path, opts, token);
       }
-    } catch { /* fall through — original 401 will surface */ }
+    } catch { /* fall through, original 401 will surface */ }
   }
 
   const text = await r.text();

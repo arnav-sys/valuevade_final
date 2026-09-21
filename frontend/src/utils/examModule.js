@@ -1,5 +1,5 @@
 /**
- * Exam-module detection helpers — mirrors the pattern in interviewSim.js
+ * Exam-module detection helpers, mirrors the pattern in interviewSim.js
  * for NISM Series XV / Module 16 style exam modules.
  *
  * Returns empty Set on any DB error so consumers degrade gracefully when

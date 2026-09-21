@@ -10,10 +10,10 @@ import { reportError } from '@/lib/errorReporter';
  * Clicking it opens a compact panel with a description textarea. On submit
  * we call the existing /api/errors/report pipeline with `type='user_report'`
  * so it lands in AdminPanel → Errors alongside crashes (but flagged as a
- * user-driven report — no stack trace, purely descriptive).
+ * user-driven report, no stack trace, purely descriptive).
  *
  * Design intent:
- *  - Never obstructs primary CTAs — bottom-LEFT corner, low z-index.
+ *  - Never obstructs primary CTAs, bottom-LEFT corner, low z-index.
  *  - Hidden on the landing / login routes (only mount when auth is ready).
  *  - Description is REQUIRED; submit is disabled otherwise.
  *  - Auto-closes 1.5s after a successful send.
@@ -25,7 +25,7 @@ export default function BugReportButton() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  // Only show for authenticated users — anonymous crash reporting is already
+  // Only show for authenticated users, anonymous crash reporting is already
   // handled by the auto-installed window handlers in errorReporter.js.
   if (authLoading || !user) return null;
 
@@ -120,7 +120,7 @@ export default function BugReportButton() {
                 <CheckCircle2 size={20} style={{ color: '#86efac' }} />
               </div>
               <p className="text-sm font-bricolage" style={{ color: 'rgba(255,255,255,0.85)' }}>
-                Thanks — our team has been notified.
+                Thanks, our team has been notified.
               </p>
             </div>
           ) : (

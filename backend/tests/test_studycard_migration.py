@@ -65,7 +65,7 @@ def test_total_master_notes_cards_count():
     r = run_sql(sql)
     assert r.status_code in OK, r.text
     count = r.json()[0]["c"]
-    # Sanity check — we accept whatever the present total is, just report it.
+    # Sanity check, we accept whatever the present total is, just report it.
     # The request says 1064; assert that.
     assert count == 1264, f"expected total 1064, got {count}"
 

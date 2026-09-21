@@ -102,8 +102,8 @@ function RewardEditorModal({ reward, triggers, onClose, onSaved }) {
               <div>
                 <label className="block text-xs font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1.5">Target *</label>
                 <select value={form.trigger_ref_id} onChange={(e) => setForm({ ...form, trigger_ref_id: e.target.value })} className="w-full px-3 py-2 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text)] text-sm" data-testid="admin-reward-trigger-ref">
-                  <option value="">— pick one —</option>
-                  {options.map((o) => (<option key={o.id} value={o.id}>{form.trigger_type === 'module_complete' ? `M${o.module_number} — ${o.title}` : `${o.code || 'CAP'} — ${o.title}`}</option>))}
+                  <option value="">pick one</option>
+                  {options.map((o) => (<option key={o.id} value={o.id}>{form.trigger_type === 'module_complete' ? `M${o.module_number}, ${o.title}` : `${o.code || 'CAP'}, ${o.title}`}</option>))}
                 </select>
               </div>
             </div>
@@ -215,7 +215,7 @@ export default function RewardsTab() {
               <div className="text-sm font-semibold text-[var(--color-text)] font-bricolage" data-testid={`admin-reward-title-${r.id}`}>{r.title}</div>
               <div className="text-xs text-[var(--color-text-muted)] mt-0.5">{r.trigger_label}</div>
               {r.resource_file_name && (<div className="text-[11px] text-[var(--color-text-faint)] mt-1 truncate">📎 {r.resource_file_name}{r.resource_size_bytes ? ` · ${(r.resource_size_bytes / 1024).toFixed(0)} KB` : ''}</div>)}
-              {!r.resource_file_path && (<div className="text-[11px] text-amber-400 mt-1">⚠ No file uploaded — reward won&apos;t unlock until you attach one.</div>)}
+              {!r.resource_file_path && (<div className="text-[11px] text-amber-400 mt-1">⚠ No file uploaded, reward won&apos;t unlock until you attach one.</div>)}
             </div>
             <div className="flex items-center gap-2">
               <button onClick={() => toggleActive(r)} className={`px-3 py-1.5 rounded-lg text-xs font-semibold border ${r.is_active ? 'border-[var(--color-success)]/50 text-[var(--color-success)]' : 'border-[var(--color-border)] text-[var(--color-text-muted)]'}`} data-testid={`admin-reward-toggle-${r.id}`}>{r.is_active ? 'Active' : 'Inactive'}</button>

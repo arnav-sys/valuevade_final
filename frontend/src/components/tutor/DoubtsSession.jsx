@@ -4,7 +4,7 @@ import { supabase } from '../../lib/supabase';
 import AvatarPersona from './AvatarPersona';
 import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
 
-// Phase 52 — DoubtsSession
+// Phase 52, DoubtsSession
 //
 // Modal-style chat panel: large Pari on the left, message thread on the right,
 // input at the bottom. Pose updates with the conversation state:
@@ -88,7 +88,7 @@ export default function DoubtsSession({
   // Post-launcher-refactor: the drawer opens instantly with NO session yet.
   // The session is provisioned via /api/doubts/start ONLY when the user
   // sends their first message (see `send()`). So `bootstrapping` stays
-  // false until then — and `sessionId` starts as null.
+  // false until then, and `sessionId` starts as null.
   const [bootstrapping, setBootstrapping] = useState(false);
   const [sessionId, setSessionId] = useState(doubtSession?.doubt_session_id || null);
   const [error, setError] = useState(null);
@@ -155,7 +155,7 @@ export default function DoubtsSession({
     setPending(true);
     try {
       // Lazy provisioning: no session yet? call /doubts/start first. This is
-      // the ONLY point at which one of the 5 daily sessions is consumed —
+      // the ONLY point at which one of the 5 daily sessions is consumed,
       // clicking the icon and closing without asking never allocates one.
       let sid = sessionId;
       if (!sid) {
@@ -175,7 +175,7 @@ export default function DoubtsSession({
         if (sStatus === 402 || (sData?.detail && sData.detail.reason === 'pari_cost_limit_reached')) {
           setMessages((m) => [...m, {
             role: 'assistant',
-            content: (sData?.detail?.message || 'Pari is disabled — usage limit reached.'),
+            content: (sData?.detail?.message || 'Pari is disabled, usage limit reached.'),
             isError: true,
           }]);
           setSessionEnded(true);
@@ -219,7 +219,7 @@ export default function DoubtsSession({
         if (status === 402 || (data?.detail && data.detail.reason === 'pari_cost_limit_reached')) {
           setMessages((m) => [...m, {
             role: 'assistant',
-            content: (data?.detail?.message || 'Pari is disabled — usage limit reached.'),
+            content: (data?.detail?.message || 'Pari is disabled, usage limit reached.'),
             isError: true,
           }]);
           setSessionEnded(true);
@@ -228,7 +228,7 @@ export default function DoubtsSession({
         }
         setMessages((m) => [...m, {
           role: 'assistant',
-          content: status >= 500 ? "Pari hit a snag — please try again." : (data?.detail || 'Something went wrong.'),
+          content: status >= 500 ? "Pari hit a snag, please try again." : (data?.detail || 'Something went wrong.'),
           isError: true,
         }]);
         setLastFailedMsg(msg);
@@ -253,8 +253,8 @@ export default function DoubtsSession({
       setMessages((m) => [...m, {
         role: 'assistant',
         content: isAuthErr
-          ? 'Your session expired — refresh the page and try again.'
-          : 'Network error — try again.',
+          ? 'Your session expired, refresh the page and try again.'
+          : 'Network error, try again.',
         isError: true,
       }]);
       setLastFailedMsg(msg);
@@ -332,7 +332,7 @@ export default function DoubtsSession({
             />
             <div className="mt-3 text-xs text-[var(--color-text-muted)] text-center font-bricolage hidden sm:block">
               {sessionEnded
-                ? "Thanks for the doubts — let's get back to it."
+                ? "Thanks for the doubts, let's get back to it."
                 : pending
                   ? `${TUTOR_NAME} is thinking…`
                   : `Ask me anything about ${moduleCode ? `Module ${moduleCode.replace(/^M/, '')}` : 'this'}.`}
@@ -354,7 +354,7 @@ export default function DoubtsSession({
               {quotaExhausted && (
                 <div className="rounded-xl border border-amber-400/40 bg-amber-400/10 p-4 text-sm text-amber-200">
                   <div className="font-bold mb-1">You've used today's 5 doubt sessions.</div>
-                  <div className="text-amber-100/80">Come back tomorrow — your quota resets at IST midnight.</div>
+                  <div className="text-amber-100/80">Come back tomorrow, your quota resets at IST midnight.</div>
                 </div>
               )}
               {error && !quotaExhausted && (
@@ -382,7 +382,7 @@ export default function DoubtsSession({
               )}
               {sessionEnded && (
                 <div className="text-xs text-[var(--color-text-muted)] text-center pt-2 font-bricolage">
-                  Session ended ({endReason || 'manual_end'}). Closing in 5s — or click X.
+                  Session ended ({endReason || 'manual_end'}). Closing in 5s, or click X.
                 </div>
               )}
             </div>
@@ -404,7 +404,7 @@ export default function DoubtsSession({
                     value={input}
                     onChange={(e) => setInput(e.target.value.slice(0, 500))}
                     onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-                    placeholder={`Ask ${TUTOR_NAME} a doubt — 5 to 500 chars`}
+                    placeholder={`Ask ${TUTOR_NAME} a doubt, 5 to 500 chars`}
                     rows={2}
                     className="flex-1 resize-none rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] px-3 py-2 text-sm font-bricolage text-[var(--color-text)] focus:outline-none focus:border-[var(--color-primary)]/60"
                     disabled={pending || bootstrapping || quotaExhausted}

@@ -3,7 +3,7 @@ import { X } from 'lucide-react';
 import { useTutor, TUTOR_NAME } from '../../contexts/TutorContext';
 import { useDoubtsLauncher } from '../../contexts/DoubtsLauncherContext';
 
-// Phase 51 — AvatarPersona
+// Phase 51, AvatarPersona
 //
 // Renders Pari, the AI tutor persona, as a stylized 3D-illustration character
 // with subtle CSS-driven micro-animations and an optional glass speech bubble.
@@ -11,18 +11,18 @@ import { useDoubtsLauncher } from '../../contexts/DoubtsLauncherContext';
 // nano-banana with the user's reference photos.
 //
 // Props
-//   pose             — one of the manifest slugs (without the `pari_` prefix
+//   pose            , one of the manifest slugs (without the `pari_` prefix
 //                      OR with it; both forms accepted)
-//   size             — 'sm' | 'md' | 'lg' | 'fullscreen'
-//   message          — optional string. When provided, a speech bubble renders
+//   size            , 'sm' | 'md' | 'lg' | 'fullscreen'
+//   message         , optional string. When provided, a speech bubble renders
 //                      next to her with a small typewriter reveal.
-//   position         — 'bottom-right' | 'bottom-left' | 'top-right' |
+//   position        , 'bottom-right' | 'bottom-left' | 'top-right' |
 //                      'top-left' | 'inline'. Defaults to 'inline'.
-//   showSpeechBubble — bool. If false, message is ignored.
-//   onMessageEnd     — called when the typewriter completes. No-op default;
+//   showSpeechBubble, bool. If false, message is ignored.
+//   onMessageEnd    , called when the typewriter completes. No-op default;
 //                      Phase 52 (Doubts) will use it to chain TTS.
-//   ariaLabel        — overrides the default "Pari, your AI tutor" announce.
-//   onClick          — optional click handler for the avatar itself.
+//   ariaLabel       , overrides the default "Pari, your AI tutor" announce.
+//   onClick         , optional click handler for the avatar itself.
 
 const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
 
@@ -95,7 +95,7 @@ export default function AvatarPersona({
     };
   }, [slug, activeSlug]);
 
-  // Speech-bubble state — typewriter reveal + dismiss.
+  // Speech-bubble state, typewriter reveal + dismiss.
   const [displayedMessage, setDisplayedMessage] = useState('');
   const [bubbleDismissed, setBubbleDismissed] = useState(false);
   const typingTimerRef = useRef(null);
@@ -130,7 +130,7 @@ export default function AvatarPersona({
 
   // Auto-dismiss: when autoDismissMs is provided, dismiss the speech bubble
   // automatically after the typewriter completes (or immediately at mount if
-  // reduced-motion). Caller-controlled — currently used by the dashboard
+  // reduced-motion). Caller-controlled, currently used by the dashboard
   // greeting so it doesn't loiter. Other surfaces keep the bubble open.
   useEffect(() => {
     if (!message || !autoDismissMs || autoDismissMs <= 0) return undefined;
@@ -145,7 +145,7 @@ export default function AvatarPersona({
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
 
   if (!enabled) return null;
-  // Feb 2026 — never show the floating tutor on graded surfaces (quiz /
+  // Feb 2026, never show the floating tutor on graded surfaces (quiz /
   // interview / simulation) or once the ₹500 Pari-spend cap is hit.
   const isFixed = position && position !== 'inline';
   if (pariBlocked && isFixed) return null;
@@ -175,7 +175,7 @@ export default function AvatarPersona({
     const r = e.currentTarget.getBoundingClientRect();
     const dx = (e.clientX - (r.left + r.width / 2)) / r.width;   // -0.5 .. +0.5
     const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-    // Cap at ±3deg horizontal, ±2deg vertical — subtle.
+    // Cap at ±3deg horizontal, ±2deg vertical, subtle.
     setParallax({ x: Math.max(-3, Math.min(3, dx * 6)), y: Math.max(-2, Math.min(2, dy * -4)) });
   } : undefined;
   const onMouseLeaveParallax = enableParallax ? () => setParallax({ x: 0, y: 0 }) : undefined;

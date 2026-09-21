@@ -1,5 +1,5 @@
 /**
- * UniverSpreadsheet — real-Excel rebuild of the Excel simulation.
+ * UniverSpreadsheet, real-Excel rebuild of the Excel simulation.
  *
  * Engine/UI: Univer (open-source Excel clone) via @univerjs/presets.
  * Gives learners the full Excel experience: ribbon toolbar, cell formatting,
@@ -8,7 +8,7 @@
  *
  * Contract (same as the old HyperFormulaSpreadsheet):
  *   props: { workbook, restoredState, onAutoSave, onSubmit, onFocusChange, readOnly }
- *   onAutoSave(state) / onSubmit(state, score) — state is JSON-serializable.
+ *   onAutoSave(state) / onSubmit(state, score), state is JSON-serializable.
  *   Saved state shape v2: { version: 2, univer_snapshot, pivot_states }.
  *   Legacy v1 states ({ sheets: [{name, cells}] }) are merged into the
  *   canonical workbook before conversion, so old drafts still restore.
@@ -51,7 +51,7 @@ function SolutionReveal({ details }) {
         <span className="inline-flex items-center gap-2">
           <CheckCircle2 size={14} className="text-[var(--color-success)]" />
           <span className="font-clash text-sm font-semibold text-[var(--color-text)]">
-            Correct solution — see the finished model
+            Correct solution, see the finished model
           </span>
         </span>
         <span className="inline-flex items-center gap-1 text-[10px] font-mono uppercase tracking-wider text-[var(--color-text-muted)]">
@@ -98,7 +98,7 @@ function SolutionReveal({ details }) {
       )}
       {!open && (
         <p className="text-[11px] font-mono text-[var(--color-text-muted)] mt-1">
-          Click to see the finished Excel file — every graded cell&apos;s correct value and formula pattern.
+          Click to see the finished Excel file, every graded cell&apos;s correct value and formula pattern.
         </p>
       )}
     </div>
@@ -370,7 +370,7 @@ export default function UniverSpreadsheet({
     // browser's default focus() call scrolls the container into view,
     // yanking the outer page upward. When a user types in a cell, Univer
     // also mounts a floating cell-editor input which either calls
-    // element.scrollIntoView() or focus() again — pushing the outer page
+    // element.scrollIntoView() or focus() again, pushing the outer page
     // in either direction. We monkey-patch BOTH focus() and scrollIntoView()
     // on every element inside the container to be scroll-safe, and add
     // scroll-anchoring off so DOM growth doesn't nudge the viewport either.
@@ -388,7 +388,7 @@ export default function UniverSpreadsheet({
       }
       // Turn scrollIntoView into a no-op so Univer's cell editor cannot
       // push the outer page around. Univer's grid rendering uses its own
-      // canvas coordinates — this DOM method is safe to neutralize.
+      // canvas coordinates, this DOM method is safe to neutralize.
       const originalSIV = el.scrollIntoView;
       if (typeof originalSIV === 'function') {
         el.scrollIntoView = function scrollSafeSIV() {
@@ -424,7 +424,7 @@ export default function UniverSpreadsheet({
         window.scrollTo({ top: savedScroll, left: window.scrollX, behavior: 'auto' });
       }
     };
-    // Watch for focusin events INSIDE our container — snapshot before,
+    // Watch for focusin events INSIDE our container, snapshot before,
     // schedule a restore right after (in case Univer scrolls on focus).
     const onFocusIn = () => {
       snapshotScroll();
@@ -434,7 +434,7 @@ export default function UniverSpreadsheet({
       setTimeout(restoreScroll, 200);
     };
     container.addEventListener('focusin', onFocusIn, true);
-    // Also snapshot on any 'input' event (typing) — Univer's cell editor
+    // Also snapshot on any 'input' event (typing), Univer's cell editor
     // fires these. If the outer page has drifted from our snapshot, it's
     // Univer that moved it, so we restore.
     const onInput = () => {
@@ -785,7 +785,7 @@ export default function UniverSpreadsheet({
         </div>
       )}
 
-      {/* Correct solution reveal — after submit, shows the correct file value for every graded cell */}
+      {/* Correct solution reveal, after submit, shows the correct file value for every graded cell */}
       {submitState.submitted && submitState.score && Array.isArray(submitState.score.details) && submitState.score.details.length > 0 && (
         <SolutionReveal details={submitState.score.details} />
       )}
@@ -793,7 +793,7 @@ export default function UniverSpreadsheet({
         <div className="rounded-xl border border-[var(--color-accent-purple)]/30 bg-[var(--color-accent-purple)]/5 px-4 py-3" data-testid="spreadsheet-submitted-freeform">
           <div className="flex items-center gap-2">
             <AlertCircle size={16} className="text-[var(--color-accent-purple)]" />
-            <span className="font-clash text-sm font-semibold text-[var(--color-text)]">Submitted — your work was saved.</span>
+            <span className="font-clash text-sm font-semibold text-[var(--color-text)]">Submitted, your work was saved.</span>
           </div>
         </div>
       )}

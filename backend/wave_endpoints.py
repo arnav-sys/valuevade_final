@@ -1,5 +1,5 @@
 """
-Wave 1 + Wave 2 — Admin panel, Referrals, Mock Interview backend module.
+Wave 1 + Wave 2, Admin panel, Referrals, Mock Interview backend module.
 
 This file is included from server.py via `from backend.wave_endpoints import register_wave_endpoints`
 and adds all new /api/* routes onto the shared api_router.
@@ -115,7 +115,7 @@ class _AdminNotesCardBody(BaseModel):
 
 
 class _AdminReorderBody(BaseModel):
-    ids: List[str]  # ordered list of card ids — new order_index = position+1
+    ids: List[str]  # ordered list of card ids, new order_index = position+1
 
 
 class _AdminQuizItemBody(BaseModel):
@@ -216,11 +216,11 @@ This is round {round} of 3. Ask ONE question at a time. After their answer, eval
 
 Maximum 6 questions in this round. After the 6th candidate answer, end the round with a short transition: "Thank you. Let's move to the next round."
 
-Round 1 — TECHNICAL: DCF mechanics, comparable companies, financial statement analysis, current market knowledge of Nifty/Sensex/RBI policy, specific Indian company case (Reliance/HDFC/Infosys), modeling judgement.
-Round 2 — BEHAVIORAL: STAR-method probes. Times you've worked under pressure, dealt with conflict, made a difficult call, learned from failure. Force concrete examples.
-Round 3 — FIT: Why equity research, why this firm (let them pick any firm), career trajectory, their best stock pitch, questions for us.
+Round 1, TECHNICAL: DCF mechanics, comparable companies, financial statement analysis, current market knowledge of Nifty/Sensex/RBI policy, specific Indian company case (Reliance/HDFC/Infosys), modeling judgement.
+Round 2, BEHAVIORAL: STAR-method probes. Times you've worked under pressure, dealt with conflict, made a difficult call, learned from failure. Force concrete examples.
+Round 3, FIT: Why equity research, why this firm (let them pick any firm), career trajectory, their best stock pitch, questions for us.
 
-Use Indian context. Reference real companies. INR for currency. Don't be sycophantic — challenge weak answers.
+Use Indian context. Reference real companies. INR for currency. Don't be sycophantic, challenge weak answers.
 
 Respond with ONLY your next utterance (your question, follow-up, or transition). No meta-commentary, no JSON, no role labels."""
 
@@ -247,7 +247,7 @@ Verdict thresholds:
 - "marginal":    avg >= 55 (would invite for second-round in real life)
 - "fail":        avg < 55
 
-In your feedback, give them ONE specific thing to work on most urgently. Be direct. Reference their actual answers (excerpts in the transcript below). End with one encouraging sentence calibrated to their actual performance — don't over-praise marginal candidates.
+In your feedback, give them ONE specific thing to work on most urgently. Be direct. Reference their actual answers (excerpts in the transcript below). End with one encouraging sentence calibrated to their actual performance, don't over-praise marginal candidates.
 
 Transcript excerpts:
 {transcript_excerpts}
@@ -318,7 +318,7 @@ async def _generate_first_question(round_num: int) -> tuple[str, str]:
     """Returns (interviewer_intro, first_question)."""
     round_name = ROUND_NAMES[round_num]
     system = INTERVIEWER_SYSTEM_BASE.format(round=round_num, round_name=round_name)
-    user_text = f"Start the {round_name} round. First, write a one-sentence warm intro (e.g. 'Welcome — let's start with technicals.'). Then immediately on a new line, ask your first question. Output EXACTLY:\n\nINTRO: <one sentence>\nQUESTION: <your first question>"
+    user_text = f"Start the {round_name} round. First, write a one-sentence warm intro (e.g. 'Welcome, let's start with technicals.'). Then immediately on a new line, ask your first question. Output EXACTLY:\n\nINTRO: <one sentence>\nQUESTION: <your first question>"
     text = await _llm_chat(system, user_text, f"mi-r{round_num}-start", max_tokens=400)
     intro = ""
     question = ""
@@ -329,9 +329,9 @@ async def _generate_first_question(round_num: int) -> tuple[str, str]:
             question = line[9:].strip()
     if not intro:
         intro = {
-            1: "Welcome — let's start with technicals.",
+            1: "Welcome, let's start with technicals.",
             2: "Now I'd like to learn about how you work.",
-            3: "Last round — let's talk about fit.",
+            3: "Last round, let's talk about fit.",
         }[round_num]
     if not question:
         question = {
@@ -481,7 +481,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                                        user=Depends(_get_supabase_user)):
         """Student-submitted feedback on a session lecture. Categories:
         content_issue | quality_issue | other. Requires message (>=5 chars).
-        Rate-limited at the DB via a soft app-level check — a user can't
+        Rate-limited at the DB via a soft app-level check, a user can't
         spam more than 5 feedback rows per session."""
         category = (body.get("category") or "").strip().lower()
         message = (body.get("message") or "").strip()
@@ -599,7 +599,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     @api_router.get("/app-settings/ai-customization")
     async def public_ai_customization_mode():
-        """Public — the enrolment page reads this to decide whether to show
+        """Public, the enrolment page reads this to decide whether to show
         the 'Customise with AI' button. Defaults to 'off' if the row/table
         is missing (safe default)."""
         try:
@@ -772,7 +772,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     @api_router.get("/faqs")
     async def public_faqs():
-        """Public — powers the landing accordion + help chatbot. Returns an
+        """Public, powers the landing accordion + help chatbot. Returns an
         empty list if the table hasn't been provisioned yet so the FE's
         static fallback engages cleanly."""
         try:
@@ -982,7 +982,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         ext_by_ct = {"image/jpeg": "jpg", "image/jpg": "jpg", "image/png": "png", "image/webp": "webp"}
         ct = (file.content_type or "").lower()
         if ct not in ext_by_ct:
-            raise HTTPException(status_code=400, detail=f"Unsupported image type {file.content_type!r} — jpg/png/webp only.")
+            raise HTTPException(status_code=400, detail=f"Unsupported image type {file.content_type!r}, jpg/png/webp only.")
         blob = await file.read()
         if len(blob) > 5 * 1024 * 1024:
             raise HTTPException(status_code=413, detail=f"Image too large ({len(blob)/1048576:.1f} MB). Max 5 MB.")
@@ -1092,7 +1092,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.get("/admin/waitlist")
     async def admin_waitlist(user=Depends(_get_supabase_user)):
         """Read all waitlist signups from Supabase (persistent). Was Mongo
-        pre-Feb 2026 but that got wiped on production redeploys — see
+        pre-Feb 2026 but that got wiped on production redeploys, see
         scripts/migrations/0031_waitlist.sql."""
         _ensure_admin(user)
         rows = _supabase_get(
@@ -1400,7 +1400,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         }
 
     def _seed_default_enrollment(user_id: str) -> Optional[str]:
-        """Mirrors frontend enrollDirect() — insert user_enrollments +
+        """Mirrors frontend enrollDirect(), insert user_enrollments +
         user_modules + user_sessions for the Equity Research career path.
         Returns enrollment_id or None if the path/data is missing."""
         # Find the Equity Research master_path
@@ -1408,7 +1408,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         if not paths:
             return None
         path = paths[0]  # only one active career path today
-        # Idempotent — reuse existing enrollment if present
+        # Idempotent, reuse existing enrollment if present
         existing = _supabase_get(
             f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}"
             f"&master_path_id=eq.{_urlparse.quote(path['id'])}&select=id&limit=1"
@@ -1637,7 +1637,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         except urllib.error.HTTPError as e:
             body_err = e.read().decode("utf-8", errors="replace")
             if e.code == 404:
-                pass  # already gone — treat as success
+                pass  # already gone, treat as success
             else:
                 logger.error("[delete-user] auth delete failed: %s %s", e.code, body_err[:200])
                 raise HTTPException(
@@ -1663,7 +1663,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
         results = {}
 
-        # 1. Enrollment — idempotent via _seed_default_enrollment
+        # 1. Enrollment, idempotent via _seed_default_enrollment
         try:
             enrollment_id = _seed_default_enrollment(user_id)
             results["enrolled"] = bool(enrollment_id)
@@ -1673,7 +1673,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             results["enrolled"] = False
             results["enrollment_error"] = str(e)
 
-        # 2. Payment status — upsert user_payment_status row
+        # 2. Payment status, upsert user_payment_status row
         try:
             existing_pay = _supabase_get(
                 f"user_payment_status?user_id=eq.{uid_q}&select=paid,pricing_tier&limit=1"
@@ -1721,7 +1721,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     ).rstrip("/")
     _SUPABASE_SR = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
     _VIDEO_BUCKET = "session-videos"
-    _MAX_VIDEO_BYTES = 5 * 1024 * 1024 * 1024   # 5 GB — matches Supabase Pro tier ceiling
+    _MAX_VIDEO_BYTES = 5 * 1024 * 1024 * 1024   # 5 GB, matches Supabase Pro tier ceiling
 
     def _bucket_public_url(key: str) -> str:
         return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_VIDEO_BUCKET}/{key}"
@@ -1770,7 +1770,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         allowed_ct = {"video/mp4", "video/webm", "video/quicktime", "application/octet-stream"}
         if (file.content_type or "").lower() not in allowed_ct:
             raise HTTPException(status_code=400,
-                detail=f"Unsupported content type {file.content_type!r} — mp4/webm only.")
+                detail=f"Unsupported content type {file.content_type!r}, mp4/webm only.")
 
         # Resolve session → module_number + order_index so we can pick a clean key.
         sess_rows = _supabase_get(
@@ -1789,7 +1789,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         module_number = int(mod_rows[0]["module_number"])
         order_index = int(sess.get("order_index") or 1)
 
-        # Read stream — cap at 500MB
+        # Read stream, cap at 500MB
         blob = await file.read()
         if len(blob) > _MAX_VIDEO_BYTES:
             raise HTTPException(status_code=413,
@@ -1855,7 +1855,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "Authorization": f"Bearer {_SUPABASE_SR}",
             },
         )
-        # Best-effort delete from bucket — swallow 404 (file may already be gone).
+        # Best-effort delete from bucket, swallow 404 (file may already be gone).
         try:
             with urllib.request.urlopen(req, timeout=30) as resp:
                 resp.read()
@@ -1952,7 +1952,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         chunk. Returns the new upload offset.
 
         We do it this way because Supabase RLS on `storage.objects` blocks
-        admin JWTs on TUS PATCH — the only clean bypass is service_role,
+        admin JWTs on TUS PATCH, the only clean bypass is service_role,
         which we do NOT expose to the browser."""
         _ensure_admin(user)
         if not _SUPABASE_SR:
@@ -1994,7 +1994,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         """Pre-creates a TUS resumable-upload session using the service_role
         key so RLS on storage.objects is bypassed. Returns the Location URL
         the FE then streams chunks to via /admin/tus-patch-chunk (which also
-        proxies with service_role — needed because Supabase RLS blocks admin
+        proxies with service_role, needed because Supabase RLS blocks admin
         JWTs on TUS PATCH as of 2026).
 
         Any existing object at the deterministic key is DELETED first so
@@ -2087,16 +2087,16 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     @api_router.post("/admin/sessions/{session_id}/video-url")
     async def admin_save_video_url(session_id: str, body: _AdminVideoUrlBody,
                                     user=Depends(_get_supabase_user)):
-        """Small JSON payload — safely under any nginx cap. Called by the FE
+        """Small JSON payload, safely under any nginx cap. Called by the FE
         after a successful direct-to-Supabase upload OR when an admin pastes
         an external video URL (e.g. YouTube, Vimeo, Cloudflare Stream, Mux,
-        BunnyCDN) — used when the file is larger than the Supabase Storage
+        BunnyCDN), used when the file is larger than the Supabase Storage
         global upload cap (50 MB on Free tier, up to 50 GB on Pro+)."""
         _ensure_admin(user)
         url = (body.public_url or "").strip()
         if not url or not url.startswith(("http://", "https://")):
             raise HTTPException(status_code=400, detail="Invalid public_url.")
-        # Post-upload sanity guard — if this is a Supabase-hosted URL, HEAD it
+        # Post-upload sanity guard, if this is a Supabase-hosted URL, HEAD it
         # to confirm the file is actually a real video, not a truncated stub.
         # Some TUS uploads have historically silently finalized at 0-1 KB when
         # the browser tab was closed or the network hiccuped, leaving admins
@@ -2113,7 +2113,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                             status_code=400,
                             detail=(
                                 f"Upload appears corrupted (only {size} bytes on Supabase). "
-                                "Retry the upload — a real lecture video should be several MB. "
+                                "Retry the upload, a real lecture video should be several MB. "
                                 "Nothing has been saved."
                             ),
                         )
@@ -2125,7 +2125,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             except HTTPException:
                 raise
             except Exception as e:
-                # Network flakiness — log but don't block the save; the admin
+                # Network flakiness, log but don't block the save; the admin
                 # can always re-check the video plays.
                 logger.warning("Post-upload HEAD check failed for %s: %s", url, e)
         patch_payload: dict = {"lecture_url": url}
@@ -2138,7 +2138,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         return {"ok": True, "lecture_url": url}
 
     # ═══════════════════════════════════════════════════════════════════════
-    # Admin curriculum CRUD — Phase A: modules + sessions
+    # Admin curriculum CRUD, Phase A: modules + sessions
     # ═══════════════════════════════════════════════════════════════════════
     @api_router.get("/admin/curriculum/modules")
     async def admin_curr_modules(user=Depends(_get_supabase_user)):
@@ -2148,7 +2148,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         path_id = paths[0]["id"] if paths else None
         if not path_id:
             return {"path_id": None, "modules": []}
-        # PostgREST embed — single request returns modules with their session
+        # PostgREST embed, single request returns modules with their session
         # counts, avoiding an N+1 loop that scaled to ~30-90s at 23 modules.
         mods = _supabase_get(
             f"master_modules?path_id=eq.{_urlparse.quote(path_id)}"
@@ -2216,8 +2216,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     @api_router.get("/admin/curriculum/export")
     async def admin_curriculum_export(user=Depends(_get_supabase_user)):
-        """Return the full curriculum tree — every module, every session,
-        every module-project, every capstone — for a single 'Download full
+        """Return the full curriculum tree, every module, every session,
+        every module-project, every capstone, for a single 'Download full
         curriculum' click on the admin View Course tab.
 
         Response shape (large but flat + serialisable):
@@ -2247,7 +2247,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         path_id = p["id"]
         path_id_q = _urlparse.quote(path_id)
 
-        # 2) Modules + embedded sessions + embedded projects — one round-trip.
+        # 2) Modules + embedded sessions + embedded projects, one round-trip.
         mods = _supabase_get(
             f"master_modules?path_id=eq.{path_id_q}"
             "&select=id,path_id,title,description,module_number,order_index,"
@@ -2456,7 +2456,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         except HTTPException as e:
             logger.warning(f"[delete-module] user_modules delete failed: {e.detail}")
 
-        # 7) Delete module-level projects (best-effort — table may not exist
+        # 7) Delete module-level projects (best-effort, table may not exist
         #    or column name may vary).
         for tbl_query in (
             f"master_module_projects?module_id=eq.{mid_q}",
@@ -2667,7 +2667,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     @api_router.post("/admin/notes-cards/reorder")
     async def admin_notes_reorder(body: _AdminReorderBody, user=Depends(_get_supabase_user)):
-        """Rewrite order_index for a batch of cards. `ids` is the new order —
+        """Rewrite order_index for a batch of cards. `ids` is the new order,
         position 0 → order_index 1, position 1 → order_index 2, ..."""
         _ensure_admin(user)
         for i, cid in enumerate(body.ids):
@@ -2727,7 +2727,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         try:
             _ur.urlopen(req, timeout=10).read()
         except _ue.HTTPError as e:
-            # 409 = bucket already exists — that's fine
+            # 409 = bucket already exists, that's fine
             if e.code != 409:
                 logger.warning("[notes-file] bucket ensure failed: %s", e)
         except Exception as e:
@@ -2768,13 +2768,13 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             )
 
         # Convert PPT/PPTX to PDF so it renders inline in-browser (no
-        # download-only fallback) — students get an actual slide viewer.
+        # download-only fallback), students get an actual slide viewer.
         # display_name keeps the ORIGINAL filename/extension for the UI badge;
         # storage_ext/content_type/blob switch to the converted PDF on success.
         display_name = file.filename or f"notes.{ext}"
         storage_ext = ext
         if ext in ("pptx", "ppt"):
-            # Blocking subprocess (LibreOffice) — offload so it doesn't
+            # Blocking subprocess (LibreOffice), offload so it doesn't
             # stall the event loop for other requests during the ~90s
             # worst-case cold start.
             converted = await asyncio.to_thread(_convert_pptx_to_pdf, blob)
@@ -3043,7 +3043,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         """Route by phases->>code. Accepts scalar updates + optional full
         phases blob replacement."""
         _ensure_admin(user)
-        # Find the row (need id for a stable PATCH filter — jsonb filter is fine but slower)
+        # Find the row (need id for a stable PATCH filter, jsonb filter is fine but slower)
         rows = _supabase_get(
             f"master_capstone_projects?phases-%3E%3Ecode=eq.{_urlparse.quote(code)}"
             "&select=id&limit=1"
@@ -3126,7 +3126,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             if "user_module_projects" in msg or "foreign key" in msg.lower():
                 raise HTTPException(
                     status_code=409,
-                    detail="Cannot delete — one or more users have progress on this project. "
+                    detail="Cannot delete, one or more users have progress on this project. "
                            "Unlink or clear their progress first.",
                 )
             raise HTTPException(status_code=500, detail=f"delete failed: {msg[:200]}")
@@ -3444,7 +3444,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                         )
                         logger.info(
                             f"[mock-exam] user {user['id']} passed exam for module "
-                            f"{exam['module_id']} — user_modules {um_rows[0]['id']} marked complete"
+                            f"{exam['module_id']}, user_modules {um_rows[0]['id']} marked complete"
                         )
             except Exception as _e:
                 logger.warning(f"[mock-exam] module-complete flip failed: {_e}")
@@ -3481,8 +3481,8 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         """Public error-ingest endpoint. Upserts by `signature`. Silenced rows
         are dropped silently. Resolved rows regressing get `regressed_at` set.
 
-        Also accepts `user_description` — free-text detail the learner adds
-        from the crash screen or the site-wide "Report a bug" button — and
+        Also accepts `user_description`, free-text detail the learner adds
+        from the crash screen or the site-wide "Report a bug" button, and
         appends it to whichever row we ended up (append, not overwrite, so we
         keep every learner's context across duplicates)."""
         sig = (body.signature or "").strip()[:128]
@@ -3502,7 +3502,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "last_seen_at": now_iso,
                 "occurrence_count": (row.get("occurrence_count") or 0) + 1,
             }
-            # Regression path — was resolved, now firing again
+            # Regression path, was resolved, now firing again
             if row.get("resolved_at"):
                 patch["resolved_at"] = None
                 patch["regressed_at"] = now_iso
@@ -3531,7 +3531,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             if not created:
                 return {"ok": False}
             report_id = created["id"]
-        # Ledger — trimmed rolling event log (best-effort, don't fail parent on error)
+        # Ledger, trimmed rolling event log (best-effort, don't fail parent on error)
         try:
             _supabase_post("error_report_events", {
                 "report_id": report_id,
@@ -3610,7 +3610,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
     # ---------------- MOCK INTERVIEW ----------------
     def _eligibility_state(user_id: str) -> dict:
-        # 1. M14 project gate — user_modules has no direct user_id, join via
+        # 1. M14 project gate, user_modules has no direct user_id, join via
         # user_enrollments. A user's M14 is "done" if any of their enrolled
         # M14 modules has is_completed=true.
         enrolls = _supabase_get(
@@ -3787,7 +3787,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 "feedback_md": verdict["feedback_md"],
             },
         )
-        # XP reward — flat 600 for completion + bonus on strong_pass
+        # XP reward, flat 600 for completion + bonus on strong_pass
         bonus = {"strong_pass": 600, "pass": 400, "marginal": 200, "fail": 100}.get(verdict["verdict"], 100)
         try:
             _supabase_post(
@@ -3803,7 +3803,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
 
     # =========================================================================
-    # REWARDS — LinkedIn share → free resource unlock (Feb 2026)
+    # REWARDS, LinkedIn share → free resource unlock (Feb 2026)
     # =========================================================================
     # Data lives in `master_rewards` + `user_reward_claims` (migration 0037).
     # Files sit in a private Supabase Storage bucket called `rewards`; the
@@ -3895,7 +3895,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
         completed_module_master_ids = set()
         if module_ref_ids:
-            # user_modules has no user_id column — it's scoped via
+            # user_modules has no user_id column, it's scoped via
             # enrollment_id -> user_enrollments.user_id. Querying
             # user_modules?user_id=... directly 42703's (this WAS the bug:
             # the endpoint silently 500'd, so the FE never showed any reward).
@@ -3949,7 +3949,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             r_out["claimed"] = bool(claim)
             r_out["claimed_at"] = (claim or {}).get("claimed_at")
             r_out["linkedin_post_url"] = (claim or {}).get("linkedin_post_url")
-            r_out["has_file"] = True  # FE doesn't need path — download comes from /rewards/{id}/download
+            r_out["has_file"] = True  # FE doesn't need path, download comes from /rewards/{id}/download
             out.append(r_out)
         return {"table_ready": True, "rewards": out}
 
@@ -4105,7 +4105,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         # Server-side eligibility check (never trust the FE).
         eligible = False
         if reward["trigger_type"] == "module_complete":
-            # user_modules has no user_id column — resolve via
+            # user_modules has no user_id column, resolve via
             # user_enrollments first (same bug/fix as GET /rewards/eligible).
             my_enrs = _supabase_get(
                 f"user_enrollments?user_id=eq.{_urlparse.quote(user_id)}&select=id"
@@ -4167,7 +4167,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         # brief LinkedIn outages should not get blocked.
         is_verified = verify_res.get("verified") is True
 
-        # Idempotent upsert — unique(user_id, reward_id) makes the second call a no-op.
+        # Idempotent upsert, unique(user_id, reward_id) makes the second call a no-op.
         # We ALSO update linkedin_post_url on conflict so a learner can correct
         # a mis-pasted URL by re-submitting (still requires eligibility above).
         # `on_conflict` targets the composite unique constraint, not the PK.
@@ -4263,7 +4263,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         for r in rewards:
             if r["trigger_type"] == "module_complete":
                 m = module_map.get(r["trigger_ref_id"])
-                r["trigger_label"] = f"Module {m['module_number']} — {m['title']}" if m else "(module deleted)"
+                r["trigger_label"] = f"Module {m['module_number']}, {m['title']}" if m else "(module deleted)"
             else:
                 c = cap_map.get(r["trigger_ref_id"])
                 phases = c.get("phases") if c else None
@@ -4271,7 +4271,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                     try: phases = _json.loads(phases)
                     except Exception: phases = {}
                 code = (phases or {}).get("code") if isinstance(phases, dict) else None
-                r["trigger_label"] = f"{code or 'Capstone'} — {c['title']}" if c else "(capstone deleted)"
+                r["trigger_label"] = f"{code or 'Capstone'}, {c['title']}" if c else "(capstone deleted)"
         return {"table_ready": True, "rewards": rewards}
 
     @api_router.get("/admin/rewards/triggers")
@@ -4494,7 +4494,7 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             raise HTTPException(status_code=413, detail=f"File exceeds {_REWARDS_MAX_BYTES // (1024*1024)}MB limit")
         mime = (file.content_type or "").lower()
         if mime and _REWARDS_ALLOWED_MIME and mime not in _REWARDS_ALLOWED_MIME:
-            # Some clients send generic octet-stream — accept those; only
+            # Some clients send generic octet-stream, accept those; only
             # hard-reject known bad types (e.g. images/executables).
             if not mime.startswith("application/") and mime != "text/csv":
                 raise HTTPException(status_code=415, detail=f"MIME type {mime} not allowed for rewards")

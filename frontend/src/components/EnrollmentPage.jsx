@@ -10,12 +10,12 @@ import { BreathingGlow, ScrollProgressBar } from './cinematic/primitives';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
 
 /**
- * Proper enrollment procedure — replaces the previous instant one-click
+ * Proper enrollment procedure, replaces the previous instant one-click
  * enroll. Shows a preview of the course (title, key numbers, capstones,
  * module outline) and a single "Start My Journey" CTA that triggers the
  * enrolldirect() DB writes and redirects to /dashboard.
  *
- * No AI customization / no personalization — every user gets the same
+ * No AI customization / no personalization, every user gets the same
  * standard curriculum.
  */
 export default function EnrollmentPage() {
@@ -36,7 +36,7 @@ export default function EnrollmentPage() {
   const [aiMode, setAiMode] = useState('off');
 
   useEffect(() => {
-    // Non-blocking fetch — defaults to 'off' if unreachable/table missing
+    // Non-blocking fetch, defaults to 'off' if unreachable/table missing
     fetch(`${process.env.REACT_APP_BACKEND_URL}/api/app-settings/ai-customization`)
       .then((r) => r.ok ? r.json() : Promise.resolve({ mode: 'off' }))
       .then((j) => setAiMode((j && j.mode) || 'off'))
@@ -47,7 +47,7 @@ export default function EnrollmentPage() {
     if (!user) { navigate('/login'); return; }
     let alive = true;
     (async () => {
-      // Independent queries with hard 15s timeout — prevents the page
+      // Independent queries with hard 15s timeout, prevents the page
       // from getting stuck on "Loading course…" if Supabase hangs.
       const TIMEOUT_MS = 15000;
       const withTimeout = (p, label) => Promise.race([
@@ -78,7 +78,7 @@ export default function EnrollmentPage() {
         if (mRes.status === 'fulfilled' && !mRes.value.error) {
           setModules(mRes.value.data || []);
         } else {
-          // Modules failure isn't fatal — page still renders CTAs.
+          // Modules failure isn't fatal, page still renders CTAs.
           setModules([]);
         }
 
@@ -114,8 +114,8 @@ export default function EnrollmentPage() {
     }
   };
 
-  // Payment must succeed before enrollDirect() ever runs — enrolling for
-  // free was a bug (the "Enrol Now — ₹999" CTA promised payment).
+  // Payment must succeed before enrollDirect() ever runs, enrolling for
+  // free was a bug (the "Enrol Now, ₹999" CTA promised payment).
   const { startPayment, busy: paying, mockModal, successOverlay } = usePaymentFlow({ onSuccess: handleStart });
   const handlePayAndStart = () => {
     setError(null);
@@ -166,7 +166,7 @@ export default function EnrollmentPage() {
       <div className="absolute bottom-[-15%] right-[8%] w-[380px] h-[380px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.05] blur-[120px] pointer-events-none" />
 
       <main className="max-w-4xl mx-auto px-6 py-14 sm:py-20 relative z-10">
-        {/* Header — course overview */}
+        {/* Header, course overview */}
         <motion.div
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
@@ -202,7 +202,7 @@ export default function EnrollmentPage() {
         {/* Capstones preview */}
         <section className="mb-12" data-testid="enrollment-capstones">
           <h2 className="font-clash text-2xl font-bold text-[var(--color-text)] mb-2">What you'll build</h2>
-          <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-6">Three portfolio-grade capstone projects — the artifacts you'll show recruiters.</p>
+          <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-6">Three portfolio-grade capstone projects, the artifacts you'll show recruiters.</p>
           <CapstoneProjectsGrid pathId={courseId} />
         </section>
 
@@ -305,7 +305,7 @@ export default function EnrollmentPage() {
                 <Sparkles size={15} /> Customise my path with AI
               </Link>
               <p className="mt-3 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-ai-fineprint">
-                Answer a few questions — Pari tailors the modules to your background and goals.
+                Answer a few questions, Pari tailors the modules to your background and goals.
               </p>
             </div>
           )}

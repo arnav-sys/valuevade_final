@@ -5,7 +5,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 
 // =============================================================================
-// Module Constellation Map (rev 2 — serpentine layout).
+// Module Constellation Map (rev 2, serpentine layout).
 //
 // Previous "S-curve with jitter" produced unreadable criss-cross paths when
 // users had removed modules (Batch 4 manual edits). This rev replaces the
@@ -52,9 +52,9 @@ function gridPosition(visualIdx) {
 }
 
 // Semantic color mapping (per product spec):
-//   completed   → gold (steady, no pulse)         — achievement
-//   in_progress → blue (pulse)                     — active work
-//   next_up     → white (static, dashed ring)      — anticipation
+//   completed   → gold (steady, no pulse)        , achievement
+//   in_progress → blue (pulse)                    , active work
+//   next_up     → white (static, dashed ring)     , anticipation
 //   unlocked    → white (static, slightly dimmer)
 //   locked      → dim gray
 function StatusStyle(mod, isNextUp) {
@@ -75,7 +75,7 @@ function StatusStyle(mod, isNextUp) {
       glow: 'rgba(251,191,36,.55)',
       stroke: '#fde68a',
       labelOpacity: 1,
-      pulse: false, // steady gentle glow — gold = achievement, not motion
+      pulse: false, // steady gentle glow, gold = achievement, not motion
     };
   }
   if ((mod.sessions_completed_n || 0) > 0) {
@@ -95,7 +95,7 @@ function StatusStyle(mod, isNextUp) {
       glow: 'rgba(255,255,255,.55)',
       stroke: '#ffffff',
       labelOpacity: 1,
-      pulse: false, // static white — anticipation, not activity
+      pulse: false, // static white, anticipation, not activity
     };
   }
   return {
@@ -228,7 +228,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
 
   const refresh = useCallback(async () => {
     if (!user?.id) { setModules([]); setLoading(false); return; }
-    // Step 1 — pick the user's ACTIVE enrollment so we don't accidentally
+    // Step 1, pick the user's ACTIVE enrollment so we don't accidentally
     // render rows from past/duplicate enrollments (otherwise the user sees
     // 30+ duplicated module nodes).
     const { data: enr, error: enrErr } = await supabase
@@ -244,7 +244,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
     const activeEnrollmentId = enr?.[0]?.id;
     if (!activeEnrollmentId) { setModules([]); setLoading(false); return; }
 
-    // Step 2 — pull module progress for THIS enrollment + the
+    // Step 2, pull module progress for THIS enrollment + the
     // removed-flag from user_modules so Batch 4 manual edits collapse
     // cleanly.
     const [{ data: viewRows, error: viewErr }, { data: umRows, error: umErr }] = await Promise.all([
@@ -365,7 +365,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
   if (modules.length === 0) {
     return (
       <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] h-[400px] sm:h-[460px] flex items-center justify-center" data-testid="constellation-empty">
-        <div className="text-sm text-[var(--color-text-muted)]">No modules yet — your learning constellation will appear here once you enroll.</div>
+        <div className="text-sm text-[var(--color-text-muted)]">No modules yet, your learning constellation will appear here once you enroll.</div>
       </div>
     );
   }
@@ -411,7 +411,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
           const sr = (i % 3) * 0.4 + 0.6;
           return <circle key={`bg-${i}`} cx={sx} cy={sy} r={sr} fill="rgba(229,233,243,.18)" />;
         })}
-        {/* Links — straight orthogonal segments, never diagonal. Serpentine
+        {/* Links, straight orthogonal segments, never diagonal. Serpentine
             ensures consecutive nodes are either same-row or same-column
             neighbors, so this is always either a horizontal or short
             vertical "U-turn" line. */}
@@ -454,9 +454,9 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
               onMouseOut={() => setHoverIdx((cur) => (cur === i ? null : cur))}
               data-testid={`constellation-node-${m.module_code}`}
             >
-              {/* Native SVG tooltip — surfaces immediately on hover with no JS overhead. */}
-              <title>{m.module_code} — {m.module_title}{m.is_completed ? ' · Completed' : m.is_unlocked ? ' · Unlocked' : ' · Locked'}</title>
-              {/* Glow halo — capstone gets a second, wider outer ring for depth. */}
+              {/* Native SVG tooltip, surfaces immediately on hover with no JS overhead. */}
+              <title>{m.module_code}, {m.module_title}{m.is_completed ? ' · Completed' : m.is_unlocked ? ' · Unlocked' : ' · Locked'}</title>
+              {/* Glow halo, capstone gets a second, wider outer ring for depth. */}
               {style.kind !== 'locked' && isCapstone && (
                 <circle cx={pos.x} cy={pos.y} r={haloR + 14} fill={glowId}
                         className={!reducedMotionRef.current ? 'constellation-pulse-slow' : ''}
@@ -465,7 +465,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
               {style.kind !== 'locked' && (
                 <circle cx={pos.x} cy={pos.y} r={haloR} fill={glowId} className={pulseClass} />
               )}
-              {/* Next-up dashed ring — white, static (NOT pulsing blue). */}
+              {/* Next-up dashed ring, white, static (NOT pulsing blue). */}
               {i === nextUpVisualIdx && (
                 <circle cx={pos.x} cy={pos.y} r={isCapstone ? 20 : 14} fill="none"
                         stroke="#ffffff" strokeWidth="1.5"
@@ -479,7 +479,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
               {style.kind === 'locked' && (
                 <text x={pos.x} y={pos.y + 3} textAnchor="middle" fontSize="8" fill="#9aa3b8">∅</text>
               )}
-              {/* READY pill — capstone is unlocked, awaiting completion. */}
+              {/* READY pill, capstone is unlocked, awaiting completion. */}
               {capstoneReady && (
                 <g>
                   <rect x={pos.x - 22} y={pos.y - (coreR + 18)} width={44} height={14} rx={7}
@@ -503,7 +503,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
           );
         })}
       </svg>
-      {/* Hover tooltip — overlay HTML for richer styling than <title>. */}
+      {/* Hover tooltip, overlay HTML for richer styling than <title>. */}
       {hoverMod && (
         <div
           className="absolute z-20 pointer-events-none px-3 py-2 rounded-lg bg-[var(--color-bg-card)] border border-[var(--color-border)] shadow-lg text-xs font-bricolage text-[var(--color-text)] max-w-[220px]"

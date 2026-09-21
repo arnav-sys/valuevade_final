@@ -29,7 +29,7 @@ import { Users as UsersIcon, Target as TargetIcon } from 'lucide-react';
  * Social proof: COUNT(DISTINCT user_id) over user_xp_events with reason in
  * ('session_complete') and source_id ∈ master_sessions(module) in last 7d.
  * Near-miss: when current user has done ≥60% of the module's sessions, show
- * "🎯 N/M sessions — so close!".
+ * "🎯 N/M sessions, so close!".
  */
 function ModuleSocialProof({ module }) {
   const [stats, setStats] = useStateSP({ weekly: null, mine: null, total: null });
@@ -77,7 +77,7 @@ function ModuleSocialProof({ module }) {
       </span>
       {pct >= 0.6 && pct < 1 && (
         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--color-accent-pink)]/12 border border-[var(--color-accent-pink)]/40 text-[var(--color-accent-pink)] font-semibold">
-          <TargetIcon size={11} /> {stats.mine}/{stats.total} sessions — so close!
+          <TargetIcon size={11} /> {stats.mine}/{stats.total} sessions, so close!
         </span>
       )}
     </div>
@@ -148,36 +148,36 @@ function DetailSkeleton() {
   );
 }
 
-// Course-details FAQ set — Prompt 3 task 12 verbatim. Kept at module scope
+// Course-details FAQ set, Prompt 3 task 12 verbatim. Kept at module scope
 // so it drives both the visible accordion AND the FAQPage JSON-LD schema
 // (Prompt 4: same source, never duplicate the strings).
 const COURSE_DETAILS_FAQS = [
   { q: 'What are the prerequisites for the Equity Research Analyst Program?',
-    a: "None. The course starts from absolute foundations — what finance is, how the three statements work — before building toward modelling and valuation. Basic Excel familiarity helps but isn't assumed; the early sessions teach the spreadsheet skills the later simulations use. If you can commit about an hour a day, you have everything you need." },
+    a: "None. The course starts from absolute foundations, what finance is, how the three statements work, before building toward modelling and valuation. Basic Excel familiarity helps but isn't assumed; the early sessions teach the spreadsheet skills the later simulations use. If you can commit about an hour a day, you have everything you need." },
   { q: 'How long does the course take to complete?',
     a: "Most students finish in about 2 months at 1 hour a day; the full program is roughly 60 hours of guided work, including 42 hours of video lectures. The Study Planner lets you set a target deadline or a daily-hours budget and auto-schedules all 239 sessions accordingly. Because access is lifetime, going slower costs nothing." },
   { q: 'How long does it take to learn DCF valuation?',
-    a: "Inside the program, you build your first complete DCF — on Reliance — in the valuation modules, roughly five weeks in at an hour a day, after the accounting, analysis and modelling foundations that make the DCF's assumptions defensible. Getting comfortable defending WACC, growth and terminal-value choices in an interview usually takes a further few weeks of the valuation and mock-interview modules." },
+    a: "Inside the program, you build your first complete DCF, on Reliance, in the valuation modules, roughly five weeks in at an hour a day, after the accounting, analysis and modelling foundations that make the DCF's assumptions defensible. Getting comfortable defending WACC, growth and terminal-value choices in an interview usually takes a further few weeks of the valuation and mock-interview modules." },
   { q: 'What does the syllabus cover?',
-    a: "Accounting and economics foundations, financial statement analysis, ratio and forensic analysis, three-statement financial modelling, valuation (DCF, comparable companies, SOTP), industry and competitive analysis, and AI skills for analysts — across 21 modules and 239 sessions — ending with three capstones: a full initiating-coverage report, a sector coverage note, and a working AI research copilot. The full module-by-module breakdown is on this page above." },
+    a: "Accounting and economics foundations, financial statement analysis, ratio and forensic analysis, three-statement financial modelling, valuation (DCF, comparable companies, SOTP), industry and competitive analysis, and AI skills for analysts, across 21 modules and 239 sessions, ending with three capstones: a full initiating-coverage report, a sector coverage note, and a working AI research copilot. The full module-by-module breakdown is on this page above." },
   { q: 'What kind of simulations does the course have?',
-    a: "239 hands-on simulations — one per session — across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet, auto-graded), branch-based decision scenarios, and applied reading with quizzes." },
+    a: "239 hands-on simulations, one per session, across three formats: interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet, auto-graded), branch-based decision scenarios, and applied reading with quizzes." },
   { q: 'Is the certificate recognised?',
-    a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certification — the curriculum prepares you for the SEBI-established NISM Series XV exam — and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
+    a: "You get Valuevade's Certificate of Completion (named, dated, unique ID, LinkedIn-ready) when you finish all three capstones. Recognition in Indian finance hiring comes less from any course certificate and more from two things this program is built around: external certification, the curriculum prepares you for the SEBI-established NISM Series XV exam, and the portfolio of three real deliverables recruiters can open and judge. We'd rather be straight about that than oversell a PDF." },
   { q: 'What happens if I pause for a few weeks?',
-    a: "Nothing is lost. Progress, streaks, XP, badges, doubt history and your study plan are all persisted, and access is lifetime — you pick up exactly where you left off. The Study Planner can reschedule your remaining sessions around a new deadline." },
+    a: "Nothing is lost. Progress, streaks, XP, badges, doubt history and your study plan are all persisted, and access is lifetime, you pick up exactly where you left off. The Study Planner can reschedule your remaining sessions around a new deadline." },
   { q: 'Will this course get me a finance job?',
-    a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series XV preparation. Those are the artefacts that get resumes shortlisted and interviews passed — the offer still depends on you." },
+    a: "No course can honestly promise a job, and we don't. What the program is built to give you is the exact evidence junior analyst hiring screens for: three portfolio deliverables (an initiating-coverage report, a sector note, and a working AI research copilot), scored mock-interview practice, and NISM Series XV preparation. Those are the artefacts that get resumes shortlisted and interviews passed, the offer still depends on you." },
   { q: 'Is Valuevade worth it?',
-    a: "For ₹4999 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV certification prep, and three portfolio capstones — a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session — notes, quiz, interview, simulation — before paying anything, and judge the quality yourself." },
+    a: "For ₹4999 one-time you get 21 modules, 239 hands-on sessions on Indian companies, a 24/7 AI tutor, scored AI mock interviews, NISM Series XV certification prep, and three portfolio capstones, a scope comparable Indian programs price at ₹25,000–₹1,20,000. Whether it's worth it for you is exactly what the free first session is for: do one full session, notes, quiz, interview, simulation, before paying anything, and judge the quality yourself." },
   { q: 'How is Valuevade different from WallStreet School?',
     a: "WallStreet School runs instructor-led cohort programs in financial modelling and valuation, with live classes and scheduled batches. Valuevade is fully self-paced software: 239 auto-graded simulations, a 24/7 AI tutor, AI mock interviews and lifetime access at ₹4999. Choose a live cohort if scheduled classes and human accountability are what keep you working; choose Valuevade if you want hands-on practice on Indian companies at your own pace and a fraction of the cost." },
   { q: 'How is Valuevade different from Imarticus or Upgrad?',
     a: "Imarticus and Upgrad offer longer university-style finance programs, often with placement-assistance structures and cohort schedules. Valuevade is a focused equity-research skill program: shorter (about 2 months at an hour a day), self-paced, simulation-first, and ₹4999 lifetime. If you want a long credentialed program with placement services, they're built for that; if you want the specific analyst skill set and portfolio, fast and affordable, that's what Valuevade is for." },
   { q: 'How is Valuevade different from Valuation School?',
-    a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software — auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹4999 lifetime. Pick the format that matches how you actually study." },
+    a: "Valuation School runs popular cohort-based equity research training with a large student community. Both teach Indian-market equity research. The difference is format: Valuation School is cohort- and community-driven; Valuevade is self-paced software, auto-graded simulations on real Indian companies, a 24/7 AI tutor, scored mock interviews, ₹4999 lifetime. Pick the format that matches how you actually study." },
   { q: 'How do I become an equity research analyst in India?',
-    a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA — not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series XV is the SEBI-established research-analyst certification; CFA helps for buy-side), and — increasingly the differentiator — a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
+    a: "The typical path: a finance-side degree (B.Com/BBA/MBA/CA, not mandatory but common), demonstrable skills in financial statement analysis, modelling and valuation, a credential or two (NISM Series XV is the SEBI-established research-analyst certification; CFA helps for buy-side), and, increasingly the differentiator, a portfolio of real work: an initiating-coverage report and a sector note you can hand a recruiter. Entry routes include sell-side research at brokerages, buy-side AM/PMS firms, and research KPOs. The Equity Research Analyst Program is built to cover the skills, the exam prep and the portfolio pieces of that path." },
 ];
 
 import { effectiveMinutes, formatDuration } from '../utils/sessionTime';
@@ -255,7 +255,7 @@ export default function CourseDetailsPage() {
       if (pathErr) throw pathErr;
       setCourse(pathData);
 
-      // 2. Modules with sessions — try full select (migration 0041), fall back
+      // 2. Modules with sessions, try full select (migration 0041), fall back
       //    to base columns if the DB hasn't been migrated yet.
       const _FULL_SEL = '*, master_sessions(id, title, description, order_index, estimated_minutes, video_duration_minutes, lecture_url, is_preview_session, is_free_session)';
       const _BASE_SEL = '*, master_sessions(id, title, description, order_index, estimated_minutes, lecture_url)';
@@ -267,7 +267,7 @@ export default function CourseDetailsPage() {
         .order('order_index');
 
       if (modErr?.message?.includes('does not exist')) {
-        // Migration 0041 not yet applied — retry with guaranteed base columns
+        // Migration 0041 not yet applied, retry with guaranteed base columns
         ({ data: modulesData, error: modErr } = await supabase
           .from('master_modules')
           .select(_BASE_SEL)
@@ -332,7 +332,7 @@ export default function CourseDetailsPage() {
   const videoHoursKnown = totalVideoMinutes > 0; // true once at least one session has duration set
   const freeSessions = allSessions.filter((s) => s.is_free_session);
 
-  // Navigate to the proper enrollment page — a preview + confirm flow
+  // Navigate to the proper enrollment page, a preview + confirm flow
   // (no AI customization / no instant enroll).
   const goCustomize = () => {
     if (!user) {
@@ -342,7 +342,7 @@ export default function CourseDetailsPage() {
     navigate(`/enroll/${courseId}`);
   };
 
-  // Scroll guests down to the "Try Free" strip instead of forcing a login —
+  // Scroll guests down to the "Try Free" strip instead of forcing a login,
   // trying a free session never requires an account.
   const scrollToFreeTrials = () => {
     document.querySelector('[data-testid="free-sessions-strip"]')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -360,17 +360,17 @@ export default function CourseDetailsPage() {
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
       <VideoPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
       <Helmet>
-        <title>Equity Research Analyst Course — Syllabus & Fees | Valuevade</title>
+        <title>Equity Research Analyst Course, Syllabus & Fees | Valuevade</title>
         <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <link rel="canonical" href={`https://valuevade.com/course/${courseId}`} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={`https://valuevade.com/course/${courseId}`} />
-        <meta property="og:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
+        <meta property="og:title" content="Equity Research Analyst Course, Syllabus & Fees | Valuevade" />
         <meta property="og:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Equity Research Analyst Course — Syllabus & Fees | Valuevade" />
+        <meta name="twitter:title" content="Equity Research Analyst Course, Syllabus & Fees | Valuevade" />
         <meta name="twitter:description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         {/* JSON-LD (Prompt 4): Course + BreadcrumbList + FAQPage.
@@ -387,7 +387,7 @@ export default function CourseDetailsPage() {
           {JSON.stringify(buildFaqPageJsonLd(COURSE_DETAILS_FAQS))}
         </script>
       </Helmet>
-      {/* Scroll progress — thin violet bar at top of viewport, premium signal */}
+      {/* Scroll progress, thin violet bar at top of viewport, premium signal */}
       <ScrollProgressBar />
 
       {/* Ambient orbs */}
@@ -441,7 +441,7 @@ export default function CourseDetailsPage() {
       </header>
 
       <main className="max-w-7xl mx-auto px-6 py-8 sm:py-12 relative z-10">
-        {/* Breadcrumb — Prompt 3 task 14 */}
+        {/* Breadcrumb, Prompt 3 task 14 */}
         <nav
           className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] font-bricolage mb-6"
           aria-label="Breadcrumb"
@@ -490,7 +490,7 @@ export default function CourseDetailsPage() {
           <div className="flex flex-col lg:flex-row gap-10">
             {/* Left content */}
             <div className="flex-1 min-w-0">
-              {/* Hero section — Prompt 3 task 5: static verbatim copy
+              {/* Hero section, Prompt 3 task 5: static verbatim copy
                   (no longer DB-driven). Preserves the halo dot animation
                   aesthetic. */}
               <section className="mb-12 relative" data-testid="detail-hero">
@@ -511,7 +511,7 @@ export default function CourseDetailsPage() {
                   </svg>
                 </div>
                 <LetterStaggerHeadline
-                  text="Equity Research Analyst Program — Financial Modelling & Valuation Course"
+                  text="Equity Research Analyst Program, Financial Modelling & Valuation Course"
                   className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 tracking-tight relative"
                   testid="detail-title"
                 />
@@ -526,7 +526,7 @@ export default function CourseDetailsPage() {
                   Indian finance students and early-career switchers. Across 21 modules and 239
                   hands-on sessions (about 60 hours, including 42 hours of video lectures), you learn
                   accounting under Ind AS, financial statement and ratio analysis, three-statement
-                  financial modelling, and valuation by DCF, comparable companies and SOTP — then
+                  financial modelling, and valuation by DCF, comparable companies and SOTP, then
                   finish with three portfolio capstones: an initiating-coverage report, a sector
                   coverage note, and a working AI research copilot. Lifetime access costs ₹4999
                   one-time, and your first session is free.
@@ -560,7 +560,7 @@ export default function CourseDetailsPage() {
                   <DifficultyBadge level={course.difficulty} />
                 </div>
 
-                {/* CTA — hero button is the payment/enroll CTA; a secondary
+                {/* CTA, hero button is the payment/enroll CTA; a secondary
                     link scrolls guests to the free-trial strip below instead
                     of forcing a login (that used to be the "Start free
                     session" button's behaviour, which was misleading). */}
@@ -587,7 +587,7 @@ export default function CourseDetailsPage() {
                           className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                           data-testid="detail-customize-enroll"
                         >
-                          Enrol Now — ₹4999 <ArrowRight size={16} />
+                          Enrol Now, ₹4999 <ArrowRight size={16} />
                         </button>
                       </BreathingGlow>
                       {freeSessions.length > 0 && (
@@ -607,7 +607,7 @@ export default function CourseDetailsPage() {
                 )}
               </section>
 
-              {/* Animated stats reveal — counts up on scroll-into-view */}
+              {/* Animated stats reveal, counts up on scroll-into-view */}
               <section className="mb-14" data-testid="detail-stats-reveal">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <AnimatedStat testid="detail-stat-modules"   value={modules.length || 0}  label="Modules"   icon={<Layers size={18} />} />
@@ -617,7 +617,7 @@ export default function CourseDetailsPage() {
                 </div>
               </section>
 
-              {/* What you'll be able to do — Prompt 3 task 7 (verbatim). */}
+              {/* What you'll be able to do, Prompt 3 task 7 (verbatim). */}
               <section className="mb-12" data-testid="detail-what-you-learn">
                 <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
                   What you&apos;ll be able to do
@@ -646,7 +646,7 @@ export default function CourseDetailsPage() {
               </section>
 
 
-              {/* Full syllabus — module by module (Prompt 3 task 6).
+              {/* Full syllabus, module by module (Prompt 3 task 6).
                   Data-driven from master_modules; capstones appended below
                   the accordion as named deliverables. */}
               {modules.length > 0 && (
@@ -658,10 +658,10 @@ export default function CourseDetailsPage() {
                       data-testid="free-sessions-strip"
                     >
                       <div className="flex items-center gap-2 mb-3">
-                        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-emerald-500">Try Free — No Account Needed</span>
+                        <span className="text-[10px] font-mono uppercase tracking-[0.18em] text-emerald-500">Try Free, No Account Needed</span>
                       </div>
                       <p className="text-sm text-[var(--color-text-muted)] mb-4 font-bricolage">
-                        Experience {freeSessions.length === 1 ? 'a full session' : `${freeSessions.length} full sessions`} — video, notes, quiz and simulation — before committing. No sign-up required.
+                        Experience {freeSessions.length === 1 ? 'a full session' : `${freeSessions.length} full sessions`}, video, notes, quiz and simulation, before committing. No sign-up required.
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {freeSessions.map((s) => (
@@ -681,9 +681,9 @@ export default function CourseDetailsPage() {
                     </div>
                   )}
 
-                  {/* The full syllabus — module by module */}
+                  {/* The full syllabus, module by module */}
                   <h2 className="text-base font-semibold font-bricolage text-[var(--color-text)] mb-4">
-                    The full syllabus — module by module
+                    The full syllabus, module by module
                   </h2>
                   <Accordion type="single" collapsible defaultValue="module-0" className="space-y-3">
                     {modules.map((mod, idx) => {
@@ -796,7 +796,7 @@ export default function CourseDetailsPage() {
                     })}
                   </Accordion>
 
-                  {/* Capstone deliverables at the end of the syllabus list — Prompt 3 task 6. */}
+                  {/* Capstone deliverables at the end of the syllabus list, Prompt 3 task 6. */}
                   <div
                     className="mt-6 rounded-2xl border border-[var(--color-accent-purple)]/20 bg-[var(--color-accent-purple)]/[0.05] p-5 space-y-4"
                     data-testid="detail-capstones-inline"
@@ -842,7 +842,7 @@ export default function CourseDetailsPage() {
                       ))}
                     </ul>
                   ) : (
-                    <p className="text-sm text-[var(--color-text-muted)] font-bricolage">None — open to all skill levels</p>
+                    <p className="text-sm text-[var(--color-text-muted)] font-bricolage">None, open to all skill levels</p>
                   )}
                 </div>
 
@@ -889,11 +889,11 @@ export default function CourseDetailsPage() {
           </div>
         )}
 
-        {/* All the below-fold sections — Prompt 3 tasks 8–13.
+        {/* All the below-fold sections, Prompt 3 tasks 8–13.
             Order: how it works → certificate & standards → who built this
             → capstone showcase → FAQ → deep comparison → closing CTA. */}
 
-        {/* Task 8 — How the course works (verbatim) */}
+        {/* Task 8, How the course works (verbatim) */}
         {!loading && !error && course && (
           <section className="mt-20 mb-16" data-testid="detail-how-it-works">
             <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-5">
@@ -902,7 +902,7 @@ export default function CourseDetailsPage() {
             <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed max-w-3xl">
               Every session follows the same loop: interactive notes → adaptive quiz → hands-on
               simulation, with Pari available in context at every step. Simulations come in three
-              formats — interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet; auto-graded),
+              formats, interactive Excel (formulas, drag-fill, VLOOKUP, multi-sheet; auto-graded),
               branch-based decision scenarios, and applied reading with quizzes. The Study Planner
               takes your deadline or daily-hours budget and schedules all 239 sessions; progress,
               streaks, XP and doubt history persist if you pause. Excel simulations are
@@ -911,7 +911,7 @@ export default function CourseDetailsPage() {
           </section>
         )}
 
-        {/* Task 9 — Certificate & external standards */}
+        {/* Task 9, Certificate & external standards */}
         {!loading && !error && course && (
           <section className="mb-16" data-testid="detail-cert-standards">
             <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
@@ -949,10 +949,10 @@ export default function CourseDetailsPage() {
           </section>
         )}
 
-        {/* Task 10 — Who built this. Reuses the homepage component (same 3 paragraphs). */}
+        {/* Task 10, Who built this. Reuses the homepage component (same 3 paragraphs). */}
         {!loading && !error && course && <WhoBuiltThisSection />}
 
-        {/* Task 11 — Capstone showcase. Replaces the previous data-driven
+        {/* Task 11, Capstone showcase. Replaces the previous data-driven
             "Your Capstone Projects" grid with the 3 fixed deliverable cards.
             Sample excerpts intentionally omitted per Prompt 3 (HTML TODO). */}
         {!loading && !error && course && (
@@ -979,11 +979,11 @@ export default function CourseDetailsPage() {
                   img: '/capstones/c1-initiating-coverage.png',
                   alt: 'Sample page from a Valuevade student initiating-coverage report on an Indian large-cap' },
                 { n: 2, title: 'Sector Coverage Note',
-                  body: 'Industry structure, comparables set, and a house coverage view — written to sell-side conventions.',
+                  body: 'Industry structure, comparables set, and a house coverage view, written to sell-side conventions.',
                   img: '/capstones/c2-sector-note.png',
                   alt: 'Sample page from a Valuevade student sector coverage note showing a comparables table for Indian private-sector banks' },
                 { n: 3, title: 'AI Research Copilot',
-                  body: 'A working research tool you built end-to-end — the portfolio artefact that demonstrates you can deploy AI, not compete with it.',
+                  body: 'A working research tool you built end-to-end, the portfolio artefact that demonstrates you can deploy AI, not compete with it.',
                   img: '/capstones/c3-ai-copilot.png',
                   alt: 'Sample screenshot of a Valuevade student-built AI equity research copilot web app' },
               ].map((c) => (
@@ -997,7 +997,7 @@ export default function CourseDetailsPage() {
                   </div>
                   <h3 className="font-clash text-sm font-bold text-[var(--color-text)] mb-2">{c.title}</h3>
                   <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-4">{c.body}</p>
-                  {/* Sample preview — generated mockup, labelled as such. */}
+                  {/* Sample preview, generated mockup, labelled as such. */}
                   <div
                     className="rounded-xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface-hover)]"
                     data-testid={`showcase-preview-${c.n}`}
@@ -1011,7 +1011,7 @@ export default function CourseDetailsPage() {
                     />
                   </div>
                   <p className="mt-2 text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-text-faint)]">
-                    Sample preview — student capstone
+                    Sample preview, student capstone
                   </p>
                 </div>
               ))}
@@ -1019,7 +1019,7 @@ export default function CourseDetailsPage() {
           </motion.section>
         )}
 
-        {/* Task 12 — Course-page FAQ (13 Qs verbatim, in prescribed order). */}
+        {/* Task 12, Course-page FAQ (13 Qs verbatim, in prescribed order). */}
         {!loading && !error && course && (
           <section id="course-faq" className="mb-16" data-testid="detail-course-faq">
             <div className="mb-6">
@@ -1050,7 +1050,7 @@ export default function CourseDetailsPage() {
           </section>
         )}
 
-        {/* Task 13 — Deep comparison table. Competitor pricing verified from
+        {/* Task 13, Deep comparison table. Competitor pricing verified from
             each provider's public listing (see footnote for verification date). */}
         {!loading && !error && course && (
           <section className="mb-16 overflow-x-auto" data-testid="detail-deep-compare">
@@ -1135,7 +1135,7 @@ export default function CourseDetailsPage() {
                       className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:brightness-110 transition-all shadow-[0_8px_30px_rgba(139,92,246,0.45)]"
                       data-testid="detail-closing-cta-button"
                     >
-                      {user ? 'Enroll — Preview & Start' : 'Login to Enroll'} <ArrowRight size={16} />
+                      {user ? 'Enroll, Preview & Start' : 'Login to Enroll'} <ArrowRight size={16} />
                     </button>
                   )}
                 </BreathingGlow>

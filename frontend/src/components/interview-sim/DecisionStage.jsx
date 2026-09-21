@@ -51,7 +51,7 @@ export default function DecisionStage({ attempt, sim, guestMode = false }) {
       {/* Hiring committee debrief */}
       <div className="glass-card rounded-2xl p-6 sm:p-7" data-testid="decision-report">
         <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-accent-purple)] mb-3">
-          Hiring committee debrief — your personalised feedback
+          Hiring committee debrief, your personalised feedback
         </p>
         <SimpleMarkdown text={decision.report_md} />
       </div>
@@ -66,7 +66,7 @@ export default function DecisionStage({ attempt, sim, guestMode = false }) {
         </button>
         {!isOffer && attemptsLeft && (
           <span className="inline-flex items-center gap-1.5 text-xs font-mono text-[var(--color-text-muted)]" data-testid="decision-retry-hint">
-            <RotateCcw size={12} /> You have 1 more attempt at {sim.firm_name} — re-apply from the openings list.
+            <RotateCcw size={12} /> You have 1 more attempt at {sim.firm_name}, re-apply from the openings list.
           </span>
         )}
       </div>

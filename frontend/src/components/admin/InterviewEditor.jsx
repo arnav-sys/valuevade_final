@@ -1,6 +1,6 @@
 /**
- * Phase B.2 — Interview questions editor for the Admin Curriculum tab.
- * Flat list — question, context, sample_strong_answer, evaluation_criteria
+ * Phase B.2, Interview questions editor for the Admin Curriculum tab.
+ * Flat list, question, context, sample_strong_answer, evaluation_criteria
  * (JSON blob). No LLM eval logic here; just content authoring.
  */
 import { useEffect, useState, useCallback } from 'react';
@@ -120,7 +120,7 @@ export default function InterviewEditor({ sessionId, sessionTitle }) {
       {loading ? (
         <p className="text-xs text-[var(--color-text-muted)]">Loading…</p>
       ) : items.length === 0 ? (
-        <p className="text-xs text-[var(--color-text-muted)] py-6 text-center">No interview questions yet — click Add.</p>
+        <p className="text-xs text-[var(--color-text-muted)] py-6 text-center">No interview questions yet, click Add.</p>
       ) : (
         <ul className="flex-1 overflow-y-auto space-y-2" data-testid="interview-items-list">
           {items.map((it) => {
@@ -181,7 +181,7 @@ export default function InterviewEditor({ sessionId, sessionTitle }) {
                     </div>
                     <div>
                       <p className="text-[10px] uppercase text-[var(--color-text-muted)] font-mono mb-1">
-                        Evaluation criteria (JSON — level, trap, power_phrase, framework_bullets…)
+                        Evaluation criteria (JSON, level, trap, power_phrase, framework_bullets…)
                       </p>
                       <textarea
                         value={criteriaText}

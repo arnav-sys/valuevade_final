@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 
 /**
- * Refund & Cancellation Policy — DRAFT (Prompt-4 of the Aug-2026 SEO/GEO
+ * Refund & Cancellation Policy, DRAFT (Prompt-4 of the Aug-2026 SEO/GEO
  * rebuild). Since Prompt 4 shipped without the two "ready-made" refund
  * options referenced in its slot notes, this draft picks a widely-used
  * software-course model that fits the ₹4999 / free-first-session product:
@@ -49,16 +49,16 @@ export default function RefundPolicyPage() {
 
           <h2 className="font-clash text-xl font-semibold text-[var(--color-text)] mt-8 mb-2">Try before you buy</h2>
           <p>
-            Every visitor gets one full session — notes, quiz, mock interview
-            and simulation — free of charge, no card required. This exists so
+            Every visitor gets one full session, notes, quiz, mock interview
+            and simulation, free of charge, no card required. This exists so
             you can judge the quality of the product before committing to the
             ₹4999 payment. Please use it.
           </p>
 
           <h2 className="font-clash text-xl font-semibold text-[var(--color-text)] mt-8 mb-2">Refunds after paid access</h2>
           <p>
-            Because full course access — including the AI tutor, simulations,
-            mock interviews, and downloadable materials — is unlocked
+            Because full course access, including the AI tutor, simulations,
+            mock interviews, and downloadable materials, is unlocked
             immediately on payment, we do not offer refunds by default once your
             account has been granted paid access. Change-of-mind requests
             (&quot;I&apos;m too busy&quot;, &quot;I found a different course&quot;)
@@ -72,7 +72,7 @@ export default function RefundPolicyPage() {
             situations, at our sole discretion:
           </p>
           <ul className="list-disc pl-6 space-y-1.5">
-            <li><strong>Duplicate charges</strong> or Razorpay processing errors — refunded in full within 7 working days of confirmation.</li>
+            <li><strong>Duplicate charges</strong> or Razorpay processing errors, refunded in full within 7 working days of confirmation.</li>
             <li><strong>Genuine inability to access the course</strong> for reasons on our side (persistent platform outage, licence not provisioned) that our support team cannot resolve.</li>
             <li><strong>Regulatory obligations</strong> under Indian consumer-protection or RBI rules that entitle you to a refund.</li>
           </ul>
@@ -87,7 +87,7 @@ export default function RefundPolicyPage() {
           <p>
             You may close your account at any time by emailing support. Because
             the product is a one-time-payment lifetime licence (not a
-            subscription), there is nothing to cancel from a billing standpoint —
+            subscription), there is nothing to cancel from a billing standpoint,
             you simply stop using the Service. Closing your account does not
             entitle you to a refund of a previously paid one-time fee, subject
             to the exceptions above.

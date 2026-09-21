@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useAuth } from './AuthContext';
 import { listSessionDoubts } from '../utils/sessionDoubts';
 
-// Phase B — Open-doubt count for sidebar pill.
+// Phase B, Open-doubt count for sidebar pill.
 //
 // Lightweight provider: fetches the open-doubt list on auth/route changes
 // and exposes a `count` plus a `refresh()` callback that the DoubtsPage

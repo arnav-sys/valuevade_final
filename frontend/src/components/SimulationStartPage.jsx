@@ -33,7 +33,7 @@ const TYPE_META = {
     label: 'Interactive',
     Icon: MousePointerClick,
     color: '#FF6AC1',
-    blurb: 'Drag, match, order — hands-on exercises.',
+    blurb: 'Drag, match, order, hands-on exercises.',
   },
 };
 
@@ -271,7 +271,7 @@ export default function SimulationStartPage() {
 
               <div className="flex items-center justify-between gap-4">
                 <span className="text-xs font-mono text-[var(--color-text-muted)]">
-                  No right path — just your best analysis
+                  No right path, just your best analysis
                 </span>
                 <button
                   onClick={() => navigate(`/session/${sessionId}/simulation`)}

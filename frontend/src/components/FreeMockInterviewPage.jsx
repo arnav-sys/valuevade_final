@@ -10,7 +10,7 @@ import { CheckCircle2, Clock, FileSpreadsheet, Mic, Trophy, Users, ArrowRight, S
 import '@/components/landing/landing-dark.css';
 
 /**
- * FreeMockInterviewPage — dedicated public marketing page for the one-time
+ * FreeMockInterviewPage, dedicated public marketing page for the one-time
  * free equity-research mock interview trial. Reached from the Navbar link
  * ("Free Mock") and via direct URL /free-mock-interview.
  * ------------------------------------------------------------------
@@ -27,7 +27,7 @@ const ROUNDS = [
   { n: 1, title: 'Application', body: "Answer three recruiter-style prompts. Pari grades your fit note and shortlists you for the online assessment.", icon: Users },
   { n: 2, title: 'Aptitude', body: "12 auto-graded quant + reasoning questions on a 15-minute clock. The same style Indian brokerages use for first-round screening.", icon: FileSpreadsheet },
   { n: 3, title: 'HR round', body: "Voice-first behavioural interview. Pari speaks in the Nova voice; you answer aloud or by typing. Structured, probing, realistic.", icon: Mic },
-  { n: 4, title: 'Technical', body: "Five equity-research questions — DCF, comps, ratios, macro. Follow-ups and pushback built in, exactly like a real analyst interview.", icon: Sparkles },
+  { n: 4, title: 'Technical', body: "Five equity-research questions, DCF, comps, ratios, macro. Follow-ups and pushback built in, exactly like a real analyst interview.", icon: Sparkles },
   { n: 5, title: 'Case study', body: "A live Excel case in your browser. Build the required cells, then defend your recommendation in writing. Fully auto-graded.", icon: Trophy },
 ];
 
@@ -65,17 +65,17 @@ export default function FreeMockInterviewPage() {
       data-landing-theme={landingTheme}
     >
       <Helmet>
-        <title>Free Equity Research Mock Interview — 5 Rounds, AI-Graded | Valuevade</title>
+        <title>Free Equity Research Mock Interview, 5 Rounds, AI-Graded | Valuevade</title>
         <meta name="description" content="Free 5-round equity research mock interview: application, aptitude, HR, technical, and a live Excel case study. AI-graded verdict + scorecard. No signup, no card." />
         <link rel="canonical" href="https://valuevade.com/free-mock-interview" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/free-mock-interview" />
-        <meta property="og:title" content="Free Equity Research Mock Interview — 5 Rounds, AI-Graded | Valuevade" />
+        <meta property="og:title" content="Free Equity Research Mock Interview, 5 Rounds, AI-Graded | Valuevade" />
         <meta property="og:description" content="Free 5-round equity research mock interview by Pari, our AI interviewer. Scorecard + verdict. No signup, no card." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Free Equity Research Mock Interview — 5 Rounds, AI-Graded" />
+        <meta name="twitter:title" content="Free Equity Research Mock Interview, 5 Rounds, AI-Graded" />
         <meta name="twitter:description" content="Free 5-round equity research mock interview by Pari. Scorecard + verdict. No signup, no card." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
       </Helmet>
@@ -115,7 +115,7 @@ export default function FreeMockInterviewPage() {
               className="mt-5 text-base sm:text-lg text-[var(--color-text-muted)] font-bricolage leading-relaxed max-w-2xl mx-auto"
               data-testid="free-mock-lead"
             >
-              Five rounds — application, aptitude, HR, technical, and a live Excel case study — run
+              Five rounds, application, aptitude, HR, technical, and a live Excel case study, run
               by Pari as a bulge-bracket-style interviewer. You get a full scorecard and verdict at
               the end. One free trial per person. No card required.
             </motion.p>
@@ -172,7 +172,7 @@ export default function FreeMockInterviewPage() {
           </div>
         </section>
 
-        {/* Email capture — reuses the existing FreeTrialCTA section */}
+        {/* Email capture, reuses the existing FreeTrialCTA section */}
         <FreeTrialCTA />
 
         {/* What you get + FAQ-lite */}
@@ -184,9 +184,9 @@ export default function FreeMockInterviewPage() {
             <ul className="space-y-3">
               {[
                 'A round-by-round score (application, aptitude, HR, technical, case) with strengths and gaps',
-                "Pari's verdict on whether you'd land the role — offer or reject — with the honest reasoning",
+                "Pari's verdict on whether you'd land the role, offer or reject, with the honest reasoning",
                 'Your Excel work saved with a per-cell breakdown of what you got right and what you missed',
-                'The exact questions you were asked — so you can rework the weak answers and try the paid course rounds next',
+                'The exact questions you were asked, so you can rework the weak answers and try the paid course rounds next',
               ].map((line, idx) => (
                 <li
                   key={idx}
@@ -215,7 +215,7 @@ export default function FreeMockInterviewPage() {
             <div className="mt-12 text-center">
               <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-4">
                 Liked the trial? The full Equity Research Analyst Program has 21 modules and 239
-                sessions — same interviewer, plus a curriculum, capstones and a certificate.
+                sessions, same interviewer, plus a curriculum, capstones and a certificate.
               </p>
               <Link
                 to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"

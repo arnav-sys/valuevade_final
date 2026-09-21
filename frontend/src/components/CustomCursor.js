@@ -1,4 +1,4 @@
-// CustomCursor — landing-only violet cursor with a soft trail and click
+// CustomCursor, landing-only violet cursor with a soft trail and click
 // ripple. Disabled on touch devices and when prefers-reduced-motion is set.
 //
 // Architecture:

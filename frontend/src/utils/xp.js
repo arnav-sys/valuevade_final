@@ -19,7 +19,7 @@
 //
 // On the "no user_stats row yet" path (very early in onboarding) the RPC
 // returns `{ updated: false, reason: 'no_user_stats_row', event_inserted: true,
-// did_level_up: false }` — we surface that to callers so the toast can be
+// did_level_up: false }`, we surface that to callers so the toast can be
 // suppressed cleanly.
 
 import { supabase } from '../lib/supabase';
@@ -27,7 +27,7 @@ import { supabase } from '../lib/supabase';
 /**
  * Authoritative list of XP `reason` values. Mirrors the CHECK constraint on
  * `public.user_xp_events.reason` and the validation inside award_xp().
- * NEVER pass a string outside this set — the RPC will raise.
+ * NEVER pass a string outside this set, the RPC will raise.
  */
 export const XP_REASONS = Object.freeze({
   session_complete: 'session_complete',
@@ -244,7 +244,7 @@ export async function getLevelInfo(current_level, total_xp) {
  * Slot-machine semantics: variance is sampled PER CORRECT QUESTION, not per
  * quiz, so a 5/5 quiz can legitimately award anywhere in [25..75]. Each
  * correct answer rolls 10 ± 5 (integer in [5,15]); each wrong attempt is a
- * flat +2 (no variance — wrongs aren't slot-machine pulls, they're
+ * flat +2 (no variance, wrongs aren't slot-machine pulls, they're
  * consolation pennies).
  */
 export function computeQuizXP({ correct = 0, attempted = 0 } = {}) {
@@ -259,7 +259,7 @@ export function computeQuizXP({ correct = 0, attempted = 0 } = {}) {
   return Math.max(0, total);
 }
 
-/** IST helpers — used by XPContext for daily_login + last_login bookkeeping. */
+/** IST helpers, used by XPContext for daily_login + last_login bookkeeping. */
 export function todayISTKey(now = new Date()) {
   // IST = UTC + 05:30; format YYYY-MM-DD
   const ist = new Date(now.getTime() + 5.5 * 60 * 60 * 1000);

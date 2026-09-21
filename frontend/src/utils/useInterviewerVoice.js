@@ -15,7 +15,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { interviewSimFetch } from './interviewSim';
 
 /**
- * Convert a base64 mp3 to a playable object URL (small helper — the browser
+ * Convert a base64 mp3 to a playable object URL (small helper, the browser
  * plays base64 data URIs directly but object URLs are cleaner + garbage-safe).
  */
 function b64ToObjectUrl(b64, mime = 'audio/mpeg') {
@@ -74,7 +74,7 @@ export default function useInterviewerVoice(turns, options = {}) {
         await audio.play();
       } catch (playErr) {
         // Autoplay policy: modern browsers may block the first play() until
-        // the user has interacted. Fall back to silent — the Replay button
+        // the user has interacted. Fall back to silent, the Replay button
         // becomes the escape hatch (user click satisfies the gesture rule).
         setSpeaking(false);
         setError(playErr?.name === 'NotAllowedError' ? 'autoplay-blocked' : null);

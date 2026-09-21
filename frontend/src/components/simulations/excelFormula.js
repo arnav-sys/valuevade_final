@@ -1,6 +1,6 @@
 // Tiny Excel-style formula evaluator. Hand-rolled to keep the bundle lean
 // (no new npm deps). Supports the function set the Batch 5 spec asks for:
-//   • cell refs: A1, B12, $A$1 (absolute markers are tolerated but ignored —
+//   • cell refs: A1, B12, $A$1 (absolute markers are tolerated but ignored,
 //     we don't fill-handle drag yet)
 //   • ranges: A1:B5
 //   • cross-sheet refs: Sheet2!A1, 'Income Statement'!B3
@@ -206,7 +206,7 @@ const FUNCTIONS = {
     if (isErr(x)) return x;
     return x;
   },
-  // IFS(cond1, val1, cond2, val2, …) — first truthy condition wins; the
+  // IFS(cond1, val1, cond2, val2, …), first truthy condition wins; the
   // common professional pattern uses TRUE as a final catch-all.
   IFS: (args, lazy) => {
     if (lazy) {
@@ -239,7 +239,7 @@ const FUNCTIONS = {
     const y = Array.isArray(b) ? b[0] : b;
     return String(x ?? '') === String(y ?? '');
   },
-  // SUMPRODUCT(rangeA, rangeB, …) — element-wise multiply across all
+  // SUMPRODUCT(rangeA, rangeB, …), element-wise multiply across all
   // ranges, then sum. Boolean conditions used as multipliers collapse to
   // 1 / 0, which is how analyst-style scoring formulas like
   // `=SUMPRODUCT((C2:C11>15)*(D2:D11<1))` count quality stocks.
@@ -552,7 +552,7 @@ const FUNCTIONS = {
 
   /* ─────────────────  Statistical  ─────────────────────────────
    * STDEV/VAR: sample (n-1). MEDIAN: middle (avg of two middles if even).
-   * PERCENTILE(range, k) — k ∈ [0,1] — linear interpolation. */
+   * PERCENTILE(range, k), k ∈ [0,1], linear interpolation. */
   STDEV: (args) => {
     const flat = args.flat().map(coerceNum).filter(Number.isFinite);
     if (flat.length < 2) return ERR('#DIV/0!');
@@ -760,7 +760,7 @@ function parseAnyDate(v) {
   if (v instanceof Date) return v;
   if (typeof v === 'number' && v >= 1 && v < 100000) {
     // Excel serial: days since 1900-01-01 (with the famous 1900 leap-year bug
-    // — we ignore the leap-year bug for serials > 60 since modern data rarely
+    //, we ignore the leap-year bug for serials > 60 since modern data rarely
     // hits it). 25569 = days between 1970-01-01 and 1900-01-01.
     return new Date((v - 25569) * 86400000);
   }
@@ -795,9 +795,9 @@ function parseAnyDate(v) {
 }
 
 function dateAsSerial(d) {
-  // Days since the Unix epoch — sign and magnitude are what arithmetic uses.
+  // Days since the Unix epoch, sign and magnitude are what arithmetic uses.
   // We deliberately don't apply Excel's 1900-01-01 baseline because the
-  // engine never reports the absolute serial — only date-date differences
+  // engine never reports the absolute serial, only date-date differences
   // and date+/-integer roundtrips, both of which work in any consistent
   // baseline.
   return Math.floor(d.getTime() / 86400000);
@@ -882,7 +882,7 @@ function tokenize(src) {
         tokens.push({ type: 'range', from: ident, to: rhs });
         i = k; continue;
       }
-      // Whole-column range (bare):  D:D, $B:$B  — column letters only.
+      // Whole-column range (bare):  D:D, $B:$B , column letters only.
       if (src[j] === ':' && /^\$?[A-Za-z]+$/.test(ident)) {
         let k = j + 1; let rhs = '';
         while (k < src.length && /[A-Za-z$]/.test(src[k])) { rhs += src[k]; k++; }
@@ -890,7 +890,7 @@ function tokenize(src) {
           tokens.push({ type: 'colrange', from: ident.replace(/\$/g, ''), to: rhs.replace(/\$/g, ''), sheet: null });
           i = k; continue;
         }
-        // Fall through if RHS wasn't column-only — we'll treat ident as a bare identifier.
+        // Fall through if RHS wasn't column-only, we'll treat ident as a bare identifier.
       }
       // Standalone cell ref
       if (/^\$?[A-Za-z]+\$?[0-9]+$/.test(ident)) {
@@ -918,7 +918,7 @@ function tokenize(src) {
     }
     if (ch === '=' && src[i + 1] !== '=') { tokens.push({ type: 'op', value: '=' }); i++; continue; }
     if (ch === '(' || ch === ')' || ch === ',') { tokens.push({ type: ch }); i++; continue; }
-    // Unknown — skip.
+    // Unknown, skip.
     i++;
   }
   return tokens;
@@ -1019,7 +1019,7 @@ function makeParser(tokens) {
   return { parseExpression };
 }
 
-// Scalar binop — separated so the array-spill path can call it element-wise.
+// Scalar binop, separated so the array-spill path can call it element-wise.
 function binopScalar(op, L, R) {
   if (op === '&') return (L == null ? '' : String(L)) + (R == null ? '' : String(R));
   if (['=', '<>', '<', '>', '<=', '>='].includes(op)) {
@@ -1035,7 +1035,7 @@ function binopScalar(op, L, R) {
       default: return false;
     }
   }
-  // Date arithmetic — Excel treats dates as numeric serials. We let users
+  // Date arithmetic, Excel treats dates as numeric serials. We let users
   // subtract two dates (→ days) and add/subtract a number to a date (→ date).
   const Ld = L instanceof Date ? L : null;
   const Rd = R instanceof Date ? R : null;
@@ -1150,7 +1150,7 @@ function evalAst(node, ctx, visited) {  if (!node) return '';
           value: { sheet: sheetName, rows: r2 - r1 + 1, cols: c2 - c1 + 1, values2d: grid },
           enumerable: false,
         });
-      } catch { /* frozen prototypes in test env — ignore */ }
+      } catch { /* frozen prototypes in test env, ignore */ }
       return flat;
     }
     case 'colrange': {
@@ -1174,7 +1174,7 @@ function evalAst(node, ctx, visited) {  if (!node) return '';
         }
       }
       if (maxRow === 0) {
-        // Empty column — return empty array so SUMIFS/COUNTIFS yield 0.
+        // Empty column, return empty array so SUMIFS/COUNTIFS yield 0.
         const flat = [];
         try {
           Object.defineProperty(flat, '__range', {

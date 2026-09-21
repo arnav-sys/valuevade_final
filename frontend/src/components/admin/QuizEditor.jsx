@@ -1,5 +1,5 @@
 /**
- * Phase B.2 — Quiz items editor for the Admin Curriculum tab.
+ * Phase B.2, Quiz items editor for the Admin Curriculum tab.
  * Flat list of quiz questions with 4 options each, correct-index selector,
  * explanation, difficulty. Add / edit / delete. Sequential order_index.
  */
@@ -136,7 +136,7 @@ export default function QuizEditor({ sessionId, sessionTitle }) {
       {loading ? (
         <p className="text-xs text-[var(--color-text-muted)]">Loading…</p>
       ) : items.length === 0 ? (
-        <p className="text-xs text-[var(--color-text-muted)] py-6 text-center">No quiz questions yet — click Add.</p>
+        <p className="text-xs text-[var(--color-text-muted)] py-6 text-center">No quiz questions yet, click Add.</p>
       ) : (
         <ul className="flex-1 overflow-y-auto space-y-2" data-testid="quiz-items-list">
           {items.map((it) => {

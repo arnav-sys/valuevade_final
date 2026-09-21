@@ -1,4 +1,4 @@
-// Reusable cinematic Three.js background — extracted from LandingHero3D so
+// Reusable cinematic Three.js background, extracted from LandingHero3D so
 // auth-gated pages (Courses, Course Details, etc.) can share the same near-
 // black + violet particle field without re-implementing the WebGL plumbing.
 //
@@ -61,7 +61,7 @@ function StaticFallback() {
 
 /**
  * @param {object} props
- * @param {'sparse'|'medium'|'dense'} [props.density] — particle count band.
+ * @param {'sparse'|'medium'|'dense'} [props.density], particle count band.
  *   sparse → ~400 desktop / ~200 mobile (course list)
  *   medium → ~600 desktop / ~300 mobile (course details, default)
  *   dense  → ~900 desktop / ~450 mobile (heroes / capstone)
@@ -166,7 +166,7 @@ export default function CinematicBackground({ density = 'medium' }) {
         raf = requestAnimationFrame(loop);
         try {
           const t = (performance.now() - start) / 1000;
-          // Slower orbital drift than landing's hero — feels ambient, not busy.
+          // Slower orbital drift than landing's hero, feels ambient, not busy.
           points.rotation.y = Math.sin(t * 0.035) * 0.06;
           points.rotation.x = Math.cos(t * 0.022) * 0.03;
           if (!reducedMotion) {

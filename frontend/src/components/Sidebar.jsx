@@ -274,7 +274,7 @@ export default function Sidebar() {
         </>
       )}
 
-      {/* Global help chatbot bubble — bottom-LEFT on authenticated pages so
+      {/* Global help chatbot bubble, bottom-LEFT on authenticated pages so
           it doesn't collide with Pari (bottom-right). Landing page mounts
           its own default (bottom-right) since Pari isn't there. */}
       <FaqChatbot align="bottom-left" />

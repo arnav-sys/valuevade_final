@@ -2,7 +2,7 @@ import { MessageCircleQuestion } from 'lucide-react';
 import { useDoubtsLauncher } from '../../contexts/DoubtsLauncherContext';
 
 /**
- * Phase 56 — small "Ask Pari about this card" launcher mounted at the bottom
+ * Phase 56, small "Ask Pari about this card" launcher mounted at the bottom
  * of any Notes card body. Carries the card_title + card_content as
  * attempt_context so Pari can explain THIS specific card.
  */
@@ -17,7 +17,7 @@ export default function AskPariAboutCard({
 }) {
   const { openDoubts } = useDoubtsLauncher();
 
-  // Trim card_content to keep the attempt_context payload reasonable —
+  // Trim card_content to keep the attempt_context payload reasonable,
   // Pari only needs the gist for grounding, not the full HTML.
   const compactContent = (() => {
     try {

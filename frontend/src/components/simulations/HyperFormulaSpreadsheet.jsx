@@ -1,5 +1,5 @@
 /**
- * HyperFormulaSpreadsheet — MVP 2.0 Part B rebuild of the Excel simulation.
+ * HyperFormulaSpreadsheet, MVP 2.0 Part B rebuild of the Excel simulation.
  *
  * • Formula engine: HyperFormula (headless, spec-compliant).
  * • Virtualized rendering: react-window (fixes UI freeze on 100×26 sheets).
@@ -297,7 +297,7 @@ export default function HyperFormulaSpreadsheet({
         maxRows: MAX_ROWS,
         maxColumns: MAX_COLS,
       });
-      // HyperFormula does not treat bare TRUE / FALSE as boolean literals — it
+      // HyperFormula does not treat bare TRUE / FALSE as boolean literals, it
       // parses them as named expressions. Register them so formulas like
       // =VLOOKUP("Infosys",A2:H6,3,FALSE) evaluate correctly instead of #NAME?.
       try { hfRef.current.addNamedExpression('TRUE', '=TRUE()'); } catch { /* already exists */ }
@@ -499,7 +499,7 @@ export default function HyperFormulaSpreadsheet({
         entries.push({ r: startR + dr, c: startC + dc, value: v });
       }));
       writeManyCells(activeSheetIdx, entries);
-    } catch (e) { /* clipboard denied — no-op */ }
+    } catch (e) { /* clipboard denied, no-op */ }
   }, [activeCell, activeSheetIdx, readOnly, writeManyCells]);
 
   // ---- Drag-fill (autofill) ----
@@ -863,7 +863,7 @@ export default function HyperFormulaSpreadsheet({
 
         {/* Row-number gutter + virtualized grid side by side */}
         <div className="flex">
-          {/* Row numbers (fixed, non-virtualized — only 100 rows) */}
+          {/* Row numbers (fixed, non-virtualized, only 100 rows) */}
           <div style={{ width: ROW_NUM_W, height: GRID_HEIGHT, overflow: 'hidden' }} className="shrink-0 border-r border-[var(--color-border)] bg-[var(--color-surface)]/60">
             <div style={{ transform: `translateY(0)` }} id="row-num-inner">
               {Array.from({ length: rowCount }, (_, r) => (
@@ -944,7 +944,7 @@ export default function HyperFormulaSpreadsheet({
         <div className="rounded-xl border border-[var(--color-accent-purple)]/30 bg-[var(--color-accent-purple)]/5 px-4 py-3" data-testid="spreadsheet-submitted-freeform">
           <div className="flex items-center gap-2">
             <AlertCircle size={16} className="text-[var(--color-accent-purple)]" />
-            <span className="font-clash text-sm font-semibold text-[var(--color-text)]">Submitted in free-form mode — your analysis was saved.</span>
+            <span className="font-clash text-sm font-semibold text-[var(--color-text)]">Submitted in free-form mode, your analysis was saved.</span>
           </div>
         </div>
       )}

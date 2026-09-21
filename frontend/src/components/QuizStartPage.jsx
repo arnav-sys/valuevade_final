@@ -129,7 +129,7 @@ export default function QuizStartPage() {
                 Test Your Knowledge
               </h1>
               <p className="text-[var(--color-text-muted)] font-bricolage text-base sm:text-lg leading-relaxed mb-8">
-                A quick check-in to make sure the concepts landed. No pressure —
+                A quick check-in to make sure the concepts landed. No pressure,
                 you can always come back to the notes.
               </p>
 
@@ -171,7 +171,7 @@ export default function QuizStartPage() {
                   <div>
                     <div className="font-clash text-sm font-semibold text-[var(--color-text)] mb-1">Pro tip</div>
                     <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-                      Read each question carefully. You'll see an explanation after every answer — wrong answers teach you just as much as right ones.
+                      Read each question carefully. You'll see an explanation after every answer, wrong answers teach you just as much as right ones.
                     </p>
                   </div>
                 </div>

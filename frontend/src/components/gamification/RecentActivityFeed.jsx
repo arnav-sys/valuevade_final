@@ -89,7 +89,7 @@ export default function RecentActivityFeed({ limit = 10 }) {
       {loading ? (
         <div className="text-sm text-[var(--color-text-muted)] font-bricolage py-4">Loading…</div>
       ) : events.length === 0 ? (
-        <div className="text-sm text-[var(--color-text-muted)] font-bricolage py-4" data-testid="recent-activity-empty">No XP-earning activity yet — start a session.</div>
+        <div className="text-sm text-[var(--color-text-muted)] font-bricolage py-4" data-testid="recent-activity-empty">No XP-earning activity yet, start a session.</div>
       ) : (
         <ol className="relative space-y-3 pl-5 before:content-[''] before:absolute before:left-2 before:top-1 before:bottom-1 before:w-px before:bg-[var(--color-border)]">
           {events.map((e) => {

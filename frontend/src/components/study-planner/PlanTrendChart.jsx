@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ReferenceLine, ResponsiveContainer, Legend } from 'recharts';
 import { TrendingUp } from 'lucide-react';
 
-// Phase D2 — Cumulative planned vs actual chart.
+// Phase D2, Cumulative planned vs actual chart.
 //
 // Reads from the parent's dashboard-summary. The Y values are cumulative
 // minutes; the chart converts to hours for the axis label. A vertical

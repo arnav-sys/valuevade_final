@@ -55,7 +55,7 @@ export default function DecisionMakingSim({ config, title, onComplete }) {
 
   const scores = useMemo(() => accumulateScores(history, scoring), [history, scoring]);
 
-  // Build "optimal path" — walk the decision tree from the first decision, picking
+  // Build "optimal path", walk the decision tree from the first decision, picking
   // the highest-scoring option at each step (sum of score_impact values).
   // Linear/converging configs the platform uses always produce a single chain.
   const optimalPath = useMemo(() => {

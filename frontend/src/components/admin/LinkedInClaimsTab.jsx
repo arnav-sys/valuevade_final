@@ -168,7 +168,7 @@ export default function LinkedInClaimsTab() {
       {/* Empty */}
       {!loading && tableReady && claims.length === 0 && (
         <div className="py-12 text-center text-[var(--color-text-muted)] text-sm" data-testid="claims-empty">
-          {showAll ? 'No claims found.' : 'No unverified claims — all clear.'}
+          {showAll ? 'No claims found.' : 'No unverified claims, all clear.'}
         </div>
       )}
 

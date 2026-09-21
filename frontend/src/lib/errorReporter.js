@@ -5,7 +5,7 @@
  * signature (message + first stack frame), throttles duplicate reports to
  * one per 5s per session, and fires-and-forgets a POST to /api/errors/report.
  *
- * Never allowed to throw itself — the reporter cannot become an error source.
+ * Never allowed to throw itself, the reporter cannot become an error source.
  */
 import { supabase } from './supabase';
 import { isChunkLoadError } from '@/utils/lazyWithRetry';
@@ -14,19 +14,19 @@ const API = process.env.REACT_APP_BACKEND_URL;
 const RECENT = new Map();           // signature → last-sent-timestamp
 const THROTTLE_MS = 5000;
 
-// Known-noise patterns — these are browser bugs or self-healed failures that
+// Known-noise patterns, these are browser bugs or self-healed failures that
 // carry no actionable signal for us. Filtering here keeps the admin errors
 // tab focused on real issues.
 const NOISE_PATTERNS = [
   // Cross-origin script error: the browser strips message/stack for security,
-  // leaving us with just "Script error." — no way to fix, pure noise.
+  // leaving us with just "Script error.", no way to fix, pure noise.
   /^Script error\.?$/i,
   // Safari iOS autofill leaks its internal callback name onto window before
   // it's defined. Known WebKit bug (bugs.webkit.org #… tracked upstream).
   /_AutofillCallbackHandler/i,
   // Passive-listener spam from browsers, framework internals, etc.
   /^ResizeObserver/i,
-  // Chunk-load failures — handled by lazyWithRetry + ErrorBoundary via a
+  // Chunk-load failures, handled by lazyWithRetry + ErrorBoundary via a
   // one-shot hard reload. Reporting adds noise; the fix is deploy-driven.
   /Loading chunk [\w-]+ failed/i,
   /Loading CSS chunk [\w-]+ failed/i,
@@ -42,7 +42,7 @@ function isNoise(message, stack) {
 }
 
 async function hashSignature(message, frame) {
-  // Cheap non-crypto hash — plenty for a group key
+  // Cheap non-crypto hash, plenty for a group key
   const s = `${message || ''}||${frame || ''}`;
   let h = 5381;
   for (let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0;
@@ -76,21 +76,21 @@ async function send(payload) {
       keepalive: true,
     });
   } catch {
-    /* swallow — reporter must never crash the app */
+    /* swallow, reporter must never crash the app */
   }
 }
 
 export async function reportError({ message, stack, type = 'runtime', user_description = null }) {
   try {
     if (!message) return;
-    // User-driven reports always pass through — even if the message would
+    // User-driven reports always pass through, even if the message would
     // otherwise be considered noise, the user *intent* to report is signal.
     if (!user_description && isNoise(message, stack)) return;
     const frame = firstStackFrame(stack);
     const signature = await hashSignature(message, frame);
     const now = Date.now();
     const prev = RECENT.get(signature);
-    // User-driven reports (with a description) bypass throttling — the user
+    // User-driven reports (with a description) bypass throttling, the user
     // actively wants the report to land, and each report may carry new colour.
     if (!user_description && prev && now - prev < THROTTLE_MS) return;
     RECENT.set(signature, now);

@@ -9,7 +9,7 @@ import { createContext, useContext, useEffect, useMemo, useRef, useState, useCal
 //   3. Audio elements are preloaded once on provider mount so the first play
 //      doesn't lag.
 //   4. Designed to be extended with more slugs (badge_unlock, streak_milestone,
-//      etc.) in later phases — just add to SOUND_SOURCES.
+//      etc.) in later phases, just add to SOUND_SOURCES.
 
 const SOUND_SOURCES = {
   xp_gain: '/sounds/xp_gain.wav',
@@ -42,7 +42,7 @@ export function SoundProvider({ children }) {
         a.volume = slug === 'level_up' ? 0.5 : 0.35;
         audiosRef.current[slug] = a;
       } catch {
-        // Audio API not available — playSound will silently no-op.
+        // Audio API not available, playSound will silently no-op.
       }
     });
   }, []);
@@ -67,7 +67,7 @@ export function SoundProvider({ children }) {
   }, [enabled]);
 
   const playSound = useCallback((slug, opts = {}) => {
-    // `force=true` plays even when sound is disabled — used by the Settings
+    // `force=true` plays even when sound is disabled, used by the Settings
     // toggle to preview the sound immediately after enabling it (the new
     // enabled state hasn't flushed into our callback's closure yet).
     if (!opts.force && !enabled) return;
@@ -97,7 +97,7 @@ export function SoundProvider({ children }) {
 export function useSound() {
   const ctx = useContext(SoundContext);
   if (!ctx) {
-    // Outside a provider (e.g. tests) — degrade gracefully.
+    // Outside a provider (e.g. tests), degrade gracefully.
     return { enabled: true, setEnabled: () => {}, toggleEnabled: () => {}, playSound: () => {}, userHasInteracted: false };
   }
   return ctx;

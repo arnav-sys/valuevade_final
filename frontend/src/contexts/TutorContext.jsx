@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-// Persona constants — single source of truth. Renaming the tutor is a
+// Persona constants, single source of truth. Renaming the tutor is a
 // one-line change here.
 export const TUTOR_NAME = 'Pari';
 export const TUTOR_TITLE = 'Your AI Finance Tutor';
@@ -68,7 +68,7 @@ export function useTutor() {
   return ctx;
 }
 
-// Phase mapping — central registry of which pose maps to which phase/event.
+// Phase mapping, central registry of which pose maps to which phase/event.
 // Pages import individual entries or call the helper with a phase key.
 export const TUTOR_PHASES = {
   notes_intro: {
@@ -85,15 +85,15 @@ export const TUTOR_PHASES = {
   },
   quiz_correct: {
     pose: 'encouraging',
-    message: () => 'Nice work — you nailed it!',
+    message: () => 'Nice work, you nailed it!',
   },
   quiz_wrong: {
     pose: 'listening',
-    message: () => 'Not quite — but every mistake is a lesson. Try the next one.',
+    message: () => 'Not quite, but every mistake is a lesson. Try the next one.',
   },
   interview_intro: {
     pose: 'interviewer',
-    message: () => "Let's do a quick interview. I'll ask, you answer — no pressure.",
+    message: () => "Let's do a quick interview. I'll ask, you answer, no pressure.",
   },
   simulation_intro: {
     pose: 'simulation_brief',
@@ -101,7 +101,7 @@ export const TUTOR_PHASES = {
   },
   project_intro: {
     pose: 'simulation_brief',
-    message: () => "Project time. Apply what you've learned — I'll be here if you need me.",
+    message: () => "Project time. Apply what you've learned, I'll be here if you need me.",
   },
   session_complete: {
     pose: 'celebrating',
@@ -125,7 +125,7 @@ export const TUTOR_PHASES = {
   },
   apology: {
     pose: 'apology',
-    message: () => "I can only help with course material — try asking again in those terms.",
+    message: () => "I can only help with course material, try asking again in those terms.",
   },
   goodbye: {
     pose: 'goodbye',

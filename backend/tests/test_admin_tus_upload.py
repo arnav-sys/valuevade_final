@@ -205,7 +205,7 @@ class TestTusPatchChunk:
         assert cl == size, f"Expected content-length {size}, got {cl}"
 
     def test_multi_chunk_12mb_upload(self, admin_token, original_lecture_url):
-        """12 MB in 2 chunks (8 MB + 4 MB) — validates offset accumulation."""
+        """12 MB in 2 chunks (8 MB + 4 MB), validates offset accumulation."""
         size = 12 * 1024 * 1024
         chunk_size = 8 * 1024 * 1024
         # create

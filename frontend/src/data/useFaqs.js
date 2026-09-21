@@ -1,5 +1,5 @@
 /**
- * useFaqs — fetches published FAQs from the backend on mount and caches
+ * useFaqs, fetches published FAQs from the backend on mount and caches
  * them in a module-level singleton so multiple components (accordion +
  * chatbot) don't duplicate the request. Falls back to the static
  * `FAQS` constant if the backend is unreachable.
@@ -9,7 +9,7 @@ import { FAQS as STATIC_FAQS, FAQ_CATEGORIES } from './faqs';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
-// Module-level cache — shared across all component instances.
+// Module-level cache, shared across all component instances.
 let _cache = null;
 let _inflight = null;
 const _subscribers = new Set();

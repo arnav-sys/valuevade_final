@@ -8,15 +8,15 @@ import { supabase } from '../../lib/supabase';
 
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
-// Batch 5 — Thin entry point that adapts the master_simulations.config into
+// Batch 5, Thin entry point that adapts the master_simulations.config into
 // the canonical workbook shape and mounts the new mini-spreadsheet.
 //
 // Props (unchanged contract with SimulationPage):
-//   config      — master_simulations.config (any of the 3 known shapes)
-//   title       — sim.title
-//   sim         — the full master_simulations row (we need id for persistence)
-//   onProgress  — incremental progress callback (kept for compatibility)
-//   onComplete  — called on submit; receives { tasks_completed, tasks_total, accuracy }
+//   config     , master_simulations.config (any of the 3 known shapes)
+//   title      , sim.title
+//   sim        , the full master_simulations row (we need id for persistence)
+//   onProgress , incremental progress callback (kept for compatibility)
+//   onComplete , called on submit; receives { tasks_completed, tasks_total, accuracy }
 
 export default function ExcelSim({ config, title, sim, onProgress, onComplete }) {
   const { sessionId } = useParams();

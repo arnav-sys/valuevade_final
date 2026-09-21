@@ -1,5 +1,5 @@
 /**
- * Admin "Courses" tab — edit a course's title, and a quick flat view of
+ * Admin "Courses" tab, edit a course's title, and a quick flat view of
  * every session in that course to toggle Preview / Free Trial (max 2 each)
  * without digging through the full module tree in the Curriculum tab.
  */

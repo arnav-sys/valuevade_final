@@ -6,7 +6,7 @@ import { useXP } from '../../contexts/XPContext';
  * (typically the centre of the button that earned the XP), floats up and
  * fades out over 2s. Consumes a queue from XPContext (`xpParticles`) so a
  * burst of 5 quiz corrects in quick succession produces up to 3 staggered
- * tags on screen — newer entries replace the oldest at the cap of 3.
+ * tags on screen, newer entries replace the oldest at the cap of 3.
  */
 export default function XPGainParticle() {
   const { xpParticles, dismissXpParticle } = useXP();

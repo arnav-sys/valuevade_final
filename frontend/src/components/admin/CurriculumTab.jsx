@@ -1,5 +1,5 @@
 /**
- * Admin "View Course" tab — Phase A: modules + sessions CRUD.
+ * Admin "View Course" tab, Phase A: modules + sessions CRUD.
  *
  * Layout: left rail (modules list + Add), middle (sessions for selected
  * module + Add), right placeholder for future notes/quiz/IQ editors.
@@ -45,7 +45,7 @@ export default function CurriculumTab() {
   const [err, setErr] = useState(null);
   const [editingMod, setEditingMod] = useState(null);  // module_id being renamed
   const [editingSess, setEditingSess] = useState(null);
-  const [selSession, setSelSession] = useState(null);  // Phase B — currently-open session
+  const [selSession, setSelSession] = useState(null);  // Phase B, currently-open session
   const [activeTab, setActiveTab] = useState('notes'); // notes | quiz | interview | video
   const [viewMode, setViewMode] = useState('modules'); // 'modules' | 'capstones'
   const [projModule, setProjModule] = useState(null);  // { id, title } when the modal is open
@@ -243,7 +243,7 @@ export default function CurriculumTab() {
     {viewMode === 'capstones' && <CapstonesEditor />}
     {viewMode === 'modules' && (
     <div className="flex gap-4 h-[calc(100vh-320px)] min-h-[500px]">
-      {/* Left rail — modules */}
+      {/* Left rail, modules */}
       <div className="w-72 flex-shrink-0 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         <div className="px-4 py-3 border-b border-[var(--color-border)] flex items-center justify-between">
           <span className="text-sm font-semibold text-[var(--color-text)]">Modules ({modules.length})</span>
@@ -366,7 +366,7 @@ export default function CurriculumTab() {
         </ul>
       </div>
 
-      {/* Middle — sessions */}
+      {/* Middle, sessions */}
       <div className="flex-1 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         <div className="px-4 py-3 border-b border-[var(--color-border)]">
           {sel ? (
@@ -470,13 +470,13 @@ export default function CurriculumTab() {
           ))}
           {sessions.length === 0 && sel && (
             <li className="p-6 text-center text-sm text-[var(--color-text-muted)]">
-              No sessions yet — click Add Session
+              No sessions yet, click Add Session
             </li>
           )}
         </ul>
       </div>
 
-      {/* Right rail — Content editors (Phase B.2). 4-tab segmented control. */}
+      {/* Right rail, Content editors (Phase B.2). 4-tab segmented control. */}
       <div className="w-96 flex-shrink-0 border border-[var(--color-border)] rounded-xl overflow-hidden flex flex-col">
         {selSession ? (
           <>
@@ -595,11 +595,11 @@ export default function CurriculumTab() {
 }
 
 /**
- * DownloadCurriculumButton — small dropdown that pulls the full curriculum
+ * DownloadCurriculumButton, small dropdown that pulls the full curriculum
  * tree from GET /api/admin/curriculum/export and offers three formats:
- *   • JSON   — structured, machine-readable, complete
- *   • Markdown — human-readable, printable, great for review/sharing
- *   • CSV    — flat rows of every session, opens in Excel
+ *   • JSON  , structured, machine-readable, complete
+ *   • Markdown, human-readable, printable, great for review/sharing
+ *   • CSV   , flat rows of every session, opens in Excel
  */
 function DownloadCurriculumButton() {
   const [open, setOpen] = useState(false);
@@ -659,7 +659,7 @@ function DownloadCurriculumButton() {
           </button>
           <button type="button" onClick={() => download('csv')} className="w-full text-left px-3 py-2 text-xs hover:bg-[var(--color-surface)] text-[var(--color-text)]" data-testid="curriculum-download-csv">
             <div className="font-semibold">CSV (.csv)</div>
-            <div className="text-[10px] text-[var(--color-text-muted)]">Every session as a row — Excel</div>
+            <div className="text-[10px] text-[var(--color-text-muted)]">Every session as a row, Excel</div>
           </button>
           <button type="button" onClick={() => download('json')} className="w-full text-left px-3 py-2 text-xs hover:bg-[var(--color-surface)] text-[var(--color-text)]" data-testid="curriculum-download-json">
             <div className="font-semibold">JSON (.json)</div>
@@ -689,7 +689,7 @@ function toMarkdown(data) {
       lines.push('');
       lines.push('**Sessions**');
       m.sessions.forEach((sess, i) => {
-        const mins = sess.estimated_minutes ? ` — ${sess.estimated_minutes} min` : '';
+        const mins = sess.estimated_minutes ? `, ${sess.estimated_minutes} min` : '';
         const vid = sess.has_video ? ' 🎥' : '';
         lines.push(`${i + 1}. ${sess.title}${mins}${vid}`);
         if (sess.description) lines.push(`   > ${sess.description.replace(/\n/g, ' ')}`);
@@ -712,7 +712,7 @@ function toMarkdown(data) {
     lines.push('# Capstone Projects');
     lines.push('');
     data.capstones.forEach((c) => {
-      lines.push(`## ${c.code ? c.code + ' — ' : ''}${c.title}`);
+      lines.push(`## ${c.code ? c.code + ', ' : ''}${c.title}`);
       if (c.learning_outcomes) { lines.push(''); lines.push(`**Learning outcomes**: ${c.learning_outcomes}`); }
       if (c.required_structure) { lines.push(''); lines.push(`**Required structure**: ${c.required_structure}`); }
       if (c.tasks_raw) { lines.push(''); lines.push(c.tasks_raw); }

@@ -2,35 +2,35 @@ import { useEffect, useState, useCallback } from 'react';
 import { Compass, Layers, Cpu, Award, Mic, Wrench, FileText, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-/* Gaps section — fanned card carousel (Jun 2026). The active gap sits sharp in
+/* Gaps section, fanned card carousel (Jun 2026). The active gap sits sharp in
  * the centre; neighbouring cards fan out behind it, rotated, scaled-down and
  * blurred. Auto-advances; pauses on hover; side cards + arrows are clickable. */
 
 const problems = [
   { idx: '01', tag: 'ROADMAP', icon: Compass, title: 'No clear roadmap',
     points: ['Theory over skills', 'No target-role path', 'Interviews test doing'],
-    body: "B.Com and BBA syllabi test theory; analyst interviews test whether you can build a model, defend a valuation and write a coverage note — and nobody maps that path for you." },
+    body: "B.Com and BBA syllabi test theory; analyst interviews test whether you can build a model, defend a valuation and write a coverage note, and nobody maps that path for you." },
   { idx: '02', tag: 'MARKET', icon: Layers, title: 'Built for the wrong market',
     points: ['US GAAP & 10-Ks', 'S&P 500 case studies', 'Not Ind AS / SEBI'],
-    body: "Most courses teach US GAAP and S&P 500 case studies. Indian analysts work with Ind AS, SEBI filings and NSE/BSE data — and Indian interviews test exactly that." },
+    body: "Most courses teach US GAAP and S&P 500 case studies. Indian analysts work with Ind AS, SEBI filings and NSE/BSE data, and Indian interviews test exactly that." },
   { idx: '03', tag: 'AI', icon: Cpu, title: 'AI is reshaping entry roles',
     points: ['Screening automated', 'First-draft models automated', 'Direct AI, or compete'],
-    body: "Screening, data pulls and first-draft models are being automated. The juniors still getting hired direct AI tools — they don't compete with them." },
+    body: "Screening, data pulls and first-draft models are being automated. The juniors still getting hired direct AI tools, they don't compete with them." },
   { idx: '04', tag: 'PROOF', icon: Award, title: 'No certs or real projects',
     points: ['Video library only', 'Certificate nobody checks', 'Nothing to show'],
-    body: "Most courses hand you a video library and a certificate nobody verifies — but no graded, portfolio-grade projects a recruiter can actually open and judge." },
+    body: "Most courses hand you a video library and a certificate nobody verifies, but no graded, portfolio-grade projects a recruiter can actually open and judge." },
   { idx: '05', tag: 'INTERVIEW', icon: Mic, title: 'No mock-interview practice',
     points: ['Revise, never rehearse', 'No live grilling', 'No real feedback'],
-    body: "You revise theory endlessly but never rehearse the real thing — a live analyst grilling you on your DCF, your assumptions and your thesis under pressure." },
+    body: "You revise theory endlessly but never rehearse the real thing, a live analyst grilling you on your DCF, your assumptions and your thesis under pressure." },
   { idx: '06', tag: 'PRACTICE', icon: Wrench, title: 'No hands-on learning',
     points: ['Passive lectures', "Doesn't stick", 'No real building'],
     body: "Passive lectures don't build skill. Without building models, analysing real filings and defending your own numbers, none of it survives a real interview." },
   { idx: '07', tag: 'CAREER', icon: FileText, title: 'No resume / LinkedIn prep',
     points: ['No ATS resume', 'No outreach playbook', 'No soft-skill coaching'],
-    body: "Even skilled students get filtered out — no ATS-ready resume, no LinkedIn outreach playbook, and no coaching on how to communicate like an analyst." },
+    body: "Even skilled students get filtered out, no ATS-ready resume, no LinkedIn outreach playbook, and no coaching on how to communicate like an analyst." },
   { idx: '08', tag: 'PERSONAL', icon: Sparkles, title: 'Generic, one-size-fits-all',
     points: ['Same syllabus for all', 'Ignores your level', 'Wastes your weeks'],
-    body: "Everyone gets the same syllabus regardless of target role or current level — so you waste weeks on things you know and skip the gaps that get you hired." },
+    body: "Everyone gets the same syllabus regardless of target role or current level, so you waste weeks on things you know and skip the gaps that get you hired." },
 ];
 
 const N = problems.length;

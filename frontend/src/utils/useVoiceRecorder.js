@@ -19,7 +19,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
  *   - Properly releases the mic stream on stop / cancel / unmount
  */
 
-const MAX_DURATION_MS = 5 * 60 * 1000; // 5 minutes — well under Whisper's 25MB
+const MAX_DURATION_MS = 5 * 60 * 1000; // 5 minutes, well under Whisper's 25MB
 
 const PREFERRED_MIME_TYPES = [
   'audio/webm;codecs=opus',
@@ -113,7 +113,7 @@ export default function useVoiceRecorder() {
         setElapsed(Math.floor((Date.now() - startedAtRef.current) / 1000));
       }, 250);
       autoStopTimeoutRef.current = setTimeout(() => {
-        // Caller reads .state in their effect — they'll see 'processing' on next render
+        // Caller reads .state in their effect, they'll see 'processing' on next render
         if (mediaRecorderRef.current && mediaRecorderRef.current.state === 'recording') {
           mediaRecorderRef.current.stop();
         }

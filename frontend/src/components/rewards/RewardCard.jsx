@@ -12,7 +12,7 @@ const LINKEDIN_POST_RE =
   /^https?:\/\/(?:[a-z]{2,3}\.)?(?:www\.)?linkedin\.com\/(?:posts\/|feed\/update\/|pulse\/|embed\/feed\/update\/)[^\s]+$|^https?:\/\/(?:www\.)?lnkd\.in\/[^\s]+$/i;
 
 /**
- * RewardCard — shown on ModuleProjectCompletePage + CapstoneCompletePage
+ * RewardCard, shown on ModuleProjectCompletePage + CapstoneCompletePage
  * whenever the user has just unlocked a "share on LinkedIn → free resource"
  * reward.
  *
@@ -23,7 +23,7 @@ const LINKEDIN_POST_RE =
  *      new tab with the pre-composed text.
  *   3) After posting, the learner copies the URL of that LinkedIn post (⋯ →
  *      "Copy link to post") and pastes it into the required input field.
- *   4) The "I've shared — unlock my resource" button unlocks ONLY after (a)
+ *   4) The "I've shared, unlock my resource" button unlocks ONLY after (a)
  *      the share intent was opened AND (b) a valid LinkedIn post URL is
  *      pasted. Backend re-validates the URL before granting the reward.
  *   5) On success we call /api/rewards/claim → server verifies eligibility,
@@ -67,8 +67,8 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
   if (!reward) return null;
 
   const linkedinText = (reward.linkedin_message && reward.linkedin_message.trim()) ||
-    // Standard fallback template — no AI.
-    `I just finished a major milestone in my equity research journey on Valuevade — the "${reward.title}" milestone. Excited to keep building analyst-grade skills. #EquityResearch #InvestmentBanking #Finance #LearningJourney`;
+    // Standard fallback template, no AI.
+    `I just finished a major milestone in my equity research journey on Valuevade, the "${reward.title}" milestone. Excited to keep building analyst-grade skills. #EquityResearch #InvestmentBanking #Finance #LearningJourney`;
 
   const shareUrl = 'https://www.linkedin.com/feed/';
   const composeUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(linkedinText)}`;
@@ -256,7 +256,7 @@ export default function RewardCard({ trigger, refId, testidPrefix = 'reward' }) 
             {claiming ? (
               <><Loader2 size={14} className="animate-spin" /> Unlocking…</>
             ) : (
-              <><Download size={16} /> I&apos;ve shared — unlock my resource</>
+              <><Download size={16} /> I&apos;ve shared, unlock my resource</>
             )}
           </button>
 

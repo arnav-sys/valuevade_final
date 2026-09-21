@@ -7,7 +7,7 @@ import { TUTOR_NAME } from '../../contexts/TutorContext';
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 
 /**
- * Phase 54 — P1
+ * Phase 54, P1
  * Full-screen welcome modal shown once per user after first enrollment.
  * Gated by `profiles.pari_welcomed_at` (timestamptz nullable).
  *
@@ -32,7 +32,7 @@ export default function PariWelcomeModal({ onDismiss = () => {} }) {
         if (!res.ok) return;
         const json = await res.json();
         if (alive && json?.should_show_welcome) setOpen(true);
-      } catch { /* fail silently — modal just doesn't show */ }
+      } catch { /* fail silently, modal just doesn't show */ }
     })();
     return () => { alive = false; };
   }, []);
@@ -88,7 +88,7 @@ export default function PariWelcomeModal({ onDismiss = () => {} }) {
             </h1>
             <p className="font-bricolage text-base sm:text-lg text-[var(--color-text-muted)] max-w-xl mx-auto leading-relaxed">
               I'll walk you through every concept, ask you questions, and answer your doubts as you learn.
-              Let's get started — your finance career is going to be fun.
+              Let's get started, your finance career is going to be fun.
             </p>
           </div>
           <button

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 /**
  * Wraps routed content with a CSS-only fade/slide transition on route change.
- * No external deps — keyed by pathname so React remounts the inner tree with
+ * No external deps, keyed by pathname so React remounts the inner tree with
  * a fresh animation on every navigation.
  */
 export default function PageTransition({ children }) {

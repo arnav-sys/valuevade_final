@@ -10,7 +10,7 @@ Endpoints under test:
 Notes:
 - 0035_session_feedback.sql may NOT be applied. When the table is missing:
   - Admin GET returns 200 with {table_ready:false} (graceful).
-  - POST / PATCH / DELETE may return 500 (PGRST205) — expected.
+  - POST / PATCH / DELETE may return 500 (PGRST205), expected.
 """
 import os
 import pytest
@@ -41,7 +41,7 @@ ADMIN_PASS = "aa1aa2sam3"
 USER_EMAIL = "testagent2026@gmail.com"
 USER_PASS = "TestPass123!"
 
-# A test session id — arbitrary but stable per session
+# A test session id, arbitrary but stable per session
 TEST_SESSION_ID = "00000000-0000-0000-0000-000000000abc"
 
 

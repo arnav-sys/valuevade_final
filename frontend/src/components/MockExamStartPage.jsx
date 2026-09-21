@@ -1,5 +1,5 @@
 /**
- * MockExamStartPage — pre-exam briefing page for NISM-style module mock exams.
+ * MockExamStartPage, pre-exam briefing page for NISM-style module mock exams.
  * Route: /module/:moduleId/mock-exam/start
  */
 import { useState, useEffect } from 'react';
@@ -200,7 +200,7 @@ export default function MockExamStartPage() {
                 <ul className="space-y-1.5 text-sm text-[var(--color-text-muted)]">
                   <li>• The timer starts the moment you click "Start Exam"</li>
                   <li>• Navigate freely between questions using the question panel</li>
-                  <li>• Unanswered questions count as incorrect — attempt every question</li>
+                  <li>• Unanswered questions count as incorrect, attempt every question</li>
                   <li>• The exam auto-submits when the timer reaches zero</li>
                   <li>• You can retake the exam as many times as you need</li>
                 </ul>

@@ -75,10 +75,10 @@ export function evaluateAnswer(answer, evaluationCriteria) {
   if (keyPoints.length && kpRate >= 0.5) {
     strengths.push(`Addressed ${keyPointsCovered.length} of ${keyPoints.length} core points interviewers look for`);
   }
-  if (len >= 220) strengths.push('Strong depth — you gave enough context to show your thinking');
+  if (len >= 220) strengths.push('Strong depth, you gave enough context to show your thinking');
   if (sentences >= 4) strengths.push('Multi-point answer with clear flow');
   if (connectorHits >= 2) strengths.push('Used structural phrases to guide the listener');
-  if (!strengths.length) strengths.push('You took a clear stance — good starting point');
+  if (!strengths.length) strengths.push('You took a clear stance, good starting point');
 
   const improvements = [];
   if (keyPointsMissed.length) {
@@ -88,7 +88,7 @@ export function evaluateAnswer(answer, evaluationCriteria) {
   if (keywordMissed.length && keywordMissed.length >= Math.max(1, keywords.length / 2)) {
     improvements.push(`Try weaving in: ${keywordMissed.slice(0, 3).join(', ')}`);
   }
-  if (len < 100) improvements.push('Too brief — interviewers want to see depth of reasoning (aim for 3–5 sentences minimum)');
+  if (len < 100) improvements.push('Too brief, interviewers want to see depth of reasoning (aim for 3–5 sentences minimum)');
   if (sentences < 3 && len >= 100) improvements.push('Break your answer into multiple sentences for easier scanning');
   if (connectorHits === 0 && len >= 150) improvements.push('Use phrases like "first / because / therefore" to signal structure');
   if (!improvements.length) improvements.push('Strong answer. Next time, open with your one-line conclusion for extra punch.');

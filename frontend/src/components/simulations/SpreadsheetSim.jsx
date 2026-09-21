@@ -3,16 +3,16 @@ import { Plus, Save, Send, Loader2, Trash2, FileSpreadsheet, CheckCircle2, XCirc
 import { evaluateFormula, formatCellDisplay, isFormulaError } from './excelFormula';
 import PivotTableSheet from './PivotTableSheet';
 
-// Batch 5 — Mini-spreadsheet component.
+// Batch 5, Mini-spreadsheet component.
 //
 // Props:
-//   workbook       — adapted from excelSimAdapter.adaptSimToWorkbook(sim)
-//   onAutoSave     — async (workbookState) called every 5s when dirty
-//   onSubmit       — async (workbookState, scoreOrNull) called by user
-//   restoredState  — optional previous workbook_state to start from
-//   onFocusChange  — (focus) → void, fired when the active cell changes;
+//   workbook      , adapted from excelSimAdapter.adaptSimToWorkbook(sim)
+//   onAutoSave    , async (workbookState) called every 5s when dirty
+//   onSubmit      , async (workbookState, scoreOrNull) called by user
+//   restoredState , optional previous workbook_state to start from
+//   onFocusChange , (focus) → void, fired when the active cell changes;
 //                    parent uses this to feed Pari current_focus
-//   readOnly       — boolean, freezes the whole grid (post-submit view)
+//   readOnly      , boolean, freezes the whole grid (post-submit view)
 //
 // Storage shape mirrors the adapter shape so onAutoSave can pass it straight
 // to /api/simulations/workbook/save.
@@ -478,7 +478,7 @@ export default function SpreadsheetSim({
         </div>
       )}
 
-      {/* Formula bar — hidden for pivot sheets (they have their own UI) */}
+      {/* Formula bar, hidden for pivot sheets (they have their own UI) */}
       {activeSheet.kind !== 'pivot' && (
       <div className="flex items-center gap-2 text-xs">
         <div className="px-2 py-1 rounded bg-[var(--color-surface)] border border-[var(--color-border)] font-mono text-[var(--color-text-muted)] min-w-[60px] text-center" data-testid="spreadsheet-active-addr">
@@ -606,7 +606,7 @@ export default function SpreadsheetSim({
           <div className="flex items-center gap-2">
             <AlertCircle size={16} className="text-[var(--color-accent-purple)]" />
             <span className="font-clash text-sm font-semibold text-[var(--color-text)]">
-              Submitted in free-form mode — your analysis was saved for your portfolio.
+              Submitted in free-form mode, your analysis was saved for your portfolio.
             </span>
           </div>
         </div>

@@ -1,5 +1,5 @@
 """
-Iteration 79 — Payment polish, Resend receipt gating, DB-fallback cleanup regressions.
+Iteration 79, Payment polish, Resend receipt gating, DB-fallback cleanup regressions.
 
 Covers:
 - Backend payment endpoints functional (eligibility, verify signature-check path)
@@ -16,7 +16,7 @@ import pytest
 BASE_URL = os.environ.get("REACT_APP_BACKEND_URL", "").rstrip("/") or \
     "https://fintech-mvp-38.preview.emergentagent.com"
 
-# Supabase auth (student) — using known test account (paid=true).
+# Supabase auth (student), using known test account (paid=true).
 SUPABASE_URL = os.environ.get("SUPABASE_URL") or "https://xzevqolrctzlywtvbsyd.supabase.co"
 SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY")
 
@@ -73,7 +73,7 @@ def admin_token():
 
 
 # =========================================================================
-# Payment endpoints — regression + Resend-unset behavior
+# Payment endpoints, regression + Resend-unset behavior
 # =========================================================================
 class TestPaymentEndpoints:
     def test_eligibility_returns_paid_true_for_paid_user(self, student_token):
@@ -90,7 +90,7 @@ class TestPaymentEndpoints:
 
     def test_verify_endpoint_bad_signature_fails_fast(self, student_token):
         """Even in a failure path, endpoint should return quickly and not
-        break due to Resend code — 404 (order not found) is fine and fast."""
+        break due to Resend code, 404 (order not found) is fine and fast."""
         start = time.time()
         r = requests.post(
             f"{BASE_URL}/api/payments/verify",
@@ -103,9 +103,9 @@ class TestPaymentEndpoints:
             timeout=15,
         )
         elapsed = time.time() - start
-        # Expect 404 (order not found) — the point is no 500 from Resend path
+        # Expect 404 (order not found), the point is no 500 from Resend path
         assert r.status_code in (400, 404), r.text
-        assert elapsed < 8, f"verify endpoint took {elapsed:.2f}s — should be fast"
+        assert elapsed < 8, f"verify endpoint took {elapsed:.2f}s, should be fast"
 
     def test_mock_success_disabled_when_razorpay_configured(self, student_token):
         """RAZORPAY_KEY_ID is set → mock mode is off → mock-success returns 404."""
@@ -115,12 +115,12 @@ class TestPaymentEndpoints:
             json={"order_id": "nonexistent"},
             timeout=15,
         )
-        # Either 404 (mock disabled) or 404 (order not found) is fine — must not be 500
+        # Either 404 (mock disabled) or 404 (order not found) is fine, must not be 500
         assert r.status_code != 500, r.text
 
 
 # =========================================================================
-# Guest session endpoints — regression after fallback cleanup
+# Guest session endpoints, regression after fallback cleanup
 # =========================================================================
 class TestGuestSessions:
     def test_preview_sessions_public(self):
@@ -173,7 +173,7 @@ class TestGuestSessions:
 
 
 # =========================================================================
-# Admin endpoints — regression after wave_endpoints cleanup
+# Admin endpoints, regression after wave_endpoints cleanup
 # =========================================================================
 class TestAdminRegression:
     def test_admin_list_courses(self, admin_token):
@@ -208,11 +208,11 @@ class TestAdminRegression:
             assert "is_free_session" in s
 
     def test_admin_curriculum_sessions(self, admin_token):
-        # Discover a module — use the free-sessions endpoint's module_id
+        # Discover a module, use the free-sessions endpoint's module_id
         fs = requests.get(f"{BASE_URL}/api/free-sessions", timeout=15).json().get("sessions", [])
         if not fs:
             pytest.skip("no free sessions to derive a module_id")
-        # Free-sessions returns course_id not module_id — call admin course preview to get real module data
+        # Free-sessions returns course_id not module_id, call admin course preview to get real module data
         pid = fs[0].get("course_id")
         if not pid:
             pytest.skip("no course_id resolvable")
@@ -222,7 +222,7 @@ class TestAdminRegression:
             headers={"Authorization": f"Bearer {admin_token}"},
             timeout=15,
         )
-        # We need a real module_id — hit admin curriculum with a fake id and expect 200 + empty
+        # We need a real module_id, hit admin curriculum with a fake id and expect 200 + empty
         r = requests.get(
             f"{BASE_URL}/api/admin/curriculum/sessions?module_id=fintech-mvp-38",
             headers={"Authorization": f"Bearer {admin_token}"},

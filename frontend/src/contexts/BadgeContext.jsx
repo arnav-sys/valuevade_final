@@ -36,7 +36,7 @@ export function BadgeProvider({ children }) {
 
   // Re-entrancy guard so the same mount doesn't fire the catch-up twice if
   // refresh() resolves before the DB flag write lands. (Persistence lives in
-  // user_stats.p3_catchup_done — this is just an in-tab fuse.)
+  // user_stats.p3_catchup_done, this is just an in-tab fuse.)
   const catchupFiredRef = useRef(false);
   // Cooldown between consecutive overlays in the unlock queue.
   const gapTimerRef = useRef(null);
@@ -88,10 +88,10 @@ export function BadgeProvider({ children }) {
   const enqueueCelebration = useCallback(async (source) => {
     let payload = null;
     if (source && typeof source === 'object' && source.code) {
-      // Came from evaluate_badges return — already has all fields.
+      // Came from evaluate_badges return, already has all fields.
       payload = source;
     } else if (typeof source === 'string') {
-      // Came from realtime — string is a master_badges.id (uuid). Fetch row.
+      // Came from realtime, string is a master_badges.id (uuid). Fetch row.
       const { data, error } = await supabase
         .from('master_badges')
         .select('code, name, description, category, rarity, icon_slug, is_secret, bonus_xp')
@@ -221,7 +221,7 @@ export function BadgeProvider({ children }) {
             await enqueueCelebration(newRow.badge_id);
             await refresh();
           } else if (newRow.progress_current !== oldRow.progress_current) {
-            // progress moved — just refresh, no celebration
+            // progress moved, just refresh, no celebration
             await refresh();
           }
         }

@@ -7,7 +7,7 @@ import { Check, Sparkles, Lock, Loader2 } from 'lucide-react';
 const API = process.env.REACT_APP_BACKEND_URL;
 
 /**
- * Pricing cards — 4999 (upfront) + 4999 (post-trial) — driven by
+ * Pricing cards, 4999 (upfront) + 4999 (post-trial), driven by
  * /api/payments/eligibility. Server decides which tier is available;
  * the FE just renders cleanly.
  */
@@ -54,7 +54,7 @@ export default function PricingCards({ onPaid }) {
   const benefits = [
     'Lifetime access to all 15+ modules',
     '68 hands-on Excel finance simulations',
-    'AI tutor "Pari" — unlimited questions',
+    'AI tutor "Pari", unlimited questions',
     '3-round mock interview capstone',
     'Daily challenges + streaks',
   ];
@@ -100,7 +100,7 @@ export default function PricingCards({ onPaid }) {
             priceLabel="Free"
             sub="Then ₹4999 after session 1"
             benefits={[
-              'Full session #1 — notes + quiz + interview + simulation',
+              'Full session #1, notes + quiz + interview + simulation',
               'No card required',
               'Upgrade anytime',
             ]}
@@ -115,7 +115,7 @@ export default function PricingCards({ onPaid }) {
       {data.mock_mode && (
         <div data-testid="mock-mode-banner" className="mt-4 px-4 py-2 rounded-lg bg-[var(--color-bg-card)] border border-dashed border-[var(--color-border)] text-xs text-[var(--color-text-muted)] inline-flex items-center gap-2">
           <Lock className="w-3.5 h-3.5" />
-          Running in mock-payment mode. Razorpay keys not configured — clicking Pay opens a simulated success modal.
+          Running in mock-payment mode. Razorpay keys not configured, clicking Pay opens a simulated success modal.
         </div>
       )}
       {mockModal}

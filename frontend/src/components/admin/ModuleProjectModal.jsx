@@ -1,5 +1,5 @@
 /**
- * Phase C — Module Project editor modal.
+ * Phase C, Module Project editor modal.
  * PATCH /api/admin/module-projects/{module_id} upserts by module_id.
  */
 import { useEffect, useState } from 'react';
@@ -155,7 +155,7 @@ export default function ModuleProjectModal({ moduleId, moduleTitle, onClose }) {
             </div>
             <div>
               <label className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] tracking-wider">
-                Tasks (JSON — shape: {"{ todo: [{ task, time_estimate?, hint? }] }"})
+                Tasks (JSON, shape: {"{ todo: [{ task, time_estimate?, hint? }] }"})
               </label>
               <textarea
                 value={tasksText}

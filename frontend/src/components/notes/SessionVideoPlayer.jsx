@@ -1,4 +1,4 @@
-// SessionVideoPlayer — HTML5 <video> with a speed-control overlay.
+// SessionVideoPlayer, HTML5 <video> with a speed-control overlay.
 // Rendered at the top of NotesPage when a session has a lecture_url.
 //
 // Behaviour:

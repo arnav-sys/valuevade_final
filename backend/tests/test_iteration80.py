@@ -19,7 +19,7 @@ SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsIn
 
 # NOTE: test_credentials.md claims user_id ea4121ce is admin@valuevade.com but
 # Supabase actually has this user_id under info@valuevade.com. admin@valuevade.com
-# does NOT exist in Supabase auth — so we use info@ for actual admin API calls.
+# does NOT exist in Supabase auth, so we use info@ for actual admin API calls.
 # (ADMIN_ALLOWED_EMAILS whitelist contains both, so both would work if both existed.)
 ADMIN_EMAIL = "info@valuevade.com"
 ADMIN_PASSWORD = "VV-Admin#2026-Sec"

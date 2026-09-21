@@ -20,9 +20,9 @@ import {
   Wrench, Loader2, AlertCircle, RefreshCw, Award, Briefcase, AlertTriangle, Brain,
 } from 'lucide-react';
 
-// Feb 2026 — session-level interview phase disabled; PHASE_DEFS no longer
+// Feb 2026, session-level interview phase disabled; PHASE_DEFS no longer
 // includes the interview column so the summary shows 3 phases instead of 4.
-// The `interview_completed` DB field still exists — legacy rows are ignored
+// The `interview_completed` DB field still exists, legacy rows are ignored
 // gracefully. Flip SESSION_INTERVIEW_ENABLED in utils/sessionPhases.js to
 // re-enable everywhere.
 const PHASE_DEFS = [
@@ -90,7 +90,7 @@ export default function SessionCompletePage() {
   const [hasModuleProject, setHasModuleProject] = useState(false);  // Batch: gate M1→M2 unlock via project
   const [showConfetti, setShowConfetti] = useState(true);
 
-  // Phase B — doubt flag state
+  // Phase B, doubt flag state
   const [doubtRow, setDoubtRow] = useState(null);  // { id, reason, status } or null
   const [flagPending, setFlagPending] = useState(null);  // 'doubt' | 'difficult' | null
   const [redoInfo, setRedoInfo] = useState(() => getRedoForSession(sessionId));
@@ -154,7 +154,7 @@ export default function SessionCompletePage() {
                   .eq('user_module_id', modId)
                   .limit(1);
                 if (!existing || existing.length === 0) {
-                  // Idempotent seed — best-effort, don't block UI on failure
+                  // Idempotent seed, best-effort, don't block UI on failure
                   try {
                     await supabase.from('user_module_projects').insert({
                       user_module_id: modId,
@@ -165,7 +165,7 @@ export default function SessionCompletePage() {
                   } catch { /* row race → ignore */ }
                 }
                 // hasModuleProject stays true even if the project is already
-                // is_completed (rare — a redo/replay path). In that case, we
+                // is_completed (rare, a redo/replay path). In that case, we
                 // still route to project/start which will show its complete-state.
                 if (mounted) setHasModuleProject(true);
               }
@@ -187,7 +187,7 @@ export default function SessionCompletePage() {
     return () => clearTimeout(t);
   }, []);
 
-  // Phase B — fetch the existing doubt (if any) for this session.
+  // Phase B, fetch the existing doubt (if any) for this session.
   useEffect(() => {
     let mounted = true;
     async function fetchDoubt() {
@@ -201,14 +201,14 @@ export default function SessionCompletePage() {
           .maybeSingle();
         if (mounted && data) setDoubtRow(data);
       } catch {
-        // ignore — graceful if table missing
+        // ignore, graceful if table missing
       }
     }
     fetchDoubt();
     return () => { mounted = false; };
   }, [user?.id, sessionId]);
 
-  // Phase B — auto-resolve the doubt when the user finishes the session in
+  // Phase B, auto-resolve the doubt when the user finishes the session in
   // redo mode. Fires once when allPhasesComplete && redoInfo matches.
   useEffect(() => {
     if (!redoInfo || !session) return;
@@ -222,7 +222,7 @@ export default function SessionCompletePage() {
       try {
         await resolveSessionDoubt(redoInfo.redo_doubt_id);
         if (!mounted) return;
-        toast.success('Doubt resolved — nice redo!');
+        toast.success('Doubt resolved, nice redo!');
         clearRedoState();
         setRedoInfo(null);
         setDoubtRow((d) => (d ? { ...d, status: 'resolved' } : d));
@@ -234,12 +234,12 @@ export default function SessionCompletePage() {
     return () => { mounted = false; };
   }, [redoInfo, session, refreshOpenCount]);
 
-  // Phase D2 — Plan-tracking side-channel.
+  // Phase D2, Plan-tracking side-channel.
   // Fires once when the session is fully complete. Fire-and-forget: the
   // backend is idempotent on (plan_id, day_date, session_id) so a refresh
   // or remount can't double-credit. Minutes_spent uses the master_session
   // estimated_minutes (planned, not wall-clock) so faster students aren't
-  // penalised — per the Phase D2 spec.
+  // penalised, per the Phase D2 spec.
   const planSyncRef = useRef(false);
   useEffect(() => {
     if (!session || planSyncRef.current) return;
@@ -276,7 +276,7 @@ export default function SessionCompletePage() {
     return () => { alive = false; };
   }, [session, sessionId]);
 
-  // Phase C — Milestone check.
+  // Phase C, Milestone check.
   // Fires once after the session loads and we've confirmed all four phases
   // are complete. POSTs /api/milestones/check; the backend grants at most
   // one milestone (module > count priority) and the MilestonesProvider then
@@ -297,7 +297,7 @@ export default function SessionCompletePage() {
     return () => clearTimeout(t);
   }, [session, sessionId, notifySessionCompleted]);
 
-  // Flag handler — only available on a fresh completion (not in redo mode).
+  // Flag handler, only available on a fresh completion (not in redo mode).
   const handleFlag = async (reason) => {
     if (flagPending) return;
     setFlagPending(reason);
@@ -361,8 +361,8 @@ export default function SessionCompletePage() {
       {showConfetti && <Confetti />}
 
       <div className="relative z-10 max-w-2xl mx-auto" data-testid="session-complete-content">
-        {/* Phase-4 SessionSummaryCard — XP breakdown + badge progress + streak + next-level + challenges.
-            Batch: unified "Continue" routing — if this is the last session and
+        {/* Phase-4 SessionSummaryCard, XP breakdown + badge progress + streak + next-level + challenges.
+            Batch: unified "Continue" routing, if this is the last session and
             the module has a project, land on the project start page (not dashboard). */}
         <SessionSummaryCard
           sessionId={sessionId}
@@ -388,7 +388,7 @@ export default function SessionCompletePage() {
           )}
           <p className="text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto leading-relaxed">
             {allPhasesComplete
-              ? 'You crushed all 3 phases. This is how real analysts learn — notes → quiz → simulation.'
+              ? 'You crushed all 3 phases. This is how real analysts learn, notes → quiz → simulation.'
               : 'Great work. Finish the remaining phases when you\'re ready to cement what you learned.'}
           </p>
         </div>
@@ -456,7 +456,7 @@ export default function SessionCompletePage() {
           </div>
         </div>
 
-        {/* Phase B — "Was this confusing?" doubt flag row + redo banner */}
+        {/* Phase B, "Was this confusing?" doubt flag row + redo banner */}
         {redoInfo && (
           <div className="rounded-2xl p-4 mb-4 bg-gradient-to-br from-[var(--color-primary)]/12 via-[var(--color-accent-purple)]/8 to-transparent border border-[var(--color-primary)]/30 flex items-start gap-3" data-testid="session-complete-redo-banner">
             <div className="w-9 h-9 rounded-xl bg-[var(--color-primary)]/20 border border-[var(--color-primary)]/40 text-[var(--color-primary)] flex items-center justify-center shrink-0">
@@ -482,7 +482,7 @@ export default function SessionCompletePage() {
                   Was this confusing?
                 </div>
                 <p className="text-xs font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                  Flag it now — you can redo the full session for half XP later or chat with Pari (15 turns) about what felt off.
+                  Flag it now, you can redo the full session for half XP later or chat with Pari (15 turns) about what felt off.
                 </p>
               </div>
             </div>
@@ -525,7 +525,7 @@ export default function SessionCompletePage() {
         {/* Gamification summary (Phase 47) */}
         <SessionCompleteSummaryCard sessionStartTs={sessionStartTsRef.current} />
 
-        {/* Phase A — Quick Revision Sheet */}
+        {/* Phase A, Quick Revision Sheet */}
         <div className="mt-4">
           <QuickRevisionSheetCard
             sessionId={sessionId}
@@ -537,7 +537,7 @@ export default function SessionCompletePage() {
           <AskPariButton phase="notes" courseSessionId={sessionId} variant="card" />
         </div>
 
-        {/* Tutor — celebrating beside the summary */}
+        {/* Tutor, celebrating beside the summary */}
         {(() => {
           const t = resolveTutorPhase('session_complete');
           return (

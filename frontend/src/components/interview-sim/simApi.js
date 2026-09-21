@@ -3,9 +3,9 @@
  * ------
  * Small abstraction so the stage components (Application/Aptitude/Interview/
  * Case/Decision) can be reused between:
- *   (a) the authenticated hub player (`InterviewSimPlayer`) — uses the
+ *   (a) the authenticated hub player (`InterviewSimPlayer`), uses the
  *       existing `/api/interview-sim/attempt/{id}/*` routes with Bearer auth
- *   (b) the guest landing-page trial player (`GuestInterviewPlayer`) — uses
+ *   (b) the guest landing-page trial player (`GuestInterviewPlayer`), uses
  *       the stateless `/api/guest-sim/{trial_id}/*` routes with NO auth
  *
  * Every stage component now accepts an optional `simApi` prop with:

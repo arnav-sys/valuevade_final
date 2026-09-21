@@ -173,7 +173,7 @@ class TestCRUD:
         state = {"module_id": module_id, "session_id": session_id, "path_id": path_id}
         yield state
 
-        # cleanup (idempotent — module delete cascades sessions)
+        # cleanup (idempotent, module delete cascades sessions)
         try:
             requests.delete(f"{BASE_URL}/api/admin/modules/{module_id}", headers=admin_headers, timeout=30)
         except Exception:
@@ -261,9 +261,9 @@ class TestCRUD:
         ids = [m["id"] for m in r.json().get("modules", [])]
         assert mid not in ids
 
-        # Sessions gone — verify via public supabase (module_id filter returns [])
+        # Sessions gone, verify via public supabase (module_id filter returns [])
         # Since we don't have direct DB, verify via impact returning 0 sessions no longer valid
-        # (module removed) — instead verify via sessions endpoint returns empty.
+        # (module removed), instead verify via sessions endpoint returns empty.
         r2 = requests.get(
             f"{BASE_URL}/api/admin/curriculum/sessions?module_id={mid}",
             headers=admin_headers,

@@ -1,9 +1,9 @@
 """
-Wave 4 — Full Razorpay payment processing + payout/redemption queue.
+Wave 4, Full Razorpay payment processing + payout/redemption queue.
 
 Runs in MOCK mode whenever RAZORPAY_KEY_ID is missing/empty. Mock mode is
 functionally identical to live mode (same DB rows, same commission flow,
-same FE checkout sequence) — only difference is the actual SDK call.
+same FE checkout sequence), only difference is the actual SDK call.
 
 Wire into server.py via register_payment_endpoints(api_router, deps={...}).
 """
@@ -178,7 +178,7 @@ def _award_paid_completion_xp(user_id: str):
         )
     except Exception as e:
         # Most likely the award_xp RPC doesn't whitelist 'paid_upgrade' as a
-        # valid reason — non-fatal.
+        # valid reason, non-fatal.
         logger.info(f"[payments] paid_upgrade xp skipped: {e}")
 
 
@@ -207,7 +207,7 @@ def _receipt_email_html(name: str, amount_inr: int, tier_code: str, paid_at: str
     return f"""
     <div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#0e0e16;color:#f4f4f8;">
       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8b8b9e;margin:0 0 20px;">Valuevade · Payment Receipt</p>
-      <h1 style="font-size:22px;margin:0 0 16px;color:#ffffff;">Thanks, {name} — you're in.</h1>
+      <h1 style="font-size:22px;margin:0 0 16px;color:#ffffff;">Thanks, {name}, you're in.</h1>
       <p style="font-size:14px;line-height:1.6;color:#c9c9d6;margin:0 0 24px;">
         Your payment was successful and your lifetime access to the Equity Research &amp;
         Financial Modelling course is now unlocked. Here's your receipt:
@@ -227,11 +227,11 @@ def _receipt_email_html(name: str, amount_inr: int, tier_code: str, paid_at: str
         </tr>
       </table>
       <p style="font-size:13px;line-height:1.6;color:#c9c9d6;margin:0 0 8px;">
-        Head back to your dashboard to pick up where you left off. No subscription, no renewals —
+        Head back to your dashboard to pick up where you left off. No subscription, no renewals,
         this access is yours for life.
       </p>
       <p style="font-size:12px;color:#6b6b7e;margin-top:32px;">
-        Valuevade · This is an automated receipt — no reply needed.
+        Valuevade · This is an automated receipt, no reply needed.
       </p>
     </div>
     """
@@ -240,7 +240,7 @@ def _receipt_email_html(name: str, amount_inr: int, tier_code: str, paid_at: str
 def _send_payment_receipt_email_sync(user_id: str, amount_inr: int, tier_code: str):
     api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
     if not api_key:
-        logger.info("[payments] RESEND_API_KEY not set — skipping receipt email")
+        logger.info("[payments] RESEND_API_KEY not set, skipping receipt email")
         return
     try:
         profs = _supabase_get(
@@ -257,7 +257,7 @@ def _send_payment_receipt_email_sync(user_id: str, amount_inr: int, tier_code: s
         resend.Emails.send({
             "from": f"Valuevade <{sender}>",
             "to": [email],
-            "subject": "Your Valuevade payment receipt — lifetime access unlocked",
+            "subject": "Your Valuevade payment receipt, lifetime access unlocked",
             "html": _receipt_email_html(name, amount_inr, tier_code, paid_at),
         })
         logger.info(f"[payments] receipt email sent to {email}")
@@ -267,7 +267,7 @@ def _send_payment_receipt_email_sync(user_id: str, amount_inr: int, tier_code: s
 
 async def _send_payment_receipt_email(user_id: str, amount_inr: int, tier_code: str):
     """Non-blocking (thread-offloaded) receipt email. Failures never affect
-    the payment flow — this is a best-effort notification only."""
+    the payment flow, this is a best-effort notification only."""
     try:
         await asyncio.to_thread(_send_payment_receipt_email_sync, user_id, amount_inr, tier_code)
     except Exception as e:
@@ -372,7 +372,7 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
         status_row = _lazy_free_session_used(user["id"], status_row)
         if status_row.get("paid"):
             raise HTTPException(status_code=400, detail="already paid")
-        # Server-side pricing — FE-supplied tier is validated against eligibility.
+        # Server-side pricing, FE-supplied tier is validated against eligibility.
         tier_code, amount = _pricing_for_user(status_row)
         # If user explicitly asked for upfront but free session already used,
         # downgrade silently to post_trial (price changes).
@@ -380,7 +380,7 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
             # Allow only when user requests post_trial while upfront is offered
             # (i.e. they want to skip the discount). Otherwise force.
             if not (req.pricing_tier == "post_trial" and tier_code == "upfront"):
-                pass  # ignore mismatch — server-side wins
+                pass  # ignore mismatch, server-side wins
             else:
                 tier_code, amount = "post_trial", 1700
         mock = is_mock_mode()
@@ -523,16 +523,16 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
         signature = request.headers.get("x-razorpay-signature", "")
         secret = (os.environ.get("RAZORPAY_WEBHOOK_SECRET") or "").strip()
         if not secret:
-            # Hard reject — never process unsigned webhook events in production.
+            # Hard reject, never process unsigned webhook events in production.
             # Set RAZORPAY_WEBHOOK_SECRET in backend/.env (Razorpay Dashboard → Webhooks).
             logger.critical(
-                "[payments] RAZORPAY_WEBHOOK_SECRET is unset — rejecting webhook to prevent "
+                "[payments] RAZORPAY_WEBHOOK_SECRET is unset, rejecting webhook to prevent "
                 "unauthenticated payment confirmation. Set the secret to enable webhooks."
             )
             raise HTTPException(status_code=503, detail="Webhook not configured on this server")
         expected = hmac.new(secret.encode("utf-8"), body, hashlib.sha256).hexdigest()
         if not hmac.compare_digest(expected, signature):
-            logger.warning("[payments] webhook signature mismatch — rejected")
+            logger.warning("[payments] webhook signature mismatch, rejected")
             raise HTTPException(status_code=400, detail="bad signature")
         try:
             evt = _json.loads(body.decode("utf-8"))
@@ -613,7 +613,7 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
         }}
 
 
-    # ---------------- ADMIN — PAYMENTS OVERVIEW ----------------
+    # ---------------- ADMIN, PAYMENTS OVERVIEW ----------------
     @api_router.get("/admin/payments/overview")
     async def admin_payments_overview(user=Depends(_get_supabase_user)):
         _ensure_admin(user)

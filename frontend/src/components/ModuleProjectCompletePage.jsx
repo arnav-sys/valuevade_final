@@ -232,7 +232,7 @@ export default function ModuleProjectCompletePage() {
           </div>
         )}
 
-        {/* Feb 2026 — LinkedIn-share reward (Module 1 / 10 / final by default; admin-configurable). */}
+        {/* Feb 2026, LinkedIn-share reward (Module 1 / 10 / final by default; admin-configurable). */}
         {masterModuleId && (
           <RewardCard
             trigger="module_complete"

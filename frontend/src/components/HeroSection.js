@@ -1,226 +1,246 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import CandlestickParticleField from '@/components/landing/CandlestickParticleField';
+import { useTheme } from '@/contexts/ThemeContext';
 
-/* Editorial-finance Hero (QuintEdge-inspired redesign, Jun 2026).
- * - Confident centered headline: bold geometric sans with an italic-serif
- *   accent word ("Financial") tinted mint-emerald.
- * - Pill CTAs, calm navy canvas, and a full-width stat band beneath.
- * - Terminal gimmicks (roadmap panel, mono ticker, CRT scan) retired for a
- *   warmer, human editorial feel.
- * All copy is verbatim from the previous version. */
+/* Hero, Sep 2026: minimal near-black canvas, a particle candlestick chart as
+ * the centre visual, vertical brand rail on the left, and the tagline carried
+ * as the headline on the right. */
 
-const H1_LINES = [
-  { weight: 500, words: ['The', 'Equity', 'Research', '&'] },
-  { weight: 800, words: ['Financial', 'Modelling', 'Course'], serif: 'Financial' },
-  { weight: 500, words: ['Built', 'for', 'Real'] },
-  { weight: 800, words: ['Finance', 'Students'] },
-];
-
-// Stat band — drawn entirely from facts already stated in the hero copy.
-const STATS = [
-  { n: '239', l: 'Hands-on sessions' },
-  { n: '21', l: 'Modules' },
-  { n: '₹4999', l: 'One-time · lifetime' },
-  { n: 'NISM XV', l: 'Exam prep' },
-  { n: '3', l: 'Capstone projects' },
-  { n: 'Free', l: 'First session' },
+// Scattered around the particle chart on desktop, compact row on mobile.
+const MARKERS = [
+  { n: '21', l: 'Modules', top: '14%', left: '31%' },
+  { n: '239', l: 'Sessions', top: '27%', left: '7%' },
+  { n: '42h', l: 'Lectures', top: '70%', left: '7%' },
+  { n: '3', l: 'Capstones', top: '80%', left: '27%' },
+  { n: 'XV', l: 'NISM prep', top: '86%', left: '46%' },
+  { n: '₹4999', l: 'Lifetime', top: '70%', left: '44%' },
 ];
 
 export default function HeroSection() {
   const reduceMotion = useReducedMotion();
+  const { theme } = useTheme();
+  const light = theme === 'light';
 
-  const lineVariants = {
-    hidden: {},
-    visible: (i = 0) => ({ transition: { staggerChildren: 0.045, delayChildren: 0.08 + i * 0.04 } }),
-  };
-  const wordVariants = {
-    hidden: { opacity: 0, y: 14 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] } },
-  };
+  const rise = (delay = 0) => ({
+    initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { delay, duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  });
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col overflow-hidden bg-[var(--bg-primary)]"
+      className="relative min-h-screen overflow-hidden"
+      style={{ background: light ? 'var(--bg-primary)' : '#05070F' }}
       data-testid="hero-section"
     >
-      {/* Subtle grid texture + soft mint sparkline — calm, low opacity */}
-      <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-40" aria-hidden="true" />
-      <svg
-        aria-hidden="true"
-        className="absolute inset-x-0 bottom-0 w-full h-[42%] pointer-events-none z-[1]"
-        viewBox="0 0 1440 400"
-        preserveAspectRatio="none"
-        style={{ opacity: 0.14 }}
-      >
-        <path
-          d="M0,320 L160,300 L300,318 L440,268 L600,286 L760,224 L920,250 L1080,190 L1240,214 L1440,168"
-          fill="none"
-          stroke="var(--color-primary)"
-          strokeWidth="1.5"
+      {/* particle candlestick field */}
+      <div className="absolute inset-0 lg:right-[34%] pointer-events-none" aria-hidden="true">
+        <CandlestickParticleField
+          accent={light ? '#1B4FD8' : '#246BFD'}
+          light={light}
+          className="w-full h-full"
+          style={{ opacity: 0.9 }}
         />
-      </svg>
-
-      <div className="relative z-10 flex-1 flex items-center">
-        <div className="w-full max-w-5xl mx-auto px-6 pt-28 pb-16 text-center flex flex-col items-center">
-          {/* Eyebrow */}
-          <motion.span
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            className="lv-chapter mb-8"
-            data-testid="hero-chapter"
-          >
-            EQUITY RESEARCH · IND-AS · NISM XV
-          </motion.span>
-
-          {/* Headline */}
-          <h1
-            className="text-[var(--color-text)]"
-            style={{
-              fontSize: 'clamp(38px, 5.4vw, 68px)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.03em',
-              marginBottom: '28px',
-            }}
-            data-testid="hero-h1"
-          >
-            {H1_LINES.map((line, lineIdx) => (
-              <motion.span
-                key={lineIdx}
-                className="block"
-                style={{ fontWeight: line.weight }}
-                variants={lineVariants}
-                initial={reduceMotion ? 'visible' : 'hidden'}
-                animate="visible"
-                custom={lineIdx}
-              >
-                {line.words.map((w, wi) => (
-                  <span key={wi}>
-                    <motion.span
-                      variants={wordVariants}
-                      className="inline-block mr-[0.2em]"
-                      style={
-                        line.serif && w === line.serif
-                          ? {
-                              fontFamily: '"Fraunces", Georgia, serif',
-                              fontStyle: 'italic',
-                              fontWeight: 500,
-                              color: 'var(--color-primary)',
-                              letterSpacing: '-0.01em',
-                            }
-                          : {}
-                      }
-                    >
-                      {w}
-                    </motion.span>{' '}
-                  </span>
-                ))}{' '}
-              </motion.span>
-            ))}
-          </h1>
-
-          {/* Subhead */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.5 }}
-            className="text-[var(--color-text)] text-lg lg:text-xl font-semibold mb-4"
-            data-testid="hero-subhead"
-          >
-            Stop guessing. Start building your finance career.
-          </motion.p>
-
-          {/* Paragraph */}
-          <motion.p
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.64, duration: 0.5 }}
-            className="text-[15px] lg:text-base text-[var(--color-text-muted)] max-w-2xl mb-9 font-bricolage leading-relaxed"
-            data-testid="hero-paragraph"
-          >
-            Valuevade is an AI-personalised equity research and financial modelling course for Indian
-            finance students and early-career switchers. The Equity Research Analyst Program covers 21
-            modules and 239 hands-on sessions built on real Indian companies and Ind AS conventions,
-            prepares you for the NISM Series XV exam, and ends with three portfolio-grade capstone
-            projects. Lifetime access is a one-time ₹4999 — no subscription, and your first session is
-            free.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.72, duration: 0.5 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6"
-          >
-            <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
-              Start Free Session
-              <ArrowRight size={16} strokeWidth={2.5} />
-            </Link>
-            <Link
-              to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
-              className="lv-cta lv-cta-ghost"
-              data-testid="hero-secondary-cta"
-            >
-              See the full curriculum
-              <ArrowUpRight size={16} strokeWidth={2.4} />
-            </Link>
-          </motion.div>
-
-          {/* Trust strip */}
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.85, duration: 0.5 }}
-            className="text-[13px] text-[var(--color-text-faint)] font-bricolage mb-3"
-            data-testid="hero-trust-strip"
-          >
-            NISM Series XV prep
-            <span className="mx-2 opacity-50">·</span>
-            One-time ₹4999
-            <span className="mx-2 opacity-50">·</span>
-            Lifetime access
-          </motion.p>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.92, duration: 0.45 }}
-            className="text-sm text-[var(--color-text-muted)] font-bricolage"
-          >
-            Already enrolled?{' '}
-            <Link to="/login" className="text-[var(--color-primary)] hover:underline font-semibold" data-testid="hero-signup-link">
-              Log in &rarr;
-            </Link>
-          </motion.p>
-        </div>
       </div>
 
-      {/* Full-width stat band */}
-      <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.0, duration: 0.55 }}
-        className="relative z-10 border-t border-[var(--color-border)] bg-[color-mix(in_oklab,var(--bg-secondary)_80%,transparent)]"
-        data-testid="hero-stats-band"
+      {/* vignette so type stays legible over the field */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        aria-hidden="true"
+        style={{
+          background: light
+            ? 'linear-gradient(90deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0) 14%, rgba(255,255,255,0) 52%, rgba(255,255,255,0.92) 74%)'
+            : 'linear-gradient(90deg, rgba(5,7,15,0.7) 0%, rgba(5,7,15,0) 14%, rgba(5,7,15,0) 52%, rgba(5,7,15,0.94) 74%)',
+        }}
+      />
+
+      {/* vertical brand rail */}
+      <div
+        className="hidden lg:flex absolute left-3 bottom-10 z-20 select-none items-end"
+        aria-hidden="true"
+        data-testid="hero-brand-rail"
       >
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-x divide-y sm:divide-y-0 divide-[var(--color-border)]">
-            {STATS.map((s) => (
-              <div key={s.l} className="px-4 py-6 text-center" data-testid={`hero-stat-${s.l.split(' ')[0].toLowerCase()}`}>
-                <div className="text-2xl lg:text-[28px] font-bold text-[var(--color-primary)]" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif', letterSpacing: '-0.02em' }}>
-                  {s.n}
+        <span
+          style={{
+            writingMode: 'vertical-rl',
+            transform: 'rotate(180deg)',
+            fontFamily: '"Space Grotesk", Inter, sans-serif',
+            fontSize: 'clamp(30px, 3.4vw, 56px)',
+            fontWeight: 600,
+            letterSpacing: '-0.02em',
+            color: 'var(--color-text)',
+            opacity: 0.9,
+          }}
+        >
+          Valuevade
+        </span>
+      </div>
+
+      {/* eyebrow floating over the field */}
+      <motion.p
+        {...rise(0.15)}
+        className="hidden lg:block absolute z-20 text-[11.5px] uppercase leading-[1.9]"
+        style={{
+          top: '20%',
+          left: '13%',
+          letterSpacing: '0.2em',
+          color: 'var(--color-primary)',
+          fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+        }}
+        data-testid="hero-chapter"
+      >
+        Equity research, financial modelling,
+        <br />
+        taught the way analysts actually work
+      </motion.p>
+
+      {/* scattered markers */}
+      <div className="hidden lg:block absolute inset-0 z-10 pointer-events-none" data-testid="hero-markers">
+        {MARKERS.map((m, i) => (
+          <motion.div
+            key={m.l}
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.6 + i * 0.09, duration: 0.8 }}
+            className="absolute text-center"
+            style={{ top: m.top, left: m.left }}
+            data-testid={`hero-marker-${m.l.toLowerCase().replace(/\s/g, '-')}`}
+          >
+            <div
+              className="text-[15px]"
+              style={{
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+                color: 'var(--color-text-secondary)',
+              }}
+            >
+              {m.n}
+            </div>
+            <div
+              className="text-[9.5px] uppercase mt-0.5"
+              style={{ letterSpacing: '0.18em', color: 'var(--color-text-faint)' }}
+            >
+              {m.l}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* right column */}
+      <div className="relative z-20 min-h-screen flex items-center">
+        <div className="w-full max-w-[1600px] mx-auto px-6 lg:px-12 pt-32 pb-20 lg:pt-24">
+          <div className="lg:ml-auto lg:w-[46%] lg:max-w-[680px]">
+            <motion.p
+              {...rise(0.2)}
+              className="mb-5 text-[11px] uppercase"
+              style={{
+                letterSpacing: '0.24em',
+                color: 'var(--color-text-faint)',
+                fontFamily: '"JetBrains Mono", ui-monospace, monospace',
+              }}
+              data-testid="hero-eyebrow"
+            >
+              Your AI finance mentor
+            </motion.p>
+
+            <motion.h1
+              {...rise(0.28)}
+              className="text-[var(--color-text)]"
+              style={{
+                fontFamily: '"Space Grotesk", Inter, sans-serif',
+                fontSize: 'clamp(40px, 5.4vw, 82px)',
+                fontWeight: 500,
+                lineHeight: 0.98,
+                letterSpacing: '-0.035em',
+              }}
+              data-testid="hero-h1"
+            >
+              A new way of mastering{' '}
+              <span style={{ fontWeight: 700 }}>finance</span>
+              <br className="hidden sm:block" /> in the{' '}
+              <span
+                style={{
+                  fontFamily: '"Fraunces", Georgia, serif',
+                  fontStyle: 'italic',
+                  fontWeight: 500,
+                  color: 'var(--color-primary)',
+                  letterSpacing: '-0.01em',
+                }}
+              >
+                age of AI
+              </span>
+            </motion.h1>
+
+            <motion.p
+              {...rise(0.42)}
+              className="mt-8 text-[14.5px] leading-relaxed max-w-md"
+              style={{ color: 'var(--color-text-muted)' }}
+              data-testid="hero-paragraph"
+            >
+              Tell Valuevade where you are and where you want to land. You get an AI-personalised
+              equity research and financial modelling path: 21 modules, 239 hands-on sessions on real
+              Indian companies, NISM Series XV prep, and three portfolio-grade capstones. One-time
+              ₹4999 for lifetime access, and your first session is free.
+            </motion.p>
+
+            <motion.div {...rise(0.52)} className="mt-9 flex flex-col sm:flex-row items-start gap-4">
+              <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
+                Start Free Session
+                <ArrowRight size={16} strokeWidth={2.5} />
+              </Link>
+              <Link
+                to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
+                className="lv-cta lv-cta-ghost"
+                data-testid="hero-secondary-cta"
+              >
+                See the full curriculum
+                <ArrowUpRight size={16} strokeWidth={2.4} />
+              </Link>
+            </motion.div>
+
+            <motion.p
+              {...rise(0.62)}
+              className="mt-7 text-[13px]"
+              style={{ color: 'var(--color-text-faint)' }}
+            >
+              Already enrolled?{' '}
+              <Link
+                to="/login"
+                className="text-[var(--color-primary)] hover:underline font-semibold"
+                data-testid="hero-signup-link"
+              >
+                Log in &rarr;
+              </Link>
+            </motion.p>
+
+            {/* mobile marker row */}
+            <motion.div
+              {...rise(0.7)}
+              className="lg:hidden mt-10 grid grid-cols-3 gap-y-6 border-t border-[var(--color-border)] pt-6"
+              data-testid="hero-markers-mobile"
+            >
+              {MARKERS.map((m) => (
+                <div key={m.l}>
+                  <div
+                    className="text-[17px] text-[var(--color-text)]"
+                    style={{ fontFamily: '"JetBrains Mono", ui-monospace, monospace' }}
+                  >
+                    {m.n}
+                  </div>
+                  <div
+                    className="text-[9.5px] uppercase mt-0.5"
+                    style={{ letterSpacing: '0.16em', color: 'var(--color-text-faint)' }}
+                  >
+                    {m.l}
+                  </div>
                 </div>
-                <div className="mt-1 text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-muted)] font-bricolage">
-                  {s.l}
-                </div>
-              </div>
-            ))}
+              ))}
+            </motion.div>
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

@@ -1,10 +1,10 @@
 /**
- * MockExamModal — Admin modal to create/edit a mock exam and manage its
+ * MockExamModal, Admin modal to create/edit a mock exam and manage its
  * questions. Opened from the CurriculumTab module row (ClipboardList icon).
  *
  * Layout: full-width modal with two panels:
- *   Left  — Exam settings (title, timer, pass %, description)
- *   Right — Question CRUD (same pattern as QuizEditor)
+ *   Left , Exam settings (title, timer, pass %, description)
+ *   Right, Question CRUD (same pattern as QuizEditor)
  */
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../lib/supabase';
@@ -240,7 +240,7 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
         }
       } catch (e) {
         if (mounted) {
-          // Surface a friendly message — DB migration likely not applied yet
+          // Surface a friendly message, DB migration likely not applied yet
           const msg = e.message || '';
           if (msg.includes('PGRST') || msg.includes('schema cache') || msg.includes('does not exist')) {
             setExamErr('DB migration 0043 not applied yet. Run 0043_mock_exams.sql in Supabase Studio.');
@@ -404,7 +404,7 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
             <Loader2 size={24} className="animate-spin text-[var(--color-primary)]" />
           </div>
         ) : !exam ? (
-          /* No exam yet — create it */
+          /* No exam yet, create it */
           <div className="flex-1 flex flex-col items-center justify-center p-10 text-center gap-4">
             <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
               <ClipboardList size={28} className="text-[var(--color-primary)]" />
@@ -451,10 +451,10 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
             </button>
           </div>
         ) : (
-          /* Exam exists — show settings + question editor */
+          /* Exam exists, show settings + question editor */
           <div className="flex-1 overflow-hidden flex gap-0 min-h-0">
 
-            {/* Left — Settings */}
+            {/* Left, Settings */}
             <div className="w-72 flex-shrink-0 border-r border-[var(--color-border)] overflow-y-auto p-5 space-y-4">
               <div>
                 <p className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] tracking-wider mb-3">Exam settings</p>
@@ -528,7 +528,7 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
               </button>
             </div>
 
-            {/* Right — Questions */}
+            {/* Right, Questions */}
             <div className="flex-1 flex flex-col overflow-hidden">
               <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border)] flex-shrink-0">
                 <p className="text-xs font-semibold text-[var(--color-text)]">
@@ -579,7 +579,7 @@ export default function MockExamModal({ moduleId, moduleTitle, onClose }) {
                       {parsedCsvRows.length > 0 ? (
                         <span className="text-[var(--color-success)]">{parsedCsvRows.length} valid row{parsedCsvRows.length !== 1 ? 's' : ''} detected</span>
                       ) : csvText.trim() ? (
-                        <span className="text-red-500">No valid rows found — check format</span>
+                        <span className="text-red-500">No valid rows found, check format</span>
                       ) : (
                         <span>Paste CSV above</span>
                       )}

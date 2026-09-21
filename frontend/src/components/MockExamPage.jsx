@@ -1,5 +1,5 @@
 /**
- * MockExamPage — the timed mock exam experience.
+ * MockExamPage, the timed mock exam experience.
  * Route: /module/:moduleId/mock-exam
  * Receives attempt_id via location.state from MockExamStartPage.
  *
@@ -174,7 +174,7 @@ export default function MockExamPage() {
 
       <main className="flex-1 min-w-0 pt-16 lg:pt-0 flex flex-col overflow-hidden">
 
-        {/* Top bar — timer + progress */}
+        {/* Top bar, timer + progress */}
         <div
           className={`flex-shrink-0 flex items-center justify-between px-4 sm:px-8 py-3 border-b ${
             isCriticalTime
@@ -224,7 +224,7 @@ export default function MockExamPage() {
         </div>
 
         <div className="flex-1 flex overflow-hidden">
-          {/* Left — question navigator */}
+          {/* Left, question navigator */}
           <div
             className="w-52 flex-shrink-0 border-r border-[var(--color-border)] overflow-y-auto p-3"
             data-testid="mock-exam-nav"
@@ -274,7 +274,7 @@ export default function MockExamPage() {
             </div>
           </div>
 
-          {/* Right — question card */}
+          {/* Right, question card */}
           <div className="flex-1 overflow-y-auto p-4 sm:p-8">
             <div className="max-w-2xl mx-auto">
               {/* Question header */}

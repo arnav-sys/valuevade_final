@@ -1,5 +1,5 @@
 /**
- * Admin VideoEditor — upload / manage lecture videos for a session.
+ * Admin VideoEditor, upload / manage lecture videos for a session.
  * Now auto-extracts video_duration_minutes from picked files and
  * allows manual duration entry for external URLs.
  */
@@ -191,7 +191,7 @@ export default function VideoEditor({ sessionId, lectureUrl: initialUrl, initial
                 </span>
               ) : (
                 <p className="text-[9px] text-[var(--color-text-faint)] mt-1.5 font-mono">
-                  Duration not set — re-upload file or enter below to enable dynamic timing
+                  Duration not set, re-upload file or enter below to enable dynamic timing
                 </p>
               )}
             </div>
@@ -317,7 +317,7 @@ export default function VideoEditor({ sessionId, lectureUrl: initialUrl, initial
           />
         </div>
         <p className="text-[9px] text-[var(--color-text-faint)] font-mono">
-          For YouTube/Vimeo, duration can't be auto-extracted — enter it manually to enable accurate session timing.
+          For YouTube/Vimeo, duration can't be auto-extracted, enter it manually to enable accurate session timing.
         </p>
       </div>
 

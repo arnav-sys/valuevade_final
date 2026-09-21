@@ -81,9 +81,9 @@ class TestGuards:
 
     def test_short_recommendation_rejected(self, qa_headers):
         # Need a case_study-active attempt to hit the 120-char guard directly.
-        # Fastest: hit any attempt in wrong stage — 409 short-circuits before the len check.
+        # Fastest: hit any attempt in wrong stage, 409 short-circuits before the len check.
         # Instead, we validate the response of case/submit on a non-case attempt returns 409 (guard exists).
-        # The <120 char guard is unit-tested only when case_study is active — see full pipeline test below.
+        # The <120 char guard is unit-tested only when case_study is active, see full pipeline test below.
         pytest.skip("Covered inside TestPipeline.test_short_recommendation_400")
 
 
@@ -171,7 +171,7 @@ class TestMorganStanleyPipeline:
         assert data["next_stage"] in ("behavioural", "decision")
         TestMorganStanleyPipeline._shared["apt_passed"] = data["passed"]
         if not data["passed"]:
-            # rejection path — decision should be present
+            # rejection path, decision should be present
             assert "decision" in data
             assert data["decision"]["verdict"] == "rejected"
             assert data["decision"].get("letter_md")
@@ -190,7 +190,7 @@ class TestMorganStanleyPipeline:
         # Answer 4 questions with varied text
         answers = [
             "During my Valuevade capstone I led a 3-person DCF for HDFC Bank; we split coverage across NIM, credit costs, and fee income and I owned the assumption reconciliation.",
-            "A vague brief on a mid-cap NBFC — I clarified scope with a written one-pager listing the 5 drivers I'd focus on, and got sign-off before modelling.",
+            "A vague brief on a mid-cap NBFC, I clarified scope with a written one-pager listing the 5 drivers I'd focus on, and got sign-off before modelling.",
             "I disagreed with a peer's terminal growth of 6% for a consumer staple; I ran a sensitivity showing intrinsic value swung 22% and we compromised at 4.5%.",
             "Long-term I want to run sector coverage; short term I want two solid years learning the craft of modelling and thesis writing.",
         ]
@@ -221,7 +221,7 @@ class TestMorganStanleyPipeline:
 
         answers = [
             "DCF: forecast FCF for 5 years off revenue growth and EBIT margin, subtract taxes, add back D&A, subtract capex and WC change; discount at WACC; terminal value via Gordon growth.",
-            "For Indian banks I'd use residual income or P/BV — DCF is noisy because of loan-loss provisioning and regulatory capital changes.",
+            "For Indian banks I'd use residual income or P/BV, DCF is noisy because of loan-loss provisioning and regulatory capital changes.",
             "ROE decomposition: net margin x asset turnover x leverage. For a bank leverage is huge so ROE is misleading; I'd focus on ROA and NIM.",
             "Sensitivity: I flex WACC ±150bps and terminal growth ±100bps; presenting a football-field of implied prices instead of a single point estimate.",
             "Red flags in a 10-K: rising DSO, one-off gains propping up EBITDA, related-party transactions, and shrinking cash conversion vs reported profit.",
@@ -257,7 +257,7 @@ class TestMorganStanleyPipeline:
             "Recommendation: BUY with a 12-month target price of INR 1,850, implying ~18% upside from the current price. "
             "Thesis rests on three pillars: (1) revenue growth trajectory of 14-16% CAGR driven by rural pickup and premiumisation; "
             "(2) operating leverage expanding EBITDA margins from 22.5% to 25% by FY27 as raw-material tailwinds sustain; "
-            "(3) capital efficiency — the company generates 24% ROCE and converts 90% of EBITDA to cash. "
+            "(3) capital efficiency, the company generates 24% ROCE and converts 90% of EBITDA to cash. "
             "Valuation: DCF (WACC 11%, terminal growth 4.5%) yields intrinsic value of INR 1,900; peer P/E of 42x FY26 EPS of INR 44 supports INR 1,850. "
             "Key risks: raw-material inflation, competitive intensity from D2C brands, and monsoon volatility affecting rural volumes. "
             "Catalysts include Q3 rural volume growth print, new plant commissioning in Q4, and potential EPS beat. "

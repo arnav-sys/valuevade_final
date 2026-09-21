@@ -6,7 +6,7 @@ import { SimpleMarkdown } from './simShared';
 import { buildAuthSimApi } from './simApi';
 import { toast } from 'sonner';
 
-/** Shared player for the behavioural (HR) and technical rounds — voice-first. */
+/** Shared player for the behavioural (HR) and technical rounds, voice-first. */
 export default function InterviewStage({ stage, attempt, sim, onAdvance, simApi }) {
   const api = simApi || buildAuthSimApi(attempt.id);
   const isHR = stage === 'behavioural';
@@ -65,7 +65,7 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance, simApi 
     try {
       const r = await api.fetch(api.endpoints.interviewAnswer, {
         method: 'POST',
-        // Guest mode is stateless — it needs the full transcript. Auth mode
+        // Guest mode is stateless, it needs the full transcript. Auth mode
         // ignores this field (server reads turns from the DB row).
         body: JSON.stringify({ stage, answer, input_method: method, turns }),
       });
@@ -99,7 +99,7 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance, simApi 
               {isHR ? 'HR / Behavioural Round' : 'Technical Round'}
             </h2>
             <p className="text-[10px] font-mono text-[var(--color-text-muted)]">
-              Answer by voice for the real-interview feel — or type if you prefer
+              Answer by voice for the real-interview feel, or type if you prefer
             </p>
           </div>
         </div>
@@ -166,7 +166,7 @@ export default function InterviewStage({ stage, attempt, sim, onAdvance, simApi 
               <p className="text-sm font-bricolage text-[var(--color-text)] whitespace-pre-wrap leading-relaxed">{t.content}</p>
               {t.role === 'interviewer' && isLastQuestion && voiceError === 'autoplay-blocked' && voiceOn && (
                 <p className="mt-2 text-[10px] font-mono text-amber-500">
-                  Browser blocked auto-play — hit Replay to hear the question.
+                  Browser blocked auto-play, hit Replay to hear the question.
                 </p>
               )}
             </div>

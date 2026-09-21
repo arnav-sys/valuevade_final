@@ -22,7 +22,7 @@ import GenericRenderer from './simulations/GenericRenderer';
 import { markPhaseComplete } from '../utils/progress';
 import { getMeasuredMinutes } from '../utils/useSessionTimer';
 import useTimeTracking from '../utils/useTimeTracking';
-// AskPariButton no longer mounted here (P55) — replaced by inline launcher button.
+// AskPariButton no longer mounted here (P55), replaced by inline launcher button.
 // import AskPariButton from './tutor/AskPariButton';
 
 const TYPE_META = {
@@ -74,7 +74,7 @@ export default function SimulationPage() {
           return;
         }
 
-        // Batch 5 — many master_sessions have multiple sim rows (e.g. an
+        // Batch 5, many master_sessions have multiple sim rows (e.g. an
         // excel sim + a decision_making sim). Fetch all and pick the most
         // useful one (prefer excel > interactive > decision_making) so the
         // student always lands on a real spreadsheet when one is available.
@@ -121,7 +121,7 @@ export default function SimulationPage() {
     // the DB write returns.
     setSubmittedScore(Math.round((accuracy || 0) * 100));
     if (saving) return;
-    // In review mode (already completed once) — skip the DB write and just
+    // In review mode (already completed once), skip the DB write and just
     // let the user review the solution inline. Show Continue button.
     if (session?.simulation_completed) {
       setPendingContinueState({ tasks_completed, tasks_total, accuracy, review: true });
@@ -288,7 +288,7 @@ export default function SimulationPage() {
       </div>
 
       <main className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-10 py-6 sm:py-8 pb-24">
-        {/* P55 — Pari sets the brief; P56 — pose flips on post-submit */}
+        {/* P55, Pari sets the brief; P56, pose flips on post-submit */}
         <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-3 sm:p-4 mb-5 flex items-start gap-3" data-testid="simulation-pari-brief">
           <AvatarPersona
             pose={submittedScore === null
@@ -306,13 +306,13 @@ export default function SimulationPage() {
             </div>
             <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
               {submittedScore === null
-                ? <>Here's what we're working on — read the brief carefully, then start.
+                ? <>Here's what we're working on, read the brief carefully, then start.
                   {sim.title && <span className="block mt-1 font-semibold">{sim.title}</span>}</>
                 : submittedScore >= 90
-                  ? `Excellent decisions — your simulation matched the optimal path closely. ${submittedScore}/100.`
+                  ? `Excellent decisions, your simulation matched the optimal path closely. ${submittedScore}/100.`
                   : submittedScore >= 70
-                    ? `Solid work — ${submittedScore}/100. Let's review where you diverged from the optimal path.`
-                    : `Some of your choices need a second look — ${submittedScore}/100. Let me walk through them with you.`}
+                    ? `Solid work, ${submittedScore}/100. Let's review where you diverged from the optimal path.`
+                    : `Some of your choices need a second look, ${submittedScore}/100. Let me walk through them with you.`}
             </div>
           </div>
         </div>
@@ -374,7 +374,7 @@ export default function SimulationPage() {
           </button>
         </div>
 
-        {/* Continue button — appears only after submission is complete + saved.
+        {/* Continue button, appears only after submission is complete + saved.
             Prevents auto-redirect so the user can review the score banner +
             correct-solution reveal before moving on. */}
         {readyToContinue && (

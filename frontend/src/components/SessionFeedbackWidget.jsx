@@ -1,5 +1,5 @@
 /**
- * SessionFeedbackWidget — small collapsible feedback panel students can
+ * SessionFeedbackWidget, small collapsible feedback panel students can
  * open on any session page to report issues (content, video/audio quality,
  * or other). Posts to /api/sessions/{session_id}/feedback and shows a
  * thank-you state on success.
@@ -81,7 +81,7 @@ export default function SessionFeedbackWidget({ sessionId }) {
 
           {status === 'done' ? (
             <div className="flex items-center gap-2 text-emerald-500 text-sm py-2 font-bricolage" data-testid="session-feedback-success">
-              <Check size={14} /> Thanks — your feedback is in.
+              <Check size={14} /> Thanks, your feedback is in.
             </div>
           ) : (
             <>
@@ -108,7 +108,7 @@ export default function SessionFeedbackWidget({ sessionId }) {
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value.slice(0, 2000))}
-                placeholder="Describe the issue — where in the video, what you'd expect, any specific detail…"
+                placeholder="Describe the issue, where in the video, what you'd expect, any specific detail…"
                 rows={3}
                 className="w-full px-3 py-2 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border)] text-sm font-bricolage resize-y focus:outline-none focus:border-[var(--color-primary)]/60"
                 data-testid="session-feedback-message"

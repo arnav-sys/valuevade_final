@@ -1,10 +1,10 @@
 import { LineChart, FileCheck2, BarChart3, Layers, Bot } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-/* Practical Skills — the modular, portfolio-grade projects students actually
+/* Practical Skills, the modular, portfolio-grade projects students actually
  * build, shown as a bento of cards with small original vignettes. Dark navy +
  * blue to stay cohesive with the rest of the landing. All content is Valuevade's
- * own (real Indian companies, Ind AS) — vignettes are original illustrations. */
+ * own (real Indian companies, Ind AS), vignettes are original illustrations. */
 
 /* ---- vignettes (pure JSX, original) ---- */
 function DcfVignette() {
@@ -74,11 +74,11 @@ function CopilotVignette() {
 }
 
 const projects = [
-  { icon: LineChart, tag: 'Valuation', title: 'Build a full DCF model', body: 'Build a discounted-cash-flow valuation on Reliance from its Ind AS statements — forecasts, WACC, terminal value and a defensible fair value.', span: 'sm:col-span-7', Vignette: DcfVignette },
-  { icon: FileCheck2, tag: 'Research', title: 'Initiating-coverage report', body: 'Write a full coverage note with a rating, target price and investment thesis — the kind a desk actually publishes.', span: 'sm:col-span-5', Vignette: CoverageVignette },
+  { icon: LineChart, tag: 'Valuation', title: 'Build a full DCF model', body: 'Build a discounted-cash-flow valuation on Reliance from its Ind AS statements, forecasts, WACC, terminal value and a defensible fair value.', span: 'sm:col-span-7', Vignette: DcfVignette },
+  { icon: FileCheck2, tag: 'Research', title: 'Initiating-coverage report', body: 'Write a full coverage note with a rating, target price and investment thesis, the kind a desk actually publishes.', span: 'sm:col-span-5', Vignette: CoverageVignette },
   { icon: BarChart3, tag: 'Analysis', title: 'Financial ratio analysis', body: 'Ratio-analyse HDFC Bank across profitability, leverage and efficiency, then defend what the numbers mean.', span: 'sm:col-span-4', Vignette: RatioVignette },
-  { icon: Layers, tag: 'Deals', title: 'LBO & M&A model', body: 'Model an LBO on Tata Steel with debt schedules and returns — and read the story the IRR tells.', span: 'sm:col-span-4', Vignette: LboVignette },
-  { icon: Bot, tag: 'AI Capstone', title: 'AI research copilot', body: 'Build a working AI copilot that pulls filings and drafts first-cut notes — proof you direct AI, not compete with it.', span: 'sm:col-span-4', Vignette: CopilotVignette },
+  { icon: Layers, tag: 'Deals', title: 'LBO & M&A model', body: 'Model an LBO on Tata Steel with debt schedules and returns, and read the story the IRR tells.', span: 'sm:col-span-4', Vignette: LboVignette },
+  { icon: Bot, tag: 'AI Capstone', title: 'AI research copilot', body: 'Build a working AI copilot that pulls filings and drafts first-cut notes, proof you direct AI, not compete with it.', span: 'sm:col-span-4', Vignette: CopilotVignette },
 ];
 
 export default function PracticalSkillsSection() {
@@ -96,7 +96,7 @@ export default function PracticalSkillsSection() {
             <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>On real projects.</span>
           </h2>
           <p className="mt-6 text-[14.5px] font-bricolage text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
-            Every module ends in a portfolio-grade project on a real Indian company — not a quiz score, but something a recruiter can open.
+            Every module ends in a portfolio-grade project on a real Indian company, not a quiz score, but something a recruiter can open.
           </p>
         </div>
 

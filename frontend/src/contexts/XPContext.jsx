@@ -107,12 +107,12 @@ export function XPProvider({ children }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id, authLoading]);
 
-  // Core award funnel — pipes through the RPC, fires toast/sound/level-up.
+  // Core award funnel, pipes through the RPC, fires toast/sound/level-up.
   const awardXP = useCallback(async ({ amount, reason, source_id = null, meta = {}, silent = false, origin = null } = {}) => {
     if (!user?.id) return { ok: false, error: 'no user' };
     const result = await awardXPRaw({ amount, reason, source_id, meta });
     if (!result.ok) {
-      // Don't spam toast on error — log and bail.
+      // Don't spam toast on error, log and bail.
       return result;
     }
     // Refresh local mirror of user_stats so all subscribers see new XP.
@@ -203,7 +203,7 @@ export function XPProvider({ children }) {
       await awardXP({ amount: 10, reason: XP_REASONS.signup_bonus, meta: { kind: 'first_load_backfill' } });
     })();
 
-    // 2) Daily login — once per IST day
+    // 2) Daily login, once per IST day
     (async () => {
       if (dailyLoginFiredRef.current) return;
       const last = stats.last_login_at_ist;
@@ -226,7 +226,7 @@ export function XPProvider({ children }) {
         console.warn('[xp] last_login stamp failed:', err?.message || err);
       }
       // Daily login also counts as activity for the streak engine.
-      // triggerStreakUpdate is fire-and-forget — StreakContext owns the
+      // triggerStreakUpdate is fire-and-forget, StreakContext owns the
       // refresh + milestone/shame overlay surfacing.
       try { await triggerStreakUpdate(); } catch { /* StreakProvider may not be mounted yet */ }
     })();
@@ -280,7 +280,7 @@ export function XPProvider({ children }) {
 export function useXP() {
   const ctx = useContext(XPContext);
   if (!ctx) {
-    // Outside a provider — degrade gracefully so unauthenticated pages don't crash.
+    // Outside a provider, degrade gracefully so unauthenticated pages don't crash.
     return {
       bootstrapping: false,
       stats: null,

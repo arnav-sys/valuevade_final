@@ -38,7 +38,7 @@ export default function AptitudeStage({ attempt, sim, onAdvance, simApi }) {
     setStarting(true);
     try {
       // The backend generates the 12 aptitude questions via an LLM which
-      // takes ~30-45s — too slow for a single HTTP request (ingress 520).
+      // takes ~30-45s, too slow for a single HTTP request (ingress 520).
       // Poll until questions are ready (max ~90s).
       let r = await api.fetch(api.endpoints.aptitudeStart, { method: 'POST' });
       const pollMs = Math.max(1500, (r?.poll_seconds || 3) * 1000);
@@ -78,7 +78,7 @@ export default function AptitudeStage({ attempt, sim, onAdvance, simApi }) {
       });
       setResult(r);
       await api.onStageComplete('aptitude', r.aptitude, 'behavioural');
-      if (auto) toast.warning('Time up — your test was auto-submitted.');
+      if (auto) toast.warning('Time up, your test was auto-submitted.');
     } catch (e) {
       submittedRef.current = false;
       toast.error(e.message);
@@ -96,7 +96,7 @@ export default function AptitudeStage({ attempt, sim, onAdvance, simApi }) {
   // ---------------- Result view ----------------
   if (result) {
     const apt = result.aptitude;
-    // NOTE: score is informational only — the final selection verdict is
+    // NOTE: score is informational only, the final selection verdict is
     // shown after ALL rounds. Every candidate advances to HR Interview.
     return (
       <div className="glass-card rounded-2xl p-6 sm:p-8" data-testid="aptitude-result">
@@ -210,9 +210,9 @@ export default function AptitudeStage({ attempt, sim, onAdvance, simApi }) {
         {sim.firm_name} Online Aptitude Test
       </h2>
       <ul className="space-y-2 text-sm font-bricolage text-[var(--color-text)] mb-6">
-        <li>• <strong>{meta.num_questions || 12} questions</strong> — numerical, data interpretation, logical &amp; verbal reasoning</li>
-        <li>• <strong>{meta.time_limit_minutes || 15} minutes</strong>, timed — the test auto-submits when time runs out</li>
-        <li>• Reference score: <strong>{meta.pass_pct || 40}%</strong>. Your score is recorded — the final selection decision is revealed after all rounds are complete</li>
+        <li>• <strong>{meta.num_questions || 12} questions</strong>, numerical, data interpretation, logical &amp; verbal reasoning</li>
+        <li>• <strong>{meta.time_limit_minutes || 15} minutes</strong>, timed, the test auto-submits when time runs out</li>
+        <li>• Reference score: <strong>{meta.pass_pct || 40}%</strong>. Your score is recorded, the final selection decision is revealed after all rounds are complete</li>
         <li>• No calculator needed. Rough paper is allowed (real tests permit it too)</li>
       </ul>
       <button

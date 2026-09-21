@@ -19,7 +19,7 @@ async function authedFetch(path, opts = {}) {
   });
 }
 
-// Web Speech API hook — returns { supported, isRecording, transcript, start, stop, reset }
+// Web Speech API hook, returns { supported, isRecording, transcript, start, stop, reset }
 function useSpeechRecognition() {
   const recRef = useRef(null);
   const [supported, setSupported] = useState(false);
@@ -188,7 +188,7 @@ export default function MockInterviewPage() {
             <h1 className="text-2xl font-bold mb-4 text-[var(--color-text)]">Mock Interview locked</h1>
             <p className="text-[var(--color-text-muted)] mb-3">
               {eligibility.reason === 'm14_project_pending' && 'Complete the M14 Interview Preparation module project to unlock the mock interview.'}
-              {eligibility.reason === 'weekly_limit' && 'You\'ve already completed 3 mock interviews in the last 7 days. Come back next week — quality over quantity!'}
+              {eligibility.reason === 'weekly_limit' && 'You\'ve already completed 3 mock interviews in the last 7 days. Come back next week, quality over quantity!'}
             </p>
             <Link to="/dashboard" className="text-[var(--color-accent)] hover:underline">← Back to dashboard</Link>
           </div>

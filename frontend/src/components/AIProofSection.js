@@ -50,7 +50,7 @@ export default function AIProofSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10 items-start">
           <div className={`${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`} style={{ animationDelay: '0.2s' }}>
             <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-[14.5px] lg:text-[15.5px] mb-6">
-              AI is already replacing junior analysts, screeners, and report writers at major banks. But finance professionals who understand AI — who can use it, direct it, and build on top of it — are more valuable than ever.
+              AI is already replacing junior analysts, screeners, and report writers at major banks. But finance professionals who understand AI, who can use it, direct it, and build on top of it, are more valuable than ever.
             </p>
             <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-[14.5px] lg:text-[15.5px]">
               Every Valuevade roadmap includes the AI skills that make you irreplaceable: Python for finance, AI-assisted modelling, prompt engineering for analysts, and knowing exactly what AI can and cannot replace in your specific role.

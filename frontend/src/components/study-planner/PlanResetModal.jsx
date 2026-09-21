@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 import { X, RefreshCcw, Loader2, ArrowRight, CalendarDays } from 'lucide-react';
 import { rebalanceStudyPlan } from '../../utils/studyPlanner';
 
-// Phase D2 — "Reset plan?" modal.
+// Phase D2, "Reset plan?" modal.
 //
 // Three exits: keep current / rebalance with same targets / change plan
 // style (opens the D1 wizard pre-filled with the current plan via the
@@ -23,7 +23,7 @@ export default function PlanResetModal({
       if (!ok) {
         toast.error(typeof data?.detail === 'string' ? data.detail : 'Rebalance failed');
       } else {
-        toast.success('Plan rebalanced — fresh start from today');
+        toast.success('Plan rebalanced, fresh start from today');
         onRebalanced?.(data);
         onClose?.();
       }

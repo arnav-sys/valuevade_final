@@ -1,5 +1,5 @@
 /**
- * Admin — Free Trials + Waitlist tab.
+ * Admin, Free Trials + Waitlist tab.
  * Shows two lists side-by-side and lets admins export CSV.
  */
 import { useCallback, useEffect, useState } from 'react';

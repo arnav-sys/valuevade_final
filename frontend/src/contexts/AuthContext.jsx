@@ -38,7 +38,7 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     let mounted = true;
 
-    // Safety timeout — never leave loading stuck
+    // Safety timeout, never leave loading stuck
     const timeout = setTimeout(() => {
       if (mounted) done();
     }, 3000);
@@ -53,7 +53,7 @@ export function AuthProvider({ children }) {
           isReconnectingRef.current = true;
           setIsReconnecting(true);
         }
-        // Session restored / token refreshed — hide banner after brief delay
+        // Session restored / token refreshed, hide banner after brief delay
         if (isReconnectingRef.current && s) {
           isReconnectingRef.current = false;
           if (reconnectTimerRef.current) clearTimeout(reconnectTimerRef.current);
@@ -105,7 +105,7 @@ export function AuthProvider({ children }) {
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
         const result = await fn();
-        // supabase-js returns { data, error } — retry only if error is transient
+        // supabase-js returns { data, error }, retry only if error is transient
         if (result?.error && isTransientNetworkError(result.error) && attempt < retries) {
           await new Promise((r) => setTimeout(r, delayMs * (attempt + 1)));
           continue;

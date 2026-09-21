@@ -6,7 +6,7 @@
  *  - COURSE DETAILS (/course/:id) ships Course + BreadcrumbList + FAQPage.
  *  - NO aggregateRating, NO Review markup anywhere.
  *  - FAQ schema is generated from the SAME source array that renders the
- *    visible FAQ — never duplicate the strings; changing the visible
+ *    visible FAQ, never duplicate the strings; changing the visible
  *    accordion must automatically change the schema.
  */
 

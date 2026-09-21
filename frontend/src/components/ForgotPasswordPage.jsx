@@ -21,7 +21,7 @@ export default function ForgotPasswordPage() {
       redirectTo: `${window.location.origin}/reset-password`,
     });
     setSubmitting(false);
-    // Deliberately generic — don't reveal whether the account exists.
+    // Deliberately generic, don't reveal whether the account exists.
     if (err) setError(err.message);
     else setSent(true);
   };
@@ -50,7 +50,7 @@ export default function ForgotPasswordPage() {
               </div>
               <h1 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-2">Check your inbox</h1>
               <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-                If an account exists for <span className="text-[var(--color-text)]">{email}</span>, we've sent a link to reset your password. It'll land in a minute or two — check spam if you don't see it.
+                If an account exists for <span className="text-[var(--color-text)]">{email}</span>, we've sent a link to reset your password. It'll land in a minute or two, check spam if you don't see it.
               </p>
             </div>
           ) : (

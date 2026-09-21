@@ -1,5 +1,5 @@
 /**
- * Phase B.1 — Notes cards editor for the AdminPanel View Course tab.
+ * Phase B.1, Notes cards editor for the AdminPanel View Course tab.
  * Top section: PDF/PPT file upload (renders as a document viewer for students).
  * Bottom section: Individual notes cards (hook / concept / formula / etc.).
  */
@@ -92,7 +92,7 @@ function NotesFileSection({ sessionId }) {
       const msg = e.message || 'Upload failed';
       // Check for DB constraint violation on card_type
       if (msg.toLowerCase().includes('check') || msg.toLowerCase().includes('constraint') || msg.toLowerCase().includes('pdf_document')) {
-        setErr('DB migration required — run 0040_notes_pdf_card_type.sql in Supabase Studio first (see /app/scripts/migrations/).');
+        setErr('DB migration required, run 0040_notes_pdf_card_type.sql in Supabase Studio first (see /app/scripts/migrations/).');
       } else {
         setErr(msg);
       }
@@ -142,7 +142,7 @@ function NotesFileSection({ sessionId }) {
                 {fileInfo.file_type?.toUpperCase()}
               </span>
               <CheckCircle2 size={10} className="text-emerald-500" />
-              <span className="text-[9px] text-emerald-600 font-mono">Active — students see this document</span>
+              <span className="text-[9px] text-emerald-600 font-mono">Active, students see this document</span>
             </div>
           </div>
           <div className="flex items-center gap-1.5 flex-shrink-0">
@@ -227,7 +227,7 @@ export default function NotesEditor({ sessionId, sessionTitle }) {
     setLoading(true);
     try {
       const j = await req(`/api/admin/notes-cards?session_id=${sessionId}`);
-      // Filter out pdf_document cards — they're managed by the file section above
+      // Filter out pdf_document cards, they're managed by the file section above
       setCards((j.cards || []).filter((c) => c.card_type !== 'pdf_document'));
     } catch (e) { setErr(e.message); }
     finally { setLoading(false); }
@@ -290,7 +290,7 @@ export default function NotesEditor({ sessionId, sessionTitle }) {
       <div className="border-t border-[var(--color-border)] pt-3 flex items-center justify-between mb-3">
         <div className="min-w-0">
           <p className="text-[10px] uppercase font-mono text-[var(--color-text-muted)] tracking-wider">Notes cards</p>
-          <p className="text-[10px] text-[var(--color-text-faint)]">Optional — shown if no PDF/PPT is uploaded</p>
+          <p className="text-[10px] text-[var(--color-text-faint)]">Optional, shown if no PDF/PPT is uploaded</p>
         </div>
         <button
           onClick={addCard}
@@ -303,7 +303,7 @@ export default function NotesEditor({ sessionId, sessionTitle }) {
       {loading ? (
         <p className="text-xs text-[var(--color-text-muted)]">Loading…</p>
       ) : cards.length === 0 ? (
-        <p className="text-xs text-[var(--color-text-muted)] py-4 text-center">No cards yet — click Add card.</p>
+        <p className="text-xs text-[var(--color-text-muted)] py-4 text-center">No cards yet, click Add card.</p>
       ) : (
         <ul className="flex-1 overflow-y-auto space-y-2" data-testid="notes-cards-list">
           {cards.map((c, i) => {

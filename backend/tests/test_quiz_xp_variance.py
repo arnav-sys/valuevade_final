@@ -30,7 +30,7 @@ def test_per_question_variance_5_correct():
     assert max(totals) <= 75, f"max was {max(totals)} (expected ≤ 75)"
     distinct = len(set(totals))
     assert distinct >= 30, (
-        f"only {distinct} distinct totals — variance is per-quiz, not "
+        f"only {distinct} distinct totals, variance is per-quiz, not "
         f"per-question (expected ≥30 from 5 stacked rolls of 11 outcomes)"
     )
 

@@ -26,7 +26,7 @@ export default class ErrorBoundary extends Component {
     console.error('[ErrorBoundary]', error, info);
 
     // Chunk-load failures self-heal via a one-shot hard reload below.
-    // Skip reporting them — they're deploy noise, not code bugs.
+    // Skip reporting them, they're deploy noise, not code bugs.
     const chunkErr = isChunkLoadError(error);
 
     if (!chunkErr) {
@@ -77,7 +77,7 @@ export default class ErrorBoundary extends Component {
   render() {
     if (!this.state.hasError) return this.props.children;
 
-    /* Dark-themed boundary — hardcoded so it works outside the .landing-dark scope. */
+    /* Dark-themed boundary, hardcoded so it works outside the .landing-dark scope. */
     return (
       <div
         className="min-h-screen relative overflow-hidden px-4 py-10 flex items-center justify-center"
@@ -125,7 +125,7 @@ export default class ErrorBoundary extends Component {
             className="font-bricolage mb-6 leading-relaxed"
             style={{ color: 'rgba(255,255,255,0.70)' }}
           >
-            The app hit an unexpected error. Try again — if it keeps happening, reload or head back home.
+            The app hit an unexpected error. Try again, if it keeps happening, reload or head back home.
           </p>
 
           {this.state.error?.message && (

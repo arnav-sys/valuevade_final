@@ -8,7 +8,7 @@ import { Menu, X, LogOut, Sun, Moon, ArrowRight } from 'lucide-react';
  * - Thin top status bar with mock market widgets (static content).
  * - Mono uppercase primary nav with underline-on-hover.
  * - Sharp signup CTA (2px radius).
- * - Mobile overlay layout untouched — brief kept it out of scope. */
+ * - Mobile overlay layout untouched, brief kept it out of scope. */
 
 const navLinks = [
   { label: 'Features', id: 'features' },
@@ -146,7 +146,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
         </button>
       </nav>
 
-      {/* Mobile overlay menu — kept exactly as before per brief scope */}
+      {/* Mobile overlay menu, kept exactly as before per brief scope */}
       {menuOpen && (
         <div
           className="md:hidden fixed left-0 right-0 bottom-0 z-40 flex flex-col items-center justify-center gap-8 overflow-y-auto py-10"

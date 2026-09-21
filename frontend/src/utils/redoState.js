@@ -1,4 +1,4 @@
-// Phase B — redo doubt session state.
+// Phase B, redo doubt session state.
 //
 // When a user clicks "Redo for half XP" on the /doubts page, we persist a
 // small marker to sessionStorage so the subsequent quiz/simulation/notes
@@ -20,7 +20,7 @@ export function setRedoState({ redo_doubt_id, redo_count, session_id }) {
   try {
     sessionStorage.setItem(KEY, JSON.stringify({ redo_doubt_id, redo_count, session_id }));
   } catch {
-    // sessionStorage disabled — best-effort, ignore.
+    // sessionStorage disabled, best-effort, ignore.
   }
 }
 

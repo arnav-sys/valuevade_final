@@ -1,4 +1,4 @@
-// Sequential P2 — Step 5/5: Drift Recovery Banner
+// Sequential P2, Step 5/5: Drift Recovery Banner
 //
 // Slim, soft-tone re-engagement banner. Fetches /api/dashboard/drift-recovery
 // on mount; renders only when the backend says `show: true`. Auto-dismisses
@@ -6,10 +6,10 @@
 // so the 24-hour cooldown starts immediately.
 //
 // Visual rules:
-//   • Slim — one line of copy + CTA + close icon. NO illustrations.
-//   • Soft — never accusatory. Mentions the drop only as a delta, not as
+//   • Slim, one line of copy + CTA + close icon. NO illustrations.
+//   • Soft, never accusatory. Mentions the drop only as a delta, not as
 //     "you slacked off". Action verb is "Resume", not "Recover".
-//   • One banner max — DashboardPage mounts this once at the top.
+//   • One banner max, DashboardPage mounts this once at the top.
 //   • Respects prefers-reduced-motion (no slide animation).
 
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -60,7 +60,7 @@ export default function DriftRecoveryBanner() {
   }, []);
 
   // Auto-dismiss after AUTO_DISMISS_MS if visible and no interaction.
-  // We DO NOT call the dismiss endpoint here — soft auto-hide is per-visit
+  // We DO NOT call the dismiss endpoint here, soft auto-hide is per-visit
   // only. The 24-hour cooldown is reserved for an explicit click.
   useEffect(() => {
     if (!state.show || hidden) return undefined;
@@ -83,7 +83,7 @@ export default function DriftRecoveryBanner() {
       await fetch(`${BACKEND}/api/dashboard/drift-recovery/dismiss`, {
         method: 'POST', headers,
       });
-    } catch { /* swallow — banner already hidden client-side */ }
+    } catch { /* swallow, banner already hidden client-side */ }
   }, [cancelAutoDismiss]);
 
   const handleResume = useCallback(() => {

@@ -2,14 +2,14 @@ import { useEffect, useRef, useState } from 'react';
 import { Target, Brain, Zap, Trophy, Check } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-/* Process section (redesigned Jun 2026) — a real roadmap UI. A progress line
+/* Process section (redesigned Jun 2026), a real roadmap UI. A progress line
  * fills as the section scrolls into view; milestone nodes light up in sequence.
  * Horizontal roadmap on desktop, vertical on mobile. Copy verbatim. */
 
 const steps = [
   { num: '01', tag: 'Input', icon: Target, title: 'Tell Us Your Goal', body: 'Input your dream role and current skills in under 2 minutes.' },
   { num: '02', tag: 'Roadmap', icon: Brain, title: 'Get Your AI Roadmap', body: 'Valuevade maps your exact skill gap and builds your personalised week-by-week path.' },
-  { num: '03', tag: 'Build', icon: Zap, title: 'Learn By Doing', body: 'Interactive notes, simulations, projects, quizzes — all sequenced for your specific path.' },
+  { num: '03', tag: 'Build', icon: Zap, title: 'Learn By Doing', body: 'Interactive notes, simulations, projects, quizzes, all sequenced for your specific path.' },
   { num: '04', tag: 'Deploy', icon: Trophy, title: 'Land The Role', body: 'Walk into interviews with real skills, real projects, and AI-proof expertise.' },
 ];
 

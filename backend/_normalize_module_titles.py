@@ -24,7 +24,7 @@ UPDATES = {
     8: ('RED FLAG ANALYSIS & FORENSIC ACCOUNTING', 'Red Flag Analysis & Forensic Accounting'),
     9: ('ADVANCED RATIO ANALYSIS', 'Advanced Ratio Analysis'),
     10: ('ECONOMY & MACRO ANALYSIS FOR EQUITY RESEARCH', 'Economy & Macro Analysis for Equity Research'),
-    11: ('SECTOR ANALYSIS — EVERY MAJOR INDIAN SECTOR', 'Sector Analysis — Every Major Indian Sector'),
+    11: ('SECTOR ANALYSIS, EVERY MAJOR INDIAN SECTOR', 'Sector Analysis, Every Major Indian Sector'),
     20: ('EQUITY RESEARCH INTERVIEW MASTERY', 'Equity Research Interview Mastery'),
 }
 

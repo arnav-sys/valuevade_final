@@ -219,7 +219,7 @@ export default function PortfolioPage() {
                     style={{ borderColor: `${data.level_color_hex || '#246BFD'}55`, color: data.level_color_hex || 'var(--color-primary)' }}
                     data-testid="portfolio-level-badge"
                   >
-                    <Star size={11} /> Level {data.current_level} — {data.level_name || 'Analyst'}
+                    <Star size={11} /> Level {data.current_level}, {data.level_name || 'Analyst'}
                   </span>
                   {data.current_streak_days > 0 && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/15 text-orange-300 border border-orange-500/30 px-2.5 py-1 text-xs font-semibold" data-testid="portfolio-streak-chip">
@@ -246,7 +246,7 @@ export default function PortfolioPage() {
                   position="inline"
                   message={`Here's your finance journey so far, ${firstName}.`}
                   showSpeechBubble={true}
-                  ariaLabel="Pari — your finance tutor"
+                  ariaLabel="Pari, your finance tutor"
                 />
               </div>
             </div>
@@ -283,7 +283,7 @@ export default function PortfolioPage() {
           )}
         </section>
 
-        {/* 4. Module journey — reuse constellation map */}
+        {/* 4. Module journey, reuse constellation map */}
         <section data-testid="portfolio-journey">
           <div className="flex items-baseline justify-between mb-3">
             <h2 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)]">Module journey</h2>
@@ -375,7 +375,7 @@ export default function PortfolioPage() {
           <ActivityHeatmap />
         </section>
 
-        {/* 8b. Pari Review Notes inline tile — links to /review */}
+        {/* 8b. Pari Review Notes inline tile, links to /review */}
         <section data-testid="portfolio-review-tile">
           <Link
             to="/review"
@@ -401,7 +401,7 @@ export default function PortfolioPage() {
           </Link>
         </section>
 
-        {/* 9. Headline stats — share-copy bits */}
+        {/* 9. Headline stats, share-copy bits */}
         <section data-testid="portfolio-headlines">
           <h2 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)] mb-3">Quotable highlights</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -417,11 +417,11 @@ export default function PortfolioPage() {
             />
             <HeadlineQuote
               value={`${data.current_streak_days || 0}-day streak.`}
-              copy={`${data.current_streak_days || 0}-day streak on Valuevade — every day showing up.`}
+              copy={`${data.current_streak_days || 0}-day streak on Valuevade, every day showing up.`}
               testid="headline-streak"
             />
             <HeadlineQuote
-              value={`Level ${data.current_level} — ${data.level_name || 'Analyst'}.`}
+              value={`Level ${data.current_level}, ${data.level_name || 'Analyst'}.`}
               copy={`Level ${data.current_level} (${data.level_name || 'Analyst'}) on Valuevade.`}
               testid="headline-level"
             />

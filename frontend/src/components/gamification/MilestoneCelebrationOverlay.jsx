@@ -4,7 +4,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 import { useMilestones } from '../../contexts/MilestonesContext';
 import { useSound } from '../../contexts/SoundContext';
 
-// Phase C — Milestone Achievement celebration overlay.
+// Phase C, Milestone Achievement celebration overlay.
 //
 // Mounted once at the app shell. Reads `pending[0]` from MilestonesContext
 // and renders the full-screen card. After Continue → POST /dismiss → next
@@ -48,7 +48,7 @@ export default function MilestoneCelebrationOverlay() {
     if (firedFor.current === current.code) return undefined;
     firedFor.current = current.code;
 
-    // Reuse the level_up sound — it's the most "big moment" cue we have.
+    // Reuse the level_up sound, it's the most "big moment" cue we have.
     try { playSound('level_up'); } catch { /* sound not critical */ }
 
     if (!reducedMotion()) {
@@ -88,7 +88,7 @@ export default function MilestoneCelebrationOverlay() {
       className="fixed inset-0 z-[105] flex items-center justify-center p-4"
       role="dialog"
       aria-modal="true"
-      aria-label={`Milestone achieved — ${current.title}`}
+      aria-label={`Milestone achieved, ${current.title}`}
       data-testid="milestone-overlay"
     >
       <button

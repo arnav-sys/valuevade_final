@@ -48,7 +48,7 @@ function computeNextMilestone({ stats, badges, sessionXp }) {
   if (nextStreak) {
     candidates.push({ type:'streak', label:`${nextStreak - streak} day${nextStreak - streak === 1 ? '' : 's'} to ${nextStreak}-day streak`, delta:(nextStreak - streak) * 100 });
   }
-  // Near-miss badge — pick the one closest to completion.
+  // Near-miss badge, pick the one closest to completion.
   const nearest = (badges || []).filter((b) => !b.is_unlocked && b.progress_target > 0).map((b) => ({
     type:'badge',
     label:`${b.progress_target - b.progress_current} more ${b.title || b.name || b.code} unit${(b.progress_target - b.progress_current) === 1 ? '' : 's'} → ${b.name}`,
@@ -131,7 +131,7 @@ export default function SessionCompleteSummaryCard({ sessionStartTs }) {
 
   if (loading) return null;
   if (xpBreakdown.total === 0 && (todayChallenges.length === 0) && newBadges.length === 0) {
-    // Nothing happened this session — render nothing.
+    // Nothing happened this session, render nothing.
     return null;
   }
 

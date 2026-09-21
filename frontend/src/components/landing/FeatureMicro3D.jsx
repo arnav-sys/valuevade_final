@@ -1,4 +1,4 @@
-// FeatureMicro3D — bespoke micro-illustration per Feature card. Picks a
+// FeatureMicro3D, bespoke micro-illustration per Feature card. Picks a
 // kind based on the feature's name/icon family, renders an SVG inside a
 // CSS-3D-transformed container (`perspective` + `transform-style:
 // preserve-3d`). Each kind has its own subtle idle animation and a
@@ -7,7 +7,7 @@
 // We use SVG + CSS rather than per-card three.js because instantiating 12
 // independent WebGL contexts blows past browser limits (~16 max). SVG with
 // CSS preserve-3d gives us bespoke-per-kind cinematic visuals at near-zero
-// runtime cost. Each glyph reads as a 3D object — it has depth, rotation,
+// runtime cost. Each glyph reads as a 3D object, it has depth, rotation,
 // and chip layers.
 
 import { useState } from 'react';
@@ -38,11 +38,11 @@ function pickKind(title = '') {
 function GlyphBrain({ fast }) {
   return (
     <svg viewBox="0 0 100 100" className="w-full h-full" style={{ filter: 'drop-shadow(0 0 12px rgba(167,139,250,.55))' }}>
-      {/* Outer ring — slow rotation */}
+      {/* Outer ring, slow rotation */}
       <g style={{ transformOrigin: '50px 50px', animation: `feat-rot ${fast ? 4 : 12}s linear infinite` }}>
         <circle cx="50" cy="50" r="34" fill="none" stroke="#a78bfa" strokeOpacity="0.45" strokeWidth="0.8" strokeDasharray="2 5" />
       </g>
-      {/* Brain cluster — 8 nodes connected */}
+      {/* Brain cluster, 8 nodes connected */}
       <g style={{ transformOrigin: '50px 50px', animation: `feat-rot-rev ${fast ? 3 : 9}s linear infinite` }}>
         {[
           [50,22],[70,32],[78,52],[68,72],[50,78],[32,72],[22,52],[30,32]

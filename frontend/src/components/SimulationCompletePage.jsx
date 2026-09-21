@@ -55,7 +55,7 @@ function overallFeedback(accuracy) {
   }
   return {
     title: 'Every rep compounds.',
-    body: 'The best analysts iterate. Review the concepts and run this one again — you\'ll feel the difference.',
+    body: 'The best analysts iterate. Review the concepts and run this one again, you\'ll feel the difference.',
     tone: 'amber',
   };
 }

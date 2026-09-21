@@ -114,14 +114,14 @@ async def root():
 @api_router.get("/health")
 async def health_liveness():
     """Lightweight liveness probe. Intentionally does NOT touch Mongo or
-    Supabase — a slow upstream must not fail the pod's liveness check.
+    Supabase, a slow upstream must not fail the pod's liveness check.
     Use the read-model endpoints (/api/health/xp, /api/health/badges, etc.)
     when you actually need to validate downstream state."""
     return {"status": "ok"}
 
 
 # ---------------------------------------------------------------------------
-# Gamification (XP) — read-only debug endpoint for the testing agent.
+# Gamification (XP), read-only debug endpoint for the testing agent.
 # Uses the Supabase service-role key against the PostgREST API to bypass RLS,
 # returning a one-shot integrity snapshot of the user's XP state.
 # ---------------------------------------------------------------------------
@@ -220,7 +220,7 @@ def _supabase_delete(path: str):
 def _supabase_auth_user(access_token: str) -> Optional[dict]:
     """Resolve a Supabase access token to a user dict via Supabase Auth's
     /auth/v1/user endpoint. We use the user's token (NOT the service role) so
-    Supabase validates the JWT signature, expiry and aud claim for us — no
+    Supabase validates the JWT signature, expiry and aud claim for us, no
     local key wrangling required. Returns None on any failure (caller maps
     to 401)."""
     if not access_token:
@@ -239,7 +239,7 @@ def _supabase_auth_user(access_token: str) -> Optional[dict]:
 
 
 def get_supabase_user(authorization: Optional[str] = Header(None)) -> dict:
-    """FastAPI dependency — extracts the authenticated Supabase user from the
+    """FastAPI dependency, extracts the authenticated Supabase user from the
     `Authorization: Bearer <jwt>` header. Raises 401 if the token is missing
     or invalid. Returned dict has at minimum {id, email}."""
     if not authorization or not authorization.lower().startswith("bearer "):
@@ -304,7 +304,7 @@ def _profile_snapshot(user_id: str) -> dict:
         ) or []
         return rows[0] if rows else {}
     except HTTPException as e:
-        # 42703 undefined_column (migration 0036 not applied yet) — degrade.
+        # 42703 undefined_column (migration 0036 not applied yet), degrade.
         if e.status_code in (400, 404):
             logger.warning(f"[llm-limits] profile snapshot degraded: {e.detail}")
             return {}
@@ -507,7 +507,7 @@ async def health_badges(user_id: str, caller: dict = Depends(get_supabase_user))
     for m in masters:
         ub = by_user.get(m["id"]) or {}
         # "Unlocked" is the AND of both columns: is_unlocked AND earned_at.
-        # Either alone is a drift signal — Phase 45 fix-pass added a backfill
+        # Either alone is a drift signal, Phase 45 fix-pass added a backfill
         # migration (0006) to make these move together always.
         is_unlocked = bool(ub.get("is_unlocked")) and ub.get("earned_at") is not None
         target = ub.get("progress_target") or m.get("progress_target") or 1
@@ -621,7 +621,7 @@ async def health_challenges(user_id: str, caller: dict = Depends(get_supabase_us
                 streak += 1
                 cursor = cursor - timedelta(days=1)
             else:
-                # Allow today to be unfinished — anchor streak from yesterday.
+                # Allow today to be unfinished, anchor streak from yesterday.
                 if streak == 0 and cursor.isoformat() == today_ist:
                     cursor = cursor - timedelta(days=1)
                     continue
@@ -694,7 +694,7 @@ async def health_journey(user_id: str, caller: dict = Depends(get_supabase_user)
     ) or []
     stats = (stats_rows or [None])[0] or {}
 
-    # Next milestone heuristic — pick the smallest absolute delta.
+    # Next milestone heuristic, pick the smallest absolute delta.
     LEVEL_NAMES = ['Trainee','Equity Apprentice','Equity Analyst','Senior Analyst','Associate','VP','Director','MD','Partner','CIO']
     LEVEL_THRESHOLDS = [0, 250, 600, 1200, 2000, 3200, 5000, 7500, 11000, 16000]
     next_milestone = None
@@ -750,7 +750,7 @@ async def health_journey(user_id: str, caller: dict = Depends(get_supabase_user)
 
 
 # =============================================================================
-# Doubts session (Phase 52) — student Q&A with Pari
+# Doubts session (Phase 52), student Q&A with Pari
 # =============================================================================
 # Hard cost rails (locked):
 #   - 5 doubt sessions per user per IST day
@@ -772,7 +772,7 @@ COUNTRY_CONTEXT = {
     'GB': "UK markets (LSE, FCA, GBP). Use UK context: HSBC, Shell, BP, Lloyds, Unilever.",
     'SG': "Singapore markets (SGX, MAS, SGD). Use Singapore + ASEAN context: DBS, Singtel, OCBC, CapitaLand.",
     'AE': "UAE markets (DFM/ADX, SCA, AED). Use UAE + GCC context: Emaar, Etisalat, FAB, ADNOC.",
-    'OTHER': "Global markets — use globally recognizable companies (Apple, Toyota, HSBC, Samsung, Nestlé).",
+    'OTHER': "Global markets, use globally recognizable companies (Apple, Toyota, HSBC, Samsung, Nestlé).",
 }
 
 
@@ -843,12 +843,12 @@ async def send_welcome_email(supa_user: dict = Depends(get_supabase_user)):
     """Send a one-time welcome email to a newly signed-up user via Resend.
     Best-effort: if RESEND_API_KEY is unset the call is a no-op (no error).
     Called once from SignupPage.jsx immediately after successful signUp.
-    Idempotent — if called again for the same user it just resends (acceptable
+    Idempotent, if called again for the same user it just resends (acceptable
     since the frontend only fires it once per session)."""
     user_id = supa_user.get("id")
     api_key = (os.environ.get("RESEND_API_KEY") or "").strip()
     if not api_key:
-        logger.info("[auth] RESEND_API_KEY not set — skipping welcome email")
+        logger.info("[auth] RESEND_API_KEY not set, skipping welcome email")
         return {"ok": True, "skipped": True}
     try:
         profs = _supabase_get(
@@ -866,7 +866,7 @@ async def send_welcome_email(supa_user: dict = Depends(get_supabase_user)):
         _resend.Emails.send({
             "from": f"Valuevade <{sender}>",
             "to": [email],
-            "subject": "You're in — your first session is free",
+            "subject": "You're in, your first session is free",
             "html": _welcome_email_html(first_name, free_session_url),
         })
         logger.info(f"[auth] welcome email sent to {email}")
@@ -880,16 +880,16 @@ def _welcome_email_html(first_name: str, courses_url: str) -> str:
     return f"""
     <div style="font-family:Arial,Helvetica,sans-serif;max-width:520px;margin:0 auto;padding:32px 24px;background:#0e0e16;color:#f4f4f8;">
       <p style="font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8b8b9e;margin:0 0 20px;">Valuevade · Welcome</p>
-      <h1 style="font-size:22px;margin:0 0 12px;color:#ffffff;">Hey {first_name} — welcome.</h1>
+      <h1 style="font-size:22px;margin:0 0 12px;color:#ffffff;">Hey {first_name}, welcome.</h1>
       <p style="font-size:15px;line-height:1.7;color:#c9c9d6;margin:0 0 24px;">
-        Your account is live. Your first session is completely free — no card, no commitment.
+        Your account is live. Your first session is completely free, no card, no commitment.
         Just open it and see if the course is right for you.
       </p>
       <a href="{courses_url}" style="display:inline-block;background:#246bfd;color:#ffffff;text-decoration:none;font-size:14px;font-weight:600;letter-spacing:0.5px;padding:14px 28px;border-radius:4px;">
         Start your free session &rarr;
       </a>
       <p style="font-size:13px;line-height:1.6;color:#8b8b9e;margin:28px 0 0;">
-        The course covers equity research, financial modelling, and valuation — built specifically for
+        The course covers equity research, financial modelling, and valuation, built specifically for
         Indian finance students. ₹4999 lifetime access after the free trial.
       </p>
       <p style="font-size:12px;color:#6b6b7e;margin-top:32px;">
@@ -899,14 +899,14 @@ def _welcome_email_html(first_name: str, courses_url: str) -> str:
     """
 
 
-# Daily Finance News feature removed (2026-07-10) — endpoints /api/news/today
+# Daily Finance News feature removed (2026-07-10), endpoints /api/news/today
 # and /api/news/mark_read no longer exist. See DashboardPage.jsx for FE cleanup.
 
 
 # ── Course Catalog ────────────────────────────────────────────────────────────
 @api_router.get("/courses/catalog")
 async def get_courses_catalog():
-    """Public endpoint — returns master_paths + module/session counts in one
+    """Public endpoint, returns master_paths + module/session counts in one
     fast server-side call so CoursesPage.jsx never needs to hit Supabase directly.
     No auth required (catalog is public)."""
     paths = _supabase_get("master_paths?is_active=eq.true&order=created_at") or []
@@ -933,7 +933,7 @@ async def get_courses_catalog():
 
 
 # =============================================================================
-# Portfolio (Phase 53) — aggregated showcase + public share slug
+# Portfolio (Phase 53), aggregated showcase + public share slug
 # =============================================================================
 
 import secrets as _secrets
@@ -1017,7 +1017,7 @@ def _redact_public_portfolio(row: dict) -> dict:
 
 
 def _generate_share_slug() -> str:
-    """8-char lowercase alphanumeric. ~3.6e12 keyspace — collision-free in practice
+    """8-char lowercase alphanumeric. ~3.6e12 keyspace, collision-free in practice
     but we still retry on conflict at the DB layer."""
     alphabet = "abcdefghijklmnopqrstuvwxyz0123456789"
     return "".join(_secrets.choice(alphabet) for _ in range(8))
@@ -1037,7 +1037,7 @@ async def portfolio_me(supa_user: dict = Depends(get_supabase_user)):
         f"v_user_portfolio?user_id=eq.{_urlparse.quote(user_id)}&select={_PORTFOLIO_VIEW_FIELDS}&limit=1"
     ) or []
     if not rows:
-        # First-time user without a user_stats row — return a stub so the page
+        # First-time user without a user_stats row, return a stub so the page
         # still renders with empty states.
         prof = _supabase_get(
             f"profiles?id=eq.{_urlparse.quote(user_id)}&select=full_name,email,avatar_url,created_at,portfolio_public,portfolio_share_slug&limit=1"
@@ -1097,7 +1097,7 @@ async def portfolio_share(req: PortfolioShareReq, supa_user: dict = Depends(get_
     np = (new_prof or [{}])[0]
     slug = np.get("portfolio_share_slug")
 
-    # Build the public URL — the frontend uses /p/<slug> on its own origin.
+    # Build the public URL, the frontend uses /p/<slug> on its own origin.
     origin = os.environ.get("PUBLIC_APP_ORIGIN") or os.environ.get("REACT_APP_PUBLIC_ORIGIN") or ""
     public_url = f"{origin.rstrip('/')}/p/{slug}" if (origin and slug) else (f"/p/{slug}" if slug else None)
 
@@ -1131,7 +1131,7 @@ async def portfolio_public(share_slug: str):
 
 
 # =============================================================================
-# Pari's Review Notes (Phase 57) — study cabinet of every Pari answer
+# Pari's Review Notes (Phase 57), study cabinet of every Pari answer
 # =============================================================================
 
 @api_router.get("/portfolio/review_notes")
@@ -1163,7 +1163,7 @@ async def portfolio_review_notes(
             raise HTTPException(status_code=400, detail="invalid module_code")
         query_parts.append(f"module_code=eq.{module_code}")
     rows = _supabase_get(f"v_user_review_notes?{'&'.join(query_parts)}") or []
-    # Best-effort stats — cheap counts on the same view, no auth filter needed
+    # Best-effort stats, cheap counts on the same view, no auth filter needed
     # because v_user_review_notes is security_invoker=true and our service-role
     # call inherits the user filter.
     all_rows = _supabase_get(
@@ -1181,7 +1181,7 @@ async def portfolio_review_notes(
 
 
 # =============================================================================
-# Phase A — Quick Revision Sheet (session-end AI revision card)
+# Phase A, Quick Revision Sheet (session-end AI revision card)
 # =============================================================================
 
 REVISION_SHEET_SYSTEM_PROMPT = """You are Pari, a precise finance tutor. Generate a Quick Revision Sheet for a learner who just finished a session.
@@ -1195,7 +1195,7 @@ Your output MUST be valid markdown with these four H2 sections IN THIS EXACT ORD
 2-4 formulas using inline code spans (e.g. `PV = FV / (1 + r)^n`). For each, add a 1-line plain-English note. If the session has no formulas, write a single italic line: *"No new formulas in this session."*
 
 ## Common Pitfalls
-2-3 bullets — mistakes students typically make on this topic.
+2-3 bullets, mistakes students typically make on this topic.
 
 ## Ask Yourself
 3 short recall questions a student should be able to answer to prove they got it.
@@ -1204,7 +1204,7 @@ Constraints:
 - Target length: 350-500 words total. Hard ceiling 600 words.
 - Match the student's country focus when picking examples: {country_context}
 - Do NOT add a heading above "Key Concepts"; do NOT add an intro paragraph; do NOT close with a sign-off.
-- Plain markdown only — no tables, no HTML, no emoji.
+- Plain markdown only, no tables, no HTML, no emoji.
 """
 
 
@@ -1259,7 +1259,7 @@ class WorkbookSaveReq(BaseModel):
 
 @api_router.post("/simulations/workbook/save")
 async def simulation_workbook_save(req: WorkbookSaveReq, supa_user: dict = Depends(get_supabase_user)):
-    """Batch 5 — Persist (or auto-save) a per-user spreadsheet workbook
+    """Batch 5, Persist (or auto-save) a per-user spreadsheet workbook
     so users can leave and come back. UPSERT on (user_id, master_simulation_id,
     user_session_id). 200 OK with the row id."""
     user_id = supa_user.get("id")
@@ -1291,7 +1291,7 @@ async def simulation_workbook_save(req: WorkbookSaveReq, supa_user: dict = Depen
         result = _supabase_post(
             "user_simulation_workbooks", row, prefer="return=representation"
         )
-        # _supabase_post returns the inserted row (or list) — handle both shapes.
+        # _supabase_post returns the inserted row (or list), handle both shapes.
         new_id = (result[0]["id"] if isinstance(result, list) and result else (result or {}).get("id"))
         return {"ok": True, "id": new_id, "updated": False}
     except Exception as e:
@@ -1305,7 +1305,7 @@ async def simulation_workbook_load(
     user_session_id: Optional[str] = None,
     supa_user: dict = Depends(get_supabase_user),
 ):
-    """Batch 5 — Fetch the persisted workbook (if any) for this user + sim
+    """Batch 5, Fetch the persisted workbook (if any) for this user + sim
     so the FE can restore where they left off."""
     user_id = supa_user.get("id")
     if not user_id:
@@ -1395,7 +1395,7 @@ async def revision_generate(req: RevisionGenerateReq, supa_user: dict = Depends(
     except HTTPException:
         raise
     except Exception as e:
-        # F1 (Batch 1) — Surface a more useful detail string. The user can hit
+        # F1 (Batch 1), Surface a more useful detail string. The user can hit
         # Retry; the FE will show a soft "Try again" CTA. We log the full
         # exception server-side so we can diagnose recurring failures.
         err_msg = str(e) or e.__class__.__name__
@@ -1405,7 +1405,7 @@ async def revision_generate(req: RevisionGenerateReq, supa_user: dict = Depends(
         elif "timeout" in err_lower or "timed out" in err_lower:
             detail = "The summary took too long to generate. Try again."
         elif "auth" in err_lower or "invalid" in err_lower and "key" in err_lower:
-            detail = "LLM credentials issue — admin has been notified."
+            detail = "LLM credentials issue, admin has been notified."
         elif "budget" in err_lower or "balance" in err_lower or "insufficient" in err_lower:
             detail = "LLM key budget exhausted. Admin needs to top up."
         else:
@@ -1466,7 +1466,7 @@ async def revision_get(session_id: str, supa_user: dict = Depends(get_supabase_u
 # --- Phase C: milestones -------------------------------------------------
 #
 # Hybrid milestone system. Module milestones (`m1_foundations`, `m4_modelling`,
-# etc.) fire when a user finishes the last session of a master_module — i.e.
+# etc.) fire when a user finishes the last session of a master_module, i.e.
 # every user_session in their user_module is `is_completed=true`. Count
 # milestones (`count_3`, `count_7`, …, `count_100`) are the fallback and fire
 # on the user's Nth completed session.
@@ -1492,7 +1492,7 @@ def check_and_grant_milestones(user_id: str, just_completed_session_id: Optional
          grant the count milestone that exactly matches.
 
     The unique constraint user_milestones_user_code_unique handles the
-    "already earned" case — we just swallow the 409.
+    "already earned" case, we just swallow the 409.
     """
     granted: list = []
 
@@ -1531,7 +1531,7 @@ def check_and_grant_milestones(user_id: str, just_completed_session_id: Optional
                             )
                             if inserted:
                                 granted.append(code)
-                                return granted   # module wins — skip count check
+                                return granted   # module wins, skip count check
                         except HTTPException as e:
                             # 409 == unique violation == already earned; fall through to count check
                             if e.status_code != 409:
@@ -1650,7 +1650,7 @@ async def milestones_check(req: MilestoneCheckReq, supa_user: dict = Depends(get
     /pending and surface the celebration overlay."""
     user_id = supa_user.get("id")
     # Sanity: confirm the session actually belongs to the caller (and is
-    # complete). We don't fully reject if not — just skip the module check.
+    # complete). We don't fully reject if not, just skip the module check.
     granted = check_and_grant_milestones(user_id, req.session_id)
     return {"newly_granted": granted}
 
@@ -1685,7 +1685,7 @@ async def admin_login(creds: AdminLogin, request: Request):
     now = time.time()
     _login_attempts[_key] = [t for t in _login_attempts.get(_key, []) if now - t < 300]
     if len(_login_attempts.get(_key, [])) >= 10:
-        raise HTTPException(status_code=429, detail="Too many login attempts — try again later")
+        raise HTTPException(status_code=429, detail="Too many login attempts, try again later")
     _login_attempts.setdefault(_key, []).append(now)
     email_ok    = hmac.compare_digest((creds.email or ""), (ADMIN_EMAIL or ""))
     password_ok = hmac.compare_digest((creds.password or ""), (ADMIN_PASSWORD or ""))
@@ -1762,7 +1762,7 @@ async def join_waitlist(entry: WaitlistCreate):
 
     row = inserted[0] if isinstance(inserted, list) and inserted else doc
 
-    # 3) Referral bump — the referrer moves up 5 spots and their count +1.
+    # 3) Referral bump, the referrer moves up 5 spots and their count +1.
     if entry.ref_code:
         refs = _supabase_get(
             f'waitlist?referral_code=eq.{_urlparse.quote(entry.ref_code)}&select=id,position,referral_count&limit=1'
@@ -1842,7 +1842,7 @@ MODULE INDEX (use these numbers in your reasoning):
 - M1 Foundations of Finance, Accounting & Economics (15 sessions)
 - M2 How Markets Actually Work (7 sessions)
 - M3 Excel Fundamentals for Analysts (13 sessions)
-- M4 Financial Modelling — 3-Statement (8 sessions)
+- M4 Financial Modelling, 3-Statement (8 sessions)
 - M5 Corporate Governance & Quality of Management (7 sessions)
 - M6 Reading Annual Reports & Concalls (12 sessions)
 - M7 Financial Statement Analysis (13 sessions)
@@ -1852,8 +1852,8 @@ MODULE INDEX (use these numbers in your reasoning):
 - M11 Sector Analysis (12 sessions)
 - M12 Valuation in Equity Research (14 sessions)
 - M13 PowerPoint & Report Writing (12 sessions)
-- M14 Resume, LinkedIn & Networking (13 sessions)  — LOCKED
-- M15 Basics of AI & Prompt Engineering (10 sessions) — LOCKED
+- M14 Resume, LinkedIn & Networking (13 sessions) , LOCKED
+- M15 Basics of AI & Prompt Engineering (10 sessions), LOCKED
 
 The last 2 modules (M14, M15) are ALWAYS locked. Never remove or reorder them.
 
@@ -1878,9 +1878,9 @@ The user's answers map to these keys (selected_value will be one of the listed o
 - q12_certs: multi-select of [none, cfa, frm, ca]
 - q13_emphasis: rating object with keys [governance, sectors, valuation, reports, jobs, ai], each rated 1-5
 
-You should match answers to keys by question_text or purpose — both will reference the key (e.g. "q1_background" or "background").
+You should match answers to keys by question_text or purpose, both will reference the key (e.g. "q1_background" or "background").
 
-Free-text is a soft signal — use it only to refine decisions already implied by structured answers.
+Free-text is a soft signal, use it only to refine decisions already implied by structured answers.
 
 ---
 
@@ -1974,7 +1974,7 @@ E) CONSERVATIVE RULES (non-negotiable)
 
 OUTPUT FORMAT
 
-Return a single JSON object. Output raw JSON only — no markdown, no preamble.
+Return a single JSON object. Output raw JSON only, no markdown, no preamble.
 
 {
 "user_profile_summary": "2-3 sentence plain-English summary of who this user is based on their answers",
@@ -2174,7 +2174,7 @@ def _compute_required_actions(ans, course):
         if "sector_specific" in vmethods:
             add_sess(12, 13)
 
-    # ── C) Certification override — force-keep modules
+    # ── C) Certification override, force-keep modules
     cert_keep = set()
     certs = ans.get("q12_certs") or []
     if isinstance(certs, str):
@@ -2216,7 +2216,7 @@ def _validate_and_normalize_plan(plan, req):
     # Start from LLM-provided plan
     actions = list(plan.get("customisation_plan") or [])
 
-    # 1) Strip any actions targeting locked modules (M14, M15) — sessions or modules
+    # 1) Strip any actions targeting locked modules (M14, M15), sessions or modules
     cleaned = []
     for a in actions:
         if a.get("module_number") in (14, 15):
@@ -2333,7 +2333,7 @@ async def generate_customization(req: CustomizeRequest, supa_user: dict = Depend
         raise HTTPException(status_code=500, detail="LLM key not configured")
 
     user_id = supa_user.get("id")
-    # Feb 2026 — lifetime cap of 4 personalised-path generations per user.
+    # Feb 2026, lifetime cap of 4 personalised-path generations per user.
     snap = _profile_snapshot(user_id)
     used = int(snap.get("customize_generations_count") or 0)
     if used >= CUSTOMIZE_GENERATION_LIMIT:
@@ -2421,7 +2421,7 @@ async def generate_customization(req: CustomizeRequest, supa_user: dict = Depend
     except json_module.JSONDecodeError as e:
         logger.error(f"Failed to parse LLM response: {e}")
         logger.error(f"Raw response: {response_text[:500]}")
-        # Fall back to a deterministic plan — validator can build a complete plan
+        # Fall back to a deterministic plan, validator can build a complete plan
         # from an empty Claude response.
         fallback = _validate_and_normalize_plan({
             "user_profile_summary": "Generated from your answers (AI summariser unavailable). Path personalised by rule engine.",
@@ -2457,7 +2457,7 @@ VISUAL_STYLE_PROMPT = (
     "thin geometric lines, rounded corners, subtle depth, lots of whitespace. "
     "Strict color palette: primary blue #246BFD, purple accent #6A5CFF, pink accent #FF6AC1, "
     "success green #10B981, dark text #1A1A2E. "
-    "Style is editorial and calm — like a high-end finance textbook. "
+    "Style is editorial and calm, like a high-end finance textbook. "
     "No photographs, no realistic people, no busy backgrounds, no cluttered text, no logos. "
     "Focus: a single clear visual metaphor with minimal annotations. "
     "Square 1024x1024 composition."
@@ -2535,7 +2535,7 @@ You will receive:
 - The interview question
 - The candidate's response
 - Optional setup/context for the question
-- Evaluation criteria (a JSONB object — may contain any of: must_cover, key_points, keywords, bonus_points, red_flags, or arbitrary fields that describe what a strong answer looks like)
+- Evaluation criteria (a JSONB object, may contain any of: must_cover, key_points, keywords, bonus_points, red_flags, or arbitrary fields that describe what a strong answer looks like)
 - Optional sample strong answer
 
 You MUST evaluate the candidate's response and return STRICT JSON in this exact shape (no markdown, no prose):
@@ -2559,22 +2559,22 @@ SCORING RUBRIC (1-5):
 - structure: Logical flow (conclusion-first, clear reasoning, transitions). 5 = textbook structure; 1 = rambling or one-dimensional.
 - overall: Holistic judgement, not a strict average. Round to integer.
 
-FEEDBACK RULES (CRITICAL — this is what makes the feedback useful):
+FEEDBACK RULES (CRITICAL, this is what makes the feedback useful):
 1. Every bullet MUST reference something specific the candidate actually said or omitted. Quote short phrases or call out concrete numbers/concepts.
 2. NEVER produce generic feedback like "Good answer" or "Add more detail". Always say what specifically was good and what specifically to improve.
 3. If the response is very short or off-topic, say so plainly.
 4. Keep bullets under 25 words each. Crisp, like a real interviewer.
-5. Calibrate tone to the finance domain — you're mentoring, not grading.
+5. Calibrate tone to the finance domain, you're mentoring, not grading.
 6. If evaluation_criteria.red_flags triggered, surface them in improvements.
 7. If evaluation_criteria.bonus_points achieved, highlight in strengths.
-8. Use the sample_strong_answer only as a reference — do NOT ask the candidate to memorize it.
+8. Use the sample_strong_answer only as a reference, do NOT ask the candidate to memorize it.
 
 Return ONLY the JSON object. No code fences. No preamble."""
 
 
 @api_router.post("/interview/evaluate")
 async def evaluate_interview_response(req: InterviewEvalRequest):
-    # Feb 2026 — session-level interview practice disabled to cut per-user
+    # Feb 2026, session-level interview practice disabled to cut per-user
     # AI cost (~40% reduction). This was the platform's only Claude Sonnet
     # 4.5 call path. Users now get their interview practice through the
     # dedicated /mock-interview flow (Haiku, much cheaper). Return 410 Gone
@@ -2598,7 +2598,7 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
     normalised = re.sub(r'\s+', ' ', resp_text.lower()).strip()
     response_hash = hashlib.sha256(normalised.encode('utf-8')).hexdigest()
 
-    # Cache lookup — only when we have a question_id to scope the key.
+    # Cache lookup, only when we have a question_id to scope the key.
     if req.question_id:
         cached = await db.interview_eval_cache.find_one(
             {"question_id": req.question_id, "response_hash": response_hash},
@@ -2673,7 +2673,7 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
                 "overall": clamp(scores.get('overall')),
             },
             "feedback": {
-                "strengths": str_list(feedback.get('strengths')) or ["You took a clear stance — good starting point"],
+                "strengths": str_list(feedback.get('strengths')) or ["You took a clear stance, good starting point"],
                 "improvements": str_list(feedback.get('improvements')) or ["Try leading with the conclusion for extra impact"],
             },
         }
@@ -2717,7 +2717,7 @@ async def evaluate_interview_response(req: InterviewEvalRequest):
 
 # ----------------------- Voice transcription (Whisper) ----------------------
 
-# Allowed audio mime/extension hints — Whisper accepts mp3, mp4, mpeg, mpga,
+# Allowed audio mime/extension hints, Whisper accepts mp3, mp4, mpeg, mpga,
 # m4a, wav, webm. Browser MediaRecorder typically produces audio/webm.
 _ALLOWED_AUDIO_EXTS = {"mp3", "mp4", "mpeg", "mpga", "m4a", "wav", "webm", "ogg"}
 _MAX_AUDIO_BYTES = 25 * 1024 * 1024  # Whisper hard limit
@@ -2742,7 +2742,7 @@ async def transcribe_audio(
     filename = audio.filename or "audio.webm"
     ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else 'webm'
     if ext not in _ALLOWED_AUDIO_EXTS:
-        # MediaRecorder sometimes sends 'blob' as filename — fall back to webm
+        # MediaRecorder sometimes sends 'blob' as filename, fall back to webm
         ext = 'webm'
         filename = 'audio.webm'
 
@@ -2886,7 +2886,7 @@ except Exception as _e:
 
 app.include_router(api_router)
 
-# CORS — the FastAPI/Starlette middleware (per CORS spec) rejects the combo
+# CORS, the FastAPI/Starlette middleware (per CORS spec) rejects the combo
 # of allow_credentials=True with origins=["*"]: the browser ignores the
 # response. In production set CORS_ORIGINS to a comma-separated list of
 # trusted origins (e.g. "https://app.valuevade.com,https://valuevade.com").
@@ -2898,7 +2898,7 @@ _cors_allow_credentials = '*' not in _cors_origins
 if '*' in _cors_origins:
     import logging as _cors_log
     _cors_log.getLogger(__name__).warning(
-        "CORS_ORIGINS not set — defaulting to '*' (allow all origins). "
+        "CORS_ORIGINS not set, defaulting to '*' (allow all origins). "
         "Set CORS_ORIGINS in backend/.env for production."
     )
 

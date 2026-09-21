@@ -172,7 +172,7 @@ export default function DoubtsPage() {
         redo_count: data.redo_count || 1,
         session_id: data.session_id,
       });
-      toast.success('Half-XP redo started — opening session…');
+      toast.success('Half-XP redo started, opening session…');
       navigate(`/session/${data.session_id}/start`);
     } catch (e) {
       toast.error(e?.message || 'Could not start redo');
@@ -206,7 +206,7 @@ export default function DoubtsPage() {
                   Stuck somewhere? Let's fix it.
                 </h1>
                 <p className="text-sm sm:text-base font-bricolage text-[var(--color-text-muted)] max-w-2xl">
-                  Sessions you flagged as confusing or difficult live here. Re-do the full session for half XP — or chat with Pari for up to 15 turns to untangle exactly what tripped you up.
+                  Sessions you flagged as confusing or difficult live here. Re-do the full session for half XP, or chat with Pari for up to 15 turns to untangle exactly what tripped you up.
                 </p>
               </div>
             </div>
@@ -257,11 +257,11 @@ export default function DoubtsPage() {
                 {tab === 'open' ? <Sparkles size={20} /> : <Circle size={20} />}
               </div>
               <h3 className="font-clash text-lg font-semibold text-[var(--color-text)] mb-1">
-                {tab === 'open' ? 'No open doubts — you\'re flying.' : 'Nothing resolved yet.'}
+                {tab === 'open' ? 'No open doubts, you\'re flying.' : 'Nothing resolved yet.'}
               </h3>
               <p className="text-sm font-bricolage text-[var(--color-text-muted)] max-w-md mx-auto">
                 {tab === 'open'
-                  ? 'Finish a session and tap "Was this confusing?" if anything didn\'t land — it\'ll show up here for a clean re-do.'
+                  ? 'Finish a session and tap "Was this confusing?" if anything didn\'t land, it\'ll show up here for a clean re-do.'
                   : 'Once you mark a doubt resolved or finish a half-XP redo, it\'ll show up under this tab.'}
               </p>
             </div>

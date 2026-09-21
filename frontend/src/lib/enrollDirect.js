@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase';
 
 /**
- * One-click enrollment — inserts the full 22-module / 246-session default
+ * One-click enrollment, inserts the full 22-module / 246-session default
  * curriculum for a user with NO customization wizard. Used by
  * CourseDetailsPage's "Enroll" button and any other direct-enrollment entry
  * point after the customize/preview/confirm wizard was removed.
@@ -104,7 +104,7 @@ export async function enrollDirect({ userId, courseId, courseTitle }) {
     if (sessErr) throw sessErr;
   }
 
-  // 5. Seed user_module_projects (best-effort — not fatal on error)
+  // 5. Seed user_module_projects (best-effort, not fatal on error)
   try {
     const masterModuleIds = (modules || []).map((m) => m.id);
     if (masterModuleIds.length > 0) {

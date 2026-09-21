@@ -10,7 +10,7 @@ import { courseJsonLd, orgJsonLd } from './jsonLd';
 import './landing.css';
 
 /* ===========================================================================
- * Premium landing — v2
+ * Premium landing, v2
  * Anchors: #features, #compare, #pricing, #faq, #how-it-works, #curriculum
  * ======================================================================== */
 
@@ -120,7 +120,7 @@ function HeroSection() {
             variants={fadeUp} initial="hidden" animate="visible" custom={2}
             className="text-lg md:text-xl text-white/70 mb-9 max-w-2xl"
           >
-            Skills + certification — the only finance program that hands you both. Personalised by
+            Skills + certification, the only finance program that hands you both. Personalised by
             AI, simulated on real Indian-market data, validated by NISM and CFI.
           </motion.p>
           <motion.div
@@ -142,7 +142,7 @@ function HeroSection() {
           </motion.p>
         </div>
 
-        {/* Constellation artwork — hand-authored SVG */}
+        {/* Constellation artwork, hand-authored SVG */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -252,12 +252,12 @@ function WhyNowStrip() {
 /* --- FEATURE GRID --------------------------------------------------- */
 function FeatureGrid() {
   const features = [
-    { icon: Brain,   title: 'AI-personalised course path',     body: 'Pari shapes your curriculum based on your target role — equity research, IB, FP&A, or research analyst.' },
-    { icon: Sparkles,title: 'Pari, your AI tutor — 24/7',       body: 'Ask anything in plain English. Pari sees your notes, your sim, your exact question — and answers contextually.' },
+    { icon: Brain,   title: 'AI-personalised course path',     body: 'Pari shapes your curriculum based on your target role, equity research, IB, FP&A, or research analyst.' },
+    { icon: Sparkles,title: 'Pari, your AI tutor, 24/7',       body: 'Ask anything in plain English. Pari sees your notes, your sim, your exact question, and answers contextually.' },
     { icon: Activity,title: 'Real Indian-market simulations',  body: 'Build a DCF on Reliance. Ratio-analyse HDFC. Model an LBO on Tata Steel. 68 hands-on sims, not toy problems.' },
     { icon: Mic,     title: 'AI mock interviews',              body: '3-round equity-research interviewer with voice or text. You speak, it grills, you get verdict + feedback.' },
     { icon: FileText,title: 'Resume + LinkedIn networking',     body: 'Get hired, not just qualified. Recruiter-tuned resume reviewer + outreach playbook.' },
-    { icon: Award,   title: 'Skills + Certifications',          body: 'Only program that bundles both. NISM + CFI certificates issued on completion — recognised across India.' },
+    { icon: Award,   title: 'Skills + Certifications',          body: 'Only program that bundles both. NISM + CFI certificates issued on completion, recognised across India.' },
     { icon: Hammer,  title: 'AI capstone project',              body: 'Build a real finance tool with AI, ship it to your portfolio. Recruiters want builders now, not just learners.' },
     { icon: Lightbulb, title: 'Top-analyst mindset',            body: 'Frameworks, soft skills, and thinking habits AI can\u2019t replace. Taught with case studies, not lectures.' },
   ];
@@ -414,7 +414,7 @@ function CurriculumPreview() {  return (
           <span className="lv-eyebrow mb-4">Module Constellation</span>
           <h2 className="lv-h2 text-white mt-5 mb-5">15 modules. 161 sessions. One map.</h2>
           <p className="text-white/65 mb-6 max-w-xl">
-            From Module 1 (Foundations) to Module 15 (AI Capstone) — each session is a discrete
+            From Module 1 (Foundations) to Module 15 (AI Capstone), each session is a discrete
             milestone with notes, a scored quiz, an AI interview check-in, and a hands-on Excel
             simulation. Navigate the constellation like a learning galaxy.
           </p>
@@ -540,7 +540,7 @@ function PricingSection() {
   const benefits = [
     'Lifetime access to all 15 modules',
     '68 hands-on Excel finance simulations',
-    'AI tutor "Pari" — unlimited questions',
+    'AI tutor "Pari", unlimited questions',
     '3-round AI mock interview capstone',
     'NISM + CFI certifications included',
     '20% commission on every referral',
@@ -548,7 +548,7 @@ function PricingSection() {
   return (
     <SectionFadeIn className="relative max-w-7xl mx-auto px-6 py-24" id="pricing" label="Pricing">
       <div className="text-center mb-12">
-        <span className="lv-eyebrow mb-4">Pricing — one-time, lifetime</span>
+        <span className="lv-eyebrow mb-4">Pricing, one-time, lifetime</span>
         <h2 className="lv-h2 text-white mt-5">Pay once. Own it forever.</h2>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-4xl mx-auto">
@@ -566,7 +566,7 @@ function PricingSection() {
             ))}
           </ul>
           <Link to="/start" className="lv-btn lv-btn-gold w-full justify-center">
-            Pay ₹999 — Lock In <ArrowRight className="w-4 h-4" />
+            Pay ₹999, Lock In <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
         <div className="lv-card p-7" data-testid="landing-price-trial">
@@ -577,7 +577,7 @@ function PricingSection() {
             <span className="text-sm text-white/55 ml-2">to start</span>
           </div>
           <ul className="space-y-2.5 mb-7">
-            <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> Full session #1 — notes, quiz, AI interview, simulation</li>
+            <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> Full session #1, notes, quiz, AI interview, simulation</li>
             <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> No card required</li>
             <li className="flex items-start gap-2 text-sm text-white/85"><Check className="w-4 h-4 mt-0.5 text-[#4ade80] flex-shrink-0" /> Upgrade anytime to unlock the rest</li>
             <li className="flex items-start gap-2 text-sm text-white/55 italic">Sessions 2+ require ₹999 lifetime upgrade</li>
@@ -598,21 +598,21 @@ function PricingSection() {
 function FAQ() {
   const items = [
     { q: 'Is this a real certificate?',
-      a: 'Yes. On completion you receive NISM (SEBI-recognised) and CFI partner certificates — both verifiable, both genuinely respected by Indian recruiters. We bundle them so you don\u2019t pay separately.' },
+      a: 'Yes. On completion you receive NISM (SEBI-recognised) and CFI partner certificates, both verifiable, both genuinely respected by Indian recruiters. We bundle them so you don\u2019t pay separately.' },
     { q: 'How does the AI tutor work?',
-      a: 'Pari sits inside every notes page, every quiz, every simulation. It has context about exactly what you\u2019re working on — your current cell in a DCF, your last quiz answer, your specific question — and answers like a senior analyst pair-debugging with you.' },
+      a: 'Pari sits inside every notes page, every quiz, every simulation. It has context about exactly what you\u2019re working on, your current cell in a DCF, your last quiz answer, your specific question, and answers like a senior analyst pair-debugging with you.' },
     { q: 'What if I don\u2019t get a job?',
-      a: 'We can\u2019t promise placements — anyone who does is lying. What we can promise: every artefact a recruiter actually asks for (resume, portfolio, certification, mock-interview verdict) is delivered by week 12. Past that, it\u2019s on your shoulders and ours together.' },
+      a: 'We can\u2019t promise placements, anyone who does is lying. What we can promise: every artefact a recruiter actually asks for (resume, portfolio, certification, mock-interview verdict) is delivered by week 12. Past that, it\u2019s on your shoulders and ours together.' },
     { q: 'Can I use this if I\u2019m a CFA candidate?',
       a: 'Yes. We map our modules to CFA Level I & II curriculum. Most CFA candidates use Valuevade to supplement the dry prep books with practical, hands-on application.' },
     { q: 'Refund policy?',
-      a: 'Full refund within 7 days, no questions asked. After 7 days we don\u2019t refund — but you get lifetime access regardless, so there\u2019s no real downside.' },
+      a: 'Full refund within 7 days, no questions asked. After 7 days we don\u2019t refund, but you get lifetime access regardless, so there\u2019s no real downside.' },
     { q: 'Why is it so cheap?',
       a: 'Two reasons. (1) AI infrastructure scales better than human instructors, so we don\u2019t need to charge ₹50k to break even. (2) We\u2019re explicitly trying to undercut the offline-coaching cartel that\u2019s been gatekeeping finance careers in India. ₹999 is the price of a textbook, not a course.' },
     { q: 'Who teaches the course?',
-      a: 'The curriculum was authored by a team with backgrounds at top equity-research desks in Mumbai. Day-to-day, your "teacher" is Pari — the AI tutor — who can answer at any depth, any hour, in any language.' },
+      a: 'The curriculum was authored by a team with backgrounds at top equity-research desks in Mumbai. Day-to-day, your "teacher" is Pari, the AI tutor, who can answer at any depth, any hour, in any language.' },
     { q: 'How long does it actually take?',
-      a: 'Self-paced. Median student finishes the core in 8 weeks at ~6 hours/week. Heaviest users hit 4 weeks. Slowest take ~12 weeks. There\u2019s no expiry — go at your pace.' },
+      a: 'Self-paced. Median student finishes the core in 8 weeks at ~6 hours/week. Heaviest users hit 4 weeks. Slowest take ~12 weeks. There\u2019s no expiry, go at your pace.' },
   ];
   const [open, setOpen] = useState(0);
   return (
@@ -721,7 +721,7 @@ export default function LandingPageV2() {
     <div className="lv-root min-h-screen" data-testid="landing-page-v2">
       <Helmet>
         <html lang="en" />
-        <title>Valuevade — Land your equity research job with AI · ₹999 lifetime course</title>
+        <title>Valuevade, Land your equity research job with AI · ₹999 lifetime course</title>
         <meta name="description" content="India's first AI-personalised finance career program. CFA/FRM prep, real-Indian-market simulations, 24/7 AI tutor, mock interviews, NISM + CFI certifications. ₹999 lifetime." />
         <meta name="keywords" content="equity research course India, CFA FRM prep, AI finance tutor, NISM certification, finance career India, equity analyst training, financial modeling course, AI for finance students" />
         <link rel="canonical" href="https://valuevade.com/" />
@@ -729,13 +729,13 @@ export default function LandingPageV2() {
         {/* Open Graph */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/" />
-        <meta property="og:title" content="Valuevade — Land your equity research job with AI · ₹999 lifetime" />
+        <meta property="og:title" content="Valuevade, Land your equity research job with AI · ₹999 lifetime" />
         <meta property="og:description" content="AI-personalised finance career program. CFA/FRM prep, real-Indian-market sims, NISM + CFI certs. ₹999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Valuevade — AI-personalised finance career platform" />
+        <meta name="twitter:title" content="Valuevade, AI-personalised finance career platform" />
         <meta name="twitter:description" content="₹999 lifetime · CFA/FRM prep · AI tutor · NISM + CFI certifications · Mock interviews · 68 finance simulations." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         {/* Structured data */}

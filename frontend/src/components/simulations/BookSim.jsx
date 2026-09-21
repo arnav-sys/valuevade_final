@@ -1,5 +1,5 @@
 /**
- * BookSim — MVP 2.0 renderer for `sim_type='book'` simulations.
+ * BookSim, MVP 2.0 renderer for `sim_type='book'` simulations.
  *
  * Shape (config):
  *   {
@@ -7,7 +7,7 @@
  *     summary: "Short intro",
  *     chapters: [
  *       {
- *         title: "Chapter 1 — What a company owns",
+ *         title: "Chapter 1, What a company owns",
  *         content: "Long-form markdown-ish text.",
  *         reflection: {
  *           prompt: "In 2-3 sentences, explain…",

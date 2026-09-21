@@ -8,7 +8,7 @@
 //
 // Context merging policy: while the debounce is pending, every additional
 // triggerBadgeEvaluation() call merges its context into the queued payload
-// — later keys win on conflict. This way progress.js can fire with the rich
+//, later keys win on conflict. This way progress.js can fire with the rich
 // session context and a stale XPContext call coming through 50ms later
 // can't blow away the session_id.
 

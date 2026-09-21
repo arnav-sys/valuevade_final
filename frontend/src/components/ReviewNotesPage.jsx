@@ -198,7 +198,7 @@ export default function ReviewNotesPage() {
                 {TUTOR_NAME}'s Review Notes
               </h1>
               <p className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-                Every concept {TUTOR_NAME} helped you with — your personal study cabinet.
+                Every concept {TUTOR_NAME} helped you with, your personal study cabinet.
               </p>
             </div>
           </section>

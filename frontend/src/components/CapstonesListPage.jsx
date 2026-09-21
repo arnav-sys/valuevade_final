@@ -7,7 +7,7 @@ import { Lock, Sparkles, ArrowRight, Trophy, Clock, FileText } from 'lucide-reac
 import { Skeleton } from './ui/skeleton';
 
 /**
- * Curriculum v2 — top-level capstones index.
+ * Curriculum v2, top-level capstones index.
  *
  * Always renders for any logged-in user enrolled in equity-research, regardless
  * of how far they are in the modules. Fetches all `master_capstone_projects`
@@ -23,7 +23,7 @@ export default function CapstonesListPage() {
   const [enrollment, setEnrollment] = useState(null);
   const [capstones, setCapstones] = useState([]);
   const [userCapstones, setUserCapstones] = useState([]); // ALL user_capstone_projects for this enrollment
-  // Feb 2026 — module + module-project completion state to gate ALL
+  // Feb 2026, module + module-project completion state to gate ALL
   // capstones behind "finish everything else first" (user requirement).
   const [allModulesDone, setAllModulesDone] = useState(false);
   const [remainingModules, setRemainingModules] = useState(0);
@@ -79,7 +79,7 @@ export default function CapstonesListPage() {
         }).sort((a, b) => (a.code || '').localeCompare(b.code || ''));
         setCapstones(decorated);
 
-        // ALL user capstone rows (Feb 2026 — schema supports many per enrollment).
+        // ALL user capstone rows (Feb 2026, schema supports many per enrollment).
         const { data: ucRows } = await supabase
           .from('user_capstone_projects')
           .select('id, master_capstone_id, started_at, is_completed')
@@ -87,7 +87,7 @@ export default function CapstonesListPage() {
         if (!mounted) return;
         setUserCapstones(ucRows || []);
 
-        // Module + project completion state — gates every capstone card.
+        // Module + project completion state, gates every capstone card.
         const { data: mods } = await supabase
           .from('user_modules')
           .select('id, is_completed, is_removed')
@@ -110,7 +110,7 @@ export default function CapstonesListPage() {
         if (!mounted) return;
         setRemainingModules(incompleteMods.length);
         setRemainingProjects(incompleteProjs.length);
-        // Feb 2026 — treat "no active modules" as "nothing left to finish"
+        // Feb 2026, treat "no active modules" as "nothing left to finish"
         // so the gate doesn't lock users whose enrollment predates the
         // user_modules seed (e.g. legacy accounts / QA fixtures).
         setAllModulesDone(
@@ -140,7 +140,7 @@ export default function CapstonesListPage() {
   );
 
   function statusFor(cap) {
-    // Feb 2026 — global gate: nothing is available until modules + projects done.
+    // Feb 2026, global gate: nothing is available until modules + projects done.
     if (!allModulesDone) return 'locked-modules';
     const uc = userCapByMaster.get(cap.id);
     if (uc?.is_completed) return 'completed';
@@ -153,7 +153,7 @@ export default function CapstonesListPage() {
   function handleOpen(cap) {
     const status = statusFor(cap);
     if (status === 'locked' || status === 'locked-modules') return;
-    // Feb 2026 — route into the per-capstone flow so CapstoneStartPage
+    // Feb 2026, route into the per-capstone flow so CapstoneStartPage
     // knows exactly which of CAP-01/02/03 to load (was buggy: legacy flow
     // loaded any user_capstone_projects row, so CAP-02 showed
     // "no capstone configured" when the seeded row was for CAP-01).

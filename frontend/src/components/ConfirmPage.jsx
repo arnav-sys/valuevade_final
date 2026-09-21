@@ -12,7 +12,7 @@ import {
   ChevronDown, ChevronRight, Wand2, X,
 } from 'lucide-react';
 
-// Batch 4 — Manual add/remove/reorder on the LLM-customized structure.
+// Batch 4, Manual add/remove/reorder on the LLM-customized structure.
 //
 // Mental model:
 //   plan.customisation_plan = the LLM's recipe of changes to apply on top
@@ -51,7 +51,7 @@ export default function ConfirmPage() {
   const [error, setError] = useState(null);
   const enrollingRef = useRef(false);
 
-  // Original LLM plan — preserved verbatim so "Reset" can restore it.
+  // Original LLM plan, preserved verbatim so "Reset" can restore it.
   const llmPlanRef = useRef(plan?.customisation_plan ? [...plan.customisation_plan] : []);
 
   // Mutable local copy of the customisation plan that the user edits.
@@ -312,7 +312,7 @@ export default function ConfirmPage() {
           master_module_id: mod.id,
           title: mod.title,
           order_index: reorderChange ? reorderChange.new_position : mod.order_index,
-          // Canonical label number — never affected by sort reorders. Falls
+          // Canonical label number, never affected by sort reorders. Falls
           // back to mod.module_number from master, then to mod.order_index.
           module_number: mod.module_number ?? mod.order_index,
           is_removed: isRemoved,
@@ -757,7 +757,7 @@ function AddSessionDialog({ open, onClose, moduleNumber, courseStructure, remove
 
   const mod = courseStructure[(moduleNumber || 1) - 1];
   const removedMasters = (mod?.master_sessions || []).filter((s) => removedSessionIds.has(s.id));
-  // Already-added AI sessions in this module — informational only.
+  // Already-added AI sessions in this module, informational only.
   const aiAdded = (addedSessionsByMod[moduleNumber] || []);
 
   return (
@@ -875,7 +875,7 @@ function AddModuleDialog({ open, onClose, removedModules, onAddBack }) {
         <DialogHeader>
           <DialogTitle>Add a module back</DialogTitle>
           <DialogDescription>
-            These modules were removed from your customized path. Pick one to add it back — all of its master sessions will be re-included, and you can trim them after.
+            These modules were removed from your customized path. Pick one to add it back, all of its master sessions will be re-included, and you can trim them after.
           </DialogDescription>
         </DialogHeader>
         <div className="max-h-72 overflow-y-auto space-y-1.5">

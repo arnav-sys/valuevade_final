@@ -1,9 +1,9 @@
 /**
- * FaqChatbot — floating help bubble (bottom-right) that opens a search
+ * FaqChatbot, floating help bubble (bottom-right) that opens a search
  * modal. Type any question → top FAQ matches show inline with expandable
  * answers. Fully client-side, no network calls, no LLM cost.
  *
- * Usage: <FaqChatbot /> — mount once per page.
+ * Usage: <FaqChatbot />, mount once per page.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { HelpCircle, X, Search as SearchIcon, ChevronRight, MessageCircleQuestion } from 'lucide-react';

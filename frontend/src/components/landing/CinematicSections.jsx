@@ -1,11 +1,11 @@
-// CinematicSections — shared cinematic decorations for the four remaining
+// CinematicSections, shared cinematic decorations for the four remaining
 // landing sections (Comparison split-3D, How-It-Works timeline, AI-Proof
 // neural net bg, Testimonials carousel). Bundled here so the four section
 // files stay readable and the bespoke visuals share one set of keyframes.
 //
 // Performance notes:
 //   • Comparison + Testimonials use CSS/SVG (cheaper than per-section
-//     WebGL contexts — browsers cap around 16).
+//     WebGL contexts, browsers cap around 16).
 //   • Neural net is the only new Three.js scene; mounts lazily via
 //     IntersectionObserver inside its host section.
 //   • All visuals respect prefers-reduced-motion via CSS or runtime checks.
@@ -14,10 +14,10 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 
 /* =====================================================================
- * 1. ComparisonSplitDecor — split 3D-feeling header for Comparison
+ * 1. ComparisonSplitDecor, split 3D-feeling header for Comparison
  *    LEFT  (chaotic): tilted dim shards, slow drift.
  *    RIGHT (ordered): tight grid of violet nodes with connecting lines.
- *    Pure SVG + CSS — no Three.js context spent here.
+ *    Pure SVG + CSS, no Three.js context spent here.
  * ===================================================================== */
 export function ComparisonSplitDecor() {
   return (
@@ -26,7 +26,7 @@ export function ComparisonSplitDecor() {
       style={{ height: 'clamp(180px, 22vw, 280px)' }}
       data-testid="comparison-split-3d"
     >
-      {/* LEFT — chaotic */}
+      {/* LEFT, chaotic */}
       <div className="relative" style={{ background: '#06060a' }} data-testid="comparison-split-left">
         <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice" className="w-full h-full">
           {Array.from({ length: 22 }).map((_, i) => {
@@ -50,7 +50,7 @@ export function ComparisonSplitDecor() {
         <div className="absolute bottom-3 left-4 text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-faint)]">The old way</div>
       </div>
 
-      {/* RIGHT — ordered */}
+      {/* RIGHT, ordered */}
       <div className="relative" style={{ background: '#0a0a14' }} data-testid="comparison-split-right">
         <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice" className="w-full h-full">
           {/* Grid of nodes 6x4 */}
@@ -71,10 +71,10 @@ export function ComparisonSplitDecor() {
         <div className="absolute bottom-3 right-4 text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-accent-purple)]">Valuevade</div>
       </div>
 
-      {/* Center seam — animated violet glow */}
+      {/* Center seam, animated violet glow */}
       <div aria-hidden="true" className="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px"
            style={{ background: 'linear-gradient(180deg, transparent, #a78bfa, transparent)', boxShadow: '0 0 16px rgba(167,139,250,0.65)' }} />
-      {/* "Escaped particle" — sneaks from left to right slowly */}
+      {/* "Escaped particle", sneaks from left to right slowly */}
       <div aria-hidden="true" className="absolute top-1/2 left-0 w-1.5 h-1.5 rounded-full bg-[#c4b5fd]"
            style={{ filter: 'drop-shadow(0 0 8px #c4b5fd)', animation: 'cmp-escape 8s linear infinite' }} />
 
@@ -91,9 +91,9 @@ export function ComparisonSplitDecor() {
 }
 
 /* =====================================================================
- * 2. TimelinePath — scroll-drawn violet path for How-It-Works.
- *    `layout` switches between desktop ("horizontal" — wide bezier sweep
- *    above the 4-up grid) and mobile ("vertical" — top-to-bottom snake
+ * 2. TimelinePath, scroll-drawn violet path for How-It-Works.
+ *    `layout` switches between desktop ("horizontal", wide bezier sweep
+ *    above the 4-up grid) and mobile ("vertical", top-to-bottom snake
  *    aligned with the stacked card centers). `progress` (0..1) controls
  *    the stroke-dashoffset; caller wires scroll-progress measurement.
  * ===================================================================== */
@@ -176,7 +176,7 @@ export function TimelinePath({ progress = 0, stepCount = 4, layout = 'horizontal
 }
 
 /* =====================================================================
- * 3. NeuralNetBg — Three.js neural-network style 3D graph for AI-Proof.
+ * 3. NeuralNetBg, Three.js neural-network style 3D graph for AI-Proof.
  *    ~40 nodes + nearest-neighbour edges; very slow rotation; per-edge
  *    pulse on a random timer to suggest "computation".
  * ===================================================================== */
@@ -318,7 +318,7 @@ export function NeuralNetBg({ mobile = false }) {
 }
 
 /* =====================================================================
- * 4. TestimonialsCarousel3D — 3-card CSS-3D rotating carousel.
+ * 4. TestimonialsCarousel3D, 3-card CSS-3D rotating carousel.
  *    Auto-rotates every 6s. Pauses on hover. Arrow controls. Cards
  *    arranged front / left-back / right-back via translateX + rotateY.
  *    Authors get a subtle violet ring around their initial avatar.

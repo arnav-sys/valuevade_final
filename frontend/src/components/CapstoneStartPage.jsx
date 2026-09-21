@@ -12,7 +12,7 @@ import { Skeleton } from './ui/skeleton';
 export default function CapstoneStartPage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  // Feb 2026 — new route pattern `/capstone/:capstoneId/start`. If undefined
+  // Feb 2026, new route pattern `/capstone/:capstoneId/start`. If undefined
   // we fall back to the legacy behaviour of "any user_capstone_projects row"
   // so old bookmarks keep working.
   const { capstoneId } = useParams();
@@ -272,7 +272,7 @@ export default function CapstoneStartPage() {
                 </div>
               </div>
 
-              {/* Curriculum v2 — all available capstones for this path.
+              {/* Curriculum v2, all available capstones for this path.
                   CAP-02 is gated on CAP-01 completion via `phases.prerequisite_capstone_codes`. */}
               {allCapstones && allCapstones.length > 0 && (
                 <div className="mb-6" data-testid="all-capstones-list">

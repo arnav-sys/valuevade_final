@@ -1,4 +1,4 @@
-// M3 Sample Preview Page — Step 4 review gate (NOT a production route).
+// M3 Sample Preview Page, Step 4 review gate (NOT a production route).
 // Reads the 3 generated samples and renders them through the same
 // SpreadsheetSim component the live simulation phase uses.
 //
@@ -13,7 +13,7 @@ import { useSearchParams } from 'react-router-dom';
 import { adaptSimToWorkbook } from '@/components/simulations/excelSimAdapter';
 import SpreadsheetSim from '@/components/simulations/SpreadsheetSim';
 
-// Static imports — webpack bundles the JSON at build time so this works
+// Static imports, webpack bundles the JSON at build time so this works
 // even without backend.
 import s33 from '@/data/m3-samples/s3-3.json';
 import s35 from '@/data/m3-samples/s3-5.json';
@@ -29,14 +29,14 @@ const ALL = [
 ];
 
 function workbookFromSample(sample) {
-  // The sample JSON has the same shape as `master_simulations.config` —
+  // The sample JSON has the same shape as `master_simulations.config`,
   // the adapter consumes it directly.
   return adaptSimToWorkbook({
     title: sample.session_title,
     config: {
       multi_tab_excel_workbook: sample.multi_tab_excel_workbook,
       expected_answers: sample.expected_answers,
-      instructions: `M3 sample — session ${sample.session}, slot: ${sample.slot}. ${sample.tagline}`,
+      instructions: `M3 sample, session ${sample.session}, slot: ${sample.slot}. ${sample.tagline}`,
     },
   });
 }
@@ -60,7 +60,7 @@ export default function M3SamplePreview() {
     <div className="min-h-screen bg-[#0A0E1A] text-white p-4 sm:p-8" data-testid="m3-sample-preview">
       {/* Tabbar */}
       <div className="flex items-center gap-3 mb-6 flex-wrap" data-testid="sample-tabs">
-        <h1 className="font-clash text-2xl font-semibold mr-4">M3 Sample Sims — Step 4 Review</h1>
+        <h1 className="font-clash text-2xl font-semibold mr-4">M3 Sample Sims, Step 4 Review</h1>
         {ALL.map((s, i) => (
           <button
             key={s.key}
@@ -102,7 +102,7 @@ export default function M3SamplePreview() {
         </div>
       </div>
 
-      {/* SpreadsheetSim — the actual student-facing renderer */}
+      {/* SpreadsheetSim, the actual student-facing renderer */}
       <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-4 mb-6" data-testid="sample-workspace">
         <SpreadsheetSim
           workbook={workbook}
@@ -111,10 +111,10 @@ export default function M3SamplePreview() {
         />
       </div>
 
-      {/* Expected answers table — for reviewer scrutiny */}
+      {/* Expected answers table, for reviewer scrutiny */}
       <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6" data-testid="sample-answers">
         <div className="font-mono text-xs uppercase tracking-[0.2em] text-white/40 mb-4">
-          Expected answers — what the auto-grader will accept
+          Expected answers, what the auto-grader will accept
         </div>
         <div className="space-y-2">
           {Object.entries(ea).map(([key, spec], i) => (

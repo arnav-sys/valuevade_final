@@ -13,7 +13,7 @@ import { ArrowRight, Loader2, Building2, Clock, Users } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
-// Cheap fingerprint — combines browser, screen, tz, language. Cookies/IP
+// Cheap fingerprint, combines browser, screen, tz, language. Cookies/IP
 // backfill on the server catch clients who wipe localStorage.
 function makeFingerprint() {
   try {
@@ -22,7 +22,7 @@ function makeFingerprint() {
       screen.width + 'x' + screen.height, screen.colorDepth,
       new Date().getTimezoneOffset(),
     ].join('|');
-    // Fast, deterministic hash — not crypto-secure but plenty for uniqueness.
+    // Fast, deterministic hash, not crypto-secure but plenty for uniqueness.
     let h = 0;
     for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
     return `fp_${Math.abs(h).toString(36)}_${btoa(s).slice(0, 16)}`;
@@ -60,10 +60,10 @@ export default function FreeTrialCTA() {
       });
       const j = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(j?.detail || 'Could not start trial.');
-      // Device-blocked branch — backend captured to waitlist. Show a
+      // Device-blocked branch, backend captured to waitlist. Show a
       // friendly info toast rather than routing into the interview.
       if (j?.waitlisted || j?.device_blocked) {
-        toast.success(j.message || "You're on the waitlist — we'll be in touch.");
+        toast.success(j.message || "You're on the waitlist, we'll be in touch.");
         localStorage.setItem('vv_free_trial_used', '1');
         setEmail('');
         return;
@@ -109,7 +109,7 @@ export default function FreeTrialCTA() {
               </h2>
               <div className="mt-5 h-px w-20 bg-[var(--color-primary)]/60" aria-hidden="true" />
               <p className="mt-5 text-[14px] font-bricolage text-[var(--color-text-muted)] leading-relaxed">
-                Five rounds — application, aptitude, HR, technical, and a live Excel case study — run by
+                Five rounds, application, aptitude, HR, technical, and a live Excel case study, run by
                 Pari as a bulge-bracket-style interviewer. You get a full scorecard and verdict at the end.
                 One free trial per person. No card required.
               </p>

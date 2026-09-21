@@ -31,7 +31,7 @@ export default function SessionSummaryCard({ sessionId, onContinue }) {
     let alive = true;
     (async () => {
       if (!user?.id) return;
-      // 1) XP breakdown — last events tied to this session OR last 8 events
+      // 1) XP breakdown, last events tied to this session OR last 8 events
       const { data: events } = await supabase
         .from('user_xp_events')
         .select('amount, reason, created_at, source_id')
@@ -45,7 +45,7 @@ export default function SessionSummaryCard({ sessionId, onContinue }) {
         setBreakdown(slice.slice(0, 6));
       }
 
-      // 2) Nearest badge — fetch one near-miss row
+      // 2) Nearest badge, fetch one near-miss row
       const { data: bn } = await supabase
         .from('user_badges')
         .select('progress_current, progress_target, master_badges!inner(code, name, rarity)')
@@ -98,7 +98,7 @@ export default function SessionSummaryCard({ sessionId, onContinue }) {
           <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-accent-purple)]">Session Complete</span>
         </div>
         <h2 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)] mb-5" data-testid="summary-title">
-          Nice work — let's bank that progress.
+          Nice work, let's bank that progress.
         </h2>
 
         {/* XP breakdown */}
@@ -132,7 +132,7 @@ export default function SessionSummaryCard({ sessionId, onContinue }) {
             <div className="min-w-0">
               <div className="text-[10px] font-mono uppercase tracking-[0.16em] text-[var(--color-text-faint)]">Next Level</div>
               <div className="font-clash font-semibold text-sm truncate">
-                {nextThresh ? `${xpToNext} XP to ${LEVEL_NAMES[curLevel + 1] || ''}` : 'Maxed out — CIO'}
+                {nextThresh ? `${xpToNext} XP to ${LEVEL_NAMES[curLevel + 1] || ''}` : 'Maxed out, CIO'}
               </div>
               {sessionsToNext > 0 && (
                 <div className="text-[10px] text-[var(--color-text-muted)] font-mono">≈ {sessionsToNext} sessions</div>

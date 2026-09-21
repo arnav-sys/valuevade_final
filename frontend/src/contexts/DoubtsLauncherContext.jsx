@@ -27,7 +27,7 @@ export function DoubtsLauncherProvider({ children }) {
   const [attemptContext, setAttemptContext] = useState(null);
   const [currentFocus, setCurrentFocus] = useState(null);
 
-  // Feb 2026 — cached status so pages don't each round-trip the pari status.
+  // Feb 2026, cached status so pages don't each round-trip the pari status.
   const [status, setStatus] = useState({
     total_cost_inr: 0,
     limit_inr: 500,
@@ -50,7 +50,7 @@ export function DoubtsLauncherProvider({ children }) {
         if (data?.pari) setStatus(data.pari);
       }
     } catch {
-      // Non-fatal — treat user as under-budget so we don't lock them out
+      // Non-fatal, treat user as under-budget so we don't lock them out
       // over a transient network issue.
     } finally {
       setStatusLoaded(true);
@@ -71,7 +71,7 @@ export function DoubtsLauncherProvider({ children }) {
     refreshStatus();
   }, [refreshStatus]);
 
-  // Open the doubts drawer INSTANTLY. No upfront network call — the drawer
+  // Open the doubts drawer INSTANTLY. No upfront network call, the drawer
   // renders in "ready to ask" state and only allocates a doubt session
   // (via /api/doubts/start) when the user actually sends their first
   // message.
@@ -82,16 +82,16 @@ export function DoubtsLauncherProvider({ children }) {
     attemptContext: ctx = null,
     currentFocus: focus = null,
   } = {}) => {
-    // Feb 2026 — hard block during quiz/interview/simulation active pages.
+    // Feb 2026, hard block during quiz/interview/simulation active pages.
     if (isPariBlockedPathname(typeof window !== 'undefined' ? window.location.pathname : '')) {
       toast('Pari is paused during quizzes, interviews and simulations. Finish the task and try again.', {
         description: 'Focus mode is on.',
       });
       return;
     }
-    // Feb 2026 — hard block once the ₹500 spend cap is hit.
+    // Feb 2026, hard block once the ₹500 spend cap is hit.
     if (status?.over_budget) {
-      toast.error(`Pari is disabled — you've reached the ₹${status.limit_inr} usage limit.`);
+      toast.error(`Pari is disabled, you've reached the ₹${status.limit_inr} usage limit.`);
       return;
     }
     setError(null);
@@ -115,7 +115,7 @@ export function DoubtsLauncherProvider({ children }) {
     isOpen: open,
     busy,
     error,
-    // Feb 2026 — surface state for FE gating.
+    // Feb 2026, surface state for FE gating.
     pariBlocked: pariBlockedByRoute || !!status?.over_budget,
     pariBlockedByRoute,
     pariOverBudget: !!status?.over_budget,

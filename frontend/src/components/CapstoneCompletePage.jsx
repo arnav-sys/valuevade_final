@@ -254,7 +254,7 @@ export default function CapstoneCompletePage() {
     return () => clearTimeout(t);
   }, []);
 
-  // Auto-redirect to /course-complete when ALL capstone projects are done —
+  // Auto-redirect to /course-complete when ALL capstone projects are done,
   // the CapstoneComplete screen celebrates ONE capstone; the CourseComplete
   // screen celebrates the whole programme (all capstones).
   useEffect(() => {
@@ -273,7 +273,7 @@ export default function CapstoneCompletePage() {
         const total = (masterList || []).length;
         const done = new Set((userList || []).map((r) => r.capstone_id)).size;
         if (total > 0 && done >= total) navigate('/course-complete', { replace: true });
-      } catch { /* silent — stay on CapstoneComplete */ }
+      } catch { /* silent, stay on CapstoneComplete */ }
     })();
     return () => { cancelled = true; };
   }, [user?.id, navigate]);
@@ -393,7 +393,7 @@ export default function CapstoneCompletePage() {
   const handleShare = async () => {
     const shareData = {
       title: `I completed ${enrollment?.title || 'my Valuevade career path'}!`,
-      text: `Just finished my capstone project on Valuevade — ${enrollment?.title || ''}.`,
+      text: `Just finished my capstone project on Valuevade, ${enrollment?.title || ''}.`,
       url: window.location.origin,
     };
     try {
@@ -495,7 +495,7 @@ export default function CapstoneCompletePage() {
             </span>.
           </p>
           <p className="text-sm text-[var(--color-text-muted)] font-bricolage max-w-md mx-auto leading-relaxed">
-            You went from concepts to interviews to real simulations — and finished with a capstone that ties it all together. This is analyst-level discipline.
+            You went from concepts to interviews to real simulations, and finished with a capstone that ties it all together. This is analyst-level discipline.
           </p>
         </div>
 
@@ -508,7 +508,7 @@ export default function CapstoneCompletePage() {
           />
         </div>
 
-        {/* Feb 2026 — LinkedIn-share reward for capstone completion (default CAP-01). */}
+        {/* Feb 2026, LinkedIn-share reward for capstone completion (default CAP-01). */}
         {capstone?.master_capstone_id && (
           <RewardCard
             trigger="capstone_complete"

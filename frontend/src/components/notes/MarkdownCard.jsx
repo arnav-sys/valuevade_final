@@ -1,7 +1,7 @@
 // MarkdownCard renderer extracted from NotesPage.jsx (Step 3, P2).
 // Renders curriculum-v2 cards whose content is `{ body_md: "..." }`.
 // Themed by card_type so each block is visually distinct on the page.
-// Zero behavior change — pure refactor.
+// Zero behavior change, pure refactor.
 
 import { CARD_THEME } from './constants';
 
@@ -136,7 +136,7 @@ export function inlineMd(text) {
   let rest = text;
   let key = 0;
   const push = (node) => parts.push(<span key={key++}>{node}</span>);
-  // very simple split — keeps it deterministic and XSS-safe (no HTML strings inserted)
+  // very simple split, keeps it deterministic and XSS-safe (no HTML strings inserted)
   while (rest.length > 0) {
     const m = rest.match(/^(.*?)(\*\*([^*]+?)\*\*|\*([^*]+?)\*|_([^_]+?)_|`([^`]+?)`)/);
     if (!m) { push(rest); break; }

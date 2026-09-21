@@ -12,7 +12,7 @@ import ModuleLab from './ModuleLab';
 import GenericRenderer from './GenericRenderer';
 
 /* =============================================================
-   EXERCISE 1: CATEGORIZE — drag items onto category drop zones
+   EXERCISE 1: CATEGORIZE, drag items onto category drop zones
    ============================================================= */
 function DraggableChip({ id, text, disabled }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
@@ -245,7 +245,7 @@ function DraggableChipInline({ id, text, disabled }) {
 }
 
 /* =============================================================
-   EXERCISE 2: ORDER — sortable list, compare to correct_position
+   EXERCISE 2: ORDER, sortable list, compare to correct_position
    ============================================================= */
 function SortableItem({ id, text, feedback, index }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
@@ -398,7 +398,7 @@ function OrderExercise({ config, onComplete }) {
 }
 
 /* =============================================================
-   EXERCISE 3: MATCH — click a left, click a right → draw line
+   EXERCISE 3: MATCH, click a left, click a right → draw line
    ============================================================= */
 function MatchExercise({ config, onComplete }) {
   const left = config?.left_items || [];
@@ -629,7 +629,7 @@ function MatchExercise({ config, onComplete }) {
 }
 
 /* =============================================================
-   EXERCISE 4: LABEL — drag labels onto template_svg drop zones
+   EXERCISE 4: LABEL, drag labels onto template_svg drop zones
    ============================================================= */
 function LabelDropZone({ id, x, y, width, height, label, feedback, isOver }) {
   const { setNodeRef } = useDroppable({ id });
@@ -865,7 +865,7 @@ export default function InteractiveSim({ config, title, onComplete }) {
   if (exerciseType === 'label') {
     return <LabelExercise config={config} onComplete={onComplete} />;
   }
-  // Ultimate fallback for any unknown interactive shape — render all
+  // Ultimate fallback for any unknown interactive shape, render all
   // config fields as readable cards + "Mark as Complete" button.
   return <GenericRenderer config={config} title={title} typeLabel="Interactive" onComplete={onComplete} />;
 }

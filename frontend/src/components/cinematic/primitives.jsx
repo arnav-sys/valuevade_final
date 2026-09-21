@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 
 /* ---------- useCountUp: simple rAF ease-out counter ---------- */
 export function useCountUp(target, { duration = 1200, start = 0, run = true } = {}) {
-  // Initial state is the REAL target value — so the first render (used by
+  // Initial state is the REAL target value, so the first render (used by
   // SSR / edge prerender snapshots) shows the real number to crawlers.
   // When the effect fires in the browser (after IO intersect), we reset to
   // `start` and animate up to `target`.

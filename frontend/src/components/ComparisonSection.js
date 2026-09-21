@@ -83,7 +83,7 @@ export default function ComparisonSection() {
           <div className="mt-6 h-px w-24 bg-[var(--color-primary)]/60" aria-hidden="true" />
         </div>
 
-        {/* Datagrid — Bloomberg terminal aesthetic */}
+        {/* Datagrid, Bloomberg terminal aesthetic */}
         <div
           className={`lv-panel overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
           style={{ animationDelay: '0.26s' }}
@@ -138,7 +138,7 @@ export default function ComparisonSection() {
           </div>
         </div>
 
-        {/* Pricing wedge — editorial panel */}
+        {/* Pricing wedge, editorial panel */}
         <div
           className={`mt-8 lv-panel px-7 py-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-5 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
           style={{ animationDelay: '0.34s' }}

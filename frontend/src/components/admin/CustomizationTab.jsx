@@ -173,7 +173,7 @@ export default function CustomizationTab() {
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mt-4">
-          {[{ key: 'off', title: 'Off', desc: 'Only standard one-click enrol' }, { key: 'optional', title: 'Optional', desc: 'Both CTAs — user chooses' }, { key: 'mandatory', title: 'Mandatory', desc: 'Every new enrollee must customise' }].map((opt) => (
+          {[{ key: 'off', title: 'Off', desc: 'Only standard one-click enrol' }, { key: 'optional', title: 'Optional', desc: 'Both CTAs, user chooses' }, { key: 'mandatory', title: 'Mandatory', desc: 'Every new enrollee must customise' }].map((opt) => (
             <button key={opt.key} type="button" disabled={modeSaving || mode === opt.key} onClick={() => changeMode(opt.key)} data-testid={`customization-mode-${opt.key}`} className={`text-left rounded-xl border px-4 py-3 transition-all ${mode === opt.key ? 'border-[var(--color-accent-purple)] bg-[var(--color-accent-purple)]/10' : 'border-[var(--color-border)] hover:border-[var(--color-text-muted)]'}`}>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-semibold text-[var(--color-text)]">{opt.title}</span>

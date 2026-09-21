@@ -1,4 +1,4 @@
-// LandingIntroSequence — full-viewport overlay that plays on first visit per
+// LandingIntroSequence, full-viewport overlay that plays on first visit per
 // browser session. Particles converge into the Valuevade wordmark for ~1.4s,
 // hold for 300ms, then the whole overlay fades out and unmounts. After it
 // plays once we set `valuevade_intro_played` in localStorage so subsequent

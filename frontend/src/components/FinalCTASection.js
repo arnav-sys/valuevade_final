@@ -3,7 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 /**
- * Final CTA — editorial finance treatment (Feb 2026).
+ * Final CTA, editorial finance treatment (Feb 2026).
  * Copy verbatim. Retired the pink/violet gradient CTA and the
  * three.js convergence bg; replaced with lv-panel + lv-cta + terminal grid.
  */

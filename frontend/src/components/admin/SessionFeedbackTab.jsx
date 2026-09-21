@@ -124,7 +124,7 @@ export default function SessionFeedbackTab() {
         </table>
         {filtered.length === 0 && (
           <div className="p-8 text-center text-sm text-[var(--color-text-muted)]" data-testid="session-feedback-empty">
-            {data.total === 0 ? 'No feedback yet — students will land here when they submit.' : 'No matches for your filters.'}
+            {data.total === 0 ? 'No feedback yet, students will land here when they submit.' : 'No matches for your filters.'}
           </div>
         )}
       </div>

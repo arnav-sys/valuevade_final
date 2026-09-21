@@ -11,7 +11,7 @@ const API = process.env.REACT_APP_BACKEND_URL;
 /**
  * First stop after signup. Forces every new user to choose:
  *   (a) Pay ₹4999 upfront (mock or real Razorpay)
- *   (b) Try free — 1 session free, then ₹4999 after.
+ *   (b) Try free, 1 session free, then ₹4999 after.
  * Both paths land at /courses to pick a course and customise.
  */
 export default function EnrollmentChoicePage() {
@@ -52,7 +52,7 @@ export default function EnrollmentChoicePage() {
   const benefits = [
     'Lifetime access to all 15+ modules',
     '68 hands-on Excel finance simulations',
-    'AI tutor "Pari" — unlimited questions',
+    'AI tutor "Pari", unlimited questions',
     '3-round mock interview capstone',
     'Daily challenges + streaks',
   ];
@@ -77,7 +77,7 @@ export default function EnrollmentChoicePage() {
             Limited offer
           </span>
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1 flex items-center gap-2">
-            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" /> Pay ₹4999 — Start Now
+            <Sparkles className="w-4 h-4 text-[var(--color-primary)]" /> Pay ₹4999, Start Now
           </h3>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">
             Lock in lifetime access at the best rate.
@@ -107,7 +107,7 @@ export default function EnrollmentChoicePage() {
         {/* Free Trial */}
         <div className="relative rounded-2xl p-6 border bg-[var(--color-bg-card-hover)] border-dashed border-[var(--color-border)]" data-testid="choice-trial-card">
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1">
-            Free Trial — 1 Session Free
+            Free Trial, 1 Session Free
           </h3>
           <p className="text-sm text-[var(--color-text-muted)] mb-4">Then ₹4999 after.</p>
           <div className="mb-5">

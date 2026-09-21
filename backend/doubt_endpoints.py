@@ -1,5 +1,5 @@
 """
-Pari doubt chat endpoints — quick (per-session) and extended (re-do) turns.
+Pari doubt chat endpoints, quick (per-session) and extended (re-do) turns.
 Extracted from server.py to keep that file bounded.
 Registered via register_doubt_endpoints(api_router, deps).
 """
@@ -82,7 +82,7 @@ COUNTRY_CONTEXT = {
     'GB': "UK markets (LSE, FCA, GBP). Use UK context: HSBC, Shell, BP, Lloyds, Unilever.",
     'SG': "Singapore markets (SGX, MAS, SGD). Use Singapore + ASEAN context: DBS, Singtel, OCBC, CapitaLand.",
     'AE': "UAE markets (DFM/ADX, SCA, AED). Use UAE + GCC context: Emaar, Etisalat, FAB, ADNOC.",
-    'OTHER': "Global markets — use globally recognizable companies (Apple, Toyota, HSBC, Samsung, Nestlé).",
+    'OTHER': "Global markets, use globally recognizable companies (Apple, Toyota, HSBC, Samsung, Nestlé).",
 }
 
 
@@ -123,7 +123,7 @@ Reply with exactly one word: 'on_topic' or 'off_topic'."""
 
 
 def _normalise_question(q: str) -> str:
-    """Lowercase, strip punctuation, collapse whitespace — used for cache keys."""
+    """Lowercase, strip punctuation, collapse whitespace, used for cache keys."""
     if not q:
         return ""
     s = q.lower().strip()
@@ -137,7 +137,7 @@ def _hash_question(q: str) -> str:
 
 
 def _approx_tokens(text: str) -> int:
-    """Rough token count for budget tracking — ~4 chars per token heuristic.
+    """Rough token count for budget tracking, ~4 chars per token heuristic.
     Good enough for guard-railing the 1500-token cap; we lean conservative
     (overcount slightly) so the cap fires before we'd overshoot in reality."""
     if not text:
@@ -147,11 +147,11 @@ def _approx_tokens(text: str) -> int:
 
 def _resolve_module_title(module_code: Optional[str]) -> str:
     """Best-effort lookup of master_modules.title by code (e.g. M0, M1).
-    Falls back to a generic label if not found — the system prompt still
+    Falls back to a generic label if not found, the system prompt still
     works, just less specific."""
     if not module_code:
         return "your current module"
-    # module_code is "M<order_index>" — try matching by order_index.
+    # module_code is "M<order_index>", try matching by order_index.
     try:
         idx = int(module_code.lstrip("Mm"))
     except (ValueError, AttributeError):
@@ -167,7 +167,7 @@ class DoubtsStartReq(BaseModel):
     phase: str
     module_code: Optional[str] = None
     attempt_context: Optional[dict] = None
-    # Batch 3 (Item 2) — what the student is looking at RIGHT NOW.
+    # Batch 3 (Item 2), what the student is looking at RIGHT NOW.
     current_focus: Optional[dict] = None
 
 
@@ -182,7 +182,7 @@ class DoubtsEndReq(BaseModel):
     doubt_session_id: str
 
 
-# Batch 3 (Item 2) — helpers for current_focus.
+# Batch 3 (Item 2), helpers for current_focus.
 def _truncate_focus(focus: Optional[dict]) -> dict:
     """Clamp anchor.snippet to 1500 chars and anchor.label to 240 chars so we
     don't bloat the user_doubt_sessions row or burn tokens on huge selections."""
@@ -237,12 +237,12 @@ def _format_focus_for_prompt(focus: Optional[dict]) -> str:
 
 
 # =============================================================================
-# Phase B — Session Doubts + Extended Pari Re-do Chat
+# Phase B, Session Doubts + Extended Pari Re-do Chat
 # =============================================================================
 
 EXTENDED_DOUBT_SYSTEM_PROMPT = """You are Pari, a patient finance tutor in an EXTENDED doubt-resolution chat.
 
-The student previously flagged this session as confusing or difficult. Your job over the next several turns is to help them genuinely understand it — not to rush.
+The student previously flagged this session as confusing or difficult. Your job over the next several turns is to help them genuinely understand it, not to rush.
 
 The student's flagged session:
 - Module: {module_code}
@@ -251,11 +251,11 @@ The student's flagged session:
 - Country focus: {country_context}
 
 Approach:
-- Start by asking ONE clarifying question to find what specifically is confusing — don't dump a full explanation upfront.
+- Start by asking ONE clarifying question to find what specifically is confusing, don't dump a full explanation upfront.
 - Build on the student's answers. Use analogies and concrete numbers.
 - Use the student's country focus for examples.
 - Each reply ≤ 180 words. Plain prose, no markdown headings.
-- This is a 15-turn budget — pace yourself.
+- This is a 15-turn budget, pace yourself.
 - If the student says "got it" before turn 15, congratulate briefly and offer to take a final recall question.
 """
 
@@ -360,7 +360,7 @@ class SessionDoubtMarkReq(BaseModel):
 
 class ExtendedDoubtStartReq(BaseModel):
     doubt_id: str
-    # Batch 3 (Item 2) — current_focus also flows through the extended chat
+    # Batch 3 (Item 2), current_focus also flows through the extended chat
     # entry-points (re-do an old doubt, /doubts/library page).
     current_focus: Optional[dict] = None
 
@@ -399,7 +399,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
         user_id = supa_user.get("id")
         if not user_id:
             raise HTTPException(status_code=401, detail="user id missing on token")
-        # Feb 2026 — hard ₹500 lifetime cap on Pari LLM spend per user.
+        # Feb 2026, hard ₹500 lifetime cap on Pari LLM spend per user.
         over_budget, total_inr = _pari_is_over_budget(user_id)
         if over_budget:
             raise HTTPException(
@@ -407,7 +407,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                 detail={
                     "reason": "pari_cost_limit_reached",
                     "message": (
-                        f"Pari is temporarily disabled — you've reached the "
+                        f"Pari is temporarily disabled, you've reached the "
                         f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
                     ),
                     "total_cost_inr": round(total_inr, 2),
@@ -426,12 +426,12 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             },
         )
         if not payload or not payload.get("ok"):
-            # Quota exhausted — surface as 429
+            # Quota exhausted, surface as 429
             if payload and payload.get("reason") == "quota_exhausted":
                 raise HTTPException(status_code=429, detail=payload)
             raise HTTPException(status_code=500, detail=payload or {"error": "start_doubt_session returned no payload"})
         # Persist attempt_context + current_focus if provided.
-        # Batch 3 (Item 2) — current_focus captures what the student is looking
+        # Batch 3 (Item 2), current_focus captures what the student is looking
         # at right now (notes section, quiz question, sim cell, etc.) so every
         # turn in this session can reference the same anchor.
         if (req.attempt_context or req.current_focus) and payload.get("doubt_session_id"):
@@ -473,12 +473,12 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
            2) cache lookup on normalised question + module scope
            3) main answer via Haiku (if cache miss + on-topic)
            4) cache write
-           5) record_doubt_turn RPC — server-side counters + auto-end gates
+           5) record_doubt_turn RPC, server-side counters + auto-end gates
         """
         if not EMERGENT_LLM_KEY:
             raise HTTPException(status_code=500, detail="LLM key not configured")
         user_id = supa_user.get("id")
-        # Feb 2026 — ₹500 lifetime Pari spend cap. Once over, no further turns.
+        # Feb 2026, ₹500 lifetime Pari spend cap. Once over, no further turns.
         over_budget, total_inr = _pari_is_over_budget(user_id)
         if over_budget:
             raise HTTPException(
@@ -486,7 +486,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                 detail={
                     "reason": "pari_cost_limit_reached",
                     "message": (
-                        f"Pari is temporarily disabled — you've reached the "
+                        f"Pari is temporarily disabled, you've reached the "
                         f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
                     ),
                     "total_cost_inr": round(total_inr, 2),
@@ -556,7 +556,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             except Exception as e:
                 logger.warning(f"[doubts] late attempt_context persist failed: {e}")
 
-        # Batch 3 (Item 2) — read persisted current_focus and fold in any newly
+        # Batch 3 (Item 2), read persisted current_focus and fold in any newly
         # supplied focus. Focused sessions are inherently personalized so we
         # also disable cache lookup/write below.
         current_focus = session.get("current_focus") or req.current_focus or None
@@ -580,7 +580,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                 session_id=f"doubt-cls-{req.doubt_session_id}-{session.get('turn_count', 0)}",
                 system_message=OFF_TOPIC_CLASSIFIER_PROMPT.format(
                     module_title=module_title,
-                    last_assistant_message=prev_assistant or "(no prior message — this is the first turn)",
+                    last_assistant_message=prev_assistant or "(no prior message, this is the first turn)",
                     user_message=msg,
                 ),
             ).with_model("anthropic", "claude-haiku-4-5-20251001")
@@ -609,13 +609,13 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             sessions_left_after_kick = max(0, 5 - len(_today_rows))
             if remaining_strikes == 0:
                 answer = (
-                    f"Session ended — let's get back to studying! "
+                    f"Session ended, let's get back to studying! "
                     f"You have {sessions_left_after_kick} doubt session"
                     f"{'s' if sessions_left_after_kick != 1 else ''} left today."
                 )
             else:
                 answer = (
-                    f"Let's stay on topic — try asking about {module_title}. "
+                    f"Let's stay on topic, try asking about {module_title}. "
                     f"You have {remaining_strikes} more off-topic chance"
                     f"{'s' if remaining_strikes != 1 else ''} and {turns_left} turn"
                     f"{'s' if turns_left != 1 else ''} left in this session."
@@ -671,7 +671,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                             import json as _json
                             ctx_json = _json.dumps(attempt_context, ensure_ascii=False)[:1500]
                             user_msg = (
-                                f"{msg}\n\n[attempt_context — what the student just did]:\n{ctx_json}"
+                                f"{msg}\n\n[attempt_context, what the student just did]:\n{ctx_json}"
                             )
                         except Exception:
                             pass
@@ -680,8 +680,8 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                     answer_tokens = _approx_tokens(answer)
                 except Exception as e:
                     logger.error(f"[doubts] main LLM call failed: {e}")
-                    raise HTTPException(status_code=502, detail="Pari hit a snag — please try again")
-                # ------- 4) Cache write (skipped when focus is present — the
+                    raise HTTPException(status_code=502, detail="Pari hit a snag, please try again")
+                # ------- 4) Cache write (skipped when focus is present, the
                 #             answer is anchor-specific and would pollute the
                 #             shared cache for non-focused askers) -------
                 if not focus_block:
@@ -717,7 +717,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             },
         ) or {}
 
-        # Feb 2026 — attribute LLM spend to the user (skip cache hits, which
+        # Feb 2026, attribute LLM spend to the user (skip cache hits, which
         # don't actually hit Claude). Fire-and-forget; failures don't block.
         if not is_cached:
             try:
@@ -728,7 +728,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             except Exception:
                 pass
 
-        # Today's quota — for the header chip on the frontend.
+        # Today's quota, for the header chip on the frontend.
         today_ist = (datetime.now(timezone.utc) + timedelta(hours=5, minutes=30)).date().isoformat()
         today_rows = _supabase_get(
             f"user_doubt_sessions?user_id=eq.{_urlparse.quote(user_id)}"
@@ -928,7 +928,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                 detail={
                     "reason": "pari_cost_limit_reached",
                     "message": (
-                        f"Pari is temporarily disabled — you've reached the "
+                        f"Pari is temporarily disabled, you've reached the "
                         f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
                     ),
                     "total_cost_inr": round(total_inr, 2),
@@ -955,7 +955,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                     },
                 )
             raise HTTPException(status_code=500, detail=payload or {"error": "start_extended_doubt_session failed"})
-        # Batch 3 (Item 2) — persist current_focus onto the new extended session.
+        # Batch 3 (Item 2), persist current_focus onto the new extended session.
         if req.current_focus and payload.get("doubt_session_id"):
             try:
                 _supabase_patch(
@@ -977,7 +977,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
                 detail={
                     "reason": "pari_cost_limit_reached",
                     "message": (
-                        f"Pari is temporarily disabled — you've reached the "
+                        f"Pari is temporarily disabled, you've reached the "
                         f"₹{PARI_COST_LIMIT_INR:.0f} usage limit."
                     ),
                     "total_cost_inr": round(total_inr, 2),
@@ -1015,7 +1015,7 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             pass
         country_context = _country_context_for(user_country)
 
-        # Batch 3 (Item 2) — resolve current_focus, persist any update, build the
+        # Batch 3 (Item 2), resolve current_focus, persist any update, build the
         # extra system-prompt block.
         current_focus = session.get("current_focus") or req.current_focus or None
         if req.current_focus and req.current_focus != session.get("current_focus"):
@@ -1077,12 +1077,12 @@ def register_doubt_endpoints(api_router: APIRouter, deps: dict):
             raise
         except Exception as e:
             logger.error(f"[extended-doubts] LLM call failed: {e}")
-            raise HTTPException(status_code=502, detail="Pari hit a snag — please try again")
+            raise HTTPException(status_code=502, detail="Pari hit a snag, please try again")
 
         user_tokens = _approx_tokens(msg)
         assistant_tokens = _approx_tokens(answer)
 
-        # Feb 2026 — attribute extended-chat LLM spend to the user.
+        # Feb 2026, attribute extended-chat LLM spend to the user.
         try:
             _bump_pari_cost(user_id, _estimate_llm_cost_inr(user_tokens, assistant_tokens))
         except Exception:

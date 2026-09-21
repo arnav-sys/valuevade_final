@@ -1,5 +1,5 @@
 /**
- * Admin — Mock Interviews content manager.
+ * Admin, Mock Interviews content manager.
  *
  * CRUD for the 5 firm interview simulations (master_interview_sims):
  *   - list, add, edit, duplicate, activate/deactivate, delete, reorder
@@ -273,7 +273,7 @@ export default function MockInterviewsTab() {
             <Building2 className="w-5 h-5" /> Mock Interview Content
           </h2>
           <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
-            Manage every firm simulation — content, rounds, and case study — powering Module 20.
+            Manage every firm simulation, content, rounds, and case study, powering Module 20.
           </p>
         </div>
         <div className="flex gap-2">
@@ -309,7 +309,7 @@ export default function MockInterviewsTab() {
             </thead>
             <tbody>
               {sims.length === 0 && (
-                <tr><td colSpan={8} className="px-3 py-6 text-center text-[var(--color-text-muted)]">No simulations yet — click &quot;Add firm&quot;.</td></tr>
+                <tr><td colSpan={8} className="px-3 py-6 text-center text-[var(--color-text-muted)]">No simulations yet, click &quot;Add firm&quot;.</td></tr>
               )}
               {sims.map((s, idx) => (
                 <tr key={s.id} className="border-t border-[var(--color-border)]" data-testid={`mock-sim-row-${s.firm_slug}`}>
@@ -450,7 +450,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
                   <option value="india">🇮🇳 Indian firm</option>
                 </select>
               </Field>
-              <Field label="Role title"><Input value={draft.role_title} onChange={(e) => set({ role_title: e.target.value })} data-testid="edit-role-title" placeholder="Equity Research Associate — India Consumer" /></Field>
+              <Field label="Role title"><Input value={draft.role_title} onChange={(e) => set({ role_title: e.target.value })} data-testid="edit-role-title" placeholder="Equity Research Associate, India Consumer" /></Field>
               <Field label="Location"><Input value={draft.location} onChange={(e) => set({ location: e.target.value })} data-testid="edit-location" placeholder="Mumbai (BKC)" /></Field>
               <Field label="Salary band"><Input value={draft.salary_band} onChange={(e) => set({ salary_band: e.target.value })} data-testid="edit-salary" placeholder="₹28-34 LPA + bonus" /></Field>
               <Field label="Order index"><Input type="number" value={draft.order_index} onChange={(e) => set({ order_index: parseInt(e.target.value || '1', 10) })} data-testid="edit-order-index" /></Field>
@@ -563,7 +563,7 @@ function SimEditor({ draft, setDraft, saving, onSave, onClose, isNew }) {
 
           {section === 'raw' && (
             <div className="space-y-4">
-              <p className="text-xs text-[var(--color-text-muted)]">Full JSON — advanced. Edits here overwrite the friendly fields.</p>
+              <p className="text-xs text-[var(--color-text-muted)]">Full JSON, advanced. Edits here overwrite the friendly fields.</p>
               {['brand', 'process', 'case_config'].map(k => (
                 <Field key={k} label={k}>
                   <Textarea
@@ -654,7 +654,7 @@ function CaseEditor({ draft, setCase }) {
       <div className="border border-[var(--color-border)] rounded-lg p-4">
         <div className="flex items-center justify-between mb-3">
           <p className="text-xs font-semibold text-[var(--color-text)] flex items-center gap-1.5">
-            <FileSpreadsheet size={14} /> Excel case workbook — params
+            <FileSpreadsheet size={14} /> Excel case workbook, params
           </p>
           <button onClick={rebuild} disabled={rebuilding}
                   className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md bg-amber-500 text-white text-xs hover:brightness-110 disabled:opacity-60"
@@ -751,7 +751,7 @@ function ConfirmDelete({ sim, hard, onSetHard, onClose, onConfirm }) {
             <input type="radio" checked={!hard} onChange={() => onSetHard(false)} className="mt-1" data-testid="mock-delete-soft" />
             <div>
               <p className="text-xs font-medium text-[var(--color-text)]">Hide (recommended)</p>
-              <p className="text-[10px] text-[var(--color-text-muted)]">Deactivates the firm — learners can&apos;t see it. Existing attempts stay intact. Reversible.</p>
+              <p className="text-[10px] text-[var(--color-text-muted)]">Deactivates the firm, learners can&apos;t see it. Existing attempts stay intact. Reversible.</p>
             </div>
           </label>
           <label className={`flex items-start gap-2 p-2 rounded-md border cursor-pointer ${hard ? 'border-red-500/50 bg-red-500/5' : 'border-[var(--color-border)]'}`}>

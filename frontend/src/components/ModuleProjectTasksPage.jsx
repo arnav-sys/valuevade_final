@@ -132,7 +132,7 @@ export default function ModuleProjectTasksPage() {
         await checkCapstoneUnlock(module.enrollment_id);
       }
 
-      // Badge engine — module_complete + any_module_complete + capstone gate
+      // Badge engine, module_complete + any_module_complete + capstone gate
       try {
         await triggerBadgeEvaluation({
           source_event: 'module_project_complete',
@@ -271,7 +271,7 @@ export default function ModuleProjectTasksPage() {
               {tasks.length > 0 && (
                 <div className="flex items-center justify-between gap-4 flex-wrap" data-testid="module-project-complete-row">
                   <span className="text-xs font-mono text-[var(--color-text-muted)]">
-                    {allDone ? '🎉 All tasks done — ready to submit.' : `${totalCount - completedCount} task${totalCount - completedCount === 1 ? '' : 's'} left.`}
+                    {allDone ? '🎉 All tasks done, ready to submit.' : `${totalCount - completedCount} task${totalCount - completedCount === 1 ? '' : 's'} left.`}
                   </span>
                   <button
                     onClick={handleComplete}
@@ -300,7 +300,7 @@ export default function ModuleProjectTasksPage() {
         const hasProject = !!masterProject && !loading && !error;
         const phase = hasProject ? 'project_intro' : 'apology';
         const t = resolveTutorPhase(phase);
-        const emptyMsg = "No project here yet — check back once you've completed all sessions in this module.";
+        const emptyMsg = "No project here yet, check back once you've completed all sessions in this module.";
         return (
           <AvatarPersona
             pose={t?.pose || (hasProject ? 'simulation_brief' : 'apology')}

@@ -1,4 +1,4 @@
-"""Module 20 — Full Interview Simulation engine.
+"""Module 20, Full Interview Simulation engine.
 
 Five firm processes (J.P. Morgan, Morgan Stanley, Goldman Sachs, Motilal Oswal,
 Kotak Institutional Equities), each a 5-stage pipeline:
@@ -43,7 +43,7 @@ _bump_iv_cost_fn = None          # injected via register()
 _INR_PER_IN_IV  = (1.0 / 1_000_000.0) * 85.0   # ≈ Claude Haiku input rate
 _INR_PER_OUT_IV = (5.0 / 1_000_000.0) * 85.0   # ≈ Claude Haiku output rate
 
-# Sonnet is ~3× more expensive — used only for the final decision report.
+# Sonnet is ~3× more expensive, used only for the final decision report.
 _INR_PER_IN_SONNET  = (3.0 / 1_000_000.0) * 85.0   # ≈ Claude Sonnet input rate
 _INR_PER_OUT_SONNET = (15.0 / 1_000_000.0) * 85.0  # ≈ Claude Sonnet output rate
 
@@ -227,7 +227,7 @@ def _maybe_complete_module(user_id: str):
 
 
 # ---------------------------------------------------------------------------
-# Sanitizers — never leak answers to the client mid-stage
+# Sanitizers, never leak answers to the client mid-stage
 # ---------------------------------------------------------------------------
 def _public_sim(sim: dict, include_case: bool = False) -> dict:
     out = {k: sim.get(k) for k in (
@@ -362,11 +362,11 @@ Round focus: {focus}
 Rules:
 - Ask ONE question at a time. After each candidate answer, either drill deeper with a follow-up (if the answer was weak or interesting) or move to a new area from the round focus.
 - Use Indian market context and INR. Reference real Indian companies where natural.
-- Be professional and realistic — never sycophantic. Challenge vague answers.
+- Be professional and realistic, never sycophantic. Challenge vague answers.
 - Ask a maximum of {n} questions total in this round.
 - Respond with ONLY your next utterance (question or follow-up). No meta-commentary, no JSON, no role labels."""
 
-ROUND_SCORE_PROMPT = """Score this {stage_label} interview round for the "{role}" role at {firm} on a 0-100 scale. Be honest — most candidates land 50-75; above 85 only for genuinely strong performances.
+ROUND_SCORE_PROMPT = """Score this {stage_label} interview round for the "{role}" role at {firm} on a 0-100 scale. Be honest, most candidates land 50-75; above 85 only for genuinely strong performances.
 
 Return ONLY JSON (no fences) with EXACTLY these keys:
 {{"score": <0-100>, "strengths": ["...","..."], "gaps": ["...","..."], "feedback_bullets": ["...","...","..."], "per_question": [{{"q": "<first 10 words of the question>", "verdict": "strong|okay|weak", "tip": "<one-line specific tip>"}}]}}
@@ -385,7 +385,7 @@ The candidate's written investment recommendation:
 
 Score the WRITTEN recommendation 0-100 on: clear BUY/HOLD/SELL call with target price (30%), thesis quality & use of the model's numbers (40%), risk awareness (15%), structure & professional tone (15%).
 
-Return ONLY JSON (no fences): {{"written_score": <0-100>, "feedback_md": "<150-220 words markdown: what a real senior analyst would say — specific praise, specific gaps, reference their actual numbers/claims>"}}"""
+Return ONLY JSON (no fences): {{"written_score": <0-100>, "feedback_md": "<150-220 words markdown: what a real senior analyst would say, specific praise, specific gaps, reference their actual numbers/claims>"}}"""
 
 FINAL_REPORT_PROMPT = """You are the hiring committee chair at {firm} deciding on a candidate for "{role}" ({location}, {salary_band}).
 
@@ -469,7 +469,7 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
     if rec:
         excerpts.append(f"(case recommendation) {rec[:400]}")
     if (sd.get("application") or {}).get("responses"):
-        excerpts.insert(0, f"(application — why firm) {sd['application']['responses'].get('why_firm', '')[:200]}")
+        excerpts.insert(0, f"(application, why firm) {sd['application']['responses'].get('why_firm', '')[:200]}")
 
     letter_kind = "offer" if verdict == "offer" else "rejection"
     letter_extra = f", mentioning the compensation band {sim.get('salary_band')}" if verdict == "offer" else ", polite and encouraging, inviting them to reapply"
@@ -490,12 +490,12 @@ async def _finalize_attempt(att: dict, sim: dict, sd: dict, rejected_at: Optiona
     )
     data = _parse_json(raw, {})
     letter_md = data.get("letter_md") or (
-        f"**{sim['firm_name']} — Talent Acquisition**\n\nDear Candidate,\n\n"
+        f"**{sim['firm_name']}, Talent Acquisition**\n\nDear Candidate,\n\n"
         + ("We are delighted to extend you an offer for the role of "
-           f"{sim['role_title']} ({sim.get('salary_band')}). Congratulations — we look forward to welcoming you to the team."
+           f"{sim['role_title']} ({sim.get('salary_band')}). Congratulations, we look forward to welcoming you to the team."
            if verdict == "offer" else
            f"Thank you for interviewing for the {sim['role_title']} role. After careful consideration we will not be "
-           "moving forward at this time. We encourage you to apply again — many successful hires joined on their second attempt.")
+           "moving forward at this time. We encourage you to apply again, many successful hires joined on their second attempt.")
     )
     report_md = data.get("report_md") or (
         f"Final weighted score: **{final_score}/100**. "
@@ -789,7 +789,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         raw = await _llm(
             "You are an assessment coach. Be specific and concise.",
             f"A candidate scored {pct}% ({correct}/{len(questions)}) on {sim['firm_name']}'s online aptitude test "
-            f"(reference cutoff {pass_pct}%). Topic breakdown — {topic_lines}. "
+            f"(reference cutoff {pass_pct}%). Topic breakdown, {topic_lines}. "
             f"They are advancing to the interview rounds regardless of this score (the final verdict is decided after all rounds). "
             "Write 90-130 words of markdown feedback: their strongest area, their weakest area with ONE concrete practice tip, and one line on pacing for timed tests.",
             f"ivs-{attempt_id}-apt-fb",
@@ -801,7 +801,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             "score_pct": pct,
             "correct": correct,
             "total": len(questions),
-            "passed": passed,  # informational only — no longer gates progression
+            "passed": passed,  # informational only, no longer gates progression
             "by_topic": {t: {"correct": c, "total": n} for t, (c, n) in by_topic.items()},
             "review": review,
             "feedback_md": raw or f"You scored {pct}% against a {pass_pct}% reference cutoff.",
@@ -809,7 +809,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         })
         sd["aptitude"] = apt
 
-        # Always advance — no early termination. The final selection decision
+        # Always advance, no early termination. The final selection decision
         # is revealed only at the end (in _finalize_attempt).
         _patch_attempt(attempt_id, {"stage_data": sd, "current_stage": "behavioural"})
         _flush_iv_cost(attempt_id, user["id"])   # flush aptitude-stage LLM spend
@@ -849,9 +849,9 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             f"ivs-{attempt_id}-{stage}-q1",
             max_tokens=400,
             _att_id=attempt_id,
-        ) or ("Welcome — let's begin. Tell me about a time you worked under real pressure. Walk me through it using the STAR structure."
+        ) or ("Welcome, let's begin. Tell me about a time you worked under real pressure. Walk me through it using the STAR structure."
               if stage == "behavioural" else
-              "Welcome — let's get into technicals. Walk me through how you would build a DCF for an Indian consumer company.")
+              "Welcome, let's get into technicals. Walk me through how you would build a DCF for an Indian consumer company.")
         st = {"turns": [{"role": "interviewer", "content": first, "at": _now_iso()}]}
         sd[stage] = st
         _patch_attempt(attempt_id, {"stage_data": sd})
@@ -875,13 +875,13 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         st = sd.get(stage) or {"turns": []}
         turns = st.get("turns") or []
         if not turns:
-            raise HTTPException(status_code=409, detail="round not started — call /interview/begin first")
+            raise HTTPException(status_code=409, detail="round not started, call /interview/begin first")
 
         turns.append({"role": "candidate", "content": answer, "input_method": input_method, "at": _now_iso()})
         answered = sum(1 for t in turns if t["role"] == "candidate")
 
         if answered >= n_questions:
-            closing = "Thank you — that wraps up this round. The team will review your responses."
+            closing = "Thank you, that wraps up this round. The team will review your responses."
             turns.append({"role": "interviewer", "content": closing, "at": _now_iso()})
             st["turns"] = turns
             result = await _score_round(sim, attempt_id, stage, turns)
@@ -900,7 +900,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
             f"ivs-{attempt_id}-{stage}-q{answered + 1}",
             max_tokens=400,
             _att_id=attempt_id,
-        ) or "Interesting. Can you make that concrete — give me a specific example with numbers?"
+        ) or "Interesting. Can you make that concrete, give me a specific example with numbers?"
         turns.append({"role": "interviewer", "content": next_q, "at": _now_iso()})
         st["turns"] = turns
         sd[stage] = st
@@ -919,7 +919,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         recommendation = str((body or {}).get("recommendation") or "").strip()
         excel = (body or {}).get("excel_score") or {}
         if len(recommendation) < 120:
-            raise HTTPException(status_code=400, detail="recommendation too short — write at least ~150 words")
+            raise HTTPException(status_code=400, detail="recommendation too short, write at least ~150 words")
         if len(recommendation) > 6000:
             raise HTTPException(status_code=400, detail="recommendation too long")
         try:
@@ -954,7 +954,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         return {"ok": True, "case_study": sd["case_study"], "next_stage": "decision", **result}
 
     # =========================================================================
-    # ADMIN CRUD — manage the 5 mock interview firms + their content
+    # ADMIN CRUD, manage the 5 mock interview firms + their content
     # =========================================================================
     def _module_id_for_admin() -> str:
         rows = _supabase_get(
@@ -1170,7 +1170,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
     async def admin_rebuild_workbook(body: dict, user=Depends(_get_supabase_user)):
         """Rebuild the Excel case workbook from friendly input params.
         Body: { rev0, growth:[g1,g2,g3], ebitda_margin, dna, interest, tax, shares, exit_pe, company, firm, role }
-        Returns { workbook, expected_summary } — the same shape as the seed script.
+        Returns { workbook, expected_summary }, the same shape as the seed script.
         Admin can preview then save via PATCH."""
         _ensure_admin(user)
         b = body or {}
@@ -1205,7 +1205,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
         ro = {"readOnly": True}
         rob = {"readOnly": True, "bold": True}
         cells = {
-            "A1": {"value": f"{company} — FY25E-FY27E Earnings Model", **rob},
+            "A1": {"value": f"{company}, FY25E-FY27E Earnings Model", **rob},
             "A2": {"value": "All figures in ₹ Cr unless stated. Fill the amber cells (use formulas).", **ro},
             "B4": {"value": "FY24A", **rob}, "C4": {"value": "FY25E", **rob},
             "D4": {"value": "FY26E", **rob}, "E4": {"value": "FY27E", **rob},
@@ -1237,7 +1237,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
                 "firm": firm, "role": role, "category": "Live Modelling Test",
                 "instructions": (
                     f"Build the FY25E-FY27E earnings model for {company}. Amber cells are graded. "
-                    "Use formulas (e.g. =B5*1.12) — the grader checks computed values."
+                    "Use formulas (e.g. =B5*1.12), the grader checks computed values."
                 ),
             },
             "scoring": {"mode": "auto"},
@@ -1256,7 +1256,7 @@ def register_interview_sim_endpoints(api_router: APIRouter, deps: dict):
                 }}
 
     # ----------------------------------------------------------------------
-    # TTS — Pari's voice for HR + Technical interview questions.
+    # TTS, Pari's voice for HR + Technical interview questions.
     # Uses OpenAI tts-1 via the Emergent LLM key. Responses are cached
     # in-memory by (text, voice, model) hash so re-plays don't re-bill.
     # ----------------------------------------------------------------------

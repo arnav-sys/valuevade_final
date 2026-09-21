@@ -163,7 +163,7 @@ function TaskPanel({ tasks, answers, setAnswers, submitted, setSubmitted, onComp
                   <XCircle size={15} className="text-[#EF4444] shrink-0 mt-0.5" />
                 )}
                 <span className={`text-xs font-mono ${result.correct ? 'text-[var(--color-success)]' : 'text-[#EF4444]'}`}>
-                  {result.correct ? 'Nice — that matches.' : 'Not quite.'}
+                  {result.correct ? 'Nice, that matches.' : 'Not quite.'}
                 </span>
               </div>
             )}

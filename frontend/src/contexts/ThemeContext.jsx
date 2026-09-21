@@ -13,8 +13,8 @@ import { createContext, useContext, useState, useEffect } from 'react';
  *
  * v3 migration block (runs at MODULE-IMPORT time, strictly before any
  * useState initialiser fires) consolidates two legacy keys:
- *   • `vv-theme`                 (old ThemeContext key — auth-gated)
- *   • `valuevade_landing_theme`  (old LandingPage key — landing only)
+ *   • `vv-theme`                 (old ThemeContext key, auth-gated)
+ *   • `valuevade_landing_theme`  (old LandingPage key, landing only)
  *
  * Source-of-truth precedence (when both legacy keys are present):
  *   1. Canonical `valuevade_theme` if already set
@@ -31,7 +31,7 @@ const THEME_VERSION   = 'v3';
 const LEGACY_KEYS     = ['vv-theme', 'valuevade_landing_theme'];
 const DEFAULT_THEME   = 'dark';
 
-/* Migration — synchronous, runs once on first script load. */
+/* Migration, synchronous, runs once on first script load. */
 if (typeof window !== 'undefined') {
   try {
     const ls = window.localStorage;
@@ -51,7 +51,7 @@ if (typeof window !== 'undefined') {
       LEGACY_KEYS.forEach((k) => ls.removeItem(k));
       ls.setItem(VERSION_KEY, THEME_VERSION);
     }
-  } catch { /* localStorage unavailable — fall through to runtime default */ }
+  } catch { /* localStorage unavailable, fall through to runtime default */ }
 }
 
 function readInitialTheme() {

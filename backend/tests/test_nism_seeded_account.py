@@ -76,13 +76,13 @@ def test_seed_state_via_supabase_user_modules(nism_h):
     # Module 16 must exist for this user; report its completion state
     assert m16 is not None, "user_modules row for M16 (NISM) missing"
     # Note: seed spec says M16 should be is_completed=false, but current DB
-    # shows it as True. Mock exam is still reachable either way — flag as info.
+    # shows it as True. Mock exam is still reachable either way, flag as info.
     print(f"[INFO] M16 is_completed = {m16['is_completed']} (spec said False)")
     assert m16["master_modules"]["is_exam_module"] is True
 
 
 def test_mock_exam_get_metadata(nism_h):
-    """GET the exam as the seeded student — no correct_answer_index leaks."""
+    """GET the exam as the seeded student, no correct_answer_index leaks."""
     r = requests.get(
         f"{BASE_URL}/api/mock-exams/{MODULE_16_MASTER_ID}",
         headers=nism_h, timeout=30,
@@ -103,7 +103,7 @@ def test_mock_exam_get_metadata(nism_h):
 
 
 def test_my_attempts_endpoint(nism_h):
-    """MockExamStartPage also fetches /my-attempts — smoke test it."""
+    """MockExamStartPage also fetches /my-attempts, smoke test it."""
     r = requests.get(
         f"{BASE_URL}/api/mock-exams/{MODULE_16_MASTER_ID}/my-attempts",
         headers=nism_h, timeout=30,
@@ -133,7 +133,7 @@ def test_start_returns_attempt(attempt):
 
 def test_submit_partial_and_get_result(nism_h, attempt):
     """Submit with all-zero answers; verify result payload structure and review array.
-    We don't need to pass — just prove the whole submit/review pipeline works."""
+    We don't need to pass, just prove the whole submit/review pipeline works."""
     # Fetch the student's question list to size the answers array
     stu = requests.get(
         f"{BASE_URL}/api/mock-exams/{MODULE_16_MASTER_ID}",

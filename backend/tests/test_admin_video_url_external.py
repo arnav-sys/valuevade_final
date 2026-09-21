@@ -1,12 +1,12 @@
 """
-Backend tests — External Video URL fix (413 payload-too-large workaround).
+Backend tests, External Video URL fix (413 payload-too-large workaround).
 
 Verifies:
   POST /api/admin/sessions/{sid}/video-url now accepts ANY https URL
   (previously required the URL to contain the 'session-videos' bucket path).
 
   This lets admins persist a video hosted on YouTube/Vimeo/Cloudflare Stream/
-  Mux/BunnyCDN/direct-CDN as the session's lecture_url — the workaround for
+  Mux/BunnyCDN/direct-CDN as the session's lecture_url, the workaround for
   the Supabase Free-tier 50 MB storage cap.
 
   Also verifies:

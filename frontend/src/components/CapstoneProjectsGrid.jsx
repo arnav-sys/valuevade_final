@@ -26,7 +26,7 @@ export default function CapstoneProjectsGrid({ pathId }) {
     async function load() {
       if (!pathId) { setLoading(false); return; }
       try {
-        // Fetch all capstone projects — the table has no path_id column,
+        // Fetch all capstone projects, the table has no path_id column,
         // so we select all 3 rows and sort by code.
         const { data: caps, error: capErr } = await supabase
           .from('master_capstone_projects')

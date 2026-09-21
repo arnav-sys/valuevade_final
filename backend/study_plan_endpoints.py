@@ -62,7 +62,7 @@ def _resolve_plan_day_items(rows: list) -> list:
     for a list of `user_study_plan_days` rows (each with
     required_session_codes/required_project_codes) so charts can show a
     per-session tooltip. Returns a list of `items` arrays, same order/
-    length as `rows` — one item per row: [{kind, id, title, minutes}, ...]."""
+    length as `rows`, one item per row: [{kind, id, title, minutes}, ...]."""
     _uuid_re = _re.compile(r"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$")
     all_sess_ids, all_proj_ids = set(), set()
     for r in rows:
@@ -72,7 +72,7 @@ def _resolve_plan_day_items(rows: list) -> list:
     try:
         if all_sess_ids:
             # `required_session_codes` stores `user_sessions.id` (the per-user copy,
-            # not the master template) — resolve title from user_sessions, then
+            # not the master template), resolve title from user_sessions, then
             # duration from the linked master_sessions row.
             usrows = _supabase_get(
                 f"user_sessions?id=in.({','.join(all_sess_ids)})&select=id,title,master_session_id"
@@ -169,7 +169,7 @@ def _fetch_plan_inventory(user_id: str, enrollment_id: str) -> dict:
                 f"&select=id,video_duration_minutes,estimated_minutes"
             ) or []
         except Exception:
-            # Migration 0041 not yet applied — fall back to estimated_minutes only
+            # Migration 0041 not yet applied, fall back to estimated_minutes only
             master_session_rows = _supabase_get(
                 f"master_sessions?id=in.({','.join(master_session_ids)})"
                 f"&select=id,estimated_minutes"
@@ -257,7 +257,7 @@ def generate_study_plan(
     raw_load = sum(it["minutes"] for it in items)
     total_load_minutes = int(_math.ceil(raw_load * (1.0 + LOAD_BUFFER_PCT)))
     if total_load_minutes <= 0:
-        raise HTTPException(status_code=400, detail="no sessions to schedule — empty enrollment")
+        raise HTTPException(status_code=400, detail="no sessions to schedule, empty enrollment")
 
     # --- Mode-specific scheduling ---
     days: list = []  # [{day_date: date, required_minutes, required_session_codes, required_project_codes, status}]
@@ -775,7 +775,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
         """Called by the FE right after `award_xp` writes for a session. Updates
         today's plan_day row, awards +25 XP if today just hit target, grants
         badges/milestones on streak transitions. All counters and rewards are
-        idempotent — replaying with the same session_id yields no extra
+        idempotent, replaying with the same session_id yields no extra
         increments or XP."""
         user_id = supa_user.get("id")
 
@@ -835,7 +835,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
             # The same RPC chain pays the challenge's +25 XP via the existing
             # mechanism, but the partial unique index on user_xp_events for
             # reason='plan_daily_target' makes our prior +25 the canonical
-            # event — the challenge XP is still booked under
+            # event, the challenge XP is still booked under
             # reason='daily_challenge_complete' which is a SEPARATE reason
             # and survives the dedup. To avoid double-counting, we ONLY
             # progress the challenge counter; the challenge RPC will then
@@ -908,7 +908,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
                 "percent_complete": pct,
             }
 
-        # Cumulative series — every day from plan_start_date through today.
+        # Cumulative series, every day from plan_start_date through today.
         all_rows = _supabase_get(
             f"user_study_plan_days?plan_id=eq.{_urlparse.quote(plan_id)}"
             f"&day_date=lte.{today}"
@@ -934,7 +934,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
         if cum_required > 0 and cum_actual < cum_required:
             is_behind_percent = round((cum_required - cum_actual) / cum_required * 100, 1)
 
-        # B5 (Batch 1) — Upcoming this week: next up to 5 active days AFTER today,
+        # B5 (Batch 1), Upcoming this week: next up to 5 active days AFTER today,
         # with a 1-line summary from the first session/project title on that day.
         upcoming = []
         upcoming_rows = _supabase_get(
@@ -992,7 +992,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
 
 
     # ============================================================================
-    # Sequential P2 — Step 5/5: Drift Recovery Banner
+    # Sequential P2, Step 5/5: Drift Recovery Banner
     # ============================================================================
     # Detect a >=70% weekly XP drop-off vs the prior 7-day window, and surface a
     # single soft-tone banner that links straight to the user's next-up session.
@@ -1108,7 +1108,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
         if not user_id:
             raise HTTPException(status_code=401, detail="unknown user")
 
-        # Cooldown gate first — cheapest check, also short-circuits the XP pull
+        # Cooldown gate first, cheapest check, also short-circuits the XP pull
         # for the 24h after a dismissal.
         stats = _supabase_get(
             f"user_stats?user_id=eq.{_urlparse.quote(user_id)}"
@@ -1147,7 +1147,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
     @api_router.post("/dashboard/drift-recovery/dismiss")
     async def dashboard_drift_recovery_dismiss(supa_user: dict = Depends(get_supabase_user)):
         """Stamp `user_stats.drift_banner_dismissed_at = now()` so the banner is
-        suppressed for the next 24h. Idempotent — upsert pattern matches the
+        suppressed for the next 24h. Idempotent, upsert pattern matches the
         rest of the user_stats writes (Phase D2 followed the same shape)."""
         user_id = supa_user.get("id")
         if not user_id:
@@ -1251,7 +1251,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
 
         items_remaining = [it for it in inv["items"] if it["id"] not in done_codes]
         if not items_remaining:
-            # Nothing left to schedule — mark the plan completed.
+            # Nothing left to schedule, mark the plan completed.
             _supabase_patch(
                 f"user_study_plans?id=eq.{_urlparse.quote(plan_id)}",
                 {"status": "completed", "updated_at": datetime.now(timezone.utc).isoformat()},
@@ -1339,7 +1339,7 @@ def register_study_plan_endpoints(api_router: APIRouter, deps: dict):
                                  "required_project_codes": proj,
                                  "status": "upcoming" if day_min > 0 else "rest"})
         else:
-            # hours_per_day / hours_per_week — walk forward, pack atomically.
+            # hours_per_day / hours_per_week, walk forward, pack atomically.
             if fwd_mode == 'hours_per_day':
                 per_day = int(round((fwd_hpd or 1.0) * 60))
             else:

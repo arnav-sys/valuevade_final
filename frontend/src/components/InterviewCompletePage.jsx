@@ -71,12 +71,12 @@ function overallFeedback(scores) {
   if (overall >= 3) {
     return {
       title: 'Solid foundation.',
-      body: `You've got the basics. To level up, focus on ${lowest.label} — that's where most analyst interviewers pressure-test candidates.`,
+      body: `You've got the basics. To level up, focus on ${lowest.label}, that's where most analyst interviewers pressure-test candidates.`,
       tone: 'primary',
     };
   }
   return {
-    title: 'Keep going — this is where growth happens.',
+    title: 'Keep going, this is where growth happens.',
     body: `Your ${lowest.label} needs the most work. Review the notes, study the model answers, and try again. Every attempt compounds.`,
     tone: 'amber',
   };
@@ -103,7 +103,7 @@ export default function InterviewCompletePage() {
       try {
         // Batch 2 (Item 1): real interview minutes from the timer hook.
         const measuredIntMin = getMeasuredMinutes(sessionId, 'interview', { fallbackMinutes: 5 });
-        // user_sessions has interview_score column only — persist overall as integer (1-5)
+        // user_sessions has interview_score column only, persist overall as integer (1-5)
         const res = await markPhaseComplete(sessionId, 'interview', {
           interview_score: Math.round(scores.overall),
         }, { actualMinutes: measuredIntMin });
@@ -153,7 +153,7 @@ export default function InterviewCompletePage() {
             {feedback.body}
           </p>
 
-          {/* P55 — Pari hero: per-dimension result delivered by Pari */}
+          {/* P55, Pari hero: per-dimension result delivered by Pari */}
           <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-4 sm:p-5 mb-6 flex items-center gap-4 text-left" data-testid="interview-complete-pari-hero">
             <AvatarPersona
               pose="explaining"

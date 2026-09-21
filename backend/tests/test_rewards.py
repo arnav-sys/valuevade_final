@@ -147,7 +147,7 @@ class TestAdminRewardsGating:
 
 
 # ---------------------------------------------------------------------------
-# Admin CRUD as admin — validates graceful degradation OR real success
+# Admin CRUD as admin, validates graceful degradation OR real success
 # ---------------------------------------------------------------------------
 class TestAdminRewardsAsAdmin:
     def test_admin_list_200(self, admin_headers):
@@ -239,7 +239,7 @@ class TestRewardsClaim:
 
 
 # ---------------------------------------------------------------------------
-# Upload endpoint — admin path (may 503 if bucket missing)
+# Upload endpoint, admin path (may 503 if bucket missing)
 # ---------------------------------------------------------------------------
 class TestRewardsUpload:
     def test_upload_as_admin(self, admin_headers):

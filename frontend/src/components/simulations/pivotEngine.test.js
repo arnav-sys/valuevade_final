@@ -22,7 +22,7 @@ const NSE = {
   ],
 };
 
-describe('pivotEngine — aggregateValues', () => {
+describe('pivotEngine, aggregateValues', () => {
   test('SUM', () => expect(aggregateValues([1, 2, 3], 'SUM')).toBe(6));
   test('AVERAGE', () => expect(aggregateValues([2, 4, 6], 'AVERAGE')).toBe(4));
   test('COUNT (numeric only)', () => expect(aggregateValues([1, 2, '', null, 'foo'], 'COUNT')).toBe(2));
@@ -42,7 +42,7 @@ describe('pivotEngine — aggregateValues', () => {
   });
 });
 
-describe('pivotEngine — computePivot', () => {
+describe('pivotEngine, computePivot', () => {
   test('empty state → no rows / no cols / no values', () => {
     const out = computePivot(NSE, { rows: [], columns: [], values: [] });
     expect(out.rowKeys).toEqual([[]]);  // one empty tuple = "grand-only"
@@ -106,7 +106,7 @@ describe('pivotEngine — computePivot', () => {
   });
 });
 
-describe('pivotEngine — gradePivotSheet', () => {
+describe('pivotEngine, gradePivotSheet', () => {
   const expected = {
     rows:    ['Sector'],
     columns: ['Quarter'],

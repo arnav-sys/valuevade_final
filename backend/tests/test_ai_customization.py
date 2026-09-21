@@ -75,8 +75,8 @@ class TestAdminSetAiMode:
         assert "mode" in r.text.lower()
 
     def test_patch_valid_mode_reaches_persistence(self, admin_headers):
-        # The app_settings table doesn't exist yet — a 500 with 'Failed to persist mode'
-        # is the acceptable outcome. If it succeeds (200) that's also fine — table exists.
+        # The app_settings table doesn't exist yet, a 500 with 'Failed to persist mode'
+        # is the acceptable outcome. If it succeeds (200) that's also fine, table exists.
         r = requests.patch(
             f"{BASE_URL}/api/admin/app-settings/ai-customization",
             headers=admin_headers, json={"mode": "off"}, timeout=15,
@@ -135,7 +135,7 @@ class TestAdminCreateDelete:
     def test_create_then_delete_single_select(self, admin_headers):
         payload = {
             "path_id": EQUITY_RESEARCH_PATH_ID,
-            "question_text": "TEST — Would you delete me?",
+            "question_text": "TEST, Would you delete me?",
             "question_type": "single_select",
             "options": [
                 {"value": "a", "label": "A"},
@@ -170,7 +170,7 @@ class TestAdminCreateDelete:
         )
         assert d.status_code in (200, 204), d.text
 
-        # Verify absent — list count is back to 13
+        # Verify absent, list count is back to 13
         r = requests.get(
             f"{BASE_URL}/api/admin/customization-questions",
             headers=admin_headers, timeout=15,
@@ -185,7 +185,7 @@ class TestValidation:
     def test_invalid_question_type(self, admin_headers):
         payload = {
             "path_id": EQUITY_RESEARCH_PATH_ID,
-            "question_text": "TEST — bad type",
+            "question_text": "TEST, bad type",
             "question_type": "foo",
             "options": [],
             "order_index": 998,
@@ -200,7 +200,7 @@ class TestValidation:
     def test_single_select_needs_2_options(self, admin_headers):
         payload = {
             "path_id": EQUITY_RESEARCH_PATH_ID,
-            "question_text": "TEST — needs 2 options",
+            "question_text": "TEST, needs 2 options",
             "question_type": "single_select",
             "options": [{"value": "a", "label": "A"}],
             "order_index": 997,

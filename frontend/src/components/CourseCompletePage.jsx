@@ -1,5 +1,5 @@
 /**
- * CourseCompletePage — Premium congratulations screen shown when a user
+ * CourseCompletePage, Premium congratulations screen shown when a user
  * finishes ALL capstone projects in Valuevade. Lets them download a PDF
  * certificate with their full name and today's date.
  *
@@ -74,10 +74,10 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
   const W = 297; const H = 210;
 
-  // Background — cream/off-white for premium feel
+  // Background, cream/off-white for premium feel
   pdf.setFillColor(250, 249, 246); pdf.rect(0, 0, W, H, 'F');
 
-  // Outer border — thin, in the Valuevade primary blue
+  // Outer border, thin, in the Valuevade primary blue
   pdf.setDrawColor(36, 107, 253); pdf.setLineWidth(0.6);
   pdf.rect(10, 10, W - 20, H - 20);
 
@@ -85,7 +85,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   pdf.setDrawColor(190, 195, 210); pdf.setLineWidth(0.15);
   pdf.rect(13, 13, W - 26, H - 26);
 
-  // Top-left monogram — "VV" mark
+  // Top-left monogram, "VV" mark
   pdf.setFillColor(36, 107, 253);
   pdf.rect(22, 22, 12, 12, 'F');
   pdf.setTextColor(255, 255, 255);
@@ -103,7 +103,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   pdf.setTextColor(120, 128, 145);
   pdf.text('EQUITY RESEARCH · FINANCIAL MODELLING · VALUATION', 40, 34.5);
 
-  // Small "CERTIFICATE" eyebrow — top-right
+  // Small "CERTIFICATE" eyebrow, top-right
   pdf.setFont('helvetica', 'normal');
   pdf.setFontSize(8);
   pdf.setTextColor(120, 128, 145);
@@ -115,7 +115,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   pdf.setTextColor(120, 128, 145);
   pdf.text('This is to certify that', W / 2, 68, { align: 'center' });
 
-  // Recipient name — bold serif-y (we approximate with helvetica bold, large)
+  // Recipient name, bold serif-y (we approximate with helvetica bold, large)
   pdf.setFont('helvetica', 'bold');
   pdf.setFontSize(38);
   pdf.setTextColor(20, 24, 34);
@@ -125,7 +125,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   pdf.setDrawColor(36, 107, 253); pdf.setLineWidth(0.4);
   pdf.line(W / 2 - 55, 94, W / 2 + 55, 94);
 
-  // Body — congratulatory copy
+  // Body, congratulatory copy
   pdf.setFont('helvetica', 'normal');
   pdf.setFontSize(11);
   pdf.setTextColor(60, 66, 78);
@@ -144,7 +144,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   const line4 = 'They have demonstrated analyst-grade judgement in financial modelling, valuation, and equity research.';
   pdf.text(line4, W / 2, 135, { align: 'center' });
 
-  // Footer — date left, signature/verification right
+  // Footer, date left, signature/verification right
   pdf.setFont('helvetica', 'bold');
   pdf.setFontSize(9);
   pdf.setTextColor(20, 24, 34);
@@ -160,7 +160,7 @@ function generateCertificatePdf({ recipientName, issueDate, certId }) {
   pdf.setFontSize(10);
   pdf.text(certId, W - 40, 183, { align: 'right' });
 
-  // Center seal — simple
+  // Center seal, simple
   pdf.setDrawColor(36, 107, 253); pdf.setLineWidth(0.4);
   pdf.circle(W / 2, 178, 8);
   pdf.setFillColor(36, 107, 253);
@@ -183,7 +183,7 @@ export default function CourseCompletePage() {
   const nameInputRef = useRef(null);
   const confettiFiredRef = useRef(false);
 
-  // Confetti burst — fires ONCE when we detect the user has completed the
+  // Confetti burst, fires ONCE when we detect the user has completed the
   // full programme. Uses canvas-confetti (bundled). Respects prefers-reduced-motion.
   useEffect(() => {
     if (!state.allDone || confettiFiredRef.current) return;
@@ -233,7 +233,7 @@ export default function CourseCompletePage() {
     (async () => {
       if (!user?.id) return;
       try {
-        // Fetch user's enrollment first — user_capstone_projects is scoped by enrollment_id.
+        // Fetch user's enrollment first, user_capstone_projects is scoped by enrollment_id.
         const { data: enrs } = await supabase.from('user_enrollments').select('id').eq('user_id', user.id).limit(1);
         const enrId = enrs && enrs[0] ? enrs[0].id : null;
         const [{ data: masterList }, userListRes, { data: profile }] = await Promise.all([
@@ -340,7 +340,7 @@ export default function CourseCompletePage() {
           className="text-center text-base sm:text-lg font-bricolage text-[var(--color-text-muted)] max-w-2xl mx-auto mb-10 leading-relaxed"
           style={{ animation: 'vvCourseFade 800ms ease-out 200ms both' }}
         >
-          You&apos;ve finished the full Valuevade programme — 21 modules, 239 sessions,
+          You&apos;ve finished the full Valuevade programme, 21 modules, 239 sessions,
           239 hands-on simulations, and 3 capstone projects. That&apos;s not a
           badge you claim; it&apos;s a workflow you own.
         </p>
@@ -379,11 +379,11 @@ export default function CourseCompletePage() {
           </h2>
           <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-3">
             {[
-              ['Build 3-statement models from scratch — not from a template.', GitBranch],
-              ['Value any business with DCF, multiples, and cross-checks — with Indian-market context.', FileSpreadsheet],
+              ['Build 3-statement models from scratch, not from a template.', GitBranch],
+              ['Value any business with DCF, multiples, and cross-checks, with Indian-market context.', FileSpreadsheet],
               ['Pitch a stock end-to-end: thesis, drivers, valuation, risks.', BookOpen],
               ['Read industry structure, unit economics, and management quality.', Layers],
-              ['Judgement under uncertainty — sector rotation, bias checks, position sizing.', Trophy],
+              ['Judgement under uncertainty, sector rotation, bias checks, position sizing.', Trophy],
               ['AI-fluent workflow: automate the mechanical, own the thesis.', Sparkles],
             ].map(([txt, Icon], i) => (
               <li key={i} className="flex items-start gap-3">

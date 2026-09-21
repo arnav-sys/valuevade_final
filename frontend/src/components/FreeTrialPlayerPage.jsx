@@ -1,5 +1,5 @@
 /**
- * FreeTrialPlayerPage — thin re-export shim.
+ * FreeTrialPlayerPage, thin re-export shim.
  *
  * The FULL landing-page free trial now runs inside `GuestInterviewPlayer`
  * (no signup, no dashboard, no sidebar). This file is kept so the existing

@@ -8,7 +8,7 @@ import { Trophy, Crown } from 'lucide-react';
  *
  * - Fills proportionally between current level threshold and next.
  * - Shows level name + total_xp / next_threshold + percent.
- * - Below the bar: persistent nudge "N XP away from Level X — <name>".
+ * - Below the bar: persistent nudge "N XP away from Level X, <name>".
  * - At max level: shows a trophy + total XP.
  * - prefers-reduced-motion: skips the fill animation, jumps straight to value.
  *
@@ -63,7 +63,7 @@ export default function XPBar({ variant = 'default', className = '' }) {
         <span
           className="shrink-0 w-6 h-6 rounded-md flex items-center justify-center text-[10px] font-mono font-bold text-white"
           style={{ background: levelColor }}
-          title={`Level ${level} — ${levelName}`}
+          title={`Level ${level}, ${levelName}`}
         >
           {level}
         </span>
@@ -154,14 +154,14 @@ export default function XPBar({ variant = 'default', className = '' }) {
       <div className="mt-3 flex items-center justify-between gap-3">
         {isMaxLevel ? (
           <div className="text-[12px] font-bricolage text-[var(--color-accent-pink)] flex items-center gap-1" data-testid="xp-bar-max-level">
-            <Trophy size={11} /> You've reached CIO — the summit of finance. Keep grinding!
+            <Trophy size={11} /> You've reached CIO, the summit of finance. Keep grinding!
           </div>
         ) : (
           <div className="text-[12px] font-bricolage text-[var(--color-text-muted)] flex items-center gap-2 flex-wrap" data-testid="xp-bar-nudge">
             <span>
               <span className="font-semibold text-[var(--color-text)]">{xpToNext.toLocaleString()} XP</span>
               {' '}away from Level {level + 1}
-              {nextLevelName && <> — <span style={{ color: 'var(--color-accent-purple)' }}>{nextLevelName}</span></>}
+              {nextLevelName && <>, <span style={{ color: 'var(--color-accent-purple)' }}>{nextLevelName}</span></>}
             </span>
             {xpToNext < 100 && (
               <span

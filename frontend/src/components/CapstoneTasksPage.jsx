@@ -436,7 +436,7 @@ export default function CapstoneTasksPage() {
               {totals.total > 0 && (
                 <div className="flex items-center justify-between gap-4 flex-wrap" data-testid="capstone-complete-row">
                   <span className="text-xs font-mono text-[var(--color-text-muted)]">
-                    {totals.allDone ? '🏆 Every task done — ready to submit.' : `${totals.total - totals.done} task${totals.total - totals.done === 1 ? '' : 's'} left.`}
+                    {totals.allDone ? '🏆 Every task done, ready to submit.' : `${totals.total - totals.done} task${totals.total - totals.done === 1 ? '' : 's'} left.`}
                   </span>
                   <button
                     onClick={handleComplete}
@@ -462,7 +462,7 @@ export default function CapstoneTasksPage() {
         const hasCapstone = !!masterCapstone && !loading && !error;
         const phase = hasCapstone ? 'project_intro' : 'apology';
         const t = resolveTutorPhase(phase);
-        const emptyMsg = "No capstone here yet — check back once you've completed all modules in this path.";
+        const emptyMsg = "No capstone here yet, check back once you've completed all modules in this path.";
         return (
           <AvatarPersona
             pose={t?.pose || (hasCapstone ? 'simulation_brief' : 'apology')}

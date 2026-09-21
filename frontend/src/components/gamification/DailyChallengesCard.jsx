@@ -113,7 +113,7 @@ export default function DailyChallengesCard() {
       <div className="mt-4 text-xs text-[var(--color-text-muted)]">
         {allComplete ? (
           <span className="text-amber-200 font-semibold">
-            All 3 crushed — +75 XP bonus claimed, 24-hr glow active{glowActive ? ' ✨' : ''}.
+            All 3 crushed, +75 XP bonus claimed, 24-hr glow active{glowActive ? ' ✨' : ''}.
           </span>
         ) : (
           <>Complete all 3 to earn <span className="font-bold text-[var(--color-accent)]">+75 XP</span> + Daily Champion badge.</>

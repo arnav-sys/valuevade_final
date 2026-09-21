@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { previewStudyPlan, commitStudyPlan } from '../../utils/studyPlanner';
 
-// Phase D1 — Study planner wizard.
+// Phase D1, Study planner wizard.
 //
 // Three modes, three steps, one commit. The wizard never mutates anything
 // until step 3's Confirm. Step 2's "rest days" picker is Sun-first (S M T
@@ -17,7 +17,7 @@ const MODES = [
   {
     key: 'deadline',
     label: 'I have a deadline',
-    hint: 'Pick a date you need to finish by — we\'ll spread the work backwards.',
+    hint: 'Pick a date you need to finish by, we\'ll spread the work backwards.',
     icon: Calendar,
   },
   {

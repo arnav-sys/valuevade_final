@@ -220,7 +220,7 @@ export default function QuizCompletePage() {
           </div>
 
           <h1 className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-3" data-testid="quiz-complete-title">
-            {passed ? 'Well done!' : 'Not quite — and that\'s okay.'}
+            {passed ? 'Well done!' : 'Not quite, and that\'s okay.'}
           </h1>
           <p className="text-[var(--color-text-muted)] font-bricolage mb-8 max-w-md mx-auto leading-relaxed" data-testid="quiz-complete-subtitle">
             {passed
@@ -228,7 +228,7 @@ export default function QuizCompletePage() {
               : 'The hardest questions teach the most. Revisit the notes and take another shot whenever you\'re ready.'}
           </p>
 
-          {/* P55 — Pari hero, score-tier-aware */}
+          {/* P55, Pari hero, score-tier-aware */}
           <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-bg-card)] backdrop-blur p-4 sm:p-5 mb-8 flex items-center gap-4 text-left" data-testid="quiz-complete-pari-hero">
             <AvatarPersona
               pose={pctScore >= 90 ? 'celebrating' : (pctScore >= 70 ? 'encouraging' : 'listening')}
@@ -243,10 +243,10 @@ export default function QuizCompletePage() {
               </div>
               <div className="text-sm sm:text-base text-[var(--color-text)] font-bricolage leading-relaxed">
                 {pctScore >= 90
-                  ? `Outstanding — you crushed it. ${score}/${total} nailed.`
+                  ? `Outstanding, you crushed it. ${score}/${total} nailed.`
                   : pctScore >= 70
-                    ? `Good work — ${score}/${total}. Let's review the ones you missed.`
-                    : `Tough one — ${score}/${total}. Let me help you understand the misses.`}
+                    ? `Good work, ${score}/${total}. Let's review the ones you missed.`
+                    : `Tough one, ${score}/${total}. Let me help you understand the misses.`}
               </div>
             </div>
           </div>
@@ -312,7 +312,7 @@ export default function QuizCompletePage() {
                         <div className="rounded-lg px-3 py-2 bg-[var(--color-surface)]/40 border border-[var(--color-border)]">
                           <div className="text-[10px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1">Your answer</div>
                           <div className={`text-base font-bricolage ${isCorrect ? 'text-[var(--color-success)]' : 'text-[var(--color-error)]'}`}>
-                            {userOpt ? (typeof userOpt === 'string' ? userOpt : JSON.stringify(userOpt)) : '— (no answer)'}
+                            {userOpt ? (typeof userOpt === 'string' ? userOpt : JSON.stringify(userOpt)) : '(no answer)'}
                           </div>
                         </div>
                         {!isCorrect && (
@@ -344,7 +344,7 @@ export default function QuizCompletePage() {
                                 correct_index: qq.correct_answer_index,
                                 explanation_existing: qq.explanation || null,
                               },
-                              // Batch 3 (Item 2) — context binding so Pari can
+                              // Batch 3 (Item 2), context binding so Pari can
                               // resolve "this" / "that" without re-explanation.
                               currentFocus: {
                                 surface: 'quiz',

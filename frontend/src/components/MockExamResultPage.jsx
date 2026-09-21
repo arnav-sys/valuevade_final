@@ -1,5 +1,5 @@
 /**
- * MockExamResultPage — shows score, pass/fail, and per-question review.
+ * MockExamResultPage, shows score, pass/fail, and per-question review.
  * Route: /module/:moduleId/mock-exam/result
  * Receives result + exam via location.state from MockExamPage submit.
  */
@@ -123,7 +123,7 @@ export default function MockExamResultPage() {
             ))}
           </div>
 
-          {/* Module Complete banner — only on pass */}
+          {/* Module Complete banner, only on pass */}
           {passed && (
             <div
               className="rounded-2xl p-5 mb-8 bg-gradient-to-r from-[#F59E0B]/15 via-[var(--color-success)]/10 to-[#F59E0B]/15 border border-[#F59E0B]/30 flex flex-col sm:flex-row items-center gap-4"

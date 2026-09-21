@@ -64,7 +64,7 @@ export default function ProfilePage() {
   const [sessions, setSessions] = useState([]);
   const [stats, setStats] = useState(null);
   const [capstone, setCapstone] = useState(null);
-  // Phase D2 — plan adherence stats (3 numbers — no chart in this block).
+  // Phase D2, plan adherence stats (3 numbers, no chart in this block).
   const [planSummary, setPlanSummary] = useState(null);
   useEffect(() => {
     if (!user?.id) return;
@@ -336,7 +336,7 @@ export default function ProfilePage() {
               <div className="min-w-0">
                 <div className="font-clash text-sm font-semibold text-[var(--color-text)]">Appearance</div>
                 <div className="text-xs font-bricolage text-[var(--color-text-muted)] mt-0.5">
-                  {theme === 'dark' ? 'Dark mode — easier on the eyes' : 'Light mode — bright and crisp'}
+                  {theme === 'dark' ? 'Dark mode, easier on the eyes' : 'Light mode, bright and crisp'}
                 </div>
               </div>
               <button
@@ -460,7 +460,7 @@ export default function ProfilePage() {
                   />
                 </div>
 
-                {/* Phase D2 — Plan Adherence (3 stats, no chart) */}
+                {/* Phase D2, Plan Adherence (3 stats, no chart) */}
                 {planSummary?.active_plan && (
                   <div className="grid grid-cols-3 gap-3 sm:gap-4 mb-5" data-testid="profile-plan-adherence">
                     <StatCard

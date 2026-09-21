@@ -30,7 +30,7 @@ export function usePaymentFlow({ onSuccess } = {}) {
   const [showSuccess, setShowSuccess] = useState(false);
 
   // Shows the success screen for a moment before handing off to onSuccess
-  // (enrollment write / navigation) — avoids the jarring feel of a hard
+  // (enrollment write / navigation), avoids the jarring feel of a hard
   // page reload right after payment.
   const celebrateThenContinue = () => {
     setShowSuccess(true);
@@ -157,7 +157,7 @@ export function usePaymentFlow({ onSuccess } = {}) {
           Simulate payment of {fmtINR(mockOrder.amount_inr)}
         </h3>
         <p className="text-sm text-[var(--color-text-muted)] mb-5">
-          Razorpay isn&apos;t wired with live keys yet — this confirms the full flow end-to-end without
+          Razorpay isn&apos;t wired with live keys yet, this confirms the full flow end-to-end without
           charging any card. The order, payment record, and unlock all get written exactly like a
           live transaction.
         </p>

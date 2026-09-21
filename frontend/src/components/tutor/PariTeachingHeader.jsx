@@ -2,7 +2,7 @@ import AvatarPersona from './AvatarPersona';
 import { TUTOR_NAME } from '../../contexts/TutorContext';
 
 /**
- * Phase 56 — small horizontal card that mounts above any Notes card body.
+ * Phase 56, small horizontal card that mounts above any Notes card body.
  * Pari pose + intro line are driven by `cardType`. Footprint is intentionally
  * tight (~64-80px tall) so it doesn't shove the existing card content far
  * down. Reused across Hook/Concept/Formula/Summary in the first wave.
@@ -11,9 +11,9 @@ import { TUTOR_NAME } from '../../contexts/TutorContext';
 const NOTES_CARD_PARI = {
   hook: { pose: 'asking', message: () => "Here's something worth thinking about..." },
   concept: { pose: 'explaining', message: (t) => t ? `Let me explain "${t}" to you...` : "Let me walk you through this concept..." },
-  formula: { pose: 'thinking', message: () => "Here's the formula — let me walk you through it..." },
+  formula: { pose: 'thinking', message: () => "Here's the formula, let me walk you through it..." },
   visual: { pose: 'explaining', message: () => "See how this works visually?" },
-  deep_dive: { pose: 'thinking', message: () => "Deeper layer — stay with me..." },
+  deep_dive: { pose: 'thinking', message: () => "Deeper layer, stay with me..." },
   example: { pose: 'explaining', message: () => "Real example to make this stick..." },
   mistake: { pose: 'listening', message: () => "A common mistake students make..." },
   summary: { pose: 'encouraging', message: () => "Quick recap of what we covered..." },

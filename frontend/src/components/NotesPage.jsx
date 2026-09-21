@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-// TODO (Step 3.5 P2): Continue NotesPage extraction — remaining seams to split:
+// TODO (Step 3.5 P2): Continue NotesPage extraction, remaining seams to split:
 //   • NotesFilterChips.jsx (filter chip row + counts logic)
 //   • SessionDoubtPanel.jsx (doubt-flagging + Pari re-do flow)
 //   • SessionRevisionSheet.jsx (revision-sheet generation/display)
@@ -29,7 +29,7 @@ import AskPariButton from './tutor/AskPariButton';
 import SessionFeedbackWidget from './SessionFeedbackWidget';
 
 // -----------------------------------------------------------
-// HELPER: ExtraFields — renders any content keys not already handled,
+// HELPER: ExtraFields, renders any content keys not already handled,
 // so unknown/new fields still show up instead of being silently dropped.
 // -----------------------------------------------------------
 
@@ -53,7 +53,7 @@ function splitLede(text) {
         const candidate = text.slice(0, i + 1);
         // Reject if the lede ends with a known abbreviation.
         if (!ABBR.test(candidate)) {
-          // Reject very short ledes (< 30 chars) — likely a stray short opener.
+          // Reject very short ledes (< 30 chars), likely a stray short opener.
           if (candidate.length >= 30 && candidate.length < text.length - 4) {
             return [candidate, text.slice(i + 1).trim()];
           }
@@ -65,7 +65,7 @@ function splitLede(text) {
   return [text, ''];
 }
 
-// Section accent rotation — used by deep-dive and example cards so each
+// Section accent rotation, used by deep-dive and example cards so each
 // section feels visually distinct rather than a uniform wall.
 const SECTION_ACCENTS = ['#246BFD', '#6A5CFF', '#FF6AC1', '#22C55E', '#F59E0B', '#0EA5E9'];
 
@@ -87,12 +87,12 @@ function formatValue(v) {
         // Pick the most meaningful string from the object
         const preferred = ['text', 'label', 'value', 'name', 'title', 'description'];
         for (const k of preferred) { if (typeof item[k] === 'string') return item[k]; }
-        return Object.values(item).filter((x) => typeof x === 'string' || typeof x === 'number').join(' — ');
+        return Object.values(item).filter((x) => typeof x === 'string' || typeof x === 'number').join(', ');
       }
       return String(item);
     }).filter(Boolean).join(', ');
   }
-  // Plain object — render as "k: v, k: v"
+  // Plain object, render as "k: v, k: v"
   return Object.entries(v).map(([k, val]) => {
     if (val == null) return null;
     if (typeof val === 'object') return `${humanize(k)}: …`;
@@ -164,13 +164,13 @@ function ExtraFieldValue({ value }) {
       <ul className="space-y-1.5">
         {value.map((item, i) => (
           <li key={i} className="text-sm font-bricolage text-[var(--color-text)]">
-            <span>• {typeof item === 'object' && item !== null ? Object.values(item).filter((v) => typeof v === 'string' || typeof v === 'number').join(' — ') : String(item)}</span>
+            <span>• {typeof item === 'object' && item !== null ? Object.values(item).filter((v) => typeof v === 'string' || typeof v === 'number').join(', ') : String(item)}</span>
           </li>
         ))}
       </ul>
     );
   }
-// Inline nested renderer — avoids recursion to stay compatible with
+// Inline nested renderer, avoids recursion to stay compatible with
 // the @emergentbase/visual-edits babel plugin.
 function NestedValue({ value }) {
   if (value == null) return null;
@@ -184,7 +184,7 @@ function NestedValue({ value }) {
           <li key={i} className="pl-2 text-sm font-bricolage text-[var(--color-text)] break-words">
             <span className="text-[var(--color-text-muted)] mr-1">•</span>
             {typeof item === 'object' && item !== null
-              ? Object.values(item).filter((v) => typeof v === 'string' || typeof v === 'number').join(' — ')
+              ? Object.values(item).filter((v) => typeof v === 'string' || typeof v === 'number').join(', ')
               : String(item)}
           </li>
         ))}
@@ -716,8 +716,8 @@ function VisualCard({ content, title: topTitle, cardId }) {
   const apiBase = process.env.REACT_APP_BACKEND_URL;
 
   // Build a richer description by harvesting any text in nested fields
-  // (so cards like Session 11 WACC — which store descriptions inside
-  // sub-objects like u_curve/wacc_waterfall — still get a meaningful prompt).
+  // (so cards like Session 11 WACC, which store descriptions inside
+  // sub-objects like u_curve/wacc_waterfall, still get a meaningful prompt).
   const promptDescription = useMemo(() => {
     if (description && typeof description === 'string') return description;
     const parts = [];
@@ -1490,7 +1490,7 @@ function CardRenderer({ card }) {
   }
 
   let content = card?.content;
-  // Some JSONB columns come through as stringified JSON — try parsing
+  // Some JSONB columns come through as stringified JSON, try parsing
   if (typeof content === 'string') {
     try { content = JSON.parse(content); } catch { /* leave as-is */ }
   }
@@ -1541,7 +1541,7 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
   const [fullscreen, setFullscreen] = useState(false);
   const [viewerError, setViewerError] = useState(false);
   // content sometimes arrives as a JSON string (not a parsed object) from
-  // Supabase — this silently produced empty file_url/file_type/file_name
+  // Supabase, this silently produced empty file_url/file_type/file_name
   // (the exact "blank notes + download.html" bug), so always parse it.
   let c = card?.content || {};
   if (typeof c === 'string') {
@@ -1553,7 +1553,7 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
   const isDisplayPpt = fileNameLower.endsWith('.pptx') || fileNameLower.endsWith('.ppt');
   const fileType = (c.file_type || 'pdf').toLowerCase();
   const isPdf = fileType === 'pdf';
-  // PPTX/PPT that wasn't converted server-side — render via Office Online Viewer
+  // PPTX/PPT that wasn't converted server-side, render via Office Online Viewer
   // so students see slides inline instead of the "still being processed" error.
   const isOffice = !isPdf && (fileType === 'pptx' || fileType === 'ppt' || isDisplayPpt);
   const hasFile = !!fileUrl;
@@ -1596,7 +1596,7 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
         )}
       </div>
 
-      {/* Document frame — rendered fully in-page, no download affordance. */}
+      {/* Document frame, rendered fully in-page, no download affordance. */}
       {(isPdf || isOffice) && hasFile ? (
         <div
           className={`relative rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] shadow-[0_8px_40px_rgba(0,0,0,0.18)] transition-all duration-300 ${fullscreen ? 'h-[85vh]' : 'h-[72vh] min-h-[500px]'}`}
@@ -1667,10 +1667,10 @@ function DocumentViewer({ card, onComplete, completing, isReview }) {
 // MAIN PAGE
 // -----------------------------------------------------------
 
-// Wave 1 / Item 1B — Video / Notes tab. This is now a CONTROLLED component:
+// Wave 1 / Item 1B, Video / Notes tab. This is now a CONTROLLED component:
 // NotesPage owns the `tab` state so the notes / filter / cards / nav below
 // can be gated on it (fixing the "video appears twice + notes bleed" bug).
-// The video is rendered here ONLY — the parent no longer mounts a separate
+// The video is rendered here ONLY, the parent no longer mounts a separate
 // SessionVideoPlayer above the tabs.
 function NotesPhaseTabs({ session, tab, setTab, onVideoEnded, videoWatched, onCompleteSession, completing }) {
   const lectureUrl = session?.lecture_url || null;
@@ -1717,13 +1717,13 @@ function NotesPhaseTabs({ session, tab, setTab, onVideoEnded, videoWatched, onCo
                   data-testid="session-video"
                 />
               )}
-              {/* Bug 2 fix — "Complete Session" button below the video. Enabled
+              {/* Bug 2 fix, "Complete Session" button below the video. Enabled
                   once the video ends (or manual mark-complete). Clicking runs
                   the same completion flow as the notes-flow "Complete Notes". */}
               <div className="mt-4 flex flex-col sm:flex-row items-center gap-3 sm:justify-between" data-testid="video-complete-row">
                 <p className="text-xs text-[var(--color-text-muted)] font-bricolage">
                   {videoWatched
-                    ? 'Video watched — you can now complete this session.'
+                    ? 'Video watched, you can now complete this session.'
                     : 'Watch the video to the end, or click Mark as complete to enable.'}
                 </p>
                 <div className="flex items-center gap-2">
@@ -1753,7 +1753,7 @@ function NotesPhaseTabs({ session, tab, setTab, onVideoEnded, videoWatched, onCo
               <div className="text-5xl mb-3">🎥</div>
               <h3 className="text-xl font-semibold text-[var(--color-text)] mb-2 font-bricolage">Video lecture for this session</h3>
               <p className="text-[var(--color-text-muted)] mb-5 max-w-md mx-auto">
-                Coming soon — for now, switch to Notes to dive in.
+                Coming soon, for now, switch to Notes to dive in.
               </p>
               <button
                 onClick={() => setTab('notes')}
@@ -1784,15 +1784,15 @@ export default function NotesPage() {
   const [startedAt] = useState(() => Date.now());
   // Filter chips: 'all' | 'lessons' | 'practice'
   const [filter, setFilter] = useState('all');
-  // Bug 1 fix — tab state lifted to page so we can gate notes/filter/nav below.
+  // Bug 1 fix, tab state lifted to page so we can gate notes/filter/nav below.
   // Default to 'notes' so users landing on a session immediately see the flow
   // they know. Users can flip to 'video' explicitly.
   const [tab, setTab] = useState('notes');
-  // Bug 2 fix — track whether the lecture video has been watched to the end.
+  // Bug 2 fix, track whether the lecture video has been watched to the end.
   // When true AND the video tab is active, the bottom nav CTA swaps to
   // "Complete Session" and marks the session complete on click.
   const [videoWatched, setVideoWatched] = useState(false);
-  // M20 — interview-module sessions are video+notes only. Completing notes
+  // M20, interview-module sessions are video+notes only. Completing notes
   // auto-completes quiz/simulation flags so the session finishes in one phase.
   const [isInterviewSession, setIsInterviewSession] = useState(false);
   // Exam-module sessions (e.g. Module 16 NISM) are notes-only. Completing notes
@@ -1810,7 +1810,7 @@ export default function NotesPage() {
     async function load() {
       if (!user?.id || !sessionId) {
         // Don't leave the page hung on a spinner if auth/route params haven't
-        // resolved yet — surface a useful state instead. The effect will
+        // resolved yet, surface a useful state instead. The effect will
         // re-run once `user.id` arrives (dependency array).
         if (mounted) {
           setLoading(false);
@@ -2031,7 +2031,7 @@ export default function NotesPage() {
         onTouchEnd={onTouchEnd}
       >
         <div className="w-full max-w-3xl mx-auto">
-          {/* Bug 1 fix — the video is now rendered ONLY inside NotesPhaseTabs
+          {/* Bug 1 fix, the video is now rendered ONLY inside NotesPhaseTabs
               when tab==='video'. The previous top-level SessionVideoPlayer was
               causing the video to render twice on the Video tab. Tab state is
               also lifted to this page so we can gate notes content below. */}
@@ -2049,7 +2049,7 @@ export default function NotesPage() {
               doesn't bleed through when the user is on the Video tab. */}
           {tab === 'notes' && (
           <>
-          {/* Document viewer mode — when admin uploaded a PDF/PPT for this session */}
+          {/* Document viewer mode, when admin uploaded a PDF/PPT for this session */}
           {!loading && !error && documentCard && (
             <div className="mb-4" data-testid="notes-document-mode">
               <DocumentViewer
@@ -2061,7 +2061,7 @@ export default function NotesPage() {
             </div>
           )}
 
-          {/* C1 (Batch 1) — AskPariButton moved to the TOP of notes content,
+          {/* C1 (Batch 1), AskPariButton moved to the TOP of notes content,
               above the cards, so it's the first thing visible. Was
               previously a sibling of the card area which placed it to
               the right on wide viewports. */}
@@ -2072,7 +2072,7 @@ export default function NotesPage() {
                 courseSessionId={sessionId}
                 variant="card"
                 getCurrentFocus={() => {
-                  // Batch 3 (Item 2) — capture what the user is reading right now.
+                  // Batch 3 (Item 2), capture what the user is reading right now.
                   // Prefer an active text selection (most specific), otherwise
                   // fall back to the current card's title + body snippet.
                   try {
@@ -2119,7 +2119,7 @@ export default function NotesPage() {
             </div>
           )}
 
-          {/* Filter chips — only when session has both lesson + practice cards */}
+          {/* Filter chips, only when session has both lesson + practice cards */}
           {!loading && !error && session?.master_session_id && counts.practice > 0 && counts.lessons > 0 && !documentCard && (
             <div
               className="mb-6 flex items-center gap-2 overflow-x-auto pb-1"
@@ -2203,7 +2203,7 @@ export default function NotesPage() {
                 AI-Generated Notes Coming Soon
               </h2>
               <p className="text-sm text-[var(--color-text-muted)] font-bricolage max-w-md mb-6">
-                This session was added specifically for your learning path. We're generating custom notes tailored to your goals — check back soon.
+                This session was added specifically for your learning path. We're generating custom notes tailored to your goals, check back soon.
               </p>
               <button
                 onClick={complete}
@@ -2256,7 +2256,7 @@ export default function NotesPage() {
       </main>
       {(() => {
         const t = resolveTutorPhase('notes_intro');
-        // Bug 3 fix — Pari icon now opens the doubts chat on click. Was
+        // Bug 3 fix, Pari icon now opens the doubts chat on click. Was
         // previously a decorative image with no onClick handler.
         return (
           <AvatarPersona
@@ -2271,7 +2271,7 @@ export default function NotesPage() {
         );
       })()}
 
-      {/* Bottom nav bar — only in card mode (document mode has its own Complete button) */}
+      {/* Bottom nav bar, only in card mode (document mode has its own Complete button) */}
       {!loading && !error && filteredTotal > 0 && !documentCard && (
         <div className="sticky bottom-0 z-40 bg-[var(--bg-primary)]/85 backdrop-blur-xl border-t border-[var(--color-border)]" data-testid="notes-nav-bar">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">

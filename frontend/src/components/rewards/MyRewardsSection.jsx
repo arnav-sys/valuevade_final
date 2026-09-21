@@ -7,7 +7,7 @@ import RewardCard from './RewardCard';
 const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
 const seenKey = (userId, rewardId) => `vv_reward_seen_${userId}_${rewardId}`;
 
-// Persistent home for rewards on the Dashboard — RewardCard previously only
+// Persistent home for rewards on the Dashboard, RewardCard previously only
 // ever rendered on the one-time ModuleProjectCompletePage/CapstoneCompletePage
 // celebration screens, so a student who completed a module BEFORE an admin
 // configured its reward (or who never revisited that page) had no way to
@@ -35,7 +35,7 @@ export default function MyRewardsSection() {
 
           // One-time nudge: toast + "New" badge for any reward the user
           // hasn't been shown before (tracked per-user in localStorage so
-          // it truly only fires once, ever — not just once per session).
+          // it truly only fires once, ever, not just once per session).
           if (user?.id) {
             const unseen = el.filter((r) => {
               try { return localStorage.getItem(seenKey(user.id, r.id)) !== '1'; }

@@ -67,7 +67,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount }) {
       className="glass-card rounded-2xl overflow-hidden transition-all duration-300 hover:border-[var(--color-accent-purple)]/30 hover:shadow-[0_8px_40px_var(--glass-hover-shadow)] group relative"
       testid={`course-card-${course.id}`}
     >
-      {/* Diagonal sheen (very slow loop) — premium signal on any active course. */}
+      {/* Diagonal sheen (very slow loop), premium signal on any active course. */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
         <div
           aria-hidden="true"
@@ -168,7 +168,7 @@ export default function CoursesPage() {
     setLoading(true);
     setError(null);
     try {
-      // Fetch catalog from backend (server-side Supabase — faster and avoids
+      // Fetch catalog from backend (server-side Supabase, faster and avoids
       // browser-to-Supabase timeouts on free-tier or cold-start scenarios).
       const catalogRes = await fetch(`${API}/api/courses/catalog`);
       if (!catalogRes.ok) throw new Error(`Catalog fetch failed (${catalogRes.status})`);
@@ -178,7 +178,7 @@ export default function CoursesPage() {
       setModuleCounts(catalog.module_counts || {});
       setSessionCounts(catalog.session_counts || {});
 
-      // Enrollment is user-specific — still fetched from Supabase but only
+      // Enrollment is user-specific, still fetched from Supabase but only
       // when a user is logged in.
       if (user?.id) {
         const { data: enrollData } = await supabase
@@ -206,18 +206,18 @@ export default function CoursesPage() {
       <Helmet>
         {/* Prompt-2/3 will replace the copy; here we only fix the per-route
             head so /courses no longer canonicalizes to the homepage. */}
-        <title>Finance Courses — Equity Research Analyst Program | Valuevade</title>
-        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹4999 lifetime." />
+        <title>Finance Courses, Equity Research Analyst Program | Valuevade</title>
+        <meta name="description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, ₹4999 lifetime." />
         <link rel="canonical" href="https://valuevade.com/courses" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://valuevade.com/courses" />
-        <meta property="og:title" content="Finance Courses — Equity Research Analyst Program | Valuevade" />
-        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹4999 lifetime." />
+        <meta property="og:title" content="Finance Courses, Equity Research Analyst Program | Valuevade" />
+        <meta property="og:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, ₹4999 lifetime." />
         <meta property="og:image" content="https://valuevade.com/valuevade-logo.png" />
         <meta property="og:site_name" content="Valuevade" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Finance Courses — Equity Research Analyst Program | Valuevade" />
-        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program — 21 modules, 239 sessions, ₹4999 lifetime." />
+        <meta name="twitter:title" content="Finance Courses, Equity Research Analyst Program | Valuevade" />
+        <meta name="twitter:description" content="Valuevade's finance courses for Indian students. Start with the Equity Research Analyst Program, 21 modules, 239 sessions, ₹4999 lifetime." />
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
       </Helmet>
 
@@ -330,7 +330,7 @@ export default function CoursesPage() {
           </div>
         )}
 
-        {/* Stats strip — real DB-derived values. Fallbacks reflect the
+        {/* Stats strip, real DB-derived values. Fallbacks reflect the
             canonical curriculum (21 modules · 239 sessions · 3 capstones).
             The "Practice Questions" counter was a made-up 260 with no data
             source, so it's REMOVED per Prompt-1 rule ("no truthful value → remove"). */}
@@ -359,7 +359,7 @@ export default function CoursesPage() {
           </section>
         )}
 
-        {/* Closing CTA band — Prompt-3 removed the duplicate "Choose Your
+        {/* Closing CTA band, Prompt-3 removed the duplicate "Choose Your
             Career Path" H2 that was echoing the hero title. The band now
             leads with the "Career Outcomes" eyebrow and a fresh sub-headline
             focused on the CTA action. */}
