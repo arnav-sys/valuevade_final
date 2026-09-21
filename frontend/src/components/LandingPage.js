@@ -132,7 +132,7 @@ export default function LandingPage() {
             </p>
             <Link
               to="/signup"
-              className="px-4 py-2 bg-[var(--color-primary)] text-white text-sm font-semibold rounded-full flex items-center gap-1.5"
+              className="px-4 py-2 bg-[var(--color-primary)] text-[#06231A] text-sm font-semibold rounded-full flex items-center gap-1.5"
               data-testid="mobile-bar-cta"
             >
               Start free <ArrowRight size={14} />

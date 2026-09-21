@@ -20,6 +20,7 @@ const LETTERS = 'VALUEVADE'.split('');
 function shouldSkip() {
   if (typeof window === 'undefined') return true;
   try {
+    if (window.location.search.includes('nointro=1')) return true;
     if (window.localStorage.getItem(STORAGE_KEY) === '1') return true;
   } catch { /* ignore */ }
   const mq = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -47,7 +48,7 @@ export default function LandingIntroSequence() {
       aria-hidden="true"
       style={{
         position: 'fixed', inset: 0, zIndex: 200,
-        background: '#08080f',
+        background: '#0A0F1C',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         pointerEvents: 'none',
         opacity: phase === 'out' ? 0 : 1,
@@ -59,7 +60,7 @@ export default function LandingIntroSequence() {
         style={{
           position: 'absolute', inset: 0,
           background:
-            'radial-gradient(40% 30% at 50% 50%, rgba(139,92,246,0.32), transparent 70%)',
+            'radial-gradient(40% 30% at 50% 50%, rgba(18,226,154,0.28), transparent 70%)',
           opacity: phase === 'out' ? 0 : 1,
           transition: 'opacity 480ms ease-out',
         }}
@@ -74,7 +75,7 @@ export default function LandingIntroSequence() {
           color: '#ffffff',
           display: 'flex',
           gap: '0.04em',
-          textShadow: '0 0 38px rgba(167,139,250,0.55)',
+          textShadow: '0 0 38px rgba(18,226,154,0.45)',
         }}
       >
         {LETTERS.map((ch, i) => (

@@ -12,34 +12,35 @@
  * the cinematic light-mode hero blends with overscroll bounce on iOS. */
 html.landing-active,
 body.landing-active {
-  background-color: #080810 !important;
-  color: rgba(255, 255, 255, 0.85);
+  background-color: #0A0F1C !important;
+  color: rgba(244, 247, 251, 0.86);
   transition: background-color 250ms ease, color 250ms ease;
 }
 html.landing-active.landing-light,
 body.landing-active.landing-light {
-  background-color: #F2E6EE !important;
-  color: #1A1A2E;
+  background-color: #F6F8F7 !important;
+  color: #0C1A2A;
 }
 
 .landing-dark {
-  /* Palette — deep cinematic violet on near-black */
-  --bg-primary:           #08080f;
-  --bg-secondary:         #0b0b14;
-  --color-surface:        rgba(255,255,255,0.04);
-  --color-border:         rgba(167, 139, 250, 0.14);
-  /* Tinted neutrals — avoid pure #fff/#000 (AI-slop tell) */
-  --color-text:           #ece8f2;    /* warm-cool cream, not pure white */
-  --color-text-secondary: rgba(236,232,242,0.88);
-  --color-text-muted:     rgba(236,232,242,0.60);
-  --color-text-faint:     rgba(236,232,242,0.38);
-  --color-primary:        #a78bfa;   /* violet */
-  --color-accent-purple:  #8b5cf6;
-  --color-accent-pink:    #c4b5fd;
+  /* Palette — deep finance navy with a single mint-emerald accent
+     (QuintEdge-inspired editorial language, no violet / no glow). */
+  --bg-primary:           #0A0F1C;
+  --bg-secondary:         #0D1526;
+  --color-surface:        rgba(255,255,255,0.035);
+  --color-border:         rgba(255, 255, 255, 0.10);
+  /* Cool tinted neutrals — avoid pure #fff (AI-slop tell) */
+  --color-text:           #F4F7FB;
+  --color-text-secondary: rgba(244,247,251,0.88);
+  --color-text-muted:     rgba(244,247,251,0.62);
+  --color-text-faint:     rgba(244,247,251,0.42);
+  --color-primary:        #12E29A;   /* mint-emerald */
+  --color-accent-purple:  #12E29A;   /* fold accents into the single mint */
+  --color-accent-pink:    #5EEAD4;   /* lighter mint for secondary accents */
 
   background:
-    radial-gradient(60% 50% at 50% -10%, rgba(139,92,246,0.18), transparent 60%),
-    radial-gradient(40% 30% at 80% 110%, rgba(167,139,250,0.12), transparent 60%),
+    radial-gradient(70% 55% at 50% -12%, rgba(18,226,154,0.10), transparent 62%),
+    radial-gradient(45% 35% at 88% 112%, rgba(94,234,212,0.06), transparent 60%),
     var(--bg-primary);
   color: var(--color-text);
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -50,27 +51,25 @@ body.landing-active.landing-light {
 /* Typography guardrail: display serif for h1/h2, sans for h3 and below.
  * Fraunces (already loaded as accent) becomes the primary display face.
  * Include h1.font-clash / h2.font-clash to win over the .font-clash rule below. */
+/* QuintEdge-style hierarchy: bold geometric sans headlines with an
+   italic-serif accent word (the accent spans set Fraunces inline). */
 .landing-dark h1,
 .landing-dark h1.font-clash,
 .landing-dark h2,
-.landing-dark h2.font-clash {
-  font-family: 'Fraunces', Georgia, serif !important;
-  font-optical-sizing: auto;
-  font-style: normal;
-  letter-spacing: -0.025em;
-}
+.landing-dark h2.font-clash,
 .landing-dark h3,
 .landing-dark h4,
 .landing-dark .font-clash {
   font-family: 'Space Grotesk', 'Inter', sans-serif !important;
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 .landing-dark .font-bricolage { font-family: 'Inter', sans-serif; }
 
 /* Glass cards in the dark palette */
 .landing-dark .glass-card {
   background: rgba(255,255,255,0.025) !important;
-  border: 1px solid rgba(167,139,250,0.14) !important;
+  border: 1px solid rgba(18,226,154,0.16) !important;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   /* Guardrail: no lift translateY, no glow box-shadow.
@@ -78,7 +77,7 @@ body.landing-active.landing-light {
   transition: border-color 300ms ease;
 }
 .landing-dark .glass-card:hover {
-  border-color: rgba(167,139,250,0.42) !important;
+  border-color: rgba(18,226,154,0.45) !important;
 }
 
 /* Sections — ensure no white bleed through anywhere */
@@ -94,7 +93,7 @@ body.landing-active.landing-light {
   content: '';
   position: absolute; top: 0; left: 10%; right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(167,139,250,0.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(18,226,154,0.22), transparent);
 }
 
 /* Navbar — when scrolled */
@@ -103,8 +102,17 @@ body.landing-active.landing-light {
 }
 .landing-dark header[data-testid="navbar"].bg-\[var\(--bg-primary\)\]\/80,
 .landing-dark header[data-testid="navbar"][class*="backdrop-blur"] {
-  background: rgba(8,8,15,0.65) !important;
-  border-bottom-color: rgba(167,139,250,0.14) !important;
+  background: rgba(10,15,28,0.78) !important;
+  border-bottom-color: rgba(18,226,154,0.16) !important;
+}
+
+/* Wordmark — clean cool-white on the navy landing (readable at small size) */
+.landing-dark .logo-gradient {
+  background: none !important;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: currentColor;
+  color: var(--color-text) !important;
 }
 
 /* CTA — Guardrail: no gradient, no glow pulse.
@@ -186,37 +194,17 @@ body.landing-active.landing-light #hero { background: transparent !important; }
     radial-gradient(rgba(0,0,0,0.05) 1px, transparent 1px);
 }
 
-/* CRT scanline overlay — ultra subtle, applied above content but pointer-events:none */
+/* CRT scanline overlay — removed for a cleaner, human editorial feel */
 .lv-crt-scan {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,0.02) 0px,
-    rgba(255,255,255,0.02) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  mix-blend-mode: overlay;
+  display: none;
 }
 
-/* Sharp editorial card frame — replaces "glass-card" pillowy look */
+/* Soft editorial card — rounded, calm border, no terminal corner-ticks */
 .lv-panel {
   background: color-mix(in oklab, var(--color-surface) 92%, transparent);
   border: 1px solid var(--color-border);
-  border-radius: 4px;
+  border-radius: 16px;
   position: relative;
-}
-.lv-panel::before {
-  /* corner tick marks — Bloomberg terminal signature */
-  content: '';
-  position: absolute;
-  inset: -1px;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) top left / 100% 1px no-repeat,
-    linear-gradient(90deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) bottom right / 100% 1px no-repeat,
-    linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) top left / 1px 100% no-repeat,
-    linear-gradient(0deg, var(--color-primary) 0, var(--color-primary) 12px, transparent 12px) bottom right / 1px 100% no-repeat;
-  opacity: 0.55;
 }
 
 /* LIVE indicator dot — restrained pulse.
@@ -257,35 +245,48 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   to { stroke-dashoffset: 0; }
 }
 
-/* Section chapter label — mono uppercase, faint */
+/* Section eyebrow — QuintEdge style: mint caps with a short leading rule */
 .lv-chapter {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--color-text-faint);
-}
-
-/* Sharp editorial CTA button — Guardrail: no glow box-shadow on hover */
-.lv-cta {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  padding: 14px 22px;
+  color: var(--color-primary);
+}
+.lv-chapter::before {
+  content: '';
+  width: 22px;
+  height: 2px;
   border-radius: 2px;
-  border: 1px solid color-mix(in oklab, var(--color-primary) 92%, black);
-  background: color-mix(in oklab, var(--color-primary) 88%, black);
-  color: #fff;
+  background: var(--color-primary);
+  opacity: 0.9;
+}
+
+/* Pill CTA — QuintEdge mint fill with dark-navy label, clean sans */
+.lv-cta {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  padding: 14px 26px;
+  border-radius: 999px;
+  border: 1px solid var(--color-primary);
+  background: var(--color-primary);
+  color: #06231A;
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  transition: background-color 220ms ease, border-color 220ms ease;
+  transition: background-color 220ms ease, border-color 220ms ease, transform 220ms ease;
 }
 .lv-cta:hover {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
+  background: #2CF0AC;
+  border-color: #2CF0AC;
+  transform: translateY(-1px);
 }
 .lv-cta-ghost {
   border: 1px solid var(--color-border);
@@ -293,17 +294,19 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: var(--color-text);
 }
 .lv-cta-ghost:hover {
-  border-color: var(--color-text-muted);
-  background: color-mix(in oklab, var(--color-surface) 60%, transparent);
+  border-color: var(--color-primary);
+  background: color-mix(in oklab, var(--color-primary) 10%, transparent);
+  color: var(--color-text);
 }
 
-/* Text link with underline reveal — Bloomberg nav pattern */
+/* Text link — clean sans, mint underline reveal */
 .lv-nav-link {
   position: relative;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--color-text-muted);
   transition: color 200ms ease;
 }
@@ -350,7 +353,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   transition: border-color 260ms ease;
 }
 .lv-feature-card-hover:hover {
-  border-color: rgba(167,139,250,0.45) !important;
+  border-color: rgba(18,226,154,0.45) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -396,7 +399,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: rgba(26,26,46,0.68);
 }
 .landing-light .lv-nav-link:hover { color: #1A1A2E; }
-.landing-light .lv-nav-link::after { background: #246BFD; }
+.landing-light .lv-nav-link::after { background: #0BA47A; }
 
 /* Status bar — white-tinted so it doesn't muddy the cream */
 .landing-light .lv-statusbar {
@@ -409,12 +412,12 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 
 /* CTA — force a punchy dark-blue on cream */
 .landing-light .lv-cta {
-  background: #1e56d4;
-  border-color: #1e56d4;
+  background: #0BA47A;
+  border-color: #0BA47A;
 }
 .landing-light .lv-cta:hover {
-  background: #246BFD;
-  border-color: #246BFD;
+  background: #0BA47A;
+  border-color: #0BA47A;
 }
 
 /* LIVE dot — deeper rose in light mode, no glow */
@@ -430,7 +433,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 /* Emotional italic pink lines wash out on cream — bump to a darker rose */
 .landing-light [data-testid="problem-transition-line"],
 .landing-light [data-testid="ai-proof-emotional-line"] {
-  color: #d02891;
+  color: #0B8F6C;
 }
 
 /* Hero ticker up/down colour tuning */
@@ -469,4 +472,4 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: #1A1A2E;
 }
 .landing-light .lv-trial-input::placeholder { color: rgba(26,26,46,0.38); }
-.landing-light .lv-trial-input:focus { border-color: #246BFD; }
+.landing-light .lv-trial-input:focus { border-color: #0BA47A; }

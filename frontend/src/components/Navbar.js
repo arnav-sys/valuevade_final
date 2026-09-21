@@ -17,15 +17,6 @@ const navLinks = [
   { label: 'Roadmap', id: 'features' },
 ];
 
-// Static market widgets — restrained mock data. Real feed would go
-// through a socket; static is fine for the marketing landing.
-const STATUS_ITEMS = [
-  { label: 'NIFTY 50', value: '22,415.30', chg: '+0.42%', dir: 'up' },
-  { label: 'SENSEX', value: '73,824.60', chg: '+0.38%', dir: 'up' },
-  { label: 'USD/INR', value: '83.21', chg: '−0.08%', dir: 'down' },
-  { label: 'GOLD', value: '₹62,340', chg: '+0.11%', dir: 'up' },
-];
-
 export default function Navbar({ landingTheme, onToggleLandingTheme }) {
   const { user, profile, loading, signOut } = useAuth();
   const { theme, toggleTheme } = useTheme();
@@ -49,16 +40,6 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
 
   const isLoggedIn = !loading && !!user;
 
-  // Freeze the "last updated" stamp on client mount so SSR/prerender
-  // doesn't ship a moving value. Static IST time is fine editorially.
-  const [ts, setTs] = useState('12:34 IST');
-  useEffect(() => {
-    const now = new Date();
-    const hh = String(now.getHours()).padStart(2, '0');
-    const mm = String(now.getMinutes()).padStart(2, '0');
-    setTs(`${hh}:${mm} IST`);
-  }, []);
-
   return (
     <header
       data-testid="navbar"
@@ -68,28 +49,6 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
           : 'bg-[var(--bg-primary)]/40 backdrop-blur-md border-b border-transparent'
       }`}
     >
-      {/* Top status bar — mono, market widgets */}
-      <div className="lv-statusbar hidden md:block" data-testid="nav-status-bar">
-        <div className="max-w-7xl mx-auto px-6 h-6 flex items-center justify-between gap-6 overflow-hidden">
-          <div className="flex items-center gap-5 min-w-0">
-            <span className="text-[var(--color-text-faint)]">
-              <span className="lv-live-dot inline-block mr-2 align-middle" aria-hidden="true" />
-              LIVE · MARKETS
-            </span>
-            {STATUS_ITEMS.map((it) => (
-              <span key={it.label} className="whitespace-nowrap" data-testid={`nav-ticker-${it.label.replace(/[^A-Z0-9]/gi, '').toLowerCase()}`}>
-                <span className="text-[var(--color-text-muted)]">{it.label}</span>
-                <span className="mx-1.5 text-[var(--color-text)]">{it.value}</span>
-                <span className={it.dir}>{it.chg}</span>
-              </span>
-            ))}
-          </div>
-          <span className="text-[var(--color-text-faint)] whitespace-nowrap">
-            LAST UPD · {ts}
-          </span>
-        </div>
-      </div>
-
       {/* Main nav row */}
       <nav className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <button
@@ -106,11 +65,10 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
             Courses
           </Link>
           <Link to="/free-mock-interview" className="lv-nav-link inline-flex items-center gap-1.5"
-            style={{ color: 'var(--color-accent-purple)' }} data-testid="nav-link-free-mock">
+            style={{ color: 'var(--color-primary)' }} data-testid="nav-link-free-mock">
             Free Mock
             <span
-              className="inline-block w-1 h-1 rounded-full bg-[var(--color-accent-pink)]"
-              style={{ boxShadow: '0 0 6px rgba(255,106,193,0.85)' }}
+              className="inline-block w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]"
               aria-hidden="true"
             />
           </Link>
@@ -272,7 +230,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
               <Link
                 to="/login"
                 onClick={() => setMenuOpen(false)}
-                className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
+                className="px-8 py-3 bg-[var(--color-primary)] text-[#06231A] font-semibold rounded-full text-lg font-bricolage"
                 data-testid="mobile-nav-signup"
               >
                 Sign Up

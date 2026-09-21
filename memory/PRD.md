@@ -1,5 +1,8 @@
 # Valuevade — Product Requirements Document
 
+## Landing Design Direction (Jun 2026 — CURRENT)
+Landing page redesigned to an editorial finance aesthetic inspired by QuintEdge's design language: deep **navy** canvas (#0A0F1C) with a single **mint-emerald** accent (#12E29A), **bold geometric-sans** headlines (Space Grotesk) paired with **italic-serif** accent words (Fraunces, mint), **pill** CTAs, section eyebrows (mint caps + leading rule), and a full-width **stat band** in the hero. The previous violet "Bloomberg-terminal" gimmicks (CRT scanlines, dot-matrix grid, mono ticker, corner-tick panels, sharp 2px corners) were stripped for a warmer, human feel. Scoped to the public landing only (`.landing-dark`); auth-gated app still uses the violet dark palette. Intro sequence accepts `?nointro=1` to skip. Copy unchanged. Key files: `landing-dark.css`, `HeroSection.js`, `Navbar.js`, `LandingIntroSequence.jsx`.
+
 ## Original Problem Statement
 Full-stack educational platform for Indian finance students with a cinematic "Bloomberg-terminal" aesthetic. Core features: Courses with AI-personalised paths, AI Mock Interviews, PDF Notes, Timed Mock Exam certification, Gamified Rewards (XP, streaks, badges, milestones), and a comprehensive Admin Panel.
 
