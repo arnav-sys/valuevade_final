@@ -53,7 +53,7 @@ export default function FaqAccordion() {
           data-testid="landing-faq-heading"
         >
           Questions,{' '}
-          <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+          <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
             answered.
           </span>
         </h2>
@@ -76,7 +76,7 @@ export default function FaqAccordion() {
                 ? 'bg-[var(--color-primary)] text-white border-[var(--color-primary)]'
                 : 'bg-transparent text-[var(--color-text-muted)] border-[var(--color-border)] hover:text-[var(--color-text)] hover:border-[var(--color-primary)]'
             }`}
-            style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}
+            style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}
           >
             {cat}
           </button>
@@ -97,7 +97,7 @@ export default function FaqAccordion() {
                 data-testid={`faq-toggle-${faq.id}`}
               >
                 <div className="flex items-baseline gap-4 min-w-0">
-                  <span className="text-[13px] font-bold text-[var(--color-primary)] shrink-0" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>
+                  <span className="text-[13px] font-bold text-[var(--color-primary)] shrink-0" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <span className="font-bricolage text-[var(--color-text)] text-[14.5px] font-medium">

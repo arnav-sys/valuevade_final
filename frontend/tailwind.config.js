@@ -5,9 +5,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        clash: ['"Clash Display"', 'sans-serif'],
-        bricolage: ['"Bricolage Grotesque"', 'sans-serif'],
-        jetbrains: ['"JetBrains Mono"', 'monospace'],
+        clash: ['"Newsreader"', 'Georgia', 'serif'],
+        bricolage: ['"Instrument Sans"', 'sans-serif'],
+        jetbrains: ['"Spline Sans Mono"', 'monospace'],
       },
       colors: {
         navy: '#02073D',

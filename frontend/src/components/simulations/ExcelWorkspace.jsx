@@ -597,7 +597,7 @@ export default function ExcelWorkspace({ config, title, onComplete }) {
       {/* Dark-theme tweaks for jspreadsheet */}
       <style>{`
         .jexcel-wrapper .jexcel {
-          font-family: 'JetBrains Mono', ui-monospace, monospace !important;
+          font-family: 'Spline Sans Mono', ui-monospace, monospace !important;
           font-size: 12px !important;
           background: #FFFFFF !important;
         }

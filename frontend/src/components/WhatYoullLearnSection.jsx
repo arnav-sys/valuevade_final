@@ -35,7 +35,7 @@ export default function WhatYoullLearnSection() {
             data-testid="whatll-learn-heading"
           >
             What you&apos;ll learn,{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               from zero to analyst
             </span>
           </h2>

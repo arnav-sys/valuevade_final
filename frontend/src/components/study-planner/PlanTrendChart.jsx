@@ -20,7 +20,7 @@ function PlanTooltip({ active, payload, label }) {
   return (
     <div
       className="rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-card)] shadow-xl px-3 py-2.5"
-      style={{ fontFamily: 'Bricolage Grotesque, sans-serif', fontSize: 12, maxWidth: 220 }}
+      style={{ fontFamily: 'Instrument Sans, sans-serif', fontSize: 12, maxWidth: 220 }}
       data-testid="plan-trend-tooltip"
     >
       <div className="text-[10px] font-mono uppercase tracking-[0.12em] text-[var(--color-text-muted)] mb-1">
@@ -116,14 +116,14 @@ export default function PlanTrendChart({ data }) {
           <LineChart data={series} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
             <XAxis
               dataKey="day"
-              tick={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fill: 'var(--color-text-muted)' }}
+              tick={{ fontSize: 10, fontFamily: 'Spline Sans Mono, monospace', fill: 'var(--color-text-muted)' }}
               tickFormatter={fmtDay}
               tickLine={false}
               axisLine={{ stroke: 'var(--color-border)' }}
               minTickGap={30}
             />
             <YAxis
-              tick={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace', fill: 'var(--color-text-muted)' }}
+              tick={{ fontSize: 10, fontFamily: 'Spline Sans Mono, monospace', fill: 'var(--color-text-muted)' }}
               tickLine={false}
               axisLine={{ stroke: 'var(--color-border)' }}
               width={36}
@@ -135,7 +135,7 @@ export default function PlanTrendChart({ data }) {
             <Legend
               verticalAlign="top"
               height={28}
-              wrapperStyle={{ fontSize: 10, fontFamily: 'JetBrains Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+              wrapperStyle={{ fontSize: 10, fontFamily: 'Spline Sans Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}
             />
             {today && <ReferenceLine x={today} stroke="var(--color-text-muted)" strokeDasharray="4 4" strokeOpacity={0.5} />}
             <Line type="monotone" dataKey="planned" stroke="#246BFD" strokeWidth={2} dot={false} name="Planned" />

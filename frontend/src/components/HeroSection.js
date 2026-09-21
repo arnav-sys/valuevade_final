@@ -1,12 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight } from 'lucide-react';
-import MarketDeskPanel from '@/components/landing/MarketDeskPanel';
-import { useTheme } from '@/contexts/ThemeContext';
+import { ArrowRight, ArrowUpRight, ChevronDown } from 'lucide-react';
+import HeroProductShowcase from '@/components/landing/HeroProductShowcase';
 
-/* Hero, Jun 2026 editorial-finance rebuild: paper canvas, masthead line,
- * serif headline on the left, live market desk on the right, stat ledger
- * running the full width beneath. */
+/* Hero, Jun 2026: centered editorial masthead on paper, with the product
+ * itself (AI interview / Excel model / document sim) floating on a dark
+ * grained stage beneath the fold line. */
 
 const STATS = [
   { n: '21', l: 'Modules' },
@@ -19,8 +18,6 @@ const STATS = [
 
 export default function HeroSection() {
   const reduceMotion = useReducedMotion();
-  const { theme } = useTheme();
-  const light = theme === 'light';
 
   const rise = (delay = 0) => ({
     initial: reduceMotion ? { opacity: 1 } : { opacity: 0, y: 18 },
@@ -32,7 +29,7 @@ export default function HeroSection() {
 
   return (
     <section id="hero" className="relative overflow-hidden" data-testid="hero-section">
-      <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-10 pt-28 lg:pt-32 pb-14 lg:pb-20">
+      <div className="relative z-10 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 pt-28 lg:pt-32 pb-14 lg:pb-20">
         {/* masthead line */}
         <motion.div {...rise(0.05)} className="lv-rule-double pt-3 flex items-center justify-between gap-4 lv-folio" data-testid="hero-masthead">
           <span className="truncate">Equity research &amp; financial modelling</span>
@@ -40,73 +37,76 @@ export default function HeroSection() {
           <span className="hidden md:inline">NSE · BSE · Ind AS</span>
         </motion.div>
 
-        <div className="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center pt-12 lg:pt-16 pb-14 lg:pb-20">
-          {/* copy */}
-          <div className="lg:col-span-7">
-            <motion.p {...rise(0.15)} className="lv-chapter mb-6" data-testid="hero-eyebrow">
-              Your AI finance mentor
-            </motion.p>
+        {/* centered masthead copy */}
+        <div className="text-center max-w-[900px] mx-auto pt-14 lg:pt-20">
+          <motion.p {...rise(0.15)} className="lv-chapter mb-7" data-testid="hero-eyebrow">
+            Your AI finance mentor
+          </motion.p>
 
-            <motion.h1
-              {...rise(0.25)}
-              className="text-[var(--color-text)]"
-              style={{
-                fontSize: 'clamp(42px, 6vw, 92px)',
-                lineHeight: 0.98,
-                letterSpacing: '-0.03em',
-                fontWeight: 600,
-              }}
-              data-testid="hero-h1"
-            >
-              A new way of mastering finance in the{' '}
-              <span className="lv-italic">age of AI</span>
-            </motion.h1>
-
-            <motion.p
-              {...rise(0.4)}
-              className="lv-dropcap mt-9 text-[15.5px] leading-[1.7] max-w-[560px]"
-              style={{ color: 'var(--color-text-secondary)' }}
-              data-testid="hero-paragraph"
-            >
-              Tell Valuevade where you are and where you want to land. You get an AI-personalised
-              equity research and financial modelling path: 21 modules, 239 hands-on sessions on real
-              Indian companies, NISM Series XV prep, and three portfolio-grade capstones. One-time
-              ₹4999 for lifetime access, and your first session is free.
-            </motion.p>
-
-            <motion.div {...rise(0.52)} className="mt-9 flex flex-col sm:flex-row items-start gap-3">
-              <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
-                Start Free Session
-                <ArrowRight size={16} strokeWidth={2.5} />
-              </Link>
-              <Link
-                to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
-                className="lv-cta lv-cta-ghost"
-                data-testid="hero-secondary-cta"
-              >
-                See the full curriculum
-                <ArrowUpRight size={16} strokeWidth={2.4} />
-              </Link>
-            </motion.div>
-
-            <motion.p {...rise(0.62)} className="mt-6 text-[13px]" style={{ color: 'var(--color-text-faint)' }}>
-              Already enrolled?{' '}
-              <Link to="/login" className="font-semibold hover:underline" style={{ color: 'var(--color-text)' }} data-testid="hero-signup-link">
-                Log in &rarr;
-              </Link>
-            </motion.p>
-          </div>
-
-          {/* market desk */}
-          <motion.div
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:col-span-5 lg:pl-4 pr-3"
+          <motion.h1
+            {...rise(0.25)}
+            className="text-[var(--color-text)]"
+            style={{ fontSize: 'clamp(38px, 5.6vw, 84px)', lineHeight: 0.98, letterSpacing: '-0.035em' }}
+            data-testid="hero-h1"
           >
-            <MarketDeskPanel light={light} />
+            <span className="block" style={{ fontWeight: 300, color: 'var(--color-text-muted)' }}>
+              A new way of mastering
+            </span>
+            <span className="block" style={{ fontWeight: 700 }}>
+              finance in the <span className="lv-italic">age of AI</span>
+            </span>
+          </motion.h1>
+
+          <motion.p
+            {...rise(0.4)}
+            className="mt-8 text-[15px] sm:text-[15.5px] leading-[1.7] max-w-[620px] mx-auto"
+            style={{ color: 'var(--color-text-secondary)' }}
+            data-testid="hero-paragraph"
+          >
+            Tell Valuevade where you are and where you want to land. You get an AI-personalised
+            equity research and financial modelling path: 21 modules, 239 hands-on sessions on real
+            Indian companies, NISM Series XV prep, and three portfolio-grade capstones. One-time
+            ₹4999 for lifetime access, and your first session is free.
+          </motion.p>
+
+          <motion.div {...rise(0.52)} className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Link to="/signup" className="lv-cta" data-testid="hero-primary-cta">
+              Start Free Session
+              <ArrowRight size={16} strokeWidth={2.5} />
+            </Link>
+            <Link
+              to="/course/5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c"
+              className="lv-cta lv-cta-ghost"
+              data-testid="hero-secondary-cta"
+            >
+              See the full curriculum
+              <ArrowUpRight size={16} strokeWidth={2.4} />
+            </Link>
           </motion.div>
+
+          <motion.p {...rise(0.62)} className="mt-6 text-[13px]" style={{ color: 'var(--color-text-faint)' }}>
+            Already enrolled?{' '}
+            <Link to="/login" className="font-semibold hover:underline" style={{ color: 'var(--color-text)' }} data-testid="hero-signup-link">
+              Log in &rarr;
+            </Link>
+          </motion.p>
         </div>
+
+        {/* product stage */}
+        <motion.div
+          initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="mt-14 lg:mt-20"
+        >
+          <HeroProductShowcase />
+        </motion.div>
+
+        <motion.div {...rise(0.9)} className="mt-6 mb-14 flex justify-center">
+          <span className="vv-scrollcue" data-testid="hero-scroll-cue">
+            Scroll to explore <ChevronDown size={13} />
+          </span>
+        </motion.div>
 
         {/* stat ledger */}
         <motion.div {...rise(0.7)} className="lv-ledger" data-testid="hero-markers">

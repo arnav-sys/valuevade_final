@@ -286,7 +286,7 @@ function SensitivityModule({ module, onExplored }) {
           <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">PV = FCF₁ / (WACC − g)  •  rows: WACC  •  cols: terminal g</span>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+          <table className="w-full text-sm" style={{ fontFamily: "'Spline Sans Mono', monospace" }}>
             <thead>
               <tr>
                 <th className="px-3 py-2 text-[10px] font-mono text-[var(--color-text-muted)]">WACC ↓ \\ g →</th>

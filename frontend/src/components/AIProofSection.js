@@ -39,7 +39,7 @@ export default function AIProofSection() {
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
           >
             Finance jobs are changing.{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               Your
             </span>{' '}
             skills should too.

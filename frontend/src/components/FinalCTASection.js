@@ -69,7 +69,7 @@ export default function FinalCTASection() {
             Your finance career doesn&apos;t start at placement season.
             <br className="hidden sm:block" />
             It starts{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               today
             </span>
             .

@@ -33,7 +33,7 @@ function Card({ t }) {
       <figcaption className="flex items-center gap-3">
         <div className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
           style={{ background: 'color-mix(in oklab, var(--color-primary) 16%, transparent)', border: '1px solid color-mix(in oklab, var(--color-primary) 30%, transparent)' }}>
-          <span className="text-[12px] font-bold text-[var(--color-primary)]" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>{initials(t.name)}</span>
+          <span className="text-[12px] font-bold text-[var(--color-primary)]" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>{initials(t.name)}</span>
         </div>
         <div className="min-w-0">
           <div className="text-[var(--color-text)] text-sm font-semibold">{t.name}</div>
@@ -77,7 +77,7 @@ export default function TestimonialsSection() {
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.03em' }}
           >
             Real students.{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>
               Real wins.
             </span>
           </h2>

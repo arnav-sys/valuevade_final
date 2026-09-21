@@ -17,7 +17,7 @@ function DcfVignette() {
             style={{ background: hot ? 'var(--color-primary)' : 'color-mix(in oklab, var(--color-text) 8%, transparent)' }} />;
         })}
       </div>
-      <div className="flex items-center justify-between mt-3 text-[11px]" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>
+      <div className="flex items-center justify-between mt-3 text-[11px]" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>
         <span className="text-[var(--color-text-muted)]">Enterprise value</span>
         <span className="text-[var(--color-primary)] font-bold">₹18.4L Cr</span>
       </div>
@@ -35,7 +35,7 @@ function CoverageVignette() {
         <div className="h-2 w-full rounded bg-[color-mix(in_oklab,var(--color-text)_8%,transparent)]" />
         <div className="h-2 w-4/5 rounded bg-[color-mix(in_oklab,var(--color-text)_8%,transparent)]" />
       </div>
-      <div className="flex items-center justify-between mt-3 text-[11px]" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>
+      <div className="flex items-center justify-between mt-3 text-[11px]" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>
         <span className="text-[var(--color-text-muted)]">Target price</span>
         <span className="text-[var(--color-text)] font-bold">₹1,540</span>
       </div>
@@ -93,7 +93,7 @@ export default function PracticalSkillsSection() {
           <h2 className={`text-4xl sm:text-5xl lg:text-[56px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
             Skills you actually build.{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>On real projects.</span>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>On real projects.</span>
           </h2>
           <p className="mt-6 text-[14.5px] font-bricolage text-[var(--color-text-muted)] max-w-2xl leading-relaxed">
             Every module ends in a portfolio-grade project on a real Indian company, not a quiz score, but something a recruiter can open.
@@ -114,7 +114,7 @@ export default function PracticalSkillsSection() {
                     style={{ background: 'color-mix(in oklab, var(--color-primary) 14%, transparent)', border: '1px solid color-mix(in oklab, var(--color-primary) 30%, transparent)' }}>
                     <Icon size={18} style={{ color: 'var(--color-primary)' }} />
                   </span>
-                  <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-faint)] font-semibold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>{p.tag}</span>
+                  <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--color-text-faint)] font-semibold" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>{p.tag}</span>
                 </div>
                 <h3 className="text-xl text-[var(--color-text)] mb-2" style={{ letterSpacing: '-0.02em', lineHeight: 1.2 }}>{p.title}</h3>
                 <p className="text-[13.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-5">{p.body}</p>

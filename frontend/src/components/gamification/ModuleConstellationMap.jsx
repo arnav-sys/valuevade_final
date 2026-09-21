@@ -485,7 +485,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
                   <rect x={pos.x - 22} y={pos.y - (coreR + 18)} width={44} height={14} rx={7}
                         fill="#fbbf24" stroke="#fde68a" strokeWidth="0.8" />
                   <text x={pos.x} y={pos.y - (coreR + 8)} textAnchor="middle"
-                        fontFamily="JetBrains Mono, ui-monospace, monospace"
+                        fontFamily="Spline Sans Mono, ui-monospace, monospace"
                         fontSize="8.5" fontWeight="700" fill="#1a1408" letterSpacing="0.8">
                     READY
                   </text>
@@ -493,7 +493,7 @@ export default function ModuleConstellationMap({ fullscreen = false }) {
               )}
               {/* Label: module code + truncated title underneath for readability */}
               <text x={pos.x} y={pos.y + (isCapstone ? 30 : 24)} textAnchor="middle"
-                    fontFamily="JetBrains Mono, ui-monospace, monospace"
+                    fontFamily="Spline Sans Mono, ui-monospace, monospace"
                     fontSize={isCapstone ? 11 : 10} fill="var(--color-text)"
                     fontWeight={isCapstone ? 700 : 600}
                     opacity={style.labelOpacity}>

@@ -50,7 +50,7 @@ export default function HowItWorksSection() {
           <h2 className={`text-4xl sm:text-5xl lg:text-[56px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.03em' }}>
             From where you are.{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>To</span>{' '}
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>To</span>{' '}
             where you want to be.
           </h2>
         </div>
@@ -83,7 +83,7 @@ export default function HowItWorksSection() {
                     </div>
                     <article className={`lv-panel p-6 w-full text-center transition-opacity duration-500 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
                       style={{ animationDelay: `${0.2 + i * 0.12}s`, opacity: active ? 1 : 0.55 }}>
-                      <div className="text-[11px] uppercase tracking-[0.16em] font-semibold mb-2" style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-faint)', fontFamily: '"Space Grotesk", Inter, sans-serif' }}>
+                      <div className="text-[11px] uppercase tracking-[0.16em] font-semibold mb-2" style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-faint)', fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>
                         Step {step.num} · {step.tag}
                       </div>
                       <h3 className="text-lg text-[var(--color-text)] mb-2" style={{ lineHeight: 1.2 }}>{step.title}</h3>
@@ -112,7 +112,7 @@ export default function HowItWorksSection() {
                       {done ? <Check size={22} strokeWidth={2.6} className="text-white" /> : <Icon size={20} className={active ? 'text-white' : 'text-[var(--color-text-muted)]'} />}
                     </div>
                     <article className="lv-panel p-5" style={{ opacity: active ? 1 : 0.6 }}>
-                      <div className="text-[11px] uppercase tracking-[0.16em] font-semibold mb-1.5" style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-faint)', fontFamily: '"Space Grotesk", Inter, sans-serif' }}>
+                      <div className="text-[11px] uppercase tracking-[0.16em] font-semibold mb-1.5" style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-faint)', fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>
                         Step {step.num} · {step.tag}
                       </div>
                       <h3 className="text-base text-[var(--color-text)] mb-1.5" style={{ lineHeight: 1.2 }}>{step.title}</h3>

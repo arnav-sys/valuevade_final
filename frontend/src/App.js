@@ -160,7 +160,7 @@ function App() {
                       backdropFilter: 'blur(20px)',
                       border: '1px solid var(--glass-border)',
                       color: 'var(--color-text)',
-                      fontFamily: "'Bricolage Grotesque', sans-serif",
+                      fontFamily: "'Instrument Sans', sans-serif",
                     },
                   }}
                 />

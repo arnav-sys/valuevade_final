@@ -40,7 +40,7 @@ body.landing-active:not(.landing-light) {
   --lv-shadow:            0 24px 60px -34px rgba(20, 20, 20, 0.35);
   background: var(--bg-primary);
   color: var(--color-text);
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
   position: relative;
   min-height: 100vh;
 }
@@ -67,7 +67,7 @@ body.landing-active:not(.landing-light) {
   --lv-shadow:            0 24px 60px -30px rgba(0, 0, 0, 0.7);
   background: var(--bg-primary);
   color: var(--color-text);
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
   position: relative;
   min-height: 100vh;
 }
@@ -92,20 +92,20 @@ body.landing-active:not(.landing-light) {
 .landing-dark h1.font-clash, .landing-dark h2.font-clash,
 .landing-light .font-clash, .landing-dark .font-clash,
 .lv-serif {
-  font-family: 'Fraunces', Georgia, 'Times New Roman', serif !important;
+  font-family: 'Newsreader', Georgia, serif !important;
   font-weight: 600;
   letter-spacing: -0.022em;
-  font-variation-settings: 'opsz' 144, 'SOFT' 20, 'WONK' 1;
+  font-variation-settings: 'opsz' 60;
 }
 .landing-light h3, .landing-dark h3 { font-weight: 500; letter-spacing: -0.015em; }
 .landing-light h4, .landing-dark h4 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
-.landing-light .font-bricolage, .landing-dark .font-bricolage { font-family: 'Inter', sans-serif; }
+.landing-light .font-bricolage, .landing-dark .font-bricolage { font-family: 'Instrument Sans', sans-serif; }
 .lv-mono, .lv-folio {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-variant-numeric: tabular-nums;
 }
 .lv-folio {
@@ -115,14 +115,14 @@ body.landing-active:not(.landing-light) {
   color: var(--color-text-faint);
 }
 .lv-italic {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   font-style: italic;
   font-weight: 500;
   color: var(--color-primary);
-  font-variation-settings: 'opsz' 144, 'SOFT' 40, 'WONK' 1;
+  font-variation-settings: 'opsz' 48;
 }
 .lv-dropcap::first-letter {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   font-weight: 600;
   float: left;
   font-size: 3.6em;
@@ -153,7 +153,7 @@ body.landing-active:not(.landing-light) {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.22em;
@@ -170,7 +170,7 @@ body.landing-active:not(.landing-light) {
 
 /* ---------- buttons ---------- */
 .lv-cta {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-size: 14.5px;
   font-weight: 600;
   letter-spacing: 0;
@@ -206,7 +206,7 @@ body.landing-active:not(.landing-light) {
 /* ---------- nav ---------- */
 .lv-nav-link {
   position: relative;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Instrument Sans', sans-serif;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0;
@@ -228,7 +228,7 @@ body.landing-active:not(.landing-light) {
 .lv-nav-link:hover::after { transform: scaleX(1); }
 
 .lv-masthead {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 10.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -251,7 +251,7 @@ body.landing-active:not(.landing-light) {
   background-clip: initial;
   -webkit-text-fill-color: currentColor;
   color: var(--color-text) !important;
-  font-family: 'Fraunces', Georgia, serif !important;
+  font-family: 'Newsreader', Georgia, serif !important;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -328,7 +328,7 @@ body.landing-active:not(.landing-light) {
 }
 @keyframes lv-spark-draw { to { stroke-dashoffset: 0; } }
 .lv-progress-readout {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 10.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -367,7 +367,7 @@ body.landing-active:not(.landing-light) {
   border-bottom: 1px solid var(--color-border);
 }
 .lv-desk__tab {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 10.5px;
   letter-spacing: 0.08em;
   padding: 3px 7px;
@@ -380,7 +380,7 @@ body.landing-active:not(.landing-light) {
   background: var(--bg-secondary);
 }
 .lv-desk__chip {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 11.5px;
   padding: 2px 7px;
   border-radius: 3px;
@@ -405,7 +405,7 @@ body.landing-active:not(.landing-light) {
 .lv-dcf-row:last-child { border-bottom: 0; }
 .lv-dcf-row span:first-child { color: var(--color-text-muted); }
 .lv-dcf-row span:last-child {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   color: var(--color-text);
   font-variant-numeric: tabular-nums;
 }
@@ -415,7 +415,7 @@ body.landing-active:not(.landing-light) {
   gap: 1px;
   background: var(--color-border);
   border: 1px solid var(--color-border);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
@@ -450,7 +450,7 @@ body.landing-active:not(.landing-light) {
   .lv-ledger > div:last-child { border-right: 0; }
 }
 .lv-ledger__n {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   font-weight: 600;
   font-size: clamp(26px, 2.2vw, 34px);
   line-height: 1;
@@ -461,7 +461,7 @@ body.landing-active:not(.landing-light) {
 
 /* ---------- social proof ---------- */
 .lv-wordmark {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   font-weight: 600;
   font-size: clamp(22px, 2.4vw, 34px);
   letter-spacing: -0.02em;
@@ -473,7 +473,7 @@ body.landing-active:not(.landing-light) {
   white-space: nowrap;
 }
 .lv-wordmark small {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 10px;
   letter-spacing: 0.16em;
   color: var(--color-primary);
@@ -534,7 +534,7 @@ article:hover .lv-portrait { transform: translate(-3px, -3px); box-shadow: 13px 
 .lv-gap:hover { background: var(--bg-secondary); }
 .lv-gap:hover::before { transform: scaleY(1); }
 .lv-gap__idx {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   font-weight: 600;
   font-size: 30px;
   line-height: 1;
@@ -546,7 +546,7 @@ article:hover .lv-portrait { transform: translate(-3px, -3px); box-shadow: 13px 
   display: flex;
   flex-wrap: wrap;
   gap: 6px 0;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: 'Spline Sans Mono', ui-monospace, monospace;
   font-size: 11px;
   letter-spacing: 0.02em;
   color: var(--color-text-muted);
@@ -567,7 +567,7 @@ article:hover .lv-portrait { transform: translate(-3px, -3px); box-shadow: 13px 
 .lv-unit__icon { color: var(--color-text-muted); transition: color 220ms ease, transform 220ms ease; }
 .lv-unit:hover .lv-unit__icon { color: var(--color-primary); transform: translateY(-2px); }
 .lv-unit__title {
-  font-family: 'Fraunces', Georgia, serif;
+  font-family: 'Newsreader', Georgia, serif;
   font-weight: 500;
   font-size: 18px;
   line-height: 1.15;

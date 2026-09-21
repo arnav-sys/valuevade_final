@@ -69,7 +69,7 @@ export default function ComparisonSection() {
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.02em' }}
           >
             Why pay{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               30×
             </span>{' '}
             more for less?
@@ -148,7 +148,7 @@ export default function ComparisonSection() {
             <p className="lv-chapter mb-2">THE PRICING WEDGE</p>
             <h3 className="font-clash text-2xl text-[var(--color-text)]" style={{ lineHeight: 1.15 }}>
               Same skills. Same certifications.{' '}
-              <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+              <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
                 30× less.
               </span>
             </h3>
@@ -159,13 +159,13 @@ export default function ComparisonSection() {
           </div>
           <div className="flex items-center gap-5 shrink-0">
             <div className="text-right">
-              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-text-faint)] font-semibold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>Theirs</div>
-              <div className="text-2xl text-[var(--color-text-muted)] line-through mt-1 font-bold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>₹50k+</div>
+              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-text-faint)] font-semibold" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>Theirs</div>
+              <div className="text-2xl text-[var(--color-text-muted)] line-through mt-1 font-bold" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>₹50k+</div>
             </div>
             <div className="w-px h-10 bg-[var(--color-border)]" aria-hidden="true" />
             <div className="text-right">
-              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-primary)] font-semibold" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>Valuevade</div>
-              <div className="text-3xl text-[var(--color-text)] font-bold mt-1" style={{ fontFamily: '"Space Grotesk", Inter, sans-serif' }}>₹4999</div>
+              <div className="text-[11px] uppercase tracking-[0.16em] text-[var(--color-primary)] font-semibold" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>Valuevade</div>
+              <div className="text-3xl text-[var(--color-text)] font-bold mt-1" style={{ fontFamily: '"Instrument Sans", ui-sans-serif, sans-serif' }}>₹4999</div>
             </div>
           </div>
         </div>

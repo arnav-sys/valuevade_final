@@ -103,7 +103,7 @@ export default function FreeTrialCTA() {
               <h2 className="font-clash text-3xl sm:text-4xl text-[var(--color-text)]" style={{ lineHeight: 1.08, letterSpacing: '-0.02em' }}>
                 Try a full analyst mock interview.
                 <br className="hidden sm:block" />
-                <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+                <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
                   Free.
                 </span>
               </h2>

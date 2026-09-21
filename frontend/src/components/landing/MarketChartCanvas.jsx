@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
  * live last candle, crosshair. Purely illustrative market data. */
 
 const N = 64;
-const MONO = '"JetBrains Mono", ui-monospace, monospace';
+const MONO = '"Spline Sans Mono", ui-monospace, monospace';
 
 function seeded(seed) {
   let s = seed >>> 0;

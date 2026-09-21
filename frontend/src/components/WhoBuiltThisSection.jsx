@@ -34,7 +34,7 @@ export default function WhoBuiltThisSection() {
             data-testid="who-built-this-heading"
           >
             Who built this, and{' '}
-            <span style={{ fontFamily: '"Fraunces", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
+            <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 400, color: 'var(--color-primary)' }}>
               why
             </span>{' '}
             you can trust it

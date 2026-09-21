@@ -75,8 +75,8 @@ export default function LandingIntroSequence() {
       <div
         className="intro-wordmark"
         style={{
-          fontFamily: '"Fraunces", Georgia, serif',
-          fontVariationSettings: '"opsz" 144, "SOFT" 20, "WONK" 1',
+          fontFamily: '"Newsreader", Georgia, serif',
+          fontVariationSettings: '"opsz" 60',
           fontSize: 'clamp(48px, 10vw, 128px)',
           fontWeight: 600,
           letterSpacing: '-0.02em',

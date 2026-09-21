@@ -173,7 +173,7 @@ function CertificateBadge({ pathTitle, userName, completedAt }) {
         </text>
 
         {/* Name */}
-        <text x="200" y="156" textAnchor="middle" fill="#ffffff" fontSize="20" fontFamily="'Clash Display', serif" fontWeight="700">
+        <text x="200" y="156" textAnchor="middle" fill="#ffffff" fontSize="20" fontFamily="'Newsreader', serif" fontWeight="700">
           {userName || 'Finance Professional'}
         </text>
 
@@ -185,7 +185,7 @@ function CertificateBadge({ pathTitle, userName, completedAt }) {
         </text>
 
         {/* Path title */}
-        <text x="200" y="214" textAnchor="middle" fill="url(#vvCertTitle)" fontSize="14" fontFamily="'Clash Display', sans-serif" fontWeight="600">
+        <text x="200" y="214" textAnchor="middle" fill="url(#vvCertTitle)" fontSize="14" fontFamily="'Newsreader', sans-serif" fontWeight="600">
           {(pathTitle || 'Finance Career Path').length > 40
             ? (pathTitle || 'Finance Career Path').slice(0, 38) + '…'
             : pathTitle || 'Finance Career Path'}

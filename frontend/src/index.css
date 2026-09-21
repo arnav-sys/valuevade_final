@@ -24,9 +24,9 @@
     --color-border: rgba(0, 0, 0, 0.08);
     --color-success: #00B876;
     --color-error: #E53E5C;
-    --font-display: 'Clash Display', sans-serif;
-    --font-body: 'Bricolage Grotesque', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-display: 'Newsreader', Georgia, serif;
+    --font-body: 'Instrument Sans', sans-serif;
+    --font-mono: 'Spline Sans Mono', monospace;
     --glass-bg: rgba(255, 255, 255, 0.65);
     --glass-border: rgba(0, 0, 0, 0.06);
     --glass-hover-border: rgba(106, 92, 255, 0.3);
@@ -130,7 +130,7 @@
     min-height: 100vh;
   }
   body {
-    font-family: 'Bricolage Grotesque', sans-serif;
+    font-family: 'Instrument Sans', sans-serif;
     background-color: var(--bg-primary) !important;
     color: var(--color-text);
     margin: 0;
@@ -154,7 +154,7 @@
     pointer-events: none;
   }
   h1, h2, h3 {
-    font-family: 'Clash Display', sans-serif;
+    font-family: 'Newsreader', Georgia, serif;
   }
   /* Browser autofill (esp. Chrome) forces its own white field background +
      ignores author text-color, which showed as an invisible white-on-white
