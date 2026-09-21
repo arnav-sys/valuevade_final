@@ -34,12 +34,12 @@ body.landing-active.landing-light {
   --color-text-secondary: rgba(244,247,251,0.88);
   --color-text-muted:     rgba(244,247,251,0.62);
   --color-text-faint:     rgba(244,247,251,0.42);
-  --color-primary:        #12E29A;   /* mint-emerald */
-  --color-accent-purple:  #12E29A;   /* fold accents into the single mint */
-  --color-accent-pink:    #5EEAD4;   /* lighter mint for secondary accents */
+  --color-primary:        #246BFD;   /* mint-emerald */
+  --color-accent-purple:  #246BFD;   /* fold accents into the single mint */
+  --color-accent-pink:    #7CA8FF;   /* lighter mint for secondary accents */
 
   background:
-    radial-gradient(70% 55% at 50% -12%, rgba(18,226,154,0.10), transparent 62%),
+    radial-gradient(70% 55% at 50% -12%, rgba(36,107,253,0.10), transparent 62%),
     radial-gradient(45% 35% at 88% 112%, rgba(94,234,212,0.06), transparent 60%),
     var(--bg-primary);
   color: var(--color-text);
@@ -69,7 +69,7 @@ body.landing-active.landing-light {
 /* Glass cards in the dark palette */
 .landing-dark .glass-card {
   background: rgba(255,255,255,0.025) !important;
-  border: 1px solid rgba(18,226,154,0.16) !important;
+  border: 1px solid rgba(36,107,253,0.16) !important;
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   /* Guardrail: no lift translateY, no glow box-shadow.
@@ -77,7 +77,7 @@ body.landing-active.landing-light {
   transition: border-color 300ms ease;
 }
 .landing-dark .glass-card:hover {
-  border-color: rgba(18,226,154,0.45) !important;
+  border-color: rgba(36,107,253,0.45) !important;
 }
 
 /* Sections — ensure no white bleed through anywhere */
@@ -93,7 +93,7 @@ body.landing-active.landing-light {
   content: '';
   position: absolute; top: 0; left: 10%; right: 10%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(18,226,154,0.22), transparent);
+  background: linear-gradient(90deg, transparent, rgba(36,107,253,0.22), transparent);
 }
 
 /* Navbar — when scrolled */
@@ -103,7 +103,7 @@ body.landing-active.landing-light {
 .landing-dark header[data-testid="navbar"].bg-\[var\(--bg-primary\)\]\/80,
 .landing-dark header[data-testid="navbar"][class*="backdrop-blur"] {
   background: rgba(10,15,28,0.78) !important;
-  border-bottom-color: rgba(18,226,154,0.16) !important;
+  border-bottom-color: rgba(36,107,253,0.16) !important;
 }
 
 /* Wordmark — clean cool-white on the navy landing (readable at small size) */
@@ -277,15 +277,15 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   border-radius: 999px;
   border: 1px solid var(--color-primary);
   background: var(--color-primary);
-  color: #06231A;
+  color: #FFFFFF;
   display: inline-flex;
   align-items: center;
   gap: 10px;
   transition: background-color 220ms ease, border-color 220ms ease, transform 220ms ease;
 }
 .lv-cta:hover {
-  background: #2CF0AC;
-  border-color: #2CF0AC;
+  background: #4C86FF;
+  border-color: #4C86FF;
   transform: translateY(-1px);
 }
 .lv-cta-ghost {
@@ -353,7 +353,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   transition: border-color 260ms ease;
 }
 .lv-feature-card-hover:hover {
-  border-color: rgba(18,226,154,0.45) !important;
+  border-color: rgba(36,107,253,0.45) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -399,7 +399,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: rgba(26,26,46,0.68);
 }
 .landing-light .lv-nav-link:hover { color: #1A1A2E; }
-.landing-light .lv-nav-link::after { background: #0BA47A; }
+.landing-light .lv-nav-link::after { background: #1E56D4; }
 
 /* Status bar — white-tinted so it doesn't muddy the cream */
 .landing-light .lv-statusbar {
@@ -412,12 +412,12 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 
 /* CTA — force a punchy dark-blue on cream */
 .landing-light .lv-cta {
-  background: #0BA47A;
-  border-color: #0BA47A;
+  background: #1E56D4;
+  border-color: #1E56D4;
 }
 .landing-light .lv-cta:hover {
-  background: #0BA47A;
-  border-color: #0BA47A;
+  background: #1E56D4;
+  border-color: #1E56D4;
 }
 
 /* LIVE dot — deeper rose in light mode, no glow */
@@ -433,7 +433,7 @@ body.landing-active.landing-light #hero { background: transparent !important; }
 /* Emotional italic pink lines wash out on cream — bump to a darker rose */
 .landing-light [data-testid="problem-transition-line"],
 .landing-light [data-testid="ai-proof-emotional-line"] {
-  color: #0B8F6C;
+  color: #1E56D4;
 }
 
 /* Hero ticker up/down colour tuning */
@@ -472,4 +472,4 @@ body.landing-active.landing-light #hero { background: transparent !important; }
   color: #1A1A2E;
 }
 .landing-light .lv-trial-input::placeholder { color: rgba(26,26,46,0.38); }
-.landing-light .lv-trial-input:focus { border-color: #0BA47A; }
+.landing-light .lv-trial-input:focus { border-color: #1E56D4; }

@@ -230,7 +230,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme }) {
               <Link
                 to="/login"
                 onClick={() => setMenuOpen(false)}
-                className="px-8 py-3 bg-[var(--color-primary)] text-[#06231A] font-semibold rounded-full text-lg font-bricolage"
+                className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
                 data-testid="mobile-nav-signup"
               >
                 Sign Up

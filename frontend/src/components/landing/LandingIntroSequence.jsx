@@ -60,7 +60,7 @@ export default function LandingIntroSequence() {
         style={{
           position: 'absolute', inset: 0,
           background:
-            'radial-gradient(40% 30% at 50% 50%, rgba(18,226,154,0.28), transparent 70%)',
+            'radial-gradient(40% 30% at 50% 50%, rgba(36,107,253,0.28), transparent 70%)',
           opacity: phase === 'out' ? 0 : 1,
           transition: 'opacity 480ms ease-out',
         }}
@@ -75,7 +75,7 @@ export default function LandingIntroSequence() {
           color: '#ffffff',
           display: 'flex',
           gap: '0.04em',
-          textShadow: '0 0 38px rgba(18,226,154,0.45)',
+          textShadow: '0 0 38px rgba(36,107,253,0.45)',
         }}
       >
         {LETTERS.map((ch, i) => (
