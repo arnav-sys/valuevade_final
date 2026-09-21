@@ -108,11 +108,11 @@ export default function LandingPage() {
       <main className="relative z-10">
         <HeroSection />
         <SocialProofStrip />
+        <FacultySection />
         <ProblemSection />
         <FeaturesSection />
         <WhatYoullLearnSection />
         <WhoBuiltThisSection />
-        <FacultySection />
         <ComparisonSection />
         <TestimonialsSection />
         <HowItWorksSection />

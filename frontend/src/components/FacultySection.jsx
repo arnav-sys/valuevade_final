@@ -36,7 +36,7 @@ export default function FacultySection() {
       <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-30" aria-hidden="true" />
       <div ref={ref} className="relative max-w-7xl mx-auto px-6">
         <div className="max-w-3xl mb-12 lg:mb-14">
-          <p className={`lv-chapter mb-5 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>THE FACULTY</p>
+          <p className={`lv-chapter mb-5 ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}>YOUR INSTRUCTORS</p>
           <h2
             className={`text-4xl sm:text-5xl lg:text-[56px] text-[var(--color-text)] ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
             style={{ animationDelay: '0.1s', lineHeight: 1.06, letterSpacing: '-0.03em' }}
