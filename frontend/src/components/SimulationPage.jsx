@@ -13,6 +13,7 @@ import {
   ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
   FileSpreadsheet, FileText, GitBranch, MousePointerClick,
 } from 'lucide-react';
+import AILoader from './common/AILoader';
 import ExcelSim from './simulations/ExcelSim';
 import DocumentSim from './simulations/DocumentSim';
 import DecisionMakingSim from './simulations/DecisionMakingSim';
@@ -192,7 +193,12 @@ export default function SimulationPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center" data-testid="simulation-loading">
-        <Loader2 size={32} className="animate-spin text-[var(--color-primary)]" />
+        <AILoader
+          variant="inline"
+          title="Setting up your simulation"
+          messages={['Loading session data…', 'Preparing the workspace…', 'Almost there…']}
+          testid="simulation-ai-loader"
+        />
       </div>
     );
   }

@@ -262,7 +262,8 @@ export default function EnrollmentPage() {
           </ol>
         </section>
 
-        {/* CTA */}
+        {/* CTA, AI-customize framed as the primary/recommended choice when
+            available, standard curriculum always one click away too. */}
         <section className="text-center" data-testid="enrollment-cta-section">
           {error && (
             <div className="mb-5 rounded-lg bg-red-500/10 border border-red-500/30 px-4 py-3 text-sm text-red-500 font-bricolage" data-testid="enrollment-error">
@@ -270,7 +271,7 @@ export default function EnrollmentPage() {
             </div>
           )}
 
-          {aiMode !== 'mandatory' && (
+          {aiMode === 'off' ? (
             <>
               <BreathingGlow testid="enrollment-glow">
                 <button
@@ -286,26 +287,58 @@ export default function EnrollmentPage() {
                 ₹4999 lifetime access · one-time payment via Razorpay · full standard curriculum
               </p>
             </>
-          )}
-
-          {(aiMode === 'optional' || aiMode === 'mandatory') && (
-            <div className={aiMode === 'optional' ? 'mt-8' : ''} data-testid="enrollment-ai-cta-block">
-              {aiMode === 'optional' && (
-                <div className="flex items-center gap-3 max-w-xs mx-auto mb-4">
-                  <div className="flex-1 h-px bg-[var(--color-border)]" />
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-text-muted)]">or</span>
-                  <div className="flex-1 h-px bg-[var(--color-border)]" />
-                </div>
-              )}
-              <Link
-                to={`/course/${courseId}/customize`}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-[var(--color-accent-purple)]/50 bg-[var(--color-accent-purple)]/10 text-[var(--color-accent-purple)] text-sm font-semibold font-bricolage hover:bg-[var(--color-accent-purple)]/20 transition-all"
-                data-testid="enrollment-customize-button"
+          ) : (
+            <div data-testid="enrollment-ai-cta-block">
+              <div
+                className={`grid gap-5 max-w-3xl mx-auto ${aiMode === 'optional' ? 'sm:grid-cols-2' : 'sm:max-w-sm'}`}
+                data-testid="enrollment-choice-grid"
               >
-                <Sparkles size={15} /> Customise my path with AI
-              </Link>
-              <p className="mt-3 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-ai-fineprint">
-                Answer a few questions, Pari tailors the modules to your background and goals.
+                {/* Primary: Customise with AI */}
+                <Link
+                  to={`/course/${courseId}/customize`}
+                  className="group relative flex flex-col items-center text-center p-7 sm:p-8 rounded-3xl border-2 border-[var(--color-accent-purple)] bg-gradient-to-br from-[var(--color-accent-purple)]/[0.09] to-transparent hover:from-[var(--color-accent-purple)]/[0.16] transition-all"
+                  data-testid="enrollment-customize-button"
+                >
+                  {aiMode === 'optional' && (
+                    <span className="absolute -top-3 px-3 py-1 rounded-full bg-[var(--color-accent-purple)] text-white text-[10px] font-mono uppercase tracking-wider font-bold shadow-md">
+                      Recommended
+                    </span>
+                  )}
+                  <span className="w-12 h-12 rounded-2xl bg-[var(--color-accent-purple)]/15 border border-[var(--color-accent-purple)]/30 flex items-center justify-center mb-4 mt-2">
+                    <Sparkles size={22} className="text-[var(--color-accent-purple)]" />
+                  </span>
+                  <h3 className="font-clash text-lg font-bold text-[var(--color-text)] mb-2">Customise my path with AI</h3>
+                  <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-5">
+                    Answer a few questions, Pari tailors the modules to your background and goals.
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-accent-purple)] group-hover:gap-2.5 transition-all">
+                    Get my custom plan <ArrowRight size={14} />
+                  </span>
+                </Link>
+
+                {/* Secondary: standard curriculum, only shown when optional */}
+                {aiMode === 'optional' && (
+                  <button
+                    onClick={handlePayAndStart}
+                    disabled={enrolling || paying}
+                    data-testid="enrollment-start-button"
+                    className="group relative flex flex-col items-center text-center p-7 sm:p-8 rounded-3xl border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/40 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                  >
+                    <span className="w-12 h-12 rounded-2xl bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/25 flex items-center justify-center mb-4 mt-2">
+                      <BookOpen size={22} className="text-[var(--color-primary)]" />
+                    </span>
+                    <h3 className="font-clash text-lg font-bold text-[var(--color-text)] mb-2">Start the standard curriculum</h3>
+                    <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-5">
+                      Jump straight in with our proven, full 21-module program. No extra steps.
+                    </p>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[var(--color-primary)] group-hover:gap-2.5 transition-all">
+                      {paying ? 'Opening payment…' : 'Pay ₹4999 & start now'} <ArrowRight size={14} />
+                    </span>
+                  </button>
+                )}
+              </div>
+              <p className="mt-6 text-xs text-[var(--color-text-muted)] font-bricolage" data-testid="enrollment-ai-fineprint">
+                ₹4999 lifetime access · one-time payment via Razorpay, either path.
               </p>
             </div>
           )}

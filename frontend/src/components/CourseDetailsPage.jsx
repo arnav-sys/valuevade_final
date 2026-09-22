@@ -191,6 +191,96 @@ const COURSE_DETAILS_FAQS = [
 
 import { effectiveMinutes, formatDuration } from '../utils/sessionTime';
 
+// ── Roadmap data + full-screen preview modal ─────────────────────────────────
+const ROADMAP_STEPS = [
+  {
+    icon: Sparkles,
+    title: 'A personalised path, not generic content',
+    body: "Tell us where you're starting from and where you want to go. Your course adapts to you, instead of dumping the same content on everyone.",
+    image: 'https://images.pexels.com/photos/577210/pexels-photo-577210.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  },
+  {
+    icon: PlayCircle,
+    title: 'Learn by doing, not just watching',
+    body: 'Video lectures, structured notes, quizzes, simulations and real-world case studies, backed by a 24/7 AI tutor that solves your doubts instantly.',
+    image: 'https://images.pexels.com/photos/6347916/pexels-photo-6347916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  },
+  {
+    icon: BrainCircuit,
+    title: 'Master AI for finance',
+    body: "Learn to use AI as your edge in equity research and modelling, so you're working with it, not getting replaced by it.",
+    image: 'https://images.unsplash.com/photo-1674027444485-cec3da58eef4?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    icon: Award,
+    title: 'NISM certification prep',
+    body: 'Structured, syllabus-mapped preparation for the NISM Series XV exam, built into the course, not sold separately.',
+    image: 'https://images.unsplash.com/photo-1756885375450-65094876d21f?crop=entropy&cs=srgb&fm=jpg&q=85',
+  },
+  {
+    icon: Hammer,
+    title: 'Build real-world projects',
+    body: 'Ship projects that actually impress recruiters. You leave with certification, skill and a portfolio, all three, not just one.',
+    image: 'https://images.pexels.com/photos/7876671/pexels-photo-7876671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  },
+  {
+    icon: Linkedin,
+    title: 'Resume, LinkedIn & soft skills',
+    body: "A guided walkthrough to fix your resume, LinkedIn and interview soft skills, the stuff that 10x's how recruiters see you.",
+    image: 'https://images.pexels.com/photos/590044/pexels-photo-590044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  },
+  {
+    icon: Mic,
+    title: 'AI mock interview prep',
+    body: 'Full, scored interview simulations run by AI, repeatable as many times as you need until you walk in confident.',
+    image: 'https://images.pexels.com/photos/6285166/pexels-photo-6285166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
+  },
+];
+
+function RoadmapStepModal({ step, index, onClose }) {
+  if (!step) return null;
+  return (
+    <div
+      className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
+      onClick={onClose}
+      data-testid="roadmap-step-modal"
+    >
+      <div
+        className="bg-[var(--color-bg-elevated)] rounded-2xl overflow-hidden shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="relative aspect-video bg-black shrink-0">
+          <img src={step.image} alt={step.title} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-mono font-bold" data-testid="roadmap-modal-step-badge">
+            Step {String(index + 1).padStart(2, '0')}
+          </span>
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center text-lg leading-none transition-colors"
+            data-testid="roadmap-modal-close"
+          >
+            ✕
+          </button>
+        </div>
+        <div className="p-6 sm:p-7 overflow-y-auto">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
+              <step.icon size={16} className="text-[var(--color-primary)]" />
+            </span>
+            <h3 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)]" data-testid="roadmap-modal-title">
+              {step.title}
+            </h3>
+          </div>
+          <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed" data-testid="roadmap-modal-body">
+            {step.body}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ── Video Preview Modal ──────────────────────────────────────────────────────
 function VideoPreviewModal({ session, onClose }) {
   if (!session) return null;
@@ -248,6 +338,7 @@ export default function CourseDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [previewSession, setPreviewSession] = useState(null); // video preview modal
+  const [roadmapStepIdx, setRoadmapStepIdx] = useState(null); // roadmap full-screen preview
 
   const fetchData = async () => {
     setLoading(true);
@@ -368,6 +459,11 @@ export default function CourseDetailsPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
       <VideoPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
+      <RoadmapStepModal
+        step={roadmapStepIdx != null ? ROADMAP_STEPS[roadmapStepIdx] : null}
+        index={roadmapStepIdx}
+        onClose={() => setRoadmapStepIdx(null)}
+      />
       <Helmet>
         <title>Equity Research Analyst Course, Syllabus & Fees | Valuevade</title>
         <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
@@ -718,36 +814,50 @@ management or Big 4 advisory.`}
                 </p>
               </section>
 
-              {/* Roadmap, how the transformation actually happens step by step */}
+              {/* Roadmap, how the transformation actually happens step by step.
+                  Horizontal wrapping grid, each step opens a full-screen preview. */}
               <section className="mb-14" data-testid="detail-roadmap">
                 <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2">Your Roadmap</p>
-                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
+                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-2">
                   How you get there, step by step
                 </h2>
-                <div className="relative">
-                  <div className="hidden sm:block absolute left-[27px] top-2 bottom-2 w-px bg-[var(--color-border)]" aria-hidden="true" />
-                  <div className="space-y-6">
-                    {[
-                      { icon: Sparkles, title: 'A personalised path, not generic content', body: "Tell us where you're starting from and where you want to go. Your course adapts to you, instead of dumping the same content on everyone." },
-                      { icon: PlayCircle, title: 'Learn by doing, not just watching', body: 'Video lectures, structured notes, quizzes, simulations and real-world case studies, backed by a 24/7 AI tutor that solves your doubts instantly.' },
-                      { icon: BrainCircuit, title: 'Master AI for finance', body: "Learn to use AI as your edge in equity research and modelling, so you're working with it, not getting replaced by it." },
-                      { icon: Award, title: 'NISM certification prep', body: 'Structured, syllabus-mapped preparation for the NISM Series XV exam, built into the course, not sold separately.' },
-                      { icon: Hammer, title: 'Build real-world projects', body: 'Ship projects that actually impress recruiters. You leave with certification, skill and a portfolio, all three, not just one.' },
-                      { icon: Linkedin, title: 'Resume, LinkedIn & soft skills', body: "A guided walkthrough to fix your resume, LinkedIn and interview soft skills, the stuff that 10x's how recruiters see you." },
-                      { icon: Mic, title: 'AI mock interview prep', body: 'Full, scored interview simulations run by AI, repeatable as many times as you need until you walk in confident.' },
-                    ].map((step, i) => (
-                      <div key={i} className="flex gap-4 sm:gap-5" data-testid={`roadmap-step-${i}`}>
-                        <span className="relative z-10 shrink-0 w-14 h-14 rounded-full bg-[var(--color-surface)] border-2 border-[var(--color-primary)] flex items-center justify-center">
-                          <step.icon size={20} className="text-[var(--color-primary)]" />
+                <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-6">
+                  Click any step for a closer look.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                  {ROADMAP_STEPS.map((step, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setRoadmapStepIdx(i)}
+                      className="group relative text-left rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/50 hover:-translate-y-1 transition-all duration-300"
+                      data-testid={`roadmap-step-${i}`}
+                    >
+                      <div className="relative aspect-[4/3] overflow-hidden">
+                        <img
+                          src={step.image}
+                          alt={step.title}
+                          loading="lazy"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                        <span className="absolute top-2.5 left-2.5 w-7 h-7 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[11px] font-mono font-bold">
+                          {String(i + 1).padStart(2, '0')}
                         </span>
-                        <div className="pt-1">
-                          <p className="text-[10px] font-mono text-[var(--color-text-faint)] mb-1">Step {String(i + 1).padStart(2, '0')}</p>
-                          <h3 className="font-clash text-base sm:text-lg font-semibold text-[var(--color-text)] mb-1">{step.title}</h3>
-                          <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">{step.body}</p>
-                        </div>
+                        <span className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center">
+                          <step.icon size={14} className="text-white" />
+                        </span>
+                        <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                          <span className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#111"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+                          </span>
+                        </span>
                       </div>
-                    ))}
-                  </div>
+                      <div className="p-3.5 sm:p-4">
+                        <p className="text-[9px] font-mono text-[var(--color-text-faint)] mb-1">Step {String(i + 1).padStart(2, '0')}</p>
+                        <h3 className="font-clash text-sm font-semibold text-[var(--color-text)] leading-snug line-clamp-2">{step.title}</h3>
+                      </div>
+                    </button>
+                  ))}
                 </div>
                 <div className="mt-8 flex items-center gap-4 rounded-2xl border-2 border-[var(--color-primary)] bg-gradient-to-br from-[var(--color-primary)]/[0.08] to-transparent p-5 sm:p-6">
                   <span className="shrink-0 w-11 h-11 rounded-full bg-[var(--color-primary)] flex items-center justify-center">
@@ -758,6 +868,7 @@ management or Big 4 advisory.`}
                   </p>
                 </div>
               </section>
+
 
               {/* Career opportunities, bigger version of the sidebar tag list */}
               <section className="mb-14" data-testid="detail-career-opportunities">

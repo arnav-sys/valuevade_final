@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase';
 import useTimeTracking from '../utils/useTimeTracking';
 import AvatarPersona from './tutor/AvatarPersona';
 import { resolveTutorPhase } from '../contexts/TutorContext';
+import AILoader from './common/AILoader';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, XCircle, Lightbulb,
   Loader2, AlertCircle, RefreshCw,
@@ -152,7 +153,12 @@ export default function QuizPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[var(--bg-primary)] flex items-center justify-center" data-testid="quiz-loading">
-        <Loader2 size={32} className="animate-spin text-[var(--color-primary)]" />
+        <AILoader
+          variant="inline"
+          title="Preparing your quiz"
+          messages={['Loading questions…', 'Shuffling options…', 'Almost ready…']}
+          testid="quiz-ai-loader"
+        />
       </div>
     );
   }

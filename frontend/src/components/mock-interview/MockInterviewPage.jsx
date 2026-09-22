@@ -4,6 +4,7 @@ import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../lib/supabase';
 import Sidebar from '../Sidebar';
 import { Mic, MicOff, Send, Keyboard, ArrowRight, Loader2 } from 'lucide-react';
+import AILoader from '../common/AILoader';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -199,6 +200,16 @@ export default function MockInterviewPage() {
 
   return (
     <div className="flex min-h-screen bg-[var(--bg-primary)]">
+      {thinking && roundComplete && (
+        <AILoader
+          variant="overlay"
+          title={round === 3 ? 'Scoring your interview' : 'Preparing your next round'}
+          messages={round === 3
+            ? ['Reviewing your transcript…', 'Scoring technicals, structure & communication…', 'Compiling your verdict…']
+            : ['Reviewing your last round…', 'Lining up the next questions…']}
+          testid="mi-transition-loader"
+        />
+      )}
       <Sidebar />
       <main className="flex-1 p-6 lg:p-10 overflow-y-auto">
         <div className="max-w-3xl mx-auto" data-testid="mock-interview-page">

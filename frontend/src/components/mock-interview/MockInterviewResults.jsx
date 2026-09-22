@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import Sidebar from '../Sidebar';
 import { Trophy, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import AILoader from '../common/AILoader';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -42,7 +43,14 @@ export default function MockInterviewResults() {
   if (!data) return (
     <div className="flex min-h-screen bg-[var(--bg-primary)]">
       <Sidebar />
-      <main className="flex-1 p-8 text-[var(--color-text-muted)]">Loading results…</main>
+      <main className="flex-1 flex items-center justify-center">
+        <AILoader
+          variant="inline"
+          title="Preparing your results"
+          messages={['Reviewing your transcript…', 'Scoring technicals, structure & communication…', 'Compiling your verdict…']}
+          testid="mi-results-ai-loader"
+        />
+      </main>
     </div>
   );
 

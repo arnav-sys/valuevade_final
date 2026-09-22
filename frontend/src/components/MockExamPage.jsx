@@ -17,6 +17,7 @@ import Sidebar from './Sidebar';
 import {
   Clock, AlertCircle, ChevronLeft, ChevronRight, Flag, Send, Loader2,
 } from 'lucide-react';
+import AILoader from './common/AILoader';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -146,7 +147,12 @@ export default function MockExamPage() {
       <div className="flex min-h-screen bg-[var(--bg-primary)]">
         <Sidebar />
         <main className="flex-1 flex items-center justify-center pt-16 lg:pt-0">
-          <Loader2 size={28} className="animate-spin text-[var(--color-primary)]" />
+          <AILoader
+            variant="inline"
+            title="Preparing your mock exam"
+            messages={['Loading questions…', 'Setting the timer…', 'Almost ready…']}
+            testid="mock-exam-ai-loader"
+          />
         </main>
       </div>
     );
