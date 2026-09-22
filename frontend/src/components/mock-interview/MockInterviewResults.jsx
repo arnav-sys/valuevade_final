@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import Sidebar from '../Sidebar';
-import { Trophy, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Trophy, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
 import AILoader from '../common/AILoader';
 
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -28,17 +28,54 @@ function SimpleMarkdown({ text }) {
 export default function MockInterviewResults() {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
   const [transcriptOpen, setTranscriptOpen] = useState(false);
 
-  useEffect(() => {
+  const fetchResults = () => {
+    setError(null);
     (async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      const r = await fetch(`${API}/api/mock-interview/${id}`, {
-        headers: { Authorization: `Bearer ${session?.access_token || ''}` },
-      });
-      if (r.ok) setData(await r.json());
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        const r = await fetch(`${API}/api/mock-interview/${id}`, {
+          headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+        });
+        if (!r.ok) {
+          const body = await r.json().catch(() => ({}));
+          throw new Error(body.detail || `Failed to load results (${r.status})`);
+        }
+        setData(await r.json());
+      } catch (e) {
+        setError(e.message || 'Failed to load results');
+      }
     })();
+  };
+
+  useEffect(() => {
+    fetchResults();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  if (error) return (
+    <div className="flex min-h-screen bg-[var(--bg-primary)]">
+      <Sidebar />
+      <main className="flex-1 flex items-center justify-center p-8">
+        <div className="flex flex-col items-center text-center" data-testid="mi-results-error">
+          <div className="w-14 h-14 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mb-4">
+            <AlertCircle size={24} className="text-red-500" />
+          </div>
+          <p className="text-[var(--color-text)] font-medium mb-1.5">Couldn't load your results</p>
+          <p className="text-sm text-[var(--color-text-muted)] mb-5">{error}</p>
+          <button
+            onClick={fetchResults}
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[var(--color-primary)] text-white text-sm font-semibold hover:brightness-110 transition-all"
+            data-testid="mi-results-retry"
+          >
+            <RefreshCw size={16} /> Try Again
+          </button>
+        </div>
+      </main>
+    </div>
+  );
 
   if (!data) return (
     <div className="flex min-h-screen bg-[var(--bg-primary)]">

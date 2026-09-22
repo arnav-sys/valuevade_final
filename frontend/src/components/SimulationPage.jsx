@@ -10,7 +10,7 @@ import AvatarPersona from './tutor/AvatarPersona';
 import { useDoubtsLauncher } from '../contexts/DoubtsLauncherContext';
 import { resolveTutorPhase } from '../contexts/TutorContext';
 import {
-  ArrowLeft, Loader2, AlertCircle, RefreshCw, Wrench,
+  ArrowLeft, AlertCircle, RefreshCw, Wrench,
   FileSpreadsheet, FileText, GitBranch, MousePointerClick,
 } from 'lucide-react';
 import AILoader from './common/AILoader';

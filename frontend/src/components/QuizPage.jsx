@@ -8,7 +8,7 @@ import { resolveTutorPhase } from '../contexts/TutorContext';
 import AILoader from './common/AILoader';
 import {
   ArrowLeft, ArrowRight, CheckCircle2, XCircle, Lightbulb,
-  Loader2, AlertCircle, RefreshCw,
+  AlertCircle, RefreshCw,
 } from 'lucide-react';
 
 function getOptions(q) {
