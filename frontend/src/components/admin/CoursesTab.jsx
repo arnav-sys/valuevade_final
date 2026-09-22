@@ -5,7 +5,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../../lib/supabase';
-import { Pencil, Check, X as XIcon, Eye, Unlock, Loader2, FolderOpen, PlayCircle, ImagePlus, ImageOff } from 'lucide-react';
+import { Pencil, Check, X as XIcon, Eye, Unlock, Loader2, FolderOpen, PlayCircle, ImagePlus, ImageOff, FileText, Video, Upload } from 'lucide-react';
 
 const API = process.env.REACT_APP_BACKEND_URL;
 
@@ -25,11 +25,11 @@ async function req(path, method = 'GET', body = null) {
   return j;
 }
 
-async function uploadPhoto(courseId, file) {
+async function uploadCourseFile(courseId, kind, file) {
   const { data: { session } } = await supabase.auth.getSession();
   const form = new FormData();
   form.append('file', file);
-  const r = await fetch(`${API}/api/admin/courses/${courseId}/photo`, {
+  const r = await fetch(`${API}/api/admin/courses/${courseId}/${kind}`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${session?.access_token || ''}` },
     body: form,
@@ -72,7 +72,7 @@ function PreviewSessionsModal({ course, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" data-testid="preview-sessions-modal">
-      <div className="bg-[var(--color-bg)] border border-[var(--color-border)] rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+      <div className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-2xl w-full max-w-2xl max-h-[80vh] flex flex-col">
         <div className="p-5 border-b border-[var(--color-border)] flex items-center justify-between">
           <div>
             <h3 className="font-semibold text-[var(--color-text)]">{course.title}</h3>
@@ -136,6 +136,86 @@ function PreviewSessionsModal({ course, onClose }) {
   );
 }
 
+function CourseDetailsModal({ course, onClose, onSaved }) {
+  const [form, setForm] = useState({
+    long_description: course.long_description || '',
+    what_you_learn: (course.what_you_learn || []).join('\n'),
+    prerequisites: (course.prerequisites || []).join('\n'),
+    career_outcomes: (course.career_outcomes || []).join('\n'),
+    skills: (course.skills || []).join('\n'),
+  });
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState(null);
+
+  const toLines = (s) => s.split('\n').map((x) => x.trim()).filter(Boolean);
+
+  const save = async () => {
+    setSaving(true);
+    setErr(null);
+    try {
+      const patch = {
+        long_description: form.long_description.trim(),
+        what_you_learn: toLines(form.what_you_learn),
+        prerequisites: toLines(form.prerequisites),
+        career_outcomes: toLines(form.career_outcomes),
+        skills: toLines(form.skills),
+      };
+      await req(`/api/admin/courses/${course.id}`, 'PATCH', patch);
+      onSaved(patch);
+      onClose();
+    } catch (e) { setErr(e.message); }
+    finally { setSaving(false); }
+  };
+
+  const field = (key, label, rows, hint) => (
+    <div>
+      <label className="text-xs font-semibold text-[var(--color-text)] mb-1 block">{label}</label>
+      {hint && <p className="text-[10px] text-[var(--color-text-faint)] mb-1">{hint}</p>}
+      <textarea
+        value={form[key]}
+        onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+        rows={rows}
+        className="w-full text-sm bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-lg p-2.5 outline-none focus:border-[var(--color-primary)] text-[var(--color-text)]"
+        data-testid={`course-details-field-${key}`}
+      />
+    </div>
+  );
+
+  return (
+    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4" data-testid="course-details-modal">
+      <div className="bg-[var(--color-bg-elevated)] border border-[var(--color-border)] rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col">
+        <div className="p-5 border-b border-[var(--color-border)] flex items-center justify-between">
+          <h3 className="font-semibold text-[var(--color-text)]">Edit details &middot; {course.title}</h3>
+          <button onClick={onClose} className="text-[var(--color-text-muted)] hover:text-[var(--color-text)]" data-testid="course-details-modal-close">
+            <XIcon size={20} />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-5 space-y-4">
+          {err && <p className="text-sm text-red-400">{err}</p>}
+          {field('long_description', 'Course description', 4, 'Shown on the course details page under the title.')}
+          {field('what_you_learn', "What you'll be able to do", 5, 'One item per line.')}
+          {field('prerequisites', 'Prerequisites', 3, 'One item per line.')}
+          {field('career_outcomes', 'Career outcomes', 4, 'One item per line.')}
+          {field('skills', "Skills you'll gain", 3, 'One item per line.')}
+        </div>
+        <div className="p-4 border-t border-[var(--color-border)] flex justify-end gap-2">
+          <button onClick={onClose} className="px-4 py-2 text-sm rounded-lg text-[var(--color-text-muted)] hover:text-[var(--color-text)]" data-testid="course-details-cancel">
+            Cancel
+          </button>
+          <button
+            onClick={save}
+            disabled={saving}
+            className="px-4 py-2 text-sm rounded-lg bg-[var(--color-primary)] text-white font-semibold disabled:opacity-50 flex items-center gap-2"
+            data-testid="course-details-save"
+          >
+            {saving && <Loader2 className="animate-spin" size={14} />} Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function CoursesTab() {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -144,8 +224,12 @@ export default function CoursesTab() {
   const [draftTitle, setDraftTitle] = useState('');
   const [saving, setSaving] = useState(false);
   const [modalCourse, setModalCourse] = useState(null);
+  const [detailsCourse, setDetailsCourse] = useState(null);
   const [uploadingId, setUploadingId] = useState(null);
+  const [uploadingKind, setUploadingKind] = useState(null);
   const fileInputs = useRef({});
+  const brochureInputs = useRef({});
+  const videoInputs = useRef({});
 
   const load = async () => {
     try {
@@ -174,15 +258,37 @@ export default function CoursesTab() {
   };
 
   const pickPhoto = (courseId) => fileInputs.current[courseId]?.click();
+  const pickBrochure = (courseId) => brochureInputs.current[courseId]?.click();
+  const pickVideo = (courseId) => videoInputs.current[courseId]?.click();
 
   const onPhotoChosen = async (course, file) => {
     if (!file) return;
-    setUploadingId(course.id);
+    setUploadingId(course.id); setUploadingKind('photo');
     try {
-      const j = await uploadPhoto(course.id, file);
+      const j = await uploadCourseFile(course.id, 'photo', file);
       setCourses((prev) => prev.map((x) => x.id === course.id ? { ...x, image_url: j.image_url } : x));
     } catch (e) { alert(`Photo upload failed: ${e.message}`); }
-    finally { setUploadingId(null); }
+    finally { setUploadingId(null); setUploadingKind(null); }
+  };
+
+  const onBrochureChosen = async (course, file) => {
+    if (!file) return;
+    setUploadingId(course.id); setUploadingKind('brochure');
+    try {
+      const j = await uploadCourseFile(course.id, 'brochure', file);
+      setCourses((prev) => prev.map((x) => x.id === course.id ? { ...x, brochure_url: j.brochure_url } : x));
+    } catch (e) { alert(`Brochure upload failed: ${e.message}`); }
+    finally { setUploadingId(null); setUploadingKind(null); }
+  };
+
+  const onVideoChosen = async (course, file) => {
+    if (!file) return;
+    setUploadingId(course.id); setUploadingKind('video');
+    try {
+      const j = await uploadCourseFile(course.id, 'intro-video', file);
+      setCourses((prev) => prev.map((x) => x.id === course.id ? { ...x, intro_video_url: j.intro_video_url } : x));
+    } catch (e) { alert(`Video upload failed: ${e.message}`); }
+    finally { setUploadingId(null); setUploadingKind(null); }
   };
 
   if (loading) return <div className="flex items-center justify-center py-16"><Loader2 className="animate-spin" size={24} /></div>;
@@ -194,7 +300,7 @@ export default function CoursesTab() {
       {courses.map((c) => (
         <div
           key={c.id}
-          className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 flex items-center gap-4"
+          className="rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-4 flex flex-wrap items-center gap-4"
           data-testid={`course-card-${c.id}`}
         >
           <input
@@ -205,14 +311,30 @@ export default function CoursesTab() {
             data-testid={`course-photo-input-${c.id}`}
             onChange={(e) => onPhotoChosen(c, e.target.files?.[0])}
           />
+          <input
+            ref={(el) => { brochureInputs.current[c.id] = el; }}
+            type="file"
+            accept="application/pdf"
+            className="hidden"
+            data-testid={`course-brochure-input-${c.id}`}
+            onChange={(e) => onBrochureChosen(c, e.target.files?.[0])}
+          />
+          <input
+            ref={(el) => { videoInputs.current[c.id] = el; }}
+            type="file"
+            accept="video/mp4,video/webm,video/quicktime"
+            className="hidden"
+            data-testid={`course-video-input-${c.id}`}
+            onChange={(e) => onVideoChosen(c, e.target.files?.[0])}
+          />
           <button
             onClick={() => pickPhoto(c.id)}
             disabled={uploadingId === c.id}
             title="Upload cover photo"
             data-testid={`course-photo-upload-${c.id}`}
-            className="relative w-16 h-16 rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg)] flex items-center justify-center flex-shrink-0 group"
+            className="relative w-16 h-16 rounded-lg overflow-hidden border border-[var(--color-border)] bg-[var(--color-bg-elevated)] flex items-center justify-center flex-shrink-0 group"
           >
-            {uploadingId === c.id ? (
+            {uploadingId === c.id && uploadingKind === 'photo' ? (
               <Loader2 className="animate-spin text-[var(--color-primary)]" size={18} />
             ) : c.image_url ? (
               <>
@@ -226,6 +348,38 @@ export default function CoursesTab() {
                 <ImageOff size={16} />
                 <span className="text-[8px]">Add photo</span>
               </span>
+            )}
+          </button>
+          <button
+            onClick={() => pickBrochure(c.id)}
+            disabled={uploadingId === c.id}
+            title={c.brochure_url ? 'Replace brochure PDF' : 'Upload brochure PDF'}
+            data-testid={`course-brochure-upload-${c.id}`}
+            className="w-16 h-16 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] flex flex-col items-center justify-center gap-0.5 flex-shrink-0"
+          >
+            {uploadingId === c.id && uploadingKind === 'brochure' ? (
+              <Loader2 className="animate-spin text-[var(--color-primary)]" size={18} />
+            ) : (
+              <>
+                <FileText size={16} className={c.brochure_url ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-faint)]'} />
+                <span className="text-[8px] text-[var(--color-text-faint)]">{c.brochure_url ? 'Replace' : 'Brochure'}</span>
+              </>
+            )}
+          </button>
+          <button
+            onClick={() => pickVideo(c.id)}
+            disabled={uploadingId === c.id}
+            title={c.intro_video_url ? 'Replace intro video' : 'Upload intro video'}
+            data-testid={`course-video-upload-${c.id}`}
+            className="w-16 h-16 rounded-lg border border-[var(--color-border)] bg-[var(--color-bg-elevated)] flex flex-col items-center justify-center gap-0.5 flex-shrink-0"
+          >
+            {uploadingId === c.id && uploadingKind === 'video' ? (
+              <Loader2 className="animate-spin text-[var(--color-primary)]" size={18} />
+            ) : (
+              <>
+                <Video size={16} className={c.intro_video_url ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-faint)]'} />
+                <span className="text-[8px] text-[var(--color-text-faint)]">{c.intro_video_url ? 'Replace' : 'Intro video'}</span>
+              </>
             )}
           </button>
           <FolderOpen size={20} className="text-[var(--color-primary)] flex-shrink-0" />
@@ -265,17 +419,33 @@ export default function CoursesTab() {
             {c.description && <p className="text-xs text-[var(--color-text-faint)] truncate mt-0.5">{c.description}</p>}
           </div>
           {!c.is_coming_soon && (
-            <button
-              onClick={() => setModalCourse(c)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-colors flex-shrink-0"
-              data-testid={`course-manage-sessions-${c.id}`}
-            >
-              <PlayCircle size={13} /> Preview & Free Sessions
-            </button>
+            <>
+              <button
+                onClick={() => setDetailsCourse(c)}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-colors flex-shrink-0"
+                data-testid={`course-edit-details-${c.id}`}
+              >
+                <Pencil size={13} /> Edit Details
+              </button>
+              <button
+                onClick={() => setModalCourse(c)}
+                className="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border border-[var(--color-border)] text-xs text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-colors flex-shrink-0"
+                data-testid={`course-manage-sessions-${c.id}`}
+              >
+                <PlayCircle size={13} /> Preview & Free Sessions
+              </button>
+            </>
           )}
         </div>
       ))}
       {modalCourse && <PreviewSessionsModal course={modalCourse} onClose={() => setModalCourse(null)} />}
+      {detailsCourse && (
+        <CourseDetailsModal
+          course={detailsCourse}
+          onClose={() => setDetailsCourse(null)}
+          onSaved={(patch) => setCourses((prev) => prev.map((x) => x.id === detailsCourse.id ? { ...x, ...patch } : x))}
+        />
+      )}
     </div>
   );
 }

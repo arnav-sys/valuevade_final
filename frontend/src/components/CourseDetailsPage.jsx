@@ -8,6 +8,9 @@ import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
 import WhoBuiltThisSection from './WhoBuiltThisSection';
+import FacultySection from './FacultySection';
+import TestimonialsSection from './TestimonialsSection';
+import PracticalSkillsSection from './PracticalSkillsSection';
 import {
   buildCourseJsonLd,
   buildCourseBreadcrumbJsonLd,
@@ -109,6 +112,8 @@ import {
   Moon,
   PlayCircle,
   Award,
+  Download,
+  Briefcase,
 } from 'lucide-react';
 
 function DifficultyBadge({ level }) {
@@ -511,7 +516,7 @@ export default function CourseDetailsPage() {
                   </svg>
                 </div>
                 <LetterStaggerHeadline
-                  text="Equity Research Analyst Program, Financial Modelling & Valuation Course"
+                  text={course?.title || 'Equity Research Analyst Program, Financial Modelling & Valuation Course'}
                   className="font-clash text-3xl sm:text-4xl lg:text-5xl font-bold text-[var(--color-text)] mb-4 tracking-tight relative"
                   testid="detail-title"
                 />
@@ -519,28 +524,21 @@ export default function CourseDetailsPage() {
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-4 max-w-3xl"
+                  className="text-sm sm:text-base text-[var(--color-text-muted)] font-bricolage leading-relaxed mb-6 max-w-3xl whitespace-pre-line"
                   data-testid="detail-description"
                 >
-                  The Equity Research Analyst Program is Valuevade&apos;s flagship online course for
-                  Indian finance students and early-career switchers. Across 21 modules and 239
-                  hands-on sessions (about 60 hours, including 42 hours of video lectures), you learn
-                  accounting under Ind AS, financial statement and ratio analysis, three-statement
-                  financial modelling, and valuation by DCF, comparable companies and SOTP, then
-                  finish with three portfolio capstones: an initiating-coverage report, a sector
-                  coverage note, and a working AI research copilot. Lifetime access costs ₹4999
-                  one-time, and your first session is free.
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.55, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                  className="text-xs sm:text-sm text-[var(--color-text-faint)] font-bricolage italic mb-6 max-w-3xl"
-                  data-testid="detail-audience-line"
-                >
-                  For B.Com/BBA/MBA students, CFA and FRM candidates, CA students moving toward markets
-                  roles, and early-career professionals switching into equity research, IB, asset
-                  management or Big 4 advisory.
+                  {course?.long_description || `The Equity Research Analyst Program is Valuevade's flagship online course for
+Indian finance students and early-career switchers. Across 21 modules and 239
+hands-on sessions (about 60 hours, including 42 hours of video lectures), you learn
+accounting under Ind AS, financial statement and ratio analysis, three-statement
+financial modelling, and valuation by DCF, comparable companies and SOTP, then
+finish with three portfolio capstones: an initiating-coverage report, a sector
+coverage note, and a working AI research copilot. Lifetime access costs ₹4999
+one-time, and your first session is free.
+
+For B.Com/BBA/MBA students, CFA and FRM candidates, CA students moving toward markets
+roles, and early-career professionals switching into equity research, IB, asset
+management or Big 4 advisory.`}
                 </motion.p>
 
                 {/* Stats bar (preserved for tests/legacy a11y) */}
@@ -607,6 +605,37 @@ export default function CourseDetailsPage() {
                 )}
               </section>
 
+              {/* Brochure download, admin-uploaded PDF from Admin > Courses */}
+              {course?.brochure_url && (
+                <a
+                  href={course.brochure_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 mb-10 text-sm font-semibold font-bricolage text-[var(--color-primary)] hover:underline"
+                  data-testid="detail-download-brochure"
+                >
+                  <Download size={16} /> Download course brochure (PDF)
+                </a>
+              )}
+
+              {/* Intro video, admin-uploaded from Admin > Courses */}
+              {course?.intro_video_url && (
+                <section className="mb-14" data-testid="detail-intro-video">
+                  <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-4">
+                    Watch a quick intro
+                  </h2>
+                  <div className="rounded-2xl overflow-hidden border border-[var(--color-border)] bg-black">
+                    <video
+                      src={course.intro_video_url}
+                      controls
+                      preload="metadata"
+                      className="w-full h-auto max-h-[480px]"
+                      data-testid="detail-intro-video-player"
+                    />
+                  </div>
+                </section>
+              )}
+
               {/* Animated stats reveal, counts up on scroll-into-view */}
               <section className="mb-14" data-testid="detail-stats-reveal">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
@@ -623,7 +652,7 @@ export default function CourseDetailsPage() {
                   What you&apos;ll be able to do
                 </h2>
                 <ul className="space-y-3">
-                  {[
+                  {(whatYouLearn.length > 0 ? whatYouLearn : [
                     'Build a linked three-statement financial model with debt and depreciation schedules and sensitivity tables',
                     'Complete a DCF valuation of an NSE-listed company and defend your WACC and terminal-value assumptions',
                     'Run a comparable-companies analysis: pick a peer set, normalise the numbers, and triangulate a value range',
@@ -632,7 +661,7 @@ export default function CourseDetailsPage() {
                     'Write a full initiating-coverage report and a sector coverage note to sell-side conventions',
                     'Clear a multi-round mock interview with scored feedback on technicals, communication and structure',
                     'Build and ship a working AI research copilot as a portfolio project',
-                  ].map((line, idx) => (
+                  ]).map((line, idx) => (
                     <li
                       key={idx}
                       className="flex items-start gap-3 p-3 sm:p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]"
@@ -645,6 +674,71 @@ export default function CourseDetailsPage() {
                 </ul>
               </section>
 
+              {/* What happens after you take this course, big-number before/after */}
+              <section className="mb-14" data-testid="detail-transformation">
+                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2">The Transformation</p>
+                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
+                  What happens after you take this course
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-0 relative">
+                  <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-8 md:rounded-r-none">
+                    <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-[var(--color-text-faint)] mb-3">Before Valuevade</p>
+                    <div className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-2" data-testid="detail-before-salary">₹4 LPA</div>
+                    <p className="text-xs text-[var(--color-text-muted)] font-bricolage mb-5">Typical entry-level offer with no specialised skills</p>
+                    <ul className="space-y-2.5">
+                      {['Just a degree', 'No hands-on projects', 'No interview practice', 'Generic, empty resume'].map((t, i) => (
+                        <li key={i} className="flex items-center gap-2.5 text-sm text-[var(--color-text-muted)] font-bricolage">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-text-faint)] shrink-0" /> {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-[var(--color-primary)] items-center justify-center shadow-[0_8px_24px_rgba(36,107,253,0.45)]">
+                    <ArrowRight size={18} className="text-white" />
+                  </div>
+                  <div className="rounded-2xl border-2 border-[var(--color-primary)] bg-gradient-to-br from-[var(--color-primary)]/[0.06] to-transparent p-6 sm:p-8 md:rounded-l-none md:border-l-0">
+                    <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-[var(--color-primary)] mb-3">After Valuevade</p>
+                    <div className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-primary)] mb-2" data-testid="detail-after-salary">Up to ₹12 LPA</div>
+                    <p className="text-xs text-[var(--color-text-muted)] font-bricolage mb-5">Analyst-track potential with a completed portfolio</p>
+                    <ul className="space-y-2.5">
+                      {['3 portfolio-grade capstone projects', 'NISM Series XV certification prep', 'Scored AI mock interview practice', 'A recruiter-ready, project-backed resume'].map((t, i) => (
+                        <li key={i} className="flex items-center gap-2.5 text-sm text-[var(--color-text)] font-bricolage">
+                          <CheckCircle2 size={15} className="text-[var(--color-primary)] shrink-0" /> {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <p className="mt-4 text-[10px] text-[var(--color-text-faint)] font-mono">
+                  Illustrative entry-level vs analyst-level compensation for equity research roles in India. Actual offers vary by employer, city and profile.
+                </p>
+              </section>
+
+              {/* Career opportunities, bigger version of the sidebar tag list */}
+              <section className="mb-14" data-testid="detail-career-opportunities">
+                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2">Where This Takes You</p>
+                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
+                  Career opportunities after this course
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {(careerOutcomes.length > 0 ? careerOutcomes : [
+                    'Equity Research Analyst', 'Investment Banking Analyst', 'Portfolio Management Associate',
+                    'Financial Modelling Consultant', 'Credit / Risk Analyst', 'Big 4 Advisory Associate',
+                  ]).map((role, i) => (
+                    <div key={i} className="flex items-center gap-3 p-4 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)]" data-testid={`career-opportunity-${i}`}>
+                      <span className="w-9 h-9 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center shrink-0">
+                        <Briefcase size={16} className="text-[var(--color-primary)]" />
+                      </span>
+                      <span className="text-sm font-semibold text-[var(--color-text)] font-bricolage">{role}</span>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* Same Practical Skills section as the landing page */}
+              <div className="-mx-6 mb-2" data-testid="detail-practical-skills">
+                <PracticalSkillsSection />
+              </div>
 
               {/* Full syllabus, module by module (Prompt 3 task 6).
                   Data-driven from master_modules; capstones appended below
@@ -1019,6 +1113,20 @@ export default function CourseDetailsPage() {
           </motion.section>
         )}
 
+        {/* Meet your instructor, same section as the landing page */}
+        {!loading && !error && course && (
+          <div className="-mx-6 mb-2" data-testid="detail-instructor-section">
+            <FacultySection />
+          </div>
+        )}
+
+        {/* Reviews, same section as the landing page */}
+        {!loading && !error && course && (
+          <div className="-mx-6 mb-2" data-testid="detail-reviews-section">
+            <TestimonialsSection />
+          </div>
+        )}
+
         {/* Task 12, Course-page FAQ (13 Qs verbatim, in prescribed order). */}
         {!loading && !error && course && (
           <section id="course-faq" className="mb-16" data-testid="detail-course-faq">
@@ -1047,57 +1155,6 @@ export default function CourseDetailsPage() {
                 </AccordionItem>
               ))}
             </Accordion>
-          </section>
-        )}
-
-        {/* Task 13, Deep comparison table. Competitor pricing verified from
-            each provider's public listing (see footnote for verification date). */}
-        {!loading && !error && course && (
-          <section className="mb-16 overflow-x-auto" data-testid="detail-deep-compare">
-            <h2 className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)] mb-6">
-              How Valuevade compares
-            </h2>
-            <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
-              <table className="w-full text-sm" data-testid="detail-compare-table">
-                <thead>
-                  <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]">
-                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Feature</th>
-                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-primary)]">Valuevade</th>
-                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">WallStreet School</th>
-                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">IFMC</th>
-                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Coursera</th>
-                    <th className="text-left px-4 py-3 font-clash text-xs uppercase tracking-wider text-[var(--color-text-muted)]">Imarticus / Upgrad</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[var(--color-border)]">
-                  {[
-                    ['Format', 'Self-paced software', 'Instructor-led cohort', 'Instructor-led + online', 'Self-paced video (subscription)', 'Instructor-led cohort'],
-                    ['Modules', '21', 'Not published', 'Varies by course', 'Varies by course', 'Varies by program'],
-                    ['Sessions & simulations', '239 hands-on sessions, one simulation per session', 'Live classroom hours', 'Live + recorded lectures', 'Recorded video lectures', 'Live + recorded lectures'],
-                    ['Capstone deliverables', '3 (initiating-coverage report, sector note, AI research copilot)', 'Live projects', 'Projects included', 'Peer-graded projects', 'Capstone included'],
-                    ['Mock interviews', 'AI, multi-round, scored feedback', 'Interview-prep sessions', 'Placement-assist mocks', 'Not typically included', 'Interview prep + placement support'],
-                    ['NISM Series XV prep', 'Included, mapped to syllabus', 'Not focused on NISM XV', 'Offered as a separate course', 'Not covered', 'Covered in select tracks'],
-                    ['24/7 AI tutor', 'Included (Pari, context-aware)', 'Not offered', 'Not offered', 'Not offered', 'Not offered'],
-                    ['Price', '₹4999 one-time', '₹45,000+', '₹10,000 – ₹35,000+', '₹4,000 – ₹7,000 / month', '₹1,00,000+'],
-                    ['Access', 'Lifetime', 'Cohort duration', 'Course duration', 'Subscription-based', 'Cohort / program duration'],
-                  ].map(([feat, vv, wss, ifmc, coursera, imarticus], i) => (
-                    <tr key={i} data-testid={`compare-row-${i}`}>
-                      <td className="px-4 py-3 text-[var(--color-text)] font-bricolage">{feat}</td>
-                      <td className="px-4 py-3 text-[var(--color-text)] font-bricolage">{vv}</td>
-                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{wss}</td>
-                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{ifmc}</td>
-                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{coursera}</td>
-                      <td className="px-4 py-3 text-[var(--color-text-muted)] font-bricolage">{imarticus}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-              <p className="px-4 py-3 text-xs text-[var(--color-text-faint)] font-bricolage border-t border-[var(--color-border)]">
-                Competitor figures are directional, sourced from each provider&apos;s publicly
-                listed programs and reviewed periodically. Please check the provider&apos;s
-                site for the latest published fees before making a decision.
-              </p>
-            </div>
           </section>
         )}
 

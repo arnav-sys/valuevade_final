@@ -96,6 +96,13 @@ class _AdminModuleBody(BaseModel):
 class _AdminCourseBody(BaseModel):
     title: Optional[str] = None
     image_url: Optional[str] = None
+    brochure_url: Optional[str] = None
+    intro_video_url: Optional[str] = None
+    long_description: Optional[str] = None
+    what_you_learn: Optional[List[str]] = None
+    prerequisites: Optional[List[str]] = None
+    career_outcomes: Optional[List[str]] = None
+    skills: Optional[List[str]] = None
 
 
 class _AdminSessionBody(BaseModel):
@@ -2188,15 +2195,24 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
         "yet. Run `/app/scripts/migrations/0046_courses_media.sql` in the Supabase SQL editor."
     )
 
+    _BASE_COURSE_FIELDS = "id,title,description,long_description,image_url,category,is_coming_soon,what_you_learn,prerequisites,career_outcomes,skills"
+    _MEDIA_COURSE_FIELDS = f"{_BASE_COURSE_FIELDS},brochure_url,intro_video_url"
+
     @api_router.get("/admin/courses")
     async def admin_list_courses(user=Depends(_get_supabase_user)):
         _ensure_admin(user)
         try:
-            rows = _supabase_get(
-                "master_paths?select=id,title,description,image_url,category,is_coming_soon"
-                "&order=created_at"
-            ) or []
+            rows = _supabase_get(f"master_paths?select={_MEDIA_COURSE_FIELDS}&order=created_at") or []
             return {"courses": rows, "media_ready": True}
+        except HTTPException as e:
+            if not _column_missing(e):
+                raise
+        try:
+            rows = _supabase_get(f"master_paths?select={_BASE_COURSE_FIELDS}&order=created_at") or []
+            return {
+                "courses": rows, "media_ready": True,
+                "hint": "Brochure/intro-video uploads need `/app/scripts/migrations/0047_course_brochure.sql` run in Supabase.",
+            }
         except HTTPException as e:
             if _column_missing(e):
                 rows = _supabase_get("master_paths?select=id,title,description&order=created_at") or []
@@ -2214,6 +2230,20 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
             patch["title"] = title
         if body.image_url is not None:
             patch["image_url"] = body.image_url.strip()
+        if body.brochure_url is not None:
+            patch["brochure_url"] = body.brochure_url.strip()
+        if body.intro_video_url is not None:
+            patch["intro_video_url"] = body.intro_video_url.strip()
+        if body.long_description is not None:
+            patch["long_description"] = body.long_description.strip()
+        if body.what_you_learn is not None:
+            patch["what_you_learn"] = [s.strip() for s in body.what_you_learn if s.strip()]
+        if body.prerequisites is not None:
+            patch["prerequisites"] = [s.strip() for s in body.prerequisites if s.strip()]
+        if body.career_outcomes is not None:
+            patch["career_outcomes"] = [s.strip() for s in body.career_outcomes if s.strip()]
+        if body.skills is not None:
+            patch["skills"] = [s.strip() for s in body.skills if s.strip()]
         if not patch:
             raise HTTPException(status_code=400, detail="No valid fields to update")
         try:
@@ -2267,6 +2297,90 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
                 raise HTTPException(status_code=503, detail=_COURSES_MEDIA_HINT)
             raise
         return {"ok": True, "image_url": image_url}
+
+    @api_router.post("/admin/courses/{path_id}/brochure")
+    async def admin_course_brochure(path_id: str, file: UploadFile = File(...), user=Depends(_get_supabase_user)):
+        """Uploads a course brochure PDF and saves its public URL on master_paths."""
+        _ensure_admin(user)
+        sr = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        if not sr:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        if (file.content_type or "").lower() != "application/pdf":
+            raise HTTPException(status_code=400, detail=f"Unsupported file type {file.content_type!r}, PDF only.")
+        blob = await file.read()
+        if len(blob) > 15 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail=f"File too large ({len(blob)/1048576:.1f} MB). Max 15 MB.")
+        if len(blob) < 200:
+            raise HTTPException(status_code=400, detail="File is empty or too small.")
+        rest = (os.environ.get("REACT_APP_SUPABASE_URL") or "https://yuadeybycbfqlkdpxbkv.supabase.co").rstrip("/")
+        bucket = "session-videos"
+        key = f"courses/brochures/{int(datetime.now(timezone.utc).timestamp())}-{os.urandom(4).hex()}.pdf"
+        import urllib.request
+        req = urllib.request.Request(
+            f"{rest}/storage/v1/object/{bucket}/{key}",
+            data=blob, method="POST",
+            headers={
+                "apikey": sr, "Authorization": f"Bearer {sr}",
+                "Content-Type": "application/pdf", "x-upsert": "true",
+                "cache-control": "public, max-age=31536000, immutable",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                resp.read()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+        brochure_url = f"{rest}/storage/v1/object/public/{bucket}/{key}"
+        try:
+            _supabase_patch(f"master_paths?id=eq.{_urlparse.quote(path_id)}", {"brochure_url": brochure_url})
+        except HTTPException as e:
+            if _column_missing(e):
+                raise HTTPException(status_code=503, detail=_COURSES_MEDIA_HINT)
+            raise
+        return {"ok": True, "brochure_url": brochure_url}
+
+    @api_router.post("/admin/courses/{path_id}/intro-video")
+    async def admin_course_intro_video(path_id: str, file: UploadFile = File(...), user=Depends(_get_supabase_user)):
+        """Uploads a course intro video and saves its public URL on master_paths."""
+        _ensure_admin(user)
+        sr = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+        if not sr:
+            raise HTTPException(status_code=500, detail="SUPABASE_SERVICE_ROLE_KEY missing on server")
+        allowed_ct = {"video/mp4", "video/webm", "video/quicktime"}
+        if (file.content_type or "").lower() not in allowed_ct:
+            raise HTTPException(status_code=400, detail=f"Unsupported content type {file.content_type!r}, mp4/webm/mov only.")
+        blob = await file.read()
+        if len(blob) > 200 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail=f"File too large ({len(blob)/1048576:.1f} MB). Max 200 MB.")
+        if len(blob) < 1024:
+            raise HTTPException(status_code=400, detail="File is empty or too small.")
+        rest = (os.environ.get("REACT_APP_SUPABASE_URL") or "https://yuadeybycbfqlkdpxbkv.supabase.co").rstrip("/")
+        bucket = "session-videos"
+        ext = "mp4" if "mp4" in (file.content_type or "") else ("webm" if "webm" in (file.content_type or "") else "mov")
+        key = f"courses/intro-videos/{int(datetime.now(timezone.utc).timestamp())}-{os.urandom(4).hex()}.{ext}"
+        import urllib.request
+        req = urllib.request.Request(
+            f"{rest}/storage/v1/object/{bucket}/{key}",
+            data=blob, method="POST",
+            headers={
+                "apikey": sr, "Authorization": f"Bearer {sr}",
+                "Content-Type": file.content_type, "x-upsert": "true",
+                "cache-control": "public, max-age=31536000, immutable",
+            },
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=300) as resp:
+                resp.read()
+        except Exception as e:
+            raise HTTPException(status_code=502, detail=f"Storage upload failed: {e}")
+        intro_video_url = f"{rest}/storage/v1/object/public/{bucket}/{key}"
+        try:
+            _supabase_patch(f"master_paths?id=eq.{_urlparse.quote(path_id)}", {"intro_video_url": intro_video_url})
+        except HTTPException as e:
+            if _column_missing(e):
+                raise HTTPException(status_code=503, detail=_COURSES_MEDIA_HINT)
+            raise
+        return {"ok": True, "intro_video_url": intro_video_url}
 
     @api_router.get("/admin/courses/{path_id}/preview-sessions")
     async def admin_course_preview_sessions(path_id: str, user=Depends(_get_supabase_user)):
