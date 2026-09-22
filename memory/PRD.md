@@ -89,13 +89,25 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
   page. Pure frontend, no backend/data changes; self-tested via screenshot at 1920px
   and 390px, no overflow.
 
-## Prioritized backlog
+- **Sept 2026 (roadmap v2 + enrollment choice + AI loader)**: `0047_course_brochure.sql`
+  confirmed run by user. Rebuilt the roadmap section on Course Details from a vertical
+  text list into a horizontal, wrapping grid of 7 clickable image cards (stock photos),
+  each opening a full-screen preview modal (`RoadmapStepModal`) with a larger image +
+  full body text. Redesigned the Enrollment page CTA: replaced the old "pay first, AI
+  as secondary link" layout with an equal-prominence 2-card choice
+  (`enrollment-choice-grid`) — "Customise my path with AI" (purple, "Recommended"
+  ribbon, primary) and "Start the standard curriculum" (still one click to Razorpay),
+  shown side-by-side when the admin's `ai_customization_mode` setting is `optional`
+  (current default). Built a new reusable on-brand `AILoader` component
+  (`common/AILoader.jsx`, ticker-bar + spinning ring, cycling status messages, all
+  colors via CSS vars so it auto-adapts light/dark) and wired it into 5 AI-wait
+  screens: `MockInterviewPage` (round-transition/finalize overlay),
+  `MockInterviewResults` (results-loading), `SimulationPage`, `QuizPage`,
+  `MockExamPage` (initial page-load spinners). Added `ai-loader-spin`/`ai-loader-bar`
+  keyframes to `App.css`. Verified by testing_agent: iteration_94.json (100% pass on
+  all 3 scoped features; 1 minor mobile padding issue found + fixed same session).
 
-### P0
-- **Execute pending Supabase SQL migrations** (0044/0046 confirmed already run):
-  1. `0045_testimonials.sql` — verify run (testimonials showing on landing already)
-  2. `0047_course_brochure.sql` — adds `brochure_url`/`intro_video_url` to `master_paths`,
-     needed for the new brochure download + intro video admin uploads to work
+## Prioritized backlog
 
 ### P1
 - Further `server.py` refactor: extract `portfolio`, `revision`, `milestones` routes into

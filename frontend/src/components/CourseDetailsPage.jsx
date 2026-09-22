@@ -816,7 +816,7 @@ management or Big 4 advisory.`}
 
               {/* Roadmap, how the transformation actually happens step by step.
                   Horizontal wrapping grid, each step opens a full-screen preview. */}
-              <section className="mb-14" data-testid="detail-roadmap">
+              <section className="mb-14 pb-6 sm:pb-0" data-testid="detail-roadmap">
                 <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2">Your Roadmap</p>
                 <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-2">
                   How you get there, step by step
