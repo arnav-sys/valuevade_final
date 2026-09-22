@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
@@ -191,90 +191,211 @@ const COURSE_DETAILS_FAQS = [
 
 import { effectiveMinutes, formatDuration } from '../utils/sessionTime';
 
-// ── Roadmap data + full-screen preview modal ─────────────────────────────────
+// ── Roadmap data + scroll-progress track section (same visual language as
+//    the landing page's HowItWorksSection: circular icon nodes + a filling
+//    connecting line, no photos). ──────────────────────────────────────────
 const ROADMAP_STEPS = [
   {
     icon: Sparkles,
+    tag: 'Personalise',
     title: 'A personalised path, not generic content',
     body: "Tell us where you're starting from and where you want to go. Your course adapts to you, instead of dumping the same content on everyone.",
-    image: 'https://images.pexels.com/photos/577210/pexels-photo-577210.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
   },
   {
     icon: PlayCircle,
+    tag: 'Learn',
     title: 'Learn by doing, not just watching',
     body: 'Video lectures, structured notes, quizzes, simulations and real-world case studies, backed by a 24/7 AI tutor that solves your doubts instantly.',
-    image: 'https://images.pexels.com/photos/6347916/pexels-photo-6347916.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
   },
   {
     icon: BrainCircuit,
+    tag: 'AI Edge',
     title: 'Master AI for finance',
     body: "Learn to use AI as your edge in equity research and modelling, so you're working with it, not getting replaced by it.",
-    image: 'https://images.unsplash.com/photo-1674027444485-cec3da58eef4?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     icon: Award,
+    tag: 'Certify',
     title: 'NISM certification prep',
     body: 'Structured, syllabus-mapped preparation for the NISM Series XV exam, built into the course, not sold separately.',
-    image: 'https://images.unsplash.com/photo-1756885375450-65094876d21f?crop=entropy&cs=srgb&fm=jpg&q=85',
   },
   {
     icon: Hammer,
+    tag: 'Build',
     title: 'Build real-world projects',
     body: 'Ship projects that actually impress recruiters. You leave with certification, skill and a portfolio, all three, not just one.',
-    image: 'https://images.pexels.com/photos/7876671/pexels-photo-7876671.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
   },
   {
     icon: Linkedin,
+    tag: 'Present',
     title: 'Resume, LinkedIn & soft skills',
     body: "A guided walkthrough to fix your resume, LinkedIn and interview soft skills, the stuff that 10x's how recruiters see you.",
-    image: 'https://images.pexels.com/photos/590044/pexels-photo-590044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
   },
   {
     icon: Mic,
+    tag: 'Interview',
     title: 'AI mock interview prep',
     body: 'Full, scored interview simulations run by AI, repeatable as many times as you need until you walk in confident.',
-    image: 'https://images.pexels.com/photos/6285166/pexels-photo-6285166.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940',
   },
 ];
 
-function RoadmapStepModal({ step, index, onClose }) {
-  if (!step) return null;
+function RoadmapNode({ step, active, done }) {
+  const Icon = step.icon;
   return (
     <div
-      className="fixed inset-0 z-[200] bg-black/85 backdrop-blur-sm flex items-center justify-center p-4 sm:p-8"
-      onClick={onClose}
-      data-testid="roadmap-step-modal"
+      className="relative z-10 w-14 h-14 rounded-full flex items-center justify-center mb-4 transition-all duration-500"
+      style={{
+        background: active ? 'var(--color-primary)' : 'var(--color-surface)',
+        border: `2px solid ${active ? 'var(--color-primary)' : 'var(--color-border)'}`,
+        boxShadow: active ? '0 0 32px -6px rgba(36,107,253,0.55)' : 'none',
+      }}
     >
-      <div
-        className="bg-[var(--color-bg-elevated)] rounded-2xl overflow-hidden shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col"
-        onClick={(e) => e.stopPropagation()}
+      {done ? (
+        <CheckCircle2 size={22} className="text-white" />
+      ) : (
+        <Icon size={19} className={active ? 'text-white' : 'text-[var(--color-text-muted)]'} />
+      )}
+    </div>
+  );
+}
+
+function RoadmapCard({ step, i, active }) {
+  return (
+    <article
+      className="rounded-2xl border p-5 w-full text-center transition-all duration-500"
+      style={{
+        background: 'var(--color-surface)',
+        borderColor: active ? 'var(--color-primary)' : 'var(--color-border)',
+        opacity: active ? 1 : 0.55,
+      }}
+      data-testid={`roadmap-step-${i}`}
+    >
+      <p
+        className="text-[10px] font-mono uppercase tracking-[0.16em] mb-2"
+        style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-faint)' }}
       >
-        <div className="relative aspect-video bg-black shrink-0">
-          <img src={step.image} alt={step.title} className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          <span className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[var(--color-primary)] text-white text-xs font-mono font-bold" data-testid="roadmap-modal-step-badge">
-            Step {String(index + 1).padStart(2, '0')}
-          </span>
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center text-lg leading-none transition-colors"
-            data-testid="roadmap-modal-close"
-          >
-            ✕
-          </button>
+        Step {String(i + 1).padStart(2, '0')} · {step.tag}
+      </p>
+      <h3 className="font-clash text-sm sm:text-base font-semibold text-[var(--color-text)] mb-1.5 leading-snug">
+        {step.title}
+      </h3>
+      <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed">{step.body}</p>
+    </article>
+  );
+}
+
+// Desktop row of nodes + cards, sharing one filling connector line. `progress`
+// is 0..1 local to this row only.
+function RoadmapRow({ steps, startIdx, progress }) {
+  const n = steps.length;
+  const inset = 100 / (n * 2); // % — centers the line under each node's column
+  const nodeThreshold = (i) => (i + 0.35) / n;
+  return (
+    <div className="relative mb-8 last:mb-0">
+      <div
+        className="absolute top-7 h-[3px] rounded-full overflow-hidden"
+        style={{ left: `${inset}%`, right: `${inset}%`, background: 'var(--color-border)' }}
+      >
+        <div
+          className="h-full rounded-full"
+          style={{ width: `${progress * 100}%`, background: 'var(--color-primary)', transition: 'width 140ms linear' }}
+        />
+      </div>
+      <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
+        {steps.map((step, i) => {
+          const active = progress >= nodeThreshold(i);
+          const done = progress >= (i + 1) / n;
+          return (
+            <div key={startIdx + i} className="flex flex-col items-center">
+              <RoadmapNode step={step} active={active} done={done} />
+              <RoadmapCard step={step} i={startIdx + i} active={active} />
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+function RoadmapTrackSection({ steps }) {
+  const trackRef = useRef(null);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const node = trackRef.current;
+    if (!node) return undefined;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { setProgress(1); return undefined; }
+    const onScroll = () => {
+      const rect = node.getBoundingClientRect();
+      const start = window.innerHeight * 0.85;
+      const end = window.innerHeight * 0.25 - rect.height;
+      const range = start - end;
+      if (range <= 0) { setProgress(1); return; }
+      const p = (start - rect.top) / range;
+      setProgress(Math.max(0, Math.min(1, p)));
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => { window.removeEventListener('scroll', onScroll); window.removeEventListener('resize', onScroll); };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const row1 = steps.slice(0, 4);
+  const row2 = steps.slice(4);
+  const rowLocalProgress = (startFrac, endFrac) => Math.max(0, Math.min(1, (progress - startFrac) / (endFrac - startFrac)));
+
+  return (
+    <div ref={trackRef} data-testid="roadmap-track">
+      {/* Desktop: two rows of node+card pairs, each with its own filling connector */}
+      <div className="hidden lg:block">
+        <RoadmapRow steps={row1} startIdx={0} progress={rowLocalProgress(0, row1.length / steps.length)} />
+        <RoadmapRow steps={row2} startIdx={4} progress={rowLocalProgress(row1.length / steps.length, 1)} />
+      </div>
+
+      {/* Mobile/tablet: single vertical track down the left side */}
+      <div className="lg:hidden relative pl-16">
+        <div
+          className="absolute left-[26px] top-2 bottom-2 w-[3px] rounded-full overflow-hidden"
+          style={{ background: 'var(--color-border)' }}
+        >
+          <div
+            className="w-full rounded-full"
+            style={{ height: `${progress * 100}%`, background: 'var(--color-primary)', transition: 'height 140ms linear' }}
+          />
         </div>
-        <div className="p-6 sm:p-7 overflow-y-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center">
-              <step.icon size={16} className="text-[var(--color-primary)]" />
-            </span>
-            <h3 className="font-clash text-lg sm:text-xl font-bold text-[var(--color-text)]" data-testid="roadmap-modal-title">
-              {step.title}
-            </h3>
-          </div>
-          <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed" data-testid="roadmap-modal-body">
-            {step.body}
-          </p>
+        <div className="space-y-5">
+          {steps.map((step, i) => {
+            const nodeThreshold = (i + 0.35) / steps.length;
+            const active = progress >= nodeThreshold;
+            const done = progress >= (i + 1) / steps.length;
+            const Icon = step.icon;
+            return (
+              <div key={i} className="relative" data-testid={`roadmap-step-mobile-${i}`}>
+                <div
+                  className="absolute -left-16 top-0 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-500"
+                  style={{
+                    background: active ? 'var(--color-primary)' : 'var(--color-surface)',
+                    border: `2px solid ${active ? 'var(--color-primary)' : 'var(--color-border)'}`,
+                    boxShadow: active ? '0 0 26px -6px rgba(36,107,253,0.55)' : 'none',
+                  }}
+                >
+                  {done ? <CheckCircle2 size={18} className="text-white" /> : <Icon size={16} className={active ? 'text-white' : 'text-[var(--color-text-muted)]'} />}
+                </div>
+                <article
+                  className="rounded-2xl border p-4 transition-all duration-500"
+                  style={{ background: 'var(--color-surface)', borderColor: active ? 'var(--color-primary)' : 'var(--color-border)', opacity: active ? 1 : 0.6 }}
+                >
+                  <p className="text-[10px] font-mono uppercase tracking-[0.16em] mb-1.5" style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-faint)' }}>
+                    Step {String(i + 1).padStart(2, '0')} · {step.tag}
+                  </p>
+                  <h3 className="font-clash text-sm font-semibold text-[var(--color-text)] mb-1">{step.title}</h3>
+                  <p className="text-xs text-[var(--color-text-muted)] font-bricolage leading-relaxed">{step.body}</p>
+                </article>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -338,7 +459,6 @@ export default function CourseDetailsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [previewSession, setPreviewSession] = useState(null); // video preview modal
-  const [roadmapStepIdx, setRoadmapStepIdx] = useState(null); // roadmap full-screen preview
 
   const fetchData = async () => {
     setLoading(true);
@@ -459,11 +579,6 @@ export default function CourseDetailsPage() {
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
       <VideoPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
-      <RoadmapStepModal
-        step={roadmapStepIdx != null ? ROADMAP_STEPS[roadmapStepIdx] : null}
-        index={roadmapStepIdx}
-        onClose={() => setRoadmapStepIdx(null)}
-      />
       <Helmet>
         <title>Equity Research Analyst Course, Syllabus & Fees | Valuevade</title>
         <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
@@ -815,50 +930,14 @@ management or Big 4 advisory.`}
               </section>
 
               {/* Roadmap, how the transformation actually happens step by step.
-                  Horizontal wrapping grid, each step opens a full-screen preview. */}
+                  Same scroll-progress track + icon-node visual language as the
+                  landing page's "How It Works" roadmap — no photos. */}
               <section className="mb-14 pb-6 sm:pb-0" data-testid="detail-roadmap">
                 <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2">Your Roadmap</p>
-                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-2">
+                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
                   How you get there, step by step
                 </h2>
-                <p className="text-sm text-[var(--color-text-muted)] font-bricolage mb-6">
-                  Click any step for a closer look.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-                  {ROADMAP_STEPS.map((step, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setRoadmapStepIdx(i)}
-                      className="group relative text-left rounded-2xl overflow-hidden border border-[var(--color-border)] bg-[var(--color-surface)] hover:border-[var(--color-primary)]/50 hover:-translate-y-1 transition-all duration-300"
-                      data-testid={`roadmap-step-${i}`}
-                    >
-                      <div className="relative aspect-[4/3] overflow-hidden">
-                        <img
-                          src={step.image}
-                          alt={step.title}
-                          loading="lazy"
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                        <span className="absolute top-2.5 left-2.5 w-7 h-7 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[11px] font-mono font-bold">
-                          {String(i + 1).padStart(2, '0')}
-                        </span>
-                        <span className="absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full bg-white/15 backdrop-blur-md border border-white/25 flex items-center justify-center">
-                          <step.icon size={14} className="text-white" />
-                        </span>
-                        <span className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span className="w-10 h-10 rounded-full bg-white/90 flex items-center justify-center shadow-lg">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="#111"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-                          </span>
-                        </span>
-                      </div>
-                      <div className="p-3.5 sm:p-4">
-                        <p className="text-[9px] font-mono text-[var(--color-text-faint)] mb-1">Step {String(i + 1).padStart(2, '0')}</p>
-                        <h3 className="font-clash text-sm font-semibold text-[var(--color-text)] leading-snug line-clamp-2">{step.title}</h3>
-                      </div>
-                    </button>
-                  ))}
-                </div>
+                <RoadmapTrackSection steps={ROADMAP_STEPS} />
                 <div className="mt-8 flex items-center gap-4 rounded-2xl border-2 border-[var(--color-primary)] bg-gradient-to-br from-[var(--color-primary)]/[0.08] to-transparent p-5 sm:p-6">
                   <span className="shrink-0 w-11 h-11 rounded-full bg-[var(--color-primary)] flex items-center justify-center">
                     <Briefcase size={18} className="text-white" />
@@ -868,7 +947,6 @@ management or Big 4 advisory.`}
                   </p>
                 </div>
               </section>
-
 
               {/* Career opportunities, bigger version of the sidebar tag list */}
               <section className="mb-14" data-testid="detail-career-opportunities">

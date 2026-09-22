@@ -89,23 +89,15 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
   page. Pure frontend, no backend/data changes; self-tested via screenshot at 1920px
   and 390px, no overflow.
 
-- **Sept 2026 (roadmap v2 + enrollment choice + AI loader)**: `0047_course_brochure.sql`
-  confirmed run by user. Rebuilt the roadmap section on Course Details from a vertical
-  text list into a horizontal, wrapping grid of 7 clickable image cards (stock photos),
-  each opening a full-screen preview modal (`RoadmapStepModal`) with a larger image +
-  full body text. Redesigned the Enrollment page CTA: replaced the old "pay first, AI
-  as secondary link" layout with an equal-prominence 2-card choice
-  (`enrollment-choice-grid`) — "Customise my path with AI" (purple, "Recommended"
-  ribbon, primary) and "Start the standard curriculum" (still one click to Razorpay),
-  shown side-by-side when the admin's `ai_customization_mode` setting is `optional`
-  (current default). Built a new reusable on-brand `AILoader` component
-  (`common/AILoader.jsx`, ticker-bar + spinning ring, cycling status messages, all
-  colors via CSS vars so it auto-adapts light/dark) and wired it into 5 AI-wait
-  screens: `MockInterviewPage` (round-transition/finalize overlay),
-  `MockInterviewResults` (results-loading), `SimulationPage`, `QuizPage`,
-  `MockExamPage` (initial page-load spinners). Added `ai-loader-spin`/`ai-loader-bar`
-  keyframes to `App.css`. Verified by testing_agent: iteration_94.json (100% pass on
-  all 3 scoped features; 1 minor mobile padding issue found + fixed same session).
+- **Sept 2026 (roadmap v3, matches landing style)**: Per user feedback, dropped the
+  stock-photo roadmap cards entirely. Roadmap now reuses the exact visual language of
+  the landing page's `HowItWorksSection` — scroll-progress-driven circular icon nodes
+  connected by a filling track line (blue), desktop = 2 rows (4+3) each with its own
+  local progress, mobile = single vertical track. No images, no click-to-expand
+  modal. New components: `RoadmapNode`, `RoadmapCard`, `RoadmapRow`,
+  `RoadmapTrackSection` (all local to `CourseDetailsPage.jsx`). Self-tested via
+  screenshot at 1920px and 390px scrolling through the section — no overflow, track
+  fills correctly, icon nodes flip to filled/checked state in sync with scroll.
 
 ## Prioritized backlog
 
