@@ -82,6 +82,12 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
   `bg-[var(--color-bg)]` referenced an undefined CSS variable — fixed by switching to
   the correct `bg-[var(--color-bg-elevated)]`.
   Verified by testing_agent: iteration_93.json (100% pass, both backend + frontend).
+- **Sept 2026 (roadmap)**: Added a "Your Roadmap" step-by-step section (7 steps:
+  personalised path → learn by doing → AI for finance → NISM prep → real-world
+  projects → resume/LinkedIn/soft skills → AI mock interviews) right between the
+  Before/After transformation section and Career Opportunities on the course details
+  page. Pure frontend, no backend/data changes; self-tested via screenshot at 1920px
+  and 390px, no overflow.
 
 ## Prioritized backlog
 

@@ -114,6 +114,10 @@ import {
   Award,
   Download,
   Briefcase,
+  BrainCircuit,
+  Hammer,
+  Linkedin,
+  Mic,
 } from 'lucide-react';
 
 function DifficultyBadge({ level }) {
@@ -712,6 +716,47 @@ management or Big 4 advisory.`}
                 <p className="mt-4 text-[10px] text-[var(--color-text-faint)] font-mono">
                   Illustrative entry-level vs analyst-level compensation for equity research roles in India. Actual offers vary by employer, city and profile.
                 </p>
+              </section>
+
+              {/* Roadmap, how the transformation actually happens step by step */}
+              <section className="mb-14" data-testid="detail-roadmap">
+                <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-[var(--color-primary)] mb-2">Your Roadmap</p>
+                <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-6">
+                  How you get there, step by step
+                </h2>
+                <div className="relative">
+                  <div className="hidden sm:block absolute left-[27px] top-2 bottom-2 w-px bg-[var(--color-border)]" aria-hidden="true" />
+                  <div className="space-y-6">
+                    {[
+                      { icon: Sparkles, title: 'A personalised path, not generic content', body: "Tell us where you're starting from and where you want to go. Your course adapts to you, instead of dumping the same content on everyone." },
+                      { icon: PlayCircle, title: 'Learn by doing, not just watching', body: 'Video lectures, structured notes, quizzes, simulations and real-world case studies, backed by a 24/7 AI tutor that solves your doubts instantly.' },
+                      { icon: BrainCircuit, title: 'Master AI for finance', body: "Learn to use AI as your edge in equity research and modelling, so you're working with it, not getting replaced by it." },
+                      { icon: Award, title: 'NISM certification prep', body: 'Structured, syllabus-mapped preparation for the NISM Series XV exam, built into the course, not sold separately.' },
+                      { icon: Hammer, title: 'Build real-world projects', body: 'Ship projects that actually impress recruiters. You leave with certification, skill and a portfolio, all three, not just one.' },
+                      { icon: Linkedin, title: 'Resume, LinkedIn & soft skills', body: "A guided walkthrough to fix your resume, LinkedIn and interview soft skills, the stuff that 10x's how recruiters see you." },
+                      { icon: Mic, title: 'AI mock interview prep', body: 'Full, scored interview simulations run by AI, repeatable as many times as you need until you walk in confident.' },
+                    ].map((step, i) => (
+                      <div key={i} className="flex gap-4 sm:gap-5" data-testid={`roadmap-step-${i}`}>
+                        <span className="relative z-10 shrink-0 w-14 h-14 rounded-full bg-[var(--color-surface)] border-2 border-[var(--color-primary)] flex items-center justify-center">
+                          <step.icon size={20} className="text-[var(--color-primary)]" />
+                        </span>
+                        <div className="pt-1">
+                          <p className="text-[10px] font-mono text-[var(--color-text-faint)] mb-1">Step {String(i + 1).padStart(2, '0')}</p>
+                          <h3 className="font-clash text-base sm:text-lg font-semibold text-[var(--color-text)] mb-1">{step.title}</h3>
+                          <p className="text-sm text-[var(--color-text-muted)] font-bricolage leading-relaxed">{step.body}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-8 flex items-center gap-4 rounded-2xl border-2 border-[var(--color-primary)] bg-gradient-to-br from-[var(--color-primary)]/[0.08] to-transparent p-5 sm:p-6">
+                  <span className="shrink-0 w-11 h-11 rounded-full bg-[var(--color-primary)] flex items-center justify-center">
+                    <Briefcase size={18} className="text-white" />
+                  </span>
+                  <p className="font-clash text-base sm:text-lg font-semibold text-[var(--color-text)]" data-testid="roadmap-outcome">
+                    You end up with certification, skills, projects and interview reps, everything you need to be job-ready.
+                  </p>
+                </div>
               </section>
 
               {/* Career opportunities, bigger version of the sidebar tag list */}
