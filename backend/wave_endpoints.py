@@ -481,6 +481,20 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
     _get_supabase_user = deps["get_supabase_user"]
     _EMERGENT_LLM_KEY = deps.get("emergent_llm_key")
 
+    # Supabase REST/service-role constants, defined early so every nested
+    # route below (including admin_create_user) can reference them directly
+    # instead of relying on closure-over-later-assignment ordering.
+    _SUPABASE_REST_URL = (
+        os.environ.get("REACT_APP_SUPABASE_URL")
+        or "https://yuadeybycbfqlkdpxbkv.supabase.co"
+    ).rstrip("/")
+    _SUPABASE_SR = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
+    _VIDEO_BUCKET = "session-videos"
+    _MAX_VIDEO_BYTES = 5 * 1024 * 1024 * 1024   # 5 GB, matches Supabase Pro tier ceiling
+
+    def _bucket_public_url(key: str) -> str:
+        return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_VIDEO_BUCKET}/{key}"
+
     # ---------------- SESSION FEEDBACK (student → admin) ----------------
     _FEEDBACK_CATEGORIES = {"content_issue", "quality_issue", "other"}
 
@@ -1722,17 +1736,6 @@ def register_wave_endpoints(api_router: APIRouter, deps: dict):
 
         return {"user_id": user_id, **results}
 
-
-    _SUPABASE_REST_URL = (
-        os.environ.get("REACT_APP_SUPABASE_URL")
-        or "https://yuadeybycbfqlkdpxbkv.supabase.co"
-    ).rstrip("/")
-    _SUPABASE_SR = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
-    _VIDEO_BUCKET = "session-videos"
-    _MAX_VIDEO_BYTES = 5 * 1024 * 1024 * 1024   # 5 GB, matches Supabase Pro tier ceiling
-
-    def _bucket_public_url(key: str) -> str:
-        return f"{_SUPABASE_REST_URL}/storage/v1/object/public/{_VIDEO_BUCKET}/{key}"
 
     def _bucket_key_for(module_number: int, order_index: int) -> str:
         return f"m{module_number}/s{module_number}-{order_index}.mp4"
