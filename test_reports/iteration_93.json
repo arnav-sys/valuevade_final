@@ -1,0 +1,36 @@
+{
+  "summary": "Verified Course Details page (public) + Admin > Courses tab for Equity Research Analyst course. All new sections render correctly with DB-driven content, old comparison table removed, admin edit modal is opaque and PATCH works, brochure/intro-video upload buttons fail with clean readable messages (as expected pre-migration).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "verified_checks": [
+    "Hero h1 renders 'Equity Research Analyst' (DB-driven title).",
+    "long_description paragraph shows including '...Big 4 advisory.' and renders as two paragraphs cleanly.",
+    "What you'll be able to do list shows DB-driven items ('How to read and decode Indian annual reports end to end', 'Building 3-statement financial models from scratch').",
+    "data-testid=detail-transformation present with ₹4 LPA / ₹12 LPA before/after cards; no horizontal overflow at 1920 or 390 viewport (scrollWidth-clientWidth = 0 on both).",
+    "data-testid=detail-career-opportunities present.",
+    "data-testid=detail-practical-skills, detail-instructor-section (Utkarsh Maru, Sarthak Bhatia), detail-reviews-section all present.",
+    "Old data-testid=detail-deep-compare NOT present. 'How Valuevade compares' string absent from page.",
+    "detail-download-brochure and detail-intro-video ABSENT from page (expected pre-migration), no console error, no broken layout.",
+    "Admin > Courses tab: GET /api/admin/courses returns 200 with 6 courses; 5 COMING SOON tags shown for placeholder courses; ONLY the Equity Research Analyst row shows 'Edit Details' + 'Preview & Free Sessions' buttons (1 each). Each row shows 3 upload buttons (photo/brochure/intro-video) = 6 brochure + 6 video buttons total.",
+    "Edit Details modal is OPAQUE (bg-elevated) with darkened backdrop – see-through bug is fixed. Contains all 5 fields: Course description, What you'll be able to do, Prerequisites, Career outcomes, Skills you'll gain – all pre-filled with real data (one item per line textareas).",
+    "PATCH /api/admin/courses/{id} with edited textarea → 200 {ok:true}, modal closes automatically.",
+    "POST /api/admin/courses/{id}/brochure with a PDF → 400 with clean JSON body {\"detail\":\"File is empty or too small.\"}. Frontend catches via alert() showing 'Brochure upload failed: File is empty or too small.' – readable, not a raw stack trace or blank screen. Migration-503 hint path would surface identically."
+  ],
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "CoursesTab.jsx uses window.alert() for upload errors (line 280, 290). Works and is readable, but a toast/snackbar would be a better UX than a blocking browser alert. Non-blocking, minor.",
+    "GET /api/admin/waitlist is hit twice on initial admin load (redundant fetch). Minor perf nit."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "info@valuevade.com / VV-Admin#2026-Sec",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Migration 0047 (brochure_url/intro_video_url columns on master_paths) is not yet run by user – this is expected. Once run, the detail-download-brochure and detail-intro-video sections should conditionally appear when a course has those URLs populated via the admin uploader. All other new detail-page sections and admin upgrades verified working."
+}

@@ -56,21 +56,40 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
     5 "Coming Soon" placeholder rows so they become real, admin-editable DB records.
     Until run, admin photo upload cleanly 503s with a migration hint (verified, not a bug).
   Verified by testing_agent: iteration_92.json (100% pass, both backend + frontend).
-- **Sept 2026 (re-reversal)**: User then asked the landing hero specifically to go back
-  to the coded HTML/CSS mockups instead of photos. `HeroProductShowcase.jsx` reverted to
-  render `MockInterviewUI`/`ExcelModelUI`/`DocSimUI` again inside the same browser-chrome
-  window/tab-switcher (self-tested via screenshot, no overflow at 1920px). `/courses`
-  photos + admin upload from the previous item were NOT reverted, that change stands.
+- **Sept 2026 (course details expansion)**: Course details page (`/course/{id}`) now
+  admin-editable end-to-end. Title/description/what-you-learn switched from hardcoded
+  JSX to `course.title`/`long_description`/`what_you_learn` (with fallback). Removed the
+  old "How Valuevade compares" comparison table entirely. Added: a big-number
+  "What happens after this course" before/after section (₹4 LPA → up to ₹12 LPA), a
+  "Career opportunities" grid (driven by `career_outcomes`), and reused the landing
+  page's exact `PracticalSkillsSection`, `FacultySection`, `TestimonialsSection`
+  components on the details page too. Added brochure-PDF download link and intro-video
+  player (both conditionally shown, admin-uploadable). Admin > Courses tab got a new
+  "Edit Details" modal (description/what-you-learn/prerequisites/career-outcomes/skills,
+  one-item-per-line textareas) plus 2 new upload buttons (Brochure PDF, Intro video)
+  next to the existing cover-photo button.
+  Backend: `GET/PATCH /api/admin/courses`, new `POST /api/admin/courses/{id}/brochure`
+  (PDF, 15MB max) and `POST /api/admin/courses/{id}/intro-video` (mp4/webm/mov, 200MB
+  max), all uploading to the `session-videos` Supabase bucket.
+  New migration `/app/scripts/migrations/0047_course_brochure.sql` (P0, PENDING) adds
+  `brochure_url`/`intro_video_url` columns — until run, those upload buttons show a
+  clean 503 hint (verified, not a bug).
+  Two real bugs found + fixed during self-testing: (1) `GET /api/admin/courses` used a
+  single combined Supabase select that failed entirely (silently dropping
+  is_coming_soon/image_url/etc.) when brochure_url/intro_video_url didn't exist yet —
+  fixed with a proper 2-tier fallback; (2) admin modals (`CourseDetailsModal` and the
+  pre-existing `PreviewSessionsModal`) were transparent/see-through because
+  `bg-[var(--color-bg)]` referenced an undefined CSS variable — fixed by switching to
+  the correct `bg-[var(--color-bg-elevated)]`.
+  Verified by testing_agent: iteration_93.json (100% pass, both backend + frontend).
 
 ## Prioritized backlog
 
 ### P0
-- **Execute pending Supabase SQL migrations** (3 pending now):
-  1. `0044_faculty.sql` — Faculty/Instructors admin panel
-  2. `0045_testimonials.sql` — Testimonials admin panel
-  3. `0046_courses_media.sql` — Course cover photos + "Coming Soon" placeholder rows
-     (needed for admin course photo uploads to work, and for the 5 placeholder
-     courses to reappear on `/courses`)
+- **Execute pending Supabase SQL migrations** (0044/0046 confirmed already run):
+  1. `0045_testimonials.sql` — verify run (testimonials showing on landing already)
+  2. `0047_course_brochure.sql` — adds `brochure_url`/`intro_video_url` to `master_paths`,
+     needed for the new brochure download + intro video admin uploads to work
 
 ### P1
 - Further `server.py` refactor: extract `portfolio`, `revision`, `milestones` routes into
