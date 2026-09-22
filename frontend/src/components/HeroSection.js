@@ -11,7 +11,7 @@ import HeroParticles from '@/components/landing/HeroParticles';
 const STATS = [
   { n: '21', l: 'Modules' },
   { n: '239', l: 'Sessions' },
-  { n: '42h', l: 'Lectures' },
+  { n: '100+h', l: 'Lectures' },
   { n: '3', l: 'Capstones' },
   { n: 'XV', l: 'NISM prep' },
   { n: '₹4999', l: 'Lifetime' },

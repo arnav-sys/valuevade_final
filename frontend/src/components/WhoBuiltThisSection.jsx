@@ -60,7 +60,7 @@ export default function WhoBuiltThisSection() {
               </span>
             </div>
             <p className="text-[13.5px] lg:text-[14.5px] text-[var(--color-text-muted)] font-bricolage leading-relaxed">
-              The program&apos;s 42 hours of video lectures are designed and taught by Saarthak Bhatia,
+              The program&apos;s 100+ hours of video lectures are designed and taught by Saarthak Bhatia,
               who built the full course content end-to-end. Every module is scripted and recorded
               before release. Saarthak is a qualified Chartered Accountant (CA), US Certified
               Management Accountant (CMA US) and ACCA (UK), a triple-credential accounting and

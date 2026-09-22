@@ -164,7 +164,7 @@ const COURSE_DETAILS_FAQS = [
   { q: 'What are the prerequisites for the Equity Research Analyst Program?',
     a: "None. The course starts from absolute foundations, what finance is, how the three statements work, before building toward modelling and valuation. Basic Excel familiarity helps but isn't assumed; the early sessions teach the spreadsheet skills the later simulations use. If you can commit about an hour a day, you have everything you need." },
   { q: 'How long does the course take to complete?',
-    a: "Most students finish in about 2 months at 1 hour a day; the full program is roughly 60 hours of guided work, including 42 hours of video lectures. The Study Planner lets you set a target deadline or a daily-hours budget and auto-schedules all 239 sessions accordingly. Because access is lifetime, going slower costs nothing." },
+    a: "Most students finish in about 2 months at 1 hour a day; the full program is roughly 100+ hours of guided work, including hands-on video lectures. The Study Planner lets you set a target deadline or a daily-hours budget and auto-schedules all 239 sessions accordingly. Because access is lifetime, going slower costs nothing." },
   { q: 'How long does it take to learn DCF valuation?',
     a: "Inside the program, you build your first complete DCF, on Reliance, in the valuation modules, roughly five weeks in at an hour a day, after the accounting, analysis and modelling foundations that make the DCF's assumptions defensible. Getting comfortable defending WACC, growth and terminal-value choices in an interview usually takes a further few weeks of the valuation and mock-interview modules." },
   { q: 'What does the syllabus cover?',
@@ -536,12 +536,6 @@ export default function CourseDetailsPage() {
     (sum, m) => sum + (m.master_sessions || []).reduce((s, sess) => s + effectiveMinutes(sess), 0),
     0
   );
-  // Prefer dynamically calculated hours (from video_duration_minutes) over the
-  // static estimated_hours field in the course row. Fall back to the static
-  // value only while sessions are still loading (totalMinutes === 0).
-  const totalHours = totalMinutes > 0
-    ? Math.round(totalMinutes / 60)
-    : (course?.estimated_hours || 0);
 
   // How many of those hours are pure video (to surface in the stats bar label)
   const allSessions = modules.flatMap((m) => m.master_sessions || []);
@@ -744,7 +738,7 @@ export default function CourseDetailsPage() {
                 >
                   {course?.long_description || `The Equity Research Analyst Program is Valuevade's flagship online course for
 Indian finance students and early-career switchers. Across 21 modules and 239
-hands-on sessions (about 60 hours, including 42 hours of video lectures), you learn
+hands-on sessions (100+ hours, including hands-on video lectures), you learn
 accounting under Ind AS, financial statement and ratio analysis, three-statement
 financial modelling, and valuation by DCF, comparable companies and SOTP, then
 finish with three portfolio capstones: an initiating-coverage report, a sector
@@ -768,7 +762,7 @@ management or Big 4 advisory.`}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock size={16} className="text-[var(--color-accent-pink)]" />
-                    {totalHours}h {videoHoursKnown && <span className="text-[10px] text-[var(--color-text-faint)] font-mono">video</span>}
+                    100+h {videoHoursKnown && <span className="text-[10px] text-[var(--color-text-faint)] font-mono">video</span>}
                   </span>
                   <DifficultyBadge level={course.difficulty} />
                 </div>
@@ -856,7 +850,7 @@ management or Big 4 advisory.`}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
                   <AnimatedStat testid="detail-stat-modules"   value={modules.length || 0}  label="Modules"   icon={<Layers size={18} />} />
                   <AnimatedStat testid="detail-stat-sessions"  value={totalSessions || 0}   label="Sessions"  icon={<BookOpen size={18} />} />
-                  <AnimatedStat testid="detail-stat-hours"     value={totalHours || 0}      label={videoHoursKnown ? 'Hours of Content' : 'Hours (est.)'}     icon={<Clock size={18} />} suffix="h" />
+                  <AnimatedStat testid="detail-stat-hours"     value={100}                  label={videoHoursKnown ? 'Hours of Content' : 'Hours (est.)'}     icon={<Clock size={18} />} suffix="+h" />
                   <AnimatedStat testid="detail-stat-capstones" value={3}                    label="Capstones" icon={<CheckCircle2 size={18} />} />
                 </div>
               </section>
