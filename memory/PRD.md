@@ -10,7 +10,68 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Current approved request — 2026-10-21
+## Latest approved request — 2026-10-21 (landing-only 3D redesign)
+User: "redesign only first landing page only to be more 3d interactive and more conversion".
+On scope clarification, user chose **"The entire landing page"**. Preserve the previous
+PDF-derived branding and leave all other pages unchanged.
+
+### Implemented
+- New isolated landing module: `src/components/landing/immersive/` (12 files), mounted
+  exclusively by `LandingPage.js`. No shared brand CSS, auth, backend, payment, or other
+  page components changed for this request. No new dependencies required.
+- New conversion-focused page sequence: 3D hero → course stats → interactive practice →
+  company coverage → portfolio outcomes → six-stage learning journey → AI toolkit →
+  published faculty/reviews → transparent pricing → comparison → FAQ → closing CTA.
+- Actual Three.js financial workspace: research report, working-model laptop illustration,
+  interview screen and extruded chart bars. Mode controls, pointer drag, reset, pause,
+  responsive scene composition, off-screen render throttling, reduced-motion support,
+  and original-art fallback on unavailable/lost WebGL. Textures are illustrative sample
+  screens, not real market feeds or a functioning spreadsheet inside the canvas.
+- Hands-on, explicitly labeled sample exercises: five-year DCF with growth/discount
+  sliders (₹100 cr starting cash flow, 3% terminal growth), financial-report signals,
+  and a sample interview question with deterministic educational feedback. No AI API
+  calls or fabricated AI scores in these previews.
+- Three perspective-tilting outcome cards, six interactive curriculum stages with
+  next/previous controls, and retained course links. All stated total-hours labels remain
+  100+ hrs; full course remains ₹4,999 lifetime and first session remains free.
+- Landing faculty/reviews consume existing APIs with no invented static fallback people
+  or reviews. Profile bios expand/collapse. Existing FAQ and comparison retained.
+- Isolated landing navigation and mobile Radix Sheet with accessible description and
+  explicit close. Signup CTAs throughout. Mobile sticky CTA and help mount only after
+  the hero has scrolled away, not on first load or over the 3D controls.
+- Removed landing-only intro interstitial/custom cursor from this new page to avoid
+  delaying the primary action. Existing signup, login, course, enrollment, free-mock,
+  footer and legal destinations retained.
+
+### Verification
+- Iteration 97 tested all new interactions, actual canvas pixel/frame differences,
+  drag/pause/reset/modes, reduced-motion, fallback, formulas, keyboard tab controls,
+  roadmap, published content, pricing links, FAQ/comparison, and non-landing isolation.
+- Fixed all reported layout defects: scene now follows copy in normal document flow;
+  mobile help no longer covers reset; sticky visibility uses measured hero bounds rather
+  than an initial IntersectionObserver result; mobile sentence spacing restored; Sheet
+  description added. Canvas screen colors corrected to preserve source texture contrast.
+- `/app/test_reports/iteration_98.json`: all acceptance checks pass, no UI/design bugs,
+  no style leakage. Tested 1920x800 and 390x844 screenshots; additional responsive checks
+  at 320/768/1024/1440 show no horizontal overflow or hero/scene overlaps.
+- Main-agent checks measured an 8px positive scene/copy gap, verified clean mobile first
+  load, sticky/help appearing only after scroll-out and disappearing at the top, and
+  unobstructed Reset/menu controls. Iteration 98 confirmed these behaviors.
+- Hard WebGL-disable simulation varied in the browser harness; fallback was verified
+  via forced context-loss in iteration 98 (constructor-failure fallback passed in 97).
+  This is a test-harness caveat, not a known application defect.
+- Pre-existing XP network warning was not reproducible in stable-load regression.
+  Dev build compiles with one existing warning. No production build/deployment claim.
+  User received an async deployment notification before this request; no new deployment
+  was requested or invoked as part of these landing changes.
+
+### Next action items
+- P0: none known for this landing-only request. User visual review is next.
+- Potential enhancement: measure free-session CTA clicks and signup completion to test
+  actual conversion impact; no conversion lift is claimed from design alone.
+- Existing application P1/P2 backlog remains unchanged below.
+
+## Previous approved request — 2026-10-21 (sitewide reference branding)
 "I have added some references of valuevade assets take the design language colour palette everything and apply it to all pages of current website. add uis and graphics also in pages just like in documents attached(specially in landing age in a new may of mastering finance in age of ai). mimick them exactly in all pages"
 
 User approved the sitewide design plan with "continue". Original references:
@@ -175,6 +236,9 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 - Exam Analytics for admins: attempt breakdowns, average scores, hardest questions.
 
 ## Key files
+- `/app/frontend/src/components/LandingPage.js` — landing-only immersive page composition
+- `/app/frontend/src/components/landing/immersive/` — current 3D landing components and isolated CSS
+- `/app/landing_3d_design.md` — design proposal and implementation notes
 - `/app/frontend/src/components/CoursesPage.jsx` — redesigned courses listing
 - `/app/frontend/src/components/HeroSection.js` — reference-matched lavender hero + original artwork + product previews
 - `/app/frontend/src/styles/valuevade-brand.css` — shared route-wide design tokens and responsive rules
@@ -188,4 +252,5 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 
 ## Testing status
 - testing_agent used after each significant change (iteration_90, iteration_91)
-- Latest redesign: see iterations95–96 and follow-up above; no remaining known regressions.
+- Sitewide branding: iterations95–96 and follow-up. Latest landing-only redesign:
+  iterations97–98; no remaining known UI regressions.

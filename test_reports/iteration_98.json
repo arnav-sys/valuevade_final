@@ -1,0 +1,53 @@
+{
+  "summary": "Focused frontend retest of landing iteration97 fixes on public preview completed. Desktop/mobile hero layout, sticky/help gating, menu accessibility, responsive overflow, and regression smoke flows now pass. No sustained XP load warning reproduced on stable landing loads.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "WebGL-disabled fallback verification",
+        "issue": "Hard WebGL-disable simulation via runtime getContext override did not reliably force constructor failure in this browser harness; fallback behavior was validated via forced webglcontextlost event instead.",
+        "affected_selectors": [
+          "[data-testid='finance-three-canvas']",
+          "[data-testid='finance-scene-fallback']"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_98.json",
+    "/root/.emergent/automation_output/20261021_211509/console_20261021_211509.log",
+    "/root/.emergent/automation_output/20261021_211605/console_20261021_211605.log",
+    "/root/.emergent/automation_output/20261021_211625/console_20261021_211625.log",
+    "/app/frontend/src/components/LandingPage.js",
+    "/app/frontend/src/components/landing/immersive/ImmersiveHero.jsx",
+    "/app/frontend/src/components/landing/immersive/LandingNav.jsx",
+    "/app/frontend/src/components/landing/immersive/FinanceScene.jsx",
+    "/app/frontend/src/components/landing/immersive/immersive.css"
+  ],
+  "action_items": [
+    "No landing code changes required from this retest based on current acceptance checks.",
+    "Optional: add a deterministic QA toggle to disable WebGL at app level for easier fallback regression automation."
+  ],
+  "critical_code_review_comments": [
+    "LandingPage hero gating now uses ResizeObserver + rAF-throttled scroll/resize and correctly prevents early sticky/help mounts at mobile initial load.",
+    "Mobile menu accessibility warning (missing Description/aria-describedby) is resolved with explicit SheetDescription and close control.",
+    "No style leakage detected to non-landing routes during this smoke pass."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_98.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (frontend-only scope)",
+    "frontend": "97%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Validated requested breakpoints and flows on https://fintech-mvp-38.preview.emergentagent.com. Hero-scene gap measured +8px desktop (1920x800). Mobile 390x844 fresh load shows no sticky/help mounts; both appear after hero pass and hide at top; sticky dismiss persists. Hero copy renders 'doing. Build'. Sheet close via explicit button/Escape/anchor works. Responsive checks at 320/768/1024/1440 showed no horizontal overflow and no hero-scene overlap. XP warning '[xp] loadLevels failed' did not recur on stable landing runs.",
+  "rca of the issue": "Previously reported landing overlap and mobile interference defects are resolved by moving hero scene/toolbar into normal flow, tightening passed-hero detection with bounding-box based gating, and rendering help/sticky only post-hero. Remaining note is automation-level WebGL hard-disable simulation variability, not a sustained functional landing defect."
+}

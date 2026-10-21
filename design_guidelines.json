@@ -1,76 +1,98 @@
 {
-  "project_name": "Valuevade Redesign Guidelines",
-  "theme_strategy": "Valuevade Dual / Brand Reference Mode (Light Canvas #F5ECFF & Deep Navy #02073D)",
-  "context_type": "Hybrid Fullstack Finance Learning Platform & AI Terminal",
-  "colors": {
-    "background_light": "#F5ECFF",
-    "background_card_light": "#FFFFFF",
-    "text_primary_navy": "#02073D",
-    "text_muted_slate": "#5B5F8F",
-    "accent_blue": "#246BFD",
-    "accent_violet": "#6A5CFF",
-    "accent_pink": "#FF6AC1",
-    "accent_green": "#0F9D78",
-    "border_light": "rgba(91, 95, 143, 0.15)",
-    "dark_canvas": "#0A0D28",
-    "dark_card": "#13173D"
+  "project_name": "Valuevade Landing Page Redesign",
+  "app_type": "landing_page",
+  "theme_strategy": {
+    "supported_modes": ["light", "dark"],
+    "default_mode": "light",
+    "toggle_mechanism": "ThemeContext single source of truth using landing-light / landing-dark CSS classes"
   },
   "typography": {
-    "heading_font": "Outfit, sans-serif",
-    "body_font": "Instrument Sans, sans-serif",
-    "mono_font": "Spline Sans Mono, monospace",
-    "h1_hero": "38px mobile / 64px desktop, weight 700, line-height 1.06, zero letter-spacing",
-    "h2_section": "Outfit, weight 600, zero letter-spacing; preserve page hierarchy",
-    "h3_card": "text-xl sm:text-2xl font-semibold text-[#02073D]",
-    "body_text": "text-base leading-relaxed text-[#5B5F8F]"
-  },
-  "layout_and_spacing": {
-    "padding_system": "Generous spacing philosophy (p-6, p-8, p-12, p-16)",
-    "container_padding": "Unframed sections with generous padding; individual cards use 8px radii",
-    "grid_mode": "Reference-inspired full-width editorial bands and original finance diagrams; dense functional editors preserved",
-    "header": "Glassmorphic header with backdrop-blur-xl bg-[#F5ECFF]/80 or bg-[#0A0D28]/80 with border-b border-[#5B5F8F]/15 z-50 sticky top-0"
-  },
-  "landing_redesign_blueprint": {
-    "hero_section": {
-      "tagline": "A new way of mastering finance in the age of AI",
-      "headline": "A new way of mastering finance in the age of AI.",
-      "cta_primary": "Start Free Session",
-      "cta_secondary": "Explore the curriculum",
-      "hero_graphics": "Original annual-report / AI / price-chart illustration extracted from the supplied PDF, followed by interactive product previews explicitly labeled illustrative data. No live stock ticker integration."
+    "font_families": {
+      "display": "Outfit, sans-serif",
+      "body": "Instrument Sans, sans-serif",
+      "mono": "Spline Sans Mono, monospace"
     },
-    "key_sections": [
-      {
-        "title": "Finance Career Lies vs AI Realities",
-        "graphic_style": "Comparison Bento cards with vibrant violet and pink pill tags, contrasting common myths against actionable financial skill modules."
-      },
-      {
-        "title": "Equities & ER Roadmap Carousel",
-        "graphic_style": "Step-by-step interactive timeline with emerald green completion nodes (#0F9D78) and blue connection lines."
-      },
-      {
-        "title": "AI Mock Interview & Spreadsheet Terminal",
-        "graphic_style": "Dark/Light hybrid glassmorphic panel with active code/financial model terminal, real-time response gauge, and downloadable Excel/Claude prompt templates."
-      }
-    ]
+    "hierarchy": {
+      "h1": "62px desktop / 45px mobile / 39px narrow mobile; Outfit 700, zero letter-spacing",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#02073D] dark:text-[#F5F1FF]",
+      "h3": "text-xl sm:text-2xl font-semibold text-[#02073D] dark:text-[#F5F1FF]",
+      "h4": "text-lg sm:text-xl font-medium text-[#02073D] dark:text-[#F5F1FF]",
+      "body": "text-base text-[#5B5F8F] dark:text-[#A6A9C7] leading-relaxed",
+      "eyebrow": "8–10px Spline Sans Mono, zero letter-spacing, muted brand color"
+    }
   },
-  "inner_page_graphic_treatments": {
-    "courses_and_catalog": "Clean white cards over soft lavender background (#F5ECFF), colorful category pills (#246BFD, #6A5CFF, #FF6AC1), progress indicators, and instructor badge cards.",
-    "ai_mock_interviews": "Split-pane layout with AI voice waveform simulation, prompt helper sidebar, and instant feedback scorecards using #0F9D78 (Green) and #246BFD (Blue).",
-    "spreadsheet_simulations": "High-density data view with dark blue accents, active cell highlights, live calculations, and step-by-step guided instructions.",
-    "dashboard_and_admin": "Cardless or soft-bordered dense analytics grid with clean metric callouts, progress rings, and test status indicators."
+  "colors": {
+    "light": {
+      "bg_primary": "#F5ECFF",
+      "bg_secondary": "#EDE8FC",
+      "color_primary": "#246BFD",
+      "accent_purple": "#6A5CFF",
+      "accent_pink": "#FF6AC1",
+      "text_main": "#02073D",
+      "text_muted": "#5B5F8F",
+      "card_bg": "#FFFDFF",
+      "border": "rgba(91,95,143,.18)",
+      "success": "#0F9D78"
+    },
+    "dark": {
+      "bg_primary": "#0A0D28",
+      "bg_secondary": "#111535",
+      "color_primary": "#246BFD",
+      "accent_purple": "#6A5CFF",
+      "accent_pink": "#FF8DD0",
+      "text_main": "#F5F1FF",
+      "text_muted": "#A6A9C7",
+      "card_bg": "#131735",
+      "border": "rgba(182,177,230,.19)",
+      "success": "#52D6AE"
+    }
   },
-  "image_urls": {
-    "dashboard_preview": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85",
-    "analytics_screen": "https://images.unsplash.com/photo-1526628953301-3e589a6a8b74?crop=entropy&cs=srgb&fm=jpg&q=85",
-    "financial_data_mobile": "https://images.pexels.com/photos/5527517/pexels-photo-5527517.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+  "grids_and_layouts": {
+    "hero_layout": "Centered benefit headline and clear CTA followed by a full-width unframed Three.js finance desk in normal document flow; scene never overlaps text",
+    "ledger_grid": "Four course metrics, two columns on mobile and four on desktop",
+    "feature_grid": "grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8",
+    "company_grid": "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4"
   },
-  "general_ui_ux_guidelines": {
-    "data_testid_rule": "ALL interactive and key informational elements (buttons, inputs, links, cards, tabs, score displays) MUST include explicit data-testid attributes in kebab-case format (e.g. data-testid=\"start-learning-button\", data-testid=\"course-card-equity-research\").",
-    "file_extension": "Target implementation files use standard .js / .jsx formats.",
-    "contrast_and_accessibility": "Ensure high text contrast. Never use plain white text on transparent backgrounds or pure white text on light lavender. Use #02073D for high readability.",
-    "micro_interactions": "Subtle hover lift (-translate-y-1), active press scale (scale-95), and ring focus indicators."
-  }
-},
-  "overwrite": true,
-  "path": "/app/design_guidelines.json"
+  "motion_and_3d": {
+    "libraries": ["three", "framer-motion", "lucide-react"],
+    "hero_3d_canvas": {
+      "component": "FinanceScene",
+      "features": ["Research report, valuation laptop, interview screen and extruded chart bars", "Research/Model/Pitch views", "Pointer drag, pause and reset", "Reduced motion and original-art WebGL fallback"]
+    },
+    "product_interactive_stage": {
+      "component": "PracticeStudio",
+      "features": ["Deterministic five-year sample DCF with growth and discount sliders", "Sample report signals with educational explanations", "Sample interview question with static instructional feedback; no fabricated AI scores"]
+    }
+  },
+  "component_paths": {
+    "landing_page": "/app/frontend/src/components/LandingPage.js",
+    "hero_section": "/app/frontend/src/components/landing/immersive/ImmersiveHero.jsx",
+    "hero_3d": "/app/frontend/src/components/landing/immersive/FinanceScene.jsx",
+    "product_showcase": "/app/frontend/src/components/landing/immersive/PracticeStudio.jsx",
+    "brand_tokens": "/app/frontend/src/styles/valuevade-brand.css"
+  },
+  "image_urls": [
+    {"category": "Original user-provided brand art", "url": "/brand/claude-art.webp", "description": "PDF-extracted original artwork; related research, career, roadmap and certification images share the same directory"}
+  ],
+  "accessibility": {
+    "contrast_standards": "WCAG AA / APCA compliant",
+    "keyboard_navigation": "Full focus states with outline indicator",
+    "data_testid_requirement": "All interactive elements, buttons, links, inputs, and markers must include kebab-case data-testid attributes",
+    "reduced_motion": "Respect prefers-reduced-motion media query"
+  },
+  "instructions_to_main_agent": [
+    "Redesign the entire landing page to be 3D interactive and conversion-focused.",
+    "Do NOT modify /app/frontend/src/styles/valuevade-brand.css because other pages rely on it.",
+    "Preserve all existing real routes, curriculum data, and pricing parameters (₹4,999 lifetime).",
+    "Do not fabricate placement statistics or artificial urgency countdowns.",
+    "Ensure both Light (#F5ECFF) and Dark (#0A0D28) landing themes function seamlessly.",
+    "Re-integrate and activate 3D interactive canvases (Three.js) in the hero section and product previews.",
+    "Maintain data-testid attributes across all components for automated testing compatibility."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "Avoid AI slop and generic templates; create distinctive, interactive finance education UI.",
+    "Ensure glassmorphism backdrop blurs do not obscure underlying text or buttons.",
+    "Maintain strict data-testid naming conventions on buttons, links, toggles, and sections.",
+    "Ensure responsive support down to mobile viewports (with sticky bottom conversion dock)."
+  ]
 }

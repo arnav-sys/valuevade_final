@@ -1,0 +1,95 @@
+{
+  "summary": "Frontend-only landing redesign validation completed on public preview with desktop/mobile/responsive/interaction audits and non-landing regression smoke. Core immersive experience works (real Three.js rendering, mode switching, drag/reset/pause, reduced-motion behavior, WebGL fallback, FAQ/comparison usability, API-driven faculty/testimonials), but 4 high-priority landing defects were reproduced.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Hero desktop layout",
+        "issue": "3D scene starts too high and visually intersects hero CTA/access-note area. Measured overlap: CTA/access-note bounding boxes intersect finance-scene bounding box.",
+        "selector": "[data-testid='hero-primary-cta'], [data-testid='hero-access-note'], [data-testid='finance-scene']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Hero mobile controls vs help bubble",
+        "issue": "FAQ help bubble overlaps Reset control in hero toolbar on 390x844. Bounding boxes intersect and reduce tapability of reset.",
+        "selector": "[data-testid='faq-chatbot-bubble'], [data-testid='hero-scene-reset']",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "Hero mobile sticky bar behavior",
+        "issue": "Mobile sticky CTA bar is visible immediately on initial page load instead of only after hero scroll-out.",
+        "selector": "[data-testid='mobile-sticky-bar']",
+        "priority": "HIGH"
+      },
+      {
+        "component": "Hero copy line-break handling",
+        "issue": "Mobile hero paragraph concatenates words as 'doing.Build' due hidden <br> with no spacing fallback.",
+        "selector": "[data-testid='hero-paragraph']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "Mobile menu accessibility",
+        "issue": "Console warns: 'Missing Description or aria-describedby for DialogContent' when opening mobile Sheet.",
+        "affected_selectors": [
+          "[data-testid='mobile-menu-overlay']"
+        ]
+      },
+      {
+        "flow": "Global runtime noise",
+        "issue": "Observed occasional console warning on landing runs: '[xp] loadLevels failed, using fallback: TypeError: Failed to fetch'.",
+        "affected_selectors": [
+          "landing route runtime"
+        ]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Landing hero (desktop + mobile)",
+        "issues": [
+          "Desktop visual hierarchy is weakened because finance canvas intrudes into CTA/access region.",
+          "Mobile floating help bubble collides with scene controls near lower hero, reducing conversion/control clarity."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [
+    "/app/frontend/src/components/LandingPage.js",
+    "/app/frontend/src/components/landing/immersive/ImmersiveHero.jsx",
+    "/app/frontend/src/components/landing/immersive/FinanceScene.jsx",
+    "/app/frontend/src/components/landing/immersive/PracticeExamples.jsx",
+    "/app/frontend/src/components/landing/immersive/LearningJourney.jsx",
+    "/app/frontend/src/components/landing/immersive/LandingNav.jsx",
+    "/app/frontend/src/components/landing/immersive/immersive.css",
+    "/app/frontend/src/components/ComparisonSection.js",
+    "/app/frontend/src/components/faq/FaqAccordion.jsx"
+  ],
+  "action_items": [
+    "Raise desktop hero canvas baseline / adjust hero spacing so CTA and access note never overlap with finance scene.",
+    "Reposition mobile FAQ bubble or hero toolbar z-order/offset to prevent overlap with reset control at 390x844.",
+    "Fix mobile hero paragraph spacing when <br> is hidden (preserve space between sentence fragments).",
+    "Gate mobile sticky signup bar to appear only after hero is out of viewport (recheck IntersectionObserver initial state).",
+    "Add Sheet description/aria-describedby wiring to remove dialog accessibility warning."
+  ],
+  "critical_code_review_comments": [
+    "FinanceScene sets preserveDrawingBuffer=true; this enabled test frame-diff checks and confirms real rendering, but can cost performance on low-end devices—monitor if mobile jank appears.",
+    "Landing style scoping cleanup works correctly: after navigation to /courses,/course,/login,/dashboard there are no lingering .vv-immersive nodes/classes.",
+    "Comparison and FAQ include usable test ids (comparison-provider-select, compare-row-*, faq-cat-*, faq-toggle-*), enabling stable regression testing."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_97.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (frontend-only scope)",
+    "frontend": "~87% (core interactions and integrations pass; 4 high-priority landing UX defects remain)"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Verified on public URL only. 3D checks passed with frame fingerprint deltas and mode-specific image signatures. WebGL-disabled fallback reproduced (fallback visible, no canvas). Responsive overflow checks passed at 320/768/1024/1440. Non-landing route smoke passed and immersive styles did not leak after navigation. Exact top screenshots captured at 1920x800 and 390x844 in automation artifacts.",
+  "rca of the issue": "Root cause is layout/stacking and breakpoint CSS behavior in hero zone: (1) fixed hero height with absolute-positioned scene/toolbar allows scene to intrude into copy area on desktop; (2) mobile FAQ bubble bottom offset conflicts with hero toolbar/reset location; (3) mobile paragraph hides <br> via CSS without preserving whitespace, causing word concatenation; (4) sticky bar visibility logic relies on IntersectionObserver state that currently starts in visible mode on first render for mobile, likely due initial observer timing/threshold behavior."
+}

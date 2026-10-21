@@ -1,36 +1,45 @@
-import { useState, useEffect, lazy, Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { X, ArrowRight } from 'lucide-react';
-import CustomCursor from '@/components/CustomCursor';
-import Navbar from '@/components/Navbar';
-import HeroSection from '@/components/HeroSection';
 import SocialProofStrip from '@/components/SocialProofStrip';
-import ProblemSection from '@/components/ProblemSection';
-import FeaturesSection from '@/components/FeaturesSection';
 import ComparisonSection from '@/components/ComparisonSection';
-import HowItWorksSection from '@/components/HowItWorksSection';
-import AIProofSection from '@/components/AIProofSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
-import FinalCTASection from '@/components/FinalCTASection';
-import FreeTrialCTA from '@/components/FreeTrialCTA';
-import WhatYoullLearnSection from '@/components/WhatYoullLearnSection';
-import PracticalSkillsSection from '@/components/PracticalSkillsSection';
-import WhoBuiltThisSection from '@/components/WhoBuiltThisSection';
-import FacultySection from '@/components/FacultySection';
 import Footer from '@/components/Footer';
 import FaqAccordion from '@/components/faq/FaqAccordion';
 import FaqChatbot from '@/components/faq/FaqChatbot';
 import { homeOrgJsonLd } from '@/components/landing/jsonLd';
-import LandingIntroSequence from '@/components/landing/LandingIntroSequence';
 import { ScrollProgressBar } from '@/components/cinematic/primitives';
 import { useTheme } from '@/contexts/ThemeContext';
 import '@/components/landing/landing-dark.css';
-
-const LandingHero3D = lazy(() => import('@/components/landing/LandingHero3D'));
+import LandingNav from './landing/immersive/LandingNav';
+import ImmersiveHero from './landing/immersive/ImmersiveHero';
+import PracticeStudio from './landing/immersive/PracticeStudio';
+import LearningJourney from './landing/immersive/LearningJourney';
+import { CourseStats, OutcomeSection, AIEdgeSection } from './landing/immersive/ValueSections';
+import LandingPeople from './landing/immersive/LandingPeople';
+import PricingSection, { ClosingSection } from './landing/immersive/PricingSection';
+import './landing/immersive/immersive.css';
 
 export default function LandingPage() {
   const [showMobileBar, setShowMobileBar] = useState(true);
+  const [hasPassedHero, setHasPassedHero] = useState(false);
+
+  useEffect(() => {
+    const hero = document.getElementById('hero');
+    if (!hero) return;
+    let frame = 0;
+    const measure = () => {
+      const bounds = hero.getBoundingClientRect();
+      setHasPassedHero(bounds.height > 0 && window.scrollY > 0 && bounds.bottom <= 0);
+    };
+    const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(measure); };
+    const observer = new ResizeObserver(schedule);
+    observer.observe(hero);
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    schedule();
+    return () => { cancelAnimationFrame(frame); observer.disconnect(); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); };
+  }, []);
 
   // Theme is now centrally owned by ThemeContext (single source of truth
   // for both landing AND auth-gated routes). Landing simply derives its
@@ -62,7 +71,7 @@ export default function LandingPage() {
 
   return (
     <div
-      className={`${landingTheme === 'dark' ? 'landing-dark' : 'landing-light'} min-h-screen relative`}
+      className={`vv-immersive ${landingTheme === 'dark' ? 'landing-dark' : 'landing-light'} min-h-screen relative`}
       data-testid="landing-page"
       data-landing-theme={landingTheme}
       style={{ transition: 'background-color 250ms ease, color 250ms ease' }}
@@ -83,51 +92,28 @@ export default function LandingPage() {
         <meta name="twitter:image" content="https://valuevade.com/valuevade-logo.png" />
         <script type="application/ld+json">{JSON.stringify(homeOrgJsonLd)}</script>
       </Helmet>
-      <CustomCursor />
       <ScrollProgressBar />
-      <LandingIntroSequence />
-      <Navbar
-        landingTheme={landingTheme}
-        onToggleLandingTheme={toggleLandingTheme}
-      />
-
-      {/* Cinematic Three.js background, retired from the above-the-fold
-          in Feb 2026 editorial redesign. HeroSection now ships its own
-          restrained chart/grid backdrop. Kept lazy import in case we
-          bring it back for a section further down the page. */}
-      {false && (
-        <div className="absolute top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none" aria-hidden="true">
-          <Suspense fallback={null}>
-            <LandingHero3D
-              theme={landingTheme}
-              mobile={typeof window !== 'undefined' && window.innerWidth < 768}
-            />
-          </Suspense>
-        </div>
-      )}
+      <LandingNav theme={landingTheme} toggleTheme={toggleLandingTheme} />
 
       <main className="relative z-10">
-        <HeroSection />
+        <ImmersiveHero theme={landingTheme} />
+        <CourseStats />
+        <PracticeStudio />
         <SocialProofStrip />
-        <FacultySection />
-        <ProblemSection />
-        <FeaturesSection />
-        <WhatYoullLearnSection />
-        <PracticalSkillsSection />
-        <WhoBuiltThisSection />
+        <OutcomeSection />
+        <LearningJourney />
+        <AIEdgeSection />
+        <LandingPeople />
+        <PricingSection />
         <ComparisonSection />
-        <TestimonialsSection />
-        <HowItWorksSection />
-        <AIProofSection />
-        <FreeTrialCTA />
         <FaqAccordion />
-        <FinalCTASection />
+        <ClosingSection />
       </main>
 
       <Footer />
-      <FaqChatbot />
+      {hasPassedHero && <FaqChatbot />}
 
-      {showMobileBar && (
+      {showMobileBar && hasPassedHero && (
         <div
           className="fixed bottom-0 left-0 right-0 z-40 lg:hidden mobile-sticky-bar"
           data-testid="mobile-sticky-bar"
@@ -148,6 +134,7 @@ export default function LandingPage() {
               onClick={() => setShowMobileBar(false)}
               className="ml-2 text-[var(--color-text-faint)] hover:text-[var(--color-text)]"
               data-testid="mobile-bar-dismiss"
+              aria-label="Dismiss signup bar"
             >
               <X size={18} />
             </button>
