@@ -1,6 +1,11 @@
 # Valuevade 3D Interactive Landing Page & Conversion Blueprint
 
 ## Implementation status — 2026-10-21
+Latest screenshot follow-up: desktop hero now includes course-benefit and portfolio-outcome
+rails at >=1200px. The AI Advantage band explicitly overrides the legacy transparent-section
+rule to retain its navy surface in both themes. Verified real text contrast and responsive
+isolation in iteration99; see PRD.md for details.
+
 The proposal below informed the design; the implemented source of truth is
 `frontend/src/components/landing/immersive/` and PRD.md. Implementation deliberately
 uses a concrete Three.js finance desk rather than ambient orbital nodes, keeps

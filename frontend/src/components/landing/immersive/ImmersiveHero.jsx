@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowDown, FileSearch, Table2, Mic, Pause, Play, RotateCcw, Check } from 'lucide-react';
 import { BrandArtwork } from '../../brand/BrandArtwork';
+import { HeroBenefits } from './HeroBenefits';
 
 const FinanceScene = lazy(() => import('./FinanceScene'));
 const MODES = [{ name: 'Research', icon: FileSearch }, { name: 'Model', icon: Table2 }, { name: 'Pitch', icon: Mic }];
@@ -11,6 +12,7 @@ export default function ImmersiveHero({ theme }) {
   const [active, setActive] = useState(1), [paused, setPaused] = useState(false), [resetKey, setResetKey] = useState(0);
   const reducedMotion = useReducedMotion();
   return <section id="hero" className="vvi-hero" data-testid="hero-section">
+    <div className="vvi-hero-intro" data-testid="hero-intro-layout">
     <motion.div className="vvi-hero-copy" initial={{ opacity: reducedMotion ? 1 : 0, y: reducedMotion ? 0 : 15 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7 }}>
       <p className="vvi-kicker" data-testid="hero-eyebrow"><span /> VALUEVADE · FINANCE, FORWARD</p>
       <h1 data-testid="hero-h1">Master finance.<br /><span>Build your edge.</span></h1>
@@ -21,6 +23,9 @@ export default function ImmersiveHero({ theme }) {
       </div>
       <p className="vvi-hero-access" data-testid="hero-access-note"><Check size={13} /> First session free <span>·</span> ₹4,999 lifetime <span>·</span> No subscription</p>
     </motion.div>
+      <HeroBenefits side="left" />
+      <HeroBenefits side="right" />
+    </div>
     <Suspense fallback={<div className="vvi-finance-scene"><BrandArtwork variant="ai" className="vvi-scene-fallback" testId="finance-scene-loading" /></div>}>
       <FinanceScene active={active} paused={paused} resetKey={resetKey} reducedMotion={reducedMotion} theme={theme} />
     </Suspense>

@@ -1,0 +1,50 @@
+{
+  "summary": "Frontend-only landing regression and visual verification completed on public preview URL. Reported AI section washout is fixed with exact navy surface and readable typography; desktop side benefits rails fill hero side space as requested and remain responsive.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Landing runtime console",
+        "issue": "Repeated net::ERR_ABORTED entries observed during rapid cross-route automation navigations (faculty/testimonials/faqs/sounds/cdn-cgi requests). Not user-visible in this pass; likely navigation-abort noise in test harness.",
+        "affected_selectors": [
+          "landing route runtime"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/frontend/src/components/landing/immersive/HeroBenefits.jsx",
+    "/app/frontend/src/components/landing/immersive/ImmersiveHero.jsx",
+    "/app/frontend/src/components/landing/immersive/ValueSections.jsx",
+    "/app/frontend/src/components/landing/immersive/immersive.css",
+    "/app/frontend/src/components/landing/landing-dark.css",
+    "/root/.emergent/automation_output/20261021_212931/console_20261021_212931.log",
+    "/root/.emergent/automation_output/20261021_213030/console_20261021_213030.log"
+  ],
+  "action_items": [
+    "No landing functional/UI blocker found for this user report; safe for user visual confirmation.",
+    "Optional perf follow-up: monitor Three.js preserveDrawingBuffer path because browser GL warnings mention ReadPixels stalls under automation screenshots."
+  ],
+  "critical_code_review_comments": [
+    "AI edge section now safely overrides legacy transparent-section rule using `.vv-immersive section.vvi-ai-edge { background: #02073D !important; }`, preventing inherited washout in both themes.",
+    "Desktop side rails are properly scoped to `@media (min-width: 1200px)` and hidden below 1200, matching desktop-only requirement without mobile growth regressions.",
+    "Landing style isolation remains intact: navigation to /login and /courses shows no lingering `.vv-immersive` node or `landing-active` body/html classes."
+  ],
+  "updated_files": [
+    "/app/test_reports/iteration_99.json"
+  ],
+  "success_rate": {
+    "backend": "N/A (frontend-only scope)",
+    "frontend": "99%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Verified on https://fintech-mvp-38.preview.emergentagent.com with required screenshot sizes only (1920x800 and 390x844). AI section computed styles: background rgb(2,7,61), heading rgb(245,241,255), all 6 tool labels rgb(245,241,255) in light+dark and desktop+mobile. Contrast measured: heading 17.18, description 9.95, kicker 9.05 (all pass thresholds). Desktop rails visible and non-overlapping at 1200/1280/1440/1920; hidden without overflow at 1199/1024/768/390/320. Hero scene interactive (mode switches, pause/reset, canvas present), CTA routes validated, side rail links scroll to #practice and #how-it-works.",
+  "rca of the issue": "User-reported washed-out AI section originated from broad legacy rule in landing-dark.css forcing section backgrounds transparent (`.landing-light section, .landing-dark section { background: transparent !important; }`). The immersive CSS now adds a scoped override for AI band background, restoring intended dark surface and text contrast while keeping changes limited to landing/immersive scope."
+}

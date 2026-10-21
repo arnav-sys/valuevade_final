@@ -10,7 +10,35 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Latest approved request — 2026-10-21 (landing-only 3D redesign)
+## Latest approved update — 2026-10-21 (landing contrast + desktop side space)
+User: "fix this and also just in this landing page I have attached in desktop in left and right it looks blank do something".
+The screenshots showed washed-out AI Advantage text and empty desktop hero wings.
+User selected **"Course benefits and outcomes"** for the side spaces. Scope remained
+landing-only; no changes to other pages, backend, authentication, or payments.
+
+### Implemented and verified
+- Reproduced the exact contrast failure: legacy `landing-dark.css` forces every section
+  background transparent with `!important`, leaving the AI section's light text on lavender.
+  Fixed with `.vv-immersive section.vvi-ai-edge { background: #02073D !important; }`
+  in the landing-only stylesheet. Explicit heading/tool label colors preserve readability.
+- Added `HeroBenefits.jsx`: left rail explains 100+ hrs of practical learning, AI-personalised
+  study and NISM XV preparation; right rail highlights three capstones, portfolio work,
+  mock interviews and career preparation. Uses only existing course facts.
+- Rails flank the central hero in a three-column layout at >=1200px and stay hidden on
+  smaller viewports. Links scroll to practice and the learning roadmap. Canvas stays below
+  the entire intro, with an 8px gap and no overlap. Mobile hero remains unchanged.
+- `/app/test_reports/iteration_99.json` verifies exact navy background and white text in
+  both themes and desktop/mobile. Measured contrast: heading 17.18, body 9.95, kicker 9.05.
+  All six tool labels readable; AI CTA, rail links, hero scene/controls and signup routes pass.
+- Tested 320/390/768/1024/1199/1200/1280/1440/1920 widths; no horizontal overflow or
+  hero overlaps. No style leakage to `/login` or `/courses`. No credentials or data changed.
+- No functional/UI blocker remains. Rapid-navigation request aborts and screenshot-heavy
+  WebGL ReadPixels warnings are test-runtime notes, not reproduced user-visible failures.
+
+Next: user visual review. Optional enhancement: measure engagement with hero outcome links.
+Existing P1/P2 application backlog remains unchanged.
+
+## Previous approved request — 2026-10-21 (landing-only 3D redesign)
 User: "redesign only first landing page only to be more 3d interactive and more conversion".
 On scope clarification, user chose **"The entire landing page"**. Preserve the previous
 PDF-derived branding and leave all other pages unchanged.
@@ -238,6 +266,7 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 ## Key files
 - `/app/frontend/src/components/LandingPage.js` — landing-only immersive page composition
 - `/app/frontend/src/components/landing/immersive/` — current 3D landing components and isolated CSS
+- `/app/frontend/src/components/landing/immersive/HeroBenefits.jsx` — desktop-only benefits/outcomes rails
 - `/app/landing_3d_design.md` — design proposal and implementation notes
 - `/app/frontend/src/components/CoursesPage.jsx` — redesigned courses listing
 - `/app/frontend/src/components/HeroSection.js` — reference-matched lavender hero + original artwork + product previews
@@ -253,4 +282,5 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 ## Testing status
 - testing_agent used after each significant change (iteration_90, iteration_91)
 - Sitewide branding: iterations95–96 and follow-up. Latest landing-only redesign:
-  iterations97–98; no remaining known UI regressions.
+  iterations97–98; screenshot-reported contrast issue subsequently fixed and verified
+  alongside desktop hero benefits in iteration99. No remaining known UI regression.

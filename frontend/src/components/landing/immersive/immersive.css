@@ -34,6 +34,7 @@ body .vvi-menu-panel { background: var(--bg-primary); width: min(340px, 90vw); c
 .vvi-menu-close button { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; }
 .vv-immersive .vvi-hero { min-height: 770px; position: relative; padding: 105px 0 8px; isolation: isolate; background: linear-gradient(180deg, transparent 65%, var(--vvi-soft)); }
 .vv-immersive .vvi-hero-copy { text-align: center; position: relative; z-index: 2; max-width: 850px; padding: 0 24px; margin: auto; }
+.vv-immersive .vvi-hero-benefits { display: none; }
 .vv-immersive .vvi-hero-copy a { pointer-events: auto; }
 .vv-immersive .vvi-hero-copy .vvi-kicker { justify-content: center; margin-bottom: 15px; }
 .vv-immersive .vvi-hero-copy .vvi-kicker > span { width: 7px; height: 7px; background: #0F9D78; border-radius: 50%; box-shadow: 0 0 0 4px #0F9D7815; }
@@ -140,10 +141,13 @@ body .vvi-menu-panel { background: var(--bg-primary); width: min(340px, 90vw); c
 .vv-immersive .vvi-journey-art > p { font-size: 13px; color: var(--color-text-muted); text-align: center; margin-top: 20px; }
 .vv-immersive .vvi-journey-bottom { display: flex; align-items: center; justify-content: space-between; padding-top: 24px; border-top: 1px solid var(--color-border); font-family: var(--font-mono); font-size: 10px; color: var(--color-text-muted); }
 .vv-immersive .vvi-journey-bottom > div { display: flex; gap: 8px; }
-.vv-immersive .vvi-ai-edge { background: #02073D; padding: 82px 0; color: #F5F1FF; }
+/* Legacy landing CSS forces every section transparent; this band requires its
+   own explicit surface so its light typography stays readable in both themes. */
+.vv-immersive section.vvi-ai-edge { background: #02073D !important; }
+.vv-immersive .vvi-ai-edge { padding: 82px 0; color: #F5F1FF; }
 .vv-immersive .vvi-ai-edge > div { display: grid; grid-template-columns: 1.15fr 1fr; gap: 80px; align-items: center; }
 .vv-immersive .vvi-ai-edge .vvi-kicker { color: #B0AEDE; }
-.vv-immersive .vvi-ai-edge h2 { font-size: 38px; line-height: 1.16; margin-top: 20px; }
+.vv-immersive .vvi-ai-edge h2 { font-size: 38px; line-height: 1.16; margin-top: 20px; color: #F5F1FF; }
 .vv-immersive .vvi-ai-edge h2 > span { color: #AAA0FF; }
 .vv-immersive .vvi-ai-edge p:not(.vvi-kicker) { font-size: 14px; line-height: 1.8; color: #B8B9D6; margin-top: 20px; max-width: 400px; }
 .vv-immersive .vvi-button-light { color: #02073D; background: #F5ECFF; margin-top: 28px; }
@@ -152,7 +156,7 @@ body .vvi-menu-panel { background: var(--bg-primary); width: min(340px, 90vw); c
 .vv-immersive .vvi-toolkit > div { padding: 16px 0; border-bottom: 1px solid #5B5F8F66; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; position: relative; }
 .vv-immersive .vvi-toolkit > div > svg:first-child { color: #9DAEFF; }
 .vv-immersive .vvi-toolkit > div > svg:last-child { position: absolute; right: 0; top: 20px; color: #60D9B6; }
-.vv-immersive .vvi-toolkit span { font-size: 12px; }
+.vv-immersive .vvi-toolkit span { font-size: 12px; color: #F5F1FF; }
 .vv-immersive .vvi-faculty-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%, 400px),1fr)); gap: 38px; }
 .vv-immersive .vvi-faculty-card { display: grid; grid-template-columns: 170px minmax(0,1fr); gap: 24px; align-items: start; }
 .vv-immersive .vvi-faculty-photo { aspect-ratio: 4 / 5; background: var(--vvi-soft); border-radius: 8px; border: 1px solid var(--color-border); display: flex; align-items: center; justify-content: center; overflow: hidden; }
@@ -208,6 +212,25 @@ body .vvi-menu-panel { background: var(--bg-primary); width: min(340px, 90vw); c
 .vv-immersive [data-testid="footer"] .lv-terminal-grid, .vv-immersive [data-testid="footer"] > div > .flex:first-child { display: none; }
 .vv-immersive .mobile-sticky-bar > div { border-color: var(--color-border); }
 .vv-immersive.landing-dark .vvi-hero h1 > span, .vv-immersive.landing-dark .vvi-section-heading h2 > span, .vv-immersive.landing-dark .vvi-closing h2 > span { color: #ADA3FF; }
+@media (min-width: 1200px) {
+  .vv-immersive .vvi-hero-intro { display: grid; grid-template-columns: 220px minmax(0,1fr) 220px; grid-template-areas: 'benefits copy outcomes'; align-items: center; gap: 40px; width: min(1600px, calc(100% - 96px)); margin: 0 auto; }
+  .vv-immersive .vvi-hero-copy { grid-area: copy; width: 100%; padding-inline: 0; }
+  .vv-immersive .vvi-hero-benefits { display: block; min-width: 0; padding-block: 12px; }
+  .vv-immersive .vvi-hero-benefits--left { grid-area: benefits; }
+  .vv-immersive .vvi-hero-benefits--right { grid-area: outcomes; }
+  .vv-immersive .vvi-benefit-header { display: flex; align-items: center; gap: 10px; color: var(--color-text-muted); font-family: var(--font-mono); font-size: 8px; }
+  .vv-immersive .vvi-benefit-header > svg { color: var(--color-primary); flex-shrink: 0; }
+  .vv-immersive .vvi-benefit-metric { display: flex; align-items: baseline; gap: 8px; margin-top: 21px; color: var(--color-primary); font-family: 'Outfit', sans-serif; font-size: 40px; font-weight: 600; line-height: 1.1; }
+  .vv-immersive .vvi-benefit-metric > span { font-family: var(--font-body); font-size: 14px; font-weight: 500; color: var(--color-text-muted); }
+  .vv-immersive .vvi-hero-benefits h2 { font-size: 23px; font-weight: 600; line-height: 1.2; margin-top: 12px; color: var(--color-text); }
+  .vv-immersive .vvi-hero-benefits > p { font-size: 12px; line-height: 1.75; color: var(--color-text-muted); margin-top: 12px; max-width: 210px; }
+  .vv-immersive .vvi-hero-benefits ul { display: flex; flex-direction: column; gap: 12px; margin-top: 19px; padding-top: 17px; border-top: 1px solid var(--color-border); }
+  .vv-immersive .vvi-hero-benefits li { display: flex; align-items: center; gap: 9px; font-size: 11px; line-height: 1.5; color: var(--color-text-secondary); }
+  .vv-immersive .vvi-hero-benefits li > svg { color: var(--color-accent-purple); flex-shrink: 0; }
+  .vv-immersive .vvi-hero-benefits > a { display: inline-flex; align-items: center; gap: 9px; margin-top: 24px; font-size: 11px; font-weight: 600; color: var(--color-primary); transition: color .2s, gap .2s; }
+  .vv-immersive .vvi-hero-benefits > a:hover { gap: 13px; }
+  .vv-immersive.landing-dark .vvi-benefit-metric, .vv-immersive.landing-dark .vvi-hero-benefits > a { color: #91B6FF; }
+}
 @media (min-width: 768px) and (max-width: 1100px) {
   .vv-immersive .vvi-nav nav { width: calc(100% - 40px); }
   .vv-immersive .vvi-nav-links { gap: 15px; }
