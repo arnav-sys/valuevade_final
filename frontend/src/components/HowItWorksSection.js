@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Target, Brain, Zap, Trophy, Check } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { BrandArtwork } from './brand/BrandArtwork';
 
 /* Process section (redesigned Jun 2026), a real roadmap UI. A progress line
  * fills as the section scrolls into view; milestone nodes light up in sequence.
@@ -53,6 +54,7 @@ export default function HowItWorksSection() {
             <span style={{ fontFamily: '"Newsreader", Georgia, serif', fontStyle: 'italic', fontWeight: 500, color: 'var(--color-primary)' }}>To</span>{' '}
             where you want to be.
           </h2>
+          <BrandArtwork variant="roadmap" className="vv-section-art vv-section-art--center" testId="roadmap-brand-artwork" />
         </div>
 
         <div ref={trackRef} className="relative" data-testid="how-it-works-roadmap">

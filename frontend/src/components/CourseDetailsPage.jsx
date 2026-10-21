@@ -11,6 +11,7 @@ import WhoBuiltThisSection from './WhoBuiltThisSection';
 import FacultySection from './FacultySection';
 import TestimonialsSection from './TestimonialsSection';
 import PracticalSkillsSection from './PracticalSkillsSection';
+import { BrandArtwork } from './brand/BrandArtwork';
 import {
   buildCourseJsonLd,
   buildCourseBreadcrumbJsonLd,
@@ -708,6 +709,7 @@ export default function CourseDetailsPage() {
                   (no longer DB-driven). Preserves the halo dot animation
                   aesthetic. */}
               <section className="mb-12 relative" data-testid="detail-hero">
+                <p className="vv-eyebrow mb-5" data-testid="detail-brand-eyebrow">VALUEVADE · EQUITY RESEARCH</p>
                 {/* Title-side halo dots (smaller variant of /courses hero halo) */}
                 <div
                   aria-hidden="true"
@@ -762,7 +764,7 @@ management or Big 4 advisory.`}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Clock size={16} className="text-[var(--color-accent-pink)]" />
-                    100+h {videoHoursKnown && <span className="text-[10px] text-[var(--color-text-faint)] font-mono">video</span>}
+                    <span data-testid="detail-total-hours">100+ hrs</span>
                   </span>
                   <DifficultyBadge level={course.difficulty} />
                 </div>
@@ -812,6 +814,7 @@ management or Big 4 advisory.`}
                     </p>
                   </>
                 )}
+                <BrandArtwork variant="research" className="vv-detail-art" testId="detail-brand-artwork" eager />
               </section>
 
               {/* Brochure download, admin-uploaded PDF from Admin > Courses */}

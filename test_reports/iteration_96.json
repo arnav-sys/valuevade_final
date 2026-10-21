@@ -1,0 +1,59 @@
+{
+  "summary": "Executed backend+frontend regression retest for iteration 95 fixes. Core mock-interview regressions are fixed (real 404 error UI + retry request, no infinite loader). SessionPaymentGate fail-closed behavior works for injected 503/malformed eligibility and recovers via retry after restoration. Mobile comparison redesign checks passed (4 provider options, 10 rows, no page-level overflow, screenshot captured).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Dashboard rewards eligibility error surface",
+        "issue": "Could not reproduce `dashboard-rewards-error/retry` path because `/api/rewards/eligible` was not requested in repeated dashboard runs (0 intercepted calls).",
+        "affected_selectors": [
+          "[data-testid=\"dashboard-rewards-error\"]",
+          "[data-testid=\"dashboard-rewards-retry\"]"
+        ]
+      },
+      {
+        "flow": "Real denied eligibility paywall check with vvtest account",
+        "issue": "`vvtest673479@example.com` did not present paywall during this run; likely account-state drift (possibly now paid/enrolled). Real denied-state confirmation remained inconclusive.",
+        "affected_selectors": [
+          "[data-testid=\"paywall-modal\"]"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter96_regression_smoke.py",
+    "/app/test_reports/pytest/iter96_regression_smoke.xml",
+    "/app/frontend/src/components/payments/SessionPaymentGate.jsx",
+    "/app/frontend/src/components/mock-interview/MockInterviewResults.jsx",
+    "/app/frontend/src/components/ComparisonSection.js",
+    "/app/frontend/src/styles/valuevade-brand.css"
+  ],
+  "action_items": [
+    "Verify why dashboard run did not trigger `/api/rewards/eligible` in this environment; then re-run injected 503 and retry assertions for `dashboard-rewards-error`.",
+    "Provide/seed a guaranteed unpaid test user for deterministic real paywall-denied eligibility checks (without DB edits by testing agent).",
+    "Optional: add a stable dashboard heading test target for typography checks (font assertions currently rely on `dashboard-welcome`)."
+  ],
+  "critical_code_review_comments": [
+    "SessionPaymentGate fail-closed logic is correctly implemented: non-2xx and malformed payloads both route to `payment-gate-error`; protected children are not rendered.",
+    "MockInterviewResults now correctly transitions to `mi-results-error` on backend 404 and `mi-results-retry` triggers a new network request each time.",
+    "AuthContext synchronous `onAuthStateChange` callback + deferred profile fetch appears stable in tested login/refresh/signout flows."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter96_regression_smoke.py",
+    "/app/test_reports/iteration_96.json"
+  ],
+  "success_rate": {
+    "backend": "100% (4/4 targeted smoke tests)",
+    "frontend": "~85% (critical mock-interview + gate + typography/mobile checks passed; rewards/paywall real-state checks partially inconclusive)"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Artifacts include desktop hero and mobile comparison screenshots. Verified: body background rgb(245,236,255), Outfit applied on landing/comparison/features/stats/course/dashboard welcome heading, sidebar help+bug x274 expanded/x84 collapsed without overlap, mobile sidebar opens+navigates, mock results invalid UUID error+retry works. TEST-ONLY injections were used for eligibility 503/malformed checks; app APIs were not changed/mocked server-side.",
+  "rca of the issue": "Iteration-95 blocker resolved: previous blank spinner/no-mount behavior on /mock-interview and invalid results route no longer reproduces. For reliability gaps: (1) rewards error flow was not observable because `/api/rewards/eligible` was not called in this run, so error UI could not be forced; (2) unpaid-user paywall could not be validated with provided vvtest account due apparent state drift."
+}

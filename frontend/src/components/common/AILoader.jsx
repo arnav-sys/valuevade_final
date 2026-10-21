@@ -22,13 +22,9 @@ export default function AILoader({
   }, [messages.length]);
 
   const content = (
-    <div className="flex flex-col items-center justify-center gap-6 py-10" data-testid={testid}>
-      <div className="relative w-20 h-20 flex items-center justify-center">
-        <div className="absolute inset-0 rounded-full border-2 border-[var(--color-primary)]/20" />
-        <div
-          className="absolute inset-0 rounded-full border-2 border-transparent border-t-[var(--color-primary)]"
-          style={{ animation: 'ai-loader-spin 1.4s linear infinite' }}
-        />
+    <div className="flex flex-col items-center justify-center gap-6 py-10" data-testid={testid} role="status" aria-live="polite">
+      <div className="relative w-24 flex flex-col items-center justify-center" aria-hidden="true">
+        <img src="/brand/claude-2.webp" alt="" className="w-24 h-24 object-contain" />
         <div className="flex items-end justify-center gap-1.5 h-7">
           {[0, 1, 2, 3, 4].map((i) => (
             <span
@@ -44,7 +40,7 @@ export default function AILoader({
         </div>
       </div>
       <div className="text-center px-4">
-        <p className="font-clash text-sm sm:text-base font-semibold text-[var(--color-text)] mb-1.5">{title}</p>
+        <p className="font-clash text-sm sm:text-base font-semibold text-[var(--color-text)] mb-1.5" data-testid={`${testid}-title`}>{title}</p>
         <p
           key={msgIdx}
           className="text-xs font-mono uppercase tracking-[0.14em] text-[var(--color-text-muted)]"

@@ -1,24 +1,11 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
 import Sidebar from '../Sidebar';
 import { Mic, MicOff, Send, Keyboard, ArrowRight, Loader2 } from 'lucide-react';
 import AILoader from '../common/AILoader';
 
 const API = process.env.REACT_APP_BACKEND_URL;
-
-async function authedFetch(path, opts = {}) {
-  const { data: { session } } = await supabase.auth.getSession();
-  return fetch(`${API}${path}`, {
-    ...opts,
-    headers: {
-      ...(opts.headers || {}),
-      Authorization: `Bearer ${session?.access_token || ''}`,
-      ...(opts.body && !opts.headers?.['Content-Type'] ? { 'Content-Type': 'application/json' } : {}),
-    },
-  });
-}
 
 // Web Speech API hook, returns { supported, isRecording, transcript, start, stop, reset }
 function useSpeechRecognition() {
@@ -82,7 +69,13 @@ const ROUND_LABEL = { 1: 'Technical', 2: 'Behavioral', 3: 'Fit' };
 export default function MockInterviewPage() {
   const { id: routeId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { session } = useAuth();
+  const token = session?.access_token;
+  const authedFetch = useCallback((path, opts = {}) => fetch(`${API}${path}`, {
+    ...opts, signal: opts.signal || AbortSignal.timeout(30000),
+    headers: { ...(opts.headers || {}), Authorization: `Bearer ${token || ''}`,
+      ...(opts.body && !opts.headers?.['Content-Type'] ? { 'Content-Type': 'application/json' } : {}) },
+  }), [token]);
   const [iv, setIv] = useState(null);
   const [turns, setTurns] = useState([]);
   const [currentQ, setCurrentQ] = useState('');
@@ -100,6 +93,7 @@ export default function MockInterviewPage() {
   useEffect(() => {
     let mounted = true;
     (async () => {
+      try {
       if (routeId) {
         const r = await authedFetch(`/api/mock-interview/${routeId}`);
         if (!r.ok) { setError(`Could not load interview: ${r.status}`); return; }
@@ -118,7 +112,9 @@ export default function MockInterviewPage() {
       }
       // Check eligibility before start
       const er = await authedFetch('/api/mock-interview/eligible');
+      if (!er.ok) throw new Error('Could not check interview availability. Please try again.');
       const ed = await er.json();
+      if (!mounted) return;
       if (!ed.eligible) { setEligibility(ed); return; }
       // start
       const sr = await authedFetch('/api/mock-interview/start', { method: 'POST' });
@@ -126,10 +122,13 @@ export default function MockInterviewPage() {
       const sd = await sr.json();
       if (!mounted) return;
       navigate(`/mock-interview/${sd.interview_id}`, { replace: true });
+      } catch (error) {
+        if (mounted) setError(error.name === 'TimeoutError' ? 'Loading your interview timed out. Please try again.' : error.message);
+      }
     })();
     return () => { mounted = false; };
     // eslint-disable-next-line
-  }, [routeId, user]);
+  }, [routeId, authedFetch, navigate]);
 
   useEffect(() => { turnsEnd.current?.scrollIntoView({ behavior: 'smooth' }); }, [turns, currentQ]);
 

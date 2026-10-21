@@ -66,7 +66,7 @@ export function ThemeProvider({ children }) {
     try { window.localStorage.setItem(STORAGE_KEY, theme); } catch { /* ignore */ }
     // iOS Safari address-bar tint
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0F141C' : '#FBF9F5');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#0A0D28' : '#F5ECFF');
   }, [theme]);
 
   const toggleTheme = () => setTheme((t) => (t === 'dark' ? 'light' : 'dark'));

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 import FaqChatbot from './faq/FaqChatbot';
+import { BrandArtwork } from './brand/BrandArtwork';
 
 /**
  * Persistent left sidebar for all authenticated pages.
@@ -99,6 +100,7 @@ export default function Sidebar() {
       <aside
         className={`${widthCls} h-screen sticky top-0 flex flex-col bg-[var(--bg-secondary)]/60 backdrop-blur-xl border-r border-[var(--color-border)] transition-[width] duration-300 ease-out`}
         data-testid="sidebar"
+        data-collapsed={!showLabels}
       >
         {/* Logo */}
         <div className="h-16 flex items-center justify-between px-4 border-b border-[var(--color-border)] shrink-0">
@@ -198,6 +200,10 @@ export default function Sidebar() {
           })}
         </nav>
 
+        {showLabels && <div className="vv-sidebar-art" data-testid={forMobile ? 'sidebar-mobile-brand' : 'sidebar-brand'}>
+          <BrandArtwork variant="roadmap" testId={forMobile ? 'sidebar-mobile-artwork' : 'sidebar-artwork'} />
+          <p>LEARN. BUILD. BECOME.</p>
+        </div>}
         {/* Footer actions */}
         <div className="border-t border-[var(--color-border)] p-2 space-y-1 shrink-0">
           {/* Theme toggle */}

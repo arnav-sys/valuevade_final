@@ -27,11 +27,10 @@ export default function SocialProofStrip() {
         </div>
       </div>
 
-      {/* wordmark ticker */}
-      <div className={`lv-ticker-wrap mt-10 py-6 border-y ${fade}`} style={{ borderColor: 'var(--lv-ink)', animationDelay: '0.1s' }} data-testid="social-proof-companies">
-        <div className="lv-ticker-track">
-          {[...COMPANIES, ...COMPANIES].map((c, i) => (
-            <span key={`${c}-${i}`} className="lv-wordmark" aria-hidden={i >= COMPANIES.length}>
+      <div className={`mt-10 py-6 border-y ${fade}`} style={{ borderColor: 'var(--color-border)', animationDelay: '0.1s' }} data-testid="social-proof-companies">
+        <div className="vv-company-grid">
+          {COMPANIES.map((c, i) => (
+            <span key={c} className="vv-company-name" data-testid={`curriculum-company-${i}`}>
               {c}<small>NSE</small>
             </span>
           ))}

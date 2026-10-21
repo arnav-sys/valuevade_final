@@ -1,6 +1,7 @@
 import { BookOpen, Briefcase, Mic, BarChart3, Award, Gamepad2, BookMarked, Shield, Sparkles, FileText, Brain, Hammer, CalendarRange, Compass, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { BrandArtwork } from './brand/BrandArtwork';
 
 /* "One platform" section, Jun 2026 editorial rebuild: sticky rail beside a
  * hairline quote-board of the 14 units; the CTA takes the final cell. */
@@ -40,9 +41,10 @@ export default function FeaturesSection() {
             </h2>
             <div className="mt-8 lv-rule-ink w-16" aria-hidden="true" />
             <p className="mt-6 text-[15px] leading-relaxed max-w-md" style={{ color: 'var(--color-text-muted)' }}>
-              Fourteen units, one file on you. Every card below is a working part of the product, not a
-              feature promise, and they all read from the same personalised plan.
+              From your first financial statement to your first research report. Build the skills,
+              confidence, and portfolio to make your next move.
             </p>
+            <BrandArtwork variant="certification" className="vv-section-art" testId="features-brand-artwork" />
           </div>
 
           <div className={`lg:col-span-8 lv-hairgrid grid-cols-2 lg:grid-cols-3 ${fade}`} style={{ animationDelay: '0.12s' }} data-testid="features-wall">

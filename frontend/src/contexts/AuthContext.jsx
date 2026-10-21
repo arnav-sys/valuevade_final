@@ -46,7 +46,7 @@ export function AuthProvider({ children }) {
     // onAuthStateChange fires on INITIAL_SESSION and then on token changes.
     // This is the fastest path to getting the session on page load.
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, s) => {
+      (event, s) => {
         if (!mounted) return;
         // Detect brief lapse: had session, now null → show reconnecting banner
         if (hadSessionRef.current && !s && event !== 'SIGNED_OUT') {
@@ -63,8 +63,8 @@ export function AuthProvider({ children }) {
         setSession(s);
         setUser(s?.user ?? null);
         if (s?.user) {
-          // Fire profile fetch but don't block done() on it
-          fetchProfile(s.user.id);
+          // Leave the Supabase auth lock before starting another client query.
+          setTimeout(() => { if (mounted) fetchProfile(s.user.id); }, 0);
         } else {
           setProfile(null);
         }

@@ -1,5 +1,6 @@
 import { Check, Minus } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
+import { useState } from 'react';
 
 /* Editorial finance / Bloomberg-terminal ComparisonSection (Feb 2026).
  * - Chapter rail §05 // SIDE-BY-SIDE.
@@ -44,6 +45,7 @@ const Cell = ({ value, vv }) => {
 
 export default function ComparisonSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
+  const [competitor, setCompetitor] = useState(1);
   return (
     <section
       id="compare"
@@ -88,8 +90,16 @@ export default function ComparisonSection() {
           className={`lv-panel overflow-hidden ${isVisible ? 'animate-fade-up visible' : 'animate-fade-up'}`}
           style={{ animationDelay: '0.26s' }}
         >
-          <div className="overflow-x-auto">
-            <table className="w-full min-w-[820px]" data-testid="comparison-table">
+          <div className="lg:hidden p-4 border-b border-[var(--color-border)]">
+            <label htmlFor="compare-provider" className="block mb-2 text-xs text-[var(--color-text-muted)]">Compare Valuevade with</label>
+            <select id="compare-provider" value={competitor} onChange={e => setCompetitor(Number(e.target.value))}
+              className="w-full border border-[var(--color-border)] bg-[var(--color-bg-card)] text-[var(--color-text)] px-3 py-2.5 text-sm"
+              data-testid="comparison-provider-select">
+              {COMPETITORS.slice(1).map((name, i) => <option key={name} value={i + 1}>{name}</option>)}
+            </select>
+          </div>
+          <div>
+            <table className="w-full table-fixed vv-comparison-table" data-testid="comparison-table">
               <thead>
                 <tr className="border-b border-[var(--color-border)] bg-[var(--color-surface-hover)]/60">
                   <th className="px-5 py-3 text-left text-[11px] uppercase tracking-[0.14em] font-semibold text-[var(--color-text-faint)]">
@@ -98,7 +108,7 @@ export default function ComparisonSection() {
                   {COMPETITORS.map((c, i) => (
                     <th
                       key={c}
-                      className={`px-4 py-3 text-left text-[11px] uppercase tracking-[0.14em] font-semibold ${
+                      className={`px-4 py-3 text-left text-[11px] uppercase tracking-[0.14em] font-semibold ${i > 0 && i !== competitor ? 'hidden lg:table-cell' : ''} ${
                         i === 0 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'
                       }`}
                       style={i === 0 ? {
@@ -127,7 +137,7 @@ export default function ComparisonSection() {
                       <Cell value={r.vv} vv />
                     </td>
                     {r.v.map((v, i) => (
-                      <td key={i} className="px-4 py-3.5">
+                      <td key={i} className={`px-4 py-3.5 ${i + 1 !== competitor ? 'hidden lg:table-cell' : ''}`}>
                         <Cell value={v} />
                       </td>
                     ))}

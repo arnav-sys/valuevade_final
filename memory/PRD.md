@@ -3,10 +3,75 @@
 ## Original problem statement
 Full-stack educational platform for Indian finance students (Valuevade): courses, AI mock
 interviews, PDF notes, timed Mock Exam certification, Gamified Rewards, Admin Panel.
-Stack: React (CRA) + FastAPI + Supabase (Auth/Postgres/Storage). Editorial-finance /
-Bloomberg-terminal design language. Fonts strictly Newsreader (headings, `font-clash`),
-Instrument Sans (body, `font-bricolage`), Spline Sans Mono (mono, `font-jetbrains` and now
-also Tailwind's default `font-mono`). No Inter/Roboto/Space Grotesk/Arial anywhere.
+Stack: React (CRA) + FastAPI + Supabase (Auth/Postgres/Storage).
+Current visual source of truth: the user's five Valuevade PDF carousels (2026-10-21),
+superseding the earlier cream/editorial and forced-dark hero treatments below.
+Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolage`),
+Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
+editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
+
+## Current approved request — 2026-10-21
+"I have added some references of valuevade assets take the design language colour palette everything and apply it to all pages of current website. add uis and graphics also in pages just like in documents attached(specially in landing age in a new may of mastering finance in age of ai). mimick them exactly in all pages"
+
+User approved the sitewide design plan with "continue". Original references:
+`valuevade-claude-finance-101.pdf`, `valuevade-er-certs-carousel.pdf`,
+`valuevade-er-roadmap-carousel.pdf`, `valuevade-finance-career-lies-carousel.pdf`,
+`valuevade-finance-certs-carousel.pdf`. Local copies/contact sheet in `/app/design-references`.
+
+### Implemented — 2026-10-21
+- Global shared theme in `src/styles/valuevade-brand.css`, imported by App.js:
+  exact source palette #F5ECFF canvas, #02073D navy, #5B5F8F muted,
+  #246BFD blue, #6A5CFF violet, #FF6AC1 pink, #0F9D78 green. Accessible text variants
+  used where needed. Typography, Shadcn tokens, surfaces, borders, forms, navigation,
+  and dark-mode equivalents apply across public, account, admin, and learning routes.
+- Extracted original PDF illustrations as transparent WebP assets, not stock imitations.
+  Six production assets in `/public/brand`, ~289 KB combined. Reusable `BrandArtwork`
+  and `AuthBrandPanel` in `components/brand/BrandArtwork.jsx`.
+- Rebuilt landing hero around original report → AI → price-chart illustration,
+  blue CTAs, violet headline emphasis, reference folios, and a 100+ hrs stats strip.
+  Existing working HTML/CSS product preview tabs retained, restyled, and clearly labeled
+  illustrative data. No fake live stock feed. Respects reduced-motion preference.
+- Added reference graphics to landing feature/roadmap/AI-proof sections, course catalog,
+  course details, enrollment, authentication, dashboard, and shared learner sidebar.
+  Admin-uploaded custom course images remain supported; stock fallbacks use brand art.
+- Mobile comparison uses provider selector + three readable columns instead of overflowing
+  an 820px table. Desktop retains full comparison. Navigation anchor destinations fixed,
+  sign-up CTAs route to signup, and logo links home. Company ticker now a responsive grid.
+- Preserved AI-first enrollment and all learning actions. Standardized visible course,
+  landing, and enrollment total-hours labels to 100+ hrs; individual session times unchanged.
+- Universal AI loader now uses original AI illustration with animated bars, live status,
+  and reduced-motion support. Shared help/report controls no longer overlap sidebar actions.
+
+### Reliability fixes discovered during redesign QA
+- Auth subscription now synchronous; profile query deferred outside Supabase auth lock.
+  No providers, credentials, or password/session policies changed.
+- `SessionPaymentGate` consumes the context session instead of indefinitely waiting on
+  `getSession`; 12s timeout, cleanup, explicit error/retry, and fail-closed validation.
+  Access still requires explicit backend `session_allowed: true`; existing paywall retained.
+- Mock results use context token with timeout/cancellation and working real404 retry.
+  Interview startup uses context token, bounded fetch, and catches network failures.
+- Dashboard rewards requests abort on unmount and offer error/retry for actual failures.
+
+### Verification
+- `/app/test_reports/iteration_95.json`: broad public/account/admin/learning-page checks.
+  Found mobile comparison overflow and interview gate blocker; both fixed.
+- `/app/test_reports/iteration_96.json`: critical fixes pass, 4/4 backend smoke tests,
+  auth login/refresh/signout, fail-closed gate under test-only503/malformed responses,
+  actual results404/retry, exact lavender, Outfit headings, desktop/mobile layout checks.
+- `/app/test_reports/iteration_96_followup.md`: main-agent browser checks resolved both
+  inconclusive report96 items: rewards503 → retry → real200 and real unpaid-session paywall.
+- Desktop1920x800 and mobile390x844 screenshots checked. Mobile overflow check is empty.
+- Preview dev compile succeeds with two pre-existing warnings. Concurrent production build
+  was interrupted by a pod restart/resource contention; do not claim production-build or
+  deployment verification for this pass. No deployment requested or performed.
+- No new API integration or application API mock added. Landing previews use illustrative
+  content; QA failure injection existed only in the test browser. Existing payment mock-mode
+  configuration was not changed, and no payment was executed in this design task.
+
+### Next action items
+- P0: none known for the approved reference-brand redesign; ready for user visual review.
+- Suggested enhancement: matching branded completion certificates and downloadable reports.
+- Existing P1/P2 backlog below remains unchanged and was not part of this request.
 
 ## What's been implemented (with dates)
 - **Sept 2026**: Landing hero rebuilt around 3 pure HTML/CSS animated mockups
@@ -111,13 +176,16 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 
 ## Key files
 - `/app/frontend/src/components/CoursesPage.jsx` — redesigned courses listing
-- `/app/frontend/src/components/HeroSection.js` — dark hero band + product stage
+- `/app/frontend/src/components/HeroSection.js` — reference-matched lavender hero + original artwork + product previews
+- `/app/frontend/src/styles/valuevade-brand.css` — shared route-wide design tokens and responsive rules
+- `/app/frontend/src/components/brand/BrandArtwork.jsx` — shared original artwork and auth panel
+- `/app/design_guidelines.json` — implementation-aligned reference blueprint
 - `/app/frontend/src/components/landing/HeroParticles.jsx`, `landing/mocks/MiniMocks.jsx`
 - `/app/frontend/src/components/landing/hero-showcase.css`, `landing/landing-dark.css`
-- `/app/frontend/src/components/Navbar.js` (navOnDark prop)
+- `/app/frontend/src/components/Navbar.js` — reference header and functional navigation
 - `/app/frontend/tailwind.config.js`
 - `/app/backend/server.py` — needs refactor (see P1)
 
 ## Testing status
 - testing_agent used after each significant change (iteration_90, iteration_91)
-- No known regressions; both UI tasks self-tested + agent-verified
+- Latest redesign: see iterations95–96 and follow-up above; no remaining known regressions.

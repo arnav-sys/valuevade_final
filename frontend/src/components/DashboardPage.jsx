@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { getNextPhase, computeStreak, updateStats } from '../utils/progress';
 import Sidebar from './Sidebar';
+import { BrandArtwork } from './brand/BrandArtwork';
 import XPBar from './gamification/XPBar';
 import StreakCounter from './gamification/StreakCounter';
 import DailyGoalModal from './gamification/DailyGoalModal';
@@ -707,13 +708,15 @@ export default function DashboardPage() {
 
               {/* Welcome + Continue learning */}
               <section>
-                <div className="mb-6">
+                <div className="vv-dashboard-banner" data-testid="dashboard-brand-banner">
+                  <p className="vv-eyebrow mb-4" data-testid="dashboard-brand-eyebrow">YOUR NEXT CHAPTER · IN PROGRESS</p>
                   <h1 className="font-clash text-3xl sm:text-4xl font-bold text-[var(--color-text)]" data-testid="dashboard-welcome">
                     Welcome back{profile?.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}
                   </h1>
                   <p className="text-sm text-[var(--color-text-muted)] font-bricolage mt-1">
                     {enrollment.title}
                   </p>
+                  <BrandArtwork variant="roadmap" testId="dashboard-brand-artwork" />
                 </div>
 
                 {/* Today's Finance News, feature removed (2026-07-10). */}

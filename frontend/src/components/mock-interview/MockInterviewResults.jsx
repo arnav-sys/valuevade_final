@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
 import Sidebar from '../Sidebar';
 import { Trophy, CheckCircle, AlertCircle, XCircle, ChevronDown, ChevronUp, RefreshCw } from 'lucide-react';
 import AILoader from '../common/AILoader';
@@ -27,33 +27,38 @@ function SimpleMarkdown({ text }) {
 
 export default function MockInterviewResults() {
   const { id } = useParams();
+  const { session } = useAuth();
+  const token = session?.access_token;
+  const [attempt, setAttempt] = useState(0);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
   const [transcriptOpen, setTranscriptOpen] = useState(false);
 
-  const fetchResults = () => {
+  const fetchResults = () => setAttempt(value => value + 1);
+
+  useEffect(() => {
+    let alive = true;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
     setError(null);
+    setData(null);
     (async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
         const r = await fetch(`${API}/api/mock-interview/${id}`, {
-          headers: { Authorization: `Bearer ${session?.access_token || ''}` },
+          headers: { Authorization: `Bearer ${token || ''}` }, signal: controller.signal,
         });
         if (!r.ok) {
           const body = await r.json().catch(() => ({}));
           throw new Error(body.detail || `Failed to load results (${r.status})`);
         }
-        setData(await r.json());
+        const result = await r.json();
+        if (alive) setData(result);
       } catch (e) {
-        setError(e.message || 'Failed to load results');
-      }
+        if (alive) setError(e.name === 'AbortError' ? 'Loading your results timed out. Please try again.' : e.message || 'Failed to load results');
+      } finally { clearTimeout(timeout); }
     })();
-  };
-
-  useEffect(() => {
-    fetchResults();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    return () => { alive = false; clearTimeout(timeout); controller.abort(); };
+  }, [id, token, attempt]);
 
   if (error) return (
     <div className="flex min-h-screen bg-[var(--bg-primary)]">

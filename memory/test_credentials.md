@@ -1,3 +1,8 @@
+## Latest verification — 2026-10-21
+- Existing `testagent2026@gmail.com` account: paid dashboard, rewards request/retry, and authenticated mock-results error/retry verified. Password unchanged from the account listing below.
+- Existing `vvtest673479@example.com` account: real unpaid paywall verified on a non-free session notes route. Suitable for denied-session checks; course-wide eligibility without a session ID is intentionally allowed by the backend. No account-state drift was found.
+- No credentials were created, rotated, or modified during the reference-brand redesign.
+
 ## NISM Module Test Account (Aug 31 2026)
 - Email: nism.tester@valuevade.com
 - Password: NismTest#2026

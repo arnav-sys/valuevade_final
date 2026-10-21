@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Gift } from 'lucide-react';
+import { Gift, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '../../contexts/AuthContext';
 import RewardCard from './RewardCard';
 
-const BACKEND = process.env.REACT_APP_BACKEND_URL || '';
+const BACKEND = process.env.REACT_APP_BACKEND_URL;
 const seenKey = (userId, rewardId) => `vv_reward_seen_${userId}_${rewardId}`;
 
 // Persistent home for rewards on the Dashboard, RewardCard previously only
@@ -17,17 +17,24 @@ export default function MyRewardsSection() {
   const [eligible, setEligible] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newRewardIds, setNewRewardIds] = useState(new Set());
+  const [error, setError] = useState(false);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let mounted = true;
+    const controller = new AbortController();
     const token = session?.access_token;
     if (!token) { setLoading(false); return; }
+    setError(false);
+    setLoading(true);
+    const timeout = setTimeout(() => controller.abort(), 12000);
     (async () => {
       try {
         const res = await fetch(`${BACKEND}/api/rewards/eligible`, {
           headers: { Authorization: `Bearer ${token}` },
+          signal: controller.signal,
         });
-        if (!res.ok) { console.warn('[rewards] eligibility check failed', res.status); return; }
+        if (!res.ok) throw new Error('Rewards temporarily unavailable');
         const data = await res.json();
         if (mounted && data.table_ready) {
           const el = (data.rewards || []).filter((r) => r.eligible);
@@ -54,11 +61,18 @@ export default function MyRewardsSection() {
             }
           }
         }
-      } catch (e) { console.warn('[rewards] eligibility check errored', e); }
-      finally { if (mounted) setLoading(false); }
+      } catch { if (mounted) setError(true); }
+      finally { clearTimeout(timeout); if (mounted) setLoading(false); }
     })();
-    return () => { mounted = false; };
-  }, [session?.access_token, user?.id]);
+    return () => { mounted = false; clearTimeout(timeout); controller.abort(); };
+  }, [session?.access_token, user?.id, attempt]);
+
+  if (error) return (
+    <div className="flex flex-wrap items-center justify-between gap-3 py-4 text-sm text-[var(--color-text-muted)]" role="status" data-testid="dashboard-rewards-error">
+      <p>Rewards are temporarily unavailable.</p>
+      <button onClick={() => setAttempt(value => value + 1)} className="inline-flex items-center gap-2 text-[var(--color-primary)]" data-testid="dashboard-rewards-retry"><RefreshCw size={14} /> Try again</button>
+    </div>
+  );
 
   if (loading || eligible.length === 0) return null;
 

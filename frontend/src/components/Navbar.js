@@ -14,7 +14,7 @@ const navLinks = [
   { label: 'Features', id: 'features' },
   { label: 'How It Works', id: 'how-it-works' },
   { label: 'AI-Proof', id: 'ai-proof' },
-  { label: 'Roadmap', id: 'features' },
+  { label: 'Roadmap', id: 'how-it-works' },
 ];
 
 export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }) {
@@ -35,7 +35,9 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
 
   const scrollTo = (id) => {
     setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    const target = document.getElementById(id);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    else window.location.assign(`/#${id}`);
   };
 
   const isLoggedIn = !loading && !!user;
@@ -57,14 +59,15 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
       )}
       {/* Main nav row */}
       <nav className="max-w-[1400px] mx-auto px-6 lg:px-10 h-16 flex items-center justify-between">
-        <button
+        <Link
+          to="/"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           className="flex items-center gap-2"
           data-testid="navbar-logo"
         >
           <img src="/valuevade-logo.svg" alt="Valuevade Logo" className="w-8 h-8 object-contain" />
           <span className="font-clash text-xl font-semibold logo-gradient">Valuevade</span>
-        </button>
+        </Link>
 
         <div className="hidden md:flex items-center gap-6 lg:gap-8 md:ml-8 lg:ml-14">
           <Link to="/courses" className="lv-nav-link" data-testid="nav-link-courses">
@@ -83,7 +86,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
               key={link.label}
               onClick={() => scrollTo(link.id)}
               className="lv-nav-link"
-              data-testid={`nav-link-${link.id}`}
+              data-testid={`nav-link-${link.label.toLowerCase().replace(/\s/g, '-')}`}
             >
               {link.label}
             </button>
@@ -131,7 +134,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
                 Log In
               </Link>
               <Link
-                to="/login"
+                to="/signup"
                 className="lv-cta"
                 style={{ padding: '9px 16px', fontSize: '13px' }}
                 data-testid="nav-signup-link"
@@ -190,7 +193,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
               key={link.label}
               onClick={() => scrollTo(link.id)}
               className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
-              data-testid={`mobile-nav-${link.id}`}
+              data-testid={`mobile-nav-${link.label.toLowerCase().replace(/\s/g, '-')}`}
             >
               {link.label}
             </button>
@@ -234,7 +237,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
                 Log In
               </Link>
               <Link
-                to="/login"
+                to="/signup"
                 onClick={() => setMenuOpen(false)}
                 className="px-8 py-3 bg-[var(--color-primary)] text-white font-semibold rounded-full text-lg font-bricolage"
                 data-testid="mobile-nav-signup"

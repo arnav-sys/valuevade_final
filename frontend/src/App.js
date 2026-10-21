@@ -1,4 +1,5 @@
 import "@/App.css";
+import "@/styles/valuevade-brand.css";
 import { Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { Toaster } from "sonner";

@@ -7,6 +7,7 @@ import { supabase } from '../lib/supabase';
 import { LogOut, BookOpen, Layers, Clock, ArrowRight, CheckCircle2, AlertCircle, RefreshCw, Sun, Moon, Award, Trophy, ChevronLeft, ChevronRight, Lock, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
+import { BrandArtwork } from './brand/BrandArtwork';
 import { AnimatedStat, BreathingGlow } from './cinematic/primitives';
 
 const API = process.env.REACT_APP_BACKEND_URL;
@@ -14,12 +15,12 @@ const API = process.env.REACT_APP_BACKEND_URL;
 // Fallback cover photos, used until an admin uploads a real one from the
 // Admin > Courses tab (course.image_url wins whenever it's set).
 const FALLBACK_IMAGE_BY_CATEGORY = {
-  'Equity Research': 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=80',
-  'Investment Banking': 'https://images.unsplash.com/photo-1707077865701-2854996afc4f?crop=entropy&cs=srgb&fm=jpg&q=80',
-  'Private Equity': 'https://images.pexels.com/photos/7414111/pexels-photo-7414111.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'Financial Modelling': 'https://images.pexels.com/photos/6694560/pexels-photo-6694560.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'Portfolio Management': 'https://images.pexels.com/photos/16594725/pexels-photo-16594725.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
-  'Wealth Management': 'https://images.pexels.com/photos/36765719/pexels-photo-36765719.jpeg?auto=compress&cs=tinysrgb&h=650&w=940',
+  'Equity Research': '/brand/er-certs-art.webp',
+  'Investment Banking': '/brand/career-art.webp',
+  'Private Equity': '/brand/certs-art.webp',
+  'Financial Modelling': '/brand/claude-art.webp',
+  'Portfolio Management': '/brand/roadmap-art.webp',
+  'Wealth Management': '/brand/certs-art.webp',
 };
 const DEFAULT_FALLBACK_IMAGE = FALLBACK_IMAGE_BY_CATEGORY['Equity Research'];
 
@@ -43,11 +44,11 @@ const DIFFICULTY_STYLES = {
   advanced: 'bg-[var(--color-accent-pink)] text-white',
 };
 
-function DifficultyBadge({ level }) {
+function DifficultyBadge({ level, courseId }) {
   const key = level?.toLowerCase() || 'beginner';
   const cls = DIFFICULTY_STYLES[key] || DIFFICULTY_STYLES.beginner;
   return (
-    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase shadow-sm whitespace-nowrap tracking-normal ${cls}`} data-testid="difficulty-badge">
+    <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bricolage font-semibold uppercase shadow-sm whitespace-nowrap tracking-normal ${cls}`} data-testid={`difficulty-badge-${courseId}`}>
       {key.charAt(0).toUpperCase() + key.slice(1)}
     </span>
   );
@@ -57,7 +58,9 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
   const navigate = useNavigate();
   const isEnrolled = enrollment?.status === 'active';
   const isCompleted = enrollment?.status === 'completed';
-  const photo = course.image_url || FALLBACK_IMAGE_BY_CATEGORY[course.category] || DEFAULT_FALLBACK_IMAGE;
+  // Keep genuine admin uploads; retire stock placeholders in favor of the brand artwork.
+  const customPhoto = course.image_url && !/images\.(unsplash|pexels)\.com/.test(course.image_url);
+  const photo = customPhoto ? course.image_url : FALLBACK_IMAGE_BY_CATEGORY[course.category] || DEFAULT_FALLBACK_IMAGE;
 
   const handleCTA = () => {
     if (isMock || isCompleted) return;
@@ -70,7 +73,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
       data-testid={`course-card-${course.id}`}
     >
       {/* Cover photo (admin-editable from Admin > Courses tab) */}
-      <div className="relative h-44 overflow-hidden" data-testid={`course-card-preview-${course.id}`}>
+      <div className={`relative h-44 overflow-hidden ${customPhoto ? '' : 'vv-course-art'}`} data-testid={`course-card-preview-${course.id}`}>
         <img
           src={photo}
           alt={course.title}
@@ -79,7 +82,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
           onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = DEFAULT_FALLBACK_IMAGE; }}
         />
         <div className="absolute top-3 left-3">
-          <DifficultyBadge level={course.difficulty} />
+          <DifficultyBadge level={course.difficulty} courseId={course.id} />
         </div>
         <div className="absolute top-3 right-3">
           {isMock ? (
@@ -104,7 +107,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
         </div>
 
         {/* Title */}
-        <h3 className="font-clash text-lg sm:text-xl font-semibold text-[var(--color-text)] mb-3 leading-snug line-clamp-2" data-testid="course-card-title">
+        <h3 className="font-clash text-lg sm:text-xl font-semibold text-[var(--color-text)] mb-3 leading-snug line-clamp-2" data-testid={`course-card-title-${course.id}`}>
           {course.title}
         </h3>
 
@@ -116,7 +119,7 @@ function CourseCard({ course, enrollment, moduleCount, sessionCount, isMock }) {
         ) : (
           <div className="flex flex-wrap items-center gap-4 text-xs font-jetbrains text-[var(--color-text-muted)] mb-4" data-testid={`course-card-meta-${course.id}`}>
             {course.estimated_hours && (
-              <span className="inline-flex items-center gap-1.5"><Clock size={13} /> {course.estimated_hours} hrs</span>
+              <span className="inline-flex items-center gap-1.5" data-testid={`course-card-hours-${course.id}`}><Clock size={13} /> 100+ hrs</span>
             )}
             <span className="inline-flex items-center gap-1.5"><Layers size={13} /> {moduleCount} modules</span>
             <span className="inline-flex items-center gap-1.5"><BookOpen size={13} /> {sessionCount} sessions</span>
@@ -242,32 +245,16 @@ export default function CoursesPage() {
         </div>
       </header>
 
-      {/* Wavy gradient hero */}
-      <div className="relative overflow-hidden" style={{ background: 'linear-gradient(120deg, var(--color-primary), var(--color-accent-purple))' }} data-testid="courses-hero">
-        <div className="absolute top-[-20%] right-[-5%] w-[420px] h-[420px] rounded-full bg-white opacity-[0.06] blur-[100px] pointer-events-none" />
-        <div className="absolute bottom-[10%] left-[5%] w-[300px] h-[300px] rounded-full bg-white opacity-[0.05] blur-[90px] pointer-events-none" />
-        <motion.div
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="relative z-10 text-center px-6 pt-16 sm:pt-20 pb-28 sm:pb-32"
-        >
-          <p className="text-[10px] font-jetbrains uppercase tracking-[0.25em] text-white/70 mb-4">Finance Education</p>
-          <h1 className="font-clash text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4 tracking-tight" data-testid="courses-heading">
-            Online Courses
-          </h1>
-          <div className="flex items-center justify-center gap-2 text-sm font-bricolage text-white/75" data-testid="courses-breadcrumb">
-            <Link to="/" className="hover:text-white transition-colors">Home</Link>
-            <span>/</span>
-            <span className="text-white">Courses</span>
+      <section className="vv-catalog-cover" data-testid="courses-hero">
+        <div className="vv-catalog-cover-inner">
+          <div>
+            <p className="vv-eyebrow" data-testid="courses-eyebrow">VALUEVADE · THE LEARNING PATHS</p>
+            <h1 data-testid="courses-heading">Your next chapter.<br /><span>Built in finance.</span></h1>
+            <p data-testid="courses-hero-description">Go from knowing the terms to doing the work. Finance courses built around real skills, real companies, and your ambition.</p>
           </div>
-        </motion.div>
-
-        {/* wave */}
-        <svg viewBox="0 0 1440 110" preserveAspectRatio="none" className="absolute bottom-0 left-0 w-full h-14 sm:h-20" aria-hidden="true">
-          <path style={{ fill: 'var(--bg-primary)' }} d="M0,60 C240,110 480,0 720,30 C960,60 1200,110 1440,40 L1440,110 L0,110 Z" />
-        </svg>
-      </div>
+          <BrandArtwork variant="research" testId="courses-brand-artwork" eager />
+        </div>
+      </section>
 
       {/* Main */}
       <main className="max-w-6xl mx-auto px-6 pt-10 sm:pt-14 pb-16 relative z-10">

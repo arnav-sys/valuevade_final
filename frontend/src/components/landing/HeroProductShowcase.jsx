@@ -18,12 +18,12 @@ export default function HeroProductShowcase() {
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!auto) return;
+    if (!auto || reduceMotion) return;
     const t = setInterval(() => {
       setActive((cur) => TABS[(TABS.findIndex((x) => x.id === cur) + 1) % TABS.length].id);
     }, 6500);
     return () => clearInterval(t);
-  }, [auto]);
+  }, [auto, reduceMotion]);
 
   const current = TABS.find((t) => t.id === active) || TABS[0];
   const Mock = current.Mock;
@@ -32,11 +32,13 @@ export default function HeroProductShowcase() {
     <div className="vv-stage" data-testid="hero-showcase">
       <div className="vv-stage__glow" aria-hidden="true" />
 
-      <div className="vv-tabs" role="tablist">
+      <div className="vv-tabs" role="tablist" aria-label="Explore the learning experience">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             role="tab"
+            id={`showcase-tab-${id}`}
+            aria-controls="showcase-panel"
             aria-selected={active === id}
             onClick={() => { setActive(id); setAuto(false); }}
             className={`vv-tab${active === id ? ' vv-tab--on' : ''}`}
@@ -50,9 +52,9 @@ export default function HeroProductShowcase() {
       <div className="vv-app" data-testid="hero-showcase-window">
         <div className="vv-app__chrome">
           <span className="vv-app__dot" /><span className="vv-app__dot" /><span className="vv-app__dot" />
-          <span className="vv-app__url">{current.url}</span>
+          <span className="vv-app__url" data-testid="hero-preview-label">Product preview · Illustrative data</span>
         </div>
-        <div className="vv-app__body">
+        <div className="vv-app__body" role="tabpanel" id="showcase-panel" aria-labelledby={`showcase-tab-${active}`}>
           <AnimatePresence mode="wait">
             <motion.div
               key={active}

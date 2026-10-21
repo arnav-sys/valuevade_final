@@ -8,6 +8,7 @@ import { usePaymentFlow } from './payments/usePaymentFlow';
 import { ArrowRight, BookOpen, Layers, Clock, Award, ChevronDown, ChevronUp, CheckCircle2, Sparkles } from 'lucide-react';
 import { BreathingGlow, ScrollProgressBar } from './cinematic/primitives';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
+import { BrandArtwork } from './brand/BrandArtwork';
 
 /**
  * Proper enrollment procedure, replaces the previous instant one-click
@@ -156,7 +157,6 @@ export default function EnrollmentPage() {
   }
 
   const totalSessions = modules.reduce((s, m) => s + (m.master_sessions?.length || 0), 0);
-  const totalHours = course.estimated_hours || 200;
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden" data-testid="enrollment-page">
@@ -194,11 +194,12 @@ export default function EnrollmentPage() {
               <Award size={13} /> 3 capstones
             </span>
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono bg-[var(--color-success)]/8 text-[var(--color-success)] border border-[var(--color-success)]/15">
-              <Clock size={13} /> ~{totalHours}h
+              <Clock size={13} /> 100+ hrs
             </span>
           </div>
         </motion.div>
 
+        <BrandArtwork variant="roadmap" className="vv-section-art vv-section-art--center" testId="enrollment-brand-artwork" />
         {/* Capstones preview */}
         <section className="mb-12" data-testid="enrollment-capstones">
           <h2 className="font-clash text-2xl font-bold text-[var(--color-text)] mb-2">What you'll build</h2>

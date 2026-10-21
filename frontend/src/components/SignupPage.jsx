@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AuthBrandPanel } from './brand/BrandArtwork';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -63,10 +64,8 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-[var(--bg-primary)] relative overflow-hidden">
-      {/* Animated bg orbs */}
-      <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] rounded-full bg-[var(--color-primary)] opacity-[0.04] blur-[120px] animate-blob pointer-events-none" />
-      <div className="absolute bottom-[-15%] right-[-10%] w-[400px] h-[400px] rounded-full bg-[var(--color-accent-purple)] opacity-[0.05] blur-[100px] animate-blob pointer-events-none" style={{ animationDelay: '2s' }} />
+    <div className="vv-auth-page" data-testid="signup-page">
+      <AuthBrandPanel testId="signup-brand-panel" />
 
       <div className="w-full max-w-md relative z-10">
         {/* Back link */}

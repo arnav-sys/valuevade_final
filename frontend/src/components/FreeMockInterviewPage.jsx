@@ -8,6 +8,7 @@ import FreeTrialCTA from '@/components/FreeTrialCTA';
 import { useTheme } from '@/contexts/ThemeContext';
 import { CheckCircle2, Clock, FileSpreadsheet, Mic, Trophy, Users, ArrowRight, Sparkles } from 'lucide-react';
 import '@/components/landing/landing-dark.css';
+import { BrandArtwork } from './brand/BrandArtwork';
 
 /**
  * FreeMockInterviewPage, dedicated public marketing page for the one-time
@@ -128,6 +129,7 @@ export default function FreeMockInterviewPage() {
             >
               30-45 min · Voice + Excel · Instant AI scorecard
             </motion.p>
+            <BrandArtwork variant="career" className="vv-section-art vv-section-art--center" testId="free-mock-brand-artwork" eager />
           </div>
         </section>
 

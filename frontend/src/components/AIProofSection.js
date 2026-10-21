@@ -1,6 +1,6 @@
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 import { X, Check } from 'lucide-react';
-import { NeuralNetBg } from '@/components/landing/CinematicSections';
+import { BrandArtwork } from './brand/BrandArtwork';
 
 /* Editorial finance AIProofSection (Feb 2026).
  * Copy verbatim. NeuralNetBg dialled back so it doesn't compete. */
@@ -10,7 +10,6 @@ const irreplaceable = ['AI-Assisted Modelling', 'Python for Finance', 'Prompt En
 
 export default function AIProofSection() {
   const [sectionRef, isVisible] = useScrollAnimation();
-  const mobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   return (
     <section
@@ -18,9 +17,6 @@ export default function AIProofSection() {
       className="relative py-24 lg:py-28 overflow-hidden bg-[var(--bg-primary)]"
       data-testid="ai-proof-section"
     >
-      <div className="absolute inset-0 opacity-40" aria-hidden="true">
-        <NeuralNetBg mobile={mobile} />
-      </div>
       <div className="absolute inset-0 lv-terminal-grid pointer-events-none opacity-30" aria-hidden="true" />
 
       <div ref={sectionRef} className="max-w-7xl mx-auto px-6 relative z-10">
@@ -55,6 +51,7 @@ export default function AIProofSection() {
             <p className="text-[var(--color-text-muted)] font-bricolage leading-relaxed text-[14.5px] lg:text-[15.5px]">
               Every Valuevade roadmap includes the AI skills that make you irreplaceable: Python for finance, AI-assisted modelling, prompt engineering for analysts, and knowing exactly what AI can and cannot replace in your specific role.
             </p>
+            <BrandArtwork variant="career" className="vv-section-art" testId="ai-proof-brand-artwork" />
           </div>
 
           <div

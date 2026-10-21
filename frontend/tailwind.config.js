@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        clash: ['"Newsreader"', 'Georgia', 'serif'],
+        clash: ['"Outfit"', 'sans-serif'],
         bricolage: ['"Instrument Sans"', 'sans-serif'],
         jetbrains: ['"Spline Sans Mono"', 'monospace'],
         mono: ['"Spline Sans Mono"', 'ui-monospace', 'monospace'],
