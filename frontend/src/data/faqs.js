@@ -61,7 +61,7 @@ export const FAQS = [
     id: 'course-instructor',
     category: 'Course',
     question: 'Who teaches the course?',
-    answer: "The 42 hours of video lectures are designed and taught by Saarthak Bhatia, a qualified Chartered Accountant (CA), CMA US and ACCA (UK), with close to five years of teaching experience at Grant Thornton Bharat, FinTram Global, Zell Education and QuintEdge (and earlier at The Narayana Group and Byju's Learning App). He built the full course content end-to-end. You can read more in the 'Who built this' section above.",
+    answer: "The 100+ hours of video lectures are designed and taught by Saarthak Bhatia, a qualified Chartered Accountant (CA), CMA US and ACCA (UK), with close to five years of teaching experience at Grant Thornton Bharat, FinTram Global, Zell Education and QuintEdge (and earlier at The Narayana Group and Byju's Learning App). He built the full course content end-to-end. You can read more in the 'Who built this' section above.",
     tags: ['teacher', 'instructor', 'who', 'saarthak', 'ca', 'cma', 'acca', 'founder'],
   },
   // Preserved verbatim from the previous set

@@ -16,7 +16,7 @@ const ROWS = [
   { label: 'Live AI tutor (24/7)',             vv: true, v: [false, false, false, false] },
   { label: 'AI-proofing curriculum',           vv: true, v: [false, false, false, false] },
   { label: 'Price',                            vv: '₹4999 lifetime, one-time',   v: ['₹50k–80k', '₹25k–40k', '₹4k–15k/yr', '₹50k–2L'] },
-  { label: 'Duration',                         vv: 'Lifetime access · ~2 months at 1 hr/day', v: ['3–6 months', '3–4 months', '6–12 months', '6–18 months'] },
+  { label: 'Duration',                         vv: 'Lifetime access · 100+ hrs of content', v: ['3–6 months', '3–4 months', '6–12 months', '6–18 months'] },
   { label: 'AI mock interviews + feedback',    vv: true, v: ['manual', 'manual', false, 'manual'] },
   { label: 'Simulations',                      vv: '239, auto-graded, Indian companies', v: ['partial', 'partial', false, 'partial'] },
   { label: 'Job-ready portfolio projects',     vv: true, v: ['partial', false, false, 'partial'] },
