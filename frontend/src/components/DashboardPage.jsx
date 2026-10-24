@@ -1231,48 +1231,60 @@ function ContinueLearningCard({ computed, enrollment, capstone, projectByModule,
     }
   }
 
-  // State 3: normal continue learning
+  // State 3: compact "continue where you left off" shortcut card
   if (currentSession && nextPhase) {
     const PhaseIcon = PHASE_META[nextPhase].icon;
     const phaseLabel = PHASE_META[nextPhase].label;
+    const moduleCrumb = /^\s*module\b/i.test(currentModule.title || '')
+      ? currentModule.title
+      : `Module ${currentModule.module_number ?? currentModule.order_index} · ${currentModule.title}`;
+    const dest = `/session/${currentSession.id}/${PHASE_META[nextPhase].path}`;
 
     return (
-      <div
-        className="glass-card rounded-2xl p-6 sm:p-8 bg-gradient-to-br from-[var(--color-primary)]/8 via-transparent to-[var(--color-accent-purple)]/8 border-[var(--color-primary)]/20"
+      <Link
+        to={dest}
+        className="group glass-card rounded-2xl overflow-hidden flex items-stretch transition-all duration-200 hover:border-[var(--color-primary)]/50 hover:shadow-[0_4px_24px_rgba(36,107,253,0.14)] no-underline"
         data-testid="continue-learning-card"
       >
-        <div className="flex items-start justify-between gap-4 mb-5">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2 text-xs font-mono text-[var(--color-primary)] mb-3">
-              <PlayCircle size={14} /> CONTINUE LEARNING
-            </div>
-            <div className="text-[11px] font-mono uppercase tracking-[0.15em] text-[var(--color-text-muted)] mb-1.5">
-              {/^\s*module\b/i.test(currentModule.title || '')
-                ? currentModule.title
-                : `Module ${currentModule.module_number ?? currentModule.order_index}: ${currentModule.title}`}
-            </div>
-            <h2 className="font-clash text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-3" data-testid="continue-session-title">
-              {currentSession.title}
-            </h2>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-[var(--color-accent-purple)]/10 text-[var(--color-accent-purple)] border border-[var(--color-accent-purple)]/15">
-                <PhaseIcon size={12} /> Next: {phaseLabel}
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono bg-[var(--color-surface)] text-[var(--color-text-muted)] border border-[var(--color-border)]">
-                <Clock size={12} /> ~15 min
-              </span>
-            </div>
+        {/* Left accent strip */}
+        <div
+          className="w-1 shrink-0 bg-gradient-to-b from-[var(--color-primary)] to-[var(--color-accent-purple)]"
+          aria-hidden="true"
+        />
+
+        {/* Phase icon block */}
+        <div className="flex items-center px-4 sm:px-5 bg-[var(--color-primary)]/5 shrink-0">
+          <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/25 flex items-center justify-center">
+            <PhaseIcon size={18} className="text-[var(--color-primary)]" />
           </div>
         </div>
 
-        <button
-          onClick={() => onNavigate(`/session/${currentSession.id}/${PHASE_META[nextPhase].path}`)}
-          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
-          data-testid="continue-learning-btn"
-        >
-          <Sparkles size={16} /> Resume {phaseLabel} <ArrowRight size={16} />
-        </button>
-      </div>
+        {/* Text */}
+        <div className="flex-1 min-w-0 px-4 py-4 sm:py-3.5">
+          <p className="text-[10px] font-mono uppercase tracking-[0.14em] text-[var(--color-text-faint)] leading-none mb-1">
+            Continue where you left off
+          </p>
+          <p
+            className="text-sm sm:text-base font-clash font-semibold text-[var(--color-text)] truncate leading-snug"
+            data-testid="continue-session-title"
+          >
+            {currentSession.title}
+          </p>
+          <p className="text-[11px] font-mono text-[var(--color-text-muted)] truncate mt-0.5">
+            {moduleCrumb}
+          </p>
+        </div>
+
+        {/* CTA */}
+        <div className="flex items-center px-4 sm:px-5 shrink-0">
+          <span
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-[11px] font-mono font-semibold whitespace-nowrap group-hover:shadow-[0_0_16px_rgba(36,107,253,0.40)] transition-shadow"
+            data-testid="continue-learning-btn"
+          >
+            {phaseLabel} <ArrowRight size={12} />
+          </span>
+        </div>
+      </Link>
     );
   }
 

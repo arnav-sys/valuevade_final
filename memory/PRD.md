@@ -10,6 +10,17 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
+## Latest approved update — 2026-10-24 (Continue Learning shortcut card)
+User requested: compact "Continue where you left off" shortcut card on the dashboard.
+
+### Implemented & verified (iteration_101 — 10/10 passed)
+- Redesigned `ContinueLearningCard` State 3 (normal in-progress session) from a large padded
+  card into a compact horizontal shortcut strip: left gradient accent, phase icon block,
+  session title + module breadcrumb, right-side CTA badge. Full `<Link>` to the next phase URL.
+- All milestone states (capstone/exam/interview/project) unchanged.
+- Verified on desktop and mobile (390px).
+
+
 ## Latest approved update — 2026-10-24 (session search + module progress rings)
 User requested: "Jump to Any Session" search bar + "Module Progress Ring" on the dashboard.
 
