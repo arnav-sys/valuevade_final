@@ -75,7 +75,7 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
   const [revisitOpen, setRevisitOpen] = useState(false);
   const sessionsExpanded = (isActive || revisitOpen) && !isLocked;
   const showSessionList = sessionsExpanded && activeSessions.length > 0;
-  const headerInteractive = isComplete && !isLocked;
+  const headerInteractive = !isLocked; // All unlocked modules are expandable
 
   return (
     <div
@@ -873,7 +873,7 @@ export default function DashboardPage() {
                       ? modules.findIndex((m) => m.id === computed.currentModule.id)
                       : -1;
                     const thisIdx = modules.findIndex((m) => m.id === mod.id);
-                    const isLocked = currentIdx >= 0 && thisIdx > currentIdx && !mod.is_completed;
+                    const isLocked = false; // All modules are freely accessible
 
                     return (
                       <ModuleCard

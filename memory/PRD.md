@@ -10,7 +10,26 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Latest approved update — 2026-10-21 (landing contrast + desktop side space)
+## Latest approved update — 2026-10-24 (free module/session access + 100+ hours copy)
+User: "right now users can not access all modules and sessions. they have to complete module
+and then next module will be available. give them option to access and see each module and
+each session."
+
+### Implemented
+- `DashboardPage.jsx` line 876: `isLocked` forced to `false` — all modules visible at full
+  opacity, no greyout.
+- `DashboardPage.jsx` line 78 (`ModuleCard`): `headerInteractive = !isLocked` (now always
+  `true`) — every module card is clickable to expand its session list, regardless of completion
+  state. Previously only completed modules were expandable.
+- Net effect: users can now click any module to see all its sessions, and click any session
+  to navigate to it, without needing to complete prior modules.
+- Gamification / XP / progress tracking remain fully intact.
+- No backend changes required (access was frontend-gated only).
+
+Also in the same session: all "1 hour a day / 2 months / 42 hours" references updated to
+"100+ hours" in FAQs (`CourseDetailsPage.jsx`, `faqs.js`), comparison table (`ComparisonSection.js`).
+
+## Previous approved update — 2026-10-21 (landing contrast + desktop side space)
 User: "fix this and also just in this landing page I have attached in desktop in left and right it looks blank do something".
 The screenshots showed washed-out AI Advantage text and empty desktop hero wings.
 User selected **"Course benefits and outcomes"** for the side spaces. Scope remained
