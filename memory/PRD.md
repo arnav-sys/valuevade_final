@@ -10,7 +10,24 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Latest approved update — 2026-10-24 (free module/session access + 100+ hours copy)
+## Latest approved update — 2026-10-24 (session search + module progress rings)
+User requested: "Jump to Any Session" search bar + "Module Progress Ring" on the dashboard.
+
+### Implemented & verified (iteration_100 — 12/12 passed)
+- **`ProgressRing` SVG component**: 40×40 ring on every non-active, non-complete module
+  card. Grey track + blue (`--color-primary`) filled arc driven by `pct`
+  (completedCount/total). Zero-padded module order index in center (e.g. "02").
+  Active module → blue PlayCircle; complete → green CheckCircle2 (unchanged).
+- **Session search bar**: above the module list, `data-testid="session-search-input"`.
+  Placeholder "Jump to any session across all 239…". Filters sessions by title AND
+  module title via `useMemo`. Dropdown shows up to 8 results with session title,
+  "Module N · Title" line, and completion status icon. Clicking navigates to
+  `/session/:id/start` and clears the search. Outside click closes dropdown.
+  Clear button (`data-testid="session-search-clear"`) removes query.
+- Mobile (390px): search is full-width (358px), rings render correctly, dropdown works.
+- `useRef` + `Search`, `X` icons added to existing imports — no new packages.
+
+## Previous approved update — 2026-10-24 (free module/session access + 100+ hours copy)
 User: "right now users can not access all modules and sessions. they have to complete module
 and then next module will be available. give them option to access and see each module and
 each session."

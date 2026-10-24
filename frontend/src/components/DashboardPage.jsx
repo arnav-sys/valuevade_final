@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react';import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react';import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { getNextPhase, computeStreak, updateStats } from '../utils/progress';
@@ -19,6 +19,7 @@ import {
   ArrowRight, Sparkles, BookOpen, Clock, Flame, Trophy, Target, Layers,
   CheckCircle2, PlayCircle, Lock, AlertCircle, RefreshCw, FileText,
   HelpCircle, MessageSquare, Wrench, Rocket, Loader2, CalendarDays, Briefcase,
+  Search, X,
 } from 'lucide-react';
 import { getPendingModuleProject } from '../lib/pendingModuleProject';
 import { getInterviewMasterModuleIds, getInterviewSimGate } from '../utils/interviewSim';
@@ -58,6 +59,40 @@ function StatCard({ icon: Icon, label, value, suffix, accent = 'primary', testid
       <div className="font-clash text-2xl sm:text-3xl font-bold text-[var(--color-text)]">
         {value}<span className="text-sm font-bricolage text-[var(--color-text-muted)] ml-1 font-normal">{suffix}</span>
       </div>
+    </div>
+  );
+}
+
+/** Small SVG ring showing per-module completion %. Shown on collapsed cards. */
+function ProgressRing({ pct, orderIndex }) {
+  const r = 14;
+  const circ = 2 * Math.PI * r; // ≈ 87.96
+  const filled = circ * (pct / 100);
+  return (
+    <div className="w-10 h-10 relative flex items-center justify-center shrink-0" aria-label={`${pct}% complete`}>
+      <svg
+        width="40" height="40" viewBox="0 0 40 40"
+        className="absolute inset-0"
+        style={{ transform: 'rotate(-90deg)' }}
+        aria-hidden="true"
+      >
+        {/* Track */}
+        <circle cx="20" cy="20" r={r} fill="none" strokeWidth="2.5"
+          stroke="var(--color-border)" />
+        {/* Progress arc */}
+        {pct > 0 && (
+          <circle cx="20" cy="20" r={r} fill="none" strokeWidth="2.5"
+            stroke="var(--color-primary)"
+            strokeDasharray={`${filled} ${circ - filled}`}
+            strokeLinecap="round"
+            style={{ transition: 'stroke-dasharray 0.6s ease' }}
+          />
+        )}
+      </svg>
+      <span className="relative z-10 text-[10px] font-mono leading-none"
+        style={{ color: pct > 0 ? 'var(--color-primary)' : 'var(--color-text-faint)' }}>
+        {String(orderIndex).padStart(2, '0')}
+      </span>
     </div>
   );
 }
@@ -103,20 +138,12 @@ function ModuleCard({ module, sessions, projectStatus, isActive, isLocked, inter
             <div className="w-10 h-10 rounded-xl bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 flex items-center justify-center">
               <CheckCircle2 size={18} className="text-[var(--color-success)]" />
             </div>
-          ) : isLocked ? (
-            <div className="w-10 h-10 rounded-xl bg-[var(--color-text-faint)]/10 border border-[var(--color-border)] flex items-center justify-center">
-              <Lock size={16} className="text-[var(--color-text-faint)]" />
-            </div>
           ) : isActive ? (
             <div className="w-10 h-10 rounded-xl bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 flex items-center justify-center">
               <PlayCircle size={18} className="text-[var(--color-primary)]" />
             </div>
           ) : (
-            <div className="w-10 h-10 rounded-xl bg-[var(--color-surface)] border border-[var(--color-border)] flex items-center justify-center">
-              <span className="text-[11px] font-mono text-[var(--color-text-muted)]">
-                {String(module.order_index).padStart(2, '0')}
-              </span>
-            </div>
+            <ProgressRing pct={pct} orderIndex={module.order_index} />
           )}
         </div>
 
@@ -312,6 +339,20 @@ export default function DashboardPage() {
   const [moduleProjects, setModuleProjects] = useState([]);
   const [capstone, setCapstone] = useState(null);
 
+  // Session search
+  const [sessionSearch, setSessionSearch] = useState('');
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchRef = useRef(null);
+  useEffect(() => {
+    function handleClick(e) {
+      if (searchRef.current && !searchRef.current.contains(e.target)) {
+        setSearchFocused(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClick);
+    return () => document.removeEventListener('mousedown', handleClick);
+  }, []);
+
   // Phase D1, Study plan presence detection + wizard control.
   // Phase D2, Dashboard summary (today + cumulative trend + adherence).
   const [activePlan, setActivePlan] = useState(undefined);   // undefined = loading, null = none, {} = present
@@ -501,6 +542,26 @@ export default function DashboardPage() {
     if (stats?.last_activity_date) dates.push(stats.last_activity_date);
     return computeStreak(dates);
   }, [sessions, stats?.last_activity_date]);
+
+  // Fast O(1) module lookup for search
+  const moduleById = useMemo(
+    () => Object.fromEntries(modules.map((m) => [m.id, m])),
+    [modules],
+  );
+
+  // Session search results
+  const searchResults = useMemo(() => {
+    const q = sessionSearch.toLowerCase().trim();
+    if (!q) return [];
+    return sessions
+      .filter((s) => !s.is_removed)
+      .filter((s) =>
+        s.title?.toLowerCase().includes(q) ||
+        moduleById[s.user_module_id]?.title?.toLowerCase().includes(q),
+      )
+      .slice(0, 8)
+      .map((s) => ({ ...s, mod: moduleById[s.user_module_id] }));
+  }, [sessionSearch, sessions, moduleById]);
 
   // Bump last_activity_date when the user opens the dashboard so streak
   // counts even if they don't immediately finish a session today.
@@ -861,6 +922,84 @@ export default function DashboardPage() {
                     className="h-full bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent-purple)] to-[var(--color-accent-pink)] rounded-full transition-all duration-700"
                     style={{ width: `${computed.overallProgress}%` }}
                   />
+                </div>
+
+                {/* Session search */}
+                <div ref={searchRef} className="relative mb-5" data-testid="session-search-container">
+                  <div className={`flex items-center gap-2 px-3 py-2.5 rounded-xl border bg-[var(--color-surface)] transition-all ${
+                    searchFocused ? 'border-[var(--color-primary)]/50 shadow-[0_0_0_3px_rgba(36,107,253,0.08)]' : 'border-[var(--color-border)]'
+                  }`}>
+                    <Search size={14} className="text-[var(--color-text-faint)] shrink-0" />
+                    <input
+                      type="text"
+                      value={sessionSearch}
+                      onChange={(e) => setSessionSearch(e.target.value)}
+                      onFocus={() => setSearchFocused(true)}
+                      placeholder="Jump to any session across all 239…"
+                      className="flex-1 bg-transparent text-sm font-bricolage text-[var(--color-text)] placeholder:text-[var(--color-text-faint)] outline-none"
+                      data-testid="session-search-input"
+                      autoComplete="off"
+                    />
+                    {sessionSearch && (
+                      <button
+                        type="button"
+                        onClick={() => { setSessionSearch(''); setSearchFocused(false); }}
+                        className="text-[var(--color-text-faint)] hover:text-[var(--color-text)] transition-colors shrink-0"
+                        data-testid="session-search-clear"
+                        aria-label="Clear search"
+                      >
+                        <X size={14} />
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Dropdown */}
+                  {searchFocused && sessionSearch.trim() && (
+                    <div
+                      className="absolute z-30 top-full left-0 right-0 mt-1.5 glass-card rounded-xl border border-[var(--color-border)] shadow-[0_8px_32px_rgba(0,0,0,0.15)] overflow-hidden"
+                      data-testid="session-search-dropdown"
+                    >
+                      {searchResults.length === 0 ? (
+                        <div className="px-4 py-3 text-sm font-bricolage text-[var(--color-text-muted)]">
+                          No sessions match &ldquo;{sessionSearch}&rdquo;
+                        </div>
+                      ) : (
+                        <ul role="listbox">
+                          {searchResults.map((s) => (
+                            <li key={s.id} role="option">
+                              <Link
+                                to={`/session/${s.id}/start`}
+                                onClick={() => { setSessionSearch(''); setSearchFocused(false); }}
+                                className="flex items-center gap-3 px-4 py-3 hover:bg-[var(--color-primary)]/6 transition-colors group border-b border-[var(--color-border)] last:border-0"
+                                data-testid={`session-search-result-${s.id}`}
+                              >
+                                <span className={`w-5 h-5 rounded-md flex items-center justify-center shrink-0 ${
+                                  s.is_completed
+                                    ? 'bg-[var(--color-success)]/15 text-[var(--color-success)]'
+                                    : 'bg-[var(--color-surface)] text-[var(--color-text-faint)]'
+                                }`}>
+                                  {s.is_completed
+                                    ? <CheckCircle2 size={12} />
+                                    : <PlayCircle size={12} />}
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                  <p className="text-sm font-bricolage text-[var(--color-text)] truncate group-hover:text-[var(--color-primary)] transition-colors">
+                                    {s.title}
+                                  </p>
+                                  {s.mod && (
+                                    <p className="text-[11px] font-mono text-[var(--color-text-faint)] truncate mt-0.5">
+                                      Module {s.mod.module_number ?? s.mod.order_index} · {s.mod.title}
+                                    </p>
+                                  )}
+                                </div>
+                                <ArrowRight size={13} className="text-[var(--color-text-faint)] group-hover:text-[var(--color-primary)] transition-colors shrink-0" />
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  )}
                 </div>
 
                 {/* Module timeline */}
