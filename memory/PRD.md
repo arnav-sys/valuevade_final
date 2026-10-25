@@ -10,7 +10,51 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Student / Enterprise course navigation — 2026-10-25 (latest)
+## Course resource-library inclusion copy — 2026-10-25 (latest)
+
+Exact request: “also in course details page mention you will get access to all resources
+include like hr database, financial modelling templates, equity research templates,
+ai agents workflows, prompts library, finance projects templates, interview prep
+templates etc. and more”. User chose **Full section and enrolment highlight** after
+being told this updates both audiences without changing payment/download permissions.
+
+### Implemented and verified
+- Shared `courses/IncludedResources.jsx` and scoped `included-resources.css`: full
+  inclusion section with all seven requested categories, plus sector study frameworks
+  and valuation/stock pitch templates. Explicit “access to all resources” copy follows
+  the user's commercial instruction. No fabricated file counts, download links or values.
+- Student course detail: full section after course stats; inclusion jump links beside
+  hero enrolment, closing CTA and mobile sticky enrolment. Existing enrolment actions
+  retained. All links jump to the resource section.
+- Enterprise course detail: B2B descriptions, enrolled-team-member inclusion wording,
+  full section, hero highlight and proposal highlight. AI-only form interest hides the
+  course inclusion highlight; workflow templates explicitly distinguished from separately
+  scoped custom AI agent implementations.
+- Upcoming student/enterprise courses show the library as a **planned inclusion at launch**,
+  with enrolment/resource access not yet open; no new prices/enrol buttons.
+- Legacy `/enterprise/programme` includes matching section and proposal highlight.
+- No auth, backend, payment, download permission or actual resource-file changes.
+  **This was a content/presentation update, not bundled resource access implementation.**
+
+### Tests
+- Direct browser regression, desktop1920×800/mobile390×844: all nine category entries,
+  student hero/closing/mobile highlights, enterprise hero/proposal highlights, anchors,
+  AI-only conditional, upcoming states and legacy programme pass. No page overflow.
+- JSX parse and dev compilation pass. Fixed the touched legacy page's effect dependency;
+  unrelated existing `ot-json1` dependency source-map warning remains.
+- Report: `/app/test_reports/resource_inclusion_copy_20261025.md`. No database writes,
+  emails, payments, runtime mocks or credentials changes. Testing agent not needed for
+  this incremental content-only update; verified directly in browser.
+
+### Next / backlog
+- P0 for this content request: none known.
+- P1: verify/provide bundled resource access for course enrollees before relying on the
+  commercial inclusion promise; no entitlements were changed by this request. Existing
+  resource purchase/upload/download and saved-lead/email delivery E2E remain pending.
+- P2: prior backend and legacy course-detail refactors remain unchanged.
+- Potential enhancement: preview a few resource examples alongside the inclusion list.
+
+## Student / Enterprise course navigation — 2026-10-25 (previous)
 
 Exact request: “in students show all courses and course details page and give option
 to view all courses in navbar and in enterprise also in navbar show all courses

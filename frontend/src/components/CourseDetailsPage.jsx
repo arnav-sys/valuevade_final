@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { BusinessNav } from './enterprise/BusinessNav';
 import { UpcomingCoursePage } from './courses/UpcomingCoursePage';
+import { IncludedResources, ResourceInclusionHighlight } from './courses/IncludedResources';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
@@ -775,6 +776,7 @@ management or Big 4 advisory.`}
                     </p>
                   </>
                 )}
+                <ResourceInclusionHighlight id="student-course-hero"/>
                 <BrandArtwork variant="research" className="vv-detail-art" testId="detail-brand-artwork" eager />
               </section>
 
@@ -818,6 +820,8 @@ management or Big 4 advisory.`}
                   <AnimatedStat testid="detail-stat-capstones" value={3}                    label="Capstones" icon={<CheckCircle2 size={18} />} />
                 </div>
               </section>
+
+              <IncludedResources/>
 
               {/* What you'll be able to do, Prompt 3 task 7 (verbatim). */}
               <section className="mb-12" data-testid="detail-what-you-learn">
@@ -1388,6 +1392,7 @@ management or Big 4 advisory.`}
                     </button>
                   )}
                 </BreathingGlow>
+                <div className="course-resources-cta-note"><ResourceInclusionHighlight id="student-course-closing"/></div>
               </div>
             </div>
           </motion.section>
@@ -1404,6 +1409,7 @@ management or Big 4 advisory.`}
       {/* Sticky mobile CTA */}
       {!loading && !error && course && !isCompleted && (
         <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-[var(--bg-primary)]/90 backdrop-blur-xl border-t border-[var(--color-border)] p-4 z-50 mobile-sticky-bar" data-testid="detail-mobile-cta">
+          <ResourceInclusionHighlight id="student-course-mobile" compact/>
           {isEnrolled ? (
             <button
               onClick={() => navigate('/dashboard')}
