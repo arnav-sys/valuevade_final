@@ -3,7 +3,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import { useTheme } from '../contexts/ThemeContext';
+import { BusinessNav } from './enterprise/BusinessNav';
+import { UpcomingCoursePage } from './courses/UpcomingCoursePage';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
@@ -451,8 +452,7 @@ function VideoPreviewModal({ session, onClose }) {
 export default function CourseDetailsPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const { user, profile, signOut } = useAuth();
-  const { theme, toggleTheme } = useTheme();
+  const { user } = useAuth();
 
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
@@ -471,10 +471,12 @@ export default function CourseDetailsPage() {
         .from('master_paths')
         .select('*')
         .eq('id', courseId)
+        .eq('is_active', true)
         .single();
 
       if (pathErr) throw pathErr;
       setCourse(pathData);
+      if (pathData.is_coming_soon) { setModules([]); setEnrollment(null); return; }
 
       // 2. Modules with sessions, try full select (migration 0041), fall back
       //    to base columns if the DB hasn't been migrated yet.
@@ -571,11 +573,13 @@ export default function CourseDetailsPage() {
   const careerOutcomes = course?.career_outcomes || [];
   const skills = course?.skills || [];
 
+  if (!loading && !error && course?.is_coming_soon) return <UpcomingCoursePage course={course}/>;
+
   return (
     <div className="min-h-screen bg-[var(--bg-primary)] relative overflow-hidden">
       <VideoPreviewModal session={previewSession} onClose={() => setPreviewSession(null)} />
       <Helmet>
-        <title>Equity Research Analyst Course, Syllabus & Fees | Valuevade</title>
+        <title>{`${course?.title || 'Course Details'} — Syllabus & Fees | Valuevade`}</title>
         <meta name="description" content="Equity Research Analyst Program syllabus: 21 modules, 239 sessions, DCF & comps on Indian companies, 3 capstone projects, certificate. ₹4999 lifetime access." />
         <link rel="canonical" href={`https://valuevade.com/course/${courseId}`} />
         <meta property="og:type" content="website" />
@@ -610,63 +614,20 @@ export default function CourseDetailsPage() {
       <div className="absolute bottom-[-10%] left-[-5%] w-[400px] h-[400px] rounded-full bg-[var(--color-primary)] opacity-[0.05] blur-[100px] pointer-events-none" />
 
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-[var(--bg-primary)]/80 backdrop-blur-xl border-b border-[var(--color-border)]" data-testid="detail-header">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2" data-testid="detail-logo">
-            <img src="/valuevade-logo.svg" alt="Valuevade" className="w-8 h-8" />
-            <span className="font-clash text-xl font-semibold logo-gradient">Valuevade</span>
-          </Link>
-          <div className="flex items-center gap-3">
-            <button onClick={toggleTheme} className="w-9 h-9 rounded-lg flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-all" data-testid="detail-theme-toggle" aria-label="Toggle theme">
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            {profile && (
-              <span className="text-sm text-[var(--color-text-muted)] font-bricolage hidden sm:block" data-testid="detail-user-name">
-                {profile.full_name}
-              </span>
-            )}
-            {user ? (
-              <button
-                onClick={signOut}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage"
-                data-testid="detail-signout-button"
-              >
-                <LogOut size={16} /> Sign Out
-              </button>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link
-                  to="/login"
-                  className="px-3 py-1.5 rounded-lg text-sm text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface-hover)] transition-all font-bricolage"
-                  data-testid="detail-login-link"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="px-3 py-1.5 rounded-lg text-sm font-semibold font-bricolage bg-[var(--color-primary)] text-white hover:shadow-[0_0_20px_rgba(36,107,253,0.35)] transition-all"
-                  data-testid="detail-signup-link"
-                >
-                  Sign up
-                </Link>
-              </div>
-            )}
-          </div>
-        </div>
-      </header>
+      <BusinessNav student/>
 
       <main className="max-w-7xl mx-auto px-6 py-8 sm:py-12 relative z-10">
         {/* Breadcrumb, Prompt 3 task 14 */}
         <nav
-          className="flex items-center gap-1.5 text-xs text-[var(--color-text-muted)] font-bricolage mb-6"
+          className="flex flex-wrap items-center gap-1.5 text-xs text-[var(--color-text-muted)] font-bricolage mb-6"
           aria-label="Breadcrumb"
           data-testid="detail-breadcrumb"
         >
-          <Link to="/" className="hover:text-[var(--color-text)] transition-colors">Home</Link>
+          <Link to="/" className="hover:text-[var(--color-text)] transition-colors" data-testid="detail-breadcrumb-home">Home</Link>
           <ChevronRight size={12} className="text-[var(--color-text-faint)]" />
-          <Link to="/courses" className="hover:text-[var(--color-text)] transition-colors">Courses</Link>
+          <Link to="/courses" className="hover:text-[var(--color-text)] transition-colors" data-testid="detail-breadcrumb-courses">All Courses</Link>
           <ChevronRight size={12} className="text-[var(--color-text-faint)]" />
-          <span className="text-[var(--color-text)]">Equity Research Analyst Program</span>
+          <span className="text-[var(--color-text)]" data-testid="detail-breadcrumb-title">{course?.title || 'Course details'}</span>
         </nav>
 
         {/* Back link */}
@@ -709,7 +670,7 @@ export default function CourseDetailsPage() {
                   (no longer DB-driven). Preserves the halo dot animation
                   aesthetic. */}
               <section className="mb-12 relative" data-testid="detail-hero">
-                <p className="vv-eyebrow mb-5" data-testid="detail-brand-eyebrow">VALUEVADE · EQUITY RESEARCH</p>
+                <p className="vv-eyebrow mb-5" data-testid="detail-brand-eyebrow">VALUEVADE · {course.category || 'FINANCE'}</p>
                 {/* Title-side halo dots (smaller variant of /courses hero halo) */}
                 <div
                   aria-hidden="true"

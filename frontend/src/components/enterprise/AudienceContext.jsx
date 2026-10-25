@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Building2, GraduationCap, ArrowUpRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '../ui/dialog';
@@ -8,23 +8,29 @@ const Audience = createContext(null);
 const readChoice = () => { try { const value = localStorage.getItem('valuevade-audience'); return ['student', 'enterprise'].includes(value) ? value : null; } catch { return null; } };
 export const AudienceProvider = ({ children }) => {
   const [audience, setAudience] = useState(readChoice);
-  const choose = value => { setAudience(value); try { localStorage.setItem('valuevade-audience', value); } catch {} };
+  const choose = useCallback(value => { setAudience(value); try { localStorage.setItem('valuevade-audience', value); } catch {} }, []);
   return <Audience.Provider value={{ audience, choose }}>{children}</Audience.Provider>;
 };
 export const useAudience = () => useContext(Audience);
+const audiencePath = (pathname, value) => {
+  const base = pathname.replace(/^\/enterprise(?=\/|$)/, '') || '/';
+  const shared = base === '/courses' || base === '/ai-agents' || /^\/course\/[^/]+$/.test(base);
+  return value === 'enterprise' ? `/enterprise${shared ? base : ''}` : shared ? base : '/';
+};
 export const AudienceSwitch = ({ id = 'header' }) => {
   const { audience, choose } = useAudience();
   const navigate = useNavigate(); const { pathname } = useLocation();
   return <div className="vv-audience-switch" aria-label="Audience" data-testid={`${id}-audience-switch`}>
     {['student', 'enterprise'].map(value => <button key={value} type="button" aria-pressed={(audience || (pathname.startsWith('/enterprise') ? 'enterprise' : 'student')) === value}
-      data-testid={`${id}-switch-${value}`} onClick={() => { choose(value); navigate(value === 'enterprise' ? '/enterprise' : '/'); }}>
+      data-testid={`${id}-switch-${value}`} onClick={() => { choose(value); navigate(audiencePath(pathname, value)); }}>
       {value === 'student' ? <GraduationCap size={14} /> : <Building2 size={14} />}{value === 'student' ? 'Students' : 'Enterprise'}
     </button>)}
   </div>;
 };
 export const AudienceGate = ({ children, course = false }) => {
   const { audience, choose } = useAudience();
-  if (audience === 'enterprise') return <Navigate to={course ? '/enterprise/programme' : '/enterprise'} replace />;
+  const { pathname } = useLocation();
+  if (audience === 'enterprise') return <Navigate to={audiencePath(pathname, 'enterprise')} replace />;
   return <>{children}<Dialog open={!audience} onOpenChange={open => { if (!open) choose('student'); }}>
     <DialogContent className="vv-audience-dialog" data-testid="audience-gateway">
       <img src="/valuevade-logo.svg" width="40" height="40" alt="Valuevade" />

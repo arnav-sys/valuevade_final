@@ -10,7 +10,78 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Business landing expansion — 2026-10-25 (latest)
+## Student / Enterprise course navigation — 2026-10-25 (latest)
+
+Exact request: “in students show all courses and course details page and give option
+to view all courses in navbar and in enterprise also in navbar show all courses
+and course details page but change the content and page to enterprise b2b specific
+in course details page and also in navbar add ai agents and show ai agents page
+and remove programmer”. User chose **Navigation only** for removing Programmer.
+
+### Implemented
+- Student landing, shared public navigation and enterprise navigation now expose
+  **All Courses** and **AI Agents**, including mobile menus. Removed the existing
+  **Programme** navigation entry; its legacy `/enterprise/programme` URL and content
+  remain available. No course records deleted or unpublished.
+- `/courses` and `/enterprise/courses` consume the same real published catalogue
+  (currently six courses: one live, five coming soon), with search/category filters,
+  empty/error/retry states, genuine brand artwork and correct audience-specific links.
+  Every card opens details, including upcoming and enrolled courses. Existing student
+  enrolment status/continue shortcut preserved; student catalogue supports dark mode.
+- Existing live `/course/:courseId` retains learning content, free trial and checkout
+  entry points. Shared nav added. Upcoming courses have truthful title-specific detail
+  pages, no ER placeholder curriculum, prices or enrol buttons; inactive paths excluded.
+- New `/enterprise/course/:courseId`: distinct B2B description, target team roles,
+  course-specific business outcomes, illustrative assignment, published module/session
+  accordion, rollout plan and team proposal. Uses actual catalogue counts/curriculum.
+  Upcoming content explicitly marked proposed; no numeric price/enrol CTA. Unknown ID
+  shows not found. No student salary, career-transformation or individual checkout copy.
+- Course enquiry context appears in the form and is retained in saved request requirements
+  or email drafts. Text length reserves space for context; no real enquiries sent in QA.
+- `/ai-agents` and `/enterprise/ai-agents` show existing FP&A, Bookkeeping and Excel
+  governance offerings with selectors, illustrative Three.js workflow, review boundaries
+  and correct training/proposal links. These are scoped business offerings, not newly
+  implemented live agents or services included in tuition.
+- Audience switching now preserves catalogue, exact course ID and agents-page context.
+  Enterprise preference no longer collapses all course links into the generic programme.
+- No backend business logic, auth, payment configuration, database or credentials changed.
+
+### Verification / current setup status
+- `/app/test_reports/iteration_104.json`: backend 4/4 passes; browser core flows passed,
+  including six-course listings, details, navigation, enquiry payload, responsive widths
+  320/390/768/1024/1440/1920 and legacy programme accessibility.
+- Tester found duplicate React keys. Root cause was **two sibling detail components**
+  (curriculum and pricing) keyed identically, not duplicate catalogue data. Namespaced
+  keys fixed it. Three repeated student/enterprise detail switches preserve ID; follow-up
+  has zero duplicate-key warnings. Catalogue and curriculum failure/retry paths verified
+  against real responses after test-only 503 injection; no runtime API mocks added.
+- Follow-up `/app/test_reports/iteration_104_followup.md`. Desktop/mobile screenshots
+  show no overflow. Mobile agent canvas nonblank: 350×208, 844 opaque sampled pixels,
+  295 colours; selector changes work. Initial Helmet mixed-title-child error corrected
+  before QA. Current JSX parses and dev compilation works.
+- **Previous migration blocker no longer reproduced:** `/api/resources` returns 200;
+  `/api/enterprise/config` returns `enquiries_available: true`. Do not tell the user
+  migration 0048 is still blocking these reads. Storage/upload/purchase/download E2E
+  and actual saved lead/email delivery were NOT verified in this navigation task.
+- Enterprise sample prices still labelled sample. Managed email provisioning/delivery
+  remains previously pending/unverified. No payments executed. Testing-only enquiry
+  interception returned a MOCKED response solely to inspect payload without saving a lead.
+
+### Next Action Items / backlog
+- P0 for this request: none known. User review of new public navigation and B2B content.
+- P1: validate real resource CRUD/upload/publish, Razorpay test purchase/recovery/webhook
+  and signed downloads now that public schema reads respond. Verify saved leads and
+  resolve/check managed enquiry email provisioning; no live delivery claim.
+- P2: existing backend router refactor; split legacy `CourseDetailsPage.jsx` into modules.
+- Potential enhancement: course comparison to help students and teams choose a path.
+
+Files: `components/courses/` (catalog hook/cards, editorial business content, enterprise
+details/curriculum, upcoming student details and scoped styles), `CoursesPage.jsx`,
+`CourseDetailsPage.jsx`, `enterprise/{AudienceContext,BusinessNav,AIAgentsPage,
+BusinessAgentsContent,EnterprisePricing}.jsx`, `enterprise.css`, `LandingNav.jsx`,
+`immersive.css`, `Navbar.js`, `App.js`. No auth credentials changed.
+
+## Business landing expansion — 2026-10-25 (previous)
 
 Exact request: “in business Landing page the first landing page add more 3d elements
 and make the background lavender just like in student and also segregate between

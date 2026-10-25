@@ -72,8 +72,9 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
           <AudienceSwitch id="student-nav" />
           <Link to="/resources" className="lv-nav-link" data-testid="nav-link-resources">Resources</Link>
           <Link to="/courses" className="lv-nav-link" data-testid="nav-link-courses">
-            Courses
+            All Courses
           </Link>
+          <Link to="/ai-agents" className="lv-nav-link" data-testid="nav-link-ai-agents">AI Agents</Link>
           <Link to="/free-mock-interview" className="lv-nav-link inline-flex items-center gap-1.5"
             style={{ color: 'var(--color-primary)' }} data-testid="nav-link-free-mock">
             Free Mock
@@ -177,8 +178,9 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
             className="text-2xl text-[var(--color-text-secondary)] hover:text-[var(--color-text)] font-clash transition-colors"
             data-testid="mobile-nav-courses"
           >
-            Courses
+            All Courses
           </Link>
+          <Link to="/ai-agents" onClick={() => setMenuOpen(false)} className="text-xl" data-testid="mobile-nav-ai-agents">AI Agents</Link>
           <Link
             to="/free-mock-interview"
             onClick={() => setMenuOpen(false)}

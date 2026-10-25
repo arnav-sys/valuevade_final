@@ -1,0 +1,46 @@
+{
+  "summary": "Completed BOTH backend and frontend regression for student/enterprise courses + AI agents navigation and detail flows on the public preview URL. Backend smoke APIs passed (4/4). Frontend core flows passed (nav updates, six-course catalogues, coming-soon behavior, enterprise B2B detail content, enquiry context capture via TEST-ONLY interception, responsive overflow matrix, /enterprise/programme reachability).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [
+      {
+        "flow": "Courses catalogue render",
+        "issue": "Intermittent React console error observed: duplicate children key for course id `5f69ef74-9bff-4cb7-9b5d-68a82d9aad5c` during catalogue navigation runs.",
+        "affected_selectors": [
+          "article.cc-card"
+        ]
+      }
+    ],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_iter104_catalog_enterprise_smoke.py",
+    "/app/test_reports/pytest/iteration104_backend.xml"
+  ],
+  "action_items": [
+    "Investigate and remove the intermittent duplicate React key warning in catalogue rendering.",
+    "Optionally add deterministic test hooks for forcing first-call catalogue/curriculum failures to make retry-state automation stable."
+  ],
+  "critical_code_review_comments": [
+    "`CourseDetailsPage.jsx` is very large (>1400 lines) and should be split into smaller modules for maintainability and safer regression scope.",
+    "Verified frontend API base usage is env-based (`process.env.REACT_APP_BACKEND_URL`) in enterprise API calls.",
+    "No hardcoded localhost/internal URLs found in tested student/enterprise catalogue + AI-agent flows."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_iter104_catalog_enterprise_smoke.py",
+    "/app/test_reports/iteration_104.json"
+  ],
+  "success_rate": {
+    "backend": "100% (4/4)",
+    "frontend": "92%"
+  },
+  "seed_data_creation": "None",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Validated with public URL from frontend/.env. Confirmed nav additions: student `/courses` + `/ai-agents`, enterprise `/enterprise/courses` + `/enterprise/ai-agents`; no Programme/Programmer nav links while `/enterprise/programme` remains reachable. Verified six cards in both catalogues, coming-soon routing, live student detail presence (`detail-hero`), enterprise detail B2B sections/no student enroll CTA, unknown enterprise-id not-found state, enquiry form native validation and TEST-ONLY intercepted submit body containing `Course: ...` context (no real lead creation), responsive overflow checks at 320/390/768/1024/1440/1920 (no horizontal overflow), and student theme toggle visibility/clickability. Audience gateway modal can appear asynchronously on first-visit flows; tests should explicitly resolve it before checking nav interactions.",
+  "rca of the issue": "Duplicate-key warning likely originates from catalogue card rendering keyed by course id when multiple render paths race during audience-gate/route transitions; reproduce by repeated fast navigation among /courses, /ai-agents, and enterprise routes while catalog fetches are in-flight. Mitigation: audit list rendering paths to ensure a single sibling list per key-space and no temporary duplicated arrays in state transitions."
+}

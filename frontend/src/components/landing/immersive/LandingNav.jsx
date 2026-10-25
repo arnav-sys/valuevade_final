@@ -10,7 +10,7 @@ export default function LandingNav({ theme, toggleTheme }) {
   return <header className="vvi-nav" data-testid="navbar">
     <nav aria-label="Main navigation">
       <Link to="/" className="vvi-logo" data-testid="navbar-logo"><img src="/valuevade-logo.svg" width="28" height="28" alt="" />Valuevade<span>®</span></Link>
-      <div className="vvi-nav-links"><AudienceSwitch id="landing" />{LINKS.map(([label, id]) => <a key={id} href={`#${id}`} data-testid={`nav-link-${id}`}>{label}</a>)}<Link to="/resources" data-testid="landing-resources-link">Resources</Link></div>
+      <div className="vvi-nav-links"><AudienceSwitch id="landing" /><Link to="/courses" data-testid="landing-all-courses-link">All Courses</Link><Link to="/ai-agents" data-testid="landing-ai-agents-link">AI Agents</Link><Link to="/resources" data-testid="landing-resources-link">Resources</Link><a href="#pricing" data-testid="nav-link-pricing">Pricing</a></div>
       <div className="vvi-nav-actions">
         <button onClick={toggleTheme} className="vvi-icon-button vvi-desktop-theme" aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`} title="Change theme" data-testid="landing-theme-toggle">{theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}</button>
         <Link to="/login" className="vvi-login" data-testid="navbar-login-link">Log in</Link>
@@ -19,9 +19,11 @@ export default function LandingNav({ theme, toggleTheme }) {
           <SheetTrigger asChild><button className="vvi-icon-button vvi-menu-trigger" aria-label="Open menu" data-testid="mobile-menu-toggle"><Menu size={22} /></button></SheetTrigger>
           <SheetContent className="vvi-menu-panel" data-testid="mobile-menu-overlay">
             <SheetTitle>Valuevade</SheetTitle>
-            <SheetDescription className="sr-only" data-testid="mobile-menu-description">Explore the course experience, roadmap, faculty, pricing, and frequently asked questions.</SheetDescription>
+            <SheetDescription className="sr-only" data-testid="mobile-menu-description">Courses, AI Agents, resources and your learning experience.</SheetDescription>
             <div className="vvi-menu-close"><SheetClose asChild><button aria-label="Close menu" data-testid="mobile-menu-close"><X size={20} /></button></SheetClose></div>
             <AudienceSwitch id="landing-mobile" />
+            <Link to="/courses" data-testid="landing-mobile-all-courses-link" onClick={() => setOpen(false)}>All Courses</Link>
+            <Link to="/ai-agents" data-testid="landing-mobile-ai-agents-link" onClick={() => setOpen(false)}>AI Agents</Link>
             <Link to="/resources" data-testid="landing-mobile-resources-link" onClick={() => setOpen(false)}>Resources</Link>
             <nav aria-label="Mobile navigation">{LINKS.map(([label, id]) => <a key={id} href={`#${id}`} onClick={() => setOpen(false)} data-testid={`mobile-nav-${id}`}>{label}<ArrowUpRight size={18} /></a>)}</nav>
             <button onClick={toggleTheme} className="vvi-mobile-theme" data-testid="mobile-theme-toggle">{theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />} {theme === 'dark' ? 'Light' : 'Dark'} mode</button>

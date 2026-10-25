@@ -30,6 +30,8 @@ import ErrorBoundary from "@/components/ErrorBoundary";
 import { AudienceProvider, AudienceGate } from '@/components/enterprise/AudienceContext';
 import EnterprisePage from '@/components/enterprise/EnterprisePage';
 import EnterpriseLanding from '@/components/enterprise/EnterpriseLanding';
+import EnterpriseCourseDetailsPage from '@/components/courses/EnterpriseCourseDetailsPage';
+import AIAgentsPage from '@/components/enterprise/AIAgentsPage';
 import ResourcesPage, { ResourceDetailsPage, ResourceLibraryPage } from '@/components/resources/ResourcesPage';
 import BugReportButton from "@/components/BugReportButton";
 import RouteLoader from "@/components/RouteLoader";
@@ -184,6 +186,10 @@ function App() {
                   <Route path="/" element={<AudienceGate><LandingPage /></AudienceGate>} />
                   <Route path="/enterprise" element={<EnterpriseLanding />} />
                   <Route path="/enterprise/programme" element={<EnterprisePage programme />} />
+                  <Route path="/enterprise/courses" element={<CoursesPage enterprise />} />
+                  <Route path="/enterprise/course/:courseId" element={<EnterpriseCourseDetailsPage />} />
+                  <Route path="/enterprise/ai-agents" element={<AIAgentsPage enterprise />} />
+                  <Route path="/ai-agents" element={<AudienceGate><AIAgentsPage /></AudienceGate>} />
                   <Route path="/resources" element={<ResourcesPage />} />
                   <Route path="/resources/library" element={<ProtectedRoute><ResourceLibraryPage /></ProtectedRoute>} />
                   <Route path="/resources/:resourceId" element={<ResourceDetailsPage />} />
