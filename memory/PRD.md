@@ -10,6 +10,61 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
+## Business landing expansion — 2026-10-25 (latest)
+
+Exact request: “in business Landing page the first landing page add more 3d elements
+and make the background lavender just like in student and also segregate between
+course and ai agents and make it more clear and add more content. the page is too
+small right now”. User explicitly chose **Course / AI agents tabs**.
+
+### Implemented and verified
+- `/enterprise` now renders the new `EnterpriseLanding.jsx`. Scoped lavender background
+  **#F5ECFF**, matching the student theme. Existing student, resources, admin and separate
+  `/enterprise/programme` routes preserved; no unrelated theme changes.
+- Accessible Radix Course / AI Agents tabs, exclusive panels and contextual hero/CTA copy.
+  Selection persists in `?view=course` / `?view=agents`, including reload/back navigation.
+- Course view expanded with outcomes, four curriculum areas, illustrative financial
+  research workspace, three example deliverables, four learning stages and five FAQs.
+- AI Agents view expanded with selectable Deep FP&A / Bookkeeping / Excel governance
+  products; each has inputs, AI work, output, human reviewer and illustrative case.
+  Added rollout stages, governance requirements, in-house-course CTA and six FAQs.
+- New real Three.js hero workspace: course research/model/review objects plus books,
+  coins and chart elements; agent source/processor/approval objects with animated data
+  connections. Second 3D agent workbench. Focus controls, drag, reset, pause, reduced
+  motion, offscreen render suspension, resource cleanup and bitmap fallbacks.
+- Preserved truthful 10x ambition with measurement criteria, not guaranteed productivity.
+  No invented client outcomes, available ERP connectors, tenant guarantees or service SLAs.
+- Course calculator and agent quotations are visibly separate. Agent view does NOT show
+  training prices. Shared enquiry preselects the relevant interest, preserves contact
+  values, clears stale drafts and rotates request UUID when switching offerings.
+- Agent-only saved-lead estimates use `quote_type: scope_based`, rather than fabricated
+  course prices; admin lead display handles that shape. Existing setup blockers unchanged.
+
+### Tests / remaining status
+- `/app/test_reports/iteration_103.json`: 18/18 backend regression tests pass; deep browser
+  checks pass for tabs/keyboard/URL history, anchors, agent selectors, FAQs, enquiry
+  drafts, sample pricing, in-house CTA and existing-route regressions.
+- No overflow at 320/390/768/1024/1440/1920 on tested views. Screenshots at1920x800/390x844.
+- 3D pixel/frame checks, pause, drag/reset and repeated-tab canvas cleanup pass.
+- Tester reported a fallback issue. Main-agent reproduction with BOTH WebGL1 and WebGL2
+  disabled confirmed existing fallback worked (both images, zero canvases). Additionally
+  hardened post-constructor context validation, render exceptions and context-loss handling;
+  disabled unavailable 3D controls. Follow-up verified normal motion, static reduced-motion,
+  mid-session context loss and fully blocked WebGL fallbacks on desktop/mobile.
+- Full follow-up: `/app/test_reports/iteration_103_followup.md`. No known open regression
+  in this redesign. No auth credentials changed. No new integrations or deployment.
+- **Unchanged P0 setup:** database migration 0048 and managed email provisioning remain
+  pending. Saved leads, resource CRUD/checkout/downloads still unavailable; `/api/resources`
+  intentionally returns503 with truthful preview UI. Manual enquiry email drafts work;
+  no email/payment was executed during testing.
+- Next: user review of the expanded landing. Prior setup work remains separately pending.
+  Potential enhancement: track Course vs AI Agents enquiry conversion.
+
+New files: `components/enterprise/{EnterpriseLanding,BusinessScene,BusinessCourseContent,
+BusinessAgentsContent,BusinessFAQ}.jsx`, `businessSceneObjects.js`, `business-landing.css`.
+Modified: `App.js`, `EnterprisePricing.jsx`, `admin/EnterpriseTab.jsx`,
+`backend/enterprise_endpoints.py`.
+
 ## Approved expansion — 2026-10-25 (Enterprise + resources marketplace)
 
 User approved these decisions in the clarification response:

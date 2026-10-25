@@ -29,6 +29,7 @@ import CustomizePaymentGate from "@/components/payments/CustomizePaymentGate";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { AudienceProvider, AudienceGate } from '@/components/enterprise/AudienceContext';
 import EnterprisePage from '@/components/enterprise/EnterprisePage';
+import EnterpriseLanding from '@/components/enterprise/EnterpriseLanding';
 import ResourcesPage, { ResourceDetailsPage, ResourceLibraryPage } from '@/components/resources/ResourcesPage';
 import BugReportButton from "@/components/BugReportButton";
 import RouteLoader from "@/components/RouteLoader";
@@ -181,7 +182,7 @@ function App() {
                 <Routes>
                   {/* Public */}
                   <Route path="/" element={<AudienceGate><LandingPage /></AudienceGate>} />
-                  <Route path="/enterprise" element={<EnterprisePage />} />
+                  <Route path="/enterprise" element={<EnterpriseLanding />} />
                   <Route path="/enterprise/programme" element={<EnterprisePage programme />} />
                   <Route path="/resources" element={<ResourcesPage />} />
                   <Route path="/resources/library" element={<ProtectedRoute><ResourceLibraryPage /></ProtectedRoute>} />

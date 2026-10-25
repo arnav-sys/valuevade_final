@@ -1,121 +1,238 @@
 {
-  "project_name": "Valuevade B2B Enterprise & Student Platform",
-  "app_type": "hybrid_fullstack",
-  "archetype": "THE PERFORMANCE PRO & SWISS B2B TECH",
+  "project_title": "Valuevade Enterprise Business Landing Page Redesign",
+  "app_type": "marketing_site",
+  "target_route": "/enterprise",
+  "design_archetype": "ORGANIC_PASTEL_TECH",
+  "background_and_color_palette": {
+    "primary_background": "#F5ECFF",
+    "section_card_bg": "#FFFFFF",
+    "elevated_card_bg": "#FAF5FF",
+    "primary_navy_ink": "#02073D",
+    "muted_text": "#575E7A",
+    "brand_blue_accent": "#246BFD",
+    "violet_gradient_start": "#6A5CFF",
+    "accent_green": "#0F9D78",
+    "border_light": "#E3D7FF",
+    "border_subtle": "#DCDCE8",
+    "glass_bg": "rgba(255, 255, 255, 0.75)",
+    "glass_border": "rgba(36, 107, 253, 0.15)",
+    "contrast_rules": "All body copy on #F5ECFF or white cards must use #02073D or #575E7A meeting 4.5:1 AA contrast ratio. Eyebrows use uppercase #575E7A with Spline Sans Mono."
+  },
   "typography": {
-    "headings": "Outfit, sans-serif (font-clash)",
-    "body": "Instrument Sans, sans-serif (font-bricolage)",
-    "mono": "Spline Sans Mono, monospace (font-jetbrains / font-mono)",
-    "editorial_italic": "Newsreader, Georgia, serif (Newsreader retained only for occasional editorial italic copy)",
-    "rules": {
-      "anti_default": "Never use Inter, Roboto, or Arial for headings or main hero titles.",
-      "h1_max": "text-4xl sm:text-5xl lg:text-6xl with tracking-tight",
-      "h2_section": "text-2xl sm:text-3xl lg:text-4xl font-clash font-bold",
-      "h3_sub": "text-xl sm:text-2xl font-clash font-semibold",
-      "h4_card": "text-lg sm:text-xl font-clash font-medium",
-      "labels": "text-xs font-mono uppercase tracking-[0.2em]"
+    "font_headings": "'Outfit', sans-serif",
+    "font_body": "'Instrument Sans', sans-serif",
+    "font_mono": "'Spline Sans Mono', monospace",
+    "hierarchy": {
+      "h1_hero": "text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight text-[#02073D]",
+      "h2_section": "text-2xl sm:text-3xl lg:text-4xl font-medium text-[#02073D]",
+      "h3_card": "text-xl sm:text-2xl font-medium text-[#02073D]",
+      "body": "text-base leading-relaxed text-[#575E7A]",
+      "eyebrow": "text-xs font-mono uppercase tracking-widest text-[#575E7A]"
     }
   },
-  "colors": {
-    "primary_navy": "#02073D",
-    "navy_light": "#050d4a",
-    "vblue_accent": "#246BFD",
-    "vpurple_accent": "#6A5CFF",
-    "vpink_accent": "#FF6AC1",
-    "lavender_bg": "#F5ECFF",
-    "dark_bg": "#0A0F1C",
-    "dark_card": "#0E1728",
-    "dark_elevated": "#15223A",
-    "text_dark_theme": "#F4F7FB",
-    "text_light_theme": "#1A1A2E",
-    "border_dark": "rgba(255, 255, 255, 0.10)",
-    "border_light": "rgba(0, 0, 0, 0.08)",
-    "rules": {
-      "forbidden": "Do NOT use #7351B7 or #1B93A4. Never use un-tinted #000000 or #808080.",
-      "contrast": "All normal text must meet AA standards (4.5:1 ratio minimum). Text over 3D scenes or dark backgrounds must use bg-black/40 backdrop blur or gradient scrims.",
-      "theme_mode": "Support both Light (lavender #F5ECFF) and Dark (cinematic navy #0A0F1C) mode toggle seamlessly."
-    }
-  },
-  "visual_enhancers": {
-    "glassmorphism": "backdrop-blur-xl bg-white/70 dark:bg-black/60 border border-white/20 dark:border-white/10 shadow-lg",
-    "card_styling": "Subtle 8px border-radius, dark elevation #0E1728 on dark mode, soft hover lift (-translate-y-1) and glow border transition.",
-    "3d_interactive": "Retain Three.js R3F financial workspace scene with interactive 3D elements (DCF model laptop, chart bars, concall analyzer canvas) + SVG fallback for high performance.",
-    "workflow_canvas": "Interactive illustrative workflow scene for Enterprise AI agents (Financial Statement Ingestion -> Concall NLP Analysis -> Auto DCF -> Governance Audit) with step highlights and animation."
-  },
-  "audience_gateway": {
-    "concept": "Split user experience (Student vs Enterprise) with a top persistent Audience Switcher toggle ('For Students' / 'For Enterprise') and a first-visit Audience Selection Modal/Hero segment.",
-    "persistent_switch_locations": ["Header Navbar", "Landing Hero Segment", "Course Catalog Header", "Course Details Header"],
-    "student_focus": "Mastering Finance, NISM Certification, Capstone DCF Models, AI Mock Interviews, Career Placement.",
-    "enterprise_focus": "10x Productivity, AI Automation Agents (Bookkeeping, FP&A, Concall Analysis, Excel Governance), Custom Enterprise Slabs, Corporate Agent Training."
-  },
-  "key_features_and_layouts": {
-    "enterprise_landing": {
-      "path": "/enterprise",
-      "sections": [
-        "Hero Section with Audience Switcher, 10x ROI Value Prop, Interactive 3D/Canvas Workflow Scene",
-        "Enterprise Products vs Training dual-path selector (Buy Built Agents vs In-house Agent Training)",
-        "Enterprise Content Modules (Real-world Valuation, Concall Case Studies, Deep FP&A, Excel Governance)",
-        "Tiered Seat Slab Calculator (1-10 seats, 11-50 seats, 51-200 seats, Enterprise Unlimited) with live price estimate and Instant Enquiry trigger",
-        "Enterprise Resend-powered Email Enquiry Form (Name, Work Email, Company, Team Size, Requirements)",
-        "Enterprise Client Case Studies / ROI Metrics (10x faster concall summary, 80% manual FP&A saved)",
-        "Closing Enterprise Lead Capture CTA"
+  "layout_and_architecture": {
+    "page_container": "min-h-screen bg-[#F5ECFF] text-[#02073D] font-['Instrument_Sans']",
+    "navigation": "Sticky BusinessNav with glassmorphism (backdrop-blur-md bg-[#F5ECFF]/80 border-b border-[#E3D7FF]) and audience context toggle",
+    "hero_section": {
+      "layout": "Grid 12-col layout (8-col main narrative, 4-col floating 3D statistics & ledger preview)",
+      "background": "#F5ECFF with subtle ambient radial lavender glow",
+      "elements": [
+        "Brand eyebrow: VALUEVADE ENTERPRISE / FINANCE × INTELLIGENCE",
+        "Bold hero headline with blue accent emphasis",
+        "Primary CTAs: 'Build your team advantage' and 'Explore Workflows & Agents'",
+        "3D floating asset ledger card with 10x ambition badge and 3-step value pillar: 01 / UPSKILL, 02 / AUTOMATE, 03 / COMPOUND"
       ]
     },
-    "resources_marketplace": {
-      "catalog_path": "/resources",
-      "detail_path": "/resources/:id",
-      "categories": [
-        "Excel financial models",
-        "Equity research report templates",
-        "AI prompt packs",
-        "Sector study frameworks",
-        "Interview prep kits"
+    "view_switcher_tabs": {
+      "component": "Segmented tab switcher at top of primary content section",
+      "options": ["Course & Capability Programme", "AI Agents & Automation Workflows"],
+      "styling": "Pill-shaped toggle with active white background, smooth slide transition, data-testid attributes ('enterprise-tab-courses', 'enterprise-tab-agents')"
+    },
+    "course_tab_view": {
+      "title": "Enterprise Finance Capability & Upskilling",
+      "curriculum_modules": [
+        {
+          "module_no": "01",
+          "title": "Finance Foundations & Model Sanity",
+          "description": "Financial statement integration, earnings quality checks, and questioning what automated models output."
+        },
+        {
+          "module_no": "02",
+          "title": "Real-World Valuation & Scenario Analysis",
+          "description": "DCF, comparable company analysis, WACC sensitivity matrices with transparent assumptions."
+        },
+        {
+          "module_no": "03",
+          "title": "AI Research Workflows & Concall Synthesis",
+          "description": "Extract management guidance, synthesize transcript risks, and build source-grounded summaries."
+        },
+        {
+          "module_no": "04",
+          "title": "Automation, Agent-Building & Governance",
+          "description": "Construct repeatable team prompts and Excel workflows with explicit human review checkpoints."
+        }
       ],
-      "checkout_flow": "Razorpay payment integration with instant unlock and secure private download access.",
-      "admin_panel": "Resource Management (/admin/resources): Upload templates, set prices/discount, view sales/leads, configure Resend email settings."
+      "team_learning_approach": {
+        "title": "How Your Team Learns",
+        "pillars": [
+          "Instructor-led live workshops grounded in real financial data",
+          "Custom exercise templates matched to your firm's sector focus",
+          "Peer review & validation mechanisms built into daily workflows"
+        ]
+      },
+      "practical_outcomes": [
+        "Source-grounded transcript analysis with explicit reviewer checks",
+        "Standardized valuation templates across junior & senior analysts",
+        "Audit-ready research trails inside Excel"
+      ]
+    },
+    "ai_agents_tab_view": {
+      "title": "Purpose-Built AI Agents & Excel Governance",
+      "mode_switch": ["Built by Valuevade", "Build In-House"],
+      "agent_grid": [
+        {
+          "id": "deep-fpa",
+          "name": "Deep FP&A Agent",
+          "tag": "PLAN WITH CONTEXT",
+          "description": "Automates variance driver identification, scenario narratives, and forecasts. Puts exception briefs right in front of analysts.",
+          "output": "Variance brief → scenario pack → sign-off"
+        },
+        {
+          "id": "bookkeeping",
+          "name": "Bookkeeping & Reconciliation",
+          "tag": "CLOSE WITH CONFIDENCE",
+          "description": "Categorizes transactions, flags anomalous entries, and reconciles ledgers prior to month-end close.",
+          "output": "Source records → matched entries → exception queue"
+        },
+        {
+          "id": "excel-governance",
+          "name": "Excel-Native Governance",
+          "tag": "KEEP HUMANS IN CONTROL",
+          "description": "Audits formula references, tags assumptions, and tracks sign-offs directly inside Excel workbooks.",
+          "output": "Workbook → validation checks → audit log"
+        }
+      ],
+      "governance_note": "Human approval stays strictly in the loop. No autonomous investment or capital allocation decisions.",
+      "faq_section": {
+        "title": "Enterprise Security & Governance FAQ",
+        "questions": [
+          {
+            "q": "How is our financial data kept private?",
+            "a": "Hosting, access controls, retention and provider terms must be agreed before any confidential data is shared. Do not claim tenant isolation or no-training guarantees without a verified implementation agreement."
+          },
+          {
+            "q": "Does this replace human financial analysts?",
+            "a": "No. Our agents prepare first-pass drafts and highlight anomalies; human sign-off is mandatory."
+          },
+          {
+            "q": "Can these agents integrate with Excel and existing ERPs?",
+            "a": "File formats, connectors, permissions and feasibility are assessed during scoping. No connector is assumed to be included."
+          }
+        ]
+      }
+    },
+    "interactive_3d_finance_workspace": {
+      "component_path": "src/components/landing/immersive/FinanceScene.jsx",
+      "enhancements": "Richer 3D financial desk in Three.js with glowing data bars, floating 3D coin geometries, rotating AI node mesh, drag interaction, reset and pause controls.",
+      "data_testids": ["enterprise-scene-reset", "enterprise-scene-pause", "workflow-case-study"]
+    },
+    "pricing_and_enquiry_calculator": {
+      "component_path": "src/components/enterprise/EnterprisePricing.jsx",
+      "features": [
+        "Interactive seat slider (1–1,000 seats)",
+        "Dynamic volume tier slab calculation (1-10 @ ₹4,999, 11-50 @ ₹3,999, 51-200 @ ₹2,999, 201-1000 @ ₹2,499 per seat)",
+        "Editable input box for exact seat count",
+        "Enquiry form with contact name, company, team size, interests, and consent checkbox",
+        "Manual email draft mailto fallback to info@valuevade.com when backend DB is pending"
+      ]
     }
+  },
+  "3d_and_motion_strategy": {
+    "library": "Three.js + @react-three/fiber + @react-three/drei + framer-motion",
+    "lavender_lighting": "Ambient light color #F5ECFF with directional soft fill light (#246BFD at 0.4 intensity)",
+    "interactions": "Pointer drag rotation, reset view CTA, play/pause toggle, smooth parallax scroll effects",
+    "accessibility": "Respects prefers-reduced-motion; provides stationary high-contrast canvas fallback image if WebGL is unavailable"
+  },
+  "component_structure": {
+    "entry_page": "src/components/enterprise/EnterprisePage.jsx",
+    "sections": [
+      "BusinessNav (shared enterprise navigation)",
+      "HeroSection (lavender background, 3D ledger preview)",
+      "SegmentedTabs (Course vs AI Agents view switcher)",
+      "EnterpriseWorkflow (interactive 3D Three.js finance scene)",
+      "CourseCurriculum & Outcomes (Course tab view)",
+      "AgentsGrid & Governance FAQ (AI Agents tab view)",
+      "EnterprisePricing (Interactive Slab Calculator & Enquiry Form)",
+      "EnterpriseResourcesPromo (Link to /resources)",
+      "BusinessFooter (shared footer)"
+    ]
   },
   "image_urls": [
     {
-      "category": "Enterprise Corporate Analytics",
-      "description": "Business executives analyzing financial dashboards and charts",
-      "url": "https://images.unsplash.com/photo-1787647562168-f268c163018e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwzfHxjb3Jwb3JhdGUlMjBmaW5hbmNlJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzJTIwcHJlc2VudGF0aW9uJTIwZGVzayUyMGluZGlhbiUyMGJ1c2luZXNzJTIwZXhlY3V0aXZlJTIwdGVhbXxlbnwwfHx8fDE3OTI5MTMyMjJ8MA&ixlib=rb-4.1.0&q=85"
+      "category": "3d_lavender_geometric",
+      "url": "https://images.unsplash.com/photo-1760008487153-13c902940fc2?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "description": "Abstract purple geometric shapes with soft lavender glow"
     },
     {
-      "category": "Corporate Team Meeting",
-      "description": "Executives presenting financial growth charts in modern boardroom",
-      "url": "https://images.unsplash.com/photo-1758691736490-03d39c292d7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHw0fHxjb3Jwb3JhdGUlMjBmaW5hbmNlJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzJTIwcHJlc2VudGF0aW9uJTIwZGVzayUyMGluZGlhbiUyMGJ1c2luZXNzJTIwZXhlY3V0aXZlJTIwdGVhbXxlbnwwfHx8fDE3OTI5MTMyMjJ8MA&ixlib=rb-4.1.0&q=85"
+      "category": "3d_abstract_icons",
+      "url": "https://images.unsplash.com/photo-1760008486577-21baa8b560a5?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "description": "Abstract 3D purple icons arranged in a clean grid"
     },
     {
-      "category": "Financial Model Discussion",
-      "description": "Colleagues reviewing equity research spreadsheet data on laptop",
-      "url": "https://images.unsplash.com/photo-1758876202980-0a28b744fb24?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBmaW5hbmNlJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzJTIwcHJlc2VudGF0aW9uJTIwZGVzayUyMGluZGlhbiUyMGJ1c2luZXNzJTIwZXhlY3V0aXZlJTIwdGVhbXxlbnwwfHx8fDE3OTI5MTMyMjJ8MA&ixlib=rb-4.1.0&q=85"
-    },
-    {
-      "category": "Financial Graphs Review",
-      "description": "Close-up of professionals reviewing financial graphs and Valuation models",
-      "url": "https://images.pexels.com/photos/8068691/pexels-photo-8068691.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+      "category": "3d_cubes_lavender",
+      "url": "https://images.unsplash.com/photo-1678189481940-59df65baf945?crop=entropy&cs=srgb&fm=jpg&q=85",
+      "description": "Group of purple 3D cubes on lavender surface"
     }
   ],
-  "testing_and_accessibility": {
-    "data_testid_requirement": "EVERY interactive element (audience toggle buttons, seat slab inputs, enquiry submit form, resource filters, checkout CTA, admin buttons) MUST have explicit kebab-case data-testid attributes.",
-    "examples": [
-      "data-testid=\"audience-switch-student\"",
-      "data-testid=\"audience-switch-enterprise\"",
-      "data-testid=\"tier-calculator-slider\"",
-      "data-testid=\"enterprise-enquiry-form\"",
-      "data-testid=\"enterprise-enquiry-submit\"",
-      "data-testid=\"resource-category-filter\"",
-      "data-testid=\"resource-buy-button\"",
-      "data-testid=\"admin-resource-upload-button\""
+  "data_testid_strategy": {
+    "required_testids": [
+      "enterprise-page",
+      "enterprise-hero",
+      "enterprise-hero-enquire",
+      "enterprise-hero-explore",
+      "enterprise-value-proposition",
+      "enterprise-main-switcher",
+      "enterprise-tab-courses",
+      "enterprise-tab-agents",
+      "enterprise-curriculum",
+      "programme-module-0",
+      "programme-module-1",
+      "programme-module-2",
+      "programme-module-3",
+      "enterprise-workflows",
+      "workflow-tab-0",
+      "workflow-tab-1",
+      "workflow-tab-2",
+      "enterprise-scene-reset",
+      "enterprise-scene-pause",
+      "workflow-case-study",
+      "enterprise-agents",
+      "agents-built-tab",
+      "agents-training-tab",
+      "agent-card-0",
+      "agent-card-1",
+      "agent-card-2",
+      "agent-enquire-0",
+      "agent-enquire-1",
+      "agent-enquire-2",
+      "agents-governance",
+      "enterprise-pricing",
+      "pricing-seat-slider",
+      "pricing-seat-input",
+      "pricing-total-display",
+      "enquiry-form",
+      "enquiry-submit-button",
+      "enterprise-faq-section"
     ]
   },
-  "instructions_to_main_agent": [
-    "Retain existing Student pages and 3D visual philosophy while adding the Enterprise tier experience.",
-    "Ensure persistent Audience Switcher (Student vs Enterprise) across landing, header, course catalog, and details pages.",
-    "Implement Enterprise Landing page at /enterprise with 10x ROI message, dynamic tiered seat calculator, interactive workflow scene, and Resend email enquiry form.",
-    "Build Resources & Templates Marketplace (/resources) supporting 5 categories, Razorpay purchase flow, private download links, and Admin panel management (/admin/resources).",
-    "Add explicit data-testid attributes on all new interactive components.",
-    "Maintain theme toggle compatibility (Light Lavender vs Dark Navy) without broken contrast or missing borders."
-  ]
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
+    "Maintain #F5ECFF background color across the enterprise landing page to match the student theme",
+    "Ensure clear, accessible contrast for all text against the lavender background using dark navy #02073D and #575E7A",
+    "Use Outfit for primary headings, Instrument Sans for body text, and Spline Sans Mono for labels/eyebrows",
+    "Ensure all direct direct children of grid containers do not break layouts when wrapped with Framer Motion",
+    "Preserve all existing routes, database/email setup limits, and student/resources/admin/programme pages",
+    "Do not invent false client ROI guarantees or fabricated customer testimonials",
+    "All interactive controls MUST retain their data-testid attributes for E2E testing"
+  ],
+  "instructions_to_main_agent": "Follow this JSON blueprint strictly to update EnterprisePage.jsx, EnterpriseWorkflow.jsx, EnterprisePricing.jsx, and enterprise.css. Ensure background is lavender #F5ECFF, Course vs AI Agents tabs are prominently featured, interactive 3D elements are enriched, and content is fully expanded."
 }

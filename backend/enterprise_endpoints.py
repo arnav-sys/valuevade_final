@@ -77,7 +77,8 @@ def register_enterprise_endpoints(router, get_user):
         if body.website:
             raise HTTPException(400,'Unable to submit this enquiry.')
         data = body.model_dump(mode='json',exclude={'website'})
-        data['estimate'] = quote_price(body.seats, await pricing())
+        data['estimate'] = ({'seats':body.seats,'currency':'INR','quote_type':'scope_based','sample':False}
+                            if body.interest=='agents' else quote_price(body.seats, await pricing()))
         # Client-generated UUID makes a retry safe without duplicating owner notifications.
         prior = await rest(f'enterprise_leads?id=eq.{body.id}&select=id&limit=1')
         if prior:
