@@ -10,7 +10,110 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Latest approved update — 2026-10-24 (Continue Learning shortcut card)
+## Approved expansion — 2026-10-25 (Enterprise + resources marketplace)
+
+User approved these decisions in the clarification response:
+- Enterprise enquiry notifications: **Emergent Managed Email, powered by Resend**, to
+  `info@valuevade.com`; retain enquiries in Supabase for admins.
+- Enterprise pricing: tiered seat slabs. Exact amounts not supplied; use editable,
+  explicitly labelled sample INR prices, not purported approved commercial rates.
+- AI agents: both Valuevade-built products and training to build/use agents in-house.
+- Resources: Excel financial models, equity research report templates, AI prompt packs,
+  sector study frameworks, interview prep kits. Payments via existing **Razorpay**.
+- Student/Enterprise first-visit choice on landing/catalog/course detail; persistent
+  audience switch; separate enterprise landing/course details while preserving students.
+- Enterprise content: AI automation, aspirational 10x productivity (not proven ROI),
+  valuation, illustrative concall/statement-analysis workflows, FP&A, bookkeeping,
+  Excel-native governance. Preserve existing branded 3D visual language.
+
+### Implemented — 2026-10-25
+- Persistent Student/Enterprise audience switch and first-visit gateway on `/`, `/courses`,
+  `/course/:courseId`. Student learning/auth routes are preserved. Enterprise preferences
+  route visitors to `/enterprise` or `/enterprise/programme`; switches available in both
+  desktop and mobile navigation. Resources linked from student and enterprise headers.
+- New enterprise landing/programme pages, interactive illustrative research workspace
+  reusing the established Three.js financial desk, concall/valuation/statements examples,
+  built-agent vs in-house-training modes, FP&A/bookkeeping/Excel-governance sections.
+  No fabricated customers or performance statistics: 10x explicitly an ambition, not a guarantee.
+- Team calculator for 1–1,000 seats using volume slabs (one rate for every seat), with
+  explicit sample pricing. INR defaults: 1–10 ₹4,999, 11–50 ₹3,999, 51–200 ₹2,999,
+  201–1,000 ₹2,499 per person. No enterprise payment collection. Rates/sample label can
+  already be edited and persisted in existing Supabase `app_settings.enterprise_pricing`.
+- Enquiry form validates contact/company/team/interest/requirements/consent. Since the
+  new database is not set up, the current functional fallback prepares a mailto draft
+  addressed to info@valuevade.com. Explicitly **not sent or saved**; the visitor must
+  open their email app and send. Editing fields clears stale drafts.
+- Resource catalog/search/category filters and detail pages across five requested types;
+  `/resources/library` for purchases, existing login with return-to-page. Current content
+  is explicitly labelled **concept previews**, not paid/downloadable products.
+- Admin Enterprise/Resources tabs: setup status, authenticated downloadable SQL setup,
+  editable slab prices, lead status/retry controls and resource editor/file/price/publish
+  controls. Resource creation is disabled while the schema is missing.
+- Isolated FastAPI modules implement Supabase lead persistence, fixed-recipient managed
+  email notification status, private resource uploads, public metadata projection, scoped
+  purchase records, Razorpay order/signature/capture/amount/currency verification, webhook,
+  payment-recovery action, refund checks and 120-second signed downloads. These new
+  persisted CRUD/checkout/download paths remain blocked pending setup, not verified E2E.
+- Additive migration `scripts/migrations/0048_enterprise_resources.sql`: private
+  `enterprise_leads`, `marketplace_resources`, `resource_orders` tables with RLS and
+  browser grants revoked, plus private `paid-resources` bucket. No migration to MongoDB
+  and no authentication implementation changes. Existing service-role/auth reused.
+- Finished M18 sessions 11–20: generation OK=10, FAIL=0. Read-only verification confirms
+  **all 20 sessions each have seven valid, nonempty cards** (140 total). Generator now
+  validates cards, generates before deleting old notes, keeps local backups and restores
+  old cards on insertion failure. Backups in `backend/notes_backups/`; supports session
+  ranges and skip-complete. No further generation needed.
+
+### Verification
+- `/app/test_reports/iteration_102.json`, backend suite
+  `/app/backend/tests/test_iter102_enterprise_resources.py`: **18/18 passing**.
+  Main agent reran all 18 after final frontend changes. Tests cover real API access guards,
+  admin SQL action/pricing roundtrip/validation, missing-schema handling, M18 Supabase
+  data, plus payment reconcile/upload/public-field unit cases using test-only doubles.
+- Frontend QA covered gateways/preferences/switching, new pages/tabs, sliders/slab
+  boundaries, template filtering/concept notices, existing login return, admin controls.
+  No overflow measured at 320/390/768/1024/1440/1920 widths on covered pages.
+- One finding (generic 422 validation message) fixed; main-agent desktop/mobile verified
+  exact `Slabs must increase and end at 1000 seats` error, no saved price changes.
+- Follow-up main-agent test verified functional email-draft fallback, recipient/body,
+  explicit unsent/unsaved copy, stale-draft clearing and no overflow at 390/1920.
+- WebGL main-agent check: 30,967 opaque pixel samples, 3,098 colours, different successive
+  frames; browser QA covered pause/reset/tab controls. Visual assets render nonblank.
+- Python compilation passes. Dev app loads. Standalone ESLint could not run because this
+  existing repo lacks a compatible ESLint config (v9); do not claim standalone lint or
+  production build/deployment verification. No deploy requested or performed.
+- No new runtime API mocks. Resource concepts and workflow examples are labelled
+  illustrative samples; backend test mocks do not exist in application runtime.
+
+### P0 remaining / setup limits
+- User saved `SUPABASE_DB_URL` as an HTTPS Supabase project URL rather than PostgreSQL
+  URI, then **skipped** correcting it. Do not request it again without a new reason.
+  Migration 0048 has **not been applied**. Credential-free alternative is ready:
+  Admin → Enterprise → Download database setup → run in Supabase SQL Editor → Check again.
+  Until applied: no saved enterprise leads, resource metadata CRUD/uploads, checkout or
+  secure downloads. Existing student app and sample pricing edits remain operational.
+- `EMERGENT_EMAIL_KEY` and `EMAIL_FROM_NAME` are absent. Two integration-guide calls did
+  not provision the managed key. Notification code exists but reports `not_configured`.
+  Do not ask the user for a managed key, switch providers silently, or claim email delivery.
+  Resolve managed provisioning, set brand display name Valuevade, test with delivered@resend.dev
+  first, then owner notifications. No email was sent during this work.
+- After migration: test real resource CRUD/upload/publish, saved enquiries, Razorpay test
+  checkout/recovery/refunds and private signed download end-to-end. Register resource
+  webhook `/api/resources/payment/webhook` in the existing Razorpay account when activating.
+  Existing course payment configuration was not changed. No payment was executed.
+- Confirm final enterprise prices and upload actual resource files before sale.
+- Future enhancement: track enquiry-to-proposal conversion. Existing P1/P2 backlog below
+  remains unchanged. No auth credentials created or modified.
+
+### New implementation files
+- Frontend: `src/components/enterprise/` (audience context, shared nav, enterprise pages,
+  calculator/form, workspace, API helper, isolated CSS); `src/components/resources/`;
+  admin `EnterpriseSetup.jsx`, `EnterpriseTab.jsx`, `ResourcesTab.jsx`.
+- Backend: `enterprise_common.py`, `enterprise_endpoints.py`, `enterprise_email.py`,
+  `resource_endpoints.py`, `resource_payments.py`, `resource_storage.py`; registered by
+  `server.py`. Migration: `scripts/migrations/0048_enterprise_resources.sql`.
+
+## Previous approved update — 2026-10-24 (Continue Learning shortcut card)
 User requested: compact "Continue where you left off" shortcut card on the dashboard.
 
 ### Implemented & verified (iteration_101 — 10/10 passed)

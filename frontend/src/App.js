@@ -27,6 +27,9 @@ import EnrollmentGuard from "@/components/EnrollmentGuard";
 import SessionPhaseGuard from "@/components/SessionPhaseGuard";
 import CustomizePaymentGate from "@/components/payments/CustomizePaymentGate";
 import ErrorBoundary from "@/components/ErrorBoundary";
+import { AudienceProvider, AudienceGate } from '@/components/enterprise/AudienceContext';
+import EnterprisePage from '@/components/enterprise/EnterprisePage';
+import ResourcesPage, { ResourceDetailsPage, ResourceLibraryPage } from '@/components/resources/ResourcesPage';
 import BugReportButton from "@/components/BugReportButton";
 import RouteLoader from "@/components/RouteLoader";
 import PageTransition from "@/components/PageTransition";
@@ -139,6 +142,7 @@ function App() {
     <ErrorBoundary>
       <HelmetProvider>
       <BrowserRouter>
+        <AudienceProvider>
         <ThemeProvider>
           <AuthProvider>
             <SoundProvider>
@@ -176,7 +180,12 @@ function App() {
               <PageTransition>
                 <Routes>
                   {/* Public */}
-                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/" element={<AudienceGate><LandingPage /></AudienceGate>} />
+                  <Route path="/enterprise" element={<EnterprisePage />} />
+                  <Route path="/enterprise/programme" element={<EnterprisePage programme />} />
+                  <Route path="/resources" element={<ResourcesPage />} />
+                  <Route path="/resources/library" element={<ProtectedRoute><ResourceLibraryPage /></ProtectedRoute>} />
+                  <Route path="/resources/:resourceId" element={<ResourceDetailsPage />} />
                   <Route path="/free-trial/:trialId" element={<FreeTrialPlayerPage />} />
                   <Route path="/try-free/:sessionId" element={<GuestSessionPage />} />
                   <Route path="/m3-sample-preview" element={<M3SamplePreview />} />
@@ -196,8 +205,8 @@ function App() {
                   <Route path="/p/:slug" element={<PublicPortfolioPage />} />
 
                   {/* Browsing / enrollment (auth only, no enrollment required) */}
-                  <Route path="/courses" element={<CoursesPage />} />
-                  <Route path="/course/:courseId" element={<CourseDetailsPage />} />
+                  <Route path="/courses" element={<AudienceGate course><CoursesPage /></AudienceGate>} />
+                  <Route path="/course/:courseId" element={<AudienceGate course><CourseDetailsPage /></AudienceGate>} />
                   <Route path="/free-mock-interview" element={<FreeMockInterviewPage />} />
                   {/* Public legal pages */}
                   <Route path="/privacy" element={<PrivacyPolicyPage />} />
@@ -294,6 +303,7 @@ function App() {
             </SoundProvider>
           </AuthProvider>
         </ThemeProvider>
+        </AudienceProvider>
       </BrowserRouter>
       </HelmetProvider>
     </ErrorBoundary>

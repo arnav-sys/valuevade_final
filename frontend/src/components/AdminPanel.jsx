@@ -20,6 +20,8 @@ import FacultyTab from './admin/FacultyTab';
 import TestimonialsTab from './admin/TestimonialsTab';
 import CustomizationTab from './admin/CustomizationTab';
 import SessionFeedbackTab from './admin/SessionFeedbackTab';
+import EnterpriseTab from './admin/EnterpriseTab';
+import ResourcesTab from './admin/ResourcesTab';
 
 import {
   Users, ListChecks, BookOpen, RefreshCw,
@@ -33,6 +35,8 @@ const ADMIN_EMAIL = 'info@valuevade.com';
 
 function AdminTabs({ tab, setTab }) {
   const tabs = [
+    { k: 'enterprise', label: 'Enterprise', icon: Building2 },
+    { k: 'resources', label: 'Resources', icon: Download },
     { k: 'waitlist',      label: 'Waitlist Signups',   icon: ListChecks },
     { k: 'users',         label: 'Enrolled Users',     icon: Users },
     { k: 'progress',      label: 'Per-User Progress',  icon: BookOpen },
@@ -103,7 +107,7 @@ export default function AdminPanel() {
   return (
     <div className="flex min-h-screen bg-[var(--bg-primary)]">
       <Sidebar />
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 min-w-0 p-4 sm:p-8 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-3xl font-bold text-[var(--color-text)] font-bricolage">Admin Panel</h1>
@@ -118,6 +122,8 @@ export default function AdminPanel() {
           <p className="text-sm text-[var(--color-text-muted)] mb-6">Logged in as <strong>{email}</strong>.</p>
 
           <AdminTabs tab={tab} setTab={setTab} />
+          {tab === 'enterprise' && <EnterpriseTab />}
+          {tab === 'resources' && <ResourcesTab />}
 
           {tab === 'waitlist'      && <WaitlistTab />}
           {tab === 'users'         && <UsersTab onSelect={(u) => { setSelected(u); }} />}

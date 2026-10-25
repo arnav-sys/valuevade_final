@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
 import { Menu, X, LogOut, Sun, Moon, ArrowRight } from 'lucide-react';
+import { AudienceSwitch } from './enterprise/AudienceContext';
 
 /* Editorial finance / Bloomberg-terminal Navbar (Feb 2026).
  * - Thin top status bar with mock market widgets (static content).
@@ -13,8 +14,6 @@ import { Menu, X, LogOut, Sun, Moon, ArrowRight } from 'lucide-react';
 const navLinks = [
   { label: 'Features', id: 'features' },
   { label: 'How It Works', id: 'how-it-works' },
-  { label: 'AI-Proof', id: 'ai-proof' },
-  { label: 'Roadmap', id: 'how-it-works' },
 ];
 
 export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }) {
@@ -69,7 +68,9 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
           <span className="font-clash text-xl font-semibold logo-gradient">Valuevade</span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-6 lg:gap-8 md:ml-8 lg:ml-14">
+        <div className="hidden xl:flex items-center gap-4">
+          <AudienceSwitch id="student-nav" />
+          <Link to="/resources" className="lv-nav-link" data-testid="nav-link-resources">Resources</Link>
           <Link to="/courses" className="lv-nav-link" data-testid="nav-link-courses">
             Courses
           </Link>
@@ -93,7 +94,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-3">
+        <div className="hidden xl:flex items-center gap-3">
           <button
             onClick={onToggleTheme}
             className="w-9 h-9 rounded flex items-center justify-center text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors"
@@ -147,7 +148,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
 
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="md:hidden text-[var(--color-text)]"
+          className="xl:hidden text-[var(--color-text)]"
           data-testid="nav-hamburger"
           aria-label="Open menu"
         >
@@ -158,15 +159,18 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
       {/* Mobile overlay menu, kept exactly as before per brief scope */}
       {menuOpen && (
         <div
-          className="md:hidden fixed left-0 right-0 bottom-0 z-40 flex flex-col items-center justify-center gap-8 overflow-y-auto py-10"
+          className="xl:hidden fixed left-0 right-0 z-40 flex flex-col items-center gap-5 overflow-y-auto py-6"
           style={{
             top: '64px',
+            height: 'calc(100dvh - 64px)',
             background: 'var(--bg-primary)',
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
           }}
           data-testid="mobile-menu-overlay"
         >
+          <AudienceSwitch id="student-mobile" />
+          <Link to="/resources" onClick={() => setMenuOpen(false)} className="text-xl" data-testid="mobile-nav-resources">Resources</Link>
           <Link
             to="/courses"
             onClick={() => setMenuOpen(false)}

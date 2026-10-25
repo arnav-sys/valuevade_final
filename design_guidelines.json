@@ -1,98 +1,121 @@
 {
-  "project_name": "Valuevade Landing Page Redesign",
-  "app_type": "landing_page",
-  "theme_strategy": {
-    "supported_modes": ["light", "dark"],
-    "default_mode": "light",
-    "toggle_mechanism": "ThemeContext single source of truth using landing-light / landing-dark CSS classes"
-  },
+  "project_name": "Valuevade B2B Enterprise & Student Platform",
+  "app_type": "hybrid_fullstack",
+  "archetype": "THE PERFORMANCE PRO & SWISS B2B TECH",
   "typography": {
-    "font_families": {
-      "display": "Outfit, sans-serif",
-      "body": "Instrument Sans, sans-serif",
-      "mono": "Spline Sans Mono, monospace"
-    },
-    "hierarchy": {
-      "h1": "62px desktop / 45px mobile / 39px narrow mobile; Outfit 700, zero letter-spacing",
-      "h2": "text-2xl sm:text-3xl lg:text-4xl font-semibold text-[#02073D] dark:text-[#F5F1FF]",
-      "h3": "text-xl sm:text-2xl font-semibold text-[#02073D] dark:text-[#F5F1FF]",
-      "h4": "text-lg sm:text-xl font-medium text-[#02073D] dark:text-[#F5F1FF]",
-      "body": "text-base text-[#5B5F8F] dark:text-[#A6A9C7] leading-relaxed",
-      "eyebrow": "8–10px Spline Sans Mono, zero letter-spacing, muted brand color"
+    "headings": "Outfit, sans-serif (font-clash)",
+    "body": "Instrument Sans, sans-serif (font-bricolage)",
+    "mono": "Spline Sans Mono, monospace (font-jetbrains / font-mono)",
+    "editorial_italic": "Newsreader, Georgia, serif (Newsreader retained only for occasional editorial italic copy)",
+    "rules": {
+      "anti_default": "Never use Inter, Roboto, or Arial for headings or main hero titles.",
+      "h1_max": "text-4xl sm:text-5xl lg:text-6xl with tracking-tight",
+      "h2_section": "text-2xl sm:text-3xl lg:text-4xl font-clash font-bold",
+      "h3_sub": "text-xl sm:text-2xl font-clash font-semibold",
+      "h4_card": "text-lg sm:text-xl font-clash font-medium",
+      "labels": "text-xs font-mono uppercase tracking-[0.2em]"
     }
   },
   "colors": {
-    "light": {
-      "bg_primary": "#F5ECFF",
-      "bg_secondary": "#EDE8FC",
-      "color_primary": "#246BFD",
-      "accent_purple": "#6A5CFF",
-      "accent_pink": "#FF6AC1",
-      "text_main": "#02073D",
-      "text_muted": "#5B5F8F",
-      "card_bg": "#FFFDFF",
-      "border": "rgba(91,95,143,.18)",
-      "success": "#0F9D78"
-    },
-    "dark": {
-      "bg_primary": "#0A0D28",
-      "bg_secondary": "#111535",
-      "color_primary": "#246BFD",
-      "accent_purple": "#6A5CFF",
-      "accent_pink": "#FF8DD0",
-      "text_main": "#F5F1FF",
-      "text_muted": "#A6A9C7",
-      "card_bg": "#131735",
-      "border": "rgba(182,177,230,.19)",
-      "success": "#52D6AE"
+    "primary_navy": "#02073D",
+    "navy_light": "#050d4a",
+    "vblue_accent": "#246BFD",
+    "vpurple_accent": "#6A5CFF",
+    "vpink_accent": "#FF6AC1",
+    "lavender_bg": "#F5ECFF",
+    "dark_bg": "#0A0F1C",
+    "dark_card": "#0E1728",
+    "dark_elevated": "#15223A",
+    "text_dark_theme": "#F4F7FB",
+    "text_light_theme": "#1A1A2E",
+    "border_dark": "rgba(255, 255, 255, 0.10)",
+    "border_light": "rgba(0, 0, 0, 0.08)",
+    "rules": {
+      "forbidden": "Do NOT use #7351B7 or #1B93A4. Never use un-tinted #000000 or #808080.",
+      "contrast": "All normal text must meet AA standards (4.5:1 ratio minimum). Text over 3D scenes or dark backgrounds must use bg-black/40 backdrop blur or gradient scrims.",
+      "theme_mode": "Support both Light (lavender #F5ECFF) and Dark (cinematic navy #0A0F1C) mode toggle seamlessly."
     }
   },
-  "grids_and_layouts": {
-    "hero_layout": "Centered benefit headline and clear CTA followed by a full-width unframed Three.js finance desk in normal document flow; scene never overlaps text",
-    "ledger_grid": "Four course metrics, two columns on mobile and four on desktop",
-    "feature_grid": "grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8",
-    "company_grid": "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4"
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-white/70 dark:bg-black/60 border border-white/20 dark:border-white/10 shadow-lg",
+    "card_styling": "Subtle 8px border-radius, dark elevation #0E1728 on dark mode, soft hover lift (-translate-y-1) and glow border transition.",
+    "3d_interactive": "Retain Three.js R3F financial workspace scene with interactive 3D elements (DCF model laptop, chart bars, concall analyzer canvas) + SVG fallback for high performance.",
+    "workflow_canvas": "Interactive illustrative workflow scene for Enterprise AI agents (Financial Statement Ingestion -> Concall NLP Analysis -> Auto DCF -> Governance Audit) with step highlights and animation."
   },
-  "motion_and_3d": {
-    "libraries": ["three", "framer-motion", "lucide-react"],
-    "hero_3d_canvas": {
-      "component": "FinanceScene",
-      "features": ["Research report, valuation laptop, interview screen and extruded chart bars", "Research/Model/Pitch views", "Pointer drag, pause and reset", "Reduced motion and original-art WebGL fallback"]
+  "audience_gateway": {
+    "concept": "Split user experience (Student vs Enterprise) with a top persistent Audience Switcher toggle ('For Students' / 'For Enterprise') and a first-visit Audience Selection Modal/Hero segment.",
+    "persistent_switch_locations": ["Header Navbar", "Landing Hero Segment", "Course Catalog Header", "Course Details Header"],
+    "student_focus": "Mastering Finance, NISM Certification, Capstone DCF Models, AI Mock Interviews, Career Placement.",
+    "enterprise_focus": "10x Productivity, AI Automation Agents (Bookkeeping, FP&A, Concall Analysis, Excel Governance), Custom Enterprise Slabs, Corporate Agent Training."
+  },
+  "key_features_and_layouts": {
+    "enterprise_landing": {
+      "path": "/enterprise",
+      "sections": [
+        "Hero Section with Audience Switcher, 10x ROI Value Prop, Interactive 3D/Canvas Workflow Scene",
+        "Enterprise Products vs Training dual-path selector (Buy Built Agents vs In-house Agent Training)",
+        "Enterprise Content Modules (Real-world Valuation, Concall Case Studies, Deep FP&A, Excel Governance)",
+        "Tiered Seat Slab Calculator (1-10 seats, 11-50 seats, 51-200 seats, Enterprise Unlimited) with live price estimate and Instant Enquiry trigger",
+        "Enterprise Resend-powered Email Enquiry Form (Name, Work Email, Company, Team Size, Requirements)",
+        "Enterprise Client Case Studies / ROI Metrics (10x faster concall summary, 80% manual FP&A saved)",
+        "Closing Enterprise Lead Capture CTA"
+      ]
     },
-    "product_interactive_stage": {
-      "component": "PracticeStudio",
-      "features": ["Deterministic five-year sample DCF with growth and discount sliders", "Sample report signals with educational explanations", "Sample interview question with static instructional feedback; no fabricated AI scores"]
+    "resources_marketplace": {
+      "catalog_path": "/resources",
+      "detail_path": "/resources/:id",
+      "categories": [
+        "Excel financial models",
+        "Equity research report templates",
+        "AI prompt packs",
+        "Sector study frameworks",
+        "Interview prep kits"
+      ],
+      "checkout_flow": "Razorpay payment integration with instant unlock and secure private download access.",
+      "admin_panel": "Resource Management (/admin/resources): Upload templates, set prices/discount, view sales/leads, configure Resend email settings."
     }
-  },
-  "component_paths": {
-    "landing_page": "/app/frontend/src/components/LandingPage.js",
-    "hero_section": "/app/frontend/src/components/landing/immersive/ImmersiveHero.jsx",
-    "hero_3d": "/app/frontend/src/components/landing/immersive/FinanceScene.jsx",
-    "product_showcase": "/app/frontend/src/components/landing/immersive/PracticeStudio.jsx",
-    "brand_tokens": "/app/frontend/src/styles/valuevade-brand.css"
   },
   "image_urls": [
-    {"category": "Original user-provided brand art", "url": "/brand/claude-art.webp", "description": "PDF-extracted original artwork; related research, career, roadmap and certification images share the same directory"}
+    {
+      "category": "Enterprise Corporate Analytics",
+      "description": "Business executives analyzing financial dashboards and charts",
+      "url": "https://images.unsplash.com/photo-1787647562168-f268c163018e?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwzfHxjb3Jwb3JhdGUlMjBmaW5hbmNlJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzJTIwcHJlc2VudGF0aW9uJTIwZGVzayUyMGluZGlhbiUyMGJ1c2luZXNzJTIwZXhlY3V0aXZlJTIwdGVhbXxlbnwwfHx8fDE3OTI5MTMyMjJ8MA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      "category": "Corporate Team Meeting",
+      "description": "Executives presenting financial growth charts in modern boardroom",
+      "url": "https://images.unsplash.com/photo-1758691736490-03d39c292d7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHw0fHxjb3Jwb3JhdGUlMjBmaW5hbmNlJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzJTIwcHJlc2VudGF0aW9uJTIwZGVzayUyMGluZGlhbiUyMGJ1c2luZXNzJTIwZXhlY3V0aXZlJTIwdGVhbXxlbnwwfHx8fDE3OTI5MTMyMjJ8MA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      "category": "Financial Model Discussion",
+      "description": "Colleagues reviewing equity research spreadsheet data on laptop",
+      "url": "https://images.unsplash.com/photo-1758876202980-0a28b744fb24?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzZ8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBmaW5hbmNlJTIwYW5hbHl0aWNzJTIwZGFzaGJvYXJkJTIwY2hhcnRzJTIwcHJlc2VudGF0aW9uJTIwZGVzayUyMGluZGlhbiUyMGJ1c2luZXNzJTIwZXhlY3V0aXZlJTIwdGVhbXxlbnwwfHx8fDE3OTI5MTMyMjJ8MA&ixlib=rb-4.1.0&q=85"
+    },
+    {
+      "category": "Financial Graphs Review",
+      "description": "Close-up of professionals reviewing financial graphs and Valuation models",
+      "url": "https://images.pexels.com/photos/8068691/pexels-photo-8068691.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940"
+    }
   ],
-  "accessibility": {
-    "contrast_standards": "WCAG AA / APCA compliant",
-    "keyboard_navigation": "Full focus states with outline indicator",
-    "data_testid_requirement": "All interactive elements, buttons, links, inputs, and markers must include kebab-case data-testid attributes",
-    "reduced_motion": "Respect prefers-reduced-motion media query"
+  "testing_and_accessibility": {
+    "data_testid_requirement": "EVERY interactive element (audience toggle buttons, seat slab inputs, enquiry submit form, resource filters, checkout CTA, admin buttons) MUST have explicit kebab-case data-testid attributes.",
+    "examples": [
+      "data-testid=\"audience-switch-student\"",
+      "data-testid=\"audience-switch-enterprise\"",
+      "data-testid=\"tier-calculator-slider\"",
+      "data-testid=\"enterprise-enquiry-form\"",
+      "data-testid=\"enterprise-enquiry-submit\"",
+      "data-testid=\"resource-category-filter\"",
+      "data-testid=\"resource-buy-button\"",
+      "data-testid=\"admin-resource-upload-button\""
+    ]
   },
   "instructions_to_main_agent": [
-    "Redesign the entire landing page to be 3D interactive and conversion-focused.",
-    "Do NOT modify /app/frontend/src/styles/valuevade-brand.css because other pages rely on it.",
-    "Preserve all existing real routes, curriculum data, and pricing parameters (₹4,999 lifetime).",
-    "Do not fabricate placement statistics or artificial urgency countdowns.",
-    "Ensure both Light (#F5ECFF) and Dark (#0A0D28) landing themes function seamlessly.",
-    "Re-integrate and activate 3D interactive canvases (Three.js) in the hero section and product previews.",
-    "Maintain data-testid attributes across all components for automated testing compatibility."
-  ],
-  "UNIVERSAL GUIDELINES FOR MAIN AGENT": [
-    "Avoid AI slop and generic templates; create distinctive, interactive finance education UI.",
-    "Ensure glassmorphism backdrop blurs do not obscure underlying text or buttons.",
-    "Maintain strict data-testid naming conventions on buttons, links, toggles, and sections.",
-    "Ensure responsive support down to mobile viewports (with sticky bottom conversion dock)."
+    "Retain existing Student pages and 3D visual philosophy while adding the Enterprise tier experience.",
+    "Ensure persistent Audience Switcher (Student vs Enterprise) across landing, header, course catalog, and details pages.",
+    "Implement Enterprise Landing page at /enterprise with 10x ROI message, dynamic tiered seat calculator, interactive workflow scene, and Resend email enquiry form.",
+    "Build Resources & Templates Marketplace (/resources) supporting 5 categories, Razorpay purchase flow, private download links, and Admin panel management (/admin/resources).",
+    "Add explicit data-testid attributes on all new interactive components.",
+    "Maintain theme toggle compatibility (Light Lavender vs Dark Navy) without broken contrast or missing borders."
   ]
 }

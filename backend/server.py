@@ -2884,6 +2884,11 @@ except Exception as _e:
     logging.warning("[study_plan_endpoints] failed to register: %s", _e)
 
 
+from enterprise_endpoints import register_enterprise_endpoints
+from resource_endpoints import register_resource_endpoints
+register_enterprise_endpoints(api_router, get_supabase_user)
+register_resource_endpoints(api_router, get_supabase_user)
+
 app.include_router(api_router)
 
 # CORS, the FastAPI/Starlette middleware (per CORS spec) rejects the combo
