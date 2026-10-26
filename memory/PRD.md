@@ -10,7 +10,39 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Notes-first completion model — 2026-10-26 (latest)
+## Resource marketplace — enrolled access wired (2026-10-26)
+
+**Feature**: Enrolled students get free access to all 7 published resources.
+
+### Seeded resources (all price_paise=0, is_published=true)
+1. HR Database Template — Finance Sector (Sector study frameworks)
+2. Financial Modelling Templates — Core Bundle (Excel financial models)
+3. Equity Research Report Template (Equity research report templates)
+4. AI Agent Workflows for Finance Professionals (AI prompt packs)
+5. Prompts Library — Finance Edition 200+ (AI prompt packs)
+6. Finance Project Templates — Client Deliverables Pack (Excel financial models)
+7. Finance Interview Prep — Questions, Frameworks & Answers (Interview prep kits)
+
+### Architecture
+- `user_payment_status.paid = true` → user is enrolled (gateway check)
+- `GET /api/resources` — public catalog (all 7 items, no auth needed)
+- `GET /api/resources/my-library` — auth required; enrolled → {has_access: true, resources: [all 7]}; non-enrolled → {has_access: false, orders: [...]}
+- `POST /api/resources/{id}/download` — enrolled → if file_path: signed URL; else: {is_sample: true, url: '/api/resources/{id}/sample'}; not enrolled → 403
+- `GET /api/resources/{id}/sample` — enrolled only; streams category-specific CSV file
+- `resource_storage.signed_download` updated to pass through external HTTPS URLs directly
+- `_SAMPLE_DATA` dict in resource_endpoints.py provides per-category CSV templates
+
+### Frontend changes (ResourcesPage.jsx)
+- `EnrollmentBanner` component shown on /resources for enrolled users
+- Resource cards: enrolled shows `<Unlock /> Included` badge; non-enrolled shows price
+- `ResourceLibraryPage`: enrolled → all 7 resources with Download buttons; non-enrolled → purchased orders only
+- `ResourceDetailsPage`: enrolled → shows resource-enrolled-access section with Download button; non-enrolled free → 'Enrol to access for free' link to /courses; loading skeleton during enrollment check
+- Download handler: `is_sample=true` → fetch with auth header, create blob URL, auto-download as CSV
+
+### Tests (iteration 106)
+- 10/10 feature requirements PASS (backend 94%, frontend 100%)
+- Only minor: 5-8s enrollment check delay on direct navigation (addressed with loading skeleton)
+
 
 Request: "users can access notes and video lectures of any locked module but they cannot
 access quiz and simulations. fix it and make sure all the gamification features like xp

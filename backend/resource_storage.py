@@ -40,6 +40,10 @@ async def upload_resource(resource_id, file: UploadFile):
     return {'file_path':path,'file_name':name,'file_size':len(content),'file_type':extension[1:].upper()}
 
 async def signed_download(path):
+    # If file_path is already an absolute HTTPS URL (e.g. external CDN or
+    # sample files), return it directly without hitting Supabase storage.
+    if path.startswith('https://') or path.startswith('http://'):
+        return {'url': path, 'expires_in': 86400}
     try:
         async with httpx.AsyncClient(timeout=15) as client:
             r = await client.post(f'{supabase_url()}/storage/v1/object/sign/{BUCKET}/{quote(path,safe="/")}',
