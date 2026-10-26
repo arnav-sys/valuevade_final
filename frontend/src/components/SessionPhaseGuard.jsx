@@ -8,22 +8,16 @@ import useSessionTimer from '../utils/useSessionTimer';
  * If an earlier phase in PHASE_ORDER is incomplete, redirects to that phase
  * instead of letting the user skip ahead via direct URL.
  *
- * Ordering is soft: only enforced when the current phase's previous phase
- * is incomplete. e.g. quiz requires notes; simulation requires quiz.
- * We check the IMMEDIATE prior phase, matching the spec.
- *
- * Props:
- *   phase: 'notes' | 'quiz' | 'interview' | 'simulation'
- *
- * Feb 2026, session interview phase is hidden. A user landing on
- * /session/:id/interview* is redirected onto the next enabled phase
- * (simulation) so old bookmarks / share links still route somewhere sane.
+ * Ordering: quiz requires notes completed first.
+ * Simulation has no prerequisite — users can access it at any time.
+ * This matches the product spec: notes completion marks a session done;
+ * quiz and simulation are optional bonus activities accessible any time.
  */
 const PREV_PHASE = {
   notes: null,
   quiz: 'notes',
   interview: 'quiz',
-  simulation: 'quiz',
+  simulation: null,  // simulation is always accessible — no notes/quiz prerequisite
 };
 
 const PHASE_ROUTE = {
