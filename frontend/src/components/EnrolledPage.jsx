@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
@@ -7,7 +7,8 @@ export default function EnrolledPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { profile } = useAuth();
+  const { profile, refreshEnrollment } = useAuth();
+  useEffect(() => { refreshEnrollment(); }, [refreshEnrollment]);
   const { courseTitle = 'Course' } = location.state || {};
 
   // Confetti pieces

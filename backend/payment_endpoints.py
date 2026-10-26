@@ -20,7 +20,7 @@ import urllib.parse as _urlparse
 from datetime import datetime, timezone
 from typing import Optional
 
-from fastapi import APIRouter, Body, Depends, HTTPException, Request
+from fastapi import APIRouter, Body, Depends, HTTPException, Request, Response
 from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
@@ -304,21 +304,20 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
 
     # ---------------- ENROLLMENT-STATUS GATE ----------------
     @api_router.get("/me/enrollment-status")
-    async def me_enrollment_status(user=Depends(_get_supabase_user)):
+    async def me_enrollment_status(response: Response, user=Depends(_get_supabase_user)):
         """Drives the front-end EnrollmentGate. Read-only, idempotent."""
+        response.headers['Cache-Control'] = 'private, no-store'
         uid = user["id"]
-        # 1) user_payment_status row?
-        ps_rows = _supabase_get(
+        from enterprise_common import rest
+        ps_rows, enr_rows = await asyncio.gather(rest(
             f"user_payment_status?user_id=eq.{_urlparse.quote(uid)}"
             "&select=user_id,paid,free_session_used&limit=1"
-        ) or []
+        ), rest(
+            f"user_enrollments?user_id=eq.{_urlparse.quote(uid)}"
+            "&status=in.(active,completed)&select=id,title,master_path_id,status"
+        ))
         has_payment_status = bool(ps_rows)
         paid = bool(ps_rows[0].get("paid")) if ps_rows else False
-        # 2) active or completed enrollment?
-        enr_rows = _supabase_get(
-            f"user_enrollments?user_id=eq.{_urlparse.quote(uid)}"
-            "&status=in.(active,completed)&select=id&limit=1"
-        ) or []
         has_enrollment = bool(enr_rows)
         # Routing intent
         needs_start_choice = not has_payment_status
@@ -328,6 +327,8 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
             "has_payment_status": has_payment_status,
             "has_enrollment": has_enrollment,
             "paid": paid,
+            "is_enrolled": paid,
+            "enrollments": enr_rows,
             "free_session_used": bool(ps_rows[0].get("free_session_used")) if ps_rows else False,
             "needs_start_choice": needs_start_choice,
             "needs_customize": needs_customize,

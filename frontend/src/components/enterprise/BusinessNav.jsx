@@ -19,7 +19,7 @@ export const BusinessNav = ({ student = false }) => {
   }, [pathname, hash]);
   const prefix = student ? 'student' : 'business';
   const base = student ? '' : '/enterprise';
-  const links = [['All Courses', `${base}/courses`], ['AI Agents', `${base}/ai-agents`], ['Resources', '/resources'], ...(!student ? [['My downloads', '/resources/library']] : [])];
+  const links = [['All Courses', `${base}/courses`], ['AI Agents', `${base}/ai-agents`], ['Resources', '/resources'], ...(user ? [['My purchases', '/purchases']] : [])];
   const themeButton = <button className="catalog-nav-icon" aria-label="Toggle theme" title="Toggle theme" onClick={toggleTheme} data-testid={`${prefix}-theme-toggle`}>{theme === 'dark' ? <Sun size={18}/> : <Moon size={18}/>}</button>;
   return <header className={`biz-nav ${student ? 'student-public-nav' : ''}`} data-testid={`${prefix}-navigation`}><div className="biz-nav-inner">
     <Link to={student ? '/' : '/enterprise'} className="biz-logo" data-testid={`${prefix}-logo`}><img src="/valuevade-logo.svg" alt="" width="30" height="30" />Valuevade<span>{student ? 'FOR STUDENTS' : 'FOR BUSINESS'}</span></Link>

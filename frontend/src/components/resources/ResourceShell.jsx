@@ -1,0 +1,2 @@
+import { BusinessNav, BusinessFooter } from '../enterprise/BusinessNav';
+export const ResourceShell = ({ children }) => <div className="biz-page resource-page"><BusinessNav student /><main>{children}</main><BusinessFooter /></div>;

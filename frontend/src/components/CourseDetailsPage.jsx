@@ -453,11 +453,11 @@ function VideoPreviewModal({ session, onClose }) {
 export default function CourseDetailsPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, enrollmentStatus } = useAuth();
 
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
-  const [enrollment, setEnrollment] = useState(null);
+  const enrollment = enrollmentStatus?.enrollments?.find(e => e.master_path_id === courseId) || null;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [previewSession, setPreviewSession] = useState(null); // video preview modal
@@ -477,7 +477,7 @@ export default function CourseDetailsPage() {
 
       if (pathErr) throw pathErr;
       setCourse(pathData);
-      if (pathData.is_coming_soon) { setModules([]); setEnrollment(null); return; }
+      if (pathData.is_coming_soon) { setModules([]); return; }
 
       // 2. Modules with sessions, try full select (migration 0041), fall back
       //    to base columns if the DB hasn't been migrated yet.
@@ -510,19 +510,6 @@ export default function CourseDetailsPage() {
       }));
       setModules(sorted);
 
-      // 3. Check enrollment
-      if (user?.id) {
-        try {
-          const { data: enrollData } = await supabase
-            .from('user_enrollments')
-            .select('id, master_path_id, status')
-            .eq('user_id', user.id)
-            .eq('master_path_id', courseId);
-          setEnrollment(enrollData?.[0] || null);
-        } catch {
-          setEnrollment(null);
-        }
-      }
     } catch (err) {
       setError(err.message || 'Failed to load course details');
     } finally {

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { fmtINR } from '../../utils/razorpay';
 import { usePaymentFlow } from './usePaymentFlow';
+import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'sonner';
 import { Check, Sparkles, Loader2, ChevronDown } from 'lucide-react';
 
@@ -15,13 +16,15 @@ const API = process.env.REACT_APP_BACKEND_URL;
  * Both paths land at /courses to pick a course and customise.
  */
 export default function EnrollmentChoicePage() {
+  const { refreshEnrollment } = useAuth();
   const navigate = useNavigate();
   const [startingTrial, setStartingTrial] = useState(false);
   const [showWhy, setShowWhy] = useState(false);
 
-  const goNext = () => {
+  const goNext = async () => {
     // Bust the EnrollmentGate cache so it sees the new payment_status row immediately.
     try { sessionStorage.removeItem('vv:enrollment-status'); } catch { /* ignore */ }
+    await refreshEnrollment();
     navigate('/courses', { replace: true });
   };
 

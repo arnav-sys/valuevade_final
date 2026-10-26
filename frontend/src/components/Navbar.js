@@ -71,6 +71,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
         <div className="hidden xl:flex items-center gap-4">
           <AudienceSwitch id="student-nav" />
           <Link to="/resources" className="lv-nav-link" data-testid="nav-link-resources">Resources</Link>
+          {isLoggedIn && <Link to="/purchases" className="lv-nav-link" data-testid="nav-link-purchases">My purchases</Link>}
           <Link to="/courses" className="lv-nav-link" data-testid="nav-link-courses">
             All Courses
           </Link>
@@ -172,6 +173,7 @@ export default function Navbar({ landingTheme, onToggleLandingTheme, navOnDark }
         >
           <AudienceSwitch id="student-mobile" />
           <Link to="/resources" onClick={() => setMenuOpen(false)} className="text-xl" data-testid="mobile-nav-resources">Resources</Link>
+          {isLoggedIn && <Link to="/purchases" onClick={() => setMenuOpen(false)} className="text-xl" data-testid="mobile-nav-purchases">My purchases</Link>}
           <Link
             to="/courses"
             onClick={() => setMenuOpen(false)}

@@ -10,38 +10,55 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Resource marketplace — enrolled access wired (2026-10-26)
+## Admin uploads, enrolment cache & purchases — 2026-10-26 (current)
+User request: upload real Excel/PDF resources through admin; cache `is_enrolled` in
+AuthContext; show all purchases and all course-included templates as free, not separate charges.
+Choices: **File coming soon** without an upload; purchases/included templates **plus payment history**.
 
-**Feature**: Enrolled students get free access to all 7 published resources.
+### Implemented
+- Admin → Resources: dedicated Upload/Replace actions, real filename/type/size, selected-file
+  validation, save/upload progress, retryable errors, publishing without files as coming soon.
+- Private Supabase `paid-resources` bucket; XLSX/XLS/PDF and existing document formats, 25 MB
+  limit, structural validation (pypdf/openpyxl/olefile), bounded archive expansion. Unique paths,
+  conditional metadata replacement, old file preserved on failures, superseded-file cleanup.
+- Download endpoint authorises paid enrolment or verified individual purchase before signing
+  a 120-second attachment URL. No public external URL passthrough or generated CSV fallback.
+  Missing files return 409; retired `/resources/{id}/sample` returns 410. Public responses
+  expose `file_available`, never storage paths. Enrolled resource orders do not charge again.
+- AuthContext exposes `is_enrolled`, `enrollmentStatus`, loading/error, `refreshEnrollment`.
+  `contexts/useEnrollmentCache.js`: per-user localStorage + memory, five-minute TTL, one
+  in-flight request, stale-while-revalidate on focus/navigation, logout/user-switch isolation.
+  First uncached sign-in still fetches; subsequent pages/reload use cache immediately.
+- `/me/enrollment-status` reads payment status/enrolments concurrently. Catalog, detail,
+  sidebar and course pages use shared context, not repeated resource-library checks.
+  Verified course checkout, trial choice and completed enrolment refresh the cache.
+  Cache is display-only: protected download and existing session gates remain server-checked.
+- New `/purchases`: active course access with actual recorded payment amount (when present),
+  all published bundled templates labelled **Free · Included in course**, original-file
+  downloads or disabled **File coming soon**. Individual purchases deduplicated against bundle.
+- Separate Payment history tab shows real recorded course/resource orders and statuses,
+  including pending/failed/refunded, plus resource Check payment. No fabricated receipts.
+  `/my-orders` redirects to history; `/resources/library` to purchases. Nav/sidebar links added.
+- `purchase_endpoints.py`: user-scoped `/api/purchases`, paginated ledger reads, no-store;
+  shared `resource_access.py`; frontend purchases/detail/editor split into focused components.
+- Existing seven catalogue resources remain published at price_paise=0: HR database,
+  financial modelling, equity research, AI workflows, prompt library, projects, interview prep.
+  **No professional content supplied yet: all seven show File coming soon until admin uploads.**
 
-### Seeded resources (all price_paise=0, is_published=true)
-1. HR Database Template — Finance Sector (Sector study frameworks)
-2. Financial Modelling Templates — Core Bundle (Excel financial models)
-3. Equity Research Report Template (Equity research report templates)
-4. AI Agent Workflows for Finance Professionals (AI prompt packs)
-5. Prompts Library — Finance Edition 200+ (AI prompt packs)
-6. Finance Project Templates — Client Deliverables Pack (Excel financial models)
-7. Finance Interview Prep — Questions, Frameworks & Answers (Interview prep kits)
+### Verification
+- `/app/test_reports/iteration_107.json`: backend 16/16; desktop/mobile flows, upload picker,
+  private access, missing-file states, navigation, cache request counts and account isolation pass.
+- Follow-up 16/16 pass, including fetching signed bytes and opening the XLSX workbook.
+  TEST-ONLY MOCKED checkout confirms failed verification never refreshes/grants; verified
+  success refreshes cached enrolment. No live charge or runtime mocks added.
+- QA DB/storage records cleaned; obsolete CSV test with hardcoded key retired. Credentials unchanged.
+- Details: `/app/test_reports/iteration_107_followup.md`; backend tests `test_iter107_resources_purchases.py`.
 
-### Architecture
-- `user_payment_status.paid = true` → user is enrolled (gateway check)
-- `GET /api/resources` — public catalog (all 7 items, no auth needed)
-- `GET /api/resources/my-library` — auth required; enrolled → {has_access: true, resources: [all 7]}; non-enrolled → {has_access: false, orders: [...]}
-- `POST /api/resources/{id}/download` — enrolled → if file_path: signed URL; else: {is_sample: true, url: '/api/resources/{id}/sample'}; not enrolled → 403
-- `GET /api/resources/{id}/sample` — enrolled only; streams category-specific CSV file
-- `resource_storage.signed_download` updated to pass through external HTTPS URLs directly
-- `_SAMPLE_DATA` dict in resource_endpoints.py provides per-category CSV templates
-
-### Frontend changes (ResourcesPage.jsx)
-- `EnrollmentBanner` component shown on /resources for enrolled users
-- Resource cards: enrolled shows `<Unlock /> Included` badge; non-enrolled shows price
-- `ResourceLibraryPage`: enrolled → all 7 resources with Download buttons; non-enrolled → purchased orders only
-- `ResourceDetailsPage`: enrolled → shows resource-enrolled-access section with Download button; non-enrolled free → 'Enrol to access for free' link to /courses; loading skeleton during enrollment check
-- Download handler: `is_sample=true` → fetch with auth header, create blob URL, auto-download as CSV
-
-### Tests (iteration 106)
-- 10/10 feature requirements PASS (backend 94%, frontend 100%)
-- Only minor: 5-8s enrollment check delay on direct navigation (addressed with loading skeleton)
+### Next / backlog
+- P0: none known in implemented flows. Admin must upload the real professional files.
+- P1: real Razorpay standalone-resource checkout/webhook E2E; enterprise enquiry email integration.
+- P2: backend router refactor, legacy hook warnings; retry storage cleanup if provider deletion fails.
+- Enhancement: show resource version/update dates so students can spot refreshed templates.
 
 
 Request: "users can access notes and video lectures of any locked module but they cannot

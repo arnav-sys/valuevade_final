@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
+import { useAuth } from '../../contexts/AuthContext';
 import { loadRazorpayCheckout, fmtINR } from '../../utils/razorpay';
 import { toast } from 'sonner';
 import { CheckCircle2, X, Loader2 } from 'lucide-react';
@@ -25,6 +26,7 @@ async function authedFetch(path, opts = {}) {
  * Renders a mock-success modal inline when in mock mode.
  */
 export function usePaymentFlow({ onSuccess } = {}) {
+  const { refreshEnrollment } = useAuth();
   const [busy, setBusy] = useState(false);
   const [mockOrder, setMockOrder] = useState(null); // {order_id, amount_inr}
   const [showSuccess, setShowSuccess] = useState(false);
@@ -33,6 +35,8 @@ export function usePaymentFlow({ onSuccess } = {}) {
   // (enrollment write / navigation), avoids the jarring feel of a hard
   // page reload right after payment.
   const celebrateThenContinue = () => {
+    // Refresh only after the server has verified this purchase.
+    refreshEnrollment();
     setShowSuccess(true);
     setTimeout(() => {
       setShowSuccess(false);

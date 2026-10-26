@@ -22,7 +22,7 @@ import { BrandArtwork } from './brand/BrandArtwork';
 export default function EnrollmentPage() {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, refreshEnrollment } = useAuth();
 
   const [course, setCourse] = useState(null);
   const [modules, setModules] = useState([]);
@@ -108,6 +108,7 @@ export default function EnrollmentPage() {
     setError(null);
     try {
       await enrollDirect({ userId: user.id, courseId, courseTitle: course?.title });
+      await refreshEnrollment();
       navigate('/dashboard', { replace: true });
     } catch (e) {
       setError(e?.message || 'Enrollment failed. Please try again.');

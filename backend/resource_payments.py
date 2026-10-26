@@ -9,6 +9,7 @@ from fastapi import Depends, HTTPException, Request
 from pydantic import BaseModel, Field
 from payment_endpoints import _razor
 from enterprise_common import rest
+from resource_access import is_enrolled
 
 class VerifyResource(BaseModel):
     razorpay_order_id: str = Field(pattern=r'^order_[A-Za-z0-9]+$',max_length=100)
@@ -47,14 +48,18 @@ def register_resource_payments(router,get_user):
     @router.post('/resources/{resource_id}/order')
     async def create_order(resource_id:UUID,user=Depends(get_user)):
         rows=await rest(f'marketplace_resources?id=eq.{resource_id}&is_published=eq.true&select=*')
-        if not rows or not rows[0].get('file_path'):
+        if not rows:
             raise HTTPException(404,'This resource is not available for purchase.')
         item=rows[0]
+        if await is_enrolled(user['id']):
+            return {'owned': True, 'included_in_course': True}
+        if not item.get('file_path'):
+            raise HTTPException(409, 'File coming soon. This resource cannot be purchased yet.')
         owned=await rest(f'resource_orders?user_id=eq.{user["id"]}&resource_id=eq.{resource_id}&status=eq.paid&select=id&limit=1')
         if owned:
             return {'owned':True}
         if item['price_paise']<=0:
-            return {'free':True}
+            raise HTTPException(403, 'This resource is included with course enrolment.')
         pending=await rest(f'resource_orders?user_id=eq.{user["id"]}&resource_id=eq.{resource_id}&amount_paise=eq.{item["price_paise"]}&status=eq.created&razorpay_order_id=not.is.null&select=*&order=created_at.desc&limit=1')
         if pending:
             order=pending[0]

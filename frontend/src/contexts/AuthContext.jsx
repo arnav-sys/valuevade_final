@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { useEnrollmentCache } from './useEnrollmentCache';
 
 const AuthContext = createContext(null);
 
@@ -9,6 +10,7 @@ export function AuthProvider({ children }) {
   const [session, setSession] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isReconnecting, setIsReconnecting] = useState(false);
+  const enrollment = useEnrollmentCache(session, loading);
   const resolved = useRef(false);
   const hadSessionRef = useRef(false);
   const isReconnectingRef = useRef(false);
@@ -191,7 +193,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, profile, session, loading, isReconnecting, signUp, signIn, signOut, updateProfile }}>
+    <AuthContext.Provider value={{ user, profile, session, loading, isReconnecting, signUp, signIn, signOut, updateProfile, ...enrollment }}>
       {children}
     </AuthContext.Provider>
   );

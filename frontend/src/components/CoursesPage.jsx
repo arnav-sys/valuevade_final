@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { Search, X, ArrowUpRight, RefreshCw } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
 import { useAudience } from './enterprise/AudienceContext';
 import { BusinessNav, BusinessFooter } from './enterprise/BusinessNav';
 import { useCourseCatalog } from './courses/useCourseCatalog';
@@ -11,17 +10,11 @@ import { CourseCatalogCard } from './courses/CourseCatalogCard';
 import './courses/courses.css';
 
 export default function CoursesPage({ enterprise = false }) {
-  const { user } = useAuth(); const { choose } = useAudience();
+  const { enrollmentStatus } = useAuth(); const { choose } = useAudience();
   const { paths, module_counts, session_counts, loading, error, retry } = useCourseCatalog();
   const [query, setQuery] = useState(''); const [category, setCategory] = useState('all');
-  const [enrollments, setEnrollments] = useState([]);
+  const enrollments = enterprise ? [] : enrollmentStatus?.enrollments || [];
   useEffect(() => { if (enterprise) choose('enterprise'); }, [enterprise, choose]);
-  useEffect(() => {
-    let active = true; setEnrollments([]);
-    if (user?.id && !enterprise) supabase.from('user_enrollments').select('id, master_path_id, status').eq('user_id', user.id)
-      .then(({ data }) => { if (active) setEnrollments(data || []); });
-    return () => { active = false; };
-  }, [user?.id, enterprise]);
   const categories = [...new Set(paths.map(c => c.category).filter(Boolean))];
   const filtered = useMemo(() => paths.filter(c => (category === 'all' || c.category === category) && `${c.title} ${c.category || ''}`.toLowerCase().includes(query.trim().toLowerCase())), [paths, category, query]);
   const clear = () => { setQuery(''); setCategory('all'); };

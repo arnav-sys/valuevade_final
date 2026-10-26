@@ -2,10 +2,9 @@ import { useState, useEffect, useMemo } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
-import { supabase } from '../lib/supabase';
 import {
   Home, BookOpen, User, Settings, LogOut, Menu, X, ChevronDown, ChevronRight,
-  Sun, Moon, ChevronLeft, Trophy, Library, MessageCircleQuestion, Sparkles,
+  Sun, Moon, ChevronLeft, Trophy, Library, MessageCircleQuestion, Sparkles, Receipt,
 } from 'lucide-react';
 import { useOpenDoubts } from '../contexts/OpenDoubtsContext';
 import FaqChatbot from './faq/FaqChatbot';
@@ -19,7 +18,7 @@ import { BrandArtwork } from './brand/BrandArtwork';
 export default function Sidebar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, enrollmentStatus } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const { count: openDoubtsCount } = useOpenDoubts();
 
@@ -28,7 +27,7 @@ export default function Sidebar() {
   });
   const [mobileOpen, setMobileOpen] = useState(false);
   const [courseExpanded, setCourseExpanded] = useState(true);
-  const [enrollment, setEnrollment] = useState(null);
+  const enrollment = enrollmentStatus?.enrollments?.find(e => e.status === 'active') || null;
 
   useEffect(() => {
     localStorage.setItem('vv-sidebar-collapsed', String(collapsed));
@@ -39,27 +38,6 @@ export default function Sidebar() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  // Fetch active enrollment for "My Course" sub-nav
-  useEffect(() => {
-    let mounted = true;
-    async function fetchEnrollment() {
-      if (!user?.id) return;
-      try {
-        const { data: enr } = await supabase
-          .from('user_enrollments')
-          .select('id, master_path_id, title, status')
-          .eq('user_id', user.id)
-          .eq('status', 'active')
-          .maybeSingle();
-        if (!mounted || !enr) return;
-        setEnrollment(enr);
-      } catch {
-        // ignore
-      }
-    }
-    fetchEnrollment();
-    return () => { mounted = false; };
-  }, [user?.id, location.pathname]);
 
   const handleSignOut = async () => {
     await signOut();
@@ -77,6 +55,7 @@ export default function Sidebar() {
         expandable: true,
       },
       { label: 'Profile', icon: User, path: '/profile', testid: 'nav-profile' },
+      { label: 'My purchases', icon: Receipt, path: '/purchases', testid: 'nav-purchases' },
       { label: 'Portfolio', icon: Trophy, path: '/portfolio', testid: 'nav-portfolio' },
       { label: 'Capstones', icon: Sparkles, path: '/capstones', testid: 'nav-capstones' },
       { label: 'Review Notes', icon: Library, path: '/review', testid: 'nav-review-notes' },
@@ -176,7 +155,7 @@ export default function Sidebar() {
                     ? 'bg-[var(--color-primary)]/10 text-[var(--color-primary)] border border-[var(--color-primary)]/20'
                     : 'text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]'
                 } ${!showLabels ? 'justify-center' : ''}`}
-                data-testid={item.testid}
+                data-testid={forMobile && item.path === '/purchases' ? 'nav-purchases-mobile' : item.testid}
                 title={!showLabels ? item.label : undefined}
               >
                 <Icon size={18} className="shrink-0" />

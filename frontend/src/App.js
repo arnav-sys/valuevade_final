@@ -100,7 +100,7 @@ const M3DryRunPreview = lazyWithRetry(() => import("@/components/M3DryRunPreview
 const UpgradePage = lazyWithRetry(() => import("@/components/payments/UpgradePage"));
 const FreeTrialPlayerPage = lazyWithRetry(() => import("@/components/FreeTrialPlayerPage"));
 const GuestSessionPage = lazyWithRetry(() => import("@/components/GuestSessionPage"));
-const MyOrdersPage = lazyWithRetry(() => import("@/components/payments/MyOrdersPage"));
+const PurchasesPage = lazyWithRetry(() => import("@/components/purchases/PurchasesPage"));
 const EnrollmentChoicePage = lazyWithRetry(() => import("@/components/payments/EnrollmentChoicePage"));
 // Legal pages, public, DRAFT copy pending founder review (Prompt-4 rebuild).
 const PrivacyPolicyPage = lazyWithRetry(() => import("@/components/legal/PrivacyPolicyPage"));
@@ -292,7 +292,8 @@ function App() {
                   {/* Payment routes */}
                   <Route path="/start" element={<ProtectedRoute><EnrollmentChoicePage /></ProtectedRoute>} />
                   <Route path="/upgrade" element={<ProtectedRoute><UpgradePage /></ProtectedRoute>} />
-                  <Route path="/my-orders" element={<ProtectedRoute><MyOrdersPage /></ProtectedRoute>} />
+                  <Route path="/purchases" element={<ProtectedRoute><PurchasesPage /></ProtectedRoute>} />
+                  <Route path="/my-orders" element={<Navigate to="/purchases?tab=history" replace />} />
 
                   {/* 404 catch-all */}
                   <Route path="*" element={<NotFoundPage />} />
