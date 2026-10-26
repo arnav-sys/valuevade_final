@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { fmtINR } from '../../utils/razorpay';
@@ -20,6 +20,20 @@ export default function EnrollmentChoicePage() {
   const navigate = useNavigate();
   const [startingTrial, setStartingTrial] = useState(false);
   const [showWhy, setShowWhy] = useState(false);
+  const [coursePrice, setCoursePrice] = useState(4999);
+
+  // Load real server-side price (backend is the source of truth for pricing)
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) return;
+      fetch(`${API}/api/payments/eligibility`, {
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      })
+        .then(r => r.ok ? r.json() : null)
+        .then(d => { if (d?.amount_inr) setCoursePrice(d.amount_inr); })
+        .catch(() => {/* keep default */});
+    });
+  }, []);
 
   const goNext = async () => {
     // Bust the EnrollmentGate cache so it sees the new payment_status row immediately.
@@ -86,7 +100,7 @@ export default function EnrollmentChoicePage() {
             Lock in lifetime access at the best rate.
           </p>
           <div className="mb-5">
-            <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">{fmtINR(999)}</span>
+            <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">{fmtINR(coursePrice)}</span>
             <span className="text-sm text-[var(--color-text-muted)] ml-1">one-time</span>
           </div>
           <ul className="space-y-2 mb-6">
@@ -103,7 +117,7 @@ export default function EnrollmentChoicePage() {
             className="w-full px-4 py-3 rounded-xl bg-[var(--color-primary)] text-white font-semibold hover:opacity-90 disabled:opacity-50 inline-flex items-center justify-center gap-2"
           >
             {payBusy && <Loader2 className="w-4 h-4 animate-spin" />}
-            Pay ₹4999 Now
+            Pay {fmtINR(coursePrice)} Now
           </button>
         </div>
 
@@ -112,7 +126,7 @@ export default function EnrollmentChoicePage() {
           <h3 className="text-xl font-bold text-[var(--color-text)] font-bricolage mb-1">
             Free Trial, 1 Session Free
           </h3>
-          <p className="text-sm text-[var(--color-text-muted)] mb-4">Then ₹4999 after.</p>
+          <p className="text-sm text-[var(--color-text-muted)] mb-4">Then {fmtINR(coursePrice)} after.</p>
           <div className="mb-5">
             <span className="text-4xl font-bold text-[var(--color-text)] font-bricolage">Free</span>
             <span className="text-sm text-[var(--color-text-muted)] ml-2">to start</span>
@@ -128,7 +142,7 @@ export default function EnrollmentChoicePage() {
               <Check className="w-4 h-4 mt-0.5 text-green-500 flex-shrink-0" /> Upgrade anytime to unlock the rest
             </li>
             <li className="flex items-start gap-2 text-sm text-[var(--color-text-muted)] italic">
-              Sessions 2+ require ₹4999 lifetime upgrade
+              Sessions 2+ require {fmtINR(coursePrice)} lifetime upgrade
             </li>
           </ul>
           <button
@@ -154,9 +168,9 @@ export default function EnrollmentChoicePage() {
       </button>
       {showWhy && (
         <div className="mt-3 max-w-2xl text-sm text-[var(--color-text-muted)] text-center" data-testid="choice-explain-body">
-          Both options unlock the exact same course content for life. Paying upfront costs just ₹4999
+          Both options unlock the exact same course content for life. Paying upfront costs just {fmtINR(coursePrice)}
           one-time. The free trial includes session 1 fully (notes + quiz + AI interview + simulation).
-          If you upgrade later, the price is still ₹4999.
+          If you upgrade later, the price is still {fmtINR(coursePrice)}.
         </div>
       )}
 

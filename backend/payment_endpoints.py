@@ -693,6 +693,26 @@ def register_payment_endpoints(api_router: APIRouter, deps: dict):
             })
         return {"total": len(out), "payments": out}
 
+    @api_router.get("/admin/payments/setup-status")
+    async def admin_payments_setup_status(user=Depends(_get_supabase_user)):
+        """Returns Razorpay configuration summary for the admin panel."""
+        _ensure_admin(user)
+        key_id = (os.environ.get("RAZORPAY_KEY_ID") or "").strip()
+        key_secret = (os.environ.get("RAZORPAY_KEY_SECRET") or "").strip()
+        webhook_secret = (os.environ.get("RAZORPAY_WEBHOOK_SECRET") or "").strip()
+        if not key_id:
+            mode = "mock"
+        elif key_id.startswith("rzp_live_"):
+            mode = "live"
+        else:
+            mode = "test"
+        return {
+            "mode": mode,
+            "key_id_display": (key_id[:16] + "...") if len(key_id) > 16 else key_id,
+            "keys_configured": bool(key_id and key_secret),
+            "webhook_secret_configured": bool(webhook_secret),
+        }
+
     @api_router.get("/admin/payments/export")
     async def admin_payments_export(user=Depends(_get_supabase_user)):
         """Return all paid users as a downloadable CSV file for Google Sheets import."""

@@ -71,7 +71,7 @@ export default function ResourceDetailsPage() {
         <strong className="resource-detail-price" data-testid="resource-detail-price">{item.price_paise ? money(item.price_paise / 100) : 'Included with enrolment'}</strong>
         {!item.file_available && <p className="resource-soon" data-testid="resource-file-coming-soon">File coming soon</p>}
         <p className="biz-fine-print">Free with your Valuevade course.</p>
-        {item.price_paise > 0 ? <button className="biz-button biz-button-primary" disabled={busy || !item.file_available || (!!user && !ownership)} onClick={buy} data-testid="resource-purchase-button">{busy ? 'Please wait…' : !item.file_available ? 'File coming soon' : user ? 'Buy resource' : 'Sign in to continue'}<ArrowUpRight size={16} /></button> : <Link to="/courses" className="biz-button biz-button-primary" data-testid="resource-purchase-button">Enrol to access for free<ArrowUpRight size={16} /></Link>}
+        {item.price_paise > 0 ? <button className="biz-button biz-button-primary" disabled={busy || !item.file_available || (!!user && enrolled === false && ownership === null && !error)} onClick={buy} data-testid="resource-purchase-button">{busy ? 'Please wait…' : !item.file_available ? 'File coming soon' : user ? 'Buy resource' : 'Sign in to continue'}<ArrowUpRight size={16} /></button> : <Link to="/courses" className="biz-button biz-button-primary" data-testid="resource-purchase-button">Enrol to access for free<ArrowUpRight size={16} /></Link>}
         <Link to="/courses" className="biz-text-link" data-testid="resource-view-courses">View courses<ArrowUpRight size={16} /></Link>
       </>}
       <Link to="/purchases" className="biz-text-link" data-testid="resource-library-link">My purchases<ArrowUpRight size={16} /></Link>

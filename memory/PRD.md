@@ -693,3 +693,17 @@ fixed) and iteration_91.json (~99%, 1 minor kerning issue, fixed).
 - Sitewide branding: iterations95–96 and follow-up. Latest landing-only redesign:
   iterations97–98; screenshot-reported contrast issue subsequently fixed and verified
   alongside desktop hero benefits in iteration99. No remaining known UI regression.
+
+## Razorpay Payment Infrastructure (Feb 2026)
+- Admin Payments tab now has a full Razorpay Configuration panel:
+  - Shows TEST MODE / LIVE MODE badge based on key prefix
+  - Displays both webhook URLs (course & resource) with copy buttons
+  - Shows setup status: API keys configured, webhook secret not set
+  - "How to switch to live keys" step-by-step guide
+  - Backend endpoint: GET /api/admin/payments/setup-status
+- Enrollment price page (/start) now fetches real price from /api/payments/eligibility — no more hardcoded ₹999 bug, all price references use the server-side value
+- Resource purchase button disabled-state fixed: no longer permanently disabled when ownership check errors
+- Standalone resource purchases via Razorpay fully wired in backend (resource_payments.py); admin must set price_paise > 0 AND upload a file to enable a resource for standalone purchase
+- Webhook endpoints (/api/payments/webhook and /api/resources/payment/webhook) return 503 when RAZORPAY_WEBHOOK_SECRET is empty — configured behavior
+- iteration_108 testing: 8/8 backend passed, 100% frontend passed
+
