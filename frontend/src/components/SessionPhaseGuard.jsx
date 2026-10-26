@@ -15,7 +15,7 @@ import useSessionTimer from '../utils/useSessionTimer';
  */
 const PREV_PHASE = {
   notes: null,
-  quiz: 'notes',
+  quiz: null,        // quiz is always accessible — no notes prerequisite
   interview: 'quiz',
   simulation: null,  // simulation is always accessible — no notes/quiz prerequisite
 };

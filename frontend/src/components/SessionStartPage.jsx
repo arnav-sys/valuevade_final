@@ -221,11 +221,9 @@ export default function SessionStartPage() {
                 <div className="space-y-2" data-testid="session-phase-list">
                   {phaseList.map((p, idx) => {
                     const isDone = session[`${p.key}_completed`];
-                    // In bonus mode (session already complete via notes), any undone
-                    // quiz/simulation phase is a bonus activity, not "NEXT".
-                    // Simulation is ALWAYS accessible (no prerequisite) — treat it as
-                    // bonus even when notes/quiz haven't been done yet.
-                    const isBonus = !isDone && p.key !== 'notes' && (sessionDoneViaNotes || p.key === 'simulation');
+                    // quiz and simulation are always accessible as bonus activities.
+                    // Notes is the only required phase (it marks the session complete).
+                    const isBonus = !isDone && p.key !== 'notes';
                     const isNext = !sessionDoneViaNotes && firstIncomplete?.key === p.key;
                     const Icon = p.icon;
                     // Hybrid: quiz counts as attempted (yellow) if done but scored < 70
