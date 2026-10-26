@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle2, ArrowRight, RotateCcw, BookOpen, Clock, Sparkles } from 'lucide-react';
+import { CheckCircle2, ArrowRight, RotateCcw, BookOpen, Clock, Sparkles, Star, Zap } from 'lucide-react';
 import { supabase } from '../lib/supabase';
-import { getNextPhaseRoute } from '../utils/progress';
 
 function formatTime(seconds) {
   if (!seconds || seconds < 1) return '—';
@@ -59,18 +58,19 @@ export default function NotesCompletePage() {
   const location = useLocation();
   const { cardsReviewed = 0, timeSpentSeconds = 0 } = location.state || {};
   const [showConfetti, setShowConfetti] = useState(true);
-  const [nextRoute, setNextRoute] = useState({ phase: 'quiz', route: 'quiz/start', label: 'Quiz' });
+  // Whether quiz hasn't been done yet (to show the bonus CTA)
+  const [quizPending, setQuizPending] = useState(false);
 
   useEffect(() => {
     let mounted = true;
     async function loadNext() {
       const { data: sess } = await supabase
         .from('user_sessions')
-        .select('notes_completed, quiz_completed, interview_completed, simulation_completed')
+        .select('quiz_completed, simulation_completed')
         .eq('id', sessionId)
         .maybeSingle();
       if (mounted && sess) {
-        setNextRoute(getNextPhaseRoute(sess, 'notes'));
+        setQuizPending(!sess.quiz_completed);
       }
     }
     loadNext();
@@ -100,16 +100,20 @@ export default function NotesCompletePage() {
 
         {/* Title */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--color-success)]/10 border border-[var(--color-success)]/25 text-[var(--color-success)] text-xs font-mono uppercase tracking-[0.2em] mb-4">
-          <Sparkles size={12} /> {nextRoute.phase ? 'Phase 1 of 3 done' : 'Session complete'}
+          <Sparkles size={12} /> Session complete
         </div>
         <h1 className="font-clash text-4xl sm:text-5xl font-bold text-[var(--color-text)] mb-3" data-testid="notes-complete-title">
-          Notes complete!
+          Session done!
         </h1>
-        <p className="text-[var(--color-text-muted)] font-bricolage mb-8">
-          {nextRoute.phase
-            ? "You've reviewed the core concepts. Time to prove you've got it."
-            : "You've finished this session's video and notes. On to the next one."}
+        <p className="text-[var(--color-text-muted)] font-bricolage mb-2">
+          You've completed the notes and video. This session is marked complete — your constellation and XP have updated.
         </p>
+        {quizPending && (
+          <p className="text-xs font-mono text-[var(--color-accent-purple)] mb-8 flex items-center justify-center gap-1.5">
+            <Zap size={11} /> Quiz and simulation are available as bonus activities for extra XP.
+          </p>
+        )}
+        {!quizPending && <div className="mb-8" />}
 
         {/* Stats */}
         <div className="grid grid-cols-2 gap-3 mb-8" data-testid="notes-complete-stats">
@@ -137,35 +141,33 @@ export default function NotesCompletePage() {
           </div>
         </div>
 
-        {/* CTAs */}
+        {/* Primary CTA: dashboard */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button
-            onClick={() => navigate(
-              nextRoute.phase
-                ? `/session/${sessionId}/${nextRoute.route}`
-                : `/session/${sessionId}/complete`
-            )}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
-            data-testid="continue-to-quiz"
-          >
-            {nextRoute.phase ? `Continue to ${nextRoute.label}` : 'Finish Session'} <ArrowRight size={16} />
-          </button>
           <Link
-            to={`/session/${sessionId}/notes`}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bricolage font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] border border-[var(--color-border)] transition-all"
-            data-testid="review-notes-again"
+            to="/dashboard"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
+            data-testid="back-to-dashboard"
           >
-            <RotateCcw size={15} /> Review Notes Again
+            <Star size={16} /> Back to Dashboard <ArrowRight size={16} />
           </Link>
+          {quizPending && (
+            <button
+              onClick={() => navigate(`/session/${sessionId}/quiz/start`)}
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-sm font-bricolage font-semibold text-[var(--color-accent-purple)] hover:bg-[var(--color-accent-purple)]/10 border border-[var(--color-accent-purple)]/30 transition-all"
+              data-testid="continue-to-quiz"
+            >
+              <Zap size={15} /> Bonus: Take Quiz for +XP
+            </button>
+          )}
         </div>
 
-        {/* Dashboard link */}
+        {/* Review notes link */}
         <Link
-          to="/dashboard"
-          className="inline-block mt-6 text-xs text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] font-mono"
-          data-testid="back-to-dashboard"
+          to={`/session/${sessionId}/notes`}
+          className="inline-flex items-center gap-1.5 mt-5 text-xs text-[var(--color-text-faint)] hover:text-[var(--color-text-muted)] font-mono transition-colors"
+          data-testid="review-notes-again"
         >
-          ← Back to Dashboard
+          <RotateCcw size={11} /> Review Notes Again
         </Link>
       </div>
     </div>

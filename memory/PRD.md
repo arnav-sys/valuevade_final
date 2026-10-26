@@ -10,7 +10,47 @@ Fonts: Outfit (headings and `font-clash`), Instrument Sans (body, `font-bricolag
 Spline Sans Mono (mono and `font-jetbrains`). Newsreader retained only for occasional
 editorial italic supporting copy, not headings. No Inter/Roboto/Arial defaults.
 
-## Course resource-library inclusion copy — 2026-10-25 (latest)
+## Notes-first completion model — 2026-10-26 (latest)
+
+Request: "users can access notes and video lectures of any locked module but they cannot
+access quiz and simulations. fix it and make sure all the gamification features like xp
+levels and constellation etc. show effect of it and marked the lectures and modules
+completed". User chose: **Notes completion = session done. Quiz/simulation become optional
+bonus activities (accessible anywhere for extra XP). Gamification updates when notes done.**
+
+### Implemented and verified (code review confirmed correct by testing agent)
+- `utils/progress.js`: `allDone = !!updated.notes_completed` — notes alone marks a
+  session as `is_completed=true` in `user_sessions`. Session completion XP (50 XP,
+  reason: `session_complete`) fires after notes. `checkModuleCompletion` is triggered so
+  modules complete when all sessions have notes done. Quiz/simulation still emit bonus XP
+  when completed (`quiz_correct`, `simulation_complete`).
+- `components/NotesPage.jsx`: Imports `useXP` and `triggerStreakUpdate`. `complete()`
+  now captures `markPhaseComplete` return value, loops through `xp_intents`, calls
+  `awardXP(intent)` for each, and triggers streak update + session_complete daily challenge.
+- `components/NotesCompletePage.jsx`: Title is "Session done!", pill badge says "Session
+  complete". Primary CTA: "Back to Dashboard" (Link to /dashboard). Secondary optional
+  CTA: "Bonus: Take Quiz for +XP" shown only when `quiz_completed=false`. "Review Notes"
+  is a small tertiary link. `getNextPhaseRoute` removed; replaced with `quizPending` flag.
+- `components/SessionStartPage.jsx`: New `sessionDoneViaNotes = session?.is_completed &&
+  !allDone` variable. When true: shows green banner "Session complete — notes done! Quiz
+  & simulation are optional for extra XP.", quiz/simulation phases show label "BONUS" and
+  blurb "Optional — earn bonus XP", all phases remain clickable (notes for review, quiz/sim
+  as bonus). CTA becomes "Session complete — continue" Link to /dashboard.
+
+### Effect on gamification
+- Dashboard `completedSessions` count uses `is_completed` → counts after notes done ✓
+- Constellation map reads `v_module_progress_summary.sessions_completed_n` which counts
+  `is_completed` rows → updates after notes ✓
+- Module `is_completed` flips when all sessions' notes done → constellation gold star ✓
+- Daily challenge `sessions_completed` fired after notes via `updateDailyChallengesForPhase` ✓
+
+### Tests
+- Code review by testing agent (iteration_105): all 3 key files confirmed CORRECT.
+- UI testing partially blocked by pre-existing intermittent Supabase urllib timeout in
+  `/api/payments/eligibility` (payment_endpoints.py _lazy_free_session_used). This is
+  NOT caused by the notes-completion changes.
+- No backend file changes; no database schema changes required.
+
 
 Exact request: “also in course details page mention you will get access to all resources
 include like hr database, financial modelling templates, equity research templates,

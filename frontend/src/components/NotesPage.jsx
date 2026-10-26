@@ -12,6 +12,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
 import { markPhaseComplete, updateDailyChallengesForPhase } from '../utils/progress';
+import { useXP } from '../contexts/XPContext';
+import { triggerStreakUpdate } from '../utils/streakBus';
 import { isInterviewUserModule } from '../utils/interviewSim';
 import { isExamUserModule } from '../utils/examModule';
 import { triggerBadgeEvaluation } from '../utils/badgeBus';
@@ -1773,6 +1775,7 @@ export default function NotesPage() {
   const { sessionId } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { awardXP } = useXP();
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -1926,12 +1929,24 @@ export default function NotesPage() {
       fallbackMinutes: Math.max(1, Math.round(timeSpent / 60)),
     });
     try {
-      await markPhaseComplete(
+      const res = await markPhaseComplete(
         session.id,
         'notes',
         (isInterviewSession || isExamSession) ? { quiz_completed: true, simulation_completed: true } : null,
         { actualMinutes: measuredMin },
       );
+      // Award XP for session_complete (fires on first notes completion).
+      if (res?.success) {
+        for (const intent of (res.xp_intents || [])) {
+          // eslint-disable-next-line no-await-in-loop
+          try { await awardXP(intent); } catch { /* non-blocking */ }
+        }
+        try { await triggerStreakUpdate(); } catch { /* fire-and-forget */ }
+        // Update daily challenges for session_complete if XP fired.
+        if ((res.xp_intents || []).some((x) => x.reason === 'session_complete')) {
+          try { await updateDailyChallengesForPhase(user.id, 'session_complete', {}); } catch { /* non-blocking */ }
+        }
+      }
       try {
         await triggerBadgeEvaluation({
           source_event: 'notes_complete',

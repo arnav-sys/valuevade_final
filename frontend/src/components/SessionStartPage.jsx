@@ -100,6 +100,10 @@ export default function SessionStartPage() {
     ? phaseList.find((p) => !session[`${p.key}_completed`])
     : null;
   const allDone = session && !firstIncomplete;
+  // Notes-complete model: session.is_completed flips after notes even though
+  // quiz/simulation may still be pending. In that state, quiz/simulation are
+  // "bonus" activities — accessible but not shown as the required NEXT step.
+  const sessionDoneViaNotes = session?.is_completed && !allDone;
 
   const description = master?.description || session?.description || '';
   const objectives = master?.learning_objectives || session?.learning_objectives || [];
@@ -206,23 +210,34 @@ export default function SessionStartPage() {
                 <h2 className="font-clash text-sm font-semibold uppercase tracking-[0.15em] text-[var(--color-text)] mb-3">
                   {isInterviewSession ? 'Your session' : isExamSession ? 'Exam prep session' : 'Your 3-phase journey'}
                 </h2>
+                {sessionDoneViaNotes && (
+                  <div className="flex items-center gap-2 mb-3 px-3 py-2 rounded-lg bg-[var(--color-success)]/8 border border-[var(--color-success)]/20">
+                    <CheckCircle2 size={14} className="text-[var(--color-success)] shrink-0" />
+                    <span className="text-xs font-bricolage text-[var(--color-success)]">
+                      Session complete — notes done! Quiz &amp; simulation are optional for extra XP.
+                    </span>
+                  </div>
+                )}
                 <div className="space-y-2" data-testid="session-phase-list">
                   {phaseList.map((p, idx) => {
                     const isDone = session[`${p.key}_completed`];
-                    const isNext = firstIncomplete?.key === p.key;
+                    // In bonus mode (session already complete via notes), any undone
+                    // quiz/simulation phase is a bonus activity, not "NEXT".
+                    const isBonus = sessionDoneViaNotes && !isDone && p.key !== 'notes';
+                    const isNext = !sessionDoneViaNotes && firstIncomplete?.key === p.key;
                     const Icon = p.icon;
                     // Hybrid: quiz counts as attempted (yellow) if done but scored < 70
                     const isAttempted = isDone && p.key === 'quiz' && (session.quiz_score ?? 100) < 70;
-                    // A phase row is interactive if it's the next phase (start it) or
-                    // already done (open in review mode). Future-locked phases stay disabled.
+                    // A phase row is interactive if: it's the NEXT phase, already done,
+                    // or a bonus activity (notes_completed means quiz/sim are always accessible).
                     const targetPath = `/session/${sessionId}/${p.path}`;
-                    const isClickable = isDone || isNext;
+                    const isClickable = isDone || isNext || isBonus;
                     const Wrapper = isClickable ? 'button' : 'div';
                     const wrapperProps = isClickable
                       ? {
                           onClick: () => navigate(targetPath),
                           type: 'button',
-                          'aria-label': isDone ? `Review ${p.label}` : `Start ${p.label}`,
+                          'aria-label': isDone ? `Review ${p.label}` : isBonus ? `${p.label} bonus activity` : `Start ${p.label}`,
                         }
                       : {};
                     return (
@@ -231,7 +246,7 @@ export default function SessionStartPage() {
                         {...wrapperProps}
                         className={`w-full text-left glass-card rounded-xl px-4 py-3.5 flex items-center gap-4 transition-all ${
                           isNext ? 'border-[var(--color-primary)]/40 shadow-[0_0_24px_rgba(36,107,253,0.12)]' : ''
-                        } ${isClickable ? 'hover:border-[var(--color-primary)]/40 hover:shadow-[0_0_24px_rgba(36,107,253,0.08)] cursor-pointer' : 'opacity-70'}`}
+                        } ${isBonus ? 'border-[var(--color-accent-purple)]/25' : ''} ${isClickable ? 'hover:border-[var(--color-primary)]/40 hover:shadow-[0_0_24px_rgba(36,107,253,0.08)] cursor-pointer' : 'opacity-70'}`}
                         data-testid={`phase-${p.key}`}
                       >
                         <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
@@ -241,6 +256,8 @@ export default function SessionStartPage() {
                             ? 'bg-[var(--color-success)]/15 border border-[var(--color-success)]/30 text-[var(--color-success)]'
                             : isNext
                             ? 'bg-[var(--color-primary)]/15 border border-[var(--color-primary)]/30 text-[var(--color-primary)]'
+                            : isBonus
+                            ? 'bg-[var(--color-accent-purple)]/12 border border-[var(--color-accent-purple)]/25 text-[var(--color-accent-purple)]'
                             : 'bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-faint)]'
                         }`}>
                           {isAttempted ? <Icon size={18} /> : isDone ? <CheckCircle2 size={18} /> : <Icon size={18} />}
@@ -253,7 +270,7 @@ export default function SessionStartPage() {
                             <h3 className="font-clash text-base font-semibold text-[var(--color-text)]">{p.label}</h3>
                           </div>
                           <p className="text-xs text-[var(--color-text-muted)] font-bricolage">
-                            {isDone ? 'Review what you covered' : p.blurb}
+                            {isDone ? 'Review what you covered' : isBonus ? 'Optional — earn bonus XP' : p.blurb}
                           </p>
                         </div>
                         {isAttempted ? (
@@ -264,6 +281,8 @@ export default function SessionStartPage() {
                           </span>
                         ) : isNext ? (
                           <span className="text-[10px] font-mono text-[var(--color-primary)]" data-testid={`phase-${p.key}-status`}>NEXT</span>
+                        ) : isBonus ? (
+                          <span className="text-[10px] font-mono text-[var(--color-accent-purple)]" data-testid={`phase-${p.key}-status`}>BONUS</span>
                         ) : (
                           <Lock size={14} className="text-[var(--color-text-faint)]" />
                         )}
@@ -285,6 +304,15 @@ export default function SessionStartPage() {
                     data-testid="session-all-done"
                   >
                     <CheckCircle2 size={16} /> All phases complete
+                  </Link>
+                ) : sessionDoneViaNotes ? (
+                  <Link
+                    to="/dashboard"
+                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-accent-purple)] text-white text-sm font-semibold font-bricolage hover:shadow-[0_0_24px_rgba(36,107,253,0.4)] hover:brightness-110 transition-all"
+                    data-testid="session-begin-btn"
+                  >
+                    <CheckCircle2 size={16} /> Session complete — continue
+                    <ArrowRight size={16} />
                   </Link>
                 ) : (
                   <button

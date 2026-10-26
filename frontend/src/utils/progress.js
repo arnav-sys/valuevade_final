@@ -129,14 +129,11 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null, 
 
     // 2) Did this update just flip the session to "all phases done"?
     //
-    // Feb 2026, session-level interview phase disabled for cost reasons.
-    // `interview_completed` is no longer required for `allDone`. Existing
-    // rows with interview_completed=true are ignored (still counted as
-    // complete either way). See utils/sessionPhases.js flag.
-    const allDone =
-      updated.notes_completed &&
-      updated.quiz_completed &&
-      updated.simulation_completed;
+    // Mar 2026: notes completion alone marks a session as "done" for progress,
+    // constellation and module-completion purposes. Quiz and simulation become
+    // optional bonus activities that award extra XP but are not required for
+    // progression. `allDone` therefore fires as soon as `notes_completed` flips.
+    const allDone = !!updated.notes_completed;
 
     let sessionJustCompleted = false;
     if (allDone && !sessionWasAlreadyComplete) {
@@ -210,15 +207,16 @@ export async function markPhaseComplete(userSessionId, phase, scoreData = null, 
           },
         });
       } else if (phase === 'notes' || phase === 'interview') {
-        // These phases don't emit a direct XP intent today (notes pays via
-        // session-complete; interview pays via overall feedback). We still
-        // need their measured time to feed daily challenges via the
-        // caller's `updateDailyChallengesForPhase` call. No xp_intent is
-        // added here.
+        // Notes/interview themselves do not push a separate XP intent here.
+        // The session_complete intent below fires immediately after notes
+        // (allDone = notes_completed) and carries the session XP.
+        // This keeps the XP ledger clean — one session_complete per session.
       }
     }
-    // Session-complete XP: fires when allDone, on a fresh completion OR
-    // a redo replay (regardless of `sessionWasAlreadyComplete`).
+    // Session-complete XP: fires when allDone (= notes_completed), on a fresh
+    // completion OR a redo replay. Since allDone is true after notes, this will
+    // NOT re-fire when quiz/simulation are done later (sessionWasAlreadyComplete
+    // will be true by then). Quiz/simulation emit their own separate XP intents.
     if (allDone && (!sessionWasAlreadyComplete || redo)) {
       xp_intents.push({
         amount: redo ? halve(50) : 50,
