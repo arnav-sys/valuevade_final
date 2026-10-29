@@ -6,6 +6,7 @@ import { supabase } from '../lib/supabase';
 import { BusinessNav } from './enterprise/BusinessNav';
 import { UpcomingCoursePage } from './courses/UpcomingCoursePage';
 import { IncludedResources, ResourceInclusionHighlight } from './courses/IncludedResources';
+import { PersonalisationSection } from './courses/PersonalisationSection';
 import { motion } from 'framer-motion';
 import { Skeleton } from '../components/ui/skeleton';
 import CapstoneProjectsGrid from './CapstoneProjectsGrid';
@@ -808,6 +809,7 @@ management or Big 4 advisory.`}
                 </div>
               </section>
 
+              <PersonalisationSection />
               <IncludedResources/>
 
               {/* What you'll be able to do, Prompt 3 task 7 (verbatim). */}
@@ -975,7 +977,7 @@ management or Big 4 advisory.`}
                           className="glass-card rounded-xl border-[var(--color-border)] overflow-hidden"
                           data-testid={`module-item-${idx}`}
                         >
-                          <AccordionTrigger className="px-5 py-4 hover:no-underline hover:bg-[var(--color-surface-hover)] transition-colors">
+                          <AccordionTrigger data-testid={`module-toggle-${idx}`} className="min-w-0 px-5 py-4 hover:no-underline hover:bg-[var(--color-surface-hover)] transition-colors">
                             <div className="flex items-center gap-4 text-left flex-1 min-w-0">
                               <span className="w-8 h-8 rounded-lg bg-[var(--color-primary)]/10 border border-[var(--color-primary)]/20 flex items-center justify-center text-xs font-mono text-[var(--color-primary)] shrink-0">
                                 {String(mod.module_number ?? mod.order_index ?? (idx + 1)).padStart(2, '0')}

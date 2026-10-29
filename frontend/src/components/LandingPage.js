@@ -17,6 +17,7 @@ import PracticeStudio from './landing/immersive/PracticeStudio';
 import LearningJourney from './landing/immersive/LearningJourney';
 import { CourseStats, OutcomeSection, AIEdgeSection } from './landing/immersive/ValueSections';
 import LandingPeople from './landing/immersive/LandingPeople';
+import { PersonalisationSection } from './courses/PersonalisationSection';
 import PricingSection, { ClosingSection } from './landing/immersive/PricingSection';
 import './landing/immersive/immersive.css';
 
@@ -98,6 +99,7 @@ export default function LandingPage() {
       <main className="relative z-10">
         <ImmersiveHero theme={landingTheme} />
         <CourseStats />
+        <PersonalisationSection id="landing-personalisation" landing />
         <PracticeStudio />
         <SocialProofStrip />
         <OutcomeSection />

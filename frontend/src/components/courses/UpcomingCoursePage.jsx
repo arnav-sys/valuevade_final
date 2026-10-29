@@ -4,6 +4,7 @@ import { ArrowLeft, ArrowUpRight, Clock } from 'lucide-react';
 import { BusinessNav } from '../enterprise/BusinessNav';
 import { courseProfile } from './courseContent';
 import { IncludedResources, ResourceInclusionHighlight } from './IncludedResources';
+import { PersonalisationSection } from './PersonalisationSection';
 import './courses.css';
 
 export const UpcomingCoursePage = ({ course }) => <div className="biz-page cc-page cc-student" data-testid="upcoming-course-page">
@@ -16,6 +17,7 @@ export const UpcomingCoursePage = ({ course }) => <div className="biz-page cc-pa
     <img className="cc-upcoming-art" src={courseProfile(course).art} alt={`${course.category || 'Finance'} learning illustration`} data-testid="upcoming-course-art"/>
     <p data-testid="upcoming-course-notice">Enrolment is not open for this course.</p>
     <ResourceInclusionHighlight id="upcoming-course" upcoming/>
+    <PersonalisationSection id="upcoming-personalisation" upcoming/>
     <IncludedResources upcoming/>
     <Link className="biz-button biz-button-primary" to="/courses" data-testid="upcoming-browse-courses">Explore all courses<ArrowUpRight size={17}/></Link>
   </main>

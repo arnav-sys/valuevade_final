@@ -1,0 +1,57 @@
+.vv-personalisation {
+  --vp-accent: #245bd8;
+  color: var(--color-text);
+  font-family: 'Instrument Sans', sans-serif;
+  border-block: 1px solid var(--color-border);
+  padding: 40px 0;
+  margin-bottom: 48px;
+  scroll-margin-top: 100px;
+}
+.vv-personalisation * { box-sizing: border-box; letter-spacing: 0; }
+.vv-personalisation--landing { padding: 72px 0; margin-bottom: 0; border-top: 0; }
+.vv-personalisation--landing .vv-personalisation-inner { width: min(1180px, calc(100% - 64px)); margin: auto; }
+.vv-personalisation-intro { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, .8fr); gap: 32px; align-items: center; }
+.vv-personalisation .vv-personalisation-eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 18px; color: var(--vp-accent); font: 10px/1.6 'Spline Sans Mono', monospace; }
+.vv-personalisation .vv-personalisation-eyebrow svg { flex-shrink: 0; }
+.vv-personalisation h2 { color: var(--color-text); font: 600 18px/1.5 'Outfit', sans-serif; margin: 0 0 18px; }
+.vv-personalisation h2 span { color: var(--vp-accent); }
+.vv-personalisation .vv-personalisation-description { color: var(--color-text-muted); font-size: 15px; line-height: 1.85; max-width: 610px; margin: 0; }
+.vv-personalisation-visual { min-width: 0; }
+.vv-personalisation-visual .vv-brand-art { max-width: 340px; margin: auto; }
+.vv-personalisation-visual > p { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; color: var(--color-text-muted); font: 10px/1.7 'Spline Sans Mono', monospace; margin: 16px 0 0; }
+.vv-personalisation-visual > p span { color: var(--vp-accent); }
+.vv-personalisation-steps { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin: 36px 0 0; padding: 0; }
+.vv-personalisation-steps li { min-width: 0; padding-top: 20px; border-top: 1px solid var(--color-border); }
+.vv-personalisation-step-top { display: flex; align-items: center; justify-content: space-between; color: var(--vp-accent); margin-bottom: 16px; }
+.vv-personalisation-step-top span { font: 11px/1.5 'Spline Sans Mono', monospace; color: var(--color-text-muted); }
+.vv-personalisation-steps li:nth-child(2) .vv-personalisation-step-top > svg { color: var(--color-accent-purple); }
+.vv-personalisation-steps li:nth-child(3) .vv-personalisation-step-top > svg { color: var(--color-success); }
+.vv-personalisation h3 { color: var(--color-text); font: 600 16px/1.5 'Outfit', sans-serif; margin: 0 0 10px; }
+.vv-personalisation-steps li > p { color: var(--color-text-muted); font-size: 13px; line-height: 1.85; margin: 0; }
+.vv-personalisation-footer { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px; border-top: 1px solid var(--color-border); padding-top: 24px; margin-top: 32px; }
+.vv-personalisation-footer > p { display: flex; align-items: flex-start; gap: 10px; color: var(--color-text-muted); font-size: 12px; line-height: 1.8; margin: 0; }
+.vv-personalisation-footer > p svg { color: var(--color-success); flex-shrink: 0; margin-top: 2px; }
+.vv-personalisation-footer > a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; color: var(--vp-accent); font-size: 13px; font-weight: 600; transition: color .2s; }
+.vv-personalisation-footer > a svg { transition: transform .2s; }
+.vv-personalisation-footer > a:hover svg { transform: translate(2px, -2px); }
+.vv-personalisation-footer > a:hover { color: var(--color-text); }
+.vv-personalisation-footer > a:focus-visible { outline: 2px solid var(--vp-accent); outline-offset: 4px; border-radius: 2px; }
+html.dark .vv-personalisation { --vp-accent: #99b8ff; }
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .vv-personalisation:not(.vv-personalisation--landing) .vv-personalisation-intro { grid-template-columns: 1fr; }
+  .vv-personalisation:not(.vv-personalisation--landing) .vv-personalisation-steps { gap: 20px; }
+}
+@media (max-width: 767px) {
+  .vv-personalisation { padding: 30px 0; margin-bottom: 32px; scroll-margin-top: 88px; }
+  .vv-personalisation--landing { padding: 48px 0; margin-bottom: 0; }
+  .vv-personalisation--landing .vv-personalisation-inner { width: calc(100% - 40px); }
+  .vv-personalisation-intro { grid-template-columns: 1fr; gap: 24px; }
+  .vv-personalisation h2 { font-size: 16px; }
+  .vv-personalisation .vv-personalisation-description { font-size: 14px; }
+  .vv-personalisation-visual .vv-brand-art { max-width: 280px; }
+  .vv-personalisation-steps { grid-template-columns: 1fr; gap: 24px; margin-top: 28px; }
+  .vv-personalisation-step-top { margin-bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vv-personalisation-footer > a, .vv-personalisation-footer > a svg { transition: none; }
+}
