@@ -9,11 +9,12 @@ async def is_enrolled(user_id):
 
 def public_resource(row):
     result = {key: row.get(key) for key in PUBLIC_FIELDS.split(',')}
-    path = row.get('file_path') or ''
-    result['file_available'] = bool(path and row.get('file_name') and not path.startswith(('http:', 'https:')))
+    files = sorted(row.get('resource_files') or [], key=lambda f: f.get('created_at') or '')
+    result['files'] = [{'id': f['id'], 'file_name': f['file_name'], 'file_size': f['file_size'], 'file_type': f['file_type']} for f in files]
+    result['file_available'] = bool(result['files'])
     return result
 
 
 async def published_resources():
-    rows = await rest(f'marketplace_resources?is_published=eq.true&select={PUBLIC_FIELDS},file_path&order=created_at.desc&limit=500')
+    rows = await rest(f'marketplace_resources?is_published=eq.true&select={PUBLIC_FIELDS},resource_files(id,file_name,file_size,file_type,created_at)&order=created_at.desc&limit=500')
     return [public_resource(row) for row in rows]

@@ -1,36 +1,55 @@
 import { useState } from 'react';
-import { Upload, Save, FileCheck2, X } from 'lucide-react';
+import { Upload, Save, FileCheck2, X, Trash2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '../ui/dialog';
 import { businessApi, CATEGORIES } from '../enterprise/api';
 
+const MAX_FILE_MB = 50;
 const EMPTY = { title: '', description: '', category: CATEGORIES[0], price_paise: 0, includes: [], is_published: false };
 export const ResourceEditor = ({ initial, token, onSaved, onClose }) => {
   const [item, setItem] = useState(initial || EMPTY);
   const [price, setPrice] = useState((initial?.price_paise || 0) / 100);
   const [includes, setIncludes] = useState((initial?.includes || []).join('\n'));
-  const [file, setFile] = useState(null);
+  const [existingFiles, setExistingFiles] = useState(initial?.resource_files || []);
+  const [pendingFiles, setPendingFiles] = useState([]);
+  const [removingId, setRemovingId] = useState('');
   const [busy, setBusy] = useState('');
   const [error, setError] = useState('');
   const set = (key, value) => setItem(x => ({ ...x, [key]: value }));
-  const chooseFile = e => {
-    const selected = e.target.files?.[0]; setError(''); setFile(null);
-    if (!selected) return;
-    if (!/\.(pdf|xlsx|xls|docx|zip|csv|txt|md)$/i.test(selected.name)) { setError('Choose an Excel workbook, PDF, DOCX, ZIP or text file.'); e.target.value = ''; return; }
-    if (!selected.size || selected.size > 25 * 1024 * 1024) { setError('Choose a non-empty file up to 25 MB.'); e.target.value = ''; return; }
-    setFile(selected);
+  const chooseFiles = e => {
+    const selected = Array.from(e.target.files || []); setError('');
+    const valid = [];
+    for (const f of selected) {
+      if (!/\.(pdf|xlsx|xls|docx|zip|csv|txt|md)$/i.test(f.name)) { setError(`${f.name}: choose an Excel workbook, PDF, DOCX, ZIP or text file.`); continue; }
+      if (!f.size || f.size > MAX_FILE_MB * 1024 * 1024) { setError(`${f.name}: choose a non-empty file up to ${MAX_FILE_MB} MB.`); continue; }
+      valid.push(f);
+    }
+    setPendingFiles(x => [...x, ...valid]);
+    e.target.value = '';
+  };
+  const dropPending = name => setPendingFiles(x => x.filter(f => f.name !== name));
+  const removeExisting = async fileId => {
+    if (!item.id) return;
+    setRemovingId(fileId); setError('');
+    try {
+      await businessApi(`/admin/resources/${item.id}/files/${fileId}`, { method: 'DELETE', token });
+      setExistingFiles(x => x.filter(f => f.id !== fileId));
+      onSaved();
+    } catch (err) { setError(err.message); }
+    finally { setRemovingId(''); }
   };
   const save = async e => {
     e.preventDefault(); setBusy('Saving details…'); setError('');
     try {
       const body = { title: item.title, description: item.description, category: item.category, price_paise: Math.round(Number(price) * 100), includes: includes.split('\n').filter(Boolean), is_published: item.is_published };
-      let saved = await businessApi(item.id ? `/admin/resources/${item.id}` : '/admin/resources', { method: item.id ? 'PUT' : 'POST', token, body });
+      const saved = await businessApi(item.id ? `/admin/resources/${item.id}` : '/admin/resources', { method: item.id ? 'PUT' : 'POST', token, body });
       setItem(saved);
-      if (file) {
-        setBusy('Uploading file…');
-        const form = new FormData(); form.append('file', file);
-        saved = await businessApi(`/admin/resources/${saved.id}/file`, { method: 'POST', token, body: form, signal: AbortSignal.timeout(120000) });
-        setItem(saved); setFile(null);
+      for (const [i, f] of pendingFiles.entries()) {
+        setBusy(`Uploading file ${i + 1} of ${pendingFiles.length}…`);
+        const form = new FormData(); form.append('file', f);
+        const uploaded = await businessApi(`/admin/resources/${saved.id}/files`, { method: 'POST', token, body: form, signal: AbortSignal.timeout(120000) });
+        setExistingFiles(x => [...x, uploaded]);
       }
+      setPendingFiles([]);
       onSaved(); onClose();
     } catch (err) { setError(err.message); onSaved(); }
     finally { setBusy(''); }
@@ -44,14 +63,14 @@ export const ResourceEditor = ({ initial, token, onSaved, onClose }) => {
       <div className="biz-form-row"><label>Category<select value={item.category} onChange={e => set('category', e.target.value)} data-testid="admin-resource-category">{CATEGORIES.map(c => <option key={c}>{c}</option>)}</select></label><label>Standalone price (INR)<input type="number" min="0" max="1000000" step="0.01" required value={price} onChange={e => setPrice(e.target.value)} data-testid="admin-resource-price" /></label></div>
       <label>Included items · one per line<textarea rows={3} maxLength={6000} value={includes} onChange={e => setIncludes(e.target.value)} data-testid="admin-resource-includes" /></label>
       <div className="resource-file-panel" data-testid="admin-resource-file-panel">
-        {item.file_name ? <p data-testid="admin-resource-current-file"><FileCheck2 size={18} /><span>{item.file_name}<small>{item.file_type} · {(item.file_size / 1024).toFixed(1)} KB</small></span></p> : <p data-testid="admin-resource-no-file">File coming soon · No file uploaded</p>}
-        <label className="biz-upload-label"><Upload size={16} />{item.file_name ? 'Replace downloadable file' : 'Upload downloadable file'} · up to 25 MB<input type="file" accept=".pdf,.xlsx,.xls,.docx,.zip,.csv,.txt,.md" onChange={chooseFile} data-testid="admin-resource-file" /></label>
-        {file && <div className="resource-file-selected" data-testid="admin-resource-selected-file"><span>{file.name} · {(file.size / 1024).toFixed(1)} KB</span><button type="button" title="Remove selected file" aria-label="Remove selected file" onClick={() => setFile(null)} data-testid="admin-resource-clear-file"><X size={16} /></button></div>}
+        {existingFiles.length ? <ul className="resource-file-list" data-testid="admin-resource-current-files">{existingFiles.map(f => <li key={f.id} data-testid={`admin-resource-current-file-${f.id}`}><FileCheck2 size={18} /><span>{f.file_name}<small>{f.file_type} · {(f.file_size / 1024).toFixed(1)} KB</small></span><button type="button" disabled={removingId === f.id} title={`Remove ${f.file_name}`} aria-label={`Remove ${f.file_name}`} onClick={() => removeExisting(f.id)} data-testid={`admin-resource-remove-file-${f.id}`}><Trash2 size={16} /></button></li>)}</ul> : <p data-testid="admin-resource-no-file">File coming soon · No files uploaded</p>}
+        <label className="biz-upload-label"><Upload size={16} />Add downloadable files · up to {MAX_FILE_MB} MB each<input type="file" multiple accept=".pdf,.xlsx,.xls,.docx,.zip,.csv,.txt,.md" onChange={chooseFiles} data-testid="admin-resource-file" /></label>
+        {pendingFiles.map(f => <div className="resource-file-selected" key={f.name} data-testid={`admin-resource-selected-file-${f.name}`}><span>{f.name} · {(f.size / 1024).toFixed(1)} KB</span><button type="button" title="Remove selected file" aria-label={`Remove ${f.name}`} onClick={() => dropPending(f.name)} data-testid={`admin-resource-clear-file-${f.name}`}><X size={16} /></button></div>)}
       </div>
       <label className="biz-consent"><input type="checkbox" checked={item.is_published} onChange={e => set('is_published', e.target.checked)} data-testid="admin-resource-published" />Published in the resource shop</label>
       <p className="biz-fine-print" data-testid="admin-resource-inclusion-note">Free for course students. Without a file, students see “File coming soon”.</p>
     </fieldset>{error && <p className="biz-alert" role="alert" data-testid="admin-resource-error">{error}</p>}
-      <button className="biz-button biz-button-primary" disabled={!!busy} data-testid="admin-resource-save"><Save size={16} />{busy || (file ? 'Save resource & upload file' : 'Save resource')}</button>
+      <button className="biz-button biz-button-primary" disabled={!!busy} data-testid="admin-resource-save"><Save size={16} />{busy || (pendingFiles.length ? `Save resource & upload ${pendingFiles.length} file${pendingFiles.length > 1 ? 's' : ''}` : 'Save resource')}</button>
     </form>
   </DialogContent></Dialog>;
 };

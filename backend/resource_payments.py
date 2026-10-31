@@ -47,13 +47,13 @@ async def order_for_user(order_id,user_id):
 def register_resource_payments(router,get_user):
     @router.post('/resources/{resource_id}/order')
     async def create_order(resource_id:UUID,user=Depends(get_user)):
-        rows=await rest(f'marketplace_resources?id=eq.{resource_id}&is_published=eq.true&select=*')
+        rows=await rest(f'marketplace_resources?id=eq.{resource_id}&is_published=eq.true&select=*,resource_files(id)')
         if not rows:
             raise HTTPException(404,'This resource is not available for purchase.')
         item=rows[0]
         if await is_enrolled(user['id']):
             return {'owned': True, 'included_in_course': True}
-        if not item.get('file_path'):
+        if not item.get('resource_files'):
             raise HTTPException(409, 'File coming soon. This resource cannot be purchased yet.')
         owned=await rest(f'resource_orders?user_id=eq.{user["id"]}&resource_id=eq.{resource_id}&status=eq.paid&select=id&limit=1')
         if owned:

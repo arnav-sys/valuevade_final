@@ -30,9 +30,10 @@ export default function ResourceDetailsPage() {
     return () => { alive = false; };
   }, [token, user?.id, resourceId, enrolled, retry]);
   const paid = ownership?.userId === user?.id && ownership?.resourceId === resourceId && ownership?.paid;
-  const downloading = async () => {
-    setBusy(true); setError('');
-    try { await downloadResource(resourceId, token); } catch (e) { setError(e.message); } finally { setBusy(false); }
+  const [downloadingId, setDownloadingId] = useState('');
+  const downloading = async fileId => {
+    setDownloadingId(fileId); setError('');
+    try { await downloadResource(resourceId, fileId, token); } catch (e) { setError(e.message); } finally { setDownloadingId(''); }
   };
   const markOwned = () => setOwnership({ userId: user.id, resourceId, paid: true });
   const buy = async () => {
@@ -62,11 +63,11 @@ export default function ResourceDetailsPage() {
     {item ? <div className="resource-detail-grid"><ResourcePreview item={item} /><div>
       <p className="biz-eyebrow" data-testid="resource-category-name">{item.category}</p><h1 data-testid="resource-detail-title">{item.title}</h1><p data-testid="resource-description">{item.description}</p>
       <ul className="biz-checks">{(item.includes || []).map((x, i) => <li key={i} data-testid={`resource-includes-${i}`}><Check size={16} />{x}</li>)}</ul>
-      {item.file_available && <p className="biz-fine-print" data-testid="resource-file-meta">{item.file_type} · {(item.file_size / 1024).toFixed(1)} KB · {item.file_name}</p>}
+      {item.file_available && !(enrolled || paid) && <p className="biz-fine-print" data-testid="resource-file-meta">{item.files.length} file{item.files.length > 1 ? 's' : ''} included</p>}
       {item.sample ? <div className="biz-alert" data-testid="resource-sample-notice">Concept preview — not for sale.</div> : checking ? <p role="status" data-testid="enrollment-loading">Checking your access…</p> : enrollmentError && enrolled === null ? <p role="alert" className="biz-alert" data-testid="resource-enrollment-error">{enrollmentError}<button onClick={() => refreshEnrollment()} data-testid="resource-enrollment-retry">Retry</button></p> : enrolled || paid ? <div data-testid={enrolled ? 'resource-enrolled-access' : 'resource-purchased-access'}>
         <p className="resource-included-label" data-testid="resource-access-label"><Unlock size={16} />{enrolled ? 'Free · Included in course' : 'Purchased · Access unlocked'}</p>
-        <ResourceDownloadButton available={item.file_available} busy={busy} onClick={downloading} testId="resource-download-btn" />
-        <p className="biz-fine-print" data-testid="resource-download-notice"><ShieldCheck size={15} />{item.file_available ? 'Private download · Original uploaded file' : 'Your access is saved. The file will appear here once uploaded.'}</p>
+        {item.file_available ? <ul className="resource-detail-files" data-testid="resource-file-list">{item.files.map(f => <li className="resource-detail-file-row" key={f.id} data-testid={`resource-file-${f.id}`}><span>{f.file_name}<small>{f.file_type} · {(f.file_size / 1024).toFixed(1)} KB</small></span><ResourceDownloadButton available busy={downloadingId === f.id} onClick={() => downloading(f.id)} testId={`resource-download-btn-${f.id}`} /></li>)}</ul> : <ResourceDownloadButton available={false} busy={false} onClick={() => {}} testId="resource-download-btn" />}
+        <p className="biz-fine-print" data-testid="resource-download-notice"><ShieldCheck size={15} />{item.file_available ? 'Private download · Original uploaded files' : 'Your access is saved. Files will appear here once uploaded.'}</p>
       </div> : <>
         <strong className="resource-detail-price" data-testid="resource-detail-price">{item.price_paise ? money(item.price_paise / 100) : 'Included with enrolment'}</strong>
         {!item.file_available && <p className="resource-soon" data-testid="resource-file-coming-soon">File coming soon</p>}

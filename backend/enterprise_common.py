@@ -8,7 +8,7 @@ CATEGORIES = ['Excel financial models', 'Equity research report templates', 'AI 
 SAMPLE_PRICING = {'sample': True, 'currency': 'INR', 'slabs': [
     {'max_seats': 10, 'price_inr': 4999}, {'max_seats': 50, 'price_inr': 3999},
     {'max_seats': 200, 'price_inr': 2999}, {'max_seats': 1000, 'price_inr': 2499}]}
-PUBLIC_FIELDS = 'id,title,description,category,price_paise,includes,file_name,file_size,file_type,created_at'
+PUBLIC_FIELDS = 'id,title,description,category,price_paise,includes,created_at'
 
 def storage_headers():
     key = os.environ['SUPABASE_SERVICE_ROLE_KEY']
@@ -24,7 +24,7 @@ async def rest(path, method='GET', data=None):
                 headers={**storage_headers(), 'Prefer': 'return=representation'}, json=data)
         if response.status_code >= 400:
             code = response.json().get('code', '')
-            if code in ('PGRST205', '42P01', 'PGRST204'):
+            if code in ('PGRST205', '42P01', 'PGRST204', 'PGRST200'):
                 raise HTTPException(503, 'Enterprise database setup is pending. Contact info@valuevade.com.')
             if response.status_code == 409:
                 raise HTTPException(409, 'This record already exists. Refresh to see the saved version.')
@@ -35,7 +35,7 @@ async def rest(path, method='GET', data=None):
 
 async def readiness():
     try:
-        for table in ('enterprise_leads','marketplace_resources','resource_orders'):
+        for table in ('enterprise_leads','marketplace_resources','resource_orders','resource_files'):
             await rest(f'{table}?select=id&limit=0')
         return True
     except HTTPException:

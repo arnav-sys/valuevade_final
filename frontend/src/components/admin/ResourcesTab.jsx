@@ -22,8 +22,8 @@ export default function ResourcesTab() {
     {ready && !loading && !error && !items.length && <p data-testid="admin-resources-empty">No resources yet.</p>}
     {items.map(item => <article className="resource-order" key={item.id} data-testid={`admin-resource-${item.id}`}><div>
       <h3 data-testid={`admin-resource-title-${item.id}`}>{item.title}</h3><p data-testid={`admin-resource-status-${item.id}`}>{item.category} · {item.price_paise ? money(item.price_paise / 100) : 'Course inclusion'} · {item.is_published ? 'Published' : 'Draft'}</p>
-      <small data-testid={`admin-resource-file-${item.id}`}>{item.file_name ? `${item.file_name} · ${item.file_type} · ${(item.file_size / 1024).toFixed(1)} KB` : 'File coming soon'}</small>
-    </div><div className="resource-admin-actions"><button className="biz-button biz-button-outline" onClick={() => setEditing(item)} data-testid={`admin-resource-upload-${item.id}`}><Upload size={16} />{item.file_name ? 'Replace file' : 'Upload file'}</button><button className="biz-button biz-button-outline" onClick={() => setEditing(item)} data-testid={`admin-resource-edit-${item.id}`} aria-label={`Edit ${item.title}`} title="Edit resource"><Pencil size={16} /></button></div></article>)}
+      <small data-testid={`admin-resource-file-${item.id}`}>{(item.resource_files || []).length ? `${item.resource_files.length} file${item.resource_files.length > 1 ? 's' : ''} uploaded` : 'File coming soon'}</small>
+    </div><div className="resource-admin-actions"><button className="biz-button biz-button-outline" onClick={() => setEditing(item)} data-testid={`admin-resource-upload-${item.id}`}><Upload size={16} />{(item.resource_files || []).length ? 'Manage files' : 'Upload files'}</button><button className="biz-button biz-button-outline" onClick={() => setEditing(item)} data-testid={`admin-resource-edit-${item.id}`} aria-label={`Edit ${item.title}`} title="Edit resource"><Pencil size={16} /></button></div></article>)}
     {editing && <ResourceEditor initial={editing.id ? editing : null} token={token} onSaved={load} onClose={() => setEditing(null)} />}
   </div>;
 }

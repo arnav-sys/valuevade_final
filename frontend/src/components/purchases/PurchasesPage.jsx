@@ -13,7 +13,7 @@ import './purchases.css';
 
 export default function PurchasesPage() {
   const { session, user, refreshEnrollment } = useAuth(); const token = session?.access_token;
-  const [result, setResult] = useState(null); const [loading, setLoading] = useState(true); const [error, setError] = useState(''); const [busy, setBusy] = useState('');
+  const [result, setResult] = useState(null); const [loading, setLoading] = useState(true); const [error, setError] = useState(''); const [busy, setBusy] = useState(''); const [busyFileId, setBusyFileId] = useState('');
   const [params, setParams] = useSearchParams(); const history = params.get('tab') === 'history';
   const [retry, setRetry] = useState(0);
   useEffect(() => {
@@ -27,9 +27,9 @@ export default function PurchasesPage() {
   const access = data?.course_access;
   const includedIds = new Set((data?.included_resources || []).map(r => r.id));
   const individual = (data?.resource_purchases || []).filter(p => !includedIds.has(p.resource_id));
-  const download = async id => {
-    setBusy(id); setError('');
-    try { await downloadResource(id, token); } catch (e) { setError(e.message); } finally { setBusy(''); }
+  const download = async (resourceId, fileId) => {
+    setBusyFileId(fileId); setError('');
+    try { await downloadResource(resourceId, fileId, token); } catch (e) { setError(e.message); } finally { setBusyFileId(''); }
   };
   const checkPayment = async id => {
     setBusy(id); setError('');
@@ -45,10 +45,10 @@ export default function PurchasesPage() {
         {access && <><section className="purchase-course" data-testid="purchased-course"><div className="purchase-course-label"><BookOpen size={24} /><span data-testid="purchase-course-status">COURSE ACCESS · ACTIVE</span></div><div className="purchase-course-summary"><div><h2 data-testid="purchase-course-title">{access.enrollments.length === 1 ? access.enrollments[0].title : 'Valuevade course access'}</h2><p data-testid="purchase-course-date">{access.paid_at ? `Purchased ${purchaseDate(access.paid_at)}` : 'Enrolment active'}{access.pricing_tier ? ` · ${access.pricing_tier.replaceAll('_', ' ')}` : ''}</p></div>{access.paid_amount_inr > 0 && <strong data-testid="purchase-course-amount">{money(access.paid_amount_inr)}<small>Course payment</small></strong>}</div>
           <div className="purchase-course-links">{access.enrollments.map(e => <Link className="biz-text-link" to={`/course/${e.master_path_id}`} key={e.id} data-testid={`purchase-course-link-${e.id}`}>{access.enrollments.length === 1 ? 'View course' : e.title}<ArrowUpRight size={16} /></Link>)}<Link className="biz-button biz-button-primary" to={access.enrollments.length ? '/dashboard' : '/courses'} data-testid="purchase-continue-learning">{access.enrollments.length ? 'Continue learning' : 'Choose your course'}<ArrowUpRight size={16} /></Link></div>
         </section><section className="purchase-inclusions" data-testid="purchase-included-templates"><div className="purchase-section-heading"><h2 data-testid="purchase-inclusions-title"><PackageCheck size={20} />Included in your course</h2><span data-testid="purchase-inclusions-count">{data.included_resources.length} resources · No extra charge</span></div>
-          {data.included_resources.map(r => <PurchaseResourceRow key={r.id} resource={r} included available={r.file_available} busy={!!busy} onDownload={() => download(r.id)} />)}
+          {data.included_resources.map(r => <PurchaseResourceRow key={r.id} resource={r} included available={r.file_available} busyFileId={busyFileId} onDownload={fileId => download(r.id, fileId)} />)}
           {!data.included_resources.length && <p data-testid="purchase-inclusions-empty">Included resources will appear here when published.</p>}
         </section></>}
-        {individual.length > 0 && <section className="purchase-individual" data-testid="purchase-individual-resources"><h2>Resource purchases</h2>{individual.map(p => <PurchaseResourceRow key={p.id} resource={p.resource || { id: p.resource_id, title: 'Resource unavailable' }} amount={p.amount_paise} available={p.available} busy={!!busy} onDownload={() => download(p.resource_id)} />)}</section>}
+        {individual.length > 0 && <section className="purchase-individual" data-testid="purchase-individual-resources"><h2>Resource purchases</h2>{individual.map(p => <PurchaseResourceRow key={p.id} resource={p.resource || { id: p.resource_id, title: 'Resource unavailable' }} amount={p.amount_paise} available={p.available} busyFileId={busyFileId} onDownload={fileId => download(p.resource_id, fileId)} />)}</section>}
         {!access && !individual.length && <section className="purchase-empty" data-testid="purchases-empty"><Receipt size={32} /><h2>No completed purchases yet.</h2><p>Your courses and templates will appear here after payment.</p><Link className="biz-button biz-button-primary" to="/courses" data-testid="purchases-browse-courses">Browse courses<ArrowUpRight size={16} /></Link></section>}
         <Link className="biz-text-link purchase-browse" to="/resources" data-testid="purchases-browse-resources">Browse resources<ArrowUpRight size={16} /></Link>
       </>}</div>}

@@ -96,7 +96,8 @@ def register_enterprise_endpoints(router, get_user):
     @router.get('/admin/enterprise/setup.sql')
     async def setup_sql(user=Depends(get_user)):
         _ensure_admin(user)
-        sql = (Path(__file__).parent.parent/'scripts/migrations/0048_enterprise_resources.sql').read_text()
+        migrations = Path(__file__).parent.parent/'scripts/migrations'
+        sql = '\n\n'.join((migrations/f).read_text() for f in ('0048_enterprise_resources.sql','0049_resource_files.sql'))
         return Response(sql,media_type='text/plain',headers={'Content-Disposition':'attachment; filename=valuevade-enterprise.sql'})
 
     @router.put('/admin/enterprise/pricing')

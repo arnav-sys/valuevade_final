@@ -1,8 +1,8 @@
 import { Download, Clock3 } from 'lucide-react';
 import { businessApi } from '../enterprise/api';
 
-export const downloadResource = async (resourceId, token) => {
-  const result = await businessApi(`/resources/${resourceId}/download`, { method: 'POST', token });
+export const downloadResource = async (resourceId, fileId, token) => {
+  const result = await businessApi(`/resources/${resourceId}/files/${fileId}/download`, { method: 'POST', token });
   // Signed private storage URL with an attachment filename; no sample fallback.
   window.location.assign(result.url);
 };

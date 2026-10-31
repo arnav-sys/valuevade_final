@@ -59,9 +59,9 @@ async def upload_resource(resource_id, file: UploadFile):
     extension = os.path.splitext(name)[1].lower()
     if extension not in FILE_TYPES:
         raise HTTPException(415,'Choose PDF, XLSX, XLS, DOCX, CSV, TXT, MD or ZIP.')
-    content = await file.read(25*1024*1024+1)
-    if not content or len(content)>25*1024*1024:
-        raise HTTPException(413,'File must be non-empty and no larger than 25 MB.')
+    content = await file.read(50*1024*1024+1)
+    if not content or len(content)>50*1024*1024:
+        raise HTTPException(413,'File must be non-empty and no larger than 50 MB.')
     await asyncio.to_thread(validate_content, extension, content)
     path = f'{resource_id}/{uuid4().hex}/{name}'
     try:

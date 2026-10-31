@@ -24,7 +24,7 @@ def register_purchase_endpoints(router, get_user):
             rest(f'user_payment_status?user_id=eq.{uid}&select=paid,paid_amount_inr,paid_at,pricing_tier&limit=1'),
             rest(f'user_enrollments?user_id=eq.{uid}&status=in.(active,completed)&select=id,title,master_path_id,status'),
             all_orders(f'razorpay_orders?user_id=eq.{uid}&select=id,razorpay_order_id,amount_inr,pricing_tier,status,mock_mode,created_at'),
-            all_orders(f'resource_orders?user_id=eq.{uid}&select=id,resource_id,amount_paise,status,created_at,razorpay_order_id,marketplace_resources(*)'),
+            all_orders(f'resource_orders?user_id=eq.{uid}&select=id,resource_id,amount_paise,status,created_at,razorpay_order_id,marketplace_resources(*,resource_files(id,file_name,file_size,file_type,created_at))'),
         )
         status = status[0] if status else {'paid': False}
         enrolled = bool(status.get('paid'))

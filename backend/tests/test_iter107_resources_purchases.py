@@ -1,12 +1,12 @@
 """
-Iteration 107: Resources + Purchases critical regression.
-Covers admin upload/replace validation, private download access, purchases payload, and redirects.
+Iteration 107 (updated for multi-file resources): Resources + Purchases critical regression.
+Covers admin multi-file upload/delete validation, private per-file download access,
+purchases payload, and redirects.
 """
 
 from __future__ import annotations
 
 import io
-import os
 import uuid
 from pathlib import Path
 from urllib.parse import quote
@@ -79,38 +79,46 @@ def _admin_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _cleanup_resource(resource_id: str | None, file_path: str | None) -> None:
+def _service_headers() -> dict:
+    return {"apikey": SUPABASE_SERVICE_ROLE_KEY, "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}"}
+
+
+def _cleanup_resource(resource_id: str | None) -> None:
     if not resource_id:
         return
-    # Replacements use a new object path; fetch the current path before deleting metadata.
-    current = requests.get(
-        f"{SUPABASE_URL}/rest/v1/marketplace_resources?id=eq.{resource_id}&select=file_path",
-        headers={"apikey": SUPABASE_SERVICE_ROLE_KEY, "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}"},
+    files = requests.get(
+        f"{SUPABASE_URL}/rest/v1/resource_files?resource_id=eq.{resource_id}&select=file_path",
+        headers=_service_headers(),
         timeout=30,
     )
-    current.raise_for_status()
-    if current.json():
-        file_path = current.json()[0].get("file_path") or file_path
-    rq = requests.delete(
+    paths = [row["file_path"] for row in files.json()] if files.status_code == 200 else []
+    requests.delete(
         f"{SUPABASE_URL}/rest/v1/marketplace_resources?id=eq.{resource_id}",
-        headers={
-            "apikey": SUPABASE_SERVICE_ROLE_KEY,
-            "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
-        },
+        headers=_service_headers(),
         timeout=30,
     )
-    rq.raise_for_status()
-    if file_path:
+    if paths:
         requests.delete(
             f"{SUPABASE_URL}/storage/v1/object/paid-resources",
-            headers={
-                "apikey": SUPABASE_SERVICE_ROLE_KEY,
-                "Authorization": f"Bearer {SUPABASE_SERVICE_ROLE_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={"prefixes": [file_path]},
+            headers={**_service_headers(), "Content-Type": "application/json"},
+            json={"prefixes": paths},
             timeout=30,
         )
+
+
+def _resource_files_ready() -> bool:
+    r = requests.get(
+        f"{SUPABASE_URL}/rest/v1/resource_files?select=id&limit=0",
+        headers=_service_headers(),
+        timeout=20,
+    )
+    return r.status_code == 200
+
+
+@pytest.fixture(scope="module", autouse=True)
+def require_resource_files_table():
+    if not _resource_files_ready():
+        pytest.skip("resource_files table is not set up yet - run the latest setup.sql in Supabase")
 
 
 @pytest.fixture(scope="module")
@@ -130,11 +138,10 @@ def tokens():
 @pytest.fixture(scope="module")
 def qa_resource(tokens):
     created_id = None
-    current_file_path = None
     try:
         payload = {
             "title": f"TEST_QA Resource {uuid.uuid4().hex[:8]}",
-            "description": "TEST_QA description for upload and signed download checks.",
+            "description": "TEST_QA description for multi-file upload and signed download checks.",
             "category": "Excel financial models",
             "price_paise": 19900,
             "includes": ["TEST_QA worksheet"],
@@ -151,14 +158,28 @@ def qa_resource(tokens):
         created_id = body["id"]
 
         upload_pdf = requests.post(
-            f"{BASE_URL}/api/admin/resources/{created_id}/file",
+            f"{BASE_URL}/api/admin/resources/{created_id}/files",
             headers=_admin_headers(tokens["admin"]),
             files={"file": ("qa-upload.pdf", _pdf_bytes(), "application/pdf")},
             timeout=80,
         )
-        assert upload_pdf.status_code == 200, upload_pdf.text
-        uploaded = upload_pdf.json()
-        current_file_path = uploaded.get("file_path")
+        assert upload_pdf.status_code == 201, upload_pdf.text
+        pdf_file = upload_pdf.json()
+
+        upload_xlsx = requests.post(
+            f"{BASE_URL}/api/admin/resources/{created_id}/files",
+            headers=_admin_headers(tokens["admin"]),
+            files={
+                "file": (
+                    "qa-second.xlsx",
+                    _xlsx_bytes(),
+                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                )
+            },
+            timeout=80,
+        )
+        assert upload_xlsx.status_code == 201, upload_xlsx.text
+        xlsx_file = upload_xlsx.json()
 
         publish = requests.put(
             f"{BASE_URL}/api/admin/resources/{created_id}",
@@ -175,17 +196,22 @@ def qa_resource(tokens):
         )
         assert publish.status_code == 200, publish.text
 
-        yield {"id": created_id, "initial_file_path": current_file_path}
+        yield {"id": created_id, "pdf_file": pdf_file, "xlsx_file": xlsx_file}
     finally:
-        _cleanup_resource(created_id, current_file_path)
+        _cleanup_resource(created_id)
 
 
-class TestAdminUploadFlow:
-    """Admin file upload, replace, and validation checks."""
+class TestAdminMultiFileUploadFlow:
+    """Admin multi-file upload, delete, and validation checks."""
+
+    def test_two_files_both_persisted(self, qa_resource):
+        assert qa_resource["pdf_file"]["file_type"] == "PDF"
+        assert qa_resource["xlsx_file"]["file_type"] == "XLSX"
+        assert qa_resource["pdf_file"]["id"] != qa_resource["xlsx_file"]["id"]
 
     def test_unauthenticated_admin_upload_denied(self, qa_resource):
         r = requests.post(
-            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/file",
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files",
             files={"file": ("unauth.pdf", _pdf_bytes(), "application/pdf")},
             timeout=30,
         )
@@ -193,7 +219,7 @@ class TestAdminUploadFlow:
 
     def test_nonadmin_admin_upload_denied(self, tokens, qa_resource):
         r = requests.post(
-            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/file",
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files",
             headers=_admin_headers(tokens["unpaid"]),
             files={"file": ("nonadmin.pdf", _pdf_bytes(), "application/pdf")},
             timeout=30,
@@ -202,7 +228,7 @@ class TestAdminUploadFlow:
 
     def test_invalid_extension_rejected(self, tokens, qa_resource):
         r = requests.post(
-            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/file",
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files",
             headers=_admin_headers(tokens["admin"]),
             files={"file": ("bad.exe", b"MZ", "application/octet-stream")},
             timeout=30,
@@ -212,14 +238,14 @@ class TestAdminUploadFlow:
 
     def test_empty_file_rejected(self, tokens, qa_resource):
         r = requests.post(
-            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/file",
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files",
             headers=_admin_headers(tokens["admin"]),
             files={"file": ("empty.pdf", b"", "application/pdf")},
             timeout=30,
         )
         assert r.status_code == 413
 
-    def test_replace_with_invalid_pdf_preserves_existing_file(self, tokens, qa_resource):
+    def test_invalid_pdf_rejected_without_touching_existing_files(self, tokens, qa_resource):
         before = requests.get(
             f"{BASE_URL}/api/admin/resources",
             headers=_admin_headers(tokens["admin"]),
@@ -227,60 +253,69 @@ class TestAdminUploadFlow:
         )
         assert before.status_code == 200
         row_before = next(x for x in before.json() if x["id"] == qa_resource["id"])
-        prev_path = row_before.get("file_path")
+        count_before = len(row_before.get("resource_files") or [])
 
-        replace = requests.post(
-            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/file",
+        bad = requests.post(
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files",
             headers=_admin_headers(tokens["admin"]),
             files={"file": ("invalid.pdf", b"not-a-pdf", "application/pdf")},
             timeout=30,
         )
-        assert replace.status_code == 415
+        assert bad.status_code == 415
 
         after = requests.get(
             f"{BASE_URL}/api/admin/resources",
             headers=_admin_headers(tokens["admin"]),
             timeout=40,
         )
-        assert after.status_code == 200
         row_after = next(x for x in after.json() if x["id"] == qa_resource["id"])
-        assert row_after.get("file_path") == prev_path
+        assert len(row_after.get("resource_files") or []) == count_before
 
-    def test_replace_with_xlsx_updates_metadata(self, tokens, qa_resource):
-        replace = requests.post(
-            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/file",
+    def test_admin_can_delete_a_single_file(self, tokens, qa_resource):
+        third = requests.post(
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files",
             headers=_admin_headers(tokens["admin"]),
-            files={
-                "file": (
-                    "qa-replace.xlsx",
-                    _xlsx_bytes(),
-                    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                )
-            },
-            timeout=80,
+            files={"file": ("qa-third.txt", b"a disposable text file", "text/plain")},
+            timeout=40,
         )
-        assert replace.status_code == 200, replace.text
-        data = replace.json()
-        assert data.get("file_name") == "qa-replace.xlsx"
-        assert data.get("file_type") == "XLSX"
-        assert isinstance(data.get("file_size"), int) and data["file_size"] > 0
+        assert third.status_code == 201, third.text
+        file_id = third.json()["id"]
+
+        delete = requests.delete(
+            f"{BASE_URL}/api/admin/resources/{qa_resource['id']}/files/{file_id}",
+            headers=_admin_headers(tokens["admin"]),
+            timeout=30,
+        )
+        assert delete.status_code == 204
+
+        listing = requests.get(
+            f"{BASE_URL}/api/admin/resources",
+            headers=_admin_headers(tokens["admin"]),
+            timeout=40,
+        )
+        row = next(x for x in listing.json() if x["id"] == qa_resource["id"])
+        assert file_id not in {f["id"] for f in (row.get("resource_files") or [])}
 
 
 class TestPublicAndProtectedAccess:
-    """Public metadata shape and protected private download flow."""
+    """Public metadata shape and protected private per-file download flow."""
 
-    def test_catalog_detail_does_not_leak_file_path_or_url(self, qa_resource):
+    def test_catalog_detail_expose_files_array_not_storage_path(self, qa_resource):
         catalog = requests.get(f"{BASE_URL}/api/resources", timeout=30)
         assert catalog.status_code == 200
         item = next(x for x in catalog.json()["items"] if x["id"] == qa_resource["id"])
         assert "file_path" not in item
         assert "url" not in item
+        assert item["file_available"] is True
+        assert len(item["files"]) == 2
+        assert {f["file_name"] for f in item["files"]} == {"qa-upload.pdf", "qa-second.xlsx"}
 
         detail = requests.get(f"{BASE_URL}/api/resources/{qa_resource['id']}", timeout=30)
         assert detail.status_code == 200
         d = detail.json()
         assert "file_path" not in d
         assert "url" not in d
+        assert len(d["files"]) == 2
 
     def test_sample_route_retired_410(self, tokens, qa_resource):
         r = requests.get(
@@ -291,8 +326,9 @@ class TestPublicAndProtectedAccess:
         assert r.status_code == 410
 
     def test_signed_download_for_enrolled_user(self, tokens, qa_resource):
+        file_id = qa_resource["xlsx_file"]["id"]
         r = requests.post(
-            f"{BASE_URL}/api/resources/{qa_resource['id']}/download",
+            f"{BASE_URL}/api/resources/{qa_resource['id']}/files/{file_id}/download",
             headers={"Authorization": f"Bearer {tokens['paid']}"},
             timeout=40,
         )
@@ -300,7 +336,7 @@ class TestPublicAndProtectedAccess:
         data = r.json()
         assert data.get("expires_in") == 120
         assert "/storage/v1/object/sign/paid-resources/" in data.get("url", "")
-        assert "download=qa-replace.xlsx" in data.get("url", "")
+        assert "download=qa-second.xlsx" in data.get("url", "")
         downloaded = requests.get(data["url"], timeout=30)
         assert downloaded.status_code == 200
         from openpyxl import load_workbook
@@ -316,8 +352,7 @@ class TestPublicAndProtectedAccess:
         )
         assert admin_rows.status_code == 200
         row = next(x for x in admin_rows.json() if x["id"] == qa_resource["id"])
-        file_path = row.get("file_path")
-        assert file_path
+        file_path = next(f["file_path"] for f in row["resource_files"] if f["id"] == qa_resource["pdf_file"]["id"])
 
         direct = requests.get(
             f"{SUPABASE_URL}/storage/v1/object/public/paid-resources/{quote(file_path, safe='/')}",
@@ -326,11 +361,14 @@ class TestPublicAndProtectedAccess:
         assert direct.status_code in (400, 401, 403, 404)
 
     def test_download_denied_for_anonymous_and_non_enrolled(self, tokens, qa_resource):
-        unauth = requests.post(f"{BASE_URL}/api/resources/{qa_resource['id']}/download", timeout=30)
+        file_id = qa_resource["pdf_file"]["id"]
+        unauth = requests.post(
+            f"{BASE_URL}/api/resources/{qa_resource['id']}/files/{file_id}/download", timeout=30
+        )
         assert unauth.status_code in (401, 403)
 
         unpaid = requests.post(
-            f"{BASE_URL}/api/resources/{qa_resource['id']}/download",
+            f"{BASE_URL}/api/resources/{qa_resource['id']}/files/{file_id}/download",
             headers={"Authorization": f"Bearer {tokens['unpaid']}"},
             timeout=30,
         )
@@ -348,16 +386,15 @@ class TestPublicAndProtectedAccess:
         assert data.get("included_in_course") is True
         assert "order_id" not in data
 
-    def test_missing_file_download_returns_409(self, tokens):
+    def test_purchase_blocked_for_resource_with_no_files(self, tokens):
         catalog = requests.get(f"{BASE_URL}/api/resources", timeout=30)
-        assert catalog.status_code == 200
         items = catalog.json().get("items", [])
         missing = next((x for x in items if not x.get("file_available")), None)
         if not missing:
             pytest.skip("No file-missing published resource available")
         d = requests.post(
-            f"{BASE_URL}/api/resources/{missing['id']}/download",
-            headers={"Authorization": f"Bearer {tokens['paid']}"},
+            f"{BASE_URL}/api/resources/{missing['id']}/order",
+            headers={"Authorization": f"Bearer {tokens['unpaid']}"},
             timeout=40,
         )
         assert d.status_code == 409
