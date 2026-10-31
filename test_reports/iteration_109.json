@@ -1,0 +1,39 @@
+{
+  "summary": "Frontend testing of the Admin Resources dark-mode button fix and the multi-file editor. The DB migration has not been run: GET /api/admin/enterprise/status returns {database_ready:false}, and /api/admin/resources and /api/resources return 503 'setup pending', so live resource CRUD, upload and download are BLOCKED (expected). To check the UI anyway, the Playwright tests mocked status=ready plus a resource list with two files through page.route, and mocked the PUT, POST /files and DELETE /files/{id} calls. Results: DARK MODE FIX WORKS. Manage files/Upload files and the Edit pencil show light text and icon (rgb(245,241,255)) with a visible border on the dark background. Light mode is unchanged (rgb(2,7,61) text, #c9cddd border). The Download database setup and Check again buttons are also readable in dark mode. The editor label reads 'up to 50 MB each'. The input has multiple set. Selecting 3 files at once gave 3 pending chips, adding 1 more gave 4, and removing one with X gave 3. The Save button reads 'Save resource & upload 3 files'. Save sent 1 PUT and then 3 POST /files calls one after another, and the dialog closed. Deleting one existing file sent DELETE /admin/resources/{id}/files/{file_id} and only that file left the list (2 -> 1). Regression: the Enterprise, Waitlist and Enrolled Users tabs load in dark mode, and public /resources (.biz-page) still uses its light design. No page errors.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/admin/resources/{id}/files", "issue": "An empty file sent to a resource that does not exist returns 404 'Save the resource before uploading.' because the resource lookup runs before the size check. The 413 '...no larger than 50 MB.' could not be reached live while the DB is not ready. The code (resource_storage.py lines 62-64) does use 50*1024*1024."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "ResourceEditor pending files", "issue": "Pending chips use the file name as the React key and dropPending filters by name. Picking the same file twice adds a duplicate (key collision), and clicking X removes every chip with that name.", "selector": "[data-testid^='admin-resource-selected-file-']", "priority": "LOW"},
+      {"component": "ResourceEditor save loop", "issue": "If upload N of M fails, files already uploaded stay in pendingFiles because it is only cleared after the loop. Clicking Save again uploads them a second time, creating duplicates. Remove each file from pendingFiles as soon as it uploads.", "selector": "[data-testid='admin-resource-save']", "priority": "MEDIUM"},
+      {"component": "ResourceEditor existing files", "issue": "The per-file trash button deletes right away with no confirmation.", "selector": "[data-testid^='admin-resource-remove-file-']", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Resource editor (dark mode)", "issues": ["Inputs and selects keep white backgrounds inside the dark dialog. They are readable but look inconsistent.", "Very small files show '0.0 KB'."]},
+      {"screen": "EnterpriseSetup copy", "issues": ["The setup text still says it creates 'enquiry and purchase tables plus a private file bucket'. It does not mention the new resource_files table or the 50 MB bucket limit."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Admin must run GET /api/admin/enterprise/setup.sql (0048+0049; verified it contains resource_files and 52428800) in the Supabase SQL editor, then re-run /app/backend/tests/test_iter107_resources_purchases.py and the live multi-file upload/download flows",
+    "Remove each uploaded file from pendingFiles inside the upload loop so a retry after a partial failure does not create duplicates",
+    "Prevent duplicate pending files, or use a unique key (name+size+lastModified)",
+    "Optional: add confirmation before per-file delete; update the setup copy"
+  ],
+  "critical_code_review_comments": [
+    "ResourceEditor.jsx save(): partial-failure retry re-uploads files that already succeeded",
+    "ResourceEditor.jsx: React key uses the file name, so duplicate names collide",
+    "chooseFiles: only the last validation error is shown when several files are invalid"
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (blocked by pending migration; status/503/setup.sql auth verified)", "frontend": "100% of testable flows (with mocked API for the DB-dependent UI)"},
+  "seed_data_creation": "None. All resource data in UI tests was mocked with Playwright page.route.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Admin login via /login: fill [data-testid=login-email-input] and input[type=password], then press Enter; it lands on /dashboard. Toggle theme with the sidebar text 'Dark mode'/'Light mode' (no theme-toggle testid in the admin layout). After the migration is applied, test the real multi-file upload, per-file delete and student download (POST /resources/{id}/files/{file_id}/download) end to end."
+}

@@ -68,10 +68,67 @@ and tailored according to you and that it is not generic and uses ai to make the
 - `frontend/src/styles/valuevade-brand.css`
 - `backend/server.py` contains the existing customisation planner; untouched this task.
 
+## Latest request — completed 2026-10-31
+Exact request: "in dark mode buttons are not visible and in resources I should add
+multiple files instead of one and increase per size file limit of 50 mb"
+
+### Implemented
+- **Dark-mode fix**: `.biz-button-outline` (Upload/Edit buttons), `.biz-eyebrow`,
+  `.biz-fine-print`, `.biz-text-link` and all admin form inputs/selects/textareas now
+  have `html.dark .biz-admin ...` overrides using theme CSS variables. The public
+  `.biz-page` design (Enterprise/Resources marketing pages) is an intentionally
+  always-light editorial system and was left untouched. Verified by testing_agent_v3_fork:
+  dark buttons now show light text/icon on a visible border; light mode unchanged.
+- **Multi-file resources**: new `resource_files` table (one resource → many files).
+  Admin can select/queue multiple files in one go, upload them sequentially, and
+  delete any single file independently (with a confirm prompt). Resource list/detail/
+  purchases/download endpoints all now expose a `files: [{id,file_name,file_size,
+  file_type}]` array instead of single file_name/file_size/file_type columns.
+  Per-file private signed download: `POST /api/resources/{id}/files/{file_id}/download`.
+- **50MB limit**: per-file cap raised from 25MB to 50MB end-to-end (upload validation,
+  error copy, editor label, and the Supabase storage bucket's `file_size_limit`).
+- Fixed testing-agent-found bugs: pending-file React key collision + duplicate
+  re-upload after a partial save failure (unique `_uid` per queued file, removed
+  from the queue as each upload succeeds); small-file size now shows bytes instead
+  of "0.0 KB".
+
+### ⚠️ Action required by user (blocker for this feature going live)
+A DB migration is required and could **not** be applied automatically (the saved
+`SUPABASE_DB_URL` secret is invalid/was skipped when re-requested). Until run, all
+`/api/resources*` and `/api/admin/resources*` endpoints return 503 "Enterprise
+database setup is pending." — **this is expected**, not a bug.
+To apply it: Admin Panel → Resources tab → "Download database setup" button
+(serves `/app/scripts/migrations/0048_enterprise_resources.sql` +
+`0049_resource_files.sql` combined) → paste into the Supabase project's SQL Editor →
+Run → click "Check again" in the admin panel. This is additive/idempotent and safe
+to re-run.
+
+### Verification
+- Backend: confirmed via curl that `/api/resources` now returns a friendly 503 (not a
+  raw 502) pre-migration; `/api/admin/enterprise/status` correctly reports
+  `database_ready:false`; `/api/admin/enterprise/setup.sql` download contains both
+  migrations with `file_size_limit=52428800` (50MB).
+- Frontend: testing_agent_v3_fork confirmed the dark-mode button fix visually (mocked
+  API data since the live DB isn't migrated yet) and the multi-file editor flows
+  (multi-select, queue, per-file delete, sequential upload, 50MB copy). No regressions
+  in Enterprise/Waitlist/Enrolled Users tabs or the public always-light `.biz-page`s.
+- Updated regression suite `backend/tests/test_iter107_resources_purchases.py` for the
+  new multi-file API shape; it self-skips until `resource_files` exists in Supabase.
+
+### Key files (this change)
+- `scripts/migrations/0049_resource_files.sql` (new table + 50MB bucket limit)
+- `backend/{resource_endpoints,resource_access,resource_storage,resource_payments,
+  purchase_endpoints,enterprise_common,enterprise_endpoints}.py`
+- `frontend/src/components/enterprise/enterprise.css` (dark-mode overrides)
+- `frontend/src/components/admin/{ResourceEditor,ResourcesTab,EnterpriseSetup}.jsx`
+- `frontend/src/components/resources/{ResourceDetailsPage,ResourceDownloadButton}.jsx`
+- `frontend/src/components/purchases/{PurchasesPage,PurchaseResourceRow}.jsx`
+
 ## Progress / next tasks
-- Current P0: no known issue in the requested presentation update; user visual review next.
-- P1: enterprise enquiry email delivery and standalone Razorpay resource purchase E2E.
-- P2: backend modularisation, existing hook warnings, optional sample personalised-path preview.
+- Current P0: user must run the Supabase SQL migration above to unblock resources.
+- P1: enterprise enquiry email delivery and standalone Razorpay resource purchase E2E
+  (re-verify after the migration, using the updated multi-file flow).
+- P2: backend modularisation, existing hook warnings.
 - Full prioritised work is in `ROADMAP.md`.
 - Prior implementation history and setup caveats are preserved in `CHANGELOG.md`.
   Entries are chronological snapshots: newer verification supersedes old setup blockers.

@@ -130,6 +130,7 @@ html.dark .biz-admin .biz-text-link,html.dark .biz-admin .biz-text-link svg { co
 .biz-checks svg { color:#0c8263;flex-shrink:0;margin-top:2px; }
 .biz-enquiry label,.biz-admin label { display:block;font-size:12px;font-weight:500;margin-bottom:15px; }
 .biz-page input:not([type=range]):not([type=checkbox]),.biz-page textarea,.biz-page select,.biz-admin input:not([type=checkbox]),.biz-admin textarea,.biz-admin select { background:#fff;color:#02073d;border:1px solid #c9cddd;border-radius:4px;padding:11px 12px;font-family:inherit;font-size:13px;width:100%;min-width:0;margin-top:7px; }
+html.dark .biz-admin input:not([type=checkbox]),html.dark .biz-admin textarea,html.dark .biz-admin select { background:var(--color-bg-card);color:var(--color-text);border-color:var(--color-border); }
 .biz-form-row { display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px; }
 .biz-enquiry .biz-consent,.biz-admin .biz-consent { display:flex;gap:9px;align-items:flex-start;font-size:11px;line-height:1.6;font-weight:400; }
 .biz-consent input { flex-shrink:0;accent-color:#246bfd;margin-top:3px; }
